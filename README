@@ -1,0 +1,6 @@
+Compile programs using:
+
+gfortran `pkg-config --cflags --libs gtk+-2.0`
+
+Send bug reports to jvdelisle@gcc.gnu.org
+
