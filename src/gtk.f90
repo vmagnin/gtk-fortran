@@ -29,6 +29,49 @@ module gtk
 
   interface
 
+    ! GDK related functions.
+    subroutine gdk_image_put_pixel(image, x, y, pixel) bind(c)
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: image
+      integer(c_int), value :: x, y, pixel
+    end subroutine gdk_image_put_pixel
+
+    type(c_ptr) function gdk_rgb_get_visual() bind(c)
+      use iso_c_binding, only: c_ptr
+    end function gdk_rgb_get_visual
+
+    type(c_ptr) function gdk_image_new(image, visual, width, height) bind(c)
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: visual
+      integer(c_int), value :: image, width, height            
+    end function gdk_image_new
+
+    subroutine gtk_widget_map (widget) bind(c)
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: widget
+    end subroutine gtk_widget_map
+
+    subroutine gtk_widget_unmap (widget) bind(c)
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: widget
+    end subroutine gtk_widget_unmap
+    
+    type(c_ptr) function gtk_image_new_from_image(image, mask) bind(c)
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: image, mask
+    end function gtk_image_new_from_image
+
+    function gtk_events_pending() bind(c)
+      use iso_c_binding, only: c_bool
+      logical(c_bool) :: gtk_events_pending
+    end function gtk_events_pending
+
+    function gtk_main_iteration_do(blocking) bind(c)
+      use iso_c_binding, only: c_bool
+      logical(c_bool), value :: blocking
+      logical(c_bool) :: gtk_main_iteration_do
+    end function gtk_main_iteration_do
+
     function gtk_drawing_area_new() bind(c)
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: gtk_drawing_area_new
@@ -168,12 +211,18 @@ module gtk
 
   end interface 
 
+  ! Some useful parameters.
   character(c_char), parameter :: CNULL = c_null_char
   type(c_ptr), parameter       :: NULL = c_null_ptr
   logical(c_bool), parameter   :: TRUE = .true.
   logical(c_bool), parameter   :: FALSE = .false.
   integer(c_int), parameter    :: GTK_WINDOW_TOPLEVEL = 0
   integer(c_int), parameter    :: GTK_WINDOW_POPUP = 1
+
+  ! GdkImageType parameters.
+  integer(c_int), parameter :: GDK_IMAGE_NORMAL = 0
+  integer(c_int), parameter :: GDK_IMAGE_SHARED = 1
+  integer(c_int), parameter :: GDK_IMAGE_FASTEST = 2
 
 contains
   subroutine g_signal_connect (instance, detailed_signal, c_handler)
