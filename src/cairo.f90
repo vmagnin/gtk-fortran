@@ -27,15 +27,79 @@ module cairo
   use iso_c_binding, only: c_int, c_bool, c_char, c_null_char, c_ptr, c_null_ptr
   implicit none
 
-  ! cairo_format:
+  ! Format
   integer(c_int), parameter :: CAIRO_FORMAT_INVALID   = -1
   integer(c_int), parameter :: CAIRO_FORMAT_ARGB32    = 0
   integer(c_int), parameter :: CAIRO_FORMAT_RGB24     = 1
   integer(c_int), parameter :: CAIRO_FORMAT_A8        = 2
   integer(c_int), parameter :: CAIRO_FORMAT_A1        = 3
   integer(c_int), parameter :: CAIRO_FORMAT_RGB16_565 = 4
+  ! Font Slant
+  integer(c_int), parameter :: CAIRO_FONT_SLANT_NORMAL = 0
+  integer(c_int), parameter :: CAIRO_FONT_SLANT_ITALIC = 1
+  integer(c_int), parameter :: CAIRO_FONT_SLANT_OBLIQUE= 2
+  ! Font Weight
+  integer(c_int), parameter :: CAIRO_FONT_WEIGHT_NORMAL = 0
+  integer(c_int), parameter :: CAIRO_FONT_WEIGHT_BOLD   = 1
 
   interface
+    ! cairo_surface_t *   cairo_get_target(cairo_t *cr);
+    function cairo_get_target (cr) bind(c)
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: cr
+      type(c_ptr) :: cairo_get_target
+    end function
+
+    ! cairo_status_t cairo_surface_write_to_png(cairo_surface_t *surface, const char *filename);
+    function cairo_surface_write_to_png(surface, filename) bind(c)
+      use iso_c_binding, only: c_ptr, c_int, c_char
+      type(c_ptr), value :: surface
+      character(kind=c_char) :: filename(*)
+      integer(c_int) :: cairo_surface_write_to_png
+    end function
+
+    ! void cairo_select_font_face(cairo_t *cr, const char *family, cairo_font_slant_t slant, cairo_font_weight_t weight);
+    subroutine cairo_select_font_face(cr, family, slant, weight) bind(c)
+      use iso_c_binding, only: c_ptr, c_int, c_char
+      type(c_ptr), value :: cr
+      character(kind=c_char) :: family(*)
+      integer(c_int), value :: slant, weight
+    end subroutine 
+
+    ! void cairo_set_font_size(cairo_t *cr, double size);
+    subroutine cairo_set_font_size(cr, size0) bind(c)
+      use iso_c_binding, only: c_ptr, c_double
+      type(c_ptr), value :: cr
+      real(c_double), value :: size0
+    end subroutine 
+ 
+    ! void cairo_show_text(cairo_t *cr, const char *utf8);
+    subroutine cairo_show_text(cr, utf8) bind(c)
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: cr
+      character(kind=c_char) :: utf8(*)
+    end subroutine 
+
+    ! cairo_paint (cairo_t *cr);
+    subroutine cairo_paint(cr) bind(c)
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: cr
+    end subroutine 
+    
+    ! void gdk_cairo_set_source_window(cairo_t *cr, GdkWindow *window, double x, double y);
+    subroutine gdk_cairo_set_source_window(cr, window, x, y) bind(c)
+      use iso_c_binding, only: c_ptr, c_double
+      type(c_ptr), value :: cr, window
+      real(c_double), value :: x, y
+    end subroutine 
+
+    ! void gdk_cairo_set_source_pixbuf(cairo_t *cr, const GdkPixbuf *pixbuf, double pixbuf_x, double pixbuf_y);
+    subroutine gdk_cairo_set_source_pixbuf(cr, pixbuf, pixbuf_x, pixbuf_y) bind(c)
+      use iso_c_binding, only: c_ptr, c_double
+      type(c_ptr), value :: cr, pixbuf
+      real(c_double), value :: pixbuf_x, pixbuf_y
+    end subroutine 
+
     function gdk_cairo_create (drawable) bind(c)
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: drawable

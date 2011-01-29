@@ -28,6 +28,45 @@ module gtk
   implicit none
 
   interface
+    subroutine gtk_widget_queue_draw (widget) bind(c)
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: widget
+    end subroutine 
+  
+    ! int gdk_pixbuf_get_rowstride(const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_rowstride(my_pixbuf) bind(c)
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: my_pixbuf
+      integer(c_int) :: gdk_pixbuf_get_rowstride
+    end function 
+
+    ! int gdk_pixbuf_get_n_channels(const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_n_channels(my_pixbuf) bind(c)
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: my_pixbuf
+      integer(c_int) :: gdk_pixbuf_get_n_channels
+    end function 
+
+    ! gboolean gdk_pixbuf_get_has_alpha(const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_has_alpha(my_pixbuf) bind(c)
+      use iso_c_binding, only: c_ptr, c_bool
+      type(c_ptr), value :: my_pixbuf
+      logical(c_bool) :: gdk_pixbuf_get_has_alpha
+    end function 
+
+    function gdk_pixbuf_get_pixels(my_pixbuf) bind(c)
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: my_pixbuf
+      type(c_ptr) :: gdk_pixbuf_get_pixels
+    end function
+
+    ! GdkPixbuf * gdk_pixbuf_new(GdkColorspace colorspace, gboolean has_alpha, int bits_per_sample, int width, int height);
+    function gdk_pixbuf_new(colorspace, has_alpha, bits_per_sample, width, height) bind(c)
+      use iso_c_binding, only: c_ptr, c_int, c_bool
+      type(c_ptr) :: gdk_pixbuf_new
+      logical(c_bool), value :: has_alpha 
+      integer(c_int), value :: colorspace, bits_per_sample, width, height            
+    end function 
 
     ! GDK related functions.
     subroutine gdk_image_put_pixel(image, x, y, pixel) bind(c)
@@ -223,6 +262,7 @@ module gtk
   integer(c_int), parameter :: GDK_IMAGE_NORMAL = 0
   integer(c_int), parameter :: GDK_IMAGE_SHARED = 1
   integer(c_int), parameter :: GDK_IMAGE_FASTEST = 2
+  integer(c_int), parameter :: GDK_COLORSPACE_RGB = 0
 
 contains
   subroutine g_signal_connect (instance, detailed_signal, c_handler)
