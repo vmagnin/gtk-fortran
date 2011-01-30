@@ -73,43 +73,43 @@ module gtk
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: image
       integer(c_int), value :: x, y, pixel
-    end subroutine gdk_image_put_pixel
+    end subroutine
 
     type(c_ptr) function gdk_rgb_get_visual() bind(c)
       use iso_c_binding, only: c_ptr
-    end function gdk_rgb_get_visual
+    end function
 
     type(c_ptr) function gdk_image_new(image, visual, width, height) bind(c)
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: visual
       integer(c_int), value :: image, width, height            
-    end function gdk_image_new
+    end function
 
     subroutine gtk_widget_map (widget) bind(c)
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: widget
-    end subroutine gtk_widget_map
+    end subroutine
 
     subroutine gtk_widget_unmap (widget) bind(c)
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: widget
-    end subroutine gtk_widget_unmap
+    end subroutine
     
     type(c_ptr) function gtk_image_new_from_image(image, mask) bind(c)
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: image, mask
-    end function gtk_image_new_from_image
+    end function
 
     function gtk_events_pending() bind(c)
       use iso_c_binding, only: c_bool
       logical(c_bool) :: gtk_events_pending
-    end function gtk_events_pending
+    end function
 
     function gtk_main_iteration_do(blocking) bind(c)
       use iso_c_binding, only: c_bool
       logical(c_bool), value :: blocking
       logical(c_bool) :: gtk_main_iteration_do
-    end function gtk_main_iteration_do
+    end function
 
     function gtk_drawing_area_new() bind(c)
       use iso_c_binding, only: c_ptr
@@ -149,24 +149,24 @@ module gtk
     function gtk_progress_bar_new() bind(c)
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: gtk_progress_bar_new
-    end function gtk_progress_bar_new
+    end function
 
     subroutine gtk_progress_bar_set_text (pbar, text) bind(c)
       use iso_c_binding, only: c_ptr, c_char
       character(kind=c_char) :: text(*)
       type(c_ptr), value :: pbar
-    end subroutine gtk_progress_bar_set_text
+    end subroutine
 
     subroutine gtk_progress_bar_set_fraction (pbar, frac) bind(c)
       use iso_c_binding, only: c_ptr, c_double
       real(c_double), value :: frac
       type(c_ptr), value :: pbar
-    end subroutine gtk_progress_bar_set_fraction
+    end subroutine
 
     subroutine gtk_progress_bar_pulse (pbar) bind(c)
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: pbar
-    end subroutine gtk_progress_bar_pulse
+    end subroutine
 
     subroutine gtk_widget_show (window) bind(c)
       use iso_c_binding, only: c_ptr
@@ -177,32 +177,32 @@ module gtk
       use iso_c_binding, only: c_ptr, c_int
       integer(c_int), value :: windowtype
       type(c_ptr) :: gtk_window_new
-    end function gtk_window_new
+    end function
 
     function gtk_hbox_new (homogenous, space) bind(c)
       use iso_c_binding, only: c_bool, c_int, c_ptr
       logical(c_bool), value :: homogenous
       integer(c_int), value :: space
       type(c_ptr) :: gtk_hbox_new
-    end function gtk_hbox_new
+    end function
 
     function gtk_vbox_new (homogenous, space) bind(c)
       use iso_c_binding, only: c_bool, c_int, c_ptr
       logical(c_bool), value :: homogenous
       integer(c_int), value :: space
       type(c_ptr) :: gtk_vbox_new
-    end function gtk_vbox_new
+    end function
 
     function gtk_button_new_with_label (label) bind(c)
       use iso_c_binding, only: c_ptr, c_char
       character(kind=c_char) :: label(*)
       type(c_ptr) :: gtk_button_new_with_label
-    end function gtk_button_new_with_label
+    end function
 
     subroutine gtk_container_add (container, object) bind(c)
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: container, object
-    end subroutine gtk_container_add
+    end subroutine
 
     subroutine gtk_box_pack_start (box, widget, expand, fill, padding) bind(c)
       use iso_c_binding, only: c_bool, c_int, c_ptr
@@ -221,26 +221,26 @@ module gtk
       use iso_c_binding, only: c_ptr, c_char
       type(c_ptr), value :: window
       character(kind=c_char), dimension(*) :: title
-    end subroutine gtk_window_set_title
+    end subroutine
 
     subroutine gtk_window_set_default_size(window, width, height) bind(c)
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: window
       integer(c_int), value :: width, height
-    end subroutine gtk_window_set_default_size
+    end subroutine
 
     subroutine gtk_main() bind(c)
-    end subroutine gtk_main
+    end subroutine
 
     subroutine gtk_main_quit() bind(c)
-    end subroutine gtk_main_quit
+    end subroutine
 
     subroutine g_signal_connect_data (instance, detailed_signal,&
 				    & c_handler, gobject, dummy) bind(c)
       use iso_c_binding, only: c_ptr, c_char
       character(c_char) :: detailed_signal(*)
       type(c_ptr), value       :: instance, gobject, c_handler, dummy
-    end subroutine g_signal_connect_data
+    end subroutine
 
     subroutine gtk_init_real(argc,argv) bind(c,name='gtk_init')
       use iso_c_binding, only: c_int, c_ptr
@@ -270,7 +270,7 @@ contains
       character(c_char):: detailed_signal(*)
       type(c_ptr)      :: instance, c_handler
       call g_signal_connect_data (instance, detailed_signal, c_handler, NULL, NULL)    
-  end subroutine g_signal_connect
+  end subroutine
 
   subroutine gtk_init()
     use iso_c_binding, only: c_ptr, c_char, c_int, c_null_char, c_loc
