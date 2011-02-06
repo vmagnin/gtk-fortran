@@ -237,9 +237,10 @@ module gtk
 
     subroutine g_signal_connect_data (instance, detailed_signal,&
 				    & c_handler, gobject, dummy) bind(c)
-      use iso_c_binding, only: c_ptr, c_char
-      character(c_char) :: detailed_signal(*)
-      type(c_ptr), value       :: instance, gobject, c_handler, dummy
+      use iso_c_binding, only: c_ptr, c_char, c_funptr
+      character(c_char)     :: detailed_signal(*)
+      type(c_ptr), value    :: instance, gobject, dummy
+      type(c_funptr), value :: c_handler      
     end subroutine
 
     subroutine gtk_init_real(argc,argv) bind(c,name='gtk_init')
@@ -266,9 +267,11 @@ module gtk
 
 contains
   subroutine g_signal_connect (instance, detailed_signal, c_handler)
-      use iso_c_binding, only: c_ptr, c_char
+      use iso_c_binding, only: c_ptr, c_char, c_funptr
       character(c_char):: detailed_signal(*)
-      type(c_ptr)      :: instance, c_handler
+      type(c_ptr)      :: instance
+      type(c_funptr)   :: c_handler
+      
       call g_signal_connect_data (instance, detailed_signal, c_handler, NULL, NULL)    
   end subroutine
 
