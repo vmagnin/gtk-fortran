@@ -6,6 +6,9 @@ gtk.f90 can be in the same directory as your main program.  Regardless it has to
 
 There are variations to this approach and I will add examples as I get time.
 
+If using gfortran, requires version 4.6, a recent checkout from trunk.
+
+Also may require installing the related gtk+-2.0 devel packages from your distribution.
 
 Send bug reports to jvdelisle@gcc.gnu.org
 
