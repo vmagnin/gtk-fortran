@@ -5,6 +5,9 @@ gfortran PATH_TO/gtk.f90 gtkhello2.f90 -o gtkhello2 `pkg-config --cflags --libs 
 gtk.f90 and gtk-auto.f90 can be in the same directory as your main program. Regardless it has to be in the compile line to link. 
 
 There are variations to this approach and I will add examples as I get time.
-A recent version of gfortran 4.6.0 is needed. The gtk-auto.f90 file was generated with GTK+ 2.22. The cfwrapper.py script can be used to regenerate gtk-auto.f90, by typing python cfwrapper.py
+
+If using gfortran, requires version 4.6, a recent checkout from trunk.Also may require installing the related gtk+-2.0 devel packages from your distribution.
+
+The gtk-auto.f90 file was generated with GTK+ 2.22. The cfwrapper.py script can be used to regenerate gtk-auto.f90, by typing python cfwrapper.py
 
 Send bug reports to jvdelisle@gcc.gnu.org

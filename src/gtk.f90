@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by Vincent Magnin and Jerry DeLisle, 01-23-2011
+! Contributed by Vincent Magnin, Jerry DeLisle and Tobias Burnus, 01-23-2011
 ! Last modification: 02-09-2011
 
 module gtk

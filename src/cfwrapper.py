@@ -64,6 +64,15 @@ def iso_c_binding(declaration, returned):
         if c_type.find(each) != -1:
             return "type(c_funptr)", "c_funptr"
     
+    #?????????????????
+    # Is it sure ????
+    #?????????????????
+    if c_type.find("gpointer")!=-1 or c_type.find("gconstpointer")!=-1:
+        if returned:
+            return "type(c_funptr)", "c_funptr"
+        else:
+            return "type(c_ptr)", "c_ptr"
+    
     # Is it a pointer ?
     if declaration.find("*") != -1:
         # Is it a string (char or gchar array) ? "unsigned char"   "guchar" gunichar ?
@@ -98,10 +107,13 @@ types_dict = { "int":("integer(c_int)","c_int"),
     "guint8": ("integer(c_int8_t)","c_int8_t"),  
     "glong":("integer(c_long)","c_long"),        
     "gulong":("integer(c_long)","c_long"),
-    "boolean":("logical(c_bool)","c_bool"),      
+    "boolean":("logical(c_bool)","c_bool"),
+    "gchar":("character(c_char)","c_char"),
+    "guchar":("character(c_char)","c_char"),
     "gboolean":("logical(c_bool)","c_bool"),  
     "double": ("real(c_double)","c_double"),     
-    "gdouble": ("real(c_double)","c_double"),     
+    "gdouble": ("real(c_double)","c_double"),
+    "long double": ("real(c_long_double)","c_long_double"),
     "float":("real(c_float)","c_float"),         
     "gfloat":("real(c_float)","c_float"),
     "gsize":  ("integer(c_size_t)","c_size_t"),  
@@ -120,6 +132,7 @@ types_dict = { "int":("integer(c_int)","c_int"),
 #typedef signed long gssize;
 #typedef void* gpointer;
 #typedef const void *gconstpointer;
+# Problem with 2 words types ? (long double...) 
 #**************************************
     
 # Regular expressions used to identify the different parts of a C prototype:
@@ -177,9 +190,8 @@ for library_path in path_dict.keys():
     tree = os.walk(library_path)    # A generator
     for directory in tree:
         for c_file_name in directory[2]:
-            # Those files contains two declaration for the same prototypes 
-            # (unix, win32 for example) so we exclude them:
-            if c_file_name == "gstdio.h" or c_file_name == "giochannel.h":
+            # Those files cause problems so we exclude them:
+            if c_file_name in ["gstdio.h", "giochannel.h"]: #, "gmessages.h"] :
                 continue    # Go to next file
 
             whole_file = open(directory[0] + "/" + c_file_name, 'rU').read()
@@ -190,6 +202,8 @@ for library_path in path_dict.keys():
             # Remove C commentaries:
             whole_file = re.sub("(?s)/\*.*?\*/", "", whole_file)
             # Remove C directives:
+            #    problem with the following regex:
+            #whole_file = re.sub("(?m)^#(.*?[\\][\n])+?$", "", whole_file)
             whole_file = re.sub("(?m)^#.*$", "", whole_file)
             # Remove TABs and overnumerous spaces:
             whole_file = whole_file.replace("\t", " ")
@@ -396,6 +410,6 @@ print
 print("Trying now to compile the interface and examples... Please wait...")
 #os.system("gfortran -g gtk.f90 ../examples/cairo-tests.f90 `pkg-config --cflags --libs gtk+-2.0`")
 os.system("gfortran -g gtk.f90 ../examples/gtkhello2.f90  `pkg-config --cflags --libs gtk+-2.0` -o../examples/gtkhello2.out")
-os.system("gfortran -g gtk.f90 ../examples/mandelbrot.f90  `pkg-config --cflags --libs gtk+-2.0` -o../examples/mandelbrot.out")
+#os.system("gfortran -g gtk.f90 ../examples/mandelbrot.f90  `pkg-config --cflags --libs gtk+-2.0` -o../examples/mandelbrot.out")
 
 
