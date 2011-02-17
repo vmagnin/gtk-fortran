@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 28.01.2011, Python 2.6.6, Linux Ubuntu 10.10
-# Last modification:  09.02.2011
+# Last modification:  15.02.2011
 
 """ This program helps you writing a GTK+ Fortran interface from C prototypes,
     using ISO_C_BINDING. The result file must be verified visually, 
@@ -37,7 +37,6 @@
     """
 
 import re        # Regular expression library
-import sys
 import os
 
 def iso_c_binding(declaration, returned):
@@ -46,24 +45,24 @@ def iso_c_binding(declaration, returned):
     global gtk_enums
     global gtk_funptr
     global RGX_TYPE
-    global types_dict
-       
+    global TYPES_DICT
+
     try:
         c_type = RGX_TYPE.search(declaration).group(1)
     except AttributeError:
         #print declaration
         return "?", "?"    # error
-    
+
     # Is it a "typedef enum" ?
     for each in gtk_enums:
         if c_type.find(each) != -1:
             return "integer(c_int)", "c_int"
-    
+
     # Is it a "typedef      (*     )" ?
     for each in gtk_funptr:
         if c_type.find(each) != -1:
             return "type(c_funptr)", "c_funptr"
-    
+
     #?????????????????
     # Is it sure ????
     #?????????????????
@@ -80,61 +79,116 @@ def iso_c_binding(declaration, returned):
             return "character(kind=c_char), dimension(*)", "c_char"
         else:
             return "type(c_ptr)", "c_ptr"
-            
+
     # Other cases:
-    for each in types_dict.keys():
-        if each in c_type.split():
-            return types_dict[each][0], types_dict[each][1]
+    if len(declaration.split()) >= 3:   # Two words type
+        for each in TYPES2_DICT.keys():
+            if set(each.split()).issubset(set(declaration.split())):
+                return TYPES2_DICT[each][0], TYPES2_DICT[each][1]
+    else:  # It is a one word type
+        for each in TYPES_DICT.keys():
+            if each in c_type.split():
+                return TYPES_DICT[each][0], TYPES_DICT[each][1]
 
     # It is finally an unknown type:
     return "?", "?"
 
 
+def write_error(errorsfile, direc, filename, message, proto, type_error): 
+    """ Write errors in the file cfwrapper-errors.txt and increments the counters """
+    global nb_errors
+    global nb_type_errors
+    
+    errorsfile.write(direc + "/" + filename + "\n")
+    errorsfile.write(message + "\n")
+    errorsfile.write(proto + "\n\n")
+    if type_error:
+        nb_type_errors += 1
+    else:
+        nb_errors += 1
+
+
 # **********************************************
 # Main program
 # **********************************************
-types_dict = { "int":("integer(c_int)","c_int"), 
+# One word types:
+TYPES_DICT = { 
+    "int":("integer(c_int)","c_int"), 
     "gint":("integer(c_int)","c_int"),
     "guint":("integer(c_int)","c_int"),          
     "cairo_bool_t":("integer(c_int)","c_int"), 
     "gint64":("integer(c_int64_t)","c_int64_t"), 
+    "goffset":("integer(c_int64_t)","c_int64_t"), 
     "guint64":("integer(c_int64_t)","c_int64_t"),
     "gint32":("integer(c_int32_t)","c_int32_t"), 
     "guint32":("integer(c_int32_t)","c_int32_t"),
+    "GQuark":("integer(c_int32_t)","c_int32_t"),  #typedef guint32 GQuark;
+    "gunichar":("integer(c_int32_t)","c_int32_t"),
     "gint16":("integer(c_int16_t)","c_int16_t"), 
     "guint16":("integer(c_int16_t)","c_int16_t"),
     "gint8": ("integer(c_int8_t)","c_int8_t"),   
     "guint8": ("integer(c_int8_t)","c_int8_t"),  
     "glong":("integer(c_long)","c_long"),        
     "gulong":("integer(c_long)","c_long"),
+    "short":("integer(c_short)","c_short"),
+    "gshort":("integer(c_short)","c_short"),
     "boolean":("logical(c_bool)","c_bool"),
     "gchar":("character(c_char)","c_char"),
     "guchar":("character(c_char)","c_char"),
     "gboolean":("logical(c_bool)","c_bool"),  
     "double": ("real(c_double)","c_double"),     
     "gdouble": ("real(c_double)","c_double"),
-    "long double": ("real(c_long_double)","c_long_double"),
     "float":("real(c_float)","c_float"),         
     "gfloat":("real(c_float)","c_float"),
     "gsize":  ("integer(c_size_t)","c_size_t"),  
     "gssize":  ("integer(c_size_t)","c_size_t"),
     "GType":  ("integer(c_size_t)","c_size_t"),  
     "size_t":  ("integer(c_size_t)","c_size_t"),
-    "gpointer":("type(c_ptr)","c_ptr") }
-# TODO: Add these types:
-# "short"  "gshort"       
+    "gpointer":("type(c_ptr)","c_ptr"),
+    "GdkAtom":("type(c_ptr)","c_ptr"),
+    "GC":("type(c_ptr)","c_ptr"),
+    "PangoGlyph":("integer(c_int32_t)","c_int32_t"),   #typedef guint32 PangoGlyph;
+    # X11 types (See /usr/include/X11/Xmd.h), unsigned int (64 bits archi.)
+    # or unsigned long (32 bits architecture) :
+    "Window":("integer(c_long)","c_long"),
+    "Drawable":("integer(c_long)","c_long"),  #define Drawable CARD32
+    "Font":("integer(c_long)","c_long"),
+    "Pixmap":("integer(c_long)","c_long"),
+    "Cursor":("integer(c_long)","c_long"),
+    "Colormap":("integer(c_long)","c_long"),
+    "GContext":("integer(c_long)","c_long"),
+    "Atom":("integer(c_long)","c_long"),
+    "VisualID":("integer(c_long)","c_long"),
+    "Time":("integer(c_long)","c_long"),
+    "KeyCode":("character(c_char)","c_char"),   #define KeyCode CARD8   => unsigned char
+    "KeySym":("integer(c_long)","c_long"),
+     }
+
+# TODO: Add or verify these types:
 # "long"   
 # int"gboolean" ?
-# "unsigned short"  "gushort"
-# "unsigned long"   "gulong"
-# "unsigned int"    "guint"
+#   "gushort"
 #typedef unsigned long gsize;   also GType
 #typedef signed long gssize;
 #typedef void* gpointer;
 #typedef const void *gconstpointer;
-# Problem with 2 words types ? (long double...) 
+# GC (Xlib) is it a pointer ?
+#typedef struct _GdkAtom            *GdkAtom;  So GdkAtom is a pointer ?
+#typedef gint32  GTime;
+#typedef guint16 GDateYear;
+#typedef guint8  GDateDay;   /* day of the month */
+#typedef struct _GDate GDate;
 #**************************************
-    
+
+# Two words types
+TYPES2_DICT = {
+    "long double": ("real(c_long_double)","c_long_double"),
+    "unsigned long":("integer(c_long)","c_long"),
+    "unsigned short":("integer(c_short)","c_short"),
+    "unsigned long":("integer(c_long)","c_long"),
+    "unsigned int":("integer(c_int)","c_int")
+}
+
 # Regular expressions used to identify the different parts of a C prototype:
 RGX_RETURNED_TYPE = re.compile( "^ *([_0-9a-zA-Z ]+ *\**)" )
 RGX_FUNCTION_NAME = re.compile( "([0-9a-zA-Z_]+) *\(" )
@@ -145,11 +199,10 @@ RGX_TYPE = re.compile( "^ *((const |G_CONST_RETURN |cairo_public )?\w+)[ \*]?" )
 RGX_VAR_NAME = re.compile( "[ |\*]([_0-9a-zA-Z]+)$" )
 RGX_UNDERSCORE = re.compile( "^_\w+$" )
 
+# Errors will be written in that file:
+ERRORS_FILE = open("cfwrapper-errors.txt", "w")
 # A tabulation:
 TAB = "  "
-
-# Errors will be written in that file:
-errors_file = open("cfwrapper-errors.txt", "w")
 
 # For statistics:
 nb_lines = 0
@@ -159,21 +212,17 @@ nb_type_errors = 0
 nb_files = 0
 type_errors_list = []
 
-# This file will be automatically included in gtk.f90: 
-F_FILE_NAME = "gtk-auto.f90"
-f_file = open(F_FILE_NAME, "w")
-f_file.write("! This file is automatically generated by cfwrapper.py \n")
-f_file.write("! Please do not modify \n")
-f_file.write("! GNU General Public License version 3 \n\n")
-
-path_dict = {"/usr/include/gtk-2.0":"gtk-auto.f90", "/usr/include/cairo":"gtk-auto.f90",
+# Libraries to parse and resulting Fortran files: 
+PATH_DICT = {"/usr/include/gtk-2.0":"gtk-auto.f90", "/usr/include/cairo":"gtk-auto.f90",
              "/usr/include/pango-1.0":"gtk-auto.f90",  "/usr/include/glib-2.0":"gtk-auto.f90",
              "/usr/include/gdk-pixbuf-2.0":"gtk-auto.f90"}
 
-# First scan to find all enum types, and all pointers to functions (funptr):
+#*************************************************************************
+# Pass 1 : to find all enum types, and all pointers to functions (funptr)
+#*************************************************************************
 gtk_enums = []
 gtk_funptr = []
-for library_path in path_dict.keys():
+for library_path in PATH_DICT.keys():
     tree = os.walk(library_path)    # A generator
     for directory in tree:
         for c_file_name in directory[2]:
@@ -182,12 +231,25 @@ for library_path in path_dict.keys():
             gtk_enums += enum_types
             funptr = re.findall("(?m)^typedef \w+ *\*? *\(\* ?([A-Z][\w]*?)\)", whole_file)
             gtk_funptr += funptr
+# Useful only for printing:
 gtk_enums.sort()
 gtk_funptr.sort()
 
-# Scan of all files in the directory and subdirectories:
-for library_path in path_dict.keys():
+#**************************************************************************************
+# Pass 2 : Scan of all files in the directory and subdirectories to generate interfaces
+#**************************************************************************************
+opened_files = []
+for library_path in PATH_DICT.keys():
     tree = os.walk(library_path)    # A generator
+    # This file will be automatically included in another .f90: 
+    F_FILE_NAME = PATH_DICT[library_path]
+    if not (F_FILE_NAME in opened_files):
+        f_file = open(F_FILE_NAME, "w")
+        opened_files.append(F_FILE_NAME)
+        f_file.write("! This file is automatically generated by cfwrapper.py \n")
+        f_file.write("! Please do not modify \n")
+        f_file.write("! GNU General Public License version 3 \n\n")
+
     for directory in tree:
         for c_file_name in directory[2]:
             # Those files cause problems so we exclude them:
@@ -225,9 +287,8 @@ for library_path in path_dict.keys():
             try:
                 corrected_lines_list.append(lines_list[0])
             except IndexError:
-                errors_file.write(directory[0] + "/" + c_file_name + "\n")
-                errors_file.write("No function to implement in this file \n\n")
-                nb_errors += 1
+                write_error(ERRORS_FILE, directory[0], c_file_name, 
+                            "No function to implement in this file", "", False)
                 continue    # Next file
 
             # Preprocessing of the C prototypes:
@@ -253,10 +314,8 @@ for library_path in path_dict.keys():
                 try:
                     function_type = type_returned.group(1)
                 except AttributeError:
-                    errors_file.write(directory[0] + "/" + c_file_name + "\n")
-                    errors_file.write("Returned type not found \n")
-                    errors_file.write(prototype + "\n\n")
-                    nb_errors += 1
+                    write_error(ERRORS_FILE, directory[0], c_file_name, 
+                                "Returned type not found", prototype, False)
                     continue    # Next prototype
 
                 # Is it a function or a subroutine ?
@@ -273,25 +332,21 @@ for library_path in path_dict.keys():
                     f_use = iso_c
                     if returned_type.find("?") != -1:
                         error_flag = True
-                        errors_file.write(directory[0] + "/" + c_file_name + "\n")
-                        errors_file.write("Unknown data type:    " + type_returned.group(1) +"\n\n")
-                        nb_type_errors += 1
+                        write_error(ERRORS_FILE, directory[0], c_file_name, 
+                            "Unknown data type:    " + type_returned.group(1), prototype, True)
                         type_errors_list.append(type_returned.group(1))
                     
                 function_name = RGX_FUNCTION_NAME.search(prototype)
                 try:
                     f_name = function_name.group(1)
                 except AttributeError:
-                    errors_file.write(directory[0] + "/" + c_file_name + "\n")
-                    errors_file.write("Function name not found \n")
-                    errors_file.write(prototype + "\n\n")
-                    nb_errors += 1
+                    write_error(ERRORS_FILE, directory[0], c_file_name, 
+                                "Function name not found", prototype, False)
                     continue    # Next prototype
                 
                 # A problem to solve with this function/subroutine
                 if f_name.find("g_signal_connect_data") != -1:
-                    errors_file.write(directory[0] + "/" + c_file_name + "\n")
-                    errors_file.write(prototype + "\n\n")
+                    write_error(ERRORS_FILE, directory[0], c_file_name, "", prototype, False)
                     continue
                     
                 # Functions with a name beginning by an underscore will be excluded:
@@ -306,10 +361,8 @@ for library_path in path_dict.keys():
                 try:
                     args = RGX_ARGS.findall(arguments.group(1))
                 except AttributeError:
-                    errors_file.write(directory[0] + "/" + c_file_name + "\n")
-                    errors_file.write("Arguments not found \n")
-                    errors_file.write(prototype + "\n\n")
-                    nb_errors += 1
+                    write_error(ERRORS_FILE, directory[0], c_file_name, 
+                                "Arguments not found", prototype, False)
                     continue    # Next prototype
             
                 # Each argument of the function is analyzed:
@@ -320,14 +373,11 @@ for library_path in path_dict.keys():
                         try:
                             var_type = RGX_VAR_TYPE.search(arg).group(1)
                         except AttributeError:
-                            errors_file.write(directory[0] + "/" + c_file_name + "\n")
-                            errors_file.write("Variable type not found \n")
-                            errors_file.write(prototype + "\n\n")
-                            nb_errors += 1
+                            write_error(ERRORS_FILE, directory[0], c_file_name, 
+                                        "Variable type not found", prototype, True)
                             continue    # Next argument
 
                         f_type, iso_c = iso_c_binding(arg, False)
-                        
                         if f_type.find("c_") != -1:
                             if f_use == "":
                                 f_use = iso_c
@@ -337,18 +387,15 @@ for library_path in path_dict.keys():
                                     f_use += ", " + iso_c       # each iso appears only once
                         elif f_type.find("?") != -1:
                             error_flag = True
-                            errors_file.write(directory[0] + "/" + c_file_name + "\n")
-                            errors_file.write("Unknown data type:    " + arg +"\n\n")
-                            nb_type_errors += 1
+                            write_error(ERRORS_FILE, directory[0], c_file_name, 
+                                        "Unknown data type:    " + arg, prototype, True)
                             type_errors_list.append(arg)
                         
                         try:
                             var_name = RGX_VAR_NAME.search(arg).group(1)
                         except AttributeError:
-                            errors_file.write(directory[0] + "/" + c_file_name + "\n")
-                            errors_file.write("Variable name not found \n")
-                            errors_file.write(prototype + "\n\n")
-                            nb_errors += 1
+                            write_error(ERRORS_FILE, directory[0], c_file_name, 
+                                        "Variable name not found", prototype, False)
                             continue    # Next argument
             
                         if f_type.find("(*)") != -1:    # character array with unknown dimension
@@ -384,13 +431,14 @@ for library_path in path_dict.keys():
 # *********************
 # End of the processing
 # *********************
+
 f_file.close()
-errors_file.close()
+ERRORS_FILE.close()
 
 # Print remaining error types:
 type_errors_list.sort()
 previous = ""
-print("   Unkown types:")
+print("=== Unkown types ===")
 for a_type in type_errors_list:
     if a_type != previous:
         print(a_type)
@@ -398,7 +446,7 @@ for a_type in type_errors_list:
         
 # Some statistics:
 print
-print("   Statistics:")
+print("=== Statistics ===")
 print("nb_files scanned = " + str(nb_files))
 print("nb_generated_interfaces = " + str(nb_generated_interfaces))
 print("nb_type_errors = " + str(nb_type_errors))
@@ -407,9 +455,8 @@ print("nb_lines treated = " + str(nb_lines))
 print
 
 # Test: do the interfaces and the examples compile with gfortran ?
-print("Trying now to compile the interface and examples... Please wait...")
-#os.system("gfortran -g gtk.f90 ../examples/cairo-tests.f90 `pkg-config --cflags --libs gtk+-2.0`")
-os.system("gfortran -g gtk.f90 ../examples/gtkhello2.f90  `pkg-config --cflags --libs gtk+-2.0` -o../examples/gtkhello2.out")
-#os.system("gfortran -g gtk.f90 ../examples/mandelbrot.f90  `pkg-config --cflags --libs gtk+-2.0` -o../examples/mandelbrot.out")
-
-
+print("=== Trying now to compile the interface and examples... ===")
+os.system("gfortran -c gtk.f90 `pkg-config --cflags --libs gtk+-2.0`")
+os.system("gfortran gtk.o ../examples/cairo-basics.f90 -ocairo-basics.out `pkg-config --cflags --libs gtk+-2.0`")
+os.system("gfortran gtk.o ../examples/gtkhello2.f90 -ogtkhello2.out `pkg-config --cflags --libs gtk+-2.0`")
+os.system("gfortran gtk.o ../examples/mandelbrot_pixbuf.f90 -omandelbrot_pixbuf.out `pkg-config --cflags --libs gtk+-2.0`")
