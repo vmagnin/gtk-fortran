@@ -263,9 +263,9 @@ for library_path in PATH_DICT.keys():
             # *************************
             # Remove C commentaries:
             whole_file = re.sub("(?s)/\*.*?\*/", "", whole_file)
-            # Remove C directives:
-            #    problem with the following regex:
-            #whole_file = re.sub("(?m)^#(.*?[\\][\n])+?$", "", whole_file)
+            # Remove C directives (multilines then monoline):
+            # in a python regular expression \\\\=\\=\
+            whole_file = re.sub("(?m)^#(.*[\\\\][\\n])+.*?$", "", whole_file)
             whole_file = re.sub("(?m)^#.*$", "", whole_file)
             # Remove TABs and overnumerous spaces:
             whole_file = whole_file.replace("\t", " ")
@@ -273,6 +273,9 @@ for library_path in PATH_DICT.keys():
             # Remove C structures
             whole_file = re.sub("(?ms){.*?}[ \w]*;", "", whole_file)
             whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
+            
+            #whole_file = re.sub("(?m)^typedef([^;]*?\n)*?[^;]*?;", "", whole_file)
+            
             whole_file = re.sub("(?m)^(typedef|union|struct).*$", "", whole_file)
             whole_file = re.sub("(?m)^.*(G_BEGIN_DECLS|CAIRO_BEGIN_DECLS) *$", "", whole_file)
             whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$", "", whole_file)
@@ -441,7 +444,7 @@ previous = ""
 print("=== Unkown types ===")
 for a_type in type_errors_list:
     if a_type != previous:
-        print(a_type)
+        #print(a_type)
         previous = a_type
         
 # Some statistics:
