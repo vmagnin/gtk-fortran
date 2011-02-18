@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g mandelbrot.f90 `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -g gtk.f90 mandelbrot.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
 
 module handlers
@@ -120,7 +120,7 @@ subroutine Mandelbrot_set(the_gdk_image, the_gtk_image, width, height, xmin, xma
       c = x + y*(0d0,1d0)	! Starting point
       z = (0d0, 0d0)	        ! z0
       k = 1
-      do while ((k <= itermax) .and. (abs(z)<2d0))
+      do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4d0)) 
         z = z*z+c
         k = k+1
       end do
