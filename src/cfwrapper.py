@@ -261,6 +261,8 @@ for library_path in PATH_DICT.keys():
             # *************************
             # Preprocessing of the file
             # *************************
+            # removing multilines typedef:
+            whole_file = re.sub("(?m)^typedef([^;]*?\n)+?[^;]*?;$", "", whole_file)
             # Remove C commentaries:
             whole_file = re.sub("(?s)/\*.*?\*/", "", whole_file)
             # Remove C directives (multilines then monoline):
@@ -273,16 +275,15 @@ for library_path in PATH_DICT.keys():
             # Remove C structures
             whole_file = re.sub("(?ms){.*?}[ \w]*;", "", whole_file)
             whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
-            
-            #whole_file = re.sub("(?m)^typedef([^;]*?\n)*?[^;]*?;", "", whole_file)
-            
             whole_file = re.sub("(?m)^(typedef|union|struct).*$", "", whole_file)
             whole_file = re.sub("(?m)^.*(G_BEGIN_DECLS|CAIRO_BEGIN_DECLS) *$", "", whole_file)
             whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$", "", whole_file)
+            whole_file = re.sub("(?m)^.*(G_UNLOCK|G_LOCK)\(.*;$", "", whole_file)
+            
+            whole_file = re.sub("(?m)^.*cairo_public ", "", whole_file)
+            
             # Remove empty lines:
             whole_file = re.sub("(?m)^\n$", "", whole_file)
-            #whole_file = re.sub("(?m)^$", "", whole_file)
-            # End of preprocessing
             # *************************
                         
             lines_list = whole_file.splitlines(True)

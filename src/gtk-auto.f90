@@ -856,7 +856,7 @@
       type(c_ptr), value :: format
     end subroutine
 
-    !  gboolean gdk_pixbuf_set_option (GdkPixbuf *pixbuf, const gchar *key, const gchar *value);
+    !    gboolean gdk_pixbuf_set_option (GdkPixbuf *pixbuf, const gchar *key, const gchar *value);
     function gdk_pixbuf_set_option(pixbuf, key, value) bind(c) 
       use iso_c_binding, only: c_bool, c_ptr, c_char
       logical(c_bool) :: gdk_pixbuf_set_option
@@ -1437,7 +1437,7 @@
       type(c_ptr), value :: n_pspecs_p
     end function
 
-    !  GClosure* g_cclosure_new (GCallback callback_func, gpointer user_data, GClosureNotify destroy_data);
+    !   GClosure* g_cclosure_new (GCallback callback_func, gpointer user_data, GClosureNotify destroy_data);
     function g_cclosure_new(callback_func, user_data, destroy_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_funptr
       type(c_ptr) :: g_cclosure_new
@@ -2235,7 +2235,7 @@
       character(kind=c_char), dimension(*) :: v_string
     end subroutine
 
-    !  GType g_type_plugin_get_type (void) G_GNUC_CONST;
+    !   GType g_type_plugin_get_type (void) G_GNUC_CONST;
     function g_type_plugin_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: g_type_plugin_get_type
@@ -2435,7 +2435,7 @@
       type(c_ptr), value :: data
     end subroutine
 
-    !  GType g_initially_unowned_get_type (void);
+    !   GType g_initially_unowned_get_type (void);
     function g_initially_unowned_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: g_initially_unowned_get_type
@@ -3662,7 +3662,7 @@
       type(c_ptr), value :: user_data
     end function
 
-    !  GType g_binding_flags_get_type (void) G_GNUC_CONST;
+    !   GType g_binding_flags_get_type (void) G_GNUC_CONST;
     function g_binding_flags_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: g_binding_flags_get_type
@@ -4007,7 +4007,7 @@
       type(c_ptr), value :: instance
     end subroutine
 
-    !  GValue* g_value_init (GValue *value, GType g_type);
+    !   GValue* g_value_init (GValue *value, GType g_type);
     function g_value_init(value, g_type) bind(c) 
       use iso_c_binding, only: c_ptr, c_size_t
       type(c_ptr) :: g_value_init
@@ -4928,7 +4928,7 @@
       type(c_ptr), value :: targets
     end function
 
-    !  guint g_bus_watch_name (GBusType bus_type, const gchar *name, GBusNameWatcherFlags flags, GBusNameAppearedCallback name_appeared_handler, GBusNameVanishedCallback name_vanished_handler, gpointer user_data, GDestroyNotify user_data_free_func);
+    !   guint g_bus_watch_name (GBusType bus_type, const gchar *name, GBusNameWatcherFlags flags, GBusNameAppearedCallback name_appeared_handler, GBusNameVanishedCallback name_vanished_handler, gpointer user_data, GDestroyNotify user_data_free_func);
     function g_bus_watch_name(bus_type, name, flags, name_appeared_handler, name&
           &_vanished_handler, user_data, user_data_free_func) bind(c) 
       use iso_c_binding, only: c_int, c_char, c_funptr, c_ptr
@@ -7279,7 +7279,7 @@
       type(c_ptr), value :: error
     end function
 
-    !  guint g_bus_own_name (GBusType bus_type, const gchar *name, GBusNameOwnerFlags flags, GBusAcquiredCallback bus_acquired_handler, GBusNameAcquiredCallback name_acquired_handler, GBusNameLostCallback name_lost_handler, gpointer user_data, GDestroyNotify user_data_free_func);
+    !   guint g_bus_own_name (GBusType bus_type, const gchar *name, GBusNameOwnerFlags flags, GBusAcquiredCallback bus_acquired_handler, GBusNameAcquiredCallback name_acquired_handler, GBusNameLostCallback name_lost_handler, gpointer user_data, GDestroyNotify user_data_free_func);
     function g_bus_own_name(bus_type, name, flags, bus_acquired_handler, name_ac&
           &quired_handler, name_lost_handler, user_data, user_data_free_func) bi&
           &nd(c) 
@@ -11672,7 +11672,7 @@
       type(c_ptr), value :: proxy
     end function
 
-    !  GType g_memory_output_stream_get_type (void) G_GNUC_CONST;
+    !   GType g_memory_output_stream_get_type (void) G_GNUC_CONST;
     function g_memory_output_stream_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: g_memory_output_stream_get_type
@@ -13471,15 +13471,6 @@
       type(c_ptr) :: g_win32_get_system_data_dirs_for_module
     end function
 
-    !  guint g_parse_debug_string (const gchar *string, const GDebugKey *keys, guint nkeys);
-    function g_parse_debug_string(string, keys, nkeys) bind(c) 
-      use iso_c_binding, only: c_int, c_char, c_ptr
-      integer(c_int) :: g_parse_debug_string
-      character(kind=c_char), dimension(*) :: string
-      type(c_ptr), value :: keys
-      integer(c_int), value :: nkeys
-    end function
-
     !  gint g_snprintf (gchar *string, gulong n, gchar const *format, ...) G_GNUC_PRINTF (3, 4);
     function g_snprintf() bind(c) 
       use iso_c_binding, only: c_int
@@ -13591,7 +13582,7 @@
       integer(c_int), value :: required_micro
     end function
 
-    !  gint g_poll (GPollFD *fds, guint nfds, gint timeout);
+    !   gint g_poll (GPollFD *fds, guint nfds, gint timeout);
     function g_poll(fds, nfds, timeout) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: g_poll
@@ -13648,7 +13639,7 @@
       character(kind=c_char), dimension(*) :: string
     end function
 
-    !  GQuark g_option_error_quark (void);
+    !   GQuark g_option_error_quark (void);
     function g_option_error_quark() bind(c) 
       use iso_c_binding, only: c_int32_t
       integer(c_int32_t) :: g_option_error_quark
@@ -14857,7 +14848,7 @@
       character(kind=c_char), dimension(*) :: format
     end function
 
-    !  void g_hook_list_init (GHookList *hook_list, guint hook_size);
+    !   void g_hook_list_init (GHookList *hook_list, guint hook_size);
     subroutine g_hook_list_init(hook_list, hook_size) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: hook_list
@@ -16021,7 +16012,7 @@
       type(c_ptr), value :: error
     end function
 
-    !  GHashTable* g_hash_table_new (GHashFunc hash_func, GEqualFunc key_equal_func);
+    !   GHashTable* g_hash_table_new (GHashFunc hash_func, GEqualFunc key_equal_func);
     function g_hash_table_new(hash_func, key_equal_func) bind(c) 
       use iso_c_binding, only: c_ptr, c_funptr
       type(c_ptr) :: g_hash_table_new
@@ -16420,7 +16411,7 @@
       type(c_ptr) :: g_markup_printf_escaped
     end function
 
-    !  int g_strcmp0 (const char *str1, const char *str2);
+    !   int g_strcmp0 (const char *str1, const char *str2);
     function g_strcmp0(str1, str2) bind(c) 
       use iso_c_binding, only: c_int, c_char
       integer(c_int) :: g_strcmp0
@@ -16713,7 +16704,7 @@
       type(c_ptr), value :: tmsg
     end subroutine
 
-    ! void g_test_log_set_fatal_handler (GTestLogFatalFunc log_func, gpointer user_data);
+    !  void g_test_log_set_fatal_handler (GTestLogFatalFunc log_func, gpointer user_data);
     subroutine g_test_log_set_fatal_handler(log_func, user_data) bind(c) 
       use iso_c_binding, only: c_funptr, c_ptr
       type(c_funptr), value :: log_func
@@ -17143,7 +17134,7 @@
       type(c_ptr), value :: string
     end function
 
-    !  void g_datalist_init (GData **datalist);
+    !   void g_datalist_init (GData **datalist);
     subroutine g_datalist_init(datalist) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: datalist
@@ -18721,7 +18712,7 @@
       type(c_ptr), value :: tz
     end subroutine
 
-    !  GSequence * g_sequence_new (GDestroyNotify data_destroy);
+    !   GSequence * g_sequence_new (GDestroyNotify data_destroy);
     function g_sequence_new(data_destroy) bind(c) 
       use iso_c_binding, only: c_ptr, c_funptr
       type(c_ptr) :: g_sequence_new
@@ -19478,7 +19469,7 @@
       use iso_c_binding, only: 
     end subroutine
 
-    !  GCompletion* g_completion_new (GCompletionFunc func);
+    !   GCompletion* g_completion_new (GCompletionFunc func);
     function g_completion_new(func) bind(c) 
       use iso_c_binding, only: c_ptr, c_funptr
       type(c_ptr) :: g_completion_new
@@ -19809,7 +19800,7 @@
       type(c_ptr), value :: allocator
     end subroutine
 
-    !  GNode* g_node_new (gpointer data);
+    !   GNode* g_node_new (gpointer data);
     function g_node_new(data) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: g_node_new
@@ -20635,7 +20626,7 @@
       type(c_ptr), value :: user_data
     end subroutine
 
-    !  GMainContext *g_main_context_new (void);
+    !   GMainContext *g_main_context_new (void);
     function g_main_context_new() bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: g_main_context_new
@@ -21748,7 +21739,7 @@
       integer(c_int) :: g_thread_pool_get_max_idle_time
     end function
 
-    !  GTree* g_tree_new (GCompareFunc key_compare_func);
+    !   GTree* g_tree_new (GCompareFunc key_compare_func);
     function g_tree_new(key_compare_func) bind(c) 
       use iso_c_binding, only: c_ptr, c_funptr
       type(c_ptr) :: g_tree_new
@@ -22613,7 +22604,7 @@
       character(kind=c_char), dimension(*) :: prg_name
     end subroutine
 
-    !  GScanner* g_scanner_new (const GScannerConfig *config_templ);
+    !   GScanner* g_scanner_new (const GScannerConfig *config_templ);
     function g_scanner_new(config_templ) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: g_scanner_new
@@ -23703,7 +23694,7 @@
       character(kind=c_char), dimension(*) :: data
     end function
 
-    !   GType gdk_display_get_type (void) G_GNUC_CONST;
+    !  GType gdk_display_get_type (void) G_GNUC_CONST;
     function gdk_display_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gdk_display_get_type
@@ -25839,7 +25830,7 @@
       integer(c_int), value :: button_pressrelease
     end function
 
-    !  GdkRegion * gdk_region_new (void);
+    !   GdkRegion * gdk_region_new (void);
     function gdk_region_new() bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: gdk_region_new
@@ -31181,7 +31172,7 @@
       type(c_ptr), value :: editable
     end function
 
-    !  GType gtk_icon_view_get_type (void) G_GNUC_CONST;
+    !   GType gtk_icon_view_get_type (void) G_GNUC_CONST;
     function gtk_icon_view_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_icon_view_get_type
@@ -32771,7 +32762,7 @@
       integer(c_int), value :: position
     end subroutine
 
-    !  GType gtk_tree_model_filter_get_type (void) G_GNUC_CONST;
+    !   GType gtk_tree_model_filter_get_type (void) G_GNUC_CONST;
     function gtk_tree_model_filter_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_tree_model_filter_get_type
@@ -34104,7 +34095,7 @@
       type(c_ptr), value :: ruler
     end subroutine
 
-    !  GType gtk_link_button_get_type (void) G_GNUC_CONST;
+    !   GType gtk_link_button_get_type (void) G_GNUC_CONST;
     function gtk_link_button_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_link_button_get_type
@@ -35461,7 +35452,7 @@
       integer(c_int), value :: action
     end subroutine
 
-    !  GType gtk_cell_layout_get_type (void) G_GNUC_CONST;
+    !   GType gtk_cell_layout_get_type (void) G_GNUC_CONST;
     function gtk_cell_layout_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_cell_layout_get_type
@@ -36540,7 +36531,7 @@
       type(c_ptr), value :: combo
     end subroutine
 
-    !  GType gtk_tree_sortable_get_type (void) G_GNUC_CONST;
+    !   GType gtk_tree_sortable_get_type (void) G_GNUC_CONST;
     function gtk_tree_sortable_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_tree_sortable_get_type
@@ -36655,7 +36646,7 @@
       type(c_ptr) :: gtk_cell_renderer_progress_new
     end function
 
-    !  GType gtk_accel_group_get_type (void) G_GNUC_CONST;
+    !   GType gtk_accel_group_get_type (void) G_GNUC_CONST;
     function gtk_accel_group_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_accel_group_get_type
@@ -37014,7 +37005,7 @@
       type(c_ptr), value :: filesel
     end function
 
-    !  GType gtk_menu_get_type (void) G_GNUC_CONST;
+    !   GType gtk_menu_get_type (void) G_GNUC_CONST;
     function gtk_menu_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_menu_get_type
@@ -38580,7 +38571,7 @@
       type(c_ptr), value :: text_view
     end function
 
-    !  GType gtk_entry_completion_get_type (void) G_GNUC_CONST;
+    !   GType gtk_entry_completion_get_type (void) G_GNUC_CONST;
     function gtk_entry_completion_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_entry_completion_get_type
@@ -39573,7 +39564,7 @@
       type(c_ptr), value :: widget
     end subroutine
 
-    !  GType gtk_tree_selection_get_type (void) G_GNUC_CONST;
+    !   GType gtk_tree_selection_get_type (void) G_GNUC_CONST;
     function gtk_tree_selection_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_tree_selection_get_type
@@ -42745,7 +42736,7 @@
       type(c_ptr), value :: layout
     end subroutine
 
-    !  GType gtk_tree_view_get_type (void) G_GNUC_CONST;
+    !   GType gtk_tree_view_get_type (void) G_GNUC_CONST;
     function gtk_tree_view_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_tree_view_get_type
@@ -43363,7 +43354,7 @@
       type(c_ptr), value :: ty
     end subroutine
 
-    ! void gtk_tree_view_set_destroy_count_func (GtkTreeView *tree_view, GtkTreeDestroyCountFunc func, gpointer data, GDestroyNotify destroy);
+    !  void gtk_tree_view_set_destroy_count_func (GtkTreeView *tree_view, GtkTreeDestroyCountFunc func, gpointer data, GDestroyNotify destroy);
     subroutine gtk_tree_view_set_destroy_count_func(tree_view, func, data, destr&
           &oy) bind(c) 
       use iso_c_binding, only: c_ptr, c_funptr
@@ -45639,7 +45630,7 @@
       logical(c_bool), value :: setting
     end subroutine
 
-    !  void gtk_accel_map_add_entry (const gchar *accel_path, guint accel_key, GdkModifierType accel_mods);
+    !   void gtk_accel_map_add_entry (const gchar *accel_path, guint accel_key, GdkModifierType accel_mods);
     subroutine gtk_accel_map_add_entry(accel_path, accel_key, accel_mods) bind(c&
           &) 
       use iso_c_binding, only: c_char, c_int
@@ -46997,7 +46988,7 @@
       type(c_ptr), value :: action
     end subroutine
 
-    !  GType gtk_style_get_type (void) G_GNUC_CONST;
+    !   GType gtk_style_get_type (void) G_GNUC_CONST;
     function gtk_style_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_style_get_type
@@ -48264,7 +48255,7 @@
       type(c_ptr), value :: anchor
     end function
 
-    !  GType gtk_widget_get_type (void) G_GNUC_CONST;
+    !   GType gtk_widget_get_type (void) G_GNUC_CONST;
     function gtk_widget_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_widget_get_type
@@ -51203,7 +51194,7 @@
       type(c_ptr), value :: plug
     end function
 
-    !  GType gtk_print_settings_get_type (void) G_GNUC_CONST;
+    !   GType gtk_print_settings_get_type (void) G_GNUC_CONST;
     function gtk_print_settings_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_print_settings_get_type
@@ -51771,7 +51762,7 @@
       character(kind=c_char), dimension(*) :: output_bin
     end subroutine
 
-    !  GType gtk_file_filter_get_type (void) G_GNUC_CONST;
+    !   GType gtk_file_filter_get_type (void) G_GNUC_CONST;
     function gtk_file_filter_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_file_filter_get_type
@@ -51958,7 +51949,7 @@
       type(c_ptr) :: gtk_vruler_new
     end function
 
-    !  GType gtk_clipboard_get_type (void) G_GNUC_CONST;
+    !   GType gtk_clipboard_get_type (void) G_GNUC_CONST;
     function gtk_clipboard_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_clipboard_get_type
@@ -52267,7 +52258,7 @@
       type(c_ptr), value :: group
     end subroutine
 
-    !  GdkAtom gtk_text_buffer_register_serialize_format (GtkTextBuffer *buffer, const gchar *mime_type, GtkTextBufferSerializeFunc function, gpointer user_data, GDestroyNotify user_data_destroy);
+    !   GdkAtom gtk_text_buffer_register_serialize_format (GtkTextBuffer *buffer, const gchar *mime_type, GtkTextBufferSerializeFunc function, gpointer user_data, GDestroyNotify user_data_destroy);
     function gtk_text_buffer_register_serialize_format(buffer, mime_type, functi&
           &on, user_data, user_data_destroy) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_funptr
@@ -52386,7 +52377,7 @@
       type(c_ptr), value :: error
     end function
 
-    !  GType gtk_calendar_get_type (void) G_GNUC_CONST;
+    !   GType gtk_calendar_get_type (void) G_GNUC_CONST;
     function gtk_calendar_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_calendar_get_type
@@ -53668,7 +53659,7 @@
       integer(c_size_t) :: gtk_recent_chooser_dialog_get_type
     end function
 
-    !  GType gtk_item_factory_get_type (void) G_GNUC_CONST;
+    !   GType gtk_item_factory_get_type (void) G_GNUC_CONST;
     function gtk_item_factory_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_item_factory_get_type
@@ -54150,7 +54141,7 @@
       character(kind=c_char), dimension(*) :: childname
     end function
 
-    !  GQuark gtk_recent_chooser_error_quark (void);
+    !   GQuark gtk_recent_chooser_error_quark (void);
     function gtk_recent_chooser_error_quark() bind(c) 
       use iso_c_binding, only: c_int32_t
       integer(c_int32_t) :: gtk_recent_chooser_error_quark
@@ -54736,7 +54727,7 @@
       character(kind=c_char), dimension(*) :: string
     end function
 
-    !  GType gtk_recent_filter_get_type (void) G_GNUC_CONST;
+    !   GType gtk_recent_filter_get_type (void) G_GNUC_CONST;
     function gtk_recent_filter_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_recent_filter_get_type
@@ -54829,7 +54820,7 @@
       type(c_ptr), value :: filter_info
     end function
 
-    !  GType gtk_ctree_get_type (void) G_GNUC_CONST;
+    !   GType gtk_ctree_get_type (void) G_GNUC_CONST;
     function gtk_ctree_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_ctree_get_type
@@ -55438,7 +55429,7 @@
       integer(c_size_t) :: gtk_ctree_node_get_type
     end function
 
-    !  GType gtk_color_selection_get_type (void) G_GNUC_CONST;
+    !   GType gtk_color_selection_get_type (void) G_GNUC_CONST;
     function gtk_color_selection_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_color_selection_get_type
@@ -55710,7 +55701,7 @@
       type(c_ptr), value :: child
     end subroutine
 
-    !  GType gtk_notebook_get_type (void) G_GNUC_CONST;
+    !   GType gtk_notebook_get_type (void) G_GNUC_CONST;
     function gtk_notebook_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_notebook_get_type
@@ -56366,7 +56357,7 @@
       integer(c_int), value :: height
     end subroutine
 
-    !  GType gtk_tree_view_column_get_type (void) G_GNUC_CONST;
+    !   GType gtk_tree_view_column_get_type (void) G_GNUC_CONST;
     function gtk_tree_view_column_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_tree_view_column_get_type
@@ -56845,7 +56836,7 @@
       integer(c_int), value :: spacing
     end function
 
-    !   cairo_public cairo_surface_t * cairo_xlib_surface_create (Display *dpy, Drawable drawable, Visual *visual, int width, int height);
+    !   cairo_surface_t * cairo_xlib_surface_create (Display *dpy, Drawable drawable, Visual *visual, int width, int height);
     function cairo_xlib_surface_create(dpy, drawable, visual, width, height) bin&
           &d(c) 
       use iso_c_binding, only: c_ptr, c_long, c_int
@@ -56857,7 +56848,7 @@
       integer(c_int), value :: height
     end function
 
-    !  cairo_public cairo_surface_t * cairo_xlib_surface_create_for_bitmap (Display *dpy, Pixmap bitmap, Screen *screen, int width, int height);
+    !  cairo_surface_t * cairo_xlib_surface_create_for_bitmap (Display *dpy, Pixmap bitmap, Screen *screen, int width, int height);
     function cairo_xlib_surface_create_for_bitmap(dpy, bitmap, screen, width, he&
           &ight) bind(c) 
       use iso_c_binding, only: c_ptr, c_long, c_int
@@ -56869,7 +56860,7 @@
       integer(c_int), value :: height
     end function
 
-    !  cairo_public void cairo_xlib_surface_set_size (cairo_surface_t *surface, int width, int height);
+    !  void cairo_xlib_surface_set_size (cairo_surface_t *surface, int width, int height);
     subroutine cairo_xlib_surface_set_size(surface, width, height) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: surface
@@ -56877,7 +56868,7 @@
       integer(c_int), value :: height
     end subroutine
 
-    !  cairo_public void cairo_xlib_surface_set_drawable (cairo_surface_t *surface, Drawable drawable, int width, int height);
+    !  void cairo_xlib_surface_set_drawable (cairo_surface_t *surface, Drawable drawable, int width, int height);
     subroutine cairo_xlib_surface_set_drawable(surface, drawable, width, height)&
           & bind(c) 
       use iso_c_binding, only: c_ptr, c_long, c_int
@@ -56887,28 +56878,56 @@
       integer(c_int), value :: height
     end subroutine
 
-    !  cairo_public Display * cairo_xlib_surface_get_display (cairo_surface_t *surface);
+    !  Display * cairo_xlib_surface_get_display (cairo_surface_t *surface);
     function cairo_xlib_surface_get_display(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_xlib_surface_get_display
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public Screen * cairo_xlib_surface_get_screen (cairo_surface_t *surface);
+    !  Drawable cairo_xlib_surface_get_drawable (cairo_surface_t *surface);
+    function cairo_xlib_surface_get_drawable(surface) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr
+      integer(c_long) :: cairo_xlib_surface_get_drawable
+      type(c_ptr), value :: surface
+    end function
+
+    !  Screen * cairo_xlib_surface_get_screen (cairo_surface_t *surface);
     function cairo_xlib_surface_get_screen(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_xlib_surface_get_screen
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public Visual * cairo_xlib_surface_get_visual (cairo_surface_t *surface);
+    !  Visual * cairo_xlib_surface_get_visual (cairo_surface_t *surface);
     function cairo_xlib_surface_get_visual(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_xlib_surface_get_visual
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public void cairo_xcb_surface_set_size (cairo_surface_t *surface, int width, int height);
+    !  int cairo_xlib_surface_get_depth (cairo_surface_t *surface);
+    function cairo_xlib_surface_get_depth(surface) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_xlib_surface_get_depth
+      type(c_ptr), value :: surface
+    end function
+
+    !  int cairo_xlib_surface_get_width (cairo_surface_t *surface);
+    function cairo_xlib_surface_get_width(surface) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_xlib_surface_get_width
+      type(c_ptr), value :: surface
+    end function
+
+    !  int cairo_xlib_surface_get_height (cairo_surface_t *surface);
+    function cairo_xlib_surface_get_height(surface) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_xlib_surface_get_height
+      type(c_ptr), value :: surface
+    end function
+
+    !  void cairo_xcb_surface_set_size (cairo_surface_t *surface, int width, int height);
     subroutine cairo_xcb_surface_set_size(surface, width, height) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: surface
@@ -56916,7 +56935,7 @@
       integer(c_int), value :: height
     end subroutine
 
-    !  cairo_public void cairo_xcb_device_debug_cap_xshm_version (cairo_device_t *device, int major_version, int minor_version);
+    !  void cairo_xcb_device_debug_cap_xshm_version (cairo_device_t *device, int major_version, int minor_version);
     subroutine cairo_xcb_device_debug_cap_xshm_version(device, major_version, mi&
           &nor_version) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -56925,7 +56944,7 @@
       integer(c_int), value :: minor_version
     end subroutine
 
-    !  cairo_public void cairo_xcb_device_debug_cap_xrender_version (cairo_device_t *device, int major_version, int minor_version);
+    !  void cairo_xcb_device_debug_cap_xrender_version (cairo_device_t *device, int major_version, int minor_version);
     subroutine cairo_xcb_device_debug_cap_xrender_version(device, major_version,&
           & minor_version) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -56934,7 +56953,199 @@
       integer(c_int), value :: minor_version
     end subroutine
 
-    !   cairo_public cairo_surface_t * cairo_svg_surface_create (const char *filename, double width_in_points, double height_in_points);
+    !   GType cairo_gobject_context_get_type (void);
+    function cairo_gobject_context_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_context_get_type
+    end function
+
+    !  GType cairo_gobject_device_get_type (void);
+    function cairo_gobject_device_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_device_get_type
+    end function
+
+    !  GType cairo_gobject_pattern_get_type (void);
+    function cairo_gobject_pattern_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_pattern_get_type
+    end function
+
+    !  GType cairo_gobject_surface_get_type (void);
+    function cairo_gobject_surface_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_surface_get_type
+    end function
+
+    !  GType cairo_gobject_rectangle_get_type (void);
+    function cairo_gobject_rectangle_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_rectangle_get_type
+    end function
+
+    !  GType cairo_gobject_scaled_font_get_type (void);
+    function cairo_gobject_scaled_font_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_scaled_font_get_type
+    end function
+
+    !  GType cairo_gobject_font_face_get_type (void);
+    function cairo_gobject_font_face_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_font_face_get_type
+    end function
+
+    !  GType cairo_gobject_font_options_get_type (void);
+    function cairo_gobject_font_options_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_font_options_get_type
+    end function
+
+    !  GType cairo_gobject_rectangle_int_get_type (void);
+    function cairo_gobject_rectangle_int_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_rectangle_int_get_type
+    end function
+
+    !  GType cairo_gobject_region_get_type (void);
+    function cairo_gobject_region_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_region_get_type
+    end function
+
+    !  GType cairo_gobject_status_get_type (void);
+    function cairo_gobject_status_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_status_get_type
+    end function
+
+    !  GType cairo_gobject_content_get_type (void);
+    function cairo_gobject_content_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_content_get_type
+    end function
+
+    !  GType cairo_gobject_operator_get_type (void);
+    function cairo_gobject_operator_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_operator_get_type
+    end function
+
+    !  GType cairo_gobject_antialias_get_type (void);
+    function cairo_gobject_antialias_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_antialias_get_type
+    end function
+
+    !  GType cairo_gobject_fill_rule_get_type (void);
+    function cairo_gobject_fill_rule_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_fill_rule_get_type
+    end function
+
+    !  GType cairo_gobject_line_cap_get_type (void);
+    function cairo_gobject_line_cap_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_line_cap_get_type
+    end function
+
+    !  GType cairo_gobject_line_join_get_type (void);
+    function cairo_gobject_line_join_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_line_join_get_type
+    end function
+
+    !  GType cairo_gobject_text_cluster_flags_get_type (void);
+    function cairo_gobject_text_cluster_flags_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_text_cluster_flags_get_type
+    end function
+
+    !  GType cairo_gobject_font_slant_get_type (void);
+    function cairo_gobject_font_slant_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_font_slant_get_type
+    end function
+
+    !  GType cairo_gobject_font_weight_get_type (void);
+    function cairo_gobject_font_weight_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_font_weight_get_type
+    end function
+
+    !  GType cairo_gobject_subpixel_order_get_type (void);
+    function cairo_gobject_subpixel_order_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_subpixel_order_get_type
+    end function
+
+    !  GType cairo_gobject_hint_style_get_type (void);
+    function cairo_gobject_hint_style_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_hint_style_get_type
+    end function
+
+    !  GType cairo_gobject_hint_metrics_get_type (void);
+    function cairo_gobject_hint_metrics_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_hint_metrics_get_type
+    end function
+
+    !  GType cairo_gobject_font_type_get_type (void);
+    function cairo_gobject_font_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_font_type_get_type
+    end function
+
+    !  GType cairo_gobject_path_data_type_get_type (void);
+    function cairo_gobject_path_data_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_path_data_type_get_type
+    end function
+
+    !  GType cairo_gobject_device_type_get_type (void);
+    function cairo_gobject_device_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_device_type_get_type
+    end function
+
+    !  GType cairo_gobject_surface_type_get_type (void);
+    function cairo_gobject_surface_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_surface_type_get_type
+    end function
+
+    !  GType cairo_gobject_format_get_type (void);
+    function cairo_gobject_format_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_format_get_type
+    end function
+
+    !  GType cairo_gobject_pattern_type_get_type (void);
+    function cairo_gobject_pattern_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_pattern_type_get_type
+    end function
+
+    !  GType cairo_gobject_extend_get_type (void);
+    function cairo_gobject_extend_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_extend_get_type
+    end function
+
+    !  GType cairo_gobject_filter_get_type (void);
+    function cairo_gobject_filter_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_filter_get_type
+    end function
+
+    !  GType cairo_gobject_region_overlap_get_type (void);
+    function cairo_gobject_region_overlap_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: cairo_gobject_region_overlap_get_type
+    end function
+
+    !   cairo_surface_t * cairo_svg_surface_create (const char *filename, double width_in_points, double height_in_points);
     function cairo_svg_surface_create(filename, width_in_points, height_in_point&
           &s) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_double
@@ -56944,28 +57155,28 @@
       real(c_double), value :: height_in_points
     end function
 
-    !  cairo_public void cairo_svg_surface_restrict_to_version (cairo_surface_t *surface, cairo_svg_version_t version);
+    !  void cairo_svg_surface_restrict_to_version (cairo_surface_t *surface, cairo_svg_version_t version);
     subroutine cairo_svg_surface_restrict_to_version(surface, version) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: surface
       integer(c_int), value :: version
     end subroutine
 
-    !  cairo_public void cairo_svg_get_versions (cairo_svg_version_t const **versions, int *num_versions);
+    !  void cairo_svg_get_versions (cairo_svg_version_t const **versions, int *num_versions);
     subroutine cairo_svg_get_versions(versions, num_versions) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int), value :: versions
       type(c_ptr), value :: num_versions
     end subroutine
 
-    !  cairo_public const char * cairo_svg_version_to_string (cairo_svg_version_t version);
+    !  const char * cairo_svg_version_to_string (cairo_svg_version_t version);
     function cairo_svg_version_to_string(version) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: cairo_svg_version_to_string
       integer(c_int), value :: version
     end function
 
-    !   cairo_public cairo_surface_t * cairo_ps_surface_create (const char *filename, double width_in_points, double height_in_points);
+    !   cairo_surface_t * cairo_ps_surface_create (const char *filename, double width_in_points, double height_in_points);
     function cairo_ps_surface_create(filename, width_in_points, height_in_points&
           &) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_double
@@ -56975,35 +57186,42 @@
       real(c_double), value :: height_in_points
     end function
 
-    !  cairo_public void cairo_ps_surface_restrict_to_level (cairo_surface_t *surface, cairo_ps_level_t level);
+    !  void cairo_ps_surface_restrict_to_level (cairo_surface_t *surface, cairo_ps_level_t level);
     subroutine cairo_ps_surface_restrict_to_level(surface, level) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: surface
       integer(c_int), value :: level
     end subroutine
 
-    !  cairo_public void cairo_ps_get_levels (cairo_ps_level_t const **levels, int *num_levels);
+    !  void cairo_ps_get_levels (cairo_ps_level_t const **levels, int *num_levels);
     subroutine cairo_ps_get_levels(levels, num_levels) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int), value :: levels
       type(c_ptr), value :: num_levels
     end subroutine
 
-    !  cairo_public const char * cairo_ps_level_to_string (cairo_ps_level_t level);
+    !  const char * cairo_ps_level_to_string (cairo_ps_level_t level);
     function cairo_ps_level_to_string(level) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: cairo_ps_level_to_string
       integer(c_int), value :: level
     end function
 
-    !  cairo_public void cairo_ps_surface_set_eps (cairo_surface_t *surface, cairo_bool_t eps);
+    !  void cairo_ps_surface_set_eps (cairo_surface_t *surface, cairo_bool_t eps);
     subroutine cairo_ps_surface_set_eps(surface, eps) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: surface
       integer(c_int), value :: eps
     end subroutine
 
-    !  cairo_public void cairo_ps_surface_set_size (cairo_surface_t *surface, double width_in_points, double height_in_points);
+    !  cairo_bool_t cairo_ps_surface_get_eps (cairo_surface_t *surface);
+    function cairo_ps_surface_get_eps(surface) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_ps_surface_get_eps
+      type(c_ptr), value :: surface
+    end function
+
+    !  void cairo_ps_surface_set_size (cairo_surface_t *surface, double width_in_points, double height_in_points);
     subroutine cairo_ps_surface_set_size(surface, width_in_points, height_in_poi&
           &nts) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
@@ -57012,26 +57230,26 @@
       real(c_double), value :: height_in_points
     end subroutine
 
-    !  cairo_public void cairo_ps_surface_dsc_comment (cairo_surface_t *surface, const char *comment);
+    !  void cairo_ps_surface_dsc_comment (cairo_surface_t *surface, const char *comment);
     subroutine cairo_ps_surface_dsc_comment(surface, comment) bind(c) 
       use iso_c_binding, only: c_ptr, c_char
       type(c_ptr), value :: surface
       character(kind=c_char), dimension(*) :: comment
     end subroutine
 
-    !  cairo_public void cairo_ps_surface_dsc_begin_setup (cairo_surface_t *surface);
+    !  void cairo_ps_surface_dsc_begin_setup (cairo_surface_t *surface);
     subroutine cairo_ps_surface_dsc_begin_setup(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
     end subroutine
 
-    !  cairo_public void cairo_ps_surface_dsc_begin_page_setup (cairo_surface_t *surface);
+    !  void cairo_ps_surface_dsc_begin_page_setup (cairo_surface_t *surface);
     subroutine cairo_ps_surface_dsc_begin_page_setup(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
     end subroutine
 
-    !   cairo_public cairo_surface_t * cairo_pdf_surface_create (const char *filename, double width_in_points, double height_in_points);
+    !   cairo_surface_t * cairo_pdf_surface_create (const char *filename, double width_in_points, double height_in_points);
     function cairo_pdf_surface_create(filename, width_in_points, height_in_point&
           &s) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_double
@@ -57041,28 +57259,28 @@
       real(c_double), value :: height_in_points
     end function
 
-    !  cairo_public void cairo_pdf_surface_restrict_to_version (cairo_surface_t *surface, cairo_pdf_version_t version);
+    !  void cairo_pdf_surface_restrict_to_version (cairo_surface_t *surface, cairo_pdf_version_t version);
     subroutine cairo_pdf_surface_restrict_to_version(surface, version) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: surface
       integer(c_int), value :: version
     end subroutine
 
-    !  cairo_public void cairo_pdf_get_versions (cairo_pdf_version_t const **versions, int *num_versions);
+    !  void cairo_pdf_get_versions (cairo_pdf_version_t const **versions, int *num_versions);
     subroutine cairo_pdf_get_versions(versions, num_versions) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int), value :: versions
       type(c_ptr), value :: num_versions
     end subroutine
 
-    !  cairo_public const char * cairo_pdf_version_to_string (cairo_pdf_version_t version);
+    !  const char * cairo_pdf_version_to_string (cairo_pdf_version_t version);
     function cairo_pdf_version_to_string(version) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: cairo_pdf_version_to_string
       integer(c_int), value :: version
     end function
 
-    !  cairo_public void cairo_pdf_surface_set_size (cairo_surface_t *surface, double width_in_points, double height_in_points);
+    !  void cairo_pdf_surface_set_size (cairo_surface_t *surface, double width_in_points, double height_in_points);
     subroutine cairo_pdf_surface_set_size(surface, width_in_points, height_in_po&
           &ints) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
@@ -57071,20 +57289,20 @@
       real(c_double), value :: height_in_points
     end subroutine
 
-    !  cairo_public cairo_script_interpreter_t * cairo_script_interpreter_create (void);
+    !  cairo_script_interpreter_t * cairo_script_interpreter_create (void);
     function cairo_script_interpreter_create() bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_script_interpreter_create
     end function
 
-    !  cairo_public void cairo_script_interpreter_install_hooks (cairo_script_interpreter_t *ctx, const cairo_script_interpreter_hooks_t *hooks);
+    !  void cairo_script_interpreter_install_hooks (cairo_script_interpreter_t *ctx, const cairo_script_interpreter_hooks_t *hooks);
     subroutine cairo_script_interpreter_install_hooks(ctx, hooks) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: ctx
       type(c_ptr), value :: hooks
     end subroutine
 
-    !  cairo_public cairo_status_t cairo_script_interpreter_run (cairo_script_interpreter_t *ctx, const char *filename);
+    !  cairo_status_t cairo_script_interpreter_run (cairo_script_interpreter_t *ctx, const char *filename);
     function cairo_script_interpreter_run(ctx, filename) bind(c) 
       use iso_c_binding, only: c_int, c_ptr, c_char
       integer(c_int) :: cairo_script_interpreter_run
@@ -57092,7 +57310,7 @@
       character(kind=c_char), dimension(*) :: filename
     end function
 
-    !  cairo_public cairo_status_t cairo_script_interpreter_feed_stream (cairo_script_interpreter_t *ctx, FILE *stream);
+    !  cairo_status_t cairo_script_interpreter_feed_stream (cairo_script_interpreter_t *ctx, FILE *stream);
     function cairo_script_interpreter_feed_stream(ctx, stream) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_script_interpreter_feed_stream
@@ -57100,7 +57318,7 @@
       type(c_ptr), value :: stream
     end function
 
-    !  cairo_public cairo_status_t cairo_script_interpreter_feed_string (cairo_script_interpreter_t *ctx, const char *line, int len);
+    !  cairo_status_t cairo_script_interpreter_feed_string (cairo_script_interpreter_t *ctx, const char *line, int len);
     function cairo_script_interpreter_feed_string(ctx, line, len) bind(c) 
       use iso_c_binding, only: c_int, c_ptr, c_char
       integer(c_int) :: cairo_script_interpreter_feed_string
@@ -57109,35 +57327,35 @@
       integer(c_int), value :: len
     end function
 
-    !  cairo_public unsigned int cairo_script_interpreter_get_line_number (cairo_script_interpreter_t *ctx);
+    !  unsigned int cairo_script_interpreter_get_line_number (cairo_script_interpreter_t *ctx);
     function cairo_script_interpreter_get_line_number(ctx) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_script_interpreter_get_line_number
       type(c_ptr), value :: ctx
     end function
 
-    !  cairo_public cairo_script_interpreter_t * cairo_script_interpreter_reference (cairo_script_interpreter_t *ctx);
+    !  cairo_script_interpreter_t * cairo_script_interpreter_reference (cairo_script_interpreter_t *ctx);
     function cairo_script_interpreter_reference(ctx) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_script_interpreter_reference
       type(c_ptr), value :: ctx
     end function
 
-    !  cairo_public cairo_status_t cairo_script_interpreter_finish (cairo_script_interpreter_t *ctx);
+    !  cairo_status_t cairo_script_interpreter_finish (cairo_script_interpreter_t *ctx);
     function cairo_script_interpreter_finish(ctx) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_script_interpreter_finish
       type(c_ptr), value :: ctx
     end function
 
-    !  cairo_public cairo_status_t cairo_script_interpreter_destroy (cairo_script_interpreter_t *ctx);
+    !  cairo_status_t cairo_script_interpreter_destroy (cairo_script_interpreter_t *ctx);
     function cairo_script_interpreter_destroy(ctx) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_script_interpreter_destroy
       type(c_ptr), value :: ctx
     end function
 
-    !   cairo_public cairo_surface_t * cairo_xlib_surface_create_with_xrender_format (Display *dpy, Drawable drawable, Screen *screen, XRenderPictFormat *format, int width, int height);
+    !   cairo_surface_t * cairo_xlib_surface_create_with_xrender_format (Display *dpy, Drawable drawable, Screen *screen, XRenderPictFormat *format, int width, int height);
     function cairo_xlib_surface_create_with_xrender_format(dpy, drawable, screen&
           &, format, width, height) bind(c) 
       use iso_c_binding, only: c_ptr, c_long, c_int
@@ -57150,106 +57368,112 @@
       integer(c_int), value :: height
     end function
 
-    !  cairo_public XRenderPictFormat * cairo_xlib_surface_get_xrender_format (cairo_surface_t *surface);
+    !  XRenderPictFormat * cairo_xlib_surface_get_xrender_format (cairo_surface_t *surface);
     function cairo_xlib_surface_get_xrender_format(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_xlib_surface_get_xrender_format
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public const char* cairo_version_string (void);
+    !   int cairo_version (void);
+    function cairo_version() bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int) :: cairo_version
+    end function
+
+    !  const char* cairo_version_string (void);
     function cairo_version_string() bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_version_string
     end function
 
-    !  cairo_public cairo_t * cairo_create (cairo_surface_t *target);
+    !  cairo_t * cairo_create (cairo_surface_t *target);
     function cairo_create(target) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_create
       type(c_ptr), value :: target
     end function
 
-    !  cairo_public cairo_t * cairo_reference (cairo_t *cr);
+    !  cairo_t * cairo_reference (cairo_t *cr);
     function cairo_reference(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_reference
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public void cairo_destroy (cairo_t *cr);
+    !  void cairo_destroy (cairo_t *cr);
     subroutine cairo_destroy(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public unsigned int cairo_get_reference_count (cairo_t *cr);
+    !  unsigned int cairo_get_reference_count (cairo_t *cr);
     function cairo_get_reference_count(cr) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_get_reference_count
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public void * cairo_get_user_data (cairo_t *cr, const cairo_user_data_key_t *key);
+    !  void * cairo_get_user_data (cairo_t *cr, const cairo_user_data_key_t *key);
     subroutine cairo_get_user_data(cr, key) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: key
     end subroutine
 
-    !  cairo_public void cairo_save (cairo_t *cr);
+    !  void cairo_save (cairo_t *cr);
     subroutine cairo_save(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_restore (cairo_t *cr);
+    !  void cairo_restore (cairo_t *cr);
     subroutine cairo_restore(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_push_group (cairo_t *cr);
+    !  void cairo_push_group (cairo_t *cr);
     subroutine cairo_push_group(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_push_group_with_content (cairo_t *cr, cairo_content_t content);
+    !  void cairo_push_group_with_content (cairo_t *cr, cairo_content_t content);
     subroutine cairo_push_group_with_content(cr, content) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: cr
       integer(c_int), value :: content
     end subroutine
 
-    !  cairo_public cairo_pattern_t * cairo_pop_group (cairo_t *cr);
+    !  cairo_pattern_t * cairo_pop_group (cairo_t *cr);
     function cairo_pop_group(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_pop_group
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public void cairo_pop_group_to_source (cairo_t *cr);
+    !  void cairo_pop_group_to_source (cairo_t *cr);
     subroutine cairo_pop_group_to_source(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_set_operator (cairo_t *cr, cairo_operator_t op);
+    !  void cairo_set_operator (cairo_t *cr, cairo_operator_t op);
     subroutine cairo_set_operator(cr, op) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: cr
       integer(c_int), value :: op
     end subroutine
 
-    !  cairo_public void cairo_set_source (cairo_t *cr, cairo_pattern_t *source);
+    !  void cairo_set_source (cairo_t *cr, cairo_pattern_t *source);
     subroutine cairo_set_source(cr, source) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: source
     end subroutine
 
-    !  cairo_public void cairo_set_source_rgb (cairo_t *cr, double red, double green, double blue);
+    !  void cairo_set_source_rgb (cairo_t *cr, double red, double green, double blue);
     subroutine cairo_set_source_rgb(cr, red, green, blue) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57258,7 +57482,7 @@
       real(c_double), value :: blue
     end subroutine
 
-    !  cairo_public void cairo_set_source_rgba (cairo_t *cr, double red, double green, double blue, double alpha);
+    !  void cairo_set_source_rgba (cairo_t *cr, double red, double green, double blue, double alpha);
     subroutine cairo_set_source_rgba(cr, red, green, blue, alpha) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57268,7 +57492,7 @@
       real(c_double), value :: alpha
     end subroutine
 
-    !  cairo_public void cairo_set_source_surface (cairo_t *cr, cairo_surface_t *surface, double x, double y);
+    !  void cairo_set_source_surface (cairo_t *cr, cairo_surface_t *surface, double x, double y);
     subroutine cairo_set_source_surface(cr, surface, x, y) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57277,49 +57501,49 @@
       real(c_double), value :: y
     end subroutine
 
-    !  cairo_public void cairo_set_tolerance (cairo_t *cr, double tolerance);
+    !  void cairo_set_tolerance (cairo_t *cr, double tolerance);
     subroutine cairo_set_tolerance(cr, tolerance) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
       real(c_double), value :: tolerance
     end subroutine
 
-    !  cairo_public void cairo_set_antialias (cairo_t *cr, cairo_antialias_t antialias);
+    !  void cairo_set_antialias (cairo_t *cr, cairo_antialias_t antialias);
     subroutine cairo_set_antialias(cr, antialias) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: cr
       integer(c_int), value :: antialias
     end subroutine
 
-    !  cairo_public void cairo_set_fill_rule (cairo_t *cr, cairo_fill_rule_t fill_rule);
+    !  void cairo_set_fill_rule (cairo_t *cr, cairo_fill_rule_t fill_rule);
     subroutine cairo_set_fill_rule(cr, fill_rule) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: cr
       integer(c_int), value :: fill_rule
     end subroutine
 
-    !  cairo_public void cairo_set_line_width (cairo_t *cr, double width);
+    !  void cairo_set_line_width (cairo_t *cr, double width);
     subroutine cairo_set_line_width(cr, width) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
       real(c_double), value :: width
     end subroutine
 
-    !  cairo_public void cairo_set_line_cap (cairo_t *cr, cairo_line_cap_t line_cap);
+    !  void cairo_set_line_cap (cairo_t *cr, cairo_line_cap_t line_cap);
     subroutine cairo_set_line_cap(cr, line_cap) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: cr
       integer(c_int), value :: line_cap
     end subroutine
 
-    !  cairo_public void cairo_set_line_join (cairo_t *cr, cairo_line_join_t line_join);
+    !  void cairo_set_line_join (cairo_t *cr, cairo_line_join_t line_join);
     subroutine cairo_set_line_join(cr, line_join) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: cr
       integer(c_int), value :: line_join
     end subroutine
 
-    !  cairo_public void cairo_set_dash (cairo_t *cr, const double *dashes, int num_dashes, double offset);
+    !  void cairo_set_dash (cairo_t *cr, const double *dashes, int num_dashes, double offset);
     subroutine cairo_set_dash(cr, dashes, num_dashes, offset) bind(c) 
       use iso_c_binding, only: c_ptr, c_int, c_double
       type(c_ptr), value :: cr
@@ -57328,14 +57552,14 @@
       real(c_double), value :: offset
     end subroutine
 
-    !  cairo_public void cairo_set_miter_limit (cairo_t *cr, double limit);
+    !  void cairo_set_miter_limit (cairo_t *cr, double limit);
     subroutine cairo_set_miter_limit(cr, limit) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
       real(c_double), value :: limit
     end subroutine
 
-    !  cairo_public void cairo_translate (cairo_t *cr, double tx, double ty);
+    !  void cairo_translate (cairo_t *cr, double tx, double ty);
     subroutine cairo_translate(cr, tx, ty) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57343,7 +57567,7 @@
       real(c_double), value :: ty
     end subroutine
 
-    !  cairo_public void cairo_scale (cairo_t *cr, double sx, double sy);
+    !  void cairo_scale (cairo_t *cr, double sx, double sy);
     subroutine cairo_scale(cr, sx, sy) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57351,34 +57575,34 @@
       real(c_double), value :: sy
     end subroutine
 
-    !  cairo_public void cairo_rotate (cairo_t *cr, double angle);
+    !  void cairo_rotate (cairo_t *cr, double angle);
     subroutine cairo_rotate(cr, angle) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
       real(c_double), value :: angle
     end subroutine
 
-    !  cairo_public void cairo_transform (cairo_t *cr, const cairo_matrix_t *matrix);
+    !  void cairo_transform (cairo_t *cr, const cairo_matrix_t *matrix);
     subroutine cairo_transform(cr, matrix) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: matrix
     end subroutine
 
-    !  cairo_public void cairo_set_matrix (cairo_t *cr, const cairo_matrix_t *matrix);
+    !  void cairo_set_matrix (cairo_t *cr, const cairo_matrix_t *matrix);
     subroutine cairo_set_matrix(cr, matrix) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: matrix
     end subroutine
 
-    !  cairo_public void cairo_identity_matrix (cairo_t *cr);
+    !  void cairo_identity_matrix (cairo_t *cr);
     subroutine cairo_identity_matrix(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_user_to_device (cairo_t *cr, double *x, double *y);
+    !  void cairo_user_to_device (cairo_t *cr, double *x, double *y);
     subroutine cairo_user_to_device(cr, x, y) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
@@ -57386,7 +57610,7 @@
       type(c_ptr), value :: y
     end subroutine
 
-    !  cairo_public void cairo_user_to_device_distance (cairo_t *cr, double *dx, double *dy);
+    !  void cairo_user_to_device_distance (cairo_t *cr, double *dx, double *dy);
     subroutine cairo_user_to_device_distance(cr, dx, dy) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
@@ -57394,7 +57618,7 @@
       type(c_ptr), value :: dy
     end subroutine
 
-    !  cairo_public void cairo_device_to_user (cairo_t *cr, double *x, double *y);
+    !  void cairo_device_to_user (cairo_t *cr, double *x, double *y);
     subroutine cairo_device_to_user(cr, x, y) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
@@ -57402,7 +57626,7 @@
       type(c_ptr), value :: y
     end subroutine
 
-    !  cairo_public void cairo_device_to_user_distance (cairo_t *cr, double *dx, double *dy);
+    !  void cairo_device_to_user_distance (cairo_t *cr, double *dx, double *dy);
     subroutine cairo_device_to_user_distance(cr, dx, dy) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
@@ -57410,13 +57634,13 @@
       type(c_ptr), value :: dy
     end subroutine
 
-    !  cairo_public void cairo_new_path (cairo_t *cr);
+    !  void cairo_new_path (cairo_t *cr);
     subroutine cairo_new_path(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_move_to (cairo_t *cr, double x, double y);
+    !  void cairo_move_to (cairo_t *cr, double x, double y);
     subroutine cairo_move_to(cr, x, y) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57424,13 +57648,13 @@
       real(c_double), value :: y
     end subroutine
 
-    !  cairo_public void cairo_new_sub_path (cairo_t *cr);
+    !  void cairo_new_sub_path (cairo_t *cr);
     subroutine cairo_new_sub_path(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_line_to (cairo_t *cr, double x, double y);
+    !  void cairo_line_to (cairo_t *cr, double x, double y);
     subroutine cairo_line_to(cr, x, y) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57438,7 +57662,7 @@
       real(c_double), value :: y
     end subroutine
 
-    !  cairo_public void cairo_curve_to (cairo_t *cr, double x1, double y1, double x2, double y2, double x3, double y3);
+    !  void cairo_curve_to (cairo_t *cr, double x1, double y1, double x2, double y2, double x3, double y3);
     subroutine cairo_curve_to(cr, x1, y1, x2, y2, x3, y3) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57450,7 +57674,7 @@
       real(c_double), value :: y3
     end subroutine
 
-    !  cairo_public void cairo_arc (cairo_t *cr, double xc, double yc, double radius, double angle1, double angle2);
+    !  void cairo_arc (cairo_t *cr, double xc, double yc, double radius, double angle1, double angle2);
     subroutine cairo_arc(cr, xc, yc, radius, angle1, angle2) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57461,7 +57685,7 @@
       real(c_double), value :: angle2
     end subroutine
 
-    !  cairo_public void cairo_arc_negative (cairo_t *cr, double xc, double yc, double radius, double angle1, double angle2);
+    !  void cairo_arc_negative (cairo_t *cr, double xc, double yc, double radius, double angle1, double angle2);
     subroutine cairo_arc_negative(cr, xc, yc, radius, angle1, angle2) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57472,7 +57696,7 @@
       real(c_double), value :: angle2
     end subroutine
 
-    !  cairo_public void cairo_rel_move_to (cairo_t *cr, double dx, double dy);
+    !  void cairo_rel_move_to (cairo_t *cr, double dx, double dy);
     subroutine cairo_rel_move_to(cr, dx, dy) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57480,7 +57704,7 @@
       real(c_double), value :: dy
     end subroutine
 
-    !  cairo_public void cairo_rel_line_to (cairo_t *cr, double dx, double dy);
+    !  void cairo_rel_line_to (cairo_t *cr, double dx, double dy);
     subroutine cairo_rel_line_to(cr, dx, dy) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57488,7 +57712,7 @@
       real(c_double), value :: dy
     end subroutine
 
-    !  cairo_public void cairo_rel_curve_to (cairo_t *cr, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3);
+    !  void cairo_rel_curve_to (cairo_t *cr, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3);
     subroutine cairo_rel_curve_to(cr, dx1, dy1, dx2, dy2, dx3, dy3) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57500,7 +57724,7 @@
       real(c_double), value :: dy3
     end subroutine
 
-    !  cairo_public void cairo_rectangle (cairo_t *cr, double x, double y, double width, double height);
+    !  void cairo_rectangle (cairo_t *cr, double x, double y, double width, double height);
     subroutine cairo_rectangle(cr, x, y, width, height) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57510,13 +57734,13 @@
       real(c_double), value :: height
     end subroutine
 
-    !  cairo_public void cairo_close_path (cairo_t *cr);
+    !  void cairo_close_path (cairo_t *cr);
     subroutine cairo_close_path(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_path_extents (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
+    !  void cairo_path_extents (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
     subroutine cairo_path_extents(cr, x1, y1, x2, y2) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
@@ -57526,27 +57750,27 @@
       type(c_ptr), value :: y2
     end subroutine
 
-    !  cairo_public void cairo_paint (cairo_t *cr);
+    !  void cairo_paint (cairo_t *cr);
     subroutine cairo_paint(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_paint_with_alpha (cairo_t *cr, double alpha);
+    !  void cairo_paint_with_alpha (cairo_t *cr, double alpha);
     subroutine cairo_paint_with_alpha(cr, alpha) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
       real(c_double), value :: alpha
     end subroutine
 
-    !  cairo_public void cairo_mask (cairo_t *cr, cairo_pattern_t *pattern);
+    !  void cairo_mask (cairo_t *cr, cairo_pattern_t *pattern);
     subroutine cairo_mask(cr, pattern) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: pattern
     end subroutine
 
-    !  cairo_public void cairo_mask_surface (cairo_t *cr, cairo_surface_t *surface, double surface_x, double surface_y);
+    !  void cairo_mask_surface (cairo_t *cr, cairo_surface_t *surface, double surface_x, double surface_y);
     subroutine cairo_mask_surface(cr, surface, surface_x, surface_y) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
@@ -57555,43 +57779,70 @@
       real(c_double), value :: surface_y
     end subroutine
 
-    !  cairo_public void cairo_stroke (cairo_t *cr);
+    !  void cairo_stroke (cairo_t *cr);
     subroutine cairo_stroke(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_stroke_preserve (cairo_t *cr);
+    !  void cairo_stroke_preserve (cairo_t *cr);
     subroutine cairo_stroke_preserve(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_fill (cairo_t *cr);
+    !  void cairo_fill (cairo_t *cr);
     subroutine cairo_fill(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_fill_preserve (cairo_t *cr);
+    !  void cairo_fill_preserve (cairo_t *cr);
     subroutine cairo_fill_preserve(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_copy_page (cairo_t *cr);
+    !  void cairo_copy_page (cairo_t *cr);
     subroutine cairo_copy_page(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_show_page (cairo_t *cr);
+    !  void cairo_show_page (cairo_t *cr);
     subroutine cairo_show_page(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_stroke_extents (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
+    !  cairo_bool_t cairo_in_stroke (cairo_t *cr, double x, double y);
+    function cairo_in_stroke(cr, x, y) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_double
+      integer(c_int) :: cairo_in_stroke
+      type(c_ptr), value :: cr
+      real(c_double), value :: x
+      real(c_double), value :: y
+    end function
+
+    !  cairo_bool_t cairo_in_fill (cairo_t *cr, double x, double y);
+    function cairo_in_fill(cr, x, y) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_double
+      integer(c_int) :: cairo_in_fill
+      type(c_ptr), value :: cr
+      real(c_double), value :: x
+      real(c_double), value :: y
+    end function
+
+    !  cairo_bool_t cairo_in_clip (cairo_t *cr, double x, double y);
+    function cairo_in_clip(cr, x, y) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_double
+      integer(c_int) :: cairo_in_clip
+      type(c_ptr), value :: cr
+      real(c_double), value :: x
+      real(c_double), value :: y
+    end function
+
+    !  void cairo_stroke_extents (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
     subroutine cairo_stroke_extents(cr, x1, y1, x2, y2) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
@@ -57601,7 +57852,7 @@
       type(c_ptr), value :: y2
     end subroutine
 
-    !  cairo_public void cairo_fill_extents (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
+    !  void cairo_fill_extents (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
     subroutine cairo_fill_extents(cr, x1, y1, x2, y2) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
@@ -57611,25 +57862,25 @@
       type(c_ptr), value :: y2
     end subroutine
 
-    !  cairo_public void cairo_reset_clip (cairo_t *cr);
+    !  void cairo_reset_clip (cairo_t *cr);
     subroutine cairo_reset_clip(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_clip (cairo_t *cr);
+    !  void cairo_clip (cairo_t *cr);
     subroutine cairo_clip(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_clip_preserve (cairo_t *cr);
+    !  void cairo_clip_preserve (cairo_t *cr);
     subroutine cairo_clip_preserve(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
     end subroutine
 
-    !  cairo_public void cairo_clip_extents (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
+    !  void cairo_clip_extents (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
     subroutine cairo_clip_extents(cr, x1, y1, x2, y2) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
@@ -57639,100 +57890,108 @@
       type(c_ptr), value :: y2
     end subroutine
 
-    !  cairo_public cairo_rectangle_list_t * cairo_copy_clip_rectangle_list (cairo_t *cr);
+    !  cairo_rectangle_list_t * cairo_copy_clip_rectangle_list (cairo_t *cr);
     function cairo_copy_clip_rectangle_list(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_copy_clip_rectangle_list
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public void cairo_rectangle_list_destroy (cairo_rectangle_list_t *rectangle_list);
+    !  void cairo_rectangle_list_destroy (cairo_rectangle_list_t *rectangle_list);
     subroutine cairo_rectangle_list_destroy(rectangle_list) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: rectangle_list
     end subroutine
 
-    !  cairo_public cairo_glyph_t * cairo_glyph_allocate (int num_glyphs);
+    !  cairo_glyph_t * cairo_glyph_allocate (int num_glyphs);
     function cairo_glyph_allocate(num_glyphs) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: cairo_glyph_allocate
       integer(c_int), value :: num_glyphs
     end function
 
-    !  cairo_public void cairo_glyph_free (cairo_glyph_t *glyphs);
+    !  void cairo_glyph_free (cairo_glyph_t *glyphs);
     subroutine cairo_glyph_free(glyphs) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: glyphs
     end subroutine
 
-    !  cairo_public cairo_text_cluster_t * cairo_text_cluster_allocate (int num_clusters);
+    !  cairo_text_cluster_t * cairo_text_cluster_allocate (int num_clusters);
     function cairo_text_cluster_allocate(num_clusters) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: cairo_text_cluster_allocate
       integer(c_int), value :: num_clusters
     end function
 
-    !  cairo_public void cairo_text_cluster_free (cairo_text_cluster_t *clusters);
+    !  void cairo_text_cluster_free (cairo_text_cluster_t *clusters);
     subroutine cairo_text_cluster_free(clusters) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: clusters
     end subroutine
 
-    !  cairo_public cairo_font_options_t * cairo_font_options_create (void);
+    !  cairo_font_options_t * cairo_font_options_create (void);
     function cairo_font_options_create() bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_font_options_create
     end function
 
-    !  cairo_public cairo_font_options_t * cairo_font_options_copy (const cairo_font_options_t *original);
+    !  cairo_font_options_t * cairo_font_options_copy (const cairo_font_options_t *original);
     function cairo_font_options_copy(original) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_font_options_copy
       type(c_ptr), value :: original
     end function
 
-    !  cairo_public void cairo_font_options_destroy (cairo_font_options_t *options);
+    !  void cairo_font_options_destroy (cairo_font_options_t *options);
     subroutine cairo_font_options_destroy(options) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: options
     end subroutine
 
-    !  cairo_public cairo_status_t cairo_font_options_status (cairo_font_options_t *options);
+    !  cairo_status_t cairo_font_options_status (cairo_font_options_t *options);
     function cairo_font_options_status(options) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_font_options_status
       type(c_ptr), value :: options
     end function
 
-    !  cairo_public void cairo_font_options_merge (cairo_font_options_t *options, const cairo_font_options_t *other);
+    !  void cairo_font_options_merge (cairo_font_options_t *options, const cairo_font_options_t *other);
     subroutine cairo_font_options_merge(options, other) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: options
       type(c_ptr), value :: other
     end subroutine
 
-    !  cairo_public unsigned long cairo_font_options_hash (const cairo_font_options_t *options);
+    ! cairo_bool_t cairo_font_options_equal (const cairo_font_options_t *options, const cairo_font_options_t *other);
+    function cairo_font_options_equal(options, other) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_font_options_equal
+      type(c_ptr), value :: options
+      type(c_ptr), value :: other
+    end function
+
+    !  unsigned long cairo_font_options_hash (const cairo_font_options_t *options);
     function cairo_font_options_hash(options) bind(c) 
       use iso_c_binding, only: c_long, c_ptr
       integer(c_long) :: cairo_font_options_hash
       type(c_ptr), value :: options
     end function
 
-    !  cairo_public void cairo_font_options_set_antialias (cairo_font_options_t *options, cairo_antialias_t antialias);
+    !  void cairo_font_options_set_antialias (cairo_font_options_t *options, cairo_antialias_t antialias);
     subroutine cairo_font_options_set_antialias(options, antialias) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: options
       integer(c_int), value :: antialias
     end subroutine
 
-    ! cairo_public cairo_antialias_t cairo_font_options_get_antialias (const cairo_font_options_t *options);
+    ! cairo_antialias_t cairo_font_options_get_antialias (const cairo_font_options_t *options);
     function cairo_font_options_get_antialias(options) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_font_options_get_antialias
       type(c_ptr), value :: options
     end function
 
-    !  cairo_public void cairo_font_options_set_subpixel_order (cairo_font_options_t *options, cairo_subpixel_order_t subpixel_order);
+    !  void cairo_font_options_set_subpixel_order (cairo_font_options_t *options, cairo_subpixel_order_t subpixel_order);
     subroutine cairo_font_options_set_subpixel_order(options, subpixel_order) bi&
           &nd(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -57740,28 +57999,28 @@
       integer(c_int), value :: subpixel_order
     end subroutine
 
-    ! cairo_public cairo_subpixel_order_t cairo_font_options_get_subpixel_order (const cairo_font_options_t *options);
+    ! cairo_subpixel_order_t cairo_font_options_get_subpixel_order (const cairo_font_options_t *options);
     function cairo_font_options_get_subpixel_order(options) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_font_options_get_subpixel_order
       type(c_ptr), value :: options
     end function
 
-    !  cairo_public void cairo_font_options_set_hint_style (cairo_font_options_t *options, cairo_hint_style_t hint_style);
+    !  void cairo_font_options_set_hint_style (cairo_font_options_t *options, cairo_hint_style_t hint_style);
     subroutine cairo_font_options_set_hint_style(options, hint_style) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: options
       integer(c_int), value :: hint_style
     end subroutine
 
-    ! cairo_public cairo_hint_style_t cairo_font_options_get_hint_style (const cairo_font_options_t *options);
+    ! cairo_hint_style_t cairo_font_options_get_hint_style (const cairo_font_options_t *options);
     function cairo_font_options_get_hint_style(options) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_font_options_get_hint_style
       type(c_ptr), value :: options
     end function
 
-    !  cairo_public void cairo_font_options_set_hint_metrics (cairo_font_options_t *options, cairo_hint_metrics_t hint_metrics);
+    !  void cairo_font_options_set_hint_metrics (cairo_font_options_t *options, cairo_hint_metrics_t hint_metrics);
     subroutine cairo_font_options_set_hint_metrics(options, hint_metrics) bind(c&
           &) 
       use iso_c_binding, only: c_ptr, c_int
@@ -57769,14 +58028,14 @@
       integer(c_int), value :: hint_metrics
     end subroutine
 
-    ! cairo_public cairo_hint_metrics_t cairo_font_options_get_hint_metrics (const cairo_font_options_t *options);
+    ! cairo_hint_metrics_t cairo_font_options_get_hint_metrics (const cairo_font_options_t *options);
     function cairo_font_options_get_hint_metrics(options) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_font_options_get_hint_metrics
       type(c_ptr), value :: options
     end function
 
-    !  cairo_public void cairo_select_font_face (cairo_t *cr, const char *family, cairo_font_slant_t slant, cairo_font_weight_t weight);
+    !  void cairo_select_font_face (cairo_t *cr, const char *family, cairo_font_slant_t slant, cairo_font_weight_t weight);
     subroutine cairo_select_font_face(cr, family, slant, weight) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_int
       type(c_ptr), value :: cr
@@ -57785,77 +58044,77 @@
       integer(c_int), value :: weight
     end subroutine
 
-    !  cairo_public void cairo_set_font_size (cairo_t *cr, double size);
+    !  void cairo_set_font_size (cairo_t *cr, double size);
     subroutine cairo_set_font_size(cr, size) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: cr
       real(c_double), value :: size
     end subroutine
 
-    !  cairo_public void cairo_set_font_matrix (cairo_t *cr, const cairo_matrix_t *matrix);
+    !  void cairo_set_font_matrix (cairo_t *cr, const cairo_matrix_t *matrix);
     subroutine cairo_set_font_matrix(cr, matrix) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: matrix
     end subroutine
 
-    !  cairo_public void cairo_get_font_matrix (cairo_t *cr, cairo_matrix_t *matrix);
+    !  void cairo_get_font_matrix (cairo_t *cr, cairo_matrix_t *matrix);
     subroutine cairo_get_font_matrix(cr, matrix) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: matrix
     end subroutine
 
-    !  cairo_public void cairo_set_font_options (cairo_t *cr, const cairo_font_options_t *options);
+    !  void cairo_set_font_options (cairo_t *cr, const cairo_font_options_t *options);
     subroutine cairo_set_font_options(cr, options) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: options
     end subroutine
 
-    !  cairo_public void cairo_get_font_options (cairo_t *cr, cairo_font_options_t *options);
+    !  void cairo_get_font_options (cairo_t *cr, cairo_font_options_t *options);
     subroutine cairo_get_font_options(cr, options) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: options
     end subroutine
 
-    !  cairo_public void cairo_set_font_face (cairo_t *cr, cairo_font_face_t *font_face);
+    !  void cairo_set_font_face (cairo_t *cr, cairo_font_face_t *font_face);
     subroutine cairo_set_font_face(cr, font_face) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: font_face
     end subroutine
 
-    !  cairo_public cairo_font_face_t * cairo_get_font_face (cairo_t *cr);
+    !  cairo_font_face_t * cairo_get_font_face (cairo_t *cr);
     function cairo_get_font_face(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_get_font_face
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public void cairo_set_scaled_font (cairo_t *cr, const cairo_scaled_font_t *scaled_font);
+    !  void cairo_set_scaled_font (cairo_t *cr, const cairo_scaled_font_t *scaled_font);
     subroutine cairo_set_scaled_font(cr, scaled_font) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: scaled_font
     end subroutine
 
-    !  cairo_public cairo_scaled_font_t * cairo_get_scaled_font (cairo_t *cr);
+    !  cairo_scaled_font_t * cairo_get_scaled_font (cairo_t *cr);
     function cairo_get_scaled_font(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_get_scaled_font
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public void cairo_show_text (cairo_t *cr, const char *utf8);
+    !  void cairo_show_text (cairo_t *cr, const char *utf8);
     subroutine cairo_show_text(cr, utf8) bind(c) 
       use iso_c_binding, only: c_ptr, c_char
       type(c_ptr), value :: cr
       character(kind=c_char), dimension(*) :: utf8
     end subroutine
 
-    !  cairo_public void cairo_show_glyphs (cairo_t *cr, const cairo_glyph_t *glyphs, int num_glyphs);
+    !  void cairo_show_glyphs (cairo_t *cr, const cairo_glyph_t *glyphs, int num_glyphs);
     subroutine cairo_show_glyphs(cr, glyphs, num_glyphs) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: cr
@@ -57863,7 +58122,7 @@
       integer(c_int), value :: num_glyphs
     end subroutine
 
-    !  cairo_public void cairo_show_text_glyphs (cairo_t *cr, const char *utf8, int utf8_len, const cairo_glyph_t *glyphs, int num_glyphs, const cairo_text_cluster_t *clusters, int num_clusters, cairo_text_cluster_flags_t cluster_flags);
+    !  void cairo_show_text_glyphs (cairo_t *cr, const char *utf8, int utf8_len, const cairo_glyph_t *glyphs, int num_glyphs, const cairo_text_cluster_t *clusters, int num_clusters, cairo_text_cluster_flags_t cluster_flags);
     subroutine cairo_show_text_glyphs(cr, utf8, utf8_len, glyphs, num_glyphs, cl&
           &usters, num_clusters, cluster_flags) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_int
@@ -57877,14 +58136,14 @@
       integer(c_int), value :: cluster_flags
     end subroutine
 
-    !  cairo_public void cairo_text_path (cairo_t *cr, const char *utf8);
+    !  void cairo_text_path (cairo_t *cr, const char *utf8);
     subroutine cairo_text_path(cr, utf8) bind(c) 
       use iso_c_binding, only: c_ptr, c_char
       type(c_ptr), value :: cr
       character(kind=c_char), dimension(*) :: utf8
     end subroutine
 
-    !  cairo_public void cairo_glyph_path (cairo_t *cr, const cairo_glyph_t *glyphs, int num_glyphs);
+    !  void cairo_glyph_path (cairo_t *cr, const cairo_glyph_t *glyphs, int num_glyphs);
     subroutine cairo_glyph_path(cr, glyphs, num_glyphs) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: cr
@@ -57892,7 +58151,7 @@
       integer(c_int), value :: num_glyphs
     end subroutine
 
-    !  cairo_public void cairo_text_extents (cairo_t *cr, const char *utf8, cairo_text_extents_t *extents);
+    !  void cairo_text_extents (cairo_t *cr, const char *utf8, cairo_text_extents_t *extents);
     subroutine cairo_text_extents(cr, utf8, extents) bind(c) 
       use iso_c_binding, only: c_ptr, c_char
       type(c_ptr), value :: cr
@@ -57900,7 +58159,7 @@
       type(c_ptr), value :: extents
     end subroutine
 
-    !  cairo_public void cairo_glyph_extents (cairo_t *cr, const cairo_glyph_t *glyphs, int num_glyphs, cairo_text_extents_t *extents);
+    !  void cairo_glyph_extents (cairo_t *cr, const cairo_glyph_t *glyphs, int num_glyphs, cairo_text_extents_t *extents);
     subroutine cairo_glyph_extents(cr, glyphs, num_glyphs, extents) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: cr
@@ -57909,55 +58168,55 @@
       type(c_ptr), value :: extents
     end subroutine
 
-    !  cairo_public void cairo_font_extents (cairo_t *cr, cairo_font_extents_t *extents);
+    !  void cairo_font_extents (cairo_t *cr, cairo_font_extents_t *extents);
     subroutine cairo_font_extents(cr, extents) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: extents
     end subroutine
 
-    !  cairo_public cairo_font_face_t * cairo_font_face_reference (cairo_font_face_t *font_face);
+    !  cairo_font_face_t * cairo_font_face_reference (cairo_font_face_t *font_face);
     function cairo_font_face_reference(font_face) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_font_face_reference
       type(c_ptr), value :: font_face
     end function
 
-    !  cairo_public void cairo_font_face_destroy (cairo_font_face_t *font_face);
+    !  void cairo_font_face_destroy (cairo_font_face_t *font_face);
     subroutine cairo_font_face_destroy(font_face) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: font_face
     end subroutine
 
-    !  cairo_public unsigned int cairo_font_face_get_reference_count (cairo_font_face_t *font_face);
+    !  unsigned int cairo_font_face_get_reference_count (cairo_font_face_t *font_face);
     function cairo_font_face_get_reference_count(font_face) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_font_face_get_reference_count
       type(c_ptr), value :: font_face
     end function
 
-    !  cairo_public cairo_status_t cairo_font_face_status (cairo_font_face_t *font_face);
+    !  cairo_status_t cairo_font_face_status (cairo_font_face_t *font_face);
     function cairo_font_face_status(font_face) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_font_face_status
       type(c_ptr), value :: font_face
     end function
 
-    !  cairo_public cairo_font_type_t cairo_font_face_get_type (cairo_font_face_t *font_face);
+    !  cairo_font_type_t cairo_font_face_get_type (cairo_font_face_t *font_face);
     function cairo_font_face_get_type(font_face) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_font_face_get_type
       type(c_ptr), value :: font_face
     end function
 
-    !  cairo_public void * cairo_font_face_get_user_data (cairo_font_face_t *font_face, const cairo_user_data_key_t *key);
+    !  void * cairo_font_face_get_user_data (cairo_font_face_t *font_face, const cairo_user_data_key_t *key);
     subroutine cairo_font_face_get_user_data(font_face, key) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: font_face
       type(c_ptr), value :: key
     end subroutine
 
-    !  cairo_public cairo_scaled_font_t * cairo_scaled_font_create (cairo_font_face_t *font_face, const cairo_matrix_t *font_matrix, const cairo_matrix_t *ctm, const cairo_font_options_t *options);
+    !  cairo_scaled_font_t * cairo_scaled_font_create (cairo_font_face_t *font_face, const cairo_matrix_t *font_matrix, const cairo_matrix_t *ctm, const cairo_font_options_t *options);
     function cairo_scaled_font_create(font_face, font_matrix, ctm, options) bind&
           &(c) 
       use iso_c_binding, only: c_ptr
@@ -57968,55 +58227,55 @@
       type(c_ptr), value :: options
     end function
 
-    !  cairo_public cairo_scaled_font_t * cairo_scaled_font_reference (cairo_scaled_font_t *scaled_font);
+    !  cairo_scaled_font_t * cairo_scaled_font_reference (cairo_scaled_font_t *scaled_font);
     function cairo_scaled_font_reference(scaled_font) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_scaled_font_reference
       type(c_ptr), value :: scaled_font
     end function
 
-    !  cairo_public void cairo_scaled_font_destroy (cairo_scaled_font_t *scaled_font);
+    !  void cairo_scaled_font_destroy (cairo_scaled_font_t *scaled_font);
     subroutine cairo_scaled_font_destroy(scaled_font) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: scaled_font
     end subroutine
 
-    !  cairo_public unsigned int cairo_scaled_font_get_reference_count (cairo_scaled_font_t *scaled_font);
+    !  unsigned int cairo_scaled_font_get_reference_count (cairo_scaled_font_t *scaled_font);
     function cairo_scaled_font_get_reference_count(scaled_font) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_scaled_font_get_reference_count
       type(c_ptr), value :: scaled_font
     end function
 
-    !  cairo_public cairo_status_t cairo_scaled_font_status (cairo_scaled_font_t *scaled_font);
+    !  cairo_status_t cairo_scaled_font_status (cairo_scaled_font_t *scaled_font);
     function cairo_scaled_font_status(scaled_font) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_scaled_font_status
       type(c_ptr), value :: scaled_font
     end function
 
-    !  cairo_public cairo_font_type_t cairo_scaled_font_get_type (cairo_scaled_font_t *scaled_font);
+    !  cairo_font_type_t cairo_scaled_font_get_type (cairo_scaled_font_t *scaled_font);
     function cairo_scaled_font_get_type(scaled_font) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_scaled_font_get_type
       type(c_ptr), value :: scaled_font
     end function
 
-    !  cairo_public void * cairo_scaled_font_get_user_data (cairo_scaled_font_t *scaled_font, const cairo_user_data_key_t *key);
+    !  void * cairo_scaled_font_get_user_data (cairo_scaled_font_t *scaled_font, const cairo_user_data_key_t *key);
     subroutine cairo_scaled_font_get_user_data(scaled_font, key) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: scaled_font
       type(c_ptr), value :: key
     end subroutine
 
-    !  cairo_public void cairo_scaled_font_extents (cairo_scaled_font_t *scaled_font, cairo_font_extents_t *extents);
+    !  void cairo_scaled_font_extents (cairo_scaled_font_t *scaled_font, cairo_font_extents_t *extents);
     subroutine cairo_scaled_font_extents(scaled_font, extents) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: scaled_font
       type(c_ptr), value :: extents
     end subroutine
 
-    !  cairo_public void cairo_scaled_font_text_extents (cairo_scaled_font_t *scaled_font, const char *utf8, cairo_text_extents_t *extents);
+    !  void cairo_scaled_font_text_extents (cairo_scaled_font_t *scaled_font, const char *utf8, cairo_text_extents_t *extents);
     subroutine cairo_scaled_font_text_extents(scaled_font, utf8, extents) bind(c&
           &) 
       use iso_c_binding, only: c_ptr, c_char
@@ -58025,7 +58284,7 @@
       type(c_ptr), value :: extents
     end subroutine
 
-    !  cairo_public void cairo_scaled_font_glyph_extents (cairo_scaled_font_t *scaled_font, const cairo_glyph_t *glyphs, int num_glyphs, cairo_text_extents_t *extents);
+    !  void cairo_scaled_font_glyph_extents (cairo_scaled_font_t *scaled_font, const cairo_glyph_t *glyphs, int num_glyphs, cairo_text_extents_t *extents);
     subroutine cairo_scaled_font_glyph_extents(scaled_font, glyphs, num_glyphs, &
           &extents) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -58035,7 +58294,7 @@
       type(c_ptr), value :: extents
     end subroutine
 
-    !  cairo_public cairo_status_t cairo_scaled_font_text_to_glyphs (cairo_scaled_font_t *scaled_font, double x, double y, const char *utf8, int utf8_len, cairo_glyph_t **glyphs, int *num_glyphs, cairo_text_cluster_t **clusters, int *num_clusters, cairo_text_cluster_flags_t *cluster_flags);
+    !  cairo_status_t cairo_scaled_font_text_to_glyphs (cairo_scaled_font_t *scaled_font, double x, double y, const char *utf8, int utf8_len, cairo_glyph_t **glyphs, int *num_glyphs, cairo_text_cluster_t **clusters, int *num_clusters, cairo_text_cluster_flags_t *cluster_flags);
     function cairo_scaled_font_text_to_glyphs(scaled_font, x, y, utf8, utf8_len,&
           & glyphs, num_glyphs, clusters, num_clusters, cluster_flags) bind(c) 
       use iso_c_binding, only: c_int, c_ptr, c_double, c_char
@@ -58052,14 +58311,14 @@
       integer(c_int), value :: cluster_flags
     end function
 
-    !  cairo_public cairo_font_face_t * cairo_scaled_font_get_font_face (cairo_scaled_font_t *scaled_font);
+    !  cairo_font_face_t * cairo_scaled_font_get_font_face (cairo_scaled_font_t *scaled_font);
     function cairo_scaled_font_get_font_face(scaled_font) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_scaled_font_get_font_face
       type(c_ptr), value :: scaled_font
     end function
 
-    !  cairo_public void cairo_scaled_font_get_font_matrix (cairo_scaled_font_t *scaled_font, cairo_matrix_t *font_matrix);
+    !  void cairo_scaled_font_get_font_matrix (cairo_scaled_font_t *scaled_font, cairo_matrix_t *font_matrix);
     subroutine cairo_scaled_font_get_font_matrix(scaled_font, font_matrix) bind(&
           &c) 
       use iso_c_binding, only: c_ptr
@@ -58067,14 +58326,14 @@
       type(c_ptr), value :: font_matrix
     end subroutine
 
-    !  cairo_public void cairo_scaled_font_get_ctm (cairo_scaled_font_t *scaled_font, cairo_matrix_t *ctm);
+    !  void cairo_scaled_font_get_ctm (cairo_scaled_font_t *scaled_font, cairo_matrix_t *ctm);
     subroutine cairo_scaled_font_get_ctm(scaled_font, ctm) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: scaled_font
       type(c_ptr), value :: ctm
     end subroutine
 
-    !  cairo_public void cairo_scaled_font_get_scale_matrix (cairo_scaled_font_t *scaled_font, cairo_matrix_t *scale_matrix);
+    !  void cairo_scaled_font_get_scale_matrix (cairo_scaled_font_t *scaled_font, cairo_matrix_t *scale_matrix);
     subroutine cairo_scaled_font_get_scale_matrix(scaled_font, scale_matrix) bin&
           &d(c) 
       use iso_c_binding, only: c_ptr
@@ -58082,14 +58341,14 @@
       type(c_ptr), value :: scale_matrix
     end subroutine
 
-    !  cairo_public void cairo_scaled_font_get_font_options (cairo_scaled_font_t *scaled_font, cairo_font_options_t *options);
+    !  void cairo_scaled_font_get_font_options (cairo_scaled_font_t *scaled_font, cairo_font_options_t *options);
     subroutine cairo_scaled_font_get_font_options(scaled_font, options) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: scaled_font
       type(c_ptr), value :: options
     end subroutine
 
-    !  cairo_public cairo_font_face_t * cairo_toy_font_face_create (const char *family, cairo_font_slant_t slant, cairo_font_weight_t weight);
+    !  cairo_font_face_t * cairo_toy_font_face_create (const char *family, cairo_font_slant_t slant, cairo_font_weight_t weight);
     function cairo_toy_font_face_create(family, slant, weight) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_int
       type(c_ptr) :: cairo_toy_font_face_create
@@ -58098,55 +58357,69 @@
       integer(c_int), value :: weight
     end function
 
-    !  cairo_public const char * cairo_toy_font_face_get_family (cairo_font_face_t *font_face);
+    !  const char * cairo_toy_font_face_get_family (cairo_font_face_t *font_face);
     function cairo_toy_font_face_get_family(font_face) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_toy_font_face_get_family
       type(c_ptr), value :: font_face
     end function
 
-    !  cairo_public cairo_font_slant_t cairo_toy_font_face_get_slant (cairo_font_face_t *font_face);
+    !  cairo_font_slant_t cairo_toy_font_face_get_slant (cairo_font_face_t *font_face);
     function cairo_toy_font_face_get_slant(font_face) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_toy_font_face_get_slant
       type(c_ptr), value :: font_face
     end function
 
-    !  cairo_public cairo_font_weight_t cairo_toy_font_face_get_weight (cairo_font_face_t *font_face);
+    !  cairo_font_weight_t cairo_toy_font_face_get_weight (cairo_font_face_t *font_face);
     function cairo_toy_font_face_get_weight(font_face) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_toy_font_face_get_weight
       type(c_ptr), value :: font_face
     end function
 
-    !  cairo_public cairo_font_face_t * cairo_user_font_face_create (void);
+    !  cairo_font_face_t * cairo_user_font_face_create (void);
     function cairo_user_font_face_create() bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_user_font_face_create
     end function
 
-    !  cairo_public cairo_operator_t cairo_get_operator (cairo_t *cr);
+    !  cairo_operator_t cairo_get_operator (cairo_t *cr);
     function cairo_get_operator(cr) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_get_operator
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public cairo_pattern_t * cairo_get_source (cairo_t *cr);
+    !  cairo_pattern_t * cairo_get_source (cairo_t *cr);
     function cairo_get_source(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_get_source
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public cairo_antialias_t cairo_get_antialias (cairo_t *cr);
+    !  double cairo_get_tolerance (cairo_t *cr);
+    function cairo_get_tolerance(cr) bind(c) 
+      use iso_c_binding, only: c_double, c_ptr
+      real(c_double) :: cairo_get_tolerance
+      type(c_ptr), value :: cr
+    end function
+
+    !  cairo_antialias_t cairo_get_antialias (cairo_t *cr);
     function cairo_get_antialias(cr) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_get_antialias
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public void cairo_get_current_point (cairo_t *cr, double *x, double *y);
+    !  cairo_bool_t cairo_has_current_point (cairo_t *cr);
+    function cairo_has_current_point(cr) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_has_current_point
+      type(c_ptr), value :: cr
+    end function
+
+    !  void cairo_get_current_point (cairo_t *cr, double *x, double *y);
     subroutine cairo_get_current_point(cr, x, y) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
@@ -58154,28 +58427,49 @@
       type(c_ptr), value :: y
     end subroutine
 
-    !  cairo_public cairo_fill_rule_t cairo_get_fill_rule (cairo_t *cr);
+    !  cairo_fill_rule_t cairo_get_fill_rule (cairo_t *cr);
     function cairo_get_fill_rule(cr) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_get_fill_rule
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public cairo_line_cap_t cairo_get_line_cap (cairo_t *cr);
+    !  double cairo_get_line_width (cairo_t *cr);
+    function cairo_get_line_width(cr) bind(c) 
+      use iso_c_binding, only: c_double, c_ptr
+      real(c_double) :: cairo_get_line_width
+      type(c_ptr), value :: cr
+    end function
+
+    !  cairo_line_cap_t cairo_get_line_cap (cairo_t *cr);
     function cairo_get_line_cap(cr) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_get_line_cap
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public cairo_line_join_t cairo_get_line_join (cairo_t *cr);
+    !  cairo_line_join_t cairo_get_line_join (cairo_t *cr);
     function cairo_get_line_join(cr) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_get_line_join
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public void cairo_get_dash (cairo_t *cr, double *dashes, double *offset);
+    !  double cairo_get_miter_limit (cairo_t *cr);
+    function cairo_get_miter_limit(cr) bind(c) 
+      use iso_c_binding, only: c_double, c_ptr
+      real(c_double) :: cairo_get_miter_limit
+      type(c_ptr), value :: cr
+    end function
+
+    !  int cairo_get_dash_count (cairo_t *cr);
+    function cairo_get_dash_count(cr) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_get_dash_count
+      type(c_ptr), value :: cr
+    end function
+
+    !  void cairo_get_dash (cairo_t *cr, double *dashes, double *offset);
     subroutine cairo_get_dash(cr, dashes, offset) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
@@ -58183,135 +58477,135 @@
       type(c_ptr), value :: offset
     end subroutine
 
-    !  cairo_public void cairo_get_matrix (cairo_t *cr, cairo_matrix_t *matrix);
+    !  void cairo_get_matrix (cairo_t *cr, cairo_matrix_t *matrix);
     subroutine cairo_get_matrix(cr, matrix) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: matrix
     end subroutine
 
-    !  cairo_public cairo_surface_t * cairo_get_target (cairo_t *cr);
+    !  cairo_surface_t * cairo_get_target (cairo_t *cr);
     function cairo_get_target(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_get_target
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public cairo_surface_t * cairo_get_group_target (cairo_t *cr);
+    !  cairo_surface_t * cairo_get_group_target (cairo_t *cr);
     function cairo_get_group_target(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_get_group_target
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public cairo_path_t * cairo_copy_path (cairo_t *cr);
+    !  cairo_path_t * cairo_copy_path (cairo_t *cr);
     function cairo_copy_path(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_copy_path
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public cairo_path_t * cairo_copy_path_flat (cairo_t *cr);
+    !  cairo_path_t * cairo_copy_path_flat (cairo_t *cr);
     function cairo_copy_path_flat(cr) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_copy_path_flat
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public void cairo_append_path (cairo_t *cr, const cairo_path_t *path);
+    !  void cairo_append_path (cairo_t *cr, const cairo_path_t *path);
     subroutine cairo_append_path(cr, path) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: cr
       type(c_ptr), value :: path
     end subroutine
 
-    !  cairo_public void cairo_path_destroy (cairo_path_t *path);
+    !  void cairo_path_destroy (cairo_path_t *path);
     subroutine cairo_path_destroy(path) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: path
     end subroutine
 
-    !  cairo_public cairo_status_t cairo_status (cairo_t *cr);
+    !  cairo_status_t cairo_status (cairo_t *cr);
     function cairo_status(cr) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_status
       type(c_ptr), value :: cr
     end function
 
-    !  cairo_public const char * cairo_status_to_string (cairo_status_t status);
+    !  const char * cairo_status_to_string (cairo_status_t status);
     function cairo_status_to_string(status) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: cairo_status_to_string
       integer(c_int), value :: status
     end function
 
-    !  cairo_public cairo_device_t * cairo_device_reference (cairo_device_t *device);
+    !  cairo_device_t * cairo_device_reference (cairo_device_t *device);
     function cairo_device_reference(device) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_device_reference
       type(c_ptr), value :: device
     end function
 
-    !  cairo_public cairo_device_type_t cairo_device_get_type (cairo_device_t *device);
+    !  cairo_device_type_t cairo_device_get_type (cairo_device_t *device);
     function cairo_device_get_type(device) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_device_get_type
       type(c_ptr), value :: device
     end function
 
-    !  cairo_public cairo_status_t cairo_device_status (cairo_device_t *device);
+    !  cairo_status_t cairo_device_status (cairo_device_t *device);
     function cairo_device_status(device) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_device_status
       type(c_ptr), value :: device
     end function
 
-    !  cairo_public cairo_status_t cairo_device_acquire (cairo_device_t *device);
+    !  cairo_status_t cairo_device_acquire (cairo_device_t *device);
     function cairo_device_acquire(device) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_device_acquire
       type(c_ptr), value :: device
     end function
 
-    !  cairo_public void cairo_device_release (cairo_device_t *device);
+    !  void cairo_device_release (cairo_device_t *device);
     subroutine cairo_device_release(device) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: device
     end subroutine
 
-    !  cairo_public void cairo_device_flush (cairo_device_t *device);
+    !  void cairo_device_flush (cairo_device_t *device);
     subroutine cairo_device_flush(device) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: device
     end subroutine
 
-    !  cairo_public void cairo_device_finish (cairo_device_t *device);
+    !  void cairo_device_finish (cairo_device_t *device);
     subroutine cairo_device_finish(device) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: device
     end subroutine
 
-    !  cairo_public void cairo_device_destroy (cairo_device_t *device);
+    !  void cairo_device_destroy (cairo_device_t *device);
     subroutine cairo_device_destroy(device) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: device
     end subroutine
 
-    !  cairo_public unsigned int cairo_device_get_reference_count (cairo_device_t *device);
+    !  unsigned int cairo_device_get_reference_count (cairo_device_t *device);
     function cairo_device_get_reference_count(device) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_device_get_reference_count
       type(c_ptr), value :: device
     end function
 
-    !  cairo_public void * cairo_device_get_user_data (cairo_device_t *device, const cairo_user_data_key_t *key);
+    !  void * cairo_device_get_user_data (cairo_device_t *device, const cairo_user_data_key_t *key);
     subroutine cairo_device_get_user_data(device, key) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: device
       type(c_ptr), value :: key
     end subroutine
 
-    !  cairo_public cairo_surface_t * cairo_surface_create_similar (cairo_surface_t *other, cairo_content_t content, int width, int height);
+    !  cairo_surface_t * cairo_surface_create_similar (cairo_surface_t *other, cairo_content_t content, int width, int height);
     function cairo_surface_create_similar(other, content, width, height) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: cairo_surface_create_similar
@@ -58321,7 +58615,7 @@
       integer(c_int), value :: height
     end function
 
-    !  cairo_public cairo_surface_t * cairo_surface_create_for_rectangle (cairo_surface_t *target, double x, double y, double width, double height);
+    !  cairo_surface_t * cairo_surface_create_for_rectangle (cairo_surface_t *target, double x, double y, double width, double height);
     function cairo_surface_create_for_rectangle(target, x, y, width, height) bin&
           &d(c) 
       use iso_c_binding, only: c_ptr, c_double
@@ -58333,61 +58627,61 @@
       real(c_double), value :: height
     end function
 
-    !  cairo_public cairo_surface_t * cairo_surface_reference (cairo_surface_t *surface);
+    !  cairo_surface_t * cairo_surface_reference (cairo_surface_t *surface);
     function cairo_surface_reference(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_surface_reference
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public void cairo_surface_finish (cairo_surface_t *surface);
+    !  void cairo_surface_finish (cairo_surface_t *surface);
     subroutine cairo_surface_finish(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
     end subroutine
 
-    !  cairo_public void cairo_surface_destroy (cairo_surface_t *surface);
+    !  void cairo_surface_destroy (cairo_surface_t *surface);
     subroutine cairo_surface_destroy(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
     end subroutine
 
-    !  cairo_public cairo_device_t * cairo_surface_get_device (cairo_surface_t *surface);
+    !  cairo_device_t * cairo_surface_get_device (cairo_surface_t *surface);
     function cairo_surface_get_device(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_surface_get_device
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public unsigned int cairo_surface_get_reference_count (cairo_surface_t *surface);
+    !  unsigned int cairo_surface_get_reference_count (cairo_surface_t *surface);
     function cairo_surface_get_reference_count(surface) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_surface_get_reference_count
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public cairo_status_t cairo_surface_status (cairo_surface_t *surface);
+    !  cairo_status_t cairo_surface_status (cairo_surface_t *surface);
     function cairo_surface_status(surface) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_surface_status
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public cairo_surface_type_t cairo_surface_get_type (cairo_surface_t *surface);
+    !  cairo_surface_type_t cairo_surface_get_type (cairo_surface_t *surface);
     function cairo_surface_get_type(surface) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_surface_get_type
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public cairo_content_t cairo_surface_get_content (cairo_surface_t *surface);
+    !  cairo_content_t cairo_surface_get_content (cairo_surface_t *surface);
     function cairo_surface_get_content(surface) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_surface_get_content
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public cairo_status_t cairo_surface_write_to_png (cairo_surface_t *surface, const char *filename);
+    !  cairo_status_t cairo_surface_write_to_png (cairo_surface_t *surface, const char *filename);
     function cairo_surface_write_to_png(surface, filename) bind(c) 
       use iso_c_binding, only: c_int, c_ptr, c_char
       integer(c_int) :: cairo_surface_write_to_png
@@ -58395,14 +58689,14 @@
       character(kind=c_char), dimension(*) :: filename
     end function
 
-    !  cairo_public void * cairo_surface_get_user_data (cairo_surface_t *surface, const cairo_user_data_key_t *key);
+    !  void * cairo_surface_get_user_data (cairo_surface_t *surface, const cairo_user_data_key_t *key);
     subroutine cairo_surface_get_user_data(surface, key) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
       type(c_ptr), value :: key
     end subroutine
 
-    !  cairo_public void cairo_surface_get_mime_data (cairo_surface_t *surface, const char *mime_type, const unsigned char **data, unsigned long *length);
+    !  void cairo_surface_get_mime_data (cairo_surface_t *surface, const char *mime_type, const unsigned char **data, unsigned long *length);
     subroutine cairo_surface_get_mime_data(surface, mime_type, data, length) bin&
           &d(c) 
       use iso_c_binding, only: c_ptr, c_char
@@ -58412,26 +58706,26 @@
       type(c_ptr), value :: length
     end subroutine
 
-    !  cairo_public void cairo_surface_get_font_options (cairo_surface_t *surface, cairo_font_options_t *options);
+    !  void cairo_surface_get_font_options (cairo_surface_t *surface, cairo_font_options_t *options);
     subroutine cairo_surface_get_font_options(surface, options) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
       type(c_ptr), value :: options
     end subroutine
 
-    !  cairo_public void cairo_surface_flush (cairo_surface_t *surface);
+    !  void cairo_surface_flush (cairo_surface_t *surface);
     subroutine cairo_surface_flush(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
     end subroutine
 
-    !  cairo_public void cairo_surface_mark_dirty (cairo_surface_t *surface);
+    !  void cairo_surface_mark_dirty (cairo_surface_t *surface);
     subroutine cairo_surface_mark_dirty(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
     end subroutine
 
-    !  cairo_public void cairo_surface_mark_dirty_rectangle (cairo_surface_t *surface, int x, int y, int width, int height);
+    !  void cairo_surface_mark_dirty_rectangle (cairo_surface_t *surface, int x, int y, int width, int height);
     subroutine cairo_surface_mark_dirty_rectangle(surface, x, y, width, height) &
           &bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -58442,7 +58736,7 @@
       integer(c_int), value :: height
     end subroutine
 
-    !  cairo_public void cairo_surface_set_device_offset (cairo_surface_t *surface, double x_offset, double y_offset);
+    !  void cairo_surface_set_device_offset (cairo_surface_t *surface, double x_offset, double y_offset);
     subroutine cairo_surface_set_device_offset(surface, x_offset, y_offset) bind&
           &(c) 
       use iso_c_binding, only: c_ptr, c_double
@@ -58451,7 +58745,7 @@
       real(c_double), value :: y_offset
     end subroutine
 
-    !  cairo_public void cairo_surface_get_device_offset (cairo_surface_t *surface, double *x_offset, double *y_offset);
+    !  void cairo_surface_get_device_offset (cairo_surface_t *surface, double *x_offset, double *y_offset);
     subroutine cairo_surface_get_device_offset(surface, x_offset, y_offset) bind&
           &(c) 
       use iso_c_binding, only: c_ptr
@@ -58460,7 +58754,7 @@
       type(c_ptr), value :: y_offset
     end subroutine
 
-    !  cairo_public void cairo_surface_set_fallback_resolution (cairo_surface_t *surface, double x_pixels_per_inch, double y_pixels_per_inch);
+    !  void cairo_surface_set_fallback_resolution (cairo_surface_t *surface, double x_pixels_per_inch, double y_pixels_per_inch);
     subroutine cairo_surface_set_fallback_resolution(surface, x_pixels_per_inch,&
           & y_pixels_per_inch) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
@@ -58469,7 +58763,7 @@
       real(c_double), value :: y_pixels_per_inch
     end subroutine
 
-    !  cairo_public void cairo_surface_get_fallback_resolution (cairo_surface_t *surface, double *x_pixels_per_inch, double *y_pixels_per_inch);
+    !  void cairo_surface_get_fallback_resolution (cairo_surface_t *surface, double *x_pixels_per_inch, double *y_pixels_per_inch);
     subroutine cairo_surface_get_fallback_resolution(surface, x_pixels_per_inch,&
           & y_pixels_per_inch) bind(c) 
       use iso_c_binding, only: c_ptr
@@ -58478,19 +58772,26 @@
       type(c_ptr), value :: y_pixels_per_inch
     end subroutine
 
-    !  cairo_public void cairo_surface_copy_page (cairo_surface_t *surface);
+    !  void cairo_surface_copy_page (cairo_surface_t *surface);
     subroutine cairo_surface_copy_page(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
     end subroutine
 
-    !  cairo_public void cairo_surface_show_page (cairo_surface_t *surface);
+    !  void cairo_surface_show_page (cairo_surface_t *surface);
     subroutine cairo_surface_show_page(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
     end subroutine
 
-    !  cairo_public cairo_surface_t * cairo_image_surface_create (cairo_format_t format, int width, int height);
+    !  cairo_bool_t cairo_surface_has_show_text_glyphs (cairo_surface_t *surface);
+    function cairo_surface_has_show_text_glyphs(surface) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_surface_has_show_text_glyphs
+      type(c_ptr), value :: surface
+    end function
+
+    !  cairo_surface_t * cairo_image_surface_create (cairo_format_t format, int width, int height);
     function cairo_image_surface_create(format, width, height) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: cairo_image_surface_create
@@ -58499,7 +58800,15 @@
       integer(c_int), value :: height
     end function
 
-    !  cairo_public cairo_surface_t * cairo_image_surface_create_for_data (unsigned char *data, cairo_format_t format, int width, int height, int stride);
+    !  int cairo_format_stride_for_width (cairo_format_t format, int width);
+    function cairo_format_stride_for_width(format, width) bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int) :: cairo_format_stride_for_width
+      integer(c_int), value :: format
+      integer(c_int), value :: width
+    end function
+
+    !  cairo_surface_t * cairo_image_surface_create_for_data (unsigned char *data, cairo_format_t format, int width, int height, int stride);
     function cairo_image_surface_create_for_data(data, format, width, height, st&
           &ride) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -58511,28 +58820,49 @@
       integer(c_int), value :: stride
     end function
 
-    !  cairo_public unsigned char * cairo_image_surface_get_data (cairo_surface_t *surface);
+    !  unsigned char * cairo_image_surface_get_data (cairo_surface_t *surface);
     function cairo_image_surface_get_data(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_image_surface_get_data
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public cairo_format_t cairo_image_surface_get_format (cairo_surface_t *surface);
+    !  cairo_format_t cairo_image_surface_get_format (cairo_surface_t *surface);
     function cairo_image_surface_get_format(surface) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_image_surface_get_format
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public cairo_surface_t * cairo_image_surface_create_from_png (const char *filename);
+    !  int cairo_image_surface_get_width (cairo_surface_t *surface);
+    function cairo_image_surface_get_width(surface) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_image_surface_get_width
+      type(c_ptr), value :: surface
+    end function
+
+    !  int cairo_image_surface_get_height (cairo_surface_t *surface);
+    function cairo_image_surface_get_height(surface) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_image_surface_get_height
+      type(c_ptr), value :: surface
+    end function
+
+    !  int cairo_image_surface_get_stride (cairo_surface_t *surface);
+    function cairo_image_surface_get_stride(surface) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_image_surface_get_stride
+      type(c_ptr), value :: surface
+    end function
+
+    !  cairo_surface_t * cairo_image_surface_create_from_png (const char *filename);
     function cairo_image_surface_create_from_png(filename) bind(c) 
       use iso_c_binding, only: c_ptr, c_char
       type(c_ptr) :: cairo_image_surface_create_from_png
       character(kind=c_char), dimension(*) :: filename
     end function
 
-    !  cairo_public cairo_surface_t * cairo_recording_surface_create (cairo_content_t content, const cairo_rectangle_t *extents);
+    !  cairo_surface_t * cairo_recording_surface_create (cairo_content_t content, const cairo_rectangle_t *extents);
     function cairo_recording_surface_create(content, extents) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: cairo_recording_surface_create
@@ -58540,7 +58870,7 @@
       type(c_ptr), value :: extents
     end function
 
-    !  cairo_public void cairo_recording_surface_ink_extents (cairo_surface_t *surface, double *x0, double *y0, double *width, double *height);
+    !  void cairo_recording_surface_ink_extents (cairo_surface_t *surface, double *x0, double *y0, double *width, double *height);
     subroutine cairo_recording_surface_ink_extents(surface, x0, y0, width, heigh&
           &t) bind(c) 
       use iso_c_binding, only: c_ptr
@@ -58551,7 +58881,7 @@
       type(c_ptr), value :: height
     end subroutine
 
-    !  cairo_public cairo_pattern_t * cairo_pattern_create_rgb (double red, double green, double blue);
+    !  cairo_pattern_t * cairo_pattern_create_rgb (double red, double green, double blue);
     function cairo_pattern_create_rgb(red, green, blue) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr) :: cairo_pattern_create_rgb
@@ -58560,7 +58890,7 @@
       real(c_double), value :: blue
     end function
 
-    !  cairo_public cairo_pattern_t * cairo_pattern_create_rgba (double red, double green, double blue, double alpha);
+    !  cairo_pattern_t * cairo_pattern_create_rgba (double red, double green, double blue, double alpha);
     function cairo_pattern_create_rgba(red, green, blue, alpha) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr) :: cairo_pattern_create_rgba
@@ -58570,14 +58900,14 @@
       real(c_double), value :: alpha
     end function
 
-    !  cairo_public cairo_pattern_t * cairo_pattern_create_for_surface (cairo_surface_t *surface);
+    !  cairo_pattern_t * cairo_pattern_create_for_surface (cairo_surface_t *surface);
     function cairo_pattern_create_for_surface(surface) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_pattern_create_for_surface
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public cairo_pattern_t * cairo_pattern_create_linear (double x0, double y0, double x1, double y1);
+    !  cairo_pattern_t * cairo_pattern_create_linear (double x0, double y0, double x1, double y1);
     function cairo_pattern_create_linear(x0, y0, x1, y1) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr) :: cairo_pattern_create_linear
@@ -58587,7 +58917,7 @@
       real(c_double), value :: y1
     end function
 
-    !  cairo_public cairo_pattern_t * cairo_pattern_create_radial (double cx0, double cy0, double radius0, double cx1, double cy1, double radius1);
+    !  cairo_pattern_t * cairo_pattern_create_radial (double cx0, double cy0, double radius0, double cx1, double cy1, double radius1);
     function cairo_pattern_create_radial(cx0, cy0, radius0, cx1, cy1, radius1) b&
           &ind(c) 
       use iso_c_binding, only: c_ptr, c_double
@@ -58600,48 +58930,48 @@
       real(c_double), value :: radius1
     end function
 
-    !  cairo_public cairo_pattern_t * cairo_pattern_reference (cairo_pattern_t *pattern);
+    !  cairo_pattern_t * cairo_pattern_reference (cairo_pattern_t *pattern);
     function cairo_pattern_reference(pattern) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_pattern_reference
       type(c_ptr), value :: pattern
     end function
 
-    !  cairo_public void cairo_pattern_destroy (cairo_pattern_t *pattern);
+    !  void cairo_pattern_destroy (cairo_pattern_t *pattern);
     subroutine cairo_pattern_destroy(pattern) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: pattern
     end subroutine
 
-    !  cairo_public unsigned int cairo_pattern_get_reference_count (cairo_pattern_t *pattern);
+    !  unsigned int cairo_pattern_get_reference_count (cairo_pattern_t *pattern);
     function cairo_pattern_get_reference_count(pattern) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_pattern_get_reference_count
       type(c_ptr), value :: pattern
     end function
 
-    !  cairo_public cairo_status_t cairo_pattern_status (cairo_pattern_t *pattern);
+    !  cairo_status_t cairo_pattern_status (cairo_pattern_t *pattern);
     function cairo_pattern_status(pattern) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_pattern_status
       type(c_ptr), value :: pattern
     end function
 
-    !  cairo_public void * cairo_pattern_get_user_data (cairo_pattern_t *pattern, const cairo_user_data_key_t *key);
+    !  void * cairo_pattern_get_user_data (cairo_pattern_t *pattern, const cairo_user_data_key_t *key);
     subroutine cairo_pattern_get_user_data(pattern, key) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: pattern
       type(c_ptr), value :: key
     end subroutine
 
-    !  cairo_public cairo_pattern_type_t cairo_pattern_get_type (cairo_pattern_t *pattern);
+    !  cairo_pattern_type_t cairo_pattern_get_type (cairo_pattern_t *pattern);
     function cairo_pattern_get_type(pattern) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_pattern_get_type
       type(c_ptr), value :: pattern
     end function
 
-    !  cairo_public void cairo_pattern_add_color_stop_rgb (cairo_pattern_t *pattern, double offset, double red, double green, double blue);
+    !  void cairo_pattern_add_color_stop_rgb (cairo_pattern_t *pattern, double offset, double red, double green, double blue);
     subroutine cairo_pattern_add_color_stop_rgb(pattern, offset, red, green, blu&
           &e) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
@@ -58652,7 +58982,7 @@
       real(c_double), value :: blue
     end subroutine
 
-    !  cairo_public void cairo_pattern_add_color_stop_rgba (cairo_pattern_t *pattern, double offset, double red, double green, double blue, double alpha);
+    !  void cairo_pattern_add_color_stop_rgba (cairo_pattern_t *pattern, double offset, double red, double green, double blue, double alpha);
     subroutine cairo_pattern_add_color_stop_rgba(pattern, offset, red, green, bl&
           &ue, alpha) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
@@ -58664,49 +58994,49 @@
       real(c_double), value :: alpha
     end subroutine
 
-    !  cairo_public void cairo_pattern_set_matrix (cairo_pattern_t *pattern, const cairo_matrix_t *matrix);
+    !  void cairo_pattern_set_matrix (cairo_pattern_t *pattern, const cairo_matrix_t *matrix);
     subroutine cairo_pattern_set_matrix(pattern, matrix) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: pattern
       type(c_ptr), value :: matrix
     end subroutine
 
-    !  cairo_public void cairo_pattern_get_matrix (cairo_pattern_t *pattern, cairo_matrix_t *matrix);
+    !  void cairo_pattern_get_matrix (cairo_pattern_t *pattern, cairo_matrix_t *matrix);
     subroutine cairo_pattern_get_matrix(pattern, matrix) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: pattern
       type(c_ptr), value :: matrix
     end subroutine
 
-    !  cairo_public void cairo_pattern_set_extend (cairo_pattern_t *pattern, cairo_extend_t extend);
+    !  void cairo_pattern_set_extend (cairo_pattern_t *pattern, cairo_extend_t extend);
     subroutine cairo_pattern_set_extend(pattern, extend) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: pattern
       integer(c_int), value :: extend
     end subroutine
 
-    !  cairo_public cairo_extend_t cairo_pattern_get_extend (cairo_pattern_t *pattern);
+    !  cairo_extend_t cairo_pattern_get_extend (cairo_pattern_t *pattern);
     function cairo_pattern_get_extend(pattern) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_pattern_get_extend
       type(c_ptr), value :: pattern
     end function
 
-    !  cairo_public void cairo_pattern_set_filter (cairo_pattern_t *pattern, cairo_filter_t filter);
+    !  void cairo_pattern_set_filter (cairo_pattern_t *pattern, cairo_filter_t filter);
     subroutine cairo_pattern_set_filter(pattern, filter) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: pattern
       integer(c_int), value :: filter
     end subroutine
 
-    !  cairo_public cairo_filter_t cairo_pattern_get_filter (cairo_pattern_t *pattern);
+    !  cairo_filter_t cairo_pattern_get_filter (cairo_pattern_t *pattern);
     function cairo_pattern_get_filter(pattern) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_pattern_get_filter
       type(c_ptr), value :: pattern
     end function
 
-    !  cairo_public cairo_status_t cairo_pattern_get_rgba (cairo_pattern_t *pattern, double *red, double *green, double *blue, double *alpha);
+    !  cairo_status_t cairo_pattern_get_rgba (cairo_pattern_t *pattern, double *red, double *green, double *blue, double *alpha);
     function cairo_pattern_get_rgba(pattern, red, green, blue, alpha) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_pattern_get_rgba
@@ -58717,7 +59047,7 @@
       type(c_ptr), value :: alpha
     end function
 
-    !  cairo_public cairo_status_t cairo_pattern_get_surface (cairo_pattern_t *pattern, cairo_surface_t **surface);
+    !  cairo_status_t cairo_pattern_get_surface (cairo_pattern_t *pattern, cairo_surface_t **surface);
     function cairo_pattern_get_surface(pattern, surface) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_pattern_get_surface
@@ -58725,7 +59055,7 @@
       type(c_ptr), value :: surface
     end function
 
-    !  cairo_public cairo_status_t cairo_pattern_get_color_stop_rgba (cairo_pattern_t *pattern, int index, double *offset, double *red, double *green, double *blue, double *alpha);
+    !  cairo_status_t cairo_pattern_get_color_stop_rgba (cairo_pattern_t *pattern, int index, double *offset, double *red, double *green, double *blue, double *alpha);
     function cairo_pattern_get_color_stop_rgba(pattern, index, offset, red, gree&
           &n, blue, alpha) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
@@ -58739,7 +59069,7 @@
       type(c_ptr), value :: alpha
     end function
 
-    !  cairo_public cairo_status_t cairo_pattern_get_color_stop_count (cairo_pattern_t *pattern, int *count);
+    !  cairo_status_t cairo_pattern_get_color_stop_count (cairo_pattern_t *pattern, int *count);
     function cairo_pattern_get_color_stop_count(pattern, count) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_pattern_get_color_stop_count
@@ -58747,7 +59077,7 @@
       type(c_ptr), value :: count
     end function
 
-    !  cairo_public cairo_status_t cairo_pattern_get_linear_points (cairo_pattern_t *pattern, double *x0, double *y0, double *x1, double *y1);
+    !  cairo_status_t cairo_pattern_get_linear_points (cairo_pattern_t *pattern, double *x0, double *y0, double *x1, double *y1);
     function cairo_pattern_get_linear_points(pattern, x0, y0, x1, y1) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_pattern_get_linear_points
@@ -58758,7 +59088,7 @@
       type(c_ptr), value :: y1
     end function
 
-    !  cairo_public cairo_status_t cairo_pattern_get_radial_circles (cairo_pattern_t *pattern, double *x0, double *y0, double *r0, double *x1, double *y1, double *r1);
+    !  cairo_status_t cairo_pattern_get_radial_circles (cairo_pattern_t *pattern, double *x0, double *y0, double *r0, double *x1, double *y1, double *r1);
     function cairo_pattern_get_radial_circles(pattern, x0, y0, r0, x1, y1, r1) b&
           &ind(c) 
       use iso_c_binding, only: c_int, c_ptr
@@ -58772,7 +59102,7 @@
       type(c_ptr), value :: r1
     end function
 
-    !  cairo_public void cairo_matrix_init (cairo_matrix_t *matrix, double xx, double yx, double xy, double yy, double x0, double y0);
+    !  void cairo_matrix_init (cairo_matrix_t *matrix, double xx, double yx, double xy, double yy, double x0, double y0);
     subroutine cairo_matrix_init(matrix, xx, yx, xy, yy, x0, y0) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: matrix
@@ -58784,13 +59114,13 @@
       real(c_double), value :: y0
     end subroutine
 
-    !  cairo_public void cairo_matrix_init_identity (cairo_matrix_t *matrix);
+    !  void cairo_matrix_init_identity (cairo_matrix_t *matrix);
     subroutine cairo_matrix_init_identity(matrix) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: matrix
     end subroutine
 
-    !  cairo_public void cairo_matrix_init_translate (cairo_matrix_t *matrix, double tx, double ty);
+    !  void cairo_matrix_init_translate (cairo_matrix_t *matrix, double tx, double ty);
     subroutine cairo_matrix_init_translate(matrix, tx, ty) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: matrix
@@ -58798,7 +59128,7 @@
       real(c_double), value :: ty
     end subroutine
 
-    !  cairo_public void cairo_matrix_init_scale (cairo_matrix_t *matrix, double sx, double sy);
+    !  void cairo_matrix_init_scale (cairo_matrix_t *matrix, double sx, double sy);
     subroutine cairo_matrix_init_scale(matrix, sx, sy) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: matrix
@@ -58806,14 +59136,14 @@
       real(c_double), value :: sy
     end subroutine
 
-    !  cairo_public void cairo_matrix_init_rotate (cairo_matrix_t *matrix, double radians);
+    !  void cairo_matrix_init_rotate (cairo_matrix_t *matrix, double radians);
     subroutine cairo_matrix_init_rotate(matrix, radians) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: matrix
       real(c_double), value :: radians
     end subroutine
 
-    !  cairo_public void cairo_matrix_translate (cairo_matrix_t *matrix, double tx, double ty);
+    !  void cairo_matrix_translate (cairo_matrix_t *matrix, double tx, double ty);
     subroutine cairo_matrix_translate(matrix, tx, ty) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: matrix
@@ -58821,7 +59151,7 @@
       real(c_double), value :: ty
     end subroutine
 
-    !  cairo_public void cairo_matrix_scale (cairo_matrix_t *matrix, double sx, double sy);
+    !  void cairo_matrix_scale (cairo_matrix_t *matrix, double sx, double sy);
     subroutine cairo_matrix_scale(matrix, sx, sy) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: matrix
@@ -58829,21 +59159,21 @@
       real(c_double), value :: sy
     end subroutine
 
-    !  cairo_public void cairo_matrix_rotate (cairo_matrix_t *matrix, double radians);
+    !  void cairo_matrix_rotate (cairo_matrix_t *matrix, double radians);
     subroutine cairo_matrix_rotate(matrix, radians) bind(c) 
       use iso_c_binding, only: c_ptr, c_double
       type(c_ptr), value :: matrix
       real(c_double), value :: radians
     end subroutine
 
-    !  cairo_public cairo_status_t cairo_matrix_invert (cairo_matrix_t *matrix);
+    !  cairo_status_t cairo_matrix_invert (cairo_matrix_t *matrix);
     function cairo_matrix_invert(matrix) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_matrix_invert
       type(c_ptr), value :: matrix
     end function
 
-    !  cairo_public void cairo_matrix_multiply (cairo_matrix_t *result, const cairo_matrix_t *a, const cairo_matrix_t *b);
+    !  void cairo_matrix_multiply (cairo_matrix_t *result, const cairo_matrix_t *a, const cairo_matrix_t *b);
     subroutine cairo_matrix_multiply(result, a, b) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: result
@@ -58851,7 +59181,7 @@
       type(c_ptr), value :: b
     end subroutine
 
-    !  cairo_public void cairo_matrix_transform_distance (const cairo_matrix_t *matrix, double *dx, double *dy);
+    !  void cairo_matrix_transform_distance (const cairo_matrix_t *matrix, double *dx, double *dy);
     subroutine cairo_matrix_transform_distance(matrix, dx, dy) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: matrix
@@ -58859,7 +59189,7 @@
       type(c_ptr), value :: dy
     end subroutine
 
-    !  cairo_public void cairo_matrix_transform_point (const cairo_matrix_t *matrix, double *x, double *y);
+    !  void cairo_matrix_transform_point (const cairo_matrix_t *matrix, double *x, double *y);
     subroutine cairo_matrix_transform_point(matrix, x, y) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: matrix
@@ -58867,20 +59197,20 @@
       type(c_ptr), value :: y
     end subroutine
 
-    !  cairo_public cairo_region_t * cairo_region_create (void);
+    !  cairo_region_t * cairo_region_create (void);
     function cairo_region_create() bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_region_create
     end function
 
-    !  cairo_public cairo_region_t * cairo_region_create_rectangle (const cairo_rectangle_int_t *rectangle);
+    !  cairo_region_t * cairo_region_create_rectangle (const cairo_rectangle_int_t *rectangle);
     function cairo_region_create_rectangle(rectangle) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_region_create_rectangle
       type(c_ptr), value :: rectangle
     end function
 
-    !  cairo_public cairo_region_t * cairo_region_create_rectangles (const cairo_rectangle_int_t *rects, int count);
+    !  cairo_region_t * cairo_region_create_rectangles (const cairo_rectangle_int_t *rects, int count);
     function cairo_region_create_rectangles(rects, count) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: cairo_region_create_rectangles
@@ -58888,41 +59218,56 @@
       integer(c_int), value :: count
     end function
 
-    !  cairo_public cairo_region_t * cairo_region_copy (const cairo_region_t *original);
+    !  cairo_region_t * cairo_region_copy (const cairo_region_t *original);
     function cairo_region_copy(original) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_region_copy
       type(c_ptr), value :: original
     end function
 
-    !  cairo_public cairo_region_t * cairo_region_reference (cairo_region_t *region);
+    !  cairo_region_t * cairo_region_reference (cairo_region_t *region);
     function cairo_region_reference(region) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_region_reference
       type(c_ptr), value :: region
     end function
 
-    !  cairo_public void cairo_region_destroy (cairo_region_t *region);
+    !  void cairo_region_destroy (cairo_region_t *region);
     subroutine cairo_region_destroy(region) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: region
     end subroutine
 
-    !  cairo_public cairo_status_t cairo_region_status (const cairo_region_t *region);
+    !  cairo_bool_t cairo_region_equal (const cairo_region_t *a, const cairo_region_t *b);
+    function cairo_region_equal(a, b) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_region_equal
+      type(c_ptr), value :: a
+      type(c_ptr), value :: b
+    end function
+
+    !  cairo_status_t cairo_region_status (const cairo_region_t *region);
     function cairo_region_status(region) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_region_status
       type(c_ptr), value :: region
     end function
 
-    !  cairo_public void cairo_region_get_extents (const cairo_region_t *region, cairo_rectangle_int_t *extents);
+    !  void cairo_region_get_extents (const cairo_region_t *region, cairo_rectangle_int_t *extents);
     subroutine cairo_region_get_extents(region, extents) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: region
       type(c_ptr), value :: extents
     end subroutine
 
-    !  cairo_public void cairo_region_get_rectangle (const cairo_region_t *region, int nth, cairo_rectangle_int_t *rectangle);
+    !  int cairo_region_num_rectangles (const cairo_region_t *region);
+    function cairo_region_num_rectangles(region) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_region_num_rectangles
+      type(c_ptr), value :: region
+    end function
+
+    !  void cairo_region_get_rectangle (const cairo_region_t *region, int nth, cairo_rectangle_int_t *rectangle);
     subroutine cairo_region_get_rectangle(region, nth, rectangle) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: region
@@ -58930,7 +59275,14 @@
       type(c_ptr), value :: rectangle
     end subroutine
 
-    !  cairo_public cairo_region_overlap_t cairo_region_contains_rectangle (const cairo_region_t *region, const cairo_rectangle_int_t *rectangle);
+    !  cairo_bool_t cairo_region_is_empty (const cairo_region_t *region);
+    function cairo_region_is_empty(region) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_region_is_empty
+      type(c_ptr), value :: region
+    end function
+
+    !  cairo_region_overlap_t cairo_region_contains_rectangle (const cairo_region_t *region, const cairo_rectangle_int_t *rectangle);
     function cairo_region_contains_rectangle(region, rectangle) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_region_contains_rectangle
@@ -58938,7 +59290,16 @@
       type(c_ptr), value :: rectangle
     end function
 
-    !  cairo_public void cairo_region_translate (cairo_region_t *region, int dx, int dy);
+    !  cairo_bool_t cairo_region_contains_point (const cairo_region_t *region, int x, int y);
+    function cairo_region_contains_point(region, x, y) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: cairo_region_contains_point
+      type(c_ptr), value :: region
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+    end function
+
+    !  void cairo_region_translate (cairo_region_t *region, int dx, int dy);
     subroutine cairo_region_translate(region, dx, dy) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: region
@@ -58946,7 +59307,7 @@
       integer(c_int), value :: dy
     end subroutine
 
-    !  cairo_public cairo_status_t cairo_region_subtract (cairo_region_t *dst, const cairo_region_t *other);
+    !  cairo_status_t cairo_region_subtract (cairo_region_t *dst, const cairo_region_t *other);
     function cairo_region_subtract(dst, other) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_region_subtract
@@ -58954,7 +59315,7 @@
       type(c_ptr), value :: other
     end function
 
-    !  cairo_public cairo_status_t cairo_region_subtract_rectangle (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
+    !  cairo_status_t cairo_region_subtract_rectangle (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
     function cairo_region_subtract_rectangle(dst, rectangle) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_region_subtract_rectangle
@@ -58962,7 +59323,7 @@
       type(c_ptr), value :: rectangle
     end function
 
-    !  cairo_public cairo_status_t cairo_region_intersect (cairo_region_t *dst, const cairo_region_t *other);
+    !  cairo_status_t cairo_region_intersect (cairo_region_t *dst, const cairo_region_t *other);
     function cairo_region_intersect(dst, other) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_region_intersect
@@ -58970,7 +59331,7 @@
       type(c_ptr), value :: other
     end function
 
-    !  cairo_public cairo_status_t cairo_region_intersect_rectangle (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
+    !  cairo_status_t cairo_region_intersect_rectangle (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
     function cairo_region_intersect_rectangle(dst, rectangle) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_region_intersect_rectangle
@@ -58978,7 +59339,7 @@
       type(c_ptr), value :: rectangle
     end function
 
-    !  cairo_public cairo_status_t cairo_region_union (cairo_region_t *dst, const cairo_region_t *other);
+    !  cairo_status_t cairo_region_union (cairo_region_t *dst, const cairo_region_t *other);
     function cairo_region_union(dst, other) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_region_union
@@ -58986,7 +59347,7 @@
       type(c_ptr), value :: other
     end function
 
-    !  cairo_public cairo_status_t cairo_region_union_rectangle (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
+    !  cairo_status_t cairo_region_union_rectangle (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
     function cairo_region_union_rectangle(dst, rectangle) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_region_union_rectangle
@@ -58994,7 +59355,7 @@
       type(c_ptr), value :: rectangle
     end function
 
-    !  cairo_public cairo_status_t cairo_region_xor (cairo_region_t *dst, const cairo_region_t *other);
+    !  cairo_status_t cairo_region_xor (cairo_region_t *dst, const cairo_region_t *other);
     function cairo_region_xor(dst, other) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_region_xor
@@ -59002,7 +59363,7 @@
       type(c_ptr), value :: other
     end function
 
-    !  cairo_public cairo_status_t cairo_region_xor_rectangle (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
+    !  cairo_status_t cairo_region_xor_rectangle (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
     function cairo_region_xor_rectangle(dst, rectangle) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: cairo_region_xor_rectangle
@@ -59010,25 +59371,25 @@
       type(c_ptr), value :: rectangle
     end function
 
-    !  cairo_public void cairo_debug_reset_static_data (void);
+    !  void cairo_debug_reset_static_data (void);
     subroutine cairo_debug_reset_static_data() bind(c) 
       use iso_c_binding, only: 
     end subroutine
 
-    !  cairo_public void cairo_ft_scaled_font_unlock_face (cairo_scaled_font_t *scaled_font);
+    !  void cairo_ft_scaled_font_unlock_face (cairo_scaled_font_t *scaled_font);
     subroutine cairo_ft_scaled_font_unlock_face(scaled_font) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: scaled_font
     end subroutine
 
-    !  cairo_public cairo_font_face_t * cairo_ft_font_face_create_for_pattern (FcPattern *pattern);
+    !  cairo_font_face_t * cairo_ft_font_face_create_for_pattern (FcPattern *pattern);
     function cairo_ft_font_face_create_for_pattern(pattern) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_ft_font_face_create_for_pattern
       type(c_ptr), value :: pattern
     end function
 
-    !  cairo_public void cairo_ft_font_options_substitute (const cairo_font_options_t *options, FcPattern *pattern);
+    !  void cairo_ft_font_options_substitute (const cairo_font_options_t *options, FcPattern *pattern);
     subroutine cairo_ft_font_options_substitute(options, pattern) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: options
@@ -59218,7 +59579,7 @@
       logical(c_bool), value :: include_size
     end function
 
-    !  GType pango_cairo_font_map_get_type (void) G_GNUC_CONST;
+    !   GType pango_cairo_font_map_get_type (void) G_GNUC_CONST;
     function pango_cairo_font_map_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: pango_cairo_font_map_get_type
@@ -60211,7 +60572,7 @@
       character(kind=c_char), dimension(*) :: id
     end function
 
-    !  void pango_ft2_render (FT_Bitmap *bitmap, PangoFont *font, PangoGlyphString *glyphs, gint x, gint y);
+    !   void pango_ft2_render (FT_Bitmap *bitmap, PangoFont *font, PangoGlyphString *glyphs, gint x, gint y);
     subroutine pango_ft2_render(bitmap, font, glyphs, x, y) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: bitmap
@@ -61847,7 +62208,7 @@
       integer(c_int), value :: attrs_len
     end subroutine
 
-    !  PangoFontMap *pango_xft_get_font_map (Display *display, int screen);
+    !   PangoFontMap *pango_xft_get_font_map (Display *display, int screen);
     function pango_xft_get_font_map(display, screen) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: pango_xft_get_font_map
