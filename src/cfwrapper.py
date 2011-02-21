@@ -114,40 +114,40 @@ def write_error(errorsfile, direc, filename, message, proto, type_error):
 # One word types:
 TYPES_DICT = { 
     "int":("integer(c_int)","c_int"), 
-    "gint":("integer(c_int)","c_int"),
     "guint":("integer(c_int)","c_int"),          
-    "cairo_bool_t":("integer(c_int)","c_int"), 
+    "Bool":("integer(c_int)","c_int"),    #define Bool int    => Xlib.h
     "gint64":("integer(c_int64_t)","c_int64_t"), 
     "goffset":("integer(c_int64_t)","c_int64_t"), 
     "guint64":("integer(c_int64_t)","c_int64_t"),
     "gint32":("integer(c_int32_t)","c_int32_t"), 
     "guint32":("integer(c_int32_t)","c_int32_t"),
-    "GQuark":("integer(c_int32_t)","c_int32_t"),  #typedef guint32 GQuark;
-    "gunichar":("integer(c_int32_t)","c_int32_t"),
+    "GdkWChar":("integer(c_int32_t)","c_int32_t"),  #typedef guint32 GdkWChar;
+    "xcb_drawable_t":("integer(c_int32_t)","c_int32_t"),  #typedef uint32_t xcb_drawable_t;
+    "xcb_pixmap_t":("integer(c_int32_t)","c_int32_t"),  #typedef uint32_t xcb_pixmap_t;
     "gint16":("integer(c_int16_t)","c_int16_t"), 
     "guint16":("integer(c_int16_t)","c_int16_t"),
     "gint8": ("integer(c_int8_t)","c_int8_t"),   
     "guint8": ("integer(c_int8_t)","c_int8_t"),  
-    "glong":("integer(c_long)","c_long"),        
+    "long":("integer(c_long)","c_long"),        
     "gulong":("integer(c_long)","c_long"),
     "short":("integer(c_short)","c_short"),
-    "gshort":("integer(c_short)","c_short"),
     "boolean":("logical(c_bool)","c_bool"),
     "gchar":("character(c_char)","c_char"),
     "guchar":("character(c_char)","c_char"),
     "gboolean":("logical(c_bool)","c_bool"),  
     "double": ("real(c_double)","c_double"),     
-    "gdouble": ("real(c_double)","c_double"),
     "float":("real(c_float)","c_float"),         
-    "gfloat":("real(c_float)","c_float"),
-    "gsize":  ("integer(c_size_t)","c_size_t"),  
-    "gssize":  ("integer(c_size_t)","c_size_t"),
+    "gsize":  ("integer(c_size_t)","c_size_t"),    #typedef unsigned long gsize;   also GType  
+    "gssize":  ("integer(c_size_t)","c_size_t"),   #typedef signed long gssize;
     "GType":  ("integer(c_size_t)","c_size_t"),  
     "size_t":  ("integer(c_size_t)","c_size_t"),
-    "gpointer":("type(c_ptr)","c_ptr"),
+    "va_list":("type(c_ptr)","c_ptr"),
+    "gpointer":("type(c_ptr)","c_ptr"),   
     "GdkAtom":("type(c_ptr)","c_ptr"),
     "GC":("type(c_ptr)","c_ptr"),
-    "PangoGlyph":("integer(c_int32_t)","c_int32_t"),   #typedef guint32 PangoGlyph;
+    "GIConv":("type(c_ptr)","c_ptr"),   #typedef struct _GIConv *GIConv;
+    "GSignalCMarshaller":("type(c_ptr)","c_ptr"), 
+    "FT_Face":("type(c_ptr)","c_ptr"),   #typedef struct FT_FaceRec_*  FT_Face;  
     # X11 types (See /usr/include/X11/Xmd.h), unsigned int (64 bits archi.)
     # or unsigned long (32 bits architecture) :
     "Window":("integer(c_long)","c_long"),
@@ -158,6 +158,8 @@ TYPES_DICT = {
     "Colormap":("integer(c_long)","c_long"),
     "GContext":("integer(c_long)","c_long"),
     "Atom":("integer(c_long)","c_long"),
+    "Picture":("integer(c_long)","c_long"),
+    "XID":("integer(c_long)","c_long"),
     "VisualID":("integer(c_long)","c_long"),
     "Time":("integer(c_long)","c_long"),
     "KeyCode":("character(c_char)","c_char"),   #define KeyCode CARD8   => unsigned char
@@ -165,19 +167,12 @@ TYPES_DICT = {
      }
 
 # TODO: Add or verify these types:
-# "long"   
 # int"gboolean" ?
 #   "gushort"
-#typedef unsigned long gsize;   also GType
-#typedef signed long gssize;
 #typedef void* gpointer;
 #typedef const void *gconstpointer;
 # GC (Xlib) is it a pointer ?
 #typedef struct _GdkAtom            *GdkAtom;  So GdkAtom is a pointer ?
-#typedef gint32  GTime;
-#typedef guint16 GDateYear;
-#typedef guint8  GDateDay;   /* day of the month */
-#typedef struct _GDate GDate;
 #**************************************
 
 # Two words types
@@ -195,7 +190,7 @@ RGX_FUNCTION_NAME = re.compile( "([0-9a-zA-Z_]+) *\(" )
 RGX_ARGUMENTS = re.compile( "\(([0-9a-zA-Z_ ,\*\[\]]*)\).*;$" )
 RGX_ARGS = re.compile( " *([0-9a-zA-Z_ \*\[\]]+),?" )
 RGX_VAR_TYPE = re.compile( " *([_0-9a-zA-Z]+)[ |\*]" )
-RGX_TYPE = re.compile( "^ *((const |G_CONST_RETURN |cairo_public )?\w+)[ \*]?" )
+RGX_TYPE = re.compile( "^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?" )
 RGX_VAR_NAME = re.compile( "[ |\*]([_0-9a-zA-Z]+)$" )
 RGX_UNDERSCORE = re.compile( "^_\w+$" )
 
@@ -218,22 +213,40 @@ PATH_DICT = {"/usr/include/gtk-2.0":"gtk-auto.f90", "/usr/include/cairo":"gtk-au
              "/usr/include/gdk-pixbuf-2.0":"gtk-auto.f90"}
 
 #*************************************************************************
-# Pass 1 : to find all enum types, and all pointers to functions (funptr)
+# Pass 1 : to find all enum types, all pointers to functions (funptr)
+# and add derived GTK+ types
 #*************************************************************************
 gtk_enums = []
 gtk_funptr = []
+gtk_types = []
 for library_path in PATH_DICT.keys():
     tree = os.walk(library_path)    # A generator
     for directory in tree:
         for c_file_name in directory[2]:
-            whole_file = open(directory[0] + "/" + c_file_name, 'rU').read()        
-            enum_types = re.findall("(?ms)^typedef enum.*?} (\w+);", whole_file)
+            whole_file = open(directory[0] + "/" + c_file_name, 'rU').read()
+            enum_types = re.findall("(?ms)^typedef enum.*?}\s(\w+);", whole_file)
             gtk_enums += enum_types
-            funptr = re.findall("(?m)^typedef \w+ *\*? *\(\* ?([A-Z][\w]*?)\)", whole_file)
+            funptr = re.findall("(?m)^typedef[ \t]*(?:const)?[ \t]*\w+[ \t]*\*?\s*\(\* ?([\w]*?)\)", whole_file)
             gtk_funptr += funptr
+            types = re.findall("(?m)^typedef *?(?:const)? *?(\w+) *\*? *([\w]+);", whole_file)
+            #types = re.findall("(?m)^typedef *?(\w+) *\*? *([\w]+);", whole_file)
+            gtk_types += types
+
+for each in gtk_types:
+    if each[1] not in TYPES_DICT.keys():
+        if each[0] in TYPES_DICT.keys():
+            TYPES_DICT[each[1]] = TYPES_DICT[each[0]]
+        elif each[0] in gtk_funptr:
+            TYPES_DICT[each[1]] = ("type(c_funptr)", "c_funptr")
+        #else:
+        #    print each[0], each[1]
+
 # Useful only for printing:
 gtk_enums.sort()
 gtk_funptr.sort()
+#print gtk_funptr
+#quit()
+
 
 #**************************************************************************************
 # Pass 2 : Scan of all files in the directory and subdirectories to generate interfaces
@@ -267,21 +280,25 @@ for library_path in PATH_DICT.keys():
             whole_file = re.sub("(?s)/\*.*?\*/", "", whole_file)
             # Remove C directives (multilines then monoline):
             # in a python regular expression \\\\=\\=\
+            #whole_file = re.sub("(?ms)#ifdef .*?#endif.*?$", "", whole_file)
             whole_file = re.sub("(?m)^#(.*[\\\\][\\n])+.*?$", "", whole_file)
             whole_file = re.sub("(?m)^#.*$", "", whole_file)
             # Remove TABs and overnumerous spaces:
             whole_file = whole_file.replace("\t", " ")
             whole_file = re.sub("[ ]{2,}", " ", whole_file)
             # Remove C structures
+            #whole_file = re.sub("(?ms)^static.*}$", "", whole_file)
+            
             whole_file = re.sub("(?ms){.*?}[ \w]*;", "", whole_file)
             whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
             whole_file = re.sub("(?m)^(typedef|union|struct).*$", "", whole_file)
             whole_file = re.sub("(?m)^.*(G_BEGIN_DECLS|CAIRO_BEGIN_DECLS) *$", "", whole_file)
             whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$", "", whole_file)
-            whole_file = re.sub("(?m)^.*(G_UNLOCK|G_LOCK)\(.*;$", "", whole_file)
+            whole_file = re.sub("(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
             
             whole_file = re.sub("(?m)^.*cairo_public ", "", whole_file)
-            
+            whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC)"
+                                , "", whole_file)   # extern
             # Remove empty lines:
             whole_file = re.sub("(?m)^\n$", "", whole_file)
             # *************************
@@ -357,8 +374,9 @@ for library_path in PATH_DICT.keys():
                 if RGX_UNDERSCORE.match(function_name.group(1)) != None:
                     continue    # Next prototype
                 
-                if function_name.group(1) == "g_signal_connect" or function_name.group(1) == "gtk_init":
+                if function_name.group(1) in ["g_signal_connect","gtk_init","g_bit_nth_lsf","g_once_init_enter"]:
                     continue    # Next prototype
+                
                     
                 arguments = RGX_ARGUMENTS.search(prototype)
                 # Optional arguments are not managed !
@@ -441,13 +459,14 @@ ERRORS_FILE.close()
 
 # Print remaining error types:
 type_errors_list.sort()
+TYPE_ERRORS_FILE = open("cfwrapper-type_errors.txt", "w")
 previous = ""
-print("=== Unkown types ===")
 for a_type in type_errors_list:
-    if a_type != previous:
-        #print(a_type)
-        previous = a_type
-        
+    #if a_type != previous:
+    TYPE_ERRORS_FILE.write(a_type+"\n")
+    previous = a_type
+TYPE_ERRORS_FILE.close()
+
 # Some statistics:
 print
 print("=== Statistics ===")

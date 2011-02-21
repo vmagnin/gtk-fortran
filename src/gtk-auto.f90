@@ -227,6 +227,24 @@
       type(c_ptr), value :: cmap
     end subroutine
 
+    !  Bool xlib_rgb_ditherable (void);
+    function xlib_rgb_ditherable() bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int) :: xlib_rgb_ditherable
+    end function
+
+    !  void xlib_rgb_set_verbose (Bool verbose);
+    subroutine xlib_rgb_set_verbose(verbose) bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int), value :: verbose
+    end subroutine
+
+    !  void xlib_rgb_set_install (Bool install);
+    subroutine xlib_rgb_set_install(install) bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int), value :: install
+    end subroutine
+
     !  void xlib_rgb_set_min_colors (int min_colors);
     subroutine xlib_rgb_set_min_colors(min_colors) bind(c) 
       use iso_c_binding, only: c_int
@@ -2429,7 +2447,7 @@
       integer(c_size_t) :: g_variant_get_gtype
     end function
 
-    !  static void g_object_notify_queue_free (gpointer data) { GObjectNotifyQueue *nqueue = data;
+    !   static void g_object_notify_queue_free (gpointer data) { GObjectNotifyQueue *nqueue = data;
     subroutine g_object_notify_queue_free(data) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: data
@@ -2521,6 +2539,34 @@
       integer(c_int), value :: n_parameters
       type(c_ptr), value :: parameters
     end function
+
+    ! GObject* g_object_new_valist (GType object_type, const gchar *first_property_name, va_list var_args);
+    function g_object_new_valist(object_type, first_property_name, var_args) bin&
+          &d(c) 
+      use iso_c_binding, only: c_ptr, c_size_t, c_char
+      type(c_ptr) :: g_object_new_valist
+      integer(c_size_t), value :: object_type
+      character(kind=c_char), dimension(*) :: first_property_name
+      type(c_ptr), value :: var_args
+    end function
+
+    ! void g_object_set_valist (GObject *object, const gchar *first_property_name, va_list var_args);
+    subroutine g_object_set_valist(object, first_property_name, var_args) bind(c&
+          &) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: object
+      character(kind=c_char), dimension(*) :: first_property_name
+      type(c_ptr), value :: var_args
+    end subroutine
+
+    ! void g_object_get_valist (GObject *object, const gchar *first_property_name, va_list var_args);
+    subroutine g_object_get_valist(object, first_property_name, var_args) bind(c&
+          &) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: object
+      character(kind=c_char), dimension(*) :: first_property_name
+      type(c_ptr), value :: var_args
+    end subroutine
 
     ! void g_object_set_property (GObject *object, const gchar *property_name, const GValue *value);
     subroutine g_object_set_property(object, property_name, value) bind(c) 
@@ -3752,6 +3798,42 @@
       type(c_ptr), value :: transform_from
     end function
 
+    !   guint g_signal_newv (const gchar *signal_name, GType itype, GSignalFlags signal_flags, GClosure *class_closure, GSignalAccumulator accumulator, gpointer accu_data, GSignalCMarshaller c_marshaller, GType return_type, guint n_params, GType *param_types);
+    function g_signal_newv(signal_name, itype, signal_flags, class_closure, accu&
+          &mulator, accu_data, c_marshaller, return_type, n_params, param_types)&
+          & bind(c) 
+      use iso_c_binding, only: c_int, c_char, c_size_t, c_ptr, c_funptr
+      integer(c_int) :: g_signal_newv
+      character(kind=c_char), dimension(*) :: signal_name
+      integer(c_size_t), value :: itype
+      integer(c_int), value :: signal_flags
+      type(c_ptr), value :: class_closure
+      type(c_funptr), value :: accumulator
+      type(c_ptr), value :: accu_data
+      type(c_ptr), value :: c_marshaller
+      integer(c_size_t), value :: return_type
+      integer(c_int), value :: n_params
+      type(c_ptr), value :: param_types
+    end function
+
+    ! guint g_signal_new_valist (const gchar *signal_name, GType itype, GSignalFlags signal_flags, GClosure *class_closure, GSignalAccumulator accumulator, gpointer accu_data, GSignalCMarshaller c_marshaller, GType return_type, guint n_params, va_list args);
+    function g_signal_new_valist(signal_name, itype, signal_flags, class_closure&
+          &, accumulator, accu_data, c_marshaller, return_type, n_params, args) &
+          &bind(c) 
+      use iso_c_binding, only: c_int, c_char, c_size_t, c_ptr, c_funptr
+      integer(c_int) :: g_signal_new_valist
+      character(kind=c_char), dimension(*) :: signal_name
+      integer(c_size_t), value :: itype
+      integer(c_int), value :: signal_flags
+      type(c_ptr), value :: class_closure
+      type(c_funptr), value :: accumulator
+      type(c_ptr), value :: accu_data
+      type(c_ptr), value :: c_marshaller
+      integer(c_size_t), value :: return_type
+      integer(c_int), value :: n_params
+      type(c_ptr), value :: args
+    end function
+
     !  void g_signal_emitv (const GValue *instance_and_params, guint signal_id, GQuark detail, GValue *return_value);
     subroutine g_signal_emitv(instance_and_params, signal_id, detail, return_val&
           &ue) bind(c) 
@@ -3760,6 +3842,16 @@
       integer(c_int), value :: signal_id
       integer(c_int32_t), value :: detail
       type(c_ptr), value :: return_value
+    end subroutine
+
+    ! void g_signal_emit_valist (gpointer instance, guint signal_id, GQuark detail, va_list var_args);
+    subroutine g_signal_emit_valist(instance, signal_id, detail, var_args) bind(&
+          &c) 
+      use iso_c_binding, only: c_ptr, c_int, c_int32_t
+      type(c_ptr), value :: instance
+      integer(c_int), value :: signal_id
+      integer(c_int32_t), value :: detail
+      type(c_ptr), value :: var_args
     end subroutine
 
     ! guint g_signal_lookup (const gchar *name, GType itype);
@@ -5032,6 +5124,19 @@
       type(c_ptr), value :: user_data
     end subroutine
 
+    ! void g_async_initable_new_valist_async (GType object_type, const gchar *first_property_name, va_list var_args, int io_priority, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+    subroutine g_async_initable_new_valist_async(object_type, first_property_nam&
+          &e, var_args, io_priority, cancellable, callback, user_data) bind(c) 
+      use iso_c_binding, only: c_size_t, c_char, c_ptr, c_int, c_funptr
+      integer(c_size_t), value :: object_type
+      character(kind=c_char), dimension(*) :: first_property_name
+      type(c_ptr), value :: var_args
+      integer(c_int), value :: io_priority
+      type(c_ptr), value :: cancellable
+      type(c_funptr), value :: callback
+      type(c_ptr), value :: user_data
+    end subroutine
+
     ! GObject *g_async_initable_new_finish (GAsyncInitable *initable, GAsyncResult *res, GError **error);
     function g_async_initable_new_finish(initable, res, error) bind(c) 
       use iso_c_binding, only: c_ptr
@@ -5106,6 +5211,17 @@
       character(kind=c_char), dimension(*) :: dbus_error_name
       character(kind=c_char), dimension(*) :: dbus_error_message
     end function
+
+    ! void g_dbus_error_set_dbus_error_valist (GError **error, const gchar *dbus_error_name, const gchar *dbus_error_message, const gchar *format, va_list var_args);
+    subroutine g_dbus_error_set_dbus_error_valist(error, dbus_error_name, dbus_e&
+          &rror_message, format, var_args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: error
+      character(kind=c_char), dimension(*) :: dbus_error_name
+      character(kind=c_char), dimension(*) :: dbus_error_message
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: var_args
+    end subroutine
 
     ! gchar *g_dbus_error_encode_gerror (const GError *error);
     function g_dbus_error_encode_gerror(error) bind(c) 
@@ -9294,6 +9410,17 @@
       type(c_ptr), value :: method_call_message
     end function
 
+    ! GDBusMessage *g_dbus_message_new_method_error_valist (GDBusMessage *method_call_message, const gchar *error_name, const gchar *error_message_format, va_list var_args);
+    function g_dbus_message_new_method_error_valist(method_call_message, error_n&
+          &ame, error_message_format, var_args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: g_dbus_message_new_method_error_valist
+      type(c_ptr), value :: method_call_message
+      character(kind=c_char), dimension(*) :: error_name
+      character(kind=c_char), dimension(*) :: error_message_format
+      type(c_ptr), value :: var_args
+    end function
+
     ! GDBusMessage *g_dbus_message_new_method_error_literal (GDBusMessage *method_call_message, const gchar *error_name, const gchar *error_message);
     function g_dbus_message_new_method_error_literal(method_call_message, error_&
           &name, error_message) bind(c) 
@@ -10424,6 +10551,17 @@
       type(c_ptr), value :: parameters
     end subroutine
 
+    ! void g_dbus_method_invocation_return_error_valist (GDBusMethodInvocation *invocation, GQuark domain, gint code, const gchar *format, va_list var_args);
+    subroutine g_dbus_method_invocation_return_error_valist(invocation, domain, &
+          &code, format, var_args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t, c_int, c_char
+      type(c_ptr), value :: invocation
+      integer(c_int32_t), value :: domain
+      integer(c_int), value :: code
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: var_args
+    end subroutine
+
     ! void g_dbus_method_invocation_return_error_literal (GDBusMethodInvocation *invocation, GQuark domain, gint code, const gchar *message);
     subroutine g_dbus_method_invocation_return_error_literal(invocation, domain,&
           & code, message) bind(c) 
@@ -11168,6 +11306,18 @@
       integer(c_size_t), value :: object_type
       integer(c_int), value :: n_parameters
       type(c_ptr), value :: parameters
+      type(c_ptr), value :: cancellable
+      type(c_ptr), value :: error
+    end function
+
+    ! GObject* g_initable_new_valist (GType object_type, const gchar *first_property_name, va_list var_args, GCancellable *cancellable, GError **error);
+    function g_initable_new_valist(object_type, first_property_name, var_args, c&
+          &ancellable, error) bind(c) 
+      use iso_c_binding, only: c_ptr, c_size_t, c_char
+      type(c_ptr) :: g_initable_new_valist
+      integer(c_size_t), value :: object_type
+      character(kind=c_char), dimension(*) :: first_property_name
+      type(c_ptr), value :: var_args
       type(c_ptr), value :: cancellable
       type(c_ptr), value :: error
     end function
@@ -13219,6 +13369,17 @@
       use iso_c_binding, only: 
     end subroutine
 
+    ! void g_simple_async_result_set_error_va (GSimpleAsyncResult *simple, GQuark domain, gint code, const char *format, va_list args);
+    subroutine g_simple_async_result_set_error_va(simple, domain, code, format, &
+          &args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t, c_int, c_char
+      type(c_ptr), value :: simple
+      integer(c_int32_t), value :: domain
+      integer(c_int), value :: code
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
+    end subroutine
+
     ! gboolean g_simple_async_result_is_valid (GAsyncResult *result, GObject *source, gpointer source_tag);
     function g_simple_async_result_is_valid(result, source, source_tag) bind(c) 
       use iso_c_binding, only: c_bool, c_ptr
@@ -13477,6 +13638,16 @@
       integer(c_int) :: g_snprintf
     end function
 
+    ! gint g_vsnprintf (gchar *string, gulong n, gchar const *format, va_list args);
+    function g_vsnprintf(string, n, format, args) bind(c) 
+      use iso_c_binding, only: c_int, c_char, c_long, c_ptr
+      integer(c_int) :: g_vsnprintf
+      character(kind=c_char), dimension(*) :: string
+      integer(c_long), value :: n
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
+    end function
+
     !  gboolean g_path_is_absolute (const gchar *file_name);
     function g_path_is_absolute(file_name) bind(c) 
       use iso_c_binding, only: c_bool, c_char
@@ -13552,6 +13723,12 @@
       type(c_ptr) :: g_listenv
     end function
 
+    !  void g_atexit (GVoidFunc func);
+    subroutine g_atexit(func) bind(c) 
+      use iso_c_binding, only: c_funptr
+      type(c_funptr), value :: func
+    end subroutine
+
     !  int atexit (void (*)(void));
     function atexit() bind(c) 
       use iso_c_binding, only: c_int
@@ -13565,12 +13742,48 @@
       character(kind=c_char), dimension(*) :: program
     end function
 
-    !  G_INLINE_FUNC void g_trash_stack_push (GTrashStack **stack_p, gpointer data_p);
+    ! gint g_bit_nth_msf (gulong mask, gint nth_bit) G_GNUC_CONST;
+    function g_bit_nth_msf(mask, nth_bit) bind(c) 
+      use iso_c_binding, only: c_int, c_long
+      integer(c_int) :: g_bit_nth_msf
+      integer(c_long), value :: mask
+      integer(c_int), value :: nth_bit
+    end function
+
+    ! guint g_bit_storage (gulong number) G_GNUC_CONST;
+    function g_bit_storage(number) bind(c) 
+      use iso_c_binding, only: c_int, c_long
+      integer(c_int) :: g_bit_storage
+      integer(c_long), value :: number
+    end function
+
+    !  void g_trash_stack_push (GTrashStack **stack_p, gpointer data_p);
     subroutine g_trash_stack_push(stack_p, data_p) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: stack_p
       type(c_ptr), value :: data_p
     end subroutine
+
+    ! gpointer g_trash_stack_pop (GTrashStack **stack_p);
+    function g_trash_stack_pop(stack_p) bind(c) 
+      use iso_c_binding, only: c_funptr, c_ptr
+      type(c_funptr) :: g_trash_stack_pop
+      type(c_ptr), value :: stack_p
+    end function
+
+    ! gpointer g_trash_stack_peek (GTrashStack **stack_p);
+    function g_trash_stack_peek(stack_p) bind(c) 
+      use iso_c_binding, only: c_funptr, c_ptr
+      type(c_funptr) :: g_trash_stack_peek
+      type(c_ptr), value :: stack_p
+    end function
+
+    ! guint g_trash_stack_height (GTrashStack **stack_p);
+    function g_trash_stack_height(stack_p) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: g_trash_stack_height
+      type(c_ptr), value :: stack_p
+    end function
 
     !  const gchar * glib_check_version (guint required_major, guint required_minor, guint required_micro);
     function glib_check_version(required_major, required_minor, required_micro) &
@@ -13734,6 +13947,16 @@
       type(c_ptr), value :: error
     end function
 
+    ! void g_option_context_set_translate_func (GOptionContext *context, GTranslateFunc func, gpointer data, GDestroyNotify destroy_notify);
+    subroutine g_option_context_set_translate_func(context, func, data, destroy_&
+          &notify) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr
+      type(c_ptr), value :: context
+      type(c_funptr), value :: func
+      type(c_ptr), value :: data
+      type(c_funptr), value :: destroy_notify
+    end subroutine
+
     ! void g_option_context_set_translation_domain (GOptionContext *context, const gchar *domain);
     subroutine g_option_context_set_translation_domain(context, domain) bind(c) 
       use iso_c_binding, only: c_ptr, c_char
@@ -13810,6 +14033,16 @@
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: group
       type(c_ptr), value :: entries
+    end subroutine
+
+    ! void g_option_group_set_translate_func (GOptionGroup *group, GTranslateFunc func, gpointer data, GDestroyNotify destroy_notify);
+    subroutine g_option_group_set_translate_func(group, func, data, destroy_noti&
+          &fy) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr
+      type(c_ptr), value :: group
+      type(c_funptr), value :: func
+      type(c_ptr), value :: data
+      type(c_funptr), value :: destroy_notify
     end subroutine
 
     ! void g_option_group_set_translation_domain (GOptionGroup *group, const gchar *domain);
@@ -14302,6 +14535,41 @@
       integer(c_int) :: g_sprintf
     end function
 
+    !  gint g_vprintf (gchar const *format, va_list args);
+    function g_vprintf(format, args) bind(c) 
+      use iso_c_binding, only: c_int, c_char, c_ptr
+      integer(c_int) :: g_vprintf
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
+    end function
+
+    ! gint g_vfprintf (FILE *file, gchar const *format, va_list args);
+    function g_vfprintf(file, format, args) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_char
+      integer(c_int) :: g_vfprintf
+      type(c_ptr), value :: file
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
+    end function
+
+    ! gint g_vsprintf (gchar *string, gchar const *format, va_list args);
+    function g_vsprintf(string, format, args) bind(c) 
+      use iso_c_binding, only: c_int, c_char, c_ptr
+      integer(c_int) :: g_vsprintf
+      character(kind=c_char), dimension(*) :: string
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
+    end function
+
+    ! gint g_vasprintf (gchar **string, gchar const *format, va_list args);
+    function g_vasprintf(string, format, args) bind(c) 
+      use iso_c_binding, only: c_int, c_char, c_ptr
+      integer(c_int) :: g_vasprintf
+      character(kind=c_char), dimension(*) :: string
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
+    end function
+
     !   gsize g_base64_encode_step (const guchar *in, gsize len, gboolean break_lines, gchar *out, gint *state, gint *save);
     function g_base64_encode_step(in, len, break_lines, out, state, save) bind(c&
           &) 
@@ -14603,6 +14871,14 @@
       real(c_double), value :: seconds
     end function
 
+    !  G_GNUC_WARN_UNUSED_RESULT GDateTime * g_date_time_add (GDateTime *datetime, GTimeSpan timespan);
+    function g_date_time_add(datetime, timespan) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int64_t
+      type(c_ptr) :: g_date_time_add
+      type(c_ptr), value :: datetime
+      integer(c_int64_t), value :: timespan
+    end function
+
     !  G_GNUC_WARN_UNUSED_RESULT GDateTime * g_date_time_add_years (GDateTime *datetime, gint years);
     function g_date_time_add_years(datetime, years) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -14679,6 +14955,14 @@
       integer(c_int) :: g_date_time_compare
       type(c_ptr), value :: dt1
       type(c_ptr), value :: dt2
+    end function
+
+    ! GTimeSpan g_date_time_difference (GDateTime *end, GDateTime *begin);
+    function g_date_time_difference(end, begin) bind(c) 
+      use iso_c_binding, only: c_int64_t, c_ptr
+      integer(c_int64_t) :: g_date_time_difference
+      type(c_ptr), value :: end
+      type(c_ptr), value :: begin
     end function
 
     ! guint g_date_time_hash (gconstpointer datetime);
@@ -14804,6 +15088,13 @@
       type(c_ptr), value :: tv
     end function
 
+    !  GTimeSpan g_date_time_get_utc_offset (GDateTime *datetime);
+    function g_date_time_get_utc_offset(datetime) bind(c) 
+      use iso_c_binding, only: c_int64_t, c_ptr
+      integer(c_int64_t) :: g_date_time_get_utc_offset
+      type(c_ptr), value :: datetime
+    end function
+
     ! const gchar * g_date_time_get_timezone_abbreviation (GDateTime *datetime);
     function g_date_time_get_timezone_abbreviation(datetime) bind(c) 
       use iso_c_binding, only: c_ptr
@@ -14920,12 +15211,30 @@
       type(c_ptr), value :: hook
     end subroutine
 
+    ! void g_hook_insert_sorted (GHookList *hook_list, GHook *hook, GHookCompareFunc func);
+    subroutine g_hook_insert_sorted(hook_list, hook, func) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr
+      type(c_ptr), value :: hook_list
+      type(c_ptr), value :: hook
+      type(c_funptr), value :: func
+    end subroutine
+
     ! GHook* g_hook_get (GHookList *hook_list, gulong hook_id);
     function g_hook_get(hook_list, hook_id) bind(c) 
       use iso_c_binding, only: c_ptr, c_long
       type(c_ptr) :: g_hook_get
       type(c_ptr), value :: hook_list
       integer(c_long), value :: hook_id
+    end function
+
+    ! GHook* g_hook_find (GHookList *hook_list, gboolean need_valids, GHookFindFunc func, gpointer data);
+    function g_hook_find(hook_list, need_valids, func, data) bind(c) 
+      use iso_c_binding, only: c_ptr, c_bool, c_funptr
+      type(c_ptr) :: g_hook_find
+      type(c_ptr), value :: hook_list
+      logical(c_bool), value :: need_valids
+      type(c_funptr), value :: func
+      type(c_ptr), value :: data
     end function
 
     ! GHook* g_hook_find_data (GHookList *hook_list, gboolean need_valids, gpointer data);
@@ -14993,6 +15302,26 @@
       use iso_c_binding, only: c_ptr, c_bool
       type(c_ptr), value :: hook_list
       logical(c_bool), value :: may_recurse
+    end subroutine
+
+    !  void g_hook_list_marshal (GHookList *hook_list, gboolean may_recurse, GHookMarshaller marshaller, gpointer marshal_data);
+    subroutine g_hook_list_marshal(hook_list, may_recurse, marshaller, marshal_d&
+          &ata) bind(c) 
+      use iso_c_binding, only: c_ptr, c_bool, c_funptr
+      type(c_ptr), value :: hook_list
+      logical(c_bool), value :: may_recurse
+      type(c_funptr), value :: marshaller
+      type(c_ptr), value :: marshal_data
+    end subroutine
+
+    ! void g_hook_list_marshal_check (GHookList *hook_list, gboolean may_recurse, GHookCheckMarshaller marshaller, gpointer marshal_data);
+    subroutine g_hook_list_marshal_check(hook_list, may_recurse, marshaller, mar&
+          &shal_data) bind(c) 
+      use iso_c_binding, only: c_ptr, c_bool, c_funptr
+      type(c_ptr), value :: hook_list
+      logical(c_bool), value :: may_recurse
+      type(c_funptr), value :: marshaller
+      type(c_ptr), value :: marshal_data
     end subroutine
 
     !   GCache* g_cache_new (GCacheNewFunc value_new_func, GCacheDestroyFunc value_destroy_func, GCacheDupFunc key_dup_func, GCacheDestroyFunc key_destroy_func, GHashFunc hash_key_func, GHashFunc hash_value_func, GEqualFunc key_equal_func);
@@ -15275,6 +15604,16 @@
       character(kind=c_char), dimension(*) :: message
     end function
 
+    ! GError* g_error_new_valist (GQuark domain, gint code, const gchar *format, va_list args);
+    function g_error_new_valist(domain, code, format, args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t, c_int, c_char
+      type(c_ptr) :: g_error_new_valist
+      integer(c_int32_t), value :: domain
+      integer(c_int), value :: code
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
+    end function
+
     !  void g_error_free (GError *error);
     subroutine g_error_free(error) bind(c) 
       use iso_c_binding, only: c_ptr
@@ -15406,6 +15745,12 @@
       integer(c_int), value :: checksum_type
       character(kind=c_char), dimension(*) :: str
       integer(c_size_t), value :: length
+    end function
+
+    !  guint64 (*g_thread_gettime) (void);
+    function guint64() bind(c) 
+      use iso_c_binding, only: c_int64_t
+      integer(c_int64_t) :: guint64
     end function
 
     !  void g_thread_init (GThreadFunctions *vtable);
@@ -16411,6 +16756,14 @@
       type(c_ptr) :: g_markup_printf_escaped
     end function
 
+    ! gchar *g_markup_vprintf_escaped (const char *format, va_list args);
+    function g_markup_vprintf_escaped(format, args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: g_markup_vprintf_escaped
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
+    end function
+
     !   int g_strcmp0 (const char *str1, const char *str2);
     function g_strcmp0(str1, str2) bind(c) 
       use iso_c_binding, only: c_int, c_char
@@ -16711,6 +17064,14 @@
       type(c_ptr), value :: user_data
     end subroutine
 
+    !   gsize g_printf_string_upper_bound (const gchar* format, va_list args);
+    function g_printf_string_upper_bound(format, args) bind(c) 
+      use iso_c_binding, only: c_size_t, c_char, c_ptr
+      integer(c_size_t) :: g_printf_string_upper_bound
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
+    end function
+
     !  guint g_log_set_handler (const gchar *log_domain, GLogLevelFlags log_levels, GLogFunc log_func, gpointer user_data);
     function g_log_set_handler(log_domain, log_levels, log_func, user_data) bind&
           &(c) 
@@ -16750,6 +17111,15 @@
     ! void g_log (const gchar *log_domain, GLogLevelFlags log_level, const gchar *format, ...) G_GNUC_PRINTF (3, 4);
     subroutine g_log() bind(c) 
       use iso_c_binding, only: 
+    end subroutine
+
+    ! void g_logv (const gchar *log_domain, GLogLevelFlags log_level, const gchar *format, va_list args);
+    subroutine g_logv(log_domain, log_level, format, args) bind(c) 
+      use iso_c_binding, only: c_char, c_int, c_ptr
+      character(kind=c_char), dimension(*) :: log_domain
+      integer(c_int), value :: log_level
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
     end subroutine
 
     ! GLogLevelFlags g_log_set_fatal_mask (const gchar *log_domain, GLogLevelFlags fatal_mask);
@@ -17098,9 +17468,25 @@
       type(c_ptr), value :: string
     end function
 
+    ! void g_string_vprintf (GString *string, const gchar *format, va_list args);
+    subroutine g_string_vprintf(string, format, args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: string
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
+    end subroutine
+
     ! void g_string_printf (GString *string, const gchar *format, ...) G_GNUC_PRINTF (2, 3);
     subroutine g_string_printf() bind(c) 
       use iso_c_binding, only: 
+    end subroutine
+
+    ! void g_string_append_vprintf (GString *string, const gchar *format, va_list args);
+    subroutine g_string_append_vprintf(string, format, args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: string
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
     end subroutine
 
     ! void g_string_append_printf (GString *string, const gchar *format, ...) G_GNUC_PRINTF (2, 3);
@@ -17510,6 +17896,14 @@
     function g_strdup_printf() bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: g_strdup_printf
+    end function
+
+    ! gchar* g_strdup_vprintf (const gchar *format, va_list args) G_GNUC_MALLOC;
+    function g_strdup_vprintf(format, args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: g_strdup_vprintf
+      character(kind=c_char), dimension(*) :: format
+      type(c_ptr), value :: args
     end function
 
     ! gchar* g_strndup (const gchar *str, gsize n) G_GNUC_MALLOC;
@@ -19819,6 +20213,15 @@
       type(c_ptr), value :: node
     end subroutine
 
+    ! GNode* g_node_copy_deep (GNode *node, GCopyFunc copy_func, gpointer data);
+    function g_node_copy_deep(node, copy_func, data) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr
+      type(c_ptr) :: g_node_copy_deep
+      type(c_ptr), value :: node
+      type(c_funptr), value :: copy_func
+      type(c_ptr), value :: data
+    end function
+
     ! GNode* g_node_copy (GNode *node);
     function g_node_copy(node) bind(c) 
       use iso_c_binding, only: c_ptr
@@ -19901,12 +20304,33 @@
       type(c_ptr), value :: data
     end function
 
+    !  void g_node_traverse (GNode *root, GTraverseType order, GTraverseFlags flags, gint max_depth, GNodeTraverseFunc func, gpointer data);
+    subroutine g_node_traverse(root, order, flags, max_depth, func, data) bind(c&
+          &) 
+      use iso_c_binding, only: c_ptr, c_int, c_funptr
+      type(c_ptr), value :: root
+      integer(c_int), value :: order
+      integer(c_int), value :: flags
+      integer(c_int), value :: max_depth
+      type(c_funptr), value :: func
+      type(c_ptr), value :: data
+    end subroutine
+
     !  guint g_node_max_height (GNode *root);
     function g_node_max_height(root) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: g_node_max_height
       type(c_ptr), value :: root
     end function
+
+    !  void g_node_children_foreach (GNode *node, GTraverseFlags flags, GNodeForeachFunc func, gpointer data);
+    subroutine g_node_children_foreach(node, flags, func, data) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_funptr
+      type(c_ptr), value :: node
+      integer(c_int), value :: flags
+      type(c_funptr), value :: func
+      type(c_ptr), value :: data
+    end subroutine
 
     ! void g_node_reverse_children (GNode *node);
     subroutine g_node_reverse_children(node) bind(c) 
@@ -21894,6 +22318,15 @@
       type(c_ptr) :: g_date_new
     end function
 
+    ! GDate* g_date_new_dmy (GDateDay day, GDateMonth month, GDateYear year);
+    function g_date_new_dmy(day, month, year) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int8_t, c_int, c_int16_t
+      type(c_ptr) :: g_date_new_dmy
+      integer(c_int8_t), value :: day
+      integer(c_int), value :: month
+      integer(c_int16_t), value :: year
+    end function
+
     ! GDate* g_date_new_julian (guint32 julian_day);
     function g_date_new_julian(julian_day) bind(c) 
       use iso_c_binding, only: c_ptr, c_int32_t
@@ -21914,11 +22347,25 @@
       type(c_ptr), value :: date
     end function
 
+    ! gboolean g_date_valid_day (GDateDay day) G_GNUC_CONST;
+    function g_date_valid_day(day) bind(c) 
+      use iso_c_binding, only: c_bool, c_int8_t
+      logical(c_bool) :: g_date_valid_day
+      integer(c_int8_t), value :: day
+    end function
+
     ! gboolean g_date_valid_month (GDateMonth month) G_GNUC_CONST;
     function g_date_valid_month(month) bind(c) 
       use iso_c_binding, only: c_bool, c_int
       logical(c_bool) :: g_date_valid_month
       integer(c_int), value :: month
+    end function
+
+    ! gboolean g_date_valid_year (GDateYear year) G_GNUC_CONST;
+    function g_date_valid_year(year) bind(c) 
+      use iso_c_binding, only: c_bool, c_int16_t
+      logical(c_bool) :: g_date_valid_year
+      integer(c_int16_t), value :: year
     end function
 
     ! gboolean g_date_valid_weekday (GDateWeekday weekday) G_GNUC_CONST;
@@ -21935,6 +22382,15 @@
       integer(c_int32_t), value :: julian_date
     end function
 
+    ! gboolean g_date_valid_dmy (GDateDay day, GDateMonth month, GDateYear year) G_GNUC_CONST;
+    function g_date_valid_dmy(day, month, year) bind(c) 
+      use iso_c_binding, only: c_bool, c_int8_t, c_int, c_int16_t
+      logical(c_bool) :: g_date_valid_dmy
+      integer(c_int8_t), value :: day
+      integer(c_int), value :: month
+      integer(c_int16_t), value :: year
+    end function
+
     !  GDateWeekday g_date_get_weekday (const GDate *date);
     function g_date_get_weekday(date) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
@@ -21946,6 +22402,20 @@
     function g_date_get_month(date) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: g_date_get_month
+      type(c_ptr), value :: date
+    end function
+
+    ! GDateYear g_date_get_year (const GDate *date);
+    function g_date_get_year(date) bind(c) 
+      use iso_c_binding, only: c_int16_t, c_ptr
+      integer(c_int16_t) :: g_date_get_year
+      type(c_ptr), value :: date
+    end function
+
+    ! GDateDay g_date_get_day (const GDate *date);
+    function g_date_get_day(date) bind(c) 
+      use iso_c_binding, only: c_int8_t, c_ptr
+      integer(c_int8_t) :: g_date_get_day
       type(c_ptr), value :: date
     end function
 
@@ -22005,11 +22475,41 @@
       type(c_ptr), value :: timeval
     end subroutine
 
+    !  void g_date_set_time (GDate *date, GTime time_);
+    subroutine g_date_set_time(date, time_) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t
+      type(c_ptr), value :: date
+      integer(c_int32_t), value :: time_
+    end subroutine
+
     !  void g_date_set_month (GDate *date, GDateMonth month);
     subroutine g_date_set_month(date, month) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr), value :: date
       integer(c_int), value :: month
+    end subroutine
+
+    ! void g_date_set_day (GDate *date, GDateDay day);
+    subroutine g_date_set_day(date, day) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int8_t
+      type(c_ptr), value :: date
+      integer(c_int8_t), value :: day
+    end subroutine
+
+    ! void g_date_set_year (GDate *date, GDateYear year);
+    subroutine g_date_set_year(date, year) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int16_t
+      type(c_ptr), value :: date
+      integer(c_int16_t), value :: year
+    end subroutine
+
+    ! void g_date_set_dmy (GDate *date, GDateDay day, GDateMonth month, GDateYear y);
+    subroutine g_date_set_dmy(date, day, month, y) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int8_t, c_int, c_int16_t
+      type(c_ptr), value :: date
+      integer(c_int8_t), value :: day
+      integer(c_int), value :: month
+      integer(c_int16_t), value :: y
     end subroutine
 
     ! void g_date_set_julian (GDate *date, guint32 julian_date);
@@ -22074,6 +22574,35 @@
       type(c_ptr), value :: date
       integer(c_int), value :: n_years
     end subroutine
+
+    ! gboolean g_date_is_leap_year (GDateYear year) G_GNUC_CONST;
+    function g_date_is_leap_year(year) bind(c) 
+      use iso_c_binding, only: c_bool, c_int16_t
+      logical(c_bool) :: g_date_is_leap_year
+      integer(c_int16_t), value :: year
+    end function
+
+    ! guint8 g_date_get_days_in_month (GDateMonth month, GDateYear year) G_GNUC_CONST;
+    function g_date_get_days_in_month(month, year) bind(c) 
+      use iso_c_binding, only: c_int8_t, c_int, c_int16_t
+      integer(c_int8_t) :: g_date_get_days_in_month
+      integer(c_int), value :: month
+      integer(c_int16_t), value :: year
+    end function
+
+    ! guint8 g_date_get_monday_weeks_in_year (GDateYear year) G_GNUC_CONST;
+    function g_date_get_monday_weeks_in_year(year) bind(c) 
+      use iso_c_binding, only: c_int8_t, c_int16_t
+      integer(c_int8_t) :: g_date_get_monday_weeks_in_year
+      integer(c_int16_t), value :: year
+    end function
+
+    ! guint8 g_date_get_sunday_weeks_in_year (GDateYear year) G_GNUC_CONST;
+    function g_date_get_sunday_weeks_in_year(year) bind(c) 
+      use iso_c_binding, only: c_int8_t, c_int16_t
+      integer(c_int8_t) :: g_date_get_sunday_weeks_in_year
+      integer(c_int16_t), value :: year
+    end function
 
     !  gint g_date_days_between (const GDate *date1, const GDate *date2);
     function g_date_days_between(date1, date2) bind(c) 
@@ -22762,6 +23291,33 @@
       integer(c_int32_t) :: g_convert_error_quark
     end function
 
+    !  GIConv g_iconv_open (const gchar *to_codeset, const gchar *from_codeset);
+    function g_iconv_open(to_codeset, from_codeset) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: g_iconv_open
+      character(kind=c_char), dimension(*) :: to_codeset
+      character(kind=c_char), dimension(*) :: from_codeset
+    end function
+
+    ! gsize g_iconv (GIConv converter, gchar **inbuf, gsize *inbytes_left, gchar **outbuf, gsize *outbytes_left);
+    function g_iconv(converter, inbuf, inbytes_left, outbuf, outbytes_left) bind&
+          &(c) 
+      use iso_c_binding, only: c_size_t, c_ptr, c_char
+      integer(c_size_t) :: g_iconv
+      type(c_ptr), value :: converter
+      character(kind=c_char), dimension(*) :: inbuf
+      type(c_ptr), value :: inbytes_left
+      character(kind=c_char), dimension(*) :: outbuf
+      type(c_ptr), value :: outbytes_left
+    end function
+
+    ! gint g_iconv_close (GIConv converter);
+    function g_iconv_close(converter) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: g_iconv_close
+      type(c_ptr), value :: converter
+    end function
+
     !  gchar* g_convert (const gchar *str, gssize len, const gchar *to_codeset, const gchar *from_codeset, gsize *bytes_read, gsize *bytes_written, GError **error) G_GNUC_MALLOC;
     function g_convert(str, len, to_codeset, from_codeset, bytes_read, bytes_wri&
           &tten, error) bind(c) 
@@ -22771,6 +23327,19 @@
       integer(c_size_t), value :: len
       character(kind=c_char), dimension(*) :: to_codeset
       character(kind=c_char), dimension(*) :: from_codeset
+      type(c_ptr), value :: bytes_read
+      type(c_ptr), value :: bytes_written
+      type(c_ptr), value :: error
+    end function
+
+    ! gchar* g_convert_with_iconv (const gchar *str, gssize len, GIConv converter, gsize *bytes_read, gsize *bytes_written, GError **error) G_GNUC_MALLOC;
+    function g_convert_with_iconv(str, len, converter, bytes_read, bytes_written&
+          &, error) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char, c_size_t
+      type(c_ptr) :: g_convert_with_iconv
+      character(kind=c_char), dimension(*) :: str
+      integer(c_size_t), value :: len
+      type(c_ptr), value :: converter
       type(c_ptr), value :: bytes_read
       type(c_ptr), value :: bytes_written
       type(c_ptr), value :: error
@@ -23694,6 +24263,48 @@
       character(kind=c_char), dimension(*) :: data
     end function
 
+    !  GdkPixmap* gdk_pixmap_foreign_new (GdkNativeWindow anid);
+    function gdk_pixmap_foreign_new(anid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixmap_foreign_new
+      type(c_ptr), value :: anid
+    end function
+
+    ! GdkPixmap* gdk_pixmap_lookup (GdkNativeWindow anid);
+    function gdk_pixmap_lookup(anid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixmap_lookup
+      type(c_ptr), value :: anid
+    end function
+
+    !  GdkPixmap* gdk_pixmap_foreign_new_for_display (GdkDisplay *display, GdkNativeWindow anid);
+    function gdk_pixmap_foreign_new_for_display(display, anid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixmap_foreign_new_for_display
+      type(c_ptr), value :: display
+      type(c_ptr), value :: anid
+    end function
+
+    ! GdkPixmap* gdk_pixmap_lookup_for_display (GdkDisplay *display, GdkNativeWindow anid);
+    function gdk_pixmap_lookup_for_display(display, anid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixmap_lookup_for_display
+      type(c_ptr), value :: display
+      type(c_ptr), value :: anid
+    end function
+
+    ! GdkPixmap* gdk_pixmap_foreign_new_for_screen (GdkScreen *screen, GdkNativeWindow anid, gint width, gint height, gint depth);
+    function gdk_pixmap_foreign_new_for_screen(screen, anid, width, height, dept&
+          &h) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: gdk_pixmap_foreign_new_for_screen
+      type(c_ptr), value :: screen
+      type(c_ptr), value :: anid
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: depth
+    end function
+
     !  GType gdk_display_get_type (void) G_GNUC_CONST;
     function gdk_display_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
@@ -23994,6 +24605,13 @@
       type(c_ptr), value :: drawable
     end function
 
+    ! XID gdk_x11_drawable_get_xid (GdkDrawable *drawable);
+    function gdk_x11_drawable_get_xid(drawable) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr
+      integer(c_long) :: gdk_x11_drawable_get_xid
+      type(c_ptr), value :: drawable
+    end function
+
     ! GdkDrawable *gdk_x11_window_get_drawable_impl (GdkWindow *window);
     function gdk_x11_window_get_drawable_impl(window) bind(c) 
       use iso_c_binding, only: c_ptr
@@ -24160,6 +24778,14 @@
       integer(c_long), value :: xcolormap
     end function
 
+    !   gpointer gdk_xid_table_lookup_for_display (GdkDisplay *display, XID xid);
+    function gdk_xid_table_lookup_for_display(display, xid) bind(c) 
+      use iso_c_binding, only: c_funptr, c_ptr, c_long
+      type(c_funptr) :: gdk_xid_table_lookup_for_display
+      type(c_ptr), value :: display
+      integer(c_long), value :: xid
+    end function
+
     ! guint32 gdk_x11_get_server_time (GdkWindow *window);
     function gdk_x11_get_server_time(window) bind(c) 
       use iso_c_binding, only: c_int32_t, c_ptr
@@ -24187,6 +24813,21 @@
       logical(c_bool) :: gdk_x11_screen_supports_net_wm_hint
       type(c_ptr), value :: screen
       type(c_ptr), value :: property
+    end function
+
+    !  XID gdk_x11_screen_get_monitor_output (GdkScreen *screen, gint monitor_num);
+    function gdk_x11_screen_get_monitor_output(screen, monitor_num) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr, c_int
+      integer(c_long) :: gdk_x11_screen_get_monitor_output
+      type(c_ptr), value :: screen
+      integer(c_int), value :: monitor_num
+    end function
+
+    !  gpointer gdk_xid_table_lookup (XID xid);
+    function gdk_xid_table_lookup(xid) bind(c) 
+      use iso_c_binding, only: c_funptr, c_long
+      type(c_funptr) :: gdk_xid_table_lookup
+      integer(c_long), value :: xid
     end function
 
     ! gboolean gdk_net_wm_supports (GdkAtom property);
@@ -24802,6 +25443,14 @@
       integer(c_int) :: gdk_char_width
       type(c_ptr), value :: font
       character(c_char), value :: character
+    end function
+
+    ! gint gdk_char_width_wc (GdkFont *font, GdkWChar character);
+    function gdk_char_width_wc(font, character) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_int32_t
+      integer(c_int) :: gdk_char_width_wc
+      type(c_ptr), value :: font
+      integer(c_int32_t), value :: character
     end function
 
     ! gint gdk_string_measure (GdkFont *font, const gchar *string);
@@ -26679,6 +27328,36 @@
       logical(c_bool), value :: use_static
     end function
 
+    !    GdkWindow* gdk_window_foreign_new (GdkNativeWindow anid);
+    function gdk_window_foreign_new(anid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_window_foreign_new
+      type(c_ptr), value :: anid
+    end function
+
+    ! GdkWindow* gdk_window_lookup (GdkNativeWindow anid);
+    function gdk_window_lookup(anid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_window_lookup
+      type(c_ptr), value :: anid
+    end function
+
+    !  GdkWindow *gdk_window_foreign_new_for_display (GdkDisplay *display, GdkNativeWindow anid);
+    function gdk_window_foreign_new_for_display(display, anid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_window_foreign_new_for_display
+      type(c_ptr), value :: display
+      type(c_ptr), value :: anid
+    end function
+
+    ! GdkWindow* gdk_window_lookup_for_display (GdkDisplay *display, GdkNativeWindow anid);
+    function gdk_window_lookup_for_display(display, anid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_window_lookup_for_display
+      type(c_ptr), value :: display
+      type(c_ptr), value :: anid
+    end function
+
     !  gboolean gdk_window_has_native (GdkWindow *window);
     function gdk_window_has_native(window) bind(c) 
       use iso_c_binding, only: c_bool, c_ptr
@@ -27417,6 +28096,29 @@
       type(c_ptr), value :: prop_type
       type(c_ptr), value :: prop_format
     end function
+
+    !  void gdk_selection_send_notify (GdkNativeWindow requestor, GdkAtom selection, GdkAtom target, GdkAtom property, guint32 time_);
+    subroutine gdk_selection_send_notify(requestor, selection, target, property,&
+          & time_) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t
+      type(c_ptr), value :: requestor
+      type(c_ptr), value :: selection
+      type(c_ptr), value :: target
+      type(c_ptr), value :: property
+      integer(c_int32_t), value :: time_
+    end subroutine
+
+    !  void gdk_selection_send_notify_for_display (GdkDisplay *display, GdkNativeWindow requestor, GdkAtom selection, GdkAtom target, GdkAtom property, guint32 time_);
+    subroutine gdk_selection_send_notify_for_display(display, requestor, selecti&
+          &on, target, property, time_) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t
+      type(c_ptr), value :: display
+      type(c_ptr), value :: requestor
+      type(c_ptr), value :: selection
+      type(c_ptr), value :: target
+      type(c_ptr), value :: property
+      integer(c_int32_t), value :: time_
+    end subroutine
 
     !   GType gdk_gc_get_type (void) G_GNUC_CONST;
     function gdk_gc_get_type() bind(c) 
@@ -28178,11 +28880,29 @@
       integer(c_int), value :: dest_max
     end function
 
+    !  gboolean gdk_event_send_client_message (GdkEvent *event, GdkNativeWindow winid);
+    function gdk_event_send_client_message(event, winid) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_event_send_client_message
+      type(c_ptr), value :: event
+      type(c_ptr), value :: winid
+    end function
+
     ! void gdk_event_send_clientmessage_toall (GdkEvent *event);
     subroutine gdk_event_send_clientmessage_toall(event) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: event
     end subroutine
+
+    !  gboolean gdk_event_send_client_message_for_display (GdkDisplay *display, GdkEvent *event, GdkNativeWindow winid);
+    function gdk_event_send_client_message_for_display(display, event, winid) bi&
+          &nd(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_event_send_client_message_for_display
+      type(c_ptr), value :: display
+      type(c_ptr), value :: event
+      type(c_ptr), value :: winid
+    end function
 
     !  void gdk_notify_startup_complete (void);
     subroutine gdk_notify_startup_complete() bind(c) 
@@ -28530,6 +29250,15 @@
       type(c_ptr), value :: targets
     end function
 
+    !  GdkNativeWindow gdk_drag_get_protocol_for_display (GdkDisplay *display, GdkNativeWindow xid, GdkDragProtocol *protocol);
+    function gdk_drag_get_protocol_for_display(display, xid, protocol) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: gdk_drag_get_protocol_for_display
+      type(c_ptr), value :: display
+      type(c_ptr), value :: xid
+      integer(c_int), value :: protocol
+    end function
+
     !  void gdk_drag_find_window_for_screen (GdkDragContext *context, GdkWindow *drag_window, GdkScreen *screen, gint x_root, gint y_root, GdkWindow **dest_window, GdkDragProtocol *protocol);
     subroutine gdk_drag_find_window_for_screen(context, drag_window, screen, x_r&
           &oot, y_root, dest_window, protocol) bind(c) 
@@ -28542,6 +29271,14 @@
       type(c_ptr), value :: dest_window
       integer(c_int), value :: protocol
     end subroutine
+
+    !  GdkNativeWindow gdk_drag_get_protocol (GdkNativeWindow xid, GdkDragProtocol *protocol);
+    function gdk_drag_get_protocol(xid, protocol) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: gdk_drag_get_protocol
+      type(c_ptr), value :: xid
+      integer(c_int), value :: protocol
+    end function
 
     !  void gdk_drag_find_window (GdkDragContext *context, GdkWindow *drag_window, gint x_root, gint y_root, GdkWindow **dest_window, GdkDragProtocol *protocol);
     subroutine gdk_drag_find_window(context, drag_window, x_root, y_root, dest_w&
@@ -32959,6 +33696,58 @@
       integer(c_int), value :: debug_flags
     end subroutine
 
+    ! GtkType gtk_type_unique (GtkType parent_type, const GtkTypeInfo *gtkinfo);
+    function gtk_type_unique(parent_type, gtkinfo) bind(c) 
+      use iso_c_binding, only: c_size_t, c_ptr
+      integer(c_size_t) :: gtk_type_unique
+      integer(c_size_t), value :: parent_type
+      type(c_ptr), value :: gtkinfo
+    end function
+
+    ! gpointer gtk_type_class (GtkType type);
+    function gtk_type_class(type) bind(c) 
+      use iso_c_binding, only: c_funptr, c_size_t
+      type(c_funptr) :: gtk_type_class
+      integer(c_size_t), value :: type
+    end function
+
+    ! gpointer gtk_type_new (GtkType type);
+    function gtk_type_new(type) bind(c) 
+      use iso_c_binding, only: c_funptr, c_size_t
+      type(c_funptr) :: gtk_type_new
+      integer(c_size_t), value :: type
+    end function
+
+    !  GtkEnumValue* gtk_type_enum_get_values (GtkType enum_type);
+    function gtk_type_enum_get_values(enum_type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_size_t
+      type(c_ptr) :: gtk_type_enum_get_values
+      integer(c_size_t), value :: enum_type
+    end function
+
+    ! GtkFlagValue* gtk_type_flags_get_values (GtkType flags_type);
+    function gtk_type_flags_get_values(flags_type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_size_t
+      type(c_ptr) :: gtk_type_flags_get_values
+      integer(c_size_t), value :: flags_type
+    end function
+
+    ! GtkEnumValue* gtk_type_enum_find_value (GtkType enum_type, const gchar *value_name);
+    function gtk_type_enum_find_value(enum_type, value_name) bind(c) 
+      use iso_c_binding, only: c_ptr, c_size_t, c_char
+      type(c_ptr) :: gtk_type_enum_find_value
+      integer(c_size_t), value :: enum_type
+      character(kind=c_char), dimension(*) :: value_name
+    end function
+
+    ! GtkFlagValue* gtk_type_flags_find_value (GtkType flags_type, const gchar *value_name);
+    function gtk_type_flags_find_value(flags_type, value_name) bind(c) 
+      use iso_c_binding, only: c_ptr, c_size_t, c_char
+      type(c_ptr) :: gtk_type_flags_find_value
+      integer(c_size_t), value :: flags_type
+      character(kind=c_char), dimension(*) :: value_name
+    end function
+
     !   GType gtk_cell_renderer_text_get_type (void) G_GNUC_CONST;
     function gtk_cell_renderer_text_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
@@ -33483,6 +34272,14 @@
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: tree_model
       type(c_ptr), value :: iter
+    end subroutine
+
+    ! void gtk_tree_model_get_valist (GtkTreeModel *tree_model, GtkTreeIter *iter, va_list var_args);
+    subroutine gtk_tree_model_get_valist(tree_model, iter, var_args) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: tree_model
+      type(c_ptr), value :: iter
+      type(c_ptr), value :: var_args
     end subroutine
 
     !  void gtk_tree_model_foreach (GtkTreeModel *model, GtkTreeModelForeachFunc func, gpointer user_data);
@@ -35285,12 +36082,33 @@
       type(c_ptr) :: gtk_socket_new
     end function
 
+    !  void gtk_socket_add_id (GtkSocket *socket_, GdkNativeWindow window_id);
+    subroutine gtk_socket_add_id(socket_, window_id) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: socket_
+      type(c_ptr), value :: window_id
+    end subroutine
+
+    ! GdkNativeWindow gtk_socket_get_id (GtkSocket *socket_);
+    function gtk_socket_get_id(socket_) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gtk_socket_get_id
+      type(c_ptr), value :: socket_
+    end function
+
     ! GdkWindow* gtk_socket_get_plug_window (GtkSocket *socket_);
     function gtk_socket_get_plug_window(socket_) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: gtk_socket_get_plug_window
       type(c_ptr), value :: socket_
     end function
+
+    !  void gtk_socket_steal (GtkSocket *socket_, GdkNativeWindow wid);
+    subroutine gtk_socket_steal(socket_, wid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: socket_
+      type(c_ptr), value :: wid
+    end subroutine
 
     !   GType gtk_hpaned_get_type (void) G_GNUC_CONST;
     function gtk_hpaned_get_type() bind(c) 
@@ -35381,6 +36199,21 @@
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: scale
     end subroutine
+
+    !   guint gtk_signal_newv (const gchar *name, GtkSignalRunType signal_flags, GType object_type, guint function_offset, GSignalCMarshaller marshaller, GType return_val, guint n_args, GType *args);
+    function gtk_signal_newv(name, signal_flags, object_type, function_offset, m&
+          &arshaller, return_val, n_args, args) bind(c) 
+      use iso_c_binding, only: c_int, c_char, c_size_t, c_ptr
+      integer(c_int) :: gtk_signal_newv
+      character(kind=c_char), dimension(*) :: name
+      integer(c_int), value :: signal_flags
+      integer(c_size_t), value :: object_type
+      integer(c_int), value :: function_offset
+      type(c_ptr), value :: marshaller
+      integer(c_size_t), value :: return_val
+      integer(c_int), value :: n_args
+      type(c_ptr), value :: args
+    end function
 
     ! void gtk_signal_emit_stop_by_name (GtkObject *object, const gchar *name);
     subroutine gtk_signal_emit_stop_by_name(object, name) bind(c) 
@@ -35795,6 +36628,24 @@
       type(c_ptr), value :: palette
       type(c_ptr), value :: selection
     end function
+
+    !  void gtk_tool_palette_set_drag_source (GtkToolPalette *palette, GtkToolPaletteDragTargets targets);
+    subroutine gtk_tool_palette_set_drag_source(palette, targets) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: palette
+      integer(c_int), value :: targets
+    end subroutine
+
+    ! void gtk_tool_palette_add_drag_dest (GtkToolPalette *palette, GtkWidget *widget, GtkDestDefaults flags, GtkToolPaletteDragTargets targets, GdkDragAction actions);
+    subroutine gtk_tool_palette_add_drag_dest(palette, widget, flags, targets, a&
+          &ctions) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: palette
+      type(c_ptr), value :: widget
+      integer(c_int), value :: flags
+      integer(c_int), value :: targets
+      integer(c_int), value :: actions
+    end subroutine
 
     !  GtkAdjustment* gtk_tool_palette_get_hadjustment (GtkToolPalette *palette);
     function gtk_tool_palette_get_hadjustment(palette) bind(c) 
@@ -36429,6 +37280,14 @@
       use iso_c_binding, only: c_int
       integer(c_int), value :: input_handler_id
     end subroutine
+
+    !  guint gtk_key_snooper_install (GtkKeySnoopFunc snooper, gpointer func_data);
+    function gtk_key_snooper_install(snooper, func_data) bind(c) 
+      use iso_c_binding, only: c_int, c_funptr, c_ptr
+      integer(c_int) :: gtk_key_snooper_install
+      type(c_funptr), value :: snooper
+      type(c_ptr), value :: func_data
+    end function
 
     ! void gtk_key_snooper_remove (guint snooper_handler_id);
     subroutine gtk_key_snooper_remove(snooper_handler_id) bind(c) 
@@ -43633,6 +44492,14 @@
       integer(c_int), value :: n_values
     end subroutine
 
+    ! void gtk_tree_store_set_valist (GtkTreeStore *tree_store, GtkTreeIter *iter, va_list var_args);
+    subroutine gtk_tree_store_set_valist(tree_store, iter, var_args) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: tree_store
+      type(c_ptr), value :: iter
+      type(c_ptr), value :: var_args
+    end subroutine
+
     ! gboolean gtk_tree_store_remove (GtkTreeStore *tree_store, GtkTreeIter *iter);
     function gtk_tree_store_remove(tree_store, iter) bind(c) 
       use iso_c_binding, only: c_bool, c_ptr
@@ -45327,6 +46194,20 @@
       type(c_ptr) :: gtk_window_group_list_windows
       type(c_ptr), value :: window_group
     end function
+
+    ! void gtk_window_remove_embedded_xid (GtkWindow *window, GdkNativeWindow xid);
+    subroutine gtk_window_remove_embedded_xid(window, xid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: window
+      type(c_ptr), value :: xid
+    end subroutine
+
+    ! void gtk_window_add_embedded_xid (GtkWindow *window, GdkNativeWindow xid);
+    subroutine gtk_window_add_embedded_xid(window, xid) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: window
+      type(c_ptr), value :: xid
+    end subroutine
 
     ! GtkWidget *gtk_window_group_get_current_grab (GtkWindowGroup *window_group);
     function gtk_window_group_get_current_grab(window_group) bind(c) 
@@ -47776,6 +48657,16 @@
       type(c_ptr), value :: value
     end subroutine
 
+    ! void gtk_style_get_valist (GtkStyle *style, GType widget_type, const gchar *first_property_name, va_list var_args);
+    subroutine gtk_style_get_valist(style, widget_type, first_property_name, var&
+          &_args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_size_t, c_char
+      type(c_ptr), value :: style
+      integer(c_size_t), value :: widget_type
+      character(kind=c_char), dimension(*) :: first_property_name
+      type(c_ptr), value :: var_args
+    end subroutine
+
     !  void gtk_draw_string (GtkStyle *style, GdkWindow *window, GtkStateType state_type, gint x, gint y, const gchar *string);
     subroutine gtk_draw_string(style, window, state_type, x, y, string) bind(c) 
       use iso_c_binding, only: c_ptr, c_int, c_char
@@ -47989,6 +48880,14 @@
       type(c_ptr), value :: columns
       type(c_ptr), value :: values
       integer(c_int), value :: n_values
+    end subroutine
+
+    ! void gtk_list_store_set_valist (GtkListStore *list_store, GtkTreeIter *iter, va_list var_args);
+    subroutine gtk_list_store_set_valist(list_store, iter, var_args) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: list_store
+      type(c_ptr), value :: iter
+      type(c_ptr), value :: var_args
     end subroutine
 
     ! gboolean gtk_list_store_remove (GtkListStore *list_store, GtkTreeIter *iter);
@@ -49311,6 +50210,15 @@
       type(c_ptr), value :: widget
       character(kind=c_char), dimension(*) :: property_name
       type(c_ptr), value :: value
+    end subroutine
+
+    ! void gtk_widget_style_get_valist (GtkWidget *widget, const gchar *first_property_name, va_list var_args);
+    subroutine gtk_widget_style_get_valist(widget, first_property_name, var_args&
+          &) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: widget
+      character(kind=c_char), dimension(*) :: first_property_name
+      type(c_ptr), value :: var_args
     end subroutine
 
     !  void gtk_widget_set_default_colormap (GdkColormap *colormap);
@@ -51178,6 +52086,43 @@
     function gtk_plug_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
       integer(c_size_t) :: gtk_plug_get_type
+    end function
+
+    !  void gtk_plug_construct (GtkPlug *plug, GdkNativeWindow socket_id);
+    subroutine gtk_plug_construct(plug, socket_id) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: plug
+      type(c_ptr), value :: socket_id
+    end subroutine
+
+    ! GtkWidget* gtk_plug_new (GdkNativeWindow socket_id);
+    function gtk_plug_new(socket_id) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gtk_plug_new
+      type(c_ptr), value :: socket_id
+    end function
+
+    !  void gtk_plug_construct_for_display (GtkPlug *plug, GdkDisplay *display, GdkNativeWindow socket_id);
+    subroutine gtk_plug_construct_for_display(plug, display, socket_id) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: plug
+      type(c_ptr), value :: display
+      type(c_ptr), value :: socket_id
+    end subroutine
+
+    ! GtkWidget* gtk_plug_new_for_display (GdkDisplay *display, GdkNativeWindow socket_id);
+    function gtk_plug_new_for_display(display, socket_id) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gtk_plug_new_for_display
+      type(c_ptr), value :: display
+      type(c_ptr), value :: socket_id
+    end function
+
+    !  GdkNativeWindow gtk_plug_get_id (GtkPlug *plug);
+    function gtk_plug_get_id(plug) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gtk_plug_get_id
+      type(c_ptr), value :: plug
     end function
 
     !  gboolean gtk_plug_get_embedded (GtkPlug *plug);
@@ -53470,6 +54415,26 @@
       type(c_ptr), value :: cclass
       type(c_ptr), value :: n_properties
     end function
+
+    ! void gtk_container_child_set_valist (GtkContainer *container, GtkWidget *child, const gchar *first_property_name, va_list var_args);
+    subroutine gtk_container_child_set_valist(container, child, first_property_n&
+          &ame, var_args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: container
+      type(c_ptr), value :: child
+      character(kind=c_char), dimension(*) :: first_property_name
+      type(c_ptr), value :: var_args
+    end subroutine
+
+    ! void gtk_container_child_get_valist (GtkContainer *container, GtkWidget *child, const gchar *first_property_name, va_list var_args);
+    subroutine gtk_container_child_get_valist(container, child, first_property_n&
+          &ame, var_args) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: container
+      type(c_ptr), value :: child
+      character(kind=c_char), dimension(*) :: first_property_name
+      type(c_ptr), value :: var_args
+    end subroutine
 
     ! void gtk_container_child_set_property (GtkContainer *container, GtkWidget *child, const gchar *property_name, const GValue *value);
     subroutine gtk_container_child_set_property(container, child, property_name,&
@@ -56927,6 +57892,43 @@
       type(c_ptr), value :: surface
     end function
 
+    !   cairo_surface_t * cairo_xcb_surface_create (xcb_connection_t *connection, xcb_drawable_t drawable, xcb_visualtype_t *visual, int width, int height);
+    function cairo_xcb_surface_create(connection, drawable, visual, width, heigh&
+          &t) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t, c_int
+      type(c_ptr) :: cairo_xcb_surface_create
+      type(c_ptr), value :: connection
+      integer(c_int32_t), value :: drawable
+      type(c_ptr), value :: visual
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+    end function
+
+    !  cairo_surface_t * cairo_xcb_surface_create_for_bitmap (xcb_connection_t *connection, xcb_screen_t *screen, xcb_pixmap_t bitmap, int width, int height);
+    function cairo_xcb_surface_create_for_bitmap(connection, screen, bitmap, wid&
+          &th, height) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t, c_int
+      type(c_ptr) :: cairo_xcb_surface_create_for_bitmap
+      type(c_ptr), value :: connection
+      type(c_ptr), value :: screen
+      integer(c_int32_t), value :: bitmap
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+    end function
+
+    !  cairo_surface_t * cairo_xcb_surface_create_with_xrender_format (xcb_connection_t *connection, xcb_screen_t *screen, xcb_drawable_t drawable, xcb_render_pictforminfo_t *format, int width, int height);
+    function cairo_xcb_surface_create_with_xrender_format(connection, screen, dr&
+          &awable, format, width, height) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t, c_int
+      type(c_ptr) :: cairo_xcb_surface_create_with_xrender_format
+      type(c_ptr), value :: connection
+      type(c_ptr), value :: screen
+      integer(c_int32_t), value :: drawable
+      type(c_ptr), value :: format
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+    end function
+
     !  void cairo_xcb_surface_set_size (cairo_surface_t *surface, int width, int height);
     subroutine cairo_xcb_surface_set_size(surface, width, height) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -57155,6 +58157,17 @@
       real(c_double), value :: height_in_points
     end function
 
+    !  cairo_surface_t * cairo_svg_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
+    function cairo_svg_surface_create_for_stream(write_func, closure, width_in_p&
+          &oints, height_in_points) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr, c_double
+      type(c_ptr) :: cairo_svg_surface_create_for_stream
+      type(c_funptr), value :: write_func
+      type(c_ptr), value :: closure
+      real(c_double), value :: width_in_points
+      real(c_double), value :: height_in_points
+    end function
+
     !  void cairo_svg_surface_restrict_to_version (cairo_surface_t *surface, cairo_svg_version_t version);
     subroutine cairo_svg_surface_restrict_to_version(surface, version) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -57182,6 +58195,17 @@
       use iso_c_binding, only: c_ptr, c_char, c_double
       type(c_ptr) :: cairo_ps_surface_create
       character(kind=c_char), dimension(*) :: filename
+      real(c_double), value :: width_in_points
+      real(c_double), value :: height_in_points
+    end function
+
+    !  cairo_surface_t * cairo_ps_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
+    function cairo_ps_surface_create_for_stream(write_func, closure, width_in_po&
+          &ints, height_in_points) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr, c_double
+      type(c_ptr) :: cairo_ps_surface_create_for_stream
+      type(c_funptr), value :: write_func
+      type(c_ptr), value :: closure
       real(c_double), value :: width_in_points
       real(c_double), value :: height_in_points
     end function
@@ -57255,6 +58279,17 @@
       use iso_c_binding, only: c_ptr, c_char, c_double
       type(c_ptr) :: cairo_pdf_surface_create
       character(kind=c_char), dimension(*) :: filename
+      real(c_double), value :: width_in_points
+      real(c_double), value :: height_in_points
+    end function
+
+    !  cairo_surface_t * cairo_pdf_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
+    function cairo_pdf_surface_create_for_stream(write_func, closure, width_in_p&
+          &oints, height_in_points) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr, c_double
+      type(c_ptr) :: cairo_pdf_surface_create_for_stream
+      type(c_funptr), value :: write_func
+      type(c_ptr), value :: closure
       real(c_double), value :: width_in_points
       real(c_double), value :: height_in_points
     end function
@@ -57355,6 +58390,16 @@
       type(c_ptr), value :: ctx
     end function
 
+    !  cairo_status_t cairo_script_interpreter_translate_stream (FILE *stream, cairo_write_func_t write_func, void *closure);
+    function cairo_script_interpreter_translate_stream(stream, write_func, closu&
+          &re) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_funptr
+      integer(c_int) :: cairo_script_interpreter_translate_stream
+      type(c_ptr), value :: stream
+      type(c_funptr), value :: write_func
+      type(c_ptr), value :: closure
+    end function
+
     !   cairo_surface_t * cairo_xlib_surface_create_with_xrender_format (Display *dpy, Drawable drawable, Screen *screen, XRenderPictFormat *format, int width, int height);
     function cairo_xlib_surface_create_with_xrender_format(dpy, drawable, screen&
           &, format, width, height) bind(c) 
@@ -57420,6 +58465,16 @@
       type(c_ptr), value :: cr
       type(c_ptr), value :: key
     end subroutine
+
+    !  cairo_status_t cairo_set_user_data (cairo_t *cr, const cairo_user_data_key_t *key, void *user_data, cairo_destroy_func_t destroy);
+    function cairo_set_user_data(cr, key, user_data, destroy) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_funptr
+      integer(c_int) :: cairo_set_user_data
+      type(c_ptr), value :: cr
+      type(c_ptr), value :: key
+      type(c_ptr), value :: user_data
+      type(c_funptr), value :: destroy
+    end function
 
     !  void cairo_save (cairo_t *cr);
     subroutine cairo_save(cr) bind(c) 
@@ -58216,6 +59271,17 @@
       type(c_ptr), value :: key
     end subroutine
 
+    !  cairo_status_t cairo_font_face_set_user_data (cairo_font_face_t *font_face, const cairo_user_data_key_t *key, void *user_data, cairo_destroy_func_t destroy);
+    function cairo_font_face_set_user_data(font_face, key, user_data, destroy) b&
+          &ind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_funptr
+      integer(c_int) :: cairo_font_face_set_user_data
+      type(c_ptr), value :: font_face
+      type(c_ptr), value :: key
+      type(c_ptr), value :: user_data
+      type(c_funptr), value :: destroy
+    end function
+
     !  cairo_scaled_font_t * cairo_scaled_font_create (cairo_font_face_t *font_face, const cairo_matrix_t *font_matrix, const cairo_matrix_t *ctm, const cairo_font_options_t *options);
     function cairo_scaled_font_create(font_face, font_matrix, ctm, options) bind&
           &(c) 
@@ -58267,6 +59333,17 @@
       type(c_ptr), value :: scaled_font
       type(c_ptr), value :: key
     end subroutine
+
+    !  cairo_status_t cairo_scaled_font_set_user_data (cairo_scaled_font_t *scaled_font, const cairo_user_data_key_t *key, void *user_data, cairo_destroy_func_t destroy);
+    function cairo_scaled_font_set_user_data(scaled_font, key, user_data, destro&
+          &y) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_funptr
+      integer(c_int) :: cairo_scaled_font_set_user_data
+      type(c_ptr), value :: scaled_font
+      type(c_ptr), value :: key
+      type(c_ptr), value :: user_data
+      type(c_funptr), value :: destroy
+    end function
 
     !  void cairo_scaled_font_extents (cairo_scaled_font_t *scaled_font, cairo_font_extents_t *extents);
     subroutine cairo_scaled_font_extents(scaled_font, extents) bind(c) 
@@ -58382,6 +59459,65 @@
     function cairo_user_font_face_create() bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: cairo_user_font_face_create
+    end function
+
+    !  void cairo_user_font_face_set_init_func (cairo_font_face_t *font_face, cairo_user_scaled_font_init_func_t init_func);
+    subroutine cairo_user_font_face_set_init_func(font_face, init_func) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr
+      type(c_ptr), value :: font_face
+      type(c_funptr), value :: init_func
+    end subroutine
+
+    !  void cairo_user_font_face_set_render_glyph_func (cairo_font_face_t *font_face, cairo_user_scaled_font_render_glyph_func_t render_glyph_func);
+    subroutine cairo_user_font_face_set_render_glyph_func(font_face, render_glyp&
+          &h_func) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr
+      type(c_ptr), value :: font_face
+      type(c_funptr), value :: render_glyph_func
+    end subroutine
+
+    !  void cairo_user_font_face_set_text_to_glyphs_func (cairo_font_face_t *font_face, cairo_user_scaled_font_text_to_glyphs_func_t text_to_glyphs_func);
+    subroutine cairo_user_font_face_set_text_to_glyphs_func(font_face, text_to_g&
+          &lyphs_func) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr
+      type(c_ptr), value :: font_face
+      type(c_funptr), value :: text_to_glyphs_func
+    end subroutine
+
+    !  void cairo_user_font_face_set_unicode_to_glyph_func (cairo_font_face_t *font_face, cairo_user_scaled_font_unicode_to_glyph_func_t unicode_to_glyph_func);
+    subroutine cairo_user_font_face_set_unicode_to_glyph_func(font_face, unicode&
+          &_to_glyph_func) bind(c) 
+      use iso_c_binding, only: c_ptr, c_funptr
+      type(c_ptr), value :: font_face
+      type(c_funptr), value :: unicode_to_glyph_func
+    end subroutine
+
+    !  cairo_user_scaled_font_init_func_t cairo_user_font_face_get_init_func (cairo_font_face_t *font_face);
+    function cairo_user_font_face_get_init_func(font_face) bind(c) 
+      use iso_c_binding, only: c_funptr, c_ptr
+      type(c_funptr) :: cairo_user_font_face_get_init_func
+      type(c_ptr), value :: font_face
+    end function
+
+    !  cairo_user_scaled_font_render_glyph_func_t cairo_user_font_face_get_render_glyph_func (cairo_font_face_t *font_face);
+    function cairo_user_font_face_get_render_glyph_func(font_face) bind(c) 
+      use iso_c_binding, only: c_funptr, c_ptr
+      type(c_funptr) :: cairo_user_font_face_get_render_glyph_func
+      type(c_ptr), value :: font_face
+    end function
+
+    !  cairo_user_scaled_font_text_to_glyphs_func_t cairo_user_font_face_get_text_to_glyphs_func (cairo_font_face_t *font_face);
+    function cairo_user_font_face_get_text_to_glyphs_func(font_face) bind(c) 
+      use iso_c_binding, only: c_funptr, c_ptr
+      type(c_funptr) :: cairo_user_font_face_get_text_to_glyphs_func
+      type(c_ptr), value :: font_face
+    end function
+
+    !  cairo_user_scaled_font_unicode_to_glyph_func_t cairo_user_font_face_get_unicode_to_glyph_func (cairo_font_face_t *font_face);
+    function cairo_user_font_face_get_unicode_to_glyph_func(font_face) bind(c) 
+      use iso_c_binding, only: c_funptr, c_ptr
+      type(c_funptr) :: cairo_user_font_face_get_unicode_to_glyph_func
+      type(c_ptr), value :: font_face
     end function
 
     !  cairo_operator_t cairo_get_operator (cairo_t *cr);
@@ -58605,6 +59741,16 @@
       type(c_ptr), value :: key
     end subroutine
 
+    !  cairo_status_t cairo_device_set_user_data (cairo_device_t *device, const cairo_user_data_key_t *key, void *user_data, cairo_destroy_func_t destroy);
+    function cairo_device_set_user_data(device, key, user_data, destroy) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_funptr
+      integer(c_int) :: cairo_device_set_user_data
+      type(c_ptr), value :: device
+      type(c_ptr), value :: key
+      type(c_ptr), value :: user_data
+      type(c_funptr), value :: destroy
+    end function
+
     !  cairo_surface_t * cairo_surface_create_similar (cairo_surface_t *other, cairo_content_t content, int width, int height);
     function cairo_surface_create_similar(other, content, width, height) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -58689,12 +59835,33 @@
       character(kind=c_char), dimension(*) :: filename
     end function
 
+    !  cairo_status_t cairo_surface_write_to_png_stream (cairo_surface_t *surface, cairo_write_func_t write_func, void *closure);
+    function cairo_surface_write_to_png_stream(surface, write_func, closure) bin&
+          &d(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_funptr
+      integer(c_int) :: cairo_surface_write_to_png_stream
+      type(c_ptr), value :: surface
+      type(c_funptr), value :: write_func
+      type(c_ptr), value :: closure
+    end function
+
     !  void * cairo_surface_get_user_data (cairo_surface_t *surface, const cairo_user_data_key_t *key);
     subroutine cairo_surface_get_user_data(surface, key) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr), value :: surface
       type(c_ptr), value :: key
     end subroutine
+
+    !  cairo_status_t cairo_surface_set_user_data (cairo_surface_t *surface, const cairo_user_data_key_t *key, void *user_data, cairo_destroy_func_t destroy);
+    function cairo_surface_set_user_data(surface, key, user_data, destroy) bind(&
+          &c) 
+      use iso_c_binding, only: c_int, c_ptr, c_funptr
+      integer(c_int) :: cairo_surface_set_user_data
+      type(c_ptr), value :: surface
+      type(c_ptr), value :: key
+      type(c_ptr), value :: user_data
+      type(c_funptr), value :: destroy
+    end function
 
     !  void cairo_surface_get_mime_data (cairo_surface_t *surface, const char *mime_type, const unsigned char **data, unsigned long *length);
     subroutine cairo_surface_get_mime_data(surface, mime_type, data, length) bin&
@@ -58705,6 +59872,19 @@
       type(c_ptr), value :: data
       type(c_ptr), value :: length
     end subroutine
+
+    !  cairo_status_t cairo_surface_set_mime_data (cairo_surface_t *surface, const char *mime_type, const unsigned char *data, unsigned long length, cairo_destroy_func_t destroy, void *closure);
+    function cairo_surface_set_mime_data(surface, mime_type, data, length, destr&
+          &oy, closure) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_char, c_long, c_funptr
+      integer(c_int) :: cairo_surface_set_mime_data
+      type(c_ptr), value :: surface
+      character(kind=c_char), dimension(*) :: mime_type
+      type(c_ptr), value :: data
+      integer(c_long), value :: length
+      type(c_funptr), value :: destroy
+      type(c_ptr), value :: closure
+    end function
 
     !  void cairo_surface_get_font_options (cairo_surface_t *surface, cairo_font_options_t *options);
     subroutine cairo_surface_get_font_options(surface, options) bind(c) 
@@ -58862,6 +60042,15 @@
       character(kind=c_char), dimension(*) :: filename
     end function
 
+    !  cairo_surface_t * cairo_image_surface_create_from_png_stream (cairo_read_func_t read_func, void *closure);
+    function cairo_image_surface_create_from_png_stream(read_func, closure) bind&
+          &(c) 
+      use iso_c_binding, only: c_ptr, c_funptr
+      type(c_ptr) :: cairo_image_surface_create_from_png_stream
+      type(c_funptr), value :: read_func
+      type(c_ptr), value :: closure
+    end function
+
     !  cairo_surface_t * cairo_recording_surface_create (cairo_content_t content, const cairo_rectangle_t *extents);
     function cairo_recording_surface_create(content, extents) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -58963,6 +60152,17 @@
       type(c_ptr), value :: pattern
       type(c_ptr), value :: key
     end subroutine
+
+    !  cairo_status_t cairo_pattern_set_user_data (cairo_pattern_t *pattern, const cairo_user_data_key_t *key, void *user_data, cairo_destroy_func_t destroy);
+    function cairo_pattern_set_user_data(pattern, key, user_data, destroy) bind(&
+          &c) 
+      use iso_c_binding, only: c_int, c_ptr, c_funptr
+      integer(c_int) :: cairo_pattern_set_user_data
+      type(c_ptr), value :: pattern
+      type(c_ptr), value :: key
+      type(c_ptr), value :: user_data
+      type(c_funptr), value :: destroy
+    end function
 
     !  cairo_pattern_type_t cairo_pattern_get_type (cairo_pattern_t *pattern);
     function cairo_pattern_get_type(pattern) bind(c) 
@@ -59375,6 +60575,21 @@
     subroutine cairo_debug_reset_static_data() bind(c) 
       use iso_c_binding, only: 
     end subroutine
+
+    !   cairo_font_face_t * cairo_ft_font_face_create_for_ft_face (FT_Face face, int load_flags);
+    function cairo_ft_font_face_create_for_ft_face(face, load_flags) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: cairo_ft_font_face_create_for_ft_face
+      type(c_ptr), value :: face
+      integer(c_int), value :: load_flags
+    end function
+
+    !  FT_Face cairo_ft_scaled_font_lock_face (cairo_scaled_font_t *scaled_font);
+    function cairo_ft_scaled_font_lock_face(scaled_font) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: cairo_ft_scaled_font_lock_face
+      type(c_ptr), value :: scaled_font
+    end function
 
     !  void cairo_ft_scaled_font_unlock_face (cairo_scaled_font_t *scaled_font);
     subroutine cairo_ft_scaled_font_unlock_face(scaled_font) bind(c) 
@@ -60038,12 +61253,79 @@
       integer(c_size_t) :: pango_ot_ruleset_get_type
     end function
 
+    !  PangoOTInfo *pango_ot_info_get (FT_Face face);
+    function pango_ot_info_get(face) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: pango_ot_info_get
+      type(c_ptr), value :: face
+    end function
+
+    !  gboolean pango_ot_info_find_script (PangoOTInfo *info, PangoOTTableType table_type, PangoOTTag script_tag, guint *script_index);
+    function pango_ot_info_find_script(info, table_type, script_tag, script_inde&
+          &x) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int, c_int32_t
+      logical(c_bool) :: pango_ot_info_find_script
+      type(c_ptr), value :: info
+      integer(c_int), value :: table_type
+      integer(c_int32_t), value :: script_tag
+      type(c_ptr), value :: script_index
+    end function
+
+    ! gboolean pango_ot_info_find_language (PangoOTInfo *info, PangoOTTableType table_type, guint script_index, PangoOTTag language_tag, guint *language_index, guint *required_feature_index);
+    function pango_ot_info_find_language(info, table_type, script_index, languag&
+          &e_tag, language_index, required_feature_index) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int, c_int32_t
+      logical(c_bool) :: pango_ot_info_find_language
+      type(c_ptr), value :: info
+      integer(c_int), value :: table_type
+      integer(c_int), value :: script_index
+      integer(c_int32_t), value :: language_tag
+      type(c_ptr), value :: language_index
+      type(c_ptr), value :: required_feature_index
+    end function
+
+    ! gboolean pango_ot_info_find_feature (PangoOTInfo *info, PangoOTTableType table_type, PangoOTTag feature_tag, guint script_index, guint language_index, guint *feature_index);
+    function pango_ot_info_find_feature(info, table_type, feature_tag, script_in&
+          &dex, language_index, feature_index) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int, c_int32_t
+      logical(c_bool) :: pango_ot_info_find_feature
+      type(c_ptr), value :: info
+      integer(c_int), value :: table_type
+      integer(c_int32_t), value :: feature_tag
+      integer(c_int), value :: script_index
+      integer(c_int), value :: language_index
+      type(c_ptr), value :: feature_index
+    end function
+
     !  PangoOTTag *pango_ot_info_list_scripts (PangoOTInfo *info, PangoOTTableType table_type);
     function pango_ot_info_list_scripts(info, table_type) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
       type(c_ptr) :: pango_ot_info_list_scripts
       type(c_ptr), value :: info
       integer(c_int), value :: table_type
+    end function
+
+    ! PangoOTTag *pango_ot_info_list_languages (PangoOTInfo *info, PangoOTTableType table_type, guint script_index, PangoOTTag language_tag);
+    function pango_ot_info_list_languages(info, table_type, script_index, langua&
+          &ge_tag) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_int32_t
+      type(c_ptr) :: pango_ot_info_list_languages
+      type(c_ptr), value :: info
+      integer(c_int), value :: table_type
+      integer(c_int), value :: script_index
+      integer(c_int32_t), value :: language_tag
+    end function
+
+    ! PangoOTTag *pango_ot_info_list_features (PangoOTInfo *info, PangoOTTableType table_type, PangoOTTag tag, guint script_index, guint language_index);
+    function pango_ot_info_list_features(info, table_type, tag, script_index, la&
+          &nguage_index) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_int32_t
+      type(c_ptr) :: pango_ot_info_list_features
+      type(c_ptr), value :: info
+      integer(c_int), value :: table_type
+      integer(c_int32_t), value :: tag
+      integer(c_int), value :: script_index
+      integer(c_int), value :: language_index
     end function
 
     !  PangoOTBuffer *pango_ot_buffer_new (PangoFcFont *font);
@@ -60147,6 +61429,17 @@
       integer(c_long), value :: property_bit
     end subroutine
 
+    ! gboolean pango_ot_ruleset_maybe_add_feature (PangoOTRuleset *ruleset, PangoOTTableType table_type, PangoOTTag feature_tag, gulong property_bit);
+    function pango_ot_ruleset_maybe_add_feature(ruleset, table_type, feature_tag&
+          &, property_bit) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int, c_int32_t, c_long
+      logical(c_bool) :: pango_ot_ruleset_maybe_add_feature
+      type(c_ptr), value :: ruleset
+      integer(c_int), value :: table_type
+      integer(c_int32_t), value :: feature_tag
+      integer(c_long), value :: property_bit
+    end function
+
     ! guint pango_ot_ruleset_maybe_add_features (PangoOTRuleset *ruleset, PangoOTTableType table_type, const PangoOTFeatureMap *features, guint n_features);
     function pango_ot_ruleset_maybe_add_features(ruleset, table_type, features, &
           &n_features) bind(c) 
@@ -60181,6 +61474,34 @@
       type(c_ptr), value :: ruleset
       type(c_ptr), value :: buffer
     end subroutine
+
+    ! PangoScript pango_ot_tag_to_script (PangoOTTag script_tag) G_GNUC_CONST;
+    function pango_ot_tag_to_script(script_tag) bind(c) 
+      use iso_c_binding, only: c_int, c_int32_t
+      integer(c_int) :: pango_ot_tag_to_script
+      integer(c_int32_t), value :: script_tag
+    end function
+
+    ! PangoOTTag pango_ot_tag_from_script (PangoScript script) G_GNUC_CONST;
+    function pango_ot_tag_from_script(script) bind(c) 
+      use iso_c_binding, only: c_int32_t, c_int
+      integer(c_int32_t) :: pango_ot_tag_from_script
+      integer(c_int), value :: script
+    end function
+
+    ! PangoLanguage *pango_ot_tag_to_language (PangoOTTag language_tag) G_GNUC_CONST;
+    function pango_ot_tag_to_language(language_tag) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t
+      type(c_ptr) :: pango_ot_tag_to_language
+      integer(c_int32_t), value :: language_tag
+    end function
+
+    ! PangoOTTag pango_ot_tag_from_language (PangoLanguage *language) G_GNUC_CONST;
+    function pango_ot_tag_from_language(language) bind(c) 
+      use iso_c_binding, only: c_int32_t, c_ptr
+      integer(c_int32_t) :: pango_ot_tag_from_language
+      type(c_ptr), value :: language
+    end function
 
     !  guint pango_ot_ruleset_description_hash (const PangoOTRulesetDescription *desc) G_GNUC_PURE;
     function pango_ot_ruleset_description_hash(desc) bind(c) 
@@ -60523,6 +61844,13 @@
       integer(c_size_t) :: pango_fc_font_get_type
     end function
 
+    !  FT_Face pango_fc_font_lock_face (PangoFcFont *font);
+    function pango_fc_font_lock_face(font) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: pango_fc_font_lock_face
+      type(c_ptr), value :: font
+    end function
+
     ! void pango_fc_font_unlock_face (PangoFcFont *font);
     subroutine pango_fc_font_unlock_face(font) bind(c) 
       use iso_c_binding, only: c_ptr
@@ -60706,6 +62034,13 @@
       type(c_ptr), value :: font
       integer(c_int32_t), value :: left
       integer(c_int32_t), value :: right
+    end function
+
+    ! FT_Face pango_ft2_font_get_face (PangoFont *font);
+    function pango_ft2_font_get_face(font) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: pango_ft2_font_get_face
+      type(c_ptr), value :: font
     end function
 
     ! PangoCoverage *pango_ft2_font_get_coverage (PangoFont *font, PangoLanguage *language);
@@ -60892,6 +62227,14 @@
       type(c_ptr), value :: font_map
     end function
 
+    !  char *pango_x_font_subfont_xlfd (PangoFont *font, PangoXSubfont subfont_id);
+    function pango_x_font_subfont_xlfd(font, subfont_id) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int16_t
+      type(c_ptr) :: pango_x_font_subfont_xlfd
+      type(c_ptr), value :: font
+      integer(c_int16_t), value :: subfont_id
+    end function
+
     !  gboolean pango_x_find_first_subfont (PangoFont *font, char **charsets, int n_charsets, PangoXSubfont *rfont);
     function pango_x_find_first_subfont(font, charsets, n_charsets, rfont) bind(&
           &c) 
@@ -60911,6 +62254,18 @@
       character(kind=c_char), dimension(*) :: text
       integer(c_int), value :: n_chars
     end subroutine
+
+    !  gboolean pango_x_apply_ligatures (PangoFont *font, PangoXSubfont subfont, gunichar **glyphs, int *n_glyphs, int **clusters);
+    function pango_x_apply_ligatures(font, subfont, glyphs, n_glyphs, clusters) &
+          &bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int16_t, c_char
+      logical(c_bool) :: pango_x_apply_ligatures
+      type(c_ptr), value :: font
+      integer(c_int16_t), value :: subfont
+      character(kind=c_char), dimension(*) :: glyphs
+      type(c_ptr), value :: n_glyphs
+      type(c_ptr), value :: clusters
+    end function
 
     !   GType pango_matrix_get_type (void) G_GNUC_CONST;
     function pango_matrix_get_type() bind(c) 
@@ -61661,6 +63016,19 @@
       integer(c_int), value :: y
     end subroutine
 
+    ! void pango_xft_picture_render (Display *display, Picture src_picture, Picture dest_picture, PangoFont *font, PangoGlyphString *glyphs, gint x, gint y);
+    subroutine pango_xft_picture_render(display, src_picture, dest_picture, font&
+          &, glyphs, x, y) bind(c) 
+      use iso_c_binding, only: c_ptr, c_long, c_int
+      type(c_ptr), value :: display
+      integer(c_long), value :: src_picture
+      integer(c_long), value :: dest_picture
+      type(c_ptr), value :: font
+      type(c_ptr), value :: glyphs
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+    end subroutine
+
     ! void pango_xft_render_transformed (XftDraw *draw, XftColor *color, PangoMatrix *matrix, PangoFont *font, PangoGlyphString *glyphs, int x, int y);
     subroutine pango_xft_render_transformed(draw, color, matrix, font, glyphs, x&
           &, y) bind(c) 
@@ -62272,6 +63640,13 @@
     function pango_xft_font_get_display(font) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: pango_xft_font_get_display
+      type(c_ptr), value :: font
+    end function
+
+    !  FT_Face pango_xft_font_lock_face (PangoFont *font);
+    function pango_xft_font_lock_face(font) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: pango_xft_font_lock_face
       type(c_ptr), value :: font
     end function
 
