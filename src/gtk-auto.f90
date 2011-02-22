@@ -2,1098 +2,1859 @@
 ! Please do not modify 
 ! GNU General Public License version 3 
 
-    !     void gdk_pixbuf_xlib_init (Display *display, int screen_num);
-    subroutine gdk_pixbuf_xlib_init(display, screen_num) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int
-      type(c_ptr), value :: display
-      integer(c_int), value :: screen_num
-    end subroutine
-
-    !  void gdk_pixbuf_xlib_init_with_depth (Display *display, int screen_num, int prefDepth);
-    subroutine gdk_pixbuf_xlib_init_with_depth(display, screen_num, prefDepth) b&
-          &ind(c) 
-      use iso_c_binding, only: c_ptr, c_int
-      type(c_ptr), value :: display
-      integer(c_int), value :: screen_num
-      integer(c_int), value :: prefDepth
-    end subroutine
-
-    !    void gdk_pixbuf_xlib_render_threshold_alpha (GdkPixbuf *pixbuf, Pixmap bitmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int alpha_threshold);
-    subroutine gdk_pixbuf_xlib_render_threshold_alpha(pixbuf, bitmap, src_x, src&
-          &_y, dest_x, dest_y, width, height, alpha_threshold) bind(c) 
-      use iso_c_binding, only: c_ptr, c_long, c_int
-      type(c_ptr), value :: pixbuf
-      integer(c_long), value :: bitmap
-      integer(c_int), value :: src_x
-      integer(c_int), value :: src_y
-      integer(c_int), value :: dest_x
-      integer(c_int), value :: dest_y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      integer(c_int), value :: alpha_threshold
-    end subroutine
-
-    !  void gdk_pixbuf_xlib_render_to_drawable (GdkPixbuf *pixbuf, Drawable drawable, GC gc, int src_x, int src_y, int dest_x, int dest_y, int width, int height, XlibRgbDither dither, int x_dither, int y_dither);
-    subroutine gdk_pixbuf_xlib_render_to_drawable(pixbuf, drawable, gc, src_x, s&
-          &rc_y, dest_x, dest_y, width, height, dither, x_dither, y_dither) bind&
-          &(c) 
-      use iso_c_binding, only: c_ptr, c_long, c_int
-      type(c_ptr), value :: pixbuf
-      integer(c_long), value :: drawable
-      type(c_ptr), value :: gc
-      integer(c_int), value :: src_x
-      integer(c_int), value :: src_y
-      integer(c_int), value :: dest_x
-      integer(c_int), value :: dest_y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      integer(c_int), value :: dither
-      integer(c_int), value :: x_dither
-      integer(c_int), value :: y_dither
-    end subroutine
-
-    !  void gdk_pixbuf_xlib_render_to_drawable_alpha (GdkPixbuf *pixbuf, Drawable drawable, int src_x, int src_y, int dest_x, int dest_y, int width, int height, GdkPixbufAlphaMode alpha_mode, int alpha_threshold, XlibRgbDither dither, int x_dither, int y_dither);
-    subroutine gdk_pixbuf_xlib_render_to_drawable_alpha(pixbuf, drawable, src_x,&
-          & src_y, dest_x, dest_y, width, height, alpha_mode, alpha_threshold, d&
-          &ither, x_dither, y_dither) bind(c) 
-      use iso_c_binding, only: c_ptr, c_long, c_int
-      type(c_ptr), value :: pixbuf
-      integer(c_long), value :: drawable
-      integer(c_int), value :: src_x
-      integer(c_int), value :: src_y
-      integer(c_int), value :: dest_x
-      integer(c_int), value :: dest_y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      integer(c_int), value :: alpha_mode
-      integer(c_int), value :: alpha_threshold
-      integer(c_int), value :: dither
-      integer(c_int), value :: x_dither
-      integer(c_int), value :: y_dither
-    end subroutine
-
-    !  void gdk_pixbuf_xlib_render_pixmap_and_mask (GdkPixbuf *pixbuf, Pixmap *pixmap_return, Pixmap *mask_return, int alpha_threshold);
-    subroutine gdk_pixbuf_xlib_render_pixmap_and_mask(pixbuf, pixmap_return, mas&
-          &k_return, alpha_threshold) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int
-      type(c_ptr), value :: pixbuf
-      type(c_ptr), value :: pixmap_return
-      type(c_ptr), value :: mask_return
-      integer(c_int), value :: alpha_threshold
-    end subroutine
-
-    !    GdkPixbuf *gdk_pixbuf_xlib_get_from_drawable (GdkPixbuf *dest, Drawable src, Colormap cmap, Visual *visual, int src_x, int src_y, int dest_x, int dest_y, int width, int height);
-    function gdk_pixbuf_xlib_get_from_drawable(dest, src, cmap, visual, src_x, s&
-          &rc_y, dest_x, dest_y, width, height) bind(c) 
-      use iso_c_binding, only: c_ptr, c_long, c_int
-      type(c_ptr) :: gdk_pixbuf_xlib_get_from_drawable
-      type(c_ptr), value :: dest
-      integer(c_long), value :: src
-      integer(c_long), value :: cmap
-      type(c_ptr), value :: visual
-      integer(c_int), value :: src_x
-      integer(c_int), value :: src_y
-      integer(c_int), value :: dest_x
-      integer(c_int), value :: dest_y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-    end function
-
-    !   void xlib_rgb_init (Display *display, Screen *screen);
-    subroutine xlib_rgb_init(display, screen) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr), value :: display
-      type(c_ptr), value :: screen
-    end subroutine
-
-    ! void xlib_rgb_init_with_depth (Display *display, Screen *screen, int prefDepth);
-    subroutine xlib_rgb_init_with_depth(display, screen, prefDepth) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int
-      type(c_ptr), value :: display
-      type(c_ptr), value :: screen
-      integer(c_int), value :: prefDepth
-    end subroutine
-
-    !  unsigned long xlib_rgb_xpixel_from_rgb (guint32 rgb);
-    function xlib_rgb_xpixel_from_rgb(rgb) bind(c) 
-      use iso_c_binding, only: c_long, c_int32_t
-      integer(c_long) :: xlib_rgb_xpixel_from_rgb
-      integer(c_int32_t), value :: rgb
-    end function
-
-    !  void xlib_rgb_gc_set_foreground (GC gc, guint32 rgb);
-    subroutine xlib_rgb_gc_set_foreground(gc, rgb) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int32_t
-      type(c_ptr), value :: gc
-      integer(c_int32_t), value :: rgb
-    end subroutine
-
-    !  void xlib_rgb_gc_set_background (GC gc, guint32 rgb);
-    subroutine xlib_rgb_gc_set_background(gc, rgb) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int32_t
-      type(c_ptr), value :: gc
-      integer(c_int32_t), value :: rgb
-    end subroutine
-
-    !  void xlib_draw_rgb_image (Drawable drawable, GC gc, int x, int y, int width, int height, XlibRgbDither dith, unsigned char *rgb_buf, int rowstride);
-    subroutine xlib_draw_rgb_image(drawable, gc, x, y, width, height, dith, rgb_&
-          &buf, rowstride) bind(c) 
-      use iso_c_binding, only: c_long, c_ptr, c_int
-      integer(c_long), value :: drawable
-      type(c_ptr), value :: gc
-      integer(c_int), value :: x
-      integer(c_int), value :: y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      integer(c_int), value :: dith
-      type(c_ptr), value :: rgb_buf
-      integer(c_int), value :: rowstride
-    end subroutine
-
-    !  void xlib_draw_rgb_image_dithalign (Drawable drawable, GC gc, int x, int y, int width, int height, XlibRgbDither dith, unsigned char *rgb_buf, int rowstride, int xdith, int ydith);
-    subroutine xlib_draw_rgb_image_dithalign(drawable, gc, x, y, width, height, &
-          &dith, rgb_buf, rowstride, xdith, ydith) bind(c) 
-      use iso_c_binding, only: c_long, c_ptr, c_int
-      integer(c_long), value :: drawable
-      type(c_ptr), value :: gc
-      integer(c_int), value :: x
-      integer(c_int), value :: y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      integer(c_int), value :: dith
-      type(c_ptr), value :: rgb_buf
-      integer(c_int), value :: rowstride
-      integer(c_int), value :: xdith
-      integer(c_int), value :: ydith
-    end subroutine
-
-    !  void xlib_draw_rgb_32_image (Drawable drawable, GC gc, int x, int y, int width, int height, XlibRgbDither dith, unsigned char *buf, int rowstride);
-    subroutine xlib_draw_rgb_32_image(drawable, gc, x, y, width, height, dith, b&
-          &uf, rowstride) bind(c) 
-      use iso_c_binding, only: c_long, c_ptr, c_int
-      integer(c_long), value :: drawable
-      type(c_ptr), value :: gc
-      integer(c_int), value :: x
-      integer(c_int), value :: y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      integer(c_int), value :: dith
-      type(c_ptr), value :: buf
-      integer(c_int), value :: rowstride
-    end subroutine
-
-    !  void xlib_draw_gray_image (Drawable drawable, GC gc, int x, int y, int width, int height, XlibRgbDither dith, unsigned char *buf, int rowstride);
-    subroutine xlib_draw_gray_image(drawable, gc, x, y, width, height, dith, buf&
-          &, rowstride) bind(c) 
-      use iso_c_binding, only: c_long, c_ptr, c_int
-      integer(c_long), value :: drawable
-      type(c_ptr), value :: gc
-      integer(c_int), value :: x
-      integer(c_int), value :: y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      integer(c_int), value :: dith
-      type(c_ptr), value :: buf
-      integer(c_int), value :: rowstride
-    end subroutine
-
-    !  XlibRgbCmap * xlib_rgb_cmap_new (guint32 *colors, int n_colors);
-    function xlib_rgb_cmap_new(colors, n_colors) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int
-      type(c_ptr) :: xlib_rgb_cmap_new
-      type(c_ptr), value :: colors
-      integer(c_int), value :: n_colors
-    end function
-
-    !  void xlib_rgb_cmap_free (XlibRgbCmap *cmap);
-    subroutine xlib_rgb_cmap_free(cmap) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr), value :: cmap
-    end subroutine
-
-    !  void xlib_draw_indexed_image (Drawable drawable, GC gc, int x, int y, int width, int height, XlibRgbDither dith, unsigned char *buf, int rowstride, XlibRgbCmap *cmap);
-    subroutine xlib_draw_indexed_image(drawable, gc, x, y, width, height, dith, &
-          &buf, rowstride, cmap) bind(c) 
-      use iso_c_binding, only: c_long, c_ptr, c_int
-      integer(c_long), value :: drawable
-      type(c_ptr), value :: gc
-      integer(c_int), value :: x
-      integer(c_int), value :: y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      integer(c_int), value :: dith
-      type(c_ptr), value :: buf
-      integer(c_int), value :: rowstride
-      type(c_ptr), value :: cmap
-    end subroutine
-
-    !  Bool xlib_rgb_ditherable (void);
-    function xlib_rgb_ditherable() bind(c) 
-      use iso_c_binding, only: c_int
-      integer(c_int) :: xlib_rgb_ditherable
-    end function
-
-    !  void xlib_rgb_set_verbose (Bool verbose);
-    subroutine xlib_rgb_set_verbose(verbose) bind(c) 
-      use iso_c_binding, only: c_int
-      integer(c_int), value :: verbose
-    end subroutine
-
-    !  void xlib_rgb_set_install (Bool install);
-    subroutine xlib_rgb_set_install(install) bind(c) 
-      use iso_c_binding, only: c_int
-      integer(c_int), value :: install
-    end subroutine
-
-    !  void xlib_rgb_set_min_colors (int min_colors);
-    subroutine xlib_rgb_set_min_colors(min_colors) bind(c) 
-      use iso_c_binding, only: c_int
-      integer(c_int), value :: min_colors
-    end subroutine
-
-    !  Colormap xlib_rgb_get_cmap (void);
-    function xlib_rgb_get_cmap() bind(c) 
-      use iso_c_binding, only: c_long
-      integer(c_long) :: xlib_rgb_get_cmap
-    end function
-
-    !  Visual * xlib_rgb_get_visual (void);
-    function xlib_rgb_get_visual() bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: xlib_rgb_get_visual
-    end function
-
-    !  XVisualInfo * xlib_rgb_get_visual_info (void);
-    function xlib_rgb_get_visual_info() bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: xlib_rgb_get_visual_info
-    end function
-
-    !  int xlib_rgb_get_depth (void);
-    function xlib_rgb_get_depth() bind(c) 
-      use iso_c_binding, only: c_int
-      integer(c_int) :: xlib_rgb_get_depth
-    end function
-
-    !  Display * xlib_rgb_get_display (void);
-    function xlib_rgb_get_display() bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: xlib_rgb_get_display
-    end function
-
-    !  Screen * xlib_rgb_get_screen (void);
-    function xlib_rgb_get_screen() bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: xlib_rgb_get_screen
-    end function
-
-    !   GType gdk_pixbuf_simple_anim_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_simple_anim_get_type() bind(c) 
+    !   GType atk_state_set_get_type (void);
+    function atk_state_set_get_type() bind(c) 
       use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_simple_anim_get_type
+      integer(c_size_t) :: atk_state_set_get_type
     end function
 
-    ! GType gdk_pixbuf_simple_anim_iter_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_simple_anim_iter_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_simple_anim_iter_get_type
-    end function
-
-    !  GdkPixbufSimpleAnim *gdk_pixbuf_simple_anim_new (gint width, gint height, gfloat rate);
-    function gdk_pixbuf_simple_anim_new(width, height, rate) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int, c_float
-      type(c_ptr) :: gdk_pixbuf_simple_anim_new
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      real(c_float), value :: rate
-    end function
-
-    ! void gdk_pixbuf_simple_anim_add_frame (GdkPixbufSimpleAnim *animation, GdkPixbuf *pixbuf);
-    subroutine gdk_pixbuf_simple_anim_add_frame(animation, pixbuf) bind(c) 
+    !  AtkStateSet* atk_state_set_new (void);
+    function atk_state_set_new() bind(c) 
       use iso_c_binding, only: c_ptr
-      type(c_ptr), value :: animation
-      type(c_ptr), value :: pixbuf
-    end subroutine
+      type(c_ptr) :: atk_state_set_new
+    end function
 
-    ! void gdk_pixbuf_simple_anim_set_loop (GdkPixbufSimpleAnim *animation, gboolean loop);
-    subroutine gdk_pixbuf_simple_anim_set_loop(animation, loop) bind(c) 
-      use iso_c_binding, only: c_ptr, c_bool
-      type(c_ptr), value :: animation
-      logical(c_bool), value :: loop
-    end subroutine
-
-    ! gboolean gdk_pixbuf_simple_anim_get_loop (GdkPixbufSimpleAnim *animation);
-    function gdk_pixbuf_simple_anim_get_loop(animation) bind(c) 
+    ! gboolean atk_state_set_is_empty (AtkStateSet *set);
+    function atk_state_set_is_empty(set) bind(c) 
       use iso_c_binding, only: c_bool, c_ptr
-      logical(c_bool) :: gdk_pixbuf_simple_anim_get_loop
-      type(c_ptr), value :: animation
+      logical(c_bool) :: atk_state_set_is_empty
+      type(c_ptr), value :: set
     end function
 
-    !   GType gdk_pixbuf_alpha_mode_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_alpha_mode_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_alpha_mode_get_type
-    end function
-
-    !  GType gdk_colorspace_get_type (void) G_GNUC_CONST;
-    function gdk_colorspace_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_colorspace_get_type
-    end function
-
-    !  GType gdk_pixbuf_error_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_error_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_error_get_type
-    end function
-
-    !  GType gdk_interp_type_get_type (void) G_GNUC_CONST;
-    function gdk_interp_type_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_interp_type_get_type
-    end function
-
-    !  GType gdk_pixbuf_rotation_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_rotation_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_rotation_get_type
-    end function
-
-    !   GType gdk_pixbuf_loader_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_loader_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_loader_get_type
-    end function
-
-    ! GdkPixbufLoader * gdk_pixbuf_loader_new (void);
-    function gdk_pixbuf_loader_new() bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_loader_new
-    end function
-
-    ! GdkPixbufLoader * gdk_pixbuf_loader_new_with_type (const char *image_type, GError **error);
-    function gdk_pixbuf_loader_new_with_type(image_type, error) bind(c) 
-      use iso_c_binding, only: c_ptr, c_char
-      type(c_ptr) :: gdk_pixbuf_loader_new_with_type
-      character(kind=c_char), dimension(*) :: image_type
-      type(c_ptr), value :: error
-    end function
-
-    ! GdkPixbufLoader * gdk_pixbuf_loader_new_with_mime_type (const char *mime_type, GError **error);
-    function gdk_pixbuf_loader_new_with_mime_type(mime_type, error) bind(c) 
-      use iso_c_binding, only: c_ptr, c_char
-      type(c_ptr) :: gdk_pixbuf_loader_new_with_mime_type
-      character(kind=c_char), dimension(*) :: mime_type
-      type(c_ptr), value :: error
-    end function
-
-    ! void gdk_pixbuf_loader_set_size (GdkPixbufLoader *loader, int width, int height);
-    subroutine gdk_pixbuf_loader_set_size(loader, width, height) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int
-      type(c_ptr), value :: loader
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-    end subroutine
-
-    ! gboolean gdk_pixbuf_loader_write (GdkPixbufLoader *loader, const guchar *buf, gsize count, GError **error);
-    function gdk_pixbuf_loader_write(loader, buf, count, error) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr, c_char, c_size_t
-      logical(c_bool) :: gdk_pixbuf_loader_write
-      type(c_ptr), value :: loader
-      character(kind=c_char), dimension(*) :: buf
-      integer(c_size_t), value :: count
-      type(c_ptr), value :: error
-    end function
-
-    ! GdkPixbuf * gdk_pixbuf_loader_get_pixbuf (GdkPixbufLoader *loader);
-    function gdk_pixbuf_loader_get_pixbuf(loader) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_loader_get_pixbuf
-      type(c_ptr), value :: loader
-    end function
-
-    ! GdkPixbufAnimation * gdk_pixbuf_loader_get_animation (GdkPixbufLoader *loader);
-    function gdk_pixbuf_loader_get_animation(loader) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_loader_get_animation
-      type(c_ptr), value :: loader
-    end function
-
-    ! gboolean gdk_pixbuf_loader_close (GdkPixbufLoader *loader, GError **error);
-    function gdk_pixbuf_loader_close(loader, error) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr
-      logical(c_bool) :: gdk_pixbuf_loader_close
-      type(c_ptr), value :: loader
-      type(c_ptr), value :: error
-    end function
-
-    ! GdkPixbufFormat *gdk_pixbuf_loader_get_format (GdkPixbufLoader *loader);
-    function gdk_pixbuf_loader_get_format(loader) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_loader_get_format
-      type(c_ptr), value :: loader
-    end function
-
-    !   guint8* gdk_pixdata_serialize (const GdkPixdata *pixdata, guint *stream_length_p);
-    function gdk_pixdata_serialize(pixdata, stream_length_p) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixdata_serialize
-      type(c_ptr), value :: pixdata
-      type(c_ptr), value :: stream_length_p
-    end function
-
-    ! gboolean gdk_pixdata_deserialize (GdkPixdata *pixdata, guint stream_length, const guint8 *stream, GError **error);
-    function gdk_pixdata_deserialize(pixdata, stream_length, stream, error) bind&
-          &(c) 
+    ! gboolean atk_state_set_add_state (AtkStateSet *set, AtkStateType type);
+    function atk_state_set_add_state(set, type) bind(c) 
       use iso_c_binding, only: c_bool, c_ptr, c_int
-      logical(c_bool) :: gdk_pixdata_deserialize
-      type(c_ptr), value :: pixdata
-      integer(c_int), value :: stream_length
-      type(c_ptr), value :: stream
-      type(c_ptr), value :: error
+      logical(c_bool) :: atk_state_set_add_state
+      type(c_ptr), value :: set
+      integer(c_int), value :: type
     end function
 
-    ! gpointer gdk_pixdata_from_pixbuf (GdkPixdata *pixdata, const GdkPixbuf *pixbuf, gboolean use_rle);
-    function gdk_pixdata_from_pixbuf(pixdata, pixbuf, use_rle) bind(c) 
-      use iso_c_binding, only: c_funptr, c_ptr, c_bool
-      type(c_funptr) :: gdk_pixdata_from_pixbuf
-      type(c_ptr), value :: pixdata
-      type(c_ptr), value :: pixbuf
-      logical(c_bool), value :: use_rle
-    end function
-
-    ! GdkPixbuf* gdk_pixbuf_from_pixdata (const GdkPixdata *pixdata, gboolean copy_pixels, GError **error);
-    function gdk_pixbuf_from_pixdata(pixdata, copy_pixels, error) bind(c) 
-      use iso_c_binding, only: c_ptr, c_bool
-      type(c_ptr) :: gdk_pixbuf_from_pixdata
-      type(c_ptr), value :: pixdata
-      logical(c_bool), value :: copy_pixels
-      type(c_ptr), value :: error
-    end function
-
-    !    GString* gdk_pixdata_to_csource (GdkPixdata *pixdata, const gchar *name, GdkPixdataDumpType dump_type);
-    function gdk_pixdata_to_csource(pixdata, name, dump_type) bind(c) 
-      use iso_c_binding, only: c_ptr, c_char, c_int
-      type(c_ptr) :: gdk_pixdata_to_csource
-      type(c_ptr), value :: pixdata
-      character(kind=c_char), dimension(*) :: name
-      integer(c_int), value :: dump_type
-    end function
-
-    !   GQuark gdk_pixbuf_error_quark (void);
-    function gdk_pixbuf_error_quark() bind(c) 
-      use iso_c_binding, only: c_int32_t
-      integer(c_int32_t) :: gdk_pixbuf_error_quark
-    end function
-
-    !    GType gdk_pixbuf_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_get_type
-    end function
-
-    !  GdkPixbuf *gdk_pixbuf_ref (GdkPixbuf *pixbuf);
-    function gdk_pixbuf_ref(pixbuf) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_ref
-      type(c_ptr), value :: pixbuf
-    end function
-
-    ! void gdk_pixbuf_unref (GdkPixbuf *pixbuf);
-    subroutine gdk_pixbuf_unref(pixbuf) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr), value :: pixbuf
-    end subroutine
-
-    !  GdkColorspace gdk_pixbuf_get_colorspace (const GdkPixbuf *pixbuf);
-    function gdk_pixbuf_get_colorspace(pixbuf) bind(c) 
-      use iso_c_binding, only: c_int, c_ptr
-      integer(c_int) :: gdk_pixbuf_get_colorspace
-      type(c_ptr), value :: pixbuf
-    end function
-
-    ! int gdk_pixbuf_get_n_channels (const GdkPixbuf *pixbuf);
-    function gdk_pixbuf_get_n_channels(pixbuf) bind(c) 
-      use iso_c_binding, only: c_int, c_ptr
-      integer(c_int) :: gdk_pixbuf_get_n_channels
-      type(c_ptr), value :: pixbuf
-    end function
-
-    ! gboolean gdk_pixbuf_get_has_alpha (const GdkPixbuf *pixbuf);
-    function gdk_pixbuf_get_has_alpha(pixbuf) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr
-      logical(c_bool) :: gdk_pixbuf_get_has_alpha
-      type(c_ptr), value :: pixbuf
-    end function
-
-    ! int gdk_pixbuf_get_bits_per_sample (const GdkPixbuf *pixbuf);
-    function gdk_pixbuf_get_bits_per_sample(pixbuf) bind(c) 
-      use iso_c_binding, only: c_int, c_ptr
-      integer(c_int) :: gdk_pixbuf_get_bits_per_sample
-      type(c_ptr), value :: pixbuf
-    end function
-
-    ! guchar *gdk_pixbuf_get_pixels (const GdkPixbuf *pixbuf);
-    function gdk_pixbuf_get_pixels(pixbuf) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_get_pixels
-      type(c_ptr), value :: pixbuf
-    end function
-
-    ! int gdk_pixbuf_get_width (const GdkPixbuf *pixbuf);
-    function gdk_pixbuf_get_width(pixbuf) bind(c) 
-      use iso_c_binding, only: c_int, c_ptr
-      integer(c_int) :: gdk_pixbuf_get_width
-      type(c_ptr), value :: pixbuf
-    end function
-
-    ! int gdk_pixbuf_get_height (const GdkPixbuf *pixbuf);
-    function gdk_pixbuf_get_height(pixbuf) bind(c) 
-      use iso_c_binding, only: c_int, c_ptr
-      integer(c_int) :: gdk_pixbuf_get_height
-      type(c_ptr), value :: pixbuf
-    end function
-
-    ! int gdk_pixbuf_get_rowstride (const GdkPixbuf *pixbuf);
-    function gdk_pixbuf_get_rowstride(pixbuf) bind(c) 
-      use iso_c_binding, only: c_int, c_ptr
-      integer(c_int) :: gdk_pixbuf_get_rowstride
-      type(c_ptr), value :: pixbuf
-    end function
-
-    !    GdkPixbuf *gdk_pixbuf_new (GdkColorspace colorspace, gboolean has_alpha, int bits_per_sample, int width, int height);
-    function gdk_pixbuf_new(colorspace, has_alpha, bits_per_sample, width, heigh&
-          &t) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int, c_bool
-      type(c_ptr) :: gdk_pixbuf_new
-      integer(c_int), value :: colorspace
-      logical(c_bool), value :: has_alpha
-      integer(c_int), value :: bits_per_sample
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-    end function
-
-    !  GdkPixbuf *gdk_pixbuf_copy (const GdkPixbuf *pixbuf);
-    function gdk_pixbuf_copy(pixbuf) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_copy
-      type(c_ptr), value :: pixbuf
-    end function
-
-    !  GdkPixbuf *gdk_pixbuf_new_subpixbuf (GdkPixbuf *src_pixbuf, int src_x, int src_y, int width, int height);
-    function gdk_pixbuf_new_subpixbuf(src_pixbuf, src_x, src_y, width, height) b&
-          &ind(c) 
+    ! void atk_state_set_add_states (AtkStateSet *set, AtkStateType *types, gint n_types);
+    subroutine atk_state_set_add_states(set, types, n_types) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
-      type(c_ptr) :: gdk_pixbuf_new_subpixbuf
-      type(c_ptr), value :: src_pixbuf
-      integer(c_int), value :: src_x
-      integer(c_int), value :: src_y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-    end function
-
-    !  GdkPixbuf *gdk_pixbuf_new_from_file (const char *filename, GError **error);
-    function gdk_pixbuf_new_from_file(filename, error) bind(c) 
-      use iso_c_binding, only: c_ptr, c_char
-      type(c_ptr) :: gdk_pixbuf_new_from_file
-      character(kind=c_char), dimension(*) :: filename
-      type(c_ptr), value :: error
-    end function
-
-    ! GdkPixbuf *gdk_pixbuf_new_from_file_at_size (const char *filename, int width, int height, GError **error);
-    function gdk_pixbuf_new_from_file_at_size(filename, width, height, error) bi&
-          &nd(c) 
-      use iso_c_binding, only: c_ptr, c_char, c_int
-      type(c_ptr) :: gdk_pixbuf_new_from_file_at_size
-      character(kind=c_char), dimension(*) :: filename
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      type(c_ptr), value :: error
-    end function
-
-    ! GdkPixbuf *gdk_pixbuf_new_from_file_at_scale (const char *filename, int width, int height, gboolean preserve_aspect_ratio, GError **error);
-    function gdk_pixbuf_new_from_file_at_scale(filename, width, height, preserve&
-          &_aspect_ratio, error) bind(c) 
-      use iso_c_binding, only: c_ptr, c_char, c_int, c_bool
-      type(c_ptr) :: gdk_pixbuf_new_from_file_at_scale
-      character(kind=c_char), dimension(*) :: filename
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      logical(c_bool), value :: preserve_aspect_ratio
-      type(c_ptr), value :: error
-    end function
-
-    !  GdkPixbuf *gdk_pixbuf_new_from_data (const guchar *data, GdkColorspace colorspace, gboolean has_alpha, int bits_per_sample, int width, int height, int rowstride, GdkPixbufDestroyNotify destroy_fn, gpointer destroy_fn_data);
-    function gdk_pixbuf_new_from_data(data, colorspace, has_alpha, bits_per_samp&
-          &le, width, height, rowstride, destroy_fn, destroy_fn_data) bind(c) 
-      use iso_c_binding, only: c_ptr, c_char, c_int, c_bool, c_funptr
-      type(c_ptr) :: gdk_pixbuf_new_from_data
-      character(kind=c_char), dimension(*) :: data
-      integer(c_int), value :: colorspace
-      logical(c_bool), value :: has_alpha
-      integer(c_int), value :: bits_per_sample
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      integer(c_int), value :: rowstride
-      type(c_funptr), value :: destroy_fn
-      type(c_ptr), value :: destroy_fn_data
-    end function
-
-    !  GdkPixbuf *gdk_pixbuf_new_from_xpm_data (const char **data);
-    function gdk_pixbuf_new_from_xpm_data(data) bind(c) 
-      use iso_c_binding, only: c_ptr, c_char
-      type(c_ptr) :: gdk_pixbuf_new_from_xpm_data
-      character(kind=c_char), dimension(*) :: data
-    end function
-
-    ! GdkPixbuf* gdk_pixbuf_new_from_inline (gint data_length, const guint8 *data, gboolean copy_pixels, GError **error);
-    function gdk_pixbuf_new_from_inline(data_length, data, copy_pixels, error) b&
-          &ind(c) 
-      use iso_c_binding, only: c_ptr, c_int, c_bool
-      type(c_ptr) :: gdk_pixbuf_new_from_inline
-      integer(c_int), value :: data_length
-      type(c_ptr), value :: data
-      logical(c_bool), value :: copy_pixels
-      type(c_ptr), value :: error
-    end function
-
-    !   void gdk_pixbuf_fill (GdkPixbuf *pixbuf, guint32 pixel);
-    subroutine gdk_pixbuf_fill(pixbuf, pixel) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int32_t
-      type(c_ptr), value :: pixbuf
-      integer(c_int32_t), value :: pixel
+      type(c_ptr), value :: set
+      integer(c_int), value :: types
+      integer(c_int), value :: n_types
     end subroutine
 
-    !  gboolean gdk_pixbuf_savev (GdkPixbuf *pixbuf, const char *filename, const char *type, char **option_keys, char **option_values, GError **error);
-    function gdk_pixbuf_savev(pixbuf, filename, type, option_keys, option_values&
-          &, error) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr, c_char
-      logical(c_bool) :: gdk_pixbuf_savev
-      type(c_ptr), value :: pixbuf
-      character(kind=c_char), dimension(*) :: filename
-      character(kind=c_char), dimension(*) :: type
-      character(kind=c_char), dimension(*) :: option_keys
-      character(kind=c_char), dimension(*) :: option_values
-      type(c_ptr), value :: error
-    end function
-
-    !  gboolean gdk_pixbuf_save_to_callbackv (GdkPixbuf *pixbuf, GdkPixbufSaveFunc save_func, gpointer user_data, const char *type, char **option_keys, char **option_values, GError **error);
-    function gdk_pixbuf_save_to_callbackv(pixbuf, save_func, user_data, type, op&
-          &tion_keys, option_values, error) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr, c_funptr, c_char
-      logical(c_bool) :: gdk_pixbuf_save_to_callbackv
-      type(c_ptr), value :: pixbuf
-      type(c_funptr), value :: save_func
-      type(c_ptr), value :: user_data
-      character(kind=c_char), dimension(*) :: type
-      character(kind=c_char), dimension(*) :: option_keys
-      character(kind=c_char), dimension(*) :: option_values
-      type(c_ptr), value :: error
-    end function
-
-    !  gboolean gdk_pixbuf_save_to_bufferv (GdkPixbuf *pixbuf, gchar **buffer, gsize *buffer_size, const char *type, char **option_keys, char **option_values, GError **error);
-    function gdk_pixbuf_save_to_bufferv(pixbuf, buffer, buffer_size, type, optio&
-          &n_keys, option_values, error) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr, c_char
-      logical(c_bool) :: gdk_pixbuf_save_to_bufferv
-      type(c_ptr), value :: pixbuf
-      character(kind=c_char), dimension(*) :: buffer
-      type(c_ptr), value :: buffer_size
-      character(kind=c_char), dimension(*) :: type
-      character(kind=c_char), dimension(*) :: option_keys
-      character(kind=c_char), dimension(*) :: option_values
-      type(c_ptr), value :: error
-    end function
-
-    !  GdkPixbuf *gdk_pixbuf_new_from_stream (GInputStream *stream, GCancellable *cancellable, GError **error);
-    function gdk_pixbuf_new_from_stream(stream, cancellable, error) bind(c) 
+    ! void atk_state_set_clear_states (AtkStateSet *set);
+    subroutine atk_state_set_clear_states(set) bind(c) 
       use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_new_from_stream
-      type(c_ptr), value :: stream
-      type(c_ptr), value :: cancellable
-      type(c_ptr), value :: error
+      type(c_ptr), value :: set
+    end subroutine
+
+    ! gboolean atk_state_set_contains_state (AtkStateSet *set, AtkStateType type);
+    function atk_state_set_contains_state(set, type) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_state_set_contains_state
+      type(c_ptr), value :: set
+      integer(c_int), value :: type
     end function
 
-    !  GdkPixbuf *gdk_pixbuf_new_from_stream_at_scale (GInputStream *stream, gint width, gint height, gboolean preserve_aspect_ratio, GCancellable *cancellable, GError **error);
-    function gdk_pixbuf_new_from_stream_at_scale(stream, width, height, preserve&
-          &_aspect_ratio, cancellable, error) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int, c_bool
-      type(c_ptr) :: gdk_pixbuf_new_from_stream_at_scale
-      type(c_ptr), value :: stream
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      logical(c_bool), value :: preserve_aspect_ratio
-      type(c_ptr), value :: cancellable
-      type(c_ptr), value :: error
+    ! gboolean atk_state_set_contains_states (AtkStateSet *set, AtkStateType *types, gint n_types);
+    function atk_state_set_contains_states(set, types, n_types) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_state_set_contains_states
+      type(c_ptr), value :: set
+      integer(c_int), value :: types
+      integer(c_int), value :: n_types
     end function
 
-    !  GdkPixbuf *gdk_pixbuf_add_alpha (const GdkPixbuf *pixbuf, gboolean substitute_color, guchar r, guchar g, guchar b);
-    function gdk_pixbuf_add_alpha(pixbuf, substitute_color, r, g, b) bind(c) 
-      use iso_c_binding, only: c_ptr, c_bool, c_char
-      type(c_ptr) :: gdk_pixbuf_add_alpha
-      type(c_ptr), value :: pixbuf
-      logical(c_bool), value :: substitute_color
-      character(c_char), value :: r
-      character(c_char), value :: g
-      character(c_char), value :: b
+    ! gboolean atk_state_set_remove_state (AtkStateSet *set, AtkStateType type);
+    function atk_state_set_remove_state(set, type) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_state_set_remove_state
+      type(c_ptr), value :: set
+      integer(c_int), value :: type
     end function
 
-    !  void gdk_pixbuf_copy_area (const GdkPixbuf *src_pixbuf, int src_x, int src_y, int width, int height, GdkPixbuf *dest_pixbuf, int dest_x, int dest_y);
-    subroutine gdk_pixbuf_copy_area(src_pixbuf, src_x, src_y, width, height, des&
-          &t_pixbuf, dest_x, dest_y) bind(c) 
+    ! AtkStateSet* atk_state_set_and_sets (AtkStateSet *set, AtkStateSet *compare_set);
+    function atk_state_set_and_sets(set, compare_set) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_state_set_and_sets
+      type(c_ptr), value :: set
+      type(c_ptr), value :: compare_set
+    end function
+
+    ! AtkStateSet* atk_state_set_or_sets (AtkStateSet *set, AtkStateSet *compare_set);
+    function atk_state_set_or_sets(set, compare_set) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_state_set_or_sets
+      type(c_ptr), value :: set
+      type(c_ptr), value :: compare_set
+    end function
+
+    ! AtkStateSet* atk_state_set_xor_sets (AtkStateSet *set, AtkStateSet *compare_set);
+    function atk_state_set_xor_sets(set, compare_set) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_state_set_xor_sets
+      type(c_ptr), value :: set
+      type(c_ptr), value :: compare_set
+    end function
+
+    !   GType atk_relation_set_get_type (void);
+    function atk_relation_set_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_relation_set_get_type
+    end function
+
+    !  AtkRelationSet* atk_relation_set_new (void);
+    function atk_relation_set_new() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_relation_set_new
+    end function
+
+    ! gboolean atk_relation_set_contains (AtkRelationSet *set, AtkRelationType relationship);
+    function atk_relation_set_contains(set, relationship) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_relation_set_contains
+      type(c_ptr), value :: set
+      integer(c_int), value :: relationship
+    end function
+
+    ! void atk_relation_set_remove (AtkRelationSet *set, AtkRelation *relation);
+    subroutine atk_relation_set_remove(set, relation) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: set
+      type(c_ptr), value :: relation
+    end subroutine
+
+    ! void atk_relation_set_add (AtkRelationSet *set, AtkRelation *relation);
+    subroutine atk_relation_set_add(set, relation) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: set
+      type(c_ptr), value :: relation
+    end subroutine
+
+    ! gint atk_relation_set_get_n_relations (AtkRelationSet *set);
+    function atk_relation_set_get_n_relations(set) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_relation_set_get_n_relations
+      type(c_ptr), value :: set
+    end function
+
+    ! AtkRelation* atk_relation_set_get_relation (AtkRelationSet *set, gint i);
+    function atk_relation_set_get_relation(set, i) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
-      type(c_ptr), value :: src_pixbuf
-      integer(c_int), value :: src_x
-      integer(c_int), value :: src_y
-      integer(c_int), value :: width
-      integer(c_int), value :: height
-      type(c_ptr), value :: dest_pixbuf
-      integer(c_int), value :: dest_x
-      integer(c_int), value :: dest_y
-    end subroutine
-
-    !  void gdk_pixbuf_saturate_and_pixelate (const GdkPixbuf *src, GdkPixbuf *dest, gfloat saturation, gboolean pixelate);
-    subroutine gdk_pixbuf_saturate_and_pixelate(src, dest, saturation, pixelate)&
-          & bind(c) 
-      use iso_c_binding, only: c_ptr, c_float, c_bool
-      type(c_ptr), value :: src
-      type(c_ptr), value :: dest
-      real(c_float), value :: saturation
-      logical(c_bool), value :: pixelate
-    end subroutine
-
-    !  GdkPixbuf *gdk_pixbuf_apply_embedded_orientation (GdkPixbuf *src);
-    function gdk_pixbuf_apply_embedded_orientation(src) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_apply_embedded_orientation
-      type(c_ptr), value :: src
+      type(c_ptr) :: atk_relation_set_get_relation
+      type(c_ptr), value :: set
+      integer(c_int), value :: i
     end function
 
-    !  G_CONST_RETURN gchar * gdk_pixbuf_get_option (GdkPixbuf *pixbuf, const gchar *key);
-    function gdk_pixbuf_get_option(pixbuf, key) bind(c) 
-      use iso_c_binding, only: c_ptr, c_char
-      type(c_ptr) :: gdk_pixbuf_get_option
-      type(c_ptr), value :: pixbuf
-      character(kind=c_char), dimension(*) :: key
+    ! AtkRelation* atk_relation_set_get_relation_by_type (AtkRelationSet *set, AtkRelationType relationship);
+    function atk_relation_set_get_relation_by_type(set, relationship) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_relation_set_get_relation_by_type
+      type(c_ptr), value :: set
+      integer(c_int), value :: relationship
     end function
 
-    !    GType gdk_pixbuf_format_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_format_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_format_get_type
-    end function
-
-    !  GSList *gdk_pixbuf_get_formats (void);
-    function gdk_pixbuf_get_formats() bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_get_formats
-    end function
-
-    ! gchar *gdk_pixbuf_format_get_name (GdkPixbufFormat *format);
-    function gdk_pixbuf_format_get_name(format) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_format_get_name
-      type(c_ptr), value :: format
-    end function
-
-    ! gchar *gdk_pixbuf_format_get_description (GdkPixbufFormat *format);
-    function gdk_pixbuf_format_get_description(format) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_format_get_description
-      type(c_ptr), value :: format
-    end function
-
-    ! gchar **gdk_pixbuf_format_get_mime_types (GdkPixbufFormat *format);
-    function gdk_pixbuf_format_get_mime_types(format) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_format_get_mime_types
-      type(c_ptr), value :: format
-    end function
-
-    ! gchar **gdk_pixbuf_format_get_extensions (GdkPixbufFormat *format);
-    function gdk_pixbuf_format_get_extensions(format) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_format_get_extensions
-      type(c_ptr), value :: format
-    end function
-
-    ! gboolean gdk_pixbuf_format_is_writable (GdkPixbufFormat *format);
-    function gdk_pixbuf_format_is_writable(format) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr
-      logical(c_bool) :: gdk_pixbuf_format_is_writable
-      type(c_ptr), value :: format
-    end function
-
-    ! gboolean gdk_pixbuf_format_is_scalable (GdkPixbufFormat *format);
-    function gdk_pixbuf_format_is_scalable(format) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr
-      logical(c_bool) :: gdk_pixbuf_format_is_scalable
-      type(c_ptr), value :: format
-    end function
-
-    ! gboolean gdk_pixbuf_format_is_disabled (GdkPixbufFormat *format);
-    function gdk_pixbuf_format_is_disabled(format) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr
-      logical(c_bool) :: gdk_pixbuf_format_is_disabled
-      type(c_ptr), value :: format
-    end function
-
-    ! void gdk_pixbuf_format_set_disabled (GdkPixbufFormat *format, gboolean disabled);
-    subroutine gdk_pixbuf_format_set_disabled(format, disabled) bind(c) 
-      use iso_c_binding, only: c_ptr, c_bool
-      type(c_ptr), value :: format
-      logical(c_bool), value :: disabled
-    end subroutine
-
-    ! gchar *gdk_pixbuf_format_get_license (GdkPixbufFormat *format);
-    function gdk_pixbuf_format_get_license(format) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_format_get_license
-      type(c_ptr), value :: format
-    end function
-
-    !  GdkPixbufFormat *gdk_pixbuf_get_file_info (const gchar *filename, gint *width, gint *height);
-    function gdk_pixbuf_get_file_info(filename, width, height) bind(c) 
-      use iso_c_binding, only: c_ptr, c_char
-      type(c_ptr) :: gdk_pixbuf_get_file_info
-      character(kind=c_char), dimension(*) :: filename
-      type(c_ptr), value :: width
-      type(c_ptr), value :: height
-    end function
-
-    !  GdkPixbufFormat *gdk_pixbuf_format_copy (const GdkPixbufFormat *format);
-    function gdk_pixbuf_format_copy(format) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_format_copy
-      type(c_ptr), value :: format
-    end function
-
-    ! void gdk_pixbuf_format_free (GdkPixbufFormat *format);
-    subroutine gdk_pixbuf_format_free(format) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr), value :: format
-    end subroutine
-
-    !    gboolean gdk_pixbuf_set_option (GdkPixbuf *pixbuf, const gchar *key, const gchar *value);
-    function gdk_pixbuf_set_option(pixbuf, key, value) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr, c_char
-      logical(c_bool) :: gdk_pixbuf_set_option
-      type(c_ptr), value :: pixbuf
-      character(kind=c_char), dimension(*) :: key
-      character(kind=c_char), dimension(*) :: value
-    end function
-
-    !   GType gdk_pixbuf_animation_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_animation_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_animation_get_type
-    end function
-
-    !  GdkPixbufAnimation *gdk_pixbuf_animation_new_from_file (const char *filename, GError **error);
-    function gdk_pixbuf_animation_new_from_file(filename, error) bind(c) 
-      use iso_c_binding, only: c_ptr, c_char
-      type(c_ptr) :: gdk_pixbuf_animation_new_from_file
-      character(kind=c_char), dimension(*) :: filename
-      type(c_ptr), value :: error
-    end function
-
-    !  GdkPixbufAnimation *gdk_pixbuf_animation_ref (GdkPixbufAnimation *animation);
-    function gdk_pixbuf_animation_ref(animation) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_animation_ref
-      type(c_ptr), value :: animation
-    end function
-
-    ! void gdk_pixbuf_animation_unref (GdkPixbufAnimation *animation);
-    subroutine gdk_pixbuf_animation_unref(animation) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr), value :: animation
-    end subroutine
-
-    !  int gdk_pixbuf_animation_get_width (GdkPixbufAnimation *animation);
-    function gdk_pixbuf_animation_get_width(animation) bind(c) 
-      use iso_c_binding, only: c_int, c_ptr
-      integer(c_int) :: gdk_pixbuf_animation_get_width
-      type(c_ptr), value :: animation
-    end function
-
-    ! int gdk_pixbuf_animation_get_height (GdkPixbufAnimation *animation);
-    function gdk_pixbuf_animation_get_height(animation) bind(c) 
-      use iso_c_binding, only: c_int, c_ptr
-      integer(c_int) :: gdk_pixbuf_animation_get_height
-      type(c_ptr), value :: animation
-    end function
-
-    ! gboolean gdk_pixbuf_animation_is_static_image (GdkPixbufAnimation *animation);
-    function gdk_pixbuf_animation_is_static_image(animation) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr
-      logical(c_bool) :: gdk_pixbuf_animation_is_static_image
-      type(c_ptr), value :: animation
-    end function
-
-    ! GdkPixbuf *gdk_pixbuf_animation_get_static_image (GdkPixbufAnimation *animation);
-    function gdk_pixbuf_animation_get_static_image(animation) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_animation_get_static_image
-      type(c_ptr), value :: animation
-    end function
-
-    !  GdkPixbufAnimationIter *gdk_pixbuf_animation_get_iter (GdkPixbufAnimation *animation, const GTimeVal *start_time);
-    function gdk_pixbuf_animation_get_iter(animation, start_time) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_animation_get_iter
-      type(c_ptr), value :: animation
-      type(c_ptr), value :: start_time
-    end function
-
-    ! GType gdk_pixbuf_animation_iter_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_animation_iter_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_animation_iter_get_type
-    end function
-
-    ! int gdk_pixbuf_animation_iter_get_delay_time (GdkPixbufAnimationIter *iter);
-    function gdk_pixbuf_animation_iter_get_delay_time(iter) bind(c) 
-      use iso_c_binding, only: c_int, c_ptr
-      integer(c_int) :: gdk_pixbuf_animation_iter_get_delay_time
-      type(c_ptr), value :: iter
-    end function
-
-    ! GdkPixbuf *gdk_pixbuf_animation_iter_get_pixbuf (GdkPixbufAnimationIter *iter);
-    function gdk_pixbuf_animation_iter_get_pixbuf(iter) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_animation_iter_get_pixbuf
-      type(c_ptr), value :: iter
-    end function
-
-    ! gboolean gdk_pixbuf_animation_iter_on_currently_loading_frame (GdkPixbufAnimationIter *iter);
-    function gdk_pixbuf_animation_iter_on_currently_loading_frame(iter) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr
-      logical(c_bool) :: gdk_pixbuf_animation_iter_on_currently_loading_frame
-      type(c_ptr), value :: iter
-    end function
-
-    ! gboolean gdk_pixbuf_animation_iter_advance (GdkPixbufAnimationIter *iter, const GTimeVal *current_time);
-    function gdk_pixbuf_animation_iter_advance(iter, current_time) bind(c) 
-      use iso_c_binding, only: c_bool, c_ptr
-      logical(c_bool) :: gdk_pixbuf_animation_iter_advance
-      type(c_ptr), value :: iter
-      type(c_ptr), value :: current_time
-    end function
-
-    !        GType gdk_pixbuf_non_anim_get_type (void) G_GNUC_CONST;
-    function gdk_pixbuf_non_anim_get_type() bind(c) 
-      use iso_c_binding, only: c_size_t
-      integer(c_size_t) :: gdk_pixbuf_non_anim_get_type
-    end function
-
-    ! GdkPixbufAnimation* gdk_pixbuf_non_anim_new (GdkPixbuf *pixbuf);
-    function gdk_pixbuf_non_anim_new(pixbuf) bind(c) 
-      use iso_c_binding, only: c_ptr
-      type(c_ptr) :: gdk_pixbuf_non_anim_new
-      type(c_ptr), value :: pixbuf
-    end function
-
-    !   void gdk_pixbuf_scale (const GdkPixbuf *src, GdkPixbuf *dest, int dest_x, int dest_y, int dest_width, int dest_height, double offset_x, double offset_y, double scale_x, double scale_y, GdkInterpType interp_type);
-    subroutine gdk_pixbuf_scale(src, dest, dest_x, dest_y, dest_width, dest_heig&
-          &ht, offset_x, offset_y, scale_x, scale_y, interp_type) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int, c_double
-      type(c_ptr), value :: src
-      type(c_ptr), value :: dest
-      integer(c_int), value :: dest_x
-      integer(c_int), value :: dest_y
-      integer(c_int), value :: dest_width
-      integer(c_int), value :: dest_height
-      real(c_double), value :: offset_x
-      real(c_double), value :: offset_y
-      real(c_double), value :: scale_x
-      real(c_double), value :: scale_y
-      integer(c_int), value :: interp_type
-    end subroutine
-
-    ! void gdk_pixbuf_composite (const GdkPixbuf *src, GdkPixbuf *dest, int dest_x, int dest_y, int dest_width, int dest_height, double offset_x, double offset_y, double scale_x, double scale_y, GdkInterpType interp_type, int overall_alpha);
-    subroutine gdk_pixbuf_composite(src, dest, dest_x, dest_y, dest_width, dest_&
-          &height, offset_x, offset_y, scale_x, scale_y, interp_type, overall_al&
-          &pha) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int, c_double
-      type(c_ptr), value :: src
-      type(c_ptr), value :: dest
-      integer(c_int), value :: dest_x
-      integer(c_int), value :: dest_y
-      integer(c_int), value :: dest_width
-      integer(c_int), value :: dest_height
-      real(c_double), value :: offset_x
-      real(c_double), value :: offset_y
-      real(c_double), value :: scale_x
-      real(c_double), value :: scale_y
-      integer(c_int), value :: interp_type
-      integer(c_int), value :: overall_alpha
-    end subroutine
-
-    ! void gdk_pixbuf_composite_color (const GdkPixbuf *src, GdkPixbuf *dest, int dest_x, int dest_y, int dest_width, int dest_height, double offset_x, double offset_y, double scale_x, double scale_y, GdkInterpType interp_type, int overall_alpha, int check_x, int check_y, int check_size, guint32 color1, guint32 color2);
-    subroutine gdk_pixbuf_composite_color(src, dest, dest_x, dest_y, dest_width,&
-          & dest_height, offset_x, offset_y, scale_x, scale_y, interp_type, over&
-          &all_alpha, check_x, check_y, check_size, color1, color2) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int, c_double, c_int32_t
-      type(c_ptr), value :: src
-      type(c_ptr), value :: dest
-      integer(c_int), value :: dest_x
-      integer(c_int), value :: dest_y
-      integer(c_int), value :: dest_width
-      integer(c_int), value :: dest_height
-      real(c_double), value :: offset_x
-      real(c_double), value :: offset_y
-      real(c_double), value :: scale_x
-      real(c_double), value :: scale_y
-      integer(c_int), value :: interp_type
-      integer(c_int), value :: overall_alpha
-      integer(c_int), value :: check_x
-      integer(c_int), value :: check_y
-      integer(c_int), value :: check_size
-      integer(c_int32_t), value :: color1
-      integer(c_int32_t), value :: color2
-    end subroutine
-
-    !  GdkPixbuf *gdk_pixbuf_scale_simple (const GdkPixbuf *src, int dest_width, int dest_height, GdkInterpType interp_type);
-    function gdk_pixbuf_scale_simple(src, dest_width, dest_height, interp_type) &
+    ! void atk_relation_set_add_relation_by_type (AtkRelationSet *set, AtkRelationType relationship, AtkObject *target);
+    subroutine atk_relation_set_add_relation_by_type(set, relationship, target) &
           &bind(c) 
       use iso_c_binding, only: c_ptr, c_int
-      type(c_ptr) :: gdk_pixbuf_scale_simple
-      type(c_ptr), value :: src
-      integer(c_int), value :: dest_width
-      integer(c_int), value :: dest_height
-      integer(c_int), value :: interp_type
+      type(c_ptr), value :: set
+      integer(c_int), value :: relationship
+      type(c_ptr), value :: target
+    end subroutine
+
+    !   GType atk_table_get_type (void);
+    function atk_table_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_table_get_type
     end function
 
-    !  GdkPixbuf *gdk_pixbuf_composite_color_simple (const GdkPixbuf *src, int dest_width, int dest_height, GdkInterpType interp_type, int overall_alpha, int check_size, guint32 color1, guint32 color2);
-    function gdk_pixbuf_composite_color_simple(src, dest_width, dest_height, int&
-          &erp_type, overall_alpha, check_size, color1, color2) bind(c) 
-      use iso_c_binding, only: c_ptr, c_int, c_int32_t
-      type(c_ptr) :: gdk_pixbuf_composite_color_simple
-      type(c_ptr), value :: src
-      integer(c_int), value :: dest_width
-      integer(c_int), value :: dest_height
-      integer(c_int), value :: interp_type
-      integer(c_int), value :: overall_alpha
-      integer(c_int), value :: check_size
-      integer(c_int32_t), value :: color1
-      integer(c_int32_t), value :: color2
-    end function
-
-    !  GdkPixbuf *gdk_pixbuf_rotate_simple (const GdkPixbuf *src, GdkPixbufRotation angle);
-    function gdk_pixbuf_rotate_simple(src, angle) bind(c) 
+    !  AtkObject* atk_table_ref_at (AtkTable *table, gint row, gint column);
+    function atk_table_ref_at(table, row, column) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
-      type(c_ptr) :: gdk_pixbuf_rotate_simple
-      type(c_ptr), value :: src
-      integer(c_int), value :: angle
+      type(c_ptr) :: atk_table_ref_at
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+      integer(c_int), value :: column
     end function
 
-    ! GdkPixbuf *gdk_pixbuf_flip (const GdkPixbuf *src, gboolean horizontal);
-    function gdk_pixbuf_flip(src, horizontal) bind(c) 
-      use iso_c_binding, only: c_ptr, c_bool
-      type(c_ptr) :: gdk_pixbuf_flip
-      type(c_ptr), value :: src
-      logical(c_bool), value :: horizontal
+    ! gint atk_table_get_index_at (AtkTable *table, gint row, gint column);
+    function atk_table_get_index_at(table, row, column) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_table_get_index_at
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+      integer(c_int), value :: column
+    end function
+
+    ! gint atk_table_get_column_at_index (AtkTable *table, gint index_);
+    function atk_table_get_column_at_index(table, index_) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_table_get_column_at_index
+      type(c_ptr), value :: table
+      integer(c_int), value :: index_
+    end function
+
+    ! gint atk_table_get_row_at_index (AtkTable *table, gint index_);
+    function atk_table_get_row_at_index(table, index_) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_table_get_row_at_index
+      type(c_ptr), value :: table
+      integer(c_int), value :: index_
+    end function
+
+    ! gint atk_table_get_n_columns (AtkTable *table);
+    function atk_table_get_n_columns(table) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_table_get_n_columns
+      type(c_ptr), value :: table
+    end function
+
+    ! gint atk_table_get_n_rows (AtkTable *table);
+    function atk_table_get_n_rows(table) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_table_get_n_rows
+      type(c_ptr), value :: table
+    end function
+
+    ! gint atk_table_get_column_extent_at (AtkTable *table, gint row, gint column);
+    function atk_table_get_column_extent_at(table, row, column) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_table_get_column_extent_at
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+      integer(c_int), value :: column
+    end function
+
+    ! gint atk_table_get_row_extent_at (AtkTable *table, gint row, gint column);
+    function atk_table_get_row_extent_at(table, row, column) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_table_get_row_extent_at
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+      integer(c_int), value :: column
+    end function
+
+    ! AtkObject* atk_table_get_caption (AtkTable *table);
+    function atk_table_get_caption(table) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_table_get_caption
+      type(c_ptr), value :: table
+    end function
+
+    ! G_CONST_RETURN gchar* atk_table_get_column_description (AtkTable *table, gint column);
+    function atk_table_get_column_description(table, column) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_table_get_column_description
+      type(c_ptr), value :: table
+      integer(c_int), value :: column
+    end function
+
+    ! AtkObject* atk_table_get_column_header (AtkTable *table, gint column);
+    function atk_table_get_column_header(table, column) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_table_get_column_header
+      type(c_ptr), value :: table
+      integer(c_int), value :: column
+    end function
+
+    ! G_CONST_RETURN gchar* atk_table_get_row_description (AtkTable *table, gint row);
+    function atk_table_get_row_description(table, row) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_table_get_row_description
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+    end function
+
+    ! AtkObject* atk_table_get_row_header (AtkTable *table, gint row);
+    function atk_table_get_row_header(table, row) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_table_get_row_header
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+    end function
+
+    ! AtkObject* atk_table_get_summary (AtkTable *table);
+    function atk_table_get_summary(table) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_table_get_summary
+      type(c_ptr), value :: table
+    end function
+
+    ! void atk_table_set_caption (AtkTable *table, AtkObject *caption);
+    subroutine atk_table_set_caption(table, caption) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: table
+      type(c_ptr), value :: caption
+    end subroutine
+
+    ! void atk_table_set_column_description (AtkTable *table, gint column, const gchar *description);
+    subroutine atk_table_set_column_description(table, column, description) bind&
+          &(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_char
+      type(c_ptr), value :: table
+      integer(c_int), value :: column
+      character(kind=c_char), dimension(*) :: description
+    end subroutine
+
+    ! void atk_table_set_column_header (AtkTable *table, gint column, AtkObject *header);
+    subroutine atk_table_set_column_header(table, column, header) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: table
+      integer(c_int), value :: column
+      type(c_ptr), value :: header
+    end subroutine
+
+    ! void atk_table_set_row_description (AtkTable *table, gint row, const gchar *description);
+    subroutine atk_table_set_row_description(table, row, description) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_char
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+      character(kind=c_char), dimension(*) :: description
+    end subroutine
+
+    ! void atk_table_set_row_header (AtkTable *table, gint row, AtkObject *header);
+    subroutine atk_table_set_row_header(table, row, header) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+      type(c_ptr), value :: header
+    end subroutine
+
+    ! void atk_table_set_summary (AtkTable *table, AtkObject *accessible);
+    subroutine atk_table_set_summary(table, accessible) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: table
+      type(c_ptr), value :: accessible
+    end subroutine
+
+    ! gint atk_table_get_selected_columns (AtkTable *table, gint **selected);
+    function atk_table_get_selected_columns(table, selected) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_table_get_selected_columns
+      type(c_ptr), value :: table
+      type(c_ptr), value :: selected
+    end function
+
+    ! gint atk_table_get_selected_rows (AtkTable *table, gint **selected);
+    function atk_table_get_selected_rows(table, selected) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_table_get_selected_rows
+      type(c_ptr), value :: table
+      type(c_ptr), value :: selected
+    end function
+
+    ! gboolean atk_table_is_column_selected (AtkTable *table, gint column);
+    function atk_table_is_column_selected(table, column) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_table_is_column_selected
+      type(c_ptr), value :: table
+      integer(c_int), value :: column
+    end function
+
+    ! gboolean atk_table_is_row_selected (AtkTable *table, gint row);
+    function atk_table_is_row_selected(table, row) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_table_is_row_selected
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+    end function
+
+    ! gboolean atk_table_is_selected (AtkTable *table, gint row, gint column);
+    function atk_table_is_selected(table, row, column) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_table_is_selected
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+      integer(c_int), value :: column
+    end function
+
+    ! gboolean atk_table_add_row_selection (AtkTable *table, gint row);
+    function atk_table_add_row_selection(table, row) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_table_add_row_selection
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+    end function
+
+    ! gboolean atk_table_remove_row_selection (AtkTable *table, gint row);
+    function atk_table_remove_row_selection(table, row) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_table_remove_row_selection
+      type(c_ptr), value :: table
+      integer(c_int), value :: row
+    end function
+
+    ! gboolean atk_table_add_column_selection (AtkTable *table, gint column);
+    function atk_table_add_column_selection(table, column) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_table_add_column_selection
+      type(c_ptr), value :: table
+      integer(c_int), value :: column
+    end function
+
+    ! gboolean atk_table_remove_column_selection (AtkTable *table, gint column);
+    function atk_table_remove_column_selection(table, column) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_table_remove_column_selection
+      type(c_ptr), value :: table
+      integer(c_int), value :: column
+    end function
+
+    !   AtkTextAttribute atk_text_attribute_register (const gchar *name);
+    function atk_text_attribute_register(name) bind(c) 
+      use iso_c_binding, only: c_int, c_char
+      integer(c_int) :: atk_text_attribute_register
+      character(kind=c_char), dimension(*) :: name
+    end function
+
+    !  GType atk_text_get_type (void);
+    function atk_text_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_text_get_type
+    end function
+
+    !  gchar* atk_text_get_text (AtkText *text, gint start_offset, gint end_offset);
+    function atk_text_get_text(text, start_offset, end_offset) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_text_get_text
+      type(c_ptr), value :: text
+      integer(c_int), value :: start_offset
+      integer(c_int), value :: end_offset
+    end function
+
+    ! gunichar atk_text_get_character_at_offset (AtkText *text, gint offset);
+    function atk_text_get_character_at_offset(text, offset) bind(c) 
+      use iso_c_binding, only: c_int32_t, c_ptr, c_int
+      integer(c_int32_t) :: atk_text_get_character_at_offset
+      type(c_ptr), value :: text
+      integer(c_int), value :: offset
+    end function
+
+    ! gchar* atk_text_get_text_after_offset (AtkText *text, gint offset, AtkTextBoundary boundary_type, gint *start_offset, gint *end_offset);
+    function atk_text_get_text_after_offset(text, offset, boundary_type, start_o&
+          &ffset, end_offset) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_text_get_text_after_offset
+      type(c_ptr), value :: text
+      integer(c_int), value :: offset
+      integer(c_int), value :: boundary_type
+      type(c_ptr), value :: start_offset
+      type(c_ptr), value :: end_offset
+    end function
+
+    ! gchar* atk_text_get_text_at_offset (AtkText *text, gint offset, AtkTextBoundary boundary_type, gint *start_offset, gint *end_offset);
+    function atk_text_get_text_at_offset(text, offset, boundary_type, start_offs&
+          &et, end_offset) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_text_get_text_at_offset
+      type(c_ptr), value :: text
+      integer(c_int), value :: offset
+      integer(c_int), value :: boundary_type
+      type(c_ptr), value :: start_offset
+      type(c_ptr), value :: end_offset
+    end function
+
+    ! gchar* atk_text_get_text_before_offset (AtkText *text, gint offset, AtkTextBoundary boundary_type, gint *start_offset, gint *end_offset);
+    function atk_text_get_text_before_offset(text, offset, boundary_type, start_&
+          &offset, end_offset) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_text_get_text_before_offset
+      type(c_ptr), value :: text
+      integer(c_int), value :: offset
+      integer(c_int), value :: boundary_type
+      type(c_ptr), value :: start_offset
+      type(c_ptr), value :: end_offset
+    end function
+
+    ! gint atk_text_get_caret_offset (AtkText *text);
+    function atk_text_get_caret_offset(text) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_text_get_caret_offset
+      type(c_ptr), value :: text
+    end function
+
+    ! void atk_text_get_character_extents (AtkText *text, gint offset, gint *x, gint *y, gint *width, gint *height, AtkCoordType coords);
+    subroutine atk_text_get_character_extents(text, offset, x, y, width, height,&
+          & coords) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: text
+      integer(c_int), value :: offset
+      type(c_ptr), value :: x
+      type(c_ptr), value :: y
+      type(c_ptr), value :: width
+      type(c_ptr), value :: height
+      integer(c_int), value :: coords
+    end subroutine
+
+    ! AtkAttributeSet* atk_text_get_run_attributes (AtkText *text, gint offset, gint *start_offset, gint *end_offset);
+    function atk_text_get_run_attributes(text, offset, start_offset, end_offset)&
+          & bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_text_get_run_attributes
+      type(c_ptr), value :: text
+      integer(c_int), value :: offset
+      type(c_ptr), value :: start_offset
+      type(c_ptr), value :: end_offset
+    end function
+
+    ! AtkAttributeSet* atk_text_get_default_attributes (AtkText *text);
+    function atk_text_get_default_attributes(text) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_text_get_default_attributes
+      type(c_ptr), value :: text
+    end function
+
+    ! gint atk_text_get_character_count (AtkText *text);
+    function atk_text_get_character_count(text) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_text_get_character_count
+      type(c_ptr), value :: text
+    end function
+
+    ! gint atk_text_get_offset_at_point (AtkText *text, gint x, gint y, AtkCoordType coords);
+    function atk_text_get_offset_at_point(text, x, y, coords) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_text_get_offset_at_point
+      type(c_ptr), value :: text
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+      integer(c_int), value :: coords
+    end function
+
+    ! gint atk_text_get_n_selections (AtkText *text);
+    function atk_text_get_n_selections(text) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_text_get_n_selections
+      type(c_ptr), value :: text
+    end function
+
+    ! gchar* atk_text_get_selection (AtkText *text, gint selection_num, gint *start_offset, gint *end_offset);
+    function atk_text_get_selection(text, selection_num, start_offset, end_offse&
+          &t) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_text_get_selection
+      type(c_ptr), value :: text
+      integer(c_int), value :: selection_num
+      type(c_ptr), value :: start_offset
+      type(c_ptr), value :: end_offset
+    end function
+
+    ! gboolean atk_text_add_selection (AtkText *text, gint start_offset, gint end_offset);
+    function atk_text_add_selection(text, start_offset, end_offset) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_text_add_selection
+      type(c_ptr), value :: text
+      integer(c_int), value :: start_offset
+      integer(c_int), value :: end_offset
+    end function
+
+    ! gboolean atk_text_remove_selection (AtkText *text, gint selection_num);
+    function atk_text_remove_selection(text, selection_num) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_text_remove_selection
+      type(c_ptr), value :: text
+      integer(c_int), value :: selection_num
+    end function
+
+    ! gboolean atk_text_set_selection (AtkText *text, gint selection_num, gint start_offset, gint end_offset);
+    function atk_text_set_selection(text, selection_num, start_offset, end_offse&
+          &t) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_text_set_selection
+      type(c_ptr), value :: text
+      integer(c_int), value :: selection_num
+      integer(c_int), value :: start_offset
+      integer(c_int), value :: end_offset
+    end function
+
+    ! gboolean atk_text_set_caret_offset (AtkText *text, gint offset);
+    function atk_text_set_caret_offset(text, offset) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_text_set_caret_offset
+      type(c_ptr), value :: text
+      integer(c_int), value :: offset
+    end function
+
+    ! void atk_text_get_range_extents (AtkText *text,  gint start_offset, gint end_offset, AtkCoordType coord_type, AtkTextRectangle *rect);
+    subroutine atk_text_get_range_extents(text, start_offset, end_offset, coord_&
+          &type, rect) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: text
+      integer(c_int), value :: start_offset
+      integer(c_int), value :: end_offset
+      integer(c_int), value :: coord_type
+      type(c_ptr), value :: rect
+    end subroutine
+
+    ! AtkTextRange** atk_text_get_bounded_ranges (AtkText *text, AtkTextRectangle *rect, AtkCoordType coord_type, AtkTextClipType x_clip_type, AtkTextClipType y_clip_type);
+    function atk_text_get_bounded_ranges(text, rect, coord_type, x_clip_type, y_&
+          &clip_type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_text_get_bounded_ranges
+      type(c_ptr), value :: text
+      type(c_ptr), value :: rect
+      integer(c_int), value :: coord_type
+      integer(c_int), value :: x_clip_type
+      integer(c_int), value :: y_clip_type
+    end function
+
+    ! void atk_text_free_ranges (AtkTextRange **ranges);
+    subroutine atk_text_free_ranges(ranges) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: ranges
+    end subroutine
+
+    ! void atk_attribute_set_free (AtkAttributeSet *attrib_set);
+    subroutine atk_attribute_set_free(attrib_set) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: attrib_set
+    end subroutine
+
+    ! G_CONST_RETURN gchar* atk_text_attribute_get_name (AtkTextAttribute attr);
+    function atk_text_attribute_get_name(attr) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_text_attribute_get_name
+      integer(c_int), value :: attr
+    end function
+
+    ! AtkTextAttribute atk_text_attribute_for_name (const gchar *name);
+    function atk_text_attribute_for_name(name) bind(c) 
+      use iso_c_binding, only: c_int, c_char
+      integer(c_int) :: atk_text_attribute_for_name
+      character(kind=c_char), dimension(*) :: name
+    end function
+
+    ! G_CONST_RETURN gchar* atk_text_attribute_get_value (AtkTextAttribute attr, gint index_);
+    function atk_text_attribute_get_value(attr, index_) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_text_attribute_get_value
+      integer(c_int), value :: attr
+      integer(c_int), value :: index_
+    end function
+
+    !   GType atk_hyperlink_impl_get_type (void);
+    function atk_hyperlink_impl_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_hyperlink_impl_get_type
+    end function
+
+    !  AtkHyperlink *atk_hyperlink_impl_get_hyperlink (AtkHyperlinkImpl *obj);
+    function atk_hyperlink_impl_get_hyperlink(obj) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_hyperlink_impl_get_hyperlink
+      type(c_ptr), value :: obj
+    end function
+
+    !   GType atk_action_get_type (void);
+    function atk_action_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_action_get_type
+    end function
+
+    !  gboolean atk_action_do_action (AtkAction *action, gint i);
+    function atk_action_do_action(action, i) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_action_do_action
+      type(c_ptr), value :: action
+      integer(c_int), value :: i
+    end function
+
+    ! gint atk_action_get_n_actions (AtkAction *action);
+    function atk_action_get_n_actions(action) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_action_get_n_actions
+      type(c_ptr), value :: action
+    end function
+
+    ! G_CONST_RETURN gchar* atk_action_get_description (AtkAction *action, gint i);
+    function atk_action_get_description(action, i) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_action_get_description
+      type(c_ptr), value :: action
+      integer(c_int), value :: i
+    end function
+
+    ! G_CONST_RETURN gchar* atk_action_get_name (AtkAction *action, gint i);
+    function atk_action_get_name(action, i) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_action_get_name
+      type(c_ptr), value :: action
+      integer(c_int), value :: i
+    end function
+
+    ! G_CONST_RETURN gchar* atk_action_get_keybinding (AtkAction *action, gint i);
+    function atk_action_get_keybinding(action, i) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_action_get_keybinding
+      type(c_ptr), value :: action
+      integer(c_int), value :: i
+    end function
+
+    ! gboolean atk_action_set_description (AtkAction *action, gint i, const gchar *desc);
+    function atk_action_set_description(action, i, desc) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int, c_char
+      logical(c_bool) :: atk_action_set_description
+      type(c_ptr), value :: action
+      integer(c_int), value :: i
+      character(kind=c_char), dimension(*) :: desc
+    end function
+
+    !  G_CONST_RETURN gchar* atk_action_get_localized_name (AtkAction *action, gint i);
+    function atk_action_get_localized_name(action, i) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_action_get_localized_name
+      type(c_ptr), value :: action
+      integer(c_int), value :: i
+    end function
+
+    !   GType atk_value_get_type (void);
+    function atk_value_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_value_get_type
+    end function
+
+    !  void atk_value_get_current_value (AtkValue *obj, GValue *value);
+    subroutine atk_value_get_current_value(obj, value) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: obj
+      type(c_ptr), value :: value
+    end subroutine
+
+    !  void atk_value_get_maximum_value (AtkValue *obj, GValue *value);
+    subroutine atk_value_get_maximum_value(obj, value) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: obj
+      type(c_ptr), value :: value
+    end subroutine
+
+    !  void atk_value_get_minimum_value (AtkValue *obj, GValue *value);
+    subroutine atk_value_get_minimum_value(obj, value) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: obj
+      type(c_ptr), value :: value
+    end subroutine
+
+    !  gboolean atk_value_set_current_value (AtkValue *obj, const GValue *value);
+    function atk_value_set_current_value(obj, value) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: atk_value_set_current_value
+      type(c_ptr), value :: obj
+      type(c_ptr), value :: value
+    end function
+
+    !  void atk_value_get_minimum_increment (AtkValue *obj, GValue *value);
+    subroutine atk_value_get_minimum_increment(obj, value) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: obj
+      type(c_ptr), value :: value
+    end subroutine
+
+    !   GType atk_streamable_content_get_type (void);
+    function atk_streamable_content_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_streamable_content_get_type
+    end function
+
+    !  gint atk_streamable_content_get_n_mime_types (AtkStreamableContent *streamable);
+    function atk_streamable_content_get_n_mime_types(streamable) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_streamable_content_get_n_mime_types
+      type(c_ptr), value :: streamable
+    end function
+
+    !  G_CONST_RETURN gchar* atk_streamable_content_get_mime_type (AtkStreamableContent *streamable, gint i);
+    function atk_streamable_content_get_mime_type(streamable, i) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_streamable_content_get_mime_type
+      type(c_ptr), value :: streamable
+      integer(c_int), value :: i
+    end function
+
+    ! GIOChannel* atk_streamable_content_get_stream (AtkStreamableContent *streamable, const gchar *mime_type);
+    function atk_streamable_content_get_stream(streamable, mime_type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: atk_streamable_content_get_stream
+      type(c_ptr), value :: streamable
+      character(kind=c_char), dimension(*) :: mime_type
+    end function
+
+    !  gchar* atk_streamable_content_get_uri (AtkStreamableContent *streamable, const gchar *mime_type);
+    function atk_streamable_content_get_uri(streamable, mime_type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: atk_streamable_content_get_uri
+      type(c_ptr), value :: streamable
+      character(kind=c_char), dimension(*) :: mime_type
+    end function
+
+    !   GType atk_gobject_accessible_get_type (void);
+    function atk_gobject_accessible_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_gobject_accessible_get_type
+    end function
+
+    !  AtkObject *atk_gobject_accessible_for_object (GObject *obj);
+    function atk_gobject_accessible_for_object(obj) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_gobject_accessible_for_object
+      type(c_ptr), value :: obj
+    end function
+
+    ! GObject *atk_gobject_accessible_get_object (AtkGObjectAccessible *obj);
+    function atk_gobject_accessible_get_object(obj) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_gobject_accessible_get_object
+      type(c_ptr), value :: obj
+    end function
+
+    !   GType atk_no_op_object_factory_get_type(void);
+    function atk_no_op_object_factory_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_no_op_object_factory_get_type
+    end function
+
+    !  AtkObjectFactory *atk_no_op_object_factory_new(void);
+    function atk_no_op_object_factory_new() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_no_op_object_factory_new
+    end function
+
+    !   GType atk_editable_text_get_type (void);
+    function atk_editable_text_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_editable_text_get_type
+    end function
+
+    !  gboolean atk_editable_text_set_run_attributes (AtkEditableText *text, AtkAttributeSet *attrib_set, gint start_offset, gint end_offset);
+    function atk_editable_text_set_run_attributes(text, attrib_set, start_offset&
+          &, end_offset) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_editable_text_set_run_attributes
+      type(c_ptr), value :: text
+      type(c_ptr), value :: attrib_set
+      integer(c_int), value :: start_offset
+      integer(c_int), value :: end_offset
+    end function
+
+    ! void atk_editable_text_set_text_contents (AtkEditableText *text, const gchar *string);
+    subroutine atk_editable_text_set_text_contents(text, string) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: text
+      character(kind=c_char), dimension(*) :: string
+    end subroutine
+
+    ! void atk_editable_text_insert_text (AtkEditableText *text, const gchar *string, gint length, gint *position);
+    subroutine atk_editable_text_insert_text(text, string, length, position) bin&
+          &d(c) 
+      use iso_c_binding, only: c_ptr, c_char, c_int
+      type(c_ptr), value :: text
+      character(kind=c_char), dimension(*) :: string
+      integer(c_int), value :: length
+      type(c_ptr), value :: position
+    end subroutine
+
+    ! void atk_editable_text_copy_text (AtkEditableText *text, gint start_pos, gint end_pos);
+    subroutine atk_editable_text_copy_text(text, start_pos, end_pos) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: text
+      integer(c_int), value :: start_pos
+      integer(c_int), value :: end_pos
+    end subroutine
+
+    ! void atk_editable_text_cut_text (AtkEditableText *text, gint start_pos, gint end_pos);
+    subroutine atk_editable_text_cut_text(text, start_pos, end_pos) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: text
+      integer(c_int), value :: start_pos
+      integer(c_int), value :: end_pos
+    end subroutine
+
+    ! void atk_editable_text_delete_text (AtkEditableText *text, gint start_pos, gint end_pos);
+    subroutine atk_editable_text_delete_text(text, start_pos, end_pos) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: text
+      integer(c_int), value :: start_pos
+      integer(c_int), value :: end_pos
+    end subroutine
+
+    ! void atk_editable_text_paste_text (AtkEditableText *text, gint position);
+    subroutine atk_editable_text_paste_text(text, position) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: text
+      integer(c_int), value :: position
+    end subroutine
+
+    !   GType atk_plug_get_type (void);
+    function atk_plug_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_plug_get_type
+    end function
+
+    !  AtkObject* atk_plug_new (void);
+    function atk_plug_new() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_plug_new
+    end function
+
+    ! gchar* atk_plug_get_id (AtkPlug* plug);
+    function atk_plug_get_id(plug) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_plug_get_id
+      type(c_ptr), value :: plug
+    end function
+
+    !   GType atk_socket_get_type (void);
+    function atk_socket_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_socket_get_type
+    end function
+
+    !  AtkObject* atk_socket_new (void);
+    function atk_socket_new() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_socket_new
+    end function
+
+    ! void atk_socket_embed (AtkSocket* obj, gchar* plug_id);
+    subroutine atk_socket_embed(obj, plug_id) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: obj
+      character(kind=c_char), dimension(*) :: plug_id
+    end subroutine
+
+    ! gboolean atk_socket_is_occupied (AtkSocket* obj);
+    function atk_socket_is_occupied(obj) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: atk_socket_is_occupied
+      type(c_ptr), value :: obj
+    end function
+
+    !   GType atk_util_get_type (void);
+    function atk_util_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_util_get_type
+    end function
+
+    !  guint atk_add_focus_tracker (AtkEventListener focus_tracker);
+    function atk_add_focus_tracker(focus_tracker) bind(c) 
+      use iso_c_binding, only: c_int, c_funptr
+      integer(c_int) :: atk_add_focus_tracker
+      type(c_funptr), value :: focus_tracker
+    end function
+
+    !  void atk_remove_focus_tracker (guint tracker_id);
+    subroutine atk_remove_focus_tracker(tracker_id) bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int), value :: tracker_id
+    end subroutine
+
+    !  void atk_focus_tracker_init (AtkEventListenerInit init);
+    subroutine atk_focus_tracker_init(init) bind(c) 
+      use iso_c_binding, only: c_funptr
+      type(c_funptr), value :: init
+    end subroutine
+
+    !  void atk_focus_tracker_notify (AtkObject *object);
+    subroutine atk_focus_tracker_notify(object) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: object
+    end subroutine
+
+    !  guint atk_add_global_event_listener (GSignalEmissionHook listener, const gchar *event_type);
+    function atk_add_global_event_listener(listener, event_type) bind(c) 
+      use iso_c_binding, only: c_int, c_funptr, c_char
+      integer(c_int) :: atk_add_global_event_listener
+      type(c_funptr), value :: listener
+      character(kind=c_char), dimension(*) :: event_type
+    end function
+
+    !  void atk_remove_global_event_listener (guint listener_id);
+    subroutine atk_remove_global_event_listener(listener_id) bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int), value :: listener_id
+    end subroutine
+
+    !  guint atk_add_key_event_listener (AtkKeySnoopFunc listener, gpointer data);
+    function atk_add_key_event_listener(listener, data) bind(c) 
+      use iso_c_binding, only: c_int, c_funptr, c_ptr
+      integer(c_int) :: atk_add_key_event_listener
+      type(c_funptr), value :: listener
+      type(c_ptr), value :: data
+    end function
+
+    !  void atk_remove_key_event_listener (guint listener_id);
+    subroutine atk_remove_key_event_listener(listener_id) bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int), value :: listener_id
+    end subroutine
+
+    !  AtkObject* atk_get_root(void);
+    function atk_get_root() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_get_root
+    end function
+
+    !  AtkObject* atk_get_focus_object (void);
+    function atk_get_focus_object() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_get_focus_object
+    end function
+
+    !  G_CONST_RETURN gchar *atk_get_toolkit_name (void);
+    function atk_get_toolkit_name() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_get_toolkit_name
+    end function
+
+    !  G_CONST_RETURN gchar *atk_get_toolkit_version (void);
+    function atk_get_toolkit_version() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_get_toolkit_version
+    end function
+
+    !  G_CONST_RETURN gchar *atk_get_version (void);
+    function atk_get_version() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_get_version
+    end function
+
+    !   GType atk_document_get_type (void);
+    function atk_document_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_document_get_type
+    end function
+
+    !  G_CONST_RETURN gchar* atk_document_get_document_type (AtkDocument *document);
+    function atk_document_get_document_type(document) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_document_get_document_type
+      type(c_ptr), value :: document
+    end function
+
+    ! gpointer atk_document_get_document (AtkDocument *document);
+    function atk_document_get_document(document) bind(c) 
+      use iso_c_binding, only: c_funptr, c_ptr
+      type(c_funptr) :: atk_document_get_document
+      type(c_ptr), value :: document
+    end function
+
+    ! G_CONST_RETURN gchar* atk_document_get_locale (AtkDocument *document);
+    function atk_document_get_locale(document) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_document_get_locale
+      type(c_ptr), value :: document
+    end function
+
+    ! AtkAttributeSet* atk_document_get_attributes (AtkDocument *document);
+    function atk_document_get_attributes(document) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_document_get_attributes
+      type(c_ptr), value :: document
+    end function
+
+    ! G_CONST_RETURN gchar* atk_document_get_attribute_value (AtkDocument *document, const gchar *attribute_name);
+    function atk_document_get_attribute_value(document, attribute_name) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: atk_document_get_attribute_value
+      type(c_ptr), value :: document
+      character(kind=c_char), dimension(*) :: attribute_name
+    end function
+
+    ! gboolean atk_document_set_attribute_value (AtkDocument *document, const gchar *attribute_name, const gchar *attribute_value);
+    function atk_document_set_attribute_value(document, attribute_name, attribut&
+          &e_value) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_char
+      logical(c_bool) :: atk_document_set_attribute_value
+      type(c_ptr), value :: document
+      character(kind=c_char), dimension(*) :: attribute_name
+      character(kind=c_char), dimension(*) :: attribute_value
+    end function
+
+    !     AtkStateType atk_state_type_register (const gchar *name);
+    function atk_state_type_register(name) bind(c) 
+      use iso_c_binding, only: c_int, c_char
+      integer(c_int) :: atk_state_type_register
+      character(kind=c_char), dimension(*) :: name
+    end function
+
+    !  G_CONST_RETURN gchar* atk_state_type_get_name (AtkStateType type);
+    function atk_state_type_get_name(type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_state_type_get_name
+      integer(c_int), value :: type
+    end function
+
+    ! AtkStateType atk_state_type_for_name (const gchar *name);
+    function atk_state_type_for_name(name) bind(c) 
+      use iso_c_binding, only: c_int, c_char
+      integer(c_int) :: atk_state_type_for_name
+      character(kind=c_char), dimension(*) :: name
+    end function
+
+    !   GType atk_object_factory_get_type(void);
+    function atk_object_factory_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_object_factory_get_type
+    end function
+
+    !  AtkObject* atk_object_factory_create_accessible (AtkObjectFactory *factory, GObject *obj);
+    function atk_object_factory_create_accessible(factory, obj) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_object_factory_create_accessible
+      type(c_ptr), value :: factory
+      type(c_ptr), value :: obj
+    end function
+
+    ! void atk_object_factory_invalidate (AtkObjectFactory *factory);
+    subroutine atk_object_factory_invalidate(factory) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: factory
+    end subroutine
+
+    ! GType atk_object_factory_get_accessible_type (AtkObjectFactory *factory);
+    function atk_object_factory_get_accessible_type(factory) bind(c) 
+      use iso_c_binding, only: c_size_t, c_ptr
+      integer(c_size_t) :: atk_object_factory_get_accessible_type
+      type(c_ptr), value :: factory
+    end function
+
+    !   GType atk_hypertext_get_type (void);
+    function atk_hypertext_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_hypertext_get_type
+    end function
+
+    !  AtkHyperlink* atk_hypertext_get_link (AtkHypertext *hypertext, gint link_index);
+    function atk_hypertext_get_link(hypertext, link_index) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_hypertext_get_link
+      type(c_ptr), value :: hypertext
+      integer(c_int), value :: link_index
+    end function
+
+    ! gint atk_hypertext_get_n_links (AtkHypertext *hypertext);
+    function atk_hypertext_get_n_links(hypertext) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_hypertext_get_n_links
+      type(c_ptr), value :: hypertext
+    end function
+
+    ! gint atk_hypertext_get_link_index (AtkHypertext *hypertext, gint char_index);
+    function atk_hypertext_get_link_index(hypertext, char_index) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_hypertext_get_link_index
+      type(c_ptr), value :: hypertext
+      integer(c_int), value :: char_index
+    end function
+
+    !   GType atk_registry_get_type (void);
+    function atk_registry_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_registry_get_type
+    end function
+
+    ! void atk_registry_set_factory_type (AtkRegistry *registry, GType type, GType factory_type);
+    subroutine atk_registry_set_factory_type(registry, type, factory_type) bind(&
+          &c) 
+      use iso_c_binding, only: c_ptr, c_size_t
+      type(c_ptr), value :: registry
+      integer(c_size_t), value :: type
+      integer(c_size_t), value :: factory_type
+    end subroutine
+
+    ! GType atk_registry_get_factory_type (AtkRegistry *registry, GType type);
+    function atk_registry_get_factory_type(registry, type) bind(c) 
+      use iso_c_binding, only: c_size_t, c_ptr
+      integer(c_size_t) :: atk_registry_get_factory_type
+      type(c_ptr), value :: registry
+      integer(c_size_t), value :: type
+    end function
+
+    ! AtkObjectFactory* atk_registry_get_factory (AtkRegistry *registry, GType type);
+    function atk_registry_get_factory(registry, type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_size_t
+      type(c_ptr) :: atk_registry_get_factory
+      type(c_ptr), value :: registry
+      integer(c_size_t), value :: type
+    end function
+
+    !  AtkRegistry* atk_get_default_registry (void);
+    function atk_get_default_registry() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_get_default_registry
+    end function
+
+    !   GType atk_image_get_type (void);
+    function atk_image_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_image_get_type
+    end function
+
+    !  G_CONST_RETURN gchar* atk_image_get_image_description (AtkImage *image);
+    function atk_image_get_image_description(image) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_image_get_image_description
+      type(c_ptr), value :: image
+    end function
+
+    !  void atk_image_get_image_size (AtkImage *image, gint *width, gint *height);
+    subroutine atk_image_get_image_size(image, width, height) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: image
+      type(c_ptr), value :: width
+      type(c_ptr), value :: height
+    end subroutine
+
+    !  gboolean atk_image_set_image_description (AtkImage *image, const gchar *description);
+    function atk_image_set_image_description(image, description) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_char
+      logical(c_bool) :: atk_image_set_image_description
+      type(c_ptr), value :: image
+      character(kind=c_char), dimension(*) :: description
+    end function
+
+    ! void atk_image_get_image_position (AtkImage *image, gint *x, gint *y, AtkCoordType coord_type);
+    subroutine atk_image_get_image_position(image, x, y, coord_type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: image
+      type(c_ptr), value :: x
+      type(c_ptr), value :: y
+      integer(c_int), value :: coord_type
+    end subroutine
+
+    !  G_CONST_RETURN gchar* atk_image_get_image_locale (AtkImage *image);
+    function atk_image_get_image_locale(image) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_image_get_image_locale
+      type(c_ptr), value :: image
+    end function
+
+    !     GType atk_hyperlink_get_type (void);
+    function atk_hyperlink_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_hyperlink_get_type
+    end function
+
+    !  gchar* atk_hyperlink_get_uri (AtkHyperlink *link_, gint i);
+    function atk_hyperlink_get_uri(link_, i) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_hyperlink_get_uri
+      type(c_ptr), value :: link_
+      integer(c_int), value :: i
+    end function
+
+    !  AtkObject* atk_hyperlink_get_object (AtkHyperlink *link_, gint i);
+    function atk_hyperlink_get_object(link_, i) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_hyperlink_get_object
+      type(c_ptr), value :: link_
+      integer(c_int), value :: i
+    end function
+
+    !  gint atk_hyperlink_get_end_index (AtkHyperlink *link_);
+    function atk_hyperlink_get_end_index(link_) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_hyperlink_get_end_index
+      type(c_ptr), value :: link_
+    end function
+
+    !  gint atk_hyperlink_get_start_index (AtkHyperlink *link_);
+    function atk_hyperlink_get_start_index(link_) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_hyperlink_get_start_index
+      type(c_ptr), value :: link_
+    end function
+
+    !  gboolean atk_hyperlink_is_valid (AtkHyperlink *link_);
+    function atk_hyperlink_is_valid(link_) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: atk_hyperlink_is_valid
+      type(c_ptr), value :: link_
+    end function
+
+    !  gboolean atk_hyperlink_is_inline (AtkHyperlink *link_);
+    function atk_hyperlink_is_inline(link_) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: atk_hyperlink_is_inline
+      type(c_ptr), value :: link_
+    end function
+
+    !  gint atk_hyperlink_get_n_anchors (AtkHyperlink *link_);
+    function atk_hyperlink_get_n_anchors(link_) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_hyperlink_get_n_anchors
+      type(c_ptr), value :: link_
+    end function
+
+    !  gboolean atk_hyperlink_is_selected_link (AtkHyperlink *link_);
+    function atk_hyperlink_is_selected_link(link_) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: atk_hyperlink_is_selected_link
+      type(c_ptr), value :: link_
+    end function
+
+    !  GType atk_misc_get_type (void);
+    function atk_misc_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_misc_get_type
+    end function
+
+    !  void atk_misc_threads_enter (AtkMisc *misc);
+    subroutine atk_misc_threads_enter(misc) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: misc
+    end subroutine
+
+    !  void atk_misc_threads_leave (AtkMisc *misc);
+    subroutine atk_misc_threads_leave(misc) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: misc
+    end subroutine
+
+    !  const AtkMisc *atk_misc_get_instance (void);
+    function atk_misc_get_instance() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_misc_get_instance
+    end function
+
+    !   GType atk_selection_get_type (void);
+    function atk_selection_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_selection_get_type
+    end function
+
+    !  gboolean atk_selection_add_selection (AtkSelection *selection, gint i);
+    function atk_selection_add_selection(selection, i) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_selection_add_selection
+      type(c_ptr), value :: selection
+      integer(c_int), value :: i
+    end function
+
+    !  gboolean atk_selection_clear_selection (AtkSelection *selection);
+    function atk_selection_clear_selection(selection) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: atk_selection_clear_selection
+      type(c_ptr), value :: selection
+    end function
+
+    !  AtkObject* atk_selection_ref_selection (AtkSelection *selection, gint i);
+    function atk_selection_ref_selection(selection, i) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_selection_ref_selection
+      type(c_ptr), value :: selection
+      integer(c_int), value :: i
+    end function
+
+    !  gint atk_selection_get_selection_count (AtkSelection *selection);
+    function atk_selection_get_selection_count(selection) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_selection_get_selection_count
+      type(c_ptr), value :: selection
+    end function
+
+    !  gboolean atk_selection_is_child_selected (AtkSelection *selection, gint i);
+    function atk_selection_is_child_selected(selection, i) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_selection_is_child_selected
+      type(c_ptr), value :: selection
+      integer(c_int), value :: i
+    end function
+
+    !  gboolean atk_selection_remove_selection (AtkSelection *selection, gint i);
+    function atk_selection_remove_selection(selection, i) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_selection_remove_selection
+      type(c_ptr), value :: selection
+      integer(c_int), value :: i
+    end function
+
+    !  gboolean atk_selection_select_all_selection (AtkSelection *selection);
+    function atk_selection_select_all_selection(selection) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: atk_selection_select_all_selection
+      type(c_ptr), value :: selection
+    end function
+
+    !   GType atk_hyperlink_state_flags_get_type (void);
+    function atk_hyperlink_state_flags_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_hyperlink_state_flags_get_type
+    end function
+
+    !  GType atk_role_get_type (void);
+    function atk_role_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_role_get_type
+    end function
+
+    !  GType atk_layer_get_type (void);
+    function atk_layer_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_layer_get_type
+    end function
+
+    !  GType atk_relation_type_get_type (void);
+    function atk_relation_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_relation_type_get_type
+    end function
+
+    !  GType atk_state_type_get_type (void);
+    function atk_state_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_state_type_get_type
+    end function
+
+    !  GType atk_text_attribute_get_type (void);
+    function atk_text_attribute_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_text_attribute_get_type
+    end function
+
+    !  GType atk_text_boundary_get_type (void);
+    function atk_text_boundary_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_text_boundary_get_type
+    end function
+
+    !  GType atk_text_clip_type_get_type (void);
+    function atk_text_clip_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_text_clip_type_get_type
+    end function
+
+    !  GType atk_key_event_type_get_type (void);
+    function atk_key_event_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_key_event_type_get_type
+    end function
+
+    !  GType atk_coord_type_get_type (void);
+    function atk_coord_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_coord_type_get_type
+    end function
+
+    !   GType atk_rectangle_get_type (void);
+    function atk_rectangle_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_rectangle_get_type
+    end function
+
+    !  GType atk_component_get_type (void);
+    function atk_component_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_component_get_type
+    end function
+
+    !  guint atk_component_add_focus_handler (AtkComponent *component, AtkFocusHandler handler);
+    function atk_component_add_focus_handler(component, handler) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_funptr
+      integer(c_int) :: atk_component_add_focus_handler
+      type(c_ptr), value :: component
+      type(c_funptr), value :: handler
+    end function
+
+    ! gboolean atk_component_contains (AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
+    function atk_component_contains(component, x, y, coord_type) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_component_contains
+      type(c_ptr), value :: component
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+      integer(c_int), value :: coord_type
+    end function
+
+    ! AtkObject* atk_component_ref_accessible_at_point(AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
+    function atk_component_ref_accessible_at_point(component, x, y, coord_type) &
+          &bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_component_ref_accessible_at_point
+      type(c_ptr), value :: component
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+      integer(c_int), value :: coord_type
+    end function
+
+    ! void atk_component_get_extents (AtkComponent *component, gint *x, gint *y, gint *width, gint *height, AtkCoordType coord_type);
+    subroutine atk_component_get_extents(component, x, y, width, height, coord_t&
+          &ype) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: component
+      type(c_ptr), value :: x
+      type(c_ptr), value :: y
+      type(c_ptr), value :: width
+      type(c_ptr), value :: height
+      integer(c_int), value :: coord_type
+    end subroutine
+
+    ! void atk_component_get_position (AtkComponent *component, gint *x, gint *y, AtkCoordType coord_type);
+    subroutine atk_component_get_position(component, x, y, coord_type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: component
+      type(c_ptr), value :: x
+      type(c_ptr), value :: y
+      integer(c_int), value :: coord_type
+    end subroutine
+
+    ! void atk_component_get_size (AtkComponent *component, gint *width, gint *height);
+    subroutine atk_component_get_size(component, width, height) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: component
+      type(c_ptr), value :: width
+      type(c_ptr), value :: height
+    end subroutine
+
+    ! AtkLayer atk_component_get_layer (AtkComponent *component);
+    function atk_component_get_layer(component) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_component_get_layer
+      type(c_ptr), value :: component
+    end function
+
+    ! gint atk_component_get_mdi_zorder (AtkComponent *component);
+    function atk_component_get_mdi_zorder(component) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_component_get_mdi_zorder
+      type(c_ptr), value :: component
+    end function
+
+    ! gboolean atk_component_grab_focus (AtkComponent *component);
+    function atk_component_grab_focus(component) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: atk_component_grab_focus
+      type(c_ptr), value :: component
+    end function
+
+    ! void atk_component_remove_focus_handler (AtkComponent *component, guint handler_id);
+    subroutine atk_component_remove_focus_handler(component, handler_id) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: component
+      integer(c_int), value :: handler_id
+    end subroutine
+
+    ! gboolean atk_component_set_extents (AtkComponent *component, gint x, gint y, gint width, gint height, AtkCoordType coord_type);
+    function atk_component_set_extents(component, x, y, width, height, coord_typ&
+          &e) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_component_set_extents
+      type(c_ptr), value :: component
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: coord_type
+    end function
+
+    ! gboolean atk_component_set_position (AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
+    function atk_component_set_position(component, x, y, coord_type) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_component_set_position
+      type(c_ptr), value :: component
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+      integer(c_int), value :: coord_type
+    end function
+
+    ! gboolean atk_component_set_size (AtkComponent *component, gint width, gint height);
+    function atk_component_set_size(component, width, height) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_component_set_size
+      type(c_ptr), value :: component
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+    end function
+
+    ! gdouble atk_component_get_alpha (AtkComponent *component);
+    function atk_component_get_alpha(component) bind(c) 
+      use iso_c_binding, only: c_double, c_ptr
+      real(c_double) :: atk_component_get_alpha
+      type(c_ptr), value :: component
+    end function
+
+    !   GType atk_no_op_object_get_type (void);
+    function atk_no_op_object_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_no_op_object_get_type
+    end function
+
+    !  AtkObject *atk_no_op_object_new (GObject *obj);
+    function atk_no_op_object_new(obj) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_no_op_object_new
+      type(c_ptr), value :: obj
+    end function
+
+    !   AtkRole atk_role_register (const gchar *name);
+    function atk_role_register(name) bind(c) 
+      use iso_c_binding, only: c_int, c_char
+      integer(c_int) :: atk_role_register
+      character(kind=c_char), dimension(*) :: name
+    end function
+
+    !  GType atk_object_get_type (void);
+    function atk_object_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_object_get_type
+    end function
+
+    !  GType atk_implementor_get_type (void);
+    function atk_implementor_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_implementor_get_type
+    end function
+
+    !  AtkObject* atk_implementor_ref_accessible (AtkImplementor *implementor);
+    function atk_implementor_ref_accessible(implementor) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_implementor_ref_accessible
+      type(c_ptr), value :: implementor
+    end function
+
+    !  G_CONST_RETURN gchar* atk_object_get_name (AtkObject *accessible);
+    function atk_object_get_name(accessible) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_object_get_name
+      type(c_ptr), value :: accessible
+    end function
+
+    ! G_CONST_RETURN gchar* atk_object_get_description (AtkObject *accessible);
+    function atk_object_get_description(accessible) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_object_get_description
+      type(c_ptr), value :: accessible
+    end function
+
+    ! AtkObject* atk_object_get_parent (AtkObject *accessible);
+    function atk_object_get_parent(accessible) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_object_get_parent
+      type(c_ptr), value :: accessible
+    end function
+
+    ! gint atk_object_get_n_accessible_children (AtkObject *accessible);
+    function atk_object_get_n_accessible_children(accessible) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_object_get_n_accessible_children
+      type(c_ptr), value :: accessible
+    end function
+
+    ! AtkObject* atk_object_ref_accessible_child (AtkObject *accessible, gint i);
+    function atk_object_ref_accessible_child(accessible, i) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_object_ref_accessible_child
+      type(c_ptr), value :: accessible
+      integer(c_int), value :: i
+    end function
+
+    ! AtkRelationSet* atk_object_ref_relation_set (AtkObject *accessible);
+    function atk_object_ref_relation_set(accessible) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_object_ref_relation_set
+      type(c_ptr), value :: accessible
+    end function
+
+    ! AtkRole atk_object_get_role (AtkObject *accessible);
+    function atk_object_get_role(accessible) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_object_get_role
+      type(c_ptr), value :: accessible
+    end function
+
+    !  AtkLayer atk_object_get_layer (AtkObject *accessible);
+    function atk_object_get_layer(accessible) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_object_get_layer
+      type(c_ptr), value :: accessible
+    end function
+
+    ! gint atk_object_get_mdi_zorder (AtkObject *accessible);
+    function atk_object_get_mdi_zorder(accessible) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_object_get_mdi_zorder
+      type(c_ptr), value :: accessible
+    end function
+
+    !  AtkAttributeSet* atk_object_get_attributes (AtkObject *accessible);
+    function atk_object_get_attributes(accessible) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_object_get_attributes
+      type(c_ptr), value :: accessible
+    end function
+
+    ! AtkStateSet* atk_object_ref_state_set (AtkObject *accessible);
+    function atk_object_ref_state_set(accessible) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_object_ref_state_set
+      type(c_ptr), value :: accessible
+    end function
+
+    ! gint atk_object_get_index_in_parent (AtkObject *accessible);
+    function atk_object_get_index_in_parent(accessible) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_object_get_index_in_parent
+      type(c_ptr), value :: accessible
+    end function
+
+    ! void atk_object_set_name (AtkObject *accessible, const gchar *name);
+    subroutine atk_object_set_name(accessible, name) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: accessible
+      character(kind=c_char), dimension(*) :: name
+    end subroutine
+
+    ! void atk_object_set_description (AtkObject *accessible, const gchar *description);
+    subroutine atk_object_set_description(accessible, description) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr), value :: accessible
+      character(kind=c_char), dimension(*) :: description
+    end subroutine
+
+    ! void atk_object_set_parent (AtkObject *accessible, AtkObject *parent);
+    subroutine atk_object_set_parent(accessible, parent) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: accessible
+      type(c_ptr), value :: parent
+    end subroutine
+
+    ! void atk_object_set_role (AtkObject *accessible, AtkRole role);
+    subroutine atk_object_set_role(accessible, role) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: accessible
+      integer(c_int), value :: role
+    end subroutine
+
+    !  guint atk_object_connect_property_change_handler (AtkObject *accessible, AtkPropertyChangeHandler *handler);
+    function atk_object_connect_property_change_handler(accessible, handler) bin&
+          &d(c) 
+      use iso_c_binding, only: c_int, c_ptr, c_funptr
+      integer(c_int) :: atk_object_connect_property_change_handler
+      type(c_ptr), value :: accessible
+      type(c_funptr), value :: handler
+    end function
+
+    ! void atk_object_remove_property_change_handler (AtkObject *accessible, guint handler_id);
+    subroutine atk_object_remove_property_change_handler(accessible, handler_id)&
+          & bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: accessible
+      integer(c_int), value :: handler_id
+    end subroutine
+
+    !  void atk_object_notify_state_change (AtkObject *accessible, AtkState state, gboolean value);
+    subroutine atk_object_notify_state_change(accessible, state, value) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int64_t, c_bool
+      type(c_ptr), value :: accessible
+      integer(c_int64_t), value :: state
+      logical(c_bool), value :: value
+    end subroutine
+
+    ! void atk_object_initialize (AtkObject *accessible, gpointer data);
+    subroutine atk_object_initialize(accessible, data) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: accessible
+      type(c_ptr), value :: data
+    end subroutine
+
+    !  G_CONST_RETURN gchar* atk_role_get_name (AtkRole role);
+    function atk_role_get_name(role) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_role_get_name
+      integer(c_int), value :: role
+    end function
+
+    ! AtkRole atk_role_for_name (const gchar *name);
+    function atk_role_for_name(name) bind(c) 
+      use iso_c_binding, only: c_int, c_char
+      integer(c_int) :: atk_role_for_name
+      character(kind=c_char), dimension(*) :: name
+    end function
+
+    !  gboolean atk_object_add_relationship (AtkObject *object, AtkRelationType relationship, AtkObject *target);
+    function atk_object_add_relationship(object, relationship, target) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_object_add_relationship
+      type(c_ptr), value :: object
+      integer(c_int), value :: relationship
+      type(c_ptr), value :: target
+    end function
+
+    ! gboolean atk_object_remove_relationship (AtkObject *object, AtkRelationType relationship, AtkObject *target);
+    function atk_object_remove_relationship(object, relationship, target) bind(c&
+          &) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: atk_object_remove_relationship
+      type(c_ptr), value :: object
+      integer(c_int), value :: relationship
+      type(c_ptr), value :: target
+    end function
+
+    ! G_CONST_RETURN gchar* atk_role_get_localized_name (AtkRole role);
+    function atk_role_get_localized_name(role) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_role_get_localized_name
+      integer(c_int), value :: role
+    end function
+
+    !   GType atk_relation_get_type (void);
+    function atk_relation_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: atk_relation_get_type
+    end function
+
+    !  AtkRelationType atk_relation_type_register (const gchar *name);
+    function atk_relation_type_register(name) bind(c) 
+      use iso_c_binding, only: c_int, c_char
+      integer(c_int) :: atk_relation_type_register
+      character(kind=c_char), dimension(*) :: name
+    end function
+
+    ! G_CONST_RETURN gchar* atk_relation_type_get_name (AtkRelationType type);
+    function atk_relation_type_get_name(type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_relation_type_get_name
+      integer(c_int), value :: type
+    end function
+
+    ! AtkRelationType atk_relation_type_for_name (const gchar *name);
+    function atk_relation_type_for_name(name) bind(c) 
+      use iso_c_binding, only: c_int, c_char
+      integer(c_int) :: atk_relation_type_for_name
+      character(kind=c_char), dimension(*) :: name
+    end function
+
+    !  AtkRelation* atk_relation_new (AtkObject **targets, gint n_targets, AtkRelationType relationship);
+    function atk_relation_new(targets, n_targets, relationship) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: atk_relation_new
+      type(c_ptr), value :: targets
+      integer(c_int), value :: n_targets
+      integer(c_int), value :: relationship
+    end function
+
+    !  AtkRelationType atk_relation_get_relation_type (AtkRelation *relation);
+    function atk_relation_get_relation_type(relation) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: atk_relation_get_relation_type
+      type(c_ptr), value :: relation
+    end function
+
+    !  GPtrArray* atk_relation_get_target (AtkRelation *relation);
+    function atk_relation_get_target(relation) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: atk_relation_get_target
+      type(c_ptr), value :: relation
+    end function
+
+    ! void atk_relation_add_target (AtkRelation *relation, AtkObject *target);
+    subroutine atk_relation_add_target(relation, target) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: relation
+      type(c_ptr), value :: target
+    end subroutine
+
+    ! gboolean atk_relation_remove_target (AtkRelation *relation, AtkObject *target);
+    function atk_relation_remove_target(relation, target) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: atk_relation_remove_target
+      type(c_ptr), value :: relation
+      type(c_ptr), value :: target
     end function
 
     !   gboolean g_module_supported (void) G_GNUC_CONST;
@@ -1717,7 +2478,7 @@
       type(c_ptr), value :: const_values
     end subroutine
 
-    !   extern void g_cclosure_marshal_VOID__VOID (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !   void g_cclosure_marshal_VOID__VOID (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__VOID(closure, return_value, n_param_valu&
           &es, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1729,7 +2490,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__BOOLEAN (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__BOOLEAN (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__BOOLEAN(closure, return_value, n_param_v&
           &alues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1741,7 +2502,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__CHAR (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__CHAR (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__CHAR(closure, return_value, n_param_valu&
           &es, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1753,7 +2514,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__UCHAR (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__UCHAR (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__UCHAR(closure, return_value, n_param_val&
           &ues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1765,7 +2526,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__INT(closure, return_value, n_param_value&
           &s, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1777,7 +2538,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__UINT(closure, return_value, n_param_valu&
           &es, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1789,7 +2550,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__LONG (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__LONG (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__LONG(closure, return_value, n_param_valu&
           &es, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1801,7 +2562,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__ULONG (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__ULONG (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__ULONG(closure, return_value, n_param_val&
           &ues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1813,7 +2574,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__ENUM(closure, return_value, n_param_valu&
           &es, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1825,7 +2586,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__FLAGS (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__FLAGS (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__FLAGS(closure, return_value, n_param_val&
           &ues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1837,7 +2598,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__FLOAT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__FLOAT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__FLOAT(closure, return_value, n_param_val&
           &ues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1849,7 +2610,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__DOUBLE (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__DOUBLE (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__DOUBLE(closure, return_value, n_param_va&
           &lues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1861,7 +2622,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__STRING (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__STRING (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__STRING(closure, return_value, n_param_va&
           &lues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1873,7 +2634,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__PARAM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__PARAM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__PARAM(closure, return_value, n_param_val&
           &ues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1885,7 +2646,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__BOXED (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__BOXED (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__BOXED(closure, return_value, n_param_val&
           &ues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1897,7 +2658,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__POINTER(closure, return_value, n_param_v&
           &alues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1909,7 +2670,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__OBJECT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__OBJECT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__OBJECT(closure, return_value, n_param_va&
           &lues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1921,7 +2682,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__VARIANT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__VARIANT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__VARIANT(closure, return_value, n_param_v&
           &alues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1933,7 +2694,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_VOID__UINT_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_VOID__UINT_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_VOID__UINT_POINTER(closure, return_value, n_pa&
           &ram_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1945,7 +2706,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_BOOLEAN__FLAGS (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_BOOLEAN__FLAGS (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_BOOLEAN__FLAGS(closure, return_value, n_param_&
           &values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1957,7 +2718,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_STRING__OBJECT_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_STRING__OBJECT_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_STRING__OBJECT_POINTER(closure, return_value, &
           &n_param_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -1969,7 +2730,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void g_cclosure_marshal_BOOLEAN__BOXED_BOXED (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void g_cclosure_marshal_BOOLEAN__BOXED_BOXED (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine g_cclosure_marshal_BOOLEAN__BOXED_BOXED(closure, return_value, n_&
           &param_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -13481,6 +14242,23 @@
       type(c_ptr), value :: error
     end function
 
+    !  uid_t g_credentials_get_unix_user (GCredentials *credentials, GError **error);
+    function g_credentials_get_unix_user(credentials, error) bind(c) 
+      use iso_c_binding, only: c_int32_t, c_ptr
+      integer(c_int32_t) :: g_credentials_get_unix_user
+      type(c_ptr), value :: credentials
+      type(c_ptr), value :: error
+    end function
+
+    ! gboolean g_credentials_set_unix_user (GCredentials *credentials, uid_t uid, GError **error);
+    function g_credentials_set_unix_user(credentials, uid, error) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int32_t
+      logical(c_bool) :: g_credentials_set_unix_user
+      type(c_ptr), value :: credentials
+      integer(c_int32_t), value :: uid
+      type(c_ptr), value :: error
+    end function
+
     !   gint g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic, gint val);
     function g_atomic_int_exchange_and_add(atomic, val) bind(c) 
       use iso_c_binding, only: c_int, c_ptr
@@ -15747,6 +16525,12 @@
       integer(c_size_t), value :: length
     end function
 
+    !   GQuark g_thread_error_quark (void);
+    function g_thread_error_quark() bind(c) 
+      use iso_c_binding, only: c_int32_t
+      integer(c_int32_t) :: g_thread_error_quark
+    end function
+
     !  guint64 (*g_thread_gettime) (void);
     function guint64() bind(c) 
       use iso_c_binding, only: c_int64_t
@@ -16241,6 +17025,20 @@
       type(c_ptr), value :: error
     end function
 
+    ! gboolean g_bookmark_file_set_app_info (GBookmarkFile *bookmark, const gchar *uri, const gchar *name, const gchar *exec, gint count, time_t stamp, GError **error);
+    function g_bookmark_file_set_app_info(bookmark, uri, name, exec, count, stam&
+          &p, error) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_char, c_int, c_long
+      logical(c_bool) :: g_bookmark_file_set_app_info
+      type(c_ptr), value :: bookmark
+      character(kind=c_char), dimension(*) :: uri
+      character(kind=c_char), dimension(*) :: name
+      character(kind=c_char), dimension(*) :: exec
+      integer(c_int), value :: count
+      integer(c_long), value :: stamp
+      type(c_ptr), value :: error
+    end function
+
     ! gboolean g_bookmark_file_get_app_info (GBookmarkFile *bookmark, const gchar *uri, const gchar *name, gchar **exec, guint *count, time_t *stamp, GError **error);
     function g_bookmark_file_get_app_info(bookmark, uri, name, exec, count, stam&
           &p, error) bind(c) 
@@ -16290,6 +17088,57 @@
       character(kind=c_char), dimension(*) :: uri
       character(kind=c_char), dimension(*) :: href
       character(kind=c_char), dimension(*) :: mime_type
+      type(c_ptr), value :: error
+    end function
+
+    ! void g_bookmark_file_set_added (GBookmarkFile *bookmark, const gchar *uri, time_t added);
+    subroutine g_bookmark_file_set_added(bookmark, uri, added) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char, c_long
+      type(c_ptr), value :: bookmark
+      character(kind=c_char), dimension(*) :: uri
+      integer(c_long), value :: added
+    end subroutine
+
+    ! time_t g_bookmark_file_get_added (GBookmarkFile *bookmark, const gchar *uri, GError **error);
+    function g_bookmark_file_get_added(bookmark, uri, error) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr, c_char
+      integer(c_long) :: g_bookmark_file_get_added
+      type(c_ptr), value :: bookmark
+      character(kind=c_char), dimension(*) :: uri
+      type(c_ptr), value :: error
+    end function
+
+    ! void g_bookmark_file_set_modified (GBookmarkFile *bookmark, const gchar *uri, time_t modified);
+    subroutine g_bookmark_file_set_modified(bookmark, uri, modified) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char, c_long
+      type(c_ptr), value :: bookmark
+      character(kind=c_char), dimension(*) :: uri
+      integer(c_long), value :: modified
+    end subroutine
+
+    ! time_t g_bookmark_file_get_modified (GBookmarkFile *bookmark, const gchar *uri, GError **error);
+    function g_bookmark_file_get_modified(bookmark, uri, error) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr, c_char
+      integer(c_long) :: g_bookmark_file_get_modified
+      type(c_ptr), value :: bookmark
+      character(kind=c_char), dimension(*) :: uri
+      type(c_ptr), value :: error
+    end function
+
+    ! void g_bookmark_file_set_visited (GBookmarkFile *bookmark, const gchar *uri, time_t visited);
+    subroutine g_bookmark_file_set_visited(bookmark, uri, visited) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char, c_long
+      type(c_ptr), value :: bookmark
+      character(kind=c_char), dimension(*) :: uri
+      integer(c_long), value :: visited
+    end subroutine
+
+    ! time_t g_bookmark_file_get_visited (GBookmarkFile *bookmark, const gchar *uri, GError **error);
+    function g_bookmark_file_get_visited(bookmark, uri, error) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr, c_char
+      integer(c_long) :: g_bookmark_file_get_visited
+      type(c_ptr), value :: bookmark
+      character(kind=c_char), dimension(*) :: uri
       type(c_ptr), value :: error
     end function
 
@@ -19998,6 +20847,12 @@
       type(c_ptr), value :: error
     end function
 
+    !  void g_spawn_close_pid (GPid pid);
+    subroutine g_spawn_close_pid(pid) bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int), value :: pid
+    end subroutine
+
     !   void g_free (gpointer mem);
     subroutine g_free(mem) bind(c) 
       use iso_c_binding, only: c_ptr
@@ -21450,6 +22305,13 @@
       type(c_ptr) :: g_idle_source_new
     end function
 
+    ! GSource *g_child_watch_source_new (GPid pid);
+    function g_child_watch_source_new(pid) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: g_child_watch_source_new
+      integer(c_int), value :: pid
+    end function
+
     ! GSource *g_timeout_source_new (guint interval);
     function g_timeout_source_new(interval) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -21530,6 +22392,27 @@
       use iso_c_binding, only: c_int, c_funptr, c_ptr
       integer(c_int) :: g_timeout_add_seconds
       integer(c_int), value :: interval
+      type(c_funptr), value :: function
+      type(c_ptr), value :: data
+    end function
+
+    ! guint g_child_watch_add_full (gint priority, GPid pid, GChildWatchFunc function, gpointer data, GDestroyNotify notify);
+    function g_child_watch_add_full(priority, pid, function, data, notify) bind(&
+          &c) 
+      use iso_c_binding, only: c_int, c_funptr, c_ptr
+      integer(c_int) :: g_child_watch_add_full
+      integer(c_int), value :: priority
+      integer(c_int), value :: pid
+      type(c_funptr), value :: function
+      type(c_ptr), value :: data
+      type(c_funptr), value :: notify
+    end function
+
+    ! guint g_child_watch_add (GPid pid, GChildWatchFunc function, gpointer data);
+    function g_child_watch_add(pid, function, data) bind(c) 
+      use iso_c_binding, only: c_int, c_funptr, c_ptr
+      integer(c_int) :: g_child_watch_add
+      integer(c_int), value :: pid
       type(c_funptr), value :: function
       type(c_ptr), value :: data
     end function
@@ -21913,12 +22796,13 @@
     end function
 
     ! void g_key_file_set_string_list (GKeyFile *key_file, const gchar *group_name, const gchar *key, const gchar * const list[], gsize length);
-    subroutine g_key_file_set_string_list(key_file, group_name, key, length) bin&
-          &d(c) 
+    subroutine g_key_file_set_string_list(key_file, group_name, key, list, lengt&
+          &h) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_size_t
       type(c_ptr), value :: key_file
       character(kind=c_char), dimension(*) :: group_name
       character(kind=c_char), dimension(*) :: key
+      character(kind=c_char), dimension(*) :: list
       integer(c_size_t), value :: length
     end subroutine
 
@@ -21937,12 +22821,13 @@
 
     ! void g_key_file_set_locale_string_list (GKeyFile *key_file, const gchar *group_name, const gchar *key, const gchar *locale, const gchar * const list[], gsize length);
     subroutine g_key_file_set_locale_string_list(key_file, group_name, key, loca&
-          &le, length) bind(c) 
+          &le, list, length) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_size_t
       type(c_ptr), value :: key_file
       character(kind=c_char), dimension(*) :: group_name
       character(kind=c_char), dimension(*) :: key
       character(kind=c_char), dimension(*) :: locale
+      character(kind=c_char), dimension(*) :: list
       integer(c_size_t), value :: length
     end subroutine
 
@@ -21959,12 +22844,13 @@
     end function
 
     ! void g_key_file_set_boolean_list (GKeyFile *key_file, const gchar *group_name, const gchar *key, gboolean list[], gsize length);
-    subroutine g_key_file_set_boolean_list(key_file, group_name, key, length) bi&
-          &nd(c) 
+    subroutine g_key_file_set_boolean_list(key_file, group_name, key, list, leng&
+          &th) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_bool, c_size_t
       type(c_ptr), value :: key_file
       character(kind=c_char), dimension(*) :: group_name
       character(kind=c_char), dimension(*) :: key
+      logical(c_bool), dimension(*) :: list
       integer(c_size_t), value :: length
     end subroutine
 
@@ -21981,12 +22867,13 @@
     end function
 
     ! void g_key_file_set_double_list (GKeyFile *key_file, const gchar *group_name, const gchar *key, gdouble list[], gsize length);
-    subroutine g_key_file_set_double_list(key_file, group_name, key, length) bin&
-          &d(c) 
+    subroutine g_key_file_set_double_list(key_file, group_name, key, list, lengt&
+          &h) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_double, c_size_t
       type(c_ptr), value :: key_file
       character(kind=c_char), dimension(*) :: group_name
       character(kind=c_char), dimension(*) :: key
+      real(c_double), dimension(*) :: list
       integer(c_size_t), value :: length
     end subroutine
 
@@ -22003,12 +22890,13 @@
     end function
 
     ! void g_key_file_set_integer_list (GKeyFile *key_file, const gchar *group_name, const gchar *key, gint list[], gsize length);
-    subroutine g_key_file_set_integer_list(key_file, group_name, key, length) bi&
-          &nd(c) 
+    subroutine g_key_file_set_integer_list(key_file, group_name, key, list, leng&
+          &th) bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_int, c_size_t
       type(c_ptr), value :: key_file
       character(kind=c_char), dimension(*) :: group_name
       character(kind=c_char), dimension(*) :: key
+      integer(c_int), dimension(*) :: list
       integer(c_size_t), value :: length
     end subroutine
 
@@ -22466,6 +23354,13 @@
       use iso_c_binding, only: c_ptr, c_char
       type(c_ptr), value :: date
       character(kind=c_char), dimension(*) :: str
+    end subroutine
+
+    ! void g_date_set_time_t (GDate *date, time_t timet);
+    subroutine g_date_set_time_t(date, timet) bind(c) 
+      use iso_c_binding, only: c_ptr, c_long
+      type(c_ptr), value :: date
+      integer(c_long), value :: timet
     end subroutine
 
     ! void g_date_set_time_val (GDate *date, GTimeVal *timeval);
@@ -28282,10 +29177,11 @@
     end subroutine
 
     ! void gdk_gc_set_dashes (GdkGC *gc, gint dash_offset, gint8 dash_list[], gint n);
-    subroutine gdk_gc_set_dashes(gc, dash_offset, n) bind(c) 
+    subroutine gdk_gc_set_dashes(gc, dash_offset, dash_list, n) bind(c) 
       use iso_c_binding, only: c_ptr, c_int, c_int8_t
       type(c_ptr), value :: gc
       integer(c_int), value :: dash_offset
+      integer(c_int8_t), dimension(*) :: dash_list
       integer(c_int), value :: n
     end subroutine
 
@@ -32398,7 +33294,7 @@
       type(c_ptr), value :: icon_view
     end function
 
-    !   extern void gtk_marshal_BOOLEAN__VOID (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !   void gtk_marshal_BOOLEAN__VOID (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_BOOLEAN__VOID(closure, return_value, n_param_values, &
           &param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32410,7 +33306,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_BOOLEAN__POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_BOOLEAN__POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_BOOLEAN__POINTER(closure, return_value, n_param_value&
           &s, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32422,7 +33318,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_BOOLEAN__POINTER_POINTER_INT_INT(closure, return_valu&
           &e, n_param_values, param_values, invocation_hint, marshal_data) bind(&
           &c) 
@@ -32435,7 +33331,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_BOOLEAN__POINTER_INT_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_BOOLEAN__POINTER_INT_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_BOOLEAN__POINTER_INT_INT(closure, return_value, n_par&
           &am_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32447,7 +33343,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_BOOLEAN__POINTER_INT_INT_UINT(closure, return_value, &
           &n_param_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32459,7 +33355,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER(closure, retur&
           &n_value, n_param_values, param_values, invocation_hint, marshal_data)&
           & bind(c) 
@@ -32472,7 +33368,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_ENUM__ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_ENUM__ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_ENUM__ENUM(closure, return_value, n_param_values, par&
           &am_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32484,7 +33380,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_INT__POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_INT__POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_INT__POINTER(closure, return_value, n_param_values, p&
           &aram_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32496,7 +33392,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_INT__POINTER_CHAR_CHAR (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_INT__POINTER_CHAR_CHAR (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_INT__POINTER_CHAR_CHAR(closure, return_value, n_param&
           &_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32508,7 +33404,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__ENUM_FLOAT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__ENUM_FLOAT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__ENUM_FLOAT(closure, return_value, n_param_value&
           &s, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32520,7 +33416,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__ENUM_FLOAT_BOOLEAN(closure, return_value, n_par&
           &am_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32532,7 +33428,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__INT_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__INT_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__INT_INT(closure, return_value, n_param_values, &
           &param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32544,7 +33440,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__INT_INT_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__INT_INT_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__INT_INT_POINTER(closure, return_value, n_param_&
           &values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32556,7 +33452,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__POINTER_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__POINTER_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__POINTER_INT(closure, return_value, n_param_valu&
           &es, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32568,7 +33464,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__POINTER_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__POINTER_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__POINTER_POINTER(closure, return_value, n_param_&
           &values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32580,7 +33476,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__POINTER_POINTER_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__POINTER_POINTER_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__POINTER_POINTER_POINTER(closure, return_value, &
           &n_param_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32592,7 +33488,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__POINTER_STRING_STRING (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__POINTER_STRING_STRING (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__POINTER_STRING_STRING(closure, return_value, n_&
           &param_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32604,7 +33500,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__POINTER_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__POINTER_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__POINTER_UINT(closure, return_value, n_param_val&
           &ues, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32616,7 +33512,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__POINTER_UINT_ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__POINTER_UINT_ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__POINTER_UINT_ENUM(closure, return_value, n_para&
           &m_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32628,7 +33524,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__POINTER_POINTER_UINT_UINT(closure, return_value&
           &, n_param_values, param_values, invocation_hint, marshal_data) bind(c&
           &) 
@@ -32641,7 +33537,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT(closure, retu&
           &rn_value, n_param_values, param_values, invocation_hint, marshal_data&
           &) bind(c) 
@@ -32654,7 +33550,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__POINTER_UINT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__POINTER_UINT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__POINTER_UINT_UINT(closure, return_value, n_para&
           &m_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32666,7 +33562,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__STRING_INT_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__STRING_INT_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__STRING_INT_POINTER(closure, return_value, n_par&
           &am_values, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -32678,7 +33574,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER(closure, re&
           &turn_value, n_param_values, param_values, invocation_hint, marshal_da&
           &ta) bind(c) 
@@ -32691,7 +33587,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM(closure, return_val&
           &ue, n_param_values, param_values, invocation_hint, marshal_data) bind&
           &(c) 
@@ -32704,7 +33600,7 @@
       type(c_ptr), value :: marshal_data
     end subroutine
 
-    !  extern void gtk_marshal_VOID__UINT_STRING (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+    !  void gtk_marshal_VOID__UINT_STRING (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
     subroutine gtk_marshal_VOID__UINT_STRING(closure, return_value, n_param_valu&
           &es, param_values, invocation_hint, marshal_data) bind(c) 
       use iso_c_binding, only: c_ptr, c_int
@@ -34612,6 +35508,27 @@
     function gtk_recent_info_get_mime_type(info) bind(c) 
       use iso_c_binding, only: c_ptr
       type(c_ptr) :: gtk_recent_info_get_mime_type
+      type(c_ptr), value :: info
+    end function
+
+    ! time_t gtk_recent_info_get_added (GtkRecentInfo *info);
+    function gtk_recent_info_get_added(info) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr
+      integer(c_long) :: gtk_recent_info_get_added
+      type(c_ptr), value :: info
+    end function
+
+    ! time_t gtk_recent_info_get_modified (GtkRecentInfo *info);
+    function gtk_recent_info_get_modified(info) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr
+      integer(c_long) :: gtk_recent_info_get_modified
+      type(c_ptr), value :: info
+    end function
+
+    ! time_t gtk_recent_info_get_visited (GtkRecentInfo *info);
+    function gtk_recent_info_get_visited(info) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr
+      integer(c_long) :: gtk_recent_info_get_visited
       type(c_ptr), value :: info
     end function
 
@@ -38765,17 +39682,19 @@
     end subroutine
 
     ! void gtk_curve_get_vector (GtkCurve *curve, int veclen, gfloat vector[]);
-    subroutine gtk_curve_get_vector(curve, veclen) bind(c) 
+    subroutine gtk_curve_get_vector(curve, veclen, vector) bind(c) 
       use iso_c_binding, only: c_ptr, c_int, c_float
       type(c_ptr), value :: curve
       integer(c_int), value :: veclen
+      real(c_float), dimension(*) :: vector
     end subroutine
 
     ! void gtk_curve_set_vector (GtkCurve *curve, int veclen, gfloat vector[]);
-    subroutine gtk_curve_set_vector(curve, veclen) bind(c) 
+    subroutine gtk_curve_set_vector(curve, veclen, vector) bind(c) 
       use iso_c_binding, only: c_ptr, c_int, c_float
       type(c_ptr), value :: curve
       integer(c_int), value :: veclen
+      real(c_float), dimension(*) :: vector
     end subroutine
 
     ! void gtk_curve_set_curve_type (GtkCurve *curve, GtkCurveType type);
@@ -40620,16 +41539,20 @@
     end subroutine
 
     !  void gtk_icon_theme_set_search_path (GtkIconTheme *icon_theme, const gchar *path[], gint n_elements);
-    subroutine gtk_icon_theme_set_search_path(icon_theme, n_elements) bind(c) 
+    subroutine gtk_icon_theme_set_search_path(icon_theme, path, n_elements) bind&
+          &(c) 
       use iso_c_binding, only: c_ptr, c_char, c_int
       type(c_ptr), value :: icon_theme
+      character(kind=c_char), dimension(*) :: path
       integer(c_int), value :: n_elements
     end subroutine
 
     ! void gtk_icon_theme_get_search_path (GtkIconTheme *icon_theme, gchar **path[], gint *n_elements);
-    subroutine gtk_icon_theme_get_search_path(icon_theme, n_elements) bind(c) 
+    subroutine gtk_icon_theme_get_search_path(icon_theme, path, n_elements) bind&
+          &(c) 
       use iso_c_binding, only: c_ptr, c_char
       type(c_ptr), value :: icon_theme
+      character(kind=c_char), dimension(*) :: path
       type(c_ptr), value :: n_elements
     end subroutine
 
@@ -40682,10 +41605,12 @@
     end function
 
     ! GtkIconInfo * gtk_icon_theme_choose_icon (GtkIconTheme *icon_theme, const gchar *icon_names[], gint size, GtkIconLookupFlags flags);
-    function gtk_icon_theme_choose_icon(icon_theme, size, flags) bind(c) 
+    function gtk_icon_theme_choose_icon(icon_theme, icon_names, size, flags) bin&
+          &d(c) 
       use iso_c_binding, only: c_ptr, c_char, c_int
       type(c_ptr) :: gtk_icon_theme_choose_icon
       type(c_ptr), value :: icon_theme
+      character(kind=c_char), dimension(*) :: icon_names
       integer(c_int), value :: size
       integer(c_int), value :: flags
     end function
@@ -51513,10 +52438,11 @@
     end function
 
     ! GtkWidget* gtk_clist_new_with_titles (gint columns, gchar *titles[]);
-    function gtk_clist_new_with_titles(columns) bind(c) 
+    function gtk_clist_new_with_titles(columns, titles) bind(c) 
       use iso_c_binding, only: c_ptr, c_int, c_char
       type(c_ptr) :: gtk_clist_new_with_titles
       integer(c_int), value :: columns
+      character(kind=c_char), dimension(*) :: titles
     end function
 
     !  void gtk_clist_set_hadjustment (GtkCList *clist, GtkAdjustment *adjustment);
@@ -51920,25 +52846,28 @@
     end function
 
     !  gint gtk_clist_prepend (GtkCList *clist, gchar *text[]);
-    function gtk_clist_prepend(clist) bind(c) 
+    function gtk_clist_prepend(clist, text) bind(c) 
       use iso_c_binding, only: c_int, c_ptr, c_char
       integer(c_int) :: gtk_clist_prepend
       type(c_ptr), value :: clist
+      character(kind=c_char), dimension(*) :: text
     end function
 
     ! gint gtk_clist_append (GtkCList *clist, gchar *text[]);
-    function gtk_clist_append(clist) bind(c) 
+    function gtk_clist_append(clist, text) bind(c) 
       use iso_c_binding, only: c_int, c_ptr, c_char
       integer(c_int) :: gtk_clist_append
       type(c_ptr), value :: clist
+      character(kind=c_char), dimension(*) :: text
     end function
 
     !  gint gtk_clist_insert (GtkCList *clist, gint row, gchar *text[]);
-    function gtk_clist_insert(clist, row) bind(c) 
+    function gtk_clist_insert(clist, row, text) bind(c) 
       use iso_c_binding, only: c_int, c_ptr, c_char
       integer(c_int) :: gtk_clist_insert
       type(c_ptr), value :: clist
       integer(c_int), value :: row
+      character(kind=c_char), dimension(*) :: text
     end function
 
     !  void gtk_clist_remove (GtkCList *clist, gint row);
@@ -55792,11 +56721,12 @@
     end function
 
     ! GtkWidget * gtk_ctree_new_with_titles (gint columns, gint tree_column, gchar *titles[]);
-    function gtk_ctree_new_with_titles(columns, tree_column) bind(c) 
+    function gtk_ctree_new_with_titles(columns, tree_column, titles) bind(c) 
       use iso_c_binding, only: c_ptr, c_int, c_char
       type(c_ptr) :: gtk_ctree_new_with_titles
       integer(c_int), value :: columns
       integer(c_int), value :: tree_column
+      character(kind=c_char), dimension(*) :: titles
     end function
 
     ! GtkWidget * gtk_ctree_new (gint columns, gint tree_column);
@@ -55808,14 +56738,15 @@
     end function
 
     ! GtkCTreeNode * gtk_ctree_insert_node (GtkCTree *ctree, GtkCTreeNode *parent, GtkCTreeNode *sibling, gchar *text[], guint8 spacing, GdkPixmap *pixmap_closed, GdkBitmap *mask_closed, GdkPixmap *pixmap_opened, GdkBitmap *mask_opened, gboolean is_leaf, gboolean expanded);
-    function gtk_ctree_insert_node(ctree, parent, sibling, spacing, pixmap_close&
-          &d, mask_closed, pixmap_opened, mask_opened, is_leaf, expanded) bind(c&
-          &) 
+    function gtk_ctree_insert_node(ctree, parent, sibling, text, spacing, pixmap&
+          &_closed, mask_closed, pixmap_opened, mask_opened, is_leaf, expanded) &
+          &bind(c) 
       use iso_c_binding, only: c_ptr, c_char, c_int8_t, c_bool
       type(c_ptr) :: gtk_ctree_insert_node
       type(c_ptr), value :: ctree
       type(c_ptr), value :: parent
       type(c_ptr), value :: sibling
+      character(kind=c_char), dimension(*) :: text
       integer(c_int8_t), value :: spacing
       type(c_ptr), value :: pixmap_closed
       type(c_ptr), value :: mask_closed
@@ -64811,5 +65742,1099 @@
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: pango_layout_iter_get_baseline
       type(c_ptr), value :: iter
+    end function
+
+    !     void gdk_pixbuf_xlib_init (Display *display, int screen_num);
+    subroutine gdk_pixbuf_xlib_init(display, screen_num) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: display
+      integer(c_int), value :: screen_num
+    end subroutine
+
+    !  void gdk_pixbuf_xlib_init_with_depth (Display *display, int screen_num, int prefDepth);
+    subroutine gdk_pixbuf_xlib_init_with_depth(display, screen_num, prefDepth) b&
+          &ind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: display
+      integer(c_int), value :: screen_num
+      integer(c_int), value :: prefDepth
+    end subroutine
+
+    !    void gdk_pixbuf_xlib_render_threshold_alpha (GdkPixbuf *pixbuf, Pixmap bitmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int alpha_threshold);
+    subroutine gdk_pixbuf_xlib_render_threshold_alpha(pixbuf, bitmap, src_x, src&
+          &_y, dest_x, dest_y, width, height, alpha_threshold) bind(c) 
+      use iso_c_binding, only: c_ptr, c_long, c_int
+      type(c_ptr), value :: pixbuf
+      integer(c_long), value :: bitmap
+      integer(c_int), value :: src_x
+      integer(c_int), value :: src_y
+      integer(c_int), value :: dest_x
+      integer(c_int), value :: dest_y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: alpha_threshold
+    end subroutine
+
+    !  void gdk_pixbuf_xlib_render_to_drawable (GdkPixbuf *pixbuf, Drawable drawable, GC gc, int src_x, int src_y, int dest_x, int dest_y, int width, int height, XlibRgbDither dither, int x_dither, int y_dither);
+    subroutine gdk_pixbuf_xlib_render_to_drawable(pixbuf, drawable, gc, src_x, s&
+          &rc_y, dest_x, dest_y, width, height, dither, x_dither, y_dither) bind&
+          &(c) 
+      use iso_c_binding, only: c_ptr, c_long, c_int
+      type(c_ptr), value :: pixbuf
+      integer(c_long), value :: drawable
+      type(c_ptr), value :: gc
+      integer(c_int), value :: src_x
+      integer(c_int), value :: src_y
+      integer(c_int), value :: dest_x
+      integer(c_int), value :: dest_y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: dither
+      integer(c_int), value :: x_dither
+      integer(c_int), value :: y_dither
+    end subroutine
+
+    !  void gdk_pixbuf_xlib_render_to_drawable_alpha (GdkPixbuf *pixbuf, Drawable drawable, int src_x, int src_y, int dest_x, int dest_y, int width, int height, GdkPixbufAlphaMode alpha_mode, int alpha_threshold, XlibRgbDither dither, int x_dither, int y_dither);
+    subroutine gdk_pixbuf_xlib_render_to_drawable_alpha(pixbuf, drawable, src_x,&
+          & src_y, dest_x, dest_y, width, height, alpha_mode, alpha_threshold, d&
+          &ither, x_dither, y_dither) bind(c) 
+      use iso_c_binding, only: c_ptr, c_long, c_int
+      type(c_ptr), value :: pixbuf
+      integer(c_long), value :: drawable
+      integer(c_int), value :: src_x
+      integer(c_int), value :: src_y
+      integer(c_int), value :: dest_x
+      integer(c_int), value :: dest_y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: alpha_mode
+      integer(c_int), value :: alpha_threshold
+      integer(c_int), value :: dither
+      integer(c_int), value :: x_dither
+      integer(c_int), value :: y_dither
+    end subroutine
+
+    !  void gdk_pixbuf_xlib_render_pixmap_and_mask (GdkPixbuf *pixbuf, Pixmap *pixmap_return, Pixmap *mask_return, int alpha_threshold);
+    subroutine gdk_pixbuf_xlib_render_pixmap_and_mask(pixbuf, pixmap_return, mas&
+          &k_return, alpha_threshold) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: pixbuf
+      type(c_ptr), value :: pixmap_return
+      type(c_ptr), value :: mask_return
+      integer(c_int), value :: alpha_threshold
+    end subroutine
+
+    !    GdkPixbuf *gdk_pixbuf_xlib_get_from_drawable (GdkPixbuf *dest, Drawable src, Colormap cmap, Visual *visual, int src_x, int src_y, int dest_x, int dest_y, int width, int height);
+    function gdk_pixbuf_xlib_get_from_drawable(dest, src, cmap, visual, src_x, s&
+          &rc_y, dest_x, dest_y, width, height) bind(c) 
+      use iso_c_binding, only: c_ptr, c_long, c_int
+      type(c_ptr) :: gdk_pixbuf_xlib_get_from_drawable
+      type(c_ptr), value :: dest
+      integer(c_long), value :: src
+      integer(c_long), value :: cmap
+      type(c_ptr), value :: visual
+      integer(c_int), value :: src_x
+      integer(c_int), value :: src_y
+      integer(c_int), value :: dest_x
+      integer(c_int), value :: dest_y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+    end function
+
+    !   void xlib_rgb_init (Display *display, Screen *screen);
+    subroutine xlib_rgb_init(display, screen) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: display
+      type(c_ptr), value :: screen
+    end subroutine
+
+    ! void xlib_rgb_init_with_depth (Display *display, Screen *screen, int prefDepth);
+    subroutine xlib_rgb_init_with_depth(display, screen, prefDepth) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: display
+      type(c_ptr), value :: screen
+      integer(c_int), value :: prefDepth
+    end subroutine
+
+    !  unsigned long xlib_rgb_xpixel_from_rgb (guint32 rgb);
+    function xlib_rgb_xpixel_from_rgb(rgb) bind(c) 
+      use iso_c_binding, only: c_long, c_int32_t
+      integer(c_long) :: xlib_rgb_xpixel_from_rgb
+      integer(c_int32_t), value :: rgb
+    end function
+
+    !  void xlib_rgb_gc_set_foreground (GC gc, guint32 rgb);
+    subroutine xlib_rgb_gc_set_foreground(gc, rgb) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t
+      type(c_ptr), value :: gc
+      integer(c_int32_t), value :: rgb
+    end subroutine
+
+    !  void xlib_rgb_gc_set_background (GC gc, guint32 rgb);
+    subroutine xlib_rgb_gc_set_background(gc, rgb) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t
+      type(c_ptr), value :: gc
+      integer(c_int32_t), value :: rgb
+    end subroutine
+
+    !  void xlib_draw_rgb_image (Drawable drawable, GC gc, int x, int y, int width, int height, XlibRgbDither dith, unsigned char *rgb_buf, int rowstride);
+    subroutine xlib_draw_rgb_image(drawable, gc, x, y, width, height, dith, rgb_&
+          &buf, rowstride) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr, c_int
+      integer(c_long), value :: drawable
+      type(c_ptr), value :: gc
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: dith
+      type(c_ptr), value :: rgb_buf
+      integer(c_int), value :: rowstride
+    end subroutine
+
+    !  void xlib_draw_rgb_image_dithalign (Drawable drawable, GC gc, int x, int y, int width, int height, XlibRgbDither dith, unsigned char *rgb_buf, int rowstride, int xdith, int ydith);
+    subroutine xlib_draw_rgb_image_dithalign(drawable, gc, x, y, width, height, &
+          &dith, rgb_buf, rowstride, xdith, ydith) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr, c_int
+      integer(c_long), value :: drawable
+      type(c_ptr), value :: gc
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: dith
+      type(c_ptr), value :: rgb_buf
+      integer(c_int), value :: rowstride
+      integer(c_int), value :: xdith
+      integer(c_int), value :: ydith
+    end subroutine
+
+    !  void xlib_draw_rgb_32_image (Drawable drawable, GC gc, int x, int y, int width, int height, XlibRgbDither dith, unsigned char *buf, int rowstride);
+    subroutine xlib_draw_rgb_32_image(drawable, gc, x, y, width, height, dith, b&
+          &uf, rowstride) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr, c_int
+      integer(c_long), value :: drawable
+      type(c_ptr), value :: gc
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: dith
+      type(c_ptr), value :: buf
+      integer(c_int), value :: rowstride
+    end subroutine
+
+    !  void xlib_draw_gray_image (Drawable drawable, GC gc, int x, int y, int width, int height, XlibRgbDither dith, unsigned char *buf, int rowstride);
+    subroutine xlib_draw_gray_image(drawable, gc, x, y, width, height, dith, buf&
+          &, rowstride) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr, c_int
+      integer(c_long), value :: drawable
+      type(c_ptr), value :: gc
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: dith
+      type(c_ptr), value :: buf
+      integer(c_int), value :: rowstride
+    end subroutine
+
+    !  XlibRgbCmap * xlib_rgb_cmap_new (guint32 *colors, int n_colors);
+    function xlib_rgb_cmap_new(colors, n_colors) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: xlib_rgb_cmap_new
+      type(c_ptr), value :: colors
+      integer(c_int), value :: n_colors
+    end function
+
+    !  void xlib_rgb_cmap_free (XlibRgbCmap *cmap);
+    subroutine xlib_rgb_cmap_free(cmap) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: cmap
+    end subroutine
+
+    !  void xlib_draw_indexed_image (Drawable drawable, GC gc, int x, int y, int width, int height, XlibRgbDither dith, unsigned char *buf, int rowstride, XlibRgbCmap *cmap);
+    subroutine xlib_draw_indexed_image(drawable, gc, x, y, width, height, dith, &
+          &buf, rowstride, cmap) bind(c) 
+      use iso_c_binding, only: c_long, c_ptr, c_int
+      integer(c_long), value :: drawable
+      type(c_ptr), value :: gc
+      integer(c_int), value :: x
+      integer(c_int), value :: y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: dith
+      type(c_ptr), value :: buf
+      integer(c_int), value :: rowstride
+      type(c_ptr), value :: cmap
+    end subroutine
+
+    !  Bool xlib_rgb_ditherable (void);
+    function xlib_rgb_ditherable() bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int) :: xlib_rgb_ditherable
+    end function
+
+    !  void xlib_rgb_set_verbose (Bool verbose);
+    subroutine xlib_rgb_set_verbose(verbose) bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int), value :: verbose
+    end subroutine
+
+    !  void xlib_rgb_set_install (Bool install);
+    subroutine xlib_rgb_set_install(install) bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int), value :: install
+    end subroutine
+
+    !  void xlib_rgb_set_min_colors (int min_colors);
+    subroutine xlib_rgb_set_min_colors(min_colors) bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int), value :: min_colors
+    end subroutine
+
+    !  Colormap xlib_rgb_get_cmap (void);
+    function xlib_rgb_get_cmap() bind(c) 
+      use iso_c_binding, only: c_long
+      integer(c_long) :: xlib_rgb_get_cmap
+    end function
+
+    !  Visual * xlib_rgb_get_visual (void);
+    function xlib_rgb_get_visual() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: xlib_rgb_get_visual
+    end function
+
+    !  XVisualInfo * xlib_rgb_get_visual_info (void);
+    function xlib_rgb_get_visual_info() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: xlib_rgb_get_visual_info
+    end function
+
+    !  int xlib_rgb_get_depth (void);
+    function xlib_rgb_get_depth() bind(c) 
+      use iso_c_binding, only: c_int
+      integer(c_int) :: xlib_rgb_get_depth
+    end function
+
+    !  Display * xlib_rgb_get_display (void);
+    function xlib_rgb_get_display() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: xlib_rgb_get_display
+    end function
+
+    !  Screen * xlib_rgb_get_screen (void);
+    function xlib_rgb_get_screen() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: xlib_rgb_get_screen
+    end function
+
+    !   GType gdk_pixbuf_simple_anim_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_simple_anim_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_simple_anim_get_type
+    end function
+
+    ! GType gdk_pixbuf_simple_anim_iter_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_simple_anim_iter_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_simple_anim_iter_get_type
+    end function
+
+    !  GdkPixbufSimpleAnim *gdk_pixbuf_simple_anim_new (gint width, gint height, gfloat rate);
+    function gdk_pixbuf_simple_anim_new(width, height, rate) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_float
+      type(c_ptr) :: gdk_pixbuf_simple_anim_new
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      real(c_float), value :: rate
+    end function
+
+    ! void gdk_pixbuf_simple_anim_add_frame (GdkPixbufSimpleAnim *animation, GdkPixbuf *pixbuf);
+    subroutine gdk_pixbuf_simple_anim_add_frame(animation, pixbuf) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: animation
+      type(c_ptr), value :: pixbuf
+    end subroutine
+
+    ! void gdk_pixbuf_simple_anim_set_loop (GdkPixbufSimpleAnim *animation, gboolean loop);
+    subroutine gdk_pixbuf_simple_anim_set_loop(animation, loop) bind(c) 
+      use iso_c_binding, only: c_ptr, c_bool
+      type(c_ptr), value :: animation
+      logical(c_bool), value :: loop
+    end subroutine
+
+    ! gboolean gdk_pixbuf_simple_anim_get_loop (GdkPixbufSimpleAnim *animation);
+    function gdk_pixbuf_simple_anim_get_loop(animation) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_pixbuf_simple_anim_get_loop
+      type(c_ptr), value :: animation
+    end function
+
+    !   GType gdk_pixbuf_alpha_mode_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_alpha_mode_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_alpha_mode_get_type
+    end function
+
+    !  GType gdk_colorspace_get_type (void) G_GNUC_CONST;
+    function gdk_colorspace_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_colorspace_get_type
+    end function
+
+    !  GType gdk_pixbuf_error_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_error_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_error_get_type
+    end function
+
+    !  GType gdk_interp_type_get_type (void) G_GNUC_CONST;
+    function gdk_interp_type_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_interp_type_get_type
+    end function
+
+    !  GType gdk_pixbuf_rotation_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_rotation_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_rotation_get_type
+    end function
+
+    !   GType gdk_pixbuf_loader_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_loader_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_loader_get_type
+    end function
+
+    ! GdkPixbufLoader * gdk_pixbuf_loader_new (void);
+    function gdk_pixbuf_loader_new() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_loader_new
+    end function
+
+    ! GdkPixbufLoader * gdk_pixbuf_loader_new_with_type (const char *image_type, GError **error);
+    function gdk_pixbuf_loader_new_with_type(image_type, error) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: gdk_pixbuf_loader_new_with_type
+      character(kind=c_char), dimension(*) :: image_type
+      type(c_ptr), value :: error
+    end function
+
+    ! GdkPixbufLoader * gdk_pixbuf_loader_new_with_mime_type (const char *mime_type, GError **error);
+    function gdk_pixbuf_loader_new_with_mime_type(mime_type, error) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: gdk_pixbuf_loader_new_with_mime_type
+      character(kind=c_char), dimension(*) :: mime_type
+      type(c_ptr), value :: error
+    end function
+
+    ! void gdk_pixbuf_loader_set_size (GdkPixbufLoader *loader, int width, int height);
+    subroutine gdk_pixbuf_loader_set_size(loader, width, height) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: loader
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+    end subroutine
+
+    ! gboolean gdk_pixbuf_loader_write (GdkPixbufLoader *loader, const guchar *buf, gsize count, GError **error);
+    function gdk_pixbuf_loader_write(loader, buf, count, error) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_char, c_size_t
+      logical(c_bool) :: gdk_pixbuf_loader_write
+      type(c_ptr), value :: loader
+      character(kind=c_char), dimension(*) :: buf
+      integer(c_size_t), value :: count
+      type(c_ptr), value :: error
+    end function
+
+    ! GdkPixbuf * gdk_pixbuf_loader_get_pixbuf (GdkPixbufLoader *loader);
+    function gdk_pixbuf_loader_get_pixbuf(loader) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_loader_get_pixbuf
+      type(c_ptr), value :: loader
+    end function
+
+    ! GdkPixbufAnimation * gdk_pixbuf_loader_get_animation (GdkPixbufLoader *loader);
+    function gdk_pixbuf_loader_get_animation(loader) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_loader_get_animation
+      type(c_ptr), value :: loader
+    end function
+
+    ! gboolean gdk_pixbuf_loader_close (GdkPixbufLoader *loader, GError **error);
+    function gdk_pixbuf_loader_close(loader, error) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_pixbuf_loader_close
+      type(c_ptr), value :: loader
+      type(c_ptr), value :: error
+    end function
+
+    ! GdkPixbufFormat *gdk_pixbuf_loader_get_format (GdkPixbufLoader *loader);
+    function gdk_pixbuf_loader_get_format(loader) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_loader_get_format
+      type(c_ptr), value :: loader
+    end function
+
+    !   guint8* gdk_pixdata_serialize (const GdkPixdata *pixdata, guint *stream_length_p);
+    function gdk_pixdata_serialize(pixdata, stream_length_p) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixdata_serialize
+      type(c_ptr), value :: pixdata
+      type(c_ptr), value :: stream_length_p
+    end function
+
+    ! gboolean gdk_pixdata_deserialize (GdkPixdata *pixdata, guint stream_length, const guint8 *stream, GError **error);
+    function gdk_pixdata_deserialize(pixdata, stream_length, stream, error) bind&
+          &(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_int
+      logical(c_bool) :: gdk_pixdata_deserialize
+      type(c_ptr), value :: pixdata
+      integer(c_int), value :: stream_length
+      type(c_ptr), value :: stream
+      type(c_ptr), value :: error
+    end function
+
+    ! gpointer gdk_pixdata_from_pixbuf (GdkPixdata *pixdata, const GdkPixbuf *pixbuf, gboolean use_rle);
+    function gdk_pixdata_from_pixbuf(pixdata, pixbuf, use_rle) bind(c) 
+      use iso_c_binding, only: c_funptr, c_ptr, c_bool
+      type(c_funptr) :: gdk_pixdata_from_pixbuf
+      type(c_ptr), value :: pixdata
+      type(c_ptr), value :: pixbuf
+      logical(c_bool), value :: use_rle
+    end function
+
+    ! GdkPixbuf* gdk_pixbuf_from_pixdata (const GdkPixdata *pixdata, gboolean copy_pixels, GError **error);
+    function gdk_pixbuf_from_pixdata(pixdata, copy_pixels, error) bind(c) 
+      use iso_c_binding, only: c_ptr, c_bool
+      type(c_ptr) :: gdk_pixbuf_from_pixdata
+      type(c_ptr), value :: pixdata
+      logical(c_bool), value :: copy_pixels
+      type(c_ptr), value :: error
+    end function
+
+    !    GString* gdk_pixdata_to_csource (GdkPixdata *pixdata, const gchar *name, GdkPixdataDumpType dump_type);
+    function gdk_pixdata_to_csource(pixdata, name, dump_type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char, c_int
+      type(c_ptr) :: gdk_pixdata_to_csource
+      type(c_ptr), value :: pixdata
+      character(kind=c_char), dimension(*) :: name
+      integer(c_int), value :: dump_type
+    end function
+
+    !   GQuark gdk_pixbuf_error_quark (void);
+    function gdk_pixbuf_error_quark() bind(c) 
+      use iso_c_binding, only: c_int32_t
+      integer(c_int32_t) :: gdk_pixbuf_error_quark
+    end function
+
+    !    GType gdk_pixbuf_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_get_type
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_ref (GdkPixbuf *pixbuf);
+    function gdk_pixbuf_ref(pixbuf) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_ref
+      type(c_ptr), value :: pixbuf
+    end function
+
+    ! void gdk_pixbuf_unref (GdkPixbuf *pixbuf);
+    subroutine gdk_pixbuf_unref(pixbuf) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: pixbuf
+    end subroutine
+
+    !  GdkColorspace gdk_pixbuf_get_colorspace (const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_colorspace(pixbuf) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: gdk_pixbuf_get_colorspace
+      type(c_ptr), value :: pixbuf
+    end function
+
+    ! int gdk_pixbuf_get_n_channels (const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_n_channels(pixbuf) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: gdk_pixbuf_get_n_channels
+      type(c_ptr), value :: pixbuf
+    end function
+
+    ! gboolean gdk_pixbuf_get_has_alpha (const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_has_alpha(pixbuf) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_pixbuf_get_has_alpha
+      type(c_ptr), value :: pixbuf
+    end function
+
+    ! int gdk_pixbuf_get_bits_per_sample (const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_bits_per_sample(pixbuf) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: gdk_pixbuf_get_bits_per_sample
+      type(c_ptr), value :: pixbuf
+    end function
+
+    ! guchar *gdk_pixbuf_get_pixels (const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_pixels(pixbuf) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_get_pixels
+      type(c_ptr), value :: pixbuf
+    end function
+
+    ! int gdk_pixbuf_get_width (const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_width(pixbuf) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: gdk_pixbuf_get_width
+      type(c_ptr), value :: pixbuf
+    end function
+
+    ! int gdk_pixbuf_get_height (const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_height(pixbuf) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: gdk_pixbuf_get_height
+      type(c_ptr), value :: pixbuf
+    end function
+
+    ! int gdk_pixbuf_get_rowstride (const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_get_rowstride(pixbuf) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: gdk_pixbuf_get_rowstride
+      type(c_ptr), value :: pixbuf
+    end function
+
+    !    GdkPixbuf *gdk_pixbuf_new (GdkColorspace colorspace, gboolean has_alpha, int bits_per_sample, int width, int height);
+    function gdk_pixbuf_new(colorspace, has_alpha, bits_per_sample, width, heigh&
+          &t) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_bool
+      type(c_ptr) :: gdk_pixbuf_new
+      integer(c_int), value :: colorspace
+      logical(c_bool), value :: has_alpha
+      integer(c_int), value :: bits_per_sample
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_copy (const GdkPixbuf *pixbuf);
+    function gdk_pixbuf_copy(pixbuf) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_copy
+      type(c_ptr), value :: pixbuf
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_new_subpixbuf (GdkPixbuf *src_pixbuf, int src_x, int src_y, int width, int height);
+    function gdk_pixbuf_new_subpixbuf(src_pixbuf, src_x, src_y, width, height) b&
+          &ind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: gdk_pixbuf_new_subpixbuf
+      type(c_ptr), value :: src_pixbuf
+      integer(c_int), value :: src_x
+      integer(c_int), value :: src_y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_new_from_file (const char *filename, GError **error);
+    function gdk_pixbuf_new_from_file(filename, error) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: gdk_pixbuf_new_from_file
+      character(kind=c_char), dimension(*) :: filename
+      type(c_ptr), value :: error
+    end function
+
+    ! GdkPixbuf *gdk_pixbuf_new_from_file_at_size (const char *filename, int width, int height, GError **error);
+    function gdk_pixbuf_new_from_file_at_size(filename, width, height, error) bi&
+          &nd(c) 
+      use iso_c_binding, only: c_ptr, c_char, c_int
+      type(c_ptr) :: gdk_pixbuf_new_from_file_at_size
+      character(kind=c_char), dimension(*) :: filename
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      type(c_ptr), value :: error
+    end function
+
+    ! GdkPixbuf *gdk_pixbuf_new_from_file_at_scale (const char *filename, int width, int height, gboolean preserve_aspect_ratio, GError **error);
+    function gdk_pixbuf_new_from_file_at_scale(filename, width, height, preserve&
+          &_aspect_ratio, error) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char, c_int, c_bool
+      type(c_ptr) :: gdk_pixbuf_new_from_file_at_scale
+      character(kind=c_char), dimension(*) :: filename
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      logical(c_bool), value :: preserve_aspect_ratio
+      type(c_ptr), value :: error
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_new_from_data (const guchar *data, GdkColorspace colorspace, gboolean has_alpha, int bits_per_sample, int width, int height, int rowstride, GdkPixbufDestroyNotify destroy_fn, gpointer destroy_fn_data);
+    function gdk_pixbuf_new_from_data(data, colorspace, has_alpha, bits_per_samp&
+          &le, width, height, rowstride, destroy_fn, destroy_fn_data) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char, c_int, c_bool, c_funptr
+      type(c_ptr) :: gdk_pixbuf_new_from_data
+      character(kind=c_char), dimension(*) :: data
+      integer(c_int), value :: colorspace
+      logical(c_bool), value :: has_alpha
+      integer(c_int), value :: bits_per_sample
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      integer(c_int), value :: rowstride
+      type(c_funptr), value :: destroy_fn
+      type(c_ptr), value :: destroy_fn_data
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_new_from_xpm_data (const char **data);
+    function gdk_pixbuf_new_from_xpm_data(data) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: gdk_pixbuf_new_from_xpm_data
+      character(kind=c_char), dimension(*) :: data
+    end function
+
+    ! GdkPixbuf* gdk_pixbuf_new_from_inline (gint data_length, const guint8 *data, gboolean copy_pixels, GError **error);
+    function gdk_pixbuf_new_from_inline(data_length, data, copy_pixels, error) b&
+          &ind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_bool
+      type(c_ptr) :: gdk_pixbuf_new_from_inline
+      integer(c_int), value :: data_length
+      type(c_ptr), value :: data
+      logical(c_bool), value :: copy_pixels
+      type(c_ptr), value :: error
+    end function
+
+    !   void gdk_pixbuf_fill (GdkPixbuf *pixbuf, guint32 pixel);
+    subroutine gdk_pixbuf_fill(pixbuf, pixel) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int32_t
+      type(c_ptr), value :: pixbuf
+      integer(c_int32_t), value :: pixel
+    end subroutine
+
+    !  gboolean gdk_pixbuf_savev (GdkPixbuf *pixbuf, const char *filename, const char *type, char **option_keys, char **option_values, GError **error);
+    function gdk_pixbuf_savev(pixbuf, filename, type, option_keys, option_values&
+          &, error) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_char
+      logical(c_bool) :: gdk_pixbuf_savev
+      type(c_ptr), value :: pixbuf
+      character(kind=c_char), dimension(*) :: filename
+      character(kind=c_char), dimension(*) :: type
+      character(kind=c_char), dimension(*) :: option_keys
+      character(kind=c_char), dimension(*) :: option_values
+      type(c_ptr), value :: error
+    end function
+
+    !  gboolean gdk_pixbuf_save_to_callbackv (GdkPixbuf *pixbuf, GdkPixbufSaveFunc save_func, gpointer user_data, const char *type, char **option_keys, char **option_values, GError **error);
+    function gdk_pixbuf_save_to_callbackv(pixbuf, save_func, user_data, type, op&
+          &tion_keys, option_values, error) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_funptr, c_char
+      logical(c_bool) :: gdk_pixbuf_save_to_callbackv
+      type(c_ptr), value :: pixbuf
+      type(c_funptr), value :: save_func
+      type(c_ptr), value :: user_data
+      character(kind=c_char), dimension(*) :: type
+      character(kind=c_char), dimension(*) :: option_keys
+      character(kind=c_char), dimension(*) :: option_values
+      type(c_ptr), value :: error
+    end function
+
+    !  gboolean gdk_pixbuf_save_to_bufferv (GdkPixbuf *pixbuf, gchar **buffer, gsize *buffer_size, const char *type, char **option_keys, char **option_values, GError **error);
+    function gdk_pixbuf_save_to_bufferv(pixbuf, buffer, buffer_size, type, optio&
+          &n_keys, option_values, error) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_char
+      logical(c_bool) :: gdk_pixbuf_save_to_bufferv
+      type(c_ptr), value :: pixbuf
+      character(kind=c_char), dimension(*) :: buffer
+      type(c_ptr), value :: buffer_size
+      character(kind=c_char), dimension(*) :: type
+      character(kind=c_char), dimension(*) :: option_keys
+      character(kind=c_char), dimension(*) :: option_values
+      type(c_ptr), value :: error
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_new_from_stream (GInputStream *stream, GCancellable *cancellable, GError **error);
+    function gdk_pixbuf_new_from_stream(stream, cancellable, error) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_new_from_stream
+      type(c_ptr), value :: stream
+      type(c_ptr), value :: cancellable
+      type(c_ptr), value :: error
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_new_from_stream_at_scale (GInputStream *stream, gint width, gint height, gboolean preserve_aspect_ratio, GCancellable *cancellable, GError **error);
+    function gdk_pixbuf_new_from_stream_at_scale(stream, width, height, preserve&
+          &_aspect_ratio, cancellable, error) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_bool
+      type(c_ptr) :: gdk_pixbuf_new_from_stream_at_scale
+      type(c_ptr), value :: stream
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      logical(c_bool), value :: preserve_aspect_ratio
+      type(c_ptr), value :: cancellable
+      type(c_ptr), value :: error
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_add_alpha (const GdkPixbuf *pixbuf, gboolean substitute_color, guchar r, guchar g, guchar b);
+    function gdk_pixbuf_add_alpha(pixbuf, substitute_color, r, g, b) bind(c) 
+      use iso_c_binding, only: c_ptr, c_bool, c_char
+      type(c_ptr) :: gdk_pixbuf_add_alpha
+      type(c_ptr), value :: pixbuf
+      logical(c_bool), value :: substitute_color
+      character(c_char), value :: r
+      character(c_char), value :: g
+      character(c_char), value :: b
+    end function
+
+    !  void gdk_pixbuf_copy_area (const GdkPixbuf *src_pixbuf, int src_x, int src_y, int width, int height, GdkPixbuf *dest_pixbuf, int dest_x, int dest_y);
+    subroutine gdk_pixbuf_copy_area(src_pixbuf, src_x, src_y, width, height, des&
+          &t_pixbuf, dest_x, dest_y) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr), value :: src_pixbuf
+      integer(c_int), value :: src_x
+      integer(c_int), value :: src_y
+      integer(c_int), value :: width
+      integer(c_int), value :: height
+      type(c_ptr), value :: dest_pixbuf
+      integer(c_int), value :: dest_x
+      integer(c_int), value :: dest_y
+    end subroutine
+
+    !  void gdk_pixbuf_saturate_and_pixelate (const GdkPixbuf *src, GdkPixbuf *dest, gfloat saturation, gboolean pixelate);
+    subroutine gdk_pixbuf_saturate_and_pixelate(src, dest, saturation, pixelate)&
+          & bind(c) 
+      use iso_c_binding, only: c_ptr, c_float, c_bool
+      type(c_ptr), value :: src
+      type(c_ptr), value :: dest
+      real(c_float), value :: saturation
+      logical(c_bool), value :: pixelate
+    end subroutine
+
+    !  GdkPixbuf *gdk_pixbuf_apply_embedded_orientation (GdkPixbuf *src);
+    function gdk_pixbuf_apply_embedded_orientation(src) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_apply_embedded_orientation
+      type(c_ptr), value :: src
+    end function
+
+    !  G_CONST_RETURN gchar * gdk_pixbuf_get_option (GdkPixbuf *pixbuf, const gchar *key);
+    function gdk_pixbuf_get_option(pixbuf, key) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: gdk_pixbuf_get_option
+      type(c_ptr), value :: pixbuf
+      character(kind=c_char), dimension(*) :: key
+    end function
+
+    !    GType gdk_pixbuf_format_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_format_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_format_get_type
+    end function
+
+    !  GSList *gdk_pixbuf_get_formats (void);
+    function gdk_pixbuf_get_formats() bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_get_formats
+    end function
+
+    ! gchar *gdk_pixbuf_format_get_name (GdkPixbufFormat *format);
+    function gdk_pixbuf_format_get_name(format) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_format_get_name
+      type(c_ptr), value :: format
+    end function
+
+    ! gchar *gdk_pixbuf_format_get_description (GdkPixbufFormat *format);
+    function gdk_pixbuf_format_get_description(format) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_format_get_description
+      type(c_ptr), value :: format
+    end function
+
+    ! gchar **gdk_pixbuf_format_get_mime_types (GdkPixbufFormat *format);
+    function gdk_pixbuf_format_get_mime_types(format) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_format_get_mime_types
+      type(c_ptr), value :: format
+    end function
+
+    ! gchar **gdk_pixbuf_format_get_extensions (GdkPixbufFormat *format);
+    function gdk_pixbuf_format_get_extensions(format) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_format_get_extensions
+      type(c_ptr), value :: format
+    end function
+
+    ! gboolean gdk_pixbuf_format_is_writable (GdkPixbufFormat *format);
+    function gdk_pixbuf_format_is_writable(format) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_pixbuf_format_is_writable
+      type(c_ptr), value :: format
+    end function
+
+    ! gboolean gdk_pixbuf_format_is_scalable (GdkPixbufFormat *format);
+    function gdk_pixbuf_format_is_scalable(format) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_pixbuf_format_is_scalable
+      type(c_ptr), value :: format
+    end function
+
+    ! gboolean gdk_pixbuf_format_is_disabled (GdkPixbufFormat *format);
+    function gdk_pixbuf_format_is_disabled(format) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_pixbuf_format_is_disabled
+      type(c_ptr), value :: format
+    end function
+
+    ! void gdk_pixbuf_format_set_disabled (GdkPixbufFormat *format, gboolean disabled);
+    subroutine gdk_pixbuf_format_set_disabled(format, disabled) bind(c) 
+      use iso_c_binding, only: c_ptr, c_bool
+      type(c_ptr), value :: format
+      logical(c_bool), value :: disabled
+    end subroutine
+
+    ! gchar *gdk_pixbuf_format_get_license (GdkPixbufFormat *format);
+    function gdk_pixbuf_format_get_license(format) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_format_get_license
+      type(c_ptr), value :: format
+    end function
+
+    !  GdkPixbufFormat *gdk_pixbuf_get_file_info (const gchar *filename, gint *width, gint *height);
+    function gdk_pixbuf_get_file_info(filename, width, height) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: gdk_pixbuf_get_file_info
+      character(kind=c_char), dimension(*) :: filename
+      type(c_ptr), value :: width
+      type(c_ptr), value :: height
+    end function
+
+    !  GdkPixbufFormat *gdk_pixbuf_format_copy (const GdkPixbufFormat *format);
+    function gdk_pixbuf_format_copy(format) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_format_copy
+      type(c_ptr), value :: format
+    end function
+
+    ! void gdk_pixbuf_format_free (GdkPixbufFormat *format);
+    subroutine gdk_pixbuf_format_free(format) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: format
+    end subroutine
+
+    !    gboolean gdk_pixbuf_set_option (GdkPixbuf *pixbuf, const gchar *key, const gchar *value);
+    function gdk_pixbuf_set_option(pixbuf, key, value) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr, c_char
+      logical(c_bool) :: gdk_pixbuf_set_option
+      type(c_ptr), value :: pixbuf
+      character(kind=c_char), dimension(*) :: key
+      character(kind=c_char), dimension(*) :: value
+    end function
+
+    !   GType gdk_pixbuf_animation_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_animation_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_animation_get_type
+    end function
+
+    !  GdkPixbufAnimation *gdk_pixbuf_animation_new_from_file (const char *filename, GError **error);
+    function gdk_pixbuf_animation_new_from_file(filename, error) bind(c) 
+      use iso_c_binding, only: c_ptr, c_char
+      type(c_ptr) :: gdk_pixbuf_animation_new_from_file
+      character(kind=c_char), dimension(*) :: filename
+      type(c_ptr), value :: error
+    end function
+
+    !  GdkPixbufAnimation *gdk_pixbuf_animation_ref (GdkPixbufAnimation *animation);
+    function gdk_pixbuf_animation_ref(animation) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_animation_ref
+      type(c_ptr), value :: animation
+    end function
+
+    ! void gdk_pixbuf_animation_unref (GdkPixbufAnimation *animation);
+    subroutine gdk_pixbuf_animation_unref(animation) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr), value :: animation
+    end subroutine
+
+    !  int gdk_pixbuf_animation_get_width (GdkPixbufAnimation *animation);
+    function gdk_pixbuf_animation_get_width(animation) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: gdk_pixbuf_animation_get_width
+      type(c_ptr), value :: animation
+    end function
+
+    ! int gdk_pixbuf_animation_get_height (GdkPixbufAnimation *animation);
+    function gdk_pixbuf_animation_get_height(animation) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: gdk_pixbuf_animation_get_height
+      type(c_ptr), value :: animation
+    end function
+
+    ! gboolean gdk_pixbuf_animation_is_static_image (GdkPixbufAnimation *animation);
+    function gdk_pixbuf_animation_is_static_image(animation) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_pixbuf_animation_is_static_image
+      type(c_ptr), value :: animation
+    end function
+
+    ! GdkPixbuf *gdk_pixbuf_animation_get_static_image (GdkPixbufAnimation *animation);
+    function gdk_pixbuf_animation_get_static_image(animation) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_animation_get_static_image
+      type(c_ptr), value :: animation
+    end function
+
+    !  GdkPixbufAnimationIter *gdk_pixbuf_animation_get_iter (GdkPixbufAnimation *animation, const GTimeVal *start_time);
+    function gdk_pixbuf_animation_get_iter(animation, start_time) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_animation_get_iter
+      type(c_ptr), value :: animation
+      type(c_ptr), value :: start_time
+    end function
+
+    ! GType gdk_pixbuf_animation_iter_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_animation_iter_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_animation_iter_get_type
+    end function
+
+    ! int gdk_pixbuf_animation_iter_get_delay_time (GdkPixbufAnimationIter *iter);
+    function gdk_pixbuf_animation_iter_get_delay_time(iter) bind(c) 
+      use iso_c_binding, only: c_int, c_ptr
+      integer(c_int) :: gdk_pixbuf_animation_iter_get_delay_time
+      type(c_ptr), value :: iter
+    end function
+
+    ! GdkPixbuf *gdk_pixbuf_animation_iter_get_pixbuf (GdkPixbufAnimationIter *iter);
+    function gdk_pixbuf_animation_iter_get_pixbuf(iter) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_animation_iter_get_pixbuf
+      type(c_ptr), value :: iter
+    end function
+
+    ! gboolean gdk_pixbuf_animation_iter_on_currently_loading_frame (GdkPixbufAnimationIter *iter);
+    function gdk_pixbuf_animation_iter_on_currently_loading_frame(iter) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_pixbuf_animation_iter_on_currently_loading_frame
+      type(c_ptr), value :: iter
+    end function
+
+    ! gboolean gdk_pixbuf_animation_iter_advance (GdkPixbufAnimationIter *iter, const GTimeVal *current_time);
+    function gdk_pixbuf_animation_iter_advance(iter, current_time) bind(c) 
+      use iso_c_binding, only: c_bool, c_ptr
+      logical(c_bool) :: gdk_pixbuf_animation_iter_advance
+      type(c_ptr), value :: iter
+      type(c_ptr), value :: current_time
+    end function
+
+    !        GType gdk_pixbuf_non_anim_get_type (void) G_GNUC_CONST;
+    function gdk_pixbuf_non_anim_get_type() bind(c) 
+      use iso_c_binding, only: c_size_t
+      integer(c_size_t) :: gdk_pixbuf_non_anim_get_type
+    end function
+
+    ! GdkPixbufAnimation* gdk_pixbuf_non_anim_new (GdkPixbuf *pixbuf);
+    function gdk_pixbuf_non_anim_new(pixbuf) bind(c) 
+      use iso_c_binding, only: c_ptr
+      type(c_ptr) :: gdk_pixbuf_non_anim_new
+      type(c_ptr), value :: pixbuf
+    end function
+
+    !   void gdk_pixbuf_scale (const GdkPixbuf *src, GdkPixbuf *dest, int dest_x, int dest_y, int dest_width, int dest_height, double offset_x, double offset_y, double scale_x, double scale_y, GdkInterpType interp_type);
+    subroutine gdk_pixbuf_scale(src, dest, dest_x, dest_y, dest_width, dest_heig&
+          &ht, offset_x, offset_y, scale_x, scale_y, interp_type) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_double
+      type(c_ptr), value :: src
+      type(c_ptr), value :: dest
+      integer(c_int), value :: dest_x
+      integer(c_int), value :: dest_y
+      integer(c_int), value :: dest_width
+      integer(c_int), value :: dest_height
+      real(c_double), value :: offset_x
+      real(c_double), value :: offset_y
+      real(c_double), value :: scale_x
+      real(c_double), value :: scale_y
+      integer(c_int), value :: interp_type
+    end subroutine
+
+    ! void gdk_pixbuf_composite (const GdkPixbuf *src, GdkPixbuf *dest, int dest_x, int dest_y, int dest_width, int dest_height, double offset_x, double offset_y, double scale_x, double scale_y, GdkInterpType interp_type, int overall_alpha);
+    subroutine gdk_pixbuf_composite(src, dest, dest_x, dest_y, dest_width, dest_&
+          &height, offset_x, offset_y, scale_x, scale_y, interp_type, overall_al&
+          &pha) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_double
+      type(c_ptr), value :: src
+      type(c_ptr), value :: dest
+      integer(c_int), value :: dest_x
+      integer(c_int), value :: dest_y
+      integer(c_int), value :: dest_width
+      integer(c_int), value :: dest_height
+      real(c_double), value :: offset_x
+      real(c_double), value :: offset_y
+      real(c_double), value :: scale_x
+      real(c_double), value :: scale_y
+      integer(c_int), value :: interp_type
+      integer(c_int), value :: overall_alpha
+    end subroutine
+
+    ! void gdk_pixbuf_composite_color (const GdkPixbuf *src, GdkPixbuf *dest, int dest_x, int dest_y, int dest_width, int dest_height, double offset_x, double offset_y, double scale_x, double scale_y, GdkInterpType interp_type, int overall_alpha, int check_x, int check_y, int check_size, guint32 color1, guint32 color2);
+    subroutine gdk_pixbuf_composite_color(src, dest, dest_x, dest_y, dest_width,&
+          & dest_height, offset_x, offset_y, scale_x, scale_y, interp_type, over&
+          &all_alpha, check_x, check_y, check_size, color1, color2) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_double, c_int32_t
+      type(c_ptr), value :: src
+      type(c_ptr), value :: dest
+      integer(c_int), value :: dest_x
+      integer(c_int), value :: dest_y
+      integer(c_int), value :: dest_width
+      integer(c_int), value :: dest_height
+      real(c_double), value :: offset_x
+      real(c_double), value :: offset_y
+      real(c_double), value :: scale_x
+      real(c_double), value :: scale_y
+      integer(c_int), value :: interp_type
+      integer(c_int), value :: overall_alpha
+      integer(c_int), value :: check_x
+      integer(c_int), value :: check_y
+      integer(c_int), value :: check_size
+      integer(c_int32_t), value :: color1
+      integer(c_int32_t), value :: color2
+    end subroutine
+
+    !  GdkPixbuf *gdk_pixbuf_scale_simple (const GdkPixbuf *src, int dest_width, int dest_height, GdkInterpType interp_type);
+    function gdk_pixbuf_scale_simple(src, dest_width, dest_height, interp_type) &
+          &bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: gdk_pixbuf_scale_simple
+      type(c_ptr), value :: src
+      integer(c_int), value :: dest_width
+      integer(c_int), value :: dest_height
+      integer(c_int), value :: interp_type
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_composite_color_simple (const GdkPixbuf *src, int dest_width, int dest_height, GdkInterpType interp_type, int overall_alpha, int check_size, guint32 color1, guint32 color2);
+    function gdk_pixbuf_composite_color_simple(src, dest_width, dest_height, int&
+          &erp_type, overall_alpha, check_size, color1, color2) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int, c_int32_t
+      type(c_ptr) :: gdk_pixbuf_composite_color_simple
+      type(c_ptr), value :: src
+      integer(c_int), value :: dest_width
+      integer(c_int), value :: dest_height
+      integer(c_int), value :: interp_type
+      integer(c_int), value :: overall_alpha
+      integer(c_int), value :: check_size
+      integer(c_int32_t), value :: color1
+      integer(c_int32_t), value :: color2
+    end function
+
+    !  GdkPixbuf *gdk_pixbuf_rotate_simple (const GdkPixbuf *src, GdkPixbufRotation angle);
+    function gdk_pixbuf_rotate_simple(src, angle) bind(c) 
+      use iso_c_binding, only: c_ptr, c_int
+      type(c_ptr) :: gdk_pixbuf_rotate_simple
+      type(c_ptr), value :: src
+      integer(c_int), value :: angle
+    end function
+
+    ! GdkPixbuf *gdk_pixbuf_flip (const GdkPixbuf *src, gboolean horizontal);
+    function gdk_pixbuf_flip(src, horizontal) bind(c) 
+      use iso_c_binding, only: c_ptr, c_bool
+      type(c_ptr) :: gdk_pixbuf_flip
+      type(c_ptr), value :: src
+      logical(c_bool), value :: horizontal
     end function
 

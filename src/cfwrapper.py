@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 28.01.2011, Python 2.6.6, Linux Ubuntu 10.10
-# Last modification:  15.02.2011
+# Last modification:  22.02.2011
 
 """ This program helps you writing a GTK+ Fortran interface from C prototypes,
     using ISO_C_BINDING. The result file must be verified visually, 
@@ -53,16 +53,23 @@ def iso_c_binding(declaration, returned):
         #print declaration
         return "?", "?"    # error
 
+    # Is it an array ?
+    if declaration.find("[") != -1:
+        array = ", dimension(*)"
+    else:
+        array = ""
+
     # Is it a "typedef enum" ?
     for each in gtk_enums:
         if c_type.find(each) != -1:
             return "integer(c_int)", "c_int"
 
-    # Is it a "typedef      (*     )" ?
+    # Is it a pointer toward a function ?
     for each in gtk_funptr:
         if c_type.find(each) != -1:
             return "type(c_funptr)", "c_funptr"
 
+        
     #?????????????????
     # Is it sure ????
     #?????????????????
@@ -84,11 +91,11 @@ def iso_c_binding(declaration, returned):
     if len(declaration.split()) >= 3:   # Two words type
         for each in TYPES2_DICT.keys():
             if set(each.split()).issubset(set(declaration.split())):
-                return TYPES2_DICT[each][0], TYPES2_DICT[each][1]
+                return TYPES2_DICT[each][0] + array, TYPES2_DICT[each][1]
     else:  # It is a one word type
         for each in TYPES_DICT.keys():
             if each in c_type.split():
-                return TYPES_DICT[each][0], TYPES_DICT[each][1]
+                return TYPES_DICT[each][0] + array, TYPES_DICT[each][1]
 
     # It is finally an unknown type:
     return "?", "?"
@@ -116,6 +123,9 @@ TYPES_DICT = {
     "int":("integer(c_int)","c_int"), 
     "guint":("integer(c_int)","c_int"),          
     "Bool":("integer(c_int)","c_int"),    #define Bool int    => Xlib.h
+    #  On UNIX, processes are identified by a process id (an integer),
+    # while Windows uses process handles (which are pointers).
+    "GPid":("integer(c_int)","c_int"),
     "gint64":("integer(c_int64_t)","c_int64_t"), 
     "goffset":("integer(c_int64_t)","c_int64_t"), 
     "guint64":("integer(c_int64_t)","c_int64_t"),
@@ -124,30 +134,32 @@ TYPES_DICT = {
     "GdkWChar":("integer(c_int32_t)","c_int32_t"),  #typedef guint32 GdkWChar;
     "xcb_drawable_t":("integer(c_int32_t)","c_int32_t"),  #typedef uint32_t xcb_drawable_t;
     "xcb_pixmap_t":("integer(c_int32_t)","c_int32_t"),  #typedef uint32_t xcb_pixmap_t;
+    "uid_t":("integer(c_int32_t)","c_int32_t"),  #typedef __uid_t uid_t;
     "gint16":("integer(c_int16_t)","c_int16_t"), 
     "guint16":("integer(c_int16_t)","c_int16_t"),
-    "gint8": ("integer(c_int8_t)","c_int8_t"),   
-    "guint8": ("integer(c_int8_t)","c_int8_t"),  
-    "long":("integer(c_long)","c_long"),        
+    "gint8": ("integer(c_int8_t)","c_int8_t"),
+    "guint8": ("integer(c_int8_t)","c_int8_t"),
+    "long":("integer(c_long)","c_long"),
     "gulong":("integer(c_long)","c_long"),
+    "time_t":("integer(c_long)","c_long"),  #typedef __time_t time_t;
     "short":("integer(c_short)","c_short"),
     "boolean":("logical(c_bool)","c_bool"),
     "gchar":("character(c_char)","c_char"),
     "guchar":("character(c_char)","c_char"),
-    "gboolean":("logical(c_bool)","c_bool"),  
-    "double": ("real(c_double)","c_double"),     
-    "float":("real(c_float)","c_float"),         
+    "gboolean":("logical(c_bool)","c_bool"),
+    "double": ("real(c_double)","c_double"),
+    "float":("real(c_float)","c_float"),
     "gsize":  ("integer(c_size_t)","c_size_t"),    #typedef unsigned long gsize;   also GType  
     "gssize":  ("integer(c_size_t)","c_size_t"),   #typedef signed long gssize;
-    "GType":  ("integer(c_size_t)","c_size_t"),  
+    "GType":  ("integer(c_size_t)","c_size_t"),
     "size_t":  ("integer(c_size_t)","c_size_t"),
     "va_list":("type(c_ptr)","c_ptr"),
-    "gpointer":("type(c_ptr)","c_ptr"),   
-    "GdkAtom":("type(c_ptr)","c_ptr"),
-    "GC":("type(c_ptr)","c_ptr"),
+    "gpointer":("type(c_ptr)","c_ptr"), #typedef void* gpointer;
+    "GdkAtom":("type(c_ptr)","c_ptr"),  #typedef struct _GdkAtom *GdkAtom; 
+    "GC":("type(c_ptr)","c_ptr"),       # GC (Xlib) is it a pointer ?
     "GIConv":("type(c_ptr)","c_ptr"),   #typedef struct _GIConv *GIConv;
     "GSignalCMarshaller":("type(c_ptr)","c_ptr"), 
-    "FT_Face":("type(c_ptr)","c_ptr"),   #typedef struct FT_FaceRec_*  FT_Face;  
+    "FT_Face":("type(c_ptr)","c_ptr"),  #typedef struct FT_FaceRec_*  FT_Face;  
     # X11 types (See /usr/include/X11/Xmd.h), unsigned int (64 bits archi.)
     # or unsigned long (32 bits architecture) :
     "Window":("integer(c_long)","c_long"),
@@ -166,14 +178,11 @@ TYPES_DICT = {
     "KeySym":("integer(c_long)","c_long"),
      }
 
-# TODO: Add or verify these types:
-# int"gboolean" ?
-#   "gushort"
-#typedef void* gpointer;
-#typedef const void *gconstpointer;
-# GC (Xlib) is it a pointer ?
-#typedef struct _GdkAtom            *GdkAtom;  So GdkAtom is a pointer ?
-#**************************************
+# TODO:
+#typedef union  _GTokenValue     GTokenValue;
+#typedef struct _GtkPropertyMark   GtkPropertyMark;
+
+
 
 # Two words types
 TYPES2_DICT = {
@@ -191,7 +200,7 @@ RGX_ARGUMENTS = re.compile( "\(([0-9a-zA-Z_ ,\*\[\]]*)\).*;$" )
 RGX_ARGS = re.compile( " *([0-9a-zA-Z_ \*\[\]]+),?" )
 RGX_VAR_TYPE = re.compile( " *([_0-9a-zA-Z]+)[ |\*]" )
 RGX_TYPE = re.compile( "^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?" )
-RGX_VAR_NAME = re.compile( "[ |\*]([_0-9a-zA-Z]+)$" )
+RGX_VAR_NAME = re.compile( "[ |\*]([_0-9a-zA-Z]+)(?:\[\])?$" )
 RGX_UNDERSCORE = re.compile( "^_\w+$" )
 
 # Errors will be written in that file:
@@ -204,13 +213,17 @@ nb_lines = 0
 nb_generated_interfaces = 0
 nb_errors = 0
 nb_type_errors = 0
+nb_variadic = 0
 nb_files = 0
 type_errors_list = []
 
 # Libraries to parse and resulting Fortran files: 
-PATH_DICT = {"/usr/include/gtk-2.0":"gtk-auto.f90", "/usr/include/cairo":"gtk-auto.f90",
-             "/usr/include/pango-1.0":"gtk-auto.f90",  "/usr/include/glib-2.0":"gtk-auto.f90",
-             "/usr/include/gdk-pixbuf-2.0":"gtk-auto.f90"}
+PATH_DICT = { "/usr/include/gtk-2.0":"gtk-auto.f90",
+              "/usr/include/cairo":"gtk-auto.f90",
+              "/usr/include/pango-1.0":"gtk-auto.f90",
+              "/usr/include/glib-2.0":"gtk-auto.f90",
+              "/usr/include/gdk-pixbuf-2.0":"gtk-auto.f90",
+              "/usr/include/atk-1.0":"gtk-auto.f90"}
 
 #*************************************************************************
 # Pass 1 : to find all enum types, all pointers to functions (funptr)
@@ -224,12 +237,11 @@ for library_path in PATH_DICT.keys():
     for directory in tree:
         for c_file_name in directory[2]:
             whole_file = open(directory[0] + "/" + c_file_name, 'rU').read()
-            enum_types = re.findall("(?ms)^typedef enum.*?}\s(\w+);", whole_file)
+            enum_types = re.findall("(?ms)^typedef enum.*?}\s?(\w+);", whole_file)
             gtk_enums += enum_types
             funptr = re.findall("(?m)^typedef[ \t]*(?:const)?[ \t]*\w+[ \t]*\*?\s*\(\* ?([\w]*?)\)", whole_file)
             gtk_funptr += funptr
             types = re.findall("(?m)^typedef *?(?:const)? *?(\w+) *\*? *([\w]+);", whole_file)
-            #types = re.findall("(?m)^typedef *?(\w+) *\*? *([\w]+);", whole_file)
             gtk_types += types
 
 for each in gtk_types:
@@ -296,7 +308,7 @@ for library_path in PATH_DICT.keys():
             whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$", "", whole_file)
             whole_file = re.sub("(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
             
-            whole_file = re.sub("(?m)^.*cairo_public ", "", whole_file)
+            whole_file = re.sub("(?m)^.*(cairo_public|extern) ", "", whole_file)
             whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC)"
                                 , "", whole_file)   # extern
             # Remove empty lines:
@@ -379,12 +391,13 @@ for library_path in PATH_DICT.keys():
                 
                     
                 arguments = RGX_ARGUMENTS.search(prototype)
-                # Optional arguments are not managed !
                 try:
                     args = RGX_ARGS.findall(arguments.group(1))
                 except AttributeError:
                     write_error(ERRORS_FILE, directory[0], c_file_name, 
                                 "Arguments not found", prototype, False)
+                    if prototype.find("...") != -1:
+                        nb_variadic += 1    # Optional arguments are not managed !
                     continue    # Next prototype
             
                 # Each argument of the function is analyzed:
@@ -420,10 +433,11 @@ for library_path in PATH_DICT.keys():
                                         "Variable name not found", prototype, False)
                             continue    # Next argument
             
-                        if f_type.find("(*)") != -1:    # character array with unknown dimension
-                            passvar = ""
+                        if f_type.find("(*)") != -1:    #array with unknown dimension
+                            passvar = ""                #passed by adress
                         else:
                             passvar = ", value"
+                            
                         declarations += 3*TAB + f_type + passvar + " :: " + var_name + "\n"
                         if args_list == "":
                             args_list = var_name
@@ -475,6 +489,7 @@ print("nb_generated_interfaces = " + str(nb_generated_interfaces))
 print("nb_type_errors = " + str(nb_type_errors))
 print("nb_errors (others) = " + str(nb_errors))
 print("nb_lines treated = " + str(nb_lines))
+print("nb_variadic functions = " + str(nb_variadic)) 
 print
 
 # Test: do the interfaces and the examples compile with gfortran ?
