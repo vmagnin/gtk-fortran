@@ -27,6 +27,7 @@
 module gtk
   use iso_c_binding
   implicit none
+  include "gtkenums-auto.f90"
 
   interface
     !**************************************************************************
@@ -53,9 +54,7 @@ module gtk
     !**************************************************************************
   end interface 
 
-  integer(c_int), parameter :: GDK_COLORSPACE_RGB = 0
-
-  ! cairo_format:
+  ! cairo_format (not yet automatically generated):
   integer(c_int), parameter :: CAIRO_FORMAT_INVALID   = -1
   integer(c_int), parameter :: CAIRO_FORMAT_ARGB32    = 0
   integer(c_int), parameter :: CAIRO_FORMAT_RGB24     = 1
@@ -70,18 +69,11 @@ module gtk
   integer(c_int), parameter :: CAIRO_FONT_WEIGHT_NORMAL = 0
   integer(c_int), parameter :: CAIRO_FONT_WEIGHT_BOLD   = 1
 
-  ! Some useful parameters:
+  ! Some useful parameters to ease coding:
   character(c_char), parameter :: CNULL = c_null_char
   type(c_ptr), parameter       :: NULL = c_null_ptr
   logical(c_bool), parameter   :: TRUE = .true.
   logical(c_bool), parameter   :: FALSE = .false.
-  integer(c_int), parameter    :: GTK_WINDOW_TOPLEVEL = 0
-  integer(c_int), parameter    :: GTK_WINDOW_POPUP = 1
-
-  ! GdkImageType parameters:
-  integer(c_int), parameter :: GDK_IMAGE_NORMAL = 0
-  integer(c_int), parameter :: GDK_IMAGE_SHARED = 1
-  integer(c_int), parameter :: GDK_IMAGE_FASTEST = 2
 
 contains
   subroutine g_signal_connect (instance, detailed_signal, c_handler)
@@ -116,6 +108,8 @@ contains
 
     argc = argc + 1
     call gtk_init_real (argc, c_loc(argv))
+    !deallocate(argv)
+    !deallocate(carg)
   end subroutine gtk_init
 
 end module gtk

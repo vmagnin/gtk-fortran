@@ -25,12 +25,11 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 28.01.2011, Python 2.6.6, Linux Ubuntu 10.10
-# Last modification:  22.02.2011
+# Last modification:  24.02.2011
 
 """ This program helps you writing a GTK+ Fortran interface from C prototypes,
     using ISO_C_BINDING. The result file must be verified visually, 
     errors corrected and unknown types replaced by the user.
-    Beware, enum statements are not yet managed.
     Beware, this program is still under heavy development ! 
     It will need some cleanup.  
     Command line:         python cfwrapper.py
@@ -114,7 +113,73 @@ def write_error(errorsfile, direc, filename, message, proto, type_error):
     else:
         nb_errors += 1
 
+def set_bit_field(match):
+    """ Returns the Fortran bitfield from a C enum flag"""
+    b = int(match.group(1))
+    field = "1"
+    for i in range(0, b):
+        field += "0"
+    return "b'"+field+"'"
 
+
+def translate_enums(errorsfile, enum_list):
+    """Receive a C enum and returns a Fortran enum"""
+    f_enum = ""
+    BIT_FIELDS = re.compile("1 *<< *(\d+)")
+    if enum_list != []:
+        for each in enum_list:
+            enum = each[0]
+            name = each[1]
+            
+            if name in ["GSocketFamily", "GSocketMsgFlags", "GdkPixdataType"]:
+                return ""
+                
+            parameters = re.findall("(?ms){(.*)}", enum)
+            parameters[0] = re.sub("(?m)^#.*$", "", parameters[0])
+            # Remove TABs and overnumerous spaces:
+            parameters[0] = parameters[0].replace("\t", " ")
+            parameters[0] = re.sub("[ ]{2,}", " ", parameters[0])
+
+            # Delete characters (   ) and , if they are not between quotes:
+            parameters[0] = re.sub("(?<!')(\()(?!')", "", parameters[0])
+            parameters[0] = re.sub("(?<!')(\))(?!')", "", parameters[0])
+            parameters[0] = re.sub("(?<!')(,)(?!')", "", parameters[0])
+            parameters[0] = re.sub("(?m),$", "", parameters[0])
+            
+            # Is it in hexadecimal ?
+            parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "z'\\1'", parameters[0])
+            # Is it a char ?
+            # Est-ce que ça marche ??????? (voir entiers)
+            parameters[0] = re.sub("('.?')", "iachar(\\1)", parameters[0])
+            # Is it a bit field ?
+            # on ne sait pas comment sont codés les entiers !!!!!
+            # Utiliser les fonctions sur les bits ??????
+            #parameters[0] = re.sub("1 *<< *(\d+)", "2**\\1", parameters[0])
+            parameters[0] = BIT_FIELDS.sub(set_bit_field, parameters[0])
+
+            # complement
+            parameters[0] = re.sub("~(\w+)", "not(\\1)", parameters[0])
+            # logical or
+            parameters[0] = re.sub("([\w\(\)]+)\s*\|\s*([\w\(\)]+)", "ior(\\1 , \\2)", parameters[0])
+
+            # Renamed flags (have the same name as a GTK+ function):
+            parameters[0] = re.sub("(?m)^\s*ATK_HYPERLINK_IS_INLINE", "ATK_HYPERLINK_IS_INLINE_F", parameters[0])
+            parameters[0] = re.sub("(?m)^\s*GDK_PROPERTY_DELETE", "GDK_PROPERTY_DELETE_F", parameters[0])
+            parameters[0] = re.sub("(?m)^\s*GDK_DRAG_STATUS", "GDK_DRAG_STATUS_F", parameters[0])
+            parameters[0] = re.sub("(?m)^\s*GDK_DRAG_MOTION", "GDK_DRAG_MOTION_F", parameters[0])
+            # Integer size problem:
+            parameters[0] = re.sub("(?m)^\s*G_PARAM_DEPRECATED.*$", "", parameters[0])
+
+            parameters[0] = re.sub("(?m)^\s*(\w+)", "    enumerator :: \\1", parameters[0])
+
+            f_enum += "enum, bind(c)    !" + name + "\n"
+            f_enum += parameters[0]
+            f_enum += "end enum\n \n"
+    # Remove empty lines:
+    f_enum = re.sub("(?m)^ *\n$", "", f_enum)
+    return f_enum
+    
+    
 # **********************************************
 # Main program
 # **********************************************
@@ -177,12 +242,9 @@ TYPES_DICT = {
     "KeyCode":("character(c_char)","c_char"),   #define KeyCode CARD8   => unsigned char
     "KeySym":("integer(c_long)","c_long"),
      }
-
 # TODO:
 #typedef union  _GTokenValue     GTokenValue;
 #typedef struct _GtkPropertyMark   GtkPropertyMark;
-
-
 
 # Two words types
 TYPES2_DICT = {
@@ -263,6 +325,8 @@ gtk_funptr.sort()
 #**************************************************************************************
 # Pass 2 : Scan of all files in the directory and subdirectories to generate interfaces
 #**************************************************************************************
+# Errors will be written in that file:
+enums_file = open("gtkenums-auto.f90", "w")
 opened_files = []
 for library_path in PATH_DICT.keys():
     tree = os.walk(library_path)    # A generator
@@ -286,10 +350,15 @@ for library_path in PATH_DICT.keys():
             # *************************
             # Preprocessing of the file
             # *************************
-            # removing multilines typedef:
-            whole_file = re.sub("(?m)^typedef([^;]*?\n)+?[^;]*?;$", "", whole_file)
             # Remove C commentaries:
             whole_file = re.sub("(?s)/\*.*?\*/", "", whole_file)
+            
+            
+            enum_types = re.findall("(?ms)^(typedef enum\s*?{.*?})\s*?(\w+);", whole_file)
+            enums_file.write(translate_enums(ERRORS_FILE, enum_types))
+            
+            # removing multilines typedef:
+            whole_file = re.sub("(?m)^typedef([^;]*?\n)+?[^;]*?;$", "", whole_file)
             # Remove C directives (multilines then monoline):
             # in a python regular expression \\\\=\\=\
             #whole_file = re.sub("(?ms)#ifdef .*?#endif.*?$", "", whole_file)
@@ -470,6 +539,7 @@ for library_path in PATH_DICT.keys():
 
 f_file.close()
 ERRORS_FILE.close()
+enums_file.close()
 
 # Print remaining error types:
 type_errors_list.sort()
