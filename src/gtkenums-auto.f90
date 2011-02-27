@@ -2347,6 +2347,245 @@ enum, bind(c)    !GtkTreeViewColumnSizing
     enumerator :: GTK_TREE_VIEW_COLUMN_AUTOSIZE
     enumerator :: GTK_TREE_VIEW_COLUMN_FIXED
 end enum
+enum, bind(c)    !cairo_svg_version_t
+    enumerator :: CAIRO_SVG_VERSION_1_1
+    enumerator :: CAIRO_SVG_VERSION_1_2
+end enum
+enum, bind(c)    !cairo_ps_level_t
+    enumerator :: CAIRO_PS_LEVEL_2
+    enumerator :: CAIRO_PS_LEVEL_3
+end enum
+enum, bind(c)    !cairo_pdf_version_t
+    enumerator :: CAIRO_PDF_VERSION_1_4
+    enumerator :: CAIRO_PDF_VERSION_1_5
+end enum
+enum, bind(c)    !cairo_status_t
+    enumerator :: CAIRO_STATUS_SUCCESS = 0
+    enumerator :: CAIRO_STATUS_NO_MEMORY
+    enumerator :: CAIRO_STATUS_INVALID_RESTORE
+    enumerator :: CAIRO_STATUS_INVALID_POP_GROUP
+    enumerator :: CAIRO_STATUS_NO_CURRENT_POINT
+    enumerator :: CAIRO_STATUS_INVALID_MATRIX
+    enumerator :: CAIRO_STATUS_INVALID_STATUS
+    enumerator :: CAIRO_STATUS_NULL_POINTER
+    enumerator :: CAIRO_STATUS_INVALID_STRING
+    enumerator :: CAIRO_STATUS_INVALID_PATH_DATA
+    enumerator :: CAIRO_STATUS_READ_ERROR
+    enumerator :: CAIRO_STATUS_WRITE_ERROR
+    enumerator :: CAIRO_STATUS_SURFACE_FINISHED
+    enumerator :: CAIRO_STATUS_SURFACE_TYPE_MISMATCH
+    enumerator :: CAIRO_STATUS_PATTERN_TYPE_MISMATCH
+    enumerator :: CAIRO_STATUS_INVALID_CONTENT
+    enumerator :: CAIRO_STATUS_INVALID_FORMAT
+    enumerator :: CAIRO_STATUS_INVALID_VISUAL
+    enumerator :: CAIRO_STATUS_FILE_NOT_FOUND
+    enumerator :: CAIRO_STATUS_INVALID_DASH
+    enumerator :: CAIRO_STATUS_INVALID_DSC_COMMENT
+    enumerator :: CAIRO_STATUS_INVALID_INDEX
+    enumerator :: CAIRO_STATUS_CLIP_NOT_REPRESENTABLE
+    enumerator :: CAIRO_STATUS_TEMP_FILE_ERROR
+    enumerator :: CAIRO_STATUS_INVALID_STRIDE
+    enumerator :: CAIRO_STATUS_FONT_TYPE_MISMATCH
+    enumerator :: CAIRO_STATUS_USER_FONT_IMMUTABLE
+    enumerator :: CAIRO_STATUS_USER_FONT_ERROR
+    enumerator :: CAIRO_STATUS_NEGATIVE_COUNT
+    enumerator :: CAIRO_STATUS_INVALID_CLUSTERS
+    enumerator :: CAIRO_STATUS_INVALID_SLANT
+    enumerator :: CAIRO_STATUS_INVALID_WEIGHT
+    enumerator :: CAIRO_STATUS_INVALID_SIZE
+    enumerator :: CAIRO_STATUS_USER_FONT_NOT_IMPLEMENTED
+    enumerator :: CAIRO_STATUS_DEVICE_TYPE_MISMATCH
+    enumerator :: CAIRO_STATUS_DEVICE_ERROR
+    enumerator :: CAIRO_STATUS_LAST_STATUS
+end enum
+ 
+enum, bind(c)    !cairo_content_t
+    enumerator :: CAIRO_CONTENT_COLOR = z'1000'
+    enumerator :: CAIRO_CONTENT_ALPHA = z'2000'
+    enumerator :: CAIRO_CONTENT_COLOR_ALPHA = z'3000'
+end enum
+ 
+enum, bind(c)    !cairo_operator_t
+    enumerator :: CAIRO_OPERATOR_CLEAR
+    enumerator :: CAIRO_OPERATOR_SOURCE
+    enumerator :: CAIRO_OPERATOR_OVER
+    enumerator :: CAIRO_OPERATOR_IN
+    enumerator :: CAIRO_OPERATOR_OUT
+    enumerator :: CAIRO_OPERATOR_ATOP
+    enumerator :: CAIRO_OPERATOR_DEST
+    enumerator :: CAIRO_OPERATOR_DEST_OVER
+    enumerator :: CAIRO_OPERATOR_DEST_IN
+    enumerator :: CAIRO_OPERATOR_DEST_OUT
+    enumerator :: CAIRO_OPERATOR_DEST_ATOP
+    enumerator :: CAIRO_OPERATOR_XOR
+    enumerator :: CAIRO_OPERATOR_ADD
+    enumerator :: CAIRO_OPERATOR_SATURATE
+    enumerator :: CAIRO_OPERATOR_MULTIPLY
+    enumerator :: CAIRO_OPERATOR_SCREEN
+    enumerator :: CAIRO_OPERATOR_OVERLAY
+    enumerator :: CAIRO_OPERATOR_DARKEN
+    enumerator :: CAIRO_OPERATOR_LIGHTEN
+    enumerator :: CAIRO_OPERATOR_COLOR_DODGE
+    enumerator :: CAIRO_OPERATOR_COLOR_BURN
+    enumerator :: CAIRO_OPERATOR_HARD_LIGHT
+    enumerator :: CAIRO_OPERATOR_SOFT_LIGHT
+    enumerator :: CAIRO_OPERATOR_DIFFERENCE
+    enumerator :: CAIRO_OPERATOR_EXCLUSION
+    enumerator :: CAIRO_OPERATOR_HSL_HUE
+    enumerator :: CAIRO_OPERATOR_HSL_SATURATION
+    enumerator :: CAIRO_OPERATOR_HSL_COLOR
+    enumerator :: CAIRO_OPERATOR_HSL_LUMINOSITY
+end enum
+ 
+enum, bind(c)    !cairo_antialias_t
+    enumerator :: CAIRO_ANTIALIAS_DEFAULT
+    enumerator :: CAIRO_ANTIALIAS_NONE
+    enumerator :: CAIRO_ANTIALIAS_GRAY
+    enumerator :: CAIRO_ANTIALIAS_SUBPIXEL
+end enum
+ 
+enum, bind(c)    !cairo_fill_rule_t
+    enumerator :: CAIRO_FILL_RULE_WINDING
+    enumerator :: CAIRO_FILL_RULE_EVEN_ODD
+end enum
+ 
+enum, bind(c)    !cairo_line_cap_t
+    enumerator :: CAIRO_LINE_CAP_BUTT
+    enumerator :: CAIRO_LINE_CAP_ROUND
+    enumerator :: CAIRO_LINE_CAP_SQUARE
+end enum
+ 
+enum, bind(c)    !cairo_line_join_t
+    enumerator :: CAIRO_LINE_JOIN_MITER
+    enumerator :: CAIRO_LINE_JOIN_ROUND
+    enumerator :: CAIRO_LINE_JOIN_BEVEL
+end enum
+ 
+enum, bind(c)    !cairo_text_cluster_flags_t
+    enumerator :: CAIRO_TEXT_CLUSTER_FLAG_BACKWARD = z'00000001'
+end enum
+ 
+enum, bind(c)    !cairo_font_slant_t
+    enumerator :: CAIRO_FONT_SLANT_NORMAL
+    enumerator :: CAIRO_FONT_SLANT_ITALIC
+    enumerator :: CAIRO_FONT_SLANT_OBLIQUE
+end enum
+ 
+enum, bind(c)    !cairo_font_weight_t
+    enumerator :: CAIRO_FONT_WEIGHT_NORMAL
+    enumerator :: CAIRO_FONT_WEIGHT_BOLD
+end enum
+ 
+enum, bind(c)    !cairo_subpixel_order_t
+    enumerator :: CAIRO_SUBPIXEL_ORDER_DEFAULT
+    enumerator :: CAIRO_SUBPIXEL_ORDER_RGB
+    enumerator :: CAIRO_SUBPIXEL_ORDER_BGR
+    enumerator :: CAIRO_SUBPIXEL_ORDER_VRGB
+    enumerator :: CAIRO_SUBPIXEL_ORDER_VBGR
+end enum
+ 
+enum, bind(c)    !cairo_hint_style_t
+    enumerator :: CAIRO_HINT_STYLE_DEFAULT
+    enumerator :: CAIRO_HINT_STYLE_NONE
+    enumerator :: CAIRO_HINT_STYLE_SLIGHT
+    enumerator :: CAIRO_HINT_STYLE_MEDIUM
+    enumerator :: CAIRO_HINT_STYLE_FULL
+end enum
+ 
+enum, bind(c)    !cairo_hint_metrics_t
+    enumerator :: CAIRO_HINT_METRICS_DEFAULT
+    enumerator :: CAIRO_HINT_METRICS_OFF
+    enumerator :: CAIRO_HINT_METRICS_ON
+end enum
+ 
+enum, bind(c)    !cairo_font_type_t
+    enumerator :: CAIRO_FONT_TYPE_TOY
+    enumerator :: CAIRO_FONT_TYPE_FT
+    enumerator :: CAIRO_FONT_TYPE_WIN32
+    enumerator :: CAIRO_FONT_TYPE_QUARTZ
+    enumerator :: CAIRO_FONT_TYPE_USER
+end enum
+ 
+enum, bind(c)    !cairo_path_data_type_t
+    enumerator :: CAIRO_PATH_MOVE_TO
+    enumerator :: CAIRO_PATH_LINE_TO
+    enumerator :: CAIRO_PATH_CURVE_TO
+    enumerator :: CAIRO_PATH_CLOSE_PATH
+end enum
+ 
+enum, bind(c)    !cairo_device_type_t
+    enumerator :: CAIRO_DEVICE_TYPE_DRM
+    enumerator :: CAIRO_DEVICE_TYPE_GL
+    enumerator :: CAIRO_DEVICE_TYPE_SCRIPT
+    enumerator :: CAIRO_DEVICE_TYPE_XCB
+    enumerator :: CAIRO_DEVICE_TYPE_XLIB
+    enumerator :: CAIRO_DEVICE_TYPE_XML
+end enum
+ 
+enum, bind(c)    !cairo_surface_type_t
+    enumerator :: CAIRO_SURFACE_TYPE_IMAGE
+    enumerator :: CAIRO_SURFACE_TYPE_PDF
+    enumerator :: CAIRO_SURFACE_TYPE_PS
+    enumerator :: CAIRO_SURFACE_TYPE_XLIB
+    enumerator :: CAIRO_SURFACE_TYPE_XCB
+    enumerator :: CAIRO_SURFACE_TYPE_GLITZ
+    enumerator :: CAIRO_SURFACE_TYPE_QUARTZ
+    enumerator :: CAIRO_SURFACE_TYPE_WIN32
+    enumerator :: CAIRO_SURFACE_TYPE_BEOS
+    enumerator :: CAIRO_SURFACE_TYPE_DIRECTFB
+    enumerator :: CAIRO_SURFACE_TYPE_SVG
+    enumerator :: CAIRO_SURFACE_TYPE_OS2
+    enumerator :: CAIRO_SURFACE_TYPE_WIN32_PRINTING
+    enumerator :: CAIRO_SURFACE_TYPE_QUARTZ_IMAGE
+    enumerator :: CAIRO_SURFACE_TYPE_SCRIPT
+    enumerator :: CAIRO_SURFACE_TYPE_QT
+    enumerator :: CAIRO_SURFACE_TYPE_RECORDING
+    enumerator :: CAIRO_SURFACE_TYPE_VG
+    enumerator :: CAIRO_SURFACE_TYPE_GL
+    enumerator :: CAIRO_SURFACE_TYPE_DRM
+    enumerator :: CAIRO_SURFACE_TYPE_TEE
+    enumerator :: CAIRO_SURFACE_TYPE_XML
+    enumerator :: CAIRO_SURFACE_TYPE_SKIA
+    enumerator :: CAIRO_SURFACE_TYPE_SUBSURFACE
+end enum
+ 
+enum, bind(c)    !cairo_format_t
+    enumerator :: CAIRO_FORMAT_INVALID = -1
+    enumerator :: CAIRO_FORMAT_ARGB32 = 0
+    enumerator :: CAIRO_FORMAT_RGB24 = 1
+    enumerator :: CAIRO_FORMAT_A8 = 2
+    enumerator :: CAIRO_FORMAT_A1 = 3
+    enumerator :: CAIRO_FORMAT_RGB16_565 = 4
+end enum
+ 
+enum, bind(c)    !cairo_pattern_type_t
+    enumerator :: CAIRO_PATTERN_TYPE_SOLID
+    enumerator :: CAIRO_PATTERN_TYPE_SURFACE
+    enumerator :: CAIRO_PATTERN_TYPE_LINEAR
+    enumerator :: CAIRO_PATTERN_TYPE_RADIAL
+end enum
+ 
+enum, bind(c)    !cairo_extend_t
+    enumerator :: CAIRO_EXTEND_NONE
+    enumerator :: CAIRO_EXTEND_REPEAT
+    enumerator :: CAIRO_EXTEND_REFLECT
+    enumerator :: CAIRO_EXTEND_PAD
+end enum
+ 
+enum, bind(c)    !cairo_filter_t
+    enumerator :: CAIRO_FILTER_FAST
+    enumerator :: CAIRO_FILTER_GOOD
+    enumerator :: CAIRO_FILTER_BEST
+    enumerator :: CAIRO_FILTER_NEAREST
+    enumerator :: CAIRO_FILTER_BILINEAR
+    enumerator :: CAIRO_FILTER_GAUSSIAN
+end enum
+ 
+enum, bind(c)    !cairo_region_overlap_t
+    enumerator :: CAIRO_REGION_OVERLAP_IN 
+    enumerator :: CAIRO_REGION_OVERLAP_OUT 
+    enumerator :: CAIRO_REGION_OVERLAP_PART 
+end enum
 enum, bind(c)    !PangoGravity
     enumerator :: PANGO_GRAVITY_SOUTH
     enumerator :: PANGO_GRAVITY_EAST

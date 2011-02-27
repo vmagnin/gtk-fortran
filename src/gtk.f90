@@ -55,19 +55,19 @@ module gtk
   end interface 
 
   ! cairo_format (not yet automatically generated):
-  integer(c_int), parameter :: CAIRO_FORMAT_INVALID   = -1
-  integer(c_int), parameter :: CAIRO_FORMAT_ARGB32    = 0
-  integer(c_int), parameter :: CAIRO_FORMAT_RGB24     = 1
-  integer(c_int), parameter :: CAIRO_FORMAT_A8        = 2
-  integer(c_int), parameter :: CAIRO_FORMAT_A1        = 3
-  integer(c_int), parameter :: CAIRO_FORMAT_RGB16_565 = 4
+!  integer(c_int), parameter :: CAIRO_FORMAT_INVALID   = -1
+!  integer(c_int), parameter :: CAIRO_FORMAT_ARGB32    = 0
+!  integer(c_int), parameter :: CAIRO_FORMAT_RGB24     = 1
+!  integer(c_int), parameter :: CAIRO_FORMAT_A8        = 2
+!  integer(c_int), parameter :: CAIRO_FORMAT_A1        = 3
+!  integer(c_int), parameter :: CAIRO_FORMAT_RGB16_565 = 4
   
-  integer(c_int), parameter :: CAIRO_FONT_SLANT_NORMAL = 0
-  integer(c_int), parameter :: CAIRO_FONT_SLANT_ITALIC = 1
-  integer(c_int), parameter :: CAIRO_FONT_SLANT_OBLIQUE= 2
+!  integer(c_int), parameter :: CAIRO_FONT_SLANT_NORMAL = 0
+!  integer(c_int), parameter :: CAIRO_FONT_SLANT_ITALIC = 1
+!  integer(c_int), parameter :: CAIRO_FONT_SLANT_OBLIQUE= 2
 
-  integer(c_int), parameter :: CAIRO_FONT_WEIGHT_NORMAL = 0
-  integer(c_int), parameter :: CAIRO_FONT_WEIGHT_BOLD   = 1
+!  integer(c_int), parameter :: CAIRO_FONT_WEIGHT_NORMAL = 0
+!  integer(c_int), parameter :: CAIRO_FONT_WEIGHT_BOLD   = 1
 
   ! Some useful parameters to ease coding:
   character(c_char), parameter :: CNULL = c_null_char

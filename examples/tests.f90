@@ -104,7 +104,36 @@ subroutine test_gint32_in_out
   end do
 end subroutine test_gint32_in_out
 
-    
+
+subroutine test_gulong_in
+  use gtk
+  implicit none
+  integer :: i
+  integer(c_long) :: nb
+  integer(c_int) :: r
+!    ! guint g_bit_storage (gulong number) G_GNUC_CONST;
+!    function g_bit_storage(number) bind(c) 
+!      use iso_c_binding, only: c_int, c_long
+!      integer(c_int) :: g_bit_storage
+!      integer(c_long), value :: number
+!    end function
+
+! Fortran integers are signed. 32 bits integers are in [-2147483648, +2147483647].
+! C language: typedef unsigned long   gulong;
+  do i = 1, 31, +1
+    nb = 2**i-1
+    r = g_bit_storage(nb)
+    if (i /= r) then
+      print *, "ERROR g_bit_storage:", i, nb, r
+    end if
+  end do
+end subroutine test_gulong_in
+
+
+!guint8              g_date_get_days_in_month            (GDateMonth month,
+!                                                         GDateYear year);
+
+
 program gtk_fortran_test
   implicit none
   
@@ -116,4 +145,6 @@ program gtk_fortran_test
   call test_gdouble_in_out
   print *, "test_gint32_in_out"
   call test_gint32_in_out
+  print *, "test_gulong_in"
+  call test_gulong_in
 end program gtk_fortran_test

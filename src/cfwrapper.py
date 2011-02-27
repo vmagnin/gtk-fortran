@@ -354,7 +354,7 @@ for library_path in PATH_DICT.keys():
             whole_file = re.sub("(?s)/\*.*?\*/", "", whole_file)
             
             
-            enum_types = re.findall("(?ms)^(typedef enum\s*?{.*?})\s*?(\w+);", whole_file)
+            enum_types = re.findall("(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
             enums_file.write(translate_enums(ERRORS_FILE, enum_types))
             
             # removing multilines typedef:
