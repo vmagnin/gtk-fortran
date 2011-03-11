@@ -510,6 +510,11 @@ end module tests
 !const gchar *                    g_variant_get_string   (GVariant *value,
 !                                                         gsize *length);
 
+! iso_c types used in gtk-fortran:
+! ['c_ptr', 'c_char', 'c_funptr', 'c_int', 'c_int64_t', 'c_bool', 
+! 'c_size_t', 'c_int16_t', 'c_int32_t', 'c_double', 'c_long', 'c_long_double', 
+! 'c_int8_t', 'c_float']
+
 program gtk_fortran_test
   use tests
   implicit none

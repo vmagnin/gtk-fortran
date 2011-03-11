@@ -21,8 +21,8 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by Vincent Magnin, Jerry DeLisle and Tobias Burnus, 01-23-2011
-! Last modification: 02-09-2011
+! Contributed by Vincent Magnin, Jerry DeLisle, "jtappin" and Tobias Burnus, 01-23-2011
+! Last modification: 03-11-2011
 
 module gtk
   use iso_c_binding
@@ -33,14 +33,6 @@ module gtk
     !**************************************************************************
     ! You can add your own additional interfaces here:
     !**************************************************************************
-    subroutine g_signal_connect_data (instance, detailed_signal,&
-                & c_handler, gobject, dummy) bind(c)
-      use iso_c_binding, only: c_ptr, c_char, c_funptr
-      character(c_char)     :: detailed_signal(*)
-      type(c_ptr), value    :: instance, gobject, dummy
-      type(c_funptr), value :: c_handler      
-    end subroutine
-
     subroutine gtk_init_real(argc,argv) bind(c,name='gtk_init')
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: argc
@@ -54,21 +46,6 @@ module gtk
     !**************************************************************************
   end interface 
 
-  ! cairo_format (not yet automatically generated):
-!  integer(c_int), parameter :: CAIRO_FORMAT_INVALID   = -1
-!  integer(c_int), parameter :: CAIRO_FORMAT_ARGB32    = 0
-!  integer(c_int), parameter :: CAIRO_FORMAT_RGB24     = 1
-!  integer(c_int), parameter :: CAIRO_FORMAT_A8        = 2
-!  integer(c_int), parameter :: CAIRO_FORMAT_A1        = 3
-!  integer(c_int), parameter :: CAIRO_FORMAT_RGB16_565 = 4
-  
-!  integer(c_int), parameter :: CAIRO_FONT_SLANT_NORMAL = 0
-!  integer(c_int), parameter :: CAIRO_FONT_SLANT_ITALIC = 1
-!  integer(c_int), parameter :: CAIRO_FONT_SLANT_OBLIQUE= 2
-
-!  integer(c_int), parameter :: CAIRO_FONT_WEIGHT_NORMAL = 0
-!  integer(c_int), parameter :: CAIRO_FONT_WEIGHT_BOLD   = 1
-
   ! Some useful parameters to ease coding:
   character(c_char), parameter :: CNULL = c_null_char
   type(c_ptr), parameter       :: NULL = c_null_ptr
@@ -76,18 +53,26 @@ module gtk
   logical(c_bool), parameter   :: FALSE = .false.
 
 contains
-  subroutine g_signal_connect (instance, detailed_signal, c_handler)
-      use iso_c_binding, only: c_ptr, c_char, c_funptr
-      character(c_char):: detailed_signal(*)
-      type(c_ptr)      :: instance
-      type(c_funptr)   :: c_handler
-      
-      call g_signal_connect_data (instance, detailed_signal, c_handler, NULL, NULL)    
+  subroutine g_signal_connect (instance, detailed_signal, c_handler, data0)
+    use iso_c_binding, only: c_ptr, c_char, c_funptr
+    character(c_char):: detailed_signal(*)
+    type(c_ptr)      :: instance
+    type(c_funptr)   :: c_handler
+    type(c_ptr), optional :: data0
+    integer(c_long) :: handler_id
+    
+    if (present(data0)) then
+      handler_id =  g_signal_connect_data (instance, detailed_signal, c_handler, &
+            & data0, NULL, 0)
+    else
+      handler_id =  g_signal_connect_data (instance, detailed_signal, c_handler, &
+            & NULL, NULL, 0)
+    end if
   end subroutine
+
 
   subroutine gtk_init()
     use iso_c_binding, only: c_ptr, c_char, c_int, c_null_char, c_loc
-
     character(len=256,kind=c_char) :: arg
     character(len=1,kind=c_char), dimension(:),pointer :: carg
     type(c_ptr), allocatable, target :: argv(:)
@@ -111,6 +96,5 @@ contains
     !deallocate(argv)
     !deallocate(carg)
   end subroutine gtk_init
-
+  
 end module gtk
-
