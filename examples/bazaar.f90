@@ -1,6 +1,28 @@
+! Copyright (C) 2011
+! Free Software Foundation, Inc.
+
+! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+
+! This is free software; you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation; either version 3, or (at your option)
+! any later version.
+
+! This software is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+
+! Under Section 7 of GPL version 3, you are granted additional
+! permissions described in the GCC Runtime Library Exception, version
+! 3.1, as published by the Free Software Foundation.
+
+! You should have received a copy of the GNU General Public License along with
+! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! If not, see <http://www.gnu.org/licenses/>.
+
 ! This program is used to test GTK+ widgets
-! Authors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
-! GPL 3 licence
+! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
 ! To compile under Linux:
 ! gfortran gtk.f90 ../examples/bazaar.f90 `pkg-config --cflags --libs gtk+-2.0`
 
@@ -25,7 +47,13 @@ module handlers
   implicit none
   
 contains
+  !*************************************
   ! User defined event handlers go here
+  !*************************************
+  ! Note that events are a special type of signals, coming from the
+  ! X Window system. Then callback functions must have an event argument.
+  
+  ! GtkWidget event:
   function delete_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int, c_bool
     logical(c_bool)    :: ret
@@ -34,6 +62,7 @@ contains
     ret = FALSE
   end function delete_event
 
+  ! GtkWidget event:
   function expose_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int, c_bool, c_char
     implicit none
@@ -117,38 +146,41 @@ contains
     ret = FALSE
   end function expose_event
 
-
+  ! GtkObject signal:
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
+    
     print *, "my destroy"
     call gtk_main_quit ()
   end subroutine destroy
 
-  function firstbutton (widget, event, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
+  ! GtkButton signal:
+  function firstbutton (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
         
     print *, "Hello World!"
     ret = .false.
   end function firstbutton
   
-  
-  function secondbutton (widget, event, gdata ) result(ret)  bind(c)
+  ! GtkButton signal:
+  function secondbutton (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
+    
     call gtk_progress_bar_pulse (progress)
     ret = .false.
   end function secondbutton
 
-
-  function file_changed (widget, event, gdata ) result(ret)  bind(c)
+  ! GtkFileChooser signal:
+  function file_changed (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_bool, c_char
     logical(c_bool)    :: ret
     character(c_char), dimension(:), pointer :: textptr
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     character(len=512) :: my_string
     
     print *, "Selected File has changed:"
@@ -159,7 +191,7 @@ contains
     ret = .false.
   end function file_changed
   
-  
+  ! This is not a handler:
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
     implicit none
@@ -209,7 +241,7 @@ end subroutine test_enums
 
 
 program gtkFortran
-  use iso_c_binding !, only: c_ptr, c_null_ptr, c_loc
+  use iso_c_binding
   use gtk
   use handlers
   use my_widgets
@@ -273,7 +305,7 @@ program gtkFortran
   
   file_selector = gtk_file_chooser_button_new ("gtk_file_chooser_button_new"//CNULL, 0)
   call gtk_table_attach_defaults(table, file_selector, 0, 3, 12, 13)  
-  call g_signal_connect (file_selector, "selection_changed"//CNULL, c_funloc(file_changed));
+  call g_signal_connect (file_selector, "selection-changed"//CNULL, c_funloc(file_changed));
 
   call gtk_widget_show_all (window)
   call gtk_main ()

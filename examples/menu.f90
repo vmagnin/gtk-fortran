@@ -24,6 +24,7 @@
 ! gfortran -g gtk.f90 simplemenu.f90 -o simplemenu `pkg-config --cflags --libs gtk+-2.0`
 ! menu.xml must be copied to the same directory as the simplemenu executable!               
 ! Contributed by Jens Hunger
+! Last modified: 03-13-2011
 
 module handlers
   use gtk
@@ -38,9 +39,13 @@ module handlers
   integer :: nch, rowstride, width, height
   
 contains
+  !*************************************
   ! User defined event handlers go here
+  !*************************************
+  ! Note that events are a special type of signals, coming from the
+  ! X Window system. Then callback functions must have an event argument.
 
-! destroy all
+  ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
@@ -50,85 +55,87 @@ contains
 
 ! delete event
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
+    use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
     type(c_ptr), value :: widget, event, gdata
     print *, "my delete_event"
     ret = FALSE
   end function delete_event
-  
+
+! GtkAction signals:
 ! open file
-  function file_open (widget, event, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
+  function file_open (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     print *, "File open"
     ret = .false.
   end function file_open
 
 ! save file
-  function file_save (widget, event, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
+  function file_save (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     print *, "File save"
     ret = .false.
   end function file_save
 
 ! close file
-  function file_close (widget, event, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
+  function file_close (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     print *, "File close"
     ret = .false.
   end function file_close
 
 ! cut
-  function cut (widget, event, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
+  function cut (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     print *, "Cut"
     ret = .false.
   end function cut
 
 ! copy
-  function copy (widget, event, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
+  function copy (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     print *, "Copy"
     ret = .false.
   end function copy
 
 ! paste
-  function paste (widget, event, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
+  function paste (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     print *, "Paste"
     ret = .false.
   end function paste
   
 ! help
-  function help (widget, event, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
+  function help (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     print *, "Help"
     ret = .false.
   end function help
 
 ! menu dummy function
-  function menu (widget, event, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
+  function menu (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     !print *, "Menu"
     ret = .false.
   end function menu
   
+  ! This is not a handler
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
     implicit none

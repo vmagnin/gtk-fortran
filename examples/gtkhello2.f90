@@ -16,20 +16,25 @@
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g gtkhello2.f90 `pkg-config --cflags --libs gtk+-2.0`
-! Jerry DeLisle , Tobias Burnus, and Vincent Magnin
+! gfortran gtk.f90 gtkhello2.f90 `pkg-config --cflags --libs gtk+-2.0`
+! Jerry DeLisle , Tobias Burnus, and Vincent Magnin, 01-23-2011
+! Data passing: James Tappin
+! Last modified: 03-13-2011
 
 module handlers
   use gtk
   implicit none
 
 contains
+  !*************************************
   ! User defined event handlers go here
+  !*************************************
+  ! Note that events are a special type of signals, coming from the
+  ! X Window system. Then callback functions must have an event argument:
   function delete_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int, c_bool
     logical(c_bool)    :: ret
@@ -38,6 +43,7 @@ contains
     ret = FALSE
   end function delete_event
 
+  ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
@@ -45,43 +51,56 @@ contains
     call gtk_main_quit ()
   end subroutine destroy
 
-  function hello (widget, event, gdata ) result(ret)  bind(c)
+  ! "clicked" is a GtkButton signal
+  function hello (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     print *, "Hello World!"
     ret = .false.
   end function hello
 
-  function button1clicked (widget, event, gdata ) result(ret)  bind(c)
+  function button1clicked (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
     print *, "Button 1 clicked!"
     ret = .false.
   end function button1clicked
 
-  function button2clicked (widget, event, gdata ) result(ret)  bind(c)
+  function button2clicked (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int, c_bool
     logical(c_bool)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value :: widget, gdata
+
+    integer, pointer :: val
+
     print *, "Button 2 clicked!"
     ret = .false.
+    if (c_associated(gdata)) then
+       call c_f_pointer(gdata, val)
+       print *, "Value =", val
+       val = val + 1
+    end if
   end function button2clicked
+
 end module handlers
 
+
 program gtkFortran
-  use iso_c_binding !, only: c_ptr, c_null_ptr, c_loc
+  use iso_c_binding
   use gtk
   use handlers
   implicit none
-  
+
   type(c_ptr) :: window
   type(c_ptr) :: box1
   type(c_ptr) :: button1, button2, button3
-  
+
+  integer, target :: val = 4
+
   call gtk_init ()
-  
+
   ! Create the window and set up some signals for it.
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   !call gtk_window_set_default_size(window, 500, 500)
@@ -96,11 +115,14 @@ program gtkFortran
   button1 = gtk_button_new_with_label ("Button1"//CNULL)
   call gtk_box_pack_start (box1, button1, FALSE, FALSE, 0)
   call g_signal_connect (button1, "clicked"//CNULL, c_funloc(button1clicked))
+  call g_signal_connect (button1, "clicked"//CNULL, c_funloc(hello))
   call gtk_widget_show (button1)
 
+  ! This is an example of passing data to the callback function:
   button2 = gtk_button_new_with_label ("Button2"//CNULL)
   call gtk_box_pack_start (box1, button2, FALSE, FALSE, 0)
-  call g_signal_connect (button2, "clicked"//CNULL, c_funloc(button2clicked))
+  call g_signal_connect (button2, "clicked"//CNULL, c_funloc(button2clicked), &
+       & c_loc(val))
   call gtk_widget_show (button2)
 
   button3 = gtk_button_new_with_label ("Exit"//CNULL)
@@ -111,7 +133,7 @@ program gtkFortran
 
   call gtk_widget_show (box1)
   call gtk_widget_show (window)
-  
+
   call gtk_main ()
- 
+
 end program gtkFortran
