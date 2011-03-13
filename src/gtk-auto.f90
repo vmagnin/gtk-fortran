@@ -1026,8 +1026,8 @@ end function
 
 ! gpointer atk_document_get_document (AtkDocument *document);
 function atk_document_get_document(document) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: atk_document_get_document
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_document_get_document
   type(c_ptr), value :: document
 end function
 
@@ -2003,8 +2003,8 @@ end function
 
 ! gpointer g_param_spec_get_qdata (GParamSpec *pspec, GQuark quark);
 function g_param_spec_get_qdata(pspec, quark) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int32_t
-  type(c_funptr) :: g_param_spec_get_qdata
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr) :: g_param_spec_get_qdata
   type(c_ptr), value :: pspec
   integer(c_int32_t), value :: quark
 end function
@@ -2028,8 +2028,8 @@ end subroutine
 
 ! gpointer g_param_spec_steal_qdata (GParamSpec *pspec, GQuark quark);
 function g_param_spec_steal_qdata(pspec, quark) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int32_t
-  type(c_funptr) :: g_param_spec_steal_qdata
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr) :: g_param_spec_steal_qdata
   type(c_ptr), value :: pspec
   integer(c_int32_t), value :: quark
 end function
@@ -2150,8 +2150,8 @@ end function
 
 !  gpointer g_param_spec_internal (GType param_type, const gchar *name, const gchar *nick, const gchar *blurb, GParamFlags flags);
 function g_param_spec_internal(param_type, name, nick, blurb, flags) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t, c_char, c_int
-  type(c_funptr) :: g_param_spec_internal
+  use iso_c_binding, only: c_ptr, c_size_t, c_char, c_int
+  type(c_ptr) :: g_param_spec_internal
   integer(c_size_t), value :: param_type
   character(kind=c_char), dimension(*) :: name
   character(kind=c_char), dimension(*) :: nick
@@ -2924,8 +2924,8 @@ end subroutine
 
 ! gpointer g_value_get_pointer (const GValue *value);
 function g_value_get_pointer(value) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_value_get_pointer
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_value_get_pointer
   type(c_ptr), value :: value
 end function
 
@@ -3045,8 +3045,8 @@ end subroutine
 
 !   gpointer g_boxed_copy (GType boxed_type, gconstpointer src_boxed);
 function g_boxed_copy(boxed_type, src_boxed) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t, c_ptr
-  type(c_funptr) :: g_boxed_copy
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_boxed_copy
   integer(c_size_t), value :: boxed_type
   type(c_ptr), value :: src_boxed
 end function
@@ -3074,15 +3074,15 @@ end subroutine
 
 ! gpointer g_value_get_boxed (const GValue *value);
 function g_value_get_boxed(value) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_value_get_boxed
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_value_get_boxed
   type(c_ptr), value :: value
 end function
 
 ! gpointer g_value_dup_boxed (const GValue *value);
 function g_value_dup_boxed(value) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_value_dup_boxed
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_value_dup_boxed
   type(c_ptr), value :: value
 end function
 
@@ -3282,8 +3282,8 @@ end function
 
 ! gpointer g_object_newv (GType object_type, guint n_parameters, GParameter *parameters);
 function g_object_newv(object_type, n_parameters, parameters) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t, c_int, c_ptr
-  type(c_funptr) :: g_object_newv
+  use iso_c_binding, only: c_ptr, c_size_t, c_int
+  type(c_ptr) :: g_object_newv
   integer(c_size_t), value :: object_type
   integer(c_int), value :: n_parameters
   type(c_ptr), value :: parameters
@@ -3365,15 +3365,15 @@ end function
 
 ! gpointer g_object_ref_sink (gpointer object);
 function g_object_ref_sink(object) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_object_ref_sink
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_object_ref_sink
   type(c_ptr), value :: object
 end function
 
 ! gpointer g_object_ref (gpointer object);
 function g_object_ref(object) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_object_ref
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_object_ref
   type(c_ptr), value :: object
 end function
 
@@ -3431,8 +3431,8 @@ end subroutine
 
 !  gpointer g_object_get_qdata (GObject *object, GQuark quark);
 function g_object_get_qdata(object, quark) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int32_t
-  type(c_funptr) :: g_object_get_qdata
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr) :: g_object_get_qdata
   type(c_ptr), value :: object
   integer(c_int32_t), value :: quark
 end function
@@ -3456,16 +3456,16 @@ end subroutine
 
 ! gpointer g_object_steal_qdata (GObject *object, GQuark quark);
 function g_object_steal_qdata(object, quark) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int32_t
-  type(c_funptr) :: g_object_steal_qdata
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr) :: g_object_steal_qdata
   type(c_ptr), value :: object
   integer(c_int32_t), value :: quark
 end function
 
 ! gpointer g_object_get_data (GObject *object, const gchar *key);
 function g_object_get_data(object, key) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_char
-  type(c_funptr) :: g_object_get_data
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: g_object_get_data
   type(c_ptr), value :: object
   character(kind=c_char), dimension(*) :: key
 end function
@@ -3489,8 +3489,8 @@ end subroutine
 
 ! gpointer g_object_steal_data (GObject *object, const gchar *key);
 function g_object_steal_data(object, key) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_char
-  type(c_funptr) :: g_object_steal_data
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: g_object_steal_data
   type(c_ptr), value :: object
   character(kind=c_char), dimension(*) :: key
 end function
@@ -3535,15 +3535,15 @@ end subroutine
 
 ! gpointer g_value_get_object (const GValue *value);
 function g_value_get_object(value) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_value_get_object
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_value_get_object
   type(c_ptr), value :: value
 end function
 
 ! gpointer g_value_dup_object (const GValue *value);
 function g_value_dup_object(value) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_value_dup_object
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_value_dup_object
   type(c_ptr), value :: value
 end function
 
@@ -3657,22 +3657,22 @@ end function
 
 ! gpointer g_type_class_ref (GType type);
 function g_type_class_ref(type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_type_class_ref
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_type_class_ref
   integer(c_size_t), value :: type
 end function
 
 ! gpointer g_type_class_peek (GType type);
 function g_type_class_peek(type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_type_class_peek
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_type_class_peek
   integer(c_size_t), value :: type
 end function
 
 ! gpointer g_type_class_peek_static (GType type);
 function g_type_class_peek_static(type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_type_class_peek_static
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_type_class_peek_static
   integer(c_size_t), value :: type
 end function
 
@@ -3684,37 +3684,37 @@ end subroutine
 
 ! gpointer g_type_class_peek_parent (gpointer g_class);
 function g_type_class_peek_parent(g_class) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_type_class_peek_parent
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_type_class_peek_parent
   type(c_ptr), value :: g_class
 end function
 
 ! gpointer g_type_interface_peek (gpointer instance_class, GType iface_type);
 function g_type_interface_peek(instance_class, iface_type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_size_t
-  type(c_funptr) :: g_type_interface_peek
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_type_interface_peek
   type(c_ptr), value :: instance_class
   integer(c_size_t), value :: iface_type
 end function
 
 ! gpointer g_type_interface_peek_parent (gpointer g_iface);
 function g_type_interface_peek_parent(g_iface) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_type_interface_peek_parent
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_type_interface_peek_parent
   type(c_ptr), value :: g_iface
 end function
 
 !  gpointer g_type_default_interface_ref (GType g_type);
 function g_type_default_interface_ref(g_type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_type_default_interface_ref
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_type_default_interface_ref
   integer(c_size_t), value :: g_type
 end function
 
 ! gpointer g_type_default_interface_peek (GType g_type);
 function g_type_default_interface_peek(g_type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_type_default_interface_peek
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_type_default_interface_peek
   integer(c_size_t), value :: g_type
 end function
 
@@ -3750,8 +3750,8 @@ end subroutine
 
 ! gpointer g_type_get_qdata (GType type, GQuark quark);
 function g_type_get_qdata(type, quark) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t, c_int32_t
-  type(c_funptr) :: g_type_get_qdata
+  use iso_c_binding, only: c_ptr, c_size_t, c_int32_t
+  type(c_ptr) :: g_type_get_qdata
   integer(c_size_t), value :: type
   integer(c_int32_t), value :: quark
 end function
@@ -3852,8 +3852,8 @@ end subroutine
 
 ! gpointer g_type_instance_get_private (GTypeInstance *instance, GType private_type);
 function g_type_instance_get_private(instance, private_type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_size_t
-  type(c_funptr) :: g_type_instance_get_private
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_type_instance_get_private
   type(c_ptr), value :: instance
   integer(c_size_t), value :: private_type
 end function
@@ -3867,8 +3867,8 @@ end subroutine
 
 ! gpointer g_type_class_get_private (GTypeClass *klass, GType private_type);
 function g_type_class_get_private(klass, private_type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_size_t
-  type(c_funptr) :: g_type_class_get_private
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_type_class_get_private
   type(c_ptr), value :: klass
   integer(c_size_t), value :: private_type
 end function
@@ -4892,8 +4892,8 @@ end function
 
 ! gpointer g_value_peek_pointer (const GValue *value);
 function g_value_peek_pointer(value) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_value_peek_pointer
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_value_peek_pointer
   type(c_ptr), value :: value
 end function
 
@@ -6302,8 +6302,8 @@ end function
 
 !  gpointer g_async_result_get_user_data (GAsyncResult *res);
 function g_async_result_get_user_data(res) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_async_result_get_user_data
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_async_result_get_user_data
   type(c_ptr), value :: res
 end function
 
@@ -11045,8 +11045,8 @@ end subroutine
 
 !  gpointer g_settings_get_mapped (GSettings *settings, const gchar *key, GSettingsGetMapping mapping, gpointer user_data);
 function g_settings_get_mapped(settings, key, mapping, user_data) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_char
-  type(c_funptr) :: g_settings_get_mapped
+  use iso_c_binding, only: c_ptr, c_char, c_funptr
+  type(c_ptr) :: g_settings_get_mapped
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
   type(c_funptr), value :: mapping
@@ -11251,8 +11251,8 @@ end function
 
 ! gpointer g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation);
 function g_dbus_method_invocation_get_user_data(invocation) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_dbus_method_invocation_get_user_data
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_dbus_method_invocation_get_user_data
   type(c_ptr), value :: invocation
 end function
 
@@ -12009,8 +12009,8 @@ end function
 ! gpointer g_initable_newv (GType object_type, guint n_parameters, GParameter *parameters, GCancellable *cancellable, GError **error);
 function g_initable_newv(object_type, n_parameters, parameters, cancellable, err&
       &or) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t, c_int, c_ptr
-  type(c_funptr) :: g_initable_newv
+  use iso_c_binding, only: c_ptr, c_size_t, c_int
+  type(c_ptr) :: g_initable_newv
   integer(c_size_t), value :: object_type
   integer(c_int), value :: n_parameters
   type(c_ptr), value :: parameters
@@ -12547,8 +12547,8 @@ end function
 
 ! gpointer g_memory_output_stream_get_data (GMemoryOutputStream *ostream);
 function g_memory_output_stream_get_data(ostream) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_memory_output_stream_get_data
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_memory_output_stream_get_data
   type(c_ptr), value :: ostream
 end function
 
@@ -12568,8 +12568,8 @@ end function
 
 ! gpointer g_memory_output_stream_steal_data (GMemoryOutputStream *ostream);
 function g_memory_output_stream_steal_data(ostream) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_memory_output_stream_steal_data
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_memory_output_stream_steal_data
   type(c_ptr), value :: ostream
 end function
 
@@ -13980,8 +13980,8 @@ end subroutine
 
 ! gpointer g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult *simple);
 function g_simple_async_result_get_op_res_gpointer(simple) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_simple_async_result_get_op_res_gpointer
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_simple_async_result_get_op_res_gpointer
   type(c_ptr), value :: simple
 end function
 
@@ -14015,8 +14015,8 @@ end function
 
 !  gpointer g_simple_async_result_get_source_tag (GSimpleAsyncResult *simple);
 function g_simple_async_result_get_source_tag(simple) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_simple_async_result_get_source_tag
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_simple_async_result_get_source_tag
   type(c_ptr), value :: simple
 end function
 
@@ -14157,8 +14157,8 @@ end function
 
 !  gpointer g_credentials_get_native (GCredentials *credentials, GCredentialsType native_type);
 function g_credentials_get_native(credentials, native_type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int
-  type(c_funptr) :: g_credentials_get_native
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: g_credentials_get_native
   type(c_ptr), value :: credentials
   integer(c_int), value :: native_type
 end function
@@ -14247,8 +14247,8 @@ end subroutine
 
 ! gpointer g_atomic_pointer_get (volatile gpointer G_GNUC_MAY_ALIAS *atomic);
 function g_atomic_pointer_get(atomic) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_atomic_pointer_get
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_atomic_pointer_get
   type(c_ptr), value :: atomic
 end function
 
@@ -14482,15 +14482,15 @@ end subroutine
 
 ! gpointer g_trash_stack_pop (GTrashStack **stack_p);
 function g_trash_stack_pop(stack_p) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_trash_stack_pop
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_trash_stack_pop
   type(c_ptr), value :: stack_p
 end function
 
 ! gpointer g_trash_stack_peek (GTrashStack **stack_p);
 function g_trash_stack_peek(stack_p) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_trash_stack_peek
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_trash_stack_peek
   type(c_ptr), value :: stack_p
 end function
 
@@ -16057,8 +16057,8 @@ end subroutine
 
 ! gpointer g_cache_insert (GCache *cache, gpointer key);
 function g_cache_insert(cache, key) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_cache_insert
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_cache_insert
   type(c_ptr), value :: cache
   type(c_ptr), value :: key
 end function
@@ -16523,8 +16523,8 @@ end subroutine
 
 ! gpointer g_thread_join (GThread *thread);
 function g_thread_join(thread) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_thread_join
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_thread_join
   type(c_ptr), value :: thread
 end function
 
@@ -16555,8 +16555,8 @@ end subroutine
 
 ! gpointer g_static_private_get (GStaticPrivate *private_key);
 function g_static_private_get(private_key) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_static_private_get
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_static_private_get
   type(c_ptr), value :: private_key
 end function
 
@@ -16678,8 +16678,8 @@ end subroutine
 
 !  gpointer g_once_impl (GOnce *once, GThreadFunc func, gpointer arg);
 function g_once_impl(once, func, arg) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_once_impl
+  use iso_c_binding, only: c_ptr, c_funptr
+  type(c_ptr) :: g_once_impl
   type(c_ptr), value :: once
   type(c_funptr), value :: func
   type(c_ptr), value :: arg
@@ -17203,8 +17203,8 @@ end subroutine
 
 ! gpointer g_hash_table_lookup (GHashTable *hash_table, gconstpointer key);
 function g_hash_table_lookup(hash_table, key) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_hash_table_lookup
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_hash_table_lookup
   type(c_ptr), value :: hash_table
   type(c_ptr), value :: key
 end function
@@ -17230,8 +17230,8 @@ end subroutine
 
 ! gpointer g_hash_table_find (GHashTable *hash_table, GHRFunc predicate, gpointer user_data);
 function g_hash_table_find(hash_table, predicate, user_data) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_hash_table_find
+  use iso_c_binding, only: c_ptr, c_funptr
+  type(c_ptr) :: g_hash_table_find
   type(c_ptr), value :: hash_table
   type(c_funptr), value :: predicate
   type(c_ptr), value :: user_data
@@ -17473,8 +17473,8 @@ end subroutine
 
 ! gpointer g_markup_parse_context_pop (GMarkupParseContext *context);
 function g_markup_parse_context_pop(context) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_markup_parse_context_pop
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_markup_parse_context_pop
   type(c_ptr), value :: context
 end function
 
@@ -17511,8 +17511,8 @@ end subroutine
 
 ! gpointer g_markup_parse_context_get_user_data (GMarkupParseContext *context);
 function g_markup_parse_context_get_user_data(context) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_markup_parse_context_get_user_data
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_markup_parse_context_get_user_data
   type(c_ptr), value :: context
 end function
 
@@ -18307,8 +18307,8 @@ end subroutine
 
 ! gpointer g_datalist_id_get_data (GData **datalist, GQuark key_id);
 function g_datalist_id_get_data(datalist, key_id) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int32_t
-  type(c_funptr) :: g_datalist_id_get_data
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr) :: g_datalist_id_get_data
   type(c_ptr), value :: datalist
   integer(c_int32_t), value :: key_id
 end function
@@ -18325,8 +18325,8 @@ end subroutine
 
 ! gpointer g_datalist_id_remove_no_notify (GData **datalist, GQuark key_id);
 function g_datalist_id_remove_no_notify(datalist, key_id) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int32_t
-  type(c_funptr) :: g_datalist_id_remove_no_notify
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr) :: g_datalist_id_remove_no_notify
   type(c_ptr), value :: datalist
   integer(c_int32_t), value :: key_id
 end function
@@ -18368,8 +18368,8 @@ end subroutine
 
 ! gpointer g_dataset_id_get_data (gconstpointer dataset_location, GQuark key_id);
 function g_dataset_id_get_data(dataset_location, key_id) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int32_t
-  type(c_funptr) :: g_dataset_id_get_data
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr) :: g_dataset_id_get_data
   type(c_ptr), value :: dataset_location
   integer(c_int32_t), value :: key_id
 end function
@@ -18386,8 +18386,8 @@ end subroutine
 
 ! gpointer g_dataset_id_remove_no_notify (gconstpointer dataset_location, GQuark key_id);
 function g_dataset_id_remove_no_notify(dataset_location, key_id) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int32_t
-  type(c_funptr) :: g_dataset_id_remove_no_notify
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr) :: g_dataset_id_remove_no_notify
   type(c_ptr), value :: dataset_location
   integer(c_int32_t), value :: key_id
 end function
@@ -18712,8 +18712,8 @@ end function
 
 !  gpointer g_memdup (gconstpointer mem, guint byte_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(2);
 function g_memdup(mem, byte_size) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int
-  type(c_funptr) :: g_memdup
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: g_memdup
   type(c_ptr), value :: mem
   integer(c_int), value :: byte_size
 end function
@@ -19220,8 +19220,8 @@ end function
 
 ! gconstpointer g_variant_get_fixed_array (GVariant *value, gsize *n_elements, gsize element_size);
 function g_variant_get_fixed_array(value, n_elements, element_size) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_size_t
-  type(c_funptr) :: g_variant_get_fixed_array
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_variant_get_fixed_array
   type(c_ptr), value :: value
   type(c_ptr), value :: n_elements
   integer(c_size_t), value :: element_size
@@ -19236,8 +19236,8 @@ end function
 
 ! gconstpointer g_variant_get_data (GVariant *value);
 function g_variant_get_data(value) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_variant_get_data
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_variant_get_data
   type(c_ptr), value :: value
 end function
 
@@ -19617,44 +19617,44 @@ end subroutine
 
 ! gpointer g_queue_pop_head (GQueue *queue);
 function g_queue_pop_head(queue) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_queue_pop_head
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_queue_pop_head
   type(c_ptr), value :: queue
 end function
 
 ! gpointer g_queue_pop_tail (GQueue *queue);
 function g_queue_pop_tail(queue) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_queue_pop_tail
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_queue_pop_tail
   type(c_ptr), value :: queue
 end function
 
 ! gpointer g_queue_pop_nth (GQueue *queue, guint n);
 function g_queue_pop_nth(queue, n) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int
-  type(c_funptr) :: g_queue_pop_nth
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: g_queue_pop_nth
   type(c_ptr), value :: queue
   integer(c_int), value :: n
 end function
 
 ! gpointer g_queue_peek_head (GQueue *queue);
 function g_queue_peek_head(queue) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_queue_peek_head
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_queue_peek_head
   type(c_ptr), value :: queue
 end function
 
 ! gpointer g_queue_peek_tail (GQueue *queue);
 function g_queue_peek_tail(queue) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_queue_peek_tail
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_queue_peek_tail
   type(c_ptr), value :: queue
 end function
 
 ! gpointer g_queue_peek_nth (GQueue *queue, guint n);
 function g_queue_peek_nth(queue, n) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int
-  type(c_funptr) :: g_queue_peek_nth
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: g_queue_peek_nth
   type(c_ptr), value :: queue
   integer(c_int), value :: n
 end function
@@ -20071,8 +20071,8 @@ end function
 
 !  gpointer g_sequence_get (GSequenceIter *iter);
 function g_sequence_get(iter) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_sequence_get
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_sequence_get
   type(c_ptr), value :: iter
 end function
 
@@ -20371,8 +20371,8 @@ end function
 
 ! gpointer g_list_nth_data (GList *list, guint n);
 function g_list_nth_data(list, n) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int
-  type(c_funptr) :: g_list_nth_data
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: g_list_nth_data
   type(c_ptr), value :: list
   integer(c_int), value :: n
 end function
@@ -20617,8 +20617,8 @@ end function
 
 ! gpointer g_slist_nth_data (GSList *list, guint n);
 function g_slist_nth_data(list, n) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int
-  type(c_funptr) :: g_slist_nth_data
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: g_slist_nth_data
   type(c_ptr), value :: list
   integer(c_int), value :: n
 end function
@@ -20783,68 +20783,68 @@ end subroutine
 
 !  gpointer g_malloc (gsize n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 function g_malloc(n_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_malloc
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_malloc
   integer(c_size_t), value :: n_bytes
 end function
 
 ! gpointer g_malloc0 (gsize n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 function g_malloc0(n_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_malloc0
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_malloc0
   integer(c_size_t), value :: n_bytes
 end function
 
 ! gpointer g_realloc (gpointer mem, gsize n_bytes) G_GNUC_WARN_UNUSED_RESULT;
 function g_realloc(mem, n_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_size_t
-  type(c_funptr) :: g_realloc
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_realloc
   type(c_ptr), value :: mem
   integer(c_size_t), value :: n_bytes
 end function
 
 ! gpointer g_try_malloc (gsize n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 function g_try_malloc(n_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_try_malloc
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_try_malloc
   integer(c_size_t), value :: n_bytes
 end function
 
 ! gpointer g_try_malloc0 (gsize n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 function g_try_malloc0(n_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_try_malloc0
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_try_malloc0
   integer(c_size_t), value :: n_bytes
 end function
 
 ! gpointer g_try_realloc (gpointer mem, gsize n_bytes) G_GNUC_WARN_UNUSED_RESULT;
 function g_try_realloc(mem, n_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_size_t
-  type(c_funptr) :: g_try_realloc
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_try_realloc
   type(c_ptr), value :: mem
   integer(c_size_t), value :: n_bytes
 end function
 
 !  gpointer g_malloc_n (gsize n_blocks, gsize n_block_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE2(1,2);
 function g_malloc_n(n_blocks, n_block_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_malloc_n
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_malloc_n
   integer(c_size_t), value :: n_blocks
   integer(c_size_t), value :: n_block_bytes
 end function
 
 ! gpointer g_malloc0_n (gsize n_blocks, gsize n_block_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE2(1,2);
 function g_malloc0_n(n_blocks, n_block_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_malloc0_n
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_malloc0_n
   integer(c_size_t), value :: n_blocks
   integer(c_size_t), value :: n_block_bytes
 end function
 
 ! gpointer g_realloc_n (gpointer mem, gsize n_blocks, gsize n_block_bytes) G_GNUC_WARN_UNUSED_RESULT;
 function g_realloc_n(mem, n_blocks, n_block_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_size_t
-  type(c_funptr) :: g_realloc_n
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_realloc_n
   type(c_ptr), value :: mem
   integer(c_size_t), value :: n_blocks
   integer(c_size_t), value :: n_block_bytes
@@ -20852,24 +20852,24 @@ end function
 
 ! gpointer g_try_malloc_n (gsize n_blocks, gsize n_block_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE2(1,2);
 function g_try_malloc_n(n_blocks, n_block_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_try_malloc_n
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_try_malloc_n
   integer(c_size_t), value :: n_blocks
   integer(c_size_t), value :: n_block_bytes
 end function
 
 ! gpointer g_try_malloc0_n (gsize n_blocks, gsize n_block_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE2(1,2);
 function g_try_malloc0_n(n_blocks, n_block_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_try_malloc0_n
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_try_malloc0_n
   integer(c_size_t), value :: n_blocks
   integer(c_size_t), value :: n_block_bytes
 end function
 
 ! gpointer g_try_realloc_n (gpointer mem, gsize n_blocks, gsize n_block_bytes) G_GNUC_WARN_UNUSED_RESULT;
 function g_try_realloc_n(mem, n_blocks, n_block_bytes) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_size_t
-  type(c_funptr) :: g_try_realloc_n
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_try_realloc_n
   type(c_ptr), value :: mem
   integer(c_size_t), value :: n_blocks
   integer(c_size_t), value :: n_block_bytes
@@ -20910,15 +20910,15 @@ end subroutine
 
 ! gpointer g_mem_chunk_alloc (GMemChunk *mem_chunk);
 function g_mem_chunk_alloc(mem_chunk) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_mem_chunk_alloc
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_mem_chunk_alloc
   type(c_ptr), value :: mem_chunk
 end function
 
 ! gpointer g_mem_chunk_alloc0 (GMemChunk *mem_chunk);
 function g_mem_chunk_alloc0(mem_chunk) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_mem_chunk_alloc0
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_mem_chunk_alloc0
   type(c_ptr), value :: mem_chunk
 end function
 
@@ -21188,22 +21188,22 @@ end subroutine
 
 !   gpointer g_slice_alloc (gsize block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 function g_slice_alloc(block_size) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_slice_alloc
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_slice_alloc
   integer(c_size_t), value :: block_size
 end function
 
 ! gpointer g_slice_alloc0 (gsize block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 function g_slice_alloc0(block_size) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: g_slice_alloc0
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_slice_alloc0
   integer(c_size_t), value :: block_size
 end function
 
 ! gpointer g_slice_copy (gsize block_size, gconstpointer mem_block) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 function g_slice_copy(block_size, mem_block) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t, c_ptr
-  type(c_funptr) :: g_slice_copy
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: g_slice_copy
   integer(c_size_t), value :: block_size
   type(c_ptr), value :: mem_block
 end function
@@ -21310,8 +21310,8 @@ end subroutine
 
 ! gpointer g_tuples_index (GTuples *tuples, gint index_, gint field);
 function g_tuples_index(tuples, index_, field) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int
-  type(c_funptr) :: g_tuples_index
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: g_tuples_index
   type(c_ptr), value :: tuples
   integer(c_int), value :: index_
   integer(c_int), value :: field
@@ -21402,44 +21402,44 @@ end subroutine
 
 !  gpointer g_async_queue_pop (GAsyncQueue *queue);
 function g_async_queue_pop(queue) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_async_queue_pop
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_async_queue_pop
   type(c_ptr), value :: queue
 end function
 
 ! gpointer g_async_queue_pop_unlocked (GAsyncQueue *queue);
 function g_async_queue_pop_unlocked(queue) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_async_queue_pop_unlocked
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_async_queue_pop_unlocked
   type(c_ptr), value :: queue
 end function
 
 !  gpointer g_async_queue_try_pop (GAsyncQueue *queue);
 function g_async_queue_try_pop(queue) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_async_queue_try_pop
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_async_queue_try_pop
   type(c_ptr), value :: queue
 end function
 
 ! gpointer g_async_queue_try_pop_unlocked (GAsyncQueue *queue);
 function g_async_queue_try_pop_unlocked(queue) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_async_queue_try_pop_unlocked
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_async_queue_try_pop_unlocked
   type(c_ptr), value :: queue
 end function
 
 !  gpointer g_async_queue_timed_pop (GAsyncQueue *queue, GTimeVal *end_time);
 function g_async_queue_timed_pop(queue, end_time) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_async_queue_timed_pop
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_async_queue_timed_pop
   type(c_ptr), value :: queue
   type(c_ptr), value :: end_time
 end function
 
 ! gpointer g_async_queue_timed_pop_unlocked (GAsyncQueue *queue, GTimeVal *end_time);
 function g_async_queue_timed_pop_unlocked(queue, end_time) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_async_queue_timed_pop_unlocked
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_async_queue_timed_pop_unlocked
   type(c_ptr), value :: queue
   type(c_ptr), value :: end_time
 end function
@@ -21620,8 +21620,8 @@ end function
 
 ! gpointer* g_ptr_array_free (GPtrArray *array, gboolean free_seg);
 function g_ptr_array_free(array, free_seg) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_bool
-  type(c_funptr) :: g_ptr_array_free
+  use iso_c_binding, only: c_ptr, c_bool
+  type(c_ptr) :: g_ptr_array_free
   type(c_ptr), value :: array
   logical(c_bool), value :: free_seg
 end function
@@ -21655,16 +21655,16 @@ end subroutine
 
 ! gpointer g_ptr_array_remove_index (GPtrArray *array, guint index_);
 function g_ptr_array_remove_index(array, index_) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int
-  type(c_funptr) :: g_ptr_array_remove_index
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: g_ptr_array_remove_index
   type(c_ptr), value :: array
   integer(c_int), value :: index_
 end function
 
 ! gpointer g_ptr_array_remove_index_fast (GPtrArray *array, guint index_);
 function g_ptr_array_remove_index_fast(array, index_) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int
-  type(c_funptr) :: g_ptr_array_remove_index_fast
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: g_ptr_array_remove_index_fast
   type(c_ptr), value :: array
   integer(c_int), value :: index_
 end function
@@ -23043,8 +23043,8 @@ end function
 
 ! gpointer g_tree_lookup (GTree *tree, gconstpointer key);
 function g_tree_lookup(tree, key) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_tree_lookup
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_tree_lookup
   type(c_ptr), value :: tree
   type(c_ptr), value :: key
 end function
@@ -23079,8 +23079,8 @@ end subroutine
 
 !  gpointer g_tree_search (GTree *tree, GCompareFunc search_func, gconstpointer user_data);
 function g_tree_search(tree, search_func, user_data) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: g_tree_search
+  use iso_c_binding, only: c_ptr, c_funptr
+  type(c_ptr) :: g_tree_search
   type(c_ptr), value :: tree
   type(c_funptr), value :: search_func
   type(c_ptr), value :: user_data
@@ -24043,8 +24043,8 @@ end subroutine
 
 ! gpointer g_scanner_scope_lookup_symbol (GScanner *scanner, guint scope_id, const gchar *symbol);
 function g_scanner_scope_lookup_symbol(scanner, scope_id, symbol) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int, c_char
-  type(c_funptr) :: g_scanner_scope_lookup_symbol
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr) :: g_scanner_scope_lookup_symbol
   type(c_ptr), value :: scanner
   integer(c_int), value :: scope_id
   character(kind=c_char), dimension(*) :: symbol
@@ -24062,8 +24062,8 @@ end subroutine
 
 ! gpointer g_scanner_lookup_symbol (GScanner *scanner, const gchar *symbol);
 function g_scanner_lookup_symbol(scanner, symbol) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_char
-  type(c_funptr) :: g_scanner_lookup_symbol
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: g_scanner_lookup_symbol
   type(c_ptr), value :: scanner
   character(kind=c_char), dimension(*) :: symbol
 end function
@@ -24396,8 +24396,8 @@ end function
 
 ! gpointer gdk_image_get_pixels (GdkImage *image);
 function gdk_image_get_pixels(image) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gdk_image_get_pixels
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_image_get_pixels
   type(c_ptr), value :: image
 end function
 
@@ -25581,8 +25581,8 @@ end function
 
 !   gpointer gdk_xid_table_lookup_for_display (GdkDisplay *display, XID xid);
 function gdk_xid_table_lookup_for_display(display, xid) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_long
-  type(c_funptr) :: gdk_xid_table_lookup_for_display
+  use iso_c_binding, only: c_ptr, c_long
+  type(c_ptr) :: gdk_xid_table_lookup_for_display
   type(c_ptr), value :: display
   integer(c_long), value :: xid
 end function
@@ -25626,8 +25626,8 @@ end function
 
 !  gpointer gdk_xid_table_lookup (XID xid);
 function gdk_xid_table_lookup(xid) bind(c) 
-  use iso_c_binding, only: c_funptr, c_long
-  type(c_funptr) :: gdk_xid_table_lookup
+  use iso_c_binding, only: c_ptr, c_long
+  type(c_ptr) :: gdk_xid_table_lookup
   integer(c_long), value :: xid
 end function
 
@@ -25738,8 +25738,8 @@ end subroutine
 
 !  gpointer gdk_x11_font_get_xfont (GdkFont *font);
 function gdk_x11_font_get_xfont(font) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gdk_x11_font_get_xfont
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_x11_font_get_xfont
   type(c_ptr), value :: font
 end function
 
@@ -25774,8 +25774,8 @@ end subroutine
 
 ! gpointer gdk_drawable_get_data (GdkDrawable *drawable, const gchar *key);
 function gdk_drawable_get_data(drawable, key) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_char
-  type(c_funptr) :: gdk_drawable_get_data
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gdk_drawable_get_data
   type(c_ptr), value :: drawable
   character(kind=c_char), dimension(*) :: key
 end function
@@ -34458,15 +34458,15 @@ end function
 
 ! gpointer gtk_type_class (GtkType type);
 function gtk_type_class(type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: gtk_type_class
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: gtk_type_class
   integer(c_size_t), value :: type
 end function
 
 ! gpointer gtk_type_new (GtkType type);
 function gtk_type_new(type) bind(c) 
-  use iso_c_binding, only: c_funptr, c_size_t
-  type(c_funptr) :: gtk_type_new
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: gtk_type_new
   integer(c_size_t), value :: type
 end function
 
@@ -41194,8 +41194,8 @@ end subroutine
 
 ! gpointer gtk_tree_selection_get_user_data (GtkTreeSelection *selection);
 function gtk_tree_selection_get_user_data(selection) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gtk_tree_selection_get_user_data
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_tree_selection_get_user_data
   type(c_ptr), value :: selection
 end function
 
@@ -45820,8 +45820,8 @@ end subroutine
 
 ! gpointer gtk_object_get_data (GtkObject *object, const gchar *key);
 function gtk_object_get_data(object, key) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_char
-  type(c_funptr) :: gtk_object_get_data
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_object_get_data
   type(c_ptr), value :: object
   character(kind=c_char), dimension(*) :: key
 end function
@@ -45842,8 +45842,8 @@ end subroutine
 
 ! gpointer gtk_object_get_user_data (GtkObject *object);
 function gtk_object_get_user_data(object) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gtk_object_get_user_data
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_object_get_user_data
   type(c_ptr), value :: object
 end function
 
@@ -45867,8 +45867,8 @@ end subroutine
 
 ! gpointer gtk_object_get_data_by_id (GtkObject *object, GQuark data_id);
 function gtk_object_get_data_by_id(object, data_id) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int32_t
-  type(c_funptr) :: gtk_object_get_data_by_id
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr) :: gtk_object_get_data_by_id
   type(c_ptr), value :: object
   integer(c_int32_t), value :: data_id
 end function
@@ -52658,8 +52658,8 @@ end subroutine
 
 !  gpointer gtk_clist_get_row_data (GtkCList *clist, gint row);
 function gtk_clist_get_row_data(clist, row) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_int
-  type(c_funptr) :: gtk_clist_get_row_data
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_clist_get_row_data
   type(c_ptr), value :: clist
   integer(c_int), value :: row
 end function
@@ -55441,15 +55441,15 @@ end subroutine
 
 ! gpointer gtk_item_factory_popup_data (GtkItemFactory *ifactory);
 function gtk_item_factory_popup_data(ifactory) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gtk_item_factory_popup_data
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_item_factory_popup_data
   type(c_ptr), value :: ifactory
 end function
 
 ! gpointer gtk_item_factory_popup_data_from_widget (GtkWidget *widget);
 function gtk_item_factory_popup_data_from_widget(widget) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gtk_item_factory_popup_data_from_widget
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_item_factory_popup_data_from_widget
   type(c_ptr), value :: widget
 end function
 
@@ -56965,8 +56965,8 @@ end subroutine
 
 ! gpointer gtk_ctree_node_get_row_data (GtkCTree *ctree, GtkCTreeNode *node);
 function gtk_ctree_node_get_row_data(ctree, node) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gtk_ctree_node_get_row_data
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_ctree_node_get_row_data
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
 end function
@@ -57433,8 +57433,8 @@ end subroutine
 
 ! gpointer gtk_notebook_get_group (GtkNotebook *notebook);
 function gtk_notebook_get_group(notebook) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gtk_notebook_get_group
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_notebook_get_group
   type(c_ptr), value :: notebook
 end function
 
@@ -61345,8 +61345,8 @@ end function
 
 ! gpointer pango_fc_fontset_key_get_context_key (const PangoFcFontsetKey *key);
 function pango_fc_fontset_key_get_context_key(key) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: pango_fc_fontset_key_get_context_key
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: pango_fc_fontset_key_get_context_key
   type(c_ptr), value :: key
 end function
 
@@ -61366,8 +61366,8 @@ end function
 
 ! gpointer pango_fc_font_key_get_context_key (const PangoFcFontKey *key);
 function pango_fc_font_key_get_context_key(key) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: pango_fc_font_key_get_context_key
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: pango_fc_font_key_get_context_key
   type(c_ptr), value :: key
 end function
 
@@ -65879,8 +65879,8 @@ end function
 
 ! gpointer gdk_pixdata_from_pixbuf (GdkPixdata *pixdata, const GdkPixbuf *pixbuf, gboolean use_rle);
 function gdk_pixdata_from_pixbuf(pixdata, pixbuf, use_rle) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr, c_bool
-  type(c_funptr) :: gdk_pixdata_from_pixbuf
+  use iso_c_binding, only: c_ptr, c_bool
+  type(c_ptr) :: gdk_pixdata_from_pixbuf
   type(c_ptr), value :: pixdata
   type(c_ptr), value :: pixbuf
   logical(c_bool), value :: use_rle

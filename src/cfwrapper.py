@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011, Python 2.6.6, Linux Ubuntu 10.10
-# Last modification:  03.11.2011
+# Last modification:  03.13.2011
 
 """ This program generates the gtk-auto.f90 and gtkenums-auto.f90 files
     from the C header files of GTK+ in Linux.
@@ -64,15 +64,9 @@ def iso_c_binding(declaration, returned):
         if c_type.find(each) != -1:
             return "type(c_funptr)", "c_funptr"
 
-        
-    #?????????????????
-    # Is it sure ????
-    #?????????????????
+    #typedef void* gpointer;
     if c_type.find("gpointer")!=-1 or c_type.find("gconstpointer")!=-1:
-        if returned:
-            return "type(c_funptr)", "c_funptr"
-        else:
-            return "type(c_ptr)", "c_ptr"
+        return "type(c_ptr)", "c_ptr"
     
     # Is it a pointer ?
     if declaration.find("*") != -1:
