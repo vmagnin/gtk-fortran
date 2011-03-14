@@ -28,16 +28,14 @@ module handlers
   use gtk
   implicit none
 
-  logical :: run_status = TRUE
-  logical(c_bool) :: boolresult
-  logical :: boolevent
-
+  integer(c_int) :: run_status = TRUE
+  integer(c_int) :: boolresult
   
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr, c_int
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     !print *, "Delete_event"
     run_status = FALSE
@@ -45,7 +43,7 @@ contains
   end function delete_event
 
   subroutine pending_events ()
-    do while(gtk_events_pending() .and. run_status)
+    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
     end do
   end subroutine pending_events
@@ -78,7 +76,7 @@ program mandelbrot
   ! The window stays opened after the computation:
   do
     call pending_events()
-    if (.not.run_status) exit
+    if (run_status == FALSE) exit
     call sleep(1) ! So we don't burn CPU cycles
   end do
   print *, "All done"
@@ -136,7 +134,7 @@ subroutine Mandelbrot_set(the_gdk_image, the_gtk_image, width, height, xmin, xma
       end if
       ! This subrountine processes gtk events as needed during the computation.
       call pending_events()
-      if (.not.run_status) return ! Exit if we had a delete event.
+      if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
   end do
 end subroutine mandelbrot_set

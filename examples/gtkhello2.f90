@@ -36,8 +36,8 @@ contains
   ! Note that events are a special type of signals, coming from the
   ! X Window system. Then callback functions must have an event argument:
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr, c_int
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     print *, "my delete_event"
     ret = FALSE
@@ -53,30 +53,30 @@ contains
 
   ! "clicked" is a GtkButton signal
   function hello (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr, c_int
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Hello World!"
-    ret = .false.
+    ret = FALSE
   end function hello
 
   function button1clicked (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr, c_int
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Button 1 clicked!"
-    ret = .false.
+    ret = FALSE
   end function button1clicked
 
   function button2clicked (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr, c_int
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
 
     integer, pointer :: val
 
     print *, "Button 2 clicked!"
-    ret = .false.
+    ret = FALSE
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, val)
        print *, "Value =", val

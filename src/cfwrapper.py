@@ -202,7 +202,7 @@ TYPES_DICT = {
     "boolean":("logical(c_bool)","c_bool"),
     "gchar":("character(c_char)","c_char"),
     "guchar":("character(c_char)","c_char"),
-    "gboolean":("logical(c_bool)","c_bool"),
+#    "gboolean":("logical(c_bool)","c_bool"), typedef int gint; typedef gint gboolean;
     "double": ("real(c_double)","c_double"),
     "float":("real(c_float)","c_float"),
     "gsize":  ("integer(c_size_t)","c_size_t"),    #typedef unsigned long gsize;   also GType  

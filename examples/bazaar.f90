@@ -55,8 +55,8 @@ contains
   
   ! GtkWidget event:
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr, c_int
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     print *, "my delete_event"
     ret = FALSE
@@ -64,9 +64,9 @@ contains
 
   ! GtkWidget event:
   function expose_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool, c_char
+    use iso_c_binding, only: c_ptr, c_int, c_char
     implicit none
-    logical(c_bool)    :: ret
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     type(c_ptr) :: my_cairo_surface, my_cairo_context, my_pixbuf
     character(c_char), dimension(:), pointer :: pixel
@@ -157,28 +157,28 @@ contains
 
   ! GtkButton signal:
   function firstbutton (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
         
     print *, "Hello World!"
-    ret = .false.
+    ret = FALSE
   end function firstbutton
   
   ! GtkButton signal:
   function secondbutton (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     
     call gtk_progress_bar_pulse (progress)
-    ret = .false.
+    ret = FALSE
   end function secondbutton
 
   ! GtkFileChooser signal:
   function file_changed (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool, c_char
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr, c_char
+    integer(c_int)    :: ret
     character(c_char), dimension(:), pointer :: textptr
     type(c_ptr), value :: widget, gdata
     character(len=512) :: my_string
@@ -188,7 +188,7 @@ contains
     call convert_c_string(textptr, my_string)
     print *, TRIM(my_string)
     
-    ret = .false.
+    ret = FALSE
   end function file_changed
   
   ! This is not a handler:

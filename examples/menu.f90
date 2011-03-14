@@ -29,15 +29,7 @@
 module handlers
   use gtk
   implicit none
-  
-  logical :: run_status = TRUE
-  logical(c_bool) :: boolresult
-  logical :: boolevent
-  
-  type(c_ptr) :: my_pixbuf
-  character(c_char), dimension(:), pointer :: pixel
-  integer :: nch, rowstride, width, height
-  
+
 contains
   !*************************************
   ! User defined event handlers go here
@@ -55,8 +47,8 @@ contains
 
 ! delete event
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     print *, "my delete_event"
     ret = FALSE
@@ -65,74 +57,74 @@ contains
 ! GtkAction signals:
 ! open file
   function file_open (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "File open"
-    ret = .false.
+    ret = FALSE
   end function file_open
 
 ! save file
   function file_save (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "File save"
-    ret = .false.
+    ret = FALSE
   end function file_save
 
 ! close file
   function file_close (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "File close"
-    ret = .false.
+    ret = FALSE
   end function file_close
 
 ! cut
   function cut (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Cut"
-    ret = .false.
+    ret = FALSE
   end function cut
 
 ! copy
   function copy (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Copy"
-    ret = .false.
+    ret = FALSE
   end function copy
 
 ! paste
   function paste (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Paste"
-    ret = .false.
+    ret = FALSE
   end function paste
   
 ! help
   function help (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Help"
-    ret = .false.
+    ret = FALSE
   end function help
 
 ! menu dummy function
   function menu (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     !print *, "Menu"
-    ret = .false.
+    ret = FALSE
   end function menu
   
   ! This is not a handler
@@ -212,8 +204,6 @@ program simplemenu
   call gtk_init ()
   
   ! Properties of the main window :
-  width = 700
-  height = 700
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_title(mainwindow, "Simple Menu Example"//CNULL)
   call gtk_widget_set_size_request(mainwindow, 500, 500)

@@ -456,7 +456,7 @@ contains
   integer function test_gboolean_in_out()
     use gtk
     implicit none
-    logical(c_bool) :: l1, l2, l3, l4
+    integer(c_int) :: l1, l2, l3, l4
     integer :: errors
   !GVariant *          g_variant_new_boolean  (gboolean value);
   !gboolean            g_variant_get_boolean               (GVariant *value);
@@ -464,7 +464,7 @@ contains
     l1 = TRUE
     l2 = g_variant_get_boolean(g_variant_new_boolean (l1))
     print *, l1, l2
-    if (l1 .neqv. l2) then
+    if (l1 /= l2) then
         write(1,*) "ERROR g_variant_get_boolean:", l1, l2
         errors = errors + 1
     end if
@@ -472,7 +472,7 @@ contains
     l1 = FALSE
     l2 = g_variant_get_boolean(g_variant_new_boolean (l1))
     print *, l1, l2
-    if (l1 .neqv. l2) then
+    if (l1 /= l2) then
         write(1,*) "ERROR g_variant_get_boolean:", l1, l2
         errors = errors + 1
     end if
@@ -486,7 +486,7 @@ contains
     l2 = g_hostname_is_ip_address("1AA.168.0.1"//CNULL)
     l3 = g_hostname_is_ip_address("blabla"//CNULL)
     l4 = g_hostname_is_ip_address("192.168,0.1"//CNULL)
-    if ((l1 .neqv. .true.) .or. (l2 .neqv. .false.) .or. (l3 .neqv. .false.) .or. (l4 .neqv. .false.)) then
+    if ((l1 /= TRUE) .or. (l2 /= FALSE) .or. (l3 /= FALSE) .or. (l4 /= FALSE)) then
       write(1,*) "ERROR g_hostname_is_ip_address:", l1, l2, l3, l4
       errors = errors + 1
     end if

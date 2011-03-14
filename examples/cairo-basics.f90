@@ -28,24 +28,23 @@ module handlers
   use gtk
   implicit none
 
-  logical :: run_status = TRUE
-  logical(c_bool) :: boolresult
+  integer(c_int) :: run_status = TRUE
+  integer(c_int) :: boolresult
   logical :: boolevent
-  logical :: finished
   integer :: width, height
   
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr, c_int
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     run_status = FALSE
     ret = FALSE
   end function delete_event
 
   subroutine pending_events ()
-    do while(gtk_events_pending() .and. run_status)
+    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
     end do
   end subroutine pending_events
@@ -55,7 +54,7 @@ contains
     use gtk
     implicit none
     real(8), parameter :: pi = 4*atan(1d0)
-    logical(c_bool)    :: ret
+    integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, event, gdata
     type(c_ptr) :: my_cairo_context
     integer :: cstatus
@@ -115,7 +114,6 @@ program cairo_basics
   type(c_ptr) :: my_window
   type(c_ptr) :: my_drawing_area
   
-  finished = .false.
   call gtk_init ()
   
   ! Properties of the main window :
@@ -136,7 +134,7 @@ program cairo_basics
   ! The window stays opened after the computation:
   do
     call pending_events()
-    if (.not.run_status) exit
+    if (run_status == FALSE) exit
     call sleep(1) ! So we don't burn CPU cycles
   end do
   print *, "All done"

@@ -49,8 +49,10 @@ module gtk
   ! Some useful parameters to ease coding:
   character(c_char), parameter :: CNULL = c_null_char
   type(c_ptr), parameter       :: NULL = c_null_ptr
-  logical(c_bool), parameter   :: TRUE = .true.
-  logical(c_bool), parameter   :: FALSE = .false.
+!  logical(c_bool), parameter   :: TRUE = .true.
+!  logical(c_bool), parameter   :: FALSE = .false.
+  integer(c_int), parameter   :: FALSE = 0
+  integer(c_int), parameter   :: TRUE = not(FALSE)
 
 contains
   subroutine g_signal_connect (instance, detailed_signal, c_handler, data0)

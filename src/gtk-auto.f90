@@ -16,15 +16,15 @@ end function
 
 ! gboolean atk_state_set_is_empty (AtkStateSet *set);
 function atk_state_set_is_empty(set) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: atk_state_set_is_empty
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_state_set_is_empty
   type(c_ptr), value :: set
 end function
 
 ! gboolean atk_state_set_add_state (AtkStateSet *set, AtkStateType type);
 function atk_state_set_add_state(set, type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_state_set_add_state
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_state_set_add_state
   type(c_ptr), value :: set
   integer(c_int), value :: type
 end function
@@ -45,16 +45,16 @@ end subroutine
 
 ! gboolean atk_state_set_contains_state (AtkStateSet *set, AtkStateType type);
 function atk_state_set_contains_state(set, type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_state_set_contains_state
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_state_set_contains_state
   type(c_ptr), value :: set
   integer(c_int), value :: type
 end function
 
 ! gboolean atk_state_set_contains_states (AtkStateSet *set, AtkStateType *types, gint n_types);
 function atk_state_set_contains_states(set, types, n_types) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_state_set_contains_states
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_state_set_contains_states
   type(c_ptr), value :: set
   integer(c_int), value :: types
   integer(c_int), value :: n_types
@@ -62,8 +62,8 @@ end function
 
 ! gboolean atk_state_set_remove_state (AtkStateSet *set, AtkStateType type);
 function atk_state_set_remove_state(set, type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_state_set_remove_state
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_state_set_remove_state
   type(c_ptr), value :: set
   integer(c_int), value :: type
 end function
@@ -106,8 +106,8 @@ end function
 
 ! gboolean atk_relation_set_contains (AtkRelationSet *set, AtkRelationType relationship);
 function atk_relation_set_contains(set, relationship) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_relation_set_contains
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_relation_set_contains
   type(c_ptr), value :: set
   integer(c_int), value :: relationship
 end function
@@ -340,24 +340,24 @@ end function
 
 ! gboolean atk_table_is_column_selected (AtkTable *table, gint column);
 function atk_table_is_column_selected(table, column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_table_is_column_selected
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_is_column_selected
   type(c_ptr), value :: table
   integer(c_int), value :: column
 end function
 
 ! gboolean atk_table_is_row_selected (AtkTable *table, gint row);
 function atk_table_is_row_selected(table, row) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_table_is_row_selected
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_is_row_selected
   type(c_ptr), value :: table
   integer(c_int), value :: row
 end function
 
 ! gboolean atk_table_is_selected (AtkTable *table, gint row, gint column);
 function atk_table_is_selected(table, row, column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_table_is_selected
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_is_selected
   type(c_ptr), value :: table
   integer(c_int), value :: row
   integer(c_int), value :: column
@@ -365,32 +365,32 @@ end function
 
 ! gboolean atk_table_add_row_selection (AtkTable *table, gint row);
 function atk_table_add_row_selection(table, row) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_table_add_row_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_add_row_selection
   type(c_ptr), value :: table
   integer(c_int), value :: row
 end function
 
 ! gboolean atk_table_remove_row_selection (AtkTable *table, gint row);
 function atk_table_remove_row_selection(table, row) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_table_remove_row_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_remove_row_selection
   type(c_ptr), value :: table
   integer(c_int), value :: row
 end function
 
 ! gboolean atk_table_add_column_selection (AtkTable *table, gint column);
 function atk_table_add_column_selection(table, column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_table_add_column_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_add_column_selection
   type(c_ptr), value :: table
   integer(c_int), value :: column
 end function
 
 ! gboolean atk_table_remove_column_selection (AtkTable *table, gint column);
 function atk_table_remove_column_selection(table, column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_table_remove_column_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_remove_column_selection
   type(c_ptr), value :: table
   integer(c_int), value :: column
 end function
@@ -536,8 +536,8 @@ end function
 
 ! gboolean atk_text_add_selection (AtkText *text, gint start_offset, gint end_offset);
 function atk_text_add_selection(text, start_offset, end_offset) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_text_add_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_text_add_selection
   type(c_ptr), value :: text
   integer(c_int), value :: start_offset
   integer(c_int), value :: end_offset
@@ -545,8 +545,8 @@ end function
 
 ! gboolean atk_text_remove_selection (AtkText *text, gint selection_num);
 function atk_text_remove_selection(text, selection_num) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_text_remove_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_text_remove_selection
   type(c_ptr), value :: text
   integer(c_int), value :: selection_num
 end function
@@ -554,8 +554,8 @@ end function
 ! gboolean atk_text_set_selection (AtkText *text, gint selection_num, gint start_offset, gint end_offset);
 function atk_text_set_selection(text, selection_num, start_offset, end_offset) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_text_set_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_text_set_selection
   type(c_ptr), value :: text
   integer(c_int), value :: selection_num
   integer(c_int), value :: start_offset
@@ -564,8 +564,8 @@ end function
 
 ! gboolean atk_text_set_caret_offset (AtkText *text, gint offset);
 function atk_text_set_caret_offset(text, offset) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_text_set_caret_offset
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_text_set_caret_offset
   type(c_ptr), value :: text
   integer(c_int), value :: offset
 end function
@@ -648,8 +648,8 @@ end function
 
 !  gboolean atk_action_do_action (AtkAction *action, gint i);
 function atk_action_do_action(action, i) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_action_do_action
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_action_do_action
   type(c_ptr), value :: action
   integer(c_int), value :: i
 end function
@@ -687,8 +687,8 @@ end function
 
 ! gboolean atk_action_set_description (AtkAction *action, gint i, const gchar *desc);
 function atk_action_set_description(action, i, desc) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_char
-  logical(c_bool) :: atk_action_set_description
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: atk_action_set_description
   type(c_ptr), value :: action
   integer(c_int), value :: i
   character(kind=c_char), dimension(*) :: desc
@@ -731,8 +731,8 @@ end subroutine
 
 !  gboolean atk_value_set_current_value (AtkValue *obj, const GValue *value);
 function atk_value_set_current_value(obj, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: atk_value_set_current_value
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_value_set_current_value
   type(c_ptr), value :: obj
   type(c_ptr), value :: value
 end function
@@ -822,8 +822,8 @@ end function
 !  gboolean atk_editable_text_set_run_attributes (AtkEditableText *text, AtkAttributeSet *attrib_set, gint start_offset, gint end_offset);
 function atk_editable_text_set_run_attributes(text, attrib_set, start_offset, en&
       &d_offset) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_editable_text_set_run_attributes
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_editable_text_set_run_attributes
   type(c_ptr), value :: text
   type(c_ptr), value :: attrib_set
   integer(c_int), value :: start_offset
@@ -917,8 +917,8 @@ end subroutine
 
 ! gboolean atk_socket_is_occupied (AtkSocket* obj);
 function atk_socket_is_occupied(obj) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: atk_socket_is_occupied
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_socket_is_occupied
   type(c_ptr), value :: obj
 end function
 
@@ -1056,8 +1056,8 @@ end function
 ! gboolean atk_document_set_attribute_value (AtkDocument *document, const gchar *attribute_name, const gchar *attribute_value);
 function atk_document_set_attribute_value(document, attribute_name, attribute_va&
       &lue) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: atk_document_set_attribute_value
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: atk_document_set_attribute_value
   type(c_ptr), value :: document
   character(kind=c_char), dimension(*) :: attribute_name
   character(kind=c_char), dimension(*) :: attribute_value
@@ -1199,8 +1199,8 @@ end subroutine
 
 !  gboolean atk_image_set_image_description (AtkImage *image, const gchar *description);
 function atk_image_set_image_description(image, description) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: atk_image_set_image_description
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: atk_image_set_image_description
   type(c_ptr), value :: image
   character(kind=c_char), dimension(*) :: description
 end function
@@ -1259,15 +1259,15 @@ end function
 
 !  gboolean atk_hyperlink_is_valid (AtkHyperlink *link_);
 function atk_hyperlink_is_valid(link_) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: atk_hyperlink_is_valid
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_hyperlink_is_valid
   type(c_ptr), value :: link_
 end function
 
 !  gboolean atk_hyperlink_is_inline (AtkHyperlink *link_);
 function atk_hyperlink_is_inline(link_) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: atk_hyperlink_is_inline
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_hyperlink_is_inline
   type(c_ptr), value :: link_
 end function
 
@@ -1280,8 +1280,8 @@ end function
 
 !  gboolean atk_hyperlink_is_selected_link (AtkHyperlink *link_);
 function atk_hyperlink_is_selected_link(link_) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: atk_hyperlink_is_selected_link
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_hyperlink_is_selected_link
   type(c_ptr), value :: link_
 end function
 
@@ -1317,16 +1317,16 @@ end function
 
 !  gboolean atk_selection_add_selection (AtkSelection *selection, gint i);
 function atk_selection_add_selection(selection, i) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_selection_add_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_add_selection
   type(c_ptr), value :: selection
   integer(c_int), value :: i
 end function
 
 !  gboolean atk_selection_clear_selection (AtkSelection *selection);
 function atk_selection_clear_selection(selection) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: atk_selection_clear_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_clear_selection
   type(c_ptr), value :: selection
 end function
 
@@ -1347,24 +1347,24 @@ end function
 
 !  gboolean atk_selection_is_child_selected (AtkSelection *selection, gint i);
 function atk_selection_is_child_selected(selection, i) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_selection_is_child_selected
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_is_child_selected
   type(c_ptr), value :: selection
   integer(c_int), value :: i
 end function
 
 !  gboolean atk_selection_remove_selection (AtkSelection *selection, gint i);
 function atk_selection_remove_selection(selection, i) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_selection_remove_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_remove_selection
   type(c_ptr), value :: selection
   integer(c_int), value :: i
 end function
 
 !  gboolean atk_selection_select_all_selection (AtkSelection *selection);
 function atk_selection_select_all_selection(selection) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: atk_selection_select_all_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_select_all_selection
   type(c_ptr), value :: selection
 end function
 
@@ -1450,8 +1450,8 @@ end function
 
 ! gboolean atk_component_contains (AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
 function atk_component_contains(component, x, y, coord_type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_component_contains
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_contains
   type(c_ptr), value :: component
   integer(c_int), value :: x
   integer(c_int), value :: y
@@ -1514,8 +1514,8 @@ end function
 
 ! gboolean atk_component_grab_focus (AtkComponent *component);
 function atk_component_grab_focus(component) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: atk_component_grab_focus
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_grab_focus
   type(c_ptr), value :: component
 end function
 
@@ -1529,8 +1529,8 @@ end subroutine
 ! gboolean atk_component_set_extents (AtkComponent *component, gint x, gint y, gint width, gint height, AtkCoordType coord_type);
 function atk_component_set_extents(component, x, y, width, height, coord_type) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_component_set_extents
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_set_extents
   type(c_ptr), value :: component
   integer(c_int), value :: x
   integer(c_int), value :: y
@@ -1541,8 +1541,8 @@ end function
 
 ! gboolean atk_component_set_position (AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
 function atk_component_set_position(component, x, y, coord_type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_component_set_position
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_set_position
   type(c_ptr), value :: component
   integer(c_int), value :: x
   integer(c_int), value :: y
@@ -1551,8 +1551,8 @@ end function
 
 ! gboolean atk_component_set_size (AtkComponent *component, gint width, gint height);
 function atk_component_set_size(component, width, height) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_component_set_size
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_set_size
   type(c_ptr), value :: component
   integer(c_int), value :: width
   integer(c_int), value :: height
@@ -1735,10 +1735,10 @@ end subroutine
 
 !  void atk_object_notify_state_change (AtkObject *accessible, AtkState state, gboolean value);
 subroutine atk_object_notify_state_change(accessible, state, value) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int64_t, c_bool
+  use iso_c_binding, only: c_ptr, c_int64_t, c_int
   type(c_ptr), value :: accessible
   integer(c_int64_t), value :: state
-  logical(c_bool), value :: value
+  integer(c_int), value :: value
 end subroutine
 
 ! void atk_object_initialize (AtkObject *accessible, gpointer data);
@@ -1764,8 +1764,8 @@ end function
 
 !  gboolean atk_object_add_relationship (AtkObject *object, AtkRelationType relationship, AtkObject *target);
 function atk_object_add_relationship(object, relationship, target) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_object_add_relationship
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_object_add_relationship
   type(c_ptr), value :: object
   integer(c_int), value :: relationship
   type(c_ptr), value :: target
@@ -1773,8 +1773,8 @@ end function
 
 ! gboolean atk_object_remove_relationship (AtkObject *object, AtkRelationType relationship, AtkObject *target);
 function atk_object_remove_relationship(object, relationship, target) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: atk_object_remove_relationship
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_object_remove_relationship
   type(c_ptr), value :: object
   integer(c_int), value :: relationship
   type(c_ptr), value :: target
@@ -1846,16 +1846,16 @@ end subroutine
 
 ! gboolean atk_relation_remove_target (AtkRelation *relation, AtkObject *target);
 function atk_relation_remove_target(relation, target) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: atk_relation_remove_target
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_relation_remove_target
   type(c_ptr), value :: relation
   type(c_ptr), value :: target
 end function
 
 !   gboolean g_module_supported (void) G_GNUC_CONST;
 function g_module_supported() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: g_module_supported
+  use iso_c_binding, only: c_int
+  integer(c_int) :: g_module_supported
 end function
 
 !  GModule* g_module_open (const gchar *file_name, GModuleFlags flags);
@@ -1868,8 +1868,8 @@ end function
 
 !  gboolean g_module_close (GModule *module);
 function g_module_close(module) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_module_close
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_module_close
   type(c_ptr), value :: module
 end function
 
@@ -1887,8 +1887,8 @@ end function
 
 !  gboolean g_module_symbol (GModule *module, const gchar *symbol_name, gpointer *symbol);
 function g_module_symbol(module, symbol_name, symbol) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_module_symbol
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_module_symbol
   type(c_ptr), value :: module
   character(kind=c_char), dimension(*) :: symbol_name
   type(c_ptr), value :: symbol
@@ -1917,8 +1917,8 @@ end function
 
 ! gboolean g_type_module_use (GTypeModule *module);
 function g_type_module_use(module) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_type_module_use
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_type_module_use
   type(c_ptr), value :: module
 end function
 
@@ -2050,16 +2050,16 @@ end subroutine
 
 ! gboolean g_param_value_defaults (GParamSpec *pspec, GValue *value);
 function g_param_value_defaults(pspec, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_param_value_defaults
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_param_value_defaults
   type(c_ptr), value :: pspec
   type(c_ptr), value :: value
 end function
 
 ! gboolean g_param_value_validate (GParamSpec *pspec, GValue *value);
 function g_param_value_validate(pspec, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_param_value_validate
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_param_value_validate
   type(c_ptr), value :: pspec
   type(c_ptr), value :: value
 end function
@@ -2067,12 +2067,12 @@ end function
 ! gboolean g_param_value_convert (GParamSpec *pspec, const GValue *src_value, GValue *dest_value, gboolean strict_validation);
 function g_param_value_convert(pspec, src_value, dest_value, strict_validation) &
       &bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_param_value_convert
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_param_value_convert
   type(c_ptr), value :: pspec
   type(c_ptr), value :: src_value
   type(c_ptr), value :: dest_value
-  logical(c_bool), value :: strict_validation
+  integer(c_int), value :: strict_validation
 end function
 
 ! gint g_param_values_cmp (GParamSpec *pspec, const GValue *value1, const GValue *value2);
@@ -2161,9 +2161,9 @@ end function
 
 ! GParamSpecPool* g_param_spec_pool_new (gboolean type_prefixing);
 function g_param_spec_pool_new(type_prefixing) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_param_spec_pool_new
-  logical(c_bool), value :: type_prefixing
+  integer(c_int), value :: type_prefixing
 end function
 
 ! void g_param_spec_pool_insert (GParamSpecPool *pool, GParamSpec *pspec, GType owner_type);
@@ -2184,12 +2184,12 @@ end subroutine
 ! GParamSpec* g_param_spec_pool_lookup (GParamSpecPool *pool, const gchar *param_name, GType owner_type, gboolean walk_ancestors);
 function g_param_spec_pool_lookup(pool, param_name, owner_type, walk_ancestors) &
       &bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_size_t, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_size_t, c_int
   type(c_ptr) :: g_param_spec_pool_lookup
   type(c_ptr), value :: pool
   character(kind=c_char), dimension(*) :: param_name
   integer(c_size_t), value :: owner_type
-  logical(c_bool), value :: walk_ancestors
+  integer(c_int), value :: walk_ancestors
 end function
 
 ! GList* g_param_spec_pool_list_owned (GParamSpecPool *pool, GType owner_type);
@@ -2763,15 +2763,15 @@ end function
 
 ! void g_value_set_boolean (GValue *value, gboolean v_boolean);
 subroutine g_value_set_boolean(value, v_boolean) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: value
-  logical(c_bool), value :: v_boolean
+  integer(c_int), value :: v_boolean
 end subroutine
 
 ! gboolean g_value_get_boolean (const GValue *value);
 function g_value_get_boolean(value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_value_get_boolean
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_value_get_boolean
   type(c_ptr), value :: value
 end function
 
@@ -3358,8 +3358,8 @@ end subroutine
 
 ! gboolean g_object_is_floating (gpointer object);
 function g_object_is_floating(object) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_object_is_floating
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_object_is_floating
   type(c_ptr), value :: object
 end function
 
@@ -3649,8 +3649,8 @@ end function
 
 ! gboolean g_type_is_a (GType type, GType is_a_type);
 function g_type_is_a(type, is_a_type) bind(c) 
-  use iso_c_binding, only: c_bool, c_size_t
-  logical(c_bool) :: g_type_is_a
+  use iso_c_binding, only: c_int, c_size_t
+  integer(c_int) :: g_type_is_a
   integer(c_size_t), value :: type
   integer(c_size_t), value :: is_a_type
 end function
@@ -3957,8 +3957,8 @@ end function
 
 !  gboolean g_type_check_instance (GTypeInstance *instance) G_GNUC_PURE;
 function g_type_check_instance(instance) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_type_check_instance
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_type_check_instance
   type(c_ptr), value :: instance
 end function
 
@@ -3972,8 +3972,8 @@ end function
 
 ! gboolean g_type_check_instance_is_a (GTypeInstance *instance, GType iface_type) G_GNUC_PURE;
 function g_type_check_instance_is_a(instance, iface_type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_size_t
-  logical(c_bool) :: g_type_check_instance_is_a
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
+  integer(c_int) :: g_type_check_instance_is_a
   type(c_ptr), value :: instance
   integer(c_size_t), value :: iface_type
 end function
@@ -3988,38 +3988,38 @@ end function
 
 ! gboolean g_type_check_class_is_a (GTypeClass *g_class, GType is_a_type) G_GNUC_PURE;
 function g_type_check_class_is_a(g_class, is_a_type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_size_t
-  logical(c_bool) :: g_type_check_class_is_a
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
+  integer(c_int) :: g_type_check_class_is_a
   type(c_ptr), value :: g_class
   integer(c_size_t), value :: is_a_type
 end function
 
 ! gboolean g_type_check_is_value_type (GType type) G_GNUC_CONST;
 function g_type_check_is_value_type(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_size_t
-  logical(c_bool) :: g_type_check_is_value_type
+  use iso_c_binding, only: c_int, c_size_t
+  integer(c_int) :: g_type_check_is_value_type
   integer(c_size_t), value :: type
 end function
 
 ! gboolean g_type_check_value (GValue *value) G_GNUC_PURE;
 function g_type_check_value(value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_type_check_value
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_type_check_value
   type(c_ptr), value :: value
 end function
 
 ! gboolean g_type_check_value_holds (GValue *value, GType type) G_GNUC_PURE;
 function g_type_check_value_holds(value, type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_size_t
-  logical(c_bool) :: g_type_check_value_holds
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
+  integer(c_int) :: g_type_check_value_holds
   type(c_ptr), value :: value
   integer(c_size_t), value :: type
 end function
 
 ! gboolean g_type_test_flags (GType type, guint flags) G_GNUC_CONST;
 function g_type_test_flags(type, flags) bind(c) 
-  use iso_c_binding, only: c_bool, c_size_t, c_int
-  logical(c_bool) :: g_type_test_flags
+  use iso_c_binding, only: c_int, c_size_t
+  integer(c_int) :: g_type_test_flags
   integer(c_size_t), value :: type
   integer(c_int), value :: flags
 end function
@@ -4113,12 +4113,12 @@ end function
 
 ! GParamSpec* g_param_spec_boolean (const gchar *name, const gchar *nick, const gchar *blurb, gboolean default_value, GParamFlags flags);
 function g_param_spec_boolean(name, nick, blurb, default_value, flags) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: g_param_spec_boolean
   character(kind=c_char), dimension(*) :: name
   character(kind=c_char), dimension(*) :: nick
   character(kind=c_char), dimension(*) :: blurb
-  logical(c_bool), value :: default_value
+  integer(c_int), value :: default_value
   integer(c_int), value :: flags
 end function
 
@@ -4623,13 +4623,13 @@ end function
 ! gboolean g_signal_parse_name (const gchar *detailed_signal, GType itype, guint *signal_id_p, GQuark *detail_p, gboolean force_detail_quark);
 function g_signal_parse_name(detailed_signal, itype, signal_id_p, detail_p, forc&
       &e_detail_quark) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_size_t, c_ptr
-  logical(c_bool) :: g_signal_parse_name
+  use iso_c_binding, only: c_int, c_char, c_size_t, c_ptr
+  integer(c_int) :: g_signal_parse_name
   character(kind=c_char), dimension(*) :: detailed_signal
   integer(c_size_t), value :: itype
   type(c_ptr), value :: signal_id_p
   type(c_ptr), value :: detail_p
-  logical(c_bool), value :: force_detail_quark
+  integer(c_int), value :: force_detail_quark
 end function
 
 ! GSignalInvocationHint* g_signal_get_invocation_hint (gpointer instance);
@@ -4676,35 +4676,35 @@ end subroutine
 !  gboolean g_signal_has_handler_pending (gpointer instance, guint signal_id, GQuark detail, gboolean may_be_blocked);
 function g_signal_has_handler_pending(instance, signal_id, detail, may_be_blocke&
       &d) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_int32_t
-  logical(c_bool) :: g_signal_has_handler_pending
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: g_signal_has_handler_pending
   type(c_ptr), value :: instance
   integer(c_int), value :: signal_id
   integer(c_int32_t), value :: detail
-  logical(c_bool), value :: may_be_blocked
+  integer(c_int), value :: may_be_blocked
 end function
 
 ! gulong g_signal_connect_closure_by_id (gpointer instance, guint signal_id, GQuark detail, GClosure *closure, gboolean after);
 function g_signal_connect_closure_by_id(instance, signal_id, detail, closure, af&
       &ter) bind(c) 
-  use iso_c_binding, only: c_long, c_ptr, c_int, c_int32_t, c_bool
+  use iso_c_binding, only: c_long, c_ptr, c_int, c_int32_t
   integer(c_long) :: g_signal_connect_closure_by_id
   type(c_ptr), value :: instance
   integer(c_int), value :: signal_id
   integer(c_int32_t), value :: detail
   type(c_ptr), value :: closure
-  logical(c_bool), value :: after
+  integer(c_int), value :: after
 end function
 
 ! gulong g_signal_connect_closure (gpointer instance, const gchar *detailed_signal, GClosure *closure, gboolean after);
 function g_signal_connect_closure(instance, detailed_signal, closure, after) bin&
       &d(c) 
-  use iso_c_binding, only: c_long, c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_long, c_ptr, c_char, c_int
   integer(c_long) :: g_signal_connect_closure
   type(c_ptr), value :: instance
   character(kind=c_char), dimension(*) :: detailed_signal
   type(c_ptr), value :: closure
-  logical(c_bool), value :: after
+  integer(c_int), value :: after
 end function
 
 ! gulong g_signal_connect_data (gpointer instance, const gchar *detailed_signal, GCallback c_handler, gpointer data, GClosureNotify destroy_data, GConnectFlags connect_flags);
@@ -4743,8 +4743,8 @@ end subroutine
 
 ! gboolean g_signal_handler_is_connected (gpointer instance, gulong handler_id);
 function g_signal_handler_is_connected(instance, handler_id) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_long
-  logical(c_bool) :: g_signal_handler_is_connected
+  use iso_c_binding, only: c_int, c_ptr, c_long
+  integer(c_int) :: g_signal_handler_is_connected
   type(c_ptr), value :: instance
   integer(c_long), value :: handler_id
 end function
@@ -4834,8 +4834,8 @@ end subroutine
 !  gboolean g_signal_accumulator_true_handled (GSignalInvocationHint *ihint, GValue *return_accu, const GValue *handler_return, gpointer dummy);
 function g_signal_accumulator_true_handled(ihint, return_accu, handler_return, d&
       &ummy) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_signal_accumulator_true_handled
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_signal_accumulator_true_handled
   type(c_ptr), value :: ihint
   type(c_ptr), value :: return_accu
   type(c_ptr), value :: handler_return
@@ -4885,8 +4885,8 @@ end subroutine
 
 !  gboolean g_value_fits_pointer (const GValue *value);
 function g_value_fits_pointer(value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_value_fits_pointer
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_value_fits_pointer
   type(c_ptr), value :: value
 end function
 
@@ -4899,24 +4899,24 @@ end function
 
 !  gboolean g_value_type_compatible (GType src_type, GType dest_type);
 function g_value_type_compatible(src_type, dest_type) bind(c) 
-  use iso_c_binding, only: c_bool, c_size_t
-  logical(c_bool) :: g_value_type_compatible
+  use iso_c_binding, only: c_int, c_size_t
+  integer(c_int) :: g_value_type_compatible
   integer(c_size_t), value :: src_type
   integer(c_size_t), value :: dest_type
 end function
 
 ! gboolean g_value_type_transformable (GType src_type, GType dest_type);
 function g_value_type_transformable(src_type, dest_type) bind(c) 
-  use iso_c_binding, only: c_bool, c_size_t
-  logical(c_bool) :: g_value_type_transformable
+  use iso_c_binding, only: c_int, c_size_t
+  integer(c_int) :: g_value_type_transformable
   integer(c_size_t), value :: src_type
   integer(c_size_t), value :: dest_type
 end function
 
 ! gboolean g_value_transform (const GValue *src_value, GValue *dest_value);
 function g_value_transform(src_value, dest_value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_value_transform
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_value_transform
   type(c_ptr), value :: src_value
   type(c_ptr), value :: dest_value
 end function
@@ -4956,8 +4956,8 @@ end subroutine
 
 ! gboolean g_socket_service_is_active (GSocketService *service);
 function g_socket_service_is_active(service) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_service_is_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_service_is_active
   type(c_ptr), value :: service
 end function
 
@@ -4976,17 +4976,17 @@ end function
 
 ! gboolean g_filter_input_stream_get_close_base_stream (GFilterInputStream *stream);
 function g_filter_input_stream_get_close_base_stream(stream) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_filter_input_stream_get_close_base_stream
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_filter_input_stream_get_close_base_stream
   type(c_ptr), value :: stream
 end function
 
 ! void g_filter_input_stream_set_close_base_stream (GFilterInputStream *stream, gboolean close_base);
 subroutine g_filter_input_stream_set_close_base_stream(stream, close_base) bind(&
       &c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: stream
-  logical(c_bool), value :: close_base
+  integer(c_int), value :: close_base
 end subroutine
 
 !   GType g_cancellable_get_type (void) G_GNUC_CONST;
@@ -5003,15 +5003,15 @@ end function
 
 !  gboolean g_cancellable_is_cancelled (GCancellable *cancellable);
 function g_cancellable_is_cancelled(cancellable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_cancellable_is_cancelled
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_cancellable_is_cancelled
   type(c_ptr), value :: cancellable
 end function
 
 ! gboolean g_cancellable_set_error_if_cancelled (GCancellable *cancellable, GError **error);
 function g_cancellable_set_error_if_cancelled(cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_cancellable_set_error_if_cancelled
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_cancellable_set_error_if_cancelled
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
 end function
@@ -5025,8 +5025,8 @@ end function
 
 ! gboolean g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd);
 function g_cancellable_make_pollfd(cancellable, pollfd) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_cancellable_make_pollfd
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_cancellable_make_pollfd
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: pollfd
 end function
@@ -5145,8 +5145,8 @@ end function
 ! gboolean g_dbus_auth_observer_authorize_authenticated_peer (GDBusAuthObserver *observer, GIOStream *stream, GCredentials *credentials);
 function g_dbus_auth_observer_authorize_authenticated_peer(observer, stream, cre&
       &dentials) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_auth_observer_authorize_authenticated_peer
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_auth_observer_authorize_authenticated_peer
   type(c_ptr), value :: observer
   type(c_ptr), value :: stream
   type(c_ptr), value :: credentials
@@ -5209,8 +5209,8 @@ end function
 
 !  gboolean g_data_output_stream_put_byte (GDataOutputStream *stream, guchar data, GCancellable *cancellable, GError **error);
 function g_data_output_stream_put_byte(stream, data, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_data_output_stream_put_byte
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_data_output_stream_put_byte
   type(c_ptr), value :: stream
   character(c_char), value :: data
   type(c_ptr), value :: cancellable
@@ -5220,8 +5220,8 @@ end function
 ! gboolean g_data_output_stream_put_int16 (GDataOutputStream *stream, gint16 data, GCancellable *cancellable, GError **error);
 function g_data_output_stream_put_int16(stream, data, cancellable, error) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int16_t
-  logical(c_bool) :: g_data_output_stream_put_int16
+  use iso_c_binding, only: c_int, c_ptr, c_int16_t
+  integer(c_int) :: g_data_output_stream_put_int16
   type(c_ptr), value :: stream
   integer(c_int16_t), value :: data
   type(c_ptr), value :: cancellable
@@ -5231,8 +5231,8 @@ end function
 ! gboolean g_data_output_stream_put_uint16 (GDataOutputStream *stream, guint16 data, GCancellable *cancellable, GError **error);
 function g_data_output_stream_put_uint16(stream, data, cancellable, error) bind(&
       &c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int16_t
-  logical(c_bool) :: g_data_output_stream_put_uint16
+  use iso_c_binding, only: c_int, c_ptr, c_int16_t
+  integer(c_int) :: g_data_output_stream_put_uint16
   type(c_ptr), value :: stream
   integer(c_int16_t), value :: data
   type(c_ptr), value :: cancellable
@@ -5242,8 +5242,8 @@ end function
 ! gboolean g_data_output_stream_put_int32 (GDataOutputStream *stream, gint32 data, GCancellable *cancellable, GError **error);
 function g_data_output_stream_put_int32(stream, data, cancellable, error) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: g_data_output_stream_put_int32
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: g_data_output_stream_put_int32
   type(c_ptr), value :: stream
   integer(c_int32_t), value :: data
   type(c_ptr), value :: cancellable
@@ -5253,8 +5253,8 @@ end function
 ! gboolean g_data_output_stream_put_uint32 (GDataOutputStream *stream, guint32 data, GCancellable *cancellable, GError **error);
 function g_data_output_stream_put_uint32(stream, data, cancellable, error) bind(&
       &c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: g_data_output_stream_put_uint32
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: g_data_output_stream_put_uint32
   type(c_ptr), value :: stream
   integer(c_int32_t), value :: data
   type(c_ptr), value :: cancellable
@@ -5264,8 +5264,8 @@ end function
 ! gboolean g_data_output_stream_put_int64 (GDataOutputStream *stream, gint64 data, GCancellable *cancellable, GError **error);
 function g_data_output_stream_put_int64(stream, data, cancellable, error) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int64_t
-  logical(c_bool) :: g_data_output_stream_put_int64
+  use iso_c_binding, only: c_int, c_ptr, c_int64_t
+  integer(c_int) :: g_data_output_stream_put_int64
   type(c_ptr), value :: stream
   integer(c_int64_t), value :: data
   type(c_ptr), value :: cancellable
@@ -5275,8 +5275,8 @@ end function
 ! gboolean g_data_output_stream_put_uint64 (GDataOutputStream *stream, guint64 data, GCancellable *cancellable, GError **error);
 function g_data_output_stream_put_uint64(stream, data, cancellable, error) bind(&
       &c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int64_t
-  logical(c_bool) :: g_data_output_stream_put_uint64
+  use iso_c_binding, only: c_int, c_ptr, c_int64_t
+  integer(c_int) :: g_data_output_stream_put_uint64
   type(c_ptr), value :: stream
   integer(c_int64_t), value :: data
   type(c_ptr), value :: cancellable
@@ -5286,8 +5286,8 @@ end function
 ! gboolean g_data_output_stream_put_string (GDataOutputStream *stream, const char *str, GCancellable *cancellable, GError **error);
 function g_data_output_stream_put_string(stream, str, cancellable, error) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_data_output_stream_put_string
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_data_output_stream_put_string
   type(c_ptr), value :: stream
   character(kind=c_char), dimension(*) :: str
   type(c_ptr), value :: cancellable
@@ -5336,16 +5336,16 @@ end subroutine
 
 ! gboolean g_mount_operation_get_anonymous (GMountOperation *op);
 function g_mount_operation_get_anonymous(op) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_mount_operation_get_anonymous
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_mount_operation_get_anonymous
   type(c_ptr), value :: op
 end function
 
 ! void g_mount_operation_set_anonymous (GMountOperation *op, gboolean anonymous);
 subroutine g_mount_operation_set_anonymous(op, anonymous) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: op
-  logical(c_bool), value :: anonymous
+  integer(c_int), value :: anonymous
 end subroutine
 
 ! const char * g_mount_operation_get_domain (GMountOperation *op);
@@ -5405,8 +5405,8 @@ end function
 
 ! gboolean g_permission_acquire (GPermission *permission, GCancellable *cancellable, GError **error);
 function g_permission_acquire(permission, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_permission_acquire
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_permission_acquire
   type(c_ptr), value :: permission
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -5424,8 +5424,8 @@ end subroutine
 
 ! gboolean g_permission_acquire_finish (GPermission *permission, GAsyncResult *result, GError **error);
 function g_permission_acquire_finish(permission, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_permission_acquire_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_permission_acquire_finish
   type(c_ptr), value :: permission
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -5433,8 +5433,8 @@ end function
 
 !  gboolean g_permission_release (GPermission *permission, GCancellable *cancellable, GError **error);
 function g_permission_release(permission, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_permission_release
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_permission_release
   type(c_ptr), value :: permission
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -5452,8 +5452,8 @@ end subroutine
 
 ! gboolean g_permission_release_finish (GPermission *permission, GAsyncResult *result, GError **error);
 function g_permission_release_finish(permission, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_permission_release_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_permission_release_finish
   type(c_ptr), value :: permission
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -5461,33 +5461,33 @@ end function
 
 !  gboolean g_permission_get_allowed (GPermission *permission);
 function g_permission_get_allowed(permission) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_permission_get_allowed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_permission_get_allowed
   type(c_ptr), value :: permission
 end function
 
 ! gboolean g_permission_get_can_acquire (GPermission *permission);
 function g_permission_get_can_acquire(permission) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_permission_get_can_acquire
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_permission_get_can_acquire
   type(c_ptr), value :: permission
 end function
 
 ! gboolean g_permission_get_can_release (GPermission *permission);
 function g_permission_get_can_release(permission) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_permission_get_can_release
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_permission_get_can_release
   type(c_ptr), value :: permission
 end function
 
 !  void g_permission_impl_update (GPermission *permission, gboolean allowed, gboolean can_acquire, gboolean can_release);
 subroutine g_permission_impl_update(permission, allowed, can_acquire, can_releas&
       &e) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: permission
-  logical(c_bool), value :: allowed
-  logical(c_bool), value :: can_acquire
-  logical(c_bool), value :: can_release
+  integer(c_int), value :: allowed
+  integer(c_int), value :: can_acquire
+  integer(c_int), value :: can_release
 end subroutine
 
 !   GType g_dbus_proxy_get_type (void) G_GNUC_CONST;
@@ -5849,8 +5849,8 @@ end subroutine
 
 ! gboolean g_async_initable_init_finish (GAsyncInitable *initable, GAsyncResult *res, GError **error);
 function g_async_initable_init_finish(initable, res, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_async_initable_init_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_async_initable_init_finish
   type(c_ptr), value :: initable
   type(c_ptr), value :: res
   type(c_ptr), value :: error
@@ -5899,8 +5899,8 @@ end function
 
 !  gboolean g_dbus_error_is_remote_error (const GError *error);
 function g_dbus_error_is_remote_error(error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_error_is_remote_error
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_error_is_remote_error
   type(c_ptr), value :: error
 end function
 
@@ -5913,16 +5913,16 @@ end function
 
 ! gboolean g_dbus_error_strip_remote_error (GError *error);
 function g_dbus_error_strip_remote_error(error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_error_strip_remote_error
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_error_strip_remote_error
   type(c_ptr), value :: error
 end function
 
 !  gboolean g_dbus_error_register_error (GQuark error_domain, gint error_code, const gchar *dbus_error_name);
 function g_dbus_error_register_error(error_domain, error_code, dbus_error_name) &
       &bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t, c_int, c_char
-  logical(c_bool) :: g_dbus_error_register_error
+  use iso_c_binding, only: c_int, c_int32_t, c_char
+  integer(c_int) :: g_dbus_error_register_error
   integer(c_int32_t), value :: error_domain
   integer(c_int), value :: error_code
   character(kind=c_char), dimension(*) :: dbus_error_name
@@ -5931,8 +5931,8 @@ end function
 ! gboolean g_dbus_error_unregister_error (GQuark error_domain, gint error_code, const gchar *dbus_error_name);
 function g_dbus_error_unregister_error(error_domain, error_code, dbus_error_name&
       &) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t, c_int, c_char
-  logical(c_bool) :: g_dbus_error_unregister_error
+  use iso_c_binding, only: c_int, c_int32_t, c_char
+  integer(c_int) :: g_dbus_error_unregister_error
   integer(c_int32_t), value :: error_domain
   integer(c_int), value :: error_code
   character(kind=c_char), dimension(*) :: dbus_error_name
@@ -5983,9 +5983,9 @@ end function
 
 ! GPermission * g_simple_permission_new (gboolean allowed);
 function g_simple_permission_new(allowed) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_simple_permission_new
-  logical(c_bool), value :: allowed
+  integer(c_int), value :: allowed
 end function
 
 !   GType g_app_info_create_flags_get_type (void) G_GNUC_CONST;
@@ -6316,24 +6316,24 @@ end function
 
 !   gboolean g_content_type_equals (const gchar *type1, const gchar *type2);
 function g_content_type_equals(type1, type2) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_content_type_equals
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_content_type_equals
   character(kind=c_char), dimension(*) :: type1
   character(kind=c_char), dimension(*) :: type2
 end function
 
 ! gboolean g_content_type_is_a (const gchar *type, const gchar *supertype);
 function g_content_type_is_a(type, supertype) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_content_type_is_a
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_content_type_is_a
   character(kind=c_char), dimension(*) :: type
   character(kind=c_char), dimension(*) :: supertype
 end function
 
 ! gboolean g_content_type_is_unknown (const gchar *type);
 function g_content_type_is_unknown(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_content_type_is_unknown
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_content_type_is_unknown
   character(kind=c_char), dimension(*) :: type
 end function
 
@@ -6360,8 +6360,8 @@ end function
 
 ! gboolean g_content_type_can_be_executable (const gchar *type);
 function g_content_type_can_be_executable(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_content_type_can_be_executable
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_content_type_can_be_executable
   character(kind=c_char), dimension(*) :: type
 end function
 
@@ -6424,8 +6424,8 @@ end function
 
 !  gboolean g_vfs_is_active (GVfs *vfs);
 function g_vfs_is_active(vfs) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_vfs_is_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_vfs_is_active
   type(c_ptr), value :: vfs
 end function
 
@@ -6474,15 +6474,15 @@ end function
 
 !   gboolean g_dbus_is_address (const gchar *string);
 function g_dbus_is_address(string) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_dbus_is_address
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_dbus_is_address
   character(kind=c_char), dimension(*) :: string
 end function
 
 ! gboolean g_dbus_is_supported_address (const gchar *string, GError **error);
 function g_dbus_is_supported_address(string, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: g_dbus_is_supported_address
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: g_dbus_is_supported_address
   character(kind=c_char), dimension(*) :: string
   type(c_ptr), value :: error
 end function
@@ -6548,8 +6548,8 @@ end function
 
 !  gboolean g_io_stream_close (GIOStream *stream, GCancellable *cancellable, GError **error);
 function g_io_stream_close(stream, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_io_stream_close
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_io_stream_close
   type(c_ptr), value :: stream
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -6568,8 +6568,8 @@ end subroutine
 
 ! gboolean g_io_stream_close_finish (GIOStream *stream, GAsyncResult *result, GError **error);
 function g_io_stream_close_finish(stream, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_io_stream_close_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_io_stream_close_finish
   type(c_ptr), value :: stream
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -6577,22 +6577,22 @@ end function
 
 !  gboolean g_io_stream_is_closed (GIOStream *stream);
 function g_io_stream_is_closed(stream) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_io_stream_is_closed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_io_stream_is_closed
   type(c_ptr), value :: stream
 end function
 
 ! gboolean g_io_stream_has_pending (GIOStream *stream);
 function g_io_stream_has_pending(stream) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_io_stream_has_pending
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_io_stream_has_pending
   type(c_ptr), value :: stream
 end function
 
 ! gboolean g_io_stream_set_pending (GIOStream *stream, GError **error);
 function g_io_stream_set_pending(stream, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_io_stream_set_pending
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_io_stream_set_pending
   type(c_ptr), value :: stream
   type(c_ptr), value :: error
 end function
@@ -6808,8 +6808,8 @@ end function
 
 ! gboolean g_file_equal (GFile *file1, GFile *file2);
 function g_file_equal(file1, file2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_equal
   type(c_ptr), value :: file1
   type(c_ptr), value :: file2
 end function
@@ -6851,8 +6851,8 @@ end function
 
 ! gboolean g_file_has_parent (GFile *file, GFile *parent);
 function g_file_has_parent(file, parent) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_has_parent
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_has_parent
   type(c_ptr), value :: file
   type(c_ptr), value :: parent
 end function
@@ -6876,8 +6876,8 @@ end function
 
 ! gboolean g_file_has_prefix (GFile *file, GFile *prefix);
 function g_file_has_prefix(file, prefix) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_has_prefix
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_has_prefix
   type(c_ptr), value :: file
   type(c_ptr), value :: prefix
 end function
@@ -6900,15 +6900,15 @@ end function
 
 ! gboolean g_file_is_native (GFile *file);
 function g_file_is_native(file) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_is_native
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_is_native
   type(c_ptr), value :: file
 end function
 
 ! gboolean g_file_has_uri_scheme (GFile *file, const char *uri_scheme);
 function g_file_has_uri_scheme(file, uri_scheme) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_has_uri_scheme
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_has_uri_scheme
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: uri_scheme
 end function
@@ -6972,11 +6972,11 @@ end function
 ! GFileOutputStream * g_file_replace (GFile *file, const char *etag, gboolean make_backup, GFileCreateFlags flags, GCancellable *cancellable, GError **error);
 function g_file_replace(file, etag, make_backup, flags, cancellable, error) bind&
       &(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: g_file_replace
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: etag
-  logical(c_bool), value :: make_backup
+  integer(c_int), value :: make_backup
   integer(c_int), value :: flags
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -7027,10 +7027,10 @@ end function
 ! void g_file_replace_async (GFile *file, const char *etag, gboolean make_backup, GFileCreateFlags flags, int io_priority, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 subroutine g_file_replace_async(file, etag, make_backup, flags, io_priority, can&
       &cellable, callback, user_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool, c_int, c_funptr
+  use iso_c_binding, only: c_ptr, c_char, c_int, c_funptr
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: etag
-  logical(c_bool), value :: make_backup
+  integer(c_int), value :: make_backup
   integer(c_int), value :: flags
   integer(c_int), value :: io_priority
   type(c_ptr), value :: cancellable
@@ -7110,11 +7110,11 @@ end function
 ! GFileIOStream * g_file_replace_readwrite (GFile *file, const char *etag, gboolean make_backup, GFileCreateFlags flags, GCancellable *cancellable, GError **error);
 function g_file_replace_readwrite(file, etag, make_backup, flags, cancellable, e&
       &rror) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: g_file_replace_readwrite
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: etag
-  logical(c_bool), value :: make_backup
+  integer(c_int), value :: make_backup
   integer(c_int), value :: flags
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -7123,10 +7123,10 @@ end function
 ! void g_file_replace_readwrite_async (GFile *file, const char *etag, gboolean make_backup, GFileCreateFlags flags, int io_priority, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 subroutine g_file_replace_readwrite_async(file, etag, make_backup, flags, io_pri&
       &ority, cancellable, callback, user_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool, c_int, c_funptr
+  use iso_c_binding, only: c_ptr, c_char, c_int, c_funptr
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: etag
-  logical(c_bool), value :: make_backup
+  integer(c_int), value :: make_backup
   integer(c_int), value :: flags
   integer(c_int), value :: io_priority
   type(c_ptr), value :: cancellable
@@ -7145,8 +7145,8 @@ end function
 
 ! gboolean g_file_query_exists (GFile *file, GCancellable *cancellable);
 function g_file_query_exists(file, cancellable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_query_exists
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_query_exists
   type(c_ptr), value :: file
   type(c_ptr), value :: cancellable
 end function
@@ -7321,8 +7321,8 @@ end function
 
 ! gboolean g_file_delete (GFile *file, GCancellable *cancellable, GError **error);
 function g_file_delete(file, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_delete
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_delete
   type(c_ptr), value :: file
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -7330,8 +7330,8 @@ end function
 
 ! gboolean g_file_trash (GFile *file, GCancellable *cancellable, GError **error);
 function g_file_trash(file, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_trash
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_trash
   type(c_ptr), value :: file
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -7340,8 +7340,8 @@ end function
 ! gboolean g_file_copy (GFile *source, GFile *destination, GFileCopyFlags flags, GCancellable *cancellable, GFileProgressCallback progress_callback, gpointer progress_callback_data, GError **error);
 function g_file_copy(source, destination, flags, cancellable, progress_callback,&
       & progress_callback_data, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_funptr
-  logical(c_bool) :: g_file_copy
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: g_file_copy
   type(c_ptr), value :: source
   type(c_ptr), value :: destination
   integer(c_int), value :: flags
@@ -7369,8 +7369,8 @@ end subroutine
 
 ! gboolean g_file_copy_finish (GFile *file, GAsyncResult *res, GError **error);
 function g_file_copy_finish(file, res, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_copy_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_copy_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: res
   type(c_ptr), value :: error
@@ -7379,8 +7379,8 @@ end function
 ! gboolean g_file_move (GFile *source, GFile *destination, GFileCopyFlags flags, GCancellable *cancellable, GFileProgressCallback progress_callback, gpointer progress_callback_data, GError **error);
 function g_file_move(source, destination, flags, cancellable, progress_callback,&
       & progress_callback_data, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_funptr
-  logical(c_bool) :: g_file_move
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: g_file_move
   type(c_ptr), value :: source
   type(c_ptr), value :: destination
   integer(c_int), value :: flags
@@ -7392,8 +7392,8 @@ end function
 
 ! gboolean g_file_make_directory (GFile *file, GCancellable *cancellable, GError **error);
 function g_file_make_directory(file, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_make_directory
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_make_directory
   type(c_ptr), value :: file
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -7401,8 +7401,8 @@ end function
 
 ! gboolean g_file_make_directory_with_parents (GFile *file, GCancellable *cancellable, GError **error);
 function g_file_make_directory_with_parents(file, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_make_directory_with_parents
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_make_directory_with_parents
   type(c_ptr), value :: file
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -7411,8 +7411,8 @@ end function
 ! gboolean g_file_make_symbolic_link (GFile *file, const char *symlink_value, GCancellable *cancellable, GError **error);
 function g_file_make_symbolic_link(file, symlink_value, cancellable, error) bind&
       &(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_make_symbolic_link
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_make_symbolic_link
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: symlink_value
   type(c_ptr), value :: cancellable
@@ -7440,8 +7440,8 @@ end function
 ! gboolean g_file_set_attribute (GFile *file, const char *attribute, GFileAttributeType type, gpointer value_p, GFileQueryInfoFlags flags, GCancellable *cancellable, GError **error);
 function g_file_set_attribute(file, attribute, type, value_p, flags, cancellable&
       &, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_file_set_attribute
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_set_attribute
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: attribute
   integer(c_int), value :: type
@@ -7454,8 +7454,8 @@ end function
 ! gboolean g_file_set_attributes_from_info (GFile *file, GFileInfo *info, GFileQueryInfoFlags flags, GCancellable *cancellable, GError **error);
 function g_file_set_attributes_from_info(file, info, flags, cancellable, error) &
       &bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: g_file_set_attributes_from_info
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_set_attributes_from_info
   type(c_ptr), value :: file
   type(c_ptr), value :: info
   integer(c_int), value :: flags
@@ -7478,8 +7478,8 @@ end subroutine
 
 ! gboolean g_file_set_attributes_finish (GFile *file, GAsyncResult *result, GFileInfo **info, GError **error);
 function g_file_set_attributes_finish(file, result, info, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_set_attributes_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_set_attributes_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: result
   type(c_ptr), value :: info
@@ -7489,8 +7489,8 @@ end function
 ! gboolean g_file_set_attribute_string (GFile *file, const char *attribute, const char *value, GFileQueryInfoFlags flags, GCancellable *cancellable, GError **error);
 function g_file_set_attribute_string(file, attribute, value, flags, cancellable,&
       & error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_file_set_attribute_string
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_set_attribute_string
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: attribute
   character(kind=c_char), dimension(*) :: value
@@ -7502,8 +7502,8 @@ end function
 ! gboolean g_file_set_attribute_byte_string (GFile *file, const char *attribute, const char *value, GFileQueryInfoFlags flags, GCancellable *cancellable, GError **error);
 function g_file_set_attribute_byte_string(file, attribute, value, flags, cancell&
       &able, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_file_set_attribute_byte_string
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_set_attribute_byte_string
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: attribute
   character(kind=c_char), dimension(*) :: value
@@ -7515,8 +7515,8 @@ end function
 ! gboolean g_file_set_attribute_uint32 (GFile *file, const char *attribute, guint32 value, GFileQueryInfoFlags flags, GCancellable *cancellable, GError **error);
 function g_file_set_attribute_uint32(file, attribute, value, flags, cancellable,&
       & error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int32_t, c_int
-  logical(c_bool) :: g_file_set_attribute_uint32
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_int32_t
+  integer(c_int) :: g_file_set_attribute_uint32
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: attribute
   integer(c_int32_t), value :: value
@@ -7528,8 +7528,8 @@ end function
 ! gboolean g_file_set_attribute_int32 (GFile *file, const char *attribute, gint32 value, GFileQueryInfoFlags flags, GCancellable *cancellable, GError **error);
 function g_file_set_attribute_int32(file, attribute, value, flags, cancellable, &
       &error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int32_t, c_int
-  logical(c_bool) :: g_file_set_attribute_int32
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_int32_t
+  integer(c_int) :: g_file_set_attribute_int32
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: attribute
   integer(c_int32_t), value :: value
@@ -7541,8 +7541,8 @@ end function
 ! gboolean g_file_set_attribute_uint64 (GFile *file, const char *attribute, guint64 value, GFileQueryInfoFlags flags, GCancellable *cancellable, GError **error);
 function g_file_set_attribute_uint64(file, attribute, value, flags, cancellable,&
       & error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int64_t, c_int
-  logical(c_bool) :: g_file_set_attribute_uint64
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_int64_t
+  integer(c_int) :: g_file_set_attribute_uint64
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: attribute
   integer(c_int64_t), value :: value
@@ -7554,8 +7554,8 @@ end function
 ! gboolean g_file_set_attribute_int64 (GFile *file, const char *attribute, gint64 value, GFileQueryInfoFlags flags, GCancellable *cancellable, GError **error);
 function g_file_set_attribute_int64(file, attribute, value, flags, cancellable, &
       &error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int64_t, c_int
-  logical(c_bool) :: g_file_set_attribute_int64
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_int64_t
+  integer(c_int) :: g_file_set_attribute_int64
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: attribute
   integer(c_int64_t), value :: value
@@ -7578,8 +7578,8 @@ end subroutine
 
 ! gboolean g_file_mount_enclosing_volume_finish (GFile *location, GAsyncResult *result, GError **error);
 function g_file_mount_enclosing_volume_finish(location, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_mount_enclosing_volume_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_mount_enclosing_volume_finish
   type(c_ptr), value :: location
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -7619,8 +7619,8 @@ end subroutine
 
 ! gboolean g_file_unmount_mountable_finish (GFile *file, GAsyncResult *result, GError **error);
 function g_file_unmount_mountable_finish(file, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_unmount_mountable_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_unmount_mountable_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -7641,8 +7641,8 @@ end subroutine
 ! gboolean g_file_unmount_mountable_with_operation_finish (GFile *file, GAsyncResult *result, GError **error);
 function g_file_unmount_mountable_with_operation_finish(file, result, error) bin&
       &d(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_unmount_mountable_with_operation_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_unmount_mountable_with_operation_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -7661,8 +7661,8 @@ end subroutine
 
 ! gboolean g_file_eject_mountable_finish (GFile *file, GAsyncResult *result, GError **error);
 function g_file_eject_mountable_finish(file, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_eject_mountable_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_eject_mountable_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -7683,8 +7683,8 @@ end subroutine
 ! gboolean g_file_eject_mountable_with_operation_finish (GFile *file, GAsyncResult *result, GError **error);
 function g_file_eject_mountable_with_operation_finish(file, result, error) bind(&
       &c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_eject_mountable_with_operation_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_eject_mountable_with_operation_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -7693,8 +7693,8 @@ end function
 !  gboolean g_file_copy_attributes (GFile *source, GFile *destination, GFileCopyFlags flags, GCancellable *cancellable, GError **error);
 function g_file_copy_attributes(source, destination, flags, cancellable, error) &
       &bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: g_file_copy_attributes
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_copy_attributes
   type(c_ptr), value :: source
   type(c_ptr), value :: destination
   integer(c_int), value :: flags
@@ -7746,8 +7746,8 @@ end subroutine
 
 ! gboolean g_file_start_mountable_finish (GFile *file, GAsyncResult *result, GError **error);
 function g_file_start_mountable_finish(file, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_start_mountable_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_start_mountable_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -7767,8 +7767,8 @@ end subroutine
 
 ! gboolean g_file_stop_mountable_finish (GFile *file, GAsyncResult *result, GError **error);
 function g_file_stop_mountable_finish(file, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_stop_mountable_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_stop_mountable_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -7785,8 +7785,8 @@ end subroutine
 
 ! gboolean g_file_poll_mountable_finish (GFile *file, GAsyncResult *result, GError **error);
 function g_file_poll_mountable_finish(file, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_poll_mountable_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_poll_mountable_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -7804,8 +7804,8 @@ end function
 ! gboolean g_file_load_contents (GFile *file, GCancellable *cancellable, char **contents, gsize *length, char **etag_out, GError **error);
 function g_file_load_contents(file, cancellable, contents, length, etag_out, err&
       &or) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_load_contents
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_load_contents
   type(c_ptr), value :: file
   type(c_ptr), value :: cancellable
   character(kind=c_char), dimension(*) :: contents
@@ -7827,8 +7827,8 @@ end subroutine
 ! gboolean g_file_load_contents_finish (GFile *file, GAsyncResult *res, char **contents, gsize *length, char **etag_out, GError **error);
 function g_file_load_contents_finish(file, res, contents, length, etag_out, erro&
       &r) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_load_contents_finish
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_load_contents_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: res
   character(kind=c_char), dimension(*) :: contents
@@ -7851,8 +7851,8 @@ end subroutine
 ! gboolean g_file_load_partial_contents_finish (GFile *file, GAsyncResult *res, char **contents, gsize *length, char **etag_out, GError **error);
 function g_file_load_partial_contents_finish(file, res, contents, length, etag_o&
       &ut, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_load_partial_contents_finish
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_load_partial_contents_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: res
   character(kind=c_char), dimension(*) :: contents
@@ -7864,13 +7864,13 @@ end function
 ! gboolean g_file_replace_contents (GFile *file, const char *contents, gsize length, const char *etag, gboolean make_backup, GFileCreateFlags flags, char **new_etag, GCancellable *cancellable, GError **error);
 function g_file_replace_contents(file, contents, length, etag, make_backup, flag&
       &s, new_etag, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_size_t, c_int
-  logical(c_bool) :: g_file_replace_contents
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
+  integer(c_int) :: g_file_replace_contents
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: contents
   integer(c_size_t), value :: length
   character(kind=c_char), dimension(*) :: etag
-  logical(c_bool), value :: make_backup
+  integer(c_int), value :: make_backup
   integer(c_int), value :: flags
   character(kind=c_char), dimension(*) :: new_etag
   type(c_ptr), value :: cancellable
@@ -7880,12 +7880,12 @@ end function
 ! void g_file_replace_contents_async (GFile *file, const char *contents, gsize length, const char *etag, gboolean make_backup, GFileCreateFlags flags, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 subroutine g_file_replace_contents_async(file, contents, length, etag, make_back&
       &up, flags, cancellable, callback, user_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_size_t, c_bool, c_int, c_funptr
+  use iso_c_binding, only: c_ptr, c_char, c_size_t, c_int, c_funptr
   type(c_ptr), value :: file
   character(kind=c_char), dimension(*) :: contents
   integer(c_size_t), value :: length
   character(kind=c_char), dimension(*) :: etag
-  logical(c_bool), value :: make_backup
+  integer(c_int), value :: make_backup
   integer(c_int), value :: flags
   type(c_ptr), value :: cancellable
   type(c_funptr), value :: callback
@@ -7894,8 +7894,8 @@ end subroutine
 
 ! gboolean g_file_replace_contents_finish (GFile *file, GAsyncResult *res, char **new_etag, GError **error);
 function g_file_replace_contents_finish(file, res, new_etag, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_replace_contents_finish
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_replace_contents_finish
   type(c_ptr), value :: file
   type(c_ptr), value :: res
   character(kind=c_char), dimension(*) :: new_etag
@@ -7904,8 +7904,8 @@ end function
 
 !  gboolean g_file_supports_thread_contexts (GFile *file);
 function g_file_supports_thread_contexts(file) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_supports_thread_contexts
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_supports_thread_contexts
   type(c_ptr), value :: file
 end function
 
@@ -7966,15 +7966,15 @@ end function
 
 ! gboolean g_mount_can_unmount (GMount *mount);
 function g_mount_can_unmount(mount) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_mount_can_unmount
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_mount_can_unmount
   type(c_ptr), value :: mount
 end function
 
 ! gboolean g_mount_can_eject (GMount *mount);
 function g_mount_can_eject(mount) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_mount_can_eject
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_mount_can_eject
   type(c_ptr), value :: mount
 end function
 
@@ -7991,8 +7991,8 @@ end subroutine
 
 ! gboolean g_mount_unmount_finish (GMount *mount, GAsyncResult *result, GError **error);
 function g_mount_unmount_finish(mount, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_mount_unmount_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_mount_unmount_finish
   type(c_ptr), value :: mount
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -8010,8 +8010,8 @@ end subroutine
 
 ! gboolean g_mount_eject_finish (GMount *mount, GAsyncResult *result, GError **error);
 function g_mount_eject_finish(mount, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_mount_eject_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_mount_eject_finish
   type(c_ptr), value :: mount
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -8031,8 +8031,8 @@ end subroutine
 
 ! gboolean g_mount_remount_finish (GMount *mount, GAsyncResult *result, GError **error);
 function g_mount_remount_finish(mount, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_mount_remount_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_mount_remount_finish
   type(c_ptr), value :: mount
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -8041,9 +8041,9 @@ end function
 !  void g_mount_guess_content_type (GMount *mount, gboolean force_rescan, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 subroutine g_mount_guess_content_type(mount, force_rescan, cancellable, callback&
       &, user_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_funptr
+  use iso_c_binding, only: c_ptr, c_int, c_funptr
   type(c_ptr), value :: mount
-  logical(c_bool), value :: force_rescan
+  integer(c_int), value :: force_rescan
   type(c_ptr), value :: cancellable
   type(c_funptr), value :: callback
   type(c_ptr), value :: user_data
@@ -8061,18 +8061,18 @@ end function
 ! gchar ** g_mount_guess_content_type_sync (GMount *mount, gboolean force_rescan, GCancellable *cancellable, GError **error);
 function g_mount_guess_content_type_sync(mount, force_rescan, cancellable, error&
       &) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_mount_guess_content_type_sync
   type(c_ptr), value :: mount
-  logical(c_bool), value :: force_rescan
+  integer(c_int), value :: force_rescan
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
 end function
 
 !  gboolean g_mount_is_shadowed (GMount *mount);
 function g_mount_is_shadowed(mount) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_mount_is_shadowed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_mount_is_shadowed
   type(c_ptr), value :: mount
 end function
 
@@ -8102,8 +8102,8 @@ end subroutine
 
 ! gboolean g_mount_unmount_with_operation_finish (GMount *mount, GAsyncResult *result, GError **error);
 function g_mount_unmount_with_operation_finish(mount, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_mount_unmount_with_operation_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_mount_unmount_with_operation_finish
   type(c_ptr), value :: mount
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -8123,8 +8123,8 @@ end subroutine
 
 ! gboolean g_mount_eject_with_operation_finish (GMount *mount, GAsyncResult *result, GError **error);
 function g_mount_eject_with_operation_finish(mount, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_mount_eject_with_operation_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_mount_eject_with_operation_finish
   type(c_ptr), value :: mount
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -8265,8 +8265,8 @@ end function
 
 ! gboolean g_app_info_equal (GAppInfo *appinfo1, GAppInfo *appinfo2);
 function g_app_info_equal(appinfo1, appinfo2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_app_info_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_app_info_equal
   type(c_ptr), value :: appinfo1
   type(c_ptr), value :: appinfo2
 end function
@@ -8322,8 +8322,8 @@ end function
 
 ! gboolean g_app_info_launch (GAppInfo *appinfo, GList *files, GAppLaunchContext *launch_context, GError **error);
 function g_app_info_launch(appinfo, files, launch_context, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_app_info_launch
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_app_info_launch
   type(c_ptr), value :: appinfo
   type(c_ptr), value :: files
   type(c_ptr), value :: launch_context
@@ -8332,22 +8332,22 @@ end function
 
 ! gboolean g_app_info_supports_uris (GAppInfo *appinfo);
 function g_app_info_supports_uris(appinfo) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_app_info_supports_uris
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_app_info_supports_uris
   type(c_ptr), value :: appinfo
 end function
 
 ! gboolean g_app_info_supports_files (GAppInfo *appinfo);
 function g_app_info_supports_files(appinfo) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_app_info_supports_files
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_app_info_supports_files
   type(c_ptr), value :: appinfo
 end function
 
 ! gboolean g_app_info_launch_uris (GAppInfo *appinfo, GList *uris, GAppLaunchContext *launch_context, GError **error);
 function g_app_info_launch_uris(appinfo, uris, launch_context, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_app_info_launch_uris
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_app_info_launch_uris
   type(c_ptr), value :: appinfo
   type(c_ptr), value :: uris
   type(c_ptr), value :: launch_context
@@ -8356,16 +8356,16 @@ end function
 
 ! gboolean g_app_info_should_show (GAppInfo *appinfo);
 function g_app_info_should_show(appinfo) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_app_info_should_show
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_app_info_should_show
   type(c_ptr), value :: appinfo
 end function
 
 !  gboolean g_app_info_set_as_default_for_type (GAppInfo *appinfo, const char *content_type, GError **error);
 function g_app_info_set_as_default_for_type(appinfo, content_type, error) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_app_info_set_as_default_for_type
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_app_info_set_as_default_for_type
   type(c_ptr), value :: appinfo
   character(kind=c_char), dimension(*) :: content_type
   type(c_ptr), value :: error
@@ -8374,8 +8374,8 @@ end function
 ! gboolean g_app_info_set_as_default_for_extension (GAppInfo *appinfo, const char *extension, GError **error);
 function g_app_info_set_as_default_for_extension(appinfo, extension, error) bind&
       &(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_app_info_set_as_default_for_extension
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_app_info_set_as_default_for_extension
   type(c_ptr), value :: appinfo
   character(kind=c_char), dimension(*) :: extension
   type(c_ptr), value :: error
@@ -8383,8 +8383,8 @@ end function
 
 ! gboolean g_app_info_add_supports_type (GAppInfo *appinfo, const char *content_type, GError **error);
 function g_app_info_add_supports_type(appinfo, content_type, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_app_info_add_supports_type
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_app_info_add_supports_type
   type(c_ptr), value :: appinfo
   character(kind=c_char), dimension(*) :: content_type
   type(c_ptr), value :: error
@@ -8392,15 +8392,15 @@ end function
 
 ! gboolean g_app_info_can_remove_supports_type (GAppInfo *appinfo);
 function g_app_info_can_remove_supports_type(appinfo) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_app_info_can_remove_supports_type
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_app_info_can_remove_supports_type
   type(c_ptr), value :: appinfo
 end function
 
 ! gboolean g_app_info_remove_supports_type (GAppInfo *appinfo, const char *content_type, GError **error);
 function g_app_info_remove_supports_type(appinfo, content_type, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_app_info_remove_supports_type
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_app_info_remove_supports_type
   type(c_ptr), value :: appinfo
   character(kind=c_char), dimension(*) :: content_type
   type(c_ptr), value :: error
@@ -8408,15 +8408,15 @@ end function
 
 ! gboolean g_app_info_can_delete (GAppInfo *appinfo);
 function g_app_info_can_delete(appinfo) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_app_info_can_delete
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_app_info_can_delete
   type(c_ptr), value :: appinfo
 end function
 
 ! gboolean g_app_info_delete (GAppInfo *appinfo);
 function g_app_info_delete(appinfo) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_app_info_delete
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_app_info_delete
   type(c_ptr), value :: appinfo
 end function
 
@@ -8442,10 +8442,10 @@ end subroutine
 ! GAppInfo *g_app_info_get_default_for_type (const char *content_type, gboolean must_support_uris);
 function g_app_info_get_default_for_type(content_type, must_support_uris) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: g_app_info_get_default_for_type
   character(kind=c_char), dimension(*) :: content_type
-  logical(c_bool), value :: must_support_uris
+  integer(c_int), value :: must_support_uris
 end function
 
 ! GAppInfo *g_app_info_get_default_for_uri_scheme (const char *uri_scheme);
@@ -8457,8 +8457,8 @@ end function
 
 !  gboolean g_app_info_launch_default_for_uri (const char *uri, GAppLaunchContext *launch_context, GError **error);
 function g_app_info_launch_default_for_uri(uri, launch_context, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: g_app_info_launch_default_for_uri
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: g_app_info_launch_default_for_uri
   character(kind=c_char), dimension(*) :: uri
   type(c_ptr), value :: launch_context
   type(c_ptr), value :: error
@@ -8606,8 +8606,8 @@ end subroutine
 !  gboolean g_socket_listener_add_socket (GSocketListener *listener, GSocket *socket, GObject *source_object, GError **error);
 function g_socket_listener_add_socket(listener, socket, source_object, error) bi&
       &nd(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_listener_add_socket
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_listener_add_socket
   type(c_ptr), value :: listener
   type(c_ptr), value :: socket
   type(c_ptr), value :: source_object
@@ -8617,8 +8617,8 @@ end function
 ! gboolean g_socket_listener_add_address (GSocketListener *listener, GSocketAddress *address, GSocketType type, GSocketProtocol protocol, GObject *source_object, GSocketAddress **effective_address, GError **error);
 function g_socket_listener_add_address(listener, address, type, protocol, source&
       &_object, effective_address, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: g_socket_listener_add_address
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_listener_add_address
   type(c_ptr), value :: listener
   type(c_ptr), value :: address
   integer(c_int), value :: type
@@ -8631,8 +8631,8 @@ end function
 ! gboolean g_socket_listener_add_inet_port (GSocketListener *listener, guint16 port, GObject *source_object, GError **error);
 function g_socket_listener_add_inet_port(listener, port, source_object, error) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int16_t
-  logical(c_bool) :: g_socket_listener_add_inet_port
+  use iso_c_binding, only: c_int, c_ptr, c_int16_t
+  integer(c_int) :: g_socket_listener_add_inet_port
   type(c_ptr), value :: listener
   integer(c_int16_t), value :: port
   type(c_ptr), value :: source_object
@@ -8811,8 +8811,8 @@ end function
 ! gboolean g_input_stream_read_all (GInputStream *stream, void *buffer, gsize count, gsize *bytes_read, GCancellable *cancellable, GError **error);
 function g_input_stream_read_all(stream, buffer, count, bytes_read, cancellable,&
       & error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_size_t
-  logical(c_bool) :: g_input_stream_read_all
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
+  integer(c_int) :: g_input_stream_read_all
   type(c_ptr), value :: stream
   type(c_ptr), value :: buffer
   integer(c_size_t), value :: count
@@ -8833,8 +8833,8 @@ end function
 
 ! gboolean g_input_stream_close (GInputStream *stream, GCancellable *cancellable, GError **error);
 function g_input_stream_close(stream, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_input_stream_close
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_input_stream_close
   type(c_ptr), value :: stream
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -8896,8 +8896,8 @@ end subroutine
 
 ! gboolean g_input_stream_close_finish (GInputStream *stream, GAsyncResult *result, GError **error);
 function g_input_stream_close_finish(stream, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_input_stream_close_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_input_stream_close_finish
   type(c_ptr), value :: stream
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -8905,22 +8905,22 @@ end function
 
 !  gboolean g_input_stream_is_closed (GInputStream *stream);
 function g_input_stream_is_closed(stream) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_input_stream_is_closed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_input_stream_is_closed
   type(c_ptr), value :: stream
 end function
 
 ! gboolean g_input_stream_has_pending (GInputStream *stream);
 function g_input_stream_has_pending(stream) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_input_stream_has_pending
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_input_stream_has_pending
   type(c_ptr), value :: stream
 end function
 
 ! gboolean g_input_stream_set_pending (GInputStream *stream, GError **error);
 function g_input_stream_set_pending(stream, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_input_stream_set_pending
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_input_stream_set_pending
   type(c_ptr), value :: stream
   type(c_ptr), value :: error
 end function
@@ -9056,29 +9056,29 @@ end function
 
 ! void g_socket_set_blocking (GSocket *socket, gboolean blocking);
 subroutine g_socket_set_blocking(socket, blocking) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: socket
-  logical(c_bool), value :: blocking
+  integer(c_int), value :: blocking
 end subroutine
 
 ! gboolean g_socket_get_blocking (GSocket *socket);
 function g_socket_get_blocking(socket) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_get_blocking
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_get_blocking
   type(c_ptr), value :: socket
 end function
 
 ! void g_socket_set_keepalive (GSocket *socket, gboolean keepalive);
 subroutine g_socket_set_keepalive(socket, keepalive) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: socket
-  logical(c_bool), value :: keepalive
+  integer(c_int), value :: keepalive
 end subroutine
 
 ! gboolean g_socket_get_keepalive (GSocket *socket);
 function g_socket_get_keepalive(socket) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_get_keepalive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_get_keepalive
   type(c_ptr), value :: socket
 end function
 
@@ -9112,25 +9112,25 @@ end subroutine
 
 ! gboolean g_socket_is_connected (GSocket *socket);
 function g_socket_is_connected(socket) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_is_connected
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_is_connected
   type(c_ptr), value :: socket
 end function
 
 ! gboolean g_socket_bind (GSocket *socket, GSocketAddress *address, gboolean allow_reuse, GError **error);
 function g_socket_bind(socket, address, allow_reuse, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_bind
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_bind
   type(c_ptr), value :: socket
   type(c_ptr), value :: address
-  logical(c_bool), value :: allow_reuse
+  integer(c_int), value :: allow_reuse
   type(c_ptr), value :: error
 end function
 
 ! gboolean g_socket_connect (GSocket *socket, GSocketAddress *address, GCancellable *cancellable, GError **error);
 function g_socket_connect(socket, address, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_connect
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_connect
   type(c_ptr), value :: socket
   type(c_ptr), value :: address
   type(c_ptr), value :: cancellable
@@ -9139,8 +9139,8 @@ end function
 
 ! gboolean g_socket_check_connect_result (GSocket *socket, GError **error);
 function g_socket_check_connect_result(socket, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_check_connect_result
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_check_connect_result
   type(c_ptr), value :: socket
   type(c_ptr), value :: error
 end function
@@ -9155,8 +9155,8 @@ end function
 
 ! gboolean g_socket_condition_wait (GSocket *socket, GIOCondition condition, GCancellable *cancellable, GError **error);
 function g_socket_condition_wait(socket, condition, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: g_socket_condition_wait
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_condition_wait
   type(c_ptr), value :: socket
   integer(c_int), value :: condition
   type(c_ptr), value :: cancellable
@@ -9174,8 +9174,8 @@ end function
 
 ! gboolean g_socket_listen (GSocket *socket, GError **error);
 function g_socket_listen(socket, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_listen
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_listen
   type(c_ptr), value :: socket
   type(c_ptr), value :: error
 end function
@@ -9262,26 +9262,26 @@ end function
 
 ! gboolean g_socket_close (GSocket *socket, GError **error);
 function g_socket_close(socket, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_close
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_close
   type(c_ptr), value :: socket
   type(c_ptr), value :: error
 end function
 
 ! gboolean g_socket_shutdown (GSocket *socket, gboolean shutdown_read, gboolean shutdown_write, GError **error);
 function g_socket_shutdown(socket, shutdown_read, shutdown_write, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_shutdown
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_shutdown
   type(c_ptr), value :: socket
-  logical(c_bool), value :: shutdown_read
-  logical(c_bool), value :: shutdown_write
+  integer(c_int), value :: shutdown_read
+  integer(c_int), value :: shutdown_write
   type(c_ptr), value :: error
 end function
 
 ! gboolean g_socket_is_closed (GSocket *socket);
 function g_socket_is_closed(socket) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_is_closed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_is_closed
   type(c_ptr), value :: socket
 end function
 
@@ -9296,8 +9296,8 @@ end function
 
 ! gboolean g_socket_speaks_ipv4 (GSocket *socket);
 function g_socket_speaks_ipv4(socket) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_speaks_ipv4
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_speaks_ipv4
   type(c_ptr), value :: socket
 end function
 
@@ -9312,12 +9312,12 @@ end function
 !  gssize g_socket_receive_with_blocking (GSocket *socket, gchar *buffer, gsize size, gboolean blocking, GCancellable *cancellable, GError **error);
 function g_socket_receive_with_blocking(socket, buffer, size, blocking, cancella&
       &ble, error) bind(c) 
-  use iso_c_binding, only: c_size_t, c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_size_t, c_ptr, c_char, c_int
   integer(c_size_t) :: g_socket_receive_with_blocking
   type(c_ptr), value :: socket
   character(kind=c_char), dimension(*) :: buffer
   integer(c_size_t), value :: size
-  logical(c_bool), value :: blocking
+  integer(c_int), value :: blocking
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
 end function
@@ -9325,12 +9325,12 @@ end function
 ! gssize g_socket_send_with_blocking (GSocket *socket, const gchar *buffer, gsize size, gboolean blocking, GCancellable *cancellable, GError **error);
 function g_socket_send_with_blocking(socket, buffer, size, blocking, cancellable&
       &, error) bind(c) 
-  use iso_c_binding, only: c_size_t, c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_size_t, c_ptr, c_char, c_int
   integer(c_size_t) :: g_socket_send_with_blocking
   type(c_ptr), value :: socket
   character(kind=c_char), dimension(*) :: buffer
   integer(c_size_t), value :: size
-  logical(c_bool), value :: blocking
+  integer(c_int), value :: blocking
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
 end function
@@ -9358,8 +9358,8 @@ end function
 
 !  gboolean g_socket_address_to_native (GSocketAddress *address, gpointer dest, gsize destlen, GError **error);
 function g_socket_address_to_native(address, dest, destlen, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_size_t
-  logical(c_bool) :: g_socket_address_to_native
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
+  integer(c_int) :: g_socket_address_to_native
   type(c_ptr), value :: address
   type(c_ptr), value :: dest
   integer(c_size_t), value :: destlen
@@ -9401,16 +9401,16 @@ end subroutine
 
 ! gboolean g_file_info_has_attribute (GFileInfo *info, const char *attribute);
 function g_file_info_has_attribute(info, attribute) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_info_has_attribute
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_info_has_attribute
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: attribute
 end function
 
 ! gboolean g_file_info_has_namespace (GFileInfo *info, const char *name_space);
 function g_file_info_has_namespace(info, name_space) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_info_has_namespace
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_info_has_namespace
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: name_space
 end function
@@ -9426,8 +9426,8 @@ end function
 ! gboolean g_file_info_get_attribute_data (GFileInfo *info, const char *attribute, GFileAttributeType *type, gpointer *value_pp, GFileAttributeStatus *status);
 function g_file_info_get_attribute_data(info, attribute, type, value_pp, status)&
       & bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_file_info_get_attribute_data
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_info_get_attribute_data
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: attribute
   integer(c_int), value :: type
@@ -9460,8 +9460,8 @@ end function
 
 ! gboolean g_file_info_set_attribute_status (GFileInfo *info, const char *attribute, GFileAttributeStatus status);
 function g_file_info_set_attribute_status(info, attribute, status) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_file_info_set_attribute_status
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_info_set_attribute_status
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: attribute
   integer(c_int), value :: status
@@ -9493,8 +9493,8 @@ end function
 
 ! gboolean g_file_info_get_attribute_boolean (GFileInfo *info, const char *attribute);
 function g_file_info_get_attribute_boolean(info, attribute) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_info_get_attribute_boolean
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_info_get_attribute_boolean
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: attribute
 end function
@@ -9576,10 +9576,10 @@ end subroutine
 ! void g_file_info_set_attribute_boolean (GFileInfo *info, const char *attribute, gboolean attr_value);
 subroutine g_file_info_set_attribute_boolean(info, attribute, attr_value) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: attribute
-  logical(c_bool), value :: attr_value
+  integer(c_int), value :: attr_value
 end subroutine
 
 ! void g_file_info_set_attribute_uint32 (GFileInfo *info, const char *attribute, guint32 attr_value);
@@ -9646,22 +9646,22 @@ end function
 
 ! gboolean g_file_info_get_is_hidden (GFileInfo *info);
 function g_file_info_get_is_hidden(info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_info_get_is_hidden
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_info_get_is_hidden
   type(c_ptr), value :: info
 end function
 
 ! gboolean g_file_info_get_is_backup (GFileInfo *info);
 function g_file_info_get_is_backup(info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_info_get_is_backup
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_info_get_is_backup
   type(c_ptr), value :: info
 end function
 
 ! gboolean g_file_info_get_is_symlink (GFileInfo *info);
 function g_file_info_get_is_symlink(info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_info_get_is_symlink
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_info_get_is_symlink
   type(c_ptr), value :: info
 end function
 
@@ -9757,16 +9757,16 @@ end subroutine
 
 ! void g_file_info_set_is_hidden (GFileInfo *info, gboolean is_hidden);
 subroutine g_file_info_set_is_hidden(info, is_hidden) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: info
-  logical(c_bool), value :: is_hidden
+  integer(c_int), value :: is_hidden
 end subroutine
 
 ! void g_file_info_set_is_symlink (GFileInfo *info, gboolean is_symlink);
 subroutine g_file_info_set_is_symlink(info, is_symlink) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: info
-  logical(c_bool), value :: is_symlink
+  integer(c_int), value :: is_symlink
 end subroutine
 
 ! void g_file_info_set_name (GFileInfo *info, const char *name);
@@ -9860,24 +9860,24 @@ end subroutine
 
 ! gboolean g_file_attribute_matcher_matches (GFileAttributeMatcher *matcher, const char *attribute);
 function g_file_attribute_matcher_matches(matcher, attribute) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_attribute_matcher_matches
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_attribute_matcher_matches
   type(c_ptr), value :: matcher
   character(kind=c_char), dimension(*) :: attribute
 end function
 
 ! gboolean g_file_attribute_matcher_matches_only (GFileAttributeMatcher *matcher, const char *attribute);
 function g_file_attribute_matcher_matches_only(matcher, attribute) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_attribute_matcher_matches_only
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_attribute_matcher_matches_only
   type(c_ptr), value :: matcher
   character(kind=c_char), dimension(*) :: attribute
 end function
 
 ! gboolean g_file_attribute_matcher_enumerate_namespace (GFileAttributeMatcher *matcher, const char *ns);
 function g_file_attribute_matcher_enumerate_namespace(matcher, ns) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_file_attribute_matcher_enumerate_namespace
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_file_attribute_matcher_enumerate_namespace
   type(c_ptr), value :: matcher
   character(kind=c_char), dimension(*) :: ns
 end function
@@ -9898,15 +9898,15 @@ end function
 !  void g_tcp_connection_set_graceful_disconnect (GTcpConnection *connection, gboolean graceful_disconnect);
 subroutine g_tcp_connection_set_graceful_disconnect(connection, graceful_disconn&
       &ect) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: connection
-  logical(c_bool), value :: graceful_disconnect
+  integer(c_int), value :: graceful_disconnect
 end subroutine
 
 ! gboolean g_tcp_connection_get_graceful_disconnect (GTcpConnection *connection);
 function g_tcp_connection_get_graceful_disconnect(connection) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_tcp_connection_get_graceful_disconnect
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_tcp_connection_get_graceful_disconnect
   type(c_ptr), value :: connection
 end function
 
@@ -10050,8 +10050,8 @@ end subroutine
 ! gboolean g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job, GSourceFunc func, gpointer user_data, GDestroyNotify notify);
 function g_io_scheduler_job_send_to_mainloop(job, func, user_data, notify) bind(&
       &c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_funptr
-  logical(c_bool) :: g_io_scheduler_job_send_to_mainloop
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: g_io_scheduler_job_send_to_mainloop
   type(c_ptr), value :: job
   type(c_funptr), value :: func
   type(c_ptr), value :: user_data
@@ -10158,8 +10158,8 @@ end function
 
 ! gboolean g_dbus_message_get_locked (GDBusMessage *message);
 function g_dbus_message_get_locked(message) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_message_get_locked
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_message_get_locked
   type(c_ptr), value :: message
 end function
 
@@ -10449,8 +10449,8 @@ end function
 
 !  gboolean g_dbus_message_to_gerror (GDBusMessage *message, GError **error);
 function g_dbus_message_to_gerror(message, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_message_to_gerror
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_message_to_gerror
   type(c_ptr), value :: message
   type(c_ptr), value :: error
 end function
@@ -10509,8 +10509,8 @@ end subroutine
 
 ! gboolean g_dbus_server_is_active (GDBusServer *server);
 function g_dbus_server_is_active(server) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_server_is_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_server_is_active
   type(c_ptr), value :: server
 end function
 
@@ -10573,15 +10573,15 @@ end function
 
 ! gboolean g_seekable_can_seek (GSeekable *seekable);
 function g_seekable_can_seek(seekable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_seekable_can_seek
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_seekable_can_seek
   type(c_ptr), value :: seekable
 end function
 
 ! gboolean g_seekable_seek (GSeekable *seekable, goffset offset, GSeekType type, GCancellable *cancellable, GError **error);
 function g_seekable_seek(seekable, offset, type, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int64_t, c_int
-  logical(c_bool) :: g_seekable_seek
+  use iso_c_binding, only: c_int, c_ptr, c_int64_t
+  integer(c_int) :: g_seekable_seek
   type(c_ptr), value :: seekable
   integer(c_int64_t), value :: offset
   integer(c_int), value :: type
@@ -10591,15 +10591,15 @@ end function
 
 ! gboolean g_seekable_can_truncate (GSeekable *seekable);
 function g_seekable_can_truncate(seekable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_seekable_can_truncate
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_seekable_can_truncate
   type(c_ptr), value :: seekable
 end function
 
 ! gboolean g_seekable_truncate (GSeekable *seekable, goffset offset, GCancellable *cancellable, GError **error);
 function g_seekable_truncate(seekable, offset, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int64_t
-  logical(c_bool) :: g_seekable_truncate
+  use iso_c_binding, only: c_int, c_ptr, c_int64_t
+  integer(c_int) :: g_seekable_truncate
   type(c_ptr), value :: seekable
   integer(c_int64_t), value :: offset
   type(c_ptr), value :: cancellable
@@ -10623,15 +10623,15 @@ end function
 
 ! void g_charset_converter_set_use_fallback (GCharsetConverter *converter, gboolean use_fallback);
 subroutine g_charset_converter_set_use_fallback(converter, use_fallback) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: converter
-  logical(c_bool), value :: use_fallback
+  integer(c_int), value :: use_fallback
 end subroutine
 
 ! gboolean g_charset_converter_get_use_fallback (GCharsetConverter *converter);
 function g_charset_converter_get_use_fallback(converter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_charset_converter_get_use_fallback
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_charset_converter_get_use_fallback
   type(c_ptr), value :: converter
 end function
 
@@ -10740,17 +10740,17 @@ end function
 
 ! gboolean g_filter_output_stream_get_close_base_stream (GFilterOutputStream *stream);
 function g_filter_output_stream_get_close_base_stream(stream) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_filter_output_stream_get_close_base_stream
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_filter_output_stream_get_close_base_stream
   type(c_ptr), value :: stream
 end function
 
 ! void g_filter_output_stream_set_close_base_stream (GFilterOutputStream *stream, gboolean close_base);
 subroutine g_filter_output_stream_set_close_base_stream(stream, close_base) bind&
       &(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: stream
-  logical(c_bool), value :: close_base
+  integer(c_int), value :: close_base
 end subroutine
 
 !   GType g_settings_get_type (void);
@@ -10813,8 +10813,8 @@ end function
 
 !  gboolean g_settings_set_value (GSettings *settings, const gchar *key, GVariant *value);
 function g_settings_set_value(settings, key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_settings_set_value
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_settings_set_value
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
   type(c_ptr), value :: value
@@ -10845,8 +10845,8 @@ end function
 
 ! gboolean g_settings_set_int (GSettings *settings, const gchar *key, gint value);
 function g_settings_set_int(settings, key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_settings_set_int
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_settings_set_int
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
   integer(c_int), value :: value
@@ -10862,8 +10862,8 @@ end function
 
 ! gboolean g_settings_set_string (GSettings *settings, const gchar *key, const gchar *value);
 function g_settings_set_string(settings, key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_settings_set_string
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_settings_set_string
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
   character(kind=c_char), dimension(*) :: value
@@ -10871,19 +10871,19 @@ end function
 
 ! gboolean g_settings_get_boolean (GSettings *settings, const gchar *key);
 function g_settings_get_boolean(settings, key) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_settings_get_boolean
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_settings_get_boolean
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
 end function
 
 ! gboolean g_settings_set_boolean (GSettings *settings, const gchar *key, gboolean value);
 function g_settings_set_boolean(settings, key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_settings_set_boolean
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_settings_set_boolean
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
-  logical(c_bool), value :: value
+  integer(c_int), value :: value
 end function
 
 ! gdouble g_settings_get_double (GSettings *settings, const gchar *key);
@@ -10896,8 +10896,8 @@ end function
 
 ! gboolean g_settings_set_double (GSettings *settings, const gchar *key, gdouble value);
 function g_settings_set_double(settings, key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_double
-  logical(c_bool) :: g_settings_set_double
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_double
+  integer(c_int) :: g_settings_set_double
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
   real(c_double), value :: value
@@ -10913,8 +10913,8 @@ end function
 
 ! gboolean g_settings_set_strv (GSettings *settings, const gchar *key, const gchar *const *value);
 function g_settings_set_strv(settings, key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_settings_set_strv
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_settings_set_strv
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
   character(kind=c_char), dimension(*) :: value
@@ -10930,8 +10930,8 @@ end function
 
 ! gboolean g_settings_set_enum (GSettings *settings, const gchar *key, gint value);
 function g_settings_set_enum(settings, key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_settings_set_enum
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_settings_set_enum
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
   integer(c_int), value :: value
@@ -10947,8 +10947,8 @@ end function
 
 ! gboolean g_settings_set_flags (GSettings *settings, const gchar *key, guint value);
 function g_settings_set_flags(settings, key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_settings_set_flags
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_settings_set_flags
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
   integer(c_int), value :: value
@@ -10964,8 +10964,8 @@ end function
 
 !  gboolean g_settings_is_writable (GSettings *settings, const gchar *name);
 function g_settings_is_writable(settings, name) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_settings_is_writable
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_settings_is_writable
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: name
 end function
@@ -10990,8 +10990,8 @@ end subroutine
 
 ! gboolean g_settings_get_has_unapplied (GSettings *settings);
 function g_settings_get_has_unapplied(settings) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_settings_get_has_unapplied
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_settings_get_has_unapplied
   type(c_ptr), value :: settings
 end function
 
@@ -11028,12 +11028,12 @@ end subroutine
 ! void g_settings_bind_writable (GSettings *settings, const gchar *key, gpointer object, const gchar *property, gboolean inverted);
 subroutine g_settings_bind_writable(settings, key, object, property, inverted) b&
       &ind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
   type(c_ptr), value :: object
   character(kind=c_char), dimension(*) :: property
-  logical(c_bool), value :: inverted
+  integer(c_int), value :: inverted
 end subroutine
 
 ! void g_settings_unbind (gpointer object, const gchar *property);
@@ -11111,8 +11111,8 @@ end function
 
 ! gboolean g_file_enumerator_close (GFileEnumerator *enumerator, GCancellable *cancellable, GError **error);
 function g_file_enumerator_close(enumerator, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_enumerator_close
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_enumerator_close
   type(c_ptr), value :: enumerator
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -11152,8 +11152,8 @@ end subroutine
 
 ! gboolean g_file_enumerator_close_finish (GFileEnumerator *enumerator, GAsyncResult *result, GError **error);
 function g_file_enumerator_close_finish(enumerator, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_enumerator_close_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_enumerator_close_finish
   type(c_ptr), value :: enumerator
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -11161,23 +11161,23 @@ end function
 
 ! gboolean g_file_enumerator_is_closed (GFileEnumerator *enumerator);
 function g_file_enumerator_is_closed(enumerator) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_enumerator_is_closed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_enumerator_is_closed
   type(c_ptr), value :: enumerator
 end function
 
 ! gboolean g_file_enumerator_has_pending (GFileEnumerator *enumerator);
 function g_file_enumerator_has_pending(enumerator) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_enumerator_has_pending
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_enumerator_has_pending
   type(c_ptr), value :: enumerator
 end function
 
 ! void g_file_enumerator_set_pending (GFileEnumerator *enumerator, gboolean pending);
 subroutine g_file_enumerator_set_pending(enumerator, pending) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: enumerator
-  logical(c_bool), value :: pending
+  integer(c_int), value :: pending
 end subroutine
 
 ! GFile * g_file_enumerator_get_container (GFileEnumerator *enumerator);
@@ -11517,16 +11517,16 @@ end subroutine
 
 ! gboolean g_socket_client_get_enable_proxy (GSocketClient *client);
 function g_socket_client_get_enable_proxy(client) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_socket_client_get_enable_proxy
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_socket_client_get_enable_proxy
   type(c_ptr), value :: client
 end function
 
 ! void g_socket_client_set_enable_proxy (GSocketClient *client, gboolean enable);
 subroutine g_socket_client_set_enable_proxy(client, enable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: client
-  logical(c_bool), value :: enable
+  integer(c_int), value :: enable
 end subroutine
 
 !  GSocketConnection * g_socket_client_connect (GSocketClient *client, GSocketConnectable *connectable, GCancellable *cancellable, GError **error);
@@ -11720,8 +11720,8 @@ end function
 
 ! gboolean g_icon_equal (GIcon *icon1, GIcon *icon2);
 function g_icon_equal(icon1, icon2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_icon_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_icon_equal
   type(c_ptr), value :: icon1
   type(c_ptr), value :: icon2
 end function
@@ -11763,8 +11763,8 @@ end function
 
 ! gboolean g_drive_has_volumes (GDrive *drive);
 function g_drive_has_volumes(drive) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_has_volumes
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_has_volumes
   type(c_ptr), value :: drive
 end function
 
@@ -11777,36 +11777,36 @@ end function
 
 ! gboolean g_drive_is_media_removable (GDrive *drive);
 function g_drive_is_media_removable(drive) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_is_media_removable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_is_media_removable
   type(c_ptr), value :: drive
 end function
 
 ! gboolean g_drive_has_media (GDrive *drive);
 function g_drive_has_media(drive) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_has_media
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_has_media
   type(c_ptr), value :: drive
 end function
 
 ! gboolean g_drive_is_media_check_automatic (GDrive *drive);
 function g_drive_is_media_check_automatic(drive) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_is_media_check_automatic
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_is_media_check_automatic
   type(c_ptr), value :: drive
 end function
 
 ! gboolean g_drive_can_poll_for_media (GDrive *drive);
 function g_drive_can_poll_for_media(drive) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_can_poll_for_media
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_can_poll_for_media
   type(c_ptr), value :: drive
 end function
 
 ! gboolean g_drive_can_eject (GDrive *drive);
 function g_drive_can_eject(drive) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_can_eject
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_can_eject
   type(c_ptr), value :: drive
 end function
 
@@ -11822,8 +11822,8 @@ end subroutine
 
 ! gboolean g_drive_eject_finish (GDrive *drive, GAsyncResult *result, GError **error);
 function g_drive_eject_finish(drive, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_eject_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_eject_finish
   type(c_ptr), value :: drive
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -11841,8 +11841,8 @@ end subroutine
 
 ! gboolean g_drive_poll_for_media_finish (GDrive *drive, GAsyncResult *result, GError **error);
 function g_drive_poll_for_media_finish(drive, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_poll_for_media_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_poll_for_media_finish
   type(c_ptr), value :: drive
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -11872,15 +11872,15 @@ end function
 
 !  gboolean g_drive_can_start (GDrive *drive);
 function g_drive_can_start(drive) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_can_start
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_can_start
   type(c_ptr), value :: drive
 end function
 
 ! gboolean g_drive_can_start_degraded (GDrive *drive);
 function g_drive_can_start_degraded(drive) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_can_start_degraded
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_can_start_degraded
   type(c_ptr), value :: drive
 end function
 
@@ -11898,8 +11898,8 @@ end subroutine
 
 ! gboolean g_drive_start_finish (GDrive *drive, GAsyncResult *result, GError **error);
 function g_drive_start_finish(drive, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_start_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_start_finish
   type(c_ptr), value :: drive
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -11907,8 +11907,8 @@ end function
 
 !  gboolean g_drive_can_stop (GDrive *drive);
 function g_drive_can_stop(drive) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_can_stop
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_can_stop
   type(c_ptr), value :: drive
 end function
 
@@ -11926,8 +11926,8 @@ end subroutine
 
 ! gboolean g_drive_stop_finish (GDrive *drive, GAsyncResult *result, GError **error);
 function g_drive_stop_finish(drive, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_stop_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_stop_finish
   type(c_ptr), value :: drive
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -11947,8 +11947,8 @@ end subroutine
 
 ! gboolean g_drive_eject_with_operation_finish (GDrive *drive, GAsyncResult *result, GError **error);
 function g_drive_eject_with_operation_finish(drive, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_drive_eject_with_operation_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_drive_eject_with_operation_finish
   type(c_ptr), value :: drive
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -11962,15 +11962,15 @@ end function
 
 !  gboolean g_file_monitor_cancel (GFileMonitor *monitor);
 function g_file_monitor_cancel(monitor) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_monitor_cancel
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_monitor_cancel
   type(c_ptr), value :: monitor
 end function
 
 ! gboolean g_file_monitor_is_cancelled (GFileMonitor *monitor);
 function g_file_monitor_is_cancelled(monitor) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_file_monitor_is_cancelled
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_file_monitor_is_cancelled
   type(c_ptr), value :: monitor
 end function
 
@@ -11999,8 +11999,8 @@ end function
 
 !  gboolean g_initable_init (GInitable *initable, GCancellable *cancellable, GError **error);
 function g_initable_init(initable, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_initable_init
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_initable_init
   type(c_ptr), value :: initable
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -12523,8 +12523,8 @@ end function
 
 !  gboolean g_proxy_supports_hostname (GProxy *proxy);
 function g_proxy_supports_hostname(proxy) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_proxy_supports_hostname
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_proxy_supports_hostname
   type(c_ptr), value :: proxy
 end function
 
@@ -12679,8 +12679,8 @@ end subroutine
 
 ! gboolean g_dbus_connection_is_closed (GDBusConnection *connection);
 function g_dbus_connection_is_closed(connection) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_connection_is_closed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_connection_is_closed
   type(c_ptr), value :: connection
 end function
 
@@ -12714,17 +12714,17 @@ end function
 
 ! gboolean g_dbus_connection_get_exit_on_close (GDBusConnection *connection);
 function g_dbus_connection_get_exit_on_close(connection) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_connection_get_exit_on_close
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_connection_get_exit_on_close
   type(c_ptr), value :: connection
 end function
 
 ! void g_dbus_connection_set_exit_on_close (GDBusConnection *connection, gboolean exit_on_close);
 subroutine g_dbus_connection_set_exit_on_close(connection, exit_on_close) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: connection
-  logical(c_bool), value :: exit_on_close
+  integer(c_int), value :: exit_on_close
 end subroutine
 
 ! GDBusCapabilityFlags g_dbus_connection_get_capabilities (GDBusConnection *connection);
@@ -12746,8 +12746,8 @@ end subroutine
 
 ! gboolean g_dbus_connection_close_finish (GDBusConnection *connection, GAsyncResult *res, GError **error);
 function g_dbus_connection_close_finish(connection, res, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_connection_close_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_connection_close_finish
   type(c_ptr), value :: connection
   type(c_ptr), value :: res
   type(c_ptr), value :: error
@@ -12755,8 +12755,8 @@ end function
 
 ! gboolean g_dbus_connection_close_sync (GDBusConnection *connection, GCancellable *cancellable, GError **error);
 function g_dbus_connection_close_sync(connection, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_connection_close_sync
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_connection_close_sync
   type(c_ptr), value :: connection
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -12774,8 +12774,8 @@ end subroutine
 
 ! gboolean g_dbus_connection_flush_finish (GDBusConnection *connection, GAsyncResult *res, GError **error);
 function g_dbus_connection_flush_finish(connection, res, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_connection_flush_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_connection_flush_finish
   type(c_ptr), value :: connection
   type(c_ptr), value :: res
   type(c_ptr), value :: error
@@ -12783,8 +12783,8 @@ end function
 
 ! gboolean g_dbus_connection_flush_sync (GDBusConnection *connection, GCancellable *cancellable, GError **error);
 function g_dbus_connection_flush_sync(connection, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_dbus_connection_flush_sync
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_connection_flush_sync
   type(c_ptr), value :: connection
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -12793,8 +12793,8 @@ end function
 !  gboolean g_dbus_connection_send_message (GDBusConnection *connection, GDBusMessage *message, GDBusSendMessageFlags flags, volatile guint32 *out_serial, GError **error);
 function g_dbus_connection_send_message(connection, message, flags, out_serial, &
       &error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: g_dbus_connection_send_message
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_connection_send_message
   type(c_ptr), value :: connection
   type(c_ptr), value :: message
   integer(c_int), value :: flags
@@ -12843,8 +12843,8 @@ end function
 !  gboolean g_dbus_connection_emit_signal (GDBusConnection *connection, const gchar *destination_bus_name, const gchar *object_path, const gchar *interface_name, const gchar *signal_name, GVariant *parameters, GError **error);
 function g_dbus_connection_emit_signal(connection, destination_bus_name, object_&
       &path, interface_name, signal_name, parameters, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_dbus_connection_emit_signal
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_dbus_connection_emit_signal
   type(c_ptr), value :: connection
   character(kind=c_char), dimension(*) :: destination_bus_name
   character(kind=c_char), dimension(*) :: object_path
@@ -12918,8 +12918,8 @@ end function
 ! gboolean g_dbus_connection_unregister_object (GDBusConnection *connection, guint registration_id);
 function g_dbus_connection_unregister_object(connection, registration_id) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: g_dbus_connection_unregister_object
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_connection_unregister_object
   type(c_ptr), value :: connection
   integer(c_int), value :: registration_id
 end function
@@ -12941,8 +12941,8 @@ end function
 ! gboolean g_dbus_connection_unregister_subtree (GDBusConnection *connection, guint registration_id);
 function g_dbus_connection_unregister_subtree(connection, registration_id) bind(&
       &c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: g_dbus_connection_unregister_subtree
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_dbus_connection_unregister_subtree
   type(c_ptr), value :: connection
   integer(c_int), value :: registration_id
 end function
@@ -13068,8 +13068,8 @@ end function
 ! gboolean g_output_stream_write_all (GOutputStream *stream, const void *buffer, gsize count, gsize *bytes_written, GCancellable *cancellable, GError **error);
 function g_output_stream_write_all(stream, buffer, count, bytes_written, cancell&
       &able, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_size_t
-  logical(c_bool) :: g_output_stream_write_all
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
+  integer(c_int) :: g_output_stream_write_all
   type(c_ptr), value :: stream
   type(c_ptr), value :: buffer
   integer(c_size_t), value :: count
@@ -13092,8 +13092,8 @@ end function
 
 ! gboolean g_output_stream_flush (GOutputStream *stream, GCancellable *cancellable, GError **error);
 function g_output_stream_flush(stream, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_output_stream_flush
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_output_stream_flush
   type(c_ptr), value :: stream
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -13101,8 +13101,8 @@ end function
 
 ! gboolean g_output_stream_close (GOutputStream *stream, GCancellable *cancellable, GError **error);
 function g_output_stream_close(stream, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_output_stream_close
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_output_stream_close
   type(c_ptr), value :: stream
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
@@ -13165,8 +13165,8 @@ end subroutine
 
 ! gboolean g_output_stream_flush_finish (GOutputStream *stream, GAsyncResult *result, GError **error);
 function g_output_stream_flush_finish(stream, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_output_stream_flush_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_output_stream_flush_finish
   type(c_ptr), value :: stream
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -13185,8 +13185,8 @@ end subroutine
 
 ! gboolean g_output_stream_close_finish (GOutputStream *stream, GAsyncResult *result, GError **error);
 function g_output_stream_close_finish(stream, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_output_stream_close_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_output_stream_close_finish
   type(c_ptr), value :: stream
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -13194,29 +13194,29 @@ end function
 
 !  gboolean g_output_stream_is_closed (GOutputStream *stream);
 function g_output_stream_is_closed(stream) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_output_stream_is_closed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_output_stream_is_closed
   type(c_ptr), value :: stream
 end function
 
 ! gboolean g_output_stream_is_closing (GOutputStream *stream);
 function g_output_stream_is_closing(stream) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_output_stream_is_closing
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_output_stream_is_closing
   type(c_ptr), value :: stream
 end function
 
 ! gboolean g_output_stream_has_pending (GOutputStream *stream);
 function g_output_stream_has_pending(stream) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_output_stream_has_pending
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_output_stream_has_pending
   type(c_ptr), value :: stream
 end function
 
 ! gboolean g_output_stream_set_pending (GOutputStream *stream, GError **error);
 function g_output_stream_set_pending(stream, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_output_stream_set_pending
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_output_stream_set_pending
   type(c_ptr), value :: stream
   type(c_ptr), value :: error
 end function
@@ -13398,9 +13398,9 @@ end function
 
 ! void g_filename_completer_set_dirs_only (GFilenameCompleter *completer, gboolean dirs_only);
 subroutine g_filename_completer_set_dirs_only(completer, dirs_only) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: completer
-  logical(c_bool), value :: dirs_only
+  integer(c_int), value :: dirs_only
 end subroutine
 
 !   GType g_inet_address_get_type (void) G_GNUC_CONST;
@@ -13468,71 +13468,71 @@ end function
 
 !  gboolean g_inet_address_get_is_any (GInetAddress *address);
 function g_inet_address_get_is_any(address) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_inet_address_get_is_any
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_inet_address_get_is_any
   type(c_ptr), value :: address
 end function
 
 !  gboolean g_inet_address_get_is_loopback (GInetAddress *address);
 function g_inet_address_get_is_loopback(address) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_inet_address_get_is_loopback
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_inet_address_get_is_loopback
   type(c_ptr), value :: address
 end function
 
 !  gboolean g_inet_address_get_is_link_local (GInetAddress *address);
 function g_inet_address_get_is_link_local(address) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_inet_address_get_is_link_local
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_inet_address_get_is_link_local
   type(c_ptr), value :: address
 end function
 
 !  gboolean g_inet_address_get_is_site_local (GInetAddress *address);
 function g_inet_address_get_is_site_local(address) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_inet_address_get_is_site_local
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_inet_address_get_is_site_local
   type(c_ptr), value :: address
 end function
 
 !  gboolean g_inet_address_get_is_multicast (GInetAddress *address);
 function g_inet_address_get_is_multicast(address) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_inet_address_get_is_multicast
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_inet_address_get_is_multicast
   type(c_ptr), value :: address
 end function
 
 !  gboolean g_inet_address_get_is_mc_global (GInetAddress *address);
 function g_inet_address_get_is_mc_global(address) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_inet_address_get_is_mc_global
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_inet_address_get_is_mc_global
   type(c_ptr), value :: address
 end function
 
 !  gboolean g_inet_address_get_is_mc_link_local (GInetAddress *address);
 function g_inet_address_get_is_mc_link_local(address) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_inet_address_get_is_mc_link_local
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_inet_address_get_is_mc_link_local
   type(c_ptr), value :: address
 end function
 
 !  gboolean g_inet_address_get_is_mc_node_local (GInetAddress *address);
 function g_inet_address_get_is_mc_node_local(address) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_inet_address_get_is_mc_node_local
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_inet_address_get_is_mc_node_local
   type(c_ptr), value :: address
 end function
 
 !  gboolean g_inet_address_get_is_mc_org_local (GInetAddress *address);
 function g_inet_address_get_is_mc_org_local(address) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_inet_address_get_is_mc_org_local
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_inet_address_get_is_mc_org_local
   type(c_ptr), value :: address
 end function
 
 !  gboolean g_inet_address_get_is_mc_site_local (GInetAddress *address);
 function g_inet_address_get_is_mc_site_local(address) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_inet_address_get_is_mc_site_local
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_inet_address_get_is_mc_site_local
   type(c_ptr), value :: address
 end function
 
@@ -13573,22 +13573,22 @@ end subroutine
 
 ! gboolean g_buffered_output_stream_get_auto_grow (GBufferedOutputStream *stream);
 function g_buffered_output_stream_get_auto_grow(stream) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_buffered_output_stream_get_auto_grow
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_buffered_output_stream_get_auto_grow
   type(c_ptr), value :: stream
 end function
 
 ! void g_buffered_output_stream_set_auto_grow (GBufferedOutputStream *stream, gboolean auto_grow);
 subroutine g_buffered_output_stream_set_auto_grow(stream, auto_grow) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: stream
-  logical(c_bool), value :: auto_grow
+  integer(c_int), value :: auto_grow
 end subroutine
 
 !   gboolean g_dbus_is_guid (const gchar *string);
 function g_dbus_is_guid(string) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_dbus_is_guid
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_dbus_is_guid
   character(kind=c_char), dimension(*) :: string
 end function
 
@@ -13600,29 +13600,29 @@ end function
 
 !  gboolean g_dbus_is_name (const gchar *string);
 function g_dbus_is_name(string) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_dbus_is_name
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_dbus_is_name
   character(kind=c_char), dimension(*) :: string
 end function
 
 ! gboolean g_dbus_is_unique_name (const gchar *string);
 function g_dbus_is_unique_name(string) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_dbus_is_unique_name
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_dbus_is_unique_name
   character(kind=c_char), dimension(*) :: string
 end function
 
 ! gboolean g_dbus_is_member_name (const gchar *string);
 function g_dbus_is_member_name(string) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_dbus_is_member_name
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_dbus_is_member_name
   character(kind=c_char), dimension(*) :: string
 end function
 
 ! gboolean g_dbus_is_interface_name (const gchar *string);
 function g_dbus_is_interface_name(string) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_dbus_is_interface_name
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_dbus_is_interface_name
   character(kind=c_char), dimension(*) :: string
 end function
 
@@ -13763,22 +13763,22 @@ end function
 
 ! gboolean g_volume_can_mount (GVolume *volume);
 function g_volume_can_mount(volume) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_volume_can_mount
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_volume_can_mount
   type(c_ptr), value :: volume
 end function
 
 ! gboolean g_volume_can_eject (GVolume *volume);
 function g_volume_can_eject(volume) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_volume_can_eject
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_volume_can_eject
   type(c_ptr), value :: volume
 end function
 
 ! gboolean g_volume_should_automount (GVolume *volume);
 function g_volume_should_automount(volume) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_volume_should_automount
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_volume_should_automount
   type(c_ptr), value :: volume
 end function
 
@@ -13796,8 +13796,8 @@ end subroutine
 
 ! gboolean g_volume_mount_finish (GVolume *volume, GAsyncResult *result, GError **error);
 function g_volume_mount_finish(volume, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_volume_mount_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_volume_mount_finish
   type(c_ptr), value :: volume
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -13816,8 +13816,8 @@ end subroutine
 
 ! gboolean g_volume_eject_finish (GVolume *volume, GAsyncResult *result, GError **error);
 function g_volume_eject_finish(volume, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_volume_eject_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_volume_eject_finish
   type(c_ptr), value :: volume
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -13859,8 +13859,8 @@ end subroutine
 
 ! gboolean g_volume_eject_with_operation_finish (GVolume *volume, GAsyncResult *result, GError **error);
 function g_volume_eject_with_operation_finish(volume, result, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_volume_eject_with_operation_finish
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_volume_eject_with_operation_finish
   type(c_ptr), value :: volume
   type(c_ptr), value :: result
   type(c_ptr), value :: error
@@ -13880,8 +13880,8 @@ end function
 
 !  gboolean g_proxy_resolver_is_supported (GProxyResolver *resolver);
 function g_proxy_resolver_is_supported(resolver) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_proxy_resolver_is_supported
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_proxy_resolver_is_supported
   type(c_ptr), value :: resolver
 end function
 
@@ -14001,15 +14001,15 @@ end function
 
 !  void g_simple_async_result_set_op_res_gboolean (GSimpleAsyncResult *simple, gboolean op_res);
 subroutine g_simple_async_result_set_op_res_gboolean(simple, op_res) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: simple
-  logical(c_bool), value :: op_res
+  integer(c_int), value :: op_res
 end subroutine
 
 ! gboolean g_simple_async_result_get_op_res_gboolean (GSimpleAsyncResult *simple);
 function g_simple_async_result_get_op_res_gboolean(simple) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_simple_async_result_get_op_res_gboolean
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_simple_async_result_get_op_res_gboolean
   type(c_ptr), value :: simple
 end function
 
@@ -14023,9 +14023,9 @@ end function
 ! void g_simple_async_result_set_handle_cancellation (GSimpleAsyncResult *simple, gboolean handle_cancellation);
 subroutine g_simple_async_result_set_handle_cancellation(simple, handle_cancella&
       &tion) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: simple
-  logical(c_bool), value :: handle_cancellation
+  integer(c_int), value :: handle_cancellation
 end subroutine
 
 ! void g_simple_async_result_complete (GSimpleAsyncResult *simple);
@@ -14059,8 +14059,8 @@ end subroutine
 
 ! gboolean g_simple_async_result_propagate_error (GSimpleAsyncResult *simple, GError **dest);
 function g_simple_async_result_propagate_error(simple, dest) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_simple_async_result_propagate_error
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_simple_async_result_propagate_error
   type(c_ptr), value :: simple
   type(c_ptr), value :: dest
 end function
@@ -14083,8 +14083,8 @@ end subroutine
 
 ! gboolean g_simple_async_result_is_valid (GAsyncResult *result, GObject *source, gpointer source_tag);
 function g_simple_async_result_is_valid(result, source, source_tag) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_simple_async_result_is_valid
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_simple_async_result_is_valid
   type(c_ptr), value :: result
   type(c_ptr), value :: source
   type(c_ptr), value :: source_tag
@@ -14174,8 +14174,8 @@ end subroutine
 !  gboolean g_credentials_is_same_user (GCredentials *credentials, GCredentials *other_credentials, GError **error);
 function g_credentials_is_same_user(credentials, other_credentials, error) bind(&
       &c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_credentials_is_same_user
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_credentials_is_same_user
   type(c_ptr), value :: credentials
   type(c_ptr), value :: other_credentials
   type(c_ptr), value :: error
@@ -14191,8 +14191,8 @@ end function
 
 ! gboolean g_credentials_set_unix_user (GCredentials *credentials, uid_t uid, GError **error);
 function g_credentials_set_unix_user(credentials, uid, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: g_credentials_set_unix_user
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: g_credentials_set_unix_user
   type(c_ptr), value :: credentials
   integer(c_int32_t), value :: uid
   type(c_ptr), value :: error
@@ -14215,8 +14215,8 @@ end subroutine
 
 ! gboolean g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic, gint oldval, gint newval);
 function g_atomic_int_compare_and_exchange(atomic, oldval, newval) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: g_atomic_int_compare_and_exchange
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_atomic_int_compare_and_exchange
   type(c_ptr), value :: atomic
   integer(c_int), value :: oldval
   integer(c_int), value :: newval
@@ -14224,8 +14224,8 @@ end function
 
 ! gboolean g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, gpointer oldval, gpointer newval);
 function g_atomic_pointer_compare_and_exchange(atomic, oldval, newval) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_atomic_pointer_compare_and_exchange
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_atomic_pointer_compare_and_exchange
   type(c_ptr), value :: atomic
   type(c_ptr), value :: oldval
   type(c_ptr), value :: newval
@@ -14366,8 +14366,8 @@ end function
 
 !  gboolean g_path_is_absolute (const gchar *file_name);
 function g_path_is_absolute(file_name) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_path_is_absolute
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_path_is_absolute
   character(kind=c_char), dimension(*) :: file_name
 end function
 
@@ -14420,11 +14420,11 @@ end function
 
 ! gboolean g_setenv (const gchar *variable, const gchar *value, gboolean overwrite);
 function g_setenv(variable, value, overwrite) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_setenv
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_setenv
   character(kind=c_char), dimension(*) :: variable
   character(kind=c_char), dimension(*) :: value
-  logical(c_bool), value :: overwrite
+  integer(c_int), value :: overwrite
 end function
 
 ! void g_unsetenv (const gchar *variable);
@@ -14535,16 +14535,16 @@ end subroutine
 
 ! gboolean g_pattern_spec_equal (GPatternSpec *pspec1, GPatternSpec *pspec2);
 function g_pattern_spec_equal(pspec1, pspec2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_pattern_spec_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_pattern_spec_equal
   type(c_ptr), value :: pspec1
   type(c_ptr), value :: pspec2
 end function
 
 ! gboolean g_pattern_match (GPatternSpec *pspec, guint string_length, const gchar *string, const gchar *string_reversed);
 function g_pattern_match(pspec, string_length, string, string_reversed) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_char
-  logical(c_bool) :: g_pattern_match
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_pattern_match
   type(c_ptr), value :: pspec
   integer(c_int), value :: string_length
   character(kind=c_char), dimension(*) :: string
@@ -14553,16 +14553,16 @@ end function
 
 ! gboolean g_pattern_match_string (GPatternSpec *pspec, const gchar *string);
 function g_pattern_match_string(pspec, string) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_pattern_match_string
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_pattern_match_string
   type(c_ptr), value :: pspec
   character(kind=c_char), dimension(*) :: string
 end function
 
 ! gboolean g_pattern_match_simple (const gchar *pattern, const gchar *string);
 function g_pattern_match_simple(pattern, string) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_pattern_match_simple
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_pattern_match_simple
   character(kind=c_char), dimension(*) :: pattern
   character(kind=c_char), dimension(*) :: string
 end function
@@ -14616,30 +14616,30 @@ end subroutine
 
 ! void g_option_context_set_help_enabled (GOptionContext *context, gboolean help_enabled);
 subroutine g_option_context_set_help_enabled(context, help_enabled) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: context
-  logical(c_bool), value :: help_enabled
+  integer(c_int), value :: help_enabled
 end subroutine
 
 ! gboolean g_option_context_get_help_enabled (GOptionContext *context);
 function g_option_context_get_help_enabled(context) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_option_context_get_help_enabled
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_option_context_get_help_enabled
   type(c_ptr), value :: context
 end function
 
 ! void g_option_context_set_ignore_unknown_options (GOptionContext *context, gboolean ignore_unknown);
 subroutine g_option_context_set_ignore_unknown_options(context, ignore_unknown) &
       &bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: context
-  logical(c_bool), value :: ignore_unknown
+  integer(c_int), value :: ignore_unknown
 end subroutine
 
 ! gboolean g_option_context_get_ignore_unknown_options (GOptionContext *context);
 function g_option_context_get_ignore_unknown_options(context) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_option_context_get_ignore_unknown_options
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_option_context_get_ignore_unknown_options
   type(c_ptr), value :: context
 end function
 
@@ -14654,8 +14654,8 @@ end subroutine
 
 ! gboolean g_option_context_parse (GOptionContext *context, gint *argc, gchar ***argv, GError **error);
 function g_option_context_parse(context, argc, argv, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_option_context_parse
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_option_context_parse
   type(c_ptr), value :: context
   type(c_ptr), value :: argc
   character(kind=c_char), dimension(*) :: argv
@@ -14702,10 +14702,10 @@ end function
 
 ! gchar *g_option_context_get_help (GOptionContext *context, gboolean main_help, GOptionGroup *group);
 function g_option_context_get_help(context, main_help, group) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_option_context_get_help
   type(c_ptr), value :: context
-  logical(c_bool), value :: main_help
+  integer(c_int), value :: main_help
   type(c_ptr), value :: group
 end function
 
@@ -14769,127 +14769,127 @@ end subroutine
 
 !   gboolean g_get_charset (G_CONST_RETURN char **charset);
 function g_get_charset(charset) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_get_charset
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_get_charset
   character(kind=c_char), dimension(*) :: charset
 end function
 
 !  gboolean g_unichar_isalnum (gunichar c) G_GNUC_CONST;
 function g_unichar_isalnum(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_isalnum
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_isalnum
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_isalpha (gunichar c) G_GNUC_CONST;
 function g_unichar_isalpha(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_isalpha
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_isalpha
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_iscntrl (gunichar c) G_GNUC_CONST;
 function g_unichar_iscntrl(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_iscntrl
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_iscntrl
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_isdigit (gunichar c) G_GNUC_CONST;
 function g_unichar_isdigit(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_isdigit
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_isdigit
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_isgraph (gunichar c) G_GNUC_CONST;
 function g_unichar_isgraph(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_isgraph
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_isgraph
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_islower (gunichar c) G_GNUC_CONST;
 function g_unichar_islower(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_islower
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_islower
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_isprint (gunichar c) G_GNUC_CONST;
 function g_unichar_isprint(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_isprint
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_isprint
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_ispunct (gunichar c) G_GNUC_CONST;
 function g_unichar_ispunct(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_ispunct
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_ispunct
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_isspace (gunichar c) G_GNUC_CONST;
 function g_unichar_isspace(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_isspace
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_isspace
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_isupper (gunichar c) G_GNUC_CONST;
 function g_unichar_isupper(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_isupper
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_isupper
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_isxdigit (gunichar c) G_GNUC_CONST;
 function g_unichar_isxdigit(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_isxdigit
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_isxdigit
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_istitle (gunichar c) G_GNUC_CONST;
 function g_unichar_istitle(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_istitle
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_istitle
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_isdefined (gunichar c) G_GNUC_CONST;
 function g_unichar_isdefined(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_isdefined
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_isdefined
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_iswide (gunichar c) G_GNUC_CONST;
 function g_unichar_iswide(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_iswide
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_iswide
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_iswide_cjk(gunichar c) G_GNUC_CONST;
 function g_unichar_iswide_cjk(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_iswide_cjk
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_iswide_cjk
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_iszerowidth(gunichar c) G_GNUC_CONST;
 function g_unichar_iszerowidth(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_iszerowidth
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_iszerowidth
   integer(c_int32_t), value :: c
 end function
 
 ! gboolean g_unichar_ismark (gunichar c) G_GNUC_CONST;
 function g_unichar_ismark(c) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_ismark
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_ismark
   integer(c_int32_t), value :: c
 end function
 
@@ -15146,8 +15146,8 @@ end function
 
 !  gboolean g_utf8_validate (const gchar *str, gssize max_len, const gchar **end);
 function g_utf8_validate(str, max_len, end) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_size_t
-  logical(c_bool) :: g_utf8_validate
+  use iso_c_binding, only: c_int, c_char, c_size_t
+  integer(c_int) :: g_utf8_validate
   character(kind=c_char), dimension(*) :: str
   integer(c_size_t), value :: max_len
   character(kind=c_char), dimension(*) :: end
@@ -15155,8 +15155,8 @@ end function
 
 !  gboolean g_unichar_validate (gunichar ch) G_GNUC_CONST;
 function g_unichar_validate(ch) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_unichar_validate
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_unichar_validate
   integer(c_int32_t), value :: ch
 end function
 
@@ -15219,8 +15219,8 @@ end function
 
 !  gboolean g_unichar_get_mirror_char (gunichar ch, gunichar *mirrored_ch);
 function g_unichar_get_mirror_char(ch, mirrored_ch) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t, c_char
-  logical(c_bool) :: g_unichar_get_mirror_char
+  use iso_c_binding, only: c_int, c_int32_t, c_char
+  integer(c_int) :: g_unichar_get_mirror_char
   integer(c_int32_t), value :: ch
   character(kind=c_char), dimension(*) :: mirrored_ch
 end function
@@ -15287,11 +15287,11 @@ end function
 
 !   gsize g_base64_encode_step (const guchar *in, gsize len, gboolean break_lines, gchar *out, gint *state, gint *save);
 function g_base64_encode_step(in, len, break_lines, out, state, save) bind(c) 
-  use iso_c_binding, only: c_size_t, c_char, c_bool, c_ptr
+  use iso_c_binding, only: c_size_t, c_char, c_int, c_ptr
   integer(c_size_t) :: g_base64_encode_step
   character(kind=c_char), dimension(*) :: in
   integer(c_size_t), value :: len
-  logical(c_bool), value :: break_lines
+  integer(c_int), value :: break_lines
   character(kind=c_char), dimension(*) :: out
   type(c_ptr), value :: state
   type(c_ptr), value :: save
@@ -15299,9 +15299,9 @@ end function
 
 ! gsize g_base64_encode_close (gboolean break_lines, gchar *out, gint *state, gint *save);
 function g_base64_encode_close(break_lines, out, state, save) bind(c) 
-  use iso_c_binding, only: c_size_t, c_bool, c_char, c_ptr
+  use iso_c_binding, only: c_size_t, c_int, c_char, c_ptr
   integer(c_size_t) :: g_base64_encode_close
-  logical(c_bool), value :: break_lines
+  integer(c_int), value :: break_lines
   character(kind=c_char), dimension(*) :: out
   type(c_ptr), value :: state
   type(c_ptr), value :: save
@@ -15685,8 +15685,8 @@ end function
 
 ! gboolean g_date_time_equal (gconstpointer dt1, gconstpointer dt2);
 function g_date_time_equal(dt1, dt2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_date_time_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_date_time_equal
   type(c_ptr), value :: dt1
   type(c_ptr), value :: dt2
 end function
@@ -15793,8 +15793,8 @@ end function
 
 ! gboolean g_date_time_to_timeval (GDateTime *datetime, GTimeVal *tv);
 function g_date_time_to_timeval(datetime, tv) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_date_time_to_timeval
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_date_time_to_timeval
   type(c_ptr), value :: datetime
   type(c_ptr), value :: tv
 end function
@@ -15815,8 +15815,8 @@ end function
 
 ! gboolean g_date_time_is_daylight_savings (GDateTime *datetime);
 function g_date_time_is_daylight_savings(datetime) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_date_time_is_daylight_savings
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_date_time_is_daylight_savings
   type(c_ptr), value :: datetime
 end function
 
@@ -15894,8 +15894,8 @@ end subroutine
 
 ! gboolean g_hook_destroy (GHookList *hook_list, gulong hook_id);
 function g_hook_destroy(hook_list, hook_id) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_long
-  logical(c_bool) :: g_hook_destroy
+  use iso_c_binding, only: c_int, c_ptr, c_long
+  integer(c_int) :: g_hook_destroy
   type(c_ptr), value :: hook_list
   integer(c_long), value :: hook_id
 end function
@@ -15940,57 +15940,57 @@ end function
 
 ! GHook* g_hook_find (GHookList *hook_list, gboolean need_valids, GHookFindFunc func, gpointer data);
 function g_hook_find(hook_list, need_valids, func, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_funptr
+  use iso_c_binding, only: c_ptr, c_int, c_funptr
   type(c_ptr) :: g_hook_find
   type(c_ptr), value :: hook_list
-  logical(c_bool), value :: need_valids
+  integer(c_int), value :: need_valids
   type(c_funptr), value :: func
   type(c_ptr), value :: data
 end function
 
 ! GHook* g_hook_find_data (GHookList *hook_list, gboolean need_valids, gpointer data);
 function g_hook_find_data(hook_list, need_valids, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_hook_find_data
   type(c_ptr), value :: hook_list
-  logical(c_bool), value :: need_valids
+  integer(c_int), value :: need_valids
   type(c_ptr), value :: data
 end function
 
 ! GHook* g_hook_find_func (GHookList *hook_list, gboolean need_valids, gpointer func);
 function g_hook_find_func(hook_list, need_valids, func) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_hook_find_func
   type(c_ptr), value :: hook_list
-  logical(c_bool), value :: need_valids
+  integer(c_int), value :: need_valids
   type(c_ptr), value :: func
 end function
 
 ! GHook* g_hook_find_func_data (GHookList *hook_list, gboolean need_valids, gpointer func, gpointer data);
 function g_hook_find_func_data(hook_list, need_valids, func, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_hook_find_func_data
   type(c_ptr), value :: hook_list
-  logical(c_bool), value :: need_valids
+  integer(c_int), value :: need_valids
   type(c_ptr), value :: func
   type(c_ptr), value :: data
 end function
 
 !  GHook* g_hook_first_valid (GHookList *hook_list, gboolean may_be_in_call);
 function g_hook_first_valid(hook_list, may_be_in_call) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_hook_first_valid
   type(c_ptr), value :: hook_list
-  logical(c_bool), value :: may_be_in_call
+  integer(c_int), value :: may_be_in_call
 end function
 
 !  GHook* g_hook_next_valid (GHookList *hook_list, GHook *hook, gboolean may_be_in_call);
 function g_hook_next_valid(hook_list, hook, may_be_in_call) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_hook_next_valid
   type(c_ptr), value :: hook_list
   type(c_ptr), value :: hook
-  logical(c_bool), value :: may_be_in_call
+  integer(c_int), value :: may_be_in_call
 end function
 
 !  gint g_hook_compare_ids (GHook *new_hook, GHook *sibling);
@@ -16003,24 +16003,24 @@ end function
 
 !  void g_hook_list_invoke (GHookList *hook_list, gboolean may_recurse);
 subroutine g_hook_list_invoke(hook_list, may_recurse) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: hook_list
-  logical(c_bool), value :: may_recurse
+  integer(c_int), value :: may_recurse
 end subroutine
 
 !  void g_hook_list_invoke_check (GHookList *hook_list, gboolean may_recurse);
 subroutine g_hook_list_invoke_check(hook_list, may_recurse) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: hook_list
-  logical(c_bool), value :: may_recurse
+  integer(c_int), value :: may_recurse
 end subroutine
 
 !  void g_hook_list_marshal (GHookList *hook_list, gboolean may_recurse, GHookMarshaller marshaller, gpointer marshal_data);
 subroutine g_hook_list_marshal(hook_list, may_recurse, marshaller, marshal_data)&
       & bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_funptr
+  use iso_c_binding, only: c_ptr, c_int, c_funptr
   type(c_ptr), value :: hook_list
-  logical(c_bool), value :: may_recurse
+  integer(c_int), value :: may_recurse
   type(c_funptr), value :: marshaller
   type(c_ptr), value :: marshal_data
 end subroutine
@@ -16028,9 +16028,9 @@ end subroutine
 ! void g_hook_list_marshal_check (GHookList *hook_list, gboolean may_recurse, GHookCheckMarshaller marshaller, gpointer marshal_data);
 subroutine g_hook_list_marshal_check(hook_list, may_recurse, marshaller, marshal&
       &_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_funptr
+  use iso_c_binding, only: c_ptr, c_int, c_funptr
   type(c_ptr), value :: hook_list
-  logical(c_bool), value :: may_recurse
+  integer(c_int), value :: may_recurse
   type(c_funptr), value :: marshaller
   type(c_ptr), value :: marshal_data
 end subroutine
@@ -16088,15 +16088,15 @@ end subroutine
 
 !   gboolean g_variant_type_string_is_valid (const gchar *type_string);
 function g_variant_type_string_is_valid(type_string) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_variant_type_string_is_valid
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_variant_type_string_is_valid
   character(kind=c_char), dimension(*) :: type_string
 end function
 
 ! gboolean g_variant_type_string_scan (const gchar *string, const gchar *limit, const gchar **endptr);
 function g_variant_type_string_scan(string, limit, endptr) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_variant_type_string_scan
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_variant_type_string_scan
   character(kind=c_char), dimension(*) :: string
   character(kind=c_char), dimension(*) :: limit
   character(kind=c_char), dimension(*) :: endptr
@@ -16145,57 +16145,57 @@ end function
 
 !  gboolean g_variant_type_is_definite (const GVariantType *type);
 function g_variant_type_is_definite(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_type_is_definite
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_type_is_definite
   type(c_ptr), value :: type
 end function
 
 ! gboolean g_variant_type_is_container (const GVariantType *type);
 function g_variant_type_is_container(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_type_is_container
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_type_is_container
   type(c_ptr), value :: type
 end function
 
 ! gboolean g_variant_type_is_basic (const GVariantType *type);
 function g_variant_type_is_basic(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_type_is_basic
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_type_is_basic
   type(c_ptr), value :: type
 end function
 
 ! gboolean g_variant_type_is_maybe (const GVariantType *type);
 function g_variant_type_is_maybe(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_type_is_maybe
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_type_is_maybe
   type(c_ptr), value :: type
 end function
 
 ! gboolean g_variant_type_is_array (const GVariantType *type);
 function g_variant_type_is_array(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_type_is_array
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_type_is_array
   type(c_ptr), value :: type
 end function
 
 ! gboolean g_variant_type_is_tuple (const GVariantType *type);
 function g_variant_type_is_tuple(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_type_is_tuple
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_type_is_tuple
   type(c_ptr), value :: type
 end function
 
 ! gboolean g_variant_type_is_dict_entry (const GVariantType *type);
 function g_variant_type_is_dict_entry(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_type_is_dict_entry
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_type_is_dict_entry
   type(c_ptr), value :: type
 end function
 
 ! gboolean g_variant_type_is_variant (const GVariantType *type);
 function g_variant_type_is_variant(type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_type_is_variant
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_type_is_variant
   type(c_ptr), value :: type
 end function
 
@@ -16208,16 +16208,16 @@ end function
 
 ! gboolean g_variant_type_equal (gconstpointer type1, gconstpointer type2);
 function g_variant_type_equal(type1, type2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_type_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_type_equal
   type(c_ptr), value :: type1
   type(c_ptr), value :: type2
 end function
 
 !  gboolean g_variant_type_is_subtype_of (const GVariantType *type, const GVariantType *supertype);
 function g_variant_type_is_subtype_of(type, supertype) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_type_is_subtype_of
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_type_is_subtype_of
   type(c_ptr), value :: type
   type(c_ptr), value :: supertype
 end function
@@ -16340,8 +16340,8 @@ end function
 
 !  gboolean g_error_matches (const GError *error, GQuark domain, gint code);
 function g_error_matches(error, domain, code) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t, c_int
-  logical(c_bool) :: g_error_matches
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: g_error_matches
   type(c_ptr), value :: error
   integer(c_int32_t), value :: domain
   integer(c_int), value :: code
@@ -16484,8 +16484,8 @@ end subroutine
 
 !  gboolean g_thread_get_initialized (void);
 function g_thread_get_initialized() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: g_thread_get_initialized
+  use iso_c_binding, only: c_int
+  integer(c_int) :: g_thread_get_initialized
 end function
 
 !  GMutex* g_static_mutex_get_mutex_impl (GMutex **mutex);
@@ -16498,13 +16498,13 @@ end function
 !  GThread* g_thread_create_full (GThreadFunc func, gpointer data, gulong stack_size, gboolean joinable, gboolean bound, GThreadPriority priority, GError **error);
 function g_thread_create_full(func, data, stack_size, joinable, bound, priority,&
       & error) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr, c_long, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_funptr, c_long, c_int
   type(c_ptr) :: g_thread_create_full
   type(c_funptr), value :: func
   type(c_ptr), value :: data
   integer(c_long), value :: stack_size
-  logical(c_bool), value :: joinable
-  logical(c_bool), value :: bound
+  integer(c_int), value :: joinable
+  integer(c_int), value :: bound
   integer(c_int), value :: priority
   type(c_ptr), value :: error
 end function
@@ -16588,8 +16588,8 @@ end subroutine
 
 ! gboolean g_static_rec_mutex_trylock (GStaticRecMutex *mutex);
 function g_static_rec_mutex_trylock(mutex) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_static_rec_mutex_trylock
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_static_rec_mutex_trylock
   type(c_ptr), value :: mutex
 end function
 
@@ -16633,8 +16633,8 @@ end subroutine
 
 ! gboolean g_static_rw_lock_reader_trylock (GStaticRWLock* lock);
 function g_static_rw_lock_reader_trylock(lock) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_static_rw_lock_reader_trylock
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_static_rw_lock_reader_trylock
   type(c_ptr), value :: lock
 end function
 
@@ -16652,8 +16652,8 @@ end subroutine
 
 ! gboolean g_static_rw_lock_writer_trylock (GStaticRWLock* lock);
 function g_static_rw_lock_writer_trylock(lock) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_static_rw_lock_writer_trylock
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_static_rw_lock_writer_trylock
   type(c_ptr), value :: lock
 end function
 
@@ -16687,8 +16687,8 @@ end function
 
 ! gboolean g_once_init_enter_impl (volatile gsize *value_location);
 function g_once_init_enter_impl(value_location) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_once_init_enter_impl
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_once_init_enter_impl
   type(c_ptr), value :: value_location
 end function
 
@@ -16758,8 +16758,8 @@ end subroutine
 
 ! gboolean g_time_val_from_iso8601 (const gchar *iso_date, GTimeVal *time_);
 function g_time_val_from_iso8601(iso_date, time_) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: g_time_val_from_iso8601
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: g_time_val_from_iso8601
   character(kind=c_char), dimension(*) :: iso_date
   type(c_ptr), value :: time_
 end function
@@ -16791,8 +16791,8 @@ end subroutine
 
 !  gboolean g_bookmark_file_load_from_file (GBookmarkFile *bookmark, const gchar *filename, GError **error);
 function g_bookmark_file_load_from_file(bookmark, filename, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_load_from_file
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_load_from_file
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: filename
   type(c_ptr), value :: error
@@ -16800,8 +16800,8 @@ end function
 
 ! gboolean g_bookmark_file_load_from_data (GBookmarkFile *bookmark, const gchar *data, gsize length, GError **error);
 function g_bookmark_file_load_from_data(bookmark, data, length, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_size_t
-  logical(c_bool) :: g_bookmark_file_load_from_data
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
+  integer(c_int) :: g_bookmark_file_load_from_data
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: data
   integer(c_size_t), value :: length
@@ -16811,8 +16811,8 @@ end function
 ! gboolean g_bookmark_file_load_from_data_dirs (GBookmarkFile *bookmark, const gchar *file, gchar **full_path, GError **error);
 function g_bookmark_file_load_from_data_dirs(bookmark, file, full_path, error) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_load_from_data_dirs
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_load_from_data_dirs
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: file
   character(kind=c_char), dimension(*) :: full_path
@@ -16830,8 +16830,8 @@ end function
 
 ! gboolean g_bookmark_file_to_file (GBookmarkFile *bookmark, const gchar *filename, GError **error);
 function g_bookmark_file_to_file(bookmark, filename, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_to_file
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_to_file
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: filename
   type(c_ptr), value :: error
@@ -16907,8 +16907,8 @@ end subroutine
 
 ! gboolean g_bookmark_file_has_group (GBookmarkFile *bookmark, const gchar *uri, const gchar *group, GError **error);
 function g_bookmark_file_has_group(bookmark, uri, group, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_has_group
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_has_group
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
   character(kind=c_char), dimension(*) :: group
@@ -16936,8 +16936,8 @@ end subroutine
 
 ! gboolean g_bookmark_file_has_application (GBookmarkFile *bookmark, const gchar *uri, const gchar *name, GError **error);
 function g_bookmark_file_has_application(bookmark, uri, name, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_has_application
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_has_application
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
   character(kind=c_char), dimension(*) :: name
@@ -16957,8 +16957,8 @@ end function
 ! gboolean g_bookmark_file_set_app_info (GBookmarkFile *bookmark, const gchar *uri, const gchar *name, const gchar *exec, gint count, time_t stamp, GError **error);
 function g_bookmark_file_set_app_info(bookmark, uri, name, exec, count, stamp, e&
       &rror) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int, c_long
-  logical(c_bool) :: g_bookmark_file_set_app_info
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_long
+  integer(c_int) :: g_bookmark_file_set_app_info
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
   character(kind=c_char), dimension(*) :: name
@@ -16971,8 +16971,8 @@ end function
 ! gboolean g_bookmark_file_get_app_info (GBookmarkFile *bookmark, const gchar *uri, const gchar *name, gchar **exec, guint *count, time_t *stamp, GError **error);
 function g_bookmark_file_get_app_info(bookmark, uri, name, exec, count, stamp, e&
       &rror) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_get_app_info
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_get_app_info
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
   character(kind=c_char), dimension(*) :: name
@@ -16984,16 +16984,16 @@ end function
 
 ! void g_bookmark_file_set_is_private (GBookmarkFile *bookmark, const gchar *uri, gboolean is_private);
 subroutine g_bookmark_file_set_is_private(bookmark, uri, is_private) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
-  logical(c_bool), value :: is_private
+  integer(c_int), value :: is_private
 end subroutine
 
 ! gboolean g_bookmark_file_get_is_private (GBookmarkFile *bookmark, const gchar *uri, GError **error);
 function g_bookmark_file_get_is_private(bookmark, uri, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_get_is_private
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_get_is_private
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
   type(c_ptr), value :: error
@@ -17010,8 +17010,8 @@ end subroutine
 
 ! gboolean g_bookmark_file_get_icon (GBookmarkFile *bookmark, const gchar *uri, gchar **href, gchar **mime_type, GError **error);
 function g_bookmark_file_get_icon(bookmark, uri, href, mime_type, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_get_icon
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_get_icon
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
   character(kind=c_char), dimension(*) :: href
@@ -17072,8 +17072,8 @@ end function
 
 ! gboolean g_bookmark_file_has_item (GBookmarkFile *bookmark, const gchar *uri);
 function g_bookmark_file_has_item(bookmark, uri) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_has_item
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_has_item
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
 end function
@@ -17095,8 +17095,8 @@ end function
 
 ! gboolean g_bookmark_file_remove_group (GBookmarkFile *bookmark, const gchar *uri, const gchar *group, GError **error);
 function g_bookmark_file_remove_group(bookmark, uri, group, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_remove_group
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_remove_group
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
   character(kind=c_char), dimension(*) :: group
@@ -17105,8 +17105,8 @@ end function
 
 ! gboolean g_bookmark_file_remove_application (GBookmarkFile *bookmark, const gchar *uri, const gchar *name, GError **error);
 function g_bookmark_file_remove_application(bookmark, uri, name, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_remove_application
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_remove_application
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
   character(kind=c_char), dimension(*) :: name
@@ -17115,8 +17115,8 @@ end function
 
 ! gboolean g_bookmark_file_remove_item (GBookmarkFile *bookmark, const gchar *uri, GError **error);
 function g_bookmark_file_remove_item(bookmark, uri, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_remove_item
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_remove_item
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: uri
   type(c_ptr), value :: error
@@ -17124,8 +17124,8 @@ end function
 
 ! gboolean g_bookmark_file_move_item (GBookmarkFile *bookmark, const gchar *old_uri, const gchar *new_uri, GError **error);
 function g_bookmark_file_move_item(bookmark, old_uri, new_uri, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_bookmark_file_move_item
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_bookmark_file_move_item
   type(c_ptr), value :: bookmark
   character(kind=c_char), dimension(*) :: old_uri
   character(kind=c_char), dimension(*) :: new_uri
@@ -17175,8 +17175,8 @@ end subroutine
 
 ! gboolean g_hash_table_remove (GHashTable *hash_table, gconstpointer key);
 function g_hash_table_remove(hash_table, key) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_hash_table_remove
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_hash_table_remove
   type(c_ptr), value :: hash_table
   type(c_ptr), value :: key
 end function
@@ -17189,8 +17189,8 @@ end subroutine
 
 ! gboolean g_hash_table_steal (GHashTable *hash_table, gconstpointer key);
 function g_hash_table_steal(hash_table, key) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_hash_table_steal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_hash_table_steal
   type(c_ptr), value :: hash_table
   type(c_ptr), value :: key
 end function
@@ -17212,8 +17212,8 @@ end function
 ! gboolean g_hash_table_lookup_extended (GHashTable *hash_table, gconstpointer lookup_key, gpointer *orig_key, gpointer *value);
 function g_hash_table_lookup_extended(hash_table, lookup_key, orig_key, value) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_hash_table_lookup_extended
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_hash_table_lookup_extended
   type(c_ptr), value :: hash_table
   type(c_ptr), value :: lookup_key
   type(c_ptr), value :: orig_key
@@ -17285,8 +17285,8 @@ end subroutine
 
 ! gboolean g_hash_table_iter_next (GHashTableIter *iter, gpointer *key, gpointer *value);
 function g_hash_table_iter_next(iter, key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_hash_table_iter_next
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_hash_table_iter_next
   type(c_ptr), value :: iter
   type(c_ptr), value :: key
   type(c_ptr), value :: value
@@ -17326,8 +17326,8 @@ end subroutine
 
 !  gboolean g_str_equal (gconstpointer v1, gconstpointer v2);
 function g_str_equal(v1, v2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_str_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_str_equal
   type(c_ptr), value :: v1
   type(c_ptr), value :: v2
 end function
@@ -17341,8 +17341,8 @@ end function
 
 !  gboolean g_int_equal (gconstpointer v1, gconstpointer v2);
 function g_int_equal(v1, v2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_int_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_int_equal
   type(c_ptr), value :: v1
   type(c_ptr), value :: v2
 end function
@@ -17356,8 +17356,8 @@ end function
 
 !  gboolean g_int64_equal (gconstpointer v1, gconstpointer v2);
 function g_int64_equal(v1, v2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_int64_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_int64_equal
   type(c_ptr), value :: v1
   type(c_ptr), value :: v2
 end function
@@ -17371,8 +17371,8 @@ end function
 
 !  gboolean g_double_equal (gconstpointer v1, gconstpointer v2);
 function g_double_equal(v1, v2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_double_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_double_equal
   type(c_ptr), value :: v1
   type(c_ptr), value :: v2
 end function
@@ -17393,8 +17393,8 @@ end function
 
 ! gboolean g_direct_equal (gconstpointer v1, gconstpointer v2) G_GNUC_CONST;
 function g_direct_equal(v1, v2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_direct_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_direct_equal
   type(c_ptr), value :: v1
   type(c_ptr), value :: v2
 end function
@@ -17422,8 +17422,8 @@ end function
 
 ! gboolean g_shell_parse_argv (const gchar *command_line, gint *argcp, gchar ***argvp, GError **error);
 function g_shell_parse_argv(command_line, argcp, argvp, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: g_shell_parse_argv
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: g_shell_parse_argv
   character(kind=c_char), dimension(*) :: command_line
   type(c_ptr), value :: argcp
   character(kind=c_char), dimension(*) :: argvp
@@ -17455,8 +17455,8 @@ end subroutine
 
 ! gboolean g_markup_parse_context_parse (GMarkupParseContext *context, const gchar *text, gssize text_len, GError **error);
 function g_markup_parse_context_parse(context, text, text_len, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_size_t
-  logical(c_bool) :: g_markup_parse_context_parse
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
+  integer(c_int) :: g_markup_parse_context_parse
   type(c_ptr), value :: context
   character(kind=c_char), dimension(*) :: text
   integer(c_size_t), value :: text_len
@@ -17480,8 +17480,8 @@ end function
 
 !  gboolean g_markup_parse_context_end_parse (GMarkupParseContext *context, GError **error);
 function g_markup_parse_context_end_parse(context, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_markup_parse_context_end_parse
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_markup_parse_context_end_parse
   type(c_ptr), value :: context
   type(c_ptr), value :: error
 end function
@@ -17626,22 +17626,22 @@ end subroutine
 
 !  gboolean g_test_trap_fork (guint64 usec_timeout, GTestTrapFlags test_trap_flags);
 function g_test_trap_fork(usec_timeout, test_trap_flags) bind(c) 
-  use iso_c_binding, only: c_bool, c_int64_t, c_int
-  logical(c_bool) :: g_test_trap_fork
+  use iso_c_binding, only: c_int, c_int64_t
+  integer(c_int) :: g_test_trap_fork
   integer(c_int64_t), value :: usec_timeout
   integer(c_int), value :: test_trap_flags
 end function
 
 ! gboolean g_test_trap_has_passed (void);
 function g_test_trap_has_passed() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: g_test_trap_has_passed
+  use iso_c_binding, only: c_int
+  integer(c_int) :: g_test_trap_has_passed
 end function
 
 ! gboolean g_test_trap_reached_timeout (void);
 function g_test_trap_reached_timeout() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: g_test_trap_reached_timeout
+  use iso_c_binding, only: c_int
+  integer(c_int) :: g_test_trap_reached_timeout
 end function
 
 !  gint32 g_test_rand_int (void);
@@ -17950,22 +17950,22 @@ end function
 
 !   gboolean g_hostname_is_non_ascii (const gchar *hostname);
 function g_hostname_is_non_ascii(hostname) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_hostname_is_non_ascii
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_hostname_is_non_ascii
   character(kind=c_char), dimension(*) :: hostname
 end function
 
 ! gboolean g_hostname_is_ascii_encoded (const gchar *hostname);
 function g_hostname_is_ascii_encoded(hostname) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_hostname_is_ascii_encoded
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_hostname_is_ascii_encoded
   character(kind=c_char), dimension(*) :: hostname
 end function
 
 ! gboolean g_hostname_is_ip_address (const gchar *hostname);
 function g_hostname_is_ip_address(hostname) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_hostname_is_ip_address
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_hostname_is_ip_address
   character(kind=c_char), dimension(*) :: hostname
 end function
 
@@ -18051,16 +18051,16 @@ end function
 
 ! gchar* g_string_free (GString *string, gboolean free_segment);
 function g_string_free(string, free_segment) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_string_free
   type(c_ptr), value :: string
-  logical(c_bool), value :: free_segment
+  integer(c_int), value :: free_segment
 end function
 
 ! gboolean g_string_equal (const GString *v, const GString *v2);
 function g_string_equal(v, v2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_string_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_string_equal
   type(c_ptr), value :: v
   type(c_ptr), value :: v2
 end function
@@ -18270,12 +18270,12 @@ end subroutine
 ! GString * g_string_append_uri_escaped(GString *string, const char *unescaped, const char *reserved_chars_allowed, gboolean allow_utf8);
 function g_string_append_uri_escaped(string, unescaped, reserved_chars_allowed, &
       &allow_utf8) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: g_string_append_uri_escaped
   type(c_ptr), value :: string
   character(kind=c_char), dimension(*) :: unescaped
   character(kind=c_char), dimension(*) :: reserved_chars_allowed
-  logical(c_bool), value :: allow_utf8
+  integer(c_int), value :: allow_utf8
 end function
 
 !  static inline GString* g_string_append_c_inline (GString *gstring, gchar c) { if (gstring->len + 1 < gstring->allocated_len) { gstring->str[gstring->len++] = c;
@@ -18513,16 +18513,16 @@ end function
 
 !  gboolean g_str_has_suffix (const gchar *str, const gchar *suffix);
 function g_str_has_suffix(str, suffix) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_str_has_suffix
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_str_has_suffix
   character(kind=c_char), dimension(*) :: str
   character(kind=c_char), dimension(*) :: suffix
 end function
 
 ! gboolean g_str_has_prefix (const gchar *str, const gchar *prefix);
 function g_str_has_prefix(str, prefix) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_str_has_prefix
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_str_has_prefix
   character(kind=c_char), dimension(*) :: str
   character(kind=c_char), dimension(*) :: prefix
 end function
@@ -18847,8 +18847,8 @@ end function
 
 ! gboolean g_variant_is_floating (GVariant *value);
 function g_variant_is_floating(value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_is_floating
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_is_floating
   type(c_ptr), value :: value
 end function
 
@@ -18868,16 +18868,16 @@ end function
 
 ! gboolean g_variant_is_of_type (GVariant *value, const GVariantType *type);
 function g_variant_is_of_type(value, type) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_is_of_type
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_is_of_type
   type(c_ptr), value :: value
   type(c_ptr), value :: type
 end function
 
 ! gboolean g_variant_is_container (GVariant *value);
 function g_variant_is_container(value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_is_container
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_is_container
   type(c_ptr), value :: value
 end function
 
@@ -18890,9 +18890,9 @@ end function
 
 ! GVariant * g_variant_new_boolean (gboolean boolean);
 function g_variant_new_boolean(boolean) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_variant_new_boolean
-  logical(c_bool), value :: boolean
+  integer(c_int), value :: boolean
 end function
 
 ! GVariant * g_variant_new_byte (guchar byte);
@@ -18974,8 +18974,8 @@ end function
 
 ! gboolean g_variant_is_object_path (const gchar *string);
 function g_variant_is_object_path(string) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_variant_is_object_path
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_variant_is_object_path
   character(kind=c_char), dimension(*) :: string
 end function
 
@@ -18988,8 +18988,8 @@ end function
 
 ! gboolean g_variant_is_signature (const gchar *string);
 function g_variant_is_signature(string) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_variant_is_signature
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_variant_is_signature
   character(kind=c_char), dimension(*) :: string
 end function
 
@@ -19025,8 +19025,8 @@ end function
 
 !  gboolean g_variant_get_boolean (GVariant *value);
 function g_variant_get_boolean(value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_get_boolean
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_get_boolean
   type(c_ptr), value :: value
 end function
 
@@ -19250,19 +19250,19 @@ end subroutine
 
 !  gchar * g_variant_print (GVariant *value, gboolean type_annotate);
 function g_variant_print(value, type_annotate) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_variant_print
   type(c_ptr), value :: value
-  logical(c_bool), value :: type_annotate
+  integer(c_int), value :: type_annotate
 end function
 
 ! GString * g_variant_print_string (GVariant *value, GString *string, gboolean type_annotate);
 function g_variant_print_string(value, string, type_annotate) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_variant_print_string
   type(c_ptr), value :: value
   type(c_ptr), value :: string
-  logical(c_bool), value :: type_annotate
+  integer(c_int), value :: type_annotate
 end function
 
 !  guint g_variant_hash (gconstpointer value);
@@ -19274,8 +19274,8 @@ end function
 
 ! gboolean g_variant_equal (gconstpointer one, gconstpointer two);
 function g_variant_equal(one, two) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_equal
   type(c_ptr), value :: one
   type(c_ptr), value :: two
 end function
@@ -19289,8 +19289,8 @@ end function
 
 ! gboolean g_variant_is_normal_form (GVariant *value);
 function g_variant_is_normal_form(value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_variant_is_normal_form
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_variant_is_normal_form
   type(c_ptr), value :: value
 end function
 
@@ -19304,12 +19304,12 @@ end function
 ! GVariant * g_variant_new_from_data (const GVariantType *type, gconstpointer data, gsize size, gboolean trusted, GDestroyNotify notify, gpointer user_data);
 function g_variant_new_from_data(type, data, size, trusted, notify, user_data) b&
       &ind(c) 
-  use iso_c_binding, only: c_ptr, c_size_t, c_bool, c_funptr
+  use iso_c_binding, only: c_ptr, c_size_t, c_int, c_funptr
   type(c_ptr) :: g_variant_new_from_data
   type(c_ptr), value :: type
   type(c_ptr), value :: data
   integer(c_size_t), value :: size
-  logical(c_bool), value :: trusted
+  integer(c_int), value :: trusted
   type(c_funptr), value :: notify
   type(c_ptr), value :: user_data
 end function
@@ -19535,8 +19535,8 @@ end subroutine
 
 ! gboolean g_queue_is_empty (GQueue *queue);
 function g_queue_is_empty(queue) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_queue_is_empty
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_queue_is_empty
   type(c_ptr), value :: queue
 end function
 
@@ -19807,10 +19807,10 @@ end subroutine
 
 !   GMappedFile *g_mapped_file_new (const gchar *filename, gboolean writable, GError **error) G_GNUC_MALLOC;
 function g_mapped_file_new(filename, writable, error) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: g_mapped_file_new
   character(kind=c_char), dimension(*) :: filename
-  logical(c_bool), value :: writable
+  integer(c_int), value :: writable
   type(c_ptr), value :: error
 end function
 
@@ -20085,15 +20085,15 @@ end subroutine
 
 !  gboolean g_sequence_iter_is_begin (GSequenceIter *iter);
 function g_sequence_iter_is_begin(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_sequence_iter_is_begin
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_sequence_iter_is_begin
   type(c_ptr), value :: iter
 end function
 
 ! gboolean g_sequence_iter_is_end (GSequenceIter *iter);
 function g_sequence_iter_is_end(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_sequence_iter_is_end
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_sequence_iter_is_end
   type(c_ptr), value :: iter
 end function
 
@@ -20397,8 +20397,8 @@ end subroutine
 
 ! gboolean g_bit_trylock (volatile gint *address, gint lock_bit);
 function g_bit_trylock(address, lock_bit) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: g_bit_trylock
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_bit_trylock
   type(c_ptr), value :: address
   integer(c_int), value :: lock_bit
 end function
@@ -20701,8 +20701,8 @@ end function
 !  gboolean g_spawn_async (const gchar *working_directory, gchar **argv, gchar **envp, GSpawnFlags flags, GSpawnChildSetupFunc child_setup, gpointer user_data, GPid *child_pid, GError **error);
 function g_spawn_async(working_directory, argv, envp, flags, child_setup, user_d&
       &ata, child_pid, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int, c_funptr, c_ptr
-  logical(c_bool) :: g_spawn_async
+  use iso_c_binding, only: c_int, c_char, c_funptr, c_ptr
+  integer(c_int) :: g_spawn_async
   character(kind=c_char), dimension(*) :: working_directory
   character(kind=c_char), dimension(*) :: argv
   character(kind=c_char), dimension(*) :: envp
@@ -20717,8 +20717,8 @@ end function
 function g_spawn_async_with_pipes(working_directory, argv, envp, flags, child_se&
       &tup, user_data, child_pid, standard_input, standard_output, standard_erro&
       &r, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int, c_funptr, c_ptr
-  logical(c_bool) :: g_spawn_async_with_pipes
+  use iso_c_binding, only: c_int, c_char, c_funptr, c_ptr
+  integer(c_int) :: g_spawn_async_with_pipes
   character(kind=c_char), dimension(*) :: working_directory
   character(kind=c_char), dimension(*) :: argv
   character(kind=c_char), dimension(*) :: envp
@@ -20735,8 +20735,8 @@ end function
 !  gboolean g_spawn_sync (const gchar *working_directory, gchar **argv, gchar **envp, GSpawnFlags flags, GSpawnChildSetupFunc child_setup, gpointer user_data, gchar **standard_output, gchar **standard_error, gint *exit_status, GError **error);
 function g_spawn_sync(working_directory, argv, envp, flags, child_setup, user_da&
       &ta, standard_output, standard_error, exit_status, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int, c_funptr, c_ptr
-  logical(c_bool) :: g_spawn_sync
+  use iso_c_binding, only: c_int, c_char, c_funptr, c_ptr
+  integer(c_int) :: g_spawn_sync
   character(kind=c_char), dimension(*) :: working_directory
   character(kind=c_char), dimension(*) :: argv
   character(kind=c_char), dimension(*) :: envp
@@ -20752,8 +20752,8 @@ end function
 !  gboolean g_spawn_command_line_sync (const gchar *command_line, gchar **standard_output, gchar **standard_error, gint *exit_status, GError **error);
 function g_spawn_command_line_sync(command_line, standard_output, standard_error&
       &, exit_status, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: g_spawn_command_line_sync
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: g_spawn_command_line_sync
   character(kind=c_char), dimension(*) :: command_line
   character(kind=c_char), dimension(*) :: standard_output
   character(kind=c_char), dimension(*) :: standard_error
@@ -20763,8 +20763,8 @@ end function
 
 ! gboolean g_spawn_command_line_async (const gchar *command_line, GError **error);
 function g_spawn_command_line_async(command_line, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: g_spawn_command_line_async
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: g_spawn_command_line_async
   character(kind=c_char), dimension(*) :: command_line
   type(c_ptr), value :: error
 end function
@@ -20883,8 +20883,8 @@ end subroutine
 
 ! gboolean g_mem_is_system_malloc (void);
 function g_mem_is_system_malloc() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: g_mem_is_system_malloc
+  use iso_c_binding, only: c_int
+  integer(c_int) :: g_mem_is_system_malloc
 end function
 
 ! void g_mem_profile (void);
@@ -21058,8 +21058,8 @@ end function
 
 ! gboolean g_node_is_ancestor (GNode *node, GNode *descendant);
 function g_node_is_ancestor(node, descendant) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_node_is_ancestor
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_node_is_ancestor
   type(c_ptr), value :: node
   type(c_ptr), value :: descendant
 end function
@@ -21476,30 +21476,30 @@ end subroutine
 
 !   GArray* g_array_new (gboolean zero_terminated, gboolean clear_, guint element_size);
 function g_array_new(zero_terminated, clear_, element_size) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_array_new
-  logical(c_bool), value :: zero_terminated
-  logical(c_bool), value :: clear_
+  integer(c_int), value :: zero_terminated
+  integer(c_int), value :: clear_
   integer(c_int), value :: element_size
 end function
 
 ! GArray* g_array_sized_new (gboolean zero_terminated, gboolean clear_, guint element_size, guint reserved_size);
 function g_array_sized_new(zero_terminated, clear_, element_size, reserved_size)&
       & bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_array_sized_new
-  logical(c_bool), value :: zero_terminated
-  logical(c_bool), value :: clear_
+  integer(c_int), value :: zero_terminated
+  integer(c_int), value :: clear_
   integer(c_int), value :: element_size
   integer(c_int), value :: reserved_size
 end function
 
 ! gchar* g_array_free (GArray *array, gboolean free_segment);
 function g_array_free(array, free_segment) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_array_free
   type(c_ptr), value :: array
-  logical(c_bool), value :: free_segment
+  integer(c_int), value :: free_segment
 end function
 
 ! GArray *g_array_ref (GArray *array);
@@ -21620,10 +21620,10 @@ end function
 
 ! gpointer* g_ptr_array_free (GPtrArray *array, gboolean free_seg);
 function g_ptr_array_free(array, free_seg) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_ptr_array_free
   type(c_ptr), value :: array
-  logical(c_bool), value :: free_seg
+  integer(c_int), value :: free_seg
 end function
 
 ! GPtrArray* g_ptr_array_ref (GPtrArray *array);
@@ -21671,16 +21671,16 @@ end function
 
 ! gboolean g_ptr_array_remove (GPtrArray *array, gpointer data);
 function g_ptr_array_remove(array, data) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_ptr_array_remove
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_ptr_array_remove
   type(c_ptr), value :: array
   type(c_ptr), value :: data
 end function
 
 ! gboolean g_ptr_array_remove_fast (GPtrArray *array, gpointer data);
 function g_ptr_array_remove_fast(array, data) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_ptr_array_remove_fast
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_ptr_array_remove_fast
   type(c_ptr), value :: array
   type(c_ptr), value :: data
 end function
@@ -21738,10 +21738,10 @@ end function
 
 ! guint8* g_byte_array_free (GByteArray *array, gboolean free_segment);
 function g_byte_array_free(array, free_segment) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_byte_array_free
   type(c_ptr), value :: array
-  logical(c_bool), value :: free_segment
+  integer(c_int), value :: free_segment
 end function
 
 ! GByteArray *g_byte_array_ref (GByteArray *array);
@@ -21850,16 +21850,16 @@ end function
 
 !  gboolean g_main_context_iteration (GMainContext *context, gboolean may_block);
 function g_main_context_iteration(context, may_block) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_main_context_iteration
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_main_context_iteration
   type(c_ptr), value :: context
-  logical(c_bool), value :: may_block
+  integer(c_int), value :: may_block
 end function
 
 ! gboolean g_main_context_pending (GMainContext *context);
 function g_main_context_pending(context) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_main_context_pending
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_main_context_pending
   type(c_ptr), value :: context
 end function
 
@@ -21897,8 +21897,8 @@ end subroutine
 
 ! gboolean g_main_context_acquire (GMainContext *context);
 function g_main_context_acquire(context) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_main_context_acquire
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_main_context_acquire
   type(c_ptr), value :: context
 end function
 
@@ -21910,15 +21910,15 @@ end subroutine
 
 ! gboolean g_main_context_is_owner (GMainContext *context);
 function g_main_context_is_owner(context) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_main_context_is_owner
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_main_context_is_owner
   type(c_ptr), value :: context
 end function
 
 ! gboolean g_main_context_wait (GMainContext *context, GCond *cond, GMutex *mutex);
 function g_main_context_wait(context, cond, mutex) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_main_context_wait
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_main_context_wait
   type(c_ptr), value :: context
   type(c_ptr), value :: cond
   type(c_ptr), value :: mutex
@@ -21926,8 +21926,8 @@ end function
 
 !  gboolean g_main_context_prepare (GMainContext *context, gint *priority);
 function g_main_context_prepare(context, priority) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_main_context_prepare
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_main_context_prepare
   type(c_ptr), value :: context
   type(c_ptr), value :: priority
 end function
@@ -22021,10 +22021,10 @@ end function
 
 !  GMainLoop *g_main_loop_new (GMainContext *context, gboolean is_running);
 function g_main_loop_new(context, is_running) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: g_main_loop_new
   type(c_ptr), value :: context
-  logical(c_bool), value :: is_running
+  integer(c_int), value :: is_running
 end function
 
 ! void g_main_loop_run (GMainLoop *loop);
@@ -22054,8 +22054,8 @@ end subroutine
 
 ! gboolean g_main_loop_is_running (GMainLoop *loop);
 function g_main_loop_is_running(loop) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_main_loop_is_running
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_main_loop_is_running
   type(c_ptr), value :: loop
 end function
 
@@ -22117,15 +22117,15 @@ end function
 
 ! void g_source_set_can_recurse (GSource *source, gboolean can_recurse);
 subroutine g_source_set_can_recurse(source, can_recurse) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: source
-  logical(c_bool), value :: can_recurse
+  integer(c_int), value :: can_recurse
 end subroutine
 
 ! gboolean g_source_get_can_recurse (GSource *source);
 function g_source_get_can_recurse(source) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_source_get_can_recurse
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_source_get_can_recurse
   type(c_ptr), value :: source
 end function
 
@@ -22161,8 +22161,8 @@ end subroutine
 
 ! gboolean g_source_is_destroyed (GSource *source);
 function g_source_is_destroyed(source) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_source_is_destroyed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_source_is_destroyed
   type(c_ptr), value :: source
 end function
 
@@ -22252,22 +22252,22 @@ end subroutine
 
 !  gboolean g_source_remove (guint tag);
 function g_source_remove(tag) bind(c) 
-  use iso_c_binding, only: c_bool, c_int
-  logical(c_bool) :: g_source_remove
+  use iso_c_binding, only: c_int
+  integer(c_int) :: g_source_remove
   integer(c_int), value :: tag
 end function
 
 ! gboolean g_source_remove_by_user_data (gpointer user_data);
 function g_source_remove_by_user_data(user_data) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_source_remove_by_user_data
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_source_remove_by_user_data
   type(c_ptr), value :: user_data
 end function
 
 ! gboolean g_source_remove_by_funcs_user_data (GSourceFuncs *funcs, gpointer user_data);
 function g_source_remove_by_funcs_user_data(funcs, user_data) bind(c) 
-  use iso_c_binding, only: c_bool, c_funptr, c_ptr
-  logical(c_bool) :: g_source_remove_by_funcs_user_data
+  use iso_c_binding, only: c_int, c_funptr, c_ptr
+  integer(c_int) :: g_source_remove_by_funcs_user_data
   type(c_funptr), value :: funcs
   type(c_ptr), value :: user_data
 end function
@@ -22353,8 +22353,8 @@ end function
 
 ! gboolean g_idle_remove_by_data (gpointer data);
 function g_idle_remove_by_data(data) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_idle_remove_by_data
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_idle_remove_by_data
   type(c_ptr), value :: data
 end function
 
@@ -22444,8 +22444,8 @@ end subroutine
 
 ! gboolean g_key_file_load_from_file (GKeyFile *key_file, const gchar *file, GKeyFileFlags flags, GError **error);
 function g_key_file_load_from_file(key_file, file, flags, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_key_file_load_from_file
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_key_file_load_from_file
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: file
   integer(c_int), value :: flags
@@ -22454,8 +22454,8 @@ end function
 
 ! gboolean g_key_file_load_from_data (GKeyFile *key_file, const gchar *data, gsize length, GKeyFileFlags flags, GError **error);
 function g_key_file_load_from_data(key_file, data, length, flags, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_size_t, c_int
-  logical(c_bool) :: g_key_file_load_from_data
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
+  integer(c_int) :: g_key_file_load_from_data
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: data
   integer(c_size_t), value :: length
@@ -22466,8 +22466,8 @@ end function
 ! gboolean g_key_file_load_from_dirs (GKeyFile *key_file, const gchar *file, const gchar **search_dirs, gchar **full_path, GKeyFileFlags flags, GError **error);
 function g_key_file_load_from_dirs(key_file, file, search_dirs, full_path, flags&
       &, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_key_file_load_from_dirs
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_key_file_load_from_dirs
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: file
   character(kind=c_char), dimension(*) :: search_dirs
@@ -22479,8 +22479,8 @@ end function
 ! gboolean g_key_file_load_from_data_dirs (GKeyFile *key_file, const gchar *file, gchar **full_path, GKeyFileFlags flags, GError **error);
 function g_key_file_load_from_data_dirs(key_file, file, full_path, flags, error)&
       & bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_key_file_load_from_data_dirs
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_key_file_load_from_data_dirs
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: file
   character(kind=c_char), dimension(*) :: full_path
@@ -22524,16 +22524,16 @@ end function
 
 ! gboolean g_key_file_has_group (GKeyFile *key_file, const gchar *group_name);
 function g_key_file_has_group(key_file, group_name) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_key_file_has_group
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_key_file_has_group
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
 end function
 
 ! gboolean g_key_file_has_key (GKeyFile *key_file, const gchar *group_name, const gchar *key, GError **error);
 function g_key_file_has_key(key_file, group_name, key, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_key_file_has_key
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_key_file_has_key
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
   character(kind=c_char), dimension(*) :: key
@@ -22603,8 +22603,8 @@ end subroutine
 
 ! gboolean g_key_file_get_boolean (GKeyFile *key_file, const gchar *group_name, const gchar *key, GError **error);
 function g_key_file_get_boolean(key_file, group_name, key, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_key_file_get_boolean
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_key_file_get_boolean
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
   character(kind=c_char), dimension(*) :: key
@@ -22613,11 +22613,11 @@ end function
 
 ! void g_key_file_set_boolean (GKeyFile *key_file, const gchar *group_name, const gchar *key, gboolean value);
 subroutine g_key_file_set_boolean(key_file, group_name, key, value) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
   character(kind=c_char), dimension(*) :: key
-  logical(c_bool), value :: value
+  integer(c_int), value :: value
 end subroutine
 
 ! gint g_key_file_get_integer (GKeyFile *key_file, const gchar *group_name, const gchar *key, GError **error);
@@ -22759,11 +22759,11 @@ end function
 ! void g_key_file_set_boolean_list (GKeyFile *key_file, const gchar *group_name, const gchar *key, gboolean list[], gsize length);
 subroutine g_key_file_set_boolean_list(key_file, group_name, key, list, length) &
       &bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool, c_size_t
+  use iso_c_binding, only: c_ptr, c_char, c_int, c_size_t
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
   character(kind=c_char), dimension(*) :: key
-  logical(c_bool), dimension(*) :: list
+  integer(c_int), dimension(*) :: list
   integer(c_size_t), value :: length
 end subroutine
 
@@ -22816,8 +22816,8 @@ end subroutine
 ! gboolean g_key_file_set_comment (GKeyFile *key_file, const gchar *group_name, const gchar *key, const gchar *comment, GError **error);
 function g_key_file_set_comment(key_file, group_name, key, comment, error) bind(&
       &c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_key_file_set_comment
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_key_file_set_comment
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
   character(kind=c_char), dimension(*) :: key
@@ -22837,8 +22837,8 @@ end function
 
 !  gboolean g_key_file_remove_comment (GKeyFile *key_file, const gchar *group_name, const gchar *key, GError **error);
 function g_key_file_remove_comment(key_file, group_name, key, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_key_file_remove_comment
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_key_file_remove_comment
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
   character(kind=c_char), dimension(*) :: key
@@ -22847,8 +22847,8 @@ end function
 
 ! gboolean g_key_file_remove_key (GKeyFile *key_file, const gchar *group_name, const gchar *key, GError **error);
 function g_key_file_remove_key(key_file, group_name, key, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_key_file_remove_key
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_key_file_remove_key
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
   character(kind=c_char), dimension(*) :: key
@@ -22857,8 +22857,8 @@ end function
 
 ! gboolean g_key_file_remove_group (GKeyFile *key_file, const gchar *group_name, GError **error);
 function g_key_file_remove_group(key_file, group_name, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_key_file_remove_group
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_key_file_remove_group
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
   type(c_ptr), value :: error
@@ -22867,12 +22867,12 @@ end function
 !   GThreadPool* g_thread_pool_new (GFunc func, gpointer user_data, gint max_threads, gboolean exclusive, GError **error);
 function g_thread_pool_new(func, user_data, max_threads, exclusive, error) bind(&
       &c) 
-  use iso_c_binding, only: c_ptr, c_funptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_funptr, c_int
   type(c_ptr) :: g_thread_pool_new
   type(c_funptr), value :: func
   type(c_ptr), value :: user_data
   integer(c_int), value :: max_threads
-  logical(c_bool), value :: exclusive
+  integer(c_int), value :: exclusive
   type(c_ptr), value :: error
 end function
 
@@ -22915,10 +22915,10 @@ end function
 
 !  void g_thread_pool_free (GThreadPool *pool, gboolean immediate, gboolean wait_);
 subroutine g_thread_pool_free(pool, immediate, wait_) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: pool
-  logical(c_bool), value :: immediate
-  logical(c_bool), value :: wait_
+  integer(c_int), value :: immediate
+  integer(c_int), value :: wait_
 end subroutine
 
 !  void g_thread_pool_set_max_unused_threads (gint max_threads);
@@ -23027,16 +23027,16 @@ end subroutine
 
 ! gboolean g_tree_remove (GTree *tree, gconstpointer key);
 function g_tree_remove(tree, key) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_tree_remove
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_tree_remove
   type(c_ptr), value :: tree
   type(c_ptr), value :: key
 end function
 
 ! gboolean g_tree_steal (GTree *tree, gconstpointer key);
 function g_tree_steal(tree, key) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_tree_steal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_tree_steal
   type(c_ptr), value :: tree
   type(c_ptr), value :: key
 end function
@@ -23051,8 +23051,8 @@ end function
 
 ! gboolean g_tree_lookup_extended (GTree *tree, gconstpointer lookup_key, gpointer *orig_key, gpointer *value);
 function g_tree_lookup_extended(tree, lookup_key, orig_key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_tree_lookup_extended
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_tree_lookup_extended
   type(c_ptr), value :: tree
   type(c_ptr), value :: lookup_key
   type(c_ptr), value :: orig_key
@@ -23143,50 +23143,50 @@ end subroutine
 
 !  gboolean g_date_valid (const GDate *date);
 function g_date_valid(date) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_date_valid
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_date_valid
   type(c_ptr), value :: date
 end function
 
 ! gboolean g_date_valid_day (GDateDay day) G_GNUC_CONST;
 function g_date_valid_day(day) bind(c) 
-  use iso_c_binding, only: c_bool, c_int8_t
-  logical(c_bool) :: g_date_valid_day
+  use iso_c_binding, only: c_int, c_int8_t
+  integer(c_int) :: g_date_valid_day
   integer(c_int8_t), value :: day
 end function
 
 ! gboolean g_date_valid_month (GDateMonth month) G_GNUC_CONST;
 function g_date_valid_month(month) bind(c) 
-  use iso_c_binding, only: c_bool, c_int
-  logical(c_bool) :: g_date_valid_month
+  use iso_c_binding, only: c_int
+  integer(c_int) :: g_date_valid_month
   integer(c_int), value :: month
 end function
 
 ! gboolean g_date_valid_year (GDateYear year) G_GNUC_CONST;
 function g_date_valid_year(year) bind(c) 
-  use iso_c_binding, only: c_bool, c_int16_t
-  logical(c_bool) :: g_date_valid_year
+  use iso_c_binding, only: c_int, c_int16_t
+  integer(c_int) :: g_date_valid_year
   integer(c_int16_t), value :: year
 end function
 
 ! gboolean g_date_valid_weekday (GDateWeekday weekday) G_GNUC_CONST;
 function g_date_valid_weekday(weekday) bind(c) 
-  use iso_c_binding, only: c_bool, c_int
-  logical(c_bool) :: g_date_valid_weekday
+  use iso_c_binding, only: c_int
+  integer(c_int) :: g_date_valid_weekday
   integer(c_int), value :: weekday
 end function
 
 ! gboolean g_date_valid_julian (guint32 julian_date) G_GNUC_CONST;
 function g_date_valid_julian(julian_date) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: g_date_valid_julian
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: g_date_valid_julian
   integer(c_int32_t), value :: julian_date
 end function
 
 ! gboolean g_date_valid_dmy (GDateDay day, GDateMonth month, GDateYear year) G_GNUC_CONST;
 function g_date_valid_dmy(day, month, year) bind(c) 
-  use iso_c_binding, only: c_bool, c_int8_t, c_int, c_int16_t
-  logical(c_bool) :: g_date_valid_dmy
+  use iso_c_binding, only: c_int, c_int8_t, c_int16_t
+  integer(c_int) :: g_date_valid_dmy
   integer(c_int8_t), value :: day
   integer(c_int), value :: month
   integer(c_int16_t), value :: year
@@ -23329,15 +23329,15 @@ end subroutine
 
 ! gboolean g_date_is_first_of_month (const GDate *date);
 function g_date_is_first_of_month(date) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_date_is_first_of_month
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_date_is_first_of_month
   type(c_ptr), value :: date
 end function
 
 ! gboolean g_date_is_last_of_month (const GDate *date);
 function g_date_is_last_of_month(date) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_date_is_last_of_month
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_date_is_last_of_month
   type(c_ptr), value :: date
 end function
 
@@ -23385,8 +23385,8 @@ end subroutine
 
 ! gboolean g_date_is_leap_year (GDateYear year) G_GNUC_CONST;
 function g_date_is_leap_year(year) bind(c) 
-  use iso_c_binding, only: c_bool, c_int16_t
-  logical(c_bool) :: g_date_is_leap_year
+  use iso_c_binding, only: c_int, c_int16_t
+  integer(c_int) :: g_date_is_leap_year
   integer(c_int16_t), value :: year
 end function
 
@@ -23475,16 +23475,16 @@ end function
 
 !  gboolean g_file_test (const gchar *filename, GFileTest test);
 function g_file_test(filename, test) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int
-  logical(c_bool) :: g_file_test
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_file_test
   character(kind=c_char), dimension(*) :: filename
   integer(c_int), value :: test
 end function
 
 ! gboolean g_file_get_contents (const gchar *filename, gchar **contents, gsize *length, GError **error);
 function g_file_get_contents(filename, contents, length, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: g_file_get_contents
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: g_file_get_contents
   character(kind=c_char), dimension(*) :: filename
   character(kind=c_char), dimension(*) :: contents
   type(c_ptr), value :: length
@@ -23493,8 +23493,8 @@ end function
 
 ! gboolean g_file_set_contents (const gchar *filename, const gchar *contents, gssize length, GError **error);
 function g_file_set_contents(filename, contents, length, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_size_t, c_ptr
-  logical(c_bool) :: g_file_set_contents
+  use iso_c_binding, only: c_int, c_char, c_size_t, c_ptr
+  integer(c_int) :: g_file_set_contents
   character(kind=c_char), dimension(*) :: filename
   character(kind=c_char), dimension(*) :: contents
   integer(c_size_t), value :: length
@@ -23647,8 +23647,8 @@ end function
 !  gboolean g_regex_match_simple (const gchar *pattern, const gchar *string, GRegexCompileFlags compile_options, GRegexMatchFlags match_options);
 function g_regex_match_simple(pattern, string, compile_options, match_options) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int
-  logical(c_bool) :: g_regex_match_simple
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_regex_match_simple
   character(kind=c_char), dimension(*) :: pattern
   character(kind=c_char), dimension(*) :: string
   integer(c_int), value :: compile_options
@@ -23657,8 +23657,8 @@ end function
 
 ! gboolean g_regex_match (const GRegex *regex, const gchar *string, GRegexMatchFlags match_options, GMatchInfo **match_info);
 function g_regex_match(regex, string, match_options, match_info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_regex_match
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_regex_match
   type(c_ptr), value :: regex
   character(kind=c_char), dimension(*) :: string
   integer(c_int), value :: match_options
@@ -23668,8 +23668,8 @@ end function
 ! gboolean g_regex_match_full (const GRegex *regex, const gchar *string, gssize string_len, gint start_position, GRegexMatchFlags match_options, GMatchInfo **match_info, GError **error);
 function g_regex_match_full(regex, string, string_len, start_position, match_opt&
       &ions, match_info, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_size_t, c_int
-  logical(c_bool) :: g_regex_match_full
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
+  integer(c_int) :: g_regex_match_full
   type(c_ptr), value :: regex
   character(kind=c_char), dimension(*) :: string
   integer(c_size_t), value :: string_len
@@ -23681,8 +23681,8 @@ end function
 
 ! gboolean g_regex_match_all (const GRegex *regex, const gchar *string, GRegexMatchFlags match_options, GMatchInfo **match_info);
 function g_regex_match_all(regex, string, match_options, match_info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: g_regex_match_all
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_regex_match_all
   type(c_ptr), value :: regex
   character(kind=c_char), dimension(*) :: string
   integer(c_int), value :: match_options
@@ -23692,8 +23692,8 @@ end function
 ! gboolean g_regex_match_all_full (const GRegex *regex, const gchar *string, gssize string_len, gint start_position, GRegexMatchFlags match_options, GMatchInfo **match_info, GError **error);
 function g_regex_match_all_full(regex, string, string_len, start_position, match&
       &_options, match_info, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_size_t, c_int
-  logical(c_bool) :: g_regex_match_all_full
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
+  integer(c_int) :: g_regex_match_all_full
   type(c_ptr), value :: regex
   character(kind=c_char), dimension(*) :: string
   integer(c_size_t), value :: string_len
@@ -23782,8 +23782,8 @@ end function
 
 ! gboolean g_regex_check_replacement (const gchar *replacement, gboolean *has_references, GError **error);
 function g_regex_check_replacement(replacement, has_references, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: g_regex_check_replacement
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: g_regex_check_replacement
   character(kind=c_char), dimension(*) :: replacement
   type(c_ptr), value :: has_references
   type(c_ptr), value :: error
@@ -23811,16 +23811,16 @@ end subroutine
 
 ! gboolean g_match_info_next (GMatchInfo *match_info, GError **error);
 function g_match_info_next(match_info, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_match_info_next
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_match_info_next
   type(c_ptr), value :: match_info
   type(c_ptr), value :: error
 end function
 
 ! gboolean g_match_info_matches (const GMatchInfo *match_info);
 function g_match_info_matches(match_info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_match_info_matches
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_match_info_matches
   type(c_ptr), value :: match_info
 end function
 
@@ -23833,8 +23833,8 @@ end function
 
 ! gboolean g_match_info_is_partial_match (const GMatchInfo *match_info);
 function g_match_info_is_partial_match(match_info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_match_info_is_partial_match
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_match_info_is_partial_match
   type(c_ptr), value :: match_info
 end function
 
@@ -23859,8 +23859,8 @@ end function
 ! gboolean g_match_info_fetch_pos (const GMatchInfo *match_info, gint match_num, gint *start_pos, gint *end_pos);
 function g_match_info_fetch_pos(match_info, match_num, start_pos, end_pos) bind(&
       &c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: g_match_info_fetch_pos
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_match_info_fetch_pos
   type(c_ptr), value :: match_info
   integer(c_int), value :: match_num
   type(c_ptr), value :: start_pos
@@ -23878,8 +23878,8 @@ end function
 ! gboolean g_match_info_fetch_named_pos (const GMatchInfo *match_info, const gchar *name, gint *start_pos, gint *end_pos);
 function g_match_info_fetch_named_pos(match_info, name, start_pos, end_pos) bind&
       &(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: g_match_info_fetch_named_pos
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: g_match_info_fetch_named_pos
   type(c_ptr), value :: match_info
   character(kind=c_char), dimension(*) :: name
   type(c_ptr), value :: start_pos
@@ -23921,11 +23921,11 @@ end function
 ! char * g_uri_escape_string (const char *unescaped, const char *reserved_chars_allowed, gboolean allow_utf8);
 function g_uri_escape_string(unescaped, reserved_chars_allowed, allow_utf8) bind&
       &(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: g_uri_escape_string
   character(kind=c_char), dimension(*) :: unescaped
   character(kind=c_char), dimension(*) :: reserved_chars_allowed
-  logical(c_bool), value :: allow_utf8
+  integer(c_int), value :: allow_utf8
 end function
 
 !   void g_on_error_query (const gchar *prg_name);
@@ -24011,8 +24011,8 @@ end function
 
 ! gboolean g_scanner_eof (GScanner *scanner);
 function g_scanner_eof(scanner) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: g_scanner_eof
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: g_scanner_eof
   type(c_ptr), value :: scanner
 end function
 
@@ -24240,8 +24240,8 @@ end function
 
 ! gboolean g_get_filename_charsets (G_CONST_RETURN gchar ***charsets);
 function g_get_filename_charsets(charsets) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: g_get_filename_charsets
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: g_get_filename_charsets
   character(kind=c_char), dimension(*) :: charsets
 end function
 
@@ -24414,8 +24414,8 @@ end function
 !   gboolean gdk_spawn_on_screen (GdkScreen *screen, const gchar *working_directory, gchar **argv, gchar **envp, GSpawnFlags flags, GSpawnChildSetupFunc child_setup, gpointer user_data, gint *child_pid, GError **error);
 function gdk_spawn_on_screen(screen, working_directory, argv, envp, flags, child&
       &_setup, user_data, child_pid, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int, c_funptr
-  logical(c_bool) :: gdk_spawn_on_screen
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_funptr
+  integer(c_int) :: gdk_spawn_on_screen
   type(c_ptr), value :: screen
   character(kind=c_char), dimension(*) :: working_directory
   character(kind=c_char), dimension(*) :: argv
@@ -24431,8 +24431,8 @@ end function
 function gdk_spawn_on_screen_with_pipes(screen, working_directory, argv, envp, f&
       &lags, child_setup, user_data, child_pid, standard_input, standard_output,&
       & standard_error, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int, c_funptr
-  logical(c_bool) :: gdk_spawn_on_screen_with_pipes
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_funptr
+  integer(c_int) :: gdk_spawn_on_screen_with_pipes
   type(c_ptr), value :: screen
   character(kind=c_char), dimension(*) :: working_directory
   character(kind=c_char), dimension(*) :: argv
@@ -24449,8 +24449,8 @@ end function
 
 !  gboolean gdk_spawn_command_line_on_screen (GdkScreen *screen, const gchar *command_line, GError **error);
 function gdk_spawn_command_line_on_screen(screen, command_line, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gdk_spawn_command_line_on_screen
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_spawn_command_line_on_screen
   type(c_ptr), value :: screen
   character(kind=c_char), dimension(*) :: command_line
   type(c_ptr), value :: error
@@ -24767,8 +24767,8 @@ end function
 
 ! gboolean gdk_device_get_has_cursor (GdkDevice *device);
 function gdk_device_get_has_cursor(device) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_device_get_has_cursor
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_has_cursor
   type(c_ptr), value :: device
 end function
 
@@ -24805,8 +24805,8 @@ end subroutine
 
 !  gboolean gdk_device_set_mode (GdkDevice *device, GdkInputMode mode);
 function gdk_device_set_mode(device, mode) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_device_set_mode
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_set_mode
   type(c_ptr), value :: device
   integer(c_int), value :: mode
 end function
@@ -24840,8 +24840,8 @@ end subroutine
 !  gboolean gdk_device_get_history (GdkDevice *device, GdkWindow *window, guint32 start, guint32 stop, GdkTimeCoord ***events, gint *n_events);
 function gdk_device_get_history(device, window, start, stop, events, n_events) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: gdk_device_get_history
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gdk_device_get_history
   type(c_ptr), value :: device
   type(c_ptr), value :: window
   integer(c_int32_t), value :: start
@@ -24859,8 +24859,8 @@ end subroutine
 
 ! gboolean gdk_device_get_axis (GdkDevice *device, gdouble *axes, GdkAxisUse use, gdouble *value);
 function gdk_device_get_axis(device, axes, use, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_device_get_axis
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_axis
   type(c_ptr), value :: device
   type(c_ptr), value :: axes
   integer(c_int), value :: use
@@ -25166,8 +25166,8 @@ end subroutine
 
 ! gboolean gdk_display_pointer_is_grabbed (GdkDisplay *display);
 function gdk_display_pointer_is_grabbed(display) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_display_pointer_is_grabbed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_pointer_is_grabbed
   type(c_ptr), value :: display
 end function
 
@@ -25197,8 +25197,8 @@ end subroutine
 
 ! gboolean gdk_display_is_closed (GdkDisplay *display);
 function gdk_display_is_closed(display) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_display_is_closed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_is_closed
   type(c_ptr), value :: display
 end function
 
@@ -25311,15 +25311,15 @@ end function
 
 !  gboolean gdk_display_supports_cursor_alpha (GdkDisplay *display);
 function gdk_display_supports_cursor_alpha(display) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_display_supports_cursor_alpha
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_supports_cursor_alpha
   type(c_ptr), value :: display
 end function
 
 ! gboolean gdk_display_supports_cursor_color (GdkDisplay *display);
 function gdk_display_supports_cursor_color(display) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_display_supports_cursor_color
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_supports_cursor_color
   type(c_ptr), value :: display
 end function
 
@@ -25347,23 +25347,23 @@ end function
 
 !  gboolean gdk_display_supports_selection_notification (GdkDisplay *display);
 function gdk_display_supports_selection_notification(display) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_display_supports_selection_notification
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_supports_selection_notification
   type(c_ptr), value :: display
 end function
 
 ! gboolean gdk_display_request_selection_notification (GdkDisplay *display, GdkAtom selection);
 function gdk_display_request_selection_notification(display, selection) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_display_request_selection_notification
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_request_selection_notification
   type(c_ptr), value :: display
   type(c_ptr), value :: selection
 end function
 
 !  gboolean gdk_display_supports_clipboard_persistence (GdkDisplay *display);
 function gdk_display_supports_clipboard_persistence(display) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_display_supports_clipboard_persistence
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_supports_clipboard_persistence
   type(c_ptr), value :: display
 end function
 
@@ -25380,22 +25380,22 @@ end subroutine
 
 !  gboolean gdk_display_supports_shapes (GdkDisplay *display);
 function gdk_display_supports_shapes(display) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_display_supports_shapes
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_supports_shapes
   type(c_ptr), value :: display
 end function
 
 ! gboolean gdk_display_supports_input_shapes (GdkDisplay *display);
 function gdk_display_supports_input_shapes(display) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_display_supports_input_shapes
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_supports_input_shapes
   type(c_ptr), value :: display
 end function
 
 ! gboolean gdk_display_supports_composite (GdkDisplay *display);
 function gdk_display_supports_composite(display) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_display_supports_composite
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_supports_composite
   type(c_ptr), value :: display
 end function
 
@@ -25610,8 +25610,8 @@ end function
 
 !  gboolean gdk_x11_screen_supports_net_wm_hint (GdkScreen *screen, GdkAtom property);
 function gdk_x11_screen_supports_net_wm_hint(screen, property) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_x11_screen_supports_net_wm_hint
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_x11_screen_supports_net_wm_hint
   type(c_ptr), value :: screen
   type(c_ptr), value :: property
 end function
@@ -25633,8 +25633,8 @@ end function
 
 ! gboolean gdk_net_wm_supports (GdkAtom property);
 function gdk_net_wm_supports(property) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_net_wm_supports
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_net_wm_supports
   type(c_ptr), value :: property
 end function
 
@@ -25865,10 +25865,10 @@ end subroutine
 
 ! void gdk_draw_rectangle (GdkDrawable *drawable, GdkGC *gc, gboolean filled, gint x, gint y, gint width, gint height);
 subroutine gdk_draw_rectangle(drawable, gc, filled, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: drawable
   type(c_ptr), value :: gc
-  logical(c_bool), value :: filled
+  integer(c_int), value :: filled
   integer(c_int), value :: x
   integer(c_int), value :: y
   integer(c_int), value :: width
@@ -25878,10 +25878,10 @@ end subroutine
 ! void gdk_draw_arc (GdkDrawable *drawable, GdkGC *gc, gboolean filled, gint x, gint y, gint width, gint height, gint angle1, gint angle2);
 subroutine gdk_draw_arc(drawable, gc, filled, x, y, width, height, angle1, angle&
       &2) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: drawable
   type(c_ptr), value :: gc
-  logical(c_bool), value :: filled
+  integer(c_int), value :: filled
   integer(c_int), value :: x
   integer(c_int), value :: y
   integer(c_int), value :: width
@@ -25892,10 +25892,10 @@ end subroutine
 
 ! void gdk_draw_polygon (GdkDrawable *drawable, GdkGC *gc, gboolean filled, const GdkPoint *points, gint n_points);
 subroutine gdk_draw_polygon(drawable, gc, filled, points, n_points) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: drawable
   type(c_ptr), value :: gc
-  logical(c_bool), value :: filled
+  integer(c_int), value :: filled
   type(c_ptr), value :: points
   integer(c_int), value :: n_points
 end subroutine
@@ -26157,8 +26157,8 @@ end function
 
 ! gboolean gdk_font_equal (const GdkFont *fonta, const GdkFont *fontb);
 function gdk_font_equal(fonta, fontb) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_font_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_font_equal
   type(c_ptr), value :: fonta
   type(c_ptr), value :: fontb
 end function
@@ -26492,14 +26492,14 @@ end subroutine
 
 !  void gdk_rgb_set_verbose (gboolean verbose);
 subroutine gdk_rgb_set_verbose(verbose) bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool), value :: verbose
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: verbose
 end subroutine
 
 !  void gdk_rgb_set_install (gboolean install);
 subroutine gdk_rgb_set_install(install) bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool), value :: install
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: install
 end subroutine
 
 ! void gdk_rgb_set_min_colors (gint min_colors);
@@ -26522,23 +26522,23 @@ end function
 
 ! gboolean gdk_rgb_ditherable (void);
 function gdk_rgb_ditherable() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gdk_rgb_ditherable
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_rgb_ditherable
 end function
 
 ! gboolean gdk_rgb_colormap_ditherable (GdkColormap *cmap);
 function gdk_rgb_colormap_ditherable(cmap) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_rgb_colormap_ditherable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_rgb_colormap_ditherable
   type(c_ptr), value :: cmap
 end function
 
 !   GdkAtom gdk_atom_intern (const gchar *atom_name, gboolean only_if_exists);
 function gdk_atom_intern(atom_name, only_if_exists) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: gdk_atom_intern
   character(kind=c_char), dimension(*) :: atom_name
-  logical(c_bool), value :: only_if_exists
+  integer(c_int), value :: only_if_exists
 end function
 
 ! GdkAtom gdk_atom_intern_static_string (const gchar *atom_name);
@@ -26558,8 +26558,8 @@ end function
 !  gboolean gdk_property_get (GdkWindow *window, GdkAtom property, GdkAtom type, gulong offset, gulong length, gint pdelete, GdkAtom *actual_property_type, gint *actual_format, gint *actual_length, guchar **data);
 function gdk_property_get(window, property, type, offset, length, pdelete, actua&
       &l_property_type, actual_format, actual_length, data) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_long, c_int, c_char
-  logical(c_bool) :: gdk_property_get
+  use iso_c_binding, only: c_int, c_ptr, c_long, c_char
+  integer(c_int) :: gdk_property_get
   type(c_ptr), value :: window
   type(c_ptr), value :: property
   type(c_ptr), value :: type
@@ -26618,8 +26618,8 @@ end function
 
 ! gboolean gdk_utf8_to_compound_text (const gchar *str, GdkAtom *encoding, gint *format, guchar **ctext, gint *length);
 function gdk_utf8_to_compound_text(str, encoding, format, ctext, length) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: gdk_utf8_to_compound_text
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: gdk_utf8_to_compound_text
   character(kind=c_char), dimension(*) :: str
   type(c_ptr), value :: encoding
   type(c_ptr), value :: format
@@ -26688,8 +26688,8 @@ end function
 ! gboolean gdk_utf8_to_compound_text_for_display (GdkDisplay *display, const gchar *str, GdkAtom *encoding, gint *format, guchar **ctext, gint *length);
 function gdk_utf8_to_compound_text_for_display(display, str, encoding, format, c&
       &text, length) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gdk_utf8_to_compound_text_for_display
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_utf8_to_compound_text_for_display
   type(c_ptr), value :: display
   character(kind=c_char), dimension(*) :: str
   type(c_ptr), value :: encoding
@@ -26771,10 +26771,10 @@ end function
 
 !  GdkColormap* gdk_colormap_new (GdkVisual *visual, gboolean allocate);
 function gdk_colormap_new(visual, allocate) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gdk_colormap_new
   type(c_ptr), value :: visual
-  logical(c_bool), value :: allocate
+  integer(c_int), value :: allocate
 end function
 
 !  GdkColormap* gdk_colormap_ref (GdkColormap *cmap);
@@ -26819,25 +26819,25 @@ end subroutine
 !  gint gdk_colormap_alloc_colors (GdkColormap *colormap, GdkColor *colors, gint n_colors, gboolean writeable, gboolean best_match, gboolean *success);
 function gdk_colormap_alloc_colors(colormap, colors, n_colors, writeable, best_m&
       &atch, success) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_bool
+  use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gdk_colormap_alloc_colors
   type(c_ptr), value :: colormap
   type(c_ptr), value :: colors
   integer(c_int), value :: n_colors
-  logical(c_bool), value :: writeable
-  logical(c_bool), value :: best_match
+  integer(c_int), value :: writeable
+  integer(c_int), value :: best_match
   type(c_ptr), value :: success
 end function
 
 ! gboolean gdk_colormap_alloc_color (GdkColormap *colormap, GdkColor *color, gboolean writeable, gboolean best_match);
 function gdk_colormap_alloc_color(colormap, color, writeable, best_match) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_colormap_alloc_color
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_colormap_alloc_color
   type(c_ptr), value :: colormap
   type(c_ptr), value :: color
-  logical(c_bool), value :: writeable
-  logical(c_bool), value :: best_match
+  integer(c_int), value :: writeable
+  integer(c_int), value :: best_match
 end function
 
 ! void gdk_colormap_free_colors (GdkColormap *colormap, const GdkColor *colors, gint n_colors);
@@ -26878,8 +26878,8 @@ end subroutine
 
 ! gboolean gdk_color_parse (const gchar *spec, GdkColor *color);
 function gdk_color_parse(spec, color) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: gdk_color_parse
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: gdk_color_parse
   character(kind=c_char), dimension(*) :: spec
   type(c_ptr), value :: color
 end function
@@ -26893,8 +26893,8 @@ end function
 
 ! gboolean gdk_color_equal (const GdkColor *colora, const GdkColor *colorb);
 function gdk_color_equal(colora, colorb) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_color_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_color_equal
   type(c_ptr), value :: colora
   type(c_ptr), value :: colorb
 end function
@@ -26955,10 +26955,10 @@ end function
 !  gint gdk_colors_alloc (GdkColormap *colormap, gboolean contiguous, gulong *planes, gint nplanes, gulong *pixels, gint npixels);
 function gdk_colors_alloc(colormap, contiguous, planes, nplanes, pixels, npixels&
       &) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_bool
+  use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gdk_colors_alloc
   type(c_ptr), value :: colormap
-  logical(c_bool), value :: contiguous
+  integer(c_int), value :: contiguous
   type(c_ptr), value :: planes
   integer(c_int), value :: nplanes
   type(c_ptr), value :: pixels
@@ -27038,8 +27038,8 @@ end function
 
 ! gboolean gdk_screen_is_composited (GdkScreen *screen);
 function gdk_screen_is_composited(screen) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_screen_is_composited
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_is_composited
   type(c_ptr), value :: screen
 end function
 
@@ -27191,8 +27191,8 @@ end function
 
 !  gboolean gdk_screen_get_setting (GdkScreen *screen, const gchar *name, GValue *value);
 function gdk_screen_get_setting(screen, name, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gdk_screen_get_setting
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_screen_get_setting
   type(c_ptr), value :: screen
   character(kind=c_char), dimension(*) :: name
   type(c_ptr), value :: value
@@ -27249,8 +27249,8 @@ end subroutine
 ! gboolean gdk_test_simulate_key (GdkWindow *window, gint x, gint y, guint keyval, GdkModifierType modifiers, GdkEventType key_pressrelease);
 function gdk_test_simulate_key(window, x, y, keyval, modifiers, key_pressrelease&
       &) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_test_simulate_key
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_test_simulate_key
   type(c_ptr), value :: window
   integer(c_int), value :: x
   integer(c_int), value :: y
@@ -27262,8 +27262,8 @@ end function
 ! gboolean gdk_test_simulate_button (GdkWindow *window, gint x, gint y, guint button, GdkModifierType modifiers, GdkEventType button_pressrelease);
 function gdk_test_simulate_button(window, x, y, button, modifiers, button_pressr&
       &elease) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_test_simulate_button
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_test_simulate_button
   type(c_ptr), value :: window
   integer(c_int), value :: x
   integer(c_int), value :: y
@@ -27324,31 +27324,31 @@ end subroutine
 
 !  gboolean gdk_region_empty (const GdkRegion *region);
 function gdk_region_empty(region) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_region_empty
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_region_empty
   type(c_ptr), value :: region
 end function
 
 ! gboolean gdk_region_equal (const GdkRegion *region1, const GdkRegion *region2);
 function gdk_region_equal(region1, region2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_region_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_region_equal
   type(c_ptr), value :: region1
   type(c_ptr), value :: region2
 end function
 
 !  gboolean gdk_region_rect_equal (const GdkRegion *region, const GdkRectangle *rectangle);
 function gdk_region_rect_equal(region, rectangle) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_region_rect_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_region_rect_equal
   type(c_ptr), value :: region
   type(c_ptr), value :: rectangle
 end function
 
 !  gboolean gdk_region_point_in (const GdkRegion *region, int x, int y);
 function gdk_region_point_in(region, x, y) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_region_point_in
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_region_point_in
   type(c_ptr), value :: region
   integer(c_int), value :: x
   integer(c_int), value :: y
@@ -27416,11 +27416,11 @@ end subroutine
 !  void gdk_region_spans_intersect_foreach (GdkRegion *region, const GdkSpan *spans, int n_spans, gboolean sorted, GdkSpanFunc function, gpointer data);
 subroutine gdk_region_spans_intersect_foreach(region, spans, n_spans, sorted, fu&
       &nction, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool, c_funptr
+  use iso_c_binding, only: c_ptr, c_int, c_funptr
   type(c_ptr), value :: region
   type(c_ptr), value :: spans
   integer(c_int), value :: n_spans
-  logical(c_bool), value :: sorted
+  integer(c_int), value :: sorted
   type(c_funptr), value :: function
   type(c_ptr), value :: data
 end subroutine
@@ -27793,8 +27793,8 @@ end function
 
 ! gboolean gdk_window_is_destroyed (GdkWindow *window);
 function gdk_window_is_destroyed(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_is_destroyed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_is_destroyed
   type(c_ptr), value :: window
 end function
 
@@ -27905,10 +27905,10 @@ end subroutine
 
 ! void gdk_window_restack (GdkWindow *window, GdkWindow *sibling, gboolean above);
 subroutine gdk_window_restack(window, sibling, above) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
   type(c_ptr), value :: sibling
-  logical(c_bool), value :: above
+  integer(c_int), value :: above
 end subroutine
 
 ! void gdk_window_focus (GdkWindow *window, guint32 timestamp);
@@ -27927,37 +27927,37 @@ end subroutine
 
 ! void gdk_window_set_override_redirect (GdkWindow *window, gboolean override_redirect);
 subroutine gdk_window_set_override_redirect(window, override_redirect) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: override_redirect
+  integer(c_int), value :: override_redirect
 end subroutine
 
 ! gboolean gdk_window_get_accept_focus (GdkWindow *window);
 function gdk_window_get_accept_focus(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_get_accept_focus
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_get_accept_focus
   type(c_ptr), value :: window
 end function
 
 ! void gdk_window_set_accept_focus (GdkWindow *window, gboolean accept_focus);
 subroutine gdk_window_set_accept_focus(window, accept_focus) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: accept_focus
+  integer(c_int), value :: accept_focus
 end subroutine
 
 ! gboolean gdk_window_get_focus_on_map (GdkWindow *window);
 function gdk_window_get_focus_on_map(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_get_focus_on_map
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_get_focus_on_map
   type(c_ptr), value :: window
 end function
 
 ! void gdk_window_set_focus_on_map (GdkWindow *window, gboolean focus_on_map);
 subroutine gdk_window_set_focus_on_map(window, focus_on_map) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: focus_on_map
+  integer(c_int), value :: focus_on_map
 end subroutine
 
 ! void gdk_window_add_filter (GdkWindow *window, GdkFilterFunc function, gpointer data);
@@ -27995,8 +27995,8 @@ end subroutine
 
 ! gboolean gdk_window_ensure_native (GdkWindow *window);
 function gdk_window_ensure_native(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_ensure_native
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_ensure_native
   type(c_ptr), value :: window
 end function
 
@@ -28027,16 +28027,16 @@ end subroutine
 
 !  gboolean gdk_window_get_composited (GdkWindow *window);
 function gdk_window_get_composited(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_get_composited
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_get_composited
   type(c_ptr), value :: window
 end function
 
 ! void gdk_window_set_composited (GdkWindow *window, gboolean composited);
 subroutine gdk_window_set_composited(window, composited) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: composited
+  integer(c_int), value :: composited
 end subroutine
 
 !  void gdk_window_merge_child_shapes (GdkWindow *window);
@@ -28078,29 +28078,29 @@ end subroutine
 
 !  gboolean gdk_window_is_visible (GdkWindow *window);
 function gdk_window_is_visible(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_is_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_is_visible
   type(c_ptr), value :: window
 end function
 
 ! gboolean gdk_window_is_viewable (GdkWindow *window);
 function gdk_window_is_viewable(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_is_viewable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_is_viewable
   type(c_ptr), value :: window
 end function
 
 ! gboolean gdk_window_is_input_only (GdkWindow *window);
 function gdk_window_is_input_only(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_is_input_only
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_is_input_only
   type(c_ptr), value :: window
 end function
 
 ! gboolean gdk_window_is_shaped (GdkWindow *window);
 function gdk_window_is_shaped(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_is_shaped
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_is_shaped
   type(c_ptr), value :: window
 end function
 
@@ -28113,10 +28113,10 @@ end function
 
 !  gboolean gdk_window_set_static_gravities (GdkWindow *window, gboolean use_static);
 function gdk_window_set_static_gravities(window, use_static) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_set_static_gravities
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_set_static_gravities
   type(c_ptr), value :: window
-  logical(c_bool), value :: use_static
+  integer(c_int), value :: use_static
 end function
 
 !    GdkWindow* gdk_window_foreign_new (GdkNativeWindow anid);
@@ -28151,8 +28151,8 @@ end function
 
 !  gboolean gdk_window_has_native (GdkWindow *window);
 function gdk_window_has_native(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_has_native
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_has_native
   type(c_ptr), value :: window
 end function
 
@@ -28186,37 +28186,37 @@ end function
 
 !  gboolean gdk_window_get_modal_hint (GdkWindow *window);
 function gdk_window_get_modal_hint(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_get_modal_hint
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_get_modal_hint
   type(c_ptr), value :: window
 end function
 
 ! void gdk_window_set_modal_hint (GdkWindow *window, gboolean modal);
 subroutine gdk_window_set_modal_hint(window, modal) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: modal
+  integer(c_int), value :: modal
 end subroutine
 
 !  void gdk_window_set_skip_taskbar_hint (GdkWindow *window, gboolean skips_taskbar);
 subroutine gdk_window_set_skip_taskbar_hint(window, skips_taskbar) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: skips_taskbar
+  integer(c_int), value :: skips_taskbar
 end subroutine
 
 ! void gdk_window_set_skip_pager_hint (GdkWindow *window, gboolean skips_pager);
 subroutine gdk_window_set_skip_pager_hint(window, skips_pager) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: skips_pager
+  integer(c_int), value :: skips_pager
 end subroutine
 
 ! void gdk_window_set_urgency_hint (GdkWindow *window, gboolean urgent);
 subroutine gdk_window_set_urgency_hint(window, urgent) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: urgent
+  integer(c_int), value :: urgent
 end subroutine
 
 !  void gdk_window_set_geometry_hints (GdkWindow *window, const GdkGeometry *geometry, GdkWindowHints geom_mask);
@@ -28296,10 +28296,10 @@ end subroutine
 
 ! void gdk_window_set_back_pixmap (GdkWindow *window, GdkPixmap *pixmap, gboolean parent_relative);
 subroutine gdk_window_set_back_pixmap(window, pixmap, parent_relative) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
   type(c_ptr), value :: pixmap
-  logical(c_bool), value :: parent_relative
+  integer(c_int), value :: parent_relative
 end subroutine
 
 ! cairo_pattern_t *gdk_window_get_background_pattern (GdkWindow *window);
@@ -28391,8 +28391,8 @@ end subroutine
 
 !  gboolean gdk_window_get_deskrelative_origin (GdkWindow *window, gint *x, gint *y);
 function gdk_window_get_deskrelative_origin(window, x, y) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_window_get_deskrelative_origin
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_get_deskrelative_origin
   type(c_ptr), value :: window
   type(c_ptr), value :: x
   type(c_ptr), value :: y
@@ -28525,8 +28525,8 @@ end subroutine
 
 ! gboolean gdk_window_get_decorations (GdkWindow *window, GdkWMDecoration *decorations);
 function gdk_window_get_decorations(window, decorations) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_window_get_decorations
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_window_get_decorations
   type(c_ptr), value :: window
   integer(c_int), value :: decorations
 end function
@@ -28611,16 +28611,16 @@ end subroutine
 
 ! void gdk_window_set_keep_above (GdkWindow *window, gboolean setting);
 subroutine gdk_window_set_keep_above(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! void gdk_window_set_keep_below (GdkWindow *window, gboolean setting);
 subroutine gdk_window_set_keep_below(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! void gdk_window_set_opacity (GdkWindow *window, gdouble opacity);
@@ -28661,19 +28661,19 @@ end subroutine
 
 !  void gdk_window_invalidate_rect (GdkWindow *window, const GdkRectangle *rect, gboolean invalidate_children);
 subroutine gdk_window_invalidate_rect(window, rect, invalidate_children) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
   type(c_ptr), value :: rect
-  logical(c_bool), value :: invalidate_children
+  integer(c_int), value :: invalidate_children
 end subroutine
 
 ! void gdk_window_invalidate_region (GdkWindow *window, const GdkRegion *region, gboolean invalidate_children);
 subroutine gdk_window_invalidate_region(window, region, invalidate_children) bin&
       &d(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
   type(c_ptr), value :: region
-  logical(c_bool), value :: invalidate_children
+  integer(c_int), value :: invalidate_children
 end subroutine
 
 ! void gdk_window_invalidate_maybe_recurse (GdkWindow *window, const GdkRegion *region, gboolean (*child_func) (GdkWindow *, gpointer), gpointer user_data);
@@ -28719,15 +28719,15 @@ end subroutine
 
 ! void gdk_window_process_updates (GdkWindow *window, gboolean update_children);
 subroutine gdk_window_process_updates(window, update_children) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: update_children
+  integer(c_int), value :: update_children
 end subroutine
 
 !  void gdk_window_set_debug_updates (gboolean setting);
 subroutine gdk_window_set_debug_updates(setting) bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool), value :: setting
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: setting
 end subroutine
 
 !  void gdk_window_constrain_size (GdkGeometry *geometry, guint flags, gint width, gint height, gint *new_width, gint *new_height);
@@ -28826,12 +28826,12 @@ end subroutine
 
 !   gboolean gdk_selection_owner_set (GdkWindow *owner, GdkAtom selection, guint32 time_, gboolean send_event);
 function gdk_selection_owner_set(owner, selection, time_, send_event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: gdk_selection_owner_set
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gdk_selection_owner_set
   type(c_ptr), value :: owner
   type(c_ptr), value :: selection
   integer(c_int32_t), value :: time_
-  logical(c_bool), value :: send_event
+  integer(c_int), value :: send_event
 end function
 
 ! GdkWindow* gdk_selection_owner_get (GdkAtom selection);
@@ -28844,13 +28844,13 @@ end function
 !  gboolean gdk_selection_owner_set_for_display (GdkDisplay *display, GdkWindow *owner, GdkAtom selection, guint32 time_, gboolean send_event);
 function gdk_selection_owner_set_for_display(display, owner, selection, time_, s&
       &end_event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: gdk_selection_owner_set_for_display
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gdk_selection_owner_set_for_display
   type(c_ptr), value :: display
   type(c_ptr), value :: owner
   type(c_ptr), value :: selection
   integer(c_int32_t), value :: time_
-  logical(c_bool), value :: send_event
+  integer(c_int), value :: send_event
 end function
 
 ! GdkWindow *gdk_selection_owner_get_for_display (GdkDisplay *display, GdkAtom selection);
@@ -29049,9 +29049,9 @@ end subroutine
 
 ! void gdk_gc_set_exposures (GdkGC *gc, gboolean exposures);
 subroutine gdk_gc_set_exposures(gc, exposures) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: gc
-  logical(c_bool), value :: exposures
+  integer(c_int), value :: exposures
 end subroutine
 
 ! void gdk_gc_set_line_attributes (GdkGC *gc, gint line_width, GdkLineStyle line_style, GdkCapStyle cap_style, GdkJoinStyle join_style);
@@ -29154,8 +29154,8 @@ end function
 ! gboolean gdk_keymap_translate_keyboard_state (GdkKeymap *keymap, guint hardware_keycode, GdkModifierType state, gint group, guint *keyval, gint *effective_group, gint *level, GdkModifierType *consumed_modifiers);
 function gdk_keymap_translate_keyboard_state(keymap, hardware_keycode, state, gr&
       &oup, keyval, effective_group, level, consumed_modifiers) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_keymap_translate_keyboard_state
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_translate_keyboard_state
   type(c_ptr), value :: keymap
   integer(c_int), value :: hardware_keycode
   integer(c_int), value :: state
@@ -29168,8 +29168,8 @@ end function
 
 ! gboolean gdk_keymap_get_entries_for_keyval (GdkKeymap *keymap, guint keyval, GdkKeymapKey **keys, gint *n_keys);
 function gdk_keymap_get_entries_for_keyval(keymap, keyval, keys, n_keys) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_keymap_get_entries_for_keyval
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_entries_for_keyval
   type(c_ptr), value :: keymap
   integer(c_int), value :: keyval
   type(c_ptr), value :: keys
@@ -29179,8 +29179,8 @@ end function
 ! gboolean gdk_keymap_get_entries_for_keycode (GdkKeymap *keymap, guint hardware_keycode, GdkKeymapKey **keys, guint **keyvals, gint *n_entries);
 function gdk_keymap_get_entries_for_keycode(keymap, hardware_keycode, keys, keyv&
       &als, n_entries) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_keymap_get_entries_for_keycode
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_entries_for_keycode
   type(c_ptr), value :: keymap
   integer(c_int), value :: hardware_keycode
   type(c_ptr), value :: keys
@@ -29197,15 +29197,15 @@ end function
 
 ! gboolean gdk_keymap_have_bidi_layouts (GdkKeymap *keymap);
 function gdk_keymap_have_bidi_layouts(keymap) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_keymap_have_bidi_layouts
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_have_bidi_layouts
   type(c_ptr), value :: keymap
 end function
 
 ! gboolean gdk_keymap_get_caps_lock_state (GdkKeymap *keymap);
 function gdk_keymap_get_caps_lock_state(keymap) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_keymap_get_caps_lock_state
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_caps_lock_state
   type(c_ptr), value :: keymap
 end function
 
@@ -29218,8 +29218,8 @@ end subroutine
 
 ! gboolean gdk_keymap_map_virtual_modifiers (GdkKeymap *keymap, GdkModifierType *state);
 function gdk_keymap_map_virtual_modifiers(keymap, state) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_keymap_map_virtual_modifiers
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_map_virtual_modifiers
   type(c_ptr), value :: keymap
   integer(c_int), value :: state
 end function
@@ -29262,15 +29262,15 @@ end function
 
 ! gboolean gdk_keyval_is_upper (guint keyval) G_GNUC_CONST;
 function gdk_keyval_is_upper(keyval) bind(c) 
-  use iso_c_binding, only: c_bool, c_int
-  logical(c_bool) :: gdk_keyval_is_upper
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_keyval_is_upper
   integer(c_int), value :: keyval
 end function
 
 ! gboolean gdk_keyval_is_lower (guint keyval) G_GNUC_CONST;
 function gdk_keyval_is_lower(keyval) bind(c) 
-  use iso_c_binding, only: c_bool, c_int
-  logical(c_bool) :: gdk_keyval_is_lower
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_keyval_is_lower
   integer(c_int), value :: keyval
 end function
 
@@ -29392,9 +29392,9 @@ end function
 
 ! PangoAttribute *gdk_pango_attr_embossed_new (gboolean embossed);
 function gdk_pango_attr_embossed_new(embossed) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gdk_pango_attr_embossed_new
-  logical(c_bool), value :: embossed
+  integer(c_int), value :: embossed
 end function
 
 ! PangoAttribute *gdk_pango_attr_emboss_color_new (const GdkColor *color);
@@ -29420,8 +29420,8 @@ end subroutine
 
 ! gboolean gdk_init_check (gint *argc, gchar ***argv);
 function gdk_init_check(argc, argv) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gdk_init_check
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_init_check
   type(c_ptr), value :: argc
   character(kind=c_char), dimension(*) :: argv
 end function
@@ -29474,14 +29474,14 @@ end function
 
 !  void gdk_set_use_xshm (gboolean use_xshm);
 subroutine gdk_set_use_xshm(use_xshm) bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool), value :: use_xshm
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: use_xshm
 end subroutine
 
 ! gboolean gdk_get_use_xshm (void);
 function gdk_get_use_xshm() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gdk_get_use_xshm
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_get_use_xshm
 end function
 
 !  gchar* gdk_get_display (void);
@@ -29526,10 +29526,10 @@ end subroutine
 !  GdkGrabStatus gdk_pointer_grab (GdkWindow *window, gboolean owner_events, GdkEventMask event_mask, GdkWindow *confine_to, GdkCursor *cursor, guint32 time_);
 function gdk_pointer_grab(window, owner_events, event_mask, confine_to, cursor, &
       &time_) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_bool, c_int32_t
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
   integer(c_int) :: gdk_pointer_grab
   type(c_ptr), value :: window
-  logical(c_bool), value :: owner_events
+  integer(c_int), value :: owner_events
   integer(c_int), value :: event_mask
   type(c_ptr), value :: confine_to
   type(c_ptr), value :: cursor
@@ -29538,18 +29538,18 @@ end function
 
 ! GdkGrabStatus gdk_keyboard_grab (GdkWindow *window, gboolean owner_events, guint32 time_);
 function gdk_keyboard_grab(window, owner_events, time_) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_bool, c_int32_t
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
   integer(c_int) :: gdk_keyboard_grab
   type(c_ptr), value :: window
-  logical(c_bool), value :: owner_events
+  integer(c_int), value :: owner_events
   integer(c_int32_t), value :: time_
 end function
 
 !  gboolean gdk_pointer_grab_info_libgtk_only (GdkDisplay *display, GdkWindow **grab_window, gboolean *owner_events);
 function gdk_pointer_grab_info_libgtk_only(display, grab_window, owner_events) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_pointer_grab_info_libgtk_only
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pointer_grab_info_libgtk_only
   type(c_ptr), value :: display
   type(c_ptr), value :: grab_window
   type(c_ptr), value :: owner_events
@@ -29558,8 +29558,8 @@ end function
 ! gboolean gdk_keyboard_grab_info_libgtk_only (GdkDisplay *display, GdkWindow **grab_window, gboolean *owner_events);
 function gdk_keyboard_grab_info_libgtk_only(display, grab_window, owner_events) &
       &bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_keyboard_grab_info_libgtk_only
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keyboard_grab_info_libgtk_only
   type(c_ptr), value :: display
   type(c_ptr), value :: grab_window
   type(c_ptr), value :: owner_events
@@ -29579,8 +29579,8 @@ end subroutine
 
 ! gboolean gdk_pointer_is_grabbed (void);
 function gdk_pointer_is_grabbed() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gdk_pointer_is_grabbed
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_pointer_is_grabbed
 end function
 
 !  gint gdk_screen_width (void) G_GNUC_CONST;
@@ -29625,8 +29625,8 @@ end subroutine
 
 !  gboolean gdk_rectangle_intersect (const GdkRectangle *src1, const GdkRectangle *src2, GdkRectangle *dest);
 function gdk_rectangle_intersect(src1, src2, dest) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_rectangle_intersect
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_rectangle_intersect
   type(c_ptr), value :: src1
   type(c_ptr), value :: src2
   type(c_ptr), value :: dest
@@ -29664,8 +29664,8 @@ end function
 
 !  gboolean gdk_event_send_client_message (GdkEvent *event, GdkNativeWindow winid);
 function gdk_event_send_client_message(event, winid) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_event_send_client_message
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_event_send_client_message
   type(c_ptr), value :: event
   type(c_ptr), value :: winid
 end function
@@ -29679,8 +29679,8 @@ end subroutine
 !  gboolean gdk_event_send_client_message_for_display (GdkDisplay *display, GdkEvent *event, GdkNativeWindow winid);
 function gdk_event_send_client_message_for_display(display, event, winid) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_event_send_client_message_for_display
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_event_send_client_message_for_display
   type(c_ptr), value :: display
   type(c_ptr), value :: event
   type(c_ptr), value :: winid
@@ -29787,8 +29787,8 @@ end function
 
 !  gboolean gdk_events_pending (void);
 function gdk_events_pending() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gdk_events_pending
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_events_pending
 end function
 
 ! GdkEvent* gdk_event_get (void);
@@ -29845,16 +29845,16 @@ end function
 
 ! gboolean gdk_event_get_state (const GdkEvent *event, GdkModifierType *state);
 function gdk_event_get_state(event, state) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_event_get_state
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_event_get_state
   type(c_ptr), value :: event
   integer(c_int), value :: state
 end function
 
 ! gboolean gdk_event_get_coords (const GdkEvent *event, gdouble *x_win, gdouble *y_win);
 function gdk_event_get_coords(event, x_win, y_win) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_event_get_coords
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_event_get_coords
   type(c_ptr), value :: event
   type(c_ptr), value :: x_win
   type(c_ptr), value :: y_win
@@ -29862,8 +29862,8 @@ end function
 
 ! gboolean gdk_event_get_root_coords (const GdkEvent *event, gdouble *x_root, gdouble *y_root);
 function gdk_event_get_root_coords(event, x_root, y_root) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_event_get_root_coords
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_event_get_root_coords
   type(c_ptr), value :: event
   type(c_ptr), value :: x_root
   type(c_ptr), value :: y_root
@@ -29871,8 +29871,8 @@ end function
 
 ! gboolean gdk_event_get_axis (const GdkEvent *event, GdkAxisUse axis_use, gdouble *value);
 function gdk_event_get_axis(event, axis_use, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_event_get_axis
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_event_get_axis
   type(c_ptr), value :: event
   integer(c_int), value :: axis_use
   type(c_ptr), value :: value
@@ -29908,14 +29908,14 @@ end function
 
 !  void gdk_set_show_events (gboolean show_events);
 subroutine gdk_set_show_events(show_events) bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool), value :: show_events
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: show_events
 end subroutine
 
 ! gboolean gdk_get_show_events (void);
 function gdk_get_show_events() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gdk_get_show_events
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_get_show_events
 end function
 
 !  void gdk_add_client_message_filter (GdkAtom message_type, GdkFilterFunc func, gpointer data);
@@ -29928,8 +29928,8 @@ end subroutine
 
 !  gboolean gdk_setting_get (const gchar *name, GValue *value);
 function gdk_setting_get(name, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: gdk_setting_get
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: gdk_setting_get
   character(kind=c_char), dimension(*) :: name
   type(c_ptr), value :: value
 end function
@@ -30003,17 +30003,17 @@ end subroutine
 
 ! void gdk_drop_reply (GdkDragContext *context, gboolean ok, guint32 time_);
 subroutine gdk_drop_reply(context, ok, time_) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int32_t
+  use iso_c_binding, only: c_ptr, c_int, c_int32_t
   type(c_ptr), value :: context
-  logical(c_bool), value :: ok
+  integer(c_int), value :: ok
   integer(c_int32_t), value :: time_
 end subroutine
 
 ! void gdk_drop_finish (GdkDragContext *context, gboolean success, guint32 time_);
 subroutine gdk_drop_finish(context, success, time_) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int32_t
+  use iso_c_binding, only: c_ptr, c_int, c_int32_t
   type(c_ptr), value :: context
-  logical(c_bool), value :: success
+  integer(c_int), value :: success
   integer(c_int32_t), value :: time_
 end subroutine
 
@@ -30077,8 +30077,8 @@ end subroutine
 !  gboolean gdk_drag_motion (GdkDragContext *context, GdkWindow *dest_window, GdkDragProtocol protocol, gint x_root, gint y_root, GdkDragAction suggested_action, GdkDragAction possible_actions, guint32 time_);
 function gdk_drag_motion(context, dest_window, protocol, x_root, y_root, suggest&
       &ed_action, possible_actions, time_) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_int32_t
-  logical(c_bool) :: gdk_drag_motion
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gdk_drag_motion
   type(c_ptr), value :: context
   type(c_ptr), value :: dest_window
   integer(c_int), value :: protocol
@@ -30105,8 +30105,8 @@ end subroutine
 
 ! gboolean gdk_drag_drop_succeeded (GdkDragContext *context);
 function gdk_drag_drop_succeeded(context) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_drag_drop_succeeded
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_drag_drop_succeeded
   type(c_ptr), value :: context
 end function
 
@@ -30252,16 +30252,16 @@ end function
 
 ! void gtk_assistant_set_page_complete (GtkAssistant *assistant, GtkWidget *page, gboolean complete);
 subroutine gtk_assistant_set_page_complete(assistant, page, complete) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: assistant
   type(c_ptr), value :: page
-  logical(c_bool), value :: complete
+  integer(c_int), value :: complete
 end subroutine
 
 ! gboolean gtk_assistant_get_page_complete (GtkAssistant *assistant, GtkWidget *page);
 function gtk_assistant_get_page_complete(assistant, page) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_assistant_get_page_complete
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_assistant_get_page_complete
   type(c_ptr), value :: assistant
   type(c_ptr), value :: page
 end function
@@ -30352,20 +30352,20 @@ end subroutine
 
 ! void gtk_paned_pack1 (GtkPaned *paned, GtkWidget *child, gboolean resize, gboolean shrink);
 subroutine gtk_paned_pack1(paned, child, resize, shrink) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: paned
   type(c_ptr), value :: child
-  logical(c_bool), value :: resize
-  logical(c_bool), value :: shrink
+  integer(c_int), value :: resize
+  integer(c_int), value :: shrink
 end subroutine
 
 ! void gtk_paned_pack2 (GtkPaned *paned, GtkWidget *child, gboolean resize, gboolean shrink);
 subroutine gtk_paned_pack2(paned, child, resize, shrink) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: paned
   type(c_ptr), value :: child
-  logical(c_bool), value :: resize
-  logical(c_bool), value :: shrink
+  integer(c_int), value :: resize
+  integer(c_int), value :: shrink
 end subroutine
 
 !  gint gtk_paned_get_position (GtkPaned *paned);
@@ -30450,15 +30450,15 @@ end function
 
 ! void gtk_tool_button_set_use_underline (GtkToolButton *button, gboolean use_underline);
 subroutine gtk_tool_button_set_use_underline(button, use_underline) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: button
-  logical(c_bool), value :: use_underline
+  integer(c_int), value :: use_underline
 end subroutine
 
 ! gboolean gtk_tool_button_get_use_underline (GtkToolButton *button);
 function gtk_tool_button_get_use_underline(button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tool_button_get_use_underline
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tool_button_get_use_underline
   type(c_ptr), value :: button
 end function
 
@@ -30552,8 +30552,8 @@ end subroutine
 
 !  gboolean gtk_rc_property_parse_color (const GParamSpec *pspec, const GString *gstring, GValue *property_value);
 function gtk_rc_property_parse_color(pspec, gstring, property_value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_rc_property_parse_color
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_rc_property_parse_color
   type(c_ptr), value :: pspec
   type(c_ptr), value :: gstring
   type(c_ptr), value :: property_value
@@ -30561,8 +30561,8 @@ end function
 
 ! gboolean gtk_rc_property_parse_enum (const GParamSpec *pspec, const GString *gstring, GValue *property_value);
 function gtk_rc_property_parse_enum(pspec, gstring, property_value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_rc_property_parse_enum
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_rc_property_parse_enum
   type(c_ptr), value :: pspec
   type(c_ptr), value :: gstring
   type(c_ptr), value :: property_value
@@ -30570,8 +30570,8 @@ end function
 
 ! gboolean gtk_rc_property_parse_flags (const GParamSpec *pspec, const GString *gstring, GValue *property_value);
 function gtk_rc_property_parse_flags(pspec, gstring, property_value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_rc_property_parse_flags
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_rc_property_parse_flags
   type(c_ptr), value :: pspec
   type(c_ptr), value :: gstring
   type(c_ptr), value :: property_value
@@ -30580,8 +30580,8 @@ end function
 ! gboolean gtk_rc_property_parse_requisition (const GParamSpec *pspec, const GString *gstring, GValue *property_value);
 function gtk_rc_property_parse_requisition(pspec, gstring, property_value) bind(&
       &c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_rc_property_parse_requisition
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_rc_property_parse_requisition
   type(c_ptr), value :: pspec
   type(c_ptr), value :: gstring
   type(c_ptr), value :: property_value
@@ -30589,8 +30589,8 @@ end function
 
 ! gboolean gtk_rc_property_parse_border (const GParamSpec *pspec, const GString *gstring, GValue *property_value);
 function gtk_rc_property_parse_border(pspec, gstring, property_value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_rc_property_parse_border
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_rc_property_parse_border
   type(c_ptr), value :: pspec
   type(c_ptr), value :: gstring
   type(c_ptr), value :: property_value
@@ -30662,29 +30662,29 @@ end function
 
 ! void gtk_toggle_button_set_mode (GtkToggleButton *toggle_button, gboolean draw_indicator);
 subroutine gtk_toggle_button_set_mode(toggle_button, draw_indicator) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: toggle_button
-  logical(c_bool), value :: draw_indicator
+  integer(c_int), value :: draw_indicator
 end subroutine
 
 ! gboolean gtk_toggle_button_get_mode (GtkToggleButton *toggle_button);
 function gtk_toggle_button_get_mode(toggle_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_toggle_button_get_mode
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_toggle_button_get_mode
   type(c_ptr), value :: toggle_button
 end function
 
 ! void gtk_toggle_button_set_active (GtkToggleButton *toggle_button, gboolean is_active);
 subroutine gtk_toggle_button_set_active(toggle_button, is_active) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: toggle_button
-  logical(c_bool), value :: is_active
+  integer(c_int), value :: is_active
 end subroutine
 
 ! gboolean gtk_toggle_button_get_active (GtkToggleButton *toggle_button);
 function gtk_toggle_button_get_active(toggle_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_toggle_button_get_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_toggle_button_get_active
   type(c_ptr), value :: toggle_button
 end function
 
@@ -30696,15 +30696,15 @@ end subroutine
 
 ! void gtk_toggle_button_set_inconsistent (GtkToggleButton *toggle_button, gboolean setting);
 subroutine gtk_toggle_button_set_inconsistent(toggle_button, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: toggle_button
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_toggle_button_get_inconsistent (GtkToggleButton *toggle_button);
 function gtk_toggle_button_get_inconsistent(toggle_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_toggle_button_get_inconsistent
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_toggle_button_get_inconsistent
   type(c_ptr), value :: toggle_button
 end function
 
@@ -30764,8 +30764,8 @@ end function
 
 ! gboolean gtk_handle_box_get_child_detached (GtkHandleBox *handle_box);
 function gtk_handle_box_get_child_detached(handle_box) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_handle_box_get_child_detached
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_handle_box_get_child_detached
   type(c_ptr), value :: handle_box
 end function
 
@@ -30830,17 +30830,17 @@ end subroutine
 
 ! gboolean gtk_file_chooser_button_get_focus_on_click (GtkFileChooserButton *button);
 function gtk_file_chooser_button_get_focus_on_click(button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_button_get_focus_on_click
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_button_get_focus_on_click
   type(c_ptr), value :: button
 end function
 
 ! void gtk_file_chooser_button_set_focus_on_click (GtkFileChooserButton *button, gboolean focus_on_click);
 subroutine gtk_file_chooser_button_set_focus_on_click(button, focus_on_click) bi&
       &nd(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: button
-  logical(c_bool), value :: focus_on_click
+  integer(c_int), value :: focus_on_click
 end subroutine
 
 !   GType gtk_accel_flags_get_type (void) G_GNUC_CONST;
@@ -31692,9 +31692,9 @@ end subroutine
 
 !  void gtk_status_icon_set_has_tooltip (GtkStatusIcon *status_icon, gboolean has_tooltip);
 subroutine gtk_status_icon_set_has_tooltip(status_icon, has_tooltip) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: status_icon
-  logical(c_bool), value :: has_tooltip
+  integer(c_int), value :: has_tooltip
 end subroutine
 
 ! void gtk_status_icon_set_tooltip_text (GtkStatusIcon *status_icon, const gchar *text);
@@ -31734,36 +31734,36 @@ end subroutine
 
 ! void gtk_status_icon_set_visible (GtkStatusIcon *status_icon, gboolean visible);
 subroutine gtk_status_icon_set_visible(status_icon, visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: status_icon
-  logical(c_bool), value :: visible
+  integer(c_int), value :: visible
 end subroutine
 
 ! gboolean gtk_status_icon_get_visible (GtkStatusIcon *status_icon);
 function gtk_status_icon_get_visible(status_icon) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_status_icon_get_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_status_icon_get_visible
   type(c_ptr), value :: status_icon
 end function
 
 !  void gtk_status_icon_set_blinking (GtkStatusIcon *status_icon, gboolean blinking);
 subroutine gtk_status_icon_set_blinking(status_icon, blinking) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: status_icon
-  logical(c_bool), value :: blinking
+  integer(c_int), value :: blinking
 end subroutine
 
 ! gboolean gtk_status_icon_get_blinking (GtkStatusIcon *status_icon);
 function gtk_status_icon_get_blinking(status_icon) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_status_icon_get_blinking
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_status_icon_get_blinking
   type(c_ptr), value :: status_icon
 end function
 
 !  gboolean gtk_status_icon_is_embedded (GtkStatusIcon *status_icon);
 function gtk_status_icon_is_embedded(status_icon) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_status_icon_is_embedded
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_status_icon_is_embedded
   type(c_ptr), value :: status_icon
 end function
 
@@ -31780,8 +31780,8 @@ end subroutine
 ! gboolean gtk_status_icon_get_geometry (GtkStatusIcon *status_icon, GdkScreen **screen, GdkRectangle *area, GtkOrientation *orientation);
 function gtk_status_icon_get_geometry(status_icon, screen, area, orientation) bi&
       &nd(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_status_icon_get_geometry
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_status_icon_get_geometry
   type(c_ptr), value :: status_icon
   type(c_ptr), value :: screen
   type(c_ptr), value :: area
@@ -31790,8 +31790,8 @@ end function
 
 ! gboolean gtk_status_icon_get_has_tooltip (GtkStatusIcon *status_icon);
 function gtk_status_icon_get_has_tooltip(status_icon) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_status_icon_get_has_tooltip
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_status_icon_get_has_tooltip
   type(c_ptr), value :: status_icon
 end function
 
@@ -31867,17 +31867,17 @@ end subroutine
 
 ! gboolean gtk_paper_size_is_equal (GtkPaperSize *size1, GtkPaperSize *size2);
 function gtk_paper_size_is_equal(size1, size2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_paper_size_is_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_paper_size_is_equal
   type(c_ptr), value :: size1
   type(c_ptr), value :: size2
 end function
 
 !  GList *gtk_paper_size_get_paper_sizes (gboolean include_custom);
 function gtk_paper_size_get_paper_sizes(include_custom) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_paper_size_get_paper_sizes
-  logical(c_bool), value :: include_custom
+  integer(c_int), value :: include_custom
 end function
 
 !  G_CONST_RETURN gchar *gtk_paper_size_get_name (GtkPaperSize *size);
@@ -31919,8 +31919,8 @@ end function
 
 ! gboolean gtk_paper_size_is_custom (GtkPaperSize *size);
 function gtk_paper_size_is_custom(size) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_paper_size_is_custom
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_paper_size_is_custom
   type(c_ptr), value :: size
 end function
 
@@ -32031,8 +32031,8 @@ end subroutine
 
 ! gboolean gtk_accel_label_refetch (GtkAccelLabel *accel_label);
 function gtk_accel_label_refetch(accel_label) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_accel_label_refetch
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_accel_label_refetch
   type(c_ptr), value :: accel_label
 end function
 
@@ -32087,9 +32087,9 @@ end subroutine
 
 ! void gtk_text_layout_set_overwrite_mode (GtkTextLayout *layout, gboolean overwrite);
 subroutine gtk_text_layout_set_overwrite_mode(layout, overwrite) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: layout
-  logical(c_bool), value :: overwrite
+  integer(c_int), value :: overwrite
 end subroutine
 
 ! void gtk_text_layout_set_keyboard_direction (GtkTextLayout *layout, GtkTextDirection keyboard_dir);
@@ -32124,15 +32124,15 @@ end subroutine
 
 !  void gtk_text_layout_set_cursor_visible (GtkTextLayout *layout, gboolean cursor_visible);
 subroutine gtk_text_layout_set_cursor_visible(layout, cursor_visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: layout
-  logical(c_bool), value :: cursor_visible
+  integer(c_int), value :: cursor_visible
 end subroutine
 
 ! gboolean gtk_text_layout_get_cursor_visible (GtkTextLayout *layout);
 function gtk_text_layout_get_cursor_visible(layout) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_layout_get_cursor_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_layout_get_cursor_visible
   type(c_ptr), value :: layout
 end function
 
@@ -32169,11 +32169,11 @@ end subroutine
 
 !  GtkTextLineDisplay* gtk_text_layout_get_line_display (GtkTextLayout *layout, GtkTextLine *line, gboolean size_only);
 function gtk_text_layout_get_line_display(layout, line, size_only) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_text_layout_get_line_display
   type(c_ptr), value :: layout
   type(c_ptr), value :: line
-  logical(c_bool), value :: size_only
+  integer(c_int), value :: size_only
 end function
 
 ! void gtk_text_layout_free_line_display (GtkTextLayout *layout, GtkTextLineDisplay *display);
@@ -32239,8 +32239,8 @@ end subroutine
 
 !  gboolean gtk_text_layout_is_valid (GtkTextLayout *layout);
 function gtk_text_layout_is_valid(layout) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_layout_is_valid
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_layout_is_valid
   type(c_ptr), value :: layout
 end function
 
@@ -32318,8 +32318,8 @@ end subroutine
 
 ! gboolean gtk_text_layout_clamp_iter_to_vrange (GtkTextLayout *layout, GtkTextIter *iter, gint top, gint bottom);
 function gtk_text_layout_clamp_iter_to_vrange(layout, iter, top, bottom) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_layout_clamp_iter_to_vrange
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_layout_clamp_iter_to_vrange
   type(c_ptr), value :: layout
   type(c_ptr), value :: iter
   integer(c_int), value :: top
@@ -32328,8 +32328,8 @@ end function
 
 !  gboolean gtk_text_layout_move_iter_to_line_end (GtkTextLayout *layout, GtkTextIter *iter, gint direction);
 function gtk_text_layout_move_iter_to_line_end(layout, iter, direction) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_layout_move_iter_to_line_end
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_layout_move_iter_to_line_end
   type(c_ptr), value :: layout
   type(c_ptr), value :: iter
   integer(c_int), value :: direction
@@ -32337,16 +32337,16 @@ end function
 
 ! gboolean gtk_text_layout_move_iter_to_previous_line (GtkTextLayout *layout, GtkTextIter *iter);
 function gtk_text_layout_move_iter_to_previous_line(layout, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_layout_move_iter_to_previous_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_layout_move_iter_to_previous_line
   type(c_ptr), value :: layout
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_layout_move_iter_to_next_line (GtkTextLayout *layout, GtkTextIter *iter);
 function gtk_text_layout_move_iter_to_next_line(layout, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_layout_move_iter_to_next_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_layout_move_iter_to_next_line
   type(c_ptr), value :: layout
   type(c_ptr), value :: iter
 end function
@@ -32361,8 +32361,8 @@ end subroutine
 
 ! gboolean gtk_text_layout_move_iter_visually (GtkTextLayout *layout, GtkTextIter *iter, gint count);
 function gtk_text_layout_move_iter_visually(layout, iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_layout_move_iter_visually
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_layout_move_iter_visually
   type(c_ptr), value :: layout
   type(c_ptr), value :: iter
   integer(c_int), value :: count
@@ -32370,8 +32370,8 @@ end function
 
 !  gboolean gtk_text_layout_iter_starts_line (GtkTextLayout *layout, const GtkTextIter *iter);
 function gtk_text_layout_iter_starts_line(layout, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_layout_iter_starts_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_layout_iter_starts_line
   type(c_ptr), value :: layout
   type(c_ptr), value :: iter
 end function
@@ -32586,8 +32586,8 @@ end subroutine
 
 ! gboolean gtk_editable_get_selection_bounds (GtkEditable *editable, gint *start_pos, gint *end_pos);
 function gtk_editable_get_selection_bounds(editable, start_pos, end_pos) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_editable_get_selection_bounds
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_editable_get_selection_bounds
   type(c_ptr), value :: editable
   type(c_ptr), value :: start_pos
   type(c_ptr), value :: end_pos
@@ -32660,15 +32660,15 @@ end function
 
 ! void gtk_editable_set_editable (GtkEditable *editable, gboolean is_editable);
 subroutine gtk_editable_set_editable(editable, is_editable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: editable
-  logical(c_bool), value :: is_editable
+  integer(c_int), value :: is_editable
 end subroutine
 
 ! gboolean gtk_editable_get_editable (GtkEditable *editable);
 function gtk_editable_get_editable(editable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_editable_get_editable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_editable_get_editable
   type(c_ptr), value :: editable
 end function
 
@@ -32884,8 +32884,8 @@ end function
 
 ! gboolean gtk_icon_view_get_item_at_pos (GtkIconView *icon_view, gint x, gint y, GtkTreePath **path, GtkCellRenderer **cell);
 function gtk_icon_view_get_item_at_pos(icon_view, x, y, path, cell) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_icon_view_get_item_at_pos
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_view_get_item_at_pos
   type(c_ptr), value :: icon_view
   integer(c_int), value :: x
   integer(c_int), value :: y
@@ -32896,8 +32896,8 @@ end function
 ! gboolean gtk_icon_view_get_visible_range (GtkIconView *icon_view, GtkTreePath **start_path, GtkTreePath **end_path);
 function gtk_icon_view_get_visible_range(icon_view, start_path, end_path) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_view_get_visible_range
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_view_get_visible_range
   type(c_ptr), value :: icon_view
   type(c_ptr), value :: start_path
   type(c_ptr), value :: end_path
@@ -32941,8 +32941,8 @@ end subroutine
 
 ! gboolean gtk_icon_view_path_is_selected (GtkIconView *icon_view, GtkTreePath *path);
 function gtk_icon_view_path_is_selected(icon_view, path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_view_path_is_selected
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_view_path_is_selected
   type(c_ptr), value :: icon_view
   type(c_ptr), value :: path
 end function
@@ -32992,17 +32992,17 @@ end subroutine
 ! void gtk_icon_view_set_cursor (GtkIconView *icon_view, GtkTreePath *path, GtkCellRenderer *cell, gboolean start_editing);
 subroutine gtk_icon_view_set_cursor(icon_view, path, cell, start_editing) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: icon_view
   type(c_ptr), value :: path
   type(c_ptr), value :: cell
-  logical(c_bool), value :: start_editing
+  integer(c_int), value :: start_editing
 end subroutine
 
 ! gboolean gtk_icon_view_get_cursor (GtkIconView *icon_view, GtkTreePath **path, GtkCellRenderer **cell);
 function gtk_icon_view_get_cursor(icon_view, path, cell) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_view_get_cursor
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_view_get_cursor
   type(c_ptr), value :: icon_view
   type(c_ptr), value :: path
   type(c_ptr), value :: cell
@@ -33011,10 +33011,10 @@ end function
 ! void gtk_icon_view_scroll_to_path (GtkIconView *icon_view, GtkTreePath *path, gboolean use_align, gfloat row_align, gfloat col_align);
 subroutine gtk_icon_view_scroll_to_path(icon_view, path, use_align, row_align, c&
       &ol_align) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_float
+  use iso_c_binding, only: c_ptr, c_int, c_float
   type(c_ptr), value :: icon_view
   type(c_ptr), value :: path
-  logical(c_bool), value :: use_align
+  integer(c_int), value :: use_align
   real(c_float), value :: row_align
   real(c_float), value :: col_align
 end subroutine
@@ -33054,15 +33054,15 @@ end subroutine
 
 ! void gtk_icon_view_set_reorderable (GtkIconView *icon_view, gboolean reorderable);
 subroutine gtk_icon_view_set_reorderable(icon_view, reorderable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: icon_view
-  logical(c_bool), value :: reorderable
+  integer(c_int), value :: reorderable
 end subroutine
 
 ! gboolean gtk_icon_view_get_reorderable (GtkIconView *icon_view);
 function gtk_icon_view_get_reorderable(icon_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_view_get_reorderable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_view_get_reorderable
   type(c_ptr), value :: icon_view
 end function
 
@@ -33085,8 +33085,8 @@ end subroutine
 ! gboolean gtk_icon_view_get_dest_item_at_pos (GtkIconView *icon_view, gint drag_x, gint drag_y, GtkTreePath **path, GtkIconViewDropPosition *pos);
 function gtk_icon_view_get_dest_item_at_pos(icon_view, drag_x, drag_y, path, pos&
       &) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_icon_view_get_dest_item_at_pos
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_view_get_dest_item_at_pos
   type(c_ptr), value :: icon_view
   integer(c_int), value :: drag_x
   integer(c_int), value :: drag_y
@@ -33134,12 +33134,12 @@ end subroutine
 ! gboolean gtk_icon_view_get_tooltip_context (GtkIconView *icon_view, gint *x, gint *y, gboolean keyboard_tip, GtkTreeModel **model, GtkTreePath **path, GtkTreeIter *iter);
 function gtk_icon_view_get_tooltip_context(icon_view, x, y, keyboard_tip, model,&
       & path, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_view_get_tooltip_context
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_view_get_tooltip_context
   type(c_ptr), value :: icon_view
   type(c_ptr), value :: x
   type(c_ptr), value :: y
-  logical(c_bool), value :: keyboard_tip
+  integer(c_int), value :: keyboard_tip
   type(c_ptr), value :: model
   type(c_ptr), value :: path
   type(c_ptr), value :: iter
@@ -33509,51 +33509,51 @@ end function
 
 !  void gtk_range_set_inverted (GtkRange *range, gboolean setting);
 subroutine gtk_range_set_inverted(range, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: range
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_range_get_inverted (GtkRange *range);
 function gtk_range_get_inverted(range) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_range_get_inverted
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_range_get_inverted
   type(c_ptr), value :: range
 end function
 
 !  void gtk_range_set_flippable (GtkRange *range, gboolean flippable);
 subroutine gtk_range_set_flippable(range, flippable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: range
-  logical(c_bool), value :: flippable
+  integer(c_int), value :: flippable
 end subroutine
 
 ! gboolean gtk_range_get_flippable (GtkRange *range);
 function gtk_range_get_flippable(range) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_range_get_flippable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_range_get_flippable
   type(c_ptr), value :: range
 end function
 
 !  void gtk_range_set_slider_size_fixed (GtkRange *range, gboolean size_fixed);
 subroutine gtk_range_set_slider_size_fixed(range, size_fixed) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: range
-  logical(c_bool), value :: size_fixed
+  integer(c_int), value :: size_fixed
 end subroutine
 
 ! gboolean gtk_range_get_slider_size_fixed (GtkRange *range);
 function gtk_range_get_slider_size_fixed(range) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_range_get_slider_size_fixed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_range_get_slider_size_fixed
   type(c_ptr), value :: range
 end function
 
 !  void gtk_range_set_min_slider_size (GtkRange *range, gboolean min_size);
 subroutine gtk_range_set_min_slider_size(range, min_size) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: range
-  logical(c_bool), value :: min_size
+  integer(c_int), value :: min_size
 end subroutine
 
 ! gint gtk_range_get_min_slider_size (GtkRange *range);
@@ -33638,30 +33638,30 @@ end function
 
 !  void gtk_range_set_show_fill_level (GtkRange *range, gboolean show_fill_level);
 subroutine gtk_range_set_show_fill_level(range, show_fill_level) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: range
-  logical(c_bool), value :: show_fill_level
+  integer(c_int), value :: show_fill_level
 end subroutine
 
 ! gboolean gtk_range_get_show_fill_level (GtkRange *range);
 function gtk_range_get_show_fill_level(range) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_range_get_show_fill_level
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_range_get_show_fill_level
   type(c_ptr), value :: range
 end function
 
 ! void gtk_range_set_restrict_to_fill_level (GtkRange *range, gboolean restrict_to_fill_level);
 subroutine gtk_range_set_restrict_to_fill_level(range, restrict_to_fill_level) b&
       &ind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: range
-  logical(c_bool), value :: restrict_to_fill_level
+  integer(c_int), value :: restrict_to_fill_level
 end subroutine
 
 ! gboolean gtk_range_get_restrict_to_fill_level (GtkRange *range);
 function gtk_range_get_restrict_to_fill_level(range) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_range_get_restrict_to_fill_level
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_range_get_restrict_to_fill_level
   type(c_ptr), value :: range
 end function
 
@@ -33748,17 +33748,17 @@ end function
 
 ! gboolean gtk_test_spin_button_click (GtkSpinButton *spinner, guint button, gboolean upwards);
 function gtk_test_spin_button_click(spinner, button, upwards) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_test_spin_button_click
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_test_spin_button_click
   type(c_ptr), value :: spinner
   integer(c_int), value :: button
-  logical(c_bool), value :: upwards
+  integer(c_int), value :: upwards
 end function
 
 ! gboolean gtk_test_widget_click (GtkWidget *widget, guint button, GdkModifierType modifiers);
 function gtk_test_widget_click(widget, button, modifiers) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_test_widget_click
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_test_widget_click
   type(c_ptr), value :: widget
   integer(c_int), value :: button
   integer(c_int), value :: modifiers
@@ -33766,8 +33766,8 @@ end function
 
 ! gboolean gtk_test_widget_send_key (GtkWidget *widget, guint keyval, GdkModifierType modifiers);
 function gtk_test_widget_send_key(widget, keyval, modifiers) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_test_widget_send_key
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_test_widget_send_key
   type(c_ptr), value :: widget
   integer(c_int), value :: keyval
   integer(c_int), value :: modifiers
@@ -33918,8 +33918,8 @@ end function
 !  gboolean gtk_builder_value_from_string (GtkBuilder *builder, GParamSpec *pspec, const gchar *string, GValue *value, GError **error);
 function gtk_builder_value_from_string(builder, pspec, string, value, error) bin&
       &d(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_builder_value_from_string
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_builder_value_from_string
   type(c_ptr), value :: builder
   type(c_ptr), value :: pspec
   character(kind=c_char), dimension(*) :: string
@@ -33930,8 +33930,8 @@ end function
 ! gboolean gtk_builder_value_from_string_type (GtkBuilder *builder, GType type, const gchar *string, GValue *value, GError **error);
 function gtk_builder_value_from_string_type(builder, type, string, value, error)&
       & bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_size_t, c_char
-  logical(c_bool) :: gtk_builder_value_from_string_type
+  use iso_c_binding, only: c_int, c_ptr, c_size_t, c_char
+  integer(c_int) :: gtk_builder_value_from_string_type
   type(c_ptr), value :: builder
   integer(c_size_t), value :: type
   character(kind=c_char), dimension(*) :: string
@@ -33984,16 +33984,16 @@ end function
 
 !  gboolean gtk_toolbar_get_show_arrow (GtkToolbar *toolbar);
 function gtk_toolbar_get_show_arrow(toolbar) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_toolbar_get_show_arrow
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_toolbar_get_show_arrow
   type(c_ptr), value :: toolbar
 end function
 
 ! void gtk_toolbar_set_show_arrow (GtkToolbar *toolbar, gboolean show_arrow);
 subroutine gtk_toolbar_set_show_arrow(toolbar, show_arrow) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: toolbar
-  logical(c_bool), value :: show_arrow
+  integer(c_int), value :: show_arrow
 end subroutine
 
 !  GtkToolbarStyle gtk_toolbar_get_style (GtkToolbar *toolbar);
@@ -34077,16 +34077,16 @@ end subroutine
 
 ! gboolean gtk_toolbar_get_tooltips (GtkToolbar *toolbar);
 function gtk_toolbar_get_tooltips(toolbar) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_toolbar_get_tooltips
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_toolbar_get_tooltips
   type(c_ptr), value :: toolbar
 end function
 
 ! void gtk_toolbar_set_tooltips (GtkToolbar *toolbar, gboolean enable);
 subroutine gtk_toolbar_set_tooltips(toolbar, enable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: toolbar
-  logical(c_bool), value :: enable
+  integer(c_int), value :: enable
 end subroutine
 
 !  GtkWidget* gtk_toolbar_append_item (GtkToolbar *toolbar, const char *text, const char *tooltip_text, const char *tooltip_private_text, GtkWidget *icon, GCallback callback, gpointer user_data);
@@ -34305,8 +34305,8 @@ end function
 !  gboolean gtk_tree_model_filter_convert_child_iter_to_iter (GtkTreeModelFilter *filter, GtkTreeIter *filter_iter, GtkTreeIter *child_iter);
 function gtk_tree_model_filter_convert_child_iter_to_iter(filter, filter_iter, c&
       &hild_iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_model_filter_convert_child_iter_to_iter
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_filter_convert_child_iter_to_iter
   type(c_ptr), value :: filter
   type(c_ptr), value :: filter_iter
   type(c_ptr), value :: child_iter
@@ -34388,15 +34388,15 @@ end function
 ! void gtk_image_menu_item_set_always_show_image (GtkImageMenuItem *image_menu_item, gboolean always_show);
 subroutine gtk_image_menu_item_set_always_show_image(image_menu_item, always_sho&
       &w) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: image_menu_item
-  logical(c_bool), value :: always_show
+  integer(c_int), value :: always_show
 end subroutine
 
 ! gboolean gtk_image_menu_item_get_always_show_image (GtkImageMenuItem *image_menu_item);
 function gtk_image_menu_item_get_always_show_image(image_menu_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_image_menu_item_get_always_show_image
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_image_menu_item_get_always_show_image
   type(c_ptr), value :: image_menu_item
 end function
 
@@ -34416,15 +34416,15 @@ end function
 
 ! void gtk_image_menu_item_set_use_stock (GtkImageMenuItem *image_menu_item, gboolean use_stock);
 subroutine gtk_image_menu_item_set_use_stock(image_menu_item, use_stock) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: image_menu_item
-  logical(c_bool), value :: use_stock
+  integer(c_int), value :: use_stock
 end subroutine
 
 ! gboolean gtk_image_menu_item_get_use_stock (GtkImageMenuItem *image_menu_item);
 function gtk_image_menu_item_get_use_stock(image_menu_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_image_menu_item_get_use_stock
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_image_menu_item_get_use_stock
   type(c_ptr), value :: image_menu_item
 end function
 
@@ -34594,24 +34594,24 @@ end function
 
 ! GtkWidget* gtk_aspect_frame_new (const gchar *label, gfloat xalign, gfloat yalign, gfloat ratio, gboolean obey_child);
 function gtk_aspect_frame_new(label, xalign, yalign, ratio, obey_child) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_float, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_float, c_int
   type(c_ptr) :: gtk_aspect_frame_new
   character(kind=c_char), dimension(*) :: label
   real(c_float), value :: xalign
   real(c_float), value :: yalign
   real(c_float), value :: ratio
-  logical(c_bool), value :: obey_child
+  integer(c_int), value :: obey_child
 end function
 
 ! void gtk_aspect_frame_set (GtkAspectFrame *aspect_frame, gfloat xalign, gfloat yalign, gfloat ratio, gboolean obey_child);
 subroutine gtk_aspect_frame_set(aspect_frame, xalign, yalign, ratio, obey_child)&
       & bind(c) 
-  use iso_c_binding, only: c_ptr, c_float, c_bool
+  use iso_c_binding, only: c_ptr, c_float, c_int
   type(c_ptr), value :: aspect_frame
   real(c_float), value :: xalign
   real(c_float), value :: yalign
   real(c_float), value :: ratio
-  logical(c_bool), value :: obey_child
+  integer(c_int), value :: obey_child
 end subroutine
 
 !   GType gtk_offscreen_window_get_type (void) G_GNUC_CONST;
@@ -34743,15 +34743,15 @@ end subroutine
 
 ! gboolean gtk_tree_path_prev (GtkTreePath *path);
 function gtk_tree_path_prev(path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_path_prev
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_path_prev
   type(c_ptr), value :: path
 end function
 
 ! gboolean gtk_tree_path_up (GtkTreePath *path);
 function gtk_tree_path_up(path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_path_up
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_path_up
   type(c_ptr), value :: path
 end function
 
@@ -34763,16 +34763,16 @@ end subroutine
 
 !  gboolean gtk_tree_path_is_ancestor (GtkTreePath *path, GtkTreePath *descendant);
 function gtk_tree_path_is_ancestor(path, descendant) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_path_is_ancestor
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_path_is_ancestor
   type(c_ptr), value :: path
   type(c_ptr), value :: descendant
 end function
 
 ! gboolean gtk_tree_path_is_descendant (GtkTreePath *path, GtkTreePath *ancestor);
 function gtk_tree_path_is_descendant(path, ancestor) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_path_is_descendant
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_path_is_descendant
   type(c_ptr), value :: path
   type(c_ptr), value :: ancestor
 end function
@@ -34816,8 +34816,8 @@ end function
 
 ! gboolean gtk_tree_row_reference_valid (GtkTreeRowReference *reference);
 function gtk_tree_row_reference_valid(reference) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_row_reference_valid
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_row_reference_valid
   type(c_ptr), value :: reference
 end function
 
@@ -34907,8 +34907,8 @@ end function
 
 !  gboolean gtk_tree_model_get_iter (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePath *path);
 function gtk_tree_model_get_iter(tree_model, iter, path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_model_get_iter
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_get_iter
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: iter
   type(c_ptr), value :: path
@@ -34917,8 +34917,8 @@ end function
 ! gboolean gtk_tree_model_get_iter_from_string (GtkTreeModel *tree_model, GtkTreeIter *iter, const gchar *path_string);
 function gtk_tree_model_get_iter_from_string(tree_model, iter, path_string) bind&
       &(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_tree_model_get_iter_from_string
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_tree_model_get_iter_from_string
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: iter
   character(kind=c_char), dimension(*) :: path_string
@@ -34934,8 +34934,8 @@ end function
 
 ! gboolean gtk_tree_model_get_iter_first (GtkTreeModel *tree_model, GtkTreeIter *iter);
 function gtk_tree_model_get_iter_first(tree_model, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_model_get_iter_first
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_get_iter_first
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: iter
 end function
@@ -34959,16 +34959,16 @@ end subroutine
 
 ! gboolean gtk_tree_model_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter);
 function gtk_tree_model_iter_next(tree_model, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_model_iter_next
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_iter_next
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_tree_model_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *parent);
 function gtk_tree_model_iter_children(tree_model, iter, parent) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_model_iter_children
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_iter_children
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: iter
   type(c_ptr), value :: parent
@@ -34976,8 +34976,8 @@ end function
 
 ! gboolean gtk_tree_model_iter_has_child (GtkTreeModel *tree_model, GtkTreeIter *iter);
 function gtk_tree_model_iter_has_child(tree_model, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_model_iter_has_child
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_iter_has_child
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: iter
 end function
@@ -34992,8 +34992,8 @@ end function
 
 ! gboolean gtk_tree_model_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *parent, gint n);
 function gtk_tree_model_iter_nth_child(tree_model, iter, parent, n) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_tree_model_iter_nth_child
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_iter_nth_child
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: iter
   type(c_ptr), value :: parent
@@ -35002,8 +35002,8 @@ end function
 
 ! gboolean gtk_tree_model_iter_parent (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *child);
 function gtk_tree_model_iter_parent(tree_model, iter, child) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_model_iter_parent
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_iter_parent
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: iter
   type(c_ptr), value :: child
@@ -35104,21 +35104,21 @@ end function
 
 !  void gtk_box_pack_start (GtkBox *box, GtkWidget *child, gboolean expand, gboolean fill, guint padding);
 subroutine gtk_box_pack_start(box, child, expand, fill, padding) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: box
   type(c_ptr), value :: child
-  logical(c_bool), value :: expand
-  logical(c_bool), value :: fill
+  integer(c_int), value :: expand
+  integer(c_int), value :: fill
   integer(c_int), value :: padding
 end subroutine
 
 ! void gtk_box_pack_end (GtkBox *box, GtkWidget *child, gboolean expand, gboolean fill, guint padding);
 subroutine gtk_box_pack_end(box, child, expand, fill, padding) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: box
   type(c_ptr), value :: child
-  logical(c_bool), value :: expand
-  logical(c_bool), value :: fill
+  integer(c_int), value :: expand
+  integer(c_int), value :: fill
   integer(c_int), value :: padding
 end subroutine
 
@@ -35138,15 +35138,15 @@ end subroutine
 
 !  void gtk_box_set_homogeneous (GtkBox *box, gboolean homogeneous);
 subroutine gtk_box_set_homogeneous(box, homogeneous) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: box
-  logical(c_bool), value :: homogeneous
+  integer(c_int), value :: homogeneous
 end subroutine
 
 ! gboolean gtk_box_get_homogeneous (GtkBox *box);
 function gtk_box_get_homogeneous(box) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_box_get_homogeneous
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_box_get_homogeneous
   type(c_ptr), value :: box
 end function
 
@@ -35187,11 +35187,11 @@ end subroutine
 ! void gtk_box_set_child_packing (GtkBox *box, GtkWidget *child, gboolean expand, gboolean fill, guint padding, GtkPackType pack_type);
 subroutine gtk_box_set_child_packing(box, child, expand, fill, padding, pack_typ&
       &e) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: box
   type(c_ptr), value :: child
-  logical(c_bool), value :: expand
-  logical(c_bool), value :: fill
+  integer(c_int), value :: expand
+  integer(c_int), value :: fill
   integer(c_int), value :: padding
   integer(c_int), value :: pack_type
 end subroutine
@@ -35236,16 +35236,16 @@ end subroutine
 
 !  gboolean gtk_recent_manager_add_item (GtkRecentManager *manager, const gchar *uri);
 function gtk_recent_manager_add_item(manager, uri) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_recent_manager_add_item
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_recent_manager_add_item
   type(c_ptr), value :: manager
   character(kind=c_char), dimension(*) :: uri
 end function
 
 ! gboolean gtk_recent_manager_add_full (GtkRecentManager *manager, const gchar *uri, const GtkRecentData *recent_data);
 function gtk_recent_manager_add_full(manager, uri, recent_data) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_recent_manager_add_full
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_recent_manager_add_full
   type(c_ptr), value :: manager
   character(kind=c_char), dimension(*) :: uri
   type(c_ptr), value :: recent_data
@@ -35253,8 +35253,8 @@ end function
 
 ! gboolean gtk_recent_manager_remove_item (GtkRecentManager *manager, const gchar *uri, GError **error);
 function gtk_recent_manager_remove_item(manager, uri, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_recent_manager_remove_item
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_recent_manager_remove_item
   type(c_ptr), value :: manager
   character(kind=c_char), dimension(*) :: uri
   type(c_ptr), value :: error
@@ -35271,16 +35271,16 @@ end function
 
 ! gboolean gtk_recent_manager_has_item (GtkRecentManager *manager, const gchar *uri);
 function gtk_recent_manager_has_item(manager, uri) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_recent_manager_has_item
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_recent_manager_has_item
   type(c_ptr), value :: manager
   character(kind=c_char), dimension(*) :: uri
 end function
 
 ! gboolean gtk_recent_manager_move_item (GtkRecentManager *manager, const gchar *uri, const gchar *new_uri, GError **error);
 function gtk_recent_manager_move_item(manager, uri, new_uri, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_recent_manager_move_item
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_recent_manager_move_item
   type(c_ptr), value :: manager
   character(kind=c_char), dimension(*) :: uri
   character(kind=c_char), dimension(*) :: new_uri
@@ -35386,16 +35386,16 @@ end function
 
 ! gboolean gtk_recent_info_get_private_hint (GtkRecentInfo *info);
 function gtk_recent_info_get_private_hint(info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_info_get_private_hint
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_info_get_private_hint
   type(c_ptr), value :: info
 end function
 
 ! gboolean gtk_recent_info_get_application_info (GtkRecentInfo *info, const gchar *app_name, const gchar **app_exec, guint *count, time_t *time_);
 function gtk_recent_info_get_application_info(info, app_name, app_exec, count, t&
       &ime_) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_recent_info_get_application_info
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_recent_info_get_application_info
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: app_name
   character(kind=c_char), dimension(*) :: app_exec
@@ -35420,8 +35420,8 @@ end function
 
 ! gboolean gtk_recent_info_has_application (GtkRecentInfo *info, const gchar *app_name);
 function gtk_recent_info_has_application(info, app_name) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_recent_info_has_application
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_recent_info_has_application
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: app_name
 end function
@@ -35436,8 +35436,8 @@ end function
 
 ! gboolean gtk_recent_info_has_group (GtkRecentInfo *info, const gchar *group_name);
 function gtk_recent_info_has_group(info, group_name) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_recent_info_has_group
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_recent_info_has_group
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: group_name
 end function
@@ -35473,22 +35473,22 @@ end function
 
 ! gboolean gtk_recent_info_is_local (GtkRecentInfo *info);
 function gtk_recent_info_is_local(info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_info_is_local
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_info_is_local
   type(c_ptr), value :: info
 end function
 
 ! gboolean gtk_recent_info_exists (GtkRecentInfo *info);
 function gtk_recent_info_exists(info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_info_exists
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_info_exists
   type(c_ptr), value :: info
 end function
 
 ! gboolean gtk_recent_info_match (GtkRecentInfo *info_a, GtkRecentInfo *info_b);
 function gtk_recent_info_match(info_a, info_b) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_info_match
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_info_match
   type(c_ptr), value :: info_a
   type(c_ptr), value :: info_b
 end function
@@ -35529,8 +35529,8 @@ end function
 
 ! gboolean gtk_bindings_activate (GtkObject *object, guint keyval, GdkModifierType modifiers);
 function gtk_bindings_activate(object, keyval, modifiers) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_bindings_activate
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_bindings_activate
   type(c_ptr), value :: object
   integer(c_int), value :: keyval
   integer(c_int), value :: modifiers
@@ -35538,8 +35538,8 @@ end function
 
 ! gboolean gtk_bindings_activate_event (GtkObject *object, GdkEventKey *event);
 function gtk_bindings_activate_event(object, event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_bindings_activate_event
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_bindings_activate_event
   type(c_ptr), value :: object
   type(c_ptr), value :: event
 end function
@@ -35547,8 +35547,8 @@ end function
 ! gboolean gtk_binding_set_activate (GtkBindingSet *binding_set, guint keyval, GdkModifierType modifiers, GtkObject *object);
 function gtk_binding_set_activate(binding_set, keyval, modifiers, object) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_binding_set_activate
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_binding_set_activate
   type(c_ptr), value :: binding_set
   integer(c_int), value :: keyval
   integer(c_int), value :: modifiers
@@ -35705,16 +35705,16 @@ end function
 
 !  gboolean gtk_link_button_get_visited (GtkLinkButton *link_button);
 function gtk_link_button_get_visited(link_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_link_button_get_visited
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_link_button_get_visited
   type(c_ptr), value :: link_button
 end function
 
 ! void gtk_link_button_set_visited (GtkLinkButton *link_button, gboolean visited);
 subroutine gtk_link_button_set_visited(link_button, visited) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: link_button
-  logical(c_bool), value :: visited
+  integer(c_int), value :: visited
 end subroutine
 
 !   GType gtk_combo_box_get_type (void) G_GNUC_CONST;
@@ -35780,16 +35780,16 @@ end subroutine
 
 !  gboolean gtk_combo_box_get_add_tearoffs (GtkComboBox *combo_box);
 function gtk_combo_box_get_add_tearoffs(combo_box) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_combo_box_get_add_tearoffs
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_combo_box_get_add_tearoffs
   type(c_ptr), value :: combo_box
 end function
 
 ! void gtk_combo_box_set_add_tearoffs (GtkComboBox *combo_box, gboolean add_tearoffs);
 subroutine gtk_combo_box_set_add_tearoffs(combo_box, add_tearoffs) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: combo_box
-  logical(c_bool), value :: add_tearoffs
+  integer(c_int), value :: add_tearoffs
 end subroutine
 
 !  G_CONST_RETURN gchar *gtk_combo_box_get_title (GtkComboBox *combo_box);
@@ -35808,16 +35808,16 @@ end subroutine
 
 !  gboolean gtk_combo_box_get_focus_on_click (GtkComboBox *combo);
 function gtk_combo_box_get_focus_on_click(combo) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_combo_box_get_focus_on_click
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_combo_box_get_focus_on_click
   type(c_ptr), value :: combo
 end function
 
 ! void gtk_combo_box_set_focus_on_click (GtkComboBox *combo, gboolean focus_on_click);
 subroutine gtk_combo_box_set_focus_on_click(combo, focus_on_click) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: combo
-  logical(c_bool), value :: focus_on_click
+  integer(c_int), value :: focus_on_click
 end subroutine
 
 !  gint gtk_combo_box_get_active (GtkComboBox *combo_box);
@@ -35836,8 +35836,8 @@ end subroutine
 
 ! gboolean gtk_combo_box_get_active_iter (GtkComboBox *combo_box, GtkTreeIter *iter);
 function gtk_combo_box_get_active_iter(combo_box, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_combo_box_get_active_iter
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_combo_box_get_active_iter
   type(c_ptr), value :: combo_box
   type(c_ptr), value :: iter
 end function
@@ -36036,8 +36036,8 @@ end subroutine
 
 ! gboolean gtk_stock_lookup (const gchar *stock_id, GtkStockItem *item);
 function gtk_stock_lookup(stock_id, item) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: gtk_stock_lookup
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: gtk_stock_lookup
   character(kind=c_char), dimension(*) :: stock_id
   type(c_ptr), value :: item
 end function
@@ -36243,8 +36243,8 @@ end function
 
 ! gboolean gtk_page_setup_load_file (GtkPageSetup *setup, const char *file_name, GError **error);
 function gtk_page_setup_load_file(setup, file_name, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_int, c_char, c_ptr
-  logical(c_bool) :: gtk_page_setup_load_file
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: gtk_page_setup_load_file
   integer(c_int), value :: setup
   character(kind=c_char), dimension(*) :: file_name
   type(c_ptr), value :: error
@@ -36252,8 +36252,8 @@ end function
 
 ! gboolean gtk_page_setup_to_file (GtkPageSetup *setup, const char *file_name, GError **error);
 function gtk_page_setup_to_file(setup, file_name, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_int, c_char, c_ptr
-  logical(c_bool) :: gtk_page_setup_to_file
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: gtk_page_setup_to_file
   integer(c_int), value :: setup
   character(kind=c_char), dimension(*) :: file_name
   type(c_ptr), value :: error
@@ -36271,8 +36271,8 @@ end function
 ! gboolean gtk_page_setup_load_key_file (GtkPageSetup *setup, GKeyFile *key_file, const gchar *group_name, GError **error);
 function gtk_page_setup_load_key_file(setup, key_file, group_name, error) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_int, c_ptr, c_char
-  logical(c_bool) :: gtk_page_setup_load_key_file
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_page_setup_load_key_file
   integer(c_int), value :: setup
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
@@ -36406,9 +36406,9 @@ end subroutine
 
 !  void gtk_pixmap_set_build_insensitive (GtkPixmap *pixmap, gboolean build);
 subroutine gtk_pixmap_set_build_insensitive(pixmap, build) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: pixmap
-  logical(c_bool), value :: build
+  integer(c_int), value :: build
 end subroutine
 
 !   GType gtk_font_button_get_type (void) G_GNUC_CONST;
@@ -36446,30 +36446,30 @@ end subroutine
 
 ! gboolean gtk_font_button_get_use_font (GtkFontButton *font_button);
 function gtk_font_button_get_use_font(font_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_font_button_get_use_font
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_font_button_get_use_font
   type(c_ptr), value :: font_button
 end function
 
 ! void gtk_font_button_set_use_font (GtkFontButton *font_button, gboolean use_font);
 subroutine gtk_font_button_set_use_font(font_button, use_font) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: font_button
-  logical(c_bool), value :: use_font
+  integer(c_int), value :: use_font
 end subroutine
 
 ! gboolean gtk_font_button_get_use_size (GtkFontButton *font_button);
 function gtk_font_button_get_use_size(font_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_font_button_get_use_size
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_font_button_get_use_size
   type(c_ptr), value :: font_button
 end function
 
 ! void gtk_font_button_set_use_size (GtkFontButton *font_button, gboolean use_size);
 subroutine gtk_font_button_set_use_size(font_button, use_size) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: font_button
-  logical(c_bool), value :: use_size
+  integer(c_int), value :: use_size
 end subroutine
 
 ! G_CONST_RETURN gchar* gtk_font_button_get_font_name (GtkFontButton *font_button);
@@ -36481,38 +36481,38 @@ end function
 
 ! gboolean gtk_font_button_set_font_name (GtkFontButton *font_button, const gchar *fontname);
 function gtk_font_button_set_font_name(font_button, fontname) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_font_button_set_font_name
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_font_button_set_font_name
   type(c_ptr), value :: font_button
   character(kind=c_char), dimension(*) :: fontname
 end function
 
 ! gboolean gtk_font_button_get_show_style (GtkFontButton *font_button);
 function gtk_font_button_get_show_style(font_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_font_button_get_show_style
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_font_button_get_show_style
   type(c_ptr), value :: font_button
 end function
 
 ! void gtk_font_button_set_show_style (GtkFontButton *font_button, gboolean show_style);
 subroutine gtk_font_button_set_show_style(font_button, show_style) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: font_button
-  logical(c_bool), value :: show_style
+  integer(c_int), value :: show_style
 end subroutine
 
 ! gboolean gtk_font_button_get_show_size (GtkFontButton *font_button);
 function gtk_font_button_get_show_size(font_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_font_button_get_show_size
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_font_button_get_show_size
   type(c_ptr), value :: font_button
 end function
 
 ! void gtk_font_button_set_show_size (GtkFontButton *font_button, gboolean show_size);
 subroutine gtk_font_button_set_show_size(font_button, show_size) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: font_button
-  logical(c_bool), value :: show_size
+  integer(c_int), value :: show_size
 end subroutine
 
 !   GType gtk_im_multicontext_get_type (void) G_GNUC_CONST;
@@ -36598,17 +36598,17 @@ end subroutine
 ! void gtk_menu_shell_activate_item (GtkMenuShell *menu_shell, GtkWidget *menu_item, gboolean force_deactivate);
 subroutine gtk_menu_shell_activate_item(menu_shell, menu_item, force_deactivate)&
       & bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu_shell
   type(c_ptr), value :: menu_item
-  logical(c_bool), value :: force_deactivate
+  integer(c_int), value :: force_deactivate
 end subroutine
 
 ! void gtk_menu_shell_select_first (GtkMenuShell *menu_shell, gboolean search_sensitive);
 subroutine gtk_menu_shell_select_first(menu_shell, search_sensitive) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu_shell
-  logical(c_bool), value :: search_sensitive
+  integer(c_int), value :: search_sensitive
 end subroutine
 
 ! void gtk_menu_shell_cancel (GtkMenuShell *menu_shell);
@@ -36619,16 +36619,16 @@ end subroutine
 
 !  gboolean gtk_menu_shell_get_take_focus (GtkMenuShell *menu_shell);
 function gtk_menu_shell_get_take_focus(menu_shell) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_menu_shell_get_take_focus
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_menu_shell_get_take_focus
   type(c_ptr), value :: menu_shell
 end function
 
 ! void gtk_menu_shell_set_take_focus (GtkMenuShell *menu_shell, gboolean take_focus);
 subroutine gtk_menu_shell_set_take_focus(menu_shell, take_focus) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu_shell
-  logical(c_bool), value :: take_focus
+  integer(c_int), value :: take_focus
 end subroutine
 
 !   GType gtk_tree_model_sort_get_type (void) G_GNUC_CONST;
@@ -36663,8 +36663,8 @@ end function
 ! gboolean gtk_tree_model_sort_convert_child_iter_to_iter (GtkTreeModelSort *tree_model_sort, GtkTreeIter *sort_iter, GtkTreeIter *child_iter);
 function gtk_tree_model_sort_convert_child_iter_to_iter(tree_model_sort, sort_it&
       &er, child_iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_model_sort_convert_child_iter_to_iter
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_sort_convert_child_iter_to_iter
   type(c_ptr), value :: tree_model_sort
   type(c_ptr), value :: sort_iter
   type(c_ptr), value :: child_iter
@@ -36702,8 +36702,8 @@ end subroutine
 
 ! gboolean gtk_tree_model_sort_iter_is_valid (GtkTreeModelSort *tree_model_sort, GtkTreeIter *iter);
 function gtk_tree_model_sort_iter_is_valid(tree_model_sort, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_model_sort_iter_is_valid
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_sort_iter_is_valid
   type(c_ptr), value :: tree_model_sort
   type(c_ptr), value :: iter
 end function
@@ -36740,10 +36740,10 @@ end function
 !  void gtk_dialog_set_response_sensitive (GtkDialog *dialog, gint response_id, gboolean setting);
 subroutine gtk_dialog_set_response_sensitive(dialog, response_id, setting) bind(&
       &c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: dialog
   integer(c_int), value :: response_id
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! void gtk_dialog_set_default_response (GtkDialog *dialog, gint response_id);
@@ -36771,22 +36771,22 @@ end function
 
 !  void gtk_dialog_set_has_separator (GtkDialog *dialog, gboolean setting);
 subroutine gtk_dialog_set_has_separator(dialog, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: dialog
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_dialog_get_has_separator (GtkDialog *dialog);
 function gtk_dialog_get_has_separator(dialog) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_dialog_get_has_separator
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_dialog_get_has_separator
   type(c_ptr), value :: dialog
 end function
 
 !  gboolean gtk_alternative_dialog_button_order (GdkScreen *screen);
 function gtk_alternative_dialog_button_order(screen) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_alternative_dialog_button_order
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_alternative_dialog_button_order
   type(c_ptr), value :: screen
 end function
 
@@ -36907,15 +36907,15 @@ end function
 
 ! void gtk_scale_set_draw_value (GtkScale *scale, gboolean draw_value);
 subroutine gtk_scale_set_draw_value(scale, draw_value) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: scale
-  logical(c_bool), value :: draw_value
+  integer(c_int), value :: draw_value
 end subroutine
 
 ! gboolean gtk_scale_get_draw_value (GtkScale *scale);
 function gtk_scale_get_draw_value(scale) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_scale_get_draw_value
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_scale_get_draw_value
   type(c_ptr), value :: scale
 end function
 
@@ -37055,18 +37055,18 @@ end function
 
 ! void gtk_cell_layout_pack_start (GtkCellLayout *cell_layout, GtkCellRenderer *cell, gboolean expand);
 subroutine gtk_cell_layout_pack_start(cell_layout, cell, expand) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: cell_layout
   type(c_ptr), value :: cell
-  logical(c_bool), value :: expand
+  integer(c_int), value :: expand
 end subroutine
 
 ! void gtk_cell_layout_pack_end (GtkCellLayout *cell_layout, GtkCellRenderer *cell, gboolean expand);
 subroutine gtk_cell_layout_pack_end(cell_layout, cell, expand) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: cell_layout
   type(c_ptr), value :: cell
-  logical(c_bool), value :: expand
+  integer(c_int), value :: expand
 end subroutine
 
 ! GList *gtk_cell_layout_get_cells (GtkCellLayout *cell_layout);
@@ -37203,8 +37203,8 @@ end subroutine
 
 ! gboolean gtk_button_box_get_child_secondary (GtkButtonBox *widget, GtkWidget *child);
 function gtk_button_box_get_child_secondary(widget, child) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_button_box_get_child_secondary
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_button_box_get_child_secondary
   type(c_ptr), value :: widget
   type(c_ptr), value :: child
 end function
@@ -37212,10 +37212,10 @@ end function
 ! void gtk_button_box_set_child_secondary (GtkButtonBox *widget, GtkWidget *child, gboolean is_secondary);
 subroutine gtk_button_box_set_child_secondary(widget, child, is_secondary) bind(&
       &c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
   type(c_ptr), value :: child
-  logical(c_bool), value :: is_secondary
+  integer(c_int), value :: is_secondary
 end subroutine
 
 !  void gtk_button_box_set_child_size (GtkButtonBox *widget, gint min_width, gint min_height);
@@ -37284,18 +37284,18 @@ end subroutine
 
 ! void gtk_tool_palette_set_exclusive (GtkToolPalette *palette, GtkToolItemGroup *group, gboolean exclusive);
 subroutine gtk_tool_palette_set_exclusive(palette, group, exclusive) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: palette
   type(c_ptr), value :: group
-  logical(c_bool), value :: exclusive
+  integer(c_int), value :: exclusive
 end subroutine
 
 ! void gtk_tool_palette_set_expand (GtkToolPalette *palette, GtkToolItemGroup *group, gboolean expand);
 subroutine gtk_tool_palette_set_expand(palette, group, expand) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: palette
   type(c_ptr), value :: group
-  logical(c_bool), value :: expand
+  integer(c_int), value :: expand
 end subroutine
 
 !  gint gtk_tool_palette_get_group_position (GtkToolPalette *palette, GtkToolItemGroup *group);
@@ -37308,16 +37308,16 @@ end function
 
 ! gboolean gtk_tool_palette_get_exclusive (GtkToolPalette *palette, GtkToolItemGroup *group);
 function gtk_tool_palette_get_exclusive(palette, group) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tool_palette_get_exclusive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tool_palette_get_exclusive
   type(c_ptr), value :: palette
   type(c_ptr), value :: group
 end function
 
 ! gboolean gtk_tool_palette_get_expand (GtkToolPalette *palette, GtkToolItemGroup *group);
 function gtk_tool_palette_get_expand(palette, group) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tool_palette_get_expand
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tool_palette_get_expand
   type(c_ptr), value :: palette
   type(c_ptr), value :: group
 end function
@@ -37516,8 +37516,8 @@ end function
 
 !  gboolean gtk_font_selection_set_font_name (GtkFontSelection *fontsel, const gchar *fontname);
 function gtk_font_selection_set_font_name(fontsel, fontname) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_font_selection_set_font_name
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_font_selection_set_font_name
   type(c_ptr), value :: fontsel
   character(kind=c_char), dimension(*) :: fontname
 end function
@@ -37593,8 +37593,8 @@ end function
 
 !  gboolean gtk_font_selection_dialog_set_font_name (GtkFontSelectionDialog *fsd, const gchar *fontname);
 function gtk_font_selection_dialog_set_font_name(fsd, fontname) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_font_selection_dialog_set_font_name
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_font_selection_dialog_set_font_name
   type(c_ptr), value :: fsd
   character(kind=c_char), dimension(*) :: fontname
 end function
@@ -37755,16 +37755,16 @@ end function
 
 !  gboolean gtk_parse_args (int *argc, char ***argv);
 function gtk_parse_args(argc, argv) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_parse_args
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_parse_args
   type(c_ptr), value :: argc
   character(kind=c_char), dimension(*) :: argv
 end function
 
 !  gboolean gtk_init_check (int *argc, char ***argv);
 function gtk_init_check(argc, argv) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_init_check
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_init_check
   type(c_ptr), value :: argc
   character(kind=c_char), dimension(*) :: argv
 end function
@@ -37772,8 +37772,8 @@ end function
 !  gboolean gtk_init_with_args (int *argc, char ***argv, const char *parameter_string, GOptionEntry *entries, const char *translation_domain, GError **error);
 function gtk_init_with_args(argc, argv, parameter_string, entries, translation_d&
       &omain, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_init_with_args
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_init_with_args
   type(c_ptr), value :: argc
   character(kind=c_char), dimension(*) :: argv
   character(kind=c_char), dimension(*) :: parameter_string
@@ -37784,9 +37784,9 @@ end function
 
 !  GOptionGroup *gtk_get_option_group (gboolean open_default_display);
 function gtk_get_option_group(open_default_display) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_get_option_group
-  logical(c_bool), value :: open_default_display
+  integer(c_int), value :: open_default_display
 end function
 
 !   void gtk_init_abi_check (int *argc, char ***argv, int num_checks, size_t sizeof_GtkWindow, size_t sizeof_GtkBox);
@@ -37803,8 +37803,8 @@ end subroutine
 ! gboolean gtk_init_check_abi_check (int *argc, char ***argv, int num_checks, size_t sizeof_GtkWindow, size_t sizeof_GtkBox);
 function gtk_init_check_abi_check(argc, argv, num_checks, sizeof_GtkWindow, size&
       &of_GtkBox) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int, c_size_t
-  logical(c_bool) :: gtk_init_check_abi_check
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
+  integer(c_int) :: gtk_init_check_abi_check
   type(c_ptr), value :: argc
   character(kind=c_char), dimension(*) :: argv
   integer(c_int), value :: num_checks
@@ -37837,8 +37837,8 @@ end function
 
 ! gboolean gtk_events_pending (void);
 function gtk_events_pending() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gtk_events_pending
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_events_pending
 end function
 
 !  void gtk_main_do_event (GdkEvent *event);
@@ -37865,27 +37865,27 @@ end subroutine
 
 ! gboolean gtk_main_iteration (void);
 function gtk_main_iteration() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gtk_main_iteration
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_main_iteration
 end function
 
 !  gboolean gtk_main_iteration_do (gboolean blocking);
 function gtk_main_iteration_do(blocking) bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gtk_main_iteration_do
-  logical(c_bool), value :: blocking
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_main_iteration_do
+  integer(c_int), value :: blocking
 end function
 
 !  gboolean gtk_true (void) G_GNUC_CONST;
 function gtk_true() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gtk_true
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_true
 end function
 
 ! gboolean gtk_false (void) G_GNUC_CONST;
 function gtk_false() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gtk_false
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_false
 end function
 
 !  void gtk_grab_add (GtkWidget *widget);
@@ -38066,8 +38066,8 @@ end function
 
 ! gboolean gtk_get_current_event_state (GdkModifierType *state);
 function gtk_get_current_event_state(state) bind(c) 
-  use iso_c_binding, only: c_bool, c_int
-  logical(c_bool) :: gtk_get_current_event_state
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_current_event_state
   integer(c_int), value :: state
 end function
 
@@ -38099,31 +38099,31 @@ end function
 
 !  void gtk_combo_set_value_in_list (GtkCombo* combo, gboolean val, gboolean ok_if_empty);
 subroutine gtk_combo_set_value_in_list(combo, val, ok_if_empty) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: combo
-  logical(c_bool), value :: val
-  logical(c_bool), value :: ok_if_empty
+  integer(c_int), value :: val
+  integer(c_int), value :: ok_if_empty
 end subroutine
 
 !  void gtk_combo_set_use_arrows (GtkCombo* combo, gboolean val);
 subroutine gtk_combo_set_use_arrows(combo, val) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: combo
-  logical(c_bool), value :: val
+  integer(c_int), value :: val
 end subroutine
 
 !  void gtk_combo_set_use_arrows_always (GtkCombo* combo, gboolean val);
 subroutine gtk_combo_set_use_arrows_always(combo, val) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: combo
-  logical(c_bool), value :: val
+  integer(c_int), value :: val
 end subroutine
 
 !  void gtk_combo_set_case_sensitive (GtkCombo* combo, gboolean val);
 subroutine gtk_combo_set_case_sensitive(combo, val) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: combo
-  logical(c_bool), value :: val
+  integer(c_int), value :: val
 end subroutine
 
 !  void gtk_combo_set_item_string (GtkCombo* combo, GtkItem* item, const gchar* item_value);
@@ -38162,8 +38162,8 @@ end subroutine
 ! gboolean gtk_tree_sortable_get_sort_column_id (GtkTreeSortable *sortable, gint *sort_column_id, GtkSortType *order);
 function gtk_tree_sortable_get_sort_column_id(sortable, sort_column_id, order) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_tree_sortable_get_sort_column_id
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_sortable_get_sort_column_id
   type(c_ptr), value :: sortable
   type(c_ptr), value :: sort_column_id
   integer(c_int), value :: order
@@ -38201,8 +38201,8 @@ end subroutine
 
 ! gboolean gtk_tree_sortable_has_default_sort_func (GtkTreeSortable *sortable);
 function gtk_tree_sortable_has_default_sort_func(sortable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_sortable_has_default_sort_func
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_sortable_has_default_sort_func
   type(c_ptr), value :: sortable
 end function
 
@@ -38238,15 +38238,15 @@ end subroutine
 
 !  void gtk_fixed_set_has_window (GtkFixed *fixed, gboolean has_window);
 subroutine gtk_fixed_set_has_window(fixed, has_window) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: fixed
-  logical(c_bool), value :: has_window
+  integer(c_int), value :: has_window
 end subroutine
 
 ! gboolean gtk_fixed_get_has_window (GtkFixed *fixed);
 function gtk_fixed_get_has_window(fixed) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_fixed_get_has_window
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_fixed_get_has_window
   type(c_ptr), value :: fixed
 end function
 
@@ -38276,8 +38276,8 @@ end function
 
 ! gboolean gtk_accel_group_get_is_locked (GtkAccelGroup *accel_group);
 function gtk_accel_group_get_is_locked(accel_group) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_accel_group_get_is_locked
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_accel_group_get_is_locked
   type(c_ptr), value :: accel_group
 end function
 
@@ -38322,8 +38322,8 @@ end subroutine
 
 ! gboolean gtk_accel_group_disconnect (GtkAccelGroup *accel_group, GClosure *closure);
 function gtk_accel_group_disconnect(accel_group, closure) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_accel_group_disconnect
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_accel_group_disconnect
   type(c_ptr), value :: accel_group
   type(c_ptr), value :: closure
 end function
@@ -38331,8 +38331,8 @@ end function
 ! gboolean gtk_accel_group_disconnect_key (GtkAccelGroup *accel_group, guint accel_key, GdkModifierType accel_mods);
 function gtk_accel_group_disconnect_key(accel_group, accel_key, accel_mods) bind&
       &(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_accel_group_disconnect_key
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_accel_group_disconnect_key
   type(c_ptr), value :: accel_group
   integer(c_int), value :: accel_key
   integer(c_int), value :: accel_mods
@@ -38341,8 +38341,8 @@ end function
 ! gboolean gtk_accel_group_activate (GtkAccelGroup *accel_group, GQuark accel_quark, GObject *acceleratable, guint accel_key, GdkModifierType accel_mods);
 function gtk_accel_group_activate(accel_group, accel_quark, acceleratable, accel&
       &_key, accel_mods) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t, c_int
-  logical(c_bool) :: gtk_accel_group_activate
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gtk_accel_group_activate
   type(c_ptr), value :: accel_group
   integer(c_int32_t), value :: accel_quark
   type(c_ptr), value :: acceleratable
@@ -38352,8 +38352,8 @@ end function
 
 ! gboolean gtk_accel_groups_activate (GObject *object, guint accel_key, GdkModifierType accel_mods);
 function gtk_accel_groups_activate(object, accel_key, accel_mods) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_accel_groups_activate
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_accel_groups_activate
   type(c_ptr), value :: object
   integer(c_int), value :: accel_key
   integer(c_int), value :: accel_mods
@@ -38384,8 +38384,8 @@ end function
 
 !  gboolean gtk_accelerator_valid (guint keyval, GdkModifierType modifiers) G_GNUC_CONST;
 function gtk_accelerator_valid(keyval, modifiers) bind(c) 
-  use iso_c_binding, only: c_bool, c_int
-  logical(c_bool) :: gtk_accelerator_valid
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_accelerator_valid
   integer(c_int), value :: keyval
   integer(c_int), value :: modifiers
 end function
@@ -38518,15 +38518,15 @@ end function
 
 ! void gtk_size_group_set_ignore_hidden (GtkSizeGroup *size_group, gboolean ignore_hidden);
 subroutine gtk_size_group_set_ignore_hidden(size_group, ignore_hidden) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: size_group
-  logical(c_bool), value :: ignore_hidden
+  integer(c_int), value :: ignore_hidden
 end subroutine
 
 ! gboolean gtk_size_group_get_ignore_hidden (GtkSizeGroup *size_group);
 function gtk_size_group_get_ignore_hidden(size_group) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_size_group_get_ignore_hidden
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_size_group_get_ignore_hidden
   type(c_ptr), value :: size_group
 end function
 
@@ -38607,15 +38607,15 @@ end function
 !  void gtk_file_selection_set_select_multiple (GtkFileSelection *filesel, gboolean select_multiple);
 subroutine gtk_file_selection_set_select_multiple(filesel, select_multiple) bind&
       &(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: filesel
-  logical(c_bool), value :: select_multiple
+  integer(c_int), value :: select_multiple
 end subroutine
 
 ! gboolean gtk_file_selection_get_select_multiple (GtkFileSelection *filesel);
 function gtk_file_selection_get_select_multiple(filesel) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_selection_get_select_multiple
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_selection_get_select_multiple
   type(c_ptr), value :: filesel
 end function
 
@@ -38721,15 +38721,15 @@ end function
 
 !  void gtk_menu_set_tearoff_state (GtkMenu *menu, gboolean torn_off);
 subroutine gtk_menu_set_tearoff_state(menu, torn_off) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu
-  logical(c_bool), value :: torn_off
+  integer(c_int), value :: torn_off
 end subroutine
 
 ! gboolean gtk_menu_get_tearoff_state (GtkMenu *menu);
 function gtk_menu_get_tearoff_state(menu) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_menu_get_tearoff_state
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_menu_get_tearoff_state
   type(c_ptr), value :: menu
 end function
 
@@ -38797,15 +38797,15 @@ end function
 
 !  void gtk_menu_set_reserve_toggle_size (GtkMenu *menu, gboolean reserve_toggle_size);
 subroutine gtk_menu_set_reserve_toggle_size(menu, reserve_toggle_size) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu
-  logical(c_bool), value :: reserve_toggle_size
+  integer(c_int), value :: reserve_toggle_size
 end subroutine
 
 ! gboolean gtk_menu_get_reserve_toggle_size (GtkMenu *menu);
 function gtk_menu_get_reserve_toggle_size(menu) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_menu_get_reserve_toggle_size
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_menu_get_reserve_toggle_size
   type(c_ptr), value :: menu
 end function
 
@@ -38824,8 +38824,8 @@ end function
 
 ! gboolean gtk_mount_operation_is_showing (GtkMountOperation *op);
 function gtk_mount_operation_is_showing(op) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_mount_operation_is_showing
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_mount_operation_is_showing
   type(c_ptr), value :: op
 end function
 
@@ -38873,23 +38873,23 @@ end function
 
 ! void gtk_text_set_editable (GtkText *text, gboolean editable);
 subroutine gtk_text_set_editable(text, editable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: text
-  logical(c_bool), value :: editable
+  integer(c_int), value :: editable
 end subroutine
 
 ! void gtk_text_set_word_wrap (GtkText *text, gboolean word_wrap);
 subroutine gtk_text_set_word_wrap(text, word_wrap) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: text
-  logical(c_bool), value :: word_wrap
+  integer(c_int), value :: word_wrap
 end subroutine
 
 ! void gtk_text_set_line_wrap (GtkText *text, gboolean line_wrap);
 subroutine gtk_text_set_line_wrap(text, line_wrap) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: text
-  logical(c_bool), value :: line_wrap
+  integer(c_int), value :: line_wrap
 end subroutine
 
 ! void gtk_text_set_adjustments (GtkText *text, GtkAdjustment *hadj, GtkAdjustment *vadj);
@@ -38946,16 +38946,16 @@ end subroutine
 
 ! gboolean gtk_text_backward_delete (GtkText *text, guint nchars);
 function gtk_text_backward_delete(text, nchars) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_backward_delete
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_backward_delete
   type(c_ptr), value :: text
   integer(c_int), value :: nchars
 end function
 
 ! gboolean gtk_text_forward_delete (GtkText *text, guint nchars);
 function gtk_text_forward_delete(text, nchars) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_forward_delete
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_forward_delete
   type(c_ptr), value :: text
   integer(c_int), value :: nchars
 end function
@@ -38988,73 +38988,73 @@ end function
 
 ! void gtk_file_chooser_set_local_only (GtkFileChooser *chooser, gboolean local_only);
 subroutine gtk_file_chooser_set_local_only(chooser, local_only) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: local_only
+  integer(c_int), value :: local_only
 end subroutine
 
 ! gboolean gtk_file_chooser_get_local_only (GtkFileChooser *chooser);
 function gtk_file_chooser_get_local_only(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_get_local_only
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_get_local_only
   type(c_ptr), value :: chooser
 end function
 
 ! void gtk_file_chooser_set_select_multiple (GtkFileChooser *chooser, gboolean select_multiple);
 subroutine gtk_file_chooser_set_select_multiple(chooser, select_multiple) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: select_multiple
+  integer(c_int), value :: select_multiple
 end subroutine
 
 ! gboolean gtk_file_chooser_get_select_multiple (GtkFileChooser *chooser);
 function gtk_file_chooser_get_select_multiple(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_get_select_multiple
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_get_select_multiple
   type(c_ptr), value :: chooser
 end function
 
 ! void gtk_file_chooser_set_show_hidden (GtkFileChooser *chooser, gboolean show_hidden);
 subroutine gtk_file_chooser_set_show_hidden(chooser, show_hidden) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: show_hidden
+  integer(c_int), value :: show_hidden
 end subroutine
 
 ! gboolean gtk_file_chooser_get_show_hidden (GtkFileChooser *chooser);
 function gtk_file_chooser_get_show_hidden(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_get_show_hidden
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_get_show_hidden
   type(c_ptr), value :: chooser
 end function
 
 !  void gtk_file_chooser_set_do_overwrite_confirmation (GtkFileChooser *chooser, gboolean do_overwrite_confirmation);
 subroutine gtk_file_chooser_set_do_overwrite_confirmation(chooser, do_overwrite_&
       &confirmation) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: do_overwrite_confirmation
+  integer(c_int), value :: do_overwrite_confirmation
 end subroutine
 
 ! gboolean gtk_file_chooser_get_do_overwrite_confirmation (GtkFileChooser *chooser);
 function gtk_file_chooser_get_do_overwrite_confirmation(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_get_do_overwrite_confirmation
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_get_do_overwrite_confirmation
   type(c_ptr), value :: chooser
 end function
 
 !  void gtk_file_chooser_set_create_folders (GtkFileChooser *chooser, gboolean create_folders);
 subroutine gtk_file_chooser_set_create_folders(chooser, create_folders) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: create_folders
+  integer(c_int), value :: create_folders
 end subroutine
 
 ! gboolean gtk_file_chooser_get_create_folders (GtkFileChooser *chooser);
 function gtk_file_chooser_get_create_folders(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_get_create_folders
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_get_create_folders
   type(c_ptr), value :: chooser
 end function
 
@@ -39074,16 +39074,16 @@ end function
 
 ! gboolean gtk_file_chooser_set_filename (GtkFileChooser *chooser, const char *filename);
 function gtk_file_chooser_set_filename(chooser, filename) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_file_chooser_set_filename
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_file_chooser_set_filename
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: filename
 end function
 
 ! gboolean gtk_file_chooser_select_filename (GtkFileChooser *chooser, const char *filename);
 function gtk_file_chooser_select_filename(chooser, filename) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_file_chooser_select_filename
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_file_chooser_select_filename
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: filename
 end function
@@ -39116,8 +39116,8 @@ end function
 
 ! gboolean gtk_file_chooser_set_current_folder (GtkFileChooser *chooser, const gchar *filename);
 function gtk_file_chooser_set_current_folder(chooser, filename) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_file_chooser_set_current_folder
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_file_chooser_set_current_folder
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: filename
 end function
@@ -39138,16 +39138,16 @@ end function
 
 ! gboolean gtk_file_chooser_set_uri (GtkFileChooser *chooser, const char *uri);
 function gtk_file_chooser_set_uri(chooser, uri) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_file_chooser_set_uri
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_file_chooser_set_uri
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: uri
 end function
 
 ! gboolean gtk_file_chooser_select_uri (GtkFileChooser *chooser, const char *uri);
 function gtk_file_chooser_select_uri(chooser, uri) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_file_chooser_select_uri
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_file_chooser_select_uri
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: uri
 end function
@@ -39168,8 +39168,8 @@ end function
 
 ! gboolean gtk_file_chooser_set_current_folder_uri (GtkFileChooser *chooser, const gchar *uri);
 function gtk_file_chooser_set_current_folder_uri(chooser, uri) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_file_chooser_set_current_folder_uri
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_file_chooser_set_current_folder_uri
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: uri
 end function
@@ -39190,8 +39190,8 @@ end function
 
 ! gboolean gtk_file_chooser_set_file (GtkFileChooser *chooser, GFile *file, GError **error);
 function gtk_file_chooser_set_file(chooser, file, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_set_file
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_set_file
   type(c_ptr), value :: chooser
   type(c_ptr), value :: file
   type(c_ptr), value :: error
@@ -39199,8 +39199,8 @@ end function
 
 ! gboolean gtk_file_chooser_select_file (GtkFileChooser *chooser, GFile *file, GError **error);
 function gtk_file_chooser_select_file(chooser, file, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_select_file
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_select_file
   type(c_ptr), value :: chooser
   type(c_ptr), value :: file
   type(c_ptr), value :: error
@@ -39222,8 +39222,8 @@ end function
 
 ! gboolean gtk_file_chooser_set_current_folder_file (GtkFileChooser *chooser, GFile *file, GError **error);
 function gtk_file_chooser_set_current_folder_file(chooser, file, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_set_current_folder_file
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_set_current_folder_file
   type(c_ptr), value :: chooser
   type(c_ptr), value :: file
   type(c_ptr), value :: error
@@ -39252,29 +39252,29 @@ end function
 
 ! void gtk_file_chooser_set_preview_widget_active (GtkFileChooser *chooser, gboolean active);
 subroutine gtk_file_chooser_set_preview_widget_active(chooser, active) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: active
+  integer(c_int), value :: active
 end subroutine
 
 ! gboolean gtk_file_chooser_get_preview_widget_active (GtkFileChooser *chooser);
 function gtk_file_chooser_get_preview_widget_active(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_get_preview_widget_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_get_preview_widget_active
   type(c_ptr), value :: chooser
 end function
 
 ! void gtk_file_chooser_set_use_preview_label (GtkFileChooser *chooser, gboolean use_label);
 subroutine gtk_file_chooser_set_use_preview_label(chooser, use_label) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: use_label
+  integer(c_int), value :: use_label
 end subroutine
 
 ! gboolean gtk_file_chooser_get_use_preview_label (GtkFileChooser *chooser);
 function gtk_file_chooser_get_use_preview_label(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_chooser_get_use_preview_label
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_get_use_preview_label
   type(c_ptr), value :: chooser
 end function
 
@@ -39350,8 +39350,8 @@ end function
 
 !  gboolean gtk_file_chooser_add_shortcut_folder (GtkFileChooser *chooser, const char *folder, GError **error);
 function gtk_file_chooser_add_shortcut_folder(chooser, folder, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_file_chooser_add_shortcut_folder
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_file_chooser_add_shortcut_folder
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: folder
   type(c_ptr), value :: error
@@ -39359,8 +39359,8 @@ end function
 
 ! gboolean gtk_file_chooser_remove_shortcut_folder (GtkFileChooser *chooser, const char *folder, GError **error);
 function gtk_file_chooser_remove_shortcut_folder(chooser, folder, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_file_chooser_remove_shortcut_folder
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_file_chooser_remove_shortcut_folder
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: folder
   type(c_ptr), value :: error
@@ -39375,8 +39375,8 @@ end function
 
 !  gboolean gtk_file_chooser_add_shortcut_folder_uri (GtkFileChooser *chooser, const char *uri, GError **error);
 function gtk_file_chooser_add_shortcut_folder_uri(chooser, uri, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_file_chooser_add_shortcut_folder_uri
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_file_chooser_add_shortcut_folder_uri
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: uri
   type(c_ptr), value :: error
@@ -39385,8 +39385,8 @@ end function
 ! gboolean gtk_file_chooser_remove_shortcut_folder_uri (GtkFileChooser *chooser, const char *uri, GError **error);
 function gtk_file_chooser_remove_shortcut_folder_uri(chooser, uri, error) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_file_chooser_remove_shortcut_folder_uri
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_file_chooser_remove_shortcut_folder_uri
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: uri
   type(c_ptr), value :: error
@@ -39428,8 +39428,8 @@ end subroutine
 
 ! gboolean gtk_text_tag_event (GtkTextTag *tag, GObject *event_object, GdkEvent *event, const GtkTextIter *iter);
 function gtk_text_tag_event(tag, event_object, event, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_tag_event
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_tag_event
   type(c_ptr), value :: tag
   type(c_ptr), value :: event_object
   type(c_ptr), value :: event
@@ -39644,8 +39644,8 @@ end function
 
 ! gboolean gtk_cell_view_get_size_of_row (GtkCellView *cell_view, GtkTreePath *path, GtkRequisition *requisition);
 function gtk_cell_view_get_size_of_row(cell_view, path, requisition) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_cell_view_get_size_of_row
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_view_get_size_of_row
   type(c_ptr), value :: cell_view
   type(c_ptr), value :: path
   type(c_ptr), value :: requisition
@@ -39723,12 +39723,12 @@ end function
 ! gboolean gtk_text_view_scroll_to_iter (GtkTextView *text_view, GtkTextIter *iter, gdouble within_margin, gboolean use_align, gdouble xalign, gdouble yalign);
 function gtk_text_view_scroll_to_iter(text_view, iter, within_margin, use_align,&
       & xalign, yalign) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_double
-  logical(c_bool) :: gtk_text_view_scroll_to_iter
+  use iso_c_binding, only: c_int, c_ptr, c_double
+  integer(c_int) :: gtk_text_view_scroll_to_iter
   type(c_ptr), value :: text_view
   type(c_ptr), value :: iter
   real(c_double), value :: within_margin
-  logical(c_bool), value :: use_align
+  integer(c_int), value :: use_align
   real(c_double), value :: xalign
   real(c_double), value :: yalign
 end function
@@ -39736,11 +39736,11 @@ end function
 ! void gtk_text_view_scroll_to_mark (GtkTextView *text_view, GtkTextMark *mark, gdouble within_margin, gboolean use_align, gdouble xalign, gdouble yalign);
 subroutine gtk_text_view_scroll_to_mark(text_view, mark, within_margin, use_alig&
       &n, xalign, yalign) bind(c) 
-  use iso_c_binding, only: c_ptr, c_double, c_bool
+  use iso_c_binding, only: c_ptr, c_double, c_int
   type(c_ptr), value :: text_view
   type(c_ptr), value :: mark
   real(c_double), value :: within_margin
-  logical(c_bool), value :: use_align
+  integer(c_int), value :: use_align
   real(c_double), value :: xalign
   real(c_double), value :: yalign
 end subroutine
@@ -39754,16 +39754,16 @@ end subroutine
 
 ! gboolean gtk_text_view_move_mark_onscreen (GtkTextView *text_view, GtkTextMark *mark);
 function gtk_text_view_move_mark_onscreen(text_view, mark) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_move_mark_onscreen
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_move_mark_onscreen
   type(c_ptr), value :: text_view
   type(c_ptr), value :: mark
 end function
 
 ! gboolean gtk_text_view_place_cursor_onscreen (GtkTextView *text_view);
 function gtk_text_view_place_cursor_onscreen(text_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_place_cursor_onscreen
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_place_cursor_onscreen
   type(c_ptr), value :: text_view
 end function
 
@@ -39776,15 +39776,15 @@ end subroutine
 
 ! void gtk_text_view_set_cursor_visible (GtkTextView *text_view, gboolean setting);
 subroutine gtk_text_view_set_cursor_visible(text_view, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: text_view
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_text_view_get_cursor_visible (GtkTextView *text_view);
 function gtk_text_view_get_cursor_visible(text_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_get_cursor_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_get_cursor_visible
   type(c_ptr), value :: text_view
 end function
 
@@ -39907,48 +39907,48 @@ end function
 
 !  gboolean gtk_text_view_forward_display_line (GtkTextView *text_view, GtkTextIter *iter);
 function gtk_text_view_forward_display_line(text_view, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_forward_display_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_forward_display_line
   type(c_ptr), value :: text_view
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_view_backward_display_line (GtkTextView *text_view, GtkTextIter *iter);
 function gtk_text_view_backward_display_line(text_view, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_backward_display_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_backward_display_line
   type(c_ptr), value :: text_view
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_view_forward_display_line_end (GtkTextView *text_view, GtkTextIter *iter);
 function gtk_text_view_forward_display_line_end(text_view, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_forward_display_line_end
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_forward_display_line_end
   type(c_ptr), value :: text_view
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_view_backward_display_line_start (GtkTextView *text_view, GtkTextIter *iter);
 function gtk_text_view_backward_display_line_start(text_view, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_backward_display_line_start
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_backward_display_line_start
   type(c_ptr), value :: text_view
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_view_starts_display_line (GtkTextView *text_view, const GtkTextIter *iter);
 function gtk_text_view_starts_display_line(text_view, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_starts_display_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_starts_display_line
   type(c_ptr), value :: text_view
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_view_move_visually (GtkTextView *text_view, GtkTextIter *iter, gint count);
 function gtk_text_view_move_visually(text_view, iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_view_move_visually
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_move_visually
   type(c_ptr), value :: text_view
   type(c_ptr), value :: iter
   integer(c_int), value :: count
@@ -39956,8 +39956,8 @@ end function
 
 !  gboolean gtk_text_view_im_context_filter_keypress (GtkTextView *text_view, GdkEventKey *event);
 function gtk_text_view_im_context_filter_keypress(text_view, event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_im_context_filter_keypress
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_im_context_filter_keypress
   type(c_ptr), value :: text_view
   type(c_ptr), value :: event
 end function
@@ -40012,43 +40012,43 @@ end function
 
 ! void gtk_text_view_set_editable (GtkTextView *text_view, gboolean setting);
 subroutine gtk_text_view_set_editable(text_view, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: text_view
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_text_view_get_editable (GtkTextView *text_view);
 function gtk_text_view_get_editable(text_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_get_editable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_get_editable
   type(c_ptr), value :: text_view
 end function
 
 ! void gtk_text_view_set_overwrite (GtkTextView *text_view, gboolean overwrite);
 subroutine gtk_text_view_set_overwrite(text_view, overwrite) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: text_view
-  logical(c_bool), value :: overwrite
+  integer(c_int), value :: overwrite
 end subroutine
 
 ! gboolean gtk_text_view_get_overwrite (GtkTextView *text_view);
 function gtk_text_view_get_overwrite(text_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_get_overwrite
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_get_overwrite
   type(c_ptr), value :: text_view
 end function
 
 ! void gtk_text_view_set_accepts_tab (GtkTextView *text_view, gboolean accepts_tab);
 subroutine gtk_text_view_set_accepts_tab(text_view, accepts_tab) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: text_view
-  logical(c_bool), value :: accepts_tab
+  integer(c_int), value :: accepts_tab
 end subroutine
 
 ! gboolean gtk_text_view_get_accepts_tab (GtkTextView *text_view);
 function gtk_text_view_get_accepts_tab(text_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_view_get_accepts_tab
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_view_get_accepts_tab
   type(c_ptr), value :: text_view
 end function
 
@@ -40272,75 +40272,75 @@ end subroutine
 !  void gtk_entry_completion_set_inline_completion (GtkEntryCompletion *completion, gboolean inline_completion);
 subroutine gtk_entry_completion_set_inline_completion(completion, inline_complet&
       &ion) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: completion
-  logical(c_bool), value :: inline_completion
+  integer(c_int), value :: inline_completion
 end subroutine
 
 ! gboolean gtk_entry_completion_get_inline_completion (GtkEntryCompletion *completion);
 function gtk_entry_completion_get_inline_completion(completion) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_entry_completion_get_inline_completion
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_completion_get_inline_completion
   type(c_ptr), value :: completion
 end function
 
 ! void gtk_entry_completion_set_inline_selection (GtkEntryCompletion *completion, gboolean inline_selection);
 subroutine gtk_entry_completion_set_inline_selection(completion, inline_selectio&
       &n) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: completion
-  logical(c_bool), value :: inline_selection
+  integer(c_int), value :: inline_selection
 end subroutine
 
 ! gboolean gtk_entry_completion_get_inline_selection (GtkEntryCompletion *completion);
 function gtk_entry_completion_get_inline_selection(completion) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_entry_completion_get_inline_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_completion_get_inline_selection
   type(c_ptr), value :: completion
 end function
 
 ! void gtk_entry_completion_set_popup_completion (GtkEntryCompletion *completion, gboolean popup_completion);
 subroutine gtk_entry_completion_set_popup_completion(completion, popup_completio&
       &n) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: completion
-  logical(c_bool), value :: popup_completion
+  integer(c_int), value :: popup_completion
 end subroutine
 
 ! gboolean gtk_entry_completion_get_popup_completion (GtkEntryCompletion *completion);
 function gtk_entry_completion_get_popup_completion(completion) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_entry_completion_get_popup_completion
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_completion_get_popup_completion
   type(c_ptr), value :: completion
 end function
 
 ! void gtk_entry_completion_set_popup_set_width (GtkEntryCompletion *completion, gboolean popup_set_width);
 subroutine gtk_entry_completion_set_popup_set_width(completion, popup_set_width)&
       & bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: completion
-  logical(c_bool), value :: popup_set_width
+  integer(c_int), value :: popup_set_width
 end subroutine
 
 ! gboolean gtk_entry_completion_get_popup_set_width (GtkEntryCompletion *completion);
 function gtk_entry_completion_get_popup_set_width(completion) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_entry_completion_get_popup_set_width
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_completion_get_popup_set_width
   type(c_ptr), value :: completion
 end function
 
 ! void gtk_entry_completion_set_popup_single_match (GtkEntryCompletion *completion, gboolean popup_single_match);
 subroutine gtk_entry_completion_set_popup_single_match(completion, popup_single_&
       &match) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: completion
-  logical(c_bool), value :: popup_single_match
+  integer(c_int), value :: popup_single_match
 end subroutine
 
 ! gboolean gtk_entry_completion_get_popup_single_match (GtkEntryCompletion *completion);
 function gtk_entry_completion_get_popup_single_match(completion) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_entry_completion_get_popup_single_match
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_completion_get_popup_single_match
   type(c_ptr), value :: completion
 end function
 
@@ -40495,40 +40495,40 @@ end function
 
 !  GSList *gtk_text_iter_get_toggled_tags (const GtkTextIter *iter, gboolean toggled_on);
 function gtk_text_iter_get_toggled_tags(iter, toggled_on) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_text_iter_get_toggled_tags
   type(c_ptr), value :: iter
-  logical(c_bool), value :: toggled_on
+  integer(c_int), value :: toggled_on
 end function
 
 !  gboolean gtk_text_iter_begins_tag (const GtkTextIter *iter, GtkTextTag *tag);
 function gtk_text_iter_begins_tag(iter, tag) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_begins_tag
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_begins_tag
   type(c_ptr), value :: iter
   type(c_ptr), value :: tag
 end function
 
 !  gboolean gtk_text_iter_ends_tag (const GtkTextIter *iter, GtkTextTag *tag);
 function gtk_text_iter_ends_tag(iter, tag) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_ends_tag
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_ends_tag
   type(c_ptr), value :: iter
   type(c_ptr), value :: tag
 end function
 
 !  gboolean gtk_text_iter_toggles_tag (const GtkTextIter *iter, GtkTextTag *tag);
 function gtk_text_iter_toggles_tag(iter, tag) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_toggles_tag
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_toggles_tag
   type(c_ptr), value :: iter
   type(c_ptr), value :: tag
 end function
 
 !  gboolean gtk_text_iter_has_tag (const GtkTextIter *iter, GtkTextTag *tag);
 function gtk_text_iter_has_tag(iter, tag) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_has_tag
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_has_tag
   type(c_ptr), value :: iter
   type(c_ptr), value :: tag
 end function
@@ -40542,80 +40542,80 @@ end function
 
 !  gboolean gtk_text_iter_editable (const GtkTextIter *iter, gboolean default_setting);
 function gtk_text_iter_editable(iter, default_setting) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_editable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_editable
   type(c_ptr), value :: iter
-  logical(c_bool), value :: default_setting
+  integer(c_int), value :: default_setting
 end function
 
 ! gboolean gtk_text_iter_can_insert (const GtkTextIter *iter, gboolean default_editability);
 function gtk_text_iter_can_insert(iter, default_editability) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_can_insert
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_can_insert
   type(c_ptr), value :: iter
-  logical(c_bool), value :: default_editability
+  integer(c_int), value :: default_editability
 end function
 
 !  gboolean gtk_text_iter_starts_word (const GtkTextIter *iter);
 function gtk_text_iter_starts_word(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_starts_word
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_starts_word
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_ends_word (const GtkTextIter *iter);
 function gtk_text_iter_ends_word(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_ends_word
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_ends_word
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_inside_word (const GtkTextIter *iter);
 function gtk_text_iter_inside_word(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_inside_word
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_inside_word
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_starts_sentence (const GtkTextIter *iter);
 function gtk_text_iter_starts_sentence(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_starts_sentence
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_starts_sentence
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_ends_sentence (const GtkTextIter *iter);
 function gtk_text_iter_ends_sentence(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_ends_sentence
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_ends_sentence
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_inside_sentence (const GtkTextIter *iter);
 function gtk_text_iter_inside_sentence(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_inside_sentence
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_inside_sentence
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_starts_line (const GtkTextIter *iter);
 function gtk_text_iter_starts_line(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_starts_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_starts_line
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_ends_line (const GtkTextIter *iter);
 function gtk_text_iter_ends_line(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_ends_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_ends_line
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_is_cursor_position (const GtkTextIter *iter);
 function gtk_text_iter_is_cursor_position(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_is_cursor_position
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_is_cursor_position
   type(c_ptr), value :: iter
 end function
 
@@ -40635,8 +40635,8 @@ end function
 
 !  gboolean gtk_text_iter_get_attributes (const GtkTextIter *iter, GtkTextAttributes *values);
 function gtk_text_iter_get_attributes(iter, values) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_get_attributes
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_get_attributes
   type(c_ptr), value :: iter
   type(c_ptr), value :: values
 end function
@@ -40650,254 +40650,254 @@ end function
 
 ! gboolean gtk_text_iter_is_end (const GtkTextIter *iter);
 function gtk_text_iter_is_end(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_is_end
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_is_end
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_is_start (const GtkTextIter *iter);
 function gtk_text_iter_is_start(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_is_start
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_is_start
   type(c_ptr), value :: iter
 end function
 
 !  gboolean gtk_text_iter_forward_char (GtkTextIter *iter);
 function gtk_text_iter_forward_char(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_forward_char
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_char
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_backward_char (GtkTextIter *iter);
 function gtk_text_iter_backward_char(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_backward_char
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_char
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_forward_chars (GtkTextIter *iter, gint count);
 function gtk_text_iter_forward_chars(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_forward_chars
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_chars
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 ! gboolean gtk_text_iter_backward_chars (GtkTextIter *iter, gint count);
 function gtk_text_iter_backward_chars(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_backward_chars
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_chars
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 ! gboolean gtk_text_iter_forward_line (GtkTextIter *iter);
 function gtk_text_iter_forward_line(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_forward_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_line
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_backward_line (GtkTextIter *iter);
 function gtk_text_iter_backward_line(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_backward_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_line
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_forward_lines (GtkTextIter *iter, gint count);
 function gtk_text_iter_forward_lines(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_forward_lines
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_lines
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 ! gboolean gtk_text_iter_backward_lines (GtkTextIter *iter, gint count);
 function gtk_text_iter_backward_lines(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_backward_lines
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_lines
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 ! gboolean gtk_text_iter_forward_word_end (GtkTextIter *iter);
 function gtk_text_iter_forward_word_end(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_forward_word_end
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_word_end
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_backward_word_start (GtkTextIter *iter);
 function gtk_text_iter_backward_word_start(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_backward_word_start
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_word_start
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_forward_word_ends (GtkTextIter *iter, gint count);
 function gtk_text_iter_forward_word_ends(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_forward_word_ends
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_word_ends
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 ! gboolean gtk_text_iter_backward_word_starts (GtkTextIter *iter, gint count);
 function gtk_text_iter_backward_word_starts(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_backward_word_starts
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_word_starts
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 !  gboolean gtk_text_iter_forward_visible_line (GtkTextIter *iter);
 function gtk_text_iter_forward_visible_line(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_forward_visible_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_visible_line
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_backward_visible_line (GtkTextIter *iter);
 function gtk_text_iter_backward_visible_line(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_backward_visible_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_visible_line
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_forward_visible_lines (GtkTextIter *iter, gint count);
 function gtk_text_iter_forward_visible_lines(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_forward_visible_lines
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_visible_lines
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 ! gboolean gtk_text_iter_backward_visible_lines (GtkTextIter *iter, gint count);
 function gtk_text_iter_backward_visible_lines(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_backward_visible_lines
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_visible_lines
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 !  gboolean gtk_text_iter_forward_visible_word_end (GtkTextIter *iter);
 function gtk_text_iter_forward_visible_word_end(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_forward_visible_word_end
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_visible_word_end
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_backward_visible_word_start (GtkTextIter *iter);
 function gtk_text_iter_backward_visible_word_start(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_backward_visible_word_start
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_visible_word_start
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_forward_visible_word_ends (GtkTextIter *iter, gint count);
 function gtk_text_iter_forward_visible_word_ends(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_forward_visible_word_ends
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_visible_word_ends
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 ! gboolean gtk_text_iter_backward_visible_word_starts (GtkTextIter *iter, gint count);
 function gtk_text_iter_backward_visible_word_starts(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_backward_visible_word_starts
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_visible_word_starts
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 !  gboolean gtk_text_iter_forward_sentence_end (GtkTextIter *iter);
 function gtk_text_iter_forward_sentence_end(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_forward_sentence_end
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_sentence_end
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_backward_sentence_start (GtkTextIter *iter);
 function gtk_text_iter_backward_sentence_start(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_backward_sentence_start
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_sentence_start
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_forward_sentence_ends (GtkTextIter *iter, gint count);
 function gtk_text_iter_forward_sentence_ends(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_forward_sentence_ends
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_sentence_ends
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 ! gboolean gtk_text_iter_backward_sentence_starts (GtkTextIter *iter, gint count);
 function gtk_text_iter_backward_sentence_starts(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_backward_sentence_starts
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_sentence_starts
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 !  gboolean gtk_text_iter_forward_cursor_position (GtkTextIter *iter);
 function gtk_text_iter_forward_cursor_position(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_forward_cursor_position
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_cursor_position
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_backward_cursor_position (GtkTextIter *iter);
 function gtk_text_iter_backward_cursor_position(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_backward_cursor_position
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_cursor_position
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_forward_cursor_positions (GtkTextIter *iter, gint count);
 function gtk_text_iter_forward_cursor_positions(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_forward_cursor_positions
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_cursor_positions
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 ! gboolean gtk_text_iter_backward_cursor_positions (GtkTextIter *iter, gint count);
 function gtk_text_iter_backward_cursor_positions(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_backward_cursor_positions
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_cursor_positions
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 !  gboolean gtk_text_iter_forward_visible_cursor_position (GtkTextIter *iter);
 function gtk_text_iter_forward_visible_cursor_position(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_forward_visible_cursor_position
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_visible_cursor_position
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_backward_visible_cursor_position (GtkTextIter *iter);
 function gtk_text_iter_backward_visible_cursor_position(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_backward_visible_cursor_position
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_visible_cursor_position
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gtk_text_iter_forward_visible_cursor_positions (GtkTextIter *iter, gint count);
 function gtk_text_iter_forward_visible_cursor_positions(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_forward_visible_cursor_positions
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_visible_cursor_positions
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
 
 ! gboolean gtk_text_iter_backward_visible_cursor_positions (GtkTextIter *iter, gint count);
 function gtk_text_iter_backward_visible_cursor_positions(iter, count) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_text_iter_backward_visible_cursor_positions
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_visible_cursor_positions
   type(c_ptr), value :: iter
   integer(c_int), value :: count
 end function
@@ -40938,8 +40938,8 @@ end subroutine
 
 ! gboolean gtk_text_iter_forward_to_line_end (GtkTextIter *iter);
 function gtk_text_iter_forward_to_line_end(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_forward_to_line_end
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_to_line_end
   type(c_ptr), value :: iter
 end function
 
@@ -40959,24 +40959,24 @@ end subroutine
 
 !  gboolean gtk_text_iter_forward_to_tag_toggle (GtkTextIter *iter, GtkTextTag *tag);
 function gtk_text_iter_forward_to_tag_toggle(iter, tag) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_forward_to_tag_toggle
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_forward_to_tag_toggle
   type(c_ptr), value :: iter
   type(c_ptr), value :: tag
 end function
 
 !  gboolean gtk_text_iter_backward_to_tag_toggle (GtkTextIter *iter, GtkTextTag *tag);
 function gtk_text_iter_backward_to_tag_toggle(iter, tag) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_backward_to_tag_toggle
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_backward_to_tag_toggle
   type(c_ptr), value :: iter
   type(c_ptr), value :: tag
 end function
 
 !  gboolean gtk_text_iter_forward_find_char (GtkTextIter *iter, GtkTextCharPredicate pred, gpointer user_data, const GtkTextIter *limit);
 function gtk_text_iter_forward_find_char(iter, pred, user_data, limit) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_funptr
-  logical(c_bool) :: gtk_text_iter_forward_find_char
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: gtk_text_iter_forward_find_char
   type(c_ptr), value :: iter
   type(c_funptr), value :: pred
   type(c_ptr), value :: user_data
@@ -40985,8 +40985,8 @@ end function
 
 ! gboolean gtk_text_iter_backward_find_char (GtkTextIter *iter, GtkTextCharPredicate pred, gpointer user_data, const GtkTextIter *limit);
 function gtk_text_iter_backward_find_char(iter, pred, user_data, limit) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_funptr
-  logical(c_bool) :: gtk_text_iter_backward_find_char
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: gtk_text_iter_backward_find_char
   type(c_ptr), value :: iter
   type(c_funptr), value :: pred
   type(c_ptr), value :: user_data
@@ -40996,8 +40996,8 @@ end function
 !  gboolean gtk_text_iter_forward_search (const GtkTextIter *iter, const gchar *str, GtkTextSearchFlags flags, GtkTextIter *match_start, GtkTextIter *match_end, const GtkTextIter *limit);
 function gtk_text_iter_forward_search(iter, str, flags, match_start, match_end, &
       &limit) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: gtk_text_iter_forward_search
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_text_iter_forward_search
   type(c_ptr), value :: iter
   character(kind=c_char), dimension(*) :: str
   integer(c_int), value :: flags
@@ -41009,8 +41009,8 @@ end function
 !  gboolean gtk_text_iter_backward_search (const GtkTextIter *iter, const gchar *str, GtkTextSearchFlags flags, GtkTextIter *match_start, GtkTextIter *match_end, const GtkTextIter *limit);
 function gtk_text_iter_backward_search(iter, str, flags, match_start, match_end,&
       & limit) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: gtk_text_iter_backward_search
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_text_iter_backward_search
   type(c_ptr), value :: iter
   character(kind=c_char), dimension(*) :: str
   integer(c_int), value :: flags
@@ -41021,8 +41021,8 @@ end function
 
 !  gboolean gtk_text_iter_equal (const GtkTextIter *lhs, const GtkTextIter *rhs);
 function gtk_text_iter_equal(lhs, rhs) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_equal
   type(c_ptr), value :: lhs
   type(c_ptr), value :: rhs
 end function
@@ -41037,8 +41037,8 @@ end function
 
 ! gboolean gtk_text_iter_in_range (const GtkTextIter *iter, const GtkTextIter *start, const GtkTextIter *end);
 function gtk_text_iter_in_range(iter, start, end) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_iter_in_range
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_iter_in_range
   type(c_ptr), value :: iter
   type(c_ptr), value :: start
   type(c_ptr), value :: end
@@ -41059,16 +41059,16 @@ end function
 
 !  gboolean gtk_tree_drag_source_row_draggable (GtkTreeDragSource *drag_source, GtkTreePath *path);
 function gtk_tree_drag_source_row_draggable(drag_source, path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_drag_source_row_draggable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_drag_source_row_draggable
   type(c_ptr), value :: drag_source
   type(c_ptr), value :: path
 end function
 
 !  gboolean gtk_tree_drag_source_drag_data_delete (GtkTreeDragSource *drag_source, GtkTreePath *path);
 function gtk_tree_drag_source_drag_data_delete(drag_source, path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_drag_source_drag_data_delete
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_drag_source_drag_data_delete
   type(c_ptr), value :: drag_source
   type(c_ptr), value :: path
 end function
@@ -41076,8 +41076,8 @@ end function
 !  gboolean gtk_tree_drag_source_drag_data_get (GtkTreeDragSource *drag_source, GtkTreePath *path, GtkSelectionData *selection_data);
 function gtk_tree_drag_source_drag_data_get(drag_source, path, selection_data) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_drag_source_drag_data_get
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_drag_source_drag_data_get
   type(c_ptr), value :: drag_source
   type(c_ptr), value :: path
   type(c_ptr), value :: selection_data
@@ -41092,8 +41092,8 @@ end function
 !  gboolean gtk_tree_drag_dest_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, GtkSelectionData *selection_data);
 function gtk_tree_drag_dest_drag_data_received(drag_dest, dest, selection_data) &
       &bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_drag_dest_drag_data_received
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_drag_dest_drag_data_received
   type(c_ptr), value :: drag_dest
   type(c_ptr), value :: dest
   type(c_ptr), value :: selection_data
@@ -41102,8 +41102,8 @@ end function
 !  gboolean gtk_tree_drag_dest_row_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, GtkSelectionData *selection_data);
 function gtk_tree_drag_dest_row_drop_possible(drag_dest, dest_path, selection_da&
       &ta) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_drag_dest_row_drop_possible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_drag_dest_row_drop_possible
   type(c_ptr), value :: drag_dest
   type(c_ptr), value :: dest_path
   type(c_ptr), value :: selection_data
@@ -41111,8 +41111,8 @@ end function
 
 !  gboolean gtk_tree_set_row_drag_data (GtkSelectionData *selection_data, GtkTreeModel *tree_model, GtkTreePath *path);
 function gtk_tree_set_row_drag_data(selection_data, tree_model, path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_set_row_drag_data
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_set_row_drag_data
   type(c_ptr), value :: selection_data
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: path
@@ -41120,8 +41120,8 @@ end function
 
 ! gboolean gtk_tree_get_row_drag_data (GtkSelectionData *selection_data, GtkTreeModel **tree_model, GtkTreePath **path);
 function gtk_tree_get_row_drag_data(selection_data, tree_model, path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_get_row_drag_data
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_get_row_drag_data
   type(c_ptr), value :: selection_data
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: path
@@ -41150,8 +41150,8 @@ end subroutine
 
 ! gboolean ubuntu_menu_proxy_show_local (UbuntuMenuProxy *proxy);
 function ubuntu_menu_proxy_show_local(proxy) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: ubuntu_menu_proxy_show_local
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: ubuntu_menu_proxy_show_local
   type(c_ptr), value :: proxy
 end function
 
@@ -41215,8 +41215,8 @@ end function
 
 !  gboolean gtk_tree_selection_get_selected (GtkTreeSelection *selection, GtkTreeModel **model, GtkTreeIter *iter);
 function gtk_tree_selection_get_selected(selection, model, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_selection_get_selected
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_selection_get_selected
   type(c_ptr), value :: selection
   type(c_ptr), value :: model
   type(c_ptr), value :: iter
@@ -41275,16 +41275,16 @@ end subroutine
 
 ! gboolean gtk_tree_selection_path_is_selected (GtkTreeSelection *selection, GtkTreePath *path);
 function gtk_tree_selection_path_is_selected(selection, path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_selection_path_is_selected
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_selection_path_is_selected
   type(c_ptr), value :: selection
   type(c_ptr), value :: path
 end function
 
 ! gboolean gtk_tree_selection_iter_is_selected (GtkTreeSelection *selection, GtkTreeIter *iter);
 function gtk_tree_selection_iter_is_selected(selection, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_selection_iter_is_selected
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_selection_iter_is_selected
   type(c_ptr), value :: selection
   type(c_ptr), value :: iter
 end function
@@ -41396,8 +41396,8 @@ end subroutine
 
 !  gboolean gtk_icon_theme_has_icon (GtkIconTheme *icon_theme, const gchar *icon_name);
 function gtk_icon_theme_has_icon(icon_theme, icon_name) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_icon_theme_has_icon
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_icon_theme_has_icon
   type(c_ptr), value :: icon_theme
   character(kind=c_char), dimension(*) :: icon_name
 end function
@@ -41476,8 +41476,8 @@ end function
 
 !  gboolean gtk_icon_theme_rescan_if_needed (GtkIconTheme *icon_theme);
 function gtk_icon_theme_rescan_if_needed(icon_theme) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_theme_rescan_if_needed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_theme_rescan_if_needed
   type(c_ptr), value :: icon_theme
 end function
 
@@ -41547,23 +41547,23 @@ end function
 
 ! void gtk_icon_info_set_raw_coordinates (GtkIconInfo *icon_info, gboolean raw_coordinates);
 subroutine gtk_icon_info_set_raw_coordinates(icon_info, raw_coordinates) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: icon_info
-  logical(c_bool), value :: raw_coordinates
+  integer(c_int), value :: raw_coordinates
 end subroutine
 
 !  gboolean gtk_icon_info_get_embedded_rect (GtkIconInfo *icon_info, GdkRectangle *rectangle);
 function gtk_icon_info_get_embedded_rect(icon_info, rectangle) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_info_get_embedded_rect
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_info_get_embedded_rect
   type(c_ptr), value :: icon_info
   type(c_ptr), value :: rectangle
 end function
 
 ! gboolean gtk_icon_info_get_attach_points (GtkIconInfo *icon_info, GdkPoint **points, gint *n_points);
 function gtk_icon_info_get_attach_points(icon_info, points, n_points) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_info_get_attach_points
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_info_get_attach_points
   type(c_ptr), value :: icon_info
   type(c_ptr), value :: points
   type(c_ptr), value :: n_points
@@ -41628,19 +41628,19 @@ end subroutine
 ! void gtk_target_list_add_rich_text_targets (GtkTargetList *list, guint info, gboolean deserializable, GtkTextBuffer *buffer);
 subroutine gtk_target_list_add_rich_text_targets(list, info, deserializable, buf&
       &fer) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: list
   integer(c_int), value :: info
-  logical(c_bool), value :: deserializable
+  integer(c_int), value :: deserializable
   type(c_ptr), value :: buffer
 end subroutine
 
 ! void gtk_target_list_add_image_targets (GtkTargetList *list, guint info, gboolean writable);
 subroutine gtk_target_list_add_image_targets(list, info, writable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: list
   integer(c_int), value :: info
-  logical(c_bool), value :: writable
+  integer(c_int), value :: writable
 end subroutine
 
 ! void gtk_target_list_add_uri_targets (GtkTargetList *list, guint info);
@@ -41667,8 +41667,8 @@ end subroutine
 
 ! gboolean gtk_target_list_find (GtkTargetList *list, GdkAtom target, guint *info);
 function gtk_target_list_find(list, target, info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_target_list_find
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_target_list_find
   type(c_ptr), value :: list
   type(c_ptr), value :: target
   type(c_ptr), value :: info
@@ -41691,8 +41691,8 @@ end subroutine
 
 !  gboolean gtk_selection_owner_set (GtkWidget *widget, GdkAtom selection, guint32 time_);
 function gtk_selection_owner_set(widget, selection, time_) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: gtk_selection_owner_set
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gtk_selection_owner_set
   type(c_ptr), value :: widget
   type(c_ptr), value :: selection
   integer(c_int32_t), value :: time_
@@ -41701,8 +41701,8 @@ end function
 ! gboolean gtk_selection_owner_set_for_display (GdkDisplay *display, GtkWidget *widget, GdkAtom selection, guint32 time_);
 function gtk_selection_owner_set_for_display(display, widget, selection, time_) &
       &bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: gtk_selection_owner_set_for_display
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gtk_selection_owner_set_for_display
   type(c_ptr), value :: display
   type(c_ptr), value :: widget
   type(c_ptr), value :: selection
@@ -41737,8 +41737,8 @@ end subroutine
 
 ! gboolean gtk_selection_convert (GtkWidget *widget, GdkAtom selection, GdkAtom target, guint32 time_);
 function gtk_selection_convert(widget, selection, target, time_) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: gtk_selection_convert
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gtk_selection_convert
   type(c_ptr), value :: widget
   type(c_ptr), value :: selection
   type(c_ptr), value :: target
@@ -41807,8 +41807,8 @@ end subroutine
 
 ! gboolean gtk_selection_data_set_text (GtkSelectionData *selection_data, const gchar *str, gint len);
 function gtk_selection_data_set_text(selection_data, str, len) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: gtk_selection_data_set_text
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_selection_data_set_text
   type(c_ptr), value :: selection_data
   character(kind=c_char), dimension(*) :: str
   integer(c_int), value :: len
@@ -41823,8 +41823,8 @@ end function
 
 ! gboolean gtk_selection_data_set_pixbuf (GtkSelectionData *selection_data, GdkPixbuf *pixbuf);
 function gtk_selection_data_set_pixbuf(selection_data, pixbuf) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_selection_data_set_pixbuf
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_selection_data_set_pixbuf
   type(c_ptr), value :: selection_data
   type(c_ptr), value :: pixbuf
 end function
@@ -41838,8 +41838,8 @@ end function
 
 ! gboolean gtk_selection_data_set_uris (GtkSelectionData *selection_data, gchar **uris);
 function gtk_selection_data_set_uris(selection_data, uris) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_selection_data_set_uris
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_selection_data_set_uris
   type(c_ptr), value :: selection_data
   character(kind=c_char), dimension(*) :: uris
 end function
@@ -41854,8 +41854,8 @@ end function
 !  gboolean gtk_selection_data_get_targets (GtkSelectionData *selection_data, GdkAtom **targets, gint *n_atoms);
 function gtk_selection_data_get_targets(selection_data, targets, n_atoms) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_selection_data_get_targets
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_selection_data_get_targets
   type(c_ptr), value :: selection_data
   type(c_ptr), value :: targets
   type(c_ptr), value :: n_atoms
@@ -41863,16 +41863,16 @@ end function
 
 ! gboolean gtk_selection_data_targets_include_text (GtkSelectionData *selection_data);
 function gtk_selection_data_targets_include_text(selection_data) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_selection_data_targets_include_text
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_selection_data_targets_include_text
   type(c_ptr), value :: selection_data
 end function
 
 ! gboolean gtk_selection_data_targets_include_rich_text (GtkSelectionData *selection_data, GtkTextBuffer *buffer);
 function gtk_selection_data_targets_include_rich_text(selection_data, buffer) bi&
       &nd(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_selection_data_targets_include_rich_text
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_selection_data_targets_include_rich_text
   type(c_ptr), value :: selection_data
   type(c_ptr), value :: buffer
 end function
@@ -41880,31 +41880,31 @@ end function
 ! gboolean gtk_selection_data_targets_include_image (GtkSelectionData *selection_data, gboolean writable);
 function gtk_selection_data_targets_include_image(selection_data, writable) bind&
       &(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_selection_data_targets_include_image
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_selection_data_targets_include_image
   type(c_ptr), value :: selection_data
-  logical(c_bool), value :: writable
+  integer(c_int), value :: writable
 end function
 
 ! gboolean gtk_selection_data_targets_include_uri (GtkSelectionData *selection_data);
 function gtk_selection_data_targets_include_uri(selection_data) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_selection_data_targets_include_uri
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_selection_data_targets_include_uri
   type(c_ptr), value :: selection_data
 end function
 
 ! gboolean gtk_targets_include_text (GdkAtom *targets, gint n_targets);
 function gtk_targets_include_text(targets, n_targets) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_targets_include_text
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_targets_include_text
   type(c_ptr), value :: targets
   integer(c_int), value :: n_targets
 end function
 
 ! gboolean gtk_targets_include_rich_text (GdkAtom *targets, gint n_targets, GtkTextBuffer *buffer);
 function gtk_targets_include_rich_text(targets, n_targets, buffer) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_targets_include_rich_text
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_targets_include_rich_text
   type(c_ptr), value :: targets
   integer(c_int), value :: n_targets
   type(c_ptr), value :: buffer
@@ -41912,17 +41912,17 @@ end function
 
 ! gboolean gtk_targets_include_image (GdkAtom *targets, gint n_targets, gboolean writable);
 function gtk_targets_include_image(targets, n_targets, writable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_targets_include_image
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_targets_include_image
   type(c_ptr), value :: targets
   integer(c_int), value :: n_targets
-  logical(c_bool), value :: writable
+  integer(c_int), value :: writable
 end function
 
 ! gboolean gtk_targets_include_uri (GdkAtom *targets, gint n_targets);
 function gtk_targets_include_uri(targets, n_targets) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_targets_include_uri
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_targets_include_uri
   type(c_ptr), value :: targets
   integer(c_int), value :: n_targets
 end function
@@ -41935,8 +41935,8 @@ end subroutine
 
 !  gboolean gtk_selection_clear (GtkWidget *widget, GdkEventSelection *event);
 function gtk_selection_clear(widget, event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_selection_clear
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_selection_clear
   type(c_ptr), value :: widget
   type(c_ptr), value :: event
 end function
@@ -42034,8 +42034,8 @@ end subroutine
 !  gboolean gtk_tooltips_get_info_from_tip_window (GtkWindow *tip_window, GtkTooltips **tooltips, GtkWidget **current_widget);
 function gtk_tooltips_get_info_from_tip_window(tip_window, tooltips, current_wid&
       &get) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tooltips_get_info_from_tip_window
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tooltips_get_info_from_tip_window
   type(c_ptr), value :: tip_window
   type(c_ptr), value :: tooltips
   type(c_ptr), value :: current_widget
@@ -42069,15 +42069,15 @@ end function
 
 ! void gtk_check_menu_item_set_active (GtkCheckMenuItem *check_menu_item, gboolean is_active);
 subroutine gtk_check_menu_item_set_active(check_menu_item, is_active) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: check_menu_item
-  logical(c_bool), value :: is_active
+  integer(c_int), value :: is_active
 end subroutine
 
 ! gboolean gtk_check_menu_item_get_active (GtkCheckMenuItem *check_menu_item);
 function gtk_check_menu_item_get_active(check_menu_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_check_menu_item_get_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_check_menu_item_get_active
   type(c_ptr), value :: check_menu_item
 end function
 
@@ -42090,38 +42090,38 @@ end subroutine
 ! void gtk_check_menu_item_set_inconsistent (GtkCheckMenuItem *check_menu_item, gboolean setting);
 subroutine gtk_check_menu_item_set_inconsistent(check_menu_item, setting) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: check_menu_item
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_check_menu_item_get_inconsistent (GtkCheckMenuItem *check_menu_item);
 function gtk_check_menu_item_get_inconsistent(check_menu_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_check_menu_item_get_inconsistent
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_check_menu_item_get_inconsistent
   type(c_ptr), value :: check_menu_item
 end function
 
 ! void gtk_check_menu_item_set_draw_as_radio (GtkCheckMenuItem *check_menu_item, gboolean draw_as_radio);
 subroutine gtk_check_menu_item_set_draw_as_radio(check_menu_item, draw_as_radio)&
       & bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: check_menu_item
-  logical(c_bool), value :: draw_as_radio
+  integer(c_int), value :: draw_as_radio
 end subroutine
 
 ! gboolean gtk_check_menu_item_get_draw_as_radio (GtkCheckMenuItem *check_menu_item);
 function gtk_check_menu_item_get_draw_as_radio(check_menu_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_check_menu_item_get_draw_as_radio
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_check_menu_item_get_draw_as_radio
   type(c_ptr), value :: check_menu_item
 end function
 
 !  void gtk_check_menu_item_set_show_toggle (GtkCheckMenuItem *menu_item, gboolean always);
 subroutine gtk_check_menu_item_set_show_toggle(menu_item, always) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu_item
-  logical(c_bool), value :: always
+  integer(c_int), value :: always
 end subroutine
 
 !   GType gtk_about_dialog_get_type (void) G_GNUC_CONST;
@@ -42222,16 +42222,16 @@ end subroutine
 
 !  gboolean gtk_about_dialog_get_wrap_license (GtkAboutDialog *about);
 function gtk_about_dialog_get_wrap_license(about) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_about_dialog_get_wrap_license
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_about_dialog_get_wrap_license
   type(c_ptr), value :: about
 end function
 
 ! void gtk_about_dialog_set_wrap_license (GtkAboutDialog *about, gboolean wrap_license);
 subroutine gtk_about_dialog_set_wrap_license(about, wrap_license) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: about
-  logical(c_bool), value :: wrap_license
+  integer(c_int), value :: wrap_license
 end subroutine
 
 !  G_CONST_RETURN gchar *gtk_about_dialog_get_website (GtkAboutDialog *about);
@@ -42379,15 +42379,15 @@ end function
 
 ! void gtk_ui_manager_set_add_tearoffs (GtkUIManager *self, gboolean add_tearoffs);
 subroutine gtk_ui_manager_set_add_tearoffs(self, add_tearoffs) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: self
-  logical(c_bool), value :: add_tearoffs
+  integer(c_int), value :: add_tearoffs
 end subroutine
 
 ! gboolean gtk_ui_manager_get_add_tearoffs (GtkUIManager *self);
 function gtk_ui_manager_get_add_tearoffs(self) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_ui_manager_get_add_tearoffs
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_ui_manager_get_add_tearoffs
   type(c_ptr), value :: self
 end function
 
@@ -42466,14 +42466,14 @@ end function
 ! void gtk_ui_manager_add_ui (GtkUIManager *self, guint merge_id, const gchar *path, const gchar *name, const gchar *action, GtkUIManagerItemType type, gboolean top);
 subroutine gtk_ui_manager_add_ui(self, merge_id, path, name, action, type, top) &
       &bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: self
   integer(c_int), value :: merge_id
   character(kind=c_char), dimension(*) :: path
   character(kind=c_char), dimension(*) :: name
   character(kind=c_char), dimension(*) :: action
   integer(c_int), value :: type
-  logical(c_bool), value :: top
+  integer(c_int), value :: top
 end subroutine
 
 ! void gtk_ui_manager_remove_ui (GtkUIManager *self, guint merge_id);
@@ -42525,30 +42525,30 @@ end function
 
 ! gboolean gtk_action_group_get_sensitive (GtkActionGroup *action_group);
 function gtk_action_group_get_sensitive(action_group) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_action_group_get_sensitive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_action_group_get_sensitive
   type(c_ptr), value :: action_group
 end function
 
 ! void gtk_action_group_set_sensitive (GtkActionGroup *action_group, gboolean sensitive);
 subroutine gtk_action_group_set_sensitive(action_group, sensitive) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action_group
-  logical(c_bool), value :: sensitive
+  integer(c_int), value :: sensitive
 end subroutine
 
 ! gboolean gtk_action_group_get_visible (GtkActionGroup *action_group);
 function gtk_action_group_get_visible(action_group) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_action_group_get_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_action_group_get_visible
   type(c_ptr), value :: action_group
 end function
 
 ! void gtk_action_group_set_visible (GtkActionGroup *action_group, gboolean visible);
 subroutine gtk_action_group_set_visible(action_group, visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action_group
-  logical(c_bool), value :: visible
+  integer(c_int), value :: visible
 end subroutine
 
 ! GtkAction *gtk_action_group_get_action (GtkActionGroup *action_group, const gchar *action_name);
@@ -43239,9 +43239,9 @@ end subroutine
 
 ! void gtk_preview_set_expand (GtkPreview *preview, gboolean expand);
 subroutine gtk_preview_set_expand(preview, expand) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: preview
-  logical(c_bool), value :: expand
+  integer(c_int), value :: expand
 end subroutine
 
 !  void gtk_preview_set_gamma (double gamma_);
@@ -43373,10 +43373,10 @@ end function
 
 !  gboolean gtk_rc_reparse_all_for_settings (GtkSettings *settings, gboolean force_load);
 function gtk_rc_reparse_all_for_settings(settings, force_load) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_rc_reparse_all_for_settings
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_rc_reparse_all_for_settings
   type(c_ptr), value :: settings
-  logical(c_bool), value :: force_load
+  integer(c_int), value :: force_load
 end function
 
 ! void gtk_rc_reset_styles (GtkSettings *settings);
@@ -43408,8 +43408,8 @@ end subroutine
 
 ! gboolean gtk_rc_reparse_all (void);
 function gtk_rc_reparse_all() bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool) :: gtk_rc_reparse_all
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_rc_reparse_all
 end function
 
 !  void gtk_rc_add_widget_name_style (GtkRcStyle *rc_style, const gchar *pattern);
@@ -43583,15 +43583,15 @@ end function
 
 ! void gtk_color_button_set_use_alpha (GtkColorButton *color_button, gboolean use_alpha);
 subroutine gtk_color_button_set_use_alpha(color_button, use_alpha) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: color_button
-  logical(c_bool), value :: use_alpha
+  integer(c_int), value :: use_alpha
 end subroutine
 
 ! gboolean gtk_color_button_get_use_alpha (GtkColorButton *color_button);
 function gtk_color_button_get_use_alpha(color_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_color_button_get_use_alpha
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_color_button_get_use_alpha
   type(c_ptr), value :: color_button
 end function
 
@@ -43651,15 +43651,15 @@ end function
 
 !  void gtk_entry_set_visibility (GtkEntry *entry, gboolean visible);
 subroutine gtk_entry_set_visibility(entry, visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: entry
-  logical(c_bool), value :: visible
+  integer(c_int), value :: visible
 end subroutine
 
 ! gboolean gtk_entry_get_visibility (GtkEntry *entry);
 function gtk_entry_get_visibility(entry) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_entry_get_visibility
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_get_visibility
   type(c_ptr), value :: entry
 end function
 
@@ -43685,15 +43685,15 @@ end subroutine
 
 !  void gtk_entry_set_has_frame (GtkEntry *entry, gboolean setting);
 subroutine gtk_entry_set_has_frame(entry, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: entry
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_entry_get_has_frame (GtkEntry *entry);
 function gtk_entry_get_has_frame(entry) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_entry_get_has_frame
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_get_has_frame
   type(c_ptr), value :: entry
 end function
 
@@ -43713,15 +43713,15 @@ end function
 
 !  void gtk_entry_set_overwrite_mode (GtkEntry *entry, gboolean overwrite);
 subroutine gtk_entry_set_overwrite_mode(entry, overwrite) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: entry
-  logical(c_bool), value :: overwrite
+  integer(c_int), value :: overwrite
 end subroutine
 
 ! gboolean gtk_entry_get_overwrite_mode (GtkEntry *entry);
 function gtk_entry_get_overwrite_mode(entry) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_entry_get_overwrite_mode
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_get_overwrite_mode
   type(c_ptr), value :: entry
 end function
 
@@ -43748,15 +43748,15 @@ end function
 
 !  void gtk_entry_set_activates_default (GtkEntry *entry, gboolean setting);
 subroutine gtk_entry_set_activates_default(entry, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: entry
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_entry_get_activates_default (GtkEntry *entry);
 function gtk_entry_get_activates_default(entry) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_entry_get_activates_default
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_get_activates_default
   type(c_ptr), value :: entry
 end function
 
@@ -43969,32 +43969,32 @@ end function
 
 ! void gtk_entry_set_icon_activatable (GtkEntry *entry, GtkEntryIconPosition icon_pos, gboolean activatable);
 subroutine gtk_entry_set_icon_activatable(entry, icon_pos, activatable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: entry
   integer(c_int), value :: icon_pos
-  logical(c_bool), value :: activatable
+  integer(c_int), value :: activatable
 end subroutine
 
 ! gboolean gtk_entry_get_icon_activatable (GtkEntry *entry, GtkEntryIconPosition icon_pos);
 function gtk_entry_get_icon_activatable(entry, icon_pos) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_entry_get_icon_activatable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_get_icon_activatable
   type(c_ptr), value :: entry
   integer(c_int), value :: icon_pos
 end function
 
 ! void gtk_entry_set_icon_sensitive (GtkEntry *entry, GtkEntryIconPosition icon_pos, gboolean sensitive);
 subroutine gtk_entry_set_icon_sensitive(entry, icon_pos, sensitive) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: entry
   integer(c_int), value :: icon_pos
-  logical(c_bool), value :: sensitive
+  integer(c_int), value :: sensitive
 end subroutine
 
 ! gboolean gtk_entry_get_icon_sensitive (GtkEntry *entry, GtkEntryIconPosition icon_pos);
 function gtk_entry_get_icon_sensitive(entry, icon_pos) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_entry_get_icon_sensitive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_get_icon_sensitive
   type(c_ptr), value :: entry
   integer(c_int), value :: icon_pos
 end function
@@ -44067,8 +44067,8 @@ end function
 
 !  gboolean gtk_entry_im_context_filter_keypress (GtkEntry *entry, GdkEventKey *event);
 function gtk_entry_im_context_filter_keypress(entry, event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_entry_im_context_filter_keypress
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_entry_im_context_filter_keypress
   type(c_ptr), value :: entry
   type(c_ptr), value :: event
 end function
@@ -44117,9 +44117,9 @@ end subroutine
 
 ! void gtk_entry_set_editable (GtkEntry *entry, gboolean editable);
 subroutine gtk_entry_set_editable(entry, editable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: entry
-  logical(c_bool), value :: editable
+  integer(c_int), value :: editable
 end subroutine
 
 !   GType gtk_separator_menu_item_get_type (void) G_GNUC_CONST;
@@ -44392,16 +44392,16 @@ end subroutine
 
 ! gboolean gtk_tree_view_get_headers_visible (GtkTreeView *tree_view);
 function gtk_tree_view_get_headers_visible(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_headers_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_headers_visible
   type(c_ptr), value :: tree_view
 end function
 
 ! void gtk_tree_view_set_headers_visible (GtkTreeView *tree_view, gboolean headers_visible);
 subroutine gtk_tree_view_set_headers_visible(tree_view, headers_visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: headers_visible
+  integer(c_int), value :: headers_visible
 end subroutine
 
 ! void gtk_tree_view_columns_autosize (GtkTreeView *tree_view);
@@ -44412,29 +44412,29 @@ end subroutine
 
 ! gboolean gtk_tree_view_get_headers_clickable (GtkTreeView *tree_view);
 function gtk_tree_view_get_headers_clickable(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_headers_clickable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_headers_clickable
   type(c_ptr), value :: tree_view
 end function
 
 ! void gtk_tree_view_set_headers_clickable (GtkTreeView *tree_view, gboolean setting);
 subroutine gtk_tree_view_set_headers_clickable(tree_view, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! void gtk_tree_view_set_rules_hint (GtkTreeView *tree_view, gboolean setting);
 subroutine gtk_tree_view_set_rules_hint(tree_view, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_tree_view_get_rules_hint (GtkTreeView *tree_view);
 function gtk_tree_view_get_rules_hint(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_rules_hint
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_rules_hint
   type(c_ptr), value :: tree_view
 end function
 
@@ -44536,11 +44536,11 @@ end subroutine
 ! void gtk_tree_view_scroll_to_cell (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gboolean use_align, gfloat row_align, gfloat col_align);
 subroutine gtk_tree_view_scroll_to_cell(tree_view, path, column, use_align, row_&
       &align, col_align) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_float
+  use iso_c_binding, only: c_ptr, c_int, c_float
   type(c_ptr), value :: tree_view
   type(c_ptr), value :: path
   type(c_ptr), value :: column
-  logical(c_bool), value :: use_align
+  integer(c_int), value :: use_align
   real(c_float), value :: row_align
   real(c_float), value :: col_align
 end subroutine
@@ -44574,17 +44574,17 @@ end subroutine
 
 ! gboolean gtk_tree_view_expand_row (GtkTreeView *tree_view, GtkTreePath *path, gboolean open_all);
 function gtk_tree_view_expand_row(tree_view, path, open_all) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_expand_row
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_expand_row
   type(c_ptr), value :: tree_view
   type(c_ptr), value :: path
-  logical(c_bool), value :: open_all
+  integer(c_int), value :: open_all
 end function
 
 ! gboolean gtk_tree_view_collapse_row (GtkTreeView *tree_view, GtkTreePath *path);
 function gtk_tree_view_collapse_row(tree_view, path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_collapse_row
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_collapse_row
   type(c_ptr), value :: tree_view
   type(c_ptr), value :: path
 end function
@@ -44599,45 +44599,45 @@ end subroutine
 
 ! gboolean gtk_tree_view_row_expanded (GtkTreeView *tree_view, GtkTreePath *path);
 function gtk_tree_view_row_expanded(tree_view, path) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_row_expanded
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_row_expanded
   type(c_ptr), value :: tree_view
   type(c_ptr), value :: path
 end function
 
 ! void gtk_tree_view_set_reorderable (GtkTreeView *tree_view, gboolean reorderable);
 subroutine gtk_tree_view_set_reorderable(tree_view, reorderable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: reorderable
+  integer(c_int), value :: reorderable
 end subroutine
 
 ! gboolean gtk_tree_view_get_reorderable (GtkTreeView *tree_view);
 function gtk_tree_view_get_reorderable(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_reorderable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_reorderable
   type(c_ptr), value :: tree_view
 end function
 
 ! void gtk_tree_view_set_cursor (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *focus_column, gboolean start_editing);
 subroutine gtk_tree_view_set_cursor(tree_view, path, focus_column, start_editing&
       &) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
   type(c_ptr), value :: path
   type(c_ptr), value :: focus_column
-  logical(c_bool), value :: start_editing
+  integer(c_int), value :: start_editing
 end subroutine
 
 ! void gtk_tree_view_set_cursor_on_cell (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *focus_column, GtkCellRenderer *focus_cell, gboolean start_editing);
 subroutine gtk_tree_view_set_cursor_on_cell(tree_view, path, focus_column, focus&
       &_cell, start_editing) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
   type(c_ptr), value :: path
   type(c_ptr), value :: focus_column
   type(c_ptr), value :: focus_cell
-  logical(c_bool), value :: start_editing
+  integer(c_int), value :: start_editing
 end subroutine
 
 ! void gtk_tree_view_get_cursor (GtkTreeView *tree_view, GtkTreePath **path, GtkTreeViewColumn **focus_column);
@@ -44658,8 +44658,8 @@ end function
 ! gboolean gtk_tree_view_get_path_at_pos (GtkTreeView *tree_view, gint x, gint y, GtkTreePath **path, GtkTreeViewColumn **column, gint *cell_x, gint *cell_y);
 function gtk_tree_view_get_path_at_pos(tree_view, x, y, path, column, cell_x, ce&
       &ll_y) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_tree_view_get_path_at_pos
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_path_at_pos
   type(c_ptr), value :: tree_view
   integer(c_int), value :: x
   integer(c_int), value :: y
@@ -44720,8 +44720,8 @@ end subroutine
 !  gboolean gtk_tree_view_get_visible_range (GtkTreeView *tree_view, GtkTreePath **start_path, GtkTreePath **end_path);
 function gtk_tree_view_get_visible_range(tree_view, start_path, end_path) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_visible_range
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_visible_range
   type(c_ptr), value :: tree_view
   type(c_ptr), value :: start_path
   type(c_ptr), value :: end_path
@@ -44779,8 +44779,8 @@ end subroutine
 ! gboolean gtk_tree_view_get_dest_row_at_pos (GtkTreeView *tree_view, gint drag_x, gint drag_y, GtkTreePath **path, GtkTreeViewDropPosition *pos);
 function gtk_tree_view_get_dest_row_at_pos(tree_view, drag_x, drag_y, path, pos)&
       & bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_tree_view_get_dest_row_at_pos
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_dest_row_at_pos
   type(c_ptr), value :: tree_view
   integer(c_int), value :: drag_x
   integer(c_int), value :: drag_y
@@ -44798,15 +44798,15 @@ end function
 
 !  void gtk_tree_view_set_enable_search (GtkTreeView *tree_view, gboolean enable_search);
 subroutine gtk_tree_view_set_enable_search(tree_view, enable_search) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: enable_search
+  integer(c_int), value :: enable_search
 end subroutine
 
 ! gboolean gtk_tree_view_get_enable_search (GtkTreeView *tree_view);
 function gtk_tree_view_get_enable_search(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_enable_search
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_enable_search
   type(c_ptr), value :: tree_view
 end function
 
@@ -44950,64 +44950,64 @@ end subroutine
 
 !  void gtk_tree_view_set_fixed_height_mode (GtkTreeView *tree_view, gboolean enable);
 subroutine gtk_tree_view_set_fixed_height_mode(tree_view, enable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: enable
+  integer(c_int), value :: enable
 end subroutine
 
 ! gboolean gtk_tree_view_get_fixed_height_mode (GtkTreeView *tree_view);
 function gtk_tree_view_get_fixed_height_mode(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_fixed_height_mode
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_fixed_height_mode
   type(c_ptr), value :: tree_view
 end function
 
 ! void gtk_tree_view_set_hover_selection (GtkTreeView *tree_view, gboolean hover);
 subroutine gtk_tree_view_set_hover_selection(tree_view, hover) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: hover
+  integer(c_int), value :: hover
 end subroutine
 
 ! gboolean gtk_tree_view_get_hover_selection (GtkTreeView *tree_view);
 function gtk_tree_view_get_hover_selection(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_hover_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_hover_selection
   type(c_ptr), value :: tree_view
 end function
 
 ! void gtk_tree_view_set_hover_expand (GtkTreeView *tree_view, gboolean expand);
 subroutine gtk_tree_view_set_hover_expand(tree_view, expand) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: expand
+  integer(c_int), value :: expand
 end subroutine
 
 ! gboolean gtk_tree_view_get_hover_expand (GtkTreeView *tree_view);
 function gtk_tree_view_get_hover_expand(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_hover_expand
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_hover_expand
   type(c_ptr), value :: tree_view
 end function
 
 ! void gtk_tree_view_set_rubber_banding (GtkTreeView *tree_view, gboolean enable);
 subroutine gtk_tree_view_set_rubber_banding(tree_view, enable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: enable
+  integer(c_int), value :: enable
 end subroutine
 
 ! gboolean gtk_tree_view_get_rubber_banding (GtkTreeView *tree_view);
 function gtk_tree_view_get_rubber_banding(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_rubber_banding
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_rubber_banding
   type(c_ptr), value :: tree_view
 end function
 
 !  gboolean gtk_tree_view_is_rubber_banding_active (GtkTreeView *tree_view);
 function gtk_tree_view_is_rubber_banding_active(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_is_rubber_banding_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_is_rubber_banding_active
   type(c_ptr), value :: tree_view
 end function
 
@@ -45044,29 +45044,29 @@ end subroutine
 
 ! gboolean gtk_tree_view_get_enable_tree_lines (GtkTreeView *tree_view);
 function gtk_tree_view_get_enable_tree_lines(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_enable_tree_lines
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_enable_tree_lines
   type(c_ptr), value :: tree_view
 end function
 
 ! void gtk_tree_view_set_enable_tree_lines (GtkTreeView *tree_view, gboolean enabled);
 subroutine gtk_tree_view_set_enable_tree_lines(tree_view, enabled) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: enabled
+  integer(c_int), value :: enabled
 end subroutine
 
 ! void gtk_tree_view_set_show_expanders (GtkTreeView *tree_view, gboolean enabled);
 subroutine gtk_tree_view_set_show_expanders(tree_view, enabled) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_view
-  logical(c_bool), value :: enabled
+  integer(c_int), value :: enabled
 end subroutine
 
 ! gboolean gtk_tree_view_get_show_expanders (GtkTreeView *tree_view);
 function gtk_tree_view_get_show_expanders(tree_view) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_show_expanders
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_show_expanders
   type(c_ptr), value :: tree_view
 end function
 
@@ -45106,12 +45106,12 @@ end subroutine
 ! gboolean gtk_tree_view_get_tooltip_context(GtkTreeView *tree_view, gint *x, gint *y, gboolean keyboard_tip, GtkTreeModel **model, GtkTreePath **path, GtkTreeIter *iter);
 function gtk_tree_view_get_tooltip_context(tree_view, x, y, keyboard_tip, model,&
       & path, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_get_tooltip_context
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_get_tooltip_context
   type(c_ptr), value :: tree_view
   type(c_ptr), value :: x
   type(c_ptr), value :: y
-  logical(c_bool), value :: keyboard_tip
+  integer(c_int), value :: keyboard_tip
   type(c_ptr), value :: model
   type(c_ptr), value :: path
   type(c_ptr), value :: iter
@@ -45161,16 +45161,16 @@ end function
 
 ! gboolean gtk_recent_action_get_show_numbers (GtkRecentAction *action);
 function gtk_recent_action_get_show_numbers(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_action_get_show_numbers
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_action_get_show_numbers
   type(c_ptr), value :: action
 end function
 
 ! void gtk_recent_action_set_show_numbers (GtkRecentAction *action, gboolean show_numbers);
 subroutine gtk_recent_action_set_show_numbers(action, show_numbers) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action
-  logical(c_bool), value :: show_numbers
+  integer(c_int), value :: show_numbers
 end subroutine
 
 !   GType gtk_tree_store_get_type (void) G_GNUC_CONST;
@@ -45225,8 +45225,8 @@ end subroutine
 
 ! gboolean gtk_tree_store_remove (GtkTreeStore *tree_store, GtkTreeIter *iter);
 function gtk_tree_store_remove(tree_store, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_store_remove
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_store_remove
   type(c_ptr), value :: tree_store
   type(c_ptr), value :: iter
 end function
@@ -45291,8 +45291,8 @@ end subroutine
 
 ! gboolean gtk_tree_store_is_ancestor (GtkTreeStore *tree_store, GtkTreeIter *iter, GtkTreeIter *descendant);
 function gtk_tree_store_is_ancestor(tree_store, iter, descendant) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_store_is_ancestor
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_store_is_ancestor
   type(c_ptr), value :: tree_store
   type(c_ptr), value :: iter
   type(c_ptr), value :: descendant
@@ -45314,8 +45314,8 @@ end subroutine
 
 ! gboolean gtk_tree_store_iter_is_valid (GtkTreeStore *tree_store, GtkTreeIter *iter);
 function gtk_tree_store_iter_is_valid(tree_store, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_store_iter_is_valid
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_store_iter_is_valid
   type(c_ptr), value :: tree_store
   type(c_ptr), value :: iter
 end function
@@ -45399,8 +45399,8 @@ end subroutine
 ! gboolean gtk_cell_renderer_activate (GtkCellRenderer *cell, GdkEvent *event, GtkWidget *widget, const gchar *path, const GdkRectangle *background_area, const GdkRectangle *cell_area, GtkCellRendererState flags);
 function gtk_cell_renderer_activate(cell, event, widget, path, background_area, &
       &cell_area, flags) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: gtk_cell_renderer_activate
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_cell_renderer_activate
   type(c_ptr), value :: cell
   type(c_ptr), value :: event
   type(c_ptr), value :: widget
@@ -45474,29 +45474,29 @@ end subroutine
 
 !  void gtk_cell_renderer_set_visible (GtkCellRenderer *cell, gboolean visible);
 subroutine gtk_cell_renderer_set_visible(cell, visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: cell
-  logical(c_bool), value :: visible
+  integer(c_int), value :: visible
 end subroutine
 
 ! gboolean gtk_cell_renderer_get_visible (GtkCellRenderer *cell);
 function gtk_cell_renderer_get_visible(cell) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_cell_renderer_get_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_renderer_get_visible
   type(c_ptr), value :: cell
 end function
 
 !  void gtk_cell_renderer_set_sensitive (GtkCellRenderer *cell, gboolean sensitive);
 subroutine gtk_cell_renderer_set_sensitive(cell, sensitive) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: cell
-  logical(c_bool), value :: sensitive
+  integer(c_int), value :: sensitive
 end subroutine
 
 ! gboolean gtk_cell_renderer_get_sensitive (GtkCellRenderer *cell);
 function gtk_cell_renderer_get_sensitive(cell) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_cell_renderer_get_sensitive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_renderer_get_sensitive
   type(c_ptr), value :: cell
 end function
 
@@ -45508,9 +45508,9 @@ end subroutine
 
 !  void gtk_cell_renderer_stop_editing (GtkCellRenderer *cell, gboolean canceled);
 subroutine gtk_cell_renderer_stop_editing(cell, canceled) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: cell
-  logical(c_bool), value :: canceled
+  integer(c_int), value :: canceled
 end subroutine
 
 !   GType gtk_tool_item_group_get_type (void) G_GNUC_CONST;
@@ -45542,9 +45542,9 @@ end subroutine
 
 ! void gtk_tool_item_group_set_collapsed (GtkToolItemGroup *group, gboolean collapsed);
 subroutine gtk_tool_item_group_set_collapsed(group, collapsed) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: group
-  logical(c_bool), value :: collapsed
+  integer(c_int), value :: collapsed
 end subroutine
 
 ! void gtk_tool_item_group_set_ellipsize (GtkToolItemGroup *group, PangoEllipsizeMode ellipsize);
@@ -45577,8 +45577,8 @@ end function
 
 ! gboolean gtk_tool_item_group_get_collapsed (GtkToolItemGroup *group);
 function gtk_tool_item_group_get_collapsed(group) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tool_item_group_get_collapsed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tool_item_group_get_collapsed
   type(c_ptr), value :: group
 end function
 
@@ -45658,16 +45658,16 @@ end function
 
 !  gboolean gtk_separator_tool_item_get_draw (GtkSeparatorToolItem *item);
 function gtk_separator_tool_item_get_draw(item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_separator_tool_item_get_draw
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_separator_tool_item_get_draw
   type(c_ptr), value :: item
 end function
 
 ! void gtk_separator_tool_item_set_draw (GtkSeparatorToolItem *item, gboolean draw);
 subroutine gtk_separator_tool_item_set_draw(item, draw) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: item
-  logical(c_bool), value :: draw
+  integer(c_int), value :: draw
 end subroutine
 
 !   GType gtk_bin_get_type (void) G_GNUC_CONST;
@@ -45945,8 +45945,8 @@ end subroutine
 
 ! gboolean gtk_hsv_is_adjusting (GtkHSV *hsv);
 function gtk_hsv_is_adjusting(hsv) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_hsv_is_adjusting
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_hsv_is_adjusting
   type(c_ptr), value :: hsv
 end function
 
@@ -45997,8 +45997,8 @@ end subroutine
 
 ! gboolean gtk_im_context_filter_keypress (GtkIMContext *context, GdkEventKey *event);
 function gtk_im_context_filter_keypress(context, event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_im_context_filter_keypress
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_im_context_filter_keypress
   type(c_ptr), value :: context
   type(c_ptr), value :: event
 end function
@@ -46030,9 +46030,9 @@ end subroutine
 
 ! void gtk_im_context_set_use_preedit (GtkIMContext *context, gboolean use_preedit);
 subroutine gtk_im_context_set_use_preedit(context, use_preedit) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: context
-  logical(c_bool), value :: use_preedit
+  integer(c_int), value :: use_preedit
 end subroutine
 
 ! void gtk_im_context_set_surrounding (GtkIMContext *context, const gchar *text, gint len, gint cursor_index);
@@ -46047,8 +46047,8 @@ end subroutine
 
 ! gboolean gtk_im_context_get_surrounding (GtkIMContext *context, gchar **text, gint *cursor_index);
 function gtk_im_context_get_surrounding(context, text, cursor_index) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_im_context_get_surrounding
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_im_context_get_surrounding
   type(c_ptr), value :: context
   character(kind=c_char), dimension(*) :: text
   type(c_ptr), value :: cursor_index
@@ -46056,8 +46056,8 @@ end function
 
 ! gboolean gtk_im_context_delete_surrounding (GtkIMContext *context, gint offset, gint n_chars);
 function gtk_im_context_delete_surrounding(context, offset, n_chars) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_im_context_delete_surrounding
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_im_context_delete_surrounding
   type(c_ptr), value :: context
   integer(c_int), value :: offset
   integer(c_int), value :: n_chars
@@ -46212,8 +46212,8 @@ end subroutine
 
 ! gboolean gtk_window_activate_focus (GtkWindow *window);
 function gtk_window_activate_focus(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_activate_focus
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_activate_focus
   type(c_ptr), value :: window
 end function
 
@@ -46247,8 +46247,8 @@ end function
 
 ! gboolean gtk_window_activate_default (GtkWindow *window);
 function gtk_window_activate_default(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_activate_default
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_activate_default
   type(c_ptr), value :: window
 end function
 
@@ -46296,113 +46296,113 @@ end function
 
 ! void gtk_window_set_skip_taskbar_hint (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_skip_taskbar_hint(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_window_get_skip_taskbar_hint (GtkWindow *window);
 function gtk_window_get_skip_taskbar_hint(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_skip_taskbar_hint
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_skip_taskbar_hint
   type(c_ptr), value :: window
 end function
 
 ! void gtk_window_set_skip_pager_hint (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_skip_pager_hint(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_window_get_skip_pager_hint (GtkWindow *window);
 function gtk_window_get_skip_pager_hint(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_skip_pager_hint
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_skip_pager_hint
   type(c_ptr), value :: window
 end function
 
 ! void gtk_window_set_urgency_hint (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_urgency_hint(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_window_get_urgency_hint (GtkWindow *window);
 function gtk_window_get_urgency_hint(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_urgency_hint
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_urgency_hint
   type(c_ptr), value :: window
 end function
 
 ! void gtk_window_set_accept_focus (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_accept_focus(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_window_get_accept_focus (GtkWindow *window);
 function gtk_window_get_accept_focus(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_accept_focus
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_accept_focus
   type(c_ptr), value :: window
 end function
 
 ! void gtk_window_set_focus_on_map (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_focus_on_map(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_window_get_focus_on_map (GtkWindow *window);
 function gtk_window_get_focus_on_map(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_focus_on_map
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_focus_on_map
   type(c_ptr), value :: window
 end function
 
 ! void gtk_window_set_destroy_with_parent (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_destroy_with_parent(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_window_get_destroy_with_parent (GtkWindow *window);
 function gtk_window_get_destroy_with_parent(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_destroy_with_parent
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_destroy_with_parent
   type(c_ptr), value :: window
 end function
 
 ! void gtk_window_set_mnemonics_visible (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_mnemonics_visible(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_window_get_mnemonics_visible (GtkWindow *window);
 function gtk_window_get_mnemonics_visible(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_mnemonics_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_mnemonics_visible
   type(c_ptr), value :: window
 end function
 
 !  void gtk_window_set_resizable (GtkWindow *window, gboolean resizable);
 subroutine gtk_window_set_resizable(window, resizable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: resizable
+  integer(c_int), value :: resizable
 end subroutine
 
 ! gboolean gtk_window_get_resizable (GtkWindow *window);
 function gtk_window_get_resizable(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_resizable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_resizable
   type(c_ptr), value :: window
 end function
 
@@ -46446,29 +46446,29 @@ end function
 
 !  gboolean gtk_window_is_active (GtkWindow *window);
 function gtk_window_is_active(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_is_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_is_active
   type(c_ptr), value :: window
 end function
 
 ! gboolean gtk_window_has_toplevel_focus (GtkWindow *window);
 function gtk_window_has_toplevel_focus(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_has_toplevel_focus
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_has_toplevel_focus
   type(c_ptr), value :: window
 end function
 
 !  void gtk_window_set_has_frame (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_has_frame(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_window_get_has_frame (GtkWindow *window);
 function gtk_window_get_has_frame(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_has_frame
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_has_frame
   type(c_ptr), value :: window
 end function
 
@@ -46496,29 +46496,29 @@ end subroutine
 
 ! void gtk_window_set_decorated (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_decorated(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_window_get_decorated (GtkWindow *window);
 function gtk_window_get_decorated(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_decorated
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_decorated
   type(c_ptr), value :: window
 end function
 
 ! void gtk_window_set_deletable (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_deletable(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_window_get_deletable (GtkWindow *window);
 function gtk_window_get_deletable(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_deletable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_deletable
   type(c_ptr), value :: window
 end function
 
@@ -46552,8 +46552,8 @@ end subroutine
 
 ! gboolean gtk_window_set_icon_from_file (GtkWindow *window, const gchar *filename, GError **err);
 function gtk_window_set_icon_from_file(window, filename, err) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_window_set_icon_from_file
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_window_set_icon_from_file
   type(c_ptr), value :: window
   character(kind=c_char), dimension(*) :: filename
   type(c_ptr), value :: err
@@ -46605,29 +46605,29 @@ end function
 
 ! gboolean gtk_window_set_default_icon_from_file (const gchar *filename, GError **err);
 function gtk_window_set_default_icon_from_file(filename, err) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: gtk_window_set_default_icon_from_file
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: gtk_window_set_default_icon_from_file
   character(kind=c_char), dimension(*) :: filename
   type(c_ptr), value :: err
 end function
 
 !  void gtk_window_set_auto_startup_notification (gboolean setting);
 subroutine gtk_window_set_auto_startup_notification(setting) bind(c) 
-  use iso_c_binding, only: c_bool
-  logical(c_bool), value :: setting
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: setting
 end subroutine
 
 !  void gtk_window_set_modal (GtkWindow *window, gboolean modal);
 subroutine gtk_window_set_modal(window, modal) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: modal
+  integer(c_int), value :: modal
 end subroutine
 
 ! gboolean gtk_window_get_modal (GtkWindow *window);
 function gtk_window_get_modal(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_get_modal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_modal
   type(c_ptr), value :: window
 end function
 
@@ -46655,8 +46655,8 @@ end subroutine
 
 ! gboolean gtk_window_mnemonic_activate (GtkWindow *window, guint keyval, GdkModifierType modifier);
 function gtk_window_mnemonic_activate(window, keyval, modifier) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_window_mnemonic_activate
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_mnemonic_activate
   type(c_ptr), value :: window
   integer(c_int), value :: keyval
   integer(c_int), value :: modifier
@@ -46678,16 +46678,16 @@ end function
 
 !  gboolean gtk_window_activate_key (GtkWindow *window, GdkEventKey *event);
 function gtk_window_activate_key(window, event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_activate_key
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_activate_key
   type(c_ptr), value :: window
   type(c_ptr), value :: event
 end function
 
 ! gboolean gtk_window_propagate_key_event (GtkWindow *window, GdkEventKey *event);
 function gtk_window_propagate_key_event(window, event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_propagate_key_event
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_propagate_key_event
   type(c_ptr), value :: window
   type(c_ptr), value :: event
 end function
@@ -46755,16 +46755,16 @@ end subroutine
 
 ! void gtk_window_set_keep_above (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_keep_above(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! void gtk_window_set_keep_below (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_keep_below(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: window
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 !  void gtk_window_begin_resize_drag (GtkWindow *window, GdkWindowEdge edge, gint button, gint root_x, gint root_y, guint32 timestamp);
@@ -46850,8 +46850,8 @@ end subroutine
 
 ! gboolean gtk_window_parse_geometry (GtkWindow *window, const gchar *geometry);
 function gtk_window_parse_geometry(window, geometry) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_window_parse_geometry
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_window_parse_geometry
   type(c_ptr), value :: window
   character(kind=c_char), dimension(*) :: geometry
 end function
@@ -46865,8 +46865,8 @@ end function
 
 ! gboolean gtk_window_has_group (GtkWindow *window);
 function gtk_window_has_group(window) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_window_has_group
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_has_group
   type(c_ptr), value :: window
 end function
 
@@ -46977,29 +46977,29 @@ end function
 
 !  void gtk_tool_item_set_homogeneous (GtkToolItem *tool_item, gboolean homogeneous);
 subroutine gtk_tool_item_set_homogeneous(tool_item, homogeneous) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tool_item
-  logical(c_bool), value :: homogeneous
+  integer(c_int), value :: homogeneous
 end subroutine
 
 ! gboolean gtk_tool_item_get_homogeneous (GtkToolItem *tool_item);
 function gtk_tool_item_get_homogeneous(tool_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tool_item_get_homogeneous
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tool_item_get_homogeneous
   type(c_ptr), value :: tool_item
 end function
 
 !  void gtk_tool_item_set_expand (GtkToolItem *tool_item, gboolean expand);
 subroutine gtk_tool_item_set_expand(tool_item, expand) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tool_item
-  logical(c_bool), value :: expand
+  integer(c_int), value :: expand
 end subroutine
 
 ! gboolean gtk_tool_item_get_expand (GtkToolItem *tool_item);
 function gtk_tool_item_get_expand(tool_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tool_item_get_expand
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tool_item_get_expand
   type(c_ptr), value :: tool_item
 end function
 
@@ -47029,60 +47029,60 @@ end subroutine
 
 !  void gtk_tool_item_set_use_drag_window (GtkToolItem *tool_item, gboolean use_drag_window);
 subroutine gtk_tool_item_set_use_drag_window(tool_item, use_drag_window) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tool_item
-  logical(c_bool), value :: use_drag_window
+  integer(c_int), value :: use_drag_window
 end subroutine
 
 ! gboolean gtk_tool_item_get_use_drag_window (GtkToolItem *tool_item);
 function gtk_tool_item_get_use_drag_window(tool_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tool_item_get_use_drag_window
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tool_item_get_use_drag_window
   type(c_ptr), value :: tool_item
 end function
 
 !  void gtk_tool_item_set_visible_horizontal (GtkToolItem *tool_item, gboolean visible_horizontal);
 subroutine gtk_tool_item_set_visible_horizontal(tool_item, visible_horizontal) b&
       &ind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tool_item
-  logical(c_bool), value :: visible_horizontal
+  integer(c_int), value :: visible_horizontal
 end subroutine
 
 ! gboolean gtk_tool_item_get_visible_horizontal (GtkToolItem *tool_item);
 function gtk_tool_item_get_visible_horizontal(tool_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tool_item_get_visible_horizontal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tool_item_get_visible_horizontal
   type(c_ptr), value :: tool_item
 end function
 
 !  void gtk_tool_item_set_visible_vertical (GtkToolItem *tool_item, gboolean visible_vertical);
 subroutine gtk_tool_item_set_visible_vertical(tool_item, visible_vertical) bind(&
       &c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tool_item
-  logical(c_bool), value :: visible_vertical
+  integer(c_int), value :: visible_vertical
 end subroutine
 
 ! gboolean gtk_tool_item_get_visible_vertical (GtkToolItem *tool_item);
 function gtk_tool_item_get_visible_vertical(tool_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tool_item_get_visible_vertical
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tool_item_get_visible_vertical
   type(c_ptr), value :: tool_item
 end function
 
 !  gboolean gtk_tool_item_get_is_important (GtkToolItem *tool_item);
 function gtk_tool_item_get_is_important(tool_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tool_item_get_is_important
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tool_item_get_is_important
   type(c_ptr), value :: tool_item
 end function
 
 ! void gtk_tool_item_set_is_important (GtkToolItem *tool_item, gboolean is_important);
 subroutine gtk_tool_item_set_is_important(tool_item, is_important) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tool_item
-  logical(c_bool), value :: is_important
+  integer(c_int), value :: is_important
 end subroutine
 
 !  PangoEllipsizeMode gtk_tool_item_get_ellipsize_mode (GtkToolItem *tool_item);
@@ -47191,44 +47191,44 @@ end function
 
 !  gboolean gtk_cell_renderer_toggle_get_radio (GtkCellRendererToggle *toggle);
 function gtk_cell_renderer_toggle_get_radio(toggle) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_cell_renderer_toggle_get_radio
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_renderer_toggle_get_radio
   type(c_ptr), value :: toggle
 end function
 
 ! void gtk_cell_renderer_toggle_set_radio (GtkCellRendererToggle *toggle, gboolean radio);
 subroutine gtk_cell_renderer_toggle_set_radio(toggle, radio) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: toggle
-  logical(c_bool), value :: radio
+  integer(c_int), value :: radio
 end subroutine
 
 !  gboolean gtk_cell_renderer_toggle_get_active (GtkCellRendererToggle *toggle);
 function gtk_cell_renderer_toggle_get_active(toggle) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_cell_renderer_toggle_get_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_renderer_toggle_get_active
   type(c_ptr), value :: toggle
 end function
 
 ! void gtk_cell_renderer_toggle_set_active (GtkCellRendererToggle *toggle, gboolean setting);
 subroutine gtk_cell_renderer_toggle_set_active(toggle, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: toggle
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 !  gboolean gtk_cell_renderer_toggle_get_activatable (GtkCellRendererToggle *toggle);
 function gtk_cell_renderer_toggle_get_activatable(toggle) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_cell_renderer_toggle_get_activatable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_renderer_toggle_get_activatable
   type(c_ptr), value :: toggle
 end function
 
 ! void gtk_cell_renderer_toggle_set_activatable (GtkCellRendererToggle *toggle, gboolean setting);
 subroutine gtk_cell_renderer_toggle_set_activatable(toggle, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: toggle
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 !   void gtk_accel_map_add_entry (const gchar *accel_path, guint accel_key, GdkModifierType accel_mods);
@@ -47241,8 +47241,8 @@ end subroutine
 
 ! gboolean gtk_accel_map_lookup_entry (const gchar *accel_path, GtkAccelKey *key);
 function gtk_accel_map_lookup_entry(accel_path, key) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: gtk_accel_map_lookup_entry
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: gtk_accel_map_lookup_entry
   character(kind=c_char), dimension(*) :: accel_path
   type(c_ptr), value :: key
 end function
@@ -47250,12 +47250,12 @@ end function
 ! gboolean gtk_accel_map_change_entry (const gchar *accel_path, guint accel_key, GdkModifierType accel_mods, gboolean replace);
 function gtk_accel_map_change_entry(accel_path, accel_key, accel_mods, replace) &
       &bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int
-  logical(c_bool) :: gtk_accel_map_change_entry
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: gtk_accel_map_change_entry
   character(kind=c_char), dimension(*) :: accel_path
   integer(c_int), value :: accel_key
   integer(c_int), value :: accel_mods
-  logical(c_bool), value :: replace
+  integer(c_int), value :: replace
 end function
 
 ! void gtk_accel_map_load (const gchar *file_name);
@@ -47437,43 +47437,43 @@ end function
 
 ! void gtk_button_set_use_underline (GtkButton *button, gboolean use_underline);
 subroutine gtk_button_set_use_underline(button, use_underline) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: button
-  logical(c_bool), value :: use_underline
+  integer(c_int), value :: use_underline
 end subroutine
 
 ! gboolean gtk_button_get_use_underline (GtkButton *button);
 function gtk_button_get_use_underline(button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_button_get_use_underline
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_button_get_use_underline
   type(c_ptr), value :: button
 end function
 
 ! void gtk_button_set_use_stock (GtkButton *button, gboolean use_stock);
 subroutine gtk_button_set_use_stock(button, use_stock) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: button
-  logical(c_bool), value :: use_stock
+  integer(c_int), value :: use_stock
 end subroutine
 
 ! gboolean gtk_button_get_use_stock (GtkButton *button);
 function gtk_button_get_use_stock(button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_button_get_use_stock
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_button_get_use_stock
   type(c_ptr), value :: button
 end function
 
 ! void gtk_button_set_focus_on_click (GtkButton *button, gboolean focus_on_click);
 subroutine gtk_button_set_focus_on_click(button, focus_on_click) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: button
-  logical(c_bool), value :: focus_on_click
+  integer(c_int), value :: focus_on_click
 end subroutine
 
 ! gboolean gtk_button_get_focus_on_click (GtkButton *button);
 function gtk_button_get_focus_on_click(button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_button_get_focus_on_click
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_button_get_focus_on_click
   type(c_ptr), value :: button
 end function
 
@@ -47598,9 +47598,9 @@ end subroutine
 
 ! void gtk_print_operation_set_use_full_page (GtkPrintOperation *op, gboolean full_page);
 subroutine gtk_print_operation_set_use_full_page(op, full_page) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: op
-  logical(c_bool), value :: full_page
+  integer(c_int), value :: full_page
 end subroutine
 
 ! void gtk_print_operation_set_unit (GtkPrintOperation *op, GtkUnit unit);
@@ -47619,23 +47619,23 @@ end subroutine
 
 ! void gtk_print_operation_set_track_print_status (GtkPrintOperation *op, gboolean track_status);
 subroutine gtk_print_operation_set_track_print_status(op, track_status) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: op
-  logical(c_bool), value :: track_status
+  integer(c_int), value :: track_status
 end subroutine
 
 ! void gtk_print_operation_set_show_progress (GtkPrintOperation *op, gboolean show_progress);
 subroutine gtk_print_operation_set_show_progress(op, show_progress) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: op
-  logical(c_bool), value :: show_progress
+  integer(c_int), value :: show_progress
 end subroutine
 
 ! void gtk_print_operation_set_allow_async (GtkPrintOperation *op, gboolean allow_async);
 subroutine gtk_print_operation_set_allow_async(op, allow_async) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: op
-  logical(c_bool), value :: allow_async
+  integer(c_int), value :: allow_async
 end subroutine
 
 ! void gtk_print_operation_set_custom_tab_label (GtkPrintOperation *op, const gchar *label);
@@ -47678,8 +47678,8 @@ end function
 
 ! gboolean gtk_print_operation_is_finished (GtkPrintOperation *op);
 function gtk_print_operation_is_finished(op) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_print_operation_is_finished
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_print_operation_is_finished
   type(c_ptr), value :: op
 end function
 
@@ -47704,43 +47704,43 @@ end subroutine
 ! void gtk_print_operation_set_support_selection (GtkPrintOperation *op, gboolean support_selection);
 subroutine gtk_print_operation_set_support_selection(op, support_selection) bind&
       &(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: op
-  logical(c_bool), value :: support_selection
+  integer(c_int), value :: support_selection
 end subroutine
 
 ! gboolean gtk_print_operation_get_support_selection (GtkPrintOperation *op);
 function gtk_print_operation_get_support_selection(op) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_print_operation_get_support_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_print_operation_get_support_selection
   type(c_ptr), value :: op
 end function
 
 ! void gtk_print_operation_set_has_selection (GtkPrintOperation *op, gboolean has_selection);
 subroutine gtk_print_operation_set_has_selection(op, has_selection) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: op
-  logical(c_bool), value :: has_selection
+  integer(c_int), value :: has_selection
 end subroutine
 
 ! gboolean gtk_print_operation_get_has_selection (GtkPrintOperation *op);
 function gtk_print_operation_get_has_selection(op) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_print_operation_get_has_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_print_operation_get_has_selection
   type(c_ptr), value :: op
 end function
 
 ! void gtk_print_operation_set_embed_page_setup (GtkPrintOperation *op, gboolean embed);
 subroutine gtk_print_operation_set_embed_page_setup(op, embed) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: op
-  logical(c_bool), value :: embed
+  integer(c_int), value :: embed
 end subroutine
 
 ! gboolean gtk_print_operation_get_embed_page_setup (GtkPrintOperation *op);
 function gtk_print_operation_get_embed_page_setup(op) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_print_operation_get_embed_page_setup
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_print_operation_get_embed_page_setup
   type(c_ptr), value :: op
 end function
 
@@ -47793,15 +47793,15 @@ end function
 
 !  void gtk_expander_set_expanded (GtkExpander *expander, gboolean expanded);
 subroutine gtk_expander_set_expanded(expander, expanded) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: expander
-  logical(c_bool), value :: expanded
+  integer(c_int), value :: expanded
 end subroutine
 
 ! gboolean gtk_expander_get_expanded (GtkExpander *expander);
 function gtk_expander_get_expanded(expander) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_expander_get_expanded
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_expander_get_expanded
   type(c_ptr), value :: expander
 end function
 
@@ -47835,29 +47835,29 @@ end function
 
 !  void gtk_expander_set_use_underline (GtkExpander *expander, gboolean use_underline);
 subroutine gtk_expander_set_use_underline(expander, use_underline) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: expander
-  logical(c_bool), value :: use_underline
+  integer(c_int), value :: use_underline
 end subroutine
 
 ! gboolean gtk_expander_get_use_underline (GtkExpander *expander);
 function gtk_expander_get_use_underline(expander) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_expander_get_use_underline
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_expander_get_use_underline
   type(c_ptr), value :: expander
 end function
 
 !  void gtk_expander_set_use_markup (GtkExpander *expander, gboolean use_markup);
 subroutine gtk_expander_set_use_markup(expander, use_markup) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: expander
-  logical(c_bool), value :: use_markup
+  integer(c_int), value :: use_markup
 end subroutine
 
 ! gboolean gtk_expander_get_use_markup (GtkExpander *expander);
 function gtk_expander_get_use_markup(expander) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_expander_get_use_markup
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_expander_get_use_markup
   type(c_ptr), value :: expander
 end function
 
@@ -47877,15 +47877,15 @@ end function
 
 ! void gtk_expander_set_label_fill (GtkExpander *expander, gboolean label_fill);
 subroutine gtk_expander_set_label_fill(expander, label_fill) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: expander
-  logical(c_bool), value :: label_fill
+  integer(c_int), value :: label_fill
 end subroutine
 
 ! gboolean gtk_expander_get_label_fill (GtkExpander *expander);
 function gtk_expander_get_label_fill(expander) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_expander_get_label_fill
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_expander_get_label_fill
   type(c_ptr), value :: expander
 end function
 
@@ -47974,10 +47974,10 @@ end subroutine
 
 ! void gtk_drag_finish (GdkDragContext *context, gboolean success, gboolean del, guint32 time_);
 subroutine gtk_drag_finish(context, success, del, time_) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int32_t
+  use iso_c_binding, only: c_ptr, c_int, c_int32_t
   type(c_ptr), value :: context
-  logical(c_bool), value :: success
-  logical(c_bool), value :: del
+  integer(c_int), value :: success
+  integer(c_int), value :: del
   integer(c_int32_t), value :: time_
 end subroutine
 
@@ -48013,11 +48013,11 @@ end subroutine
 !  void gtk_drag_dest_set_proxy (GtkWidget *widget, GdkWindow *proxy_window, GdkDragProtocol protocol, gboolean use_coordinates);
 subroutine gtk_drag_dest_set_proxy(widget, proxy_window, protocol, use_coordinat&
       &es) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
   type(c_ptr), value :: proxy_window
   integer(c_int), value :: protocol
-  logical(c_bool), value :: use_coordinates
+  integer(c_int), value :: use_coordinates
 end subroutine
 
 !  void gtk_drag_dest_unset (GtkWidget *widget);
@@ -48069,15 +48069,15 @@ end subroutine
 
 !  void gtk_drag_dest_set_track_motion (GtkWidget *widget, gboolean track_motion);
 subroutine gtk_drag_dest_set_track_motion(widget, track_motion) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: track_motion
+  integer(c_int), value :: track_motion
 end subroutine
 
 ! gboolean gtk_drag_dest_get_track_motion (GtkWidget *widget);
 function gtk_drag_dest_get_track_motion(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_drag_dest_get_track_motion
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_drag_dest_get_track_motion
   type(c_ptr), value :: widget
 end function
 
@@ -48228,8 +48228,8 @@ end subroutine
 !  gboolean gtk_drag_check_threshold (GtkWidget *widget, gint start_x, gint start_y, gint current_x, gint current_y);
 function gtk_drag_check_threshold(widget, start_x, start_y, current_x, current_y&
       &) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_drag_check_threshold
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_drag_check_threshold
   type(c_ptr), value :: widget
   integer(c_int), value :: start_x
   integer(c_int), value :: start_y
@@ -48301,15 +48301,15 @@ end subroutine
 
 !   void gtk_statusbar_set_has_resize_grip (GtkStatusbar *statusbar, gboolean setting);
 subroutine gtk_statusbar_set_has_resize_grip(statusbar, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: statusbar
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_statusbar_get_has_resize_grip (GtkStatusbar *statusbar);
 function gtk_statusbar_get_has_resize_grip(statusbar) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_statusbar_get_has_resize_grip
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_statusbar_get_has_resize_grip
   type(c_ptr), value :: statusbar
 end function
 
@@ -48341,15 +48341,15 @@ end function
 
 !  void gtk_toggle_tool_button_set_active (GtkToggleToolButton *button, gboolean is_active);
 subroutine gtk_toggle_tool_button_set_active(button, is_active) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: button
-  logical(c_bool), value :: is_active
+  integer(c_int), value :: is_active
 end subroutine
 
 ! gboolean gtk_toggle_tool_button_get_active (GtkToggleToolButton *button);
 function gtk_toggle_tool_button_get_active(button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_toggle_tool_button_get_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_toggle_tool_button_get_active
   type(c_ptr), value :: button
 end function
 
@@ -48558,15 +48558,15 @@ end function
 !  void gtk_activatable_set_use_action_appearance (GtkActivatable *activatable, gboolean use_appearance);
 subroutine gtk_activatable_set_use_action_appearance(activatable, use_appearance&
       &) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: activatable
-  logical(c_bool), value :: use_appearance
+  integer(c_int), value :: use_appearance
 end subroutine
 
 ! gboolean gtk_activatable_get_use_action_appearance (GtkActivatable *activatable);
 function gtk_activatable_get_use_action_appearance(activatable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_activatable_get_use_action_appearance
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_activatable_get_use_action_appearance
   type(c_ptr), value :: activatable
 end function
 
@@ -48648,10 +48648,10 @@ end subroutine
 ! void gtk_style_apply_default_background (GtkStyle *style, GdkWindow *window, gboolean set_bg, GtkStateType state_type, const GdkRectangle *area, gint x, gint y, gint width, gint height);
 subroutine gtk_style_apply_default_background(style, window, set_bg, state_type,&
       & area, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: style
   type(c_ptr), value :: window
-  logical(c_bool), value :: set_bg
+  integer(c_int), value :: set_bg
   integer(c_int), value :: state_type
   type(c_ptr), value :: area
   integer(c_int), value :: x
@@ -48670,8 +48670,8 @@ end function
 
 ! gboolean gtk_style_lookup_color (GtkStyle *style, const gchar *color_name, GdkColor *color);
 function gtk_style_lookup_color(style, color_name, color) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_style_lookup_color
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_style_lookup_color
   type(c_ptr), value :: style
   character(kind=c_char), dimension(*) :: color_name
   type(c_ptr), value :: color
@@ -48730,26 +48730,26 @@ end subroutine
 ! void gtk_draw_polygon (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkPoint *points, gint npoints, gboolean fill);
 subroutine gtk_draw_polygon(style, window, state_type, shadow_type, points, npoi&
       &nts, fill) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: style
   type(c_ptr), value :: window
   integer(c_int), value :: state_type
   integer(c_int), value :: shadow_type
   type(c_ptr), value :: points
   integer(c_int), value :: npoints
-  logical(c_bool), value :: fill
+  integer(c_int), value :: fill
 end subroutine
 
 ! void gtk_draw_arrow (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GtkArrowType arrow_type, gboolean fill, gint x, gint y, gint width, gint height);
 subroutine gtk_draw_arrow(style, window, state_type, shadow_type, arrow_type, fi&
       &ll, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: style
   type(c_ptr), value :: window
   integer(c_int), value :: state_type
   integer(c_int), value :: shadow_type
   integer(c_int), value :: arrow_type
-  logical(c_bool), value :: fill
+  integer(c_int), value :: fill
   integer(c_int), value :: x
   integer(c_int), value :: y
   integer(c_int), value :: width
@@ -48945,11 +48945,11 @@ end subroutine
 ! void gtk_draw_layout (GtkStyle *style, GdkWindow *window, GtkStateType state_type, gboolean use_text, gint x, gint y, PangoLayout *layout);
 subroutine gtk_draw_layout(style, window, state_type, use_text, x, y, layout) bi&
       &nd(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: style
   type(c_ptr), value :: window
   integer(c_int), value :: state_type
-  logical(c_bool), value :: use_text
+  integer(c_int), value :: use_text
   integer(c_int), value :: x
   integer(c_int), value :: y
   type(c_ptr), value :: layout
@@ -49019,7 +49019,7 @@ end subroutine
 ! void gtk_paint_polygon (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, const GdkPoint *points, gint n_points, gboolean fill);
 subroutine gtk_paint_polygon(style, window, state_type, shadow_type, area, widge&
       &t, detail, points, n_points, fill) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
   type(c_ptr), value :: window
   integer(c_int), value :: state_type
@@ -49029,13 +49029,13 @@ subroutine gtk_paint_polygon(style, window, state_type, shadow_type, area, widge
   character(kind=c_char), dimension(*) :: detail
   type(c_ptr), value :: points
   integer(c_int), value :: n_points
-  logical(c_bool), value :: fill
+  integer(c_int), value :: fill
 end subroutine
 
 ! void gtk_paint_arrow (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, GtkArrowType arrow_type, gboolean fill, gint x, gint y, gint width, gint height);
 subroutine gtk_paint_arrow(style, window, state_type, shadow_type, area, widget,&
       & detail, arrow_type, fill, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
   type(c_ptr), value :: window
   integer(c_int), value :: state_type
@@ -49044,7 +49044,7 @@ subroutine gtk_paint_arrow(style, window, state_type, shadow_type, area, widget,
   type(c_ptr), value :: widget
   character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: arrow_type
-  logical(c_bool), value :: fill
+  integer(c_int), value :: fill
   integer(c_int), value :: x
   integer(c_int), value :: y
   integer(c_int), value :: width
@@ -49281,11 +49281,11 @@ end subroutine
 ! void gtk_paint_layout (GtkStyle *style, GdkWindow *window, GtkStateType state_type, gboolean use_text, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, PangoLayout *layout);
 subroutine gtk_paint_layout(style, window, state_type, use_text, area, widget, d&
       &etail, x, y, layout) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool, c_char
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
   type(c_ptr), value :: window
   integer(c_int), value :: state_type
-  logical(c_bool), value :: use_text
+  integer(c_int), value :: use_text
   type(c_ptr), value :: area
   type(c_ptr), value :: widget
   character(kind=c_char), dimension(*) :: detail
@@ -49402,14 +49402,14 @@ end subroutine
 !  void gtk_draw_insertion_cursor (GtkWidget *widget, GdkDrawable *drawable, const GdkRectangle *area, const GdkRectangle *location, gboolean is_primary, GtkTextDirection direction, gboolean draw_arrow);
 subroutine gtk_draw_insertion_cursor(widget, drawable, area, location, is_primar&
       &y, direction, draw_arrow) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
   type(c_ptr), value :: drawable
   type(c_ptr), value :: area
   type(c_ptr), value :: location
-  logical(c_bool), value :: is_primary
+  integer(c_int), value :: is_primary
   integer(c_int), value :: direction
-  logical(c_bool), value :: draw_arrow
+  integer(c_int), value :: draw_arrow
 end subroutine
 
 !   GType gtk_table_get_type (void) G_GNUC_CONST;
@@ -49420,11 +49420,11 @@ end function
 
 ! GtkWidget* gtk_table_new (guint rows, guint columns, gboolean homogeneous);
 function gtk_table_new(rows, columns, homogeneous) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_table_new
   integer(c_int), value :: rows
   integer(c_int), value :: columns
-  logical(c_bool), value :: homogeneous
+  integer(c_int), value :: homogeneous
 end function
 
 ! void gtk_table_resize (GtkTable *table, guint rows, guint columns);
@@ -49525,15 +49525,15 @@ end function
 
 ! void gtk_table_set_homogeneous (GtkTable *table, gboolean homogeneous);
 subroutine gtk_table_set_homogeneous(table, homogeneous) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: table
-  logical(c_bool), value :: homogeneous
+  integer(c_int), value :: homogeneous
 end subroutine
 
 ! gboolean gtk_table_get_homogeneous (GtkTable *table);
 function gtk_table_get_homogeneous(table) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_table_get_homogeneous
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_table_get_homogeneous
   type(c_ptr), value :: table
 end function
 
@@ -49597,8 +49597,8 @@ end subroutine
 
 ! gboolean gtk_list_store_remove (GtkListStore *list_store, GtkTreeIter *iter);
 function gtk_list_store_remove(list_store, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_list_store_remove
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_list_store_remove
   type(c_ptr), value :: list_store
   type(c_ptr), value :: iter
 end function
@@ -49661,8 +49661,8 @@ end subroutine
 
 ! gboolean gtk_list_store_iter_is_valid (GtkListStore *list_store, GtkTreeIter *iter);
 function gtk_list_store_iter_is_valid(list_store, iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_list_store_iter_is_valid
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_list_store_iter_is_valid
   type(c_ptr), value :: list_store
   type(c_ptr), value :: iter
 end function
@@ -49772,15 +49772,15 @@ end subroutine
 
 ! void gtk_menu_item_set_right_justified (GtkMenuItem *menu_item, gboolean right_justified);
 subroutine gtk_menu_item_set_right_justified(menu_item, right_justified) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu_item
-  logical(c_bool), value :: right_justified
+  integer(c_int), value :: right_justified
 end subroutine
 
 ! gboolean gtk_menu_item_get_right_justified (GtkMenuItem *menu_item);
 function gtk_menu_item_get_right_justified(menu_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_menu_item_get_right_justified
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_menu_item_get_right_justified
   type(c_ptr), value :: menu_item
 end function
 
@@ -49814,15 +49814,15 @@ end function
 
 !  void gtk_menu_item_set_use_underline (GtkMenuItem *menu_item, gboolean setting);
 subroutine gtk_menu_item_set_use_underline(menu_item, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu_item
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_menu_item_get_use_underline (GtkMenuItem *menu_item);
 function gtk_menu_item_get_use_underline(menu_item) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_menu_item_get_use_underline
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_menu_item_get_use_underline
   type(c_ptr), value :: menu_item
 end function
 
@@ -49853,8 +49853,8 @@ end function
 
 ! gboolean gtk_text_child_anchor_get_deleted (GtkTextChildAnchor *anchor);
 function gtk_text_child_anchor_get_deleted(anchor) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_child_anchor_get_deleted
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_child_anchor_get_deleted
   type(c_ptr), value :: anchor
 end function
 
@@ -49928,15 +49928,15 @@ end subroutine
 
 ! void gtk_widget_set_no_show_all (GtkWidget *widget, gboolean no_show_all);
 subroutine gtk_widget_set_no_show_all(widget, no_show_all) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: no_show_all
+  integer(c_int), value :: no_show_all
 end subroutine
 
 ! gboolean gtk_widget_get_no_show_all (GtkWidget *widget);
 function gtk_widget_get_no_show_all(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_no_show_all
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_no_show_all
   type(c_ptr), value :: widget
 end function
 
@@ -50051,8 +50051,8 @@ end subroutine
 ! gboolean gtk_widget_remove_accelerator (GtkWidget *widget, GtkAccelGroup *accel_group, guint accel_key, GdkModifierType accel_mods);
 function gtk_widget_remove_accelerator(widget, accel_group, accel_key, accel_mod&
       &s) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_widget_remove_accelerator
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_remove_accelerator
   type(c_ptr), value :: widget
   type(c_ptr), value :: accel_group
   integer(c_int), value :: accel_key
@@ -50076,24 +50076,24 @@ end function
 
 ! gboolean gtk_widget_can_activate_accel (GtkWidget *widget, guint signal_id);
 function gtk_widget_can_activate_accel(widget, signal_id) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_widget_can_activate_accel
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_can_activate_accel
   type(c_ptr), value :: widget
   integer(c_int), value :: signal_id
 end function
 
 ! gboolean gtk_widget_mnemonic_activate (GtkWidget *widget, gboolean group_cycling);
 function gtk_widget_mnemonic_activate(widget, group_cycling) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_mnemonic_activate
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_mnemonic_activate
   type(c_ptr), value :: widget
-  logical(c_bool), value :: group_cycling
+  integer(c_int), value :: group_cycling
 end function
 
 ! gboolean gtk_widget_event (GtkWidget *widget, GdkEvent *event);
 function gtk_widget_event(widget, event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_event
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_event
   type(c_ptr), value :: widget
   type(c_ptr), value :: event
 end function
@@ -50108,24 +50108,24 @@ end function
 
 ! gboolean gtk_widget_send_focus_change (GtkWidget *widget, GdkEvent *event);
 function gtk_widget_send_focus_change(widget, event) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_send_focus_change
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_send_focus_change
   type(c_ptr), value :: widget
   type(c_ptr), value :: event
 end function
 
 !  gboolean gtk_widget_activate (GtkWidget *widget);
 function gtk_widget_activate(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_activate
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_activate
   type(c_ptr), value :: widget
 end function
 
 ! gboolean gtk_widget_set_scroll_adjustments (GtkWidget *widget, GtkAdjustment *hadjustment, GtkAdjustment *vadjustment);
 function gtk_widget_set_scroll_adjustments(widget, hadjustment, vadjustment) bin&
       &d(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_set_scroll_adjustments
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_set_scroll_adjustments
   type(c_ptr), value :: widget
   type(c_ptr), value :: hadjustment
   type(c_ptr), value :: vadjustment
@@ -50140,8 +50140,8 @@ end subroutine
 
 ! gboolean gtk_widget_intersect (GtkWidget *widget, const GdkRectangle *area, GdkRectangle *intersection);
 function gtk_widget_intersect(widget, area, intersection) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_intersect
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_intersect
   type(c_ptr), value :: widget
   type(c_ptr), value :: area
   type(c_ptr), value :: intersection
@@ -50176,29 +50176,29 @@ end subroutine
 
 !  void gtk_widget_set_can_focus (GtkWidget *widget, gboolean can_focus);
 subroutine gtk_widget_set_can_focus(widget, can_focus) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: can_focus
+  integer(c_int), value :: can_focus
 end subroutine
 
 ! gboolean gtk_widget_get_can_focus (GtkWidget *widget);
 function gtk_widget_get_can_focus(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_can_focus
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_can_focus
   type(c_ptr), value :: widget
 end function
 
 ! gboolean gtk_widget_has_focus (GtkWidget *widget);
 function gtk_widget_has_focus(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_has_focus
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_has_focus
   type(c_ptr), value :: widget
 end function
 
 ! gboolean gtk_widget_is_focus (GtkWidget *widget);
 function gtk_widget_is_focus(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_is_focus
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_is_focus
   type(c_ptr), value :: widget
 end function
 
@@ -50210,22 +50210,22 @@ end subroutine
 
 !  void gtk_widget_set_can_default (GtkWidget *widget, gboolean can_default);
 subroutine gtk_widget_set_can_default(widget, can_default) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: can_default
+  integer(c_int), value :: can_default
 end subroutine
 
 ! gboolean gtk_widget_get_can_default (GtkWidget *widget);
 function gtk_widget_get_can_default(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_can_default
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_can_default
   type(c_ptr), value :: widget
 end function
 
 ! gboolean gtk_widget_has_default (GtkWidget *widget);
 function gtk_widget_has_default(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_has_default
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_has_default
   type(c_ptr), value :: widget
 end function
 
@@ -50237,22 +50237,22 @@ end subroutine
 
 !  void gtk_widget_set_receives_default (GtkWidget *widget, gboolean receives_default);
 subroutine gtk_widget_set_receives_default(widget, receives_default) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: receives_default
+  integer(c_int), value :: receives_default
 end subroutine
 
 ! gboolean gtk_widget_get_receives_default (GtkWidget *widget);
 function gtk_widget_get_receives_default(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_receives_default
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_receives_default
   type(c_ptr), value :: widget
 end function
 
 !  gboolean gtk_widget_has_grab (GtkWidget *widget);
 function gtk_widget_has_grab(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_has_grab
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_has_grab
   type(c_ptr), value :: widget
 end function
 
@@ -50286,128 +50286,128 @@ end function
 
 !  void gtk_widget_set_sensitive (GtkWidget *widget, gboolean sensitive);
 subroutine gtk_widget_set_sensitive(widget, sensitive) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: sensitive
+  integer(c_int), value :: sensitive
 end subroutine
 
 ! gboolean gtk_widget_get_sensitive (GtkWidget *widget);
 function gtk_widget_get_sensitive(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_sensitive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_sensitive
   type(c_ptr), value :: widget
 end function
 
 ! gboolean gtk_widget_is_sensitive (GtkWidget *widget);
 function gtk_widget_is_sensitive(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_is_sensitive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_is_sensitive
   type(c_ptr), value :: widget
 end function
 
 !  void gtk_widget_set_visible (GtkWidget *widget, gboolean visible);
 subroutine gtk_widget_set_visible(widget, visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: visible
+  integer(c_int), value :: visible
 end subroutine
 
 ! gboolean gtk_widget_get_visible (GtkWidget *widget);
 function gtk_widget_get_visible(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_visible
   type(c_ptr), value :: widget
 end function
 
 !  void gtk_widget_set_has_window (GtkWidget *widget, gboolean has_window);
 subroutine gtk_widget_set_has_window(widget, has_window) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: has_window
+  integer(c_int), value :: has_window
 end subroutine
 
 ! gboolean gtk_widget_get_has_window (GtkWidget *widget);
 function gtk_widget_get_has_window(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_has_window
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_has_window
   type(c_ptr), value :: widget
 end function
 
 !  gboolean gtk_widget_is_toplevel (GtkWidget *widget);
 function gtk_widget_is_toplevel(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_is_toplevel
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_is_toplevel
   type(c_ptr), value :: widget
 end function
 
 ! gboolean gtk_widget_is_drawable (GtkWidget *widget);
 function gtk_widget_is_drawable(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_is_drawable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_is_drawable
   type(c_ptr), value :: widget
 end function
 
 ! void gtk_widget_set_realized (GtkWidget *widget, gboolean realized);
 subroutine gtk_widget_set_realized(widget, realized) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: realized
+  integer(c_int), value :: realized
 end subroutine
 
 ! gboolean gtk_widget_get_realized (GtkWidget *widget);
 function gtk_widget_get_realized(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_realized
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_realized
   type(c_ptr), value :: widget
 end function
 
 ! void gtk_widget_set_mapped (GtkWidget *widget, gboolean mapped);
 subroutine gtk_widget_set_mapped(widget, mapped) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: mapped
+  integer(c_int), value :: mapped
 end subroutine
 
 ! gboolean gtk_widget_get_mapped (GtkWidget *widget);
 function gtk_widget_get_mapped(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_mapped
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_mapped
   type(c_ptr), value :: widget
 end function
 
 !  void gtk_widget_set_app_paintable (GtkWidget *widget, gboolean app_paintable);
 subroutine gtk_widget_set_app_paintable(widget, app_paintable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: app_paintable
+  integer(c_int), value :: app_paintable
 end subroutine
 
 ! gboolean gtk_widget_get_app_paintable (GtkWidget *widget);
 function gtk_widget_get_app_paintable(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_app_paintable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_app_paintable
   type(c_ptr), value :: widget
 end function
 
 !  void gtk_widget_set_double_buffered (GtkWidget *widget, gboolean double_buffered);
 subroutine gtk_widget_set_double_buffered(widget, double_buffered) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: double_buffered
+  integer(c_int), value :: double_buffered
 end subroutine
 
 ! gboolean gtk_widget_get_double_buffered (GtkWidget *widget);
 function gtk_widget_get_double_buffered(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_double_buffered
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_double_buffered
   type(c_ptr), value :: widget
 end function
 
 !  void gtk_widget_set_redraw_on_allocate (GtkWidget *widget, gboolean redraw_on_allocate);
 subroutine gtk_widget_set_redraw_on_allocate(widget, redraw_on_allocate) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: redraw_on_allocate
+  integer(c_int), value :: redraw_on_allocate
 end subroutine
 
 !  void gtk_widget_set_parent (GtkWidget *widget, GtkWidget *parent);
@@ -50440,15 +50440,15 @@ end function
 
 !  void gtk_widget_set_child_visible (GtkWidget *widget, gboolean is_visible);
 subroutine gtk_widget_set_child_visible(widget, is_visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: is_visible
+  integer(c_int), value :: is_visible
 end subroutine
 
 ! gboolean gtk_widget_get_child_visible (GtkWidget *widget);
 function gtk_widget_get_child_visible(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_child_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_child_visible
   type(c_ptr), value :: widget
 end function
 
@@ -50489,16 +50489,16 @@ end subroutine
 
 !  gboolean gtk_widget_child_focus (GtkWidget *widget, GtkDirectionType direction);
 function gtk_widget_child_focus(widget, direction) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_widget_child_focus
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_child_focus
   type(c_ptr), value :: widget
   integer(c_int), value :: direction
 end function
 
 ! gboolean gtk_widget_keynav_failed (GtkWidget *widget, GtkDirectionType direction);
 function gtk_widget_keynav_failed(widget, direction) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_widget_keynav_failed
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_keynav_failed
   type(c_ptr), value :: widget
   integer(c_int), value :: direction
 end function
@@ -50607,8 +50607,8 @@ end function
 
 ! gboolean gtk_widget_has_screen (GtkWidget *widget);
 function gtk_widget_has_screen(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_has_screen
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_has_screen
   type(c_ptr), value :: widget
 end function
 
@@ -50680,8 +50680,8 @@ end subroutine
 
 !  gboolean gtk_widget_is_ancestor (GtkWidget *widget, GtkWidget *ancestor);
 function gtk_widget_is_ancestor(widget, ancestor) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_is_ancestor
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_is_ancestor
   type(c_ptr), value :: widget
   type(c_ptr), value :: ancestor
 end function
@@ -50689,8 +50689,8 @@ end function
 !  gboolean gtk_widget_translate_coordinates (GtkWidget *src_widget, GtkWidget *dest_widget, gint src_x, gint src_y, gint *dest_x, gint *dest_y);
 function gtk_widget_translate_coordinates(src_widget, dest_widget, src_x, src_y,&
       & dest_x, dest_y) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_widget_translate_coordinates
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_translate_coordinates
   type(c_ptr), value :: src_widget
   type(c_ptr), value :: dest_widget
   integer(c_int), value :: src_x
@@ -50701,8 +50701,8 @@ end function
 
 !  gboolean gtk_widget_hide_on_delete (GtkWidget *widget);
 function gtk_widget_hide_on_delete(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_hide_on_delete
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_hide_on_delete
   type(c_ptr), value :: widget
 end function
 
@@ -50714,8 +50714,8 @@ end subroutine
 
 !  gboolean gtk_widget_has_rc_style (GtkWidget *widget);
 function gtk_widget_has_rc_style(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_has_rc_style
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_has_rc_style
   type(c_ptr), value :: widget
 end function
 
@@ -50974,8 +50974,8 @@ end function
 
 !  gboolean gtk_widget_is_composited (GtkWidget *widget);
 function gtk_widget_is_composited(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_is_composited
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_is_composited
   type(c_ptr), value :: widget
 end function
 
@@ -51095,15 +51095,15 @@ end function
 
 ! void gtk_widget_set_has_tooltip (GtkWidget *widget, gboolean has_tooltip);
 subroutine gtk_widget_set_has_tooltip(widget, has_tooltip) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: has_tooltip
+  integer(c_int), value :: has_tooltip
 end subroutine
 
 ! gboolean gtk_widget_get_has_tooltip (GtkWidget *widget);
 function gtk_widget_get_has_tooltip(widget) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_widget_get_has_tooltip
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_has_tooltip
   type(c_ptr), value :: widget
 end function
 
@@ -51128,9 +51128,9 @@ end subroutine
 
 !  void ubuntu_gtk_widget_set_has_grab (GtkWidget *widget, gboolean has_grab);
 subroutine ubuntu_gtk_widget_set_has_grab(widget, has_grab) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  logical(c_bool), value :: has_grab
+  integer(c_int), value :: has_grab
 end subroutine
 
 !   GType gtk_text_buffer_get_type (void) G_GNUC_CONST;
@@ -51195,24 +51195,24 @@ end subroutine
 !  gboolean gtk_text_buffer_insert_interactive (GtkTextBuffer *buffer, GtkTextIter *iter, const gchar *text, gint len, gboolean default_editable);
 function gtk_text_buffer_insert_interactive(buffer, iter, text, len, default_edi&
       &table) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: gtk_text_buffer_insert_interactive
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_text_buffer_insert_interactive
   type(c_ptr), value :: buffer
   type(c_ptr), value :: iter
   character(kind=c_char), dimension(*) :: text
   integer(c_int), value :: len
-  logical(c_bool), value :: default_editable
+  integer(c_int), value :: default_editable
 end function
 
 ! gboolean gtk_text_buffer_insert_interactive_at_cursor (GtkTextBuffer *buffer, const gchar *text, gint len, gboolean default_editable);
 function gtk_text_buffer_insert_interactive_at_cursor(buffer, text, len, default&
       &_editable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: gtk_text_buffer_insert_interactive_at_cursor
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_text_buffer_insert_interactive_at_cursor
   type(c_ptr), value :: buffer
   character(kind=c_char), dimension(*) :: text
   integer(c_int), value :: len
-  logical(c_bool), value :: default_editable
+  integer(c_int), value :: default_editable
 end function
 
 !  void gtk_text_buffer_insert_range (GtkTextBuffer *buffer, GtkTextIter *iter, const GtkTextIter *start, const GtkTextIter *end);
@@ -51227,13 +51227,13 @@ end subroutine
 ! gboolean gtk_text_buffer_insert_range_interactive (GtkTextBuffer *buffer, GtkTextIter *iter, const GtkTextIter *start, const GtkTextIter *end, gboolean default_editable);
 function gtk_text_buffer_insert_range_interactive(buffer, iter, start, end, defa&
       &ult_editable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_buffer_insert_range_interactive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_insert_range_interactive
   type(c_ptr), value :: buffer
   type(c_ptr), value :: iter
   type(c_ptr), value :: start
   type(c_ptr), value :: end
-  logical(c_bool), value :: default_editable
+  integer(c_int), value :: default_editable
 end function
 
 !  void gtk_text_buffer_delete (GtkTextBuffer *buffer, GtkTextIter *start, GtkTextIter *end);
@@ -51247,45 +51247,45 @@ end subroutine
 ! gboolean gtk_text_buffer_delete_interactive (GtkTextBuffer *buffer, GtkTextIter *start_iter, GtkTextIter *end_iter, gboolean default_editable);
 function gtk_text_buffer_delete_interactive(buffer, start_iter, end_iter, defaul&
       &t_editable) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_buffer_delete_interactive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_delete_interactive
   type(c_ptr), value :: buffer
   type(c_ptr), value :: start_iter
   type(c_ptr), value :: end_iter
-  logical(c_bool), value :: default_editable
+  integer(c_int), value :: default_editable
 end function
 
 ! gboolean gtk_text_buffer_backspace (GtkTextBuffer *buffer, GtkTextIter *iter, gboolean interactive, gboolean default_editable);
 function gtk_text_buffer_backspace(buffer, iter, interactive, default_editable) &
       &bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_buffer_backspace
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_backspace
   type(c_ptr), value :: buffer
   type(c_ptr), value :: iter
-  logical(c_bool), value :: interactive
-  logical(c_bool), value :: default_editable
+  integer(c_int), value :: interactive
+  integer(c_int), value :: default_editable
 end function
 
 !  gchar *gtk_text_buffer_get_text (GtkTextBuffer *buffer, const GtkTextIter *start, const GtkTextIter *end, gboolean include_hidden_chars);
 function gtk_text_buffer_get_text(buffer, start, end, include_hidden_chars) bind&
       &(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_text_buffer_get_text
   type(c_ptr), value :: buffer
   type(c_ptr), value :: start
   type(c_ptr), value :: end
-  logical(c_bool), value :: include_hidden_chars
+  integer(c_int), value :: include_hidden_chars
 end function
 
 !  gchar *gtk_text_buffer_get_slice (GtkTextBuffer *buffer, const GtkTextIter *start, const GtkTextIter *end, gboolean include_hidden_chars);
 function gtk_text_buffer_get_slice(buffer, start, end, include_hidden_chars) bin&
       &d(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_text_buffer_get_slice
   type(c_ptr), value :: buffer
   type(c_ptr), value :: start
   type(c_ptr), value :: end
-  logical(c_bool), value :: include_hidden_chars
+  integer(c_int), value :: include_hidden_chars
 end function
 
 !  void gtk_text_buffer_insert_pixbuf (GtkTextBuffer *buffer, GtkTextIter *iter, GdkPixbuf *pixbuf);
@@ -51323,12 +51323,12 @@ end subroutine
 ! GtkTextMark *gtk_text_buffer_create_mark (GtkTextBuffer *buffer, const gchar *mark_name, const GtkTextIter *where, gboolean left_gravity);
 function gtk_text_buffer_create_mark(buffer, mark_name, where, left_gravity) bin&
       &d(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: gtk_text_buffer_create_mark
   type(c_ptr), value :: buffer
   character(kind=c_char), dimension(*) :: mark_name
   type(c_ptr), value :: where
-  logical(c_bool), value :: left_gravity
+  integer(c_int), value :: left_gravity
 end function
 
 ! void gtk_text_buffer_move_mark (GtkTextBuffer *buffer, GtkTextMark *mark, const GtkTextIter *where);
@@ -51519,22 +51519,22 @@ end subroutine
 
 !  gboolean gtk_text_buffer_get_modified (GtkTextBuffer *buffer);
 function gtk_text_buffer_get_modified(buffer) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_buffer_get_modified
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_get_modified
   type(c_ptr), value :: buffer
 end function
 
 ! void gtk_text_buffer_set_modified (GtkTextBuffer *buffer, gboolean setting);
 subroutine gtk_text_buffer_set_modified(buffer, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: buffer
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 !  gboolean gtk_text_buffer_get_has_selection (GtkTextBuffer *buffer);
 function gtk_text_buffer_get_has_selection(buffer) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_buffer_get_has_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_get_has_selection
   type(c_ptr), value :: buffer
 end function
 
@@ -51555,10 +51555,10 @@ end subroutine
 !  void gtk_text_buffer_cut_clipboard (GtkTextBuffer *buffer, GtkClipboard *clipboard, gboolean default_editable);
 subroutine gtk_text_buffer_cut_clipboard(buffer, clipboard, default_editable) bi&
       &nd(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: buffer
   type(c_ptr), value :: clipboard
-  logical(c_bool), value :: default_editable
+  integer(c_int), value :: default_editable
 end subroutine
 
 ! void gtk_text_buffer_copy_clipboard (GtkTextBuffer *buffer, GtkClipboard *clipboard);
@@ -51571,17 +51571,17 @@ end subroutine
 ! void gtk_text_buffer_paste_clipboard (GtkTextBuffer *buffer, GtkClipboard *clipboard, GtkTextIter *override_location, gboolean default_editable);
 subroutine gtk_text_buffer_paste_clipboard(buffer, clipboard, override_location,&
       & default_editable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: buffer
   type(c_ptr), value :: clipboard
   type(c_ptr), value :: override_location
-  logical(c_bool), value :: default_editable
+  integer(c_int), value :: default_editable
 end subroutine
 
 !  gboolean gtk_text_buffer_get_selection_bounds (GtkTextBuffer *buffer, GtkTextIter *start, GtkTextIter *end);
 function gtk_text_buffer_get_selection_bounds(buffer, start, end) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_buffer_get_selection_bounds
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_get_selection_bounds
   type(c_ptr), value :: buffer
   type(c_ptr), value :: start
   type(c_ptr), value :: end
@@ -51590,11 +51590,11 @@ end function
 ! gboolean gtk_text_buffer_delete_selection (GtkTextBuffer *buffer, gboolean interactive, gboolean default_editable);
 function gtk_text_buffer_delete_selection(buffer, interactive, default_editable)&
       & bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_buffer_delete_selection
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_delete_selection
   type(c_ptr), value :: buffer
-  logical(c_bool), value :: interactive
-  logical(c_bool), value :: default_editable
+  integer(c_int), value :: interactive
+  integer(c_int), value :: default_editable
 end function
 
 !  void gtk_text_buffer_begin_user_action (GtkTextBuffer *buffer);
@@ -51725,10 +51725,10 @@ end function
 ! void gtk_info_bar_set_response_sensitive (GtkInfoBar *info_bar, gint response_id, gboolean setting);
 subroutine gtk_info_bar_set_response_sensitive(info_bar, response_id, setting) b&
       &ind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: info_bar
   integer(c_int), value :: response_id
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! void gtk_info_bar_set_default_response (GtkInfoBar *info_bar, gint response_id);
@@ -51808,8 +51808,8 @@ end function
 
 !  gboolean gtk_icon_size_lookup (GtkIconSize size, gint *width, gint *height);
 function gtk_icon_size_lookup(size, width, height) bind(c) 
-  use iso_c_binding, only: c_bool, c_int, c_ptr
-  logical(c_bool) :: gtk_icon_size_lookup
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_size_lookup
   integer(c_int), value :: size
   type(c_ptr), value :: width
   type(c_ptr), value :: height
@@ -51818,8 +51818,8 @@ end function
 !  gboolean gtk_icon_size_lookup_for_settings (GtkSettings *settings, GtkIconSize size, gint *width, gint *height);
 function gtk_icon_size_lookup_for_settings(settings, size, width, height) bind(c&
       &) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_icon_size_lookup_for_settings
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_size_lookup_for_settings
   type(c_ptr), value :: settings
   integer(c_int), value :: size
   type(c_ptr), value :: width
@@ -51993,43 +51993,43 @@ end function
 
 !  void gtk_icon_source_set_direction_wildcarded (GtkIconSource *source, gboolean setting);
 subroutine gtk_icon_source_set_direction_wildcarded(source, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: source
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! void gtk_icon_source_set_state_wildcarded (GtkIconSource *source, gboolean setting);
 subroutine gtk_icon_source_set_state_wildcarded(source, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: source
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! void gtk_icon_source_set_size_wildcarded (GtkIconSource *source, gboolean setting);
 subroutine gtk_icon_source_set_size_wildcarded(source, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: source
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_icon_source_get_size_wildcarded (const GtkIconSource *source);
 function gtk_icon_source_get_size_wildcarded(source) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_source_get_size_wildcarded
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_source_get_size_wildcarded
   type(c_ptr), value :: source
 end function
 
 ! gboolean gtk_icon_source_get_state_wildcarded (const GtkIconSource *source);
 function gtk_icon_source_get_state_wildcarded(source) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_source_get_state_wildcarded
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_source_get_state_wildcarded
   type(c_ptr), value :: source
 end function
 
 ! gboolean gtk_icon_source_get_direction_wildcarded (const GtkIconSource *source);
 function gtk_icon_source_get_direction_wildcarded(source) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_icon_source_get_direction_wildcarded
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_source_get_direction_wildcarded
   type(c_ptr), value :: source
 end function
 
@@ -52083,9 +52083,9 @@ end function
 
 ! void gtk_old_editable_claim_selection (GtkOldEditable *old_editable, gboolean claim, guint32 time_);
 subroutine gtk_old_editable_claim_selection(old_editable, claim, time_) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int32_t
+  use iso_c_binding, only: c_ptr, c_int, c_int32_t
   type(c_ptr), value :: old_editable
-  logical(c_bool), value :: claim
+  integer(c_int), value :: claim
   integer(c_int32_t), value :: time_
 end subroutine
 
@@ -52165,30 +52165,30 @@ end function
 
 ! gboolean gtk_event_box_get_visible_window (GtkEventBox *event_box);
 function gtk_event_box_get_visible_window(event_box) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_event_box_get_visible_window
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_event_box_get_visible_window
   type(c_ptr), value :: event_box
 end function
 
 ! void gtk_event_box_set_visible_window (GtkEventBox *event_box, gboolean visible_window);
 subroutine gtk_event_box_set_visible_window(event_box, visible_window) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: event_box
-  logical(c_bool), value :: visible_window
+  integer(c_int), value :: visible_window
 end subroutine
 
 ! gboolean gtk_event_box_get_above_child (GtkEventBox *event_box);
 function gtk_event_box_get_above_child(event_box) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_event_box_get_above_child
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_event_box_get_above_child
   type(c_ptr), value :: event_box
 end function
 
 ! void gtk_event_box_set_above_child (GtkEventBox *event_box, gboolean above_child);
 subroutine gtk_event_box_set_above_child(event_box, above_child) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: event_box
-  logical(c_bool), value :: above_child
+  integer(c_int), value :: above_child
 end subroutine
 
 !  GType gtk_clist_get_type (void) G_GNUC_CONST;
@@ -52256,16 +52256,16 @@ end subroutine
 
 !  void gtk_clist_set_reorderable (GtkCList *clist, gboolean reorderable);
 subroutine gtk_clist_set_reorderable(clist, reorderable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: clist
-  logical(c_bool), value :: reorderable
+  integer(c_int), value :: reorderable
 end subroutine
 
 ! void gtk_clist_set_use_drag_icons (GtkCList *clist, gboolean use_icons);
 subroutine gtk_clist_set_use_drag_icons(clist, use_icons) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: clist
-  logical(c_bool), value :: use_icons
+  integer(c_int), value :: use_icons
 end subroutine
 
 ! void gtk_clist_set_button_actions (GtkCList *clist, guint button, guint8 button_actions);
@@ -52369,26 +52369,26 @@ end subroutine
 
 !  void gtk_clist_set_column_visibility (GtkCList *clist, gint column, gboolean visible);
 subroutine gtk_clist_set_column_visibility(clist, column, visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: clist
   integer(c_int), value :: column
-  logical(c_bool), value :: visible
+  integer(c_int), value :: visible
 end subroutine
 
 !  void gtk_clist_set_column_resizeable (GtkCList *clist, gint column, gboolean resizeable);
 subroutine gtk_clist_set_column_resizeable(clist, column, resizeable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: clist
   integer(c_int), value :: column
-  logical(c_bool), value :: resizeable
+  integer(c_int), value :: resizeable
 end subroutine
 
 !  void gtk_clist_set_column_auto_resize (GtkCList *clist, gint column, gboolean auto_resize);
 subroutine gtk_clist_set_column_auto_resize(clist, column, auto_resize) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: clist
   integer(c_int), value :: column
-  logical(c_bool), value :: auto_resize
+  integer(c_int), value :: auto_resize
 end subroutine
 
 !  gint gtk_clist_columns_autosize (GtkCList *clist);
@@ -52593,16 +52593,16 @@ end subroutine
 
 !  void gtk_clist_set_selectable (GtkCList *clist, gint row, gboolean selectable);
 subroutine gtk_clist_set_selectable(clist, row, selectable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: clist
   integer(c_int), value :: row
-  logical(c_bool), value :: selectable
+  integer(c_int), value :: selectable
 end subroutine
 
 ! gboolean gtk_clist_get_selectable (GtkCList *clist, gint row);
 function gtk_clist_get_selectable(clist, row) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_clist_get_selectable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_clist_get_selectable
   type(c_ptr), value :: clist
   integer(c_int), value :: row
 end function
@@ -52768,9 +52768,9 @@ end subroutine
 
 !  void gtk_clist_set_auto_sort (GtkCList *clist, gboolean auto_sort);
 subroutine gtk_clist_set_auto_sort(clist, auto_sort) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: clist
-  logical(c_bool), value :: auto_sort
+  integer(c_int), value :: auto_sort
 end subroutine
 
 !   GType gtk_plug_get_type (void) G_GNUC_CONST;
@@ -52818,8 +52818,8 @@ end function
 
 !  gboolean gtk_plug_get_embedded (GtkPlug *plug);
 function gtk_plug_get_embedded(plug) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_plug_get_embedded
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_plug_get_embedded
   type(c_ptr), value :: plug
 end function
 
@@ -52859,8 +52859,8 @@ end function
 
 ! gboolean gtk_print_settings_load_file (GtkPrintSettings *settings, const gchar *file_name, GError **error);
 function gtk_print_settings_load_file(settings, file_name, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_print_settings_load_file
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_print_settings_load_file
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: file_name
   type(c_ptr), value :: error
@@ -52868,8 +52868,8 @@ end function
 
 ! gboolean gtk_print_settings_to_file (GtkPrintSettings *settings, const gchar *file_name, GError **error);
 function gtk_print_settings_to_file(settings, file_name, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_print_settings_to_file
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_print_settings_to_file
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: file_name
   type(c_ptr), value :: error
@@ -52888,8 +52888,8 @@ end function
 ! gboolean gtk_print_settings_load_key_file (GtkPrintSettings *settings, GKeyFile *key_file, const gchar *group_name, GError **error);
 function gtk_print_settings_load_key_file(settings, key_file, group_name, error)&
       & bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_print_settings_load_key_file
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_print_settings_load_key_file
   type(c_ptr), value :: settings
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
@@ -52907,8 +52907,8 @@ end subroutine
 
 ! gboolean gtk_print_settings_has_key (GtkPrintSettings *settings, const gchar *key);
 function gtk_print_settings_has_key(settings, key) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_print_settings_has_key
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_print_settings_has_key
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
 end function
@@ -52946,18 +52946,18 @@ end subroutine
 
 ! gboolean gtk_print_settings_get_bool (GtkPrintSettings *settings, const gchar *key);
 function gtk_print_settings_get_bool(settings, key) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_print_settings_get_bool
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_print_settings_get_bool
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
 end function
 
 ! void gtk_print_settings_set_bool (GtkPrintSettings *settings, const gchar *key, gboolean value);
 subroutine gtk_print_settings_set_bool(settings, key, value) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr), value :: settings
   character(kind=c_char), dimension(*) :: key
-  logical(c_bool), value :: value
+  integer(c_int), value :: value
 end subroutine
 
 ! gdouble gtk_print_settings_get_double (GtkPrintSettings *settings, const gchar *key);
@@ -53104,44 +53104,44 @@ end subroutine
 
 ! gboolean gtk_print_settings_get_use_color (GtkPrintSettings *settings);
 function gtk_print_settings_get_use_color(settings) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_print_settings_get_use_color
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_print_settings_get_use_color
   type(c_ptr), value :: settings
 end function
 
 ! void gtk_print_settings_set_use_color (GtkPrintSettings *settings, gboolean use_color);
 subroutine gtk_print_settings_set_use_color(settings, use_color) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: settings
-  logical(c_bool), value :: use_color
+  integer(c_int), value :: use_color
 end subroutine
 
 ! gboolean gtk_print_settings_get_collate (GtkPrintSettings *settings);
 function gtk_print_settings_get_collate(settings) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_print_settings_get_collate
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_print_settings_get_collate
   type(c_ptr), value :: settings
 end function
 
 ! void gtk_print_settings_set_collate (GtkPrintSettings *settings, gboolean collate);
 subroutine gtk_print_settings_set_collate(settings, collate) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: settings
-  logical(c_bool), value :: collate
+  integer(c_int), value :: collate
 end subroutine
 
 ! gboolean gtk_print_settings_get_reverse (GtkPrintSettings *settings);
 function gtk_print_settings_get_reverse(settings) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_print_settings_get_reverse
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_print_settings_get_reverse
   type(c_ptr), value :: settings
 end function
 
 ! void gtk_print_settings_set_reverse (GtkPrintSettings *settings, gboolean reverse);
 subroutine gtk_print_settings_set_reverse(settings, reverse) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: settings
-  logical(c_bool), value :: reverse
+  integer(c_int), value :: reverse
 end subroutine
 
 ! GtkPrintDuplex gtk_print_settings_get_duplex (GtkPrintSettings *settings);
@@ -53462,8 +53462,8 @@ end function
 
 ! gboolean gtk_file_filter_filter (GtkFileFilter *filter, const GtkFileFilterInfo *filter_info);
 function gtk_file_filter_filter(filter, filter_info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_file_filter_filter
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_filter_filter
   type(c_ptr), value :: filter
   type(c_ptr), value :: filter_info
 end function
@@ -53519,8 +53519,8 @@ end function
 ! gboolean gtk_print_context_get_hard_margins (GtkPrintContext *context, gdouble *top, gdouble *bottom, gdouble *left, gdouble *right);
 function gtk_print_context_get_hard_margins(context, top, bottom, left, right) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_print_context_get_hard_margins
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_print_context_get_hard_margins
   type(c_ptr), value :: context
   type(c_ptr), value :: top
   type(c_ptr), value :: bottom
@@ -53614,8 +53614,8 @@ end function
 !  gboolean gtk_clipboard_set_with_data (GtkClipboard *clipboard, const GtkTargetEntry *targets, guint n_targets, GtkClipboardGetFunc get_func, GtkClipboardClearFunc clear_func, gpointer user_data);
 function gtk_clipboard_set_with_data(clipboard, targets, n_targets, get_func, cl&
       &ear_func, user_data) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_funptr
-  logical(c_bool) :: gtk_clipboard_set_with_data
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: gtk_clipboard_set_with_data
   type(c_ptr), value :: clipboard
   type(c_ptr), value :: targets
   integer(c_int), value :: n_targets
@@ -53627,8 +53627,8 @@ end function
 ! gboolean gtk_clipboard_set_with_owner (GtkClipboard *clipboard, const GtkTargetEntry *targets, guint n_targets, GtkClipboardGetFunc get_func, GtkClipboardClearFunc clear_func, GObject *owner);
 function gtk_clipboard_set_with_owner(clipboard, targets, n_targets, get_func, c&
       &lear_func, owner) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_funptr
-  logical(c_bool) :: gtk_clipboard_set_with_owner
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: gtk_clipboard_set_with_owner
   type(c_ptr), value :: clipboard
   type(c_ptr), value :: targets
   integer(c_int), value :: n_targets
@@ -53759,8 +53759,8 @@ end function
 
 ! gboolean gtk_clipboard_wait_for_targets (GtkClipboard *clipboard, GdkAtom **targets, gint *n_targets);
 function gtk_clipboard_wait_for_targets(clipboard, targets, n_targets) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_clipboard_wait_for_targets
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_clipboard_wait_for_targets
   type(c_ptr), value :: clipboard
   type(c_ptr), value :: targets
   type(c_ptr), value :: n_targets
@@ -53768,37 +53768,37 @@ end function
 
 !  gboolean gtk_clipboard_wait_is_text_available (GtkClipboard *clipboard);
 function gtk_clipboard_wait_is_text_available(clipboard) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_clipboard_wait_is_text_available
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_clipboard_wait_is_text_available
   type(c_ptr), value :: clipboard
 end function
 
 ! gboolean gtk_clipboard_wait_is_rich_text_available (GtkClipboard *clipboard, GtkTextBuffer *buffer);
 function gtk_clipboard_wait_is_rich_text_available(clipboard, buffer) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_clipboard_wait_is_rich_text_available
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_clipboard_wait_is_rich_text_available
   type(c_ptr), value :: clipboard
   type(c_ptr), value :: buffer
 end function
 
 ! gboolean gtk_clipboard_wait_is_image_available (GtkClipboard *clipboard);
 function gtk_clipboard_wait_is_image_available(clipboard) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_clipboard_wait_is_image_available
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_clipboard_wait_is_image_available
   type(c_ptr), value :: clipboard
 end function
 
 ! gboolean gtk_clipboard_wait_is_uris_available (GtkClipboard *clipboard);
 function gtk_clipboard_wait_is_uris_available(clipboard) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_clipboard_wait_is_uris_available
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_clipboard_wait_is_uris_available
   type(c_ptr), value :: clipboard
 end function
 
 ! gboolean gtk_clipboard_wait_is_target_available (GtkClipboard *clipboard, GdkAtom target);
 function gtk_clipboard_wait_is_target_available(clipboard, target) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_clipboard_wait_is_target_available
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_clipboard_wait_is_target_available
   type(c_ptr), value :: clipboard
   type(c_ptr), value :: target
 end function
@@ -53943,16 +53943,16 @@ end subroutine
 !  void gtk_text_buffer_deserialize_set_can_create_tags (GtkTextBuffer *buffer, GdkAtom format, gboolean can_create_tags);
 subroutine gtk_text_buffer_deserialize_set_can_create_tags(buffer, format, can_c&
       &reate_tags) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: buffer
   type(c_ptr), value :: format
-  logical(c_bool), value :: can_create_tags
+  integer(c_int), value :: can_create_tags
 end subroutine
 
 ! gboolean gtk_text_buffer_deserialize_get_can_create_tags (GtkTextBuffer *buffer, GdkAtom format);
 function gtk_text_buffer_deserialize_get_can_create_tags(buffer, format) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_buffer_deserialize_get_can_create_tags
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_deserialize_get_can_create_tags
   type(c_ptr), value :: buffer
   type(c_ptr), value :: format
 end function
@@ -53989,8 +53989,8 @@ end function
 ! gboolean gtk_text_buffer_deserialize (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, GdkAtom format, GtkTextIter *iter, const guint8 *data, gsize length, GError **error);
 function gtk_text_buffer_deserialize(register_buffer, content_buffer, format, it&
       &er, data, length, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_size_t
-  logical(c_bool) :: gtk_text_buffer_deserialize
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
+  integer(c_int) :: gtk_text_buffer_deserialize
   type(c_ptr), value :: register_buffer
   type(c_ptr), value :: content_buffer
   type(c_ptr), value :: format
@@ -54014,8 +54014,8 @@ end function
 
 !  gboolean gtk_calendar_select_month (GtkCalendar *calendar, guint month, guint year);
 function gtk_calendar_select_month(calendar, month, year) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_calendar_select_month
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_calendar_select_month
   type(c_ptr), value :: calendar
   integer(c_int), value :: month
   integer(c_int), value :: year
@@ -54030,16 +54030,16 @@ end subroutine
 
 !  gboolean gtk_calendar_mark_day (GtkCalendar *calendar, guint day);
 function gtk_calendar_mark_day(calendar, day) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_calendar_mark_day
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_calendar_mark_day
   type(c_ptr), value :: calendar
   integer(c_int), value :: day
 end function
 
 ! gboolean gtk_calendar_unmark_day (GtkCalendar *calendar, guint day);
 function gtk_calendar_unmark_day(calendar, day) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_calendar_unmark_day
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_calendar_unmark_day
   type(c_ptr), value :: calendar
   integer(c_int), value :: day
 end function
@@ -54154,44 +54154,44 @@ end function
 
 ! gboolean gtk_action_is_sensitive (GtkAction *action);
 function gtk_action_is_sensitive(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_action_is_sensitive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_action_is_sensitive
   type(c_ptr), value :: action
 end function
 
 ! gboolean gtk_action_get_sensitive (GtkAction *action);
 function gtk_action_get_sensitive(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_action_get_sensitive
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_action_get_sensitive
   type(c_ptr), value :: action
 end function
 
 ! void gtk_action_set_sensitive (GtkAction *action, gboolean sensitive);
 subroutine gtk_action_set_sensitive(action, sensitive) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action
-  logical(c_bool), value :: sensitive
+  integer(c_int), value :: sensitive
 end subroutine
 
 ! gboolean gtk_action_is_visible (GtkAction *action);
 function gtk_action_is_visible(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_action_is_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_action_is_visible
   type(c_ptr), value :: action
 end function
 
 ! gboolean gtk_action_get_visible (GtkAction *action);
 function gtk_action_get_visible(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_action_get_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_action_get_visible
   type(c_ptr), value :: action
 end function
 
 ! void gtk_action_set_visible (GtkAction *action, gboolean visible);
 subroutine gtk_action_set_visible(action, visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action
-  logical(c_bool), value :: visible
+  integer(c_int), value :: visible
 end subroutine
 
 ! void gtk_action_activate (GtkAction *action);
@@ -54409,57 +54409,57 @@ end function
 
 ! void gtk_action_set_visible_horizontal (GtkAction *action, gboolean visible_horizontal);
 subroutine gtk_action_set_visible_horizontal(action, visible_horizontal) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action
-  logical(c_bool), value :: visible_horizontal
+  integer(c_int), value :: visible_horizontal
 end subroutine
 
 ! gboolean gtk_action_get_visible_horizontal (GtkAction *action);
 function gtk_action_get_visible_horizontal(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_action_get_visible_horizontal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_action_get_visible_horizontal
   type(c_ptr), value :: action
 end function
 
 ! void gtk_action_set_visible_vertical (GtkAction *action, gboolean visible_vertical);
 subroutine gtk_action_set_visible_vertical(action, visible_vertical) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action
-  logical(c_bool), value :: visible_vertical
+  integer(c_int), value :: visible_vertical
 end subroutine
 
 ! gboolean gtk_action_get_visible_vertical (GtkAction *action);
 function gtk_action_get_visible_vertical(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_action_get_visible_vertical
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_action_get_visible_vertical
   type(c_ptr), value :: action
 end function
 
 ! void gtk_action_set_is_important (GtkAction *action, gboolean is_important);
 subroutine gtk_action_set_is_important(action, is_important) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action
-  logical(c_bool), value :: is_important
+  integer(c_int), value :: is_important
 end subroutine
 
 ! gboolean gtk_action_get_is_important (GtkAction *action);
 function gtk_action_get_is_important(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_action_get_is_important
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_action_get_is_important
   type(c_ptr), value :: action
 end function
 
 ! void gtk_action_set_always_show_image (GtkAction *action, gboolean always_show);
 subroutine gtk_action_set_always_show_image(action, always_show) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action
-  logical(c_bool), value :: always_show
+  integer(c_int), value :: always_show
 end subroutine
 
 ! gboolean gtk_action_get_always_show_image (GtkAction *action);
 function gtk_action_get_always_show_image(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_action_get_always_show_image
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_action_get_always_show_image
   type(c_ptr), value :: action
 end function
 
@@ -54471,9 +54471,9 @@ end function
 
 ! GtkWidget * gtk_hbox_new (gboolean homogeneous, gint spacing);
 function gtk_hbox_new(homogeneous, spacing) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_hbox_new
-  logical(c_bool), value :: homogeneous
+  integer(c_int), value :: homogeneous
   integer(c_int), value :: spacing
 end function
 
@@ -54485,24 +54485,24 @@ end function
 
 !  void gtk_text_mark_set_visible (GtkTextMark *mark, gboolean setting);
 subroutine gtk_text_mark_set_visible(mark, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: mark
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_text_mark_get_visible (GtkTextMark *mark);
 function gtk_text_mark_get_visible(mark) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_mark_get_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_mark_get_visible
   type(c_ptr), value :: mark
 end function
 
 !  GtkTextMark *gtk_text_mark_new (const gchar *name, gboolean left_gravity);
 function gtk_text_mark_new(name, left_gravity) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: gtk_text_mark_new
   character(kind=c_char), dimension(*) :: name
-  logical(c_bool), value :: left_gravity
+  integer(c_int), value :: left_gravity
 end function
 
 ! G_CONST_RETURN gchar* gtk_text_mark_get_name (GtkTextMark *mark);
@@ -54514,8 +54514,8 @@ end function
 
 ! gboolean gtk_text_mark_get_deleted (GtkTextMark *mark);
 function gtk_text_mark_get_deleted(mark) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_mark_get_deleted
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_mark_get_deleted
   type(c_ptr), value :: mark
 end function
 
@@ -54528,8 +54528,8 @@ end function
 
 ! gboolean gtk_text_mark_get_left_gravity (GtkTextMark *mark);
 function gtk_text_mark_get_left_gravity(mark) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_text_mark_get_left_gravity
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_mark_get_left_gravity
   type(c_ptr), value :: mark
 end function
 
@@ -54664,15 +54664,15 @@ end function
 
 !  void gtk_spin_button_set_numeric (GtkSpinButton *spin_button, gboolean numeric);
 subroutine gtk_spin_button_set_numeric(spin_button, numeric) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: spin_button
-  logical(c_bool), value :: numeric
+  integer(c_int), value :: numeric
 end subroutine
 
 ! gboolean gtk_spin_button_get_numeric (GtkSpinButton *spin_button);
 function gtk_spin_button_get_numeric(spin_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_spin_button_get_numeric
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_spin_button_get_numeric
   type(c_ptr), value :: spin_button
 end function
 
@@ -54686,29 +54686,29 @@ end subroutine
 
 !  void gtk_spin_button_set_wrap (GtkSpinButton *spin_button, gboolean wrap);
 subroutine gtk_spin_button_set_wrap(spin_button, wrap) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: spin_button
-  logical(c_bool), value :: wrap
+  integer(c_int), value :: wrap
 end subroutine
 
 ! gboolean gtk_spin_button_get_wrap (GtkSpinButton *spin_button);
 function gtk_spin_button_get_wrap(spin_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_spin_button_get_wrap
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_spin_button_get_wrap
   type(c_ptr), value :: spin_button
 end function
 
 !  void gtk_spin_button_set_snap_to_ticks (GtkSpinButton *spin_button, gboolean snap_to_ticks);
 subroutine gtk_spin_button_set_snap_to_ticks(spin_button, snap_to_ticks) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: spin_button
-  logical(c_bool), value :: snap_to_ticks
+  integer(c_int), value :: snap_to_ticks
 end subroutine
 
 ! gboolean gtk_spin_button_get_snap_to_ticks (GtkSpinButton *spin_button);
 function gtk_spin_button_get_snap_to_ticks(spin_button) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_spin_button_get_snap_to_ticks
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_spin_button_get_snap_to_ticks
   type(c_ptr), value :: spin_button
 end function
 
@@ -54986,8 +54986,8 @@ end subroutine
 
 ! gboolean gtk_container_get_focus_chain (GtkContainer *container, GList **focusable_widgets);
 function gtk_container_get_focus_chain(container, focusable_widgets) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_container_get_focus_chain
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_container_get_focus_chain
   type(c_ptr), value :: container
   type(c_ptr), value :: focusable_widgets
 end function
@@ -55001,9 +55001,9 @@ end subroutine
 !  void gtk_container_set_reallocate_redraws (GtkContainer *container, gboolean needs_redraws);
 subroutine gtk_container_set_reallocate_redraws(container, needs_redraws) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: container
-  logical(c_bool), value :: needs_redraws
+  integer(c_int), value :: needs_redraws
 end subroutine
 
 ! void gtk_container_set_focus_child (GtkContainer *container, GtkWidget *child);
@@ -55164,29 +55164,29 @@ end subroutine
 
 ! void gtk_toggle_action_set_active (GtkToggleAction *action, gboolean is_active);
 subroutine gtk_toggle_action_set_active(action, is_active) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action
-  logical(c_bool), value :: is_active
+  integer(c_int), value :: is_active
 end subroutine
 
 ! gboolean gtk_toggle_action_get_active (GtkToggleAction *action);
 function gtk_toggle_action_get_active(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_toggle_action_get_active
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_toggle_action_get_active
   type(c_ptr), value :: action
 end function
 
 ! void gtk_toggle_action_set_draw_as_radio (GtkToggleAction *action, gboolean draw_as_radio);
 subroutine gtk_toggle_action_set_draw_as_radio(action, draw_as_radio) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: action
-  logical(c_bool), value :: draw_as_radio
+  integer(c_int), value :: draw_as_radio
 end subroutine
 
 ! gboolean gtk_toggle_action_get_draw_as_radio (GtkToggleAction *action);
 function gtk_toggle_action_get_draw_as_radio(action) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_toggle_action_get_draw_as_radio
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_toggle_action_get_draw_as_radio
   type(c_ptr), value :: action
 end function
 
@@ -55543,9 +55543,9 @@ end function
 
 ! void gtk_progress_set_show_text (GtkProgress *progress, gboolean show_text);
 subroutine gtk_progress_set_show_text(progress, show_text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: progress
-  logical(c_bool), value :: show_text
+  integer(c_int), value :: show_text
 end subroutine
 
 ! void gtk_progress_set_text_alignment (GtkProgress *progress, gfloat x_align, gfloat y_align);
@@ -55602,9 +55602,9 @@ end function
 
 ! void gtk_progress_set_activity_mode (GtkProgress *progress, gboolean activity_mode);
 subroutine gtk_progress_set_activity_mode(progress, activity_mode) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: progress
-  logical(c_bool), value :: activity_mode
+  integer(c_int), value :: activity_mode
 end subroutine
 
 ! gchar* gtk_progress_get_current_text (GtkProgress *progress);
@@ -55658,16 +55658,16 @@ end function
 
 !  gboolean gtk_recent_chooser_menu_get_show_numbers (GtkRecentChooserMenu *menu);
 function gtk_recent_chooser_menu_get_show_numbers(menu) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_chooser_menu_get_show_numbers
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_chooser_menu_get_show_numbers
   type(c_ptr), value :: menu
 end function
 
 ! void gtk_recent_chooser_menu_set_show_numbers (GtkRecentChooserMenu *menu, gboolean show_numbers);
 subroutine gtk_recent_chooser_menu_set_show_numbers(menu, show_numbers) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu
-  logical(c_bool), value :: show_numbers
+  integer(c_int), value :: show_numbers
 end subroutine
 
 !   GType gtk_buildable_get_type (void) G_GNUC_CONST;
@@ -55721,8 +55721,8 @@ end function
 ! gboolean gtk_buildable_custom_tag_start (GtkBuildable *buildable, GtkBuilder *builder, GObject *child, const gchar *tagname, GMarkupParser *parser, gpointer *data);
 function gtk_buildable_custom_tag_start(buildable, builder, child, tagname, pars&
       &er, data) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_buildable_custom_tag_start
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_buildable_custom_tag_start
   type(c_ptr), value :: buildable
   type(c_ptr), value :: builder
   type(c_ptr), value :: child
@@ -55783,45 +55783,45 @@ end function
 
 !  void gtk_recent_chooser_set_show_private (GtkRecentChooser *chooser, gboolean show_private);
 subroutine gtk_recent_chooser_set_show_private(chooser, show_private) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: show_private
+  integer(c_int), value :: show_private
 end subroutine
 
 ! gboolean gtk_recent_chooser_get_show_private (GtkRecentChooser *chooser);
 function gtk_recent_chooser_get_show_private(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_chooser_get_show_private
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_chooser_get_show_private
   type(c_ptr), value :: chooser
 end function
 
 ! void gtk_recent_chooser_set_show_not_found (GtkRecentChooser *chooser, gboolean show_not_found);
 subroutine gtk_recent_chooser_set_show_not_found(chooser, show_not_found) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: show_not_found
+  integer(c_int), value :: show_not_found
 end subroutine
 
 ! gboolean gtk_recent_chooser_get_show_not_found (GtkRecentChooser *chooser);
 function gtk_recent_chooser_get_show_not_found(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_chooser_get_show_not_found
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_chooser_get_show_not_found
   type(c_ptr), value :: chooser
 end function
 
 ! void gtk_recent_chooser_set_select_multiple (GtkRecentChooser *chooser, gboolean select_multiple);
 subroutine gtk_recent_chooser_set_select_multiple(chooser, select_multiple) bind&
       &(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: select_multiple
+  integer(c_int), value :: select_multiple
 end subroutine
 
 ! gboolean gtk_recent_chooser_get_select_multiple (GtkRecentChooser *chooser);
 function gtk_recent_chooser_get_select_multiple(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_chooser_get_select_multiple
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_chooser_get_select_multiple
   type(c_ptr), value :: chooser
 end function
 
@@ -55841,57 +55841,57 @@ end function
 
 ! void gtk_recent_chooser_set_local_only (GtkRecentChooser *chooser, gboolean local_only);
 subroutine gtk_recent_chooser_set_local_only(chooser, local_only) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: local_only
+  integer(c_int), value :: local_only
 end subroutine
 
 ! gboolean gtk_recent_chooser_get_local_only (GtkRecentChooser *chooser);
 function gtk_recent_chooser_get_local_only(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_chooser_get_local_only
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_chooser_get_local_only
   type(c_ptr), value :: chooser
 end function
 
 ! void gtk_recent_chooser_set_show_tips (GtkRecentChooser *chooser, gboolean show_tips);
 subroutine gtk_recent_chooser_set_show_tips(chooser, show_tips) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: show_tips
+  integer(c_int), value :: show_tips
 end subroutine
 
 ! gboolean gtk_recent_chooser_get_show_tips (GtkRecentChooser *chooser);
 function gtk_recent_chooser_get_show_tips(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_chooser_get_show_tips
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_chooser_get_show_tips
   type(c_ptr), value :: chooser
 end function
 
 !  void gtk_recent_chooser_set_show_numbers (GtkRecentChooser *chooser, gboolean show_numbers);
 subroutine gtk_recent_chooser_set_show_numbers(chooser, show_numbers) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: show_numbers
+  integer(c_int), value :: show_numbers
 end subroutine
 
 ! gboolean gtk_recent_chooser_get_show_numbers (GtkRecentChooser *chooser);
 function gtk_recent_chooser_get_show_numbers(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_chooser_get_show_numbers
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_chooser_get_show_numbers
   type(c_ptr), value :: chooser
 end function
 
 !  void gtk_recent_chooser_set_show_icons (GtkRecentChooser *chooser, gboolean show_icons);
 subroutine gtk_recent_chooser_set_show_icons(chooser, show_icons) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
-  logical(c_bool), value :: show_icons
+  integer(c_int), value :: show_icons
 end subroutine
 
 ! gboolean gtk_recent_chooser_get_show_icons (GtkRecentChooser *chooser);
 function gtk_recent_chooser_get_show_icons(chooser) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_chooser_get_show_icons
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_chooser_get_show_icons
   type(c_ptr), value :: chooser
 end function
 
@@ -55921,8 +55921,8 @@ end subroutine
 
 !  gboolean gtk_recent_chooser_set_current_uri (GtkRecentChooser *chooser, const gchar *uri, GError **error);
 function gtk_recent_chooser_set_current_uri(chooser, uri, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_recent_chooser_set_current_uri
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_recent_chooser_set_current_uri
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: uri
   type(c_ptr), value :: error
@@ -55944,8 +55944,8 @@ end function
 
 ! gboolean gtk_recent_chooser_select_uri (GtkRecentChooser *chooser, const gchar *uri, GError **error);
 function gtk_recent_chooser_select_uri(chooser, uri, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_recent_chooser_select_uri
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_recent_chooser_select_uri
   type(c_ptr), value :: chooser
   character(kind=c_char), dimension(*) :: uri
   type(c_ptr), value :: error
@@ -56091,29 +56091,29 @@ end subroutine
 
 ! void gtk_label_set_use_markup (GtkLabel *label, gboolean setting);
 subroutine gtk_label_set_use_markup(label, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: label
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_label_get_use_markup (GtkLabel *label);
 function gtk_label_get_use_markup(label) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_label_get_use_markup
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_label_get_use_markup
   type(c_ptr), value :: label
 end function
 
 ! void gtk_label_set_use_underline (GtkLabel *label, gboolean setting);
 subroutine gtk_label_set_use_underline(label, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: label
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_label_get_use_underline (GtkLabel *label);
 function gtk_label_get_use_underline(label) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_label_get_use_underline
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_label_get_use_underline
   type(c_ptr), value :: label
 end function
 
@@ -56217,15 +56217,15 @@ end subroutine
 
 ! void gtk_label_set_line_wrap (GtkLabel *label, gboolean wrap);
 subroutine gtk_label_set_line_wrap(label, wrap) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: label
-  logical(c_bool), value :: wrap
+  integer(c_int), value :: wrap
 end subroutine
 
 ! gboolean gtk_label_get_line_wrap (GtkLabel *label);
 function gtk_label_get_line_wrap(label) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_label_get_line_wrap
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_label_get_line_wrap
   type(c_ptr), value :: label
 end function
 
@@ -56245,15 +56245,15 @@ end function
 
 ! void gtk_label_set_selectable (GtkLabel *label, gboolean setting);
 subroutine gtk_label_set_selectable(label, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: label
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_label_get_selectable (GtkLabel *label);
 function gtk_label_get_selectable(label) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_label_get_selectable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_label_get_selectable
   type(c_ptr), value :: label
 end function
 
@@ -56281,8 +56281,8 @@ end subroutine
 
 ! gboolean gtk_label_get_selection_bounds (GtkLabel *label, gint *start, gint *end);
 function gtk_label_get_selection_bounds(label, start, end) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_label_get_selection_bounds
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_label_get_selection_bounds
   type(c_ptr), value :: label
   type(c_ptr), value :: start
   type(c_ptr), value :: end
@@ -56305,15 +56305,15 @@ end subroutine
 
 !  void gtk_label_set_single_line_mode (GtkLabel *label, gboolean single_line_mode);
 subroutine gtk_label_set_single_line_mode(label, single_line_mode) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: label
-  logical(c_bool), value :: single_line_mode
+  integer(c_int), value :: single_line_mode
 end subroutine
 
 ! gboolean gtk_label_get_single_line_mode (GtkLabel *label);
 function gtk_label_get_single_line_mode(label) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_label_get_single_line_mode
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_label_get_single_line_mode
   type(c_ptr), value :: label
 end function
 
@@ -56326,15 +56326,15 @@ end function
 
 ! void gtk_label_set_track_visited_links (GtkLabel *label, gboolean track_links);
 subroutine gtk_label_set_track_visited_links(label, track_links) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: label
-  logical(c_bool), value :: track_links
+  integer(c_int), value :: track_links
 end subroutine
 
 ! gboolean gtk_label_get_track_visited_links (GtkLabel *label);
 function gtk_label_get_track_visited_links(label) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_label_get_track_visited_links
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_label_get_track_visited_links
   type(c_ptr), value :: label
 end function
 
@@ -56440,8 +56440,8 @@ end function
 
 ! gboolean gtk_recent_filter_filter (GtkRecentFilter *filter, const GtkRecentFilterInfo *filter_info);
 function gtk_recent_filter_filter(filter, filter_info) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_recent_filter_filter
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_recent_filter_filter
   type(c_ptr), value :: filter
   type(c_ptr), value :: filter_info
 end function
@@ -56472,7 +56472,7 @@ end function
 ! GtkCTreeNode * gtk_ctree_insert_node (GtkCTree *ctree, GtkCTreeNode *parent, GtkCTreeNode *sibling, gchar *text[], guint8 spacing, GdkPixmap *pixmap_closed, GdkBitmap *mask_closed, GdkPixmap *pixmap_opened, GdkBitmap *mask_opened, gboolean is_leaf, gboolean expanded);
 function gtk_ctree_insert_node(ctree, parent, sibling, text, spacing, pixmap_clo&
       &sed, mask_closed, pixmap_opened, mask_opened, is_leaf, expanded) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int8_t, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int8_t, c_int
   type(c_ptr) :: gtk_ctree_insert_node
   type(c_ptr), value :: ctree
   type(c_ptr), value :: parent
@@ -56483,8 +56483,8 @@ function gtk_ctree_insert_node(ctree, parent, sibling, text, spacing, pixmap_clo
   type(c_ptr), value :: mask_closed
   type(c_ptr), value :: pixmap_opened
   type(c_ptr), value :: mask_opened
-  logical(c_bool), value :: is_leaf
-  logical(c_bool), value :: expanded
+  integer(c_int), value :: is_leaf
+  integer(c_int), value :: expanded
 end function
 
 ! void gtk_ctree_remove_node (GtkCTree *ctree, GtkCTreeNode *node);
@@ -56562,8 +56562,8 @@ end subroutine
 
 ! gboolean gtk_ctree_is_viewable (GtkCTree *ctree, GtkCTreeNode *node);
 function gtk_ctree_is_viewable(ctree, node) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_ctree_is_viewable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_ctree_is_viewable
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
 end function
@@ -56594,8 +56594,8 @@ end function
 
 ! gboolean gtk_ctree_find (GtkCTree *ctree, GtkCTreeNode *node, GtkCTreeNode *child);
 function gtk_ctree_find(ctree, node, child) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_ctree_find
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_ctree_find
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
   type(c_ptr), value :: child
@@ -56603,8 +56603,8 @@ end function
 
 ! gboolean gtk_ctree_is_ancestor (GtkCTree *ctree, GtkCTreeNode *node, GtkCTreeNode *child);
 function gtk_ctree_is_ancestor(ctree, node, child) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_ctree_is_ancestor
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_ctree_is_ancestor
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
   type(c_ptr), value :: child
@@ -56650,8 +56650,8 @@ end function
 
 ! gboolean gtk_ctree_is_hot_spot (GtkCTree *ctree, gint x, gint y);
 function gtk_ctree_is_hot_spot(ctree, x, y) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_ctree_is_hot_spot
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_ctree_is_hot_spot
   type(c_ptr), value :: ctree
   integer(c_int), value :: x
   integer(c_int), value :: y
@@ -56795,7 +56795,7 @@ end subroutine
 ! void gtk_ctree_set_node_info (GtkCTree *ctree, GtkCTreeNode *node, const gchar *text, guint8 spacing, GdkPixmap *pixmap_closed, GdkBitmap *mask_closed, GdkPixmap *pixmap_opened, GdkBitmap *mask_opened, gboolean is_leaf, gboolean expanded);
 subroutine gtk_ctree_set_node_info(ctree, node, text, spacing, pixmap_closed, ma&
       &sk_closed, pixmap_opened, mask_opened, is_leaf, expanded) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int8_t, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int8_t, c_int
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
   character(kind=c_char), dimension(*) :: text
@@ -56804,8 +56804,8 @@ subroutine gtk_ctree_set_node_info(ctree, node, text, spacing, pixmap_closed, ma
   type(c_ptr), value :: mask_closed
   type(c_ptr), value :: pixmap_opened
   type(c_ptr), value :: mask_opened
-  logical(c_bool), value :: is_leaf
-  logical(c_bool), value :: expanded
+  integer(c_int), value :: is_leaf
+  integer(c_int), value :: expanded
 end subroutine
 
 ! void gtk_ctree_node_set_shift (GtkCTree *ctree, GtkCTreeNode *node, gint column, gint vertical, gint horizontal);
@@ -56821,16 +56821,16 @@ end subroutine
 
 ! void gtk_ctree_node_set_selectable (GtkCTree *ctree, GtkCTreeNode *node, gboolean selectable);
 subroutine gtk_ctree_node_set_selectable(ctree, node, selectable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
-  logical(c_bool), value :: selectable
+  integer(c_int), value :: selectable
 end subroutine
 
 ! gboolean gtk_ctree_node_get_selectable (GtkCTree *ctree, GtkCTreeNode *node);
 function gtk_ctree_node_get_selectable(ctree, node) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_ctree_node_get_selectable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_ctree_node_get_selectable
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
 end function
@@ -56846,8 +56846,8 @@ end function
 
 ! gboolean gtk_ctree_node_get_text (GtkCTree *ctree, GtkCTreeNode *node, gint column, gchar **text);
 function gtk_ctree_node_get_text(ctree, node, column, text) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_char
-  logical(c_bool) :: gtk_ctree_node_get_text
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_ctree_node_get_text
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
   integer(c_int), value :: column
@@ -56856,8 +56856,8 @@ end function
 
 ! gboolean gtk_ctree_node_get_pixmap (GtkCTree *ctree, GtkCTreeNode *node, gint column, GdkPixmap **pixmap, GdkBitmap **mask);
 function gtk_ctree_node_get_pixmap(ctree, node, column, pixmap, mask) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_ctree_node_get_pixmap
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_ctree_node_get_pixmap
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
   integer(c_int), value :: column
@@ -56868,8 +56868,8 @@ end function
 ! gboolean gtk_ctree_node_get_pixtext (GtkCTree *ctree, GtkCTreeNode *node, gint column, gchar **text, guint8 *spacing, GdkPixmap **pixmap, GdkBitmap **mask);
 function gtk_ctree_node_get_pixtext(ctree, node, column, text, spacing, pixmap, &
       &mask) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_char
-  logical(c_bool) :: gtk_ctree_node_get_pixtext
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_ctree_node_get_pixtext
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
   integer(c_int), value :: column
@@ -56882,8 +56882,8 @@ end function
 ! gboolean gtk_ctree_get_node_info (GtkCTree *ctree, GtkCTreeNode *node, gchar **text, guint8 *spacing, GdkPixmap **pixmap_closed, GdkBitmap **mask_closed, GdkPixmap **pixmap_opened, GdkBitmap **mask_opened, gboolean *is_leaf, gboolean *expanded);
 function gtk_ctree_get_node_info(ctree, node, text, spacing, pixmap_closed, mask&
       &_closed, pixmap_opened, mask_opened, is_leaf, expanded) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gtk_ctree_get_node_info
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_ctree_get_node_info
   type(c_ptr), value :: ctree
   type(c_ptr), value :: node
   character(kind=c_char), dimension(*) :: text
@@ -57006,9 +57006,9 @@ end subroutine
 
 ! void gtk_ctree_set_show_stub (GtkCTree *ctree, gboolean show_stub);
 subroutine gtk_ctree_set_show_stub(ctree, show_stub) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: ctree
-  logical(c_bool), value :: show_stub
+  integer(c_int), value :: show_stub
 end subroutine
 
 ! void gtk_ctree_set_line_style (GtkCTree *ctree, GtkCTreeLineStyle line_style);
@@ -57066,31 +57066,31 @@ end function
 
 ! gboolean gtk_color_selection_get_has_opacity_control (GtkColorSelection *colorsel);
 function gtk_color_selection_get_has_opacity_control(colorsel) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_color_selection_get_has_opacity_control
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_color_selection_get_has_opacity_control
   type(c_ptr), value :: colorsel
 end function
 
 ! void gtk_color_selection_set_has_opacity_control (GtkColorSelection *colorsel, gboolean has_opacity);
 subroutine gtk_color_selection_set_has_opacity_control(colorsel, has_opacity) bi&
       &nd(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: colorsel
-  logical(c_bool), value :: has_opacity
+  integer(c_int), value :: has_opacity
 end subroutine
 
 ! gboolean gtk_color_selection_get_has_palette (GtkColorSelection *colorsel);
 function gtk_color_selection_get_has_palette(colorsel) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_color_selection_get_has_palette
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_color_selection_get_has_palette
   type(c_ptr), value :: colorsel
 end function
 
 ! void gtk_color_selection_set_has_palette (GtkColorSelection *colorsel, gboolean has_palette);
 subroutine gtk_color_selection_set_has_palette(colorsel, has_palette) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: colorsel
-  logical(c_bool), value :: has_palette
+  integer(c_int), value :: has_palette
 end subroutine
 
 !  void gtk_color_selection_set_current_color (GtkColorSelection *colorsel, const GdkColor *color);
@@ -57151,15 +57151,15 @@ end function
 
 !  gboolean gtk_color_selection_is_adjusting (GtkColorSelection *colorsel);
 function gtk_color_selection_is_adjusting(colorsel) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_color_selection_is_adjusting
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_color_selection_is_adjusting
   type(c_ptr), value :: colorsel
 end function
 
 !  gboolean gtk_color_selection_palette_from_string (const gchar *str, GdkColor **colors, gint *n_colors);
 function gtk_color_selection_palette_from_string(str, colors, n_colors) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: gtk_color_selection_palette_from_string
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: gtk_color_selection_palette_from_string
   character(kind=c_char), dimension(*) :: str
   type(c_ptr), value :: colors
   type(c_ptr), value :: n_colors
@@ -57309,9 +57309,9 @@ end subroutine
 
 ! void gtk_tree_set_view_lines (GtkTree *tree, gboolean flag);
 subroutine gtk_tree_set_view_lines(tree, flag) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree
-  logical(c_bool), value :: flag
+  integer(c_int), value :: flag
 end subroutine
 
 !  void gtk_tree_remove_item (GtkTree *tree, GtkWidget *child);
@@ -57489,29 +57489,29 @@ end subroutine
 
 !  void gtk_notebook_set_show_border (GtkNotebook *notebook, gboolean show_border);
 subroutine gtk_notebook_set_show_border(notebook, show_border) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: notebook
-  logical(c_bool), value :: show_border
+  integer(c_int), value :: show_border
 end subroutine
 
 ! gboolean gtk_notebook_get_show_border (GtkNotebook *notebook);
 function gtk_notebook_get_show_border(notebook) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_notebook_get_show_border
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_notebook_get_show_border
   type(c_ptr), value :: notebook
 end function
 
 ! void gtk_notebook_set_show_tabs (GtkNotebook *notebook, gboolean show_tabs);
 subroutine gtk_notebook_set_show_tabs(notebook, show_tabs) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: notebook
-  logical(c_bool), value :: show_tabs
+  integer(c_int), value :: show_tabs
 end subroutine
 
 ! gboolean gtk_notebook_get_show_tabs (GtkNotebook *notebook);
 function gtk_notebook_get_show_tabs(notebook) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_notebook_get_show_tabs
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_notebook_get_show_tabs
   type(c_ptr), value :: notebook
 end function
 
@@ -57531,9 +57531,9 @@ end function
 
 !  void gtk_notebook_set_homogeneous_tabs (GtkNotebook *notebook, gboolean homogeneous);
 subroutine gtk_notebook_set_homogeneous_tabs(notebook, homogeneous) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: notebook
-  logical(c_bool), value :: homogeneous
+  integer(c_int), value :: homogeneous
 end subroutine
 
 ! void gtk_notebook_set_tab_border (GtkNotebook *notebook, guint border_width);
@@ -57559,15 +57559,15 @@ end subroutine
 
 !  void gtk_notebook_set_scrollable (GtkNotebook *notebook, gboolean scrollable);
 subroutine gtk_notebook_set_scrollable(notebook, scrollable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: notebook
-  logical(c_bool), value :: scrollable
+  integer(c_int), value :: scrollable
 end subroutine
 
 ! gboolean gtk_notebook_get_scrollable (GtkNotebook *notebook);
 function gtk_notebook_get_scrollable(notebook) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_notebook_get_scrollable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_notebook_get_scrollable
   type(c_ptr), value :: notebook
 end function
 
@@ -57675,11 +57675,11 @@ end subroutine
 ! void gtk_notebook_set_tab_label_packing (GtkNotebook *notebook, GtkWidget *child, gboolean expand, gboolean fill, GtkPackType pack_type);
 subroutine gtk_notebook_set_tab_label_packing(notebook, child, expand, fill, pac&
       &k_type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: notebook
   type(c_ptr), value :: child
-  logical(c_bool), value :: expand
-  logical(c_bool), value :: fill
+  integer(c_int), value :: expand
+  integer(c_int), value :: fill
   integer(c_int), value :: pack_type
 end subroutine
 
@@ -57693,8 +57693,8 @@ end subroutine
 
 ! gboolean gtk_notebook_get_tab_reorderable (GtkNotebook *notebook, GtkWidget *child);
 function gtk_notebook_get_tab_reorderable(notebook, child) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_notebook_get_tab_reorderable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_notebook_get_tab_reorderable
   type(c_ptr), value :: notebook
   type(c_ptr), value :: child
 end function
@@ -57702,26 +57702,26 @@ end function
 ! void gtk_notebook_set_tab_reorderable (GtkNotebook *notebook, GtkWidget *child, gboolean reorderable);
 subroutine gtk_notebook_set_tab_reorderable(notebook, child, reorderable) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: notebook
   type(c_ptr), value :: child
-  logical(c_bool), value :: reorderable
+  integer(c_int), value :: reorderable
 end subroutine
 
 ! gboolean gtk_notebook_get_tab_detachable (GtkNotebook *notebook, GtkWidget *child);
 function gtk_notebook_get_tab_detachable(notebook, child) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_notebook_get_tab_detachable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_notebook_get_tab_detachable
   type(c_ptr), value :: notebook
   type(c_ptr), value :: child
 end function
 
 ! void gtk_notebook_set_tab_detachable (GtkNotebook *notebook, GtkWidget *child, gboolean detachable);
 subroutine gtk_notebook_set_tab_detachable(notebook, child, detachable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: notebook
   type(c_ptr), value :: child
-  logical(c_bool), value :: detachable
+  integer(c_int), value :: detachable
 end subroutine
 
 !  GtkWidget* gtk_notebook_get_action_widget (GtkNotebook *notebook, GtkPackType pack_type);
@@ -57842,11 +57842,11 @@ end subroutine
 !  void gtk_list_extend_selection (GtkList *list, GtkScrollType scroll_type, gfloat position, gboolean auto_start_selection);
 subroutine gtk_list_extend_selection(list, scroll_type, position, auto_start_sel&
       &ection) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_float, c_bool
+  use iso_c_binding, only: c_ptr, c_int, c_float
   type(c_ptr), value :: list
   integer(c_int), value :: scroll_type
   real(c_float), value :: position
-  logical(c_bool), value :: auto_start_selection
+  integer(c_int), value :: auto_start_selection
 end subroutine
 
 ! void gtk_list_start_selection (GtkList *list);
@@ -57943,8 +57943,8 @@ end function
 
 !   gboolean gtk_show_uri (GdkScreen *screen, const gchar *uri, guint32 timestamp, GError **error);
 function gtk_show_uri(screen, uri, timestamp, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int32_t
-  logical(c_bool) :: gtk_show_uri
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_int32_t
+  integer(c_int) :: gtk_show_uri
   type(c_ptr), value :: screen
   character(kind=c_char), dimension(*) :: uri
   integer(c_int32_t), value :: timestamp
@@ -57985,18 +57985,18 @@ end function
 
 ! void gtk_tree_view_column_pack_start (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell, gboolean expand);
 subroutine gtk_tree_view_column_pack_start(tree_column, cell, expand) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_column
   type(c_ptr), value :: cell
-  logical(c_bool), value :: expand
+  integer(c_int), value :: expand
 end subroutine
 
 ! void gtk_tree_view_column_pack_end (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell, gboolean expand);
 subroutine gtk_tree_view_column_pack_end(tree_column, cell, expand) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_column
   type(c_ptr), value :: cell
-  logical(c_bool), value :: expand
+  integer(c_int), value :: expand
 end subroutine
 
 ! void gtk_tree_view_column_clear (GtkTreeViewColumn *tree_column);
@@ -58057,29 +58057,29 @@ end function
 
 ! void gtk_tree_view_column_set_visible (GtkTreeViewColumn *tree_column, gboolean visible);
 subroutine gtk_tree_view_column_set_visible(tree_column, visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_column
-  logical(c_bool), value :: visible
+  integer(c_int), value :: visible
 end subroutine
 
 ! gboolean gtk_tree_view_column_get_visible (GtkTreeViewColumn *tree_column);
 function gtk_tree_view_column_get_visible(tree_column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_column_get_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_column_get_visible
   type(c_ptr), value :: tree_column
 end function
 
 ! void gtk_tree_view_column_set_resizable (GtkTreeViewColumn *tree_column, gboolean resizable);
 subroutine gtk_tree_view_column_set_resizable(tree_column, resizable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_column
-  logical(c_bool), value :: resizable
+  integer(c_int), value :: resizable
 end subroutine
 
 ! gboolean gtk_tree_view_column_get_resizable (GtkTreeViewColumn *tree_column);
 function gtk_tree_view_column_get_resizable(tree_column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_column_get_resizable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_column_get_resizable
   type(c_ptr), value :: tree_column
 end function
 
@@ -58169,29 +58169,29 @@ end function
 
 ! void gtk_tree_view_column_set_expand (GtkTreeViewColumn *tree_column, gboolean expand);
 subroutine gtk_tree_view_column_set_expand(tree_column, expand) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_column
-  logical(c_bool), value :: expand
+  integer(c_int), value :: expand
 end subroutine
 
 ! gboolean gtk_tree_view_column_get_expand (GtkTreeViewColumn *tree_column);
 function gtk_tree_view_column_get_expand(tree_column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_column_get_expand
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_column_get_expand
   type(c_ptr), value :: tree_column
 end function
 
 ! void gtk_tree_view_column_set_clickable (GtkTreeViewColumn *tree_column, gboolean clickable);
 subroutine gtk_tree_view_column_set_clickable(tree_column, clickable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_column
-  logical(c_bool), value :: clickable
+  integer(c_int), value :: clickable
 end subroutine
 
 ! gboolean gtk_tree_view_column_get_clickable (GtkTreeViewColumn *tree_column);
 function gtk_tree_view_column_get_clickable(tree_column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_column_get_clickable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_column_get_clickable
   type(c_ptr), value :: tree_column
 end function
 
@@ -58226,15 +58226,15 @@ end function
 ! void gtk_tree_view_column_set_reorderable (GtkTreeViewColumn *tree_column, gboolean reorderable);
 subroutine gtk_tree_view_column_set_reorderable(tree_column, reorderable) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_column
-  logical(c_bool), value :: reorderable
+  integer(c_int), value :: reorderable
 end subroutine
 
 ! gboolean gtk_tree_view_column_get_reorderable (GtkTreeViewColumn *tree_column);
 function gtk_tree_view_column_get_reorderable(tree_column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_column_get_reorderable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_column_get_reorderable
   type(c_ptr), value :: tree_column
 end function
 
@@ -58255,15 +58255,15 @@ end function
 
 ! void gtk_tree_view_column_set_sort_indicator (GtkTreeViewColumn *tree_column, gboolean setting);
 subroutine gtk_tree_view_column_set_sort_indicator(tree_column, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_column
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean gtk_tree_view_column_get_sort_indicator (GtkTreeViewColumn *tree_column);
 function gtk_tree_view_column_get_sort_indicator(tree_column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_column_get_sort_indicator
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_column_get_sort_indicator
   type(c_ptr), value :: tree_column
 end function
 
@@ -58284,12 +58284,12 @@ end function
 !  void gtk_tree_view_column_cell_set_cell_data (GtkTreeViewColumn *tree_column, GtkTreeModel *tree_model, GtkTreeIter *iter, gboolean is_expander, gboolean is_expanded);
 subroutine gtk_tree_view_column_cell_set_cell_data(tree_column, tree_model, iter&
       &, is_expander, is_expanded) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: tree_column
   type(c_ptr), value :: tree_model
   type(c_ptr), value :: iter
-  logical(c_bool), value :: is_expander
-  logical(c_bool), value :: is_expanded
+  integer(c_int), value :: is_expander
+  integer(c_int), value :: is_expanded
 end subroutine
 
 ! void gtk_tree_view_column_cell_get_size (GtkTreeViewColumn *tree_column, const GdkRectangle *cell_area, gint *x_offset, gint *y_offset, gint *width, gint *height);
@@ -58306,8 +58306,8 @@ end subroutine
 
 ! gboolean gtk_tree_view_column_cell_is_visible (GtkTreeViewColumn *tree_column);
 function gtk_tree_view_column_cell_is_visible(tree_column) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_column_cell_is_visible
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_column_cell_is_visible
   type(c_ptr), value :: tree_column
 end function
 
@@ -58321,8 +58321,8 @@ end subroutine
 ! gboolean gtk_tree_view_column_cell_get_position (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell_renderer, gint *start_pos, gint *width);
 function gtk_tree_view_column_cell_get_position(tree_column, cell_renderer, star&
       &t_pos, width) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gtk_tree_view_column_cell_get_position
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_column_cell_get_position
   type(c_ptr), value :: tree_column
   type(c_ptr), value :: cell_renderer
   type(c_ptr), value :: start_pos
@@ -58424,8 +58424,8 @@ end subroutine
 
 ! gboolean gtk_print_operation_preview_is_selected (GtkPrintOperationPreview *preview, gint page_nr);
 function gtk_print_operation_preview_is_selected(preview, page_nr) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gtk_print_operation_preview_is_selected
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_print_operation_preview_is_selected
   type(c_ptr), value :: preview
   integer(c_int), value :: page_nr
 end function
@@ -58438,9 +58438,9 @@ end function
 
 ! GtkWidget * gtk_vbox_new (gboolean homogeneous, gint spacing);
 function gtk_vbox_new(homogeneous, spacing) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_vbox_new
-  logical(c_bool), value :: homogeneous
+  integer(c_int), value :: homogeneous
   integer(c_int), value :: spacing
 end function
 
@@ -61266,10 +61266,10 @@ end function
 ! PangoGravity pango_gravity_get_for_script_and_width (PangoScript script, gboolean wide, PangoGravity base_gravity, PangoGravityHint hint) G_GNUC_CONST;
 function pango_gravity_get_for_script_and_width(script, wide, base_gravity, hint&
       &) bind(c) 
-  use iso_c_binding, only: c_int, c_bool
+  use iso_c_binding, only: c_int
   integer(c_int) :: pango_gravity_get_for_script_and_width
   integer(c_int), value :: script
-  logical(c_bool), value :: wide
+  integer(c_int), value :: wide
   integer(c_int), value :: base_gravity
   integer(c_int), value :: hint
 end function
@@ -61416,10 +61416,10 @@ end function
 
 !  PangoFontDescription *pango_fc_font_description_from_pattern (FcPattern *pattern, gboolean include_size);
 function pango_fc_font_description_from_pattern(pattern, include_size) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: pango_fc_font_description_from_pattern
   type(c_ptr), value :: pattern
-  logical(c_bool), value :: include_size
+  integer(c_int), value :: include_size
 end function
 
 !   GType pango_cairo_font_map_get_type (void) G_GNUC_CONST;
@@ -61664,31 +61664,31 @@ end function
 
 ! gboolean pango_skip_space (const char **pos);
 function pango_skip_space(pos) bind(c) 
-  use iso_c_binding, only: c_bool, c_char
-  logical(c_bool) :: pango_skip_space
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: pango_skip_space
   character(kind=c_char), dimension(*) :: pos
 end function
 
 ! gboolean pango_scan_word (const char **pos, GString *out);
 function pango_scan_word(pos, out) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: pango_scan_word
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: pango_scan_word
   character(kind=c_char), dimension(*) :: pos
   type(c_ptr), value :: out
 end function
 
 ! gboolean pango_scan_string (const char **pos, GString *out);
 function pango_scan_string(pos, out) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: pango_scan_string
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: pango_scan_string
   character(kind=c_char), dimension(*) :: pos
   type(c_ptr), value :: out
 end function
 
 ! gboolean pango_scan_int (const char **pos, int *out);
 function pango_scan_int(pos, out) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_ptr
-  logical(c_bool) :: pango_scan_int
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: pango_scan_int
   character(kind=c_char), dimension(*) :: pos
   type(c_ptr), value :: out
 end function
@@ -61710,49 +61710,49 @@ end subroutine
 
 !  gboolean pango_parse_enum (GType type, const char *str, int *value, gboolean warn, char **possible_values);
 function pango_parse_enum(type, str, value, warn, possible_values) bind(c) 
-  use iso_c_binding, only: c_bool, c_size_t, c_char, c_ptr
-  logical(c_bool) :: pango_parse_enum
+  use iso_c_binding, only: c_int, c_size_t, c_char, c_ptr
+  integer(c_int) :: pango_parse_enum
   integer(c_size_t), value :: type
   character(kind=c_char), dimension(*) :: str
   type(c_ptr), value :: value
-  logical(c_bool), value :: warn
+  integer(c_int), value :: warn
   character(kind=c_char), dimension(*) :: possible_values
 end function
 
 !  gboolean pango_parse_style (const char *str, PangoStyle *style, gboolean warn);
 function pango_parse_style(str, style, warn) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int
-  logical(c_bool) :: pango_parse_style
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: pango_parse_style
   character(kind=c_char), dimension(*) :: str
   integer(c_int), value :: style
-  logical(c_bool), value :: warn
+  integer(c_int), value :: warn
 end function
 
 ! gboolean pango_parse_variant (const char *str, PangoVariant *variant, gboolean warn);
 function pango_parse_variant(str, variant, warn) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int
-  logical(c_bool) :: pango_parse_variant
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: pango_parse_variant
   character(kind=c_char), dimension(*) :: str
   integer(c_int), value :: variant
-  logical(c_bool), value :: warn
+  integer(c_int), value :: warn
 end function
 
 ! gboolean pango_parse_weight (const char *str, PangoWeight *weight, gboolean warn);
 function pango_parse_weight(str, weight, warn) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int
-  logical(c_bool) :: pango_parse_weight
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: pango_parse_weight
   character(kind=c_char), dimension(*) :: str
   integer(c_int), value :: weight
-  logical(c_bool), value :: warn
+  integer(c_int), value :: warn
 end function
 
 ! gboolean pango_parse_stretch (const char *str, PangoStretch *stretch, gboolean warn);
 function pango_parse_stretch(str, stretch, warn) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int
-  logical(c_bool) :: pango_parse_stretch
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: pango_parse_stretch
   character(kind=c_char), dimension(*) :: str
   integer(c_int), value :: stretch
-  logical(c_bool), value :: warn
+  integer(c_int), value :: warn
 end function
 
 !  G_CONST_RETURN char * pango_get_sysconf_subdirectory (void) G_GNUC_PURE;
@@ -61785,8 +61785,8 @@ end function
 
 !  gboolean pango_is_zero_width (gunichar ch) G_GNUC_CONST;
 function pango_is_zero_width(ch) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t
-  logical(c_bool) :: pango_is_zero_width
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: pango_is_zero_width
   integer(c_int32_t), value :: ch
 end function
 
@@ -61847,16 +61847,16 @@ end function
 
 !  gboolean pango_language_matches (PangoLanguage *language, const char *range_list) G_GNUC_PURE;
 function pango_language_matches(language, range_list) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: pango_language_matches
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: pango_language_matches
   type(c_ptr), value :: language
   character(kind=c_char), dimension(*) :: range_list
 end function
 
 !  gboolean pango_language_includes_script (PangoLanguage *language, PangoScript script) G_GNUC_PURE;
 function pango_language_includes_script(language, script) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: pango_language_includes_script
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_language_includes_script
   type(c_ptr), value :: language
   integer(c_int), value :: script
 end function
@@ -61891,8 +61891,8 @@ end function
 !  gboolean pango_ot_info_find_script (PangoOTInfo *info, PangoOTTableType table_type, PangoOTTag script_tag, guint *script_index);
 function pango_ot_info_find_script(info, table_type, script_tag, script_index) b&
       &ind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_int32_t
-  logical(c_bool) :: pango_ot_info_find_script
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: pango_ot_info_find_script
   type(c_ptr), value :: info
   integer(c_int), value :: table_type
   integer(c_int32_t), value :: script_tag
@@ -61902,8 +61902,8 @@ end function
 ! gboolean pango_ot_info_find_language (PangoOTInfo *info, PangoOTTableType table_type, guint script_index, PangoOTTag language_tag, guint *language_index, guint *required_feature_index);
 function pango_ot_info_find_language(info, table_type, script_index, language_ta&
       &g, language_index, required_feature_index) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_int32_t
-  logical(c_bool) :: pango_ot_info_find_language
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: pango_ot_info_find_language
   type(c_ptr), value :: info
   integer(c_int), value :: table_type
   integer(c_int), value :: script_index
@@ -61915,8 +61915,8 @@ end function
 ! gboolean pango_ot_info_find_feature (PangoOTInfo *info, PangoOTTableType table_type, PangoOTTag feature_tag, guint script_index, guint language_index, guint *feature_index);
 function pango_ot_info_find_feature(info, table_type, feature_tag, script_index,&
       & language_index, feature_index) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_int32_t
-  logical(c_bool) :: pango_ot_info_find_feature
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: pango_ot_info_find_feature
   type(c_ptr), value :: info
   integer(c_int), value :: table_type
   integer(c_int32_t), value :: feature_tag
@@ -61977,9 +61977,9 @@ end subroutine
 
 ! void pango_ot_buffer_set_rtl (PangoOTBuffer *buffer, gboolean rtl);
 subroutine pango_ot_buffer_set_rtl(buffer, rtl) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: buffer
-  logical(c_bool), value :: rtl
+  integer(c_int), value :: rtl
 end subroutine
 
 ! void pango_ot_buffer_add_glyph (PangoOTBuffer *buffer, guint glyph, guint properties, guint cluster);
@@ -62009,9 +62009,9 @@ end subroutine
 !  void pango_ot_buffer_set_zero_width_marks (PangoOTBuffer *buffer, gboolean zero_width_marks);
 subroutine pango_ot_buffer_set_zero_width_marks(buffer, zero_width_marks) bind(c&
       &) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: buffer
-  logical(c_bool), value :: zero_width_marks
+  integer(c_int), value :: zero_width_marks
 end subroutine
 
 !  const PangoOTRuleset *pango_ot_ruleset_get_for_description (PangoOTInfo *info, const PangoOTRulesetDescription *desc);
@@ -62059,8 +62059,8 @@ end subroutine
 ! gboolean pango_ot_ruleset_maybe_add_feature (PangoOTRuleset *ruleset, PangoOTTableType table_type, PangoOTTag feature_tag, gulong property_bit);
 function pango_ot_ruleset_maybe_add_feature(ruleset, table_type, feature_tag, pr&
       &operty_bit) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int, c_int32_t, c_long
-  logical(c_bool) :: pango_ot_ruleset_maybe_add_feature
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t, c_long
+  integer(c_int) :: pango_ot_ruleset_maybe_add_feature
   type(c_ptr), value :: ruleset
   integer(c_int), value :: table_type
   integer(c_int32_t), value :: feature_tag
@@ -62139,8 +62139,8 @@ end function
 
 ! gboolean pango_ot_ruleset_description_equal (const PangoOTRulesetDescription *desc1, const PangoOTRulesetDescription *desc2) G_GNUC_PURE;
 function pango_ot_ruleset_description_equal(desc1, desc2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_ot_ruleset_description_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_ot_ruleset_description_equal
   type(c_ptr), value :: desc1
   type(c_ptr), value :: desc2
 end function
@@ -62436,8 +62436,8 @@ end function
 
 !   gboolean pango_fc_font_has_char (PangoFcFont *font, gunichar wc);
 function pango_fc_font_has_char(font, wc) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: pango_fc_font_has_char
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: pango_fc_font_has_char
   type(c_ptr), value :: font
   integer(c_int32_t), value :: wc
 end function
@@ -62782,8 +62782,8 @@ end function
 
 ! gboolean pango_x_has_glyph (PangoFont *font, PangoGlyph glyph);
 function pango_x_has_glyph(font, glyph) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: pango_x_has_glyph
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: pango_x_has_glyph
   type(c_ptr), value :: font
   integer(c_int32_t), value :: glyph
 end function
@@ -62861,8 +62861,8 @@ end function
 
 !  gboolean pango_x_find_first_subfont (PangoFont *font, char **charsets, int n_charsets, PangoXSubfont *rfont);
 function pango_x_find_first_subfont(font, charsets, n_charsets, rfont) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_int
-  logical(c_bool) :: pango_x_find_first_subfont
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: pango_x_find_first_subfont
   type(c_ptr), value :: font
   character(kind=c_char), dimension(*) :: charsets
   integer(c_int), value :: n_charsets
@@ -62881,8 +62881,8 @@ end subroutine
 !  gboolean pango_x_apply_ligatures (PangoFont *font, PangoXSubfont subfont, gunichar **glyphs, int *n_glyphs, int **clusters);
 function pango_x_apply_ligatures(font, subfont, glyphs, n_glyphs, clusters) bind&
       &(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int16_t, c_char
-  logical(c_bool) :: pango_x_apply_ligatures
+  use iso_c_binding, only: c_int, c_ptr, c_int16_t, c_char
+  integer(c_int) :: pango_x_apply_ligatures
   type(c_ptr), value :: font
   integer(c_int16_t), value :: subfont
   character(kind=c_char), dimension(*) :: glyphs
@@ -63002,8 +63002,8 @@ end subroutine
 
 ! gboolean pango_script_iter_next (PangoScriptIter *iter);
 function pango_script_iter_next(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_int
-  logical(c_bool) :: pango_script_iter_next
+  use iso_c_binding, only: c_int
+  integer(c_int) :: pango_script_iter_next
   integer(c_int), value :: iter
 end function
 
@@ -63055,8 +63055,8 @@ end function
 
 ! gboolean pango_font_description_equal (const PangoFontDescription *desc1, const PangoFontDescription *desc2) G_GNUC_PURE;
 function pango_font_description_equal(desc1, desc2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_font_description_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_font_description_equal
   type(c_ptr), value :: desc1
   type(c_ptr), value :: desc2
 end function
@@ -63174,8 +63174,8 @@ end subroutine
 
 ! gboolean pango_font_description_get_size_is_absolute (const PangoFontDescription *desc) G_GNUC_PURE;
 function pango_font_description_get_size_is_absolute(desc) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_font_description_get_size_is_absolute
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_font_description_get_size_is_absolute
   type(c_ptr), value :: desc
 end function
 
@@ -63210,25 +63210,25 @@ end subroutine
 !  void pango_font_description_merge (PangoFontDescription *desc, const PangoFontDescription *desc_to_merge, gboolean replace_existing);
 subroutine pango_font_description_merge(desc, desc_to_merge, replace_existing) b&
       &ind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: desc
   type(c_ptr), value :: desc_to_merge
-  logical(c_bool), value :: replace_existing
+  integer(c_int), value :: replace_existing
 end subroutine
 
 ! void pango_font_description_merge_static (PangoFontDescription *desc, const PangoFontDescription *desc_to_merge, gboolean replace_existing);
 subroutine pango_font_description_merge_static(desc, desc_to_merge, replace_exis&
       &ting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: desc
   type(c_ptr), value :: desc_to_merge
-  logical(c_bool), value :: replace_existing
+  integer(c_int), value :: replace_existing
 end subroutine
 
 !  gboolean pango_font_description_better_match (const PangoFontDescription *desc, const PangoFontDescription *old_match, const PangoFontDescription *new_match) G_GNUC_PURE;
 function pango_font_description_better_match(desc, old_match, new_match) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_font_description_better_match
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_font_description_better_match
   type(c_ptr), value :: desc
   type(c_ptr), value :: old_match
   type(c_ptr), value :: new_match
@@ -63359,8 +63359,8 @@ end function
 
 ! gboolean pango_font_family_is_monospace (PangoFontFamily *family) G_GNUC_PURE;
 function pango_font_family_is_monospace(family) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_font_family_is_monospace
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_font_family_is_monospace
   type(c_ptr), value :: family
 end function
 
@@ -63394,8 +63394,8 @@ end subroutine
 
 ! gboolean pango_font_face_is_synthesized (PangoFontFace *face) G_GNUC_PURE;
 function pango_font_face_is_synthesized(face) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_font_face_is_synthesized
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_font_face_is_synthesized
   type(c_ptr), value :: face
 end function
 
@@ -63485,8 +63485,8 @@ end function
 
 !  gboolean pango_get_mirror_char (gunichar ch, gunichar *mirrored_ch);
 function pango_get_mirror_char(ch, mirrored_ch) bind(c) 
-  use iso_c_binding, only: c_bool, c_int32_t, c_char
-  logical(c_bool) :: pango_get_mirror_char
+  use iso_c_binding, only: c_int, c_int32_t, c_char
+  integer(c_int) :: pango_get_mirror_char
   integer(c_int32_t), value :: ch
   character(kind=c_char), dimension(*) :: mirrored_ch
 end function
@@ -63568,8 +63568,8 @@ end subroutine
 
 !  gboolean pango_glyph_item_iter_init_start (PangoGlyphItemIter *iter, PangoGlyphItem *glyph_item, const char *text);
 function pango_glyph_item_iter_init_start(iter, glyph_item, text) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: pango_glyph_item_iter_init_start
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: pango_glyph_item_iter_init_start
   type(c_ptr), value :: iter
   type(c_ptr), value :: glyph_item
   character(kind=c_char), dimension(*) :: text
@@ -63577,8 +63577,8 @@ end function
 
 ! gboolean pango_glyph_item_iter_init_end (PangoGlyphItemIter *iter, PangoGlyphItem *glyph_item, const char *text);
 function pango_glyph_item_iter_init_end(iter, glyph_item, text) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: pango_glyph_item_iter_init_end
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: pango_glyph_item_iter_init_end
   type(c_ptr), value :: iter
   type(c_ptr), value :: glyph_item
   character(kind=c_char), dimension(*) :: text
@@ -63586,15 +63586,15 @@ end function
 
 ! gboolean pango_glyph_item_iter_next_cluster (PangoGlyphItemIter *iter);
 function pango_glyph_item_iter_next_cluster(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_glyph_item_iter_next_cluster
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_glyph_item_iter_next_cluster
   type(c_ptr), value :: iter
 end function
 
 ! gboolean pango_glyph_item_iter_prev_cluster (PangoGlyphItemIter *iter);
 function pango_glyph_item_iter_prev_cluster(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_glyph_item_iter_prev_cluster
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_glyph_item_iter_prev_cluster
   type(c_ptr), value :: iter
 end function
 
@@ -63935,13 +63935,13 @@ end subroutine
 !  void pango_glyph_string_index_to_x (PangoGlyphString *glyphs, char *text, int length, PangoAnalysis *analysis, int index_, gboolean trailing, int *x_pos);
 subroutine pango_glyph_string_index_to_x(glyphs, text, length, analysis, index_,&
       & trailing, x_pos) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr), value :: glyphs
   character(kind=c_char), dimension(*) :: text
   integer(c_int), value :: length
   type(c_ptr), value :: analysis
   integer(c_int), value :: index_
-  logical(c_bool), value :: trailing
+  integer(c_int), value :: trailing
   type(c_ptr), value :: x_pos
 end subroutine
 
@@ -64284,8 +64284,8 @@ end function
 
 ! gboolean pango_xft_font_has_char (PangoFont *font, gunichar wc);
 function pango_xft_font_has_char(font, wc) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int32_t
-  logical(c_bool) :: pango_xft_font_has_char
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: pango_xft_font_has_char
   type(c_ptr), value :: font
   integer(c_int32_t), value :: wc
 end function
@@ -64300,10 +64300,10 @@ end function
 
 !   PangoTabArray *pango_tab_array_new (gint initial_size, gboolean positions_in_pixels);
 function pango_tab_array_new(initial_size, positions_in_pixels) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: pango_tab_array_new
   integer(c_int), value :: initial_size
-  logical(c_bool), value :: positions_in_pixels
+  integer(c_int), value :: positions_in_pixels
 end function
 
 ! GType pango_tab_array_get_type (void) G_GNUC_CONST;
@@ -64369,8 +64369,8 @@ end subroutine
 
 !  gboolean pango_tab_array_get_positions_in_pixels (PangoTabArray *tab_array);
 function pango_tab_array_get_positions_in_pixels(tab_array) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_tab_array_get_positions_in_pixels
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_tab_array_get_positions_in_pixels
   type(c_ptr), value :: tab_array
 end function
 
@@ -64395,8 +64395,8 @@ end subroutine
 
 ! gboolean pango_color_parse (PangoColor *color, const char *spec);
 function pango_color_parse(color, spec) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: pango_color_parse
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: pango_color_parse
   type(c_ptr), value :: color
   character(kind=c_char), dimension(*) :: spec
 end function
@@ -64444,8 +64444,8 @@ end subroutine
 
 ! gboolean pango_attribute_equal (const PangoAttribute *attr1, const PangoAttribute *attr2) G_GNUC_PURE;
 function pango_attribute_equal(attr1, attr2) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_attribute_equal
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_attribute_equal
   type(c_ptr), value :: attr1
   type(c_ptr), value :: attr2
 end function
@@ -64549,9 +64549,9 @@ end function
 
 ! PangoAttribute *pango_attr_strikethrough_new (gboolean strikethrough);
 function pango_attr_strikethrough_new(strikethrough) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: pango_attr_strikethrough_new
-  logical(c_bool), value :: strikethrough
+  integer(c_int), value :: strikethrough
 end function
 
 ! PangoAttribute *pango_attr_strikethrough_color_new (guint16 red, guint16 green, guint16 blue);
@@ -64579,9 +64579,9 @@ end function
 
 ! PangoAttribute *pango_attr_fallback_new (gboolean enable_fallback);
 function pango_attr_fallback_new(enable_fallback) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: pango_attr_fallback_new
-  logical(c_bool), value :: enable_fallback
+  integer(c_int), value :: enable_fallback
 end function
 
 ! PangoAttribute *pango_attr_letter_spacing_new (int letter_spacing);
@@ -64713,8 +64713,8 @@ end subroutine
 
 ! gboolean pango_attr_iterator_next (PangoAttrIterator *iterator);
 function pango_attr_iterator_next(iterator) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_attr_iterator_next
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_attr_iterator_next
   type(c_ptr), value :: iterator
 end function
 
@@ -64759,8 +64759,8 @@ end function
 !  gboolean pango_parse_markup (const char *markup_text, int length, gunichar accel_marker, PangoAttrList **attr_list, char **text, gunichar *accel_char, GError **error);
 function pango_parse_markup(markup_text, length, accel_marker, attr_list, text, &
       &accel_char, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_char, c_int, c_int32_t, c_ptr
-  logical(c_bool) :: pango_parse_markup
+  use iso_c_binding, only: c_int, c_char, c_int32_t, c_ptr
+  integer(c_int) :: pango_parse_markup
   character(kind=c_char), dimension(*) :: markup_text
   integer(c_int), value :: length
   integer(c_int32_t), value :: accel_marker
@@ -64926,8 +64926,8 @@ end function
 
 ! gboolean pango_layout_is_wrapped (PangoLayout *layout);
 function pango_layout_is_wrapped(layout) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_layout_is_wrapped
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_is_wrapped
   type(c_ptr), value :: layout
 end function
 
@@ -64961,29 +64961,29 @@ end function
 
 ! void pango_layout_set_justify (PangoLayout *layout, gboolean justify);
 subroutine pango_layout_set_justify(layout, justify) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: layout
-  logical(c_bool), value :: justify
+  integer(c_int), value :: justify
 end subroutine
 
 ! gboolean pango_layout_get_justify (PangoLayout *layout);
 function pango_layout_get_justify(layout) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_layout_get_justify
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_get_justify
   type(c_ptr), value :: layout
 end function
 
 ! void pango_layout_set_auto_dir (PangoLayout *layout, gboolean auto_dir);
 subroutine pango_layout_set_auto_dir(layout, auto_dir) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: layout
-  logical(c_bool), value :: auto_dir
+  integer(c_int), value :: auto_dir
 end subroutine
 
 ! gboolean pango_layout_get_auto_dir (PangoLayout *layout);
 function pango_layout_get_auto_dir(layout) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_layout_get_auto_dir
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_get_auto_dir
   type(c_ptr), value :: layout
 end function
 
@@ -65017,15 +65017,15 @@ end function
 
 !  void pango_layout_set_single_paragraph_mode (PangoLayout *layout, gboolean setting);
 subroutine pango_layout_set_single_paragraph_mode(layout, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: layout
-  logical(c_bool), value :: setting
+  integer(c_int), value :: setting
 end subroutine
 
 ! gboolean pango_layout_get_single_paragraph_mode (PangoLayout *layout);
 function pango_layout_get_single_paragraph_mode(layout) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_layout_get_single_paragraph_mode
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_get_single_paragraph_mode
   type(c_ptr), value :: layout
 end function
 
@@ -65045,8 +65045,8 @@ end function
 
 ! gboolean pango_layout_is_ellipsized (PangoLayout *layout);
 function pango_layout_is_ellipsized(layout) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_layout_is_ellipsized
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_is_ellipsized
   type(c_ptr), value :: layout
 end function
 
@@ -65082,10 +65082,10 @@ end subroutine
 ! void pango_layout_index_to_line_x (PangoLayout *layout, int index_, gboolean trailing, int *line, int *x_pos);
 subroutine pango_layout_index_to_line_x(layout, index_, trailing, line, x_pos) b&
       &ind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: layout
   integer(c_int), value :: index_
-  logical(c_bool), value :: trailing
+  integer(c_int), value :: trailing
   type(c_ptr), value :: line
   type(c_ptr), value :: x_pos
 end subroutine
@@ -65103,9 +65103,9 @@ end subroutine
 ! void pango_layout_move_cursor_visually (PangoLayout *layout, gboolean strong, int old_index, int old_trailing, int direction, int *new_index, int *new_trailing);
 subroutine pango_layout_move_cursor_visually(layout, strong, old_index, old_trai&
       &ling, direction, new_index, new_trailing) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: layout
-  logical(c_bool), value :: strong
+  integer(c_int), value :: strong
   integer(c_int), value :: old_index
   integer(c_int), value :: old_trailing
   integer(c_int), value :: direction
@@ -65115,8 +65115,8 @@ end subroutine
 
 ! gboolean pango_layout_xy_to_index (PangoLayout *layout, int x, int y, int *index_, int *trailing);
 function pango_layout_xy_to_index(layout, x, y, index_, trailing) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: pango_layout_xy_to_index
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_xy_to_index
   type(c_ptr), value :: layout
   integer(c_int), value :: x
   integer(c_int), value :: y
@@ -65222,8 +65222,8 @@ end subroutine
 
 !  gboolean pango_layout_line_x_to_index (PangoLayoutLine *line, int x_pos, int *index_, int *trailing);
 function pango_layout_line_x_to_index(line, x_pos, index_, trailing) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: pango_layout_line_x_to_index
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_line_x_to_index
   type(c_ptr), value :: line
   integer(c_int), value :: x_pos
   type(c_ptr), value :: index_
@@ -65232,10 +65232,10 @@ end function
 
 ! void pango_layout_line_index_to_x (PangoLayoutLine *line, int index_, gboolean trailing, int *x_pos);
 subroutine pango_layout_line_index_to_x(line, index_, trailing, x_pos) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: line
   integer(c_int), value :: index_
-  logical(c_bool), value :: trailing
+  integer(c_int), value :: trailing
   type(c_ptr), value :: x_pos
 end subroutine
 
@@ -65330,8 +65330,8 @@ end function
 
 ! gboolean pango_layout_iter_at_last_line (PangoLayoutIter *iter);
 function pango_layout_iter_at_last_line(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_layout_iter_at_last_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_iter_at_last_line
   type(c_ptr), value :: iter
 end function
 
@@ -65344,29 +65344,29 @@ end function
 
 !  gboolean pango_layout_iter_next_char (PangoLayoutIter *iter);
 function pango_layout_iter_next_char(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_layout_iter_next_char
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_iter_next_char
   type(c_ptr), value :: iter
 end function
 
 ! gboolean pango_layout_iter_next_cluster (PangoLayoutIter *iter);
 function pango_layout_iter_next_cluster(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_layout_iter_next_cluster
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_iter_next_cluster
   type(c_ptr), value :: iter
 end function
 
 ! gboolean pango_layout_iter_next_run (PangoLayoutIter *iter);
 function pango_layout_iter_next_run(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_layout_iter_next_run
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_iter_next_run
   type(c_ptr), value :: iter
 end function
 
 ! gboolean pango_layout_iter_next_line (PangoLayoutIter *iter);
 function pango_layout_iter_next_line(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: pango_layout_iter_next_line
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: pango_layout_iter_next_line
   type(c_ptr), value :: iter
 end function
 
@@ -65742,15 +65742,15 @@ end subroutine
 
 ! void gdk_pixbuf_simple_anim_set_loop (GdkPixbufSimpleAnim *animation, gboolean loop);
 subroutine gdk_pixbuf_simple_anim_set_loop(animation, loop) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: animation
-  logical(c_bool), value :: loop
+  integer(c_int), value :: loop
 end subroutine
 
 ! gboolean gdk_pixbuf_simple_anim_get_loop (GdkPixbufSimpleAnim *animation);
 function gdk_pixbuf_simple_anim_get_loop(animation) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_pixbuf_simple_anim_get_loop
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pixbuf_simple_anim_get_loop
   type(c_ptr), value :: animation
 end function
 
@@ -65822,8 +65822,8 @@ end subroutine
 
 ! gboolean gdk_pixbuf_loader_write (GdkPixbufLoader *loader, const guchar *buf, gsize count, GError **error);
 function gdk_pixbuf_loader_write(loader, buf, count, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char, c_size_t
-  logical(c_bool) :: gdk_pixbuf_loader_write
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
+  integer(c_int) :: gdk_pixbuf_loader_write
   type(c_ptr), value :: loader
   character(kind=c_char), dimension(*) :: buf
   integer(c_size_t), value :: count
@@ -65846,8 +65846,8 @@ end function
 
 ! gboolean gdk_pixbuf_loader_close (GdkPixbufLoader *loader, GError **error);
 function gdk_pixbuf_loader_close(loader, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_pixbuf_loader_close
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pixbuf_loader_close
   type(c_ptr), value :: loader
   type(c_ptr), value :: error
 end function
@@ -65869,8 +65869,8 @@ end function
 
 ! gboolean gdk_pixdata_deserialize (GdkPixdata *pixdata, guint stream_length, const guint8 *stream, GError **error);
 function gdk_pixdata_deserialize(pixdata, stream_length, stream, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_int
-  logical(c_bool) :: gdk_pixdata_deserialize
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pixdata_deserialize
   type(c_ptr), value :: pixdata
   integer(c_int), value :: stream_length
   type(c_ptr), value :: stream
@@ -65879,19 +65879,19 @@ end function
 
 ! gpointer gdk_pixdata_from_pixbuf (GdkPixdata *pixdata, const GdkPixbuf *pixbuf, gboolean use_rle);
 function gdk_pixdata_from_pixbuf(pixdata, pixbuf, use_rle) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gdk_pixdata_from_pixbuf
   type(c_ptr), value :: pixdata
   type(c_ptr), value :: pixbuf
-  logical(c_bool), value :: use_rle
+  integer(c_int), value :: use_rle
 end function
 
 ! GdkPixbuf* gdk_pixbuf_from_pixdata (const GdkPixdata *pixdata, gboolean copy_pixels, GError **error);
 function gdk_pixbuf_from_pixdata(pixdata, copy_pixels, error) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gdk_pixbuf_from_pixdata
   type(c_ptr), value :: pixdata
-  logical(c_bool), value :: copy_pixels
+  integer(c_int), value :: copy_pixels
   type(c_ptr), value :: error
 end function
 
@@ -65945,8 +65945,8 @@ end function
 
 ! gboolean gdk_pixbuf_get_has_alpha (const GdkPixbuf *pixbuf);
 function gdk_pixbuf_get_has_alpha(pixbuf) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_pixbuf_get_has_alpha
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pixbuf_get_has_alpha
   type(c_ptr), value :: pixbuf
 end function
 
@@ -65988,10 +65988,10 @@ end function
 !    GdkPixbuf *gdk_pixbuf_new (GdkColorspace colorspace, gboolean has_alpha, int bits_per_sample, int width, int height);
 function gdk_pixbuf_new(colorspace, has_alpha, bits_per_sample, width, height) b&
       &ind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gdk_pixbuf_new
   integer(c_int), value :: colorspace
-  logical(c_bool), value :: has_alpha
+  integer(c_int), value :: has_alpha
   integer(c_int), value :: bits_per_sample
   integer(c_int), value :: width
   integer(c_int), value :: height
@@ -66038,23 +66038,23 @@ end function
 ! GdkPixbuf *gdk_pixbuf_new_from_file_at_scale (const char *filename, int width, int height, gboolean preserve_aspect_ratio, GError **error);
 function gdk_pixbuf_new_from_file_at_scale(filename, width, height, preserve_asp&
       &ect_ratio, error) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: gdk_pixbuf_new_from_file_at_scale
   character(kind=c_char), dimension(*) :: filename
   integer(c_int), value :: width
   integer(c_int), value :: height
-  logical(c_bool), value :: preserve_aspect_ratio
+  integer(c_int), value :: preserve_aspect_ratio
   type(c_ptr), value :: error
 end function
 
 !  GdkPixbuf *gdk_pixbuf_new_from_data (const guchar *data, GdkColorspace colorspace, gboolean has_alpha, int bits_per_sample, int width, int height, int rowstride, GdkPixbufDestroyNotify destroy_fn, gpointer destroy_fn_data);
 function gdk_pixbuf_new_from_data(data, colorspace, has_alpha, bits_per_sample, &
       &width, height, rowstride, destroy_fn, destroy_fn_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int, c_bool, c_funptr
+  use iso_c_binding, only: c_ptr, c_char, c_int, c_funptr
   type(c_ptr) :: gdk_pixbuf_new_from_data
   character(kind=c_char), dimension(*) :: data
   integer(c_int), value :: colorspace
-  logical(c_bool), value :: has_alpha
+  integer(c_int), value :: has_alpha
   integer(c_int), value :: bits_per_sample
   integer(c_int), value :: width
   integer(c_int), value :: height
@@ -66073,11 +66073,11 @@ end function
 ! GdkPixbuf* gdk_pixbuf_new_from_inline (gint data_length, const guint8 *data, gboolean copy_pixels, GError **error);
 function gdk_pixbuf_new_from_inline(data_length, data, copy_pixels, error) bind(&
       &c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gdk_pixbuf_new_from_inline
   integer(c_int), value :: data_length
   type(c_ptr), value :: data
-  logical(c_bool), value :: copy_pixels
+  integer(c_int), value :: copy_pixels
   type(c_ptr), value :: error
 end function
 
@@ -66091,8 +66091,8 @@ end subroutine
 !  gboolean gdk_pixbuf_savev (GdkPixbuf *pixbuf, const char *filename, const char *type, char **option_keys, char **option_values, GError **error);
 function gdk_pixbuf_savev(pixbuf, filename, type, option_keys, option_values, er&
       &ror) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gdk_pixbuf_savev
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_pixbuf_savev
   type(c_ptr), value :: pixbuf
   character(kind=c_char), dimension(*) :: filename
   character(kind=c_char), dimension(*) :: type
@@ -66104,8 +66104,8 @@ end function
 !  gboolean gdk_pixbuf_save_to_callbackv (GdkPixbuf *pixbuf, GdkPixbufSaveFunc save_func, gpointer user_data, const char *type, char **option_keys, char **option_values, GError **error);
 function gdk_pixbuf_save_to_callbackv(pixbuf, save_func, user_data, type, option&
       &_keys, option_values, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_funptr, c_char
-  logical(c_bool) :: gdk_pixbuf_save_to_callbackv
+  use iso_c_binding, only: c_int, c_ptr, c_funptr, c_char
+  integer(c_int) :: gdk_pixbuf_save_to_callbackv
   type(c_ptr), value :: pixbuf
   type(c_funptr), value :: save_func
   type(c_ptr), value :: user_data
@@ -66118,8 +66118,8 @@ end function
 !  gboolean gdk_pixbuf_save_to_bufferv (GdkPixbuf *pixbuf, gchar **buffer, gsize *buffer_size, const char *type, char **option_keys, char **option_values, GError **error);
 function gdk_pixbuf_save_to_bufferv(pixbuf, buffer, buffer_size, type, option_ke&
       &ys, option_values, error) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gdk_pixbuf_save_to_bufferv
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_pixbuf_save_to_bufferv
   type(c_ptr), value :: pixbuf
   character(kind=c_char), dimension(*) :: buffer
   type(c_ptr), value :: buffer_size
@@ -66141,22 +66141,22 @@ end function
 !  GdkPixbuf *gdk_pixbuf_new_from_stream_at_scale (GInputStream *stream, gint width, gint height, gboolean preserve_aspect_ratio, GCancellable *cancellable, GError **error);
 function gdk_pixbuf_new_from_stream_at_scale(stream, width, height, preserve_asp&
       &ect_ratio, cancellable, error) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gdk_pixbuf_new_from_stream_at_scale
   type(c_ptr), value :: stream
   integer(c_int), value :: width
   integer(c_int), value :: height
-  logical(c_bool), value :: preserve_aspect_ratio
+  integer(c_int), value :: preserve_aspect_ratio
   type(c_ptr), value :: cancellable
   type(c_ptr), value :: error
 end function
 
 !  GdkPixbuf *gdk_pixbuf_add_alpha (const GdkPixbuf *pixbuf, gboolean substitute_color, guchar r, guchar g, guchar b);
 function gdk_pixbuf_add_alpha(pixbuf, substitute_color, r, g, b) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool, c_char
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr) :: gdk_pixbuf_add_alpha
   type(c_ptr), value :: pixbuf
-  logical(c_bool), value :: substitute_color
+  integer(c_int), value :: substitute_color
   character(c_char), value :: r
   character(c_char), value :: g
   character(c_char), value :: b
@@ -66179,11 +66179,11 @@ end subroutine
 !  void gdk_pixbuf_saturate_and_pixelate (const GdkPixbuf *src, GdkPixbuf *dest, gfloat saturation, gboolean pixelate);
 subroutine gdk_pixbuf_saturate_and_pixelate(src, dest, saturation, pixelate) bin&
       &d(c) 
-  use iso_c_binding, only: c_ptr, c_float, c_bool
+  use iso_c_binding, only: c_ptr, c_float, c_int
   type(c_ptr), value :: src
   type(c_ptr), value :: dest
   real(c_float), value :: saturation
-  logical(c_bool), value :: pixelate
+  integer(c_int), value :: pixelate
 end subroutine
 
 !  GdkPixbuf *gdk_pixbuf_apply_embedded_orientation (GdkPixbuf *src);
@@ -66243,30 +66243,30 @@ end function
 
 ! gboolean gdk_pixbuf_format_is_writable (GdkPixbufFormat *format);
 function gdk_pixbuf_format_is_writable(format) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_pixbuf_format_is_writable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pixbuf_format_is_writable
   type(c_ptr), value :: format
 end function
 
 ! gboolean gdk_pixbuf_format_is_scalable (GdkPixbufFormat *format);
 function gdk_pixbuf_format_is_scalable(format) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_pixbuf_format_is_scalable
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pixbuf_format_is_scalable
   type(c_ptr), value :: format
 end function
 
 ! gboolean gdk_pixbuf_format_is_disabled (GdkPixbufFormat *format);
 function gdk_pixbuf_format_is_disabled(format) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_pixbuf_format_is_disabled
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pixbuf_format_is_disabled
   type(c_ptr), value :: format
 end function
 
 ! void gdk_pixbuf_format_set_disabled (GdkPixbufFormat *format, gboolean disabled);
 subroutine gdk_pixbuf_format_set_disabled(format, disabled) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: format
-  logical(c_bool), value :: disabled
+  integer(c_int), value :: disabled
 end subroutine
 
 ! gchar *gdk_pixbuf_format_get_license (GdkPixbufFormat *format);
@@ -66300,8 +66300,8 @@ end subroutine
 
 !    gboolean gdk_pixbuf_set_option (GdkPixbuf *pixbuf, const gchar *key, const gchar *value);
 function gdk_pixbuf_set_option(pixbuf, key, value) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr, c_char
-  logical(c_bool) :: gdk_pixbuf_set_option
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_pixbuf_set_option
   type(c_ptr), value :: pixbuf
   character(kind=c_char), dimension(*) :: key
   character(kind=c_char), dimension(*) :: value
@@ -66350,8 +66350,8 @@ end function
 
 ! gboolean gdk_pixbuf_animation_is_static_image (GdkPixbufAnimation *animation);
 function gdk_pixbuf_animation_is_static_image(animation) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_pixbuf_animation_is_static_image
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pixbuf_animation_is_static_image
   type(c_ptr), value :: animation
 end function
 
@@ -66392,15 +66392,15 @@ end function
 
 ! gboolean gdk_pixbuf_animation_iter_on_currently_loading_frame (GdkPixbufAnimationIter *iter);
 function gdk_pixbuf_animation_iter_on_currently_loading_frame(iter) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_pixbuf_animation_iter_on_currently_loading_frame
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pixbuf_animation_iter_on_currently_loading_frame
   type(c_ptr), value :: iter
 end function
 
 ! gboolean gdk_pixbuf_animation_iter_advance (GdkPixbufAnimationIter *iter, const GTimeVal *current_time);
 function gdk_pixbuf_animation_iter_advance(iter, current_time) bind(c) 
-  use iso_c_binding, only: c_bool, c_ptr
-  logical(c_bool) :: gdk_pixbuf_animation_iter_advance
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_pixbuf_animation_iter_advance
   type(c_ptr), value :: iter
   type(c_ptr), value :: current_time
 end function
@@ -66514,9 +66514,9 @@ end function
 
 ! GdkPixbuf *gdk_pixbuf_flip (const GdkPixbuf *src, gboolean horizontal);
 function gdk_pixbuf_flip(src, horizontal) bind(c) 
-  use iso_c_binding, only: c_ptr, c_bool
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gdk_pixbuf_flip
   type(c_ptr), value :: src
-  logical(c_bool), value :: horizontal
+  integer(c_int), value :: horizontal
 end function
 
