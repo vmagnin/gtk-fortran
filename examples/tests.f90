@@ -517,6 +517,7 @@ end module tests
 
 program gtk_fortran_test
   use tests
+  use gtk
   implicit none
   integer :: errors
   
