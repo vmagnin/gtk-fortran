@@ -167,7 +167,28 @@ program simplemenu
   type(c_ptr) :: action_group,menu_manager,error
   character(c_char), dimension(:), pointer :: textptr
   character(len=512) :: error_string
+  integer(c_size_t) :: buffer_length
   integer :: ui,i
+  character(len=*), parameter :: buffer = &
+    "<ui>"//C_NEW_LINE//&
+    "  <menubar name=""MainMenu"">"//C_NEW_LINE//&
+    "    <menu name=""FileMenu"" action=""FileMenuAction"">"//C_NEW_LINE//&
+    "      <menuitem name=""Open"" action=""OpenAction"" />"//C_NEW_LINE//&
+    "      <menuitem name=""Save"" action=""SaveAction"" />"//C_NEW_LINE//&
+    "      <menuitem name=""Close"" action=""CloseAction"" />"//C_NEW_LINE//&
+    "      <menuitem name=""Quit"" action=""QuitAction"" />"//C_NEW_LINE//&
+    "    </menu>"//C_NEW_LINE//&
+    "    <menu name=""EditMenu"" action=""EditMenuAction"">"//C_NEW_LINE//&
+    "      <menuitem name=""Cut"" action=""CutAction""/>"//C_NEW_LINE//&
+    "      <menuitem name=""Copy"" action=""CopyAction""/>"//C_NEW_LINE//&
+    "      <menuitem name=""Paste"" action=""PasteAction""/>"//C_NEW_LINE//&
+    "    </menu>"//C_NEW_LINE//&
+    "    <menu name=""HelpMenu"" action=""HelpMenuAction"">"//C_NEW_LINE//&
+    "      <menuitem name=""Help"" action=""HelpAction""/>"//C_NEW_LINE//&
+    "    </menu>"//C_NEW_LINE//&
+    "  </menubar>"//C_NEW_LINE//&
+    "</ui>"
+
   
   ! Menu action data
   type(ui_action),dimension(11)::action = (/&
@@ -228,8 +249,10 @@ program simplemenu
   menu_manager = gtk_ui_manager_new ()
   call gtk_ui_manager_insert_action_group (menu_manager, action_group, 0)
   error = NULL
-  ui = gtk_ui_manager_add_ui_from_file (menu_manager, "menu.xml"//CNULL, error)
-            
+  !ui = gtk_ui_manager_add_ui_from_file (menu_manager, "menu.xml"//CNULL, error)
+  buffer_length = len_trim(buffer)
+  ui = gtk_ui_manager_add_ui_from_string (menu_manager, trim(buffer)//CNULL, buffer_length, error)
+
   ! Handle error
   if (c_associated(error)) then
     call c_f_pointer(error, textptr, (/0/))
