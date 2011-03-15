@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin, Jerry DeLisle, "jtappin" and Tobias Burnus, 01-23-2011
-! Last modification: 03-11-2011
+! Last modification: 03-15-2011
 
 module gtk
   use iso_c_binding
@@ -49,10 +49,9 @@ module gtk
   ! Some useful parameters to ease coding:
   character(c_char), parameter :: CNULL = c_null_char
   type(c_ptr), parameter       :: NULL = c_null_ptr
-!  logical(c_bool), parameter   :: TRUE = .true.
-!  logical(c_bool), parameter   :: FALSE = .false.
+  ! In GTK+ gboolean is int:
   integer(c_int), parameter   :: FALSE = 0
-  integer(c_int), parameter   :: TRUE = not(FALSE)
+  integer(c_int), parameter   :: TRUE = 1
 
 contains
   subroutine g_signal_connect (instance, detailed_signal, c_handler, data0)
