@@ -91,12 +91,12 @@ contains
       end do
       carg(strlen) = c_null_char
       argv(i) = c_loc (carg(0))
+      deallocate(carg)
     end do
 
     argc = argc + 1
     call gtk_init_real (argc, c_loc(argv))
     !deallocate(argv)
-    !deallocate(carg)
   end subroutine gtk_init
   
 end module gtk
