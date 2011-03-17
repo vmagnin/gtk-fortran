@@ -21,23 +21,21 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g mandelbrot.f90 `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -g gtk.f90 mandelbrot.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
 
 module handlers
   use gtk
   implicit none
 
-  logical :: run_status = TRUE
-  logical(c_bool) :: boolresult
-  logical :: boolevent
-
+  integer(c_int) :: run_status = TRUE
+  integer(c_int) :: boolresult
   
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_bool
-    logical(c_bool)    :: ret
+    use iso_c_binding, only: c_ptr, c_int
+    integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     !print *, "Delete_event"
     run_status = FALSE
@@ -45,7 +43,7 @@ contains
   end function delete_event
 
   subroutine pending_events ()
-    do while(gtk_events_pending() .and. run_status)
+    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
     end do
   end subroutine pending_events
@@ -78,7 +76,7 @@ program mandelbrot
   ! The window stays opened after the computation:
   do
     call pending_events()
-    if (.not.run_status) exit
+    if (run_status == FALSE) exit
     call sleep(1) ! So we don't burn CPU cycles
   end do
   print *, "All done"
@@ -120,7 +118,7 @@ subroutine Mandelbrot_set(the_gdk_image, the_gtk_image, width, height, xmin, xma
       c = x + y*(0d0,1d0)	! Starting point
       z = (0d0, 0d0)	        ! z0
       k = 1
-      do while ((k <= itermax) .and. (abs(z)<2d0))
+      do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4d0)) 
         z = z*z+c
         k = k+1
       end do
@@ -136,7 +134,7 @@ subroutine Mandelbrot_set(the_gdk_image, the_gtk_image, width, height, xmin, xma
       end if
       ! This subrountine processes gtk events as needed during the computation.
       call pending_events()
-      if (.not.run_status) return ! Exit if we had a delete event.
+      if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
   end do
 end subroutine mandelbrot_set
