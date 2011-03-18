@@ -39,19 +39,20 @@ module widgets
 
 contains
 
-!void gtk_notebook_set_group_name (GtkNotebook *notebook, const gchar *group_name);
-subroutine gtk_notebook_set_group_name (notebook, group_name) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: notebook
-  character(kind=c_char), dimension(*) :: group_name
-end subroutine
+  ! *** These two functions will be avalaibable in GTK+ 2.24 ***
+  !void gtk_notebook_set_group_name (GtkNotebook *notebook, const gchar *group_name);
+  subroutine gtk_notebook_set_group_name (notebook, group_name) bind(c)
+    use iso_c_binding, only: c_ptr, c_char
+    type(c_ptr), value :: notebook
+    character(kind=c_char), dimension(*) :: group_name
+  end subroutine
 
-!const gchar *gtk_notebook_get_group_name (GtkNotebook *notebook);
-function gtk_notebook_get_group_name (notebook) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: notebook
-  type(c_ptr) :: gtk_notebook_get_group_name
-end function
+  !const gchar *gtk_notebook_get_group_name (GtkNotebook *notebook);
+  function gtk_notebook_get_group_name (notebook) bind(c)
+    use iso_c_binding, only: c_ptr
+    type(c_ptr), value :: notebook
+    type(c_ptr) :: gtk_notebook_get_group_name
+  end function
 
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
@@ -69,6 +70,7 @@ end function
   end subroutine convert_c_string
 
 end module
+
 
 module handlers
   use gtk
@@ -106,9 +108,9 @@ contains
     integer(c_int)     :: ret
     type(c_ptr), value :: widget, gdata
     if (gtk_notebook_get_current_page(notebook_1) .eq. gtk_notebook_get_n_pages(notebook_1) - 1) then
-    	call gtk_notebook_set_current_page (notebook_1, 0)
+      call gtk_notebook_set_current_page (notebook_1, 0)
     else
-    	call gtk_notebook_next_page (notebook_1)
+      call gtk_notebook_next_page (notebook_1)
     endif
     ret = FALSE
   end function next_page_book
@@ -119,9 +121,9 @@ contains
     integer(c_int)     :: ret
     type(c_ptr), value :: widget, gdata
     if (gtk_notebook_get_current_page(notebook_1) .eq. 0) then
-    	call gtk_notebook_set_current_page (notebook_1, -1)
+      call gtk_notebook_set_current_page (notebook_1, -1)
     else
-	call gtk_notebook_prev_page (notebook_1)
+  call gtk_notebook_prev_page (notebook_1)
     endif
     ret = FALSE
   end function prev_page_book
@@ -165,8 +167,8 @@ contains
 
 end module handlers
 
-program notebook_example
 
+program notebook_example
   use iso_c_binding
   use gtk
   use widgets
@@ -181,7 +183,7 @@ program notebook_example
   character(c_char), dimension(:), pointer :: textptr
   character(len=512) :: my_string
 
-  ! GTK initialisation			
+  ! GTK initialisation      
   call gtk_init ()
   
   ! Properties of the main window :
@@ -204,26 +206,27 @@ program notebook_example
 
   ! Attach notebook to group, necessary to enable drag and drop between the two notebooks
   call gtk_notebook_set_group_name(notebook_1,"group"//CNULL)
-! --> this is not working!!!: 
+! --> this is not working!!! (available in GTK+ 2.24): 
   call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, (/64/))
   call convert_c_string(textptr, my_string)
   print *, "group name = <"//TRIM(my_string)//">"
+  print *, "=> This should work with GTK+ 2.24 and later"
 
   !append a bunch of pages to the notebook
   do i=1,3
-	write(istr,*)i
-	
-	frame = gtk_frame_new ("Append Frame "//trim(adjustl(istr))//CNULL)
-	call gtk_container_set_border_width (frame, 10)
-	call gtk_widget_set_size_request (frame, 100, 75)
-	
-	label = gtk_label_new ("Append Frame "//trim(adjustl(istr))//CNULL)
-	call gtk_container_add (frame, label)
-	
-	label = gtk_label_new ("Page "//trim(adjustl(istr))//CNULL)
-	nb = gtk_notebook_append_page (notebook_1, frame, label)
-	call gtk_notebook_set_tab_reorderable (notebook_1, frame, TRUE)
-	call gtk_notebook_set_tab_detachable (notebook_1, frame, TRUE)
+    write(istr,*)i
+    
+    frame = gtk_frame_new ("Append Frame "//trim(adjustl(istr))//CNULL)
+    call gtk_container_set_border_width (frame, 10)
+    call gtk_widget_set_size_request (frame, 100, 75)
+    
+    label = gtk_label_new ("Append Frame "//trim(adjustl(istr))//CNULL)
+    call gtk_container_add (frame, label)
+    
+    label = gtk_label_new ("Page "//trim(adjustl(istr))//CNULL)
+    nb = gtk_notebook_append_page (notebook_1, frame, label)
+    call gtk_notebook_set_tab_reorderable (notebook_1, frame, TRUE)
+    call gtk_notebook_set_tab_detachable (notebook_1, frame, TRUE)
   enddo
  
   ! add a page to a specific spot
@@ -237,19 +240,19 @@ program notebook_example
     
   ! prepend pages to the notebook 
   do i=1,3
-	write(istr,*)i
-	
-	frame = gtk_frame_new ("Prepend Frame "//trim(adjustl(istr))//CNULL)
-	call gtk_container_set_border_width (frame, 10)
-	call gtk_widget_set_size_request (frame, 100, 75)
-	
-	label = gtk_label_new ("Prepend Frame "//trim(adjustl(istr))//CNULL)
-	call gtk_container_add (frame, label)
-	
-	label = gtk_label_new ("PPage "//trim(adjustl(istr))//CNULL)
-	nb = gtk_notebook_prepend_page (notebook_1, frame, label)
-	call gtk_notebook_set_tab_reorderable (notebook_1, frame, TRUE)
-	call gtk_notebook_set_tab_detachable (notebook_1, frame, TRUE)
+    write(istr,*) i
+    
+    frame = gtk_frame_new ("Prepend Frame "//trim(adjustl(istr))//CNULL)
+    call gtk_container_set_border_width (frame, 10)
+    call gtk_widget_set_size_request (frame, 100, 75)
+    
+    label = gtk_label_new ("Prepend Frame "//trim(adjustl(istr))//CNULL)
+    call gtk_container_add (frame, label)
+    
+    label = gtk_label_new ("PPage "//trim(adjustl(istr))//CNULL)
+    nb = gtk_notebook_prepend_page (notebook_1, frame, label)
+    call gtk_notebook_set_tab_reorderable (notebook_1, frame, TRUE)
+    call gtk_notebook_set_tab_detachable (notebook_1, frame, TRUE)
   enddo
     
   ! Set what page to start at (page 4)
@@ -290,19 +293,19 @@ program notebook_example
 
   !append a bunch of pages to the notebook
   do i=1,3
-	write(istr,*)i
-	
-	frame = gtk_frame_new ("Notebook 2 - Frame "//trim(adjustl(istr))//CNULL)
-	call gtk_container_set_border_width (frame, 10)
-	call gtk_widget_set_size_request (frame, 100, 75)
-	
-	label = gtk_label_new ("Notebook 2 - Frame "//trim(adjustl(istr))//CNULL)
-	call gtk_container_add (frame, label)
-	
-	label = gtk_label_new ("Notebook 2 - Page "//trim(adjustl(istr))//CNULL)
-	nb = gtk_notebook_append_page (notebook_2, frame, label)
-	call gtk_notebook_set_tab_reorderable (notebook_2, frame, TRUE)
-	call gtk_notebook_set_tab_detachable (notebook_2, frame, TRUE)
+    write(istr,*) i
+    
+    frame = gtk_frame_new ("Notebook 2 - Frame "//trim(adjustl(istr))//CNULL)
+    call gtk_container_set_border_width (frame, 10)
+    call gtk_widget_set_size_request (frame, 100, 75)
+    
+    label = gtk_label_new ("Notebook 2 - Frame "//trim(adjustl(istr))//CNULL)
+    call gtk_container_add (frame, label)
+    
+    label = gtk_label_new ("Notebook 2 - Page "//trim(adjustl(istr))//CNULL)
+    nb = gtk_notebook_append_page (notebook_2, frame, label)
+    call gtk_notebook_set_tab_reorderable (notebook_2, frame, TRUE)
+    call gtk_notebook_set_tab_detachable (notebook_2, frame, TRUE)
   enddo
 
   call gtk_widget_show_all (mainwindow)
