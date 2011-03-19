@@ -490,6 +490,13 @@ contains
       write(1,*) "ERROR g_hostname_is_ip_address:", l1, l2, l3, l4
       errors = errors + 1
     end if
+    ! gboolean gtk_true (void) G_GNUC_CONST;
+    ! gboolean gtk_false (void) G_GNUC_CONST;
+    if ((gtk_true() /= TRUE) .or. (gtk_false() /= FALSE)) then
+      write(1,*) "ERROR gtk_true, gtk_false:", gtk_true(), gtk_false()
+      errors = errors + 1
+    end if
+    
     test_gboolean_in_out = errors
   end function test_gboolean_in_out
 

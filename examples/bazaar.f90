@@ -38,6 +38,7 @@ module my_widgets
   type(c_ptr) :: progress, file_selector
   type(c_ptr) :: view, buffer, scrolled_window
   type(c_ptr) :: my_drawing_area, my_pixbuf
+  type(c_ptr) :: dialog
 end module
 
 
@@ -160,8 +161,17 @@ contains
     use iso_c_binding, only: c_ptr
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-        
+    integer(c_int) :: response_id
+    
     print *, "Hello World!"
+
+    dialog = gtk_about_dialog_new()
+    call gtk_about_dialog_set_name(dialog, "Gtk-fortran"//CNULL)
+    call gtk_about_dialog_set_license(dialog, "GNU GPL 3"//CNULL)
+    response_id =  gtk_dialog_run(dialog)
+    print *, "Dialog response ID:", response_id
+    call gtk_widget_destroy(dialog)
+    
     ret = FALSE
   end function firstbutton
   
