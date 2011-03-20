@@ -33,7 +33,7 @@ module my_widgets
 
   type(c_ptr) :: window
   type(c_ptr) :: box1, table
-  type(c_ptr) :: button1, button2, button3, label1
+  type(c_ptr) :: button1, button2, button3, button4, label1
   type(c_ptr) :: entry1
   type(c_ptr) :: progress, file_selector
   type(c_ptr) :: view, buffer, scrolled_window
@@ -62,6 +62,7 @@ contains
     print *, "my delete_event"
     ret = FALSE
   end function delete_event
+
 
   ! GtkWidget event:
   function expose_event (widget, event, gdata) result(ret)  bind(c)
@@ -147,6 +148,7 @@ contains
     ret = FALSE
   end function expose_event
 
+
   ! GtkObject signal:
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
@@ -156,22 +158,14 @@ contains
     call gtk_main_quit ()
   end subroutine destroy
 
+
   ! GtkButton signal:
   function firstbutton (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-    integer(c_int) :: response_id
     
     print *, "Hello World!"
-
-    dialog = gtk_about_dialog_new()
-    call gtk_about_dialog_set_name(dialog, "Gtk-fortran"//CNULL)
-    call gtk_about_dialog_set_license(dialog, "GNU GPL 3"//CNULL)
-    response_id =  gtk_dialog_run(dialog)
-    print *, "Dialog response ID:", response_id
-    call gtk_widget_destroy(dialog)
-    
     ret = FALSE
   end function firstbutton
   
@@ -184,6 +178,36 @@ contains
     call gtk_progress_bar_pulse (progress)
     ret = FALSE
   end function secondbutton
+
+
+  ! GtkButton signal:
+  function aboutbutton (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr
+    integer(c_int)    :: ret
+    type(c_ptr), value :: widget, gdata
+    integer(c_int) :: response_id
+    
+    dialog = gtk_about_dialog_new()
+    call gtk_about_dialog_set_name(dialog, "Gtk-fortran"//CNULL)
+    call gtk_about_dialog_set_license(dialog, "GNU GPL 3"//CNULL)
+    call gtk_about_dialog_set_comments(dialog, "The gtk-fortran project &
+    & aims to offer scientists programming in Fortran a cross-platform library &
+    &to build Graphical User Interfaces (GUI)."//c_new_line//" Gtk-fortran&
+    & is a partial GTK+ / Fortran binding 100% written in Fortran, thanks&
+    & to the ISO_C_BINDING module for interoperability between C and Fortran,&
+    & which is a part of the Fortran 2003 standard."//c_new_line//" GTK+ &
+    &is a free software cross-platform graphical library available for &
+    &Linux, Unix, Windows and MacOs X."//CNULL)
+    call gtk_about_dialog_set_website(dialog, "https://github.com/jerryd/gtk-fortran/wiki"//CNULL)
+    !TODO: to add authors we need a pointer toward null terminated array of strings.
+    !call gtk_about_dialog_set_authors(dialog, authors)
+    response_id =  gtk_dialog_run(dialog)
+    print *, "Dialog response ID:", response_id
+    call gtk_widget_destroy(dialog)
+    
+    ret = FALSE
+  end function aboutbutton
+
 
   ! GtkFileChooser signal:
   function file_changed (widget, gdata ) result(ret)  bind(c)
@@ -200,6 +224,7 @@ contains
     
     ret = FALSE
   end function file_changed
+  
   
   ! This is not a handler:
   subroutine convert_c_string(textptr, f_string)
@@ -274,7 +299,7 @@ program gtkFortran
   call g_signal_connect (window, "delete-event"//CNULL, c_funloc(delete_event))
   call g_signal_connect (window, "destroy"//CNULL, c_funloc(destroy))
 
-  table = gtk_table_new (15, 3, TRUE)
+  table = gtk_table_new (15, 4, TRUE)
   call gtk_container_add (window, table)
 
   button1 = gtk_button_new_with_label ("Button1"//CNULL)
@@ -290,6 +315,10 @@ program gtkFortran
   call g_signal_connect (button3, "clicked"//CNULL, c_funloc(destroy))
   call g_signal_connect (button3, "clicked"//CNULL, c_funloc(firstbutton))
 
+  button4 = gtk_button_new_with_label ("About"//CNULL)
+  call gtk_table_attach_defaults(table, button4, 3, 4, 0, 1)
+  call g_signal_connect (button4, "clicked"//CNULL, c_funloc(aboutbutton))
+
   label1 = gtk_label_new("My label"//CNULL)
   call gtk_table_attach_defaults(table, label1, 0, 1, 1, 2)
   
@@ -304,7 +333,8 @@ program gtkFortran
   view = gtk_text_view_new ()
   buffer = gtk_text_view_get_buffer (view)
   call gtk_text_buffer_set_text (buffer, "This is not clean code, just a great bazaar"//char(13)// &
-      & "where I test widgets"//char(13)//"Vincent"//CNULL, -1)
+      & "where I test widgets"//c_new_line//"Vincent"//c_new_line//&
+      &"You can edit this text."//CNULL, -1)
   scrolled_window = gtk_scrolled_window_new (NULL, NULL)
   call gtk_container_add (scrolled_window, view)
   call gtk_table_attach_defaults(table, scrolled_window, 0, 3, 3, 6)  
