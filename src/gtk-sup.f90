@@ -25,7 +25,7 @@
 ! Contributed by James Tappin
 ! Last modification: 03-21-2011
 
-module fgtk_utils
+module gtk_sup
   ! The definitions in this supplementary module are ones that are not (yet)
   !  automatically extracted from the GTK headers.
 
@@ -117,4 +117,4 @@ contains
     gval%il=0
     gval%i64=(/0,0/)
   end subroutine clear_gvalue
-end module fgtk_utils
+end module gtk_sup
