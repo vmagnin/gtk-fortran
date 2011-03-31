@@ -6,8 +6,8 @@ program list_demo
   ! varargs calls replaced & translated into Fortran: James Tappin
   ! 21-Mar-2011
 
-  use gtk
-  use fgtk_utils  ! Contains iter structure and gtypes definitions
+  ! use gtk
+  use gtk_sup  ! Contains iter structure and gtypes definitions
 
   enum, bind(c)
      enumerator :: COL_NAME = 0
