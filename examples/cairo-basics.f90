@@ -108,7 +108,6 @@ end module handlers
 
 program cairo_basics
   use iso_c_binding
-  use gtk
   use handlers
   implicit none
   type(c_ptr) :: my_window
