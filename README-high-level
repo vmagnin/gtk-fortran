@@ -1,11 +1,14 @@
 GTK FORTRAN -- High level interfaces
 ====================================
 
-The high level interface for Gtk-Fotrtran is in the source file
+The high level interface for Gtk-Fortran is in the source file
 gtk-hl.f90. This provides a number of higher level interfaces to the
 GTK+ widget system, with the intent of making GUI construction more
 accessible to scientific programmers (the feel should not be too alien
 to anyone who has developed GUIs in IDL).
+
+The routines make use of the optional arguments in Fortran90+ to
+simplify creating and initializing widgets.
 
 **WARNING** This module is still incomplete and is provided as a
   "taster".
@@ -24,8 +27,8 @@ hl_gtk_list1_new: A single column list with indexing
     hl_gtk_list1_ins: Insert a row into a list
     hl_gtk_list1_rem: Delete a row from a list, or clear the list.
 hl_gtk_menu_new: Create a menubar.
-hl_gtk_menu_submenu: Add a submenu to a menu
-hl_gtk_menu_item: Add a button to a menu
+hl_gtk_menu_submenu_new: Add a submenu to a menu
+hl_gtk_menu_item_new: Add a button to a menu
 hl_gtk_progress_bar_new: A progress bar.
 hl_gtk_progress_bar_set: Set the value of a progress bar.
 
