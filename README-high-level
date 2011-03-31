@@ -1,0 +1,33 @@
+GTK FORTRAN -- High level interfaces
+====================================
+
+The high level interface for Gtk-Fotrtran is in the source file
+gtk-hl.f90. This provides a number of higher level interfaces to the
+GTK+ widget system, with the intent of making GUI construction more
+accessible to scientific programmers (the feel should not be too alien
+to anyone who has developed GUIs in IDL).
+
+**WARNING** This module is still incomplete and is provided as a
+  "taster".
+
+Routines currently included
+hl_gtk_window_new: A top-level window.
+hl_gtk_button_new: A simple button
+hl_gtk_check_button_new: A check button
+hl_gtk_radio_button_new: A radio button with group.
+    hl_gtk_radio_group_get_select: Which member of a radio group
+    	is selected.
+    hl_gtk_radio_group_set_select: Select a member of a radio group.
+hl_gtk_entry_new: A 1-line text box
+hl_gtk_list1_new: A single column list with indexing
+    hl_gtk_list1_get_selections: Get the selected row(s) from a list.
+    hl_gtk_list1_ins: Insert a row into a list
+    hl_gtk_list1_rem: Delete a row from a list, or clear the list.
+hl_gtk_menu_new: Create a menubar.
+hl_gtk_menu_submenu: Add a submenu to a menu
+hl_gtk_menu_item: Add a button to a menu
+hl_gtk_progress_bar_new: A progress bar.
+hl_gtk_progress_bar_set: Set the value of a progress bar.
+
+Several demos are provided in the examples directory: they have the
+prefix hl_.
