@@ -1,24 +1,51 @@
+! Copyright (C) 2011
+! Free Software Foundation, Inc.
+
+! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+
+! This is free software; you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation; either version 3, or (at your option)
+! any later version.
+
+! This software is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+
+! Under Section 7 of GPL version 3, you are granted additional
+! permissions described in the GCC Runtime Library Exception, version
+! 3.1, as published by the Free Software Foundation.
+
+! You should have received a copy of the GNU General Public License along with
+! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! If not, see <http://www.gnu.org/licenses/>.
+!
+! gfortran -g -fopenmp gtk.f90 gtk-sup.f90 gtk-hl.f90 hl_pbar_p.f90 `pkg-config --cflags --libs gtk+-2.0`
+! Contributed by James Tappin.
+
 module handlers
-  use fgtk_h_widgets
-  
+  use gtk_hl
+
   implicit none
 
-  type(c_ptr) :: Win,pbar,qbut, box
+  type(c_ptr) :: win,pbar,qbut, box
   integer(kind=c_int) :: run_status = TRUE
   type(c_ptr), dimension(10) :: bar
 contains
-    subroutine my_destroy(widget, gdata) bind(c)
+  subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     print *, "Exit called"
-!    call gtk_object_destroy(win)
-!    call gtk_main_quit ()
+    !    call gtk_object_destroy(win)
+    !    call gtk_main_quit ()
     run_status = FALSE
   end subroutine my_destroy
 
   subroutine pending_events ()
-   integer(c_int) :: boolresult
-   do while(IAND(gtk_events_pending(), run_status) /= FALSE)
-      boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
+    integer(c_int) :: boolresult
+    do 
+       if (IAND(gtk_events_pending(), run_status) == FALSE) exit
+       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
     end do
   end subroutine pending_events
 
@@ -28,6 +55,9 @@ program progress
 
   ! PROGRESS
   ! Examples of progress bars
+  ! Note this example is only really interesting if you:
+  ! a) Compile with the -fopenmp option and
+  ! b) run it on a multicore machine
 
   use handlers
 
@@ -38,7 +68,7 @@ program progress
 
   ! Initialize gtk & create a window for the heirarchy
   call gtk_init()
-  win = f_gtk_window("Progress"//cnull, destroy=c_funloc(my_destroy))
+  win = hl_gtk_window_new("Progress"//cnull, destroy=c_funloc(my_destroy))
 
   ! Make a column box to contain our widgets and put it in the window
   box=gtk_vbox_new(FALSE, 0)
@@ -46,14 +76,14 @@ program progress
 
   ! Make several horizontal progress bars and put them in the box
   do i=1,10
-     bar(i) = f_gtk_progress_bar()
+     bar(i) = hl_gtk_progress_bar_new()
      call gtk_box_pack_start_defaults(box, bar(i))
   end do
-  pbar = f_gtk_progress_bar(step=0.05_c_double)
+  pbar = hl_gtk_progress_bar_new(step=0.05_c_double)
   call gtk_box_pack_start_defaults(box, pbar)
 
   ! Make a quit button and put that in the box.
-  qbut = f_gtk_button("Quit"//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
   call gtk_box_pack_start_defaults(box, qbut)
 
   ! Display the window
@@ -71,10 +101,10 @@ program progress
         istep = istep+1
 
         if (istep > itmax) exit
-        call f_gtk_progress_bar_set(bar(i), real(istep,c_double), &
-             & real(itmax, c_double), string=TRUE)
+        call hl_gtk_progress_bar_set(bar(i), istep, &
+             & itmax, string=TRUE)
         if (mod(istep, 20) == 0) &
-             & call f_gtk_progress_bar_set(pbar, text="Working"//cnull)
+             & call hl_gtk_progress_bar_set(pbar, text="Working"//cnull)
      end do
      if (run_status == FALSE) exit
   end do

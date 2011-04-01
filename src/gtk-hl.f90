@@ -61,6 +61,7 @@ module gtk_hl
 
   implicit none
 
+  ! A progress bar value can be given as a fraction or m of n
   interface hl_gtk_progress_bar_set
      module procedure  hl_gtk_progress_bar_set_f
      module procedure  hl_gtk_progress_bar_set_ii
@@ -68,21 +69,26 @@ module gtk_hl
 
 contains
 
-  function hl_gtk_window_new(title, destroy, delete_event, border, wsize,&
-       & sensitive) result(win)
+  function hl_gtk_window_new(title, destroy, delete_event, data_destroy, &
+       & data_delete_event, border, wsize, sensitive) result(win)
     ! Higher-level interface to make a gtk_window
     !
     ! TITLE: String: optional: Title for the window
     ! DESTROY: c_funptr: optional: Callback for the "destroy" signal
     ! DELETE_EVENT: c_funptr: optional: Callback for the "delete-event" signal
+    ! DATA_DESTROY: c_ptr: optional: Data to be passed to the destroy
+    ! 		signal handler
+    ! DATA_DELETE_EVENT: c_ptr: optional: Data to be passed to the
+    ! 		delete_event signal handler
     ! BORDER: integer: optional: Size of the window border
     ! WSIZE: integer(2): optional: Size of the window
-    ! SENSITIVE: logical: optional: Whether the widget should initially
+    ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
 
     type(c_ptr) :: win
     character(kind=c_char), dimension(*), intent(in), optional :: title
     type(c_funptr), optional :: destroy, delete_event
+    type(c_ptr), optional :: data_destroy, data_delete_event
     integer, optional, intent(in) :: border
     integer, optional, intent(in), dimension(2) :: wsize
     integer(kind=c_int), intent(in), optional :: sensitive
@@ -93,10 +99,24 @@ contains
     if (present(border)) call gtk_container_set_border_width(win, border)
     if (present(wsize)) &
          & call gtk_window_set_default_size(win, wsize(1), wsize(2))
-    if (present(delete_event)) &
-         & call g_signal_connect(win, "delete-event"//CNULL, delete_event)
-    if (present(destroy)) &
-         & call g_signal_connect(win, "destroy"//CNULL, destroy)
+
+    if (present(delete_event)) then
+       if (present(data_delete_event)) then
+          call g_signal_connect(win, "delete-event"//CNULL, delete_event, &
+               & data_delete_event)
+       else
+          call g_signal_connect(win, "delete-event"//CNULL, delete_event)
+       end if
+    end if
+
+    if (present(destroy)) then
+       if (present(data_destroy)) then
+          call g_signal_connect(win, "destroy"//CNULL, destroy, &
+               & data_destroy)
+       else
+          call g_signal_connect(win, "destroy"//CNULL, destroy)
+       end if
+    end if
 
     if (present(sensitive)) &
          & call gtk_widget_set_sensitive(win, sensitive)
@@ -108,11 +128,11 @@ contains
     ! Higher-level button
     !
     ! LABEL: string: required: The label on the button
-    ! CLICKED: c_funloc: optional: callback routine for the "clicked" signal
-    ! DATA: c_loc: optional: Data to be passed to the clicked callback
+    ! CLICKED: c_funptr: optional: callback routine for the "clicked" signal
+    ! DATA: c_ptr: optional: Data to be passed to the clicked callback
     ! TOOLTIP: string: optional: tooltip to be displayed when the pointer
     ! 		is held over the button.
-    ! SENSITIVE: logical: optional: Whether the widget should initially
+    ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
 
     type(c_ptr) :: but
@@ -145,12 +165,12 @@ contains
     ! Higher level check box.
     !
     ! LABEL: string: required:  The label on the button.
-    ! TOGGLED: c_funloc: optional: Callback function for the "toggled" signal.
-    ! DATA: c_loc: optional: Data to pass to/from the toggled callback.
+    ! TOGGLED: c_funptr: optional: Callback function for the "toggled" signal.
+    ! DATA: c_ptr: optional: Data to pass to/from the toggled callback.
     ! TOOLTIP: string: optional: A tooltip for the check_button.
     ! INITIAL_STATE: integer: optional: set the initial state of the
     !               check_button.
-    ! SENSITIVE: logical: optional: Whether the widget should initially
+    ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
 
     type(c_ptr) :: but
@@ -185,19 +205,19 @@ contains
        & sensitive) result(but)
     ! Radio button
     !
-    ! GROUP: c_loc: required: The group to which the button belongs.
+    ! GROUP: c_ptr: required: The group to which the button belongs.
     ! 		This is an INOUT argument so it must be a variable
     ! 		of type(c_ptr). To start a new group (menu) initialize
     ! 		the variable to CNULL, to add a new button use the value
-    ! 		returned from the last call to hl_gtk_radio_button. This
+    ! 		returned from the last call to hl_gtk_radio_button_new. This
     ! 		is the variable which you use to do things like setting the
     ! 		selection.
     ! LABEL: string: required: The label for the button.
-    ! TOGGLED: c_funloc: optional: call back to be executed when the
+    ! TOGGLED: c_funptr: optional: call back to be executed when the
     ! 		button is toggled
-    ! DATA: c_loc: optional: Data to pass to/from the "toggled" callback.
+    ! DATA: c_ptr: optional: Data to pass to/from the "toggled" callback.
     ! TOOLTIP: string: optional: A tooltip for the radio button
-    ! SENSITIVE: logical: optional: Whether the widget should initially
+    ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
 
     type(c_ptr) :: but
@@ -228,7 +248,7 @@ contains
   subroutine hl_gtk_radio_group_set_select(group, index)
     ! Set the indexth button of a radio group
     !
-    ! GROUP: c_loc: required: The group of the last button added to
+    ! GROUP: c_ptr: required: The group of the last button added to
     ! 		the radio menu
     ! INDEX: integer: required: The index of the button to set
     ! 		(starting from the first as 0).
@@ -251,6 +271,9 @@ contains
 
   function hl_gtk_radio_group_get_select(group) result(index)
     ! Find the selected button in a radio group.
+    !
+    ! GROUP: c_ptr: required: The group of the last button added to
+    ! 		the radio menu
 
     integer(kind=c_int) :: index
     type(c_ptr), intent(in) :: group
@@ -277,14 +300,14 @@ contains
     ! Higher level text entry box
     !
     ! LEN: integer: optional: The maximum length of the entry field.
-    ! EDITABLE: logical: optional: whether the entry box can be edited
+    ! EDITABLE: boolean: optional: whether the entry box can be edited
     ! 		by the user
-    ! ACTIVATE: c_funloc: optional: Callback function for the "activate" signal
-    ! DATA: c_loc: optional: Data to be passed to the activate callback
+    ! ACTIVATE: c_funptr: optional: Callback function for the "activate" signal
+    ! DATA: c_ptr: optional: Data to be passed to the activate callback
     ! TOOLTIP: string: optional: tooltip to be displayed when the pointer
     ! 		is held over the button.
     ! VALUE: string: optional: An initial value for the entry box.
-    ! SENSITIVE: logical: optional: Whether the widget should initially
+    ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
 
     type(c_ptr) :: entry
@@ -331,8 +354,8 @@ contains
     ! CHANGED: c_funptr: optional: Callback function for the "changed"
     !           signal to the associated selection object.
     ! DATA: c_ptr: optional: Data to be passed to/from the callback.
-    ! MULTIPLE: logical: optional: Whether multiple selections are allowed.
-    ! SENSITIVE: logical: optional: Whether the widget is intially sensitive.
+    ! MULTIPLE: boolean: optional: Whether multiple selections are allowed.
+    ! SENSITIVE: boolean: optional: Whether the widget is intially sensitive.
     ! TOOLTIP: string: optional: Tooltip for the widget
     ! TITLE: string: optional: Title for the visible column.
     ! HEIGHT: integer: optional: The height of the display (this is
@@ -427,7 +450,7 @@ contains
   subroutine hl_gtk_list1_ins(list, text, row)
     ! Insert a row into a list
     !
-    ! LIST: g_ptr: required: The list to insert to.
+    ! LIST: c_ptr: required: The list to insert to.
     ! TEXT: string: required: The text to insert.
     ! ROW: integer: optional: The row at which to insert the text
     ! 		(omit to append)
@@ -480,7 +503,7 @@ contains
   subroutine hl_gtk_list1_rem(list, row)
     ! Remove a row or clear a list
     !
-    ! LIST: g_ptr: required: The list to modify
+    ! LIST: c_ptr: required: The list to modify
     ! ROW: integer: optional: The row to remove, if absent clear the list
 
     type(c_ptr), intent(in) :: list
@@ -590,8 +613,7 @@ contains
     ! Menu initializer (mainly for consistency)
     !
     ! ORIENTATION: integer: optional: Whether to lay out the top level
-    ! 		horizontaly or vertically. If this arguemtn is present, then
-    ! 		a menubar is created, otherwise a simple menu.
+    ! 		horizontaly or vertically.
 
     type(c_ptr) :: menu
     integer(kind=c_int), intent(in), optional :: orientation
@@ -608,7 +630,7 @@ contains
 
   end function hl_gtk_menu_new
 
-  function hl_gtk_menu_submenu(menu, label, tooltip, pos) result(submenu)
+  function hl_gtk_menu_submenu_new(menu, label, tooltip, pos) result(submenu)
     ! Make a submenu node
     !
     ! MENU: c_ptr: required:  The parent of the submenu
@@ -641,9 +663,9 @@ contains
 
     if (present(tooltip)) call gtk_widget_set_tooltip_text(item, tooltip)
 
-  end function hl_gtk_menu_submenu
+  end function hl_gtk_menu_submenu_new
 
-  function hl_gtk_menu_item(menu, label, activate, data, tooltip, pos) &
+  function hl_gtk_menu_item_new(menu, label, activate, data, tooltip, pos) &
        & result(item)
     ! Make a menu item or separator
     !
@@ -695,7 +717,7 @@ contains
 
     ! Attach a tooltip
     if (present(tooltip)) call gtk_widget_set_tooltip_text(item, tooltip)
-  end function hl_gtk_menu_item
+  end function hl_gtk_menu_item_new
 
   function hl_gtk_progress_bar_new(orientation, step) result(bar)
     ! Intializer for a progress bar
@@ -719,17 +741,18 @@ contains
   end function hl_gtk_progress_bar_new
 
   subroutine hl_gtk_progress_bar_set_f(bar, val, string, text)
-    ! Set the value of a progress bar
+    ! Set the value of a progress bar )fraction or pulse)
     !
     ! BAR: c_ptr: required: The bar to set
     ! VAL: double: optional: The value to set. If absent, the bar is pulsed
-    ! STRING: logical: optional: Whether to put a string on the bar.
+    ! STRING: boolean: optional: Whether to put a string on the bar.
     ! TEXT: string: optional: Text to put in the bar, (overrides STRING)
 
     type(c_ptr) :: bar
     real(kind=c_double), optional :: val
     integer(kind=c_int), optional :: string
-    character(kind=c_char), dimension(*), intent(in), optional :: text
+    ! character(kind=c_char), dimension(*), intent(in), optional :: text
+    character(len=*), intent(in), optional:: text
 
     real(kind=c_double) :: frac
     character(len=50) :: sval
@@ -738,14 +761,13 @@ contains
     if (.not. present(val)) then
        call gtk_progress_bar_pulse(bar)
     else
-
        ! Determine the fraction to fill & fill it
        call gtk_progress_bar_set_fraction(bar, val)
     end if
 
     ! If annotation is needed, add it.
     if (present(text)) then
-       call gtk_progress_bar_set_text (bar, text)
+       call gtk_progress_bar_set_text (bar, text//cnull)
     else if (present(string)) then
        if (string == FALSE .or. .not. present(val)) return
        ! Otherwise we display a percentage
@@ -755,19 +777,19 @@ contains
     end if
   end subroutine hl_gtk_progress_bar_set_f
   subroutine hl_gtk_progress_bar_set_ii(bar, val, maxv, string, text)
-    ! Set the value of a progress bar
+    ! Set the value of a progress bar (n of m)
     !
     ! BAR: c_ptr: required: The bar to set
-    ! VAL: int: required: The value to set. If absent, the bar is pulsed
+    ! VAL: int: required: The value to set.
     ! MAXV: int: required: The maximum value for the bar
-    ! STRING: logical: optional: Whether to put a string on the bar.
+    ! STRING: boolean: optional: Whether to put a string on the bar.
     ! TEXT: string: optional: Text to put in the bar, (overrides STRING)
 
     type(c_ptr) :: bar
     integer(kind=c_int) :: val, maxv
     integer(kind=c_int), optional :: string
-    character(kind=c_char), dimension(*), intent(in), optional :: text
-
+    !    character(kind=c_char), dimension(*), intent(in), optional :: text
+    character(len=*), intent(in), optional:: text
     real(kind=c_double) :: frac
     character(len=50) :: sval
 
@@ -776,7 +798,7 @@ contains
 
     ! If annotation is needed, add it.
     if (present(text)) then
-       call gtk_progress_bar_set_text (bar, text)
+       call gtk_progress_bar_set_text (bar, text//cnull)
     else if (present(string)) then
        if (string == FALSE) return
         ! Otherwise we display n or m

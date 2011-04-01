@@ -1,5 +1,31 @@
+! Copyright (C) 2011
+! Free Software Foundation, Inc.
+
+! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+
+! This is free software; you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation; either version 3, or (at your option)
+! any later version.
+
+! This software is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+
+! Under Section 7 of GPL version 3, you are granted additional
+! permissions described in the GCC Runtime Library Exception, version
+! 3.1, as published by the Free Software Foundation.
+
+! You should have received a copy of the GNU General Public License along with
+! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! If not, see <http://www.gnu.org/licenses/>.
+!
+! gfortran -g gtk.f90 gtk-sup.f90 gtk-hl.f90 hl_menu.f90 `pkg-config --cflags --libs gtk+-2.0`
+! Contributed by James Tappin.
+
 module handlers
-  use fgtk_h_widgets
+  use gtk_hl
 
   implicit none
 
@@ -16,12 +42,12 @@ contains
     call gtk_main_quit ()
   end subroutine my_destroy
 
-  function mbut_act(widget, gdata) result(res) bind(c)
-    integer(kind=c_int) :: res
+  subroutine mbut_act(widget, gdata)  bind(c)
     type(c_ptr), value :: widget, gdata
 
     integer(kind=c_int), pointer :: fdata
 
+    print *, "Menu 1"
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
        if (fdata < 0) then
@@ -31,31 +57,29 @@ contains
        end if
     end if
 
-    res=FALSE
-  end function mbut_act
+  end subroutine mbut_act
 
-  function sm1_act(widget, gdata) result(res) bind(c)
-    integer(kind=c_int) :: res
+  subroutine sm1_act(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     integer(kind=c_int), pointer :: fdata
 
+    print *, "Menu 2"
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
        print *, "Selected:",fdata
     end if
-    res=FALSE
-  end function sm1_act
-  function sm2_act(widget, gdata) result(res) bind(c)
-    integer(kind=c_int) :: res
+  end subroutine sm1_act
+
+  subroutine sm2_act(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     integer(kind=c_int), pointer :: fdata
 
+    print *, "Menu 2 (submenu)"
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
        print *, "Subselected:",fdata
     end if
-    res=FALSE
-  end function sm2_act
+  end subroutine sm2_act
 
 end module handlers
 
@@ -80,7 +104,7 @@ program menu_test
   call gtk_init()
 
   ! Make a window for the hierarchy
-  win = f_gtk_window("Menu Demo"//cnull, destroy=c_funloc(my_destroy))
+  win = hl_gtk_window_new("Menu Demo"//cnull, destroy=c_funloc(my_destroy))
 
   ! Make a vertical box, and add a label to it
   box=gtk_vbox_new(FALSE, 0)
@@ -91,43 +115,43 @@ program menu_test
 
   ! Make a menubar with the buttons horizontally aranged and put it in the
   ! box
-  menubar = f_gtk_menu(GTK_PACK_DIRECTION_LTR)
+  menubar = hl_gtk_menu_new(GTK_PACK_DIRECTION_LTR)
   call gtk_box_pack_start_defaults(box, menubar)
 
   ! Make a submenu in the first (0) location
-  smnu = f_gtk_menu_submenu(menubar, "Choose"//cnull)
+  smnu = hl_gtk_menu_submenu_new(menubar, "Choose"//cnull)
 
   ! Populate the submenu with buttons
   do i = 1, size(mbuts)
      write(holder,'("Item: ",I2)') i
-     mbuts(i) = f_gtk_menu_item(smnu, trim(holder)//cnull, &
+     mbuts(i) = hl_gtk_menu_item_new(smnu, trim(holder)//cnull, &
           & activate=c_funloc(mbut_act), data=c_loc(mclicks(i)))
   end do
   ! Add a single button
-  mba =  f_gtk_menu_item(menubar, "Extra"//cnull, &
+  mba =  hl_gtk_menu_item_new(menubar, "Extra"//cnull, &
        & activate=c_funloc(mbut_act), data=c_loc(mca))
 
   ! Now a second menu with just a single tlb
-  mnu2 =  f_gtk_menu()
+  mnu2 =  hl_gtk_menu_new()
   call gtk_box_pack_start_defaults(box, mnu2)
 
-  sm1 = f_gtk_menu_submenu(mnu2, "Select"//cnull)
+  sm1 = hl_gtk_menu_submenu_new(mnu2, "Select"//cnull)
 
   do i = 1, 4
      write(holder,'("Select: ",I2)') i
-     mb1(i) = f_gtk_menu_item(sm1, trim(holder)//cnull, &
+     mb1(i) = hl_gtk_menu_item_new(sm1, trim(holder)//cnull, &
           & activate=c_funloc(sm1_act), data=c_loc(mc1(i)))
-     if (i == 3) sm2 = f_gtk_menu_submenu(sm1, "Sub choice"//cnull)
+     if (i == 3) sm2 = hl_gtk_menu_submenu_new(sm1, "Sub choice"//cnull)
   end do
   do i = 1, 4
      write(holder,'("Sub Sel: ",I2)') i
-     mb2(i) = f_gtk_menu_item(sm2, trim(holder)//cnull, &
+     mb2(i) = hl_gtk_menu_item_new(sm2, trim(holder)//cnull, &
           & activate=c_funloc(sm2_act), data=c_loc(mc2(i)))
   end do
 
   ! Make a quit button and put it in the box, put the box
   ! into the window
-  qbut = f_gtk_button("Quit"//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
   call gtk_box_pack_start_defaults(box, qbut)
 
   ! Realize the hierarchy
