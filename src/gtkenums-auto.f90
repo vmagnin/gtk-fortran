@@ -2,54 +2,6 @@
 ! Please do not modify 
 ! GNU General Public License version 3 
 
-enum, bind(c)    !AtkTextAttribute
-    enumerator :: ATK_TEXT_ATTR_INVALID = 0
-    enumerator :: ATK_TEXT_ATTR_LEFT_MARGIN
-    enumerator :: ATK_TEXT_ATTR_RIGHT_MARGIN
-    enumerator :: ATK_TEXT_ATTR_INDENT
-    enumerator :: ATK_TEXT_ATTR_INVISIBLE
-    enumerator :: ATK_TEXT_ATTR_EDITABLE
-    enumerator :: ATK_TEXT_ATTR_PIXELS_ABOVE_LINES
-    enumerator :: ATK_TEXT_ATTR_PIXELS_BELOW_LINES
-    enumerator :: ATK_TEXT_ATTR_PIXELS_INSIDE_WRAP
-    enumerator :: ATK_TEXT_ATTR_BG_FULL_HEIGHT
-    enumerator :: ATK_TEXT_ATTR_RISE
-    enumerator :: ATK_TEXT_ATTR_UNDERLINE
-    enumerator :: ATK_TEXT_ATTR_STRIKETHROUGH
-    enumerator :: ATK_TEXT_ATTR_SIZE
-    enumerator :: ATK_TEXT_ATTR_SCALE
-    enumerator :: ATK_TEXT_ATTR_WEIGHT
-    enumerator :: ATK_TEXT_ATTR_LANGUAGE
-    enumerator :: ATK_TEXT_ATTR_FAMILY_NAME
-    enumerator :: ATK_TEXT_ATTR_BG_COLOR
-    enumerator :: ATK_TEXT_ATTR_FG_COLOR
-    enumerator :: ATK_TEXT_ATTR_BG_STIPPLE
-    enumerator :: ATK_TEXT_ATTR_FG_STIPPLE
-    enumerator :: ATK_TEXT_ATTR_WRAP_MODE
-    enumerator :: ATK_TEXT_ATTR_DIRECTION
-    enumerator :: ATK_TEXT_ATTR_JUSTIFICATION
-    enumerator :: ATK_TEXT_ATTR_STRETCH
-    enumerator :: ATK_TEXT_ATTR_VARIANT
-    enumerator :: ATK_TEXT_ATTR_STYLE
-    enumerator :: ATK_TEXT_ATTR_LAST_DEFINED
-end enum
- 
-enum, bind(c)    !AtkTextBoundary
-    enumerator :: ATK_TEXT_BOUNDARY_CHAR
-    enumerator :: ATK_TEXT_BOUNDARY_WORD_START
-    enumerator :: ATK_TEXT_BOUNDARY_WORD_END
-    enumerator :: ATK_TEXT_BOUNDARY_SENTENCE_START
-    enumerator :: ATK_TEXT_BOUNDARY_SENTENCE_END
-    enumerator :: ATK_TEXT_BOUNDARY_LINE_START
-    enumerator :: ATK_TEXT_BOUNDARY_LINE_END
-end enum
- 
-enum, bind(c)    !AtkTextClipType
-    enumerator :: ATK_TEXT_CLIP_NONE
-    enumerator :: ATK_TEXT_CLIP_MIN
-    enumerator :: ATK_TEXT_CLIP_MAX
-    enumerator :: ATK_TEXT_CLIP_BOTH
-end enum
 enum, bind(c)    !AtkKeyEventType
     enumerator :: ATK_KEY_EVENT_PRESS
     enumerator :: ATK_KEY_EVENT_RELEASE
@@ -59,71 +11,6 @@ end enum
 enum, bind(c)    !AtkCoordType
     enumerator :: ATK_XY_SCREEN
     enumerator :: ATK_XY_WINDOW
-end enum
-enum, bind(c)    !AtkStateType
-    enumerator :: ATK_STATE_INVALID
-    enumerator :: ATK_STATE_ACTIVE
-    enumerator :: ATK_STATE_ARMED
-    enumerator :: ATK_STATE_BUSY
-    enumerator :: ATK_STATE_CHECKED
-    enumerator :: ATK_STATE_DEFUNCT
-    enumerator :: ATK_STATE_EDITABLE
-    enumerator :: ATK_STATE_ENABLED
-    enumerator :: ATK_STATE_EXPANDABLE
-    enumerator :: ATK_STATE_EXPANDED
-    enumerator :: ATK_STATE_FOCUSABLE
-    enumerator :: ATK_STATE_FOCUSED
-    enumerator :: ATK_STATE_HORIZONTAL
-    enumerator :: ATK_STATE_ICONIFIED
-    enumerator :: ATK_STATE_MODAL
-    enumerator :: ATK_STATE_MULTI_LINE
-    enumerator :: ATK_STATE_MULTISELECTABLE
-    enumerator :: ATK_STATE_OPAQUE
-    enumerator :: ATK_STATE_PRESSED
-    enumerator :: ATK_STATE_RESIZABLE
-    enumerator :: ATK_STATE_SELECTABLE
-    enumerator :: ATK_STATE_SELECTED
-    enumerator :: ATK_STATE_SENSITIVE
-    enumerator :: ATK_STATE_SHOWING
-    enumerator :: ATK_STATE_SINGLE_LINE
-    enumerator :: ATK_STATE_STALE
-    enumerator :: ATK_STATE_TRANSIENT
-    enumerator :: ATK_STATE_VERTICAL
-    enumerator :: ATK_STATE_VISIBLE
-    enumerator :: ATK_STATE_MANAGES_DESCENDANTS
-    enumerator :: ATK_STATE_INDETERMINATE
-    enumerator :: ATK_STATE_TRUNCATED
-    enumerator :: ATK_STATE_REQUIRED
-    enumerator :: ATK_STATE_INVALID_ENTRY
-    enumerator :: ATK_STATE_SUPPORTS_AUTOCOMPLETION
-    enumerator :: ATK_STATE_SELECTABLE_TEXT
-    enumerator :: ATK_STATE_DEFAULT
-    enumerator :: ATK_STATE_ANIMATED
-    enumerator :: ATK_STATE_VISITED
-    enumerator :: ATK_STATE_LAST_DEFINED
-end enum
-enum, bind(c)    !AtkHyperlinkStateFlags
-    enumerator :: ATK_HYPERLINK_IS_INLINE_F = b'1'
-end enum
-enum, bind(c)    !AtkRelationType
-    enumerator :: ATK_RELATION_NULL = 0
-    enumerator :: ATK_RELATION_CONTROLLED_BY
-    enumerator :: ATK_RELATION_CONTROLLER_FOR
-    enumerator :: ATK_RELATION_LABEL_FOR
-    enumerator :: ATK_RELATION_LABELLED_BY
-    enumerator :: ATK_RELATION_MEMBER_OF
-    enumerator :: ATK_RELATION_NODE_CHILD_OF
-    enumerator :: ATK_RELATION_FLOWS_TO
-    enumerator :: ATK_RELATION_FLOWS_FROM
-    enumerator :: ATK_RELATION_SUBWINDOW_OF 
-    enumerator :: ATK_RELATION_EMBEDS 
-    enumerator :: ATK_RELATION_EMBEDDED_BY 
-    enumerator :: ATK_RELATION_POPUP_FOR 
-    enumerator :: ATK_RELATION_PARENT_WINDOW_OF 
-    enumerator :: ATK_RELATION_DESCRIBED_BY
-    enumerator :: ATK_RELATION_DESCRIPTION_FOR
-    enumerator :: ATK_RELATION_NODE_PARENT_OF
-    enumerator :: ATK_RELATION_LAST_DEFINED
 end enum
 enum, bind(c)    !AtkRole
     enumerator :: ATK_ROLE_INVALID = 0 
@@ -227,69 +114,123 @@ enum, bind(c)    !AtkLayer
     enumerator :: ATK_LAYER_OVERLAY
     enumerator :: ATK_LAYER_WINDOW
 end enum
+enum, bind(c)    !AtkTextAttribute
+    enumerator :: ATK_TEXT_ATTR_INVALID = 0
+    enumerator :: ATK_TEXT_ATTR_LEFT_MARGIN
+    enumerator :: ATK_TEXT_ATTR_RIGHT_MARGIN
+    enumerator :: ATK_TEXT_ATTR_INDENT
+    enumerator :: ATK_TEXT_ATTR_INVISIBLE
+    enumerator :: ATK_TEXT_ATTR_EDITABLE
+    enumerator :: ATK_TEXT_ATTR_PIXELS_ABOVE_LINES
+    enumerator :: ATK_TEXT_ATTR_PIXELS_BELOW_LINES
+    enumerator :: ATK_TEXT_ATTR_PIXELS_INSIDE_WRAP
+    enumerator :: ATK_TEXT_ATTR_BG_FULL_HEIGHT
+    enumerator :: ATK_TEXT_ATTR_RISE
+    enumerator :: ATK_TEXT_ATTR_UNDERLINE
+    enumerator :: ATK_TEXT_ATTR_STRIKETHROUGH
+    enumerator :: ATK_TEXT_ATTR_SIZE
+    enumerator :: ATK_TEXT_ATTR_SCALE
+    enumerator :: ATK_TEXT_ATTR_WEIGHT
+    enumerator :: ATK_TEXT_ATTR_LANGUAGE
+    enumerator :: ATK_TEXT_ATTR_FAMILY_NAME
+    enumerator :: ATK_TEXT_ATTR_BG_COLOR
+    enumerator :: ATK_TEXT_ATTR_FG_COLOR
+    enumerator :: ATK_TEXT_ATTR_BG_STIPPLE
+    enumerator :: ATK_TEXT_ATTR_FG_STIPPLE
+    enumerator :: ATK_TEXT_ATTR_WRAP_MODE
+    enumerator :: ATK_TEXT_ATTR_DIRECTION
+    enumerator :: ATK_TEXT_ATTR_JUSTIFICATION
+    enumerator :: ATK_TEXT_ATTR_STRETCH
+    enumerator :: ATK_TEXT_ATTR_VARIANT
+    enumerator :: ATK_TEXT_ATTR_STYLE
+    enumerator :: ATK_TEXT_ATTR_LAST_DEFINED
+end enum
+ 
+enum, bind(c)    !AtkTextBoundary
+    enumerator :: ATK_TEXT_BOUNDARY_CHAR
+    enumerator :: ATK_TEXT_BOUNDARY_WORD_START
+    enumerator :: ATK_TEXT_BOUNDARY_WORD_END
+    enumerator :: ATK_TEXT_BOUNDARY_SENTENCE_START
+    enumerator :: ATK_TEXT_BOUNDARY_SENTENCE_END
+    enumerator :: ATK_TEXT_BOUNDARY_LINE_START
+    enumerator :: ATK_TEXT_BOUNDARY_LINE_END
+end enum
+ 
+enum, bind(c)    !AtkTextClipType
+    enumerator :: ATK_TEXT_CLIP_NONE
+    enumerator :: ATK_TEXT_CLIP_MIN
+    enumerator :: ATK_TEXT_CLIP_MAX
+    enumerator :: ATK_TEXT_CLIP_BOTH
+end enum
+enum, bind(c)    !AtkHyperlinkStateFlags
+    enumerator :: ATK_HYPERLINK_IS_INLINE_F = b'1'
+end enum
+enum, bind(c)    !AtkStateType
+    enumerator :: ATK_STATE_INVALID
+    enumerator :: ATK_STATE_ACTIVE
+    enumerator :: ATK_STATE_ARMED
+    enumerator :: ATK_STATE_BUSY
+    enumerator :: ATK_STATE_CHECKED
+    enumerator :: ATK_STATE_DEFUNCT
+    enumerator :: ATK_STATE_EDITABLE
+    enumerator :: ATK_STATE_ENABLED
+    enumerator :: ATK_STATE_EXPANDABLE
+    enumerator :: ATK_STATE_EXPANDED
+    enumerator :: ATK_STATE_FOCUSABLE
+    enumerator :: ATK_STATE_FOCUSED
+    enumerator :: ATK_STATE_HORIZONTAL
+    enumerator :: ATK_STATE_ICONIFIED
+    enumerator :: ATK_STATE_MODAL
+    enumerator :: ATK_STATE_MULTI_LINE
+    enumerator :: ATK_STATE_MULTISELECTABLE
+    enumerator :: ATK_STATE_OPAQUE
+    enumerator :: ATK_STATE_PRESSED
+    enumerator :: ATK_STATE_RESIZABLE
+    enumerator :: ATK_STATE_SELECTABLE
+    enumerator :: ATK_STATE_SELECTED
+    enumerator :: ATK_STATE_SENSITIVE
+    enumerator :: ATK_STATE_SHOWING
+    enumerator :: ATK_STATE_SINGLE_LINE
+    enumerator :: ATK_STATE_STALE
+    enumerator :: ATK_STATE_TRANSIENT
+    enumerator :: ATK_STATE_VERTICAL
+    enumerator :: ATK_STATE_VISIBLE
+    enumerator :: ATK_STATE_MANAGES_DESCENDANTS
+    enumerator :: ATK_STATE_INDETERMINATE
+    enumerator :: ATK_STATE_TRUNCATED
+    enumerator :: ATK_STATE_REQUIRED
+    enumerator :: ATK_STATE_INVALID_ENTRY
+    enumerator :: ATK_STATE_SUPPORTS_AUTOCOMPLETION
+    enumerator :: ATK_STATE_SELECTABLE_TEXT
+    enumerator :: ATK_STATE_DEFAULT
+    enumerator :: ATK_STATE_ANIMATED
+    enumerator :: ATK_STATE_VISITED
+    enumerator :: ATK_STATE_LAST_DEFINED
+end enum
+enum, bind(c)    !AtkRelationType
+    enumerator :: ATK_RELATION_NULL = 0
+    enumerator :: ATK_RELATION_CONTROLLED_BY
+    enumerator :: ATK_RELATION_CONTROLLER_FOR
+    enumerator :: ATK_RELATION_LABEL_FOR
+    enumerator :: ATK_RELATION_LABELLED_BY
+    enumerator :: ATK_RELATION_MEMBER_OF
+    enumerator :: ATK_RELATION_NODE_CHILD_OF
+    enumerator :: ATK_RELATION_FLOWS_TO
+    enumerator :: ATK_RELATION_FLOWS_FROM
+    enumerator :: ATK_RELATION_SUBWINDOW_OF 
+    enumerator :: ATK_RELATION_EMBEDS 
+    enumerator :: ATK_RELATION_EMBEDDED_BY 
+    enumerator :: ATK_RELATION_POPUP_FOR 
+    enumerator :: ATK_RELATION_PARENT_WINDOW_OF 
+    enumerator :: ATK_RELATION_DESCRIBED_BY
+    enumerator :: ATK_RELATION_DESCRIPTION_FOR
+    enumerator :: ATK_RELATION_NODE_PARENT_OF
+    enumerator :: ATK_RELATION_LAST_DEFINED
+end enum
 enum, bind(c)    !GModuleFlags
     enumerator :: G_MODULE_BIND_LAZY = b'1'
     enumerator :: G_MODULE_BIND_LOCAL = b'10'
     enumerator :: G_MODULE_BIND_MASK = z'03'
-end enum
-enum, bind(c)    !GParamFlags
-    enumerator :: G_PARAM_READABLE = b'1'
-    enumerator :: G_PARAM_WRITABLE = b'10'
-    enumerator :: G_PARAM_CONSTRUCT = b'100'
-    enumerator :: G_PARAM_CONSTRUCT_ONLY = b'1000'
-    enumerator :: G_PARAM_LAX_VALIDATION = b'10000'
-    enumerator :: G_PARAM_STATIC_NAME = b'100000'
-    enumerator :: G_PARAM_PRIVATE = G_PARAM_STATIC_NAME
-    enumerator :: G_PARAM_STATIC_NICK = b'1000000'
-    enumerator :: G_PARAM_STATIC_BLURB = b'10000000'
-
-end enum
-enum, bind(c)    !GTypeDebugFlags
-    enumerator :: G_TYPE_DEBUG_NONE = 0
-    enumerator :: G_TYPE_DEBUG_OBJECTS = b'1'
-    enumerator :: G_TYPE_DEBUG_SIGNALS = b'10'
-    enumerator :: G_TYPE_DEBUG_MASK = z'03'
-end enum
- 
-enum, bind(c)    !GTypeFundamentalFlags
-    enumerator :: G_TYPE_FLAG_CLASSED = b'1'
-    enumerator :: G_TYPE_FLAG_INSTANTIATABLE = b'10'
-    enumerator :: G_TYPE_FLAG_DERIVABLE = b'100'
-    enumerator :: G_TYPE_FLAG_DEEP_DERIVABLE = b'1000'
-end enum
- 
-enum, bind(c)    !GTypeFlags
-    enumerator :: G_TYPE_FLAG_ABSTRACT = b'10000'
-    enumerator :: G_TYPE_FLAG_VALUE_ABSTRACT = b'100000'
-end enum
-enum, bind(c)    !GBindingFlags
-    enumerator :: G_BINDING_DEFAULT = 0
-    enumerator :: G_BINDING_BIDIRECTIONAL = b'1'
-    enumerator :: G_BINDING_SYNC_CREATE = b'10'
-    enumerator :: G_BINDING_INVERT_BOOLEAN = b'100'
-end enum
-enum, bind(c)    !GSignalFlags
-    enumerator :: G_SIGNAL_RUN_FIRST = b'1'
-    enumerator :: G_SIGNAL_RUN_LAST = b'10'
-    enumerator :: G_SIGNAL_RUN_CLEANUP = b'100'
-    enumerator :: G_SIGNAL_NO_RECURSE = b'1000'
-    enumerator :: G_SIGNAL_DETAILED = b'10000'
-    enumerator :: G_SIGNAL_ACTION = b'100000'
-    enumerator :: G_SIGNAL_NO_HOOKS = b'1000000'
-end enum
- 
-enum, bind(c)    !GConnectFlags
-    enumerator :: G_CONNECT_AFTER = b'1'
-    enumerator :: G_CONNECT_SWAPPED = b'10'
-end enum
- 
-enum, bind(c)    !GSignalMatchType
-    enumerator :: G_SIGNAL_MATCH_ID = b'1'
-    enumerator :: G_SIGNAL_MATCH_DETAIL = b'10'
-    enumerator :: G_SIGNAL_MATCH_CLOSURE = b'100'
-    enumerator :: G_SIGNAL_MATCH_FUNC = b'1000'
-    enumerator :: G_SIGNAL_MATCH_DATA = b'10000'
-    enumerator :: G_SIGNAL_MATCH_UNBLOCKED = b'100000'
 end enum
 enum, bind(c)    !GSettingsBindFlags
     enumerator :: G_SETTINGS_BIND_DEFAULT
@@ -299,16 +240,184 @@ enum, bind(c)    !GSettingsBindFlags
     enumerator :: G_SETTINGS_BIND_GET_NO_CHANGES = b'1000'
     enumerator :: G_SETTINGS_BIND_INVERT_BOOLEAN = b'10000'
 end enum
-enum, bind(c)    !GUserDirectory
-    enumerator :: G_USER_DIRECTORY_DESKTOP
-    enumerator :: G_USER_DIRECTORY_DOCUMENTS
-    enumerator :: G_USER_DIRECTORY_DOWNLOAD
-    enumerator :: G_USER_DIRECTORY_MUSIC
-    enumerator :: G_USER_DIRECTORY_PICTURES
-    enumerator :: G_USER_DIRECTORY_PUBLIC_SHARE
-    enumerator :: G_USER_DIRECTORY_TEMPLATES
-    enumerator :: G_USER_DIRECTORY_VIDEOS
-    enumerator :: G_USER_N_DIRECTORIES
+enum, bind(c)    !GTestTrapFlags
+    enumerator :: G_TEST_TRAP_SILENCE_STDOUT = b'10000000'
+    enumerator :: G_TEST_TRAP_SILENCE_STDERR = b'100000000'
+    enumerator :: G_TEST_TRAP_INHERIT_STDIN = b'1000000000'
+end enum
+ 
+enum, bind(c)    !GTestLogType
+    enumerator :: G_TEST_LOG_NONE
+    enumerator :: G_TEST_LOG_ERROR 
+    enumerator :: G_TEST_LOG_START_BINARY 
+    enumerator :: G_TEST_LOG_LIST_CASE 
+    enumerator :: G_TEST_LOG_SKIP_CASE 
+    enumerator :: G_TEST_LOG_START_CASE 
+    enumerator :: G_TEST_LOG_STOP_CASE 
+    enumerator :: G_TEST_LOG_MIN_RESULT 
+    enumerator :: G_TEST_LOG_MAX_RESULT 
+    enumerator :: G_TEST_LOG_MESSAGE 
+end enum
+enum, bind(c)    !GThreadError
+    enumerator :: G_THREAD_ERROR_AGAIN 
+end enum
+ 
+enum, bind(c)    !GThreadPriority
+    enumerator :: G_THREAD_PRIORITY_LOW
+    enumerator :: G_THREAD_PRIORITY_NORMAL
+    enumerator :: G_THREAD_PRIORITY_HIGH
+    enumerator :: G_THREAD_PRIORITY_URGENT
+end enum
+ 
+enum, bind(c)    !GOnceStatus
+    enumerator :: G_ONCE_STATUS_NOTCALLED
+    enumerator :: G_ONCE_STATUS_PROGRESS
+    enumerator :: G_ONCE_STATUS_READY 
+end enum
+enum, bind(c)    !GFileError
+    enumerator :: G_FILE_ERROR_EXIST
+    enumerator :: G_FILE_ERROR_ISDIR
+    enumerator :: G_FILE_ERROR_ACCES
+    enumerator :: G_FILE_ERROR_NAMETOOLONG
+    enumerator :: G_FILE_ERROR_NOENT
+    enumerator :: G_FILE_ERROR_NOTDIR
+    enumerator :: G_FILE_ERROR_NXIO
+    enumerator :: G_FILE_ERROR_NODEV
+    enumerator :: G_FILE_ERROR_ROFS
+    enumerator :: G_FILE_ERROR_TXTBSY
+    enumerator :: G_FILE_ERROR_FAULT
+    enumerator :: G_FILE_ERROR_LOOP
+    enumerator :: G_FILE_ERROR_NOSPC
+    enumerator :: G_FILE_ERROR_NOMEM
+    enumerator :: G_FILE_ERROR_MFILE
+    enumerator :: G_FILE_ERROR_NFILE
+    enumerator :: G_FILE_ERROR_BADF
+    enumerator :: G_FILE_ERROR_INVAL
+    enumerator :: G_FILE_ERROR_PIPE
+    enumerator :: G_FILE_ERROR_AGAIN
+    enumerator :: G_FILE_ERROR_INTR
+    enumerator :: G_FILE_ERROR_IO
+    enumerator :: G_FILE_ERROR_PERM
+    enumerator :: G_FILE_ERROR_NOSYS
+    enumerator :: G_FILE_ERROR_FAILED
+end enum
+ 
+enum, bind(c)    !GFileTest
+    enumerator :: G_FILE_TEST_IS_REGULAR = b'1'
+    enumerator :: G_FILE_TEST_IS_SYMLINK = b'10'
+    enumerator :: G_FILE_TEST_IS_DIR = b'100'
+    enumerator :: G_FILE_TEST_IS_EXECUTABLE = b'1000'
+    enumerator :: G_FILE_TEST_EXISTS = b'10000'
+end enum
+enum, bind(c)    !GChecksumType
+    enumerator :: G_CHECKSUM_MD5
+    enumerator :: G_CHECKSUM_SHA1
+    enumerator :: G_CHECKSUM_SHA256
+end enum
+enum, bind(c)    !GShellError
+    enumerator :: G_SHELL_ERROR_BAD_QUOTING
+    enumerator :: G_SHELL_ERROR_EMPTY_STRING
+    enumerator :: G_SHELL_ERROR_FAILED
+end enum
+enum, bind(c)    !GAsciiType
+    enumerator :: G_ASCII_ALNUM = b'1'
+    enumerator :: G_ASCII_ALPHA = b'10'
+    enumerator :: G_ASCII_CNTRL = b'100'
+    enumerator :: G_ASCII_DIGIT = b'1000'
+    enumerator :: G_ASCII_GRAPH = b'10000'
+    enumerator :: G_ASCII_LOWER = b'100000'
+    enumerator :: G_ASCII_PRINT = b'1000000'
+    enumerator :: G_ASCII_PUNCT = b'10000000'
+    enumerator :: G_ASCII_SPACE = b'100000000'
+    enumerator :: G_ASCII_UPPER = b'1000000000'
+    enumerator :: G_ASCII_XDIGIT = b'10000000000'
+end enum
+enum, bind(c)    !GDateDMY
+    enumerator :: G_DATE_DAY = 0
+    enumerator :: G_DATE_MONTH = 1
+    enumerator :: G_DATE_YEAR = 2
+end enum
+ 
+enum, bind(c)    !GDateWeekday
+    enumerator :: G_DATE_BAD_WEEKDAY = 0
+    enumerator :: G_DATE_MONDAY = 1
+    enumerator :: G_DATE_TUESDAY = 2
+    enumerator :: G_DATE_WEDNESDAY = 3
+    enumerator :: G_DATE_THURSDAY = 4
+    enumerator :: G_DATE_FRIDAY = 5
+    enumerator :: G_DATE_SATURDAY = 6
+    enumerator :: G_DATE_SUNDAY = 7
+end enum
+ 
+enum, bind(c)    !GDateMonth
+    enumerator :: G_DATE_BAD_MONTH = 0
+    enumerator :: G_DATE_JANUARY = 1
+    enumerator :: G_DATE_FEBRUARY = 2
+    enumerator :: G_DATE_MARCH = 3
+    enumerator :: G_DATE_APRIL = 4
+    enumerator :: G_DATE_MAY = 5
+    enumerator :: G_DATE_JUNE = 6
+    enumerator :: G_DATE_JULY = 7
+    enumerator :: G_DATE_AUGUST = 8
+    enumerator :: G_DATE_SEPTEMBER = 9
+    enumerator :: G_DATE_OCTOBER = 10
+    enumerator :: G_DATE_NOVEMBER = 11
+    enumerator :: G_DATE_DECEMBER = 12
+end enum
+enum, bind(c)    !GSpawnError
+    enumerator :: G_SPAWN_ERROR_FORK 
+    enumerator :: G_SPAWN_ERROR_READ 
+    enumerator :: G_SPAWN_ERROR_CHDIR 
+    enumerator :: G_SPAWN_ERROR_ACCES 
+    enumerator :: G_SPAWN_ERROR_PERM 
+    enumerator :: G_SPAWN_ERROR_2BIG 
+    enumerator :: G_SPAWN_ERROR_NOEXEC 
+    enumerator :: G_SPAWN_ERROR_NAMETOOLONG 
+    enumerator :: G_SPAWN_ERROR_NOENT 
+    enumerator :: G_SPAWN_ERROR_NOMEM 
+    enumerator :: G_SPAWN_ERROR_NOTDIR 
+    enumerator :: G_SPAWN_ERROR_LOOP 
+    enumerator :: G_SPAWN_ERROR_TXTBUSY 
+    enumerator :: G_SPAWN_ERROR_IO 
+    enumerator :: G_SPAWN_ERROR_NFILE 
+    enumerator :: G_SPAWN_ERROR_MFILE 
+    enumerator :: G_SPAWN_ERROR_INVAL 
+    enumerator :: G_SPAWN_ERROR_ISDIR 
+    enumerator :: G_SPAWN_ERROR_LIBBAD 
+    enumerator :: G_SPAWN_ERROR_FAILED 
+end enum
+ 
+enum, bind(c)    !GSpawnFlags
+    enumerator :: G_SPAWN_LEAVE_DESCRIPTORS_OPEN = b'1'
+    enumerator :: G_SPAWN_DO_NOT_REAP_CHILD = b'10'
+    enumerator :: G_SPAWN_SEARCH_PATH = b'100'
+    enumerator :: G_SPAWN_STDOUT_TO_DEV_NULL = b'1000'
+    enumerator :: G_SPAWN_STDERR_TO_DEV_NULL = b'10000'
+    enumerator :: G_SPAWN_CHILD_INHERITS_STDIN = b'100000'
+    enumerator :: G_SPAWN_FILE_AND_ARGV_ZERO = b'1000000'
+end enum
+enum, bind(c)    !GHookFlagMask
+    enumerator :: G_HOOK_FLAG_ACTIVE = b'1'
+    enumerator :: G_HOOK_FLAG_IN_CALL = b'10'
+    enumerator :: G_HOOK_FLAG_MASK = z'0f'
+end enum
+enum, bind(c)    !GSliceConfig
+    enumerator :: G_SLICE_CONFIG_ALWAYS_MALLOC = 1
+    enumerator :: G_SLICE_CONFIG_BYPASS_MAGAZINES
+    enumerator :: G_SLICE_CONFIG_WORKING_SET_MSECS
+    enumerator :: G_SLICE_CONFIG_COLOR_INCREMENT
+    enumerator :: G_SLICE_CONFIG_CHUNK_SIZES
+    enumerator :: G_SLICE_CONFIG_CONTENTION_COUNTER
+end enum
+enum, bind(c)    !GBookmarkFileError
+    enumerator :: G_BOOKMARK_FILE_ERROR_INVALID_URI
+    enumerator :: G_BOOKMARK_FILE_ERROR_INVALID_VALUE
+    enumerator :: G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED
+    enumerator :: G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND
+    enumerator :: G_BOOKMARK_FILE_ERROR_READ
+    enumerator :: G_BOOKMARK_FILE_ERROR_UNKNOWN_ENCODING
+    enumerator :: G_BOOKMARK_FILE_ERROR_WRITE
+    enumerator :: G_BOOKMARK_FILE_ERROR_FILE_NOT_FOUND
 end enum
 enum, bind(c)    !GOptionFlags
     enumerator :: G_OPTION_FLAG_HIDDEN = b'1'
@@ -336,6 +445,67 @@ enum, bind(c)    !GOptionError
     enumerator :: G_OPTION_ERROR_UNKNOWN_OPTION
     enumerator :: G_OPTION_ERROR_BAD_VALUE
     enumerator :: G_OPTION_ERROR_FAILED
+end enum
+enum, bind(c)    !GErrorType
+    enumerator :: G_ERR_UNKNOWN
+    enumerator :: G_ERR_UNEXP_EOF
+    enumerator :: G_ERR_UNEXP_EOF_IN_STRING
+    enumerator :: G_ERR_UNEXP_EOF_IN_COMMENT
+    enumerator :: G_ERR_NON_DIGIT_IN_CONST
+    enumerator :: G_ERR_DIGIT_RADIX
+    enumerator :: G_ERR_FLOAT_RADIX
+    enumerator :: G_ERR_FLOAT_MALFORMED
+end enum
+ 
+enum, bind(c)    !GTokenType
+    enumerator :: G_TOKEN_EOF = 0
+    enumerator :: G_TOKEN_LEFT_PAREN = iachar('(')
+    enumerator :: G_TOKEN_RIGHT_PAREN = iachar(')')
+    enumerator :: G_TOKEN_LEFT_CURLY = iachar('{')
+    enumerator :: G_TOKEN_RIGHT_CURLY = iachar('}')
+    enumerator :: G_TOKEN_LEFT_BRACE = iachar('[')
+    enumerator :: G_TOKEN_RIGHT_BRACE = iachar(']')
+    enumerator :: G_TOKEN_EQUAL_SIGN = iachar('=')
+    enumerator :: G_TOKEN_COMMA = iachar(',')
+    enumerator :: G_TOKEN_NONE = 256
+    enumerator :: G_TOKEN_ERROR
+    enumerator :: G_TOKEN_CHAR
+    enumerator :: G_TOKEN_BINARY
+    enumerator :: G_TOKEN_OCTAL
+    enumerator :: G_TOKEN_INT
+    enumerator :: G_TOKEN_HEX
+    enumerator :: G_TOKEN_FLOAT
+    enumerator :: G_TOKEN_STRING
+    enumerator :: G_TOKEN_SYMBOL
+    enumerator :: G_TOKEN_IDENTIFIER
+    enumerator :: G_TOKEN_IDENTIFIER_NULL
+    enumerator :: G_TOKEN_COMMENT_SINGLE
+    enumerator :: G_TOKEN_COMMENT_MULTI
+    enumerator :: G_TOKEN_LAST
+end enum
+enum, bind(c)    !GMarkupError
+    enumerator :: G_MARKUP_ERROR_BAD_UTF8
+    enumerator :: G_MARKUP_ERROR_EMPTY
+    enumerator :: G_MARKUP_ERROR_PARSE
+    enumerator :: G_MARKUP_ERROR_UNKNOWN_ELEMENT
+    enumerator :: G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE
+    enumerator :: G_MARKUP_ERROR_INVALID_CONTENT
+    enumerator :: G_MARKUP_ERROR_MISSING_ATTRIBUTE
+end enum
+ 
+enum, bind(c)    !GMarkupParseFlags
+    enumerator :: G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG = b'1'
+    enumerator :: G_MARKUP_TREAT_CDATA_AS_TEXT = b'10'
+    enumerator :: G_MARKUP_PREFIX_ERROR_POSITION = b'100'
+end enum
+ 
+enum, bind(c)    !GMarkupCollectType
+    enumerator :: G_MARKUP_COLLECT_INVALID
+    enumerator :: G_MARKUP_COLLECT_STRING
+    enumerator :: G_MARKUP_COLLECT_STRDUP
+    enumerator :: G_MARKUP_COLLECT_BOOLEAN
+    enumerator :: G_MARKUP_COLLECT_TRISTATE
+    enumerator :: G_MARKUP_COLLECT_OPTIONAL = b'10000000000000000'
 end enum
 enum, bind(c)    !GUnicodeType
     enumerator :: G_UNICODE_CONTROL
@@ -516,272 +686,13 @@ enum, bind(c)    !GNormalizeMode
     enumerator :: G_NORMALIZE_ALL_COMPOSE
     enumerator :: G_NORMALIZE_NFKC = G_NORMALIZE_ALL_COMPOSE
 end enum
-enum, bind(c)    !GHookFlagMask
-    enumerator :: G_HOOK_FLAG_ACTIVE = b'1'
-    enumerator :: G_HOOK_FLAG_IN_CALL = b'10'
-    enumerator :: G_HOOK_FLAG_MASK = z'0f'
-end enum
-enum, bind(c)    !GChecksumType
-    enumerator :: G_CHECKSUM_MD5
-    enumerator :: G_CHECKSUM_SHA1
-    enumerator :: G_CHECKSUM_SHA256
-end enum
-enum, bind(c)    !GThreadError
-    enumerator :: G_THREAD_ERROR_AGAIN 
-end enum
- 
-enum, bind(c)    !GThreadPriority
-    enumerator :: G_THREAD_PRIORITY_LOW
-    enumerator :: G_THREAD_PRIORITY_NORMAL
-    enumerator :: G_THREAD_PRIORITY_HIGH
-    enumerator :: G_THREAD_PRIORITY_URGENT
-end enum
- 
-enum, bind(c)    !GOnceStatus
-    enumerator :: G_ONCE_STATUS_NOTCALLED
-    enumerator :: G_ONCE_STATUS_PROGRESS
-    enumerator :: G_ONCE_STATUS_READY 
-end enum
-enum, bind(c)    !GBookmarkFileError
-    enumerator :: G_BOOKMARK_FILE_ERROR_INVALID_URI
-    enumerator :: G_BOOKMARK_FILE_ERROR_INVALID_VALUE
-    enumerator :: G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED
-    enumerator :: G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND
-    enumerator :: G_BOOKMARK_FILE_ERROR_READ
-    enumerator :: G_BOOKMARK_FILE_ERROR_UNKNOWN_ENCODING
-    enumerator :: G_BOOKMARK_FILE_ERROR_WRITE
-    enumerator :: G_BOOKMARK_FILE_ERROR_FILE_NOT_FOUND
-end enum
-enum, bind(c)    !GShellError
-    enumerator :: G_SHELL_ERROR_BAD_QUOTING
-    enumerator :: G_SHELL_ERROR_EMPTY_STRING
-    enumerator :: G_SHELL_ERROR_FAILED
-end enum
-enum, bind(c)    !GMarkupError
-    enumerator :: G_MARKUP_ERROR_BAD_UTF8
-    enumerator :: G_MARKUP_ERROR_EMPTY
-    enumerator :: G_MARKUP_ERROR_PARSE
-    enumerator :: G_MARKUP_ERROR_UNKNOWN_ELEMENT
-    enumerator :: G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE
-    enumerator :: G_MARKUP_ERROR_INVALID_CONTENT
-    enumerator :: G_MARKUP_ERROR_MISSING_ATTRIBUTE
-end enum
- 
-enum, bind(c)    !GMarkupParseFlags
-    enumerator :: G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG = b'1'
-    enumerator :: G_MARKUP_TREAT_CDATA_AS_TEXT = b'10'
-    enumerator :: G_MARKUP_PREFIX_ERROR_POSITION = b'100'
-end enum
- 
-enum, bind(c)    !GMarkupCollectType
-    enumerator :: G_MARKUP_COLLECT_INVALID
-    enumerator :: G_MARKUP_COLLECT_STRING
-    enumerator :: G_MARKUP_COLLECT_STRDUP
-    enumerator :: G_MARKUP_COLLECT_BOOLEAN
-    enumerator :: G_MARKUP_COLLECT_TRISTATE
-    enumerator :: G_MARKUP_COLLECT_OPTIONAL = b'10000000000000000'
-end enum
-enum, bind(c)    !GTestTrapFlags
-    enumerator :: G_TEST_TRAP_SILENCE_STDOUT = b'10000000'
-    enumerator :: G_TEST_TRAP_SILENCE_STDERR = b'100000000'
-    enumerator :: G_TEST_TRAP_INHERIT_STDIN = b'1000000000'
-end enum
- 
-enum, bind(c)    !GTestLogType
-    enumerator :: G_TEST_LOG_NONE
-    enumerator :: G_TEST_LOG_ERROR 
-    enumerator :: G_TEST_LOG_START_BINARY 
-    enumerator :: G_TEST_LOG_LIST_CASE 
-    enumerator :: G_TEST_LOG_SKIP_CASE 
-    enumerator :: G_TEST_LOG_START_CASE 
-    enumerator :: G_TEST_LOG_STOP_CASE 
-    enumerator :: G_TEST_LOG_MIN_RESULT 
-    enumerator :: G_TEST_LOG_MAX_RESULT 
-    enumerator :: G_TEST_LOG_MESSAGE 
-end enum
-enum, bind(c)    !GLogLevelFlags
-    enumerator :: G_LOG_FLAG_RECURSION = b'1'
-    enumerator :: G_LOG_FLAG_FATAL = b'10'
-    enumerator :: G_LOG_LEVEL_ERROR = b'100' 
-    enumerator :: G_LOG_LEVEL_CRITICAL = b'1000'
-    enumerator :: G_LOG_LEVEL_WARNING = b'10000'
-    enumerator :: G_LOG_LEVEL_MESSAGE = b'100000'
-    enumerator :: G_LOG_LEVEL_INFO = b'1000000'
-    enumerator :: G_LOG_LEVEL_DEBUG = b'10000000'
-    enumerator :: G_LOG_LEVEL_MASK = ior(not(G_LOG_FLAG_RECURSION) , G_LOG_FLAG_FATAL)
-end enum
-enum, bind(c)    !GAsciiType
-    enumerator :: G_ASCII_ALNUM = b'1'
-    enumerator :: G_ASCII_ALPHA = b'10'
-    enumerator :: G_ASCII_CNTRL = b'100'
-    enumerator :: G_ASCII_DIGIT = b'1000'
-    enumerator :: G_ASCII_GRAPH = b'10000'
-    enumerator :: G_ASCII_LOWER = b'100000'
-    enumerator :: G_ASCII_PRINT = b'1000000'
-    enumerator :: G_ASCII_PUNCT = b'10000000'
-    enumerator :: G_ASCII_SPACE = b'100000000'
-    enumerator :: G_ASCII_UPPER = b'1000000000'
-    enumerator :: G_ASCII_XDIGIT = b'10000000000'
-end enum
-enum, bind(c)    !GVariantClass
-    enumerator :: G_VARIANT_CLASS_BOOLEAN = iachar('b')
-    enumerator :: G_VARIANT_CLASS_BYTE = iachar('y')
-    enumerator :: G_VARIANT_CLASS_INT16 = iachar('n')
-    enumerator :: G_VARIANT_CLASS_UINT16 = iachar('q')
-    enumerator :: G_VARIANT_CLASS_INT32 = iachar('i')
-    enumerator :: G_VARIANT_CLASS_UINT32 = iachar('u')
-    enumerator :: G_VARIANT_CLASS_INT64 = iachar('x')
-    enumerator :: G_VARIANT_CLASS_UINT64 = iachar('t')
-    enumerator :: G_VARIANT_CLASS_HANDLE = iachar('h')
-    enumerator :: G_VARIANT_CLASS_DOUBLE = iachar('d')
-    enumerator :: G_VARIANT_CLASS_STRING = iachar('s')
-    enumerator :: G_VARIANT_CLASS_OBJECT_PATH = iachar('o')
-    enumerator :: G_VARIANT_CLASS_SIGNATURE = iachar('g')
-    enumerator :: G_VARIANT_CLASS_VARIANT = iachar('v')
-    enumerator :: G_VARIANT_CLASS_MAYBE = iachar('m')
-    enumerator :: G_VARIANT_CLASS_ARRAY = iachar('a')
-    enumerator :: G_VARIANT_CLASS_TUPLE = iachar('(')
-    enumerator :: G_VARIANT_CLASS_DICT_ENTRY = iachar('{')
-end enum
- 
-enum, bind(c)    !GVariantParseError
-    enumerator :: G_VARIANT_PARSE_ERROR_FAILED
-end enum
-enum, bind(c)    !GSpawnError
-    enumerator :: G_SPAWN_ERROR_FORK 
-    enumerator :: G_SPAWN_ERROR_READ 
-    enumerator :: G_SPAWN_ERROR_CHDIR 
-    enumerator :: G_SPAWN_ERROR_ACCES 
-    enumerator :: G_SPAWN_ERROR_PERM 
-    enumerator :: G_SPAWN_ERROR_2BIG 
-    enumerator :: G_SPAWN_ERROR_NOEXEC 
-    enumerator :: G_SPAWN_ERROR_NAMETOOLONG 
-    enumerator :: G_SPAWN_ERROR_NOENT 
-    enumerator :: G_SPAWN_ERROR_NOMEM 
-    enumerator :: G_SPAWN_ERROR_NOTDIR 
-    enumerator :: G_SPAWN_ERROR_LOOP 
-    enumerator :: G_SPAWN_ERROR_TXTBUSY 
-    enumerator :: G_SPAWN_ERROR_IO 
-    enumerator :: G_SPAWN_ERROR_NFILE 
-    enumerator :: G_SPAWN_ERROR_MFILE 
-    enumerator :: G_SPAWN_ERROR_INVAL 
-    enumerator :: G_SPAWN_ERROR_ISDIR 
-    enumerator :: G_SPAWN_ERROR_LIBBAD 
-    enumerator :: G_SPAWN_ERROR_FAILED 
-end enum
- 
-enum, bind(c)    !GSpawnFlags
-    enumerator :: G_SPAWN_LEAVE_DESCRIPTORS_OPEN = b'1'
-    enumerator :: G_SPAWN_DO_NOT_REAP_CHILD = b'10'
-    enumerator :: G_SPAWN_SEARCH_PATH = b'100'
-    enumerator :: G_SPAWN_STDOUT_TO_DEV_NULL = b'1000'
-    enumerator :: G_SPAWN_STDERR_TO_DEV_NULL = b'10000'
-    enumerator :: G_SPAWN_CHILD_INHERITS_STDIN = b'100000'
-    enumerator :: G_SPAWN_FILE_AND_ARGV_ZERO = b'1000000'
-end enum
-enum, bind(c)    !GTraverseFlags
-    enumerator :: G_TRAVERSE_LEAVES = b'1'
-    enumerator :: G_TRAVERSE_NON_LEAVES = b'10'
-    enumerator :: G_TRAVERSE_ALL = ior(G_TRAVERSE_LEAVES , G_TRAVERSE_NON_LEAVES)
-    enumerator :: G_TRAVERSE_MASK = z'03'
-    enumerator :: G_TRAVERSE_LEAFS = G_TRAVERSE_LEAVES
-    enumerator :: G_TRAVERSE_NON_LEAFS = G_TRAVERSE_NON_LEAVES
-end enum
- 
-enum, bind(c)    !GTraverseType
-    enumerator :: G_IN_ORDER
-    enumerator :: G_PRE_ORDER
-    enumerator :: G_POST_ORDER
-    enumerator :: G_LEVEL_ORDER
-end enum
-enum, bind(c)    !GSliceConfig
-    enumerator :: G_SLICE_CONFIG_ALWAYS_MALLOC = 1
-    enumerator :: G_SLICE_CONFIG_BYPASS_MAGAZINES
-    enumerator :: G_SLICE_CONFIG_WORKING_SET_MSECS
-    enumerator :: G_SLICE_CONFIG_COLOR_INCREMENT
-    enumerator :: G_SLICE_CONFIG_CHUNK_SIZES
-    enumerator :: G_SLICE_CONFIG_CONTENTION_COUNTER
-end enum
-enum, bind(c)    !GKeyFileError
-    enumerator :: G_KEY_FILE_ERROR_UNKNOWN_ENCODING
-    enumerator :: G_KEY_FILE_ERROR_PARSE
-    enumerator :: G_KEY_FILE_ERROR_NOT_FOUND
-    enumerator :: G_KEY_FILE_ERROR_KEY_NOT_FOUND
-    enumerator :: G_KEY_FILE_ERROR_GROUP_NOT_FOUND
-    enumerator :: G_KEY_FILE_ERROR_INVALID_VALUE
-end enum
- 
-enum, bind(c)    !GKeyFileFlags
-    enumerator :: G_KEY_FILE_NONE = 0
-    enumerator :: G_KEY_FILE_KEEP_COMMENTS = b'1'
-    enumerator :: G_KEY_FILE_KEEP_TRANSLATIONS = b'10'
-end enum
-enum, bind(c)    !GDateDMY
-    enumerator :: G_DATE_DAY = 0
-    enumerator :: G_DATE_MONTH = 1
-    enumerator :: G_DATE_YEAR = 2
-end enum
- 
-enum, bind(c)    !GDateWeekday
-    enumerator :: G_DATE_BAD_WEEKDAY = 0
-    enumerator :: G_DATE_MONDAY = 1
-    enumerator :: G_DATE_TUESDAY = 2
-    enumerator :: G_DATE_WEDNESDAY = 3
-    enumerator :: G_DATE_THURSDAY = 4
-    enumerator :: G_DATE_FRIDAY = 5
-    enumerator :: G_DATE_SATURDAY = 6
-    enumerator :: G_DATE_SUNDAY = 7
-end enum
- 
-enum, bind(c)    !GDateMonth
-    enumerator :: G_DATE_BAD_MONTH = 0
-    enumerator :: G_DATE_JANUARY = 1
-    enumerator :: G_DATE_FEBRUARY = 2
-    enumerator :: G_DATE_MARCH = 3
-    enumerator :: G_DATE_APRIL = 4
-    enumerator :: G_DATE_MAY = 5
-    enumerator :: G_DATE_JUNE = 6
-    enumerator :: G_DATE_JULY = 7
-    enumerator :: G_DATE_AUGUST = 8
-    enumerator :: G_DATE_SEPTEMBER = 9
-    enumerator :: G_DATE_OCTOBER = 10
-    enumerator :: G_DATE_NOVEMBER = 11
-    enumerator :: G_DATE_DECEMBER = 12
-end enum
-enum, bind(c)    !GFileError
-    enumerator :: G_FILE_ERROR_EXIST
-    enumerator :: G_FILE_ERROR_ISDIR
-    enumerator :: G_FILE_ERROR_ACCES
-    enumerator :: G_FILE_ERROR_NAMETOOLONG
-    enumerator :: G_FILE_ERROR_NOENT
-    enumerator :: G_FILE_ERROR_NOTDIR
-    enumerator :: G_FILE_ERROR_NXIO
-    enumerator :: G_FILE_ERROR_NODEV
-    enumerator :: G_FILE_ERROR_ROFS
-    enumerator :: G_FILE_ERROR_TXTBSY
-    enumerator :: G_FILE_ERROR_FAULT
-    enumerator :: G_FILE_ERROR_LOOP
-    enumerator :: G_FILE_ERROR_NOSPC
-    enumerator :: G_FILE_ERROR_NOMEM
-    enumerator :: G_FILE_ERROR_MFILE
-    enumerator :: G_FILE_ERROR_NFILE
-    enumerator :: G_FILE_ERROR_BADF
-    enumerator :: G_FILE_ERROR_INVAL
-    enumerator :: G_FILE_ERROR_PIPE
-    enumerator :: G_FILE_ERROR_AGAIN
-    enumerator :: G_FILE_ERROR_INTR
-    enumerator :: G_FILE_ERROR_IO
-    enumerator :: G_FILE_ERROR_PERM
-    enumerator :: G_FILE_ERROR_NOSYS
-    enumerator :: G_FILE_ERROR_FAILED
-end enum
- 
-enum, bind(c)    !GFileTest
-    enumerator :: G_FILE_TEST_IS_REGULAR = b'1'
-    enumerator :: G_FILE_TEST_IS_SYMLINK = b'10'
-    enumerator :: G_FILE_TEST_IS_DIR = b'100'
-    enumerator :: G_FILE_TEST_IS_EXECUTABLE = b'1000'
-    enumerator :: G_FILE_TEST_EXISTS = b'10000'
+enum, bind(c)    !GConvertError
+    enumerator :: G_CONVERT_ERROR_NO_CONVERSION
+    enumerator :: G_CONVERT_ERROR_ILLEGAL_SEQUENCE
+    enumerator :: G_CONVERT_ERROR_FAILED
+    enumerator :: G_CONVERT_ERROR_PARTIAL_INPUT
+    enumerator :: G_CONVERT_ERROR_BAD_URI
+    enumerator :: G_CONVERT_ERROR_NOT_ABSOLUTE_PATH
 end enum
 enum, bind(c)    !GRegexError
     enumerator :: G_REGEX_ERROR_COMPILE
@@ -856,413 +767,144 @@ enum, bind(c)    !GRegexMatchFlags
     enumerator :: G_REGEX_MATCH_NEWLINE_CRLF = ior(G_REGEX_MATCH_NEWLINE_CR , G_REGEX_MATCH_NEWLINE_LF)
     enumerator :: G_REGEX_MATCH_NEWLINE_ANY = b'10000000000000000000000'
 end enum
-enum, bind(c)    !GErrorType
-    enumerator :: G_ERR_UNKNOWN
-    enumerator :: G_ERR_UNEXP_EOF
-    enumerator :: G_ERR_UNEXP_EOF_IN_STRING
-    enumerator :: G_ERR_UNEXP_EOF_IN_COMMENT
-    enumerator :: G_ERR_NON_DIGIT_IN_CONST
-    enumerator :: G_ERR_DIGIT_RADIX
-    enumerator :: G_ERR_FLOAT_RADIX
-    enumerator :: G_ERR_FLOAT_MALFORMED
+enum, bind(c)    !GTraverseFlags
+    enumerator :: G_TRAVERSE_LEAVES = b'1'
+    enumerator :: G_TRAVERSE_NON_LEAVES = b'10'
+    enumerator :: G_TRAVERSE_ALL = ior(G_TRAVERSE_LEAVES , G_TRAVERSE_NON_LEAVES)
+    enumerator :: G_TRAVERSE_MASK = z'03'
+    enumerator :: G_TRAVERSE_LEAFS = G_TRAVERSE_LEAVES
+    enumerator :: G_TRAVERSE_NON_LEAFS = G_TRAVERSE_NON_LEAVES
 end enum
  
-enum, bind(c)    !GTokenType
-    enumerator :: G_TOKEN_EOF = 0
-    enumerator :: G_TOKEN_LEFT_PAREN = iachar('(')
-    enumerator :: G_TOKEN_RIGHT_PAREN = iachar(')')
-    enumerator :: G_TOKEN_LEFT_CURLY = iachar('{')
-    enumerator :: G_TOKEN_RIGHT_CURLY = iachar('}')
-    enumerator :: G_TOKEN_LEFT_BRACE = iachar('[')
-    enumerator :: G_TOKEN_RIGHT_BRACE = iachar(']')
-    enumerator :: G_TOKEN_EQUAL_SIGN = iachar('=')
-    enumerator :: G_TOKEN_COMMA = iachar(',')
-    enumerator :: G_TOKEN_NONE = 256
-    enumerator :: G_TOKEN_ERROR
-    enumerator :: G_TOKEN_CHAR
-    enumerator :: G_TOKEN_BINARY
-    enumerator :: G_TOKEN_OCTAL
-    enumerator :: G_TOKEN_INT
-    enumerator :: G_TOKEN_HEX
-    enumerator :: G_TOKEN_FLOAT
-    enumerator :: G_TOKEN_STRING
-    enumerator :: G_TOKEN_SYMBOL
-    enumerator :: G_TOKEN_IDENTIFIER
-    enumerator :: G_TOKEN_IDENTIFIER_NULL
-    enumerator :: G_TOKEN_COMMENT_SINGLE
-    enumerator :: G_TOKEN_COMMENT_MULTI
-    enumerator :: G_TOKEN_LAST
+enum, bind(c)    !GTraverseType
+    enumerator :: G_IN_ORDER
+    enumerator :: G_PRE_ORDER
+    enumerator :: G_POST_ORDER
+    enumerator :: G_LEVEL_ORDER
 end enum
-enum, bind(c)    !GConvertError
-    enumerator :: G_CONVERT_ERROR_NO_CONVERSION
-    enumerator :: G_CONVERT_ERROR_ILLEGAL_SEQUENCE
-    enumerator :: G_CONVERT_ERROR_FAILED
-    enumerator :: G_CONVERT_ERROR_PARTIAL_INPUT
-    enumerator :: G_CONVERT_ERROR_BAD_URI
-    enumerator :: G_CONVERT_ERROR_NOT_ABSOLUTE_PATH
-end enum
-enum, bind(c)    !GdkImageType
-    enumerator :: GDK_IMAGE_NORMAL
-    enumerator :: GDK_IMAGE_SHARED
-    enumerator :: GDK_IMAGE_FASTEST
-end enum
-enum, bind(c)    !GdkExtensionMode
-    enumerator :: GDK_EXTENSION_EVENTS_NONE
-    enumerator :: GDK_EXTENSION_EVENTS_ALL
-    enumerator :: GDK_EXTENSION_EVENTS_CURSOR
+enum, bind(c)    !GKeyFileError
+    enumerator :: G_KEY_FILE_ERROR_UNKNOWN_ENCODING
+    enumerator :: G_KEY_FILE_ERROR_PARSE
+    enumerator :: G_KEY_FILE_ERROR_NOT_FOUND
+    enumerator :: G_KEY_FILE_ERROR_KEY_NOT_FOUND
+    enumerator :: G_KEY_FILE_ERROR_GROUP_NOT_FOUND
+    enumerator :: G_KEY_FILE_ERROR_INVALID_VALUE
 end enum
  
-enum, bind(c)    !GdkInputSource
-    enumerator :: GDK_SOURCE_MOUSE
-    enumerator :: GDK_SOURCE_PEN
-    enumerator :: GDK_SOURCE_ERASER
-    enumerator :: GDK_SOURCE_CURSOR
+enum, bind(c)    !GKeyFileFlags
+    enumerator :: G_KEY_FILE_NONE = 0
+    enumerator :: G_KEY_FILE_KEEP_COMMENTS = b'1'
+    enumerator :: G_KEY_FILE_KEEP_TRANSLATIONS = b'10'
+end enum
+enum, bind(c)    !GVariantClass
+    enumerator :: G_VARIANT_CLASS_BOOLEAN = iachar('b')
+    enumerator :: G_VARIANT_CLASS_BYTE = iachar('y')
+    enumerator :: G_VARIANT_CLASS_INT16 = iachar('n')
+    enumerator :: G_VARIANT_CLASS_UINT16 = iachar('q')
+    enumerator :: G_VARIANT_CLASS_INT32 = iachar('i')
+    enumerator :: G_VARIANT_CLASS_UINT32 = iachar('u')
+    enumerator :: G_VARIANT_CLASS_INT64 = iachar('x')
+    enumerator :: G_VARIANT_CLASS_UINT64 = iachar('t')
+    enumerator :: G_VARIANT_CLASS_HANDLE = iachar('h')
+    enumerator :: G_VARIANT_CLASS_DOUBLE = iachar('d')
+    enumerator :: G_VARIANT_CLASS_STRING = iachar('s')
+    enumerator :: G_VARIANT_CLASS_OBJECT_PATH = iachar('o')
+    enumerator :: G_VARIANT_CLASS_SIGNATURE = iachar('g')
+    enumerator :: G_VARIANT_CLASS_VARIANT = iachar('v')
+    enumerator :: G_VARIANT_CLASS_MAYBE = iachar('m')
+    enumerator :: G_VARIANT_CLASS_ARRAY = iachar('a')
+    enumerator :: G_VARIANT_CLASS_TUPLE = iachar('(')
+    enumerator :: G_VARIANT_CLASS_DICT_ENTRY = iachar('{')
 end enum
  
-enum, bind(c)    !GdkInputMode
-    enumerator :: GDK_MODE_DISABLED
-    enumerator :: GDK_MODE_SCREEN
-    enumerator :: GDK_MODE_WINDOW
+enum, bind(c)    !GVariantParseError
+    enumerator :: G_VARIANT_PARSE_ERROR_FAILED
+end enum
+enum, bind(c)    !GUserDirectory
+    enumerator :: G_USER_DIRECTORY_DESKTOP
+    enumerator :: G_USER_DIRECTORY_DOCUMENTS
+    enumerator :: G_USER_DIRECTORY_DOWNLOAD
+    enumerator :: G_USER_DIRECTORY_MUSIC
+    enumerator :: G_USER_DIRECTORY_PICTURES
+    enumerator :: G_USER_DIRECTORY_PUBLIC_SHARE
+    enumerator :: G_USER_DIRECTORY_TEMPLATES
+    enumerator :: G_USER_DIRECTORY_VIDEOS
+    enumerator :: G_USER_N_DIRECTORIES
+end enum
+enum, bind(c)    !GLogLevelFlags
+    enumerator :: G_LOG_FLAG_RECURSION = b'1'
+    enumerator :: G_LOG_FLAG_FATAL = b'10'
+    enumerator :: G_LOG_LEVEL_ERROR = b'100' 
+    enumerator :: G_LOG_LEVEL_CRITICAL = b'1000'
+    enumerator :: G_LOG_LEVEL_WARNING = b'10000'
+    enumerator :: G_LOG_LEVEL_MESSAGE = b'100000'
+    enumerator :: G_LOG_LEVEL_INFO = b'1000000'
+    enumerator :: G_LOG_LEVEL_DEBUG = b'10000000'
+    enumerator :: G_LOG_LEVEL_MASK = ior(not(G_LOG_FLAG_RECURSION) , G_LOG_FLAG_FATAL)
+end enum
+enum, bind(c)    !GSignalFlags
+    enumerator :: G_SIGNAL_RUN_FIRST = b'1'
+    enumerator :: G_SIGNAL_RUN_LAST = b'10'
+    enumerator :: G_SIGNAL_RUN_CLEANUP = b'100'
+    enumerator :: G_SIGNAL_NO_RECURSE = b'1000'
+    enumerator :: G_SIGNAL_DETAILED = b'10000'
+    enumerator :: G_SIGNAL_ACTION = b'100000'
+    enumerator :: G_SIGNAL_NO_HOOKS = b'1000000'
 end enum
  
-enum, bind(c)    !GdkAxisUse
-    enumerator :: GDK_AXIS_IGNORE
-    enumerator :: GDK_AXIS_X
-    enumerator :: GDK_AXIS_Y
-    enumerator :: GDK_AXIS_PRESSURE
-    enumerator :: GDK_AXIS_XTILT
-    enumerator :: GDK_AXIS_YTILT
-    enumerator :: GDK_AXIS_WHEEL
-    enumerator :: GDK_AXIS_LAST
+enum, bind(c)    !GConnectFlags
+    enumerator :: G_CONNECT_AFTER = b'1'
+    enumerator :: G_CONNECT_SWAPPED = b'10'
 end enum
-enum, bind(c)    !GdkCursorType
-    enumerator :: GDK_X_CURSOR = 0
-    enumerator :: GDK_ARROW = 2
-    enumerator :: GDK_BASED_ARROW_DOWN = 4
-    enumerator :: GDK_BASED_ARROW_UP = 6
-    enumerator :: GDK_BOAT = 8
-    enumerator :: GDK_BOGOSITY = 10
-    enumerator :: GDK_BOTTOM_LEFT_CORNER = 12
-    enumerator :: GDK_BOTTOM_RIGHT_CORNER = 14
-    enumerator :: GDK_BOTTOM_SIDE = 16
-    enumerator :: GDK_BOTTOM_TEE = 18
-    enumerator :: GDK_BOX_SPIRAL = 20
-    enumerator :: GDK_CENTER_PTR = 22
-    enumerator :: GDK_CIRCLE = 24
-    enumerator :: GDK_CLOCK = 26
-    enumerator :: GDK_COFFEE_MUG = 28
-    enumerator :: GDK_CROSS = 30
-    enumerator :: GDK_CROSS_REVERSE = 32
-    enumerator :: GDK_CROSSHAIR = 34
-    enumerator :: GDK_DIAMOND_CROSS = 36
-    enumerator :: GDK_DOT = 38
-    enumerator :: GDK_DOTBOX = 40
-    enumerator :: GDK_DOUBLE_ARROW = 42
-    enumerator :: GDK_DRAFT_LARGE = 44
-    enumerator :: GDK_DRAFT_SMALL = 46
-    enumerator :: GDK_DRAPED_BOX = 48
-    enumerator :: GDK_EXCHANGE = 50
-    enumerator :: GDK_FLEUR = 52
-    enumerator :: GDK_GOBBLER = 54
-    enumerator :: GDK_GUMBY = 56
-    enumerator :: GDK_HAND1 = 58
-    enumerator :: GDK_HAND2 = 60
-    enumerator :: GDK_HEART = 62
-    enumerator :: GDK_ICON = 64
-    enumerator :: GDK_IRON_CROSS = 66
-    enumerator :: GDK_LEFT_PTR = 68
-    enumerator :: GDK_LEFT_SIDE = 70
-    enumerator :: GDK_LEFT_TEE = 72
-    enumerator :: GDK_LEFTBUTTON = 74
-    enumerator :: GDK_LL_ANGLE = 76
-    enumerator :: GDK_LR_ANGLE = 78
-    enumerator :: GDK_MAN = 80
-    enumerator :: GDK_MIDDLEBUTTON = 82
-    enumerator :: GDK_MOUSE = 84
-    enumerator :: GDK_PENCIL = 86
-    enumerator :: GDK_PIRATE = 88
-    enumerator :: GDK_PLUS = 90
-    enumerator :: GDK_QUESTION_ARROW = 92
-    enumerator :: GDK_RIGHT_PTR = 94
-    enumerator :: GDK_RIGHT_SIDE = 96
-    enumerator :: GDK_RIGHT_TEE = 98
-    enumerator :: GDK_RIGHTBUTTON = 100
-    enumerator :: GDK_RTL_LOGO = 102
-    enumerator :: GDK_SAILBOAT = 104
-    enumerator :: GDK_SB_DOWN_ARROW = 106
-    enumerator :: GDK_SB_H_DOUBLE_ARROW = 108
-    enumerator :: GDK_SB_LEFT_ARROW = 110
-    enumerator :: GDK_SB_RIGHT_ARROW = 112
-    enumerator :: GDK_SB_UP_ARROW = 114
-    enumerator :: GDK_SB_V_DOUBLE_ARROW = 116
-    enumerator :: GDK_SHUTTLE = 118
-    enumerator :: GDK_SIZING = 120
-    enumerator :: GDK_SPIDER = 122
-    enumerator :: GDK_SPRAYCAN = 124
-    enumerator :: GDK_STAR = 126
-    enumerator :: GDK_TARGET = 128
-    enumerator :: GDK_TCROSS = 130
-    enumerator :: GDK_TOP_LEFT_ARROW = 132
-    enumerator :: GDK_TOP_LEFT_CORNER = 134
-    enumerator :: GDK_TOP_RIGHT_CORNER = 136
-    enumerator :: GDK_TOP_SIDE = 138
-    enumerator :: GDK_TOP_TEE = 140
-    enumerator :: GDK_TREK = 142
-    enumerator :: GDK_UL_ANGLE = 144
-    enumerator :: GDK_UMBRELLA = 146
-    enumerator :: GDK_UR_ANGLE = 148
-    enumerator :: GDK_WATCH = 150
-    enumerator :: GDK_XTERM = 152
-    enumerator :: GDK_LAST_CURSOR
-    enumerator :: GDK_BLANK_CURSOR = -2
-    enumerator :: GDK_CURSOR_IS_PIXMAP = -1
+ 
+enum, bind(c)    !GSignalMatchType
+    enumerator :: G_SIGNAL_MATCH_ID = b'1'
+    enumerator :: G_SIGNAL_MATCH_DETAIL = b'10'
+    enumerator :: G_SIGNAL_MATCH_CLOSURE = b'100'
+    enumerator :: G_SIGNAL_MATCH_FUNC = b'1000'
+    enumerator :: G_SIGNAL_MATCH_DATA = b'10000'
+    enumerator :: G_SIGNAL_MATCH_UNBLOCKED = b'100000'
 end enum
-enum, bind(c)    !GdkFontType
-    enumerator :: GDK_FONT_FONT
-    enumerator :: GDK_FONT_FONTSET
+enum, bind(c)    !GBindingFlags
+    enumerator :: G_BINDING_DEFAULT = 0
+    enumerator :: G_BINDING_BIDIRECTIONAL = b'1'
+    enumerator :: G_BINDING_SYNC_CREATE = b'10'
+    enumerator :: G_BINDING_INVERT_BOOLEAN = b'100'
+end enum
+enum, bind(c)    !GTypeDebugFlags
+    enumerator :: G_TYPE_DEBUG_NONE = 0
+    enumerator :: G_TYPE_DEBUG_OBJECTS = b'1'
+    enumerator :: G_TYPE_DEBUG_SIGNALS = b'10'
+    enumerator :: G_TYPE_DEBUG_MASK = z'03'
+end enum
+ 
+enum, bind(c)    !GTypeFundamentalFlags
+    enumerator :: G_TYPE_FLAG_CLASSED = b'1'
+    enumerator :: G_TYPE_FLAG_INSTANTIATABLE = b'10'
+    enumerator :: G_TYPE_FLAG_DERIVABLE = b'100'
+    enumerator :: G_TYPE_FLAG_DEEP_DERIVABLE = b'1000'
+end enum
+ 
+enum, bind(c)    !GTypeFlags
+    enumerator :: G_TYPE_FLAG_ABSTRACT = b'10000'
+    enumerator :: G_TYPE_FLAG_VALUE_ABSTRACT = b'100000'
+end enum
+enum, bind(c)    !GParamFlags
+    enumerator :: G_PARAM_READABLE = b'1'
+    enumerator :: G_PARAM_WRITABLE = b'10'
+    enumerator :: G_PARAM_CONSTRUCT = b'100'
+    enumerator :: G_PARAM_CONSTRUCT_ONLY = b'1000'
+    enumerator :: G_PARAM_LAX_VALIDATION = b'10000'
+    enumerator :: G_PARAM_STATIC_NAME = b'100000'
+    enumerator :: G_PARAM_PRIVATE = G_PARAM_STATIC_NAME
+    enumerator :: G_PARAM_STATIC_NICK = b'1000000'
+    enumerator :: G_PARAM_STATIC_BLURB = b'10000000'
+
 end enum
 enum, bind(c)    !GdkRgbDither
     enumerator :: GDK_RGB_DITHER_NONE
     enumerator :: GDK_RGB_DITHER_NORMAL
     enumerator :: GDK_RGB_DITHER_MAX
-end enum
-enum, bind(c)    !GdkPropMode
-    enumerator :: GDK_PROP_MODE_REPLACE
-    enumerator :: GDK_PROP_MODE_PREPEND
-    enumerator :: GDK_PROP_MODE_APPEND
-end enum
-enum, bind(c)    !GdkFillRule
-    enumerator :: GDK_EVEN_ODD_RULE
-    enumerator :: GDK_WINDING_RULE
-end enum
- 
-enum, bind(c)    !GdkOverlapType
-    enumerator :: GDK_OVERLAP_RECTANGLE_IN
-    enumerator :: GDK_OVERLAP_RECTANGLE_OUT
-    enumerator :: GDK_OVERLAP_RECTANGLE_PART
-end enum
-enum, bind(c)    !GdkByteOrder
-    enumerator :: GDK_LSB_FIRST
-    enumerator :: GDK_MSB_FIRST
-end enum
- 
-enum, bind(c)    !GdkModifierType
-    enumerator :: GDK_SHIFT_MASK = b'1'
-    enumerator :: GDK_LOCK_MASK = b'10'
-    enumerator :: GDK_CONTROL_MASK = b'100'
-    enumerator :: GDK_MOD1_MASK = b'1000'
-    enumerator :: GDK_MOD2_MASK = b'10000'
-    enumerator :: GDK_MOD3_MASK = b'100000'
-    enumerator :: GDK_MOD4_MASK = b'1000000'
-    enumerator :: GDK_MOD5_MASK = b'10000000'
-    enumerator :: GDK_BUTTON1_MASK = b'100000000'
-    enumerator :: GDK_BUTTON2_MASK = b'1000000000'
-    enumerator :: GDK_BUTTON3_MASK = b'10000000000'
-    enumerator :: GDK_BUTTON4_MASK = b'100000000000'
-    enumerator :: GDK_BUTTON5_MASK = b'1000000000000'
-    enumerator :: GDK_SUPER_MASK = b'100000000000000000000000000'
-    enumerator :: GDK_HYPER_MASK = b'1000000000000000000000000000'
-    enumerator :: GDK_META_MASK = b'10000000000000000000000000000'
-    enumerator :: GDK_RELEASE_MASK = b'1000000000000000000000000000000'
-    enumerator :: GDK_MODIFIER_MASK = z'5c001fff'
-end enum
- 
-enum, bind(c)    !GdkInputCondition
-    enumerator :: GDK_INPUT_READ = b'1'
-    enumerator :: GDK_INPUT_WRITE = b'10'
-    enumerator :: GDK_INPUT_EXCEPTION = b'100'
-end enum
- 
-enum, bind(c)    !GdkStatus
-    enumerator :: GDK_OK = 0
-    enumerator :: GDK_ERROR = -1
-    enumerator :: GDK_ERROR_PARAM = -2
-    enumerator :: GDK_ERROR_FILE = -3
-    enumerator :: GDK_ERROR_MEM = -4
-end enum
- 
-enum, bind(c)    !GdkGrabStatus
-    enumerator :: GDK_GRAB_SUCCESS = 0
-    enumerator :: GDK_GRAB_ALREADY_GRABBED = 1
-    enumerator :: GDK_GRAB_INVALID_TIME = 2
-    enumerator :: GDK_GRAB_NOT_VIEWABLE = 3
-    enumerator :: GDK_GRAB_FROZEN = 4
-end enum
-enum, bind(c)    !GdkVisualType
-    enumerator :: GDK_VISUAL_STATIC_GRAY
-    enumerator :: GDK_VISUAL_GRAYSCALE
-    enumerator :: GDK_VISUAL_STATIC_COLOR
-    enumerator :: GDK_VISUAL_PSEUDO_COLOR
-    enumerator :: GDK_VISUAL_TRUE_COLOR
-    enumerator :: GDK_VISUAL_DIRECT_COLOR
-end enum
-enum, bind(c)    !GdkWindowClass
-    enumerator :: GDK_INPUT_OUTPUT
-    enumerator :: GDK_INPUT_ONLY
-end enum
- 
-enum, bind(c)    !GdkWindowType
-    enumerator :: GDK_WINDOW_ROOT
-    enumerator :: GDK_WINDOW_TOPLEVEL
-    enumerator :: GDK_WINDOW_CHILD
-    enumerator :: GDK_WINDOW_DIALOG
-    enumerator :: GDK_WINDOW_TEMP
-    enumerator :: GDK_WINDOW_FOREIGN
-    enumerator :: GDK_WINDOW_OFFSCREEN
-end enum
- 
-enum, bind(c)    !GdkWindowAttributesType
-    enumerator :: GDK_WA_TITLE = b'10'
-    enumerator :: GDK_WA_X = b'100'
-    enumerator :: GDK_WA_Y = b'1000'
-    enumerator :: GDK_WA_CURSOR = b'10000'
-    enumerator :: GDK_WA_COLORMAP = b'100000'
-    enumerator :: GDK_WA_VISUAL = b'1000000'
-    enumerator :: GDK_WA_WMCLASS = b'10000000'
-    enumerator :: GDK_WA_NOREDIR = b'100000000'
-    enumerator :: GDK_WA_TYPE_HINT = b'1000000000'
-end enum
- 
-enum, bind(c)    !GdkWindowHints
-    enumerator :: GDK_HINT_POS = b'1'
-    enumerator :: GDK_HINT_MIN_SIZE = b'10'
-    enumerator :: GDK_HINT_MAX_SIZE = b'100'
-    enumerator :: GDK_HINT_BASE_SIZE = b'1000'
-    enumerator :: GDK_HINT_ASPECT = b'10000'
-    enumerator :: GDK_HINT_RESIZE_INC = b'100000'
-    enumerator :: GDK_HINT_WIN_GRAVITY = b'1000000'
-    enumerator :: GDK_HINT_USER_POS = b'10000000'
-    enumerator :: GDK_HINT_USER_SIZE = b'100000000'
-end enum
- 
-enum, bind(c)    !GdkWindowTypeHint
-    enumerator :: GDK_WINDOW_TYPE_HINT_NORMAL
-    enumerator :: GDK_WINDOW_TYPE_HINT_DIALOG
-    enumerator :: GDK_WINDOW_TYPE_HINT_MENU 
-    enumerator :: GDK_WINDOW_TYPE_HINT_TOOLBAR
-    enumerator :: GDK_WINDOW_TYPE_HINT_SPLASHSCREEN
-    enumerator :: GDK_WINDOW_TYPE_HINT_UTILITY
-    enumerator :: GDK_WINDOW_TYPE_HINT_DOCK
-    enumerator :: GDK_WINDOW_TYPE_HINT_DESKTOP
-    enumerator :: GDK_WINDOW_TYPE_HINT_DROPDOWN_MENU 
-    enumerator :: GDK_WINDOW_TYPE_HINT_POPUP_MENU 
-    enumerator :: GDK_WINDOW_TYPE_HINT_TOOLTIP
-    enumerator :: GDK_WINDOW_TYPE_HINT_NOTIFICATION
-    enumerator :: GDK_WINDOW_TYPE_HINT_COMBO
-    enumerator :: GDK_WINDOW_TYPE_HINT_DND
-end enum
- 
-enum, bind(c)    !GdkWMDecoration
-    enumerator :: GDK_DECOR_ALL = b'1'
-    enumerator :: GDK_DECOR_BORDER = b'10'
-    enumerator :: GDK_DECOR_RESIZEH = b'100'
-    enumerator :: GDK_DECOR_TITLE = b'1000'
-    enumerator :: GDK_DECOR_MENU = b'10000'
-    enumerator :: GDK_DECOR_MINIMIZE = b'100000'
-    enumerator :: GDK_DECOR_MAXIMIZE = b'1000000'
-end enum
- 
-enum, bind(c)    !GdkWMFunction
-    enumerator :: GDK_FUNC_ALL = b'1'
-    enumerator :: GDK_FUNC_RESIZE = b'10'
-    enumerator :: GDK_FUNC_MOVE = b'100'
-    enumerator :: GDK_FUNC_MINIMIZE = b'1000'
-    enumerator :: GDK_FUNC_MAXIMIZE = b'10000'
-    enumerator :: GDK_FUNC_CLOSE = b'100000'
-end enum
- 
-enum, bind(c)    !GdkGravity
-    enumerator :: GDK_GRAVITY_NORTH_WEST = 1
-    enumerator :: GDK_GRAVITY_NORTH
-    enumerator :: GDK_GRAVITY_NORTH_EAST
-    enumerator :: GDK_GRAVITY_WEST
-    enumerator :: GDK_GRAVITY_CENTER
-    enumerator :: GDK_GRAVITY_EAST
-    enumerator :: GDK_GRAVITY_SOUTH_WEST
-    enumerator :: GDK_GRAVITY_SOUTH
-    enumerator :: GDK_GRAVITY_SOUTH_EAST
-    enumerator :: GDK_GRAVITY_STATIC
-end enum
- 
-enum, bind(c)    !GdkWindowEdge
-    enumerator :: GDK_WINDOW_EDGE_NORTH_WEST
-    enumerator :: GDK_WINDOW_EDGE_NORTH
-    enumerator :: GDK_WINDOW_EDGE_NORTH_EAST
-    enumerator :: GDK_WINDOW_EDGE_WEST
-    enumerator :: GDK_WINDOW_EDGE_EAST
-    enumerator :: GDK_WINDOW_EDGE_SOUTH_WEST
-    enumerator :: GDK_WINDOW_EDGE_SOUTH
-    enumerator :: GDK_WINDOW_EDGE_SOUTH_EAST 
-end enum
-enum, bind(c)    !GdkCapStyle
-    enumerator :: GDK_CAP_NOT_LAST
-    enumerator :: GDK_CAP_BUTT
-    enumerator :: GDK_CAP_ROUND
-    enumerator :: GDK_CAP_PROJECTING
-end enum
- 
-enum, bind(c)    !GdkFill
-    enumerator :: GDK_SOLID
-    enumerator :: GDK_TILED
-    enumerator :: GDK_STIPPLED
-    enumerator :: GDK_OPAQUE_STIPPLED
-end enum
- 
-enum, bind(c)    !GdkFunction
-    enumerator :: GDK_COPY
-    enumerator :: GDK_INVERT
-    enumerator :: GDK_XOR
-    enumerator :: GDK_CLEAR
-    enumerator :: GDK_AND
-    enumerator :: GDK_AND_REVERSE
-    enumerator :: GDK_AND_INVERT
-    enumerator :: GDK_NOOP
-    enumerator :: GDK_OR
-    enumerator :: GDK_EQUIV
-    enumerator :: GDK_OR_REVERSE
-    enumerator :: GDK_COPY_INVERT
-    enumerator :: GDK_OR_INVERT
-    enumerator :: GDK_NAND
-    enumerator :: GDK_NOR
-    enumerator :: GDK_SET
-end enum
- 
-enum, bind(c)    !GdkJoinStyle
-    enumerator :: GDK_JOIN_MITER
-    enumerator :: GDK_JOIN_ROUND
-    enumerator :: GDK_JOIN_BEVEL
-end enum
- 
-enum, bind(c)    !GdkLineStyle
-    enumerator :: GDK_LINE_SOLID
-    enumerator :: GDK_LINE_ON_OFF_DASH
-    enumerator :: GDK_LINE_DOUBLE_DASH
-end enum
- 
-enum, bind(c)    !GdkSubwindowMode
-    enumerator :: GDK_CLIP_BY_CHILDREN = 0
-    enumerator :: GDK_INCLUDE_INFERIORS = 1
-end enum
- 
-enum, bind(c)    !GdkGCValuesMask
-    enumerator :: GDK_GC_FOREGROUND = b'1'
-    enumerator :: GDK_GC_BACKGROUND = b'10'
-    enumerator :: GDK_GC_FONT = b'100'
-    enumerator :: GDK_GC_FUNCTION = b'1000'
-    enumerator :: GDK_GC_FILL = b'10000'
-    enumerator :: GDK_GC_TILE = b'100000'
-    enumerator :: GDK_GC_STIPPLE = b'1000000'
-    enumerator :: GDK_GC_CLIP_MASK = b'10000000'
-    enumerator :: GDK_GC_SUBWINDOW = b'100000000'
-    enumerator :: GDK_GC_TS_X_ORIGIN = b'1000000000'
-    enumerator :: GDK_GC_TS_Y_ORIGIN = b'10000000000'
-    enumerator :: GDK_GC_CLIP_X_ORIGIN = b'100000000000'
-    enumerator :: GDK_GC_CLIP_Y_ORIGIN = b'1000000000000'
-    enumerator :: GDK_GC_EXPOSURES = b'10000000000000'
-    enumerator :: GDK_GC_LINE_WIDTH = b'100000000000000'
-    enumerator :: GDK_GC_LINE_STYLE = b'1000000000000000'
-    enumerator :: GDK_GC_CAP_STYLE = b'10000000000000000'
-    enumerator :: GDK_GC_JOIN_STYLE = b'100000000000000000'
 end enum
 enum, bind(c)    !GdkFilterReturn
     enumerator :: GDK_FILTER_CONTINUE 
@@ -1394,6 +1036,326 @@ enum, bind(c)    !GdkOwnerChange
     enumerator :: GDK_OWNER_CHANGE_DESTROY
     enumerator :: GDK_OWNER_CHANGE_CLOSE
 end enum
+enum, bind(c)    !GdkCapStyle
+    enumerator :: GDK_CAP_NOT_LAST
+    enumerator :: GDK_CAP_BUTT
+    enumerator :: GDK_CAP_ROUND
+    enumerator :: GDK_CAP_PROJECTING
+end enum
+ 
+enum, bind(c)    !GdkFill
+    enumerator :: GDK_SOLID
+    enumerator :: GDK_TILED
+    enumerator :: GDK_STIPPLED
+    enumerator :: GDK_OPAQUE_STIPPLED
+end enum
+ 
+enum, bind(c)    !GdkFunction
+    enumerator :: GDK_COPY
+    enumerator :: GDK_INVERT
+    enumerator :: GDK_XOR
+    enumerator :: GDK_CLEAR
+    enumerator :: GDK_AND
+    enumerator :: GDK_AND_REVERSE
+    enumerator :: GDK_AND_INVERT
+    enumerator :: GDK_NOOP
+    enumerator :: GDK_OR
+    enumerator :: GDK_EQUIV
+    enumerator :: GDK_OR_REVERSE
+    enumerator :: GDK_COPY_INVERT
+    enumerator :: GDK_OR_INVERT
+    enumerator :: GDK_NAND
+    enumerator :: GDK_NOR
+    enumerator :: GDK_SET
+end enum
+ 
+enum, bind(c)    !GdkJoinStyle
+    enumerator :: GDK_JOIN_MITER
+    enumerator :: GDK_JOIN_ROUND
+    enumerator :: GDK_JOIN_BEVEL
+end enum
+ 
+enum, bind(c)    !GdkLineStyle
+    enumerator :: GDK_LINE_SOLID
+    enumerator :: GDK_LINE_ON_OFF_DASH
+    enumerator :: GDK_LINE_DOUBLE_DASH
+end enum
+ 
+enum, bind(c)    !GdkSubwindowMode
+    enumerator :: GDK_CLIP_BY_CHILDREN = 0
+    enumerator :: GDK_INCLUDE_INFERIORS = 1
+end enum
+ 
+enum, bind(c)    !GdkGCValuesMask
+    enumerator :: GDK_GC_FOREGROUND = b'1'
+    enumerator :: GDK_GC_BACKGROUND = b'10'
+    enumerator :: GDK_GC_FONT = b'100'
+    enumerator :: GDK_GC_FUNCTION = b'1000'
+    enumerator :: GDK_GC_FILL = b'10000'
+    enumerator :: GDK_GC_TILE = b'100000'
+    enumerator :: GDK_GC_STIPPLE = b'1000000'
+    enumerator :: GDK_GC_CLIP_MASK = b'10000000'
+    enumerator :: GDK_GC_SUBWINDOW = b'100000000'
+    enumerator :: GDK_GC_TS_X_ORIGIN = b'1000000000'
+    enumerator :: GDK_GC_TS_Y_ORIGIN = b'10000000000'
+    enumerator :: GDK_GC_CLIP_X_ORIGIN = b'100000000000'
+    enumerator :: GDK_GC_CLIP_Y_ORIGIN = b'1000000000000'
+    enumerator :: GDK_GC_EXPOSURES = b'10000000000000'
+    enumerator :: GDK_GC_LINE_WIDTH = b'100000000000000'
+    enumerator :: GDK_GC_LINE_STYLE = b'1000000000000000'
+    enumerator :: GDK_GC_CAP_STYLE = b'10000000000000000'
+    enumerator :: GDK_GC_JOIN_STYLE = b'100000000000000000'
+end enum
+enum, bind(c)    !GdkCursorType
+    enumerator :: GDK_X_CURSOR = 0
+    enumerator :: GDK_ARROW = 2
+    enumerator :: GDK_BASED_ARROW_DOWN = 4
+    enumerator :: GDK_BASED_ARROW_UP = 6
+    enumerator :: GDK_BOAT = 8
+    enumerator :: GDK_BOGOSITY = 10
+    enumerator :: GDK_BOTTOM_LEFT_CORNER = 12
+    enumerator :: GDK_BOTTOM_RIGHT_CORNER = 14
+    enumerator :: GDK_BOTTOM_SIDE = 16
+    enumerator :: GDK_BOTTOM_TEE = 18
+    enumerator :: GDK_BOX_SPIRAL = 20
+    enumerator :: GDK_CENTER_PTR = 22
+    enumerator :: GDK_CIRCLE = 24
+    enumerator :: GDK_CLOCK = 26
+    enumerator :: GDK_COFFEE_MUG = 28
+    enumerator :: GDK_CROSS = 30
+    enumerator :: GDK_CROSS_REVERSE = 32
+    enumerator :: GDK_CROSSHAIR = 34
+    enumerator :: GDK_DIAMOND_CROSS = 36
+    enumerator :: GDK_DOT = 38
+    enumerator :: GDK_DOTBOX = 40
+    enumerator :: GDK_DOUBLE_ARROW = 42
+    enumerator :: GDK_DRAFT_LARGE = 44
+    enumerator :: GDK_DRAFT_SMALL = 46
+    enumerator :: GDK_DRAPED_BOX = 48
+    enumerator :: GDK_EXCHANGE = 50
+    enumerator :: GDK_FLEUR = 52
+    enumerator :: GDK_GOBBLER = 54
+    enumerator :: GDK_GUMBY = 56
+    enumerator :: GDK_HAND1 = 58
+    enumerator :: GDK_HAND2 = 60
+    enumerator :: GDK_HEART = 62
+    enumerator :: GDK_ICON = 64
+    enumerator :: GDK_IRON_CROSS = 66
+    enumerator :: GDK_LEFT_PTR = 68
+    enumerator :: GDK_LEFT_SIDE = 70
+    enumerator :: GDK_LEFT_TEE = 72
+    enumerator :: GDK_LEFTBUTTON = 74
+    enumerator :: GDK_LL_ANGLE = 76
+    enumerator :: GDK_LR_ANGLE = 78
+    enumerator :: GDK_MAN = 80
+    enumerator :: GDK_MIDDLEBUTTON = 82
+    enumerator :: GDK_MOUSE = 84
+    enumerator :: GDK_PENCIL = 86
+    enumerator :: GDK_PIRATE = 88
+    enumerator :: GDK_PLUS = 90
+    enumerator :: GDK_QUESTION_ARROW = 92
+    enumerator :: GDK_RIGHT_PTR = 94
+    enumerator :: GDK_RIGHT_SIDE = 96
+    enumerator :: GDK_RIGHT_TEE = 98
+    enumerator :: GDK_RIGHTBUTTON = 100
+    enumerator :: GDK_RTL_LOGO = 102
+    enumerator :: GDK_SAILBOAT = 104
+    enumerator :: GDK_SB_DOWN_ARROW = 106
+    enumerator :: GDK_SB_H_DOUBLE_ARROW = 108
+    enumerator :: GDK_SB_LEFT_ARROW = 110
+    enumerator :: GDK_SB_RIGHT_ARROW = 112
+    enumerator :: GDK_SB_UP_ARROW = 114
+    enumerator :: GDK_SB_V_DOUBLE_ARROW = 116
+    enumerator :: GDK_SHUTTLE = 118
+    enumerator :: GDK_SIZING = 120
+    enumerator :: GDK_SPIDER = 122
+    enumerator :: GDK_SPRAYCAN = 124
+    enumerator :: GDK_STAR = 126
+    enumerator :: GDK_TARGET = 128
+    enumerator :: GDK_TCROSS = 130
+    enumerator :: GDK_TOP_LEFT_ARROW = 132
+    enumerator :: GDK_TOP_LEFT_CORNER = 134
+    enumerator :: GDK_TOP_RIGHT_CORNER = 136
+    enumerator :: GDK_TOP_SIDE = 138
+    enumerator :: GDK_TOP_TEE = 140
+    enumerator :: GDK_TREK = 142
+    enumerator :: GDK_UL_ANGLE = 144
+    enumerator :: GDK_UMBRELLA = 146
+    enumerator :: GDK_UR_ANGLE = 148
+    enumerator :: GDK_WATCH = 150
+    enumerator :: GDK_XTERM = 152
+    enumerator :: GDK_LAST_CURSOR
+    enumerator :: GDK_BLANK_CURSOR = -2
+    enumerator :: GDK_CURSOR_IS_PIXMAP = -1
+end enum
+enum, bind(c)    !GdkWindowClass
+    enumerator :: GDK_INPUT_OUTPUT
+    enumerator :: GDK_INPUT_ONLY
+end enum
+ 
+enum, bind(c)    !GdkWindowType
+    enumerator :: GDK_WINDOW_ROOT
+    enumerator :: GDK_WINDOW_TOPLEVEL
+    enumerator :: GDK_WINDOW_CHILD
+    enumerator :: GDK_WINDOW_DIALOG
+    enumerator :: GDK_WINDOW_TEMP
+    enumerator :: GDK_WINDOW_FOREIGN
+    enumerator :: GDK_WINDOW_OFFSCREEN
+end enum
+ 
+enum, bind(c)    !GdkWindowAttributesType
+    enumerator :: GDK_WA_TITLE = b'10'
+    enumerator :: GDK_WA_X = b'100'
+    enumerator :: GDK_WA_Y = b'1000'
+    enumerator :: GDK_WA_CURSOR = b'10000'
+    enumerator :: GDK_WA_COLORMAP = b'100000'
+    enumerator :: GDK_WA_VISUAL = b'1000000'
+    enumerator :: GDK_WA_WMCLASS = b'10000000'
+    enumerator :: GDK_WA_NOREDIR = b'100000000'
+    enumerator :: GDK_WA_TYPE_HINT = b'1000000000'
+end enum
+ 
+enum, bind(c)    !GdkWindowHints
+    enumerator :: GDK_HINT_POS = b'1'
+    enumerator :: GDK_HINT_MIN_SIZE = b'10'
+    enumerator :: GDK_HINT_MAX_SIZE = b'100'
+    enumerator :: GDK_HINT_BASE_SIZE = b'1000'
+    enumerator :: GDK_HINT_ASPECT = b'10000'
+    enumerator :: GDK_HINT_RESIZE_INC = b'100000'
+    enumerator :: GDK_HINT_WIN_GRAVITY = b'1000000'
+    enumerator :: GDK_HINT_USER_POS = b'10000000'
+    enumerator :: GDK_HINT_USER_SIZE = b'100000000'
+end enum
+ 
+enum, bind(c)    !GdkWindowTypeHint
+    enumerator :: GDK_WINDOW_TYPE_HINT_NORMAL
+    enumerator :: GDK_WINDOW_TYPE_HINT_DIALOG
+    enumerator :: GDK_WINDOW_TYPE_HINT_MENU 
+    enumerator :: GDK_WINDOW_TYPE_HINT_TOOLBAR
+    enumerator :: GDK_WINDOW_TYPE_HINT_SPLASHSCREEN
+    enumerator :: GDK_WINDOW_TYPE_HINT_UTILITY
+    enumerator :: GDK_WINDOW_TYPE_HINT_DOCK
+    enumerator :: GDK_WINDOW_TYPE_HINT_DESKTOP
+    enumerator :: GDK_WINDOW_TYPE_HINT_DROPDOWN_MENU 
+    enumerator :: GDK_WINDOW_TYPE_HINT_POPUP_MENU 
+    enumerator :: GDK_WINDOW_TYPE_HINT_TOOLTIP
+    enumerator :: GDK_WINDOW_TYPE_HINT_NOTIFICATION
+    enumerator :: GDK_WINDOW_TYPE_HINT_COMBO
+    enumerator :: GDK_WINDOW_TYPE_HINT_DND
+end enum
+ 
+enum, bind(c)    !GdkWMDecoration
+    enumerator :: GDK_DECOR_ALL = b'1'
+    enumerator :: GDK_DECOR_BORDER = b'10'
+    enumerator :: GDK_DECOR_RESIZEH = b'100'
+    enumerator :: GDK_DECOR_TITLE = b'1000'
+    enumerator :: GDK_DECOR_MENU = b'10000'
+    enumerator :: GDK_DECOR_MINIMIZE = b'100000'
+    enumerator :: GDK_DECOR_MAXIMIZE = b'1000000'
+end enum
+ 
+enum, bind(c)    !GdkWMFunction
+    enumerator :: GDK_FUNC_ALL = b'1'
+    enumerator :: GDK_FUNC_RESIZE = b'10'
+    enumerator :: GDK_FUNC_MOVE = b'100'
+    enumerator :: GDK_FUNC_MINIMIZE = b'1000'
+    enumerator :: GDK_FUNC_MAXIMIZE = b'10000'
+    enumerator :: GDK_FUNC_CLOSE = b'100000'
+end enum
+ 
+enum, bind(c)    !GdkGravity
+    enumerator :: GDK_GRAVITY_NORTH_WEST = 1
+    enumerator :: GDK_GRAVITY_NORTH
+    enumerator :: GDK_GRAVITY_NORTH_EAST
+    enumerator :: GDK_GRAVITY_WEST
+    enumerator :: GDK_GRAVITY_CENTER
+    enumerator :: GDK_GRAVITY_EAST
+    enumerator :: GDK_GRAVITY_SOUTH_WEST
+    enumerator :: GDK_GRAVITY_SOUTH
+    enumerator :: GDK_GRAVITY_SOUTH_EAST
+    enumerator :: GDK_GRAVITY_STATIC
+end enum
+ 
+enum, bind(c)    !GdkWindowEdge
+    enumerator :: GDK_WINDOW_EDGE_NORTH_WEST
+    enumerator :: GDK_WINDOW_EDGE_NORTH
+    enumerator :: GDK_WINDOW_EDGE_NORTH_EAST
+    enumerator :: GDK_WINDOW_EDGE_WEST
+    enumerator :: GDK_WINDOW_EDGE_EAST
+    enumerator :: GDK_WINDOW_EDGE_SOUTH_WEST
+    enumerator :: GDK_WINDOW_EDGE_SOUTH
+    enumerator :: GDK_WINDOW_EDGE_SOUTH_EAST 
+end enum
+enum, bind(c)    !GdkImageType
+    enumerator :: GDK_IMAGE_NORMAL
+    enumerator :: GDK_IMAGE_SHARED
+    enumerator :: GDK_IMAGE_FASTEST
+end enum
+enum, bind(c)    !GdkByteOrder
+    enumerator :: GDK_LSB_FIRST
+    enumerator :: GDK_MSB_FIRST
+end enum
+ 
+enum, bind(c)    !GdkModifierType
+    enumerator :: GDK_SHIFT_MASK = b'1'
+    enumerator :: GDK_LOCK_MASK = b'10'
+    enumerator :: GDK_CONTROL_MASK = b'100'
+    enumerator :: GDK_MOD1_MASK = b'1000'
+    enumerator :: GDK_MOD2_MASK = b'10000'
+    enumerator :: GDK_MOD3_MASK = b'100000'
+    enumerator :: GDK_MOD4_MASK = b'1000000'
+    enumerator :: GDK_MOD5_MASK = b'10000000'
+    enumerator :: GDK_BUTTON1_MASK = b'100000000'
+    enumerator :: GDK_BUTTON2_MASK = b'1000000000'
+    enumerator :: GDK_BUTTON3_MASK = b'10000000000'
+    enumerator :: GDK_BUTTON4_MASK = b'100000000000'
+    enumerator :: GDK_BUTTON5_MASK = b'1000000000000'
+    enumerator :: GDK_SUPER_MASK = b'100000000000000000000000000'
+    enumerator :: GDK_HYPER_MASK = b'1000000000000000000000000000'
+    enumerator :: GDK_META_MASK = b'10000000000000000000000000000'
+    enumerator :: GDK_RELEASE_MASK = b'1000000000000000000000000000000'
+    enumerator :: GDK_MODIFIER_MASK = z'5c001fff'
+end enum
+ 
+enum, bind(c)    !GdkInputCondition
+    enumerator :: GDK_INPUT_READ = b'1'
+    enumerator :: GDK_INPUT_WRITE = b'10'
+    enumerator :: GDK_INPUT_EXCEPTION = b'100'
+end enum
+ 
+enum, bind(c)    !GdkStatus
+    enumerator :: GDK_OK = 0
+    enumerator :: GDK_ERROR = -1
+    enumerator :: GDK_ERROR_PARAM = -2
+    enumerator :: GDK_ERROR_FILE = -3
+    enumerator :: GDK_ERROR_MEM = -4
+end enum
+ 
+enum, bind(c)    !GdkGrabStatus
+    enumerator :: GDK_GRAB_SUCCESS = 0
+    enumerator :: GDK_GRAB_ALREADY_GRABBED = 1
+    enumerator :: GDK_GRAB_INVALID_TIME = 2
+    enumerator :: GDK_GRAB_NOT_VIEWABLE = 3
+    enumerator :: GDK_GRAB_FROZEN = 4
+end enum
+enum, bind(c)    !GdkVisualType
+    enumerator :: GDK_VISUAL_STATIC_GRAY
+    enumerator :: GDK_VISUAL_GRAYSCALE
+    enumerator :: GDK_VISUAL_STATIC_COLOR
+    enumerator :: GDK_VISUAL_PSEUDO_COLOR
+    enumerator :: GDK_VISUAL_TRUE_COLOR
+    enumerator :: GDK_VISUAL_DIRECT_COLOR
+end enum
+enum, bind(c)    !GdkFillRule
+    enumerator :: GDK_EVEN_ODD_RULE
+    enumerator :: GDK_WINDING_RULE
+end enum
+ 
+enum, bind(c)    !GdkOverlapType
+    enumerator :: GDK_OVERLAP_RECTANGLE_IN
+    enumerator :: GDK_OVERLAP_RECTANGLE_OUT
+    enumerator :: GDK_OVERLAP_RECTANGLE_PART
+end enum
 enum, bind(c)    !GdkDragAction
     enumerator :: GDK_ACTION_DEFAULT = b'1'
     enumerator :: GDK_ACTION_COPY = b'10'
@@ -1412,189 +1374,47 @@ enum, bind(c)    !GdkDragProtocol
     enumerator :: GDK_DRAG_PROTO_OLE2 
     enumerator :: GDK_DRAG_PROTO_LOCAL 
 end enum
-enum, bind(c)    !GtkAssistantPageType
-    enumerator :: GTK_ASSISTANT_PAGE_CONTENT
-    enumerator :: GTK_ASSISTANT_PAGE_INTRO
-    enumerator :: GTK_ASSISTANT_PAGE_CONFIRM
-    enumerator :: GTK_ASSISTANT_PAGE_SUMMARY
-    enumerator :: GTK_ASSISTANT_PAGE_PROGRESS
-end enum
-enum, bind(c)    !GtkIconViewDropPosition
-    enumerator :: GTK_ICON_VIEW_NO_DROP
-    enumerator :: GTK_ICON_VIEW_DROP_INTO
-    enumerator :: GTK_ICON_VIEW_DROP_LEFT
-    enumerator :: GTK_ICON_VIEW_DROP_RIGHT
-    enumerator :: GTK_ICON_VIEW_DROP_ABOVE
-    enumerator :: GTK_ICON_VIEW_DROP_BELOW
-end enum
-enum, bind(c)    !GtkBuilderError
-    enumerator :: GTK_BUILDER_ERROR_INVALID_TYPE_FUNCTION
-    enumerator :: GTK_BUILDER_ERROR_UNHANDLED_TAG
-    enumerator :: GTK_BUILDER_ERROR_MISSING_ATTRIBUTE
-    enumerator :: GTK_BUILDER_ERROR_INVALID_ATTRIBUTE
-    enumerator :: GTK_BUILDER_ERROR_INVALID_TAG
-    enumerator :: GTK_BUILDER_ERROR_MISSING_PROPERTY_VALUE
-    enumerator :: GTK_BUILDER_ERROR_INVALID_VALUE
-    enumerator :: GTK_BUILDER_ERROR_VERSION_MISMATCH
-    enumerator :: GTK_BUILDER_ERROR_DUPLICATE_ID
-end enum
-enum, bind(c)    !GtkToolbarChildType
-    enumerator :: GTK_TOOLBAR_CHILD_SPACE
-    enumerator :: GTK_TOOLBAR_CHILD_BUTTON
-    enumerator :: GTK_TOOLBAR_CHILD_TOGGLEBUTTON
-    enumerator :: GTK_TOOLBAR_CHILD_RADIOBUTTON
-    enumerator :: GTK_TOOLBAR_CHILD_WIDGET
+enum, bind(c)    !GdkExtensionMode
+    enumerator :: GDK_EXTENSION_EVENTS_NONE
+    enumerator :: GDK_EXTENSION_EVENTS_ALL
+    enumerator :: GDK_EXTENSION_EVENTS_CURSOR
 end enum
  
-enum, bind(c)    !GtkToolbarSpaceStyle
-    enumerator :: GTK_TOOLBAR_SPACE_EMPTY
-    enumerator :: GTK_TOOLBAR_SPACE_LINE
+enum, bind(c)    !GdkInputSource
+    enumerator :: GDK_SOURCE_MOUSE
+    enumerator :: GDK_SOURCE_PEN
+    enumerator :: GDK_SOURCE_ERASER
+    enumerator :: GDK_SOURCE_CURSOR
 end enum
-enum, bind(c)    !GtkTreeModelFlags
-    enumerator :: GTK_TREE_MODEL_ITERS_PERSIST = b'1'
-    enumerator :: GTK_TREE_MODEL_LIST_ONLY = b'10'
+ 
+enum, bind(c)    !GdkInputMode
+    enumerator :: GDK_MODE_DISABLED
+    enumerator :: GDK_MODE_SCREEN
+    enumerator :: GDK_MODE_WINDOW
 end enum
-enum, bind(c)    !GtkRecentManagerError
-    enumerator :: GTK_RECENT_MANAGER_ERROR_NOT_FOUND
-    enumerator :: GTK_RECENT_MANAGER_ERROR_INVALID_URI
-    enumerator :: GTK_RECENT_MANAGER_ERROR_INVALID_ENCODING
-    enumerator :: GTK_RECENT_MANAGER_ERROR_NOT_REGISTERED
-    enumerator :: GTK_RECENT_MANAGER_ERROR_READ
-    enumerator :: GTK_RECENT_MANAGER_ERROR_WRITE
-    enumerator :: GTK_RECENT_MANAGER_ERROR_UNKNOWN
+ 
+enum, bind(c)    !GdkAxisUse
+    enumerator :: GDK_AXIS_IGNORE
+    enumerator :: GDK_AXIS_X
+    enumerator :: GDK_AXIS_Y
+    enumerator :: GDK_AXIS_PRESSURE
+    enumerator :: GDK_AXIS_XTILT
+    enumerator :: GDK_AXIS_YTILT
+    enumerator :: GDK_AXIS_WHEEL
+    enumerator :: GDK_AXIS_LAST
 end enum
-enum, bind(c)    !GtkPrivateFlags
-    enumerator :: PRIVATE_GTK_USER_STYLE = b'1'
-    enumerator :: PRIVATE_GTK_RESIZE_PENDING = b'100'
-    enumerator :: PRIVATE_GTK_HAS_POINTER = b'1000' 
-    enumerator :: PRIVATE_GTK_SHADOWED = b'10000' 
-    enumerator :: PRIVATE_GTK_HAS_SHAPE_MASK = b'100000'
-    enumerator :: PRIVATE_GTK_IN_REPARENT = b'1000000'
-    enumerator :: PRIVATE_GTK_DIRECTION_SET = b'10000000' 
-    enumerator :: PRIVATE_GTK_DIRECTION_LTR = b'100000000' 
-    enumerator :: PRIVATE_GTK_ANCHORED = b'1000000000' 
-    enumerator :: PRIVATE_GTK_CHILD_VISIBLE = b'10000000000' 
-    enumerator :: PRIVATE_GTK_REDRAW_ON_ALLOC = b'100000000000' 
-    enumerator :: PRIVATE_GTK_ALLOC_NEEDED = b'1000000000000' 
-    enumerator :: PRIVATE_GTK_REQUEST_NEEDED = b'10000000000000' 
+enum, bind(c)    !GdkFontType
+    enumerator :: GDK_FONT_FONT
+    enumerator :: GDK_FONT_FONTSET
+end enum
+enum, bind(c)    !GdkPropMode
+    enumerator :: GDK_PROP_MODE_REPLACE
+    enumerator :: GDK_PROP_MODE_PREPEND
+    enumerator :: GDK_PROP_MODE_APPEND
 end enum
 enum, bind(c)    !GtkCellRendererAccelMode
     enumerator :: GTK_CELL_RENDERER_ACCEL_MODE_GTK
     enumerator :: GTK_CELL_RENDERER_ACCEL_MODE_OTHER
-end enum
-enum, bind(c)    !GtkDialogFlags
-    enumerator :: GTK_DIALOG_MODAL = b'1' 
-    enumerator :: GTK_DIALOG_DESTROY_WITH_PARENT = b'10' 
-    enumerator :: GTK_DIALOG_NO_SEPARATOR = b'100' 
-end enum
- 
-enum, bind(c)    !GtkResponseType
-    enumerator :: GTK_RESPONSE_NONE = -1
-    enumerator :: GTK_RESPONSE_REJECT = -2
-    enumerator :: GTK_RESPONSE_ACCEPT = -3
-    enumerator :: GTK_RESPONSE_DELETE_EVENT = -4
-    enumerator :: GTK_RESPONSE_OK = -5
-    enumerator :: GTK_RESPONSE_CANCEL = -6
-    enumerator :: GTK_RESPONSE_CLOSE = -7
-    enumerator :: GTK_RESPONSE_YES = -8
-    enumerator :: GTK_RESPONSE_NO = -9
-    enumerator :: GTK_RESPONSE_APPLY = -10
-    enumerator :: GTK_RESPONSE_HELP = -11
-end enum
-enum, bind(c)    !GtkToolPaletteDragTargets
-    enumerator :: GTK_TOOL_PALETTE_DRAG_ITEMS = b'1'
-    enumerator :: GTK_TOOL_PALETTE_DRAG_GROUPS = b'10'
-end enum
-enum, bind(c)    !GtkProgressBarStyle
-    enumerator :: GTK_PROGRESS_CONTINUOUS
-    enumerator :: GTK_PROGRESS_DISCRETE
-end enum
- 
-enum, bind(c)    !GtkProgressBarOrientation
-    enumerator :: GTK_PROGRESS_LEFT_TO_RIGHT
-    enumerator :: GTK_PROGRESS_RIGHT_TO_LEFT
-    enumerator :: GTK_PROGRESS_BOTTOM_TO_TOP
-    enumerator :: GTK_PROGRESS_TOP_TO_BOTTOM
-end enum
-enum, bind(c)    !GtkAccelFlags
-    enumerator :: GTK_ACCEL_VISIBLE = b'1' 
-    enumerator :: GTK_ACCEL_LOCKED = b'10' 
-    enumerator :: GTK_ACCEL_MASK = z'07'
-end enum
-enum, bind(c)    !GtkSizeGroupMode
-    enumerator :: GTK_SIZE_GROUP_NONE
-    enumerator :: GTK_SIZE_GROUP_HORIZONTAL
-    enumerator :: GTK_SIZE_GROUP_VERTICAL
-    enumerator :: GTK_SIZE_GROUP_BOTH
-end enum
-enum, bind(c)    !GtkFileChooserAction
-    enumerator :: GTK_FILE_CHOOSER_ACTION_OPEN
-    enumerator :: GTK_FILE_CHOOSER_ACTION_SAVE
-    enumerator :: GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
-    enumerator :: GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER
-end enum
- 
-enum, bind(c)    !GtkFileChooserConfirmation
-    enumerator :: GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM
-    enumerator :: GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME
-    enumerator :: GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN
-end enum
- 
-enum, bind(c)    !GtkFileChooserError
-    enumerator :: GTK_FILE_CHOOSER_ERROR_NONEXISTENT
-    enumerator :: GTK_FILE_CHOOSER_ERROR_BAD_FILENAME
-    enumerator :: GTK_FILE_CHOOSER_ERROR_ALREADY_EXISTS
-    enumerator :: GTK_FILE_CHOOSER_ERROR_INCOMPLETE_HOSTNAME
-end enum
-enum, bind(c)    !GtkTextWindowType
-    enumerator :: GTK_TEXT_WINDOW_PRIVATE
-    enumerator :: GTK_TEXT_WINDOW_WIDGET
-    enumerator :: GTK_TEXT_WINDOW_TEXT
-    enumerator :: GTK_TEXT_WINDOW_LEFT
-    enumerator :: GTK_TEXT_WINDOW_RIGHT
-    enumerator :: GTK_TEXT_WINDOW_TOP
-    enumerator :: GTK_TEXT_WINDOW_BOTTOM
-end enum
-enum, bind(c)    !GtkTextSearchFlags
-    enumerator :: GTK_TEXT_SEARCH_VISIBLE_ONLY = b'1'
-    enumerator :: GTK_TEXT_SEARCH_TEXT_ONLY = b'10'
- 
-end enum
-enum, bind(c)    !GtkIconLookupFlags
-    enumerator :: GTK_ICON_LOOKUP_NO_SVG = b'1'
-    enumerator :: GTK_ICON_LOOKUP_FORCE_SVG = b'10'
-    enumerator :: GTK_ICON_LOOKUP_USE_BUILTIN = b'100'
-    enumerator :: GTK_ICON_LOOKUP_GENERIC_FALLBACK = b'1000'
-    enumerator :: GTK_ICON_LOOKUP_FORCE_SIZE = b'10000'
-end enum
- 
-enum, bind(c)    !GtkIconThemeError
-    enumerator :: GTK_ICON_THEME_NOT_FOUND
-    enumerator :: GTK_ICON_THEME_FAILED
-end enum
-enum, bind(c)    !GtkUIManagerItemType
-    enumerator :: GTK_UI_MANAGER_AUTO = 0
-    enumerator :: GTK_UI_MANAGER_MENUBAR = b'1'
-    enumerator :: GTK_UI_MANAGER_MENU = b'10'
-    enumerator :: GTK_UI_MANAGER_TOOLBAR = b'100'
-    enumerator :: GTK_UI_MANAGER_PLACEHOLDER = b'1000'
-    enumerator :: GTK_UI_MANAGER_POPUP = b'10000'
-    enumerator :: GTK_UI_MANAGER_MENUITEM = b'100000'
-    enumerator :: GTK_UI_MANAGER_TOOLITEM = b'1000000'
-    enumerator :: GTK_UI_MANAGER_SEPARATOR = b'10000000'
-    enumerator :: GTK_UI_MANAGER_ACCELERATOR = b'100000000'
-    enumerator :: GTK_UI_MANAGER_POPUP_WITH_ACCELS = b'1000000000'
-end enum
-enum, bind(c)    !GtkImageType
-    enumerator :: GTK_IMAGE_EMPTY
-    enumerator :: GTK_IMAGE_PIXMAP
-    enumerator :: GTK_IMAGE_IMAGE
-    enumerator :: GTK_IMAGE_PIXBUF
-    enumerator :: GTK_IMAGE_STOCK
-    enumerator :: GTK_IMAGE_ICON_SET
-    enumerator :: GTK_IMAGE_ANIMATION
-    enumerator :: GTK_IMAGE_ICON_NAME
-    enumerator :: GTK_IMAGE_GICON
 end enum
 enum, bind(c)    !GtkRcFlags
     enumerator :: GTK_RC_FG = b'1'
@@ -1645,42 +1465,119 @@ enum, bind(c)    !GtkRcTokenType
     enumerator :: GTK_RC_TOKEN_UNBIND
     enumerator :: GTK_RC_TOKEN_LAST
 end enum
-enum, bind(c)    !GtkEntryIconPosition
-    enumerator :: GTK_ENTRY_ICON_PRIMARY
-    enumerator :: GTK_ENTRY_ICON_SECONDARY
-end enum
-enum, bind(c)    !GtkTreeViewDropPosition
-    enumerator :: GTK_TREE_VIEW_DROP_BEFORE
-    enumerator :: GTK_TREE_VIEW_DROP_AFTER
-    enumerator :: GTK_TREE_VIEW_DROP_INTO_OR_BEFORE
-    enumerator :: GTK_TREE_VIEW_DROP_INTO_OR_AFTER
-end enum
-enum, bind(c)    !GtkCellRendererState
-    enumerator :: GTK_CELL_RENDERER_SELECTED = b'1'
-    enumerator :: GTK_CELL_RENDERER_PRELIT = b'10'
-    enumerator :: GTK_CELL_RENDERER_INSENSITIVE = b'100'
-    enumerator :: GTK_CELL_RENDERER_SORTED = b'1000'
-    enumerator :: GTK_CELL_RENDERER_FOCUSED = b'10000'
+enum, bind(c)    !GtkRecentSortType
+    enumerator :: GTK_RECENT_SORT_NONE = 0
+    enumerator :: GTK_RECENT_SORT_MRU
+    enumerator :: GTK_RECENT_SORT_LRU
+    enumerator :: GTK_RECENT_SORT_CUSTOM
 end enum
  
-enum, bind(c)    !GtkCellRendererMode
-    enumerator :: GTK_CELL_RENDERER_MODE_INERT
-    enumerator :: GTK_CELL_RENDERER_MODE_ACTIVATABLE
-    enumerator :: GTK_CELL_RENDERER_MODE_EDITABLE
+enum, bind(c)    !GtkRecentChooserError
+    enumerator :: GTK_RECENT_CHOOSER_ERROR_NOT_FOUND
+    enumerator :: GTK_RECENT_CHOOSER_ERROR_INVALID_URI
 end enum
-enum, bind(c)    !GtkObjectFlags
-    enumerator :: GTK_IN_DESTRUCTION = b'1' 
-    enumerator :: GTK_FLOATING = b'10'
-    enumerator :: GTK_RESERVED_1 = b'100'
-    enumerator :: GTK_RESERVED_2 = b'1000'
+enum, bind(c)    !GtkCellType
+    enumerator :: GTK_CELL_EMPTY
+    enumerator :: GTK_CELL_TEXT
+    enumerator :: GTK_CELL_PIXMAP
+    enumerator :: GTK_CELL_PIXTEXT
+    enumerator :: GTK_CELL_WIDGET
 end enum
  
-enum, bind(c)    !GtkArgFlags
-    enumerator :: GTK_ARG_READABLE = G_PARAM_READABLE
-    enumerator :: GTK_ARG_WRITABLE = G_PARAM_WRITABLE
-    enumerator :: GTK_ARG_CONSTRUCT = G_PARAM_CONSTRUCT
-    enumerator :: GTK_ARG_CONSTRUCT_ONLY = G_PARAM_CONSTRUCT_ONLY
-    enumerator :: GTK_ARG_CHILD_ARG = b'10000'
+enum, bind(c)    !GtkCListDragPos
+    enumerator :: GTK_CLIST_DRAG_NONE
+    enumerator :: GTK_CLIST_DRAG_BEFORE
+    enumerator :: GTK_CLIST_DRAG_INTO
+    enumerator :: GTK_CLIST_DRAG_AFTER
+end enum
+ 
+enum, bind(c)    !GtkButtonAction
+    enumerator :: GTK_BUTTON_IGNORED = 0
+    enumerator :: GTK_BUTTON_SELECTS = b'1'
+    enumerator :: GTK_BUTTON_DRAGS = b'10'
+    enumerator :: GTK_BUTTON_EXPANDS = b'100'
+end enum
+enum, bind(c)    !GtkTreeModelFlags
+    enumerator :: GTK_TREE_MODEL_ITERS_PERSIST = b'1'
+    enumerator :: GTK_TREE_MODEL_LIST_ONLY = b'10'
+end enum
+enum, bind(c)    !GtkAccelFlags
+    enumerator :: GTK_ACCEL_VISIBLE = b'1' 
+    enumerator :: GTK_ACCEL_LOCKED = b'10' 
+    enumerator :: GTK_ACCEL_MASK = z'07'
+end enum
+enum, bind(c)    !GtkNotebookTab
+    enumerator :: GTK_NOTEBOOK_TAB_FIRST
+    enumerator :: GTK_NOTEBOOK_TAB_LAST
+end enum
+enum, bind(c)    !GtkPrivateFlags
+    enumerator :: PRIVATE_GTK_USER_STYLE = b'1'
+    enumerator :: PRIVATE_GTK_RESIZE_PENDING = b'100'
+    enumerator :: PRIVATE_GTK_HAS_POINTER = b'1000' 
+    enumerator :: PRIVATE_GTK_SHADOWED = b'10000' 
+    enumerator :: PRIVATE_GTK_HAS_SHAPE_MASK = b'100000'
+    enumerator :: PRIVATE_GTK_IN_REPARENT = b'1000000'
+    enumerator :: PRIVATE_GTK_DIRECTION_SET = b'10000000' 
+    enumerator :: PRIVATE_GTK_DIRECTION_LTR = b'100000000' 
+    enumerator :: PRIVATE_GTK_ANCHORED = b'1000000000' 
+    enumerator :: PRIVATE_GTK_CHILD_VISIBLE = b'10000000000' 
+    enumerator :: PRIVATE_GTK_REDRAW_ON_ALLOC = b'100000000000' 
+    enumerator :: PRIVATE_GTK_ALLOC_NEEDED = b'1000000000000' 
+    enumerator :: PRIVATE_GTK_REQUEST_NEEDED = b'10000000000000' 
+end enum
+enum, bind(c)    !GtkDebugFlag
+    enumerator :: GTK_DEBUG_MISC = b'1'
+    enumerator :: GTK_DEBUG_PLUGSOCKET = b'10'
+    enumerator :: GTK_DEBUG_TEXT = b'100'
+    enumerator :: GTK_DEBUG_TREE = b'1000'
+    enumerator :: GTK_DEBUG_UPDATES = b'10000'
+    enumerator :: GTK_DEBUG_KEYBINDINGS = b'100000'
+    enumerator :: GTK_DEBUG_MULTIHEAD = b'1000000'
+    enumerator :: GTK_DEBUG_MODULES = b'10000000'
+    enumerator :: GTK_DEBUG_GEOMETRY = b'100000000'
+    enumerator :: GTK_DEBUG_ICONTHEME = b'1000000000'
+    enumerator :: GTK_DEBUG_PRINTING = b'10000000000'
+    enumerator :: GTK_DEBUG_BUILDER = b'100000000000'
+end enum
+enum, bind(c)    !GtkIconLookupFlags
+    enumerator :: GTK_ICON_LOOKUP_NO_SVG = b'1'
+    enumerator :: GTK_ICON_LOOKUP_FORCE_SVG = b'10'
+    enumerator :: GTK_ICON_LOOKUP_USE_BUILTIN = b'100'
+    enumerator :: GTK_ICON_LOOKUP_GENERIC_FALLBACK = b'1000'
+    enumerator :: GTK_ICON_LOOKUP_FORCE_SIZE = b'10000'
+end enum
+ 
+enum, bind(c)    !GtkIconThemeError
+    enumerator :: GTK_ICON_THEME_NOT_FOUND
+    enumerator :: GTK_ICON_THEME_FAILED
+end enum
+enum, bind(c)    !GtkCTreePos
+    enumerator :: GTK_CTREE_POS_BEFORE
+    enumerator :: GTK_CTREE_POS_AS_CHILD
+    enumerator :: GTK_CTREE_POS_AFTER
+end enum
+ 
+enum, bind(c)    !GtkCTreeLineStyle
+    enumerator :: GTK_CTREE_LINES_NONE
+    enumerator :: GTK_CTREE_LINES_SOLID
+    enumerator :: GTK_CTREE_LINES_DOTTED
+    enumerator :: GTK_CTREE_LINES_TABBED
+end enum
+ 
+enum, bind(c)    !GtkCTreeExpanderStyle
+    enumerator :: GTK_CTREE_EXPANDER_NONE
+    enumerator :: GTK_CTREE_EXPANDER_SQUARE
+    enumerator :: GTK_CTREE_EXPANDER_TRIANGLE
+    enumerator :: GTK_CTREE_EXPANDER_CIRCULAR
+end enum
+ 
+enum, bind(c)    !GtkCTreeExpansionType
+    enumerator :: GTK_CTREE_EXPANSION_EXPAND
+    enumerator :: GTK_CTREE_EXPANSION_EXPAND_RECURSIVE
+    enumerator :: GTK_CTREE_EXPANSION_COLLAPSE
+    enumerator :: GTK_CTREE_EXPANSION_COLLAPSE_RECURSIVE
+    enumerator :: GTK_CTREE_EXPANSION_TOGGLE
+    enumerator :: GTK_CTREE_EXPANSION_TOGGLE_RECURSIVE
 end enum
 enum, bind(c)    !GtkPrintStatus
     enumerator :: GTK_PRINT_STATUS_INITIAL
@@ -1714,18 +1611,49 @@ enum, bind(c)    !GtkPrintError
     enumerator :: GTK_PRINT_ERROR_NOMEM
     enumerator :: GTK_PRINT_ERROR_INVALID_FILE
 end enum
-enum, bind(c)    !GtkDestDefaults
-    enumerator :: GTK_DEST_DEFAULT_MOTION = b'1' 
-    enumerator :: GTK_DEST_DEFAULT_HIGHLIGHT = b'10' 
-    enumerator :: GTK_DEST_DEFAULT_DROP = b'100' 
-    enumerator :: GTK_DEST_DEFAULT_ALL = z'07'
+enum, bind(c)    !GtkSpinButtonUpdatePolicy
+    enumerator :: GTK_UPDATE_ALWAYS
+    enumerator :: GTK_UPDATE_IF_VALID
 end enum
  
-enum, bind(c)    !GtkTargetFlags
-    enumerator :: GTK_TARGET_SAME_APP = b'1' 
-    enumerator :: GTK_TARGET_SAME_WIDGET = b'10' 
-    enumerator :: GTK_TARGET_OTHER_APP = b'100' 
-    enumerator :: GTK_TARGET_OTHER_WIDGET = b'1000' 
+enum, bind(c)    !GtkSpinType
+    enumerator :: GTK_SPIN_STEP_FORWARD
+    enumerator :: GTK_SPIN_STEP_BACKWARD
+    enumerator :: GTK_SPIN_PAGE_FORWARD
+    enumerator :: GTK_SPIN_PAGE_BACKWARD
+    enumerator :: GTK_SPIN_HOME
+    enumerator :: GTK_SPIN_END
+    enumerator :: GTK_SPIN_USER_DEFINED
+end enum
+enum, bind(c)    !GtkTreeViewDropPosition
+    enumerator :: GTK_TREE_VIEW_DROP_BEFORE
+    enumerator :: GTK_TREE_VIEW_DROP_AFTER
+    enumerator :: GTK_TREE_VIEW_DROP_INTO_OR_BEFORE
+    enumerator :: GTK_TREE_VIEW_DROP_INTO_OR_AFTER
+end enum
+enum, bind(c)    !GtkDialogFlags
+    enumerator :: GTK_DIALOG_MODAL = b'1' 
+    enumerator :: GTK_DIALOG_DESTROY_WITH_PARENT = b'10' 
+    enumerator :: GTK_DIALOG_NO_SEPARATOR = b'100' 
+end enum
+ 
+enum, bind(c)    !GtkResponseType
+    enumerator :: GTK_RESPONSE_NONE = -1
+    enumerator :: GTK_RESPONSE_REJECT = -2
+    enumerator :: GTK_RESPONSE_ACCEPT = -3
+    enumerator :: GTK_RESPONSE_DELETE_EVENT = -4
+    enumerator :: GTK_RESPONSE_OK = -5
+    enumerator :: GTK_RESPONSE_CANCEL = -6
+    enumerator :: GTK_RESPONSE_CLOSE = -7
+    enumerator :: GTK_RESPONSE_YES = -8
+    enumerator :: GTK_RESPONSE_NO = -9
+    enumerator :: GTK_RESPONSE_APPLY = -10
+    enumerator :: GTK_RESPONSE_HELP = -11
+end enum
+enum, bind(c)    !GtkTreeViewColumnSizing
+    enumerator :: GTK_TREE_VIEW_COLUMN_GROW_ONLY
+    enumerator :: GTK_TREE_VIEW_COLUMN_AUTOSIZE
+    enumerator :: GTK_TREE_VIEW_COLUMN_FIXED
 end enum
 enum, bind(c)    !LoadState
     enumerator :: LOAD_EMPTY 
@@ -1750,36 +1678,140 @@ enum, bind(c)    !OperationMode
     enumerator :: OPERATION_MODE_SEARCH
     enumerator :: OPERATION_MODE_RECENT
 end enum
-enum, bind(c)    !GtkWidgetFlags
-    enumerator :: GTK_TOPLEVEL = b'10000'
-    enumerator :: GTK_NO_WINDOW = b'100000'
-    enumerator :: GTK_REALIZED = b'1000000'
-    enumerator :: GTK_MAPPED = b'10000000'
-    enumerator :: GTK_VISIBLE = b'100000000'
-    enumerator :: GTK_SENSITIVE = b'1000000000'
-    enumerator :: GTK_PARENT_SENSITIVE = b'10000000000'
-    enumerator :: GTK_CAN_FOCUS = b'100000000000'
-    enumerator :: GTK_HAS_FOCUS = b'1000000000000'
-    enumerator :: GTK_CAN_DEFAULT = b'10000000000000'
-    enumerator :: GTK_HAS_DEFAULT = b'100000000000000'
-    enumerator :: GTK_HAS_GRAB = b'1000000000000000'
-    enumerator :: GTK_RC_STYLE = b'10000000000000000'
-    enumerator :: GTK_COMPOSITE_CHILD = b'100000000000000000'
-    enumerator :: GTK_NO_REPARENT = b'1000000000000000000'
-    enumerator :: GTK_APP_PAINTABLE = b'10000000000000000000'
-    enumerator :: GTK_RECEIVES_DEFAULT = b'100000000000000000000'
-    enumerator :: GTK_DOUBLE_BUFFERED = b'1000000000000000000000'
-    enumerator :: GTK_NO_SHOW_ALL = b'10000000000000000000000'
+enum, bind(c)    !GtkTreeViewMode
+    enumerator :: GTK_TREE_VIEW_LINE 
+    enumerator :: GTK_TREE_VIEW_ITEM
+end enum
+enum, bind(c)    !GtkCellRendererState
+    enumerator :: GTK_CELL_RENDERER_SELECTED = b'1'
+    enumerator :: GTK_CELL_RENDERER_PRELIT = b'10'
+    enumerator :: GTK_CELL_RENDERER_INSENSITIVE = b'100'
+    enumerator :: GTK_CELL_RENDERER_SORTED = b'1000'
+    enumerator :: GTK_CELL_RENDERER_FOCUSED = b'10000'
 end enum
  
-enum, bind(c)    !GtkWidgetHelpType
-    enumerator :: GTK_WIDGET_HELP_TOOLTIP
-    enumerator :: GTK_WIDGET_HELP_WHATS_THIS
+enum, bind(c)    !GtkCellRendererMode
+    enumerator :: GTK_CELL_RENDERER_MODE_INERT
+    enumerator :: GTK_CELL_RENDERER_MODE_ACTIVATABLE
+    enumerator :: GTK_CELL_RENDERER_MODE_EDITABLE
 end enum
-enum, bind(c)    !GtkTextBufferTargetInfo
-    enumerator :: GTK_TEXT_BUFFER_TARGET_INFO_BUFFER_CONTENTS = - 1
-    enumerator :: GTK_TEXT_BUFFER_TARGET_INFO_RICH_TEXT = - 2
-    enumerator :: GTK_TEXT_BUFFER_TARGET_INFO_TEXT = - 3
+enum, bind(c)    !GtkToolbarChildType
+    enumerator :: GTK_TOOLBAR_CHILD_SPACE
+    enumerator :: GTK_TOOLBAR_CHILD_BUTTON
+    enumerator :: GTK_TOOLBAR_CHILD_TOGGLEBUTTON
+    enumerator :: GTK_TOOLBAR_CHILD_RADIOBUTTON
+    enumerator :: GTK_TOOLBAR_CHILD_WIDGET
+end enum
+ 
+enum, bind(c)    !GtkToolbarSpaceStyle
+    enumerator :: GTK_TOOLBAR_SPACE_EMPTY
+    enumerator :: GTK_TOOLBAR_SPACE_LINE
+end enum
+enum, bind(c)    !GtkFileFilterFlags
+    enumerator :: GTK_FILE_FILTER_FILENAME = b'1'
+    enumerator :: GTK_FILE_FILTER_URI = b'10'
+    enumerator :: GTK_FILE_FILTER_DISPLAY_NAME = b'100'
+    enumerator :: GTK_FILE_FILTER_MIME_TYPE = b'1000'
+end enum
+enum, bind(c)    !GtkObjectFlags
+    enumerator :: GTK_IN_DESTRUCTION = b'1' 
+    enumerator :: GTK_FLOATING = b'10'
+    enumerator :: GTK_RESERVED_1 = b'100'
+    enumerator :: GTK_RESERVED_2 = b'1000'
+end enum
+ 
+enum, bind(c)    !GtkArgFlags
+    enumerator :: GTK_ARG_READABLE = G_PARAM_READABLE
+    enumerator :: GTK_ARG_WRITABLE = G_PARAM_WRITABLE
+    enumerator :: GTK_ARG_CONSTRUCT = G_PARAM_CONSTRUCT
+    enumerator :: GTK_ARG_CONSTRUCT_ONLY = G_PARAM_CONSTRUCT_ONLY
+    enumerator :: GTK_ARG_CHILD_ARG = b'10000'
+end enum
+enum, bind(c)    !GtkTextSearchFlags
+    enumerator :: GTK_TEXT_SEARCH_VISIBLE_ONLY = b'1'
+    enumerator :: GTK_TEXT_SEARCH_TEXT_ONLY = b'10'
+ 
+end enum
+enum, bind(c)    !GtkToolPaletteDragTargets
+    enumerator :: GTK_TOOL_PALETTE_DRAG_ITEMS = b'1'
+    enumerator :: GTK_TOOL_PALETTE_DRAG_GROUPS = b'10'
+end enum
+enum, bind(c)    !GtkProgressBarStyle
+    enumerator :: GTK_PROGRESS_CONTINUOUS
+    enumerator :: GTK_PROGRESS_DISCRETE
+end enum
+ 
+enum, bind(c)    !GtkProgressBarOrientation
+    enumerator :: GTK_PROGRESS_LEFT_TO_RIGHT
+    enumerator :: GTK_PROGRESS_RIGHT_TO_LEFT
+    enumerator :: GTK_PROGRESS_BOTTOM_TO_TOP
+    enumerator :: GTK_PROGRESS_TOP_TO_BOTTOM
+end enum
+enum, bind(c)    !GtkFileChooserProp
+    enumerator :: GTK_FILE_CHOOSER_PROP_FIRST = z'1000'
+    enumerator :: GTK_FILE_CHOOSER_PROP_ACTION = GTK_FILE_CHOOSER_PROP_FIRST
+    enumerator :: GTK_FILE_CHOOSER_PROP_FILE_SYSTEM_BACKEND
+    enumerator :: GTK_FILE_CHOOSER_PROP_FILTER
+    enumerator :: GTK_FILE_CHOOSER_PROP_LOCAL_ONLY
+    enumerator :: GTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET 
+    enumerator :: GTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET_ACTIVE
+    enumerator :: GTK_FILE_CHOOSER_PROP_USE_PREVIEW_LABEL
+    enumerator :: GTK_FILE_CHOOSER_PROP_EXTRA_WIDGET
+    enumerator :: GTK_FILE_CHOOSER_PROP_SELECT_MULTIPLE
+    enumerator :: GTK_FILE_CHOOSER_PROP_SHOW_HIDDEN
+    enumerator :: GTK_FILE_CHOOSER_PROP_DO_OVERWRITE_CONFIRMATION
+    enumerator :: GTK_FILE_CHOOSER_PROP_CREATE_FOLDERS
+    enumerator :: GTK_FILE_CHOOSER_PROP_LAST = GTK_FILE_CHOOSER_PROP_CREATE_FOLDERS
+end enum
+enum, bind(c)    !GtkImageType
+    enumerator :: GTK_IMAGE_EMPTY
+    enumerator :: GTK_IMAGE_PIXMAP
+    enumerator :: GTK_IMAGE_IMAGE
+    enumerator :: GTK_IMAGE_PIXBUF
+    enumerator :: GTK_IMAGE_STOCK
+    enumerator :: GTK_IMAGE_ICON_SET
+    enumerator :: GTK_IMAGE_ANIMATION
+    enumerator :: GTK_IMAGE_ICON_NAME
+    enumerator :: GTK_IMAGE_GICON
+end enum
+enum, bind(c)    !GtkUIManagerItemType
+    enumerator :: GTK_UI_MANAGER_AUTO = 0
+    enumerator :: GTK_UI_MANAGER_MENUBAR = b'1'
+    enumerator :: GTK_UI_MANAGER_MENU = b'10'
+    enumerator :: GTK_UI_MANAGER_TOOLBAR = b'100'
+    enumerator :: GTK_UI_MANAGER_PLACEHOLDER = b'1000'
+    enumerator :: GTK_UI_MANAGER_POPUP = b'10000'
+    enumerator :: GTK_UI_MANAGER_MENUITEM = b'100000'
+    enumerator :: GTK_UI_MANAGER_TOOLITEM = b'1000000'
+    enumerator :: GTK_UI_MANAGER_SEPARATOR = b'10000000'
+    enumerator :: GTK_UI_MANAGER_ACCELERATOR = b'100000000'
+    enumerator :: GTK_UI_MANAGER_POPUP_WITH_ACCELS = b'1000000000'
+end enum
+enum, bind(c)    !GtkDestDefaults
+    enumerator :: GTK_DEST_DEFAULT_MOTION = b'1' 
+    enumerator :: GTK_DEST_DEFAULT_HIGHLIGHT = b'10' 
+    enumerator :: GTK_DEST_DEFAULT_DROP = b'100' 
+    enumerator :: GTK_DEST_DEFAULT_ALL = z'07'
+end enum
+ 
+enum, bind(c)    !GtkTargetFlags
+    enumerator :: GTK_TARGET_SAME_APP = b'1' 
+    enumerator :: GTK_TARGET_SAME_WIDGET = b'10' 
+    enumerator :: GTK_TARGET_OTHER_APP = b'100' 
+    enumerator :: GTK_TARGET_OTHER_WIDGET = b'1000' 
+end enum
+enum, bind(c)    !GtkTextWindowType
+    enumerator :: GTK_TEXT_WINDOW_PRIVATE
+    enumerator :: GTK_TEXT_WINDOW_WIDGET
+    enumerator :: GTK_TEXT_WINDOW_TEXT
+    enumerator :: GTK_TEXT_WINDOW_LEFT
+    enumerator :: GTK_TEXT_WINDOW_RIGHT
+    enumerator :: GTK_TEXT_WINDOW_TOP
+    enumerator :: GTK_TEXT_WINDOW_BOTTOM
+end enum
+enum, bind(c)    !GtkEntryIconPosition
+    enumerator :: GTK_ENTRY_ICON_PRIMARY
+    enumerator :: GTK_ENTRY_ICON_SECONDARY
 end enum
 enum, bind(c)    !GtkButtonsType
     enumerator :: GTK_BUTTONS_NONE
@@ -1788,6 +1820,17 @@ enum, bind(c)    !GtkButtonsType
     enumerator :: GTK_BUTTONS_CANCEL
     enumerator :: GTK_BUTTONS_YES_NO
     enumerator :: GTK_BUTTONS_OK_CANCEL
+end enum
+enum, bind(c)    !GtkBuilderError
+    enumerator :: GTK_BUILDER_ERROR_INVALID_TYPE_FUNCTION
+    enumerator :: GTK_BUILDER_ERROR_UNHANDLED_TAG
+    enumerator :: GTK_BUILDER_ERROR_MISSING_ATTRIBUTE
+    enumerator :: GTK_BUILDER_ERROR_INVALID_ATTRIBUTE
+    enumerator :: GTK_BUILDER_ERROR_INVALID_TAG
+    enumerator :: GTK_BUILDER_ERROR_MISSING_PROPERTY_VALUE
+    enumerator :: GTK_BUILDER_ERROR_INVALID_VALUE
+    enumerator :: GTK_BUILDER_ERROR_VERSION_MISMATCH
+    enumerator :: GTK_BUILDER_ERROR_DUPLICATE_ID
 end enum
 enum, bind(c)    !GtkAnchorType
     enumerator :: GTK_ANCHOR_CENTER
@@ -2212,95 +2255,29 @@ enum, bind(c)    !GtkDragResult
     enumerator :: GTK_DRAG_RESULT_GRAB_BROKEN
     enumerator :: GTK_DRAG_RESULT_ERROR
 end enum
-enum, bind(c)    !GtkCellType
-    enumerator :: GTK_CELL_EMPTY
-    enumerator :: GTK_CELL_TEXT
-    enumerator :: GTK_CELL_PIXMAP
-    enumerator :: GTK_CELL_PIXTEXT
-    enumerator :: GTK_CELL_WIDGET
+enum, bind(c)    !GtkFileChooserAction
+    enumerator :: GTK_FILE_CHOOSER_ACTION_OPEN
+    enumerator :: GTK_FILE_CHOOSER_ACTION_SAVE
+    enumerator :: GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
+    enumerator :: GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER
 end enum
  
-enum, bind(c)    !GtkCListDragPos
-    enumerator :: GTK_CLIST_DRAG_NONE
-    enumerator :: GTK_CLIST_DRAG_BEFORE
-    enumerator :: GTK_CLIST_DRAG_INTO
-    enumerator :: GTK_CLIST_DRAG_AFTER
+enum, bind(c)    !GtkFileChooserConfirmation
+    enumerator :: GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM
+    enumerator :: GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME
+    enumerator :: GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN
 end enum
  
-enum, bind(c)    !GtkButtonAction
-    enumerator :: GTK_BUTTON_IGNORED = 0
-    enumerator :: GTK_BUTTON_SELECTS = b'1'
-    enumerator :: GTK_BUTTON_DRAGS = b'10'
-    enumerator :: GTK_BUTTON_EXPANDS = b'100'
+enum, bind(c)    !GtkFileChooserError
+    enumerator :: GTK_FILE_CHOOSER_ERROR_NONEXISTENT
+    enumerator :: GTK_FILE_CHOOSER_ERROR_BAD_FILENAME
+    enumerator :: GTK_FILE_CHOOSER_ERROR_ALREADY_EXISTS
+    enumerator :: GTK_FILE_CHOOSER_ERROR_INCOMPLETE_HOSTNAME
 end enum
-enum, bind(c)    !GtkFileFilterFlags
-    enumerator :: GTK_FILE_FILTER_FILENAME = b'1'
-    enumerator :: GTK_FILE_FILTER_URI = b'10'
-    enumerator :: GTK_FILE_FILTER_DISPLAY_NAME = b'100'
-    enumerator :: GTK_FILE_FILTER_MIME_TYPE = b'1000'
-end enum
-enum, bind(c)    !GtkCalendarDisplayOptions
-    enumerator :: GTK_CALENDAR_SHOW_HEADING = b'1'
-    enumerator :: GTK_CALENDAR_SHOW_DAY_NAMES = b'10'
-    enumerator :: GTK_CALENDAR_NO_MONTH_CHANGE = b'100'
-    enumerator :: GTK_CALENDAR_SHOW_WEEK_NUMBERS = b'1000'
-    enumerator :: GTK_CALENDAR_WEEK_START_MONDAY = b'10000'
-    enumerator :: GTK_CALENDAR_SHOW_DETAILS = b'100000'
-end enum
-enum, bind(c)    !GtkSpinButtonUpdatePolicy
-    enumerator :: GTK_UPDATE_ALWAYS
-    enumerator :: GTK_UPDATE_IF_VALID
-end enum
- 
-enum, bind(c)    !GtkSpinType
-    enumerator :: GTK_SPIN_STEP_FORWARD
-    enumerator :: GTK_SPIN_STEP_BACKWARD
-    enumerator :: GTK_SPIN_PAGE_FORWARD
-    enumerator :: GTK_SPIN_PAGE_BACKWARD
-    enumerator :: GTK_SPIN_HOME
-    enumerator :: GTK_SPIN_END
-    enumerator :: GTK_SPIN_USER_DEFINED
-end enum
-enum, bind(c)    !GtkDebugFlag
-    enumerator :: GTK_DEBUG_MISC = b'1'
-    enumerator :: GTK_DEBUG_PLUGSOCKET = b'10'
-    enumerator :: GTK_DEBUG_TEXT = b'100'
-    enumerator :: GTK_DEBUG_TREE = b'1000'
-    enumerator :: GTK_DEBUG_UPDATES = b'10000'
-    enumerator :: GTK_DEBUG_KEYBINDINGS = b'100000'
-    enumerator :: GTK_DEBUG_MULTIHEAD = b'1000000'
-    enumerator :: GTK_DEBUG_MODULES = b'10000000'
-    enumerator :: GTK_DEBUG_GEOMETRY = b'100000000'
-    enumerator :: GTK_DEBUG_ICONTHEME = b'1000000000'
-    enumerator :: GTK_DEBUG_PRINTING = b'10000000000'
-    enumerator :: GTK_DEBUG_BUILDER = b'100000000000'
-end enum
-enum, bind(c)    !GtkFileChooserProp
-    enumerator :: GTK_FILE_CHOOSER_PROP_FIRST = z'1000'
-    enumerator :: GTK_FILE_CHOOSER_PROP_ACTION = GTK_FILE_CHOOSER_PROP_FIRST
-    enumerator :: GTK_FILE_CHOOSER_PROP_FILE_SYSTEM_BACKEND
-    enumerator :: GTK_FILE_CHOOSER_PROP_FILTER
-    enumerator :: GTK_FILE_CHOOSER_PROP_LOCAL_ONLY
-    enumerator :: GTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET 
-    enumerator :: GTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET_ACTIVE
-    enumerator :: GTK_FILE_CHOOSER_PROP_USE_PREVIEW_LABEL
-    enumerator :: GTK_FILE_CHOOSER_PROP_EXTRA_WIDGET
-    enumerator :: GTK_FILE_CHOOSER_PROP_SELECT_MULTIPLE
-    enumerator :: GTK_FILE_CHOOSER_PROP_SHOW_HIDDEN
-    enumerator :: GTK_FILE_CHOOSER_PROP_DO_OVERWRITE_CONFIRMATION
-    enumerator :: GTK_FILE_CHOOSER_PROP_CREATE_FOLDERS
-    enumerator :: GTK_FILE_CHOOSER_PROP_LAST = GTK_FILE_CHOOSER_PROP_CREATE_FOLDERS
-end enum
-enum, bind(c)    !GtkRecentSortType
-    enumerator :: GTK_RECENT_SORT_NONE = 0
-    enumerator :: GTK_RECENT_SORT_MRU
-    enumerator :: GTK_RECENT_SORT_LRU
-    enumerator :: GTK_RECENT_SORT_CUSTOM
-end enum
- 
-enum, bind(c)    !GtkRecentChooserError
-    enumerator :: GTK_RECENT_CHOOSER_ERROR_NOT_FOUND
-    enumerator :: GTK_RECENT_CHOOSER_ERROR_INVALID_URI
+enum, bind(c)    !GtkTextBufferTargetInfo
+    enumerator :: GTK_TEXT_BUFFER_TARGET_INFO_BUFFER_CONTENTS = - 1
+    enumerator :: GTK_TEXT_BUFFER_TARGET_INFO_RICH_TEXT = - 2
+    enumerator :: GTK_TEXT_BUFFER_TARGET_INFO_TEXT = - 3
 end enum
 enum, bind(c)    !GtkRecentFilterFlags
     enumerator :: GTK_RECENT_FILTER_URI = b'1'
@@ -2310,58 +2287,73 @@ enum, bind(c)    !GtkRecentFilterFlags
     enumerator :: GTK_RECENT_FILTER_GROUP = b'10000'
     enumerator :: GTK_RECENT_FILTER_AGE = b'100000'
 end enum
-enum, bind(c)    !GtkCTreePos
-    enumerator :: GTK_CTREE_POS_BEFORE
-    enumerator :: GTK_CTREE_POS_AS_CHILD
-    enumerator :: GTK_CTREE_POS_AFTER
+enum, bind(c)    !GtkAssistantPageType
+    enumerator :: GTK_ASSISTANT_PAGE_CONTENT
+    enumerator :: GTK_ASSISTANT_PAGE_INTRO
+    enumerator :: GTK_ASSISTANT_PAGE_CONFIRM
+    enumerator :: GTK_ASSISTANT_PAGE_SUMMARY
+    enumerator :: GTK_ASSISTANT_PAGE_PROGRESS
+end enum
+enum, bind(c)    !GtkSizeGroupMode
+    enumerator :: GTK_SIZE_GROUP_NONE
+    enumerator :: GTK_SIZE_GROUP_HORIZONTAL
+    enumerator :: GTK_SIZE_GROUP_VERTICAL
+    enumerator :: GTK_SIZE_GROUP_BOTH
+end enum
+enum, bind(c)    !GtkIconViewDropPosition
+    enumerator :: GTK_ICON_VIEW_NO_DROP
+    enumerator :: GTK_ICON_VIEW_DROP_INTO
+    enumerator :: GTK_ICON_VIEW_DROP_LEFT
+    enumerator :: GTK_ICON_VIEW_DROP_RIGHT
+    enumerator :: GTK_ICON_VIEW_DROP_ABOVE
+    enumerator :: GTK_ICON_VIEW_DROP_BELOW
+end enum
+enum, bind(c)    !GtkCalendarDisplayOptions
+    enumerator :: GTK_CALENDAR_SHOW_HEADING = b'1'
+    enumerator :: GTK_CALENDAR_SHOW_DAY_NAMES = b'10'
+    enumerator :: GTK_CALENDAR_NO_MONTH_CHANGE = b'100'
+    enumerator :: GTK_CALENDAR_SHOW_WEEK_NUMBERS = b'1000'
+    enumerator :: GTK_CALENDAR_WEEK_START_MONDAY = b'10000'
+    enumerator :: GTK_CALENDAR_SHOW_DETAILS = b'100000'
+end enum
+enum, bind(c)    !GtkWidgetFlags
+    enumerator :: GTK_TOPLEVEL = b'10000'
+    enumerator :: GTK_NO_WINDOW = b'100000'
+    enumerator :: GTK_REALIZED = b'1000000'
+    enumerator :: GTK_MAPPED = b'10000000'
+    enumerator :: GTK_VISIBLE = b'100000000'
+    enumerator :: GTK_SENSITIVE = b'1000000000'
+    enumerator :: GTK_PARENT_SENSITIVE = b'10000000000'
+    enumerator :: GTK_CAN_FOCUS = b'100000000000'
+    enumerator :: GTK_HAS_FOCUS = b'1000000000000'
+    enumerator :: GTK_CAN_DEFAULT = b'10000000000000'
+    enumerator :: GTK_HAS_DEFAULT = b'100000000000000'
+    enumerator :: GTK_HAS_GRAB = b'1000000000000000'
+    enumerator :: GTK_RC_STYLE = b'10000000000000000'
+    enumerator :: GTK_COMPOSITE_CHILD = b'100000000000000000'
+    enumerator :: GTK_NO_REPARENT = b'1000000000000000000'
+    enumerator :: GTK_APP_PAINTABLE = b'10000000000000000000'
+    enumerator :: GTK_RECEIVES_DEFAULT = b'100000000000000000000'
+    enumerator :: GTK_DOUBLE_BUFFERED = b'1000000000000000000000'
+    enumerator :: GTK_NO_SHOW_ALL = b'10000000000000000000000'
 end enum
  
-enum, bind(c)    !GtkCTreeLineStyle
-    enumerator :: GTK_CTREE_LINES_NONE
-    enumerator :: GTK_CTREE_LINES_SOLID
-    enumerator :: GTK_CTREE_LINES_DOTTED
-    enumerator :: GTK_CTREE_LINES_TABBED
+enum, bind(c)    !GtkWidgetHelpType
+    enumerator :: GTK_WIDGET_HELP_TOOLTIP
+    enumerator :: GTK_WIDGET_HELP_WHATS_THIS
 end enum
- 
-enum, bind(c)    !GtkCTreeExpanderStyle
-    enumerator :: GTK_CTREE_EXPANDER_NONE
-    enumerator :: GTK_CTREE_EXPANDER_SQUARE
-    enumerator :: GTK_CTREE_EXPANDER_TRIANGLE
-    enumerator :: GTK_CTREE_EXPANDER_CIRCULAR
-end enum
- 
-enum, bind(c)    !GtkCTreeExpansionType
-    enumerator :: GTK_CTREE_EXPANSION_EXPAND
-    enumerator :: GTK_CTREE_EXPANSION_EXPAND_RECURSIVE
-    enumerator :: GTK_CTREE_EXPANSION_COLLAPSE
-    enumerator :: GTK_CTREE_EXPANSION_COLLAPSE_RECURSIVE
-    enumerator :: GTK_CTREE_EXPANSION_TOGGLE
-    enumerator :: GTK_CTREE_EXPANSION_TOGGLE_RECURSIVE
-end enum
-enum, bind(c)    !GtkTreeViewMode
-    enumerator :: GTK_TREE_VIEW_LINE 
-    enumerator :: GTK_TREE_VIEW_ITEM
-end enum
-enum, bind(c)    !GtkNotebookTab
-    enumerator :: GTK_NOTEBOOK_TAB_FIRST
-    enumerator :: GTK_NOTEBOOK_TAB_LAST
-end enum
-enum, bind(c)    !GtkTreeViewColumnSizing
-    enumerator :: GTK_TREE_VIEW_COLUMN_GROW_ONLY
-    enumerator :: GTK_TREE_VIEW_COLUMN_AUTOSIZE
-    enumerator :: GTK_TREE_VIEW_COLUMN_FIXED
-end enum
-enum, bind(c)    !cairo_svg_version_t
-    enumerator :: CAIRO_SVG_VERSION_1_1
-    enumerator :: CAIRO_SVG_VERSION_1_2
+enum, bind(c)    !GtkRecentManagerError
+    enumerator :: GTK_RECENT_MANAGER_ERROR_NOT_FOUND
+    enumerator :: GTK_RECENT_MANAGER_ERROR_INVALID_URI
+    enumerator :: GTK_RECENT_MANAGER_ERROR_INVALID_ENCODING
+    enumerator :: GTK_RECENT_MANAGER_ERROR_NOT_REGISTERED
+    enumerator :: GTK_RECENT_MANAGER_ERROR_READ
+    enumerator :: GTK_RECENT_MANAGER_ERROR_WRITE
+    enumerator :: GTK_RECENT_MANAGER_ERROR_UNKNOWN
 end enum
 enum, bind(c)    !cairo_ps_level_t
     enumerator :: CAIRO_PS_LEVEL_2
     enumerator :: CAIRO_PS_LEVEL_3
-end enum
-enum, bind(c)    !cairo_pdf_version_t
-    enumerator :: CAIRO_PDF_VERSION_1_4
-    enumerator :: CAIRO_PDF_VERSION_1_5
 end enum
 enum, bind(c)    !cairo_status_t
     enumerator :: CAIRO_STATUS_SUCCESS = 0
@@ -2590,6 +2582,99 @@ enum, bind(c)    !cairo_region_overlap_t
     enumerator :: CAIRO_REGION_OVERLAP_OUT 
     enumerator :: CAIRO_REGION_OVERLAP_PART 
 end enum
+enum, bind(c)    !cairo_svg_version_t
+    enumerator :: CAIRO_SVG_VERSION_1_1
+    enumerator :: CAIRO_SVG_VERSION_1_2
+end enum
+enum, bind(c)    !cairo_pdf_version_t
+    enumerator :: CAIRO_PDF_VERSION_1_4
+    enumerator :: CAIRO_PDF_VERSION_1_5
+end enum
+enum, bind(c)    !PangoRenderPart
+    enumerator :: PANGO_RENDER_PART_FOREGROUND
+    enumerator :: PANGO_RENDER_PART_BACKGROUND
+    enumerator :: PANGO_RENDER_PART_UNDERLINE
+    enumerator :: PANGO_RENDER_PART_STRIKETHROUGH
+end enum
+enum, bind(c)    !PangoAttrType
+    enumerator :: PANGO_ATTR_INVALID 
+    enumerator :: PANGO_ATTR_LANGUAGE 
+    enumerator :: PANGO_ATTR_FAMILY 
+    enumerator :: PANGO_ATTR_STYLE 
+    enumerator :: PANGO_ATTR_WEIGHT 
+    enumerator :: PANGO_ATTR_VARIANT 
+    enumerator :: PANGO_ATTR_STRETCH 
+    enumerator :: PANGO_ATTR_SIZE 
+    enumerator :: PANGO_ATTR_FONT_DESC 
+    enumerator :: PANGO_ATTR_FOREGROUND 
+    enumerator :: PANGO_ATTR_BACKGROUND 
+    enumerator :: PANGO_ATTR_UNDERLINE 
+    enumerator :: PANGO_ATTR_STRIKETHROUGH 
+    enumerator :: PANGO_ATTR_RISE 
+    enumerator :: PANGO_ATTR_SHAPE 
+    enumerator :: PANGO_ATTR_SCALE 
+    enumerator :: PANGO_ATTR_FALLBACK 
+    enumerator :: PANGO_ATTR_LETTER_SPACING 
+    enumerator :: PANGO_ATTR_UNDERLINE_COLOR 
+    enumerator :: PANGO_ATTR_STRIKETHROUGH_COLOR
+    enumerator :: PANGO_ATTR_ABSOLUTE_SIZE 
+    enumerator :: PANGO_ATTR_GRAVITY 
+    enumerator :: PANGO_ATTR_GRAVITY_HINT 
+end enum
+ 
+enum, bind(c)    !PangoUnderline
+    enumerator :: PANGO_UNDERLINE_NONE
+    enumerator :: PANGO_UNDERLINE_SINGLE
+    enumerator :: PANGO_UNDERLINE_DOUBLE
+    enumerator :: PANGO_UNDERLINE_LOW
+    enumerator :: PANGO_UNDERLINE_ERROR
+end enum
+enum, bind(c)    !PangoCoverageLevel
+    enumerator :: PANGO_COVERAGE_NONE
+    enumerator :: PANGO_COVERAGE_FALLBACK
+    enumerator :: PANGO_COVERAGE_APPROXIMATE
+    enumerator :: PANGO_COVERAGE_EXACT
+end enum
+enum, bind(c)    !PangoTabAlign
+    enumerator :: PANGO_TAB_LEFT
+
+ 
+end enum
+enum, bind(c)    !PangoOTTableType
+    enumerator :: PANGO_OT_TABLE_GSUB
+    enumerator :: PANGO_OT_TABLE_GPOS
+end enum
+enum, bind(c)    !PangoBidiType
+    enumerator :: PANGO_BIDI_TYPE_L
+    enumerator :: PANGO_BIDI_TYPE_LRE
+    enumerator :: PANGO_BIDI_TYPE_LRO
+    enumerator :: PANGO_BIDI_TYPE_R
+    enumerator :: PANGO_BIDI_TYPE_AL
+    enumerator :: PANGO_BIDI_TYPE_RLE
+    enumerator :: PANGO_BIDI_TYPE_RLO
+    enumerator :: PANGO_BIDI_TYPE_PDF
+    enumerator :: PANGO_BIDI_TYPE_EN
+    enumerator :: PANGO_BIDI_TYPE_ES
+    enumerator :: PANGO_BIDI_TYPE_ET
+    enumerator :: PANGO_BIDI_TYPE_AN
+    enumerator :: PANGO_BIDI_TYPE_CS
+    enumerator :: PANGO_BIDI_TYPE_NSM
+    enumerator :: PANGO_BIDI_TYPE_BN
+    enumerator :: PANGO_BIDI_TYPE_B
+    enumerator :: PANGO_BIDI_TYPE_S
+    enumerator :: PANGO_BIDI_TYPE_WS
+    enumerator :: PANGO_BIDI_TYPE_ON
+end enum
+ 
+enum, bind(c)    !PangoDirection
+    enumerator :: PANGO_DIRECTION_LTR
+    enumerator :: PANGO_DIRECTION_RTL
+    enumerator :: PANGO_DIRECTION_TTB_LTR
+    enumerator :: PANGO_DIRECTION_TTB_RTL
+    enumerator :: PANGO_DIRECTION_WEAK_LTR
+    enumerator :: PANGO_DIRECTION_WEAK_RTL
+    enumerator :: PANGO_DIRECTION_NEUTRAL
+end enum
 enum, bind(c)    !PangoGravity
     enumerator :: PANGO_GRAVITY_SOUTH
     enumerator :: PANGO_GRAVITY_EAST
@@ -2602,22 +2687,6 @@ enum, bind(c)    !PangoGravityHint
     enumerator :: PANGO_GRAVITY_HINT_NATURAL
     enumerator :: PANGO_GRAVITY_HINT_STRONG
     enumerator :: PANGO_GRAVITY_HINT_LINE
-end enum
-enum, bind(c)    !PangoOTTableType
-    enumerator :: PANGO_OT_TABLE_GSUB
-    enumerator :: PANGO_OT_TABLE_GPOS
-end enum
-enum, bind(c)    !PangoCoverageLevel
-    enumerator :: PANGO_COVERAGE_NONE
-    enumerator :: PANGO_COVERAGE_FALLBACK
-    enumerator :: PANGO_COVERAGE_APPROXIMATE
-    enumerator :: PANGO_COVERAGE_EXACT
-end enum
-enum, bind(c)    !PangoRenderPart
-    enumerator :: PANGO_RENDER_PART_FOREGROUND
-    enumerator :: PANGO_RENDER_PART_BACKGROUND
-    enumerator :: PANGO_RENDER_PART_UNDERLINE
-    enumerator :: PANGO_RENDER_PART_STRIKETHROUGH
 end enum
 enum, bind(c)    !PangoScript
     enumerator :: PANGO_SCRIPT_INVALID_CODE = -1
@@ -2746,75 +2815,6 @@ enum, bind(c)    !PangoFontMask
     enumerator :: PANGO_FONT_MASK_SIZE = b'100000'
     enumerator :: PANGO_FONT_MASK_GRAVITY = b'1000000'
 end enum
-enum, bind(c)    !PangoBidiType
-    enumerator :: PANGO_BIDI_TYPE_L
-    enumerator :: PANGO_BIDI_TYPE_LRE
-    enumerator :: PANGO_BIDI_TYPE_LRO
-    enumerator :: PANGO_BIDI_TYPE_R
-    enumerator :: PANGO_BIDI_TYPE_AL
-    enumerator :: PANGO_BIDI_TYPE_RLE
-    enumerator :: PANGO_BIDI_TYPE_RLO
-    enumerator :: PANGO_BIDI_TYPE_PDF
-    enumerator :: PANGO_BIDI_TYPE_EN
-    enumerator :: PANGO_BIDI_TYPE_ES
-    enumerator :: PANGO_BIDI_TYPE_ET
-    enumerator :: PANGO_BIDI_TYPE_AN
-    enumerator :: PANGO_BIDI_TYPE_CS
-    enumerator :: PANGO_BIDI_TYPE_NSM
-    enumerator :: PANGO_BIDI_TYPE_BN
-    enumerator :: PANGO_BIDI_TYPE_B
-    enumerator :: PANGO_BIDI_TYPE_S
-    enumerator :: PANGO_BIDI_TYPE_WS
-    enumerator :: PANGO_BIDI_TYPE_ON
-end enum
- 
-enum, bind(c)    !PangoDirection
-    enumerator :: PANGO_DIRECTION_LTR
-    enumerator :: PANGO_DIRECTION_RTL
-    enumerator :: PANGO_DIRECTION_TTB_LTR
-    enumerator :: PANGO_DIRECTION_TTB_RTL
-    enumerator :: PANGO_DIRECTION_WEAK_LTR
-    enumerator :: PANGO_DIRECTION_WEAK_RTL
-    enumerator :: PANGO_DIRECTION_NEUTRAL
-end enum
-enum, bind(c)    !PangoTabAlign
-    enumerator :: PANGO_TAB_LEFT
-
- 
-end enum
-enum, bind(c)    !PangoAttrType
-    enumerator :: PANGO_ATTR_INVALID 
-    enumerator :: PANGO_ATTR_LANGUAGE 
-    enumerator :: PANGO_ATTR_FAMILY 
-    enumerator :: PANGO_ATTR_STYLE 
-    enumerator :: PANGO_ATTR_WEIGHT 
-    enumerator :: PANGO_ATTR_VARIANT 
-    enumerator :: PANGO_ATTR_STRETCH 
-    enumerator :: PANGO_ATTR_SIZE 
-    enumerator :: PANGO_ATTR_FONT_DESC 
-    enumerator :: PANGO_ATTR_FOREGROUND 
-    enumerator :: PANGO_ATTR_BACKGROUND 
-    enumerator :: PANGO_ATTR_UNDERLINE 
-    enumerator :: PANGO_ATTR_STRIKETHROUGH 
-    enumerator :: PANGO_ATTR_RISE 
-    enumerator :: PANGO_ATTR_SHAPE 
-    enumerator :: PANGO_ATTR_SCALE 
-    enumerator :: PANGO_ATTR_FALLBACK 
-    enumerator :: PANGO_ATTR_LETTER_SPACING 
-    enumerator :: PANGO_ATTR_UNDERLINE_COLOR 
-    enumerator :: PANGO_ATTR_STRIKETHROUGH_COLOR
-    enumerator :: PANGO_ATTR_ABSOLUTE_SIZE 
-    enumerator :: PANGO_ATTR_GRAVITY 
-    enumerator :: PANGO_ATTR_GRAVITY_HINT 
-end enum
- 
-enum, bind(c)    !PangoUnderline
-    enumerator :: PANGO_UNDERLINE_NONE
-    enumerator :: PANGO_UNDERLINE_SINGLE
-    enumerator :: PANGO_UNDERLINE_DOUBLE
-    enumerator :: PANGO_UNDERLINE_LOW
-    enumerator :: PANGO_UNDERLINE_ERROR
-end enum
 enum, bind(c)    !PangoAlignment
     enumerator :: PANGO_ALIGN_LEFT
     enumerator :: PANGO_ALIGN_CENTER
@@ -2832,11 +2832,6 @@ enum, bind(c)    !PangoEllipsizeMode
     enumerator :: PANGO_ELLIPSIZE_START
     enumerator :: PANGO_ELLIPSIZE_MIDDLE
     enumerator :: PANGO_ELLIPSIZE_END
-end enum
-enum, bind(c)    !XlibRgbDither
-    enumerator :: XLIB_RGB_DITHER_NONE
-    enumerator :: XLIB_RGB_DITHER_NORMAL
-    enumerator :: XLIB_RGB_DITHER_MAX
 end enum
 enum, bind(c)    !GdkPixbufAlphaMode
     enumerator :: GDK_PIXBUF_ALPHA_BILEVEL
@@ -2872,4 +2867,9 @@ enum, bind(c)    !GdkPixbufRotation
     enumerator :: GDK_PIXBUF_ROTATE_COUNTERCLOCKWISE = 90
     enumerator :: GDK_PIXBUF_ROTATE_UPSIDEDOWN = 180
     enumerator :: GDK_PIXBUF_ROTATE_CLOCKWISE = 270
+end enum
+enum, bind(c)    !XlibRgbDither
+    enumerator :: XLIB_RGB_DITHER_NONE
+    enumerator :: XLIB_RGB_DITHER_NORMAL
+    enumerator :: XLIB_RGB_DITHER_MAX
 end enum

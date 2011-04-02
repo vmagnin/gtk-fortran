@@ -70,7 +70,6 @@ end module handlers
 
 program mandelbrot
   use iso_c_binding
-  use gtk
   use handlers
   implicit none
   type(c_ptr) :: my_window
@@ -133,7 +132,6 @@ end program mandelbrot
     ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
     ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
     use iso_c_binding
-    use gtk
     use handlers
     implicit none
 

@@ -169,9 +169,6 @@ end module handlers
 
 
 program notebook_example
-  use iso_c_binding
-  use gtk
-  use widgets
   use handlers
 
   implicit none

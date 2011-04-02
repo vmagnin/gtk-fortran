@@ -276,7 +276,7 @@ PATH_DICT = { "/usr/include/gtk-2.0":"gtk-auto.f90",
               "/usr/include/pango-1.0":"gtk-auto.f90",
               "/usr/include/glib-2.0":"gtk-auto.f90",
               "/usr/include/gdk-pixbuf-2.0":"gtk-auto.f90",
-              "/usr/include/atk-1.0":"gtk-auto.f90"}
+              "/usr/include/atk-1.0":"gtk-auto.f90",}
 
 #*************************************************************************
 # Pass 1 : to find all enum types, all pointers to functions (funptr)
@@ -335,6 +335,13 @@ for library_path in PATH_DICT.keys():
             if c_file_name in ["gstdio.h", "giochannel.h"]: #, "gmessages.h"] :
                 continue    # Go to next file
 
+            module_name = re.search("^([^.]+)[.]", c_file_name).group(1)
+            fmodule_file = open("../modules/" + module_name + ".f90", "w")
+            module_name = module_name.replace("-", "_")
+            if module_name == "pango_break":
+              module_name = "pango__break" # A subroutine has the same name
+            fmodule_file.write("module "+module_name+"\nuse iso_c_binding\nimplicit none\ninterface\n")
+
             whole_file = open(directory[0] + "/" + c_file_name, 'rU').read()
             nb_files += 1            
             # *************************
@@ -381,6 +388,8 @@ for library_path in PATH_DICT.keys():
             except IndexError:
                 write_error(ERRORS_FILE, directory[0], c_file_name, 
                             "No function to implement in this file", "", False)
+                fmodule_file.write("end interface\nend module "+module_name+"\n")
+                fmodule_file.close()
                 continue    # Next file
 
             # Preprocessing of the C prototypes:
@@ -518,7 +527,12 @@ for library_path in PATH_DICT.keys():
                     interface += 0*TAB + f_the_end + "\n\n" 
                     
                     f_file.write(interface)
+                    fmodule_file.write(interface)
                     nb_generated_interfaces += 1
+            
+            fmodule_file.write("end interface\nend module "+module_name+"\n")
+            fmodule_file.close()
+
           
 # *********************
 # End of the processing

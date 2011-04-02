@@ -89,7 +89,6 @@ end module handlers
 
 program gtkFortran
   use iso_c_binding
-  use gtk
   use handlers
   implicit none
 

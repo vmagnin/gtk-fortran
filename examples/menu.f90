@@ -149,7 +149,6 @@ end module handlers
 program simplemenu
 
   use iso_c_binding
-  use gtk
   use handlers
 
   implicit none

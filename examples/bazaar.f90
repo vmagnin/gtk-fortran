@@ -276,8 +276,6 @@ end subroutine test_enums
 
 
 program gtkFortran
-  use iso_c_binding
-  use gtk
   use handlers
   use my_widgets
   implicit none
@@ -355,6 +353,3 @@ program gtkFortran
   print *, my_string
   print *, TRIM(my_string)
 end program gtkFortran
-
-
-
