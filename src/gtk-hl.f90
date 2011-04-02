@@ -69,6 +69,7 @@ module gtk_hl
 
 contains
 
+  !+
   function hl_gtk_window_new(title, destroy, delete_event, data_destroy, &
        & data_delete_event, border, wsize, sensitive) result(win)
     ! Higher-level interface to make a gtk_window
@@ -84,6 +85,7 @@ contains
     ! WSIZE: integer(2): optional: Size of the window
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
+    !-
 
     type(c_ptr) :: win
     character(kind=c_char), dimension(*), intent(in), optional :: title
@@ -123,6 +125,7 @@ contains
 
   end function hl_gtk_window_new
 
+  !+
   function hl_gtk_button_new(label, clicked, data, tooltip, sensitive) &
        & result(but)
     ! Higher-level button
@@ -134,6 +137,7 @@ contains
     ! 		is held over the button.
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
+    !-
 
     type(c_ptr) :: but
     character(kind=c_char), dimension(*), intent(in) :: label
@@ -160,6 +164,7 @@ contains
 
   end function hl_gtk_button_new
 
+  !+
   function hl_gtk_check_button_new(label, toggled, data, tooltip, &
        & initial_state, sensitive) result(but)
     ! Higher level check box.
@@ -172,6 +177,7 @@ contains
     !               check_button.
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
+    !-
 
     type(c_ptr) :: but
     character(kind=c_char), dimension(*), intent(in) :: label
@@ -201,6 +207,7 @@ contains
 
   end function hl_gtk_check_button_new
 
+  !+
   function hl_gtk_radio_button_new(group, label, toggled, data, tooltip, &
        & sensitive) result(but)
     ! Radio button
@@ -219,6 +226,7 @@ contains
     ! TOOLTIP: string: optional: A tooltip for the radio button
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
+    !-
 
     type(c_ptr) :: but
     type(c_ptr), intent(inout) :: group
@@ -245,6 +253,7 @@ contains
 
   end function hl_gtk_radio_button_new
 
+  !+
   subroutine hl_gtk_radio_group_set_select(group, index)
     ! Set the indexth button of a radio group
     !
@@ -252,6 +261,7 @@ contains
     ! 		the radio menu
     ! INDEX: integer: required: The index of the button to set
     ! 		(starting from the first as 0).
+    !-
 
     type(c_ptr), intent(in) :: group
     integer(kind=c_int), intent(in) :: index
@@ -269,11 +279,13 @@ contains
 
   end subroutine hl_gtk_radio_group_set_select
 
+  !+
   function hl_gtk_radio_group_get_select(group) result(index)
     ! Find the selected button in a radio group.
     !
     ! GROUP: c_ptr: required: The group of the last button added to
     ! 		the radio menu
+    !+
 
     integer(kind=c_int) :: index
     type(c_ptr), intent(in) :: group
@@ -295,6 +307,7 @@ contains
     end do
   end function hl_gtk_radio_group_get_select
 
+  !+
   function hl_gtk_entry_new(len, editable, activate, data, tooltip, value, &
        & sensitive) result(entry)
     ! Higher level text entry box
@@ -309,6 +322,7 @@ contains
     ! VALUE: string: optional: An initial value for the entry box.
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
+    !-
 
     type(c_ptr) :: entry
     integer, intent(in), optional :: len
@@ -344,6 +358,7 @@ contains
 
   end function hl_gtk_entry_new
 
+  !+
   function hl_gtk_list1_new(scroll, width, changed, data, multiple, &
        & sensitive, tooltip, title, height) result(list)
     ! A single column selectable list based on the GTK Tree View
@@ -360,6 +375,7 @@ contains
     ! TITLE: string: optional: Title for the visible column.
     ! HEIGHT: integer: optional: The height of the display (this is
     !            actually the height of the scroll box).
+    !-
 
     type(c_ptr) :: list
     type(c_ptr), intent(out) :: scroll
@@ -447,6 +463,7 @@ contains
 
   end function hl_gtk_list1_new
 
+  !+
   subroutine hl_gtk_list1_ins(list, text, row)
     ! Insert a row into a list
     !
@@ -454,6 +471,7 @@ contains
     ! TEXT: string: required: The text to insert.
     ! ROW: integer: optional: The row at which to insert the text
     ! 		(omit to append)
+    !-
 
     type(c_ptr), intent(in) :: list
     character(kind=c_char), dimension(*), intent(in), target :: text
@@ -500,11 +518,13 @@ contains
     end if
   end subroutine hl_gtk_list1_ins
 
+  !+
   subroutine hl_gtk_list1_rem(list, row)
     ! Remove a row or clear a list
     !
     ! LIST: c_ptr: required: The list to modify
     ! ROW: integer: optional: The row to remove, if absent clear the list
+    !-
 
     type(c_ptr), intent(in) :: list
     integer(kind=c_int), optional, intent(in) :: row
@@ -542,6 +562,7 @@ contains
     end if
   end subroutine hl_gtk_list1_rem
 
+  !+
   function hl_gtk_list1_get_selections(list, indices, selection) result(count)
     ! Get the indices of the selected rows
     !
@@ -554,8 +575,9 @@ contains
     !           is ignored. This is most often used in the callback routine
     !           for the changed signal when that needs to find which element(s)
     !           are selected.
-    ! 
+    !
     ! Returns the number of selections.
+    !-
 
     integer(kind=c_int) :: count
     type(c_ptr), intent(in) :: list
@@ -609,11 +631,13 @@ contains
 
   end function hl_gtk_list1_get_selections
 
+  !+
   function hl_gtk_menu_new(orientation) result(menu)
     ! Menu initializer (mainly for consistency)
     !
     ! ORIENTATION: integer: optional: Whether to lay out the top level
     ! 		horizontaly or vertically.
+    !-
 
     type(c_ptr) :: menu
     integer(kind=c_int), intent(in), optional :: orientation
@@ -630,6 +654,7 @@ contains
 
   end function hl_gtk_menu_new
 
+  !+
   function hl_gtk_menu_submenu_new(menu, label, tooltip, pos) result(submenu)
     ! Make a submenu node
     !
@@ -638,6 +663,7 @@ contains
     ! TOOLTIP: string: optional: A tooltip for the submenu.
     ! POS: integer: optional: The position at which to insert the item
     ! 		(omit to append)
+    !-
 
     type(c_ptr) :: submenu
     type(c_ptr) :: menu
@@ -665,6 +691,7 @@ contains
 
   end function hl_gtk_menu_submenu_new
 
+  !+
   function hl_gtk_menu_item_new(menu, label, activate, data, tooltip, pos) &
        & result(item)
     ! Make a menu item or separator
@@ -678,6 +705,7 @@ contains
     ! TOOLTIP: string: optional: A tooltip for the menu item.
     ! POS: integer: optional: The position at which to insert the item
     ! 		(omit to append)
+    !-
 
     type(c_ptr) ::  item
     type(c_ptr) :: menu
@@ -719,12 +747,14 @@ contains
     if (present(tooltip)) call gtk_widget_set_tooltip_text(item, tooltip)
   end function hl_gtk_menu_item_new
 
+  !+
   function hl_gtk_progress_bar_new(orientation, step) result(bar)
     ! Intializer for a progress bar
     !
     ! ORIENTATION: integer: optional: The orientation of the bar.
     ! STEP: double: optional: The fractional step to advance when
     ! 		pulsing the bar
+    !-
 
     type(c_ptr) :: bar
     integer(kind=c_int), optional :: orientation
@@ -740,6 +770,7 @@ contains
 
   end function hl_gtk_progress_bar_new
 
+  !+
   subroutine hl_gtk_progress_bar_set_f(bar, val, string, text)
     ! Set the value of a progress bar )fraction or pulse)
     !
@@ -747,6 +778,7 @@ contains
     ! VAL: double: optional: The value to set. If absent, the bar is pulsed
     ! STRING: boolean: optional: Whether to put a string on the bar.
     ! TEXT: string: optional: Text to put in the bar, (overrides STRING)
+    !-
 
     type(c_ptr) :: bar
     real(kind=c_double), optional :: val
@@ -776,6 +808,8 @@ contains
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
     end if
   end subroutine hl_gtk_progress_bar_set_f
+
+  !+
   subroutine hl_gtk_progress_bar_set_ii(bar, val, maxv, string, text)
     ! Set the value of a progress bar (n of m)
     !
@@ -784,6 +818,7 @@ contains
     ! MAXV: int: required: The maximum value for the bar
     ! STRING: boolean: optional: Whether to put a string on the bar.
     ! TEXT: string: optional: Text to put in the bar, (overrides STRING)
+    !-
 
     type(c_ptr) :: bar
     integer(kind=c_int) :: val, maxv
@@ -806,5 +841,68 @@ contains
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
     end if
   end subroutine hl_gtk_progress_bar_set_ii
+
+  !+
+  function hl_gtk_message_dialog_show(message, button_set, title) &
+       & result(resp)
+    ! A DIY version of the message dialogue, needed because both creators
+    ! for the built in one are variadic and so not callable from Fortran.
+    !
+    ! MESSAGE: string(n): required: The message to display.
+    ! BUTTON_SET: integer: required: The set of buttons to display
+    ! TITLE: string: optional: Title for the window.
+    !
+    ! The return value is the response code, not the widget.
+
+    integer(kind=c_int) :: resp
+    character(len=*), dimension(:), intent(in) :: message
+    integer(kind=c_int), intent(in) :: button_set
+    character(kind=c_char), dimension(*), intent(in), optional :: title
+
+    type(c_ptr) :: dialog, content, junk
+    integer :: i
+
+    ! Create the dialog window and make it modal.
+
+    dialog=gtk_dialog_new()
+    call gtk_window_set_modal(dialog, TRUE)
+    if (present(title)) call gtk_window_set_title(dialog, title)
+
+    ! Get the content area and put the message in it.
+    content = gtk_dialog_get_content_area(dialog)
+
+    do i = 1, size(message)
+       junk = gtk_label_new(trim(message(i))//cnull)
+       call gtk_box_pack_start_defaults(content, junk)
+    end do
+
+    select case (button_set)
+    case (GTK_BUTTONS_NONE)
+    case (GTK_BUTTONS_OK)
+       junk = gtk_dialog_add_button(dialog, GTK_STOCK_OK, GTK_RESPONSE_OK)
+    case (GTK_BUTTONS_CLOSE)
+       junk = gtk_dialog_add_button(dialog, GTK_STOCK_CLOSE, &
+            & GTK_RESPONSE_CLOSE)
+    case (GTK_BUTTONS_CANCEL)
+       junk = gtk_dialog_add_button(dialog, GTK_STOCK_CANCEL, &
+            & GTK_RESPONSE_CANCEL)
+    case (GTK_BUTTONS_YES_NO)
+       junk = gtk_dialog_add_button(dialog, GTK_STOCK_YES, GTK_RESPONSE_YES)
+       junk = gtk_dialog_add_button(dialog, GTK_STOCK_NO, GTK_RESPONSE_NO)
+    case (GTK_BUTTONS_OK_CANCEL)
+       junk = gtk_dialog_add_button(dialog, GTK_STOCK_OK, GTK_RESPONSE_OK)
+       junk = gtk_dialog_add_button(dialog, GTK_STOCK_CANCEL, &
+            & GTK_RESPONSE_CANCEL)
+    case default
+       call gtk_widget_destroy(dialog)
+       resp = GTK_RESPONSE_NONE
+       return
+    end select
+
+    call gtk_widget_show_all (dialog)
+    resp = gtk_dialog_run(dialog)
+    call gtk_object_destroy(dialog)
+
+  end function hl_gtk_message_dialog_show
 
 end module gtk_hl
