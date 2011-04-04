@@ -73,7 +73,19 @@ end module
 
 
 module handlers
-  use gtk
+  use gtk, only: g_signal_connect, gtk_init, gtk_button_new, gtk_button_new_with_label, gtk_check_button_new, &
+  & gtk_check_button_new_with_label, gtk_container_add, gtk_container_set_border_width, &
+  & gtk_frame_new, gtk_label_new, gtk_main, gtk_main_quit, gtk_notebook_append_page, &
+  & gtk_notebook_get_current_page, gtk_notebook_get_group, gtk_notebook_get_n_pages, &
+  & gtk_notebook_get_show_border, gtk_notebook_get_show_tabs, gtk_notebook_get_tab_pos, &
+  & gtk_notebook_insert_page, gtk_notebook_new, gtk_notebook_next_page, &
+  & gtk_notebook_prepend_page, gtk_notebook_prev_page, gtk_notebook_remove_page, &
+  & gtk_notebook_set_current_page, gtk_notebook_set_group, gtk_notebook_set_show_border, &
+  & gtk_notebook_set_show_tabs, gtk_notebook_set_tab_detachable, gtk_notebook_set_tab_pos, &
+  & gtk_notebook_set_tab_reorderable, gtk_table_attach, gtk_table_attach_defaults, &
+  & gtk_table_new, gtk_widget_queue_draw, gtk_widget_set_size_request, gtk_widget_show, &
+  & gtk_widget_show_all, gtk_window_new, gtk_window_set_title, &
+  & FALSE, TRUE, CNULL, GTK_WINDOW_TOPLEVEL, GTK_POS_TOP
   use widgets
 
   implicit none
