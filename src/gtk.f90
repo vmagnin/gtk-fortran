@@ -58,7 +58,7 @@ module gtk
 contains
   subroutine g_signal_connect (instance, detailed_signal, c_handler, data0)
     use iso_c_binding, only: c_ptr, c_char, c_funptr
-    use glib, only: g_signal_connect_data
+    use g, only: g_signal_connect_data
     character(c_char):: detailed_signal(*)
     type(c_ptr)      :: instance
     type(c_funptr)   :: c_handler
