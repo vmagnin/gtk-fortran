@@ -21,13 +21,19 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see .
 !
-! gfortran -g gtk.f90 simplemenu.f90 -o simplemenu `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -g gtk.f90 menu.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! menu.xml must be copied to the same directory as the simplemenu executable!               
 ! Contributed by Jens Hunger
-! Last modified: 03-13-2011
+! Last modified: 05-04-2011
 
 module handlers
-  use gtk
+  use gtk, only: gtk_action_group_add_action, gtk_action_group_get_action, gtk_ac&
+  &tion_group_new, gtk_action_new, gtk_box_pack_start, gtk_container_add, gtk_mai&
+  &n, gtk_main_quit, gtk_ui_manager_add_ui, gtk_ui_manager_add_ui_from_file, gtk_&
+  &ui_manager_add_ui_from_string, gtk_ui_manager_get_widget, gtk_ui_manager_inser&
+  &t_action_group, gtk_ui_manager_new, gtk_vbox_new, gtk_widget_set_size_request,&
+  & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_title,&
+  &gtk_init, g_signal_connect, FALSE, TRUE, NULL, CNULL, GTK_WINDOW_TOPLEVEL
   implicit none
 
 contains
@@ -47,7 +53,7 @@ contains
 
 ! delete event
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     print *, "my delete_event"
@@ -57,7 +63,7 @@ contains
 ! GtkAction signals:
 ! open file
   function file_open (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "File open"
@@ -66,7 +72,7 @@ contains
 
 ! save file
   function file_save (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "File save"
@@ -75,7 +81,7 @@ contains
 
 ! close file
   function file_close (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "File close"
@@ -84,7 +90,7 @@ contains
 
 ! cut
   function cut (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Cut"
@@ -93,7 +99,7 @@ contains
 
 ! copy
   function copy (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Copy"
@@ -102,7 +108,7 @@ contains
 
 ! paste
   function paste (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Paste"
@@ -111,7 +117,7 @@ contains
   
 ! help
   function help (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Help"
@@ -120,7 +126,7 @@ contains
 
 ! menu dummy function
   function menu (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     !print *, "Menu"
@@ -147,10 +153,8 @@ end module handlers
 
 
 program simplemenu
-
   use iso_c_binding
   use handlers
-
   implicit none
 
   type ui_action

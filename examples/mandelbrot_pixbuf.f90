@@ -25,7 +25,16 @@
 ! Contributed by Jerry DeLisle and Vincent Magnin
 
 module handlers
-  use gtk
+  use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
+  &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
+  &idget_queue_draw, gtk_widget_show, gtk_window_new, gtk_window_set_default, gtk&
+  &_window_set_default_size, gtk_window_set_title, GDK_COLORSPACE_RGB,&
+  &gtk_init, g_signal_connect, FALSE, TRUE, NULL, CNULL, GTK_WINDOW_TOPLEVEL
+  use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
+  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
+  &buf_get_rowstride, gdk_pixbuf_new
+  use iso_c_binding
   implicit none
 
   integer(c_int) :: run_status = TRUE
@@ -124,72 +133,72 @@ program mandelbrot
 end program mandelbrot 
 
 
-  !*********************************************
-  ! A tribute to Benoit MANDELBROT (1924-2010)
-  ! http://en.wikipedia.org/wiki/Mandelbrot_set
-  !*********************************************
-  subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
-    ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
-    ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
-    use iso_c_binding
-    use handlers
-    implicit none
+!*********************************************
+! A tribute to Benoit MANDELBROT (1924-2010)
+! http://en.wikipedia.org/wiki/Mandelbrot_set
+!*********************************************
+subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
+  ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
+  ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
+  use iso_c_binding
+  use handlers
+  implicit none
 
-    type(c_ptr) :: my_drawing_area
-    integer(4) :: i, j, k, p, itermax
-    real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-    complex(8) :: c, z   
-    real(8)    :: scx, scy             ! scales
-    integer(1) :: red, green, blue     ! rgb color
-    real(8) :: system_time, t0, t1
+  type(c_ptr) :: my_drawing_area
+  integer(4) :: i, j, k, p, itermax
+  real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+  complex(8) :: c, z   
+  real(8)    :: scx, scy             ! scales
+  integer(1) :: red, green, blue     ! rgb color
+  real(8) :: system_time, t0, t1
+  
+  t0=system_time()
+  scx = ((xmax-xmin)/width)   ! x scale
+  scy = ((ymax-ymin)/height)  ! y scale
+  
+  do i=0, width-1
+    ! We provoke an expose_event once in a while to improve performances:
+    if (mod(i,10)==0) then
+      call gtk_widget_queue_draw(my_drawing_area)
+    end if
     
-    t0=system_time()
-    scx = ((xmax-xmin)/width)   ! x scale
-    scy = ((ymax-ymin)/height)  ! y scale
-    
-    do i=0, width-1
-      ! We provoke an expose_event once in a while to improve performances:
-      if (mod(i,10)==0) then
-        call gtk_widget_queue_draw(my_drawing_area)
+    x = xmin + scx * i
+    do j=0, height-1
+      y = ymin + scy * j
+      c = x + y*(0d0,1d0)   ! Starting point
+      z = (0d0, 0d0)        ! z0
+      k = 1
+      do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4d0)) 
+        z = z*z+c
+        k = k+1
+      end do
+      
+      if (k>itermax) then
+        ! Black pixel:
+        red   = 0
+        green = 0
+        blue  = 0
+      else
+        red   = min(255, k*2)
+        green = min(255, k*5)
+        blue  = min(255, k*10)
       end if
       
-      x = xmin + scx * i
-      do j=0, height-1
-        y = ymin + scy * j
-        c = x + y*(0d0,1d0)   ! Starting point
-        z = (0d0, 0d0)        ! z0
-        k = 1
-        do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4d0)) 
-          z = z*z+c
-          k = k+1
-        end do
-        
-        if (k>itermax) then
-          ! Black pixel:
-          red   = 0
-          green = 0
-          blue  = 0
-        else
-          red   = min(255, k*2)
-          green = min(255, k*5)
-          blue  = min(255, k*10)
-        end if
-        
-        ! We write in the pixbuffer:
-        p = i * nch + j * rowstride + 1
-        pixel(p)=char(red)
-        pixel(p+1)=char(green)
-        pixel(p+2)=char(blue)
-        pixel(p+3)=char(255)  ! Opacity (alpha channel)
+      ! We write in the pixbuffer:
+      p = i * nch + j * rowstride + 1
+      pixel(p)=char(red)
+      pixel(p+1)=char(green)
+      pixel(p+2)=char(blue)
+      pixel(p+3)=char(255)  ! Opacity (alpha channel)
 
-        ! This subrountine processes gtk events as needed during the computation.
-        call pending_events()
-        if (run_status == FALSE) return ! Exit if we had a delete event.
-      end do
+      ! This subrountine processes gtk events as needed during the computation.
+      call pending_events()
+      if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
-    t1=system_time()
-    print *, "System time = ", t1-t0
-  end subroutine mandelbrot_set
+  end do
+  t1=system_time()
+  print *, "System time = ", t1-t0
+end subroutine mandelbrot_set
 
 !***********************************************************
 !  system time since 00:00
