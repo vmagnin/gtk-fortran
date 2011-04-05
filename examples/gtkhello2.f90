@@ -26,7 +26,7 @@
 ! Last modified: 03-13-2011
 
 module handlers
-  use gtk
+  use gtk, only: gtk_main_quit, FALSE
   implicit none
 
 contains
@@ -69,7 +69,7 @@ contains
   end function button1clicked
 
   function button2clicked (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use iso_c_binding, only: c_ptr, c_int, c_associated, c_f_pointer
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
 
@@ -88,7 +88,12 @@ end module handlers
 
 
 program gtkFortran
-  use iso_c_binding
+  use iso_c_binding, only: c_ptr, c_funloc, c_loc
+  use gtk, only: gtk_init, gtk_window_new, GTK_WINDOW_TOPLEVEL, gtk_window_set_title, &
+      & gtk_container_set_border_width, g_signal_connect, gtk_hbox_new, gtk_container_add, &
+      & gtk_button_new_with_label, gtk_box_pack_start, gtk_widget_show, gtk_main, FALSE, &
+      & CNULL, TRUE
+  ! The "only" statement can divide the compilation time by a factor 10 !
   use handlers
   implicit none
 
