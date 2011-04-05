@@ -24,10 +24,10 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by Vincent Magnin, 01.28.2011, Python 2.6.6, Linux Ubuntu 10.10
-# Last modification:  03.13.2011
+# Contributed by Vincent Magnin, 01.28.2011, Python 2.7.1, Linux Ubuntu 11.04
+# Last modification:  05.04.2011
 
-""" This program generates the gtk-auto.f90 and gtkenums-auto.f90 files
+""" This program generates the *-auto.f90 files
     from the C header files of GTK+ in Linux.
     Command line:         python cfwrapper.py
     """
@@ -104,6 +104,16 @@ def write_error(errorsfile, direc, filename, message, proto, type_error):
         nb_type_errors += 1
     else:
         nb_errors += 1
+
+
+def multiline(ch, maxlength): 
+    """Split a long line in a multiline, following Fortran syntax."""
+    result = ""
+    while len(ch) > maxlength-1:
+        result += ch[0:maxlength-1] + "&\n"
+        ch = "&"+ ch[maxlength-1:]
+    result += ch
+    return result
 
 
 def set_bit_field(match):
@@ -349,13 +359,6 @@ for library_path in PATH_DICT.keys():
             if c_file_name in ["gstdio.h", "giochannel.h"]: #, "gmessages.h"] :
                 continue    # Go to next file
 
-            #module_name = re.search("^([^.]+)[.]", c_file_name).group(1)
-            #fmodule_file = open("../modules/" + module_name + ".f90", "w")
-            #module_name = module_name.replace("-", "_")
-            #if module_name == "pango_break":
-              #module_name = "pango__break" # A subroutine has the same name
-            #fmodule_file.write("module "+module_name+"\nuse iso_c_binding\nimplicit none\ninterface\n")
-
             whole_file = open(directory[0] + "/" + c_file_name, 'rU').read()
             nb_files += 1            
             # *************************
@@ -402,8 +405,6 @@ for library_path in PATH_DICT.keys():
             except IndexError:
                 write_error(ERRORS_FILE, directory[0], c_file_name, 
                             "No function to implement in this file", "", False)
-                #fmodule_file.write("end interface\nend module "+module_name+"\n")
-                #fmodule_file.close()
                 continue    # Next file
 
             # Preprocessing of the C prototypes:
@@ -526,14 +527,8 @@ for library_path in PATH_DICT.keys():
                 # Write the Fortran interface in the .f90 file:
                 if (error_flag == False):
                     interface = 0*TAB + "! " + prototype + "\n"
-                    
-                    # The first line must not be too long (<132):
                     first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
-                    #TODO: use the multiline() function from usemodules.py:
-                    while len(first_line) > 80:
-                        interface += first_line[0:80] + "&\n"
-                        first_line = 3*TAB + "&" + first_line[80:] 
-                    interface += first_line + " \n"
+                    interface += multiline(first_line, 80) + " \n"
                     
                     interface += 1*TAB + "use iso_c_binding, only: " + f_use + "\n"
                     if isfunction:
@@ -542,20 +537,18 @@ for library_path in PATH_DICT.keys():
                     interface += 0*TAB + f_the_end + "\n\n" 
                     
                     f_file.write(interface)
-                    index.append([module_name, f_name, F_FILE_NAME, c_file_name])
-                    #fmodule_file.write(interface)
+                    index.append([module_name, f_name, F_FILE_NAME, directory[0]+"/"+c_file_name, prototype])
                     nb_generated_interfaces += 1
             
     if module_name != "gtk":
         f_file.write("end interface\nend module "+module_name+"\n")
         f_file.close()
-            #fmodule_file.write("end interface\nend module "+module_name+"\n")
-            #fmodule_file.close()
-
           
 # *********************
 # End of the processing
 # *********************
+
+#TODO: use ";" instead of "," as CSV separator
 index_file = csv.writer(open("gtk-fortran-index.csv", "w"))
 index.sort()
 index_file.writerows(index)

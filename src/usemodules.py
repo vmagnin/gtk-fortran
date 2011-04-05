@@ -40,7 +40,7 @@ def multiline(ch, maxlength):
     result = ""
     while len(ch) > maxlength-1:
         result += ch[0:maxlength-1] + "&\n"
-        ch = "& "+ ch[maxlength-1:]
+        ch = "&"+ ch[maxlength-1:]
     result += ch
     return result
 
