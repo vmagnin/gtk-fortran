@@ -37,7 +37,10 @@ module widgets
 end module
 
 module handlers
-  use gtk
+  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
+  &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&
+  &FALSE, CNULL, NULL, gtk_init
+  use g, only: g_object_unref
   use widgets
   implicit none
 
