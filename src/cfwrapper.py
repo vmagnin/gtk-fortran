@@ -549,7 +549,7 @@ for library_path in PATH_DICT.keys():
 # *********************
 
 #TODO: use ";" instead of "," as CSV separator
-index_file = csv.writer(open("gtk-fortran-index.csv", "w"))
+index_file = csv.writer(open("gtk-fortran-index.csv", "w"), delimiter=";")
 index.sort()
 index_file.writerows(index)
 
