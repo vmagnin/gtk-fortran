@@ -35,7 +35,7 @@ module gtk_sup
   ! GValue: Pseudo type definition.
 
   use iso_c_binding
-  use gtk
+  use gtk, only: NULL, CNULL
 
   implicit none
 
@@ -317,17 +317,18 @@ module gtk_sup
 contains
   ! These 2 clear_ routines are only needed of you need to re-initialize
   ! the types. The definitions include the intial setting to zero or NULL.
-subroutine clear_gtktreeiter(iter)
-type(gtktreeiter), intent(inout) :: iter
+  subroutine clear_gtktreeiter(iter)
+    type(gtktreeiter), intent(inout) :: iter
 
-iter%intv=0
-iter%p0=NULL
-iter%p1=NULL
-iter%p2=NULL
-end subroutine clear_gtktreeiter
-subroutine clear_gvalue(gval)
-type(gvalue) :: gval
-gval%il=0
-gval%i64=(/0,0/)
-end subroutine clear_gvalue
+    iter%intv=0
+    iter%p0=NULL
+    iter%p1=NULL
+    iter%p2=NULL
+  end subroutine clear_gtktreeiter
+
+  subroutine clear_gvalue(gval)
+    type(gvalue) :: gval
+    gval%il=0
+    gval%i64=(/0,0/)
+  end subroutine clear_gvalue
 end module gtk_sup
