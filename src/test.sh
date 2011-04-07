@@ -2,6 +2,12 @@
 # Compilation of gtk-fortran and its examples
 # April 7th 2011
 
+rm *.o
+rm *.mod
+rm *.out
+rm ../examples/*.mod
+rm ../examples/*.out
+
 echo "gtk..."
 gfortran -c gdk-auto.f90 `pkg-config --cflags --libs gtk+-2.0`
 gfortran -c glib-auto.f90 `pkg-config --cflags --libs gtk+-2.0`
