@@ -26,7 +26,10 @@
 
 module handlers
   use gtk_hl
-
+  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
+  & gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, gtk_menu_item_new,&
+  & gtk_menu_new, gtk_object_destroy, gtk_vbox_new, gtk_widget_show, gtk_widget_s&
+  &how_all, gtk_window_new, gtk_init
   implicit none
 
   type(c_ptr) :: win, box, menubar, qbut,lab, smnu,mba

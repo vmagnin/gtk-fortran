@@ -36,7 +36,8 @@ module gtk_sup
 
   use iso_c_binding
   use gtk, only: NULL, CNULL
-
+  use g, only: alloca, g_type_fundamental
+  
   implicit none
 
   ! Gtype definitions

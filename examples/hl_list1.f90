@@ -26,7 +26,13 @@
 
 module l1_handlers
   use gtk_hl
-
+  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
+& gtk_check_button_new, gtk_container_add, gtk_entry_get_text, gtk_entry_get_te&
+&xt_length, gtk_entry_new, gtk_entry_set_text, gtk_hbox_new, gtk_main, gtk_main&
+&_quit, gtk_object_destroy, gtk_toggle_button_get_active, gtk_toggle_button_set&
+&_active, gtk_vbox_new, gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
+  use g, only: alloca
+  
   implicit none
 
   ! The widgets. (Strictly only those that need to be accessed
