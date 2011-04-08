@@ -564,6 +564,418 @@ subroutine gtk_print_settings_set_output_bin(settings, output_bin) bind(c)
   character(kind=c_char), dimension(*) :: output_bin
 end subroutine
 
+!   GType gtk_cell_area_get_type (void) G_GNUC_CONST;
+function gtk_cell_area_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_cell_area_get_type
+end function
+
+!  void gtk_cell_area_add (GtkCellArea *area, GtkCellRenderer *renderer);
+subroutine gtk_cell_area_add(area, renderer) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+end subroutine
+
+! void gtk_cell_area_remove (GtkCellArea *area, GtkCellRenderer *renderer);
+subroutine gtk_cell_area_remove(area, renderer) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+end subroutine
+
+! gboolean gtk_cell_area_has_renderer (GtkCellArea *area, GtkCellRenderer *renderer);
+function gtk_cell_area_has_renderer(area, renderer) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_area_has_renderer
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+end function
+
+! void gtk_cell_area_foreach (GtkCellArea *area, GtkCellCallback callback, gpointer callback_data);
+subroutine gtk_cell_area_foreach(area, callback, callback_data) bind(c) 
+  use iso_c_binding, only: c_ptr, c_funptr
+  type(c_ptr), value :: area
+  type(c_funptr), value :: callback
+  type(c_ptr), value :: callback_data
+end subroutine
+
+! void gtk_cell_area_foreach_alloc (GtkCellArea *area, GtkCellAreaContext *context, GtkWidget *widget, const GdkRectangle *cell_area, const GdkRectangle *background_area, GtkCellAllocCallback callback, gpointer callback_data);
+subroutine gtk_cell_area_foreach_alloc(area, context, widget, cell_area, backgr&
+&ound_area, callback, callback_data) bind(c) 
+  use iso_c_binding, only: c_ptr, c_funptr
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: cell_area
+  type(c_ptr), value :: background_area
+  type(c_funptr), value :: callback
+  type(c_ptr), value :: callback_data
+end subroutine
+
+! gint gtk_cell_area_event (GtkCellArea *area, GtkCellAreaContext *context, GtkWidget *widget, GdkEvent *event, const GdkRectangle *cell_area, GtkCellRendererState flags);
+function gtk_cell_area_event(area, context, widget, event, cell_area, flags) bi&
+&nd(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_area_event
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: event
+  type(c_ptr), value :: cell_area
+  integer(c_int), value :: flags
+end function
+
+! void gtk_cell_area_render (GtkCellArea *area, GtkCellAreaContext *context, GtkWidget *widget, cairo_t *cr, const GdkRectangle *background_area, const GdkRectangle *cell_area, GtkCellRendererState flags, gboolean paint_focus);
+subroutine gtk_cell_area_render(area, context, widget, cr, background_area, cel&
+&l_area, flags, paint_focus) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: cr
+  type(c_ptr), value :: background_area
+  type(c_ptr), value :: cell_area
+  integer(c_int), value :: flags
+  integer(c_int), value :: paint_focus
+end subroutine
+
+!  void gtk_cell_area_get_cell_allocation (GtkCellArea *area, GtkCellAreaContext *context, GtkWidget *widget, GtkCellRenderer *renderer, const GdkRectangle *cell_area, GdkRectangle *allocation);
+subroutine gtk_cell_area_get_cell_allocation(area, context, widget, renderer, c&
+&ell_area, allocation) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: renderer
+  type(c_ptr), value :: cell_area
+  type(c_ptr), value :: allocation
+end subroutine
+
+! GtkCellRenderer *gtk_cell_area_get_cell_at_position (GtkCellArea *area, GtkCellAreaContext *context, GtkWidget *widget, const GdkRectangle *cell_area, gint x, gint y, GdkRectangle *alloc_area);
+function gtk_cell_area_get_cell_at_position(area, context, widget, cell_area, x&
+&, y, alloc_area) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_cell_area_get_cell_at_position
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: cell_area
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  type(c_ptr), value :: alloc_area
+end function
+
+!  GtkCellAreaContext *gtk_cell_area_create_context (GtkCellArea *area);
+function gtk_cell_area_create_context(area) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_create_context
+  type(c_ptr), value :: area
+end function
+
+! GtkCellAreaContext *gtk_cell_area_copy_context (GtkCellArea *area, GtkCellAreaContext *context);
+function gtk_cell_area_copy_context(area, context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_copy_context
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+end function
+
+! GtkSizeRequestMode gtk_cell_area_get_request_mode (GtkCellArea *area);
+function gtk_cell_area_get_request_mode(area) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_area_get_request_mode
+  type(c_ptr), value :: area
+end function
+
+! void gtk_cell_area_get_preferred_width (GtkCellArea *area, GtkCellAreaContext *context, GtkWidget *widget, gint *minimum_width, gint *natural_width);
+subroutine gtk_cell_area_get_preferred_width(area, context, widget, minimum_wid&
+&th, natural_width) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: minimum_width
+  type(c_ptr), value :: natural_width
+end subroutine
+
+! void gtk_cell_area_get_preferred_height_for_width (GtkCellArea *area, GtkCellAreaContext *context, GtkWidget *widget, gint width, gint *minimum_height, gint *natural_height);
+subroutine gtk_cell_area_get_preferred_height_for_width(area, context, widget, &
+&width, minimum_height, natural_height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+  type(c_ptr), value :: widget
+  integer(c_int), value :: width
+  type(c_ptr), value :: minimum_height
+  type(c_ptr), value :: natural_height
+end subroutine
+
+! void gtk_cell_area_get_preferred_height (GtkCellArea *area, GtkCellAreaContext *context, GtkWidget *widget, gint *minimum_height, gint *natural_height);
+subroutine gtk_cell_area_get_preferred_height(area, context, widget, minimum_he&
+&ight, natural_height) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: minimum_height
+  type(c_ptr), value :: natural_height
+end subroutine
+
+! void gtk_cell_area_get_preferred_width_for_height (GtkCellArea *area, GtkCellAreaContext *context, GtkWidget *widget, gint height, gint *minimum_width, gint *natural_width);
+subroutine gtk_cell_area_get_preferred_width_for_height(area, context, widget, &
+&height, minimum_width, natural_width) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+  type(c_ptr), value :: widget
+  integer(c_int), value :: height
+  type(c_ptr), value :: minimum_width
+  type(c_ptr), value :: natural_width
+end subroutine
+
+! G_CONST_RETURN gchar *gtk_cell_area_get_current_path_string (GtkCellArea *area);
+function gtk_cell_area_get_current_path_string(area) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_get_current_path_string
+  type(c_ptr), value :: area
+end function
+
+!  void gtk_cell_area_apply_attributes (GtkCellArea *area, GtkTreeModel *tree_model, GtkTreeIter *iter, gboolean is_expander, gboolean is_expanded);
+subroutine gtk_cell_area_apply_attributes(area, tree_model, iter, is_expander, &
+&is_expanded) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: area
+  type(c_ptr), value :: tree_model
+  type(c_ptr), value :: iter
+  integer(c_int), value :: is_expander
+  integer(c_int), value :: is_expanded
+end subroutine
+
+! void gtk_cell_area_attribute_connect (GtkCellArea *area, GtkCellRenderer *renderer, const gchar *attribute, gint column);
+subroutine gtk_cell_area_attribute_connect(area, renderer, attribute, column) b&
+&ind(c) 
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+  character(kind=c_char), dimension(*) :: attribute
+  integer(c_int), value :: column
+end subroutine
+
+! void gtk_cell_area_attribute_disconnect (GtkCellArea *area, GtkCellRenderer *renderer, const gchar *attribute);
+subroutine gtk_cell_area_attribute_disconnect(area, renderer, attribute) bind(c&
+&) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+  character(kind=c_char), dimension(*) :: attribute
+end subroutine
+
+!  void gtk_cell_area_class_install_cell_property (GtkCellAreaClass *aclass, guint property_id, GParamSpec *pspec);
+subroutine gtk_cell_area_class_install_cell_property(aclass, property_id, pspec&
+&) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: aclass
+  integer(c_int), value :: property_id
+  type(c_ptr), value :: pspec
+end subroutine
+
+! GParamSpec* gtk_cell_area_class_find_cell_property (GtkCellAreaClass *aclass, const gchar *property_name);
+function gtk_cell_area_class_find_cell_property(aclass, property_name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_cell_area_class_find_cell_property
+  type(c_ptr), value :: aclass
+  character(kind=c_char), dimension(*) :: property_name
+end function
+
+! GParamSpec** gtk_cell_area_class_list_cell_properties (GtkCellAreaClass *aclass, guint *n_properties);
+function gtk_cell_area_class_list_cell_properties(aclass, n_properties) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_class_list_cell_properties
+  type(c_ptr), value :: aclass
+  type(c_ptr), value :: n_properties
+end function
+
+! void gtk_cell_area_cell_set_valist (GtkCellArea *area, GtkCellRenderer *renderer, const gchar *first_property_name, va_list var_args);
+subroutine gtk_cell_area_cell_set_valist(area, renderer, first_property_name, v&
+&ar_args) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+  character(kind=c_char), dimension(*) :: first_property_name
+  type(c_ptr), value :: var_args
+end subroutine
+
+! void gtk_cell_area_cell_get_valist (GtkCellArea *area, GtkCellRenderer *renderer, const gchar *first_property_name, va_list var_args);
+subroutine gtk_cell_area_cell_get_valist(area, renderer, first_property_name, v&
+&ar_args) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+  character(kind=c_char), dimension(*) :: first_property_name
+  type(c_ptr), value :: var_args
+end subroutine
+
+! void gtk_cell_area_cell_set_property (GtkCellArea *area, GtkCellRenderer *renderer, const gchar *property_name, const GValue *value);
+subroutine gtk_cell_area_cell_set_property(area, renderer, property_name, value&
+&) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+  character(kind=c_char), dimension(*) :: property_name
+  type(c_ptr), value :: value
+end subroutine
+
+! void gtk_cell_area_cell_get_property (GtkCellArea *area, GtkCellRenderer *renderer, const gchar *property_name, GValue *value);
+subroutine gtk_cell_area_cell_get_property(area, renderer, property_name, value&
+&) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+  character(kind=c_char), dimension(*) :: property_name
+  type(c_ptr), value :: value
+end subroutine
+
+!  gboolean gtk_cell_area_is_activatable (GtkCellArea *area);
+function gtk_cell_area_is_activatable(area) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_area_is_activatable
+  type(c_ptr), value :: area
+end function
+
+! gboolean gtk_cell_area_activate (GtkCellArea *area, GtkCellAreaContext *context, GtkWidget *widget, const GdkRectangle *cell_area, GtkCellRendererState flags, gboolean edit_only);
+function gtk_cell_area_activate(area, context, widget, cell_area, flags, edit_o&
+&nly) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_area_activate
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: cell_area
+  integer(c_int), value :: flags
+  integer(c_int), value :: edit_only
+end function
+
+! gboolean gtk_cell_area_focus (GtkCellArea *area, GtkDirectionType direction);
+function gtk_cell_area_focus(area, direction) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_area_focus
+  type(c_ptr), value :: area
+  integer(c_int), value :: direction
+end function
+
+! void gtk_cell_area_set_focus_cell (GtkCellArea *area, GtkCellRenderer *renderer);
+subroutine gtk_cell_area_set_focus_cell(area, renderer) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+end subroutine
+
+! GtkCellRenderer *gtk_cell_area_get_focus_cell (GtkCellArea *area);
+function gtk_cell_area_get_focus_cell(area) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_get_focus_cell
+  type(c_ptr), value :: area
+end function
+
+!  void gtk_cell_area_add_focus_sibling (GtkCellArea *area, GtkCellRenderer *renderer, GtkCellRenderer *sibling);
+subroutine gtk_cell_area_add_focus_sibling(area, renderer, sibling) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+  type(c_ptr), value :: sibling
+end subroutine
+
+! void gtk_cell_area_remove_focus_sibling (GtkCellArea *area, GtkCellRenderer *renderer, GtkCellRenderer *sibling);
+subroutine gtk_cell_area_remove_focus_sibling(area, renderer, sibling) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+  type(c_ptr), value :: sibling
+end subroutine
+
+! gboolean gtk_cell_area_is_focus_sibling (GtkCellArea *area, GtkCellRenderer *renderer, GtkCellRenderer *sibling);
+function gtk_cell_area_is_focus_sibling(area, renderer, sibling) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_area_is_focus_sibling
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+  type(c_ptr), value :: sibling
+end function
+
+! G_CONST_RETURN GList *gtk_cell_area_get_focus_siblings (GtkCellArea *area, GtkCellRenderer *renderer);
+function gtk_cell_area_get_focus_siblings(area, renderer) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_get_focus_siblings
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+end function
+
+! GtkCellRenderer *gtk_cell_area_get_focus_from_sibling (GtkCellArea *area, GtkCellRenderer *renderer);
+function gtk_cell_area_get_focus_from_sibling(area, renderer) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_get_focus_from_sibling
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+end function
+
+!  GtkCellRenderer *gtk_cell_area_get_edited_cell (GtkCellArea *area);
+function gtk_cell_area_get_edited_cell(area) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_get_edited_cell
+  type(c_ptr), value :: area
+end function
+
+! GtkCellEditable *gtk_cell_area_get_edit_widget (GtkCellArea *area);
+function gtk_cell_area_get_edit_widget(area) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_get_edit_widget
+  type(c_ptr), value :: area
+end function
+
+! gboolean gtk_cell_area_activate_cell (GtkCellArea *area, GtkWidget *widget, GtkCellRenderer *renderer, GdkEvent *event, const GdkRectangle *cell_area, GtkCellRendererState flags);
+function gtk_cell_area_activate_cell(area, widget, renderer, event, cell_area, &
+&flags) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_area_activate_cell
+  type(c_ptr), value :: area
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: renderer
+  type(c_ptr), value :: event
+  type(c_ptr), value :: cell_area
+  integer(c_int), value :: flags
+end function
+
+! void gtk_cell_area_stop_editing (GtkCellArea *area, gboolean canceled);
+subroutine gtk_cell_area_stop_editing(area, canceled) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: area
+  integer(c_int), value :: canceled
+end subroutine
+
+!  void gtk_cell_area_inner_cell_area (GtkCellArea *area, GtkWidget *widget, const GdkRectangle *cell_area, GdkRectangle *inner_area);
+subroutine gtk_cell_area_inner_cell_area(area, widget, cell_area, inner_area) b&
+&ind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: area
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: cell_area
+  type(c_ptr), value :: inner_area
+end subroutine
+
+!  void gtk_cell_area_request_renderer (GtkCellArea *area, GtkCellRenderer *renderer, GtkOrientation orientation, GtkWidget *widget, gint for_size, gint *minimum_size, gint *natural_size);
+subroutine gtk_cell_area_request_renderer(area, renderer, orientation, widget, &
+&for_size, minimum_size, natural_size) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: area
+  type(c_ptr), value :: renderer
+  integer(c_int), value :: orientation
+  type(c_ptr), value :: widget
+  integer(c_int), value :: for_size
+  type(c_ptr), value :: minimum_size
+  type(c_ptr), value :: natural_size
+end subroutine
+
 !   GType gtk_cell_renderer_accel_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_accel_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -653,27 +1065,6 @@ function gtk_rc_reparse_all() bind(c)
   integer(c_int) :: gtk_rc_reparse_all
 end function
 
-!  void gtk_rc_add_widget_name_style (GtkRcStyle *rc_style, const gchar *pattern);
-subroutine gtk_rc_add_widget_name_style(rc_style, pattern) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: rc_style
-  character(kind=c_char), dimension(*) :: pattern
-end subroutine
-
-! void gtk_rc_add_widget_class_style (GtkRcStyle *rc_style, const gchar *pattern);
-subroutine gtk_rc_add_widget_class_style(rc_style, pattern) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: rc_style
-  character(kind=c_char), dimension(*) :: pattern
-end subroutine
-
-! void gtk_rc_add_class_style (GtkRcStyle *rc_style, const gchar *pattern);
-subroutine gtk_rc_add_class_style(rc_style, pattern) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: rc_style
-  character(kind=c_char), dimension(*) :: pattern
-end subroutine
-
 !  GType gtk_rc_style_get_type (void) G_GNUC_CONST;
 function gtk_rc_style_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -692,18 +1083,6 @@ function gtk_rc_style_copy(orig) bind(c)
   type(c_ptr) :: gtk_rc_style_copy
   type(c_ptr), value :: orig
 end function
-
-!  void gtk_rc_style_ref (GtkRcStyle *rc_style);
-subroutine gtk_rc_style_ref(rc_style) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: rc_style
-end subroutine
-
-! void gtk_rc_style_unref (GtkRcStyle *rc_style);
-subroutine gtk_rc_style_unref(rc_style) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: rc_style
-end subroutine
 
 !  gchar* gtk_rc_find_module_in_path (const gchar *module_file);
 function gtk_rc_find_module_in_path(module_file) bind(c) 
@@ -787,97 +1166,20 @@ function gtk_separator_menu_item_new() bind(c)
   type(c_ptr) :: gtk_separator_menu_item_new
 end function
 
-!   guint gtk_signal_newv (const gchar *name, GtkSignalRunType signal_flags, GType object_type, guint function_offset, GSignalCMarshaller marshaller, GType return_val, guint n_args, GType *args);
-function gtk_signal_newv(name, signal_flags, object_type, function_offset, mars&
-&haller, return_val, n_args, args) bind(c) 
-  use iso_c_binding, only: c_int, c_char, c_size_t, c_ptr
-  integer(c_int) :: gtk_signal_newv
-  character(kind=c_char), dimension(*) :: name
-  integer(c_int), value :: signal_flags
-  integer(c_size_t), value :: object_type
-  integer(c_int), value :: function_offset
-  type(c_ptr), value :: marshaller
-  integer(c_size_t), value :: return_val
-  integer(c_int), value :: n_args
-  type(c_ptr), value :: args
-end function
-
-! void gtk_signal_emit_stop_by_name (GtkObject *object, const gchar *name);
-subroutine gtk_signal_emit_stop_by_name(object, name) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: object
-  character(kind=c_char), dimension(*) :: name
-end subroutine
-
-! void gtk_signal_connect_object_while_alive (GtkObject *object, const gchar *name, GCallback func, GtkObject *alive_object);
-subroutine gtk_signal_connect_object_while_alive(object, name, func, alive_obje&
-&ct) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_funptr
-  type(c_ptr), value :: object
-  character(kind=c_char), dimension(*) :: name
-  type(c_funptr), value :: func
-  type(c_ptr), value :: alive_object
-end subroutine
-
-! void gtk_signal_connect_while_alive (GtkObject *object, const gchar *name, GCallback func, gpointer func_data, GtkObject *alive_object);
-subroutine gtk_signal_connect_while_alive(object, name, func, func_data, alive_&
-&object) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_funptr
-  type(c_ptr), value :: object
-  character(kind=c_char), dimension(*) :: name
-  type(c_funptr), value :: func
-  type(c_ptr), value :: func_data
-  type(c_ptr), value :: alive_object
-end subroutine
-
-! gulong gtk_signal_connect_full (GtkObject *object, const gchar *name, GCallback func, GtkCallbackMarshal unsupported, gpointer data, GDestroyNotify destroy_func, gint object_signal, gint after);
-function gtk_signal_connect_full(object, name, func, unsupported, data, destroy&
-&_func, object_signal, after) bind(c) 
-  use iso_c_binding, only: c_long, c_ptr, c_char, c_funptr, c_int
-  integer(c_long) :: gtk_signal_connect_full
-  type(c_ptr), value :: object
-  character(kind=c_char), dimension(*) :: name
-  type(c_funptr), value :: func
-  type(c_funptr), value :: unsupported
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy_func
-  integer(c_int), value :: object_signal
-  integer(c_int), value :: after
-end function
-
-! void gtk_signal_emitv (GtkObject *object, guint signal_id, GtkArg *args);
-subroutine gtk_signal_emitv(object, signal_id, args) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: object
-  integer(c_int), value :: signal_id
-  type(c_ptr), value :: args
-end subroutine
-
-! void gtk_signal_emitv_by_name (GtkObject *object, const gchar *name, GtkArg *args);
-subroutine gtk_signal_emitv_by_name(object, name, args) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: object
-  character(kind=c_char), dimension(*) :: name
-  type(c_ptr), value :: args
-end subroutine
-
-! void gtk_signal_compat_matched (GtkObject *object, GCallback func, gpointer data, GSignalMatchType match, guint action);
-subroutine gtk_signal_compat_matched(object, func, data, match, action) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr, c_int
-  type(c_ptr), value :: object
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-  integer(c_int), value :: match
-  integer(c_int), value :: action
-end subroutine
-
-!       GType gtk_button_box_get_type (void) G_GNUC_CONST;
+!   GType gtk_button_box_get_type (void) G_GNUC_CONST;
 function gtk_button_box_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_button_box_get_type
 end function
 
-!  GtkButtonBoxStyle gtk_button_box_get_layout (GtkButtonBox *widget);
+! GtkWidget * gtk_button_box_new (GtkOrientation orientation);
+function gtk_button_box_new(orientation) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_button_box_new
+  integer(c_int), value :: orientation
+end function
+
+! GtkButtonBoxStyle gtk_button_box_get_layout (GtkButtonBox *widget);
 function gtk_button_box_get_layout(widget) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_button_box_get_layout
@@ -908,42 +1210,18 @@ subroutine gtk_button_box_set_child_secondary(widget, child, is_secondary) bind&
   integer(c_int), value :: is_secondary
 end subroutine
 
-!  void gtk_button_box_set_child_size (GtkButtonBox *widget, gint min_width, gint min_height);
-subroutine gtk_button_box_set_child_size(widget, min_width, min_height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: widget
-  integer(c_int), value :: min_width
-  integer(c_int), value :: min_height
-end subroutine
-
-! void gtk_button_box_set_child_ipadding (GtkButtonBox *widget, gint ipad_x, gint ipad_y);
-subroutine gtk_button_box_set_child_ipadding(widget, ipad_x, ipad_y) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: widget
-  integer(c_int), value :: ipad_x
-  integer(c_int), value :: ipad_y
-end subroutine
-
-! void gtk_button_box_get_child_size (GtkButtonBox *widget, gint *min_width, gint *min_height);
-subroutine gtk_button_box_get_child_size(widget, min_width, min_height) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: widget
-  type(c_ptr), value :: min_width
-  type(c_ptr), value :: min_height
-end subroutine
-
-! void gtk_button_box_get_child_ipadding (GtkButtonBox *widget, gint *ipad_x, gint *ipad_y);
-subroutine gtk_button_box_get_child_ipadding(widget, ipad_x, ipad_y) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: widget
-  type(c_ptr), value :: ipad_x
-  type(c_ptr), value :: ipad_y
-end subroutine
-
 !   GType gtk_box_get_type (void) G_GNUC_CONST;
 function gtk_box_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_box_get_type
+end function
+
+! GtkWidget* gtk_box_new (GtkOrientation orientation, gint spacing);
+function gtk_box_new(orientation, spacing) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_box_new
+  integer(c_int), value :: orientation
+  integer(c_int), value :: spacing
 end function
 
 !  void gtk_box_pack_start (GtkBox *box, GtkWidget *child, gboolean expand, gboolean fill, guint padding);
@@ -964,20 +1242,6 @@ subroutine gtk_box_pack_end(box, child, expand, fill, padding) bind(c)
   integer(c_int), value :: expand
   integer(c_int), value :: fill
   integer(c_int), value :: padding
-end subroutine
-
-!  void gtk_box_pack_start_defaults (GtkBox *box, GtkWidget *widget);
-subroutine gtk_box_pack_start_defaults(box, widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: box
-  type(c_ptr), value :: widget
-end subroutine
-
-! void gtk_box_pack_end_defaults (GtkBox *box, GtkWidget *widget);
-subroutine gtk_box_pack_end_defaults(box, widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: box
-  type(c_ptr), value :: widget
 end subroutine
 
 !  void gtk_box_set_homogeneous (GtkBox *box, gboolean homogeneous);
@@ -1040,74 +1304,6 @@ subroutine gtk_box_set_child_packing(box, child, expand, fill, padding, pack_ty&
   integer(c_int), value :: pack_type
 end subroutine
 
-!   GType gtk_file_selection_get_type (void) G_GNUC_CONST;
-function gtk_file_selection_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_file_selection_get_type
-end function
-
-! GtkWidget* gtk_file_selection_new (const gchar *title);
-function gtk_file_selection_new(title) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_file_selection_new
-  character(kind=c_char), dimension(*) :: title
-end function
-
-! void gtk_file_selection_set_filename (GtkFileSelection *filesel, const gchar *filename);
-subroutine gtk_file_selection_set_filename(filesel, filename) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: filesel
-  character(kind=c_char), dimension(*) :: filename
-end subroutine
-
-! G_CONST_RETURN gchar* gtk_file_selection_get_filename (GtkFileSelection *filesel);
-function gtk_file_selection_get_filename(filesel) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_file_selection_get_filename
-  type(c_ptr), value :: filesel
-end function
-
-!  void gtk_file_selection_complete (GtkFileSelection *filesel, const gchar *pattern);
-subroutine gtk_file_selection_complete(filesel, pattern) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: filesel
-  character(kind=c_char), dimension(*) :: pattern
-end subroutine
-
-! void gtk_file_selection_show_fileop_buttons (GtkFileSelection *filesel);
-subroutine gtk_file_selection_show_fileop_buttons(filesel) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: filesel
-end subroutine
-
-! void gtk_file_selection_hide_fileop_buttons (GtkFileSelection *filesel);
-subroutine gtk_file_selection_hide_fileop_buttons(filesel) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: filesel
-end subroutine
-
-!  gchar** gtk_file_selection_get_selections (GtkFileSelection *filesel);
-function gtk_file_selection_get_selections(filesel) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_file_selection_get_selections
-  type(c_ptr), value :: filesel
-end function
-
-!  void gtk_file_selection_set_select_multiple (GtkFileSelection *filesel, gboolean select_multiple);
-subroutine gtk_file_selection_set_select_multiple(filesel, select_multiple) bin&
-&d(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: filesel
-  integer(c_int), value :: select_multiple
-end subroutine
-
-! gboolean gtk_file_selection_get_select_multiple (GtkFileSelection *filesel);
-function gtk_file_selection_get_select_multiple(filesel) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_file_selection_get_select_multiple
-  type(c_ptr), value :: filesel
-end function
-
 !   GType gtk_combo_box_get_type (void) G_GNUC_CONST;
 function gtk_combo_box_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -1118,6 +1314,20 @@ end function
 function gtk_combo_box_new() bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_combo_box_new
+end function
+
+! GtkWidget *gtk_combo_box_new_with_area (GtkCellArea *area);
+function gtk_combo_box_new_with_area(area) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_combo_box_new_with_area
+  type(c_ptr), value :: area
+end function
+
+! GtkWidget *gtk_combo_box_new_with_area_and_entry (GtkCellArea *area);
+function gtk_combo_box_new_with_area_and_entry(area) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_combo_box_new_with_area_and_entry
+  type(c_ptr), value :: area
 end function
 
 ! GtkWidget *gtk_combo_box_new_with_entry (void);
@@ -1319,45 +1529,17 @@ function gtk_combo_box_get_entry_text_column(combo_box) bind(c)
   type(c_ptr), value :: combo_box
 end function
 
-!  GtkWidget *gtk_combo_box_new_text (void);
-function gtk_combo_box_new_text() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_combo_box_new_text
-end function
-
-! void gtk_combo_box_append_text (GtkComboBox *combo_box, const gchar *text);
-subroutine gtk_combo_box_append_text(combo_box, text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: combo_box
-  character(kind=c_char), dimension(*) :: text
-end subroutine
-
-! void gtk_combo_box_insert_text (GtkComboBox *combo_box, gint position, const gchar *text);
-subroutine gtk_combo_box_insert_text(combo_box, position, text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: combo_box
-  integer(c_int), value :: position
-  character(kind=c_char), dimension(*) :: text
-end subroutine
-
-! void gtk_combo_box_prepend_text (GtkComboBox *combo_box, const gchar *text);
-subroutine gtk_combo_box_prepend_text(combo_box, text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: combo_box
-  character(kind=c_char), dimension(*) :: text
-end subroutine
-
-! void gtk_combo_box_remove_text (GtkComboBox *combo_box, gint position);
-subroutine gtk_combo_box_remove_text(combo_box, position) bind(c) 
+!  void gtk_combo_box_set_popup_fixed_width (GtkComboBox *combo_box, gboolean fixed);
+subroutine gtk_combo_box_set_popup_fixed_width(combo_box, fixed) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: combo_box
-  integer(c_int), value :: position
+  integer(c_int), value :: fixed
 end subroutine
 
-! gchar *gtk_combo_box_get_active_text (GtkComboBox *combo_box);
-function gtk_combo_box_get_active_text(combo_box) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_combo_box_get_active_text
+! gboolean gtk_combo_box_get_popup_fixed_width (GtkComboBox *combo_box);
+function gtk_combo_box_get_popup_fixed_width(combo_box) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_combo_box_get_popup_fixed_width
   type(c_ptr), value :: combo_box
 end function
 
@@ -1365,6 +1547,13 @@ end function
 subroutine gtk_combo_box_popup(combo_box) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: combo_box
+end subroutine
+
+! void gtk_combo_box_popup_for_device (GtkComboBox *combo_box, GdkDevice *device);
+subroutine gtk_combo_box_popup_for_device(combo_box, device) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: combo_box
+  type(c_ptr), value :: device
 end subroutine
 
 ! void gtk_combo_box_popdown (GtkComboBox *combo_box);
@@ -1380,6 +1569,34 @@ function gtk_combo_box_get_popup_accessible(combo_box) bind(c)
   type(c_ptr), value :: combo_box
 end function
 
+!  gint gtk_combo_box_get_id_column (GtkComboBox *combo_box);
+function gtk_combo_box_get_id_column(combo_box) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_combo_box_get_id_column
+  type(c_ptr), value :: combo_box
+end function
+
+! void gtk_combo_box_set_id_column (GtkComboBox *combo_box, gint id_column);
+subroutine gtk_combo_box_set_id_column(combo_box, id_column) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: combo_box
+  integer(c_int), value :: id_column
+end subroutine
+
+! const gchar * gtk_combo_box_get_active_id (GtkComboBox *combo_box);
+function gtk_combo_box_get_active_id(combo_box) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_combo_box_get_active_id
+  type(c_ptr), value :: combo_box
+end function
+
+! void gtk_combo_box_set_active_id (GtkComboBox *combo_box, const gchar *active_id);
+subroutine gtk_combo_box_set_active_id(combo_box, active_id) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: combo_box
+  character(kind=c_char), dimension(*) :: active_id
+end subroutine
+
 !   GType gtk_cell_renderer_progress_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_progress_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -1392,44 +1609,108 @@ function gtk_cell_renderer_progress_new() bind(c)
   type(c_ptr) :: gtk_cell_renderer_progress_new
 end function
 
-!   GType gtk_tips_query_get_type (void) G_GNUC_CONST;
-function gtk_tips_query_get_type() bind(c) 
+!   GType gtk_style_properties_get_type (void) G_GNUC_CONST;
+function gtk_style_properties_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_tips_query_get_type
+  integer(c_size_t) :: gtk_style_properties_get_type
 end function
 
-! GtkWidget* gtk_tips_query_new (void);
-function gtk_tips_query_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_tips_query_new
+!  void gtk_style_properties_register_property (GtkStylePropertyParser parse_func, GParamSpec *pspec);
+subroutine gtk_style_properties_register_property(parse_func, pspec) bind(c) 
+  use iso_c_binding, only: c_funptr, c_ptr
+  type(c_funptr), value :: parse_func
+  type(c_ptr), value :: pspec
+end subroutine
+
+! gboolean gtk_style_properties_lookup_property (const gchar *property_name, GtkStylePropertyParser *parse_func, GParamSpec **pspec);
+function gtk_style_properties_lookup_property(property_name, parse_func, pspec)&
+& bind(c) 
+  use iso_c_binding, only: c_int, c_char, c_funptr, c_ptr
+  integer(c_int) :: gtk_style_properties_lookup_property
+  character(kind=c_char), dimension(*) :: property_name
+  type(c_funptr), value :: parse_func
+  type(c_ptr), value :: pspec
 end function
 
-! void gtk_tips_query_start_query (GtkTipsQuery *tips_query);
-subroutine gtk_tips_query_start_query(tips_query) bind(c) 
+!  GtkStyleProperties * gtk_style_properties_new (void);
+function gtk_style_properties_new() bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tips_query
-end subroutine
+  type(c_ptr) :: gtk_style_properties_new
+end function
 
-! void gtk_tips_query_stop_query (GtkTipsQuery *tips_query);
-subroutine gtk_tips_query_stop_query(tips_query) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tips_query
-end subroutine
-
-! void gtk_tips_query_set_caller (GtkTipsQuery *tips_query, GtkWidget *caller);
-subroutine gtk_tips_query_set_caller(tips_query, caller) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tips_query
-  type(c_ptr), value :: caller
-end subroutine
-
-! void gtk_tips_query_set_labels (GtkTipsQuery *tips_query, const gchar *label_inactive, const gchar *label_no_tip);
-subroutine gtk_tips_query_set_labels(tips_query, label_inactive, label_no_tip) &
-&bind(c) 
+!  void gtk_style_properties_map_color (GtkStyleProperties *props, const gchar *name, GtkSymbolicColor *color);
+subroutine gtk_style_properties_map_color(props, name, color) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: tips_query
-  character(kind=c_char), dimension(*) :: label_inactive
-  character(kind=c_char), dimension(*) :: label_no_tip
+  type(c_ptr), value :: props
+  character(kind=c_char), dimension(*) :: name
+  type(c_ptr), value :: color
+end subroutine
+
+! GtkSymbolicColor * gtk_style_properties_lookup_color (GtkStyleProperties *props, const gchar *name);
+function gtk_style_properties_lookup_color(props, name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_style_properties_lookup_color
+  type(c_ptr), value :: props
+  character(kind=c_char), dimension(*) :: name
+end function
+
+!  void gtk_style_properties_set_property (GtkStyleProperties *props, const gchar *property, GtkStateFlags state, const GValue *value);
+subroutine gtk_style_properties_set_property(props, property, state, value) bin&
+&d(c) 
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr), value :: props
+  character(kind=c_char), dimension(*) :: property
+  integer(c_int), value :: state
+  type(c_ptr), value :: value
+end subroutine
+
+! void gtk_style_properties_set_valist (GtkStyleProperties *props, GtkStateFlags state, va_list args);
+subroutine gtk_style_properties_set_valist(props, state, args) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: props
+  integer(c_int), value :: state
+  type(c_ptr), value :: args
+end subroutine
+
+!  gboolean gtk_style_properties_get_property (GtkStyleProperties *props, const gchar *property, GtkStateFlags state, GValue *value);
+function gtk_style_properties_get_property(props, property, state, value) bind(&
+&c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_style_properties_get_property
+  type(c_ptr), value :: props
+  character(kind=c_char), dimension(*) :: property
+  integer(c_int), value :: state
+  type(c_ptr), value :: value
+end function
+
+! void gtk_style_properties_get_valist (GtkStyleProperties *props, GtkStateFlags state, va_list args);
+subroutine gtk_style_properties_get_valist(props, state, args) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: props
+  integer(c_int), value :: state
+  type(c_ptr), value :: args
+end subroutine
+
+!  void gtk_style_properties_unset_property (GtkStyleProperties *props, const gchar *property, GtkStateFlags state);
+subroutine gtk_style_properties_unset_property(props, property, state) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr), value :: props
+  character(kind=c_char), dimension(*) :: property
+  integer(c_int), value :: state
+end subroutine
+
+!  void gtk_style_properties_clear (GtkStyleProperties *props);
+subroutine gtk_style_properties_clear(props) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: props
+end subroutine
+
+!  void gtk_style_properties_merge (GtkStyleProperties *props, const GtkStyleProperties *props_to_merge, gboolean replace);
+subroutine gtk_style_properties_merge(props, props_to_merge, replace) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: props
+  type(c_ptr), value :: props_to_merge
+  integer(c_int), value :: replace
 end subroutine
 
 !   GType gtk_button_get_type (void) G_GNUC_CONST;
@@ -1747,21 +2028,7 @@ function gtk_recent_chooser_get_show_tips(chooser) bind(c)
   type(c_ptr), value :: chooser
 end function
 
-!  void gtk_recent_chooser_set_show_numbers (GtkRecentChooser *chooser, gboolean show_numbers);
-subroutine gtk_recent_chooser_set_show_numbers(chooser, show_numbers) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: chooser
-  integer(c_int), value :: show_numbers
-end subroutine
-
-! gboolean gtk_recent_chooser_get_show_numbers (GtkRecentChooser *chooser);
-function gtk_recent_chooser_get_show_numbers(chooser) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_recent_chooser_get_show_numbers
-  type(c_ptr), value :: chooser
-end function
-
-!  void gtk_recent_chooser_set_show_icons (GtkRecentChooser *chooser, gboolean show_icons);
+! void gtk_recent_chooser_set_show_icons (GtkRecentChooser *chooser, gboolean show_icons);
 subroutine gtk_recent_chooser_set_show_icons(chooser, show_icons) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: chooser
@@ -1900,6 +2167,103 @@ function gtk_recent_chooser_get_filter(chooser) bind(c)
   type(c_ptr), value :: chooser
 end function
 
+!   GType gtk_app_chooser_widget_get_type (void) G_GNUC_CONST;
+function gtk_app_chooser_widget_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_app_chooser_widget_get_type
+end function
+
+!  GtkWidget * gtk_app_chooser_widget_new (const gchar *content_type);
+function gtk_app_chooser_widget_new(content_type) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_app_chooser_widget_new
+  character(kind=c_char), dimension(*) :: content_type
+end function
+
+!  void gtk_app_chooser_widget_set_show_default (GtkAppChooserWidget *self, gboolean setting);
+subroutine gtk_app_chooser_widget_set_show_default(self, setting) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: setting
+end subroutine
+
+! gboolean gtk_app_chooser_widget_get_show_default (GtkAppChooserWidget *self);
+function gtk_app_chooser_widget_get_show_default(self) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_app_chooser_widget_get_show_default
+  type(c_ptr), value :: self
+end function
+
+!  void gtk_app_chooser_widget_set_show_recommended (GtkAppChooserWidget *self, gboolean setting);
+subroutine gtk_app_chooser_widget_set_show_recommended(self, setting) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: setting
+end subroutine
+
+! gboolean gtk_app_chooser_widget_get_show_recommended (GtkAppChooserWidget *self);
+function gtk_app_chooser_widget_get_show_recommended(self) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_app_chooser_widget_get_show_recommended
+  type(c_ptr), value :: self
+end function
+
+!  void gtk_app_chooser_widget_set_show_fallback (GtkAppChooserWidget *self, gboolean setting);
+subroutine gtk_app_chooser_widget_set_show_fallback(self, setting) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: setting
+end subroutine
+
+! gboolean gtk_app_chooser_widget_get_show_fallback (GtkAppChooserWidget *self);
+function gtk_app_chooser_widget_get_show_fallback(self) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_app_chooser_widget_get_show_fallback
+  type(c_ptr), value :: self
+end function
+
+!  void gtk_app_chooser_widget_set_show_other (GtkAppChooserWidget *self, gboolean setting);
+subroutine gtk_app_chooser_widget_set_show_other(self, setting) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: setting
+end subroutine
+
+! gboolean gtk_app_chooser_widget_get_show_other (GtkAppChooserWidget *self);
+function gtk_app_chooser_widget_get_show_other(self) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_app_chooser_widget_get_show_other
+  type(c_ptr), value :: self
+end function
+
+!  void gtk_app_chooser_widget_set_show_all (GtkAppChooserWidget *self, gboolean setting);
+subroutine gtk_app_chooser_widget_set_show_all(self, setting) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: setting
+end subroutine
+
+! gboolean gtk_app_chooser_widget_get_show_all (GtkAppChooserWidget *self);
+function gtk_app_chooser_widget_get_show_all(self) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_app_chooser_widget_get_show_all
+  type(c_ptr), value :: self
+end function
+
+!  void gtk_app_chooser_widget_set_default_text (GtkAppChooserWidget *self, const gchar *text);
+subroutine gtk_app_chooser_widget_set_default_text(self, text) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: text
+end subroutine
+
+! const gchar * gtk_app_chooser_widget_get_default_text (GtkAppChooserWidget *self);
+function gtk_app_chooser_widget_get_default_text(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_app_chooser_widget_get_default_text
+  type(c_ptr), value :: self
+end function
+
 !   GType gtk_hscrollbar_get_type (void) G_GNUC_CONST;
 function gtk_hscrollbar_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -1961,589 +2325,6 @@ function gtk_accel_label_refetch(accel_label) bind(c)
   integer(c_int) :: gtk_accel_label_refetch
   type(c_ptr), value :: accel_label
 end function
-
-!  GType gtk_clist_get_type (void) G_GNUC_CONST;
-function gtk_clist_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_clist_get_type
-end function
-
-!  GtkWidget* gtk_clist_new (gint columns);
-function gtk_clist_new(columns) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_clist_new
-  integer(c_int), value :: columns
-end function
-
-! GtkWidget* gtk_clist_new_with_titles (gint columns, gchar *titles[]);
-function gtk_clist_new_with_titles(columns, titles) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr) :: gtk_clist_new_with_titles
-  integer(c_int), value :: columns
-  character(kind=c_char), dimension(*) :: titles
-end function
-
-!  void gtk_clist_set_hadjustment (GtkCList *clist, GtkAdjustment *adjustment);
-subroutine gtk_clist_set_hadjustment(clist, adjustment) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-  type(c_ptr), value :: adjustment
-end subroutine
-
-! void gtk_clist_set_vadjustment (GtkCList *clist, GtkAdjustment *adjustment);
-subroutine gtk_clist_set_vadjustment(clist, adjustment) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-  type(c_ptr), value :: adjustment
-end subroutine
-
-!  GtkAdjustment* gtk_clist_get_hadjustment (GtkCList *clist);
-function gtk_clist_get_hadjustment(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_clist_get_hadjustment
-  type(c_ptr), value :: clist
-end function
-
-! GtkAdjustment* gtk_clist_get_vadjustment (GtkCList *clist);
-function gtk_clist_get_vadjustment(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_clist_get_vadjustment
-  type(c_ptr), value :: clist
-end function
-
-!  void gtk_clist_set_shadow_type (GtkCList *clist, GtkShadowType type);
-subroutine gtk_clist_set_shadow_type(clist, type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: type
-end subroutine
-
-!  void gtk_clist_set_selection_mode (GtkCList *clist, GtkSelectionMode mode);
-subroutine gtk_clist_set_selection_mode(clist, mode) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: mode
-end subroutine
-
-!  void gtk_clist_set_reorderable (GtkCList *clist, gboolean reorderable);
-subroutine gtk_clist_set_reorderable(clist, reorderable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: reorderable
-end subroutine
-
-! void gtk_clist_set_use_drag_icons (GtkCList *clist, gboolean use_icons);
-subroutine gtk_clist_set_use_drag_icons(clist, use_icons) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: use_icons
-end subroutine
-
-! void gtk_clist_set_button_actions (GtkCList *clist, guint button, guint8 button_actions);
-subroutine gtk_clist_set_button_actions(clist, button, button_actions) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_int8_t
-  type(c_ptr), value :: clist
-  integer(c_int), value :: button
-  integer(c_int8_t), value :: button_actions
-end subroutine
-
-!  void gtk_clist_freeze (GtkCList *clist);
-subroutine gtk_clist_freeze(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-! void gtk_clist_thaw (GtkCList *clist);
-subroutine gtk_clist_thaw(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-!  void gtk_clist_column_titles_show (GtkCList *clist);
-subroutine gtk_clist_column_titles_show(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-! void gtk_clist_column_titles_hide (GtkCList *clist);
-subroutine gtk_clist_column_titles_hide(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-!  void gtk_clist_column_title_active (GtkCList *clist, gint column);
-subroutine gtk_clist_column_title_active(clist, column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-end subroutine
-
-! void gtk_clist_column_title_passive (GtkCList *clist, gint column);
-subroutine gtk_clist_column_title_passive(clist, column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-end subroutine
-
-! void gtk_clist_column_titles_active (GtkCList *clist);
-subroutine gtk_clist_column_titles_active(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-! void gtk_clist_column_titles_passive (GtkCList *clist);
-subroutine gtk_clist_column_titles_passive(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-!  void gtk_clist_set_column_title (GtkCList *clist, gint column, const gchar *title);
-subroutine gtk_clist_set_column_title(clist, column, title) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-  character(kind=c_char), dimension(*) :: title
-end subroutine
-
-!  gchar * gtk_clist_get_column_title (GtkCList *clist, gint column);
-function gtk_clist_get_column_title(clist, column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_clist_get_column_title
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-end function
-
-!  void gtk_clist_set_column_widget (GtkCList *clist, gint column, GtkWidget *widget);
-subroutine gtk_clist_set_column_widget(clist, column, widget) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-  type(c_ptr), value :: widget
-end subroutine
-
-!  GtkWidget * gtk_clist_get_column_widget (GtkCList *clist, gint column);
-function gtk_clist_get_column_widget(clist, column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_clist_get_column_widget
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-end function
-
-!  void gtk_clist_set_column_justification (GtkCList *clist, gint column, GtkJustification justification);
-subroutine gtk_clist_set_column_justification(clist, column, justification) bin&
-&d(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-  integer(c_int), value :: justification
-end subroutine
-
-!  void gtk_clist_set_column_visibility (GtkCList *clist, gint column, gboolean visible);
-subroutine gtk_clist_set_column_visibility(clist, column, visible) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-  integer(c_int), value :: visible
-end subroutine
-
-!  void gtk_clist_set_column_resizeable (GtkCList *clist, gint column, gboolean resizeable);
-subroutine gtk_clist_set_column_resizeable(clist, column, resizeable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-  integer(c_int), value :: resizeable
-end subroutine
-
-!  void gtk_clist_set_column_auto_resize (GtkCList *clist, gint column, gboolean auto_resize);
-subroutine gtk_clist_set_column_auto_resize(clist, column, auto_resize) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-  integer(c_int), value :: auto_resize
-end subroutine
-
-!  gint gtk_clist_columns_autosize (GtkCList *clist);
-function gtk_clist_columns_autosize(clist) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_clist_columns_autosize
-  type(c_ptr), value :: clist
-end function
-
-!  gint gtk_clist_optimal_column_width (GtkCList *clist, gint column);
-function gtk_clist_optimal_column_width(clist, column) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_clist_optimal_column_width
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-end function
-
-!  void gtk_clist_set_column_width (GtkCList *clist, gint column, gint width);
-subroutine gtk_clist_set_column_width(clist, column, width) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-  integer(c_int), value :: width
-end subroutine
-
-!  void gtk_clist_set_column_min_width (GtkCList *clist, gint column, gint min_width);
-subroutine gtk_clist_set_column_min_width(clist, column, min_width) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-  integer(c_int), value :: min_width
-end subroutine
-
-! void gtk_clist_set_column_max_width (GtkCList *clist, gint column, gint max_width);
-subroutine gtk_clist_set_column_max_width(clist, column, max_width) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-  integer(c_int), value :: max_width
-end subroutine
-
-!  void gtk_clist_set_row_height (GtkCList *clist, guint height);
-subroutine gtk_clist_set_row_height(clist, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: height
-end subroutine
-
-!  void gtk_clist_moveto (GtkCList *clist, gint row, gint column, gfloat row_align, gfloat col_align);
-subroutine gtk_clist_moveto(clist, row, column, row_align, col_align) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_float
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-  real(c_float), value :: row_align
-  real(c_float), value :: col_align
-end subroutine
-
-!  GtkVisibility gtk_clist_row_is_visible (GtkCList *clist, gint row);
-function gtk_clist_row_is_visible(clist, row) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_clist_row_is_visible
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-end function
-
-!  GtkCellType gtk_clist_get_cell_type (GtkCList *clist, gint row, gint column);
-function gtk_clist_get_cell_type(clist, row, column) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_clist_get_cell_type
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-end function
-
-!  void gtk_clist_set_text (GtkCList *clist, gint row, gint column, const gchar *text);
-subroutine gtk_clist_set_text(clist, row, column, text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-  character(kind=c_char), dimension(*) :: text
-end subroutine
-
-!  gint gtk_clist_get_text (GtkCList *clist, gint row, gint column, gchar **text);
-function gtk_clist_get_text(clist, row, column, text) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gtk_clist_get_text
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-  character(kind=c_char), dimension(*) :: text
-end function
-
-!  void gtk_clist_set_pixmap (GtkCList *clist, gint row, gint column, GdkPixmap *pixmap, GdkBitmap *mask);
-subroutine gtk_clist_set_pixmap(clist, row, column, pixmap, mask) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end subroutine
-
-!  gint gtk_clist_get_pixmap (GtkCList *clist, gint row, gint column, GdkPixmap **pixmap, GdkBitmap **mask);
-function gtk_clist_get_pixmap(clist, row, column, pixmap, mask) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_clist_get_pixmap
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end function
-
-!  void gtk_clist_set_pixtext (GtkCList *clist, gint row, gint column, const gchar *text, guint8 spacing, GdkPixmap *pixmap, GdkBitmap *mask);
-subroutine gtk_clist_set_pixtext(clist, row, column, text, spacing, pixmap, mas&
-&k) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char, c_int8_t
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-  character(kind=c_char), dimension(*) :: text
-  integer(c_int8_t), value :: spacing
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end subroutine
-
-!  gint gtk_clist_get_pixtext (GtkCList *clist, gint row, gint column, gchar **text, guint8 *spacing, GdkPixmap **pixmap, GdkBitmap **mask);
-function gtk_clist_get_pixtext(clist, row, column, text, spacing, pixmap, mask)&
-& bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gtk_clist_get_pixtext
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-  character(kind=c_char), dimension(*) :: text
-  type(c_ptr), value :: spacing
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end function
-
-!  void gtk_clist_set_foreground (GtkCList *clist, gint row, const GdkColor *color);
-subroutine gtk_clist_set_foreground(clist, row, color) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  type(c_ptr), value :: color
-end subroutine
-
-!  void gtk_clist_set_background (GtkCList *clist, gint row, const GdkColor *color);
-subroutine gtk_clist_set_background(clist, row, color) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  type(c_ptr), value :: color
-end subroutine
-
-!  void gtk_clist_set_cell_style (GtkCList *clist, gint row, gint column, GtkStyle *style);
-subroutine gtk_clist_set_cell_style(clist, row, column, style) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-  type(c_ptr), value :: style
-end subroutine
-
-!  GtkStyle *gtk_clist_get_cell_style (GtkCList *clist, gint row, gint column);
-function gtk_clist_get_cell_style(clist, row, column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_clist_get_cell_style
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-end function
-
-!  void gtk_clist_set_row_style (GtkCList *clist, gint row, GtkStyle *style);
-subroutine gtk_clist_set_row_style(clist, row, style) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  type(c_ptr), value :: style
-end subroutine
-
-!  GtkStyle *gtk_clist_get_row_style (GtkCList *clist, gint row);
-function gtk_clist_get_row_style(clist, row) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_clist_get_row_style
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-end function
-
-!  void gtk_clist_set_shift (GtkCList *clist, gint row, gint column, gint vertical, gint horizontal);
-subroutine gtk_clist_set_shift(clist, row, column, vertical, horizontal) bind(c&
-&) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-  integer(c_int), value :: vertical
-  integer(c_int), value :: horizontal
-end subroutine
-
-!  void gtk_clist_set_selectable (GtkCList *clist, gint row, gboolean selectable);
-subroutine gtk_clist_set_selectable(clist, row, selectable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: selectable
-end subroutine
-
-! gboolean gtk_clist_get_selectable (GtkCList *clist, gint row);
-function gtk_clist_get_selectable(clist, row) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_clist_get_selectable
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-end function
-
-!  gint gtk_clist_prepend (GtkCList *clist, gchar *text[]);
-function gtk_clist_prepend(clist, text) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gtk_clist_prepend
-  type(c_ptr), value :: clist
-  character(kind=c_char), dimension(*) :: text
-end function
-
-! gint gtk_clist_append (GtkCList *clist, gchar *text[]);
-function gtk_clist_append(clist, text) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gtk_clist_append
-  type(c_ptr), value :: clist
-  character(kind=c_char), dimension(*) :: text
-end function
-
-!  gint gtk_clist_insert (GtkCList *clist, gint row, gchar *text[]);
-function gtk_clist_insert(clist, row, text) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gtk_clist_insert
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  character(kind=c_char), dimension(*) :: text
-end function
-
-!  void gtk_clist_remove (GtkCList *clist, gint row);
-subroutine gtk_clist_remove(clist, row) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-end subroutine
-
-!  void gtk_clist_set_row_data (GtkCList *clist, gint row, gpointer data);
-subroutine gtk_clist_set_row_data(clist, row, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  type(c_ptr), value :: data
-end subroutine
-
-!  void gtk_clist_set_row_data_full (GtkCList *clist, gint row, gpointer data, GDestroyNotify destroy);
-subroutine gtk_clist_set_row_data_full(clist, row, data, destroy) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_funptr
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
-end subroutine
-
-!  gpointer gtk_clist_get_row_data (GtkCList *clist, gint row);
-function gtk_clist_get_row_data(clist, row) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_clist_get_row_data
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-end function
-
-!  gint gtk_clist_find_row_from_data (GtkCList *clist, gpointer data);
-function gtk_clist_find_row_from_data(clist, data) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_clist_find_row_from_data
-  type(c_ptr), value :: clist
-  type(c_ptr), value :: data
-end function
-
-!  void gtk_clist_select_row (GtkCList *clist, gint row, gint column);
-subroutine gtk_clist_select_row(clist, row, column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-end subroutine
-
-!  void gtk_clist_unselect_row (GtkCList *clist, gint row, gint column);
-subroutine gtk_clist_unselect_row(clist, row, column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-end subroutine
-
-!  void gtk_clist_undo_selection (GtkCList *clist);
-subroutine gtk_clist_undo_selection(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-!  void gtk_clist_clear (GtkCList *clist);
-subroutine gtk_clist_clear(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-!  gint gtk_clist_get_selection_info (GtkCList *clist, gint x, gint y, gint *row, gint *column);
-function gtk_clist_get_selection_info(clist, x, y, row, column) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_clist_get_selection_info
-  type(c_ptr), value :: clist
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  type(c_ptr), value :: row
-  type(c_ptr), value :: column
-end function
-
-!  void gtk_clist_select_all (GtkCList *clist);
-subroutine gtk_clist_select_all(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-!  void gtk_clist_unselect_all (GtkCList *clist);
-subroutine gtk_clist_unselect_all(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-!  void gtk_clist_swap_rows (GtkCList *clist, gint row1, gint row2);
-subroutine gtk_clist_swap_rows(clist, row1, row2) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: row1
-  integer(c_int), value :: row2
-end subroutine
-
-!  void gtk_clist_row_move (GtkCList *clist, gint source_row, gint dest_row);
-subroutine gtk_clist_row_move(clist, source_row, dest_row) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: source_row
-  integer(c_int), value :: dest_row
-end subroutine
-
-!  void gtk_clist_set_compare_func (GtkCList *clist, GtkCListCompareFunc cmp_func);
-subroutine gtk_clist_set_compare_func(clist, cmp_func) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr), value :: clist
-  type(c_funptr), value :: cmp_func
-end subroutine
-
-!  void gtk_clist_set_sort_column (GtkCList *clist, gint column);
-subroutine gtk_clist_set_sort_column(clist, column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: column
-end subroutine
-
-!  void gtk_clist_set_sort_type (GtkCList *clist, GtkSortType sort_type);
-subroutine gtk_clist_set_sort_type(clist, sort_type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: sort_type
-end subroutine
-
-!  void gtk_clist_sort (GtkCList *clist);
-subroutine gtk_clist_sort(clist) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: clist
-end subroutine
-
-!  void gtk_clist_set_auto_sort (GtkCList *clist, gboolean auto_sort);
-subroutine gtk_clist_set_auto_sort(clist, auto_sort) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: clist
-  integer(c_int), value :: auto_sort
-end subroutine
 
 !   GType gtk_radio_button_get_type (void) G_GNUC_CONST;
 function gtk_radio_button_get_type() bind(c) 
@@ -2613,6 +2394,13 @@ subroutine gtk_radio_button_set_group(radio_button, group) bind(c)
   type(c_ptr), value :: group
 end subroutine
 
+! void gtk_radio_button_join_group (GtkRadioButton *radio_button, GtkRadioButton *group_source);
+subroutine gtk_radio_button_join_group(radio_button, group_source) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: radio_button
+  type(c_ptr), value :: group_source
+end subroutine
+
 !   GType gtk_file_chooser_dialog_get_type (void) G_GNUC_CONST;
 function gtk_file_chooser_dialog_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -2623,6 +2411,14 @@ end function
 function gtk_scrollbar_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_scrollbar_get_type
+end function
+
+! GtkWidget * gtk_scrollbar_new (GtkOrientation orientation, GtkAdjustment *adjustment);
+function gtk_scrollbar_new(orientation, adjustment) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_scrollbar_new
+  integer(c_int), value :: orientation
+  type(c_ptr), value :: adjustment
 end function
 
 !   GType gtk_activatable_get_type (void) G_GNUC_CONST;
@@ -2745,6 +2541,13 @@ subroutine gtk_cell_layout_reorder(cell_layout, cell, position) bind(c)
   integer(c_int), value :: position
 end subroutine
 
+! GtkCellArea *gtk_cell_layout_get_area (GtkCellLayout *cell_layout);
+function gtk_cell_layout_get_area(cell_layout) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_layout_get_area
+  type(c_ptr), value :: cell_layout
+end function
+
 !   GType gtk_cell_renderer_spinner_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_spinner_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -2763,7 +2566,7 @@ function gtk_menu_shell_get_type() bind(c)
   integer(c_size_t) :: gtk_menu_shell_get_type
 end function
 
-! void gtk_menu_shell_append (GtkMenuShell *menu_shell, GtkWidget *child);
+!  void gtk_menu_shell_append (GtkMenuShell *menu_shell, GtkWidget *child);
 subroutine gtk_menu_shell_append(menu_shell, child) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: menu_shell
@@ -2826,7 +2629,7 @@ subroutine gtk_menu_shell_cancel(menu_shell) bind(c)
   type(c_ptr), value :: menu_shell
 end subroutine
 
-!  gboolean gtk_menu_shell_get_take_focus (GtkMenuShell *menu_shell);
+! gboolean gtk_menu_shell_get_take_focus (GtkMenuShell *menu_shell);
 function gtk_menu_shell_get_take_focus(menu_shell) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_menu_shell_get_take_focus
@@ -2839,6 +2642,20 @@ subroutine gtk_menu_shell_set_take_focus(menu_shell, take_focus) bind(c)
   type(c_ptr), value :: menu_shell
   integer(c_int), value :: take_focus
 end subroutine
+
+!  GtkWidget *gtk_menu_shell_get_selected_item (GtkMenuShell *menu_shell);
+function gtk_menu_shell_get_selected_item(menu_shell) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_menu_shell_get_selected_item
+  type(c_ptr), value :: menu_shell
+end function
+
+! GtkWidget *gtk_menu_shell_get_parent_shell (GtkMenuShell *menu_shell);
+function gtk_menu_shell_get_parent_shell(menu_shell) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_menu_shell_get_parent_shell
+  type(c_ptr), value :: menu_shell
+end function
 
 !   GType gtk_separator_tool_item_get_type (void) G_GNUC_CONST;
 function gtk_separator_tool_item_get_type() bind(c) 
@@ -2865,6 +2682,227 @@ subroutine gtk_separator_tool_item_set_draw(item, draw) bind(c)
   type(c_ptr), value :: item
   integer(c_int), value :: draw
 end subroutine
+
+!   GType gtk_widget_path_get_type (void) G_GNUC_CONST;
+function gtk_widget_path_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_widget_path_get_type
+end function
+
+! GtkWidgetPath * gtk_widget_path_new (void);
+function gtk_widget_path_new() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_widget_path_new
+end function
+
+!  GtkWidgetPath * gtk_widget_path_copy (const GtkWidgetPath *path);
+function gtk_widget_path_copy(path) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_widget_path_copy
+  type(c_ptr), value :: path
+end function
+
+! void gtk_widget_path_free (GtkWidgetPath *path);
+subroutine gtk_widget_path_free(path) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: path
+end subroutine
+
+!  gint gtk_widget_path_length (const GtkWidgetPath *path);
+function gtk_widget_path_length(path) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_path_length
+  type(c_ptr), value :: path
+end function
+
+!  gint gtk_widget_path_append_type (GtkWidgetPath *path, GType type);
+function gtk_widget_path_append_type(path, type) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
+  integer(c_int) :: gtk_widget_path_append_type
+  type(c_ptr), value :: path
+  integer(c_size_t), value :: type
+end function
+
+! void gtk_widget_path_prepend_type (GtkWidgetPath *path, GType type);
+subroutine gtk_widget_path_prepend_type(path, type) bind(c) 
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr), value :: path
+  integer(c_size_t), value :: type
+end subroutine
+
+!  GType gtk_widget_path_iter_get_object_type (const GtkWidgetPath *path, gint pos);
+function gtk_widget_path_iter_get_object_type(path, pos) bind(c) 
+  use iso_c_binding, only: c_size_t, c_ptr, c_int
+  integer(c_size_t) :: gtk_widget_path_iter_get_object_type
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+end function
+
+! void gtk_widget_path_iter_set_object_type (GtkWidgetPath *path, gint pos, GType type);
+subroutine gtk_widget_path_iter_set_object_type(path, pos, type) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_size_t
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  integer(c_size_t), value :: type
+end subroutine
+
+!  G_CONST_RETURN gchar * gtk_widget_path_iter_get_name (const GtkWidgetPath *path, gint pos);
+function gtk_widget_path_iter_get_name(path, pos) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_widget_path_iter_get_name
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+end function
+
+! void gtk_widget_path_iter_set_name (GtkWidgetPath *path, gint pos, const gchar *name);
+subroutine gtk_widget_path_iter_set_name(path, pos, name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  character(kind=c_char), dimension(*) :: name
+end subroutine
+
+! gboolean gtk_widget_path_iter_has_name (const GtkWidgetPath *path, gint pos, const gchar *name);
+function gtk_widget_path_iter_has_name(path, pos, name) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_widget_path_iter_has_name
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  character(kind=c_char), dimension(*) :: name
+end function
+
+! gboolean gtk_widget_path_iter_has_qname (const GtkWidgetPath *path, gint pos, GQuark qname);
+function gtk_widget_path_iter_has_qname(path, pos, qname) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gtk_widget_path_iter_has_qname
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  integer(c_int32_t), value :: qname
+end function
+
+!  void gtk_widget_path_iter_add_class (GtkWidgetPath *path, gint pos, const gchar *name);
+subroutine gtk_widget_path_iter_add_class(path, pos, name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  character(kind=c_char), dimension(*) :: name
+end subroutine
+
+! void gtk_widget_path_iter_remove_class (GtkWidgetPath *path, gint pos, const gchar *name);
+subroutine gtk_widget_path_iter_remove_class(path, pos, name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  character(kind=c_char), dimension(*) :: name
+end subroutine
+
+! void gtk_widget_path_iter_clear_classes (GtkWidgetPath *path, gint pos);
+subroutine gtk_widget_path_iter_clear_classes(path, pos) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+end subroutine
+
+! GSList * gtk_widget_path_iter_list_classes (const GtkWidgetPath *path, gint pos);
+function gtk_widget_path_iter_list_classes(path, pos) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_widget_path_iter_list_classes
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+end function
+
+! gboolean gtk_widget_path_iter_has_class (const GtkWidgetPath *path, gint pos, const gchar *name);
+function gtk_widget_path_iter_has_class(path, pos, name) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_widget_path_iter_has_class
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  character(kind=c_char), dimension(*) :: name
+end function
+
+! gboolean gtk_widget_path_iter_has_qclass (const GtkWidgetPath *path, gint pos, GQuark qname);
+function gtk_widget_path_iter_has_qclass(path, pos, qname) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gtk_widget_path_iter_has_qclass
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  integer(c_int32_t), value :: qname
+end function
+
+!  void gtk_widget_path_iter_add_region (GtkWidgetPath *path, gint pos, const gchar *name, GtkRegionFlags flags);
+subroutine gtk_widget_path_iter_add_region(path, pos, name, flags) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  character(kind=c_char), dimension(*) :: name
+  integer(c_int), value :: flags
+end subroutine
+
+! void gtk_widget_path_iter_remove_region (GtkWidgetPath *path, gint pos, const gchar *name);
+subroutine gtk_widget_path_iter_remove_region(path, pos, name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  character(kind=c_char), dimension(*) :: name
+end subroutine
+
+! void gtk_widget_path_iter_clear_regions (GtkWidgetPath *path, gint pos);
+subroutine gtk_widget_path_iter_clear_regions(path, pos) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+end subroutine
+
+!  GSList * gtk_widget_path_iter_list_regions (const GtkWidgetPath *path, gint pos);
+function gtk_widget_path_iter_list_regions(path, pos) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_widget_path_iter_list_regions
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+end function
+
+!  gboolean gtk_widget_path_iter_has_region (const GtkWidgetPath *path, gint pos, const gchar *name, GtkRegionFlags *flags);
+function gtk_widget_path_iter_has_region(path, pos, name, flags) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_widget_path_iter_has_region
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  character(kind=c_char), dimension(*) :: name
+  integer(c_int), value :: flags
+end function
+
+! gboolean gtk_widget_path_iter_has_qregion (const GtkWidgetPath *path, gint pos, GQuark qname, GtkRegionFlags *flags);
+function gtk_widget_path_iter_has_qregion(path, pos, qname, flags) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gtk_widget_path_iter_has_qregion
+  type(c_ptr), value :: path
+  integer(c_int), value :: pos
+  integer(c_int32_t), value :: qname
+  integer(c_int), value :: flags
+end function
+
+!  GType gtk_widget_path_get_object_type (const GtkWidgetPath *path);
+function gtk_widget_path_get_object_type(path) bind(c) 
+  use iso_c_binding, only: c_size_t, c_ptr
+  integer(c_size_t) :: gtk_widget_path_get_object_type
+  type(c_ptr), value :: path
+end function
+
+!  gboolean gtk_widget_path_is_type (const GtkWidgetPath *path, GType type);
+function gtk_widget_path_is_type(path, type) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
+  integer(c_int) :: gtk_widget_path_is_type
+  type(c_ptr), value :: path
+  integer(c_size_t), value :: type
+end function
+
+! gboolean gtk_widget_path_has_parent (const GtkWidgetPath *path, GType type);
+function gtk_widget_path_has_parent(path, type) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
+  integer(c_int) :: gtk_widget_path_has_parent
+  type(c_ptr), value :: path
+  integer(c_size_t), value :: type
+end function
 
 !   GType gtk_im_context_get_type (void) G_GNUC_CONST;
 function gtk_im_context_get_type() bind(c) 
@@ -3499,7 +3537,7 @@ function gtk_tree_path_get_indices(path) bind(c)
   type(c_ptr), value :: path
 end function
 
-! gint *gtk_tree_path_get_indices_with_depth (GtkTreePath *path, gint *depth);
+!  gint *gtk_tree_path_get_indices_with_depth (GtkTreePath *path, gint *depth);
 function gtk_tree_path_get_indices_with_depth(path, depth) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_tree_path_get_indices_with_depth
@@ -3507,7 +3545,7 @@ function gtk_tree_path_get_indices_with_depth(path, depth) bind(c)
   type(c_ptr), value :: depth
 end function
 
-! void gtk_tree_path_free (GtkTreePath *path);
+!  void gtk_tree_path_free (GtkTreePath *path);
 subroutine gtk_tree_path_free(path) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: path
@@ -3755,6 +3793,14 @@ subroutine gtk_tree_model_get_value(tree_model, iter, column, value) bind(c)
   integer(c_int), value :: column
   type(c_ptr), value :: value
 end subroutine
+
+! gboolean gtk_tree_model_iter_previous (GtkTreeModel *tree_model, GtkTreeIter *iter);
+function gtk_tree_model_iter_previous(tree_model, iter) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_model_iter_previous
+  type(c_ptr), value :: tree_model
+  type(c_ptr), value :: iter
+end function
 
 ! gboolean gtk_tree_model_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter);
 function gtk_tree_model_iter_next(tree_model, iter) bind(c) 
@@ -4236,24 +4282,66 @@ subroutine gtk_clipboard_store(clipboard) bind(c)
   type(c_ptr), value :: clipboard
 end subroutine
 
-!   GType gtk_old_editable_get_type (void) G_GNUC_CONST;
-function gtk_old_editable_get_type() bind(c) 
+!   GType gtk_scrollable_get_type (void) G_GNUC_CONST;
+function gtk_scrollable_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_old_editable_get_type
+  integer(c_size_t) :: gtk_scrollable_get_type
 end function
 
-! void gtk_old_editable_claim_selection (GtkOldEditable *old_editable, gboolean claim, guint32 time_);
-subroutine gtk_old_editable_claim_selection(old_editable, claim, time_) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_int32_t
-  type(c_ptr), value :: old_editable
-  integer(c_int), value :: claim
-  integer(c_int32_t), value :: time_
+! GtkAdjustment *gtk_scrollable_get_hadjustment (GtkScrollable *scrollable);
+function gtk_scrollable_get_hadjustment(scrollable) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_scrollable_get_hadjustment
+  type(c_ptr), value :: scrollable
+end function
+
+! void gtk_scrollable_set_hadjustment (GtkScrollable *scrollable, GtkAdjustment *hadjustment);
+subroutine gtk_scrollable_set_hadjustment(scrollable, hadjustment) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: scrollable
+  type(c_ptr), value :: hadjustment
 end subroutine
 
-! void gtk_old_editable_changed (GtkOldEditable *old_editable);
-subroutine gtk_old_editable_changed(old_editable) bind(c) 
+! GtkAdjustment *gtk_scrollable_get_vadjustment (GtkScrollable *scrollable);
+function gtk_scrollable_get_vadjustment(scrollable) bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: old_editable
+  type(c_ptr) :: gtk_scrollable_get_vadjustment
+  type(c_ptr), value :: scrollable
+end function
+
+! void gtk_scrollable_set_vadjustment (GtkScrollable *scrollable, GtkAdjustment *vadjustment);
+subroutine gtk_scrollable_set_vadjustment(scrollable, vadjustment) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: scrollable
+  type(c_ptr), value :: vadjustment
+end subroutine
+
+! GtkScrollablePolicy gtk_scrollable_get_hscroll_policy (GtkScrollable *scrollable);
+function gtk_scrollable_get_hscroll_policy(scrollable) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_scrollable_get_hscroll_policy
+  type(c_ptr), value :: scrollable
+end function
+
+! void gtk_scrollable_set_hscroll_policy (GtkScrollable *scrollable, GtkScrollablePolicy policy);
+subroutine gtk_scrollable_set_hscroll_policy(scrollable, policy) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: scrollable
+  integer(c_int), value :: policy
+end subroutine
+
+! GtkScrollablePolicy gtk_scrollable_get_vscroll_policy (GtkScrollable *scrollable);
+function gtk_scrollable_get_vscroll_policy(scrollable) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_scrollable_get_vscroll_policy
+  type(c_ptr), value :: scrollable
+end function
+
+! void gtk_scrollable_set_vscroll_policy (GtkScrollable *scrollable, GtkScrollablePolicy policy);
+subroutine gtk_scrollable_set_vscroll_policy(scrollable, policy) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: scrollable
+  integer(c_int), value :: policy
 end subroutine
 
 !   GType gtk_scale_button_get_type (void) G_GNUC_CONST;
@@ -4328,20 +4416,6 @@ function gtk_scale_button_get_popup(button) bind(c)
   type(c_ptr) :: gtk_scale_button_get_popup
   type(c_ptr), value :: button
 end function
-
-!  GtkOrientation gtk_scale_button_get_orientation (GtkScaleButton *button);
-function gtk_scale_button_get_orientation(button) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_scale_button_get_orientation
-  type(c_ptr), value :: button
-end function
-
-! void gtk_scale_button_set_orientation (GtkScaleButton *button, GtkOrientation orientation);
-subroutine gtk_scale_button_set_orientation(button, orientation) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: button
-  integer(c_int), value :: orientation
-end subroutine
 
 !   GType gtk_status_icon_get_type (void) G_GNUC_CONST;
 function gtk_status_icon_get_type() bind(c) 
@@ -4481,13 +4555,6 @@ function gtk_status_icon_get_screen(status_icon) bind(c)
   type(c_ptr), value :: status_icon
 end function
 
-!  void gtk_status_icon_set_tooltip (GtkStatusIcon *status_icon, const gchar *tooltip_text);
-subroutine gtk_status_icon_set_tooltip(status_icon, tooltip_text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: status_icon
-  character(kind=c_char), dimension(*) :: tooltip_text
-end subroutine
-
 !  void gtk_status_icon_set_has_tooltip (GtkStatusIcon *status_icon, gboolean has_tooltip);
 subroutine gtk_status_icon_set_has_tooltip(status_icon, has_tooltip) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
@@ -4541,20 +4608,6 @@ end subroutine
 function gtk_status_icon_get_visible(status_icon) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_status_icon_get_visible
-  type(c_ptr), value :: status_icon
-end function
-
-!  void gtk_status_icon_set_blinking (GtkStatusIcon *status_icon, gboolean blinking);
-subroutine gtk_status_icon_set_blinking(status_icon, blinking) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: status_icon
-  integer(c_int), value :: blinking
-end subroutine
-
-! gboolean gtk_status_icon_get_blinking (GtkStatusIcon *status_icon);
-function gtk_status_icon_get_blinking(status_icon) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_status_icon_get_blinking
   type(c_ptr), value :: status_icon
 end function
 
@@ -4637,116 +4690,13 @@ function gtk_hscale_new_with_range(min, max, step) bind(c)
   real(c_double), value :: step
 end function
 
-!  GType gtk_text_get_type (void) G_GNUC_CONST;
-function gtk_text_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_text_get_type
-end function
-
-! GtkWidget* gtk_text_new (GtkAdjustment *hadj, GtkAdjustment *vadj);
-function gtk_text_new(hadj, vadj) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_text_new
-  type(c_ptr), value :: hadj
-  type(c_ptr), value :: vadj
-end function
-
-! void gtk_text_set_editable (GtkText *text, gboolean editable);
-subroutine gtk_text_set_editable(text, editable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: text
-  integer(c_int), value :: editable
-end subroutine
-
-! void gtk_text_set_word_wrap (GtkText *text, gboolean word_wrap);
-subroutine gtk_text_set_word_wrap(text, word_wrap) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: text
-  integer(c_int), value :: word_wrap
-end subroutine
-
-! void gtk_text_set_line_wrap (GtkText *text, gboolean line_wrap);
-subroutine gtk_text_set_line_wrap(text, line_wrap) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: text
-  integer(c_int), value :: line_wrap
-end subroutine
-
-! void gtk_text_set_adjustments (GtkText *text, GtkAdjustment *hadj, GtkAdjustment *vadj);
-subroutine gtk_text_set_adjustments(text, hadj, vadj) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: text
-  type(c_ptr), value :: hadj
-  type(c_ptr), value :: vadj
-end subroutine
-
-! void gtk_text_set_point (GtkText *text, guint index);
-subroutine gtk_text_set_point(text, index) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: text
-  integer(c_int), value :: index
-end subroutine
-
-! guint gtk_text_get_point (GtkText *text);
-function gtk_text_get_point(text) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_text_get_point
-  type(c_ptr), value :: text
-end function
-
-! guint gtk_text_get_length (GtkText *text);
-function gtk_text_get_length(text) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_text_get_length
-  type(c_ptr), value :: text
-end function
-
-! void gtk_text_freeze (GtkText *text);
-subroutine gtk_text_freeze(text) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: text
-end subroutine
-
-! void gtk_text_thaw (GtkText *text);
-subroutine gtk_text_thaw(text) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: text
-end subroutine
-
-! void gtk_text_insert (GtkText *text, GdkFont *font, const GdkColor *fore, const GdkColor *back, const char *chars, gint length);
-subroutine gtk_text_insert(text, font, fore, back, chars, length) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int
-  type(c_ptr), value :: text
-  type(c_ptr), value :: font
-  type(c_ptr), value :: fore
-  type(c_ptr), value :: back
-  character(kind=c_char), dimension(*) :: chars
-  integer(c_int), value :: length
-end subroutine
-
-! gboolean gtk_text_backward_delete (GtkText *text, guint nchars);
-function gtk_text_backward_delete(text, nchars) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_text_backward_delete
-  type(c_ptr), value :: text
-  integer(c_int), value :: nchars
-end function
-
-! gboolean gtk_text_forward_delete (GtkText *text, guint nchars);
-function gtk_text_forward_delete(text, nchars) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_text_forward_delete
-  type(c_ptr), value :: text
-  integer(c_int), value :: nchars
-end function
-
 !   GType gtk_menu_item_get_type (void) G_GNUC_CONST;
 function gtk_menu_item_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_menu_item_get_type
 end function
 
-! GtkWidget* gtk_menu_item_new (void);
+!  GtkWidget* gtk_menu_item_new (void);
 function gtk_menu_item_new() bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_menu_item_new
@@ -4869,11 +4819,19 @@ function gtk_menu_item_get_use_underline(menu_item) bind(c)
   type(c_ptr), value :: menu_item
 end function
 
-!  void gtk_menu_item_remove_submenu (GtkMenuItem *menu_item);
-subroutine gtk_menu_item_remove_submenu(menu_item) bind(c) 
-  use iso_c_binding, only: c_ptr
+!  void gtk_menu_item_set_reserve_indicator (GtkMenuItem *menu_item, gboolean reserve);
+subroutine gtk_menu_item_set_reserve_indicator(menu_item, reserve) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu_item
+  integer(c_int), value :: reserve
 end subroutine
+
+! gboolean gtk_menu_item_get_reserve_indicator (GtkMenuItem *menu_item);
+function gtk_menu_item_get_reserve_indicator(menu_item) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_menu_item_get_reserve_indicator
+  type(c_ptr), value :: menu_item
+end function
 
 !   GType gtk_vscrollbar_get_type (void) G_GNUC_CONST;
 function gtk_vscrollbar_get_type() bind(c) 
@@ -5047,7 +5005,7 @@ subroutine gtk_accelerator_set_default_mod_mask(default_mod_mask) bind(c)
   integer(c_int), value :: default_mod_mask
 end subroutine
 
-! guint gtk_accelerator_get_default_mod_mask (void);
+! GdkModifierType gtk_accelerator_get_default_mod_mask (void);
 function gtk_accelerator_get_default_mod_mask() bind(c) 
   use iso_c_binding, only: c_int
   integer(c_int) :: gtk_accelerator_get_default_mod_mask
@@ -5389,42 +5347,6 @@ function gtk_window_has_toplevel_focus(window) bind(c)
   type(c_ptr), value :: window
 end function
 
-!  void gtk_window_set_has_frame (GtkWindow *window, gboolean setting);
-subroutine gtk_window_set_has_frame(window, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: window
-  integer(c_int), value :: setting
-end subroutine
-
-! gboolean gtk_window_get_has_frame (GtkWindow *window);
-function gtk_window_get_has_frame(window) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_window_get_has_frame
-  type(c_ptr), value :: window
-end function
-
-! void gtk_window_set_frame_dimensions (GtkWindow *window, gint left, gint top, gint right, gint bottom);
-subroutine gtk_window_set_frame_dimensions(window, left, top, right, bottom) bi&
-&nd(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: window
-  integer(c_int), value :: left
-  integer(c_int), value :: top
-  integer(c_int), value :: right
-  integer(c_int), value :: bottom
-end subroutine
-
-! void gtk_window_get_frame_dimensions (GtkWindow *window, gint *left, gint *top, gint *right, gint *bottom);
-subroutine gtk_window_get_frame_dimensions(window, left, top, right, bottom) bi&
-&nd(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: window
-  type(c_ptr), value :: left
-  type(c_ptr), value :: top
-  type(c_ptr), value :: right
-  type(c_ptr), value :: bottom
-end subroutine
-
 !  void gtk_window_set_decorated (GtkWindow *window, gboolean setting);
 subroutine gtk_window_set_decorated(window, setting) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
@@ -5567,6 +5489,13 @@ function gtk_window_list_toplevels() bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_window_list_toplevels
 end function
+
+! void gtk_window_set_has_user_ref_count (GtkWindow *window, gboolean setting);
+subroutine gtk_window_set_has_user_ref_count(window, setting) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: window
+  integer(c_int), value :: setting
+end subroutine
 
 !  void gtk_window_add_mnemonic (GtkWindow *window, guint keyval, GtkWidget *target);
 subroutine gtk_window_add_mnemonic(window, keyval, target) bind(c) 
@@ -5721,16 +5650,6 @@ subroutine gtk_window_begin_move_drag(window, button, root_x, root_y, timestamp&
   integer(c_int32_t), value :: timestamp
 end subroutine
 
-!  void gtk_window_set_policy (GtkWindow *window, gint allow_shrink, gint allow_grow, gint auto_shrink);
-subroutine gtk_window_set_policy(window, allow_shrink, allow_grow, auto_shrink)&
-& bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: window
-  integer(c_int), value :: allow_shrink
-  integer(c_int), value :: allow_grow
-  integer(c_int), value :: auto_shrink
-end subroutine
-
 !  void gtk_window_set_default_size (GtkWindow *window, gint width, gint height);
 subroutine gtk_window_set_default_size(window, width, height) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
@@ -5787,7 +5706,23 @@ function gtk_window_parse_geometry(window, geometry) bind(c)
   character(kind=c_char), dimension(*) :: geometry
 end function
 
-! GtkWindowGroup *gtk_window_get_group (GtkWindow *window);
+!  void gtk_window_set_default_geometry (GtkWindow *window, gint width, gint height);
+subroutine gtk_window_set_default_geometry(window, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: window
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end subroutine
+
+! void gtk_window_resize_to_geometry (GtkWindow *window, gint width, gint height);
+subroutine gtk_window_resize_to_geometry(window, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: window
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end subroutine
+
+!  GtkWindowGroup *gtk_window_get_group (GtkWindow *window);
 function gtk_window_get_group(window) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_window_get_group
@@ -5847,6 +5782,35 @@ function gtk_window_group_list_windows(window_group) bind(c)
   type(c_ptr), value :: window_group
 end function
 
+!  GtkWidget * gtk_window_group_get_current_grab (GtkWindowGroup *window_group);
+function gtk_window_group_get_current_grab(window_group) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_window_group_get_current_grab
+  type(c_ptr), value :: window_group
+end function
+
+! GtkWidget * gtk_window_group_get_current_device_grab (GtkWindowGroup *window_group, GdkDevice *device);
+function gtk_window_group_get_current_device_grab(window_group, device) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_window_group_get_current_device_grab
+  type(c_ptr), value :: window_group
+  type(c_ptr), value :: device
+end function
+
+!  GtkApplication *gtk_window_get_application (GtkWindow *window);
+function gtk_window_get_application(window) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_window_get_application
+  type(c_ptr), value :: window
+end function
+
+! void gtk_window_set_application (GtkWindow *window, GtkApplication *application);
+subroutine gtk_window_set_application(window, application) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: window
+  type(c_ptr), value :: application
+end subroutine
+
 !  void gtk_window_set_has_resize_grip (GtkWindow *window, gboolean value);
 subroutine gtk_window_set_has_resize_grip(window, value) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
@@ -5876,27 +5840,6 @@ function gtk_window_get_resize_grip_area(window, rect) bind(c)
   type(c_ptr), value :: rect
 end function
 
-! void gtk_window_remove_embedded_xid (GtkWindow *window, GdkNativeWindow xid);
-subroutine gtk_window_remove_embedded_xid(window, xid) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: window
-  type(c_ptr), value :: xid
-end subroutine
-
-! void gtk_window_add_embedded_xid (GtkWindow *window, GdkNativeWindow xid);
-subroutine gtk_window_add_embedded_xid(window, xid) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: window
-  type(c_ptr), value :: xid
-end subroutine
-
-! GtkWidget *gtk_window_group_get_current_grab (GtkWindowGroup *window_group);
-function gtk_window_group_get_current_grab(window_group) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_window_group_get_current_grab
-  type(c_ptr), value :: window_group
-end function
-
 !   GType gtk_vseparator_get_type (void) G_GNUC_CONST;
 function gtk_vseparator_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -5909,83 +5852,13 @@ function gtk_vseparator_new() bind(c)
   type(c_ptr) :: gtk_vseparator_new
 end function
 
-!   void gtk_text_layout_draw (GtkTextLayout *layout, GtkWidget *widget, GdkDrawable *drawable, GdkGC *cursor_gc, gint x_offset, gint y_offset, gint x, gint y, gint width, gint height, GList **widgets);
-subroutine gtk_text_layout_draw(layout, widget, drawable, cursor_gc, x_offset, &
-&y_offset, x, y, width, height, widgets) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
+!   void gtk_text_layout_draw (GtkTextLayout *layout, GtkWidget *widget, cairo_t *cr, GList **widgets);
+subroutine gtk_text_layout_draw(layout, widget, cr, widgets) bind(c) 
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: layout
   type(c_ptr), value :: widget
-  type(c_ptr), value :: drawable
-  type(c_ptr), value :: cursor_gc
-  integer(c_int), value :: x_offset
-  integer(c_int), value :: y_offset
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
+  type(c_ptr), value :: cr
   type(c_ptr), value :: widgets
-end subroutine
-
-!   GType gtk_combo_get_type (void) G_GNUC_CONST;
-function gtk_combo_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_combo_get_type
-end function
-
-!  GtkWidget* gtk_combo_new (void);
-function gtk_combo_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_combo_new
-end function
-
-!  void gtk_combo_set_value_in_list (GtkCombo* combo, gboolean val, gboolean ok_if_empty);
-subroutine gtk_combo_set_value_in_list(combo, val, ok_if_empty) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: combo
-  integer(c_int), value :: val
-  integer(c_int), value :: ok_if_empty
-end subroutine
-
-!  void gtk_combo_set_use_arrows (GtkCombo* combo, gboolean val);
-subroutine gtk_combo_set_use_arrows(combo, val) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: combo
-  integer(c_int), value :: val
-end subroutine
-
-!  void gtk_combo_set_use_arrows_always (GtkCombo* combo, gboolean val);
-subroutine gtk_combo_set_use_arrows_always(combo, val) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: combo
-  integer(c_int), value :: val
-end subroutine
-
-!  void gtk_combo_set_case_sensitive (GtkCombo* combo, gboolean val);
-subroutine gtk_combo_set_case_sensitive(combo, val) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: combo
-  integer(c_int), value :: val
-end subroutine
-
-!  void gtk_combo_set_item_string (GtkCombo* combo, GtkItem* item, const gchar* item_value);
-subroutine gtk_combo_set_item_string(combo, item, item_value) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: combo
-  type(c_ptr), value :: item
-  character(kind=c_char), dimension(*) :: item_value
-end subroutine
-
-!  void gtk_combo_set_popdown_strings (GtkCombo* combo, GList *strings);
-subroutine gtk_combo_set_popdown_strings(combo, strings) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: combo
-  type(c_ptr), value :: strings
-end subroutine
-
-!  void gtk_combo_disable_activate (GtkCombo* combo);
-subroutine gtk_combo_disable_activate(combo) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: combo
 end subroutine
 
 !   GType gtk_action_get_type (void) G_GNUC_CONST;
@@ -6121,42 +5994,7 @@ function gtk_action_get_accel_closure(action) bind(c)
   type(c_ptr), value :: action
 end function
 
-!  GtkAction *gtk_widget_get_action (GtkWidget *widget);
-function gtk_widget_get_action(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_widget_get_action
-  type(c_ptr), value :: widget
-end function
-
-! void gtk_action_connect_proxy (GtkAction *action, GtkWidget *proxy);
-subroutine gtk_action_connect_proxy(action, proxy) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: action
-  type(c_ptr), value :: proxy
-end subroutine
-
-! void gtk_action_disconnect_proxy (GtkAction *action, GtkWidget *proxy);
-subroutine gtk_action_disconnect_proxy(action, proxy) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: action
-  type(c_ptr), value :: proxy
-end subroutine
-
-! void gtk_action_block_activate_from (GtkAction *action, GtkWidget *proxy);
-subroutine gtk_action_block_activate_from(action, proxy) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: action
-  type(c_ptr), value :: proxy
-end subroutine
-
-! void gtk_action_unblock_activate_from (GtkAction *action, GtkWidget *proxy);
-subroutine gtk_action_unblock_activate_from(action, proxy) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: action
-  type(c_ptr), value :: proxy
-end subroutine
-
-!  void gtk_action_block_activate (GtkAction *action);
+! void gtk_action_block_activate (GtkAction *action);
 subroutine gtk_action_block_activate(action) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: action
@@ -6323,18 +6161,6 @@ function gtk_action_get_always_show_image(action) bind(c)
   type(c_ptr), value :: action
 end function
 
-!   GType gtk_gamma_curve_get_type (void) G_GNUC_CONST;
-function gtk_gamma_curve_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_gamma_curve_get_type
-end function
-
-! GtkWidget* gtk_gamma_curve_new (void);
-function gtk_gamma_curve_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_gamma_curve_new
-end function
-
 !   GType gtk_notebook_get_type (void) G_GNUC_CONST;
 function gtk_notebook_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -6415,42 +6241,6 @@ subroutine gtk_notebook_remove_page(notebook, page_num) bind(c)
   type(c_ptr), value :: notebook
   integer(c_int), value :: page_num
 end subroutine
-
-!  void gtk_notebook_set_window_creation_hook (GtkNotebookWindowCreationFunc func, gpointer data, GDestroyNotify destroy);
-subroutine gtk_notebook_set_window_creation_hook(func, data, destroy) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
-end subroutine
-
-! void gtk_notebook_set_group_id (GtkNotebook *notebook, gint group_id);
-subroutine gtk_notebook_set_group_id(notebook, group_id) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: notebook
-  integer(c_int), value :: group_id
-end subroutine
-
-! gint gtk_notebook_get_group_id (GtkNotebook *notebook);
-function gtk_notebook_get_group_id(notebook) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_notebook_get_group_id
-  type(c_ptr), value :: notebook
-end function
-
-!  void gtk_notebook_set_group (GtkNotebook *notebook, gpointer group);
-subroutine gtk_notebook_set_group(notebook, group) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: notebook
-  type(c_ptr), value :: group
-end subroutine
-
-! gpointer gtk_notebook_get_group (GtkNotebook *notebook);
-function gtk_notebook_get_group(notebook) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_notebook_get_group
-  type(c_ptr), value :: notebook
-end function
 
 !  void gtk_notebook_set_group_name (GtkNotebook *notebook, const gchar *group_name);
 subroutine gtk_notebook_set_group_name(notebook, group_name) bind(c) 
@@ -6557,35 +6347,7 @@ function gtk_notebook_get_tab_pos(notebook) bind(c)
   type(c_ptr), value :: notebook
 end function
 
-!  void gtk_notebook_set_homogeneous_tabs (GtkNotebook *notebook, gboolean homogeneous);
-subroutine gtk_notebook_set_homogeneous_tabs(notebook, homogeneous) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: notebook
-  integer(c_int), value :: homogeneous
-end subroutine
-
-! void gtk_notebook_set_tab_border (GtkNotebook *notebook, guint border_width);
-subroutine gtk_notebook_set_tab_border(notebook, border_width) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: notebook
-  integer(c_int), value :: border_width
-end subroutine
-
-! void gtk_notebook_set_tab_hborder (GtkNotebook *notebook, guint tab_hborder);
-subroutine gtk_notebook_set_tab_hborder(notebook, tab_hborder) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: notebook
-  integer(c_int), value :: tab_hborder
-end subroutine
-
-! void gtk_notebook_set_tab_vborder (GtkNotebook *notebook, guint tab_vborder);
-subroutine gtk_notebook_set_tab_vborder(notebook, tab_vborder) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: notebook
-  integer(c_int), value :: tab_vborder
-end subroutine
-
-!  void gtk_notebook_set_scrollable (GtkNotebook *notebook, gboolean scrollable);
+! void gtk_notebook_set_scrollable (GtkNotebook *notebook, gboolean scrollable);
 subroutine gtk_notebook_set_scrollable(notebook, scrollable) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: notebook
@@ -6689,29 +6451,7 @@ function gtk_notebook_get_menu_label_text(notebook, child) bind(c)
   type(c_ptr), value :: child
 end function
 
-!  void gtk_notebook_query_tab_label_packing (GtkNotebook *notebook, GtkWidget *child, gboolean *expand, gboolean *fill, GtkPackType *pack_type);
-subroutine gtk_notebook_query_tab_label_packing(notebook, child, expand, fill, &
-&pack_type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: notebook
-  type(c_ptr), value :: child
-  type(c_ptr), value :: expand
-  type(c_ptr), value :: fill
-  integer(c_int), value :: pack_type
-end subroutine
-
-! void gtk_notebook_set_tab_label_packing (GtkNotebook *notebook, GtkWidget *child, gboolean expand, gboolean fill, GtkPackType pack_type);
-subroutine gtk_notebook_set_tab_label_packing(notebook, child, expand, fill, pa&
-&ck_type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: notebook
-  type(c_ptr), value :: child
-  integer(c_int), value :: expand
-  integer(c_int), value :: fill
-  integer(c_int), value :: pack_type
-end subroutine
-
-!  void gtk_notebook_reorder_child (GtkNotebook *notebook, GtkWidget *child, gint position);
+! void gtk_notebook_reorder_child (GtkNotebook *notebook, GtkWidget *child, gint position);
 subroutine gtk_notebook_reorder_child(notebook, child, position) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: notebook
@@ -6803,45 +6543,6 @@ function gtk_text_tag_event(tag, event_object, event, iter) bind(c)
   type(c_ptr), value :: event_object
   type(c_ptr), value :: event
   type(c_ptr), value :: iter
-end function
-
-!  GtkTextAttributes* gtk_text_attributes_new (void);
-function gtk_text_attributes_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_text_attributes_new
-end function
-
-! GtkTextAttributes* gtk_text_attributes_copy (GtkTextAttributes *src);
-function gtk_text_attributes_copy(src) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_text_attributes_copy
-  type(c_ptr), value :: src
-end function
-
-! void gtk_text_attributes_copy_values (GtkTextAttributes *src, GtkTextAttributes *dest);
-subroutine gtk_text_attributes_copy_values(src, dest) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: src
-  type(c_ptr), value :: dest
-end subroutine
-
-! void gtk_text_attributes_unref (GtkTextAttributes *values);
-subroutine gtk_text_attributes_unref(values) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: values
-end subroutine
-
-! GtkTextAttributes *gtk_text_attributes_ref (GtkTextAttributes *values);
-function gtk_text_attributes_ref(values) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_text_attributes_ref
-  type(c_ptr), value :: values
-end function
-
-!  GType gtk_text_attributes_get_type (void) G_GNUC_CONST;
-function gtk_text_attributes_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_text_attributes_get_type
 end function
 
 ! void gtk_test_register_all_types (void);
@@ -6944,6 +6645,18 @@ function gtk_test_find_label(widget, label_pattern) bind(c)
   character(kind=c_char), dimension(*) :: label_pattern
 end function
 
+!   guint gtk_get_debug_flags (void);
+function gtk_get_debug_flags() bind(c) 
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_debug_flags
+end function
+
+! void gtk_set_debug_flags (guint flags);
+subroutine gtk_set_debug_flags(flags) bind(c) 
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: flags
+end subroutine
+
 !   GType gtk_volume_button_get_type (void) G_GNUC_CONST;
 function gtk_volume_button_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -6962,55 +6675,273 @@ function gtk_plug_get_type() bind(c)
   integer(c_size_t) :: gtk_plug_get_type
 end function
 
-!  void gtk_plug_construct (GtkPlug *plug, GdkNativeWindow socket_id);
+!  void gtk_plug_construct (GtkPlug *plug, Window socket_id);
 subroutine gtk_plug_construct(plug, socket_id) bind(c) 
-  use iso_c_binding, only: c_ptr
+  use iso_c_binding, only: c_ptr, c_long
   type(c_ptr), value :: plug
-  type(c_ptr), value :: socket_id
+  integer(c_long), value :: socket_id
 end subroutine
 
-! GtkWidget* gtk_plug_new (GdkNativeWindow socket_id);
+! GtkWidget *gtk_plug_new (Window socket_id);
 function gtk_plug_new(socket_id) bind(c) 
-  use iso_c_binding, only: c_ptr
+  use iso_c_binding, only: c_ptr, c_long
   type(c_ptr) :: gtk_plug_new
-  type(c_ptr), value :: socket_id
+  integer(c_long), value :: socket_id
 end function
 
-!  void gtk_plug_construct_for_display (GtkPlug *plug, GdkDisplay *display, GdkNativeWindow socket_id);
+!  void gtk_plug_construct_for_display (GtkPlug *plug, GdkDisplay *display, Window socket_id);
 subroutine gtk_plug_construct_for_display(plug, display, socket_id) bind(c) 
-  use iso_c_binding, only: c_ptr
+  use iso_c_binding, only: c_ptr, c_long
   type(c_ptr), value :: plug
   type(c_ptr), value :: display
-  type(c_ptr), value :: socket_id
+  integer(c_long), value :: socket_id
 end subroutine
 
-! GtkWidget* gtk_plug_new_for_display (GdkDisplay *display, GdkNativeWindow socket_id);
+! GtkWidget *gtk_plug_new_for_display (GdkDisplay *display, Window socket_id);
 function gtk_plug_new_for_display(display, socket_id) bind(c) 
-  use iso_c_binding, only: c_ptr
+  use iso_c_binding, only: c_ptr, c_long
   type(c_ptr) :: gtk_plug_new_for_display
   type(c_ptr), value :: display
-  type(c_ptr), value :: socket_id
+  integer(c_long), value :: socket_id
 end function
 
-!  GdkNativeWindow gtk_plug_get_id (GtkPlug *plug);
+! Window gtk_plug_get_id (GtkPlug *plug);
 function gtk_plug_get_id(plug) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_plug_get_id
+  use iso_c_binding, only: c_long, c_ptr
+  integer(c_long) :: gtk_plug_get_id
   type(c_ptr), value :: plug
 end function
 
-!  gboolean gtk_plug_get_embedded (GtkPlug *plug);
+! gboolean gtk_plug_get_embedded (GtkPlug *plug);
 function gtk_plug_get_embedded(plug) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_plug_get_embedded
   type(c_ptr), value :: plug
 end function
 
-!  GdkWindow *gtk_plug_get_socket_window (GtkPlug *plug);
+! GdkWindow *gtk_plug_get_socket_window (GtkPlug *plug);
 function gtk_plug_get_socket_window(plug) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_plug_get_socket_window
   type(c_ptr), value :: plug
+end function
+
+!   GType gtk_theming_engine_get_type (void) G_GNUC_CONST;
+function gtk_theming_engine_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_theming_engine_get_type
+end function
+
+!  void gtk_theming_engine_register_property (const gchar *name_space, GtkStylePropertyParser parse_func, GParamSpec *pspec);
+subroutine gtk_theming_engine_register_property(name_space, parse_func, pspec) &
+&bind(c) 
+  use iso_c_binding, only: c_char, c_funptr, c_ptr
+  character(kind=c_char), dimension(*) :: name_space
+  type(c_funptr), value :: parse_func
+  type(c_ptr), value :: pspec
+end subroutine
+
+!  void gtk_theming_engine_get_property (GtkThemingEngine *engine, const gchar *property, GtkStateFlags state, GValue *value);
+subroutine gtk_theming_engine_get_property(engine, property, state, value) bind&
+&(c) 
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr), value :: engine
+  character(kind=c_char), dimension(*) :: property
+  integer(c_int), value :: state
+  type(c_ptr), value :: value
+end subroutine
+
+! void gtk_theming_engine_get_valist (GtkThemingEngine *engine, GtkStateFlags state, va_list args);
+subroutine gtk_theming_engine_get_valist(engine, state, args) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: engine
+  integer(c_int), value :: state
+  type(c_ptr), value :: args
+end subroutine
+
+!  void gtk_theming_engine_get_style_property (GtkThemingEngine *engine, const gchar *property_name, GValue *value);
+subroutine gtk_theming_engine_get_style_property(engine, property_name, value) &
+&bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: engine
+  character(kind=c_char), dimension(*) :: property_name
+  type(c_ptr), value :: value
+end subroutine
+
+! void gtk_theming_engine_get_style_valist (GtkThemingEngine *engine, va_list args);
+subroutine gtk_theming_engine_get_style_valist(engine, args) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: engine
+  type(c_ptr), value :: args
+end subroutine
+
+!  gboolean gtk_theming_engine_lookup_color (GtkThemingEngine *engine, const gchar *color_name, GdkRGBA *color);
+function gtk_theming_engine_lookup_color(engine, color_name, color) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_theming_engine_lookup_color
+  type(c_ptr), value :: engine
+  character(kind=c_char), dimension(*) :: color_name
+  type(c_ptr), value :: color
+end function
+
+!  G_CONST_RETURN GtkWidgetPath * gtk_theming_engine_get_path (GtkThemingEngine *engine);
+function gtk_theming_engine_get_path(engine) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_theming_engine_get_path
+  type(c_ptr), value :: engine
+end function
+
+!  gboolean gtk_theming_engine_has_class (GtkThemingEngine *engine, const gchar *style_class);
+function gtk_theming_engine_has_class(engine, style_class) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_theming_engine_has_class
+  type(c_ptr), value :: engine
+  character(kind=c_char), dimension(*) :: style_class
+end function
+
+! gboolean gtk_theming_engine_has_region (GtkThemingEngine *engine, const gchar *style_region, GtkRegionFlags *flags);
+function gtk_theming_engine_has_region(engine, style_region, flags) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_theming_engine_has_region
+  type(c_ptr), value :: engine
+  character(kind=c_char), dimension(*) :: style_region
+  integer(c_int), value :: flags
+end function
+
+!  GtkStateFlags gtk_theming_engine_get_state (GtkThemingEngine *engine);
+function gtk_theming_engine_get_state(engine) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_theming_engine_get_state
+  type(c_ptr), value :: engine
+end function
+
+! gboolean gtk_theming_engine_state_is_running (GtkThemingEngine *engine, GtkStateType state, gdouble *progress);
+function gtk_theming_engine_state_is_running(engine, state, progress) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_theming_engine_state_is_running
+  type(c_ptr), value :: engine
+  integer(c_int), value :: state
+  type(c_ptr), value :: progress
+end function
+
+!  GtkTextDirection gtk_theming_engine_get_direction (GtkThemingEngine *engine);
+function gtk_theming_engine_get_direction(engine) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_theming_engine_get_direction
+  type(c_ptr), value :: engine
+end function
+
+!  GtkJunctionSides gtk_theming_engine_get_junction_sides (GtkThemingEngine *engine);
+function gtk_theming_engine_get_junction_sides(engine) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_theming_engine_get_junction_sides
+  type(c_ptr), value :: engine
+end function
+
+!  void gtk_theming_engine_get_color (GtkThemingEngine *engine, GtkStateFlags state, GdkRGBA *color);
+subroutine gtk_theming_engine_get_color(engine, state, color) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: engine
+  integer(c_int), value :: state
+  type(c_ptr), value :: color
+end subroutine
+
+! void gtk_theming_engine_get_background_color (GtkThemingEngine *engine, GtkStateFlags state, GdkRGBA *color);
+subroutine gtk_theming_engine_get_background_color(engine, state, color) bind(c&
+&) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: engine
+  integer(c_int), value :: state
+  type(c_ptr), value :: color
+end subroutine
+
+! void gtk_theming_engine_get_border_color (GtkThemingEngine *engine, GtkStateFlags state, GdkRGBA *color);
+subroutine gtk_theming_engine_get_border_color(engine, state, color) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: engine
+  integer(c_int), value :: state
+  type(c_ptr), value :: color
+end subroutine
+
+!  void gtk_theming_engine_get_border (GtkThemingEngine *engine, GtkStateFlags state, GtkBorder *border);
+subroutine gtk_theming_engine_get_border(engine, state, border) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: engine
+  integer(c_int), value :: state
+  type(c_ptr), value :: border
+end subroutine
+
+! void gtk_theming_engine_get_padding (GtkThemingEngine *engine, GtkStateFlags state, GtkBorder *padding);
+subroutine gtk_theming_engine_get_padding(engine, state, padding) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: engine
+  integer(c_int), value :: state
+  type(c_ptr), value :: padding
+end subroutine
+
+! void gtk_theming_engine_get_margin (GtkThemingEngine *engine, GtkStateFlags state, GtkBorder *margin);
+subroutine gtk_theming_engine_get_margin(engine, state, margin) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: engine
+  integer(c_int), value :: state
+  type(c_ptr), value :: margin
+end subroutine
+
+!  const PangoFontDescription * gtk_theming_engine_get_font (GtkThemingEngine *engine, GtkStateFlags state);
+function gtk_theming_engine_get_font(engine, state) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_theming_engine_get_font
+  type(c_ptr), value :: engine
+  integer(c_int), value :: state
+end function
+
+!  GtkThemingEngine * gtk_theming_engine_load (const gchar *name);
+function gtk_theming_engine_load(name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_theming_engine_load
+  character(kind=c_char), dimension(*) :: name
+end function
+
+!  GdkScreen * gtk_theming_engine_get_screen (GtkThemingEngine *engine);
+function gtk_theming_engine_get_screen(engine) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_theming_engine_get_screen
+  type(c_ptr), value :: engine
+end function
+
+!   GType gtk_application_get_type (void) G_GNUC_CONST;
+function gtk_application_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_application_get_type
+end function
+
+!  GtkApplication * gtk_application_new (const gchar *application_id, GApplicationFlags flags);
+function gtk_application_new(application_id, flags) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr) :: gtk_application_new
+  character(kind=c_char), dimension(*) :: application_id
+  integer(c_int), value :: flags
+end function
+
+!  void gtk_application_add_window (GtkApplication *application, GtkWindow *window);
+subroutine gtk_application_add_window(application, window) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: application
+  type(c_ptr), value :: window
+end subroutine
+
+!  void gtk_application_remove_window (GtkApplication *application, GtkWindow *window);
+subroutine gtk_application_remove_window(application, window) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: application
+  type(c_ptr), value :: window
+end subroutine
+
+!  GList * gtk_application_get_windows (GtkApplication *application);
+function gtk_application_get_windows(application) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_application_get_windows
+  type(c_ptr), value :: application
 end function
 
 !   GType gtk_cell_renderer_toggle_get_type (void) G_GNUC_CONST;
@@ -7079,6 +7010,14 @@ function gtk_cell_view_new() bind(c)
   type(c_ptr) :: gtk_cell_view_new
 end function
 
+! GtkWidget *gtk_cell_view_new_with_context (GtkCellArea *area, GtkCellAreaContext *context);
+function gtk_cell_view_new_with_context(area, context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_view_new_with_context
+  type(c_ptr), value :: area
+  type(c_ptr), value :: context
+end function
+
 ! GtkWidget *gtk_cell_view_new_with_text (const gchar *text);
 function gtk_cell_view_new_with_text(text) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
@@ -7100,7 +7039,7 @@ function gtk_cell_view_new_with_pixbuf(pixbuf) bind(c)
   type(c_ptr), value :: pixbuf
 end function
 
-!  void gtk_cell_view_set_model (GtkCellView *cell_view, GtkTreeModel *model);
+! void gtk_cell_view_set_model (GtkCellView *cell_view, GtkTreeModel *model);
 subroutine gtk_cell_view_set_model(cell_view, model) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: cell_view
@@ -7128,27 +7067,55 @@ function gtk_cell_view_get_displayed_row(cell_view) bind(c)
   type(c_ptr), value :: cell_view
 end function
 
-! gboolean gtk_cell_view_get_size_of_row (GtkCellView *cell_view, GtkTreePath *path, GtkRequisition *requisition);
-function gtk_cell_view_get_size_of_row(cell_view, path, requisition) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_cell_view_get_size_of_row
-  type(c_ptr), value :: cell_view
-  type(c_ptr), value :: path
-  type(c_ptr), value :: requisition
-end function
-
-!  void gtk_cell_view_set_background_color (GtkCellView *cell_view, const GdkColor *color);
+! void gtk_cell_view_set_background_color (GtkCellView *cell_view, const GdkColor *color);
 subroutine gtk_cell_view_set_background_color(cell_view, color) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: cell_view
   type(c_ptr), value :: color
 end subroutine
 
-!  GList *gtk_cell_view_get_cell_renderers (GtkCellView *cell_view);
-function gtk_cell_view_get_cell_renderers(cell_view) bind(c) 
+! void gtk_cell_view_set_background_rgba (GtkCellView *cell_view, const GdkRGBA *rgba);
+subroutine gtk_cell_view_set_background_rgba(cell_view, rgba) bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_cell_view_get_cell_renderers
   type(c_ptr), value :: cell_view
+  type(c_ptr), value :: rgba
+end subroutine
+
+! gboolean gtk_cell_view_get_draw_sensitive (GtkCellView *cell_view);
+function gtk_cell_view_get_draw_sensitive(cell_view) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_view_get_draw_sensitive
+  type(c_ptr), value :: cell_view
+end function
+
+! void gtk_cell_view_set_draw_sensitive (GtkCellView *cell_view, gboolean draw_sensitive);
+subroutine gtk_cell_view_set_draw_sensitive(cell_view, draw_sensitive) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: cell_view
+  integer(c_int), value :: draw_sensitive
+end subroutine
+
+! gboolean gtk_cell_view_get_fit_model (GtkCellView *cell_view);
+function gtk_cell_view_get_fit_model(cell_view) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_view_get_fit_model
+  type(c_ptr), value :: cell_view
+end function
+
+! void gtk_cell_view_set_fit_model (GtkCellView *cell_view, gboolean fit_model);
+subroutine gtk_cell_view_set_fit_model(cell_view, fit_model) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: cell_view
+  integer(c_int), value :: fit_model
+end subroutine
+
+!  gboolean gtk_cell_view_get_size_of_row (GtkCellView *cell_view, GtkTreePath *path, GtkRequisition *requisition);
+function gtk_cell_view_get_size_of_row(cell_view, path, requisition) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_view_get_size_of_row
+  type(c_ptr), value :: cell_view
+  type(c_ptr), value :: path
+  type(c_ptr), value :: requisition
 end function
 
 !   GType gtk_recent_chooser_dialog_get_type (void) G_GNUC_CONST;
@@ -7410,7 +7377,44 @@ function gtk_icon_info_load_icon(icon_info, error) bind(c)
   type(c_ptr), value :: error
 end function
 
-! void gtk_icon_info_set_raw_coordinates (GtkIconInfo *icon_info, gboolean raw_coordinates);
+! GdkPixbuf * gtk_icon_info_load_symbolic (GtkIconInfo *icon_info, const GdkRGBA *fg, const GdkRGBA *success_color, const GdkRGBA *warning_color, const GdkRGBA *error_color, gboolean *was_symbolic, GError **error);
+function gtk_icon_info_load_symbolic(icon_info, fg, success_color, warning_colo&
+&r, error_color, was_symbolic, error) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_icon_info_load_symbolic
+  type(c_ptr), value :: icon_info
+  type(c_ptr), value :: fg
+  type(c_ptr), value :: success_color
+  type(c_ptr), value :: warning_color
+  type(c_ptr), value :: error_color
+  type(c_ptr), value :: was_symbolic
+  type(c_ptr), value :: error
+end function
+
+! GdkPixbuf * gtk_icon_info_load_symbolic_for_context (GtkIconInfo *icon_info, GtkStyleContext *context, gboolean *was_symbolic, GError **error);
+function gtk_icon_info_load_symbolic_for_context(icon_info, context, was_symbol&
+&ic, error) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_icon_info_load_symbolic_for_context
+  type(c_ptr), value :: icon_info
+  type(c_ptr), value :: context
+  type(c_ptr), value :: was_symbolic
+  type(c_ptr), value :: error
+end function
+
+!  GdkPixbuf * gtk_icon_info_load_symbolic_for_style (GtkIconInfo *icon_info, GtkStyle *style, GtkStateType state, gboolean *was_symbolic, GError **error);
+function gtk_icon_info_load_symbolic_for_style(icon_info, style, state, was_sym&
+&bolic, error) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_icon_info_load_symbolic_for_style
+  type(c_ptr), value :: icon_info
+  type(c_ptr), value :: style
+  integer(c_int), value :: state
+  type(c_ptr), value :: was_symbolic
+  type(c_ptr), value :: error
+end function
+
+!  void gtk_icon_info_set_raw_coordinates (GtkIconInfo *icon_info, gboolean raw_coordinates);
 subroutine gtk_icon_info_set_raw_coordinates(icon_info, raw_coordinates) bind(c&
 &) 
   use iso_c_binding, only: c_ptr, c_int
@@ -7525,10 +7529,10 @@ function gtk_offscreen_window_new() bind(c)
   type(c_ptr) :: gtk_offscreen_window_new
 end function
 
-! GdkPixmap *gtk_offscreen_window_get_pixmap (GtkOffscreenWindow *offscreen);
-function gtk_offscreen_window_get_pixmap(offscreen) bind(c) 
+! cairo_surface_t *gtk_offscreen_window_get_surface (GtkOffscreenWindow *offscreen);
+function gtk_offscreen_window_get_surface(offscreen) bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_offscreen_window_get_pixmap
+  type(c_ptr) :: gtk_offscreen_window_get_surface
   type(c_ptr), value :: offscreen
 end function
 
@@ -7549,6 +7553,13 @@ end function
 function gtk_entry_completion_new() bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_entry_completion_new
+end function
+
+! GtkEntryCompletion *gtk_entry_completion_new_with_area (GtkCellArea *area);
+function gtk_entry_completion_new_with_area(area) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_entry_completion_new_with_area
+  type(c_ptr), value :: area
 end function
 
 !  GtkWidget *gtk_entry_completion_get_entry (GtkEntryCompletion *completion);
@@ -8001,17 +8012,7 @@ function gtk_tool_item_get_expand(tool_item) bind(c)
   type(c_ptr), value :: tool_item
 end function
 
-!  void gtk_tool_item_set_tooltip (GtkToolItem *tool_item, GtkTooltips *tooltips, const gchar *tip_text, const gchar *tip_private);
-subroutine gtk_tool_item_set_tooltip(tool_item, tooltips, tip_text, tip_private&
-&) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: tool_item
-  type(c_ptr), value :: tooltips
-  character(kind=c_char), dimension(*) :: tip_text
-  character(kind=c_char), dimension(*) :: tip_private
-end subroutine
-
-!  void gtk_tool_item_set_tooltip_text (GtkToolItem *tool_item, const gchar *text);
+! void gtk_tool_item_set_tooltip_text (GtkToolItem *tool_item, const gchar *text);
 subroutine gtk_tool_item_set_tooltip_text(tool_item, text) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr), value :: tool_item
@@ -8174,186 +8175,6 @@ end subroutine
 subroutine gtk_tool_item_toolbar_reconfigured(tool_item) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: tool_item
-end subroutine
-
-!   GType gtk_list_get_type (void) G_GNUC_CONST;
-function gtk_list_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_list_get_type
-end function
-
-! GtkWidget* gtk_list_new (void);
-function gtk_list_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_list_new
-end function
-
-! void gtk_list_insert_items (GtkList *list, GList *items, gint position);
-subroutine gtk_list_insert_items(list, items, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: list
-  type(c_ptr), value :: items
-  integer(c_int), value :: position
-end subroutine
-
-! void gtk_list_append_items (GtkList *list, GList *items);
-subroutine gtk_list_append_items(list, items) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-  type(c_ptr), value :: items
-end subroutine
-
-! void gtk_list_prepend_items (GtkList *list, GList *items);
-subroutine gtk_list_prepend_items(list, items) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-  type(c_ptr), value :: items
-end subroutine
-
-! void gtk_list_remove_items (GtkList *list, GList *items);
-subroutine gtk_list_remove_items(list, items) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-  type(c_ptr), value :: items
-end subroutine
-
-! void gtk_list_remove_items_no_unref (GtkList *list, GList *items);
-subroutine gtk_list_remove_items_no_unref(list, items) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-  type(c_ptr), value :: items
-end subroutine
-
-! void gtk_list_clear_items (GtkList *list, gint start, gint end);
-subroutine gtk_list_clear_items(list, start, end) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: list
-  integer(c_int), value :: start
-  integer(c_int), value :: end
-end subroutine
-
-! void gtk_list_select_item (GtkList *list, gint item);
-subroutine gtk_list_select_item(list, item) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: list
-  integer(c_int), value :: item
-end subroutine
-
-! void gtk_list_unselect_item (GtkList *list, gint item);
-subroutine gtk_list_unselect_item(list, item) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: list
-  integer(c_int), value :: item
-end subroutine
-
-! void gtk_list_select_child (GtkList *list, GtkWidget *child);
-subroutine gtk_list_select_child(list, child) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-  type(c_ptr), value :: child
-end subroutine
-
-! void gtk_list_unselect_child (GtkList *list, GtkWidget *child);
-subroutine gtk_list_unselect_child(list, child) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-  type(c_ptr), value :: child
-end subroutine
-
-! gint gtk_list_child_position (GtkList *list, GtkWidget *child);
-function gtk_list_child_position(list, child) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_list_child_position
-  type(c_ptr), value :: list
-  type(c_ptr), value :: child
-end function
-
-! void gtk_list_set_selection_mode (GtkList *list, GtkSelectionMode mode);
-subroutine gtk_list_set_selection_mode(list, mode) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: list
-  integer(c_int), value :: mode
-end subroutine
-
-!  void gtk_list_extend_selection (GtkList *list, GtkScrollType scroll_type, gfloat position, gboolean auto_start_selection);
-subroutine gtk_list_extend_selection(list, scroll_type, position, auto_start_se&
-&lection) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_float
-  type(c_ptr), value :: list
-  integer(c_int), value :: scroll_type
-  real(c_float), value :: position
-  integer(c_int), value :: auto_start_selection
-end subroutine
-
-! void gtk_list_start_selection (GtkList *list);
-subroutine gtk_list_start_selection(list) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-end subroutine
-
-! void gtk_list_end_selection (GtkList *list);
-subroutine gtk_list_end_selection(list) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-end subroutine
-
-! void gtk_list_select_all (GtkList *list);
-subroutine gtk_list_select_all(list) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-end subroutine
-
-! void gtk_list_unselect_all (GtkList *list);
-subroutine gtk_list_unselect_all(list) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-end subroutine
-
-! void gtk_list_scroll_horizontal (GtkList *list, GtkScrollType scroll_type, gfloat position);
-subroutine gtk_list_scroll_horizontal(list, scroll_type, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_float
-  type(c_ptr), value :: list
-  integer(c_int), value :: scroll_type
-  real(c_float), value :: position
-end subroutine
-
-! void gtk_list_scroll_vertical (GtkList *list, GtkScrollType scroll_type, gfloat position);
-subroutine gtk_list_scroll_vertical(list, scroll_type, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_float
-  type(c_ptr), value :: list
-  integer(c_int), value :: scroll_type
-  real(c_float), value :: position
-end subroutine
-
-! void gtk_list_toggle_add_mode (GtkList *list);
-subroutine gtk_list_toggle_add_mode(list) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-end subroutine
-
-! void gtk_list_toggle_focus_row (GtkList *list);
-subroutine gtk_list_toggle_focus_row(list) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-end subroutine
-
-! void gtk_list_toggle_row (GtkList *list, GtkWidget *item);
-subroutine gtk_list_toggle_row(list, item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-  type(c_ptr), value :: item
-end subroutine
-
-! void gtk_list_undo_selection (GtkList *list);
-subroutine gtk_list_undo_selection(list) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
-end subroutine
-
-! void gtk_list_end_drag_selection (GtkList *list);
-subroutine gtk_list_end_drag_selection(list) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list
 end subroutine
 
 !   GType gtk_paper_size_get_type (void) G_GNUC_CONST;
@@ -8567,6 +8388,13 @@ function gtk_paned_get_type() bind(c)
   integer(c_size_t) :: gtk_paned_get_type
 end function
 
+! GtkWidget * gtk_paned_new (GtkOrientation orientation);
+function gtk_paned_new(orientation) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_paned_new
+  integer(c_int), value :: orientation
+end function
+
 ! void gtk_paned_add1 (GtkPaned *paned, GtkWidget *child);
 subroutine gtk_paned_add1(paned, child) bind(c) 
   use iso_c_binding, only: c_ptr
@@ -8634,16 +8462,6 @@ function gtk_paned_get_handle_window(paned) bind(c)
   type(c_ptr), value :: paned
 end function
 
-!  void gtk_paned_compute_position (GtkPaned *paned, gint allocation, gint child1_req, gint child2_req);
-subroutine gtk_paned_compute_position(paned, allocation, child1_req, child2_req&
-&) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: paned
-  integer(c_int), value :: allocation
-  integer(c_int), value :: child1_req
-  integer(c_int), value :: child2_req
-end subroutine
-
 !   GType gtk_menu_get_type (void) G_GNUC_CONST;
 function gtk_menu_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -8669,6 +8487,21 @@ subroutine gtk_menu_popup(menu, parent_menu_shell, parent_menu_item, func, data&
   integer(c_int32_t), value :: activate_time
 end subroutine
 
+! void gtk_menu_popup_for_device (GtkMenu *menu, GdkDevice *device, GtkWidget *parent_menu_shell, GtkWidget *parent_menu_item, GtkMenuPositionFunc func, gpointer data, GDestroyNotify destroy, guint button, guint32 activate_time);
+subroutine gtk_menu_popup_for_device(menu, device, parent_menu_shell, parent_me&
+&nu_item, func, data, destroy, button, activate_time) bind(c) 
+  use iso_c_binding, only: c_ptr, c_funptr, c_int, c_int32_t
+  type(c_ptr), value :: menu
+  type(c_ptr), value :: device
+  type(c_ptr), value :: parent_menu_shell
+  type(c_ptr), value :: parent_menu_item
+  type(c_funptr), value :: func
+  type(c_ptr), value :: data
+  type(c_funptr), value :: destroy
+  integer(c_int), value :: button
+  integer(c_int32_t), value :: activate_time
+end subroutine
+
 !  void gtk_menu_reposition (GtkMenu *menu);
 subroutine gtk_menu_reposition(menu) bind(c) 
   use iso_c_binding, only: c_ptr
@@ -8688,11 +8521,11 @@ function gtk_menu_get_active(menu) bind(c)
   type(c_ptr), value :: menu
 end function
 
-! void gtk_menu_set_active (GtkMenu *menu, guint index_);
-subroutine gtk_menu_set_active(menu, index_) bind(c) 
+! void gtk_menu_set_active (GtkMenu *menu, guint index);
+subroutine gtk_menu_set_active(menu, index) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu
-  integer(c_int), value :: index_
+  integer(c_int), value :: index
 end subroutine
 
 !  void gtk_menu_set_accel_group (GtkMenu *menu, GtkAccelGroup *accel_group);
@@ -8834,628 +8667,6 @@ function gtk_menu_get_reserve_toggle_size(menu) bind(c)
   type(c_ptr), value :: menu
 end function
 
-!   GdkGC* gtk_gc_get (gint depth, GdkColormap *colormap, GdkGCValues *values, GdkGCValuesMask values_mask);
-function gtk_gc_get(depth, colormap, values, values_mask) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_gc_get
-  integer(c_int), value :: depth
-  type(c_ptr), value :: colormap
-  type(c_ptr), value :: values
-  integer(c_int), value :: values_mask
-end function
-
-! void gtk_gc_release (GdkGC *gc);
-subroutine gtk_gc_release(gc) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: gc
-end subroutine
-
-!   GType gtk_ctree_get_type (void) G_GNUC_CONST;
-function gtk_ctree_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_ctree_get_type
-end function
-
-! GtkWidget * gtk_ctree_new_with_titles (gint columns, gint tree_column, gchar *titles[]);
-function gtk_ctree_new_with_titles(columns, tree_column, titles) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr) :: gtk_ctree_new_with_titles
-  integer(c_int), value :: columns
-  integer(c_int), value :: tree_column
-  character(kind=c_char), dimension(*) :: titles
-end function
-
-! GtkWidget * gtk_ctree_new (gint columns, gint tree_column);
-function gtk_ctree_new(columns, tree_column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_ctree_new
-  integer(c_int), value :: columns
-  integer(c_int), value :: tree_column
-end function
-
-! GtkCTreeNode * gtk_ctree_insert_node (GtkCTree *ctree, GtkCTreeNode *parent, GtkCTreeNode *sibling, gchar *text[], guint8 spacing, GdkPixmap *pixmap_closed, GdkBitmap *mask_closed, GdkPixmap *pixmap_opened, GdkBitmap *mask_opened, gboolean is_leaf, gboolean expanded);
-function gtk_ctree_insert_node(ctree, parent, sibling, text, spacing, pixmap_cl&
-&osed, mask_closed, pixmap_opened, mask_opened, is_leaf, expanded) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int8_t, c_int
-  type(c_ptr) :: gtk_ctree_insert_node
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: parent
-  type(c_ptr), value :: sibling
-  character(kind=c_char), dimension(*) :: text
-  integer(c_int8_t), value :: spacing
-  type(c_ptr), value :: pixmap_closed
-  type(c_ptr), value :: mask_closed
-  type(c_ptr), value :: pixmap_opened
-  type(c_ptr), value :: mask_opened
-  integer(c_int), value :: is_leaf
-  integer(c_int), value :: expanded
-end function
-
-! void gtk_ctree_remove_node (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_remove_node(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! GtkCTreeNode * gtk_ctree_insert_gnode (GtkCTree *ctree, GtkCTreeNode *parent, GtkCTreeNode *sibling, GNode *gnode, GtkCTreeGNodeFunc func, gpointer data);
-function gtk_ctree_insert_gnode(ctree, parent, sibling, gnode, func, data) bind&
-&(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr) :: gtk_ctree_insert_gnode
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: parent
-  type(c_ptr), value :: sibling
-  type(c_ptr), value :: gnode
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-end function
-
-! GNode * gtk_ctree_export_to_gnode (GtkCTree *ctree, GNode *parent, GNode *sibling, GtkCTreeNode *node, GtkCTreeGNodeFunc func, gpointer data);
-function gtk_ctree_export_to_gnode(ctree, parent, sibling, node, func, data) bi&
-&nd(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr) :: gtk_ctree_export_to_gnode
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: parent
-  type(c_ptr), value :: sibling
-  type(c_ptr), value :: node
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-end function
-
-!  void gtk_ctree_post_recursive (GtkCTree *ctree, GtkCTreeNode *node, GtkCTreeFunc func, gpointer data);
-subroutine gtk_ctree_post_recursive(ctree, node, func, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-end subroutine
-
-! void gtk_ctree_post_recursive_to_depth (GtkCTree *ctree, GtkCTreeNode *node, gint depth, GtkCTreeFunc func, gpointer data);
-subroutine gtk_ctree_post_recursive_to_depth(ctree, node, depth, func, data) bi&
-&nd(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_funptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: depth
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-end subroutine
-
-! void gtk_ctree_pre_recursive (GtkCTree *ctree, GtkCTreeNode *node, GtkCTreeFunc func, gpointer data);
-subroutine gtk_ctree_pre_recursive(ctree, node, func, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-end subroutine
-
-! void gtk_ctree_pre_recursive_to_depth (GtkCTree *ctree, GtkCTreeNode *node, gint depth, GtkCTreeFunc func, gpointer data);
-subroutine gtk_ctree_pre_recursive_to_depth(ctree, node, depth, func, data) bin&
-&d(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_funptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: depth
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-end subroutine
-
-! gboolean gtk_ctree_is_viewable (GtkCTree *ctree, GtkCTreeNode *node);
-function gtk_ctree_is_viewable(ctree, node) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_ctree_is_viewable
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end function
-
-! GtkCTreeNode * gtk_ctree_last (GtkCTree *ctree, GtkCTreeNode *node);
-function gtk_ctree_last(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_ctree_last
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end function
-
-! GtkCTreeNode * gtk_ctree_find_node_ptr (GtkCTree *ctree, GtkCTreeRow *ctree_row);
-function gtk_ctree_find_node_ptr(ctree, ctree_row) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_ctree_find_node_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: ctree_row
-end function
-
-! GtkCTreeNode * gtk_ctree_node_nth (GtkCTree *ctree, guint row);
-function gtk_ctree_node_nth(ctree, row) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_ctree_node_nth
-  type(c_ptr), value :: ctree
-  integer(c_int), value :: row
-end function
-
-! gboolean gtk_ctree_find (GtkCTree *ctree, GtkCTreeNode *node, GtkCTreeNode *child);
-function gtk_ctree_find(ctree, node, child) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_ctree_find
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: child
-end function
-
-! gboolean gtk_ctree_is_ancestor (GtkCTree *ctree, GtkCTreeNode *node, GtkCTreeNode *child);
-function gtk_ctree_is_ancestor(ctree, node, child) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_ctree_is_ancestor
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: child
-end function
-
-! GtkCTreeNode * gtk_ctree_find_by_row_data (GtkCTree *ctree, GtkCTreeNode *node, gpointer data);
-function gtk_ctree_find_by_row_data(ctree, node, data) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_ctree_find_by_row_data
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: data
-end function
-
-!  GList * gtk_ctree_find_all_by_row_data (GtkCTree *ctree, GtkCTreeNode *node, gpointer data);
-function gtk_ctree_find_all_by_row_data(ctree, node, data) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_ctree_find_all_by_row_data
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: data
-end function
-
-! GtkCTreeNode * gtk_ctree_find_by_row_data_custom (GtkCTree *ctree, GtkCTreeNode *node, gpointer data, GCompareFunc func);
-function gtk_ctree_find_by_row_data_custom(ctree, node, data, func) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr) :: gtk_ctree_find_by_row_data_custom
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: data
-  type(c_funptr), value :: func
-end function
-
-!  GList * gtk_ctree_find_all_by_row_data_custom (GtkCTree *ctree, GtkCTreeNode *node, gpointer data, GCompareFunc func);
-function gtk_ctree_find_all_by_row_data_custom(ctree, node, data, func) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr) :: gtk_ctree_find_all_by_row_data_custom
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: data
-  type(c_funptr), value :: func
-end function
-
-! gboolean gtk_ctree_is_hot_spot (GtkCTree *ctree, gint x, gint y);
-function gtk_ctree_is_hot_spot(ctree, x, y) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_ctree_is_hot_spot
-  type(c_ptr), value :: ctree
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-end function
-
-!  void gtk_ctree_move (GtkCTree *ctree, GtkCTreeNode *node, GtkCTreeNode *new_parent, GtkCTreeNode *new_sibling);
-subroutine gtk_ctree_move(ctree, node, new_parent, new_sibling) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: new_parent
-  type(c_ptr), value :: new_sibling
-end subroutine
-
-! void gtk_ctree_expand (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_expand(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_expand_recursive (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_expand_recursive(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_expand_to_depth (GtkCTree *ctree, GtkCTreeNode *node, gint depth);
-subroutine gtk_ctree_expand_to_depth(ctree, node, depth) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: depth
-end subroutine
-
-! void gtk_ctree_collapse (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_collapse(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_collapse_recursive (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_collapse_recursive(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_collapse_to_depth (GtkCTree *ctree, GtkCTreeNode *node, gint depth);
-subroutine gtk_ctree_collapse_to_depth(ctree, node, depth) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: depth
-end subroutine
-
-! void gtk_ctree_toggle_expansion (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_toggle_expansion(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_toggle_expansion_recursive (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_toggle_expansion_recursive(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_select (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_select(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_select_recursive (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_select_recursive(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_unselect (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_unselect(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_unselect_recursive (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_unselect_recursive(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_real_select_recursive (GtkCTree *ctree, GtkCTreeNode *node, gint state);
-subroutine gtk_ctree_real_select_recursive(ctree, node, state) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: state
-end subroutine
-
-!  void gtk_ctree_node_set_text (GtkCTree *ctree, GtkCTreeNode *node, gint column, const gchar *text);
-subroutine gtk_ctree_node_set_text(ctree, node, column, text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-  character(kind=c_char), dimension(*) :: text
-end subroutine
-
-! void gtk_ctree_node_set_pixmap (GtkCTree *ctree, GtkCTreeNode *node, gint column, GdkPixmap *pixmap, GdkBitmap *mask);
-subroutine gtk_ctree_node_set_pixmap(ctree, node, column, pixmap, mask) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end subroutine
-
-! void gtk_ctree_node_set_pixtext (GtkCTree *ctree, GtkCTreeNode *node, gint column, const gchar *text, guint8 spacing, GdkPixmap *pixmap, GdkBitmap *mask);
-subroutine gtk_ctree_node_set_pixtext(ctree, node, column, text, spacing, pixma&
-&p, mask) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char, c_int8_t
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-  character(kind=c_char), dimension(*) :: text
-  integer(c_int8_t), value :: spacing
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end subroutine
-
-! void gtk_ctree_set_node_info (GtkCTree *ctree, GtkCTreeNode *node, const gchar *text, guint8 spacing, GdkPixmap *pixmap_closed, GdkBitmap *mask_closed, GdkPixmap *pixmap_opened, GdkBitmap *mask_opened, gboolean is_leaf, gboolean expanded);
-subroutine gtk_ctree_set_node_info(ctree, node, text, spacing, pixmap_closed, m&
-&ask_closed, pixmap_opened, mask_opened, is_leaf, expanded) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int8_t, c_int
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  character(kind=c_char), dimension(*) :: text
-  integer(c_int8_t), value :: spacing
-  type(c_ptr), value :: pixmap_closed
-  type(c_ptr), value :: mask_closed
-  type(c_ptr), value :: pixmap_opened
-  type(c_ptr), value :: mask_opened
-  integer(c_int), value :: is_leaf
-  integer(c_int), value :: expanded
-end subroutine
-
-! void gtk_ctree_node_set_shift (GtkCTree *ctree, GtkCTreeNode *node, gint column, gint vertical, gint horizontal);
-subroutine gtk_ctree_node_set_shift(ctree, node, column, vertical, horizontal) &
-&bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-  integer(c_int), value :: vertical
-  integer(c_int), value :: horizontal
-end subroutine
-
-! void gtk_ctree_node_set_selectable (GtkCTree *ctree, GtkCTreeNode *node, gboolean selectable);
-subroutine gtk_ctree_node_set_selectable(ctree, node, selectable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: selectable
-end subroutine
-
-! gboolean gtk_ctree_node_get_selectable (GtkCTree *ctree, GtkCTreeNode *node);
-function gtk_ctree_node_get_selectable(ctree, node) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_ctree_node_get_selectable
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end function
-
-! GtkCellType gtk_ctree_node_get_cell_type (GtkCTree *ctree, GtkCTreeNode *node, gint column);
-function gtk_ctree_node_get_cell_type(ctree, node, column) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_ctree_node_get_cell_type
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-end function
-
-! gboolean gtk_ctree_node_get_text (GtkCTree *ctree, GtkCTreeNode *node, gint column, gchar **text);
-function gtk_ctree_node_get_text(ctree, node, column, text) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gtk_ctree_node_get_text
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-  character(kind=c_char), dimension(*) :: text
-end function
-
-! gboolean gtk_ctree_node_get_pixmap (GtkCTree *ctree, GtkCTreeNode *node, gint column, GdkPixmap **pixmap, GdkBitmap **mask);
-function gtk_ctree_node_get_pixmap(ctree, node, column, pixmap, mask) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_ctree_node_get_pixmap
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end function
-
-! gboolean gtk_ctree_node_get_pixtext (GtkCTree *ctree, GtkCTreeNode *node, gint column, gchar **text, guint8 *spacing, GdkPixmap **pixmap, GdkBitmap **mask);
-function gtk_ctree_node_get_pixtext(ctree, node, column, text, spacing, pixmap,&
-& mask) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gtk_ctree_node_get_pixtext
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-  character(kind=c_char), dimension(*) :: text
-  type(c_ptr), value :: spacing
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end function
-
-! gboolean gtk_ctree_get_node_info (GtkCTree *ctree, GtkCTreeNode *node, gchar **text, guint8 *spacing, GdkPixmap **pixmap_closed, GdkBitmap **mask_closed, GdkPixmap **pixmap_opened, GdkBitmap **mask_opened, gboolean *is_leaf, gboolean *expanded);
-function gtk_ctree_get_node_info(ctree, node, text, spacing, pixmap_closed, mas&
-&k_closed, pixmap_opened, mask_opened, is_leaf, expanded) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gtk_ctree_get_node_info
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  character(kind=c_char), dimension(*) :: text
-  type(c_ptr), value :: spacing
-  type(c_ptr), value :: pixmap_closed
-  type(c_ptr), value :: mask_closed
-  type(c_ptr), value :: pixmap_opened
-  type(c_ptr), value :: mask_opened
-  type(c_ptr), value :: is_leaf
-  type(c_ptr), value :: expanded
-end function
-
-! void gtk_ctree_node_set_row_style (GtkCTree *ctree, GtkCTreeNode *node, GtkStyle *style);
-subroutine gtk_ctree_node_set_row_style(ctree, node, style) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: style
-end subroutine
-
-! GtkStyle * gtk_ctree_node_get_row_style (GtkCTree *ctree, GtkCTreeNode *node);
-function gtk_ctree_node_get_row_style(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_ctree_node_get_row_style
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end function
-
-! void gtk_ctree_node_set_cell_style (GtkCTree *ctree, GtkCTreeNode *node, gint column, GtkStyle *style);
-subroutine gtk_ctree_node_set_cell_style(ctree, node, column, style) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-  type(c_ptr), value :: style
-end subroutine
-
-! GtkStyle * gtk_ctree_node_get_cell_style (GtkCTree *ctree, GtkCTreeNode *node, gint column);
-function gtk_ctree_node_get_cell_style(ctree, node, column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_ctree_node_get_cell_style
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-end function
-
-! void gtk_ctree_node_set_foreground (GtkCTree *ctree, GtkCTreeNode *node, const GdkColor *color);
-subroutine gtk_ctree_node_set_foreground(ctree, node, color) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: color
-end subroutine
-
-! void gtk_ctree_node_set_background (GtkCTree *ctree, GtkCTreeNode *node, const GdkColor *color);
-subroutine gtk_ctree_node_set_background(ctree, node, color) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: color
-end subroutine
-
-! void gtk_ctree_node_set_row_data (GtkCTree *ctree, GtkCTreeNode *node, gpointer data);
-subroutine gtk_ctree_node_set_row_data(ctree, node, data) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: data
-end subroutine
-
-! void gtk_ctree_node_set_row_data_full (GtkCTree *ctree, GtkCTreeNode *node, gpointer data, GDestroyNotify destroy);
-subroutine gtk_ctree_node_set_row_data_full(ctree, node, data, destroy) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
-end subroutine
-
-! gpointer gtk_ctree_node_get_row_data (GtkCTree *ctree, GtkCTreeNode *node);
-function gtk_ctree_node_get_row_data(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_ctree_node_get_row_data
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end function
-
-! void gtk_ctree_node_moveto (GtkCTree *ctree, GtkCTreeNode *node, gint column, gfloat row_align, gfloat col_align);
-subroutine gtk_ctree_node_moveto(ctree, node, column, row_align, col_align) bin&
-&d(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_float
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-  integer(c_int), value :: column
-  real(c_float), value :: row_align
-  real(c_float), value :: col_align
-end subroutine
-
-! GtkVisibility gtk_ctree_node_is_visible (GtkCTree *ctree, GtkCTreeNode *node);
-function gtk_ctree_node_is_visible(ctree, node) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_ctree_node_is_visible
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end function
-
-!  void gtk_ctree_set_indent (GtkCTree *ctree, gint indent);
-subroutine gtk_ctree_set_indent(ctree, indent) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  integer(c_int), value :: indent
-end subroutine
-
-! void gtk_ctree_set_spacing (GtkCTree *ctree, gint spacing);
-subroutine gtk_ctree_set_spacing(ctree, spacing) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  integer(c_int), value :: spacing
-end subroutine
-
-! void gtk_ctree_set_show_stub (GtkCTree *ctree, gboolean show_stub);
-subroutine gtk_ctree_set_show_stub(ctree, show_stub) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  integer(c_int), value :: show_stub
-end subroutine
-
-! void gtk_ctree_set_line_style (GtkCTree *ctree, GtkCTreeLineStyle line_style);
-subroutine gtk_ctree_set_line_style(ctree, line_style) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  integer(c_int), value :: line_style
-end subroutine
-
-! void gtk_ctree_set_expander_style (GtkCTree *ctree, GtkCTreeExpanderStyle expander_style);
-subroutine gtk_ctree_set_expander_style(ctree, expander_style) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ctree
-  integer(c_int), value :: expander_style
-end subroutine
-
-! void gtk_ctree_set_drag_compare_func (GtkCTree *ctree, GtkCTreeCompareDragFunc cmp_func);
-subroutine gtk_ctree_set_drag_compare_func(ctree, cmp_func) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr), value :: ctree
-  type(c_funptr), value :: cmp_func
-end subroutine
-
-!  void gtk_ctree_sort_node (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_sort_node(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-! void gtk_ctree_sort_recursive (GtkCTree *ctree, GtkCTreeNode *node);
-subroutine gtk_ctree_sort_recursive(ctree, node) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctree
-  type(c_ptr), value :: node
-end subroutine
-
-!  GType gtk_ctree_node_get_type (void) G_GNUC_CONST;
-function gtk_ctree_node_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_ctree_node_get_type
-end function
-
 !   GType gtk_font_button_get_type (void) G_GNUC_CONST;
 function gtk_font_button_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -9560,7 +8771,13 @@ subroutine gtk_font_button_set_show_size(font_button, show_size) bind(c)
   integer(c_int), value :: show_size
 end subroutine
 
-!   GtkTargetList *gtk_target_list_new (const GtkTargetEntry *targets, guint ntargets);
+!   GType gtk_target_list_get_type (void) G_GNUC_CONST;
+function gtk_target_list_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_target_list_get_type
+end function
+
+! GtkTargetList *gtk_target_list_new (const GtkTargetEntry *targets, guint ntargets);
 function gtk_target_list_new(targets, ntargets) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_target_list_new
@@ -9717,49 +8934,64 @@ function gtk_selection_convert(widget, selection, target, time_) bind(c)
   integer(c_int32_t), value :: time_
 end function
 
-!  GdkAtom gtk_selection_data_get_selection (GtkSelectionData *selection_data);
+! void gtk_selection_remove_all (GtkWidget *widget);
+subroutine gtk_selection_remove_all(widget) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
+end subroutine
+
+!  GdkAtom gtk_selection_data_get_selection (const GtkSelectionData *selection_data);
 function gtk_selection_data_get_selection(selection_data) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_selection_data_get_selection
   type(c_ptr), value :: selection_data
 end function
 
-! GdkAtom gtk_selection_data_get_target (GtkSelectionData *selection_data);
+! GdkAtom gtk_selection_data_get_target (const GtkSelectionData *selection_data);
 function gtk_selection_data_get_target(selection_data) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_selection_data_get_target
   type(c_ptr), value :: selection_data
 end function
 
-! GdkAtom gtk_selection_data_get_data_type (GtkSelectionData *selection_data);
+! GdkAtom gtk_selection_data_get_data_type (const GtkSelectionData *selection_data);
 function gtk_selection_data_get_data_type(selection_data) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_selection_data_get_data_type
   type(c_ptr), value :: selection_data
 end function
 
-! gint gtk_selection_data_get_format (GtkSelectionData *selection_data);
+! gint gtk_selection_data_get_format (const GtkSelectionData *selection_data);
 function gtk_selection_data_get_format(selection_data) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_selection_data_get_format
   type(c_ptr), value :: selection_data
 end function
 
-! const guchar *gtk_selection_data_get_data (GtkSelectionData *selection_data);
+! const guchar *gtk_selection_data_get_data (const GtkSelectionData *selection_data);
 function gtk_selection_data_get_data(selection_data) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_selection_data_get_data
   type(c_ptr), value :: selection_data
 end function
 
-! gint gtk_selection_data_get_length (GtkSelectionData *selection_data);
+! gint gtk_selection_data_get_length (const GtkSelectionData *selection_data);
 function gtk_selection_data_get_length(selection_data) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_selection_data_get_length
   type(c_ptr), value :: selection_data
 end function
 
-! GdkDisplay *gtk_selection_data_get_display (GtkSelectionData *selection_data);
+! const guchar *gtk_selection_data_get_data_with_length (const GtkSelectionData *selection_data, gint *length);
+function gtk_selection_data_get_data_with_length(selection_data, length) bind(c&
+&) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_selection_data_get_data_with_length
+  type(c_ptr), value :: selection_data
+  type(c_ptr), value :: length
+end function
+
+!  GdkDisplay *gtk_selection_data_get_display (const GtkSelectionData *selection_data);
 function gtk_selection_data_get_display(selection_data) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_selection_data_get_display
@@ -9786,7 +9018,7 @@ function gtk_selection_data_set_text(selection_data, str, len) bind(c)
   integer(c_int), value :: len
 end function
 
-! guchar * gtk_selection_data_get_text (GtkSelectionData *selection_data);
+! guchar * gtk_selection_data_get_text (const GtkSelectionData *selection_data);
 function gtk_selection_data_get_text(selection_data) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_selection_data_get_text
@@ -9801,7 +9033,7 @@ function gtk_selection_data_set_pixbuf(selection_data, pixbuf) bind(c)
   type(c_ptr), value :: pixbuf
 end function
 
-! GdkPixbuf *gtk_selection_data_get_pixbuf (GtkSelectionData *selection_data);
+! GdkPixbuf *gtk_selection_data_get_pixbuf (const GtkSelectionData *selection_data);
 function gtk_selection_data_get_pixbuf(selection_data) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_selection_data_get_pixbuf
@@ -9816,14 +9048,14 @@ function gtk_selection_data_set_uris(selection_data, uris) bind(c)
   character(kind=c_char), dimension(*) :: uris
 end function
 
-! gchar **gtk_selection_data_get_uris (GtkSelectionData *selection_data);
+! gchar **gtk_selection_data_get_uris (const GtkSelectionData *selection_data);
 function gtk_selection_data_get_uris(selection_data) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_selection_data_get_uris
   type(c_ptr), value :: selection_data
 end function
 
-!  gboolean gtk_selection_data_get_targets (GtkSelectionData *selection_data, GdkAtom **targets, gint *n_atoms);
+!  gboolean gtk_selection_data_get_targets (const GtkSelectionData *selection_data, GdkAtom **targets, gint *n_atoms);
 function gtk_selection_data_get_targets(selection_data, targets, n_atoms) bind(&
 &c) 
   use iso_c_binding, only: c_int, c_ptr
@@ -9833,14 +9065,14 @@ function gtk_selection_data_get_targets(selection_data, targets, n_atoms) bind(&
   type(c_ptr), value :: n_atoms
 end function
 
-! gboolean gtk_selection_data_targets_include_text (GtkSelectionData *selection_data);
+! gboolean gtk_selection_data_targets_include_text (const GtkSelectionData *selection_data);
 function gtk_selection_data_targets_include_text(selection_data) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_selection_data_targets_include_text
   type(c_ptr), value :: selection_data
 end function
 
-! gboolean gtk_selection_data_targets_include_rich_text (GtkSelectionData *selection_data, GtkTextBuffer *buffer);
+! gboolean gtk_selection_data_targets_include_rich_text (const GtkSelectionData *selection_data, GtkTextBuffer *buffer);
 function gtk_selection_data_targets_include_rich_text(selection_data, buffer) b&
 &ind(c) 
   use iso_c_binding, only: c_int, c_ptr
@@ -9849,7 +9081,7 @@ function gtk_selection_data_targets_include_rich_text(selection_data, buffer) b&
   type(c_ptr), value :: buffer
 end function
 
-! gboolean gtk_selection_data_targets_include_image (GtkSelectionData *selection_data, gboolean writable);
+! gboolean gtk_selection_data_targets_include_image (const GtkSelectionData *selection_data, gboolean writable);
 function gtk_selection_data_targets_include_image(selection_data, writable) bin&
 &d(c) 
   use iso_c_binding, only: c_int, c_ptr
@@ -9858,7 +9090,7 @@ function gtk_selection_data_targets_include_image(selection_data, writable) bin&
   integer(c_int), value :: writable
 end function
 
-! gboolean gtk_selection_data_targets_include_uri (GtkSelectionData *selection_data);
+! gboolean gtk_selection_data_targets_include_uri (const GtkSelectionData *selection_data);
 function gtk_selection_data_targets_include_uri(selection_data) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_selection_data_targets_include_uri
@@ -9899,27 +9131,13 @@ function gtk_targets_include_uri(targets, n_targets) bind(c)
   integer(c_int), value :: n_targets
 end function
 
-!  void gtk_selection_remove_all (GtkWidget *widget);
-subroutine gtk_selection_remove_all(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: widget
-end subroutine
-
-!  gboolean gtk_selection_clear (GtkWidget *widget, GdkEventSelection *event);
-function gtk_selection_clear(widget, event) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_selection_clear
-  type(c_ptr), value :: widget
-  type(c_ptr), value :: event
-end function
-
 !  GType gtk_selection_data_get_type (void) G_GNUC_CONST;
 function gtk_selection_data_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_selection_data_get_type
 end function
 
-! GtkSelectionData *gtk_selection_data_copy (GtkSelectionData *data);
+! GtkSelectionData *gtk_selection_data_copy (const GtkSelectionData *data);
 function gtk_selection_data_copy(data) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_selection_data_copy
@@ -9932,11 +9150,33 @@ subroutine gtk_selection_data_free(data) bind(c)
   type(c_ptr), value :: data
 end subroutine
 
-!  GType gtk_target_list_get_type (void) G_GNUC_CONST;
-function gtk_target_list_get_type() bind(c) 
+!  GType gtk_target_entry_get_type (void) G_GNUC_CONST;
+function gtk_target_entry_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_target_list_get_type
+  integer(c_size_t) :: gtk_target_entry_get_type
 end function
+
+! GtkTargetEntry *gtk_target_entry_new (const gchar *target, guint flags, guint info);
+function gtk_target_entry_new(target, flags, info) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr) :: gtk_target_entry_new
+  character(kind=c_char), dimension(*) :: target
+  integer(c_int), value :: flags
+  integer(c_int), value :: info
+end function
+
+! GtkTargetEntry *gtk_target_entry_copy (GtkTargetEntry *data);
+function gtk_target_entry_copy(data) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_target_entry_copy
+  type(c_ptr), value :: data
+end function
+
+! void gtk_target_entry_free (GtkTargetEntry *data);
+subroutine gtk_target_entry_free(data) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: data
+end subroutine
 
 !   GType gtk_tree_selection_get_type (void) G_GNUC_CONST;
 function gtk_tree_selection_get_type() bind(c) 
@@ -10095,148 +9335,6 @@ subroutine gtk_tree_selection_unselect_range(selection, start_path, end_path) b&
   type(c_ptr), value :: end_path
 end subroutine
 
-!   GType gtk_combo_box_entry_get_type (void) G_GNUC_CONST;
-function gtk_combo_box_entry_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_combo_box_entry_get_type
-end function
-
-! GtkWidget *gtk_combo_box_entry_new (void);
-function gtk_combo_box_entry_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_combo_box_entry_new
-end function
-
-! GtkWidget *gtk_combo_box_entry_new_with_model (GtkTreeModel *model, gint text_column);
-function gtk_combo_box_entry_new_with_model(model, text_column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_combo_box_entry_new_with_model
-  type(c_ptr), value :: model
-  integer(c_int), value :: text_column
-end function
-
-!  void gtk_combo_box_entry_set_text_column (GtkComboBoxEntry *entry_box, gint text_column);
-subroutine gtk_combo_box_entry_set_text_column(entry_box, text_column) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: entry_box
-  integer(c_int), value :: text_column
-end subroutine
-
-! gint gtk_combo_box_entry_get_text_column (GtkComboBoxEntry *entry_box);
-function gtk_combo_box_entry_get_text_column(entry_box) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_combo_box_entry_get_text_column
-  type(c_ptr), value :: entry_box
-end function
-
-!  GtkWidget *gtk_combo_box_entry_new_text (void);
-function gtk_combo_box_entry_new_text() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_combo_box_entry_new_text
-end function
-
-!   GType gtk_progress_get_type (void) G_GNUC_CONST;
-function gtk_progress_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_progress_get_type
-end function
-
-! void gtk_progress_set_show_text (GtkProgress *progress, gboolean show_text);
-subroutine gtk_progress_set_show_text(progress, show_text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: progress
-  integer(c_int), value :: show_text
-end subroutine
-
-! void gtk_progress_set_text_alignment (GtkProgress *progress, gfloat x_align, gfloat y_align);
-subroutine gtk_progress_set_text_alignment(progress, x_align, y_align) bind(c) 
-  use iso_c_binding, only: c_ptr, c_float
-  type(c_ptr), value :: progress
-  real(c_float), value :: x_align
-  real(c_float), value :: y_align
-end subroutine
-
-! void gtk_progress_set_format_string (GtkProgress *progress, const gchar *format);
-subroutine gtk_progress_set_format_string(progress, format) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: progress
-  character(kind=c_char), dimension(*) :: format
-end subroutine
-
-! void gtk_progress_set_adjustment (GtkProgress *progress, GtkAdjustment *adjustment);
-subroutine gtk_progress_set_adjustment(progress, adjustment) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: progress
-  type(c_ptr), value :: adjustment
-end subroutine
-
-! void gtk_progress_configure (GtkProgress *progress, gdouble value, gdouble min, gdouble max);
-subroutine gtk_progress_configure(progress, value, min, max) bind(c) 
-  use iso_c_binding, only: c_ptr, c_double
-  type(c_ptr), value :: progress
-  real(c_double), value :: value
-  real(c_double), value :: min
-  real(c_double), value :: max
-end subroutine
-
-! void gtk_progress_set_percentage (GtkProgress *progress, gdouble percentage);
-subroutine gtk_progress_set_percentage(progress, percentage) bind(c) 
-  use iso_c_binding, only: c_ptr, c_double
-  type(c_ptr), value :: progress
-  real(c_double), value :: percentage
-end subroutine
-
-! void gtk_progress_set_value (GtkProgress *progress, gdouble value);
-subroutine gtk_progress_set_value(progress, value) bind(c) 
-  use iso_c_binding, only: c_ptr, c_double
-  type(c_ptr), value :: progress
-  real(c_double), value :: value
-end subroutine
-
-! gdouble gtk_progress_get_value (GtkProgress *progress);
-function gtk_progress_get_value(progress) bind(c) 
-  use iso_c_binding, only: c_double, c_ptr
-  real(c_double) :: gtk_progress_get_value
-  type(c_ptr), value :: progress
-end function
-
-! void gtk_progress_set_activity_mode (GtkProgress *progress, gboolean activity_mode);
-subroutine gtk_progress_set_activity_mode(progress, activity_mode) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: progress
-  integer(c_int), value :: activity_mode
-end subroutine
-
-! gchar* gtk_progress_get_current_text (GtkProgress *progress);
-function gtk_progress_get_current_text(progress) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_progress_get_current_text
-  type(c_ptr), value :: progress
-end function
-
-! gchar* gtk_progress_get_text_from_value (GtkProgress *progress, gdouble value);
-function gtk_progress_get_text_from_value(progress, value) bind(c) 
-  use iso_c_binding, only: c_ptr, c_double
-  type(c_ptr) :: gtk_progress_get_text_from_value
-  type(c_ptr), value :: progress
-  real(c_double), value :: value
-end function
-
-! gdouble gtk_progress_get_current_percentage (GtkProgress *progress);
-function gtk_progress_get_current_percentage(progress) bind(c) 
-  use iso_c_binding, only: c_double, c_ptr
-  real(c_double) :: gtk_progress_get_current_percentage
-  type(c_ptr), value :: progress
-end function
-
-! gdouble gtk_progress_get_percentage_from_value (GtkProgress *progress, gdouble value);
-function gtk_progress_get_percentage_from_value(progress, value) bind(c) 
-  use iso_c_binding, only: c_double, c_ptr
-  real(c_double) :: gtk_progress_get_percentage_from_value
-  type(c_ptr), value :: progress
-  real(c_double), value :: value
-end function
-
 !   GType gtk_tooltip_get_type (void);
 function gtk_tooltip_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -10321,98 +9419,39 @@ function gtk_hpaned_new() bind(c)
   type(c_ptr) :: gtk_hpaned_new
 end function
 
-!   GType gtk_tree_item_get_type (void) G_GNUC_CONST;
-function gtk_tree_item_get_type() bind(c) 
+!   GType gtk_style_provider_get_type (void) G_GNUC_CONST;
+function gtk_style_provider_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_tree_item_get_type
+  integer(c_size_t) :: gtk_style_provider_get_type
 end function
 
-! GtkWidget* gtk_tree_item_new (void);
-function gtk_tree_item_new() bind(c) 
+!  GtkStyleProperties *gtk_style_provider_get_style (GtkStyleProvider *provider, GtkWidgetPath *path);
+function gtk_style_provider_get_style(provider, path) bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_tree_item_new
+  type(c_ptr) :: gtk_style_provider_get_style
+  type(c_ptr), value :: provider
+  type(c_ptr), value :: path
 end function
 
-! GtkWidget* gtk_tree_item_new_with_label (const gchar *label);
-function gtk_tree_item_new_with_label(label) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_tree_item_new_with_label
-  character(kind=c_char), dimension(*) :: label
+!  gboolean gtk_style_provider_get_style_property (GtkStyleProvider *provider, GtkWidgetPath *path, GtkStateFlags state, GParamSpec *pspec, GValue *value);
+function gtk_style_provider_get_style_property(provider, path, state, pspec, va&
+&lue) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_style_provider_get_style_property
+  type(c_ptr), value :: provider
+  type(c_ptr), value :: path
+  integer(c_int), value :: state
+  type(c_ptr), value :: pspec
+  type(c_ptr), value :: value
 end function
 
-! void gtk_tree_item_set_subtree (GtkTreeItem *tree_item, GtkWidget *subtree);
-subroutine gtk_tree_item_set_subtree(tree_item, subtree) bind(c) 
+!  GtkIconFactory * gtk_style_provider_get_icon_factory (GtkStyleProvider *provider, GtkWidgetPath *path);
+function gtk_style_provider_get_icon_factory(provider, path) bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree_item
-  type(c_ptr), value :: subtree
-end subroutine
-
-! void gtk_tree_item_remove_subtree (GtkTreeItem *tree_item);
-subroutine gtk_tree_item_remove_subtree(tree_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree_item
-end subroutine
-
-! void gtk_tree_item_select (GtkTreeItem *tree_item);
-subroutine gtk_tree_item_select(tree_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree_item
-end subroutine
-
-! void gtk_tree_item_deselect (GtkTreeItem *tree_item);
-subroutine gtk_tree_item_deselect(tree_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree_item
-end subroutine
-
-! void gtk_tree_item_expand (GtkTreeItem *tree_item);
-subroutine gtk_tree_item_expand(tree_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree_item
-end subroutine
-
-! void gtk_tree_item_collapse (GtkTreeItem *tree_item);
-subroutine gtk_tree_item_collapse(tree_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree_item
-end subroutine
-
-!   GType gtk_pixmap_get_type (void) G_GNUC_CONST;
-function gtk_pixmap_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_pixmap_get_type
+  type(c_ptr) :: gtk_style_provider_get_icon_factory
+  type(c_ptr), value :: provider
+  type(c_ptr), value :: path
 end function
-
-! GtkWidget* gtk_pixmap_new (GdkPixmap *pixmap, GdkBitmap *mask);
-function gtk_pixmap_new(pixmap, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_pixmap_new
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end function
-
-! void gtk_pixmap_set (GtkPixmap *pixmap, GdkPixmap *val, GdkBitmap *mask);
-subroutine gtk_pixmap_set(pixmap, val, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: val
-  type(c_ptr), value :: mask
-end subroutine
-
-! void gtk_pixmap_get (GtkPixmap *pixmap, GdkPixmap **val, GdkBitmap **mask);
-subroutine gtk_pixmap_get(pixmap, val, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: val
-  type(c_ptr), value :: mask
-end subroutine
-
-!  void gtk_pixmap_set_build_insensitive (GtkPixmap *pixmap, gboolean build);
-subroutine gtk_pixmap_set_build_insensitive(pixmap, build) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: pixmap
-  integer(c_int), value :: build
-end subroutine
 
 !   GType gtk_toggle_button_get_type (void) G_GNUC_CONST;
 function gtk_toggle_button_get_type() bind(c) 
@@ -10550,30 +9589,19 @@ subroutine gtk_container_foreach(container, callback, callback_data) bind(c)
   type(c_ptr), value :: callback_data
 end subroutine
 
-!  void gtk_container_foreach_full (GtkContainer *container, GtkCallback callback, GtkCallbackMarshal marshal, gpointer callback_data, GDestroyNotify notify);
-subroutine gtk_container_foreach_full(container, callback, marshal, callback_da&
-&ta, notify) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr), value :: container
-  type(c_funptr), value :: callback
-  type(c_funptr), value :: marshal
-  type(c_ptr), value :: callback_data
-  type(c_funptr), value :: notify
-end subroutine
-
-!  GList* gtk_container_get_children (GtkContainer *container);
+! GList* gtk_container_get_children (GtkContainer *container);
 function gtk_container_get_children(container) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_container_get_children
   type(c_ptr), value :: container
 end function
 
-!  void gtk_container_propagate_expose (GtkContainer *container, GtkWidget *child, GdkEventExpose *event);
-subroutine gtk_container_propagate_expose(container, child, event) bind(c) 
+!  void gtk_container_propagate_draw (GtkContainer *container, GtkWidget *child, cairo_t *cr);
+subroutine gtk_container_propagate_draw(container, child, cr) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: container
   type(c_ptr), value :: child
-  type(c_ptr), value :: event
+  type(c_ptr), value :: cr
 end subroutine
 
 !  void gtk_container_set_focus_chain (GtkContainer *container, GList *focusable_widgets);
@@ -10733,6 +9761,20 @@ subroutine gtk_container_forall(container, callback, callback_data) bind(c)
   type(c_funptr), value :: callback
   type(c_ptr), value :: callback_data
 end subroutine
+
+!  void gtk_container_class_handle_border_width (GtkContainerClass *klass);
+subroutine gtk_container_class_handle_border_width(klass) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: klass
+end subroutine
+
+!  GtkWidgetPath * gtk_container_get_path_for_child (GtkContainer *container, GtkWidget *child);
+function gtk_container_get_path_for_child(container, child) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_container_get_path_for_child
+  type(c_ptr), value :: container
+  type(c_ptr), value :: child
+end function
 
 !   GQuark gtk_print_error_quark (void);
 function gtk_print_error_quark() bind(c) 
@@ -11074,6 +10116,34 @@ function gtk_color_selection_get_previous_alpha(colorsel) bind(c)
   type(c_ptr), value :: colorsel
 end function
 
+!  void gtk_color_selection_set_current_rgba (GtkColorSelection *colorsel, const GdkRGBA *rgba);
+subroutine gtk_color_selection_set_current_rgba(colorsel, rgba) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: colorsel
+  type(c_ptr), value :: rgba
+end subroutine
+
+! void gtk_color_selection_get_current_rgba (GtkColorSelection *colorsel, GdkRGBA *rgba);
+subroutine gtk_color_selection_get_current_rgba(colorsel, rgba) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: colorsel
+  type(c_ptr), value :: rgba
+end subroutine
+
+! void gtk_color_selection_set_previous_rgba (GtkColorSelection *colorsel, const GdkRGBA *rgba);
+subroutine gtk_color_selection_set_previous_rgba(colorsel, rgba) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: colorsel
+  type(c_ptr), value :: rgba
+end subroutine
+
+! void gtk_color_selection_get_previous_rgba (GtkColorSelection *colorsel, GdkRGBA *rgba);
+subroutine gtk_color_selection_get_previous_rgba(colorsel, rgba) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: colorsel
+  type(c_ptr), value :: rgba
+end subroutine
+
 !  gboolean gtk_color_selection_is_adjusting (GtkColorSelection *colorsel);
 function gtk_color_selection_is_adjusting(colorsel) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
@@ -11098,40 +10168,12 @@ function gtk_color_selection_palette_to_string(colors, n_colors) bind(c)
   integer(c_int), value :: n_colors
 end function
 
-!  GtkColorSelectionChangePaletteFunc gtk_color_selection_set_change_palette_hook (GtkColorSelectionChangePaletteFunc func);
-function gtk_color_selection_set_change_palette_hook(func) bind(c) 
-  use iso_c_binding, only: c_funptr
-  type(c_funptr) :: gtk_color_selection_set_change_palette_hook
-  type(c_funptr), value :: func
-end function
-
 !  GtkColorSelectionChangePaletteWithScreenFunc gtk_color_selection_set_change_palette_with_screen_hook (GtkColorSelectionChangePaletteWithScreenFunc func);
 function gtk_color_selection_set_change_palette_with_screen_hook(func) bind(c) 
   use iso_c_binding, only: c_funptr
   type(c_funptr) :: gtk_color_selection_set_change_palette_with_screen_hook
   type(c_funptr), value :: func
 end function
-
-!  void gtk_color_selection_set_color (GtkColorSelection *colorsel, gdouble *color);
-subroutine gtk_color_selection_set_color(colorsel, color) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: colorsel
-  type(c_ptr), value :: color
-end subroutine
-
-! void gtk_color_selection_get_color (GtkColorSelection *colorsel, gdouble *color);
-subroutine gtk_color_selection_get_color(colorsel, color) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: colorsel
-  type(c_ptr), value :: color
-end subroutine
-
-! void gtk_color_selection_set_update_policy (GtkColorSelection *colorsel, GtkUpdateType policy);
-subroutine gtk_color_selection_set_update_policy(colorsel, policy) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: colorsel
-  integer(c_int), value :: policy
-end subroutine
 
 !   GType gtk_color_button_get_type (void) G_GNUC_CONST;
 function gtk_color_button_get_type() bind(c) 
@@ -11150,6 +10192,13 @@ function gtk_color_button_new_with_color(color) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_color_button_new_with_color
   type(c_ptr), value :: color
+end function
+
+! GtkWidget *gtk_color_button_new_with_rgba (const GdkRGBA *rgba);
+function gtk_color_button_new_with_rgba(rgba) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_color_button_new_with_rgba
+  type(c_ptr), value :: rgba
 end function
 
 ! void gtk_color_button_set_color (GtkColorButton *color_button, const GdkColor *color);
@@ -11194,6 +10243,20 @@ function gtk_color_button_get_use_alpha(color_button) bind(c)
   type(c_ptr), value :: color_button
 end function
 
+! void gtk_color_button_set_rgba (GtkColorButton *color_button, const GdkRGBA *rgba);
+subroutine gtk_color_button_set_rgba(color_button, rgba) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: color_button
+  type(c_ptr), value :: rgba
+end subroutine
+
+! void gtk_color_button_get_rgba (GtkColorButton *color_button, GdkRGBA *rgba);
+subroutine gtk_color_button_get_rgba(color_button, rgba) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: color_button
+  type(c_ptr), value :: rgba
+end subroutine
+
 ! void gtk_color_button_set_title (GtkColorButton *color_button, const gchar *title);
 subroutine gtk_color_button_set_title(color_button, title) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
@@ -11207,52 +10270,6 @@ function gtk_color_button_get_title(color_button) bind(c)
   type(c_ptr) :: gtk_color_button_get_title
   type(c_ptr), value :: color_button
 end function
-
-!   GType gtk_option_menu_get_type (void) G_GNUC_CONST;
-function gtk_option_menu_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_option_menu_get_type
-end function
-
-! GtkWidget* gtk_option_menu_new (void);
-function gtk_option_menu_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_option_menu_new
-end function
-
-! GtkWidget* gtk_option_menu_get_menu (GtkOptionMenu *option_menu);
-function gtk_option_menu_get_menu(option_menu) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_option_menu_get_menu
-  type(c_ptr), value :: option_menu
-end function
-
-! void gtk_option_menu_set_menu (GtkOptionMenu *option_menu, GtkWidget *menu);
-subroutine gtk_option_menu_set_menu(option_menu, menu) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: option_menu
-  type(c_ptr), value :: menu
-end subroutine
-
-! void gtk_option_menu_remove_menu (GtkOptionMenu *option_menu);
-subroutine gtk_option_menu_remove_menu(option_menu) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: option_menu
-end subroutine
-
-! gint gtk_option_menu_get_history (GtkOptionMenu *option_menu);
-function gtk_option_menu_get_history(option_menu) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_option_menu_get_history
-  type(c_ptr), value :: option_menu
-end function
-
-! void gtk_option_menu_set_history (GtkOptionMenu *option_menu, guint index_);
-subroutine gtk_option_menu_set_history(option_menu, index_) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: option_menu
-  integer(c_int), value :: index_
-end subroutine
 
 !   GType gtk_spin_button_get_type (void) G_GNUC_CONST;
 function gtk_spin_button_get_type() bind(c) 
@@ -11517,8 +10534,8 @@ end function
 
 ! void gtk_alignment_set (GtkAlignment *alignment, gfloat xalign, gfloat yalign, gfloat xscale, gfloat yscale);
 subroutine gtk_alignment_set(alignment, xalign, yalign, xscale, yscale) bind(c) 
-  use iso_c_binding, only: c_ptr, c_float
-  type(c_ptr), value :: alignment
+  use iso_c_binding, only: c_int, c_float
+  integer(c_int), value :: alignment
   real(c_float), value :: xalign
   real(c_float), value :: yalign
   real(c_float), value :: xscale
@@ -11528,8 +10545,8 @@ end subroutine
 !  void gtk_alignment_set_padding (GtkAlignment *alignment, guint padding_top, guint padding_bottom, guint padding_left, guint padding_right);
 subroutine gtk_alignment_set_padding(alignment, padding_top, padding_bottom, pa&
 &dding_left, padding_right) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: alignment
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: alignment
   integer(c_int), value :: padding_top
   integer(c_int), value :: padding_bottom
   integer(c_int), value :: padding_left
@@ -11539,8 +10556,8 @@ end subroutine
 !  void gtk_alignment_get_padding (GtkAlignment *alignment, guint *padding_top, guint *padding_bottom, guint *padding_left, guint *padding_right);
 subroutine gtk_alignment_get_padding(alignment, padding_top, padding_bottom, pa&
 &dding_left, padding_right) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: alignment
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int), value :: alignment
   type(c_ptr), value :: padding_top
   type(c_ptr), value :: padding_bottom
   type(c_ptr), value :: padding_left
@@ -11725,17 +10742,7 @@ function gtk_file_chooser_button_new(title, action) bind(c)
   integer(c_int), value :: action
 end function
 
-!  GtkWidget * gtk_file_chooser_button_new_with_backend (const gchar *title, GtkFileChooserAction action, const gchar *backend);
-function gtk_file_chooser_button_new_with_backend(title, action, backend) bind(&
-&c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int
-  type(c_ptr) :: gtk_file_chooser_button_new_with_backend
-  character(kind=c_char), dimension(*) :: title
-  integer(c_int), value :: action
-  character(kind=c_char), dimension(*) :: backend
-end function
-
-!  GtkWidget * gtk_file_chooser_button_new_with_dialog (GtkWidget *dialog);
+! GtkWidget * gtk_file_chooser_button_new_with_dialog (GtkWidget *dialog);
 function gtk_file_chooser_button_new_with_dialog(dialog) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_file_chooser_button_new_with_dialog
@@ -11825,7 +10832,7 @@ function gtk_tree_view_get_selection(tree_view) bind(c)
   type(c_ptr), value :: tree_view
 end function
 
-! GtkAdjustment *gtk_tree_view_get_hadjustment (GtkTreeView *tree_view);
+!  GtkAdjustment *gtk_tree_view_get_hadjustment (GtkTreeView *tree_view);
 function gtk_tree_view_get_hadjustment(tree_view) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_tree_view_get_hadjustment
@@ -11853,7 +10860,7 @@ subroutine gtk_tree_view_set_vadjustment(tree_view, adjustment) bind(c)
   type(c_ptr), value :: adjustment
 end subroutine
 
-! gboolean gtk_tree_view_get_headers_visible (GtkTreeView *tree_view);
+!  gboolean gtk_tree_view_get_headers_visible (GtkTreeView *tree_view);
 function gtk_tree_view_get_headers_visible(tree_view) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_tree_view_get_headers_visible
@@ -12159,29 +11166,7 @@ subroutine gtk_tree_view_get_visible_rect(tree_view, visible_rect) bind(c)
   type(c_ptr), value :: visible_rect
 end subroutine
 
-!  void gtk_tree_view_widget_to_tree_coords (GtkTreeView *tree_view, gint wx, gint wy, gint *tx, gint *ty);
-subroutine gtk_tree_view_widget_to_tree_coords(tree_view, wx, wy, tx, ty) bind(&
-&c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: tree_view
-  integer(c_int), value :: wx
-  integer(c_int), value :: wy
-  type(c_ptr), value :: tx
-  type(c_ptr), value :: ty
-end subroutine
-
-! void gtk_tree_view_tree_to_widget_coords (GtkTreeView *tree_view, gint tx, gint ty, gint *wx, gint *wy);
-subroutine gtk_tree_view_tree_to_widget_coords(tree_view, tx, ty, wx, wy) bind(&
-&c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: tree_view
-  integer(c_int), value :: tx
-  integer(c_int), value :: ty
-  type(c_ptr), value :: wx
-  type(c_ptr), value :: wy
-end subroutine
-
-!  gboolean gtk_tree_view_get_visible_range (GtkTreeView *tree_view, GtkTreePath **start_path, GtkTreePath **end_path);
+! gboolean gtk_tree_view_get_visible_range (GtkTreeView *tree_view, GtkTreePath **start_path, GtkTreePath **end_path);
 function gtk_tree_view_get_visible_range(tree_view, start_path, end_path) bind(&
 &c) 
   use iso_c_binding, only: c_int, c_ptr
@@ -12189,6 +11174,20 @@ function gtk_tree_view_get_visible_range(tree_view, start_path, end_path) bind(&
   type(c_ptr), value :: tree_view
   type(c_ptr), value :: start_path
   type(c_ptr), value :: end_path
+end function
+
+! gboolean gtk_tree_view_is_blank_at_pos (GtkTreeView *tree_view, gint x, gint y, GtkTreePath **path, GtkTreeViewColumn **column, gint *cell_x, gint *cell_y);
+function gtk_tree_view_is_blank_at_pos(tree_view, x, y, path, column, cell_x, c&
+&ell_y) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_tree_view_is_blank_at_pos
+  type(c_ptr), value :: tree_view
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  type(c_ptr), value :: path
+  type(c_ptr), value :: column
+  type(c_ptr), value :: cell_x
+  type(c_ptr), value :: cell_y
 end function
 
 !  void gtk_tree_view_enable_model_drag_source (GtkTreeView *tree_view, GdkModifierType start_button_mask, const GtkTargetEntry *targets, gint n_targets, GdkDragAction actions);
@@ -12252,7 +11251,7 @@ function gtk_tree_view_get_dest_row_at_pos(tree_view, drag_x, drag_y, path, pos&
   integer(c_int), value :: pos
 end function
 
-! GdkPixmap *gtk_tree_view_create_row_drag_icon (GtkTreeView *tree_view, GtkTreePath *path);
+! cairo_surface_t *gtk_tree_view_create_row_drag_icon (GtkTreeView *tree_view, GtkTreePath *path);
 function gtk_tree_view_create_row_drag_icon(tree_view, path) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_tree_view_create_row_drag_icon
@@ -12656,20 +11655,6 @@ function gtk_dialog_get_response_for_widget(dialog, widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
-!  void gtk_dialog_set_has_separator (GtkDialog *dialog, gboolean setting);
-subroutine gtk_dialog_set_has_separator(dialog, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: dialog
-  integer(c_int), value :: setting
-end subroutine
-
-! gboolean gtk_dialog_get_has_separator (GtkDialog *dialog);
-function gtk_dialog_get_has_separator(dialog) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_dialog_get_has_separator
-  type(c_ptr), value :: dialog
-end function
-
 !  gboolean gtk_alternative_dialog_button_order (GdkScreen *screen);
 function gtk_alternative_dialog_button_order(screen) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
@@ -12846,58 +11831,6 @@ subroutine gtk_print_context_set_cairo_context(context, cr, dpi_x, dpi_y) bind(&
   real(c_double), value :: dpi_y
 end subroutine
 
-!   GType gtk_ruler_get_type (void) G_GNUC_CONST;
-function gtk_ruler_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_ruler_get_type
-end function
-
-! void gtk_ruler_set_metric (GtkRuler *ruler, GtkMetricType metric);
-subroutine gtk_ruler_set_metric(ruler, metric) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ruler
-  integer(c_int), value :: metric
-end subroutine
-
-! GtkMetricType gtk_ruler_get_metric (GtkRuler *ruler);
-function gtk_ruler_get_metric(ruler) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_ruler_get_metric
-  type(c_ptr), value :: ruler
-end function
-
-! void gtk_ruler_set_range (GtkRuler *ruler, gdouble lower, gdouble upper, gdouble position, gdouble max_size);
-subroutine gtk_ruler_set_range(ruler, lower, upper, position, max_size) bind(c) 
-  use iso_c_binding, only: c_ptr, c_double
-  type(c_ptr), value :: ruler
-  real(c_double), value :: lower
-  real(c_double), value :: upper
-  real(c_double), value :: position
-  real(c_double), value :: max_size
-end subroutine
-
-! void gtk_ruler_get_range (GtkRuler *ruler, gdouble *lower, gdouble *upper, gdouble *position, gdouble *max_size);
-subroutine gtk_ruler_get_range(ruler, lower, upper, position, max_size) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ruler
-  type(c_ptr), value :: lower
-  type(c_ptr), value :: upper
-  type(c_ptr), value :: position
-  type(c_ptr), value :: max_size
-end subroutine
-
-!  void gtk_ruler_draw_ticks (GtkRuler *ruler);
-subroutine gtk_ruler_draw_ticks(ruler) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ruler
-end subroutine
-
-! void gtk_ruler_draw_pos (GtkRuler *ruler);
-subroutine gtk_ruler_draw_pos(ruler) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ruler
-end subroutine
-
 !   GType gtk_tree_model_sort_get_type (void) G_GNUC_CONST;
 function gtk_tree_model_sort_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -12981,20 +11914,6 @@ function gtk_range_get_type() bind(c)
   integer(c_size_t) :: gtk_range_get_type
 end function
 
-!  void gtk_range_set_update_policy (GtkRange *range, GtkUpdateType policy);
-subroutine gtk_range_set_update_policy(range, policy) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: range
-  integer(c_int), value :: policy
-end subroutine
-
-! GtkUpdateType gtk_range_get_update_policy (GtkRange *range);
-function gtk_range_get_update_policy(range) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_range_get_update_policy
-  type(c_ptr), value :: range
-end function
-
 !  void gtk_range_set_adjustment (GtkRange *range, GtkAdjustment *adjustment);
 subroutine gtk_range_set_adjustment(range, adjustment) bind(c) 
   use iso_c_binding, only: c_ptr
@@ -13051,7 +11970,7 @@ function gtk_range_get_slider_size_fixed(range) bind(c)
   type(c_ptr), value :: range
 end function
 
-!  void gtk_range_set_min_slider_size (GtkRange *range, gboolean min_size);
+!  void gtk_range_set_min_slider_size (GtkRange *range, gint min_size);
 subroutine gtk_range_set_min_slider_size(range, min_size) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: range
@@ -13195,6 +12114,13 @@ function gtk_range_get_round_digits(range) bind(c)
   type(c_ptr), value :: range
 end function
 
+! GdkWindow* gtk_range_get_event_window (GtkRange *range);
+function gtk_range_get_event_window(range) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_range_get_event_window
+  type(c_ptr), value :: range
+end function
+
 !   GType gtk_tree_view_column_get_type (void) G_GNUC_CONST;
 function gtk_tree_view_column_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -13205,6 +12131,13 @@ end function
 function gtk_tree_view_column_new() bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_tree_view_column_new
+end function
+
+! GtkTreeViewColumn *gtk_tree_view_column_new_with_area (GtkCellArea *area);
+function gtk_tree_view_column_new_with_area(area) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_tree_view_column_new_with_area
+  type(c_ptr), value :: area
 end function
 
 ! void gtk_tree_view_column_pack_start (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell, gboolean expand);
@@ -13229,14 +12162,7 @@ subroutine gtk_tree_view_column_clear(tree_column) bind(c)
   type(c_ptr), value :: tree_column
 end subroutine
 
-!  GList *gtk_tree_view_column_get_cell_renderers (GtkTreeViewColumn *tree_column);
-function gtk_tree_view_column_get_cell_renderers(tree_column) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_tree_view_column_get_cell_renderers
-  type(c_ptr), value :: tree_column
-end function
-
-!  void gtk_tree_view_column_add_attribute (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell_renderer, const gchar *attribute, gint column);
+! void gtk_tree_view_column_add_attribute (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell_renderer, const gchar *attribute, gint column);
 subroutine gtk_tree_view_column_add_attribute(tree_column, cell_renderer, attri&
 &bute, column) bind(c) 
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -13543,14 +12469,14 @@ subroutine gtk_tree_view_column_focus_cell(tree_column, cell) bind(c)
   type(c_ptr), value :: cell
 end subroutine
 
-! gboolean gtk_tree_view_column_cell_get_position (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell_renderer, gint *start_pos, gint *width);
-function gtk_tree_view_column_cell_get_position(tree_column, cell_renderer, sta&
-&rt_pos, width) bind(c) 
+! gboolean gtk_tree_view_column_cell_get_position (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell_renderer, gint *x_offset, gint *width);
+function gtk_tree_view_column_cell_get_position(tree_column, cell_renderer, x_o&
+&ffset, width) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_tree_view_column_cell_get_position
   type(c_ptr), value :: tree_column
   type(c_ptr), value :: cell_renderer
-  type(c_ptr), value :: start_pos
+  type(c_ptr), value :: x_offset
   type(c_ptr), value :: width
 end function
 
@@ -13567,6 +12493,13 @@ function gtk_tree_view_column_get_tree_view(tree_column) bind(c)
   type(c_ptr), value :: tree_column
 end function
 
+! GtkWidget *gtk_tree_view_column_get_button (GtkTreeViewColumn *tree_column);
+function gtk_tree_view_column_get_button(tree_column) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_tree_view_column_get_button
+  type(c_ptr), value :: tree_column
+end function
+
 !   GType gtk_vbutton_box_get_type (void) G_GNUC_CONST;
 function gtk_vbutton_box_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -13578,30 +12511,6 @@ function gtk_vbutton_box_new() bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_vbutton_box_new
 end function
-
-!  gint gtk_vbutton_box_get_spacing_default (void);
-function gtk_vbutton_box_get_spacing_default() bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gtk_vbutton_box_get_spacing_default
-end function
-
-! void gtk_vbutton_box_set_spacing_default (gint spacing);
-subroutine gtk_vbutton_box_set_spacing_default(spacing) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: spacing
-end subroutine
-
-!  GtkButtonBoxStyle gtk_vbutton_box_get_layout_default (void);
-function gtk_vbutton_box_get_layout_default() bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gtk_vbutton_box_get_layout_default
-end function
-
-! void gtk_vbutton_box_set_layout_default (GtkButtonBoxStyle layout);
-subroutine gtk_vbutton_box_set_layout_default(layout) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: layout
-end subroutine
 
 !   GType gtk_handle_box_get_type (void) G_GNUC_CONST;
 function gtk_handle_box_get_type() bind(c) 
@@ -13662,6 +12571,70 @@ function gtk_handle_box_get_child_detached(handle_box) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_handle_box_get_child_detached
   type(c_ptr), value :: handle_box
+end function
+
+!   GType gtk_app_chooser_button_get_type (void) G_GNUC_CONST;
+function gtk_app_chooser_button_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_app_chooser_button_get_type
+end function
+
+!  GtkWidget * gtk_app_chooser_button_new (const gchar *content_type);
+function gtk_app_chooser_button_new(content_type) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_app_chooser_button_new
+  character(kind=c_char), dimension(*) :: content_type
+end function
+
+!  void gtk_app_chooser_button_append_separator (GtkAppChooserButton *self);
+subroutine gtk_app_chooser_button_append_separator(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+end subroutine
+
+! void gtk_app_chooser_button_append_custom_item (GtkAppChooserButton *self, const gchar *name, const gchar *label, GIcon *icon);
+subroutine gtk_app_chooser_button_append_custom_item(self, name, label, icon) b&
+&ind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: name
+  character(kind=c_char), dimension(*) :: label
+  type(c_ptr), value :: icon
+end subroutine
+
+! void gtk_app_chooser_button_set_active_custom_item (GtkAppChooserButton *self, const gchar *name);
+subroutine gtk_app_chooser_button_set_active_custom_item(self, name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: name
+end subroutine
+
+!  void gtk_app_chooser_button_set_show_dialog_item (GtkAppChooserButton *self, gboolean setting);
+subroutine gtk_app_chooser_button_set_show_dialog_item(self, setting) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: setting
+end subroutine
+
+! gboolean gtk_app_chooser_button_get_show_dialog_item (GtkAppChooserButton *self);
+function gtk_app_chooser_button_get_show_dialog_item(self) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_app_chooser_button_get_show_dialog_item
+  type(c_ptr), value :: self
+end function
+
+! void gtk_app_chooser_button_set_heading (GtkAppChooserButton *self, const gchar *heading);
+subroutine gtk_app_chooser_button_set_heading(self, heading) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: heading
+end subroutine
+
+! const gchar * gtk_app_chooser_button_get_heading (GtkAppChooserButton *self);
+function gtk_app_chooser_button_get_heading(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_app_chooser_button_get_heading
+  type(c_ptr), value :: self
 end function
 
 !   GType gtk_recent_action_get_type (void) G_GNUC_CONST;
@@ -13763,12 +12736,43 @@ subroutine gtk_combo_box_text_remove(combo_box, position) bind(c)
   integer(c_int), value :: position
 end subroutine
 
+! void gtk_combo_box_text_remove_all (GtkComboBoxText *combo_box);
+subroutine gtk_combo_box_text_remove_all(combo_box) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: combo_box
+end subroutine
+
 ! gchar *gtk_combo_box_text_get_active_text (GtkComboBoxText *combo_box);
 function gtk_combo_box_text_get_active_text(combo_box) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_combo_box_text_get_active_text
   type(c_ptr), value :: combo_box
 end function
+
+!  void gtk_combo_box_text_insert (GtkComboBoxText *combo_box, gint position, const gchar *id, const gchar *text);
+subroutine gtk_combo_box_text_insert(combo_box, position, id, text) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: combo_box
+  integer(c_int), value :: position
+  character(kind=c_char), dimension(*) :: id
+  character(kind=c_char), dimension(*) :: text
+end subroutine
+
+! void gtk_combo_box_text_append (GtkComboBoxText *combo_box, const gchar *id, const gchar *text);
+subroutine gtk_combo_box_text_append(combo_box, id, text) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: combo_box
+  character(kind=c_char), dimension(*) :: id
+  character(kind=c_char), dimension(*) :: text
+end subroutine
+
+! void gtk_combo_box_text_prepend (GtkComboBoxText *combo_box, const gchar *id, const gchar *text);
+subroutine gtk_combo_box_text_prepend(combo_box, id, text) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: combo_box
+  character(kind=c_char), dimension(*) :: id
+  character(kind=c_char), dimension(*) :: text
+end subroutine
 
 !   GType gtk_tool_button_get_type (void) G_GNUC_CONST;
 function gtk_tool_button_get_type() bind(c) 
@@ -13950,13 +12954,6 @@ function gtk_font_selection_get_font_name(fontsel) bind(c)
   type(c_ptr), value :: fontsel
 end function
 
-!  GdkFont* gtk_font_selection_get_font (GtkFontSelection *fontsel);
-function gtk_font_selection_get_font(fontsel) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_font_selection_get_font
-  type(c_ptr), value :: fontsel
-end function
-
 !  gboolean gtk_font_selection_set_font_name (GtkFontSelection *fontsel, const gchar *fontname);
 function gtk_font_selection_set_font_name(fontsel, fontname) bind(c) 
   use iso_c_binding, only: c_int, c_ptr, c_char
@@ -13999,14 +12996,7 @@ function gtk_font_selection_dialog_get_ok_button(fsd) bind(c)
   type(c_ptr), value :: fsd
 end function
 
-!  GtkWidget *gtk_font_selection_dialog_get_apply_button (GtkFontSelectionDialog *fsd);
-function gtk_font_selection_dialog_get_apply_button(fsd) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_font_selection_dialog_get_apply_button
-  type(c_ptr), value :: fsd
-end function
-
-!  GtkWidget *gtk_font_selection_dialog_get_cancel_button (GtkFontSelectionDialog *fsd);
+! GtkWidget *gtk_font_selection_dialog_get_cancel_button (GtkFontSelectionDialog *fsd);
 function gtk_font_selection_dialog_get_cancel_button(fsd) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_font_selection_dialog_get_cancel_button
@@ -14024,13 +13014,6 @@ end function
 function gtk_font_selection_dialog_get_font_name(fsd) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_font_selection_dialog_get_font_name
-  type(c_ptr), value :: fsd
-end function
-
-!  GdkFont* gtk_font_selection_dialog_get_font (GtkFontSelectionDialog *fsd);
-function gtk_font_selection_dialog_get_font(fsd) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_font_selection_dialog_get_font
   type(c_ptr), value :: fsd
 end function
 
@@ -14081,13 +13064,104 @@ subroutine gtk_cell_editable_remove_widget(cell_editable) bind(c)
   type(c_ptr), value :: cell_editable
 end subroutine
 
+!   GType gtk_grid_get_type (void) G_GNUC_CONST;
+function gtk_grid_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_grid_get_type
+end function
+
+! GtkWidget* gtk_grid_new (void);
+function gtk_grid_new() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_grid_new
+end function
+
+! void gtk_grid_attach (GtkGrid *grid, GtkWidget *child, gint left, gint top, gint width, gint height);
+subroutine gtk_grid_attach(grid, child, left, top, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: grid
+  type(c_ptr), value :: child
+  integer(c_int), value :: left
+  integer(c_int), value :: top
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end subroutine
+
+! void gtk_grid_attach_next_to (GtkGrid *grid, GtkWidget *child, GtkWidget *sibling, GtkPositionType side, gint width, gint height);
+subroutine gtk_grid_attach_next_to(grid, child, sibling, side, width, height) b&
+&ind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: grid
+  type(c_ptr), value :: child
+  type(c_ptr), value :: sibling
+  integer(c_int), value :: side
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end subroutine
+
+! void gtk_grid_set_row_homogeneous (GtkGrid *grid, gboolean homogeneous);
+subroutine gtk_grid_set_row_homogeneous(grid, homogeneous) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: grid
+  integer(c_int), value :: homogeneous
+end subroutine
+
+! gboolean gtk_grid_get_row_homogeneous (GtkGrid *grid);
+function gtk_grid_get_row_homogeneous(grid) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_grid_get_row_homogeneous
+  type(c_ptr), value :: grid
+end function
+
+! void gtk_grid_set_row_spacing (GtkGrid *grid, guint spacing);
+subroutine gtk_grid_set_row_spacing(grid, spacing) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: grid
+  integer(c_int), value :: spacing
+end subroutine
+
+! guint gtk_grid_get_row_spacing (GtkGrid *grid);
+function gtk_grid_get_row_spacing(grid) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_grid_get_row_spacing
+  type(c_ptr), value :: grid
+end function
+
+! void gtk_grid_set_column_homogeneous (GtkGrid *grid, gboolean homogeneous);
+subroutine gtk_grid_set_column_homogeneous(grid, homogeneous) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: grid
+  integer(c_int), value :: homogeneous
+end subroutine
+
+! gboolean gtk_grid_get_column_homogeneous (GtkGrid *grid);
+function gtk_grid_get_column_homogeneous(grid) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_grid_get_column_homogeneous
+  type(c_ptr), value :: grid
+end function
+
+! void gtk_grid_set_column_spacing (GtkGrid *grid, guint spacing);
+subroutine gtk_grid_set_column_spacing(grid, spacing) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: grid
+  integer(c_int), value :: spacing
+end subroutine
+
+! guint gtk_grid_get_column_spacing (GtkGrid *grid);
+function gtk_grid_get_column_spacing(grid) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_grid_get_column_spacing
+  type(c_ptr), value :: grid
+end function
+
 !   GType gtk_adjustment_get_type (void) G_GNUC_CONST;
 function gtk_adjustment_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_adjustment_get_type
 end function
 
-! GtkObject* gtk_adjustment_new (gdouble value, gdouble lower, gdouble upper, gdouble step_increment, gdouble page_increment, gdouble page_size);
+! GtkAdjustment* gtk_adjustment_new (gdouble value, gdouble lower, gdouble upper, gdouble step_increment, gdouble page_increment, gdouble page_size);
 function gtk_adjustment_new(value, lower, upper, step_increment, page_increment&
 &, page_size) bind(c) 
   use iso_c_binding, only: c_ptr, c_double
@@ -14231,7 +13305,13 @@ function gtk_cell_renderer_pixbuf_new() bind(c)
   type(c_ptr) :: gtk_cell_renderer_pixbuf_new
 end function
 
-!   GType gtk_accel_flags_get_type (void) G_GNUC_CONST;
+!   GType gtk_license_get_type (void) G_GNUC_CONST;
+function gtk_license_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_license_get_type
+end function
+
+!  GType gtk_accel_flags_get_type (void) G_GNUC_CONST;
 function gtk_accel_flags_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_accel_flags_get_type
@@ -14273,6 +13353,12 @@ function gtk_cell_renderer_accel_mode_get_type() bind(c)
   integer(c_size_t) :: gtk_cell_renderer_accel_mode_get_type
 end function
 
+!  GType gtk_css_provider_error_get_type (void) G_GNUC_CONST;
+function gtk_css_provider_error_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_css_provider_error_get_type
+end function
+
 !  GType gtk_debug_flag_get_type (void) G_GNUC_CONST;
 function gtk_debug_flag_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -14309,10 +13395,10 @@ function gtk_entry_icon_position_get_type() bind(c)
   integer(c_size_t) :: gtk_entry_icon_position_get_type
 end function
 
-!  GType gtk_anchor_type_get_type (void) G_GNUC_CONST;
-function gtk_anchor_type_get_type() bind(c) 
+!  GType gtk_align_get_type (void) G_GNUC_CONST;
+function gtk_align_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_anchor_type_get_type
+  integer(c_size_t) :: gtk_align_get_type
 end function
 
 !  GType gtk_arrow_placement_get_type (void) G_GNUC_CONST;
@@ -14337,12 +13423,6 @@ end function
 function gtk_button_box_style_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_button_box_style_get_type
-end function
-
-!  GType gtk_curve_type_get_type (void) G_GNUC_CONST;
-function gtk_curve_type_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_curve_type_get_type
 end function
 
 !  GType gtk_delete_type_get_type (void) G_GNUC_CONST;
@@ -14375,12 +13455,6 @@ function gtk_sensitivity_type_get_type() bind(c)
   integer(c_size_t) :: gtk_sensitivity_type_get_type
 end function
 
-!  GType gtk_side_type_get_type (void) G_GNUC_CONST;
-function gtk_side_type_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_side_type_get_type
-end function
-
 !  GType gtk_text_direction_get_type (void) G_GNUC_CONST;
 function gtk_text_direction_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -14393,12 +13467,6 @@ function gtk_justification_get_type() bind(c)
   integer(c_size_t) :: gtk_justification_get_type
 end function
 
-!  GType gtk_match_type_get_type (void) G_GNUC_CONST;
-function gtk_match_type_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_match_type_get_type
-end function
-
 !  GType gtk_menu_direction_type_get_type (void) G_GNUC_CONST;
 function gtk_menu_direction_type_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -14409,12 +13477,6 @@ end function
 function gtk_message_type_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_message_type_get_type
-end function
-
-!  GType gtk_metric_type_get_type (void) G_GNUC_CONST;
-function gtk_metric_type_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_metric_type_get_type
 end function
 
 !  GType gtk_movement_step_get_type (void) G_GNUC_CONST;
@@ -14471,12 +13533,6 @@ function gtk_position_type_get_type() bind(c)
   integer(c_size_t) :: gtk_position_type_get_type
 end function
 
-!  GType gtk_preview_type_get_type (void) G_GNUC_CONST;
-function gtk_preview_type_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_preview_type_get_type
-end function
-
 !  GType gtk_relief_style_get_type (void) G_GNUC_CONST;
 function gtk_relief_style_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -14487,12 +13543,6 @@ end function
 function gtk_resize_mode_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_resize_mode_get_type
-end function
-
-!  GType gtk_signal_run_type_get_type (void) G_GNUC_CONST;
-function gtk_signal_run_type_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_signal_run_type_get_type
 end function
 
 !  GType gtk_scroll_type_get_type (void) G_GNUC_CONST;
@@ -14519,34 +13569,10 @@ function gtk_state_type_get_type() bind(c)
   integer(c_size_t) :: gtk_state_type_get_type
 end function
 
-!  GType gtk_submenu_direction_get_type (void) G_GNUC_CONST;
-function gtk_submenu_direction_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_submenu_direction_get_type
-end function
-
-!  GType gtk_submenu_placement_get_type (void) G_GNUC_CONST;
-function gtk_submenu_placement_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_submenu_placement_get_type
-end function
-
 !  GType gtk_toolbar_style_get_type (void) G_GNUC_CONST;
 function gtk_toolbar_style_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_toolbar_style_get_type
-end function
-
-!  GType gtk_update_type_get_type (void) G_GNUC_CONST;
-function gtk_update_type_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_update_type_get_type
-end function
-
-!  GType gtk_visibility_get_type (void) G_GNUC_CONST;
-function gtk_visibility_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_visibility_get_type
 end function
 
 !  GType gtk_window_position_get_type (void) G_GNUC_CONST;
@@ -14645,6 +13671,42 @@ function gtk_drag_result_get_type() bind(c)
   integer(c_size_t) :: gtk_drag_result_get_type
 end function
 
+!  GType gtk_size_request_mode_get_type (void) G_GNUC_CONST;
+function gtk_size_request_mode_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_size_request_mode_get_type
+end function
+
+!  GType gtk_scrollable_policy_get_type (void) G_GNUC_CONST;
+function gtk_scrollable_policy_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_scrollable_policy_get_type
+end function
+
+!  GType gtk_state_flags_get_type (void) G_GNUC_CONST;
+function gtk_state_flags_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_state_flags_get_type
+end function
+
+!  GType gtk_region_flags_get_type (void) G_GNUC_CONST;
+function gtk_region_flags_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_region_flags_get_type
+end function
+
+!  GType gtk_junction_sides_get_type (void) G_GNUC_CONST;
+function gtk_junction_sides_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_junction_sides_get_type
+end function
+
+!  GType gtk_border_style_get_type (void) G_GNUC_CONST;
+function gtk_border_style_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_border_style_get_type
+end function
+
 !  GType gtk_file_chooser_action_get_type (void) G_GNUC_CONST;
 function gtk_file_chooser_action_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -14705,18 +13767,6 @@ function gtk_notebook_tab_get_type() bind(c)
   integer(c_size_t) :: gtk_notebook_tab_get_type
 end function
 
-!  GType gtk_object_flags_get_type (void) G_GNUC_CONST;
-function gtk_object_flags_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_object_flags_get_type
-end function
-
-!  GType gtk_arg_flags_get_type (void) G_GNUC_CONST;
-function gtk_arg_flags_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_arg_flags_get_type
-end function
-
 !  GType gtk_print_status_get_type (void) G_GNUC_CONST;
 function gtk_print_status_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -14739,24 +13789,6 @@ end function
 function gtk_print_error_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_print_error_get_type
-end function
-
-!  GType gtk_private_flags_get_type (void) G_GNUC_CONST;
-function gtk_private_flags_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_private_flags_get_type
-end function
-
-!  GType gtk_progress_bar_style_get_type (void) G_GNUC_CONST;
-function gtk_progress_bar_style_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_progress_bar_style_get_type
-end function
-
-!  GType gtk_progress_bar_orientation_get_type (void) G_GNUC_CONST;
-function gtk_progress_bar_orientation_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_progress_bar_orientation_get_type
 end function
 
 !  GType gtk_rc_flags_get_type (void) G_GNUC_CONST;
@@ -14831,12 +13863,6 @@ function gtk_text_window_type_get_type() bind(c)
   integer(c_size_t) :: gtk_text_window_type_get_type
 end function
 
-!  GType gtk_toolbar_child_type_get_type (void) G_GNUC_CONST;
-function gtk_toolbar_child_type_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_toolbar_child_type_get_type
-end function
-
 !  GType gtk_toolbar_space_style_get_type (void) G_GNUC_CONST;
 function gtk_toolbar_space_style_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -14873,64 +13899,10 @@ function gtk_ui_manager_item_type_get_type() bind(c)
   integer(c_size_t) :: gtk_ui_manager_item_type_get_type
 end function
 
-!  GType gtk_widget_flags_get_type (void) G_GNUC_CONST;
-function gtk_widget_flags_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_widget_flags_get_type
-end function
-
 !  GType gtk_widget_help_type_get_type (void) G_GNUC_CONST;
 function gtk_widget_help_type_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_widget_help_type_get_type
-end function
-
-!  GType gtk_tree_view_mode_get_type (void) G_GNUC_CONST;
-function gtk_tree_view_mode_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_tree_view_mode_get_type
-end function
-
-!  GType gtk_cell_type_get_type (void) G_GNUC_CONST;
-function gtk_cell_type_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_cell_type_get_type
-end function
-
-!  GType gtk_clist_drag_pos_get_type (void) G_GNUC_CONST;
-function gtk_clist_drag_pos_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_clist_drag_pos_get_type
-end function
-
-!  GType gtk_button_action_get_type (void) G_GNUC_CONST;
-function gtk_button_action_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_button_action_get_type
-end function
-
-!  GType gtk_ctree_pos_get_type (void) G_GNUC_CONST;
-function gtk_ctree_pos_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_ctree_pos_get_type
-end function
-
-!  GType gtk_ctree_line_style_get_type (void) G_GNUC_CONST;
-function gtk_ctree_line_style_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_ctree_line_style_get_type
-end function
-
-!  GType gtk_ctree_expander_style_get_type (void) G_GNUC_CONST;
-function gtk_ctree_expander_style_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_ctree_expander_style_get_type
-end function
-
-!  GType gtk_ctree_expansion_type_get_type (void) G_GNUC_CONST;
-function gtk_ctree_expansion_type_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_ctree_expansion_type_get_type
 end function
 
 !   GType gtk_toggle_action_get_type (void) G_GNUC_CONST;
@@ -14983,6 +13955,97 @@ function gtk_toggle_action_get_draw_as_radio(action) bind(c)
   type(c_ptr), value :: action
 end function
 
+!   GType gtk_cell_area_context_get_type (void) G_GNUC_CONST;
+function gtk_cell_area_context_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_cell_area_context_get_type
+end function
+
+!  GtkCellArea *gtk_cell_area_context_get_area (GtkCellAreaContext *context);
+function gtk_cell_area_context_get_area(context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_context_get_area
+  type(c_ptr), value :: context
+end function
+
+! void gtk_cell_area_context_allocate (GtkCellAreaContext *context, gint width, gint height);
+subroutine gtk_cell_area_context_allocate(context, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end subroutine
+
+! void gtk_cell_area_context_reset (GtkCellAreaContext *context);
+subroutine gtk_cell_area_context_reset(context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+end subroutine
+
+!  void gtk_cell_area_context_get_preferred_width (GtkCellAreaContext *context, gint *minimum_width, gint *natural_width);
+subroutine gtk_cell_area_context_get_preferred_width(context, minimum_width, na&
+&tural_width) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: minimum_width
+  type(c_ptr), value :: natural_width
+end subroutine
+
+! void gtk_cell_area_context_get_preferred_height (GtkCellAreaContext *context, gint *minimum_height, gint *natural_height);
+subroutine gtk_cell_area_context_get_preferred_height(context, minimum_height, &
+&natural_height) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: minimum_height
+  type(c_ptr), value :: natural_height
+end subroutine
+
+! void gtk_cell_area_context_get_preferred_height_for_width (GtkCellAreaContext *context, gint width, gint *minimum_height, gint *natural_height);
+subroutine gtk_cell_area_context_get_preferred_height_for_width(context, width,&
+& minimum_height, natural_height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: width
+  type(c_ptr), value :: minimum_height
+  type(c_ptr), value :: natural_height
+end subroutine
+
+! void gtk_cell_area_context_get_preferred_width_for_height (GtkCellAreaContext *context, gint height, gint *minimum_width, gint *natural_width);
+subroutine gtk_cell_area_context_get_preferred_width_for_height(context, height&
+&, minimum_width, natural_width) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: height
+  type(c_ptr), value :: minimum_width
+  type(c_ptr), value :: natural_width
+end subroutine
+
+! void gtk_cell_area_context_get_allocation (GtkCellAreaContext *context, gint *width, gint *height);
+subroutine gtk_cell_area_context_get_allocation(context, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: width
+  type(c_ptr), value :: height
+end subroutine
+
+!  void gtk_cell_area_context_push_preferred_width (GtkCellAreaContext *context, gint minimum_width, gint natural_width);
+subroutine gtk_cell_area_context_push_preferred_width(context, minimum_width, n&
+&atural_width) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: minimum_width
+  integer(c_int), value :: natural_width
+end subroutine
+
+! void gtk_cell_area_context_push_preferred_height (GtkCellAreaContext *context, gint minimum_height, gint natural_height);
+subroutine gtk_cell_area_context_push_preferred_height(context, minimum_height,&
+& natural_height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: minimum_height
+  integer(c_int), value :: natural_height
+end subroutine
+
 !   GType gtk_link_button_get_type (void) G_GNUC_CONST;
 function gtk_link_button_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -15017,15 +14080,6 @@ subroutine gtk_link_button_set_uri(link_button, uri) bind(c)
   type(c_ptr), value :: link_button
   character(kind=c_char), dimension(*) :: uri
 end subroutine
-
-!  GtkLinkButtonUriFunc gtk_link_button_set_uri_hook (GtkLinkButtonUriFunc func, gpointer data, GDestroyNotify destroy);
-function gtk_link_button_set_uri_hook(func, data, destroy) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gtk_link_button_set_uri_hook
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
-end function
 
 !  gboolean gtk_link_button_get_visited (GtkLinkButton *link_button);
 function gtk_link_button_get_visited(link_button) bind(c) 
@@ -15125,119 +14179,6 @@ subroutine gtk_image_menu_item_set_accel_group(image_menu_item, accel_group) bi&
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: image_menu_item
   type(c_ptr), value :: accel_group
-end subroutine
-
-!   GType gtk_tree_get_type (void) G_GNUC_CONST;
-function gtk_tree_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_tree_get_type
-end function
-
-! GtkWidget* gtk_tree_new (void);
-function gtk_tree_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_tree_new
-end function
-
-! void gtk_tree_append (GtkTree *tree, GtkWidget *tree_item);
-subroutine gtk_tree_append(tree, tree_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree
-  type(c_ptr), value :: tree_item
-end subroutine
-
-! void gtk_tree_prepend (GtkTree *tree, GtkWidget *tree_item);
-subroutine gtk_tree_prepend(tree, tree_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree
-  type(c_ptr), value :: tree_item
-end subroutine
-
-! void gtk_tree_insert (GtkTree *tree, GtkWidget *tree_item, gint position);
-subroutine gtk_tree_insert(tree, tree_item, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: tree
-  type(c_ptr), value :: tree_item
-  integer(c_int), value :: position
-end subroutine
-
-! void gtk_tree_remove_items (GtkTree *tree, GList *items);
-subroutine gtk_tree_remove_items(tree, items) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree
-  type(c_ptr), value :: items
-end subroutine
-
-! void gtk_tree_clear_items (GtkTree *tree, gint start, gint end);
-subroutine gtk_tree_clear_items(tree, start, end) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: tree
-  integer(c_int), value :: start
-  integer(c_int), value :: end
-end subroutine
-
-! void gtk_tree_select_item (GtkTree *tree, gint item);
-subroutine gtk_tree_select_item(tree, item) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: tree
-  integer(c_int), value :: item
-end subroutine
-
-! void gtk_tree_unselect_item (GtkTree *tree, gint item);
-subroutine gtk_tree_unselect_item(tree, item) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: tree
-  integer(c_int), value :: item
-end subroutine
-
-! void gtk_tree_select_child (GtkTree *tree, GtkWidget *tree_item);
-subroutine gtk_tree_select_child(tree, tree_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree
-  type(c_ptr), value :: tree_item
-end subroutine
-
-! void gtk_tree_unselect_child (GtkTree *tree, GtkWidget *tree_item);
-subroutine gtk_tree_unselect_child(tree, tree_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree
-  type(c_ptr), value :: tree_item
-end subroutine
-
-! gint gtk_tree_child_position (GtkTree *tree, GtkWidget *child);
-function gtk_tree_child_position(tree, child) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_tree_child_position
-  type(c_ptr), value :: tree
-  type(c_ptr), value :: child
-end function
-
-! void gtk_tree_set_selection_mode (GtkTree *tree, GtkSelectionMode mode);
-subroutine gtk_tree_set_selection_mode(tree, mode) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: tree
-  integer(c_int), value :: mode
-end subroutine
-
-! void gtk_tree_set_view_mode (GtkTree *tree, GtkTreeViewMode mode);
-subroutine gtk_tree_set_view_mode(tree, mode) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: tree
-  integer(c_int), value :: mode
-end subroutine
-
-! void gtk_tree_set_view_lines (GtkTree *tree, gboolean flag);
-subroutine gtk_tree_set_view_lines(tree, flag) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: tree
-  integer(c_int), value :: flag
-end subroutine
-
-!  void gtk_tree_remove_item (GtkTree *tree, GtkWidget *child);
-subroutine gtk_tree_remove_item(tree, child) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tree
-  type(c_ptr), value :: child
 end subroutine
 
 !   GType gtk_action_group_get_type (void) G_GNUC_CONST;
@@ -15447,6 +14388,76 @@ function gtk_cell_renderer_get_type() bind(c)
   integer(c_size_t) :: gtk_cell_renderer_get_type
 end function
 
+!  GtkSizeRequestMode gtk_cell_renderer_get_request_mode (GtkCellRenderer *cell);
+function gtk_cell_renderer_get_request_mode(cell) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_renderer_get_request_mode
+  type(c_ptr), value :: cell
+end function
+
+! void gtk_cell_renderer_get_preferred_width (GtkCellRenderer *cell, GtkWidget *widget, gint *minimum_size, gint *natural_size);
+subroutine gtk_cell_renderer_get_preferred_width(cell, widget, minimum_size, na&
+&tural_size) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: cell
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: minimum_size
+  type(c_ptr), value :: natural_size
+end subroutine
+
+! void gtk_cell_renderer_get_preferred_height_for_width (GtkCellRenderer *cell, GtkWidget *widget, gint width, gint *minimum_height, gint *natural_height);
+subroutine gtk_cell_renderer_get_preferred_height_for_width(cell, widget, width&
+&, minimum_height, natural_height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: cell
+  type(c_ptr), value :: widget
+  integer(c_int), value :: width
+  type(c_ptr), value :: minimum_height
+  type(c_ptr), value :: natural_height
+end subroutine
+
+! void gtk_cell_renderer_get_preferred_height (GtkCellRenderer *cell, GtkWidget *widget, gint *minimum_size, gint *natural_size);
+subroutine gtk_cell_renderer_get_preferred_height(cell, widget, minimum_size, n&
+&atural_size) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: cell
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: minimum_size
+  type(c_ptr), value :: natural_size
+end subroutine
+
+! void gtk_cell_renderer_get_preferred_width_for_height (GtkCellRenderer *cell, GtkWidget *widget, gint height, gint *minimum_width, gint *natural_width);
+subroutine gtk_cell_renderer_get_preferred_width_for_height(cell, widget, heigh&
+&t, minimum_width, natural_width) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: cell
+  type(c_ptr), value :: widget
+  integer(c_int), value :: height
+  type(c_ptr), value :: minimum_width
+  type(c_ptr), value :: natural_width
+end subroutine
+
+! void gtk_cell_renderer_get_preferred_size (GtkCellRenderer *cell, GtkWidget *widget, GtkRequisition *minimum_size, GtkRequisition *natural_size);
+subroutine gtk_cell_renderer_get_preferred_size(cell, widget, minimum_size, nat&
+&ural_size) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: cell
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: minimum_size
+  type(c_ptr), value :: natural_size
+end subroutine
+
+! void gtk_cell_renderer_get_aligned_area (GtkCellRenderer *cell, GtkWidget *widget, GtkCellRendererState flags, const GdkRectangle *cell_area, GdkRectangle *aligned_area);
+subroutine gtk_cell_renderer_get_aligned_area(cell, widget, flags, cell_area, a&
+&ligned_area) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: cell
+  type(c_ptr), value :: widget
+  integer(c_int), value :: flags
+  type(c_ptr), value :: cell_area
+  type(c_ptr), value :: aligned_area
+end subroutine
+
 !  void gtk_cell_renderer_get_size (GtkCellRenderer *cell, GtkWidget *widget, const GdkRectangle *cell_area, gint *x_offset, gint *y_offset, gint *width, gint *height);
 subroutine gtk_cell_renderer_get_size(cell, widget, cell_area, x_offset, y_offs&
 &et, width, height) bind(c) 
@@ -15460,16 +14471,15 @@ subroutine gtk_cell_renderer_get_size(cell, widget, cell_area, x_offset, y_offs&
   type(c_ptr), value :: height
 end subroutine
 
-! void gtk_cell_renderer_render (GtkCellRenderer *cell, GdkWindow *window, GtkWidget *widget, const GdkRectangle *background_area, const GdkRectangle *cell_area, const GdkRectangle *expose_area, GtkCellRendererState flags);
-subroutine gtk_cell_renderer_render(cell, window, widget, background_area, cell&
-&_area, expose_area, flags) bind(c) 
+!  void gtk_cell_renderer_render (GtkCellRenderer *cell, cairo_t *cr, GtkWidget *widget, const GdkRectangle *background_area, const GdkRectangle *cell_area, GtkCellRendererState flags);
+subroutine gtk_cell_renderer_render(cell, cr, widget, background_area, cell_are&
+&a, flags) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: cell
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   type(c_ptr), value :: widget
   type(c_ptr), value :: background_area
   type(c_ptr), value :: cell_area
-  type(c_ptr), value :: expose_area
   integer(c_int), value :: flags
 end subroutine
 
@@ -15577,17 +14587,53 @@ function gtk_cell_renderer_get_sensitive(cell) bind(c)
   type(c_ptr), value :: cell
 end function
 
-!  void gtk_cell_renderer_editing_canceled (GtkCellRenderer *cell);
-subroutine gtk_cell_renderer_editing_canceled(cell) bind(c) 
-  use iso_c_binding, only: c_ptr
+!  gboolean gtk_cell_renderer_is_activatable (GtkCellRenderer *cell);
+function gtk_cell_renderer_is_activatable(cell) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_renderer_is_activatable
   type(c_ptr), value :: cell
-end subroutine
+end function
 
 !  void gtk_cell_renderer_stop_editing (GtkCellRenderer *cell, gboolean canceled);
 subroutine gtk_cell_renderer_stop_editing(cell, canceled) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: cell
   integer(c_int), value :: canceled
+end subroutine
+
+!  GtkStateFlags gtk_cell_renderer_get_state (GtkCellRenderer *cell, GtkWidget *widget, GtkCellRendererState cell_state);
+function gtk_cell_renderer_get_state(cell, widget, cell_state) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_renderer_get_state
+  type(c_ptr), value :: cell
+  type(c_ptr), value :: widget
+  integer(c_int), value :: cell_state
+end function
+
+!   GType gtk_app_chooser_get_type (void) G_GNUC_CONST;
+function gtk_app_chooser_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_app_chooser_get_type
+end function
+
+!  GAppInfo * gtk_app_chooser_get_app_info (GtkAppChooser *self);
+function gtk_app_chooser_get_app_info(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_app_chooser_get_app_info
+  type(c_ptr), value :: self
+end function
+
+! gchar * gtk_app_chooser_get_content_type (GtkAppChooser *self);
+function gtk_app_chooser_get_content_type(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_app_chooser_get_content_type
+  type(c_ptr), value :: self
+end function
+
+! void gtk_app_chooser_refresh (GtkAppChooser *self);
+subroutine gtk_app_chooser_refresh(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
 end subroutine
 
 !   GType gtk_layout_get_type (void) G_GNUC_CONST;
@@ -15673,18 +14719,6 @@ subroutine gtk_layout_set_vadjustment(layout, adjustment) bind(c)
   type(c_ptr), value :: adjustment
 end subroutine
 
-!  void gtk_layout_freeze (GtkLayout *layout);
-subroutine gtk_layout_freeze(layout) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: layout
-end subroutine
-
-! void gtk_layout_thaw (GtkLayout *layout);
-subroutine gtk_layout_thaw(layout) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: layout
-end subroutine
-
 !   GType gtk_statusbar_get_type (void) G_GNUC_CONST;
 function gtk_statusbar_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -15736,20 +14770,6 @@ subroutine gtk_statusbar_remove_all(statusbar, context_id) bind(c)
   integer(c_int), value :: context_id
 end subroutine
 
-!   void gtk_statusbar_set_has_resize_grip (GtkStatusbar *statusbar, gboolean setting);
-subroutine gtk_statusbar_set_has_resize_grip(statusbar, setting) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: statusbar
-  integer(c_int), value :: setting
-end subroutine
-
-! gboolean gtk_statusbar_get_has_resize_grip (GtkStatusbar *statusbar);
-function gtk_statusbar_get_has_resize_grip(statusbar) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_statusbar_get_has_resize_grip
-  type(c_ptr), value :: statusbar
-end function
-
 !  GtkWidget* gtk_statusbar_get_message_area (GtkStatusbar *statusbar);
 function gtk_statusbar_get_message_area(statusbar) bind(c) 
   use iso_c_binding, only: c_ptr
@@ -15789,14 +14809,6 @@ function gtk_drawing_area_new() bind(c)
   type(c_ptr) :: gtk_drawing_area_new
 end function
 
-!  void gtk_drawing_area_size (GtkDrawingArea *darea, gint width, gint height);
-subroutine gtk_drawing_area_size(darea, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: darea
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
 !   GType ubuntu_menu_proxy_get_type (void) G_GNUC_CONST;
 function ubuntu_menu_proxy_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -15830,210 +14842,6 @@ subroutine ubuntu_menu_proxy_activate_menu(proxy, widget) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: proxy
   type(c_ptr), value :: widget
-end subroutine
-
-!   GType gtk_item_factory_get_type (void) G_GNUC_CONST;
-function gtk_item_factory_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_item_factory_get_type
-end function
-
-!  GtkItemFactory* gtk_item_factory_new (GType container_type, const gchar *path, GtkAccelGroup *accel_group);
-function gtk_item_factory_new(container_type, path, accel_group) bind(c) 
-  use iso_c_binding, only: c_ptr, c_size_t, c_char
-  type(c_ptr) :: gtk_item_factory_new
-  integer(c_size_t), value :: container_type
-  character(kind=c_char), dimension(*) :: path
-  type(c_ptr), value :: accel_group
-end function
-
-! void gtk_item_factory_construct (GtkItemFactory *ifactory, GType container_type, const gchar *path, GtkAccelGroup *accel_group);
-subroutine gtk_item_factory_construct(ifactory, container_type, path, accel_gro&
-&up) bind(c) 
-  use iso_c_binding, only: c_ptr, c_size_t, c_char
-  type(c_ptr), value :: ifactory
-  integer(c_size_t), value :: container_type
-  character(kind=c_char), dimension(*) :: path
-  type(c_ptr), value :: accel_group
-end subroutine
-
-!   void gtk_item_factory_add_foreign (GtkWidget *accel_widget, const gchar *full_path, GtkAccelGroup *accel_group, guint keyval, GdkModifierType modifiers);
-subroutine gtk_item_factory_add_foreign(accel_widget, full_path, accel_group, k&
-&eyval, modifiers) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int
-  type(c_ptr), value :: accel_widget
-  character(kind=c_char), dimension(*) :: full_path
-  type(c_ptr), value :: accel_group
-  integer(c_int), value :: keyval
-  integer(c_int), value :: modifiers
-end subroutine
-
-!  GtkItemFactory* gtk_item_factory_from_widget (GtkWidget *widget);
-function gtk_item_factory_from_widget(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_item_factory_from_widget
-  type(c_ptr), value :: widget
-end function
-
-! G_CONST_RETURN gchar* gtk_item_factory_path_from_widget (GtkWidget *widget);
-function gtk_item_factory_path_from_widget(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_item_factory_path_from_widget
-  type(c_ptr), value :: widget
-end function
-
-!  GtkWidget* gtk_item_factory_get_item (GtkItemFactory *ifactory, const gchar *path);
-function gtk_item_factory_get_item(ifactory, path) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_item_factory_get_item
-  type(c_ptr), value :: ifactory
-  character(kind=c_char), dimension(*) :: path
-end function
-
-! GtkWidget* gtk_item_factory_get_widget (GtkItemFactory *ifactory, const gchar *path);
-function gtk_item_factory_get_widget(ifactory, path) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_item_factory_get_widget
-  type(c_ptr), value :: ifactory
-  character(kind=c_char), dimension(*) :: path
-end function
-
-! GtkWidget* gtk_item_factory_get_widget_by_action (GtkItemFactory *ifactory, guint action);
-function gtk_item_factory_get_widget_by_action(ifactory, action) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_item_factory_get_widget_by_action
-  type(c_ptr), value :: ifactory
-  integer(c_int), value :: action
-end function
-
-! GtkWidget* gtk_item_factory_get_item_by_action (GtkItemFactory *ifactory, guint action);
-function gtk_item_factory_get_item_by_action(ifactory, action) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_item_factory_get_item_by_action
-  type(c_ptr), value :: ifactory
-  integer(c_int), value :: action
-end function
-
-!  void gtk_item_factory_create_item (GtkItemFactory *ifactory, GtkItemFactoryEntry *entry, gpointer callback_data, guint callback_type);
-subroutine gtk_item_factory_create_item(ifactory, entry, callback_data, callbac&
-&k_type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ifactory
-  type(c_ptr), value :: entry
-  type(c_ptr), value :: callback_data
-  integer(c_int), value :: callback_type
-end subroutine
-
-! void gtk_item_factory_create_items (GtkItemFactory *ifactory, guint n_entries, GtkItemFactoryEntry *entries, gpointer callback_data);
-subroutine gtk_item_factory_create_items(ifactory, n_entries, entries, callback&
-&_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ifactory
-  integer(c_int), value :: n_entries
-  type(c_ptr), value :: entries
-  type(c_ptr), value :: callback_data
-end subroutine
-
-! void gtk_item_factory_delete_item (GtkItemFactory *ifactory, const gchar *path);
-subroutine gtk_item_factory_delete_item(ifactory, path) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: ifactory
-  character(kind=c_char), dimension(*) :: path
-end subroutine
-
-! void gtk_item_factory_delete_entry (GtkItemFactory *ifactory, GtkItemFactoryEntry *entry);
-subroutine gtk_item_factory_delete_entry(ifactory, entry) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ifactory
-  type(c_ptr), value :: entry
-end subroutine
-
-! void gtk_item_factory_delete_entries (GtkItemFactory *ifactory, guint n_entries, GtkItemFactoryEntry *entries);
-subroutine gtk_item_factory_delete_entries(ifactory, n_entries, entries) bind(c&
-&) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ifactory
-  integer(c_int), value :: n_entries
-  type(c_ptr), value :: entries
-end subroutine
-
-! void gtk_item_factory_popup (GtkItemFactory *ifactory, guint x, guint y, guint mouse_button, guint32 time_);
-subroutine gtk_item_factory_popup(ifactory, x, y, mouse_button, time_) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_int32_t
-  type(c_ptr), value :: ifactory
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: mouse_button
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! void gtk_item_factory_popup_with_data(GtkItemFactory *ifactory, gpointer popup_data, GDestroyNotify destroy, guint x, guint y, guint mouse_button, guint32 time_);
-subroutine gtk_item_factory_popup_with_data(ifactory, popup_data, destroy, x, y&
-&, mouse_button, time_) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr, c_int, c_int32_t
-  type(c_ptr), value :: ifactory
-  type(c_ptr), value :: popup_data
-  type(c_funptr), value :: destroy
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: mouse_button
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! gpointer gtk_item_factory_popup_data (GtkItemFactory *ifactory);
-function gtk_item_factory_popup_data(ifactory) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_item_factory_popup_data
-  type(c_ptr), value :: ifactory
-end function
-
-! gpointer gtk_item_factory_popup_data_from_widget (GtkWidget *widget);
-function gtk_item_factory_popup_data_from_widget(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_item_factory_popup_data_from_widget
-  type(c_ptr), value :: widget
-end function
-
-! void gtk_item_factory_set_translate_func (GtkItemFactory *ifactory, GtkTranslateFunc func, gpointer data, GDestroyNotify notify);
-subroutine gtk_item_factory_set_translate_func(ifactory, func, data, notify) bi&
-&nd(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr), value :: ifactory
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-  type(c_funptr), value :: notify
-end subroutine
-
-!  void gtk_item_factory_create_items_ac (GtkItemFactory *ifactory, guint n_entries, GtkItemFactoryEntry *entries, gpointer callback_data, guint callback_type);
-subroutine gtk_item_factory_create_items_ac(ifactory, n_entries, entries, callb&
-&ack_data, callback_type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: ifactory
-  integer(c_int), value :: n_entries
-  type(c_ptr), value :: entries
-  type(c_ptr), value :: callback_data
-  integer(c_int), value :: callback_type
-end subroutine
-
-!  GtkItemFactory* gtk_item_factory_from_path (const gchar *path);
-function gtk_item_factory_from_path(path) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_item_factory_from_path
-  character(kind=c_char), dimension(*) :: path
-end function
-
-! void gtk_item_factory_create_menu_entries (guint n_entries, GtkMenuEntry *entries);
-subroutine gtk_item_factory_create_menu_entries(n_entries, entries) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int), value :: n_entries
-  type(c_ptr), value :: entries
-end subroutine
-
-! void gtk_item_factories_path_delete (const gchar *ifactory_path, const gchar *path);
-subroutine gtk_item_factories_path_delete(ifactory_path, path) bind(c) 
-  use iso_c_binding, only: c_char
-  character(kind=c_char), dimension(*) :: ifactory_path
-  character(kind=c_char), dimension(*) :: path
 end subroutine
 
 !   GType gtk_hbox_get_type (void) G_GNUC_CONST;
@@ -16135,18 +14943,6 @@ subroutine gtk_radio_menu_item_set_group(radio_menu_item, group) bind(c)
   type(c_ptr), value :: radio_menu_item
   type(c_ptr), value :: group
 end subroutine
-
-!   GType gtk_vruler_get_type (void) G_GNUC_CONST;
-function gtk_vruler_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_vruler_get_type
-end function
-
-! GtkWidget* gtk_vruler_new (void);
-function gtk_vruler_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_vruler_new
-end function
 
 !   GType gtk_list_store_get_type (void) G_GNUC_CONST;
 function gtk_list_store_get_type() bind(c) 
@@ -16424,197 +15220,6 @@ subroutine gtk_toolbar_set_drop_highlight_item(toolbar, tool_item, index_) bind&
   integer(c_int), value :: index_
 end subroutine
 
-!  GtkOrientation gtk_toolbar_get_orientation (GtkToolbar *toolbar);
-function gtk_toolbar_get_orientation(toolbar) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_toolbar_get_orientation
-  type(c_ptr), value :: toolbar
-end function
-
-! void gtk_toolbar_set_orientation (GtkToolbar *toolbar, GtkOrientation orientation);
-subroutine gtk_toolbar_set_orientation(toolbar, orientation) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: toolbar
-  integer(c_int), value :: orientation
-end subroutine
-
-! gboolean gtk_toolbar_get_tooltips (GtkToolbar *toolbar);
-function gtk_toolbar_get_tooltips(toolbar) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_toolbar_get_tooltips
-  type(c_ptr), value :: toolbar
-end function
-
-! void gtk_toolbar_set_tooltips (GtkToolbar *toolbar, gboolean enable);
-subroutine gtk_toolbar_set_tooltips(toolbar, enable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: toolbar
-  integer(c_int), value :: enable
-end subroutine
-
-!  GtkWidget* gtk_toolbar_append_item (GtkToolbar *toolbar, const char *text, const char *tooltip_text, const char *tooltip_private_text, GtkWidget *icon, GCallback callback, gpointer user_data);
-function gtk_toolbar_append_item(toolbar, text, tooltip_text, tooltip_private_t&
-&ext, icon, callback, user_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_funptr
-  type(c_ptr) :: gtk_toolbar_append_item
-  type(c_ptr), value :: toolbar
-  character(kind=c_char), dimension(*) :: text
-  character(kind=c_char), dimension(*) :: tooltip_text
-  character(kind=c_char), dimension(*) :: tooltip_private_text
-  type(c_ptr), value :: icon
-  type(c_funptr), value :: callback
-  type(c_ptr), value :: user_data
-end function
-
-! GtkWidget* gtk_toolbar_prepend_item (GtkToolbar *toolbar, const char *text, const char *tooltip_text, const char *tooltip_private_text, GtkWidget *icon, GCallback callback, gpointer user_data);
-function gtk_toolbar_prepend_item(toolbar, text, tooltip_text, tooltip_private_&
-&text, icon, callback, user_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_funptr
-  type(c_ptr) :: gtk_toolbar_prepend_item
-  type(c_ptr), value :: toolbar
-  character(kind=c_char), dimension(*) :: text
-  character(kind=c_char), dimension(*) :: tooltip_text
-  character(kind=c_char), dimension(*) :: tooltip_private_text
-  type(c_ptr), value :: icon
-  type(c_funptr), value :: callback
-  type(c_ptr), value :: user_data
-end function
-
-! GtkWidget* gtk_toolbar_insert_item (GtkToolbar *toolbar, const char *text, const char *tooltip_text, const char *tooltip_private_text, GtkWidget *icon, GCallback callback, gpointer user_data, gint position);
-function gtk_toolbar_insert_item(toolbar, text, tooltip_text, tooltip_private_t&
-&ext, icon, callback, user_data, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_funptr, c_int
-  type(c_ptr) :: gtk_toolbar_insert_item
-  type(c_ptr), value :: toolbar
-  character(kind=c_char), dimension(*) :: text
-  character(kind=c_char), dimension(*) :: tooltip_text
-  character(kind=c_char), dimension(*) :: tooltip_private_text
-  type(c_ptr), value :: icon
-  type(c_funptr), value :: callback
-  type(c_ptr), value :: user_data
-  integer(c_int), value :: position
-end function
-
-!  GtkWidget* gtk_toolbar_insert_stock (GtkToolbar *toolbar, const gchar *stock_id, const char *tooltip_text, const char *tooltip_private_text, GCallback callback, gpointer user_data, gint position);
-function gtk_toolbar_insert_stock(toolbar, stock_id, tooltip_text, tooltip_priv&
-&ate_text, callback, user_data, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_funptr, c_int
-  type(c_ptr) :: gtk_toolbar_insert_stock
-  type(c_ptr), value :: toolbar
-  character(kind=c_char), dimension(*) :: stock_id
-  character(kind=c_char), dimension(*) :: tooltip_text
-  character(kind=c_char), dimension(*) :: tooltip_private_text
-  type(c_funptr), value :: callback
-  type(c_ptr), value :: user_data
-  integer(c_int), value :: position
-end function
-
-!  void gtk_toolbar_append_space (GtkToolbar *toolbar);
-subroutine gtk_toolbar_append_space(toolbar) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: toolbar
-end subroutine
-
-! void gtk_toolbar_prepend_space (GtkToolbar *toolbar);
-subroutine gtk_toolbar_prepend_space(toolbar) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: toolbar
-end subroutine
-
-! void gtk_toolbar_insert_space (GtkToolbar *toolbar, gint position);
-subroutine gtk_toolbar_insert_space(toolbar, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: toolbar
-  integer(c_int), value :: position
-end subroutine
-
-! void gtk_toolbar_remove_space (GtkToolbar *toolbar, gint position);
-subroutine gtk_toolbar_remove_space(toolbar, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: toolbar
-  integer(c_int), value :: position
-end subroutine
-
-!  GtkWidget* gtk_toolbar_append_element (GtkToolbar *toolbar, GtkToolbarChildType type, GtkWidget *widget, const char *text, const char *tooltip_text, const char *tooltip_private_text, GtkWidget *icon, GCallback callback, gpointer user_data);
-function gtk_toolbar_append_element(toolbar, type, widget, text, tooltip_text, &
-&tooltip_private_text, icon, callback, user_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char, c_funptr
-  type(c_ptr) :: gtk_toolbar_append_element
-  type(c_ptr), value :: toolbar
-  integer(c_int), value :: type
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: text
-  character(kind=c_char), dimension(*) :: tooltip_text
-  character(kind=c_char), dimension(*) :: tooltip_private_text
-  type(c_ptr), value :: icon
-  type(c_funptr), value :: callback
-  type(c_ptr), value :: user_data
-end function
-
-!  GtkWidget* gtk_toolbar_prepend_element (GtkToolbar *toolbar, GtkToolbarChildType type, GtkWidget *widget, const char *text, const char *tooltip_text, const char *tooltip_private_text, GtkWidget *icon, GCallback callback, gpointer user_data);
-function gtk_toolbar_prepend_element(toolbar, type, widget, text, tooltip_text,&
-& tooltip_private_text, icon, callback, user_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char, c_funptr
-  type(c_ptr) :: gtk_toolbar_prepend_element
-  type(c_ptr), value :: toolbar
-  integer(c_int), value :: type
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: text
-  character(kind=c_char), dimension(*) :: tooltip_text
-  character(kind=c_char), dimension(*) :: tooltip_private_text
-  type(c_ptr), value :: icon
-  type(c_funptr), value :: callback
-  type(c_ptr), value :: user_data
-end function
-
-!  GtkWidget* gtk_toolbar_insert_element (GtkToolbar *toolbar, GtkToolbarChildType type, GtkWidget *widget, const char *text, const char *tooltip_text, const char *tooltip_private_text, GtkWidget *icon, GCallback callback, gpointer user_data, gint position);
-function gtk_toolbar_insert_element(toolbar, type, widget, text, tooltip_text, &
-&tooltip_private_text, icon, callback, user_data, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char, c_funptr
-  type(c_ptr) :: gtk_toolbar_insert_element
-  type(c_ptr), value :: toolbar
-  integer(c_int), value :: type
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: text
-  character(kind=c_char), dimension(*) :: tooltip_text
-  character(kind=c_char), dimension(*) :: tooltip_private_text
-  type(c_ptr), value :: icon
-  type(c_funptr), value :: callback
-  type(c_ptr), value :: user_data
-  integer(c_int), value :: position
-end function
-
-!  void gtk_toolbar_append_widget (GtkToolbar *toolbar, GtkWidget *widget, const char *tooltip_text, const char *tooltip_private_text);
-subroutine gtk_toolbar_append_widget(toolbar, widget, tooltip_text, tooltip_pri&
-&vate_text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: toolbar
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: tooltip_text
-  character(kind=c_char), dimension(*) :: tooltip_private_text
-end subroutine
-
-! void gtk_toolbar_prepend_widget (GtkToolbar *toolbar, GtkWidget *widget, const char *tooltip_text, const char *tooltip_private_text);
-subroutine gtk_toolbar_prepend_widget(toolbar, widget, tooltip_text, tooltip_pr&
-&ivate_text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: toolbar
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: tooltip_text
-  character(kind=c_char), dimension(*) :: tooltip_private_text
-end subroutine
-
-! void gtk_toolbar_insert_widget (GtkToolbar *toolbar, GtkWidget *widget, const char *tooltip_text, const char *tooltip_private_text, gint position);
-subroutine gtk_toolbar_insert_widget(toolbar, widget, tooltip_text, tooltip_pri&
-&vate_text, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int
-  type(c_ptr), value :: toolbar
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: tooltip_text
-  character(kind=c_char), dimension(*) :: tooltip_private_text
-  integer(c_int), value :: position
-end subroutine
-
 !   GType gtk_file_filter_get_type (void) G_GNUC_CONST;
 function gtk_file_filter_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -16718,6 +15323,13 @@ subroutine gtk_radio_action_set_group(action, group) bind(c)
   type(c_ptr), value :: group
 end subroutine
 
+! void gtk_radio_action_join_group (GtkRadioAction *action, GtkRadioAction *group_source);
+subroutine gtk_radio_action_join_group(action, group_source) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: action
+  type(c_ptr), value :: group_source
+end subroutine
+
 ! gint gtk_radio_action_get_current_value (GtkRadioAction *action);
 function gtk_radio_action_get_current_value(action) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
@@ -16738,253 +15350,32 @@ function gtk_socket_get_type() bind(c)
   integer(c_size_t) :: gtk_socket_get_type
 end function
 
-! GtkWidget* gtk_socket_new (void);
+! GtkWidget *gtk_socket_new (void);
 function gtk_socket_new() bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_socket_new
 end function
 
-!  void gtk_socket_add_id (GtkSocket *socket_, GdkNativeWindow window_id);
-subroutine gtk_socket_add_id(socket_, window_id) bind(c) 
-  use iso_c_binding, only: c_ptr
+! void gtk_socket_add_id (GtkSocket *socket_, Window window);
+subroutine gtk_socket_add_id(socket_, window) bind(c) 
+  use iso_c_binding, only: c_ptr, c_long
   type(c_ptr), value :: socket_
-  type(c_ptr), value :: window_id
+  integer(c_long), value :: window
 end subroutine
 
-! GdkNativeWindow gtk_socket_get_id (GtkSocket *socket_);
+! Window gtk_socket_get_id (GtkSocket *socket_);
 function gtk_socket_get_id(socket_) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_socket_get_id
+  use iso_c_binding, only: c_long, c_ptr
+  integer(c_long) :: gtk_socket_get_id
   type(c_ptr), value :: socket_
 end function
 
-! GdkWindow* gtk_socket_get_plug_window (GtkSocket *socket_);
+! GdkWindow *gtk_socket_get_plug_window (GtkSocket *socket_);
 function gtk_socket_get_plug_window(socket_) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_socket_get_plug_window
   type(c_ptr), value :: socket_
 end function
-
-!  void gtk_socket_steal (GtkSocket *socket_, GdkNativeWindow wid);
-subroutine gtk_socket_steal(socket_, wid) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: socket_
-  type(c_ptr), value :: wid
-end subroutine
-
-!   GType gtk_identifier_get_type (void) G_GNUC_CONST;
-function gtk_identifier_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_identifier_get_type
-end function
-
-!  void gtk_type_init (GTypeDebugFlags debug_flags);
-subroutine gtk_type_init(debug_flags) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: debug_flags
-end subroutine
-
-! GtkType gtk_type_unique (GtkType parent_type, const GtkTypeInfo *gtkinfo);
-function gtk_type_unique(parent_type, gtkinfo) bind(c) 
-  use iso_c_binding, only: c_size_t, c_ptr
-  integer(c_size_t) :: gtk_type_unique
-  integer(c_size_t), value :: parent_type
-  type(c_ptr), value :: gtkinfo
-end function
-
-! gpointer gtk_type_class (GtkType type);
-function gtk_type_class(type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_size_t
-  type(c_ptr) :: gtk_type_class
-  integer(c_size_t), value :: type
-end function
-
-! gpointer gtk_type_new (GtkType type);
-function gtk_type_new(type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_size_t
-  type(c_ptr) :: gtk_type_new
-  integer(c_size_t), value :: type
-end function
-
-!  GtkEnumValue* gtk_type_enum_get_values (GtkType enum_type);
-function gtk_type_enum_get_values(enum_type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_size_t
-  type(c_ptr) :: gtk_type_enum_get_values
-  integer(c_size_t), value :: enum_type
-end function
-
-! GtkFlagValue* gtk_type_flags_get_values (GtkType flags_type);
-function gtk_type_flags_get_values(flags_type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_size_t
-  type(c_ptr) :: gtk_type_flags_get_values
-  integer(c_size_t), value :: flags_type
-end function
-
-! GtkEnumValue* gtk_type_enum_find_value (GtkType enum_type, const gchar *value_name);
-function gtk_type_enum_find_value(enum_type, value_name) bind(c) 
-  use iso_c_binding, only: c_ptr, c_size_t, c_char
-  type(c_ptr) :: gtk_type_enum_find_value
-  integer(c_size_t), value :: enum_type
-  character(kind=c_char), dimension(*) :: value_name
-end function
-
-! GtkFlagValue* gtk_type_flags_find_value (GtkType flags_type, const gchar *value_name);
-function gtk_type_flags_find_value(flags_type, value_name) bind(c) 
-  use iso_c_binding, only: c_ptr, c_size_t, c_char
-  type(c_ptr) :: gtk_type_flags_find_value
-  integer(c_size_t), value :: flags_type
-  character(kind=c_char), dimension(*) :: value_name
-end function
-
-!   GType gtk_object_get_type (void) G_GNUC_CONST;
-function gtk_object_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_object_get_type
-end function
-
-!  void gtk_object_sink (GtkObject *object);
-subroutine gtk_object_sink(object) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: object
-end subroutine
-
-!  void gtk_object_destroy (GtkObject *object);
-subroutine gtk_object_destroy(object) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: object
-end subroutine
-
-! GtkObject* gtk_object_ref (GtkObject *object);
-function gtk_object_ref(object) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_object_ref
-  type(c_ptr), value :: object
-end function
-
-! void gtk_object_unref (GtkObject *object);
-subroutine gtk_object_unref(object) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: object
-end subroutine
-
-! void gtk_object_weakref (GtkObject *object, GDestroyNotify notify, gpointer data);
-subroutine gtk_object_weakref(object, notify, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr), value :: object
-  type(c_funptr), value :: notify
-  type(c_ptr), value :: data
-end subroutine
-
-! void gtk_object_weakunref (GtkObject *object, GDestroyNotify notify, gpointer data);
-subroutine gtk_object_weakunref(object, notify, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr), value :: object
-  type(c_funptr), value :: notify
-  type(c_ptr), value :: data
-end subroutine
-
-!  void gtk_object_set_data (GtkObject *object, const gchar *key, gpointer data);
-subroutine gtk_object_set_data(object, key, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: object
-  character(kind=c_char), dimension(*) :: key
-  type(c_ptr), value :: data
-end subroutine
-
-! void gtk_object_set_data_full (GtkObject *object, const gchar *key, gpointer data, GDestroyNotify destroy);
-subroutine gtk_object_set_data_full(object, key, data, destroy) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_funptr
-  type(c_ptr), value :: object
-  character(kind=c_char), dimension(*) :: key
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
-end subroutine
-
-! void gtk_object_remove_data (GtkObject *object, const gchar *key);
-subroutine gtk_object_remove_data(object, key) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: object
-  character(kind=c_char), dimension(*) :: key
-end subroutine
-
-! gpointer gtk_object_get_data (GtkObject *object, const gchar *key);
-function gtk_object_get_data(object, key) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_object_get_data
-  type(c_ptr), value :: object
-  character(kind=c_char), dimension(*) :: key
-end function
-
-! void gtk_object_remove_no_notify (GtkObject *object, const gchar *key);
-subroutine gtk_object_remove_no_notify(object, key) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: object
-  character(kind=c_char), dimension(*) :: key
-end subroutine
-
-!  void gtk_object_set_user_data (GtkObject *object, gpointer data);
-subroutine gtk_object_set_user_data(object, data) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: object
-  type(c_ptr), value :: data
-end subroutine
-
-! gpointer gtk_object_get_user_data (GtkObject *object);
-function gtk_object_get_user_data(object) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_object_get_user_data
-  type(c_ptr), value :: object
-end function
-
-!  void gtk_object_set_data_by_id (GtkObject *object, GQuark data_id, gpointer data);
-subroutine gtk_object_set_data_by_id(object, data_id, data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr), value :: object
-  integer(c_int32_t), value :: data_id
-  type(c_ptr), value :: data
-end subroutine
-
-! void gtk_object_set_data_by_id_full (GtkObject *object, GQuark data_id, gpointer data, GDestroyNotify destroy);
-subroutine gtk_object_set_data_by_id_full(object, data_id, data, destroy) bind(&
-&c) 
-  use iso_c_binding, only: c_ptr, c_int32_t, c_funptr
-  type(c_ptr), value :: object
-  integer(c_int32_t), value :: data_id
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
-end subroutine
-
-! gpointer gtk_object_get_data_by_id (GtkObject *object, GQuark data_id);
-function gtk_object_get_data_by_id(object, data_id) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr) :: gtk_object_get_data_by_id
-  type(c_ptr), value :: object
-  integer(c_int32_t), value :: data_id
-end function
-
-! void gtk_object_remove_data_by_id (GtkObject *object, GQuark data_id);
-subroutine gtk_object_remove_data_by_id(object, data_id) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr), value :: object
-  integer(c_int32_t), value :: data_id
-end subroutine
-
-! void gtk_object_remove_no_notify_by_id (GtkObject *object, GQuark key_id);
-subroutine gtk_object_remove_no_notify_by_id(object, key_id) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr), value :: object
-  integer(c_int32_t), value :: key_id
-end subroutine
-
-! void gtk_object_add_arg_type (const gchar *arg_name, GType arg_type, guint arg_flags, guint arg_id);
-subroutine gtk_object_add_arg_type(arg_name, arg_type, arg_flags, arg_id) bind(&
-&c) 
-  use iso_c_binding, only: c_char, c_size_t, c_int
-  character(kind=c_char), dimension(*) :: arg_name
-  integer(c_size_t), value :: arg_type
-  integer(c_int), value :: arg_flags
-  integer(c_int), value :: arg_id
-end subroutine
 
 !   GType gtk_about_dialog_get_type (void) G_GNUC_CONST;
 function gtk_about_dialog_get_type() bind(c) 
@@ -16998,21 +15389,7 @@ function gtk_about_dialog_new() bind(c)
   type(c_ptr) :: gtk_about_dialog_new
 end function
 
-!  G_CONST_RETURN gchar *gtk_about_dialog_get_name (GtkAboutDialog *about);
-function gtk_about_dialog_get_name(about) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_about_dialog_get_name
-  type(c_ptr), value :: about
-end function
-
-! void gtk_about_dialog_set_name (GtkAboutDialog *about, const gchar *name);
-subroutine gtk_about_dialog_set_name(about, name) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: about
-  character(kind=c_char), dimension(*) :: name
-end subroutine
-
-!  G_CONST_RETURN gchar *gtk_about_dialog_get_program_name (GtkAboutDialog *about);
+! G_CONST_RETURN gchar *gtk_about_dialog_get_program_name (GtkAboutDialog *about);
 function gtk_about_dialog_get_program_name(about) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_about_dialog_get_program_name
@@ -17081,6 +15458,20 @@ subroutine gtk_about_dialog_set_license(about, license) bind(c)
   type(c_ptr), value :: about
   character(kind=c_char), dimension(*) :: license
 end subroutine
+
+! void gtk_about_dialog_set_license_type (GtkAboutDialog *about, GtkLicense license_type);
+subroutine gtk_about_dialog_set_license_type(about, license_type) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: about
+  integer(c_int), value :: license_type
+end subroutine
+
+! GtkLicense gtk_about_dialog_get_license_type (GtkAboutDialog *about);
+function gtk_about_dialog_get_license_type(about) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_about_dialog_get_license_type
+  type(c_ptr), value :: about
+end function
 
 !  gboolean gtk_about_dialog_get_wrap_license (GtkAboutDialog *about);
 function gtk_about_dialog_get_wrap_license(about) bind(c) 
@@ -17209,22 +15600,30 @@ subroutine gtk_about_dialog_set_logo_icon_name(about, icon_name) bind(c)
   character(kind=c_char), dimension(*) :: icon_name
 end subroutine
 
-!  GtkAboutDialogActivateLinkFunc gtk_about_dialog_set_email_hook (GtkAboutDialogActivateLinkFunc func, gpointer data, GDestroyNotify destroy);
-function gtk_about_dialog_set_email_hook(func, data, destroy) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gtk_about_dialog_set_email_hook
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
+!   GType gtk_switch_get_type (void) G_GNUC_CONST;
+function gtk_switch_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_switch_get_type
 end function
 
-! GtkAboutDialogActivateLinkFunc gtk_about_dialog_set_url_hook (GtkAboutDialogActivateLinkFunc func, gpointer data, GDestroyNotify destroy);
-function gtk_about_dialog_set_url_hook(func, data, destroy) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr) :: gtk_about_dialog_set_url_hook
-  type(c_funptr), value :: func
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
+!  GtkWidget * gtk_switch_new (void);
+function gtk_switch_new() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_switch_new
+end function
+
+!  void gtk_switch_set_active (GtkSwitch *sw, gboolean is_active);
+subroutine gtk_switch_set_active(sw, is_active) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: sw
+  integer(c_int), value :: is_active
+end subroutine
+
+! gboolean gtk_switch_get_active (GtkSwitch *sw);
+function gtk_switch_get_active(sw) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_switch_get_active
+  type(c_ptr), value :: sw
 end function
 
 !   GtkTextBuffer *gtk_text_iter_get_buffer (const GtkTextIter *iter);
@@ -17919,7 +16318,15 @@ function gtk_text_mark_get_type() bind(c)
   integer(c_size_t) :: gtk_text_mark_get_type
 end function
 
-!  void gtk_text_mark_set_visible (GtkTextMark *mark, gboolean setting);
+!  GtkTextMark *gtk_text_mark_new (const gchar *name, gboolean left_gravity);
+function gtk_text_mark_new(name, left_gravity) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr) :: gtk_text_mark_new
+  character(kind=c_char), dimension(*) :: name
+  integer(c_int), value :: left_gravity
+end function
+
+! void gtk_text_mark_set_visible (GtkTextMark *mark, gboolean setting);
 subroutine gtk_text_mark_set_visible(mark, setting) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: mark
@@ -17933,15 +16340,7 @@ function gtk_text_mark_get_visible(mark) bind(c)
   type(c_ptr), value :: mark
 end function
 
-!  GtkTextMark *gtk_text_mark_new (const gchar *name, gboolean left_gravity);
-function gtk_text_mark_new(name, left_gravity) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int
-  type(c_ptr) :: gtk_text_mark_new
-  character(kind=c_char), dimension(*) :: name
-  integer(c_int), value :: left_gravity
-end function
-
-! G_CONST_RETURN gchar* gtk_text_mark_get_name (GtkTextMark *mark);
+!  G_CONST_RETURN gchar* gtk_text_mark_get_name (GtkTextMark *mark);
 function gtk_text_mark_get_name(mark) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_text_mark_get_name
@@ -18110,6 +16509,52 @@ function gtk_editable_get_editable(editable) bind(c)
   type(c_ptr), value :: editable
 end function
 
+!   GType gtk_app_chooser_dialog_get_type (void) G_GNUC_CONST;
+function gtk_app_chooser_dialog_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_app_chooser_dialog_get_type
+end function
+
+!  GtkWidget * gtk_app_chooser_dialog_new (GtkWindow *parent, GtkDialogFlags flags, GFile *file);
+function gtk_app_chooser_dialog_new(parent, flags, file) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_app_chooser_dialog_new
+  type(c_ptr), value :: parent
+  integer(c_int), value :: flags
+  type(c_ptr), value :: file
+end function
+
+! GtkWidget * gtk_app_chooser_dialog_new_for_content_type (GtkWindow *parent, GtkDialogFlags flags, const gchar *content_type);
+function gtk_app_chooser_dialog_new_for_content_type(parent, flags, content_typ&
+&e) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr) :: gtk_app_chooser_dialog_new_for_content_type
+  type(c_ptr), value :: parent
+  integer(c_int), value :: flags
+  character(kind=c_char), dimension(*) :: content_type
+end function
+
+!  GtkWidget * gtk_app_chooser_dialog_get_widget (GtkAppChooserDialog *self);
+function gtk_app_chooser_dialog_get_widget(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_app_chooser_dialog_get_widget
+  type(c_ptr), value :: self
+end function
+
+! void gtk_app_chooser_dialog_set_heading (GtkAppChooserDialog *self, const gchar *heading);
+subroutine gtk_app_chooser_dialog_set_heading(self, heading) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: heading
+end subroutine
+
+! const gchar * gtk_app_chooser_dialog_get_heading (GtkAppChooserDialog *self);
+function gtk_app_chooser_dialog_get_heading(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_app_chooser_dialog_get_heading
+  type(c_ptr), value :: self
+end function
+
 !   GType gtk_tool_shell_get_type (void) G_GNUC_CONST;
 function gtk_tool_shell_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -18192,7 +16637,7 @@ function gtk_viewport_new(hadjustment, vadjustment) bind(c)
   type(c_ptr), value :: vadjustment
 end function
 
-! GtkAdjustment* gtk_viewport_get_hadjustment (GtkViewport *viewport);
+!  GtkAdjustment* gtk_viewport_get_hadjustment (GtkViewport *viewport);
 function gtk_viewport_get_hadjustment(viewport) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_viewport_get_hadjustment
@@ -18220,7 +16665,7 @@ subroutine gtk_viewport_set_vadjustment(viewport, adjustment) bind(c)
   type(c_ptr), value :: adjustment
 end subroutine
 
-! void gtk_viewport_set_shadow_type (GtkViewport *viewport, GtkShadowType type);
+!  void gtk_viewport_set_shadow_type (GtkViewport *viewport, GtkShadowType type);
 subroutine gtk_viewport_set_shadow_type(viewport, type) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: viewport
@@ -18248,6 +16693,16 @@ function gtk_viewport_get_view_window(viewport) bind(c)
   type(c_ptr), value :: viewport
 end function
 
+!   gint gtk_distribute_natural_allocation (gint extra_space, guint n_requested_sizes, GtkRequestedSize *sizes);
+function gtk_distribute_natural_allocation(extra_space, n_requested_sizes, size&
+&s) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_distribute_natural_allocation
+  integer(c_int), value :: extra_space
+  integer(c_int), value :: n_requested_sizes
+  type(c_ptr), value :: sizes
+end function
+
 !   GType gtk_file_chooser_widget_get_type (void) G_GNUC_CONST;
 function gtk_file_chooser_widget_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -18260,38 +16715,6 @@ function gtk_file_chooser_widget_new(action) bind(c)
   type(c_ptr) :: gtk_file_chooser_widget_new
   integer(c_int), value :: action
 end function
-
-!  GtkWidget *gtk_file_chooser_widget_new_with_backend (GtkFileChooserAction action, const gchar *backend);
-function gtk_file_chooser_widget_new_with_backend(action, backend) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr) :: gtk_file_chooser_widget_new_with_backend
-  integer(c_int), value :: action
-  character(kind=c_char), dimension(*) :: backend
-end function
-
-!   GType gtk_item_get_type (void) G_GNUC_CONST;
-function gtk_item_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_item_get_type
-end function
-
-!  void gtk_item_select (GtkItem *item);
-subroutine gtk_item_select(item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: item
-end subroutine
-
-! void gtk_item_deselect (GtkItem *item);
-subroutine gtk_item_deselect(item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: item
-end subroutine
-
-! void gtk_item_toggle (GtkItem *item);
-subroutine gtk_item_toggle(item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: item
-end subroutine
 
 !   GType gtk_page_setup_get_type (void) G_GNUC_CONST;
 function gtk_page_setup_get_type() bind(c) 
@@ -18599,7 +17022,37 @@ function gtk_accel_map_get() bind(c)
   type(c_ptr) :: gtk_accel_map_get
 end function
 
-! const gchar* gtk_check_version (guint required_major, guint required_minor, guint required_micro);
+!   guint gtk_get_major_version (void) G_GNUC_CONST;
+function gtk_get_major_version() bind(c) 
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_major_version
+end function
+
+! guint gtk_get_minor_version (void) G_GNUC_CONST;
+function gtk_get_minor_version() bind(c) 
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_minor_version
+end function
+
+! guint gtk_get_micro_version (void) G_GNUC_CONST;
+function gtk_get_micro_version() bind(c) 
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_micro_version
+end function
+
+! guint gtk_get_binary_age (void) G_GNUC_CONST;
+function gtk_get_binary_age() bind(c) 
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_binary_age
+end function
+
+! guint gtk_get_interface_age (void) G_GNUC_CONST;
+function gtk_get_interface_age() bind(c) 
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_interface_age
+end function
+
+!  const gchar* gtk_check_version (guint required_major, guint required_minor, guint required_micro);
 function gtk_check_version(required_major, required_minor, required_micro) bind&
 &(c) 
   use iso_c_binding, only: c_ptr, c_int
@@ -18625,7 +17078,7 @@ function gtk_init_check(argc, argv) bind(c)
   character(kind=c_char), dimension(*) :: argv
 end function
 
-!  gboolean gtk_init_with_args (int *argc, char ***argv, const char *parameter_string, GOptionEntry *entries, const char *translation_domain, GError **error);
+!  gboolean gtk_init_with_args (gint *argc, gchar ***argv, const gchar *parameter_string, const GOptionEntry *entries, const gchar *translation_domain, GError **error);
 function gtk_init_with_args(argc, argv, parameter_string, entries, translation_&
 &domain, error) bind(c) 
   use iso_c_binding, only: c_int, c_ptr, c_char
@@ -18645,7 +17098,7 @@ function gtk_get_option_group(open_default_display) bind(c)
   integer(c_int), value :: open_default_display
 end function
 
-!   void gtk_init_abi_check (int *argc, char ***argv, int num_checks, size_t sizeof_GtkWindow, size_t sizeof_GtkBox);
+!  void gtk_init_abi_check (int *argc, char ***argv, int num_checks, size_t sizeof_GtkWindow, size_t sizeof_GtkBox);
 subroutine gtk_init_abi_check(argc, argv, num_checks, sizeof_GtkWindow, sizeof_&
 &GtkBox) bind(c) 
   use iso_c_binding, only: c_ptr, c_char, c_int, c_size_t
@@ -18666,18 +17119,6 @@ function gtk_init_check_abi_check(argc, argv, num_checks, sizeof_GtkWindow, siz&
   integer(c_int), value :: num_checks
   integer(c_size_t), value :: sizeof_GtkWindow
   integer(c_size_t), value :: sizeof_GtkBox
-end function
-
-!  void gtk_exit (gint error_code);
-subroutine gtk_exit(error_code) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: error_code
-end subroutine
-
-! gchar * gtk_set_locale (void);
-function gtk_set_locale() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_set_locale
 end function
 
 !  void gtk_disable_setlocale (void);
@@ -18703,7 +17144,7 @@ subroutine gtk_main_do_event(event) bind(c)
   type(c_ptr), value :: event
 end subroutine
 
-!  void gtk_main (void);
+! void gtk_main (void);
 subroutine gtk_main() bind(c) 
   use iso_c_binding, only: 
 end subroutine
@@ -18725,7 +17166,7 @@ function gtk_main_iteration() bind(c)
   integer(c_int) :: gtk_main_iteration
 end function
 
-!  gboolean gtk_main_iteration_do (gboolean blocking);
+! gboolean gtk_main_iteration_do (gboolean blocking);
 function gtk_main_iteration_do(blocking) bind(c) 
   use iso_c_binding, only: c_int
   integer(c_int) :: gtk_main_iteration_do
@@ -18762,137 +17203,19 @@ subroutine gtk_grab_remove(widget) bind(c)
   type(c_ptr), value :: widget
 end subroutine
 
-!  void gtk_init_add (GtkFunction function, gpointer data);
-subroutine gtk_init_add(function, data) bind(c) 
-  use iso_c_binding, only: c_funptr, c_ptr
-  type(c_funptr), value :: function
-  type(c_ptr), value :: data
+!  void gtk_device_grab_add (GtkWidget *widget, GdkDevice *device, gboolean block_others);
+subroutine gtk_device_grab_add(widget, device, block_others) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: device
+  integer(c_int), value :: block_others
 end subroutine
 
-! void gtk_quit_add_destroy (guint main_level, GtkObject *object);
-subroutine gtk_quit_add_destroy(main_level, object) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int), value :: main_level
-  type(c_ptr), value :: object
-end subroutine
-
-! guint gtk_quit_add (guint main_level, GtkFunction function, gpointer data);
-function gtk_quit_add(main_level, function, data) bind(c) 
-  use iso_c_binding, only: c_int, c_funptr, c_ptr
-  integer(c_int) :: gtk_quit_add
-  integer(c_int), value :: main_level
-  type(c_funptr), value :: function
-  type(c_ptr), value :: data
-end function
-
-! guint gtk_quit_add_full (guint main_level, GtkFunction function, GtkCallbackMarshal marshal, gpointer data, GDestroyNotify destroy);
-function gtk_quit_add_full(main_level, function, marshal, data, destroy) bind(c&
-&) 
-  use iso_c_binding, only: c_int, c_funptr, c_ptr
-  integer(c_int) :: gtk_quit_add_full
-  integer(c_int), value :: main_level
-  type(c_funptr), value :: function
-  type(c_funptr), value :: marshal
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
-end function
-
-! void gtk_quit_remove (guint quit_handler_id);
-subroutine gtk_quit_remove(quit_handler_id) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: quit_handler_id
-end subroutine
-
-! void gtk_quit_remove_by_data (gpointer data);
-subroutine gtk_quit_remove_by_data(data) bind(c) 
+! void gtk_device_grab_remove (GtkWidget *widget, GdkDevice *device);
+subroutine gtk_device_grab_remove(widget, device) bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: data
-end subroutine
-
-! guint gtk_timeout_add (guint32 interval, GtkFunction function, gpointer data);
-function gtk_timeout_add(interval, function, data) bind(c) 
-  use iso_c_binding, only: c_int, c_int32_t, c_funptr, c_ptr
-  integer(c_int) :: gtk_timeout_add
-  integer(c_int32_t), value :: interval
-  type(c_funptr), value :: function
-  type(c_ptr), value :: data
-end function
-
-! guint gtk_timeout_add_full (guint32 interval, GtkFunction function, GtkCallbackMarshal marshal, gpointer data, GDestroyNotify destroy);
-function gtk_timeout_add_full(interval, function, marshal, data, destroy) bind(&
-&c) 
-  use iso_c_binding, only: c_int, c_int32_t, c_funptr, c_ptr
-  integer(c_int) :: gtk_timeout_add_full
-  integer(c_int32_t), value :: interval
-  type(c_funptr), value :: function
-  type(c_funptr), value :: marshal
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
-end function
-
-! void gtk_timeout_remove (guint timeout_handler_id);
-subroutine gtk_timeout_remove(timeout_handler_id) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: timeout_handler_id
-end subroutine
-
-!  guint gtk_idle_add (GtkFunction function, gpointer data);
-function gtk_idle_add(function, data) bind(c) 
-  use iso_c_binding, only: c_int, c_funptr, c_ptr
-  integer(c_int) :: gtk_idle_add
-  type(c_funptr), value :: function
-  type(c_ptr), value :: data
-end function
-
-! guint gtk_idle_add_priority (gint priority, GtkFunction function, gpointer data);
-function gtk_idle_add_priority(priority, function, data) bind(c) 
-  use iso_c_binding, only: c_int, c_funptr, c_ptr
-  integer(c_int) :: gtk_idle_add_priority
-  integer(c_int), value :: priority
-  type(c_funptr), value :: function
-  type(c_ptr), value :: data
-end function
-
-! guint gtk_idle_add_full (gint priority, GtkFunction function, GtkCallbackMarshal marshal, gpointer data, GDestroyNotify destroy);
-function gtk_idle_add_full(priority, function, marshal, data, destroy) bind(c) 
-  use iso_c_binding, only: c_int, c_funptr, c_ptr
-  integer(c_int) :: gtk_idle_add_full
-  integer(c_int), value :: priority
-  type(c_funptr), value :: function
-  type(c_funptr), value :: marshal
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
-end function
-
-! void gtk_idle_remove (guint idle_handler_id);
-subroutine gtk_idle_remove(idle_handler_id) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: idle_handler_id
-end subroutine
-
-! void gtk_idle_remove_by_data (gpointer data);
-subroutine gtk_idle_remove_by_data(data) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: data
-end subroutine
-
-! guint gtk_input_add_full (gint source, GdkInputCondition condition, GdkInputFunction function, GtkCallbackMarshal marshal, gpointer data, GDestroyNotify destroy);
-function gtk_input_add_full(source, condition, function, marshal, data, destroy&
-&) bind(c) 
-  use iso_c_binding, only: c_int, c_funptr, c_ptr
-  integer(c_int) :: gtk_input_add_full
-  integer(c_int), value :: source
-  integer(c_int), value :: condition
-  type(c_funptr), value :: function
-  type(c_funptr), value :: marshal
-  type(c_ptr), value :: data
-  type(c_funptr), value :: destroy
-end function
-
-! void gtk_input_remove (guint input_handler_id);
-subroutine gtk_input_remove(input_handler_id) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: input_handler_id
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: device
 end subroutine
 
 !  guint gtk_key_snooper_install (GtkKeySnoopFunc snooper, gpointer func_data);
@@ -18909,7 +17232,7 @@ subroutine gtk_key_snooper_remove(snooper_handler_id) bind(c)
   integer(c_int), value :: snooper_handler_id
 end subroutine
 
-!  GdkEvent* gtk_get_current_event (void);
+!  GdkEvent * gtk_get_current_event (void);
 function gtk_get_current_event() bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_get_current_event
@@ -18928,7 +17251,13 @@ function gtk_get_current_event_state(state) bind(c)
   integer(c_int), value :: state
 end function
 
-!  GtkWidget* gtk_get_event_widget (GdkEvent *event);
+! GdkDevice *gtk_get_current_event_device (void);
+function gtk_get_current_event_device() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_get_current_event_device
+end function
+
+!  GtkWidget *gtk_get_event_widget (GdkEvent *event);
 function gtk_get_event_widget(event) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_get_event_widget
@@ -18953,30 +17282,6 @@ function gtk_hbutton_box_new() bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_hbutton_box_new
 end function
-
-!  gint gtk_hbutton_box_get_spacing_default (void);
-function gtk_hbutton_box_get_spacing_default() bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gtk_hbutton_box_get_spacing_default
-end function
-
-! GtkButtonBoxStyle gtk_hbutton_box_get_layout_default (void);
-function gtk_hbutton_box_get_layout_default() bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gtk_hbutton_box_get_layout_default
-end function
-
-!  void gtk_hbutton_box_set_spacing_default (gint spacing);
-subroutine gtk_hbutton_box_set_spacing_default(spacing) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: spacing
-end subroutine
-
-! void gtk_hbutton_box_set_layout_default (GtkButtonBoxStyle layout);
-subroutine gtk_hbutton_box_set_layout_default(layout) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: layout
-end subroutine
 
 !   GType gtk_im_context_simple_get_type (void) G_GNUC_CONST;
 function gtk_im_context_simple_get_type() bind(c) 
@@ -19018,6 +17323,64 @@ function gtk_color_selection_dialog_get_color_selection(colorsel) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_color_selection_dialog_get_color_selection
   type(c_ptr), value :: colorsel
+end function
+
+!   GType gtk_gradient_get_type (void) G_GNUC_CONST;
+function gtk_gradient_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_gradient_get_type
+end function
+
+!  GtkGradient * gtk_gradient_new_linear (gdouble x0, gdouble y0, gdouble x1, gdouble y1);
+function gtk_gradient_new_linear(x0, y0, x1, y1) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr) :: gtk_gradient_new_linear
+  real(c_double), value :: x0
+  real(c_double), value :: y0
+  real(c_double), value :: x1
+  real(c_double), value :: y1
+end function
+
+! GtkGradient * gtk_gradient_new_radial (gdouble x0, gdouble y0, gdouble radius0, gdouble x1, gdouble y1, gdouble radius1);
+function gtk_gradient_new_radial(x0, y0, radius0, x1, y1, radius1) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr) :: gtk_gradient_new_radial
+  real(c_double), value :: x0
+  real(c_double), value :: y0
+  real(c_double), value :: radius0
+  real(c_double), value :: x1
+  real(c_double), value :: y1
+  real(c_double), value :: radius1
+end function
+
+!  void gtk_gradient_add_color_stop (GtkGradient *gradient, gdouble offset, GtkSymbolicColor *color);
+subroutine gtk_gradient_add_color_stop(gradient, offset, color) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: gradient
+  real(c_double), value :: offset
+  type(c_ptr), value :: color
+end subroutine
+
+!  GtkGradient * gtk_gradient_ref (GtkGradient *gradient);
+function gtk_gradient_ref(gradient) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_gradient_ref
+  type(c_ptr), value :: gradient
+end function
+
+! void gtk_gradient_unref (GtkGradient *gradient);
+subroutine gtk_gradient_unref(gradient) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: gradient
+end subroutine
+
+!  gboolean gtk_gradient_resolve (GtkGradient *gradient, GtkStyleProperties *props, cairo_pattern_t **resolved_gradient);
+function gtk_gradient_resolve(gradient, props, resolved_gradient) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_gradient_resolve
+  type(c_ptr), value :: gradient
+  type(c_ptr), value :: props
+  type(c_ptr), value :: resolved_gradient
 end function
 
 !   GType gtk_buildable_get_type (void) G_GNUC_CONST;
@@ -19291,18 +17654,6 @@ function gtk_tool_palette_get_drag_target_group() bind(c)
   type(c_ptr) :: gtk_tool_palette_get_drag_target_group
 end function
 
-!   GType gtk_input_dialog_get_type (void) G_GNUC_CONST;
-function gtk_input_dialog_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_input_dialog_get_type
-end function
-
-! GtkWidget* gtk_input_dialog_new (void);
-function gtk_input_dialog_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_input_dialog_new
-end function
-
 !   GType gtk_progress_bar_get_type (void) G_GNUC_CONST;
 function gtk_progress_bar_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -19342,11 +17693,11 @@ subroutine gtk_progress_bar_set_pulse_step(pbar, fraction) bind(c)
   real(c_double), value :: fraction
 end subroutine
 
-! void gtk_progress_bar_set_orientation (GtkProgressBar *pbar, GtkProgressBarOrientation orientation);
-subroutine gtk_progress_bar_set_orientation(pbar, orientation) bind(c) 
+! void gtk_progress_bar_set_inverted (GtkProgressBar *pbar, gboolean inverted);
+subroutine gtk_progress_bar_set_inverted(pbar, inverted) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: pbar
-  integer(c_int), value :: orientation
+  integer(c_int), value :: inverted
 end subroutine
 
 !  G_CONST_RETURN gchar* gtk_progress_bar_get_text (GtkProgressBar *pbar);
@@ -19370,10 +17721,10 @@ function gtk_progress_bar_get_pulse_step(pbar) bind(c)
   type(c_ptr), value :: pbar
 end function
 
-!  GtkProgressBarOrientation gtk_progress_bar_get_orientation (GtkProgressBar *pbar);
-function gtk_progress_bar_get_orientation(pbar) bind(c) 
+!  gboolean gtk_progress_bar_get_inverted (GtkProgressBar *pbar);
+function gtk_progress_bar_get_inverted(pbar) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_progress_bar_get_orientation
+  integer(c_int) :: gtk_progress_bar_get_inverted
   type(c_ptr), value :: pbar
 end function
 
@@ -19391,53 +17742,19 @@ function gtk_progress_bar_get_ellipsize(pbar) bind(c)
   type(c_ptr), value :: pbar
 end function
 
-!  GtkWidget* gtk_progress_bar_new_with_adjustment (GtkAdjustment *adjustment);
-function gtk_progress_bar_new_with_adjustment(adjustment) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_progress_bar_new_with_adjustment
-  type(c_ptr), value :: adjustment
+!  void gtk_progress_bar_set_show_text (GtkProgressBar *pbar, gboolean show_text);
+subroutine gtk_progress_bar_set_show_text(pbar, show_text) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: pbar
+  integer(c_int), value :: show_text
+end subroutine
+
+! gboolean gtk_progress_bar_get_show_text (GtkProgressBar *pbar);
+function gtk_progress_bar_get_show_text(pbar) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_progress_bar_get_show_text
+  type(c_ptr), value :: pbar
 end function
-
-! void gtk_progress_bar_set_bar_style (GtkProgressBar *pbar, GtkProgressBarStyle style);
-subroutine gtk_progress_bar_set_bar_style(pbar, style) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: pbar
-  integer(c_int), value :: style
-end subroutine
-
-! void gtk_progress_bar_set_discrete_blocks (GtkProgressBar *pbar, guint blocks);
-subroutine gtk_progress_bar_set_discrete_blocks(pbar, blocks) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: pbar
-  integer(c_int), value :: blocks
-end subroutine
-
-!  void gtk_progress_bar_set_activity_step (GtkProgressBar *pbar, guint step);
-subroutine gtk_progress_bar_set_activity_step(pbar, step) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: pbar
-  integer(c_int), value :: step
-end subroutine
-
-! void gtk_progress_bar_set_activity_blocks (GtkProgressBar *pbar, guint blocks);
-subroutine gtk_progress_bar_set_activity_blocks(pbar, blocks) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: pbar
-  integer(c_int), value :: blocks
-end subroutine
-
-! void gtk_progress_bar_update (GtkProgressBar *pbar, gdouble percentage);
-subroutine gtk_progress_bar_update(pbar, percentage) bind(c) 
-  use iso_c_binding, only: c_ptr, c_double
-  type(c_ptr), value :: pbar
-  real(c_double), value :: percentage
-end subroutine
-
-!  void hildon_gtk_file_chooser_install_properties (GObjectClass *klass);
-subroutine hildon_gtk_file_chooser_install_properties(klass) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: klass
-end subroutine
 
 !   GdkAtom gtk_text_buffer_register_serialize_format (GtkTextBuffer *buffer, const gchar *mime_type, GtkTextBufferSerializeFunc function, gpointer user_data, GDestroyNotify user_data_destroy);
 function gtk_text_buffer_register_serialize_format(buffer, mime_type, function,&
@@ -19606,22 +17923,6 @@ function gtk_image_new() bind(c)
   type(c_ptr) :: gtk_image_new
 end function
 
-! GtkWidget* gtk_image_new_from_pixmap (GdkPixmap *pixmap, GdkBitmap *mask);
-function gtk_image_new_from_pixmap(pixmap, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_image_new_from_pixmap
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end function
-
-! GtkWidget* gtk_image_new_from_image (GdkImage *image, GdkBitmap *mask);
-function gtk_image_new_from_image(image, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_image_new_from_image
-  type(c_ptr), value :: image
-  type(c_ptr), value :: mask
-end function
-
 ! GtkWidget* gtk_image_new_from_file (const gchar *filename);
 function gtk_image_new_from_file(filename) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
@@ -19679,22 +17980,6 @@ end function
 subroutine gtk_image_clear(image) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: image
-end subroutine
-
-! void gtk_image_set_from_pixmap (GtkImage *image, GdkPixmap *pixmap, GdkBitmap *mask);
-subroutine gtk_image_set_from_pixmap(image, pixmap, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: image
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end subroutine
-
-! void gtk_image_set_from_image (GtkImage *image, GdkImage *gdk_image, GdkBitmap *mask);
-subroutine gtk_image_set_from_image(image, gdk_image, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: image
-  type(c_ptr), value :: gdk_image
-  type(c_ptr), value :: mask
 end subroutine
 
 ! void gtk_image_set_from_file (GtkImage *image, const gchar *filename);
@@ -19764,23 +18049,7 @@ function gtk_image_get_storage_type(image) bind(c)
   type(c_ptr), value :: image
 end function
 
-!  void gtk_image_get_pixmap (GtkImage *image, GdkPixmap **pixmap, GdkBitmap **mask);
-subroutine gtk_image_get_pixmap(image, pixmap, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: image
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end subroutine
-
-! void gtk_image_get_image (GtkImage *image, GdkImage **gdk_image, GdkBitmap **mask);
-subroutine gtk_image_get_image(image, gdk_image, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: image
-  type(c_ptr), value :: gdk_image
-  type(c_ptr), value :: mask
-end subroutine
-
-! GdkPixbuf* gtk_image_get_pixbuf (GtkImage *image);
+!  GdkPixbuf* gtk_image_get_pixbuf (GtkImage *image);
 function gtk_image_get_pixbuf(image) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_image_get_pixbuf
@@ -19833,22 +18102,6 @@ function gtk_image_get_pixel_size(image) bind(c)
   type(c_ptr), value :: image
 end function
 
-!  void gtk_image_set (GtkImage *image, GdkImage *val, GdkBitmap *mask);
-subroutine gtk_image_set(image, val, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: image
-  type(c_ptr), value :: val
-  type(c_ptr), value :: mask
-end subroutine
-
-! void gtk_image_get (GtkImage *image, GdkImage **val, GdkBitmap **mask);
-subroutine gtk_image_get(image, val, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: image
-  type(c_ptr), value :: val
-  type(c_ptr), value :: mask
-end subroutine
-
 !   GType gtk_ui_manager_get_type (void) G_GNUC_CONST;
 function gtk_ui_manager_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -19861,97 +18114,99 @@ function gtk_ui_manager_new() bind(c)
   type(c_ptr) :: gtk_ui_manager_new
 end function
 
-! void gtk_ui_manager_set_add_tearoffs (GtkUIManager *self, gboolean add_tearoffs);
-subroutine gtk_ui_manager_set_add_tearoffs(self, add_tearoffs) bind(c) 
+! void gtk_ui_manager_set_add_tearoffs (GtkUIManager *manager, gboolean add_tearoffs);
+subroutine gtk_ui_manager_set_add_tearoffs(manager, add_tearoffs) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
   integer(c_int), value :: add_tearoffs
 end subroutine
 
-! gboolean gtk_ui_manager_get_add_tearoffs (GtkUIManager *self);
-function gtk_ui_manager_get_add_tearoffs(self) bind(c) 
+! gboolean gtk_ui_manager_get_add_tearoffs (GtkUIManager *manager);
+function gtk_ui_manager_get_add_tearoffs(manager) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_ui_manager_get_add_tearoffs
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
 end function
 
-! void gtk_ui_manager_insert_action_group (GtkUIManager *self, GtkActionGroup *action_group, gint pos);
-subroutine gtk_ui_manager_insert_action_group(self, action_group, pos) bind(c) 
+! void gtk_ui_manager_insert_action_group (GtkUIManager *manager, GtkActionGroup *action_group, gint pos);
+subroutine gtk_ui_manager_insert_action_group(manager, action_group, pos) bind(&
+&c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
   type(c_ptr), value :: action_group
   integer(c_int), value :: pos
 end subroutine
 
-! void gtk_ui_manager_remove_action_group (GtkUIManager *self, GtkActionGroup *action_group);
-subroutine gtk_ui_manager_remove_action_group(self, action_group) bind(c) 
+! void gtk_ui_manager_remove_action_group (GtkUIManager *manager, GtkActionGroup *action_group);
+subroutine gtk_ui_manager_remove_action_group(manager, action_group) bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
   type(c_ptr), value :: action_group
 end subroutine
 
-! GList *gtk_ui_manager_get_action_groups (GtkUIManager *self);
-function gtk_ui_manager_get_action_groups(self) bind(c) 
+! GList *gtk_ui_manager_get_action_groups (GtkUIManager *manager);
+function gtk_ui_manager_get_action_groups(manager) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_ui_manager_get_action_groups
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
 end function
 
-! GtkAccelGroup *gtk_ui_manager_get_accel_group (GtkUIManager *self);
-function gtk_ui_manager_get_accel_group(self) bind(c) 
+! GtkAccelGroup *gtk_ui_manager_get_accel_group (GtkUIManager *manager);
+function gtk_ui_manager_get_accel_group(manager) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_ui_manager_get_accel_group
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
 end function
 
-! GtkWidget *gtk_ui_manager_get_widget (GtkUIManager *self, const gchar *path);
-function gtk_ui_manager_get_widget(self, path) bind(c) 
+! GtkWidget *gtk_ui_manager_get_widget (GtkUIManager *manager, const gchar *path);
+function gtk_ui_manager_get_widget(manager, path) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: gtk_ui_manager_get_widget
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
   character(kind=c_char), dimension(*) :: path
 end function
 
-! GSList *gtk_ui_manager_get_toplevels (GtkUIManager *self, GtkUIManagerItemType types);
-function gtk_ui_manager_get_toplevels(self, types) bind(c) 
+! GSList *gtk_ui_manager_get_toplevels (GtkUIManager *manager, GtkUIManagerItemType types);
+function gtk_ui_manager_get_toplevels(manager, types) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_ui_manager_get_toplevels
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
   integer(c_int), value :: types
 end function
 
-! GtkAction *gtk_ui_manager_get_action (GtkUIManager *self, const gchar *path);
-function gtk_ui_manager_get_action(self, path) bind(c) 
+! GtkAction *gtk_ui_manager_get_action (GtkUIManager *manager, const gchar *path);
+function gtk_ui_manager_get_action(manager, path) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: gtk_ui_manager_get_action
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
   character(kind=c_char), dimension(*) :: path
 end function
 
-! guint gtk_ui_manager_add_ui_from_string (GtkUIManager *self, const gchar *buffer, gssize length, GError **error);
-function gtk_ui_manager_add_ui_from_string(self, buffer, length, error) bind(c) 
+! guint gtk_ui_manager_add_ui_from_string (GtkUIManager *manager, const gchar *buffer, gssize length, GError **error);
+function gtk_ui_manager_add_ui_from_string(manager, buffer, length, error) bind&
+&(c) 
   use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
   integer(c_int) :: gtk_ui_manager_add_ui_from_string
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
   character(kind=c_char), dimension(*) :: buffer
   integer(c_size_t), value :: length
   type(c_ptr), value :: error
 end function
 
-! guint gtk_ui_manager_add_ui_from_file (GtkUIManager *self, const gchar *filename, GError **error);
-function gtk_ui_manager_add_ui_from_file(self, filename, error) bind(c) 
+! guint gtk_ui_manager_add_ui_from_file (GtkUIManager *manager, const gchar *filename, GError **error);
+function gtk_ui_manager_add_ui_from_file(manager, filename, error) bind(c) 
   use iso_c_binding, only: c_int, c_ptr, c_char
   integer(c_int) :: gtk_ui_manager_add_ui_from_file
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
   character(kind=c_char), dimension(*) :: filename
   type(c_ptr), value :: error
 end function
 
-! void gtk_ui_manager_add_ui (GtkUIManager *self, guint merge_id, const gchar *path, const gchar *name, const gchar *action, GtkUIManagerItemType type, gboolean top);
-subroutine gtk_ui_manager_add_ui(self, merge_id, path, name, action, type, top)&
-& bind(c) 
+! void gtk_ui_manager_add_ui (GtkUIManager *manager, guint merge_id, const gchar *path, const gchar *name, const gchar *action, GtkUIManagerItemType type, gboolean top);
+subroutine gtk_ui_manager_add_ui(manager, merge_id, path, name, action, type, t&
+&op) bind(c) 
   use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
   integer(c_int), value :: merge_id
   character(kind=c_char), dimension(*) :: path
   character(kind=c_char), dimension(*) :: name
@@ -19960,31 +18215,31 @@ subroutine gtk_ui_manager_add_ui(self, merge_id, path, name, action, type, top)&
   integer(c_int), value :: top
 end subroutine
 
-! void gtk_ui_manager_remove_ui (GtkUIManager *self, guint merge_id);
-subroutine gtk_ui_manager_remove_ui(self, merge_id) bind(c) 
+! void gtk_ui_manager_remove_ui (GtkUIManager *manager, guint merge_id);
+subroutine gtk_ui_manager_remove_ui(manager, merge_id) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
   integer(c_int), value :: merge_id
 end subroutine
 
-! gchar *gtk_ui_manager_get_ui (GtkUIManager *self);
-function gtk_ui_manager_get_ui(self) bind(c) 
+! gchar *gtk_ui_manager_get_ui (GtkUIManager *manager);
+function gtk_ui_manager_get_ui(manager) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_ui_manager_get_ui
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
 end function
 
-! void gtk_ui_manager_ensure_update (GtkUIManager *self);
-subroutine gtk_ui_manager_ensure_update(self) bind(c) 
+! void gtk_ui_manager_ensure_update (GtkUIManager *manager);
+subroutine gtk_ui_manager_ensure_update(manager) bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
 end subroutine
 
-! guint gtk_ui_manager_new_merge_id (GtkUIManager *self);
-function gtk_ui_manager_new_merge_id(self) bind(c) 
+! guint gtk_ui_manager_new_merge_id (GtkUIManager *manager);
+function gtk_ui_manager_new_merge_id(manager) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_ui_manager_new_merge_id
-  type(c_ptr), value :: self
+  type(c_ptr), value :: manager
 end function
 
 !   GType gtk_hseparator_get_type (void) G_GNUC_CONST;
@@ -20240,16 +18495,7 @@ subroutine gtk_drag_source_add_uri_targets(widget) bind(c)
   type(c_ptr), value :: widget
 end subroutine
 
-!  void gtk_drag_source_set_icon (GtkWidget *widget, GdkColormap *colormap, GdkPixmap *pixmap, GdkBitmap *mask);
-subroutine gtk_drag_source_set_icon(widget, colormap, pixmap, mask) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: widget
-  type(c_ptr), value :: colormap
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-end subroutine
-
-! void gtk_drag_source_set_icon_pixbuf (GtkWidget *widget, GdkPixbuf *pixbuf);
+!  void gtk_drag_source_set_icon_pixbuf (GtkWidget *widget, GdkPixbuf *pixbuf);
 subroutine gtk_drag_source_set_icon_pixbuf(widget, pixbuf) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
@@ -20290,18 +18536,6 @@ subroutine gtk_drag_set_icon_widget(context, widget, hot_x, hot_y) bind(c)
   integer(c_int), value :: hot_y
 end subroutine
 
-! void gtk_drag_set_icon_pixmap (GdkDragContext *context, GdkColormap *colormap, GdkPixmap *pixmap, GdkBitmap *mask, gint hot_x, gint hot_y);
-subroutine gtk_drag_set_icon_pixmap(context, colormap, pixmap, mask, hot_x, hot&
-&_y) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: context
-  type(c_ptr), value :: colormap
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-  integer(c_int), value :: hot_x
-  integer(c_int), value :: hot_y
-end subroutine
-
 ! void gtk_drag_set_icon_pixbuf (GdkDragContext *context, GdkPixbuf *pixbuf, gint hot_x, gint hot_y);
 subroutine gtk_drag_set_icon_pixbuf(context, pixbuf, hot_x, hot_y) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
@@ -20318,6 +18552,13 @@ subroutine gtk_drag_set_icon_stock(context, stock_id, hot_x, hot_y) bind(c)
   character(kind=c_char), dimension(*) :: stock_id
   integer(c_int), value :: hot_x
   integer(c_int), value :: hot_y
+end subroutine
+
+! void gtk_drag_set_icon_surface(GdkDragContext *context, cairo_surface_t *surface);
+subroutine gtk_drag_set_icon_surface(context, surface) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: surface
 end subroutine
 
 ! void gtk_drag_set_icon_name (GdkDragContext *context, const gchar *icon_name, gint hot_x, gint hot_y);
@@ -20346,17 +18587,6 @@ function gtk_drag_check_threshold(widget, start_x, start_y, current_x, current_&
   integer(c_int), value :: current_x
   integer(c_int), value :: current_y
 end function
-
-!  void gtk_drag_set_default_icon (GdkColormap *colormap, GdkPixmap *pixmap, GdkBitmap *mask, gint hot_x, gint hot_y);
-subroutine gtk_drag_set_default_icon(colormap, pixmap, mask, hot_x, hot_y) bind&
-&(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: colormap
-  type(c_ptr), value :: pixmap
-  type(c_ptr), value :: mask
-  integer(c_int), value :: hot_x
-  integer(c_int), value :: hot_y
-end subroutine
 
 !   GType gtk_hsv_get_type (void) G_GNUC_CONST;
 function gtk_hsv_get_type() bind(c) 
@@ -20690,7 +18920,17 @@ function gtk_text_view_get_cursor_visible(text_view) bind(c)
   type(c_ptr), value :: text_view
 end function
 
-!  void gtk_text_view_get_iter_location (GtkTextView *text_view, const GtkTextIter *iter, GdkRectangle *location);
+!  void gtk_text_view_get_cursor_locations (GtkTextView *text_view, const GtkTextIter *iter, GdkRectangle *strong, GdkRectangle *weak);
+subroutine gtk_text_view_get_cursor_locations(text_view, iter, strong, weak) bi&
+&nd(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: text_view
+  type(c_ptr), value :: iter
+  type(c_ptr), value :: strong
+  type(c_ptr), value :: weak
+end subroutine
+
+! void gtk_text_view_get_iter_location (GtkTextView *text_view, const GtkTextIter *iter, GdkRectangle *location);
 subroutine gtk_text_view_get_iter_location(text_view, iter, location) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: text_view
@@ -21109,12 +19349,12 @@ subroutine gtk_entry_set_buffer(entry, buffer) bind(c)
   type(c_ptr), value :: buffer
 end subroutine
 
-!  GdkWindow *gtk_entry_get_text_window (GtkEntry *entry);
-function gtk_entry_get_text_window(entry) bind(c) 
+!  void gtk_entry_get_text_area (GtkEntry *entry, GdkRectangle *text_area);
+subroutine gtk_entry_get_text_area(entry, text_area) bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_entry_get_text_window
   type(c_ptr), value :: entry
-end function
+  type(c_ptr), value :: text_area
+end subroutine
 
 !  void gtk_entry_set_visibility (GtkEntry *entry, gboolean visible);
 subroutine gtk_entry_set_visibility(entry, visible) bind(c) 
@@ -21525,13 +19765,13 @@ function gtk_entry_get_current_icon_drag_source(entry) bind(c)
   type(c_ptr), value :: entry
 end function
 
-!  GdkWindow * gtk_entry_get_icon_window (GtkEntry *entry, GtkEntryIconPosition icon_pos);
-function gtk_entry_get_icon_window(entry, icon_pos) bind(c) 
+! void gtk_entry_get_icon_area (GtkEntry *entry, GtkEntryIconPosition icon_pos, GdkRectangle *icon_area);
+subroutine gtk_entry_get_icon_area(entry, icon_pos, icon_area) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_entry_get_icon_window
   type(c_ptr), value :: entry
   integer(c_int), value :: icon_pos
-end function
+  type(c_ptr), value :: icon_area
+end subroutine
 
 !  gboolean gtk_entry_im_context_filter_keypress (GtkEntry *entry, GdkEventKey *event);
 function gtk_entry_im_context_filter_keypress(entry, event) bind(c) 
@@ -21545,49 +19785,6 @@ end function
 subroutine gtk_entry_reset_im_context(entry) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: entry
-end subroutine
-
-!  GtkWidget* gtk_entry_new_with_max_length (gint max);
-function gtk_entry_new_with_max_length(max) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_entry_new_with_max_length
-  integer(c_int), value :: max
-end function
-
-! void gtk_entry_append_text (GtkEntry *entry, const gchar *text);
-subroutine gtk_entry_append_text(entry, text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: entry
-  character(kind=c_char), dimension(*) :: text
-end subroutine
-
-! void gtk_entry_prepend_text (GtkEntry *entry, const gchar *text);
-subroutine gtk_entry_prepend_text(entry, text) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: entry
-  character(kind=c_char), dimension(*) :: text
-end subroutine
-
-! void gtk_entry_set_position (GtkEntry *entry, gint position);
-subroutine gtk_entry_set_position(entry, position) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: entry
-  integer(c_int), value :: position
-end subroutine
-
-! void gtk_entry_select_region (GtkEntry *entry, gint start, gint end);
-subroutine gtk_entry_select_region(entry, start, end) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: entry
-  integer(c_int), value :: start
-  integer(c_int), value :: end
-end subroutine
-
-! void gtk_entry_set_editable (GtkEntry *entry, gboolean editable);
-subroutine gtk_entry_set_editable(entry, editable) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: entry
-  integer(c_int), value :: editable
 end subroutine
 
 !   GType gtk_label_get_type (void) G_GNUC_CONST;
@@ -21908,20 +20105,30 @@ function gtk_label_get_track_visited_links(label) bind(c)
   type(c_ptr), value :: label
 end function
 
-!  void gtk_label_get (GtkLabel *label, gchar **str);
-subroutine gtk_label_get(label, str) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: label
-  character(kind=c_char), dimension(*) :: str
-end subroutine
-
-!  guint gtk_label_parse_uline (GtkLabel *label, const gchar *string);
-function gtk_label_parse_uline(label, string) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gtk_label_parse_uline
-  type(c_ptr), value :: label
-  character(kind=c_char), dimension(*) :: string
+!   GType gtk_border_get_type (void) G_GNUC_CONST;
+function gtk_border_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_border_get_type
 end function
+
+! GtkBorder *gtk_border_new (void) G_GNUC_MALLOC;
+function gtk_border_new() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_border_new
+end function
+
+! GtkBorder *gtk_border_copy (const GtkBorder *border_);
+function gtk_border_copy(border_) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_border_copy
+  type(c_ptr), value :: border_
+end function
+
+! void gtk_border_free (GtkBorder *border_);
+subroutine gtk_border_free(border_) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: border_
+end subroutine
 
 !   GType gtk_mount_operation_get_type (void);
 function gtk_mount_operation_get_type() bind(c) 
@@ -22090,9 +20297,34 @@ subroutine gtk_scrolled_window_add_with_viewport(scrolled_window, child) bind(c&
   type(c_ptr), value :: child
 end subroutine
 
-!  void ubuntu_gtk_scrolled_window_init (void);
-subroutine ubuntu_gtk_scrolled_window_init() bind(c) 
-  use iso_c_binding, only: 
+!  gint gtk_scrolled_window_get_min_content_width (GtkScrolledWindow *scrolled_window);
+function gtk_scrolled_window_get_min_content_width(scrolled_window) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_scrolled_window_get_min_content_width
+  type(c_ptr), value :: scrolled_window
+end function
+
+! void gtk_scrolled_window_set_min_content_width (GtkScrolledWindow *scrolled_window, gint width);
+subroutine gtk_scrolled_window_set_min_content_width(scrolled_window, width) bi&
+&nd(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: scrolled_window
+  integer(c_int), value :: width
+end subroutine
+
+! gint gtk_scrolled_window_get_min_content_height (GtkScrolledWindow *scrolled_window);
+function gtk_scrolled_window_get_min_content_height(scrolled_window) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_scrolled_window_get_min_content_height
+  type(c_ptr), value :: scrolled_window
+end function
+
+! void gtk_scrolled_window_set_min_content_height (GtkScrolledWindow *scrolled_window, gint height);
+subroutine gtk_scrolled_window_set_min_content_height(scrolled_window, height) &
+&bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: scrolled_window
+  integer(c_int), value :: height
 end subroutine
 
 !   GType gtk_message_dialog_get_type (void) G_GNUC_CONST;
@@ -22287,6 +20519,73 @@ function gtk_builder_value_from_string_type(builder, type, string, value, error&
   type(c_ptr), value :: error
 end function
 
+!   GType gtk_symbolic_color_get_type (void) G_GNUC_CONST;
+function gtk_symbolic_color_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_symbolic_color_get_type
+end function
+
+!  GtkSymbolicColor * gtk_symbolic_color_new_literal (const GdkRGBA *color);
+function gtk_symbolic_color_new_literal(color) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_symbolic_color_new_literal
+  type(c_ptr), value :: color
+end function
+
+! GtkSymbolicColor * gtk_symbolic_color_new_name (const gchar *name);
+function gtk_symbolic_color_new_name(name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_symbolic_color_new_name
+  character(kind=c_char), dimension(*) :: name
+end function
+
+! GtkSymbolicColor * gtk_symbolic_color_new_shade (GtkSymbolicColor *color, gdouble factor);
+function gtk_symbolic_color_new_shade(color, factor) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr) :: gtk_symbolic_color_new_shade
+  type(c_ptr), value :: color
+  real(c_double), value :: factor
+end function
+
+! GtkSymbolicColor * gtk_symbolic_color_new_alpha (GtkSymbolicColor *color, gdouble factor);
+function gtk_symbolic_color_new_alpha(color, factor) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr) :: gtk_symbolic_color_new_alpha
+  type(c_ptr), value :: color
+  real(c_double), value :: factor
+end function
+
+! GtkSymbolicColor * gtk_symbolic_color_new_mix (GtkSymbolicColor *color1, GtkSymbolicColor *color2, gdouble factor);
+function gtk_symbolic_color_new_mix(color1, color2, factor) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr) :: gtk_symbolic_color_new_mix
+  type(c_ptr), value :: color1
+  type(c_ptr), value :: color2
+  real(c_double), value :: factor
+end function
+
+!  GtkSymbolicColor * gtk_symbolic_color_ref (GtkSymbolicColor *color);
+function gtk_symbolic_color_ref(color) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_symbolic_color_ref
+  type(c_ptr), value :: color
+end function
+
+! void gtk_symbolic_color_unref (GtkSymbolicColor *color);
+subroutine gtk_symbolic_color_unref(color) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: color
+end subroutine
+
+!  gboolean gtk_symbolic_color_resolve (GtkSymbolicColor *color, GtkStyleProperties *props, GdkRGBA *resolved_color);
+function gtk_symbolic_color_resolve(color, props, resolved_color) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_symbolic_color_resolve
+  type(c_ptr), value :: color
+  type(c_ptr), value :: props
+  type(c_ptr), value :: resolved_color
+end function
+
 !   GType gtk_tree_model_filter_get_type (void) G_GNUC_CONST;
 function gtk_tree_model_filter_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -22385,6 +20684,45 @@ subroutine gtk_tree_model_filter_clear_cache(filter) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: filter
 end subroutine
+
+!   GtkTextAttributes* gtk_text_attributes_new (void);
+function gtk_text_attributes_new() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_text_attributes_new
+end function
+
+! GtkTextAttributes* gtk_text_attributes_copy (GtkTextAttributes *src);
+function gtk_text_attributes_copy(src) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_text_attributes_copy
+  type(c_ptr), value :: src
+end function
+
+! void gtk_text_attributes_copy_values (GtkTextAttributes *src, GtkTextAttributes *dest);
+subroutine gtk_text_attributes_copy_values(src, dest) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: src
+  type(c_ptr), value :: dest
+end subroutine
+
+! void gtk_text_attributes_unref (GtkTextAttributes *values);
+subroutine gtk_text_attributes_unref(values) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: values
+end subroutine
+
+! GtkTextAttributes *gtk_text_attributes_ref (GtkTextAttributes *values);
+function gtk_text_attributes_ref(values) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_text_attributes_ref
+  type(c_ptr), value :: values
+end function
+
+!  GType gtk_text_attributes_get_type (void) G_GNUC_CONST;
+function gtk_text_attributes_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_text_attributes_get_type
+end function
 
 !   GType gtk_vpaned_get_type (void) G_GNUC_CONST;
 function gtk_vpaned_get_type() bind(c) 
@@ -22511,34 +20849,7 @@ subroutine gtk_style_detach(style) bind(c)
   type(c_ptr), value :: style
 end subroutine
 
-!  GtkStyle* gtk_style_ref (GtkStyle *style);
-function gtk_style_ref(style) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_style_ref
-  type(c_ptr), value :: style
-end function
-
-! void gtk_style_unref (GtkStyle *style);
-subroutine gtk_style_unref(style) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: style
-end subroutine
-
-!  GdkFont * gtk_style_get_font (GtkStyle *style);
-function gtk_style_get_font(style) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_style_get_font
-  type(c_ptr), value :: style
-end function
-
-! void gtk_style_set_font (GtkStyle *style, GdkFont *font);
-subroutine gtk_style_set_font(style, font) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: style
-  type(c_ptr), value :: font
-end subroutine
-
-!  void gtk_style_set_background (GtkStyle *style, GdkWindow *window, GtkStateType state_type);
+! void gtk_style_set_background (GtkStyle *style, GdkWindow *window, GtkStateType state_type);
 subroutine gtk_style_set_background(style, window, state_type) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: style
@@ -22546,15 +20857,14 @@ subroutine gtk_style_set_background(style, window, state_type) bind(c)
   integer(c_int), value :: state_type
 end subroutine
 
-! void gtk_style_apply_default_background (GtkStyle *style, GdkWindow *window, gboolean set_bg, GtkStateType state_type, const GdkRectangle *area, gint x, gint y, gint width, gint height);
-subroutine gtk_style_apply_default_background(style, window, set_bg, state_type&
-&, area, x, y, width, height) bind(c) 
+! void gtk_style_apply_default_background (GtkStyle *style, cairo_t *cr, GdkWindow *window, GtkStateType state_type, gint x, gint y, gint width, gint height);
+subroutine gtk_style_apply_default_background(style, cr, window, state_type, x,&
+& y, width, height) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: style
+  type(c_ptr), value :: cr
   type(c_ptr), value :: window
-  integer(c_int), value :: set_bg
   integer(c_int), value :: state_type
-  type(c_ptr), value :: area
   integer(c_int), value :: x
   integer(c_int), value :: y
   integer(c_int), value :: width
@@ -22592,63 +20902,60 @@ function gtk_style_render_icon(style, source, direction, state, size, widget, d&
   character(kind=c_char), dimension(*) :: detail
 end function
 
-!  void gtk_draw_hline (GtkStyle *style, GdkWindow *window, GtkStateType state_type, gint x1, gint x2, gint y);
-subroutine gtk_draw_hline(style, window, state_type, x1, x2, y) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
+!  void gtk_paint_hline (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkWidget *widget, const gchar *detail, gint x1, gint x2, gint y);
+subroutine gtk_paint_hline(style, cr, state_type, widget, detail, x1, x2, y) bi&
+&nd(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: x1
   integer(c_int), value :: x2
   integer(c_int), value :: y
 end subroutine
 
-! void gtk_draw_vline (GtkStyle *style, GdkWindow *window, GtkStateType state_type, gint y1_, gint y2_, gint x);
-subroutine gtk_draw_vline(style, window, state_type, y1_, y2_, x) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
+! void gtk_paint_vline (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkWidget *widget, const gchar *detail, gint y1_, gint y2_, gint x);
+subroutine gtk_paint_vline(style, cr, state_type, widget, detail, y1_, y2_, x) &
+&bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: y1_
   integer(c_int), value :: y2_
   integer(c_int), value :: x
 end subroutine
 
-! void gtk_draw_shadow (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height);
-subroutine gtk_draw_shadow(style, window, state_type, shadow_type, x, y, width,&
-& height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
+! void gtk_paint_shadow (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_shadow(style, cr, state_type, shadow_type, widget, detail,&
+& x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
   integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: x
   integer(c_int), value :: y
   integer(c_int), value :: width
   integer(c_int), value :: height
 end subroutine
 
-! void gtk_draw_polygon (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkPoint *points, gint npoints, gboolean fill);
-subroutine gtk_draw_polygon(style, window, state_type, shadow_type, points, npo&
-&ints, fill) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
+! void gtk_paint_arrow (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, GtkArrowType arrow_type, gboolean fill, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_arrow(style, cr, state_type, shadow_type, widget, detail, &
+&arrow_type, fill, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
   integer(c_int), value :: shadow_type
-  type(c_ptr), value :: points
-  integer(c_int), value :: npoints
-  integer(c_int), value :: fill
-end subroutine
-
-! void gtk_draw_arrow (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GtkArrowType arrow_type, gboolean fill, gint x, gint y, gint width, gint height);
-subroutine gtk_draw_arrow(style, window, state_type, shadow_type, arrow_type, f&
-&ill, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: arrow_type
   integer(c_int), value :: fill
   integer(c_int), value :: x
@@ -22657,258 +20964,164 @@ subroutine gtk_draw_arrow(style, window, state_type, shadow_type, arrow_type, f&
   integer(c_int), value :: height
 end subroutine
 
-! void gtk_draw_diamond (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height);
-subroutine gtk_draw_diamond(style, window, state_type, shadow_type, x, y, width&
-&, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
+! void gtk_paint_diamond (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_diamond(style, cr, state_type, shadow_type, widget, detail&
+&, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
   integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: x
   integer(c_int), value :: y
   integer(c_int), value :: width
   integer(c_int), value :: height
 end subroutine
 
-! void gtk_draw_box (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height);
-subroutine gtk_draw_box(style, window, state_type, shadow_type, x, y, width, he&
-&ight) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
+! void gtk_paint_box (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_box(style, cr, state_type, shadow_type, widget, detail, x,&
+& y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
   integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: x
   integer(c_int), value :: y
   integer(c_int), value :: width
   integer(c_int), value :: height
 end subroutine
 
-! void gtk_draw_flat_box (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height);
-subroutine gtk_draw_flat_box(style, window, state_type, shadow_type, x, y, widt&
-&h, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
+! void gtk_paint_flat_box (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_flat_box(style, cr, state_type, shadow_type, widget, detai&
+&l, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
   integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: x
   integer(c_int), value :: y
   integer(c_int), value :: width
   integer(c_int), value :: height
 end subroutine
 
-! void gtk_draw_check (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height);
-subroutine gtk_draw_check(style, window, state_type, shadow_type, x, y, width, &
+! void gtk_paint_check (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_check(style, cr, state_type, shadow_type, widget, detail, &
+&x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: style
+  type(c_ptr), value :: cr
+  integer(c_int), value :: state_type
+  integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end subroutine
+
+! void gtk_paint_option (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_option(style, cr, state_type, shadow_type, widget, detail,&
+& x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: style
+  type(c_ptr), value :: cr
+  integer(c_int), value :: state_type
+  integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end subroutine
+
+! void gtk_paint_tab (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_tab(style, cr, state_type, shadow_type, widget, detail, x,&
+& y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: style
+  type(c_ptr), value :: cr
+  integer(c_int), value :: state_type
+  integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end subroutine
+
+! void gtk_paint_shadow_gap (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height, GtkPositionType gap_side, gint gap_x, gint gap_width);
+subroutine gtk_paint_shadow_gap(style, cr, state_type, shadow_type, widget, det&
+&ail, x, y, width, height, gap_side, gap_x, gap_width) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: style
+  type(c_ptr), value :: cr
+  integer(c_int), value :: state_type
+  integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+  integer(c_int), value :: gap_side
+  integer(c_int), value :: gap_x
+  integer(c_int), value :: gap_width
+end subroutine
+
+! void gtk_paint_box_gap (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height, GtkPositionType gap_side, gint gap_x, gint gap_width);
+subroutine gtk_paint_box_gap(style, cr, state_type, shadow_type, widget, detail&
+&, x, y, width, height, gap_side, gap_x, gap_width) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: style
+  type(c_ptr), value :: cr
+  integer(c_int), value :: state_type
+  integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+  integer(c_int), value :: gap_side
+  integer(c_int), value :: gap_x
+  integer(c_int), value :: gap_width
+end subroutine
+
+! void gtk_paint_extension (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height, GtkPositionType gap_side);
+subroutine gtk_paint_extension(style, cr, state_type, shadow_type, widget, deta&
+&il, x, y, width, height, gap_side) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: style
+  type(c_ptr), value :: cr
+  integer(c_int), value :: state_type
+  integer(c_int), value :: shadow_type
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: detail
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+  integer(c_int), value :: gap_side
+end subroutine
+
+! void gtk_paint_focus (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_focus(style, cr, state_type, widget, detail, x, y, width, &
 &height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_draw_option (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height);
-subroutine gtk_draw_option(style, window, state_type, shadow_type, x, y, width,&
-& height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_draw_tab (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height);
-subroutine gtk_draw_tab(style, window, state_type, shadow_type, x, y, width, he&
-&ight) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_draw_shadow_gap (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height, GtkPositionType gap_side, gint gap_x, gint gap_width);
-subroutine gtk_draw_shadow_gap(style, window, state_type, shadow_type, x, y, wi&
-&dth, height, gap_side, gap_x, gap_width) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-  integer(c_int), value :: gap_side
-  integer(c_int), value :: gap_x
-  integer(c_int), value :: gap_width
-end subroutine
-
-! void gtk_draw_box_gap (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height, GtkPositionType gap_side, gint gap_x, gint gap_width);
-subroutine gtk_draw_box_gap(style, window, state_type, shadow_type, x, y, width&
-&, height, gap_side, gap_x, gap_width) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-  integer(c_int), value :: gap_side
-  integer(c_int), value :: gap_x
-  integer(c_int), value :: gap_width
-end subroutine
-
-! void gtk_draw_extension (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height, GtkPositionType gap_side);
-subroutine gtk_draw_extension(style, window, state_type, shadow_type, x, y, wid&
-&th, height, gap_side) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-  integer(c_int), value :: gap_side
-end subroutine
-
-! void gtk_draw_focus (GtkStyle *style, GdkWindow *window, gint x, gint y, gint width, gint height);
-subroutine gtk_draw_focus(style, window, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_draw_slider (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height, GtkOrientation orientation);
-subroutine gtk_draw_slider(style, window, state_type, shadow_type, x, y, width,&
-& height, orientation) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-  integer(c_int), value :: orientation
-end subroutine
-
-! void gtk_draw_handle (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, gint x, gint y, gint width, gint height, GtkOrientation orientation);
-subroutine gtk_draw_handle(style, window, state_type, shadow_type, x, y, width,&
-& height, orientation) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-  integer(c_int), value :: orientation
-end subroutine
-
-! void gtk_draw_expander (GtkStyle *style, GdkWindow *window, GtkStateType state_type, gint x, gint y, GtkExpanderStyle expander_style);
-subroutine gtk_draw_expander(style, window, state_type, x, y, expander_style) b&
-&ind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: expander_style
-end subroutine
-
-! void gtk_draw_layout (GtkStyle *style, GdkWindow *window, GtkStateType state_type, gboolean use_text, gint x, gint y, PangoLayout *layout);
-subroutine gtk_draw_layout(style, window, state_type, use_text, x, y, layout) b&
-&ind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: use_text
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  type(c_ptr), value :: layout
-end subroutine
-
-! void gtk_draw_resize_grip (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GdkWindowEdge edge, gint x, gint y, gint width, gint height);
-subroutine gtk_draw_resize_grip(style, window, state_type, edge, x, y, width, h&
-&eight) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: edge
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-!  void gtk_paint_hline (GtkStyle *style, GdkWindow *window, GtkStateType state_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x1, gint x2, gint y);
-subroutine gtk_paint_hline(style, window, state_type, area, widget, detail, x1,&
-& x2, y) bind(c) 
   use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x1
-  integer(c_int), value :: x2
-  integer(c_int), value :: y
-end subroutine
-
-! void gtk_paint_vline (GtkStyle *style, GdkWindow *window, GtkStateType state_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint y1_, gint y2_, gint x);
-subroutine gtk_paint_vline(style, window, state_type, area, widget, detail, y1_&
-&, y2_, x) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: y1_
-  integer(c_int), value :: y2_
-  integer(c_int), value :: x
-end subroutine
-
-! void gtk_paint_shadow (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_shadow(style, window, state_type, shadow_type, area, widge&
-&t, detail, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
   type(c_ptr), value :: widget
   character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: x
@@ -22917,226 +21130,14 @@ subroutine gtk_paint_shadow(style, window, state_type, shadow_type, area, widge&
   integer(c_int), value :: height
 end subroutine
 
-! void gtk_paint_polygon (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, const GdkPoint *points, gint n_points, gboolean fill);
-subroutine gtk_paint_polygon(style, window, state_type, shadow_type, area, widg&
-&et, detail, points, n_points, fill) bind(c) 
+! void gtk_paint_slider (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height, GtkOrientation orientation);
+subroutine gtk_paint_slider(style, cr, state_type, shadow_type, widget, detail,&
+& x, y, width, height, orientation) bind(c) 
   use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
   integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  type(c_ptr), value :: points
-  integer(c_int), value :: n_points
-  integer(c_int), value :: fill
-end subroutine
-
-! void gtk_paint_arrow (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, GtkArrowType arrow_type, gboolean fill, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_arrow(style, window, state_type, shadow_type, area, widget&
-&, detail, arrow_type, fill, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: arrow_type
-  integer(c_int), value :: fill
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_paint_diamond (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_diamond(style, window, state_type, shadow_type, area, widg&
-&et, detail, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_paint_box (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_box(style, window, state_type, shadow_type, area, widget, &
-&detail, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_paint_flat_box (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_flat_box(style, window, state_type, shadow_type, area, wid&
-&get, detail, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_paint_check (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_check(style, window, state_type, shadow_type, area, widget&
-&, detail, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_paint_option (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_option(style, window, state_type, shadow_type, area, widge&
-&t, detail, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_paint_tab (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_tab(style, window, state_type, shadow_type, area, widget, &
-&detail, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_paint_shadow_gap (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height, GtkPositionType gap_side, gint gap_x, gint gap_width);
-subroutine gtk_paint_shadow_gap(style, window, state_type, shadow_type, area, w&
-&idget, detail, x, y, width, height, gap_side, gap_x, gap_width) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-  integer(c_int), value :: gap_side
-  integer(c_int), value :: gap_x
-  integer(c_int), value :: gap_width
-end subroutine
-
-! void gtk_paint_box_gap (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height, GtkPositionType gap_side, gint gap_x, gint gap_width);
-subroutine gtk_paint_box_gap(style, window, state_type, shadow_type, area, widg&
-&et, detail, x, y, width, height, gap_side, gap_x, gap_width) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-  integer(c_int), value :: gap_side
-  integer(c_int), value :: gap_x
-  integer(c_int), value :: gap_width
-end subroutine
-
-! void gtk_paint_extension (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height, GtkPositionType gap_side);
-subroutine gtk_paint_extension(style, window, state_type, shadow_type, area, wi&
-&dget, detail, x, y, width, height, gap_side) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-  integer(c_int), value :: gap_side
-end subroutine
-
-! void gtk_paint_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_focus(style, window, state_type, area, widget, detail, x, &
-&y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_paint_slider (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height, GtkOrientation orientation);
-subroutine gtk_paint_slider(style, window, state_type, shadow_type, area, widge&
-&t, detail, x, y, width, height, orientation) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
   type(c_ptr), value :: widget
   character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: x
@@ -23146,15 +21147,14 @@ subroutine gtk_paint_slider(style, window, state_type, shadow_type, area, widge&
   integer(c_int), value :: orientation
 end subroutine
 
-! void gtk_paint_handle (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height, GtkOrientation orientation);
-subroutine gtk_paint_handle(style, window, state_type, shadow_type, area, widge&
-&t, detail, x, y, width, height, orientation) bind(c) 
+! void gtk_paint_handle (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkShadowType shadow_type, GtkWidget *widget, const gchar *detail, gint x, gint y, gint width, gint height, GtkOrientation orientation);
+subroutine gtk_paint_handle(style, cr, state_type, shadow_type, widget, detail,&
+& x, y, width, height, orientation) bind(c) 
   use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
   integer(c_int), value :: shadow_type
-  type(c_ptr), value :: area
   type(c_ptr), value :: widget
   character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: x
@@ -23164,14 +21164,13 @@ subroutine gtk_paint_handle(style, window, state_type, shadow_type, area, widge&
   integer(c_int), value :: orientation
 end subroutine
 
-! void gtk_paint_expander (GtkStyle *style, GdkWindow *window, GtkStateType state_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, GtkExpanderStyle expander_style);
-subroutine gtk_paint_expander(style, window, state_type, area, widget, detail, &
-&x, y, expander_style) bind(c) 
+! void gtk_paint_expander (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkWidget *widget, const gchar *detail, gint x, gint y, GtkExpanderStyle expander_style);
+subroutine gtk_paint_expander(style, cr, state_type, widget, detail, x, y, expa&
+&nder_style) bind(c) 
   use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
-  type(c_ptr), value :: area
   type(c_ptr), value :: widget
   character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: x
@@ -23179,15 +21178,14 @@ subroutine gtk_paint_expander(style, window, state_type, area, widget, detail, &
   integer(c_int), value :: expander_style
 end subroutine
 
-! void gtk_paint_layout (GtkStyle *style, GdkWindow *window, GtkStateType state_type, gboolean use_text, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, PangoLayout *layout);
-subroutine gtk_paint_layout(style, window, state_type, use_text, area, widget, &
-&detail, x, y, layout) bind(c) 
+! void gtk_paint_layout (GtkStyle *style, cairo_t *cr, GtkStateType state_type, gboolean use_text, GtkWidget *widget, const gchar *detail, gint x, gint y, PangoLayout *layout);
+subroutine gtk_paint_layout(style, cr, state_type, use_text, widget, detail, x,&
+& y, layout) bind(c) 
   use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
   integer(c_int), value :: use_text
-  type(c_ptr), value :: area
   type(c_ptr), value :: widget
   character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: x
@@ -23195,14 +21193,13 @@ subroutine gtk_paint_layout(style, window, state_type, use_text, area, widget, &
   type(c_ptr), value :: layout
 end subroutine
 
-! void gtk_paint_resize_grip (GtkStyle *style, GdkWindow *window, GtkStateType state_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, GdkWindowEdge edge, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_resize_grip(style, window, state_type, area, widget, detai&
-&l, edge, x, y, width, height) bind(c) 
+! void gtk_paint_resize_grip (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkWidget *widget, const gchar *detail, GdkWindowEdge edge, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_resize_grip(style, cr, state_type, widget, detail, edge, x&
+&, y, width, height) bind(c) 
   use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
-  type(c_ptr), value :: area
   type(c_ptr), value :: widget
   character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: edge
@@ -23212,14 +21209,13 @@ subroutine gtk_paint_resize_grip(style, window, state_type, area, widget, detai&
   integer(c_int), value :: height
 end subroutine
 
-! void gtk_paint_spinner (GtkStyle *style, GdkWindow *window, GtkStateType state_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, guint step, gint x, gint y, gint width, gint height);
-subroutine gtk_paint_spinner(style, window, state_type, area, widget, detail, s&
-&tep, x, y, width, height) bind(c) 
+! void gtk_paint_spinner (GtkStyle *style, cairo_t *cr, GtkStateType state_type, GtkWidget *widget, const gchar *detail, guint step, gint x, gint y, gint width, gint height);
+subroutine gtk_paint_spinner(style, cr, state_type, widget, detail, step, x, y,&
+& width, height) bind(c) 
   use iso_c_binding, only: c_ptr, c_int, c_char
   type(c_ptr), value :: style
-  type(c_ptr), value :: window
+  type(c_ptr), value :: cr
   integer(c_int), value :: state_type
-  type(c_ptr), value :: area
   type(c_ptr), value :: widget
   character(kind=c_char), dimension(*) :: detail
   integer(c_int), value :: step
@@ -23227,31 +21223,6 @@ subroutine gtk_paint_spinner(style, window, state_type, area, widget, detail, s&
   integer(c_int), value :: y
   integer(c_int), value :: width
   integer(c_int), value :: height
-end subroutine
-
-!  GType gtk_border_get_type (void) G_GNUC_CONST;
-function gtk_border_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_border_get_type
-end function
-
-! GtkBorder *gtk_border_new (void) G_GNUC_MALLOC;
-function gtk_border_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_border_new
-end function
-
-! GtkBorder *gtk_border_copy (const GtkBorder *border_);
-function gtk_border_copy(border_) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_border_copy
-  type(c_ptr), value :: border_
-end function
-
-! void gtk_border_free (GtkBorder *border_);
-subroutine gtk_border_free(border_) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: border_
 end subroutine
 
 !  void gtk_style_get_style_property (GtkStyle *style, GType widget_type, const gchar *property_name, GValue *value);
@@ -23274,67 +21245,47 @@ subroutine gtk_style_get_valist(style, widget_type, first_property_name, var_ar&
   type(c_ptr), value :: var_args
 end subroutine
 
-!  void gtk_draw_string (GtkStyle *style, GdkWindow *window, GtkStateType state_type, gint x, gint y, const gchar *string);
-subroutine gtk_draw_string(style, window, state_type, x, y, string) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  character(kind=c_char), dimension(*) :: string
-end subroutine
-
-! void gtk_paint_string (GtkStyle *style, GdkWindow *window, GtkStateType state_type, const GdkRectangle *area, GtkWidget *widget, const gchar *detail, gint x, gint y, const gchar *string);
-subroutine gtk_paint_string(style, window, state_type, area, widget, detail, x,&
-& y, string) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: style
-  type(c_ptr), value :: window
-  integer(c_int), value :: state_type
-  type(c_ptr), value :: area
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: detail
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  character(kind=c_char), dimension(*) :: string
-end subroutine
-
-!  void gtk_draw_insertion_cursor (GtkWidget *widget, GdkDrawable *drawable, const GdkRectangle *area, const GdkRectangle *location, gboolean is_primary, GtkTextDirection direction, gboolean draw_arrow);
-subroutine gtk_draw_insertion_cursor(widget, drawable, area, location, is_prima&
-&ry, direction, draw_arrow) bind(c) 
+!  void gtk_draw_insertion_cursor (GtkWidget *widget, cairo_t *cr, const GdkRectangle *location, gboolean is_primary, GtkTextDirection direction, gboolean draw_arrow);
+subroutine gtk_draw_insertion_cursor(widget, cr, location, is_primary, directio&
+&n, draw_arrow) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  type(c_ptr), value :: drawable
-  type(c_ptr), value :: area
+  type(c_ptr), value :: cr
   type(c_ptr), value :: location
   integer(c_int), value :: is_primary
   integer(c_int), value :: direction
   integer(c_int), value :: draw_arrow
 end subroutine
 
-!  GtkBindingSet* gtk_binding_set_new (const gchar *set_name);
+!  gboolean gtk_style_has_context (GtkStyle *style);
+function gtk_style_has_context(style) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_style_has_context
+  type(c_ptr), value :: style
+end function
+
+!  GtkBindingSet *gtk_binding_set_new (const gchar *set_name);
 function gtk_binding_set_new(set_name) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: gtk_binding_set_new
   character(kind=c_char), dimension(*) :: set_name
 end function
 
-! GtkBindingSet* gtk_binding_set_by_class(gpointer object_class);
+! GtkBindingSet *gtk_binding_set_by_class (gpointer object_class);
 function gtk_binding_set_by_class(object_class) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_binding_set_by_class
   type(c_ptr), value :: object_class
 end function
 
-! GtkBindingSet* gtk_binding_set_find (const gchar *set_name);
+! GtkBindingSet *gtk_binding_set_find (const gchar *set_name);
 function gtk_binding_set_find(set_name) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: gtk_binding_set_find
   character(kind=c_char), dimension(*) :: set_name
 end function
 
-! gboolean gtk_bindings_activate (GtkObject *object, guint keyval, GdkModifierType modifiers);
+!  gboolean gtk_bindings_activate (GObject *object, guint keyval, GdkModifierType modifiers);
 function gtk_bindings_activate(object, keyval, modifiers) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_bindings_activate
@@ -23343,7 +21294,7 @@ function gtk_bindings_activate(object, keyval, modifiers) bind(c)
   integer(c_int), value :: modifiers
 end function
 
-! gboolean gtk_bindings_activate_event (GtkObject *object, GdkEventKey *event);
+! gboolean gtk_bindings_activate_event (GObject *object, GdkEventKey *event);
 function gtk_bindings_activate_event(object, event) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_bindings_activate_event
@@ -23351,7 +21302,7 @@ function gtk_bindings_activate_event(object, event) bind(c)
   type(c_ptr), value :: event
 end function
 
-! gboolean gtk_binding_set_activate (GtkBindingSet *binding_set, guint keyval, GdkModifierType modifiers, GtkObject *object);
+! gboolean gtk_binding_set_activate (GtkBindingSet *binding_set, guint keyval, GdkModifierType modifiers, GObject *object);
 function gtk_binding_set_activate(binding_set, keyval, modifiers, object) bind(&
 &c) 
   use iso_c_binding, only: c_int, c_ptr
@@ -23360,21 +21311,6 @@ function gtk_binding_set_activate(binding_set, keyval, modifiers, object) bind(&
   integer(c_int), value :: keyval
   integer(c_int), value :: modifiers
   type(c_ptr), value :: object
-end function
-
-!  void gtk_binding_entry_clear (GtkBindingSet *binding_set, guint keyval, GdkModifierType modifiers);
-subroutine gtk_binding_entry_clear(binding_set, keyval, modifiers) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: binding_set
-  integer(c_int), value :: keyval
-  integer(c_int), value :: modifiers
-end subroutine
-
-! guint gtk_binding_parse_binding (GScanner *scanner);
-function gtk_binding_parse_binding(scanner) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_binding_parse_binding
-  type(c_ptr), value :: scanner
 end function
 
 !  void gtk_binding_entry_skip (GtkBindingSet *binding_set, guint keyval, GdkModifierType modifiers);
@@ -23396,7 +21332,16 @@ subroutine gtk_binding_entry_add_signall(binding_set, keyval, modifiers, signal&
   type(c_ptr), value :: binding_args
 end subroutine
 
-! void gtk_binding_entry_remove (GtkBindingSet *binding_set, guint keyval, GdkModifierType modifiers);
+!  GTokenType gtk_binding_entry_add_signal_from_string (GtkBindingSet *binding_set, const gchar *signal_desc);
+function gtk_binding_entry_add_signal_from_string(binding_set, signal_desc) bin&
+&d(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_binding_entry_add_signal_from_string
+  type(c_ptr), value :: binding_set
+  character(kind=c_char), dimension(*) :: signal_desc
+end function
+
+!  void gtk_binding_entry_remove (GtkBindingSet *binding_set, guint keyval, GdkModifierType modifiers);
 subroutine gtk_binding_entry_remove(binding_set, keyval, modifiers) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: binding_set
@@ -23444,331 +21389,547 @@ subroutine gtk_fixed_move(fixed, widget, x, y) bind(c)
   integer(c_int), value :: y
 end subroutine
 
-!  void gtk_fixed_set_has_window (GtkFixed *fixed, gboolean has_window);
-subroutine gtk_fixed_set_has_window(fixed, has_window) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: fixed
-  integer(c_int), value :: has_window
-end subroutine
-
-! gboolean gtk_fixed_get_has_window (GtkFixed *fixed);
-function gtk_fixed_get_has_window(fixed) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_fixed_get_has_window
-  type(c_ptr), value :: fixed
+!   GType gtk_style_context_get_type (void) G_GNUC_CONST;
+function gtk_style_context_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_style_context_get_type
 end function
 
-!   void gtk_marshal_BOOLEAN__VOID (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_BOOLEAN__VOID(closure, return_value, n_param_values, par&
-&am_values, invocation_hint, marshal_data) bind(c) 
+!  GtkStyleContext * gtk_style_context_new (void);
+function gtk_style_context_new() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_style_context_new
+end function
+
+!  void gtk_style_context_add_provider_for_screen (GdkScreen *screen, GtkStyleProvider *provider, guint priority);
+subroutine gtk_style_context_add_provider_for_screen(screen, provider, priority&
+&) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr), value :: screen
+  type(c_ptr), value :: provider
+  integer(c_int), value :: priority
 end subroutine
 
-!  void gtk_marshal_BOOLEAN__POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_BOOLEAN__POINTER(closure, return_value, n_param_values, &
-&param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! void gtk_style_context_remove_provider_for_screen (GdkScreen *screen, GtkStyleProvider *provider);
+subroutine gtk_style_context_remove_provider_for_screen(screen, provider) bind(&
+&c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: screen
+  type(c_ptr), value :: provider
 end subroutine
 
-!  void gtk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_BOOLEAN__POINTER_POINTER_INT_INT(closure, return_value, &
-&n_param_values, param_values, invocation_hint, marshal_data) bind(c) 
+!  void gtk_style_context_add_provider (GtkStyleContext *context, GtkStyleProvider *provider, guint priority);
+subroutine gtk_style_context_add_provider(context, provider, priority) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr), value :: context
+  type(c_ptr), value :: provider
+  integer(c_int), value :: priority
 end subroutine
 
-!  void gtk_marshal_BOOLEAN__POINTER_INT_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_BOOLEAN__POINTER_INT_INT(closure, return_value, n_param_&
-&values, param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+!  void gtk_style_context_remove_provider (GtkStyleContext *context, GtkStyleProvider *provider);
+subroutine gtk_style_context_remove_provider(context, provider) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: provider
 end subroutine
 
-!  void gtk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_BOOLEAN__POINTER_INT_INT_UINT(closure, return_value, n_p&
-&aram_values, param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+!  void gtk_style_context_save (GtkStyleContext *context);
+subroutine gtk_style_context_save(context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
 end subroutine
 
-!  void gtk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER(closure, return_v&
-&alue, n_param_values, param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! void gtk_style_context_restore (GtkStyleContext *context);
+subroutine gtk_style_context_restore(context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
 end subroutine
 
-!  void gtk_marshal_ENUM__ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_ENUM__ENUM(closure, return_value, n_param_values, param_&
-&values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+!  void gtk_style_context_get_property (GtkStyleContext *context, const gchar *property, GtkStateFlags state, GValue *value);
+subroutine gtk_style_context_get_property(context, property, state, value) bind&
+&(c) 
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: property
+  integer(c_int), value :: state
+  type(c_ptr), value :: value
 end subroutine
 
-!  void gtk_marshal_INT__POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_INT__POINTER(closure, return_value, n_param_values, para&
-&m_values, invocation_hint, marshal_data) bind(c) 
+! void gtk_style_context_get_valist (GtkStyleContext *context, GtkStateFlags state, va_list args);
+subroutine gtk_style_context_get_valist(context, state, args) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr), value :: context
+  integer(c_int), value :: state
+  type(c_ptr), value :: args
 end subroutine
 
-!  void gtk_marshal_INT__POINTER_CHAR_CHAR (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_INT__POINTER_CHAR_CHAR(closure, return_value, n_param_va&
-&lues, param_values, invocation_hint, marshal_data) bind(c) 
+!  void gtk_style_context_set_state (GtkStyleContext *context, GtkStateFlags flags);
+subroutine gtk_style_context_set_state(context, flags) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr), value :: context
+  integer(c_int), value :: flags
 end subroutine
 
-!  void gtk_marshal_VOID__ENUM_FLOAT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__ENUM_FLOAT(closure, return_value, n_param_values, &
-&param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! GtkStateFlags gtk_style_context_get_state (GtkStyleContext *context);
+function gtk_style_context_get_state(context) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_style_context_get_state
+  type(c_ptr), value :: context
+end function
+
+!  gboolean gtk_style_context_state_is_running (GtkStyleContext *context, GtkStateType state, gdouble *progress);
+function gtk_style_context_state_is_running(context, state, progress) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_style_context_state_is_running
+  type(c_ptr), value :: context
+  integer(c_int), value :: state
+  type(c_ptr), value :: progress
+end function
+
+!  void gtk_style_context_set_path (GtkStyleContext *context, GtkWidgetPath *path);
+subroutine gtk_style_context_set_path(context, path) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: path
 end subroutine
 
-!  void gtk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__ENUM_FLOAT_BOOLEAN(closure, return_value, n_param_&
-&values, param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! G_CONST_RETURN GtkWidgetPath * gtk_style_context_get_path (GtkStyleContext *context);
+function gtk_style_context_get_path(context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_style_context_get_path
+  type(c_ptr), value :: context
+end function
+
+!  GList * gtk_style_context_list_classes (GtkStyleContext *context);
+function gtk_style_context_list_classes(context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_style_context_list_classes
+  type(c_ptr), value :: context
+end function
+
+!  void gtk_style_context_add_class (GtkStyleContext *context, const gchar *class_name);
+subroutine gtk_style_context_add_class(context, class_name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: class_name
 end subroutine
 
-!  void gtk_marshal_VOID__INT_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__INT_INT(closure, return_value, n_param_values, par&
-&am_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! void gtk_style_context_remove_class (GtkStyleContext *context, const gchar *class_name);
+subroutine gtk_style_context_remove_class(context, class_name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: class_name
 end subroutine
 
-!  void gtk_marshal_VOID__INT_INT_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__INT_INT_POINTER(closure, return_value, n_param_val&
-&ues, param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! gboolean gtk_style_context_has_class (GtkStyleContext *context, const gchar *class_name);
+function gtk_style_context_has_class(context, class_name) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_style_context_has_class
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: class_name
+end function
+
+!  GList * gtk_style_context_list_regions (GtkStyleContext *context);
+function gtk_style_context_list_regions(context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_style_context_list_regions
+  type(c_ptr), value :: context
+end function
+
+!  void gtk_style_context_add_region (GtkStyleContext *context, const gchar *region_name, GtkRegionFlags flags);
+subroutine gtk_style_context_add_region(context, region_name, flags) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: region_name
+  integer(c_int), value :: flags
 end subroutine
 
-!  void gtk_marshal_VOID__POINTER_INT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__POINTER_INT(closure, return_value, n_param_values,&
-& param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! void gtk_style_context_remove_region (GtkStyleContext *context, const gchar *region_name);
+subroutine gtk_style_context_remove_region(context, region_name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: region_name
 end subroutine
 
-!  void gtk_marshal_VOID__POINTER_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__POINTER_POINTER(closure, return_value, n_param_val&
-&ues, param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! gboolean gtk_style_context_has_region (GtkStyleContext *context, const gchar *region_name, GtkRegionFlags *flags_return);
+function gtk_style_context_has_region(context, region_name, flags_return) bind(&
+&c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_style_context_has_region
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: region_name
+  integer(c_int), value :: flags_return
+end function
+
+!  void gtk_style_context_get_style_property (GtkStyleContext *context, const gchar *property_name, GValue *value);
+subroutine gtk_style_context_get_style_property(context, property_name, value) &
+&bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: property_name
+  type(c_ptr), value :: value
 end subroutine
 
-!  void gtk_marshal_VOID__POINTER_POINTER_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__POINTER_POINTER_POINTER(closure, return_value, n_p&
-&aram_values, param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! void gtk_style_context_get_style_valist (GtkStyleContext *context, va_list args);
+subroutine gtk_style_context_get_style_valist(context, args) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: args
 end subroutine
 
-!  void gtk_marshal_VOID__POINTER_STRING_STRING (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__POINTER_STRING_STRING(closure, return_value, n_par&
-&am_values, param_values, invocation_hint, marshal_data) bind(c) 
+!  GtkIconSet * gtk_style_context_lookup_icon_set (GtkStyleContext *context, const gchar *stock_id);
+function gtk_style_context_lookup_icon_set(context, stock_id) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_style_context_lookup_icon_set
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: stock_id
+end function
+
+! GdkPixbuf * gtk_icon_set_render_icon_pixbuf (GtkIconSet *icon_set, GtkStyleContext *context, GtkIconSize size);
+function gtk_icon_set_render_icon_pixbuf(icon_set, context, size) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr) :: gtk_icon_set_render_icon_pixbuf
+  type(c_ptr), value :: icon_set
+  type(c_ptr), value :: context
+  integer(c_int), value :: size
+end function
+
+!  void gtk_style_context_set_screen (GtkStyleContext *context, GdkScreen *screen);
+subroutine gtk_style_context_set_screen(context, screen) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: screen
 end subroutine
 
-!  void gtk_marshal_VOID__POINTER_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__POINTER_UINT(closure, return_value, n_param_values&
-&, param_values, invocation_hint, marshal_data) bind(c) 
+! GdkScreen * gtk_style_context_get_screen (GtkStyleContext *context);
+function gtk_style_context_get_screen(context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_style_context_get_screen
+  type(c_ptr), value :: context
+end function
+
+!  void gtk_style_context_set_direction (GtkStyleContext *context, GtkTextDirection direction);
+subroutine gtk_style_context_set_direction(context, direction) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr), value :: context
+  integer(c_int), value :: direction
 end subroutine
 
-!  void gtk_marshal_VOID__POINTER_UINT_ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__POINTER_UINT_ENUM(closure, return_value, n_param_v&
-&alues, param_values, invocation_hint, marshal_data) bind(c) 
+! GtkTextDirection gtk_style_context_get_direction (GtkStyleContext *context);
+function gtk_style_context_get_direction(context) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_style_context_get_direction
+  type(c_ptr), value :: context
+end function
+
+!  void gtk_style_context_set_junction_sides (GtkStyleContext *context, GtkJunctionSides sides);
+subroutine gtk_style_context_set_junction_sides(context, sides) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr), value :: context
+  integer(c_int), value :: sides
 end subroutine
 
-!  void gtk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__POINTER_POINTER_UINT_UINT(closure, return_value, n&
-&_param_values, param_values, invocation_hint, marshal_data) bind(c) 
+! GtkJunctionSides gtk_style_context_get_junction_sides (GtkStyleContext *context);
+function gtk_style_context_get_junction_sides(context) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_style_context_get_junction_sides
+  type(c_ptr), value :: context
+end function
+
+!  gboolean gtk_style_context_lookup_color (GtkStyleContext *context, const gchar *color_name, GdkRGBA *color);
+function gtk_style_context_lookup_color(context, color_name, color) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_style_context_lookup_color
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: color_name
+  type(c_ptr), value :: color
+end function
+
+!  void gtk_style_context_notify_state_change (GtkStyleContext *context, GdkWindow *window, gpointer region_id, GtkStateType state, gboolean state_value);
+subroutine gtk_style_context_notify_state_change(context, window, region_id, st&
+&ate, state_value) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr), value :: context
+  type(c_ptr), value :: window
+  type(c_ptr), value :: region_id
+  integer(c_int), value :: state
+  integer(c_int), value :: state_value
 end subroutine
 
-!  void gtk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT(closure, return_&
-&value, n_param_values, param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! void gtk_style_context_cancel_animations (GtkStyleContext *context, gpointer region_id);
+subroutine gtk_style_context_cancel_animations(context, region_id) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: region_id
 end subroutine
 
-!  void gtk_marshal_VOID__POINTER_UINT_UINT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__POINTER_UINT_UINT(closure, return_value, n_param_v&
-&alues, param_values, invocation_hint, marshal_data) bind(c) 
+! void gtk_style_context_scroll_animations (GtkStyleContext *context, GdkWindow *window, gint dx, gint dy);
+subroutine gtk_style_context_scroll_animations(context, window, dx, dy) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr), value :: context
+  type(c_ptr), value :: window
+  integer(c_int), value :: dx
+  integer(c_int), value :: dy
 end subroutine
 
-!  void gtk_marshal_VOID__STRING_INT_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__STRING_INT_POINTER(closure, return_value, n_param_&
-&values, param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+!  void gtk_style_context_push_animatable_region (GtkStyleContext *context, gpointer region_id);
+subroutine gtk_style_context_push_animatable_region(context, region_id) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: region_id
 end subroutine
 
-!  void gtk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER(closure, retur&
-&n_value, n_param_values, param_values, invocation_hint, marshal_data) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+! void gtk_style_context_pop_animatable_region (GtkStyleContext *context);
+subroutine gtk_style_context_pop_animatable_region(context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
 end subroutine
 
-!  void gtk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM(closure, return_value,&
-& n_param_values, param_values, invocation_hint, marshal_data) bind(c) 
+!  void gtk_style_context_get_color (GtkStyleContext *context, GtkStateFlags state, GdkRGBA *color);
+subroutine gtk_style_context_get_color(context, state, color) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr), value :: context
+  integer(c_int), value :: state
+  type(c_ptr), value :: color
 end subroutine
 
-!  void gtk_marshal_VOID__UINT_STRING (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
-subroutine gtk_marshal_VOID__UINT_STRING(closure, return_value, n_param_values,&
-& param_values, invocation_hint, marshal_data) bind(c) 
+! void gtk_style_context_get_background_color (GtkStyleContext *context, GtkStateFlags state, GdkRGBA *color);
+subroutine gtk_style_context_get_background_color(context, state, color) bind(c&
+&) 
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: closure
-  type(c_ptr), value :: return_value
-  integer(c_int), value :: n_param_values
-  type(c_ptr), value :: param_values
-  type(c_ptr), value :: invocation_hint
-  type(c_ptr), value :: marshal_data
+  type(c_ptr), value :: context
+  integer(c_int), value :: state
+  type(c_ptr), value :: color
 end subroutine
+
+! void gtk_style_context_get_border_color (GtkStyleContext *context, GtkStateFlags state, GdkRGBA *color);
+subroutine gtk_style_context_get_border_color(context, state, color) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: state
+  type(c_ptr), value :: color
+end subroutine
+
+! const PangoFontDescription * gtk_style_context_get_font (GtkStyleContext *context, GtkStateFlags state);
+function gtk_style_context_get_font(context, state) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_style_context_get_font
+  type(c_ptr), value :: context
+  integer(c_int), value :: state
+end function
+
+! void gtk_style_context_get_border (GtkStyleContext *context, GtkStateFlags state, GtkBorder *border);
+subroutine gtk_style_context_get_border(context, state, border) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: state
+  type(c_ptr), value :: border
+end subroutine
+
+! void gtk_style_context_get_padding (GtkStyleContext *context, GtkStateFlags state, GtkBorder *padding);
+subroutine gtk_style_context_get_padding(context, state, padding) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: state
+  type(c_ptr), value :: padding
+end subroutine
+
+! void gtk_style_context_get_margin (GtkStyleContext *context, GtkStateFlags state, GtkBorder *margin);
+subroutine gtk_style_context_get_margin(context, state, margin) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: state
+  type(c_ptr), value :: margin
+end subroutine
+
+!  void gtk_style_context_invalidate (GtkStyleContext *context);
+subroutine gtk_style_context_invalidate(context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+end subroutine
+
+! void gtk_style_context_reset_widgets (GdkScreen *screen);
+subroutine gtk_style_context_reset_widgets(screen) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: screen
+end subroutine
+
+!  void gtk_style_context_set_background (GtkStyleContext *context, GdkWindow *window);
+subroutine gtk_style_context_set_background(context, window) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: window
+end subroutine
+
+!  void gtk_render_check (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height);
+subroutine gtk_render_check(context, cr, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+end subroutine
+
+! void gtk_render_option (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height);
+subroutine gtk_render_option(context, cr, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+end subroutine
+
+! void gtk_render_arrow (GtkStyleContext *context, cairo_t *cr, gdouble angle, gdouble x, gdouble y, gdouble size);
+subroutine gtk_render_arrow(context, cr, angle, x, y, size) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: angle
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: size
+end subroutine
+
+! void gtk_render_background (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height);
+subroutine gtk_render_background(context, cr, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+end subroutine
+
+! void gtk_render_frame (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height);
+subroutine gtk_render_frame(context, cr, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+end subroutine
+
+! void gtk_render_expander (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height);
+subroutine gtk_render_expander(context, cr, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+end subroutine
+
+! void gtk_render_focus (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height);
+subroutine gtk_render_focus(context, cr, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+end subroutine
+
+! void gtk_render_layout (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, PangoLayout *layout);
+subroutine gtk_render_layout(context, cr, x, y, layout) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  type(c_ptr), value :: layout
+end subroutine
+
+! void gtk_render_line (GtkStyleContext *context, cairo_t *cr, gdouble x0, gdouble y0, gdouble x1, gdouble y1);
+subroutine gtk_render_line(context, cr, x0, y0, x1, y1) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x0
+  real(c_double), value :: y0
+  real(c_double), value :: x1
+  real(c_double), value :: y1
+end subroutine
+
+! void gtk_render_slider (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height, GtkOrientation orientation);
+subroutine gtk_render_slider(context, cr, x, y, width, height, orientation) bin&
+&d(c) 
+  use iso_c_binding, only: c_ptr, c_double, c_int
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+  integer(c_int), value :: orientation
+end subroutine
+
+! void gtk_render_frame_gap (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height, GtkPositionType gap_side, gdouble xy0_gap, gdouble xy1_gap);
+subroutine gtk_render_frame_gap(context, cr, x, y, width, height, gap_side, xy0&
+&_gap, xy1_gap) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double, c_int
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+  integer(c_int), value :: gap_side
+  real(c_double), value :: xy0_gap
+  real(c_double), value :: xy1_gap
+end subroutine
+
+! void gtk_render_extension (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height, GtkPositionType gap_side);
+subroutine gtk_render_extension(context, cr, x, y, width, height, gap_side) bin&
+&d(c) 
+  use iso_c_binding, only: c_ptr, c_double, c_int
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+  integer(c_int), value :: gap_side
+end subroutine
+
+! void gtk_render_handle (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height);
+subroutine gtk_render_handle(context, cr, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+end subroutine
+
+! void gtk_render_activity (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, gdouble width, gdouble height);
+subroutine gtk_render_activity(context, cr, x, y, width, height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: x
+  real(c_double), value :: y
+  real(c_double), value :: width
+  real(c_double), value :: height
+end subroutine
+
+! GdkPixbuf * gtk_render_icon_pixbuf (GtkStyleContext *context, const GtkIconSource *source, GtkIconSize size);
+function gtk_render_icon_pixbuf(context, source, size) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_render_icon_pixbuf
+  type(c_ptr), value :: context
+  type(c_ptr), value :: source
+  integer(c_int), value :: size
+end function
 
 !   GType gtk_icon_factory_get_type (void) G_GNUC_CONST;
 function gtk_icon_factory_get_type() bind(c) 
@@ -23906,7 +22067,7 @@ function gtk_icon_set_copy(icon_set) bind(c)
   type(c_ptr), value :: icon_set
 end function
 
-!  GdkPixbuf* gtk_icon_set_render_icon (GtkIconSet *icon_set, GtkStyle *style, GtkTextDirection direction, GtkStateType state, GtkIconSize size, GtkWidget *widget, const char *detail);
+!  GdkPixbuf* gtk_icon_set_render_icon (GtkIconSet *icon_set, GtkStyle *style, GtkTextDirection direction, GtkStateType state, GtkIconSize size, GtkWidget *widget, const gchar *detail);
 function gtk_icon_set_render_icon(icon_set, style, direction, state, size, widg&
 &et, detail) bind(c) 
   use iso_c_binding, only: c_ptr, c_int, c_char
@@ -24174,13 +22335,6 @@ function gtk_check_menu_item_get_draw_as_radio(check_menu_item) bind(c)
   type(c_ptr), value :: check_menu_item
 end function
 
-!  void gtk_check_menu_item_set_show_toggle (GtkCheckMenuItem *menu_item, gboolean always);
-subroutine gtk_check_menu_item_set_show_toggle(menu_item, always) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: menu_item
-  integer(c_int), value :: always
-end subroutine
-
 !   GType ubuntu_menu_proxy_module_get_type (void) G_GNUC_CONST;
 function ubuntu_menu_proxy_module_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -24192,64 +22346,6 @@ function ubuntu_menu_proxy_module_get() bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: ubuntu_menu_proxy_module_get
 end function
-
-!   GType gtk_curve_get_type (void) G_GNUC_CONST;
-function gtk_curve_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_curve_get_type
-end function
-
-! GtkWidget* gtk_curve_new (void);
-function gtk_curve_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_curve_new
-end function
-
-! void gtk_curve_reset (GtkCurve *curve);
-subroutine gtk_curve_reset(curve) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: curve
-end subroutine
-
-! void gtk_curve_set_gamma (GtkCurve *curve, gfloat gamma_);
-subroutine gtk_curve_set_gamma(curve, gamma_) bind(c) 
-  use iso_c_binding, only: c_ptr, c_float
-  type(c_ptr), value :: curve
-  real(c_float), value :: gamma_
-end subroutine
-
-! void gtk_curve_set_range (GtkCurve *curve, gfloat min_x, gfloat max_x, gfloat min_y, gfloat max_y);
-subroutine gtk_curve_set_range(curve, min_x, max_x, min_y, max_y) bind(c) 
-  use iso_c_binding, only: c_ptr, c_float
-  type(c_ptr), value :: curve
-  real(c_float), value :: min_x
-  real(c_float), value :: max_x
-  real(c_float), value :: min_y
-  real(c_float), value :: max_y
-end subroutine
-
-! void gtk_curve_get_vector (GtkCurve *curve, int veclen, gfloat vector[]);
-subroutine gtk_curve_get_vector(curve, veclen, vector) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_float
-  type(c_ptr), value :: curve
-  integer(c_int), value :: veclen
-  real(c_float), dimension(*) :: vector
-end subroutine
-
-! void gtk_curve_set_vector (GtkCurve *curve, int veclen, gfloat vector[]);
-subroutine gtk_curve_set_vector(curve, veclen, vector) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_float
-  type(c_ptr), value :: curve
-  integer(c_int), value :: veclen
-  real(c_float), dimension(*) :: vector
-end subroutine
-
-! void gtk_curve_set_curve_type (GtkCurve *curve, GtkCurveType type);
-subroutine gtk_curve_set_curve_type(curve, type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: curve
-  integer(c_int), value :: type
-end subroutine
 
 !   GType gtk_menu_tool_button_get_type (void) G_GNUC_CONST;
 function gtk_menu_tool_button_get_type() bind(c) 
@@ -24286,17 +22382,7 @@ function gtk_menu_tool_button_get_menu(button) bind(c)
   type(c_ptr), value :: button
 end function
 
-!  void gtk_menu_tool_button_set_arrow_tooltip (GtkMenuToolButton *button, GtkTooltips *tooltips, const gchar *tip_text, const gchar *tip_private);
-subroutine gtk_menu_tool_button_set_arrow_tooltip(button, tooltips, tip_text, t&
-&ip_private) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: button
-  type(c_ptr), value :: tooltips
-  character(kind=c_char), dimension(*) :: tip_text
-  character(kind=c_char), dimension(*) :: tip_private
-end subroutine
-
-!  void gtk_menu_tool_button_set_arrow_tooltip_text (GtkMenuToolButton *button, const gchar *text);
+! void gtk_menu_tool_button_set_arrow_tooltip_text (GtkMenuToolButton *button, const gchar *text);
 subroutine gtk_menu_tool_button_set_arrow_tooltip_text(button, text) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr), value :: button
@@ -24751,41 +22837,28 @@ function gtk_file_chooser_list_shortcut_folder_uris(chooser) bind(c)
   type(c_ptr), value :: chooser
 end function
 
-!   GType gtk_list_item_get_type (void) G_GNUC_CONST;
-function gtk_list_item_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_list_item_get_type
-end function
-
-! GtkWidget* gtk_list_item_new (void);
-function gtk_list_item_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_list_item_new
-end function
-
-! GtkWidget* gtk_list_item_new_with_label (const gchar *label);
-function gtk_list_item_new_with_label(label) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_list_item_new_with_label
-  character(kind=c_char), dimension(*) :: label
-end function
-
-! void gtk_list_item_select (GtkListItem *list_item);
-subroutine gtk_list_item_select(list_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list_item
-end subroutine
-
-! void gtk_list_item_deselect (GtkListItem *list_item);
-subroutine gtk_list_item_deselect(list_item) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: list_item
-end subroutine
-
 !   GType gtk_scale_get_type (void) G_GNUC_CONST;
 function gtk_scale_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_scale_get_type
+end function
+
+! GtkWidget * gtk_scale_new (GtkOrientation orientation, GtkAdjustment *adjustment);
+function gtk_scale_new(orientation, adjustment) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_scale_new
+  integer(c_int), value :: orientation
+  type(c_ptr), value :: adjustment
+end function
+
+! GtkWidget * gtk_scale_new_with_range (GtkOrientation orientation, gdouble min, gdouble max, gdouble step);
+function gtk_scale_new_with_range(orientation, min, max, step) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int, c_double
+  type(c_ptr) :: gtk_scale_new_with_range
+  integer(c_int), value :: orientation
+  real(c_double), value :: min
+  real(c_double), value :: max
+  real(c_double), value :: step
 end function
 
 ! void gtk_scale_set_digits (GtkScale *scale, gint digits);
@@ -25507,6 +23580,18 @@ function gtk_assistant_new() bind(c)
   type(c_ptr) :: gtk_assistant_new
 end function
 
+! void gtk_assistant_next_page (GtkAssistant *assistant);
+subroutine gtk_assistant_next_page(assistant) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: assistant
+end subroutine
+
+! void gtk_assistant_previous_page (GtkAssistant *assistant);
+subroutine gtk_assistant_previous_page(assistant) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: assistant
+end subroutine
+
 ! gint gtk_assistant_get_current_page (GtkAssistant *assistant);
 function gtk_assistant_get_current_page(assistant) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
@@ -25710,6 +23795,54 @@ function gtk_invisible_get_screen(invisible) bind(c)
   type(c_ptr), value :: invisible
 end function
 
+!   GType gtk_cell_area_box_get_type (void) G_GNUC_CONST;
+function gtk_cell_area_box_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_cell_area_box_get_type
+end function
+
+!  GtkCellArea *gtk_cell_area_box_new (void);
+function gtk_cell_area_box_new() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_cell_area_box_new
+end function
+
+! void gtk_cell_area_box_pack_start (GtkCellAreaBox *box, GtkCellRenderer *renderer, gboolean expand, gboolean align, gboolean fixed);
+subroutine gtk_cell_area_box_pack_start(box, renderer, expand, align, fixed) bi&
+&nd(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: box
+  type(c_ptr), value :: renderer
+  integer(c_int), value :: expand
+  integer(c_int), value :: align
+  integer(c_int), value :: fixed
+end subroutine
+
+! void gtk_cell_area_box_pack_end (GtkCellAreaBox *box, GtkCellRenderer *renderer, gboolean expand, gboolean align, gboolean fixed);
+subroutine gtk_cell_area_box_pack_end(box, renderer, expand, align, fixed) bind&
+&(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: box
+  type(c_ptr), value :: renderer
+  integer(c_int), value :: expand
+  integer(c_int), value :: align
+  integer(c_int), value :: fixed
+end subroutine
+
+! gint gtk_cell_area_box_get_spacing (GtkCellAreaBox *box);
+function gtk_cell_area_box_get_spacing(box) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cell_area_box_get_spacing
+  type(c_ptr), value :: box
+end function
+
+! void gtk_cell_area_box_set_spacing (GtkCellAreaBox *box, gint spacing);
+subroutine gtk_cell_area_box_set_spacing(box, spacing) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: box
+  integer(c_int), value :: spacing
+end subroutine
+
 !   GType gtk_vscale_get_type (void) G_GNUC_CONST;
 function gtk_vscale_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -25771,6 +23904,97 @@ subroutine gtk_event_box_set_above_child(event_box, above_child) bind(c)
   type(c_ptr), value :: event_box
   integer(c_int), value :: above_child
 end subroutine
+
+!   GType gtk_numerable_icon_get_type (void) G_GNUC_CONST;
+function gtk_numerable_icon_get_type() bind(c) 
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_numerable_icon_get_type
+end function
+
+!  GIcon * gtk_numerable_icon_new (GIcon *base_icon);
+function gtk_numerable_icon_new(base_icon) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_numerable_icon_new
+  type(c_ptr), value :: base_icon
+end function
+
+! GIcon * gtk_numerable_icon_new_with_style_context (GIcon *base_icon, GtkStyleContext *context);
+function gtk_numerable_icon_new_with_style_context(base_icon, context) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_numerable_icon_new_with_style_context
+  type(c_ptr), value :: base_icon
+  type(c_ptr), value :: context
+end function
+
+!  GtkStyleContext * gtk_numerable_icon_get_style_context (GtkNumerableIcon *self);
+function gtk_numerable_icon_get_style_context(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_numerable_icon_get_style_context
+  type(c_ptr), value :: self
+end function
+
+! void gtk_numerable_icon_set_style_context (GtkNumerableIcon *self, GtkStyleContext *style);
+subroutine gtk_numerable_icon_set_style_context(self, style) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: style
+end subroutine
+
+!  gint gtk_numerable_icon_get_count (GtkNumerableIcon *self);
+function gtk_numerable_icon_get_count(self) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_numerable_icon_get_count
+  type(c_ptr), value :: self
+end function
+
+! void gtk_numerable_icon_set_count (GtkNumerableIcon *self, gint count);
+subroutine gtk_numerable_icon_set_count(self, count) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: count
+end subroutine
+
+!  const gchar * gtk_numerable_icon_get_label (GtkNumerableIcon *self);
+function gtk_numerable_icon_get_label(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_numerable_icon_get_label
+  type(c_ptr), value :: self
+end function
+
+! void gtk_numerable_icon_set_label (GtkNumerableIcon *self, const gchar *label);
+subroutine gtk_numerable_icon_set_label(self, label) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: label
+end subroutine
+
+!  void gtk_numerable_icon_set_background_gicon (GtkNumerableIcon *self, GIcon *icon);
+subroutine gtk_numerable_icon_set_background_gicon(self, icon) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: icon
+end subroutine
+
+! GIcon * gtk_numerable_icon_get_background_gicon (GtkNumerableIcon *self);
+function gtk_numerable_icon_get_background_gicon(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_numerable_icon_get_background_gicon
+  type(c_ptr), value :: self
+end function
+
+!  void gtk_numerable_icon_set_background_icon_name (GtkNumerableIcon *self, const gchar *icon_name);
+subroutine gtk_numerable_icon_set_background_icon_name(self, icon_name) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: icon_name
+end subroutine
+
+! const gchar * gtk_numerable_icon_get_background_icon_name (GtkNumerableIcon *self);
+function gtk_numerable_icon_get_background_icon_name(self) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_numerable_icon_get_background_icon_name
+  type(c_ptr), value :: self
+end function
 
 !   GType gtk_size_group_get_type (void) G_GNUC_CONST;
 function gtk_size_group_get_type() bind(c) 
@@ -25840,6 +24064,13 @@ function gtk_separator_get_type() bind(c)
   integer(c_size_t) :: gtk_separator_get_type
 end function
 
+! GtkWidget * gtk_separator_new (GtkOrientation orientation);
+function gtk_separator_new(orientation) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_separator_new
+  integer(c_int), value :: orientation
+end function
+
 !   GType gtk_icon_view_get_type (void) G_GNUC_CONST;
 function gtk_icon_view_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -25850,6 +24081,13 @@ end function
 function gtk_icon_view_new() bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_icon_view_new
+end function
+
+! GtkWidget * gtk_icon_view_new_with_area (GtkCellArea *area);
+function gtk_icon_view_new_with_area(area) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_icon_view_new_with_area
+  type(c_ptr), value :: area
 end function
 
 ! GtkWidget * gtk_icon_view_new_with_model (GtkTreeModel *model);
@@ -25915,21 +24153,7 @@ function gtk_icon_view_get_pixbuf_column(icon_view) bind(c)
   type(c_ptr), value :: icon_view
 end function
 
-!  void gtk_icon_view_set_orientation (GtkIconView *icon_view, GtkOrientation orientation);
-subroutine gtk_icon_view_set_orientation(icon_view, orientation) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: icon_view
-  integer(c_int), value :: orientation
-end subroutine
-
-! GtkOrientation gtk_icon_view_get_orientation (GtkIconView *icon_view);
-function gtk_icon_view_get_orientation(icon_view) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_icon_view_get_orientation
-  type(c_ptr), value :: icon_view
-end function
-
-! void gtk_icon_view_set_item_orientation (GtkIconView *icon_view, GtkOrientation orientation);
+!  void gtk_icon_view_set_item_orientation (GtkIconView *icon_view, GtkOrientation orientation);
 subroutine gtk_icon_view_set_item_orientation(icon_view, orientation) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: icon_view
@@ -26262,7 +24486,7 @@ function gtk_icon_view_get_dest_item_at_pos(icon_view, drag_x, drag_y, path, po&
   integer(c_int), value :: pos
 end function
 
-! GdkPixmap *gtk_icon_view_create_drag_icon (GtkIconView *icon_view, GtkTreePath *path);
+! cairo_surface_t *gtk_icon_view_create_drag_icon (GtkIconView *icon_view, GtkTreePath *path);
 function gtk_icon_view_create_drag_icon(icon_view, path) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_icon_view_create_drag_icon
@@ -26327,121 +24551,66 @@ function gtk_icon_view_get_tooltip_column(icon_view) bind(c)
   type(c_ptr), value :: icon_view
 end function
 
-!   GType gtk_preview_get_type (void) G_GNUC_CONST;
-function gtk_preview_get_type() bind(c) 
+!   GQuark gtk_css_provider_error_quark (void);
+function gtk_css_provider_error_quark() bind(c) 
+  use iso_c_binding, only: c_int32_t
+  integer(c_int32_t) :: gtk_css_provider_error_quark
+end function
+
+!  GType gtk_css_provider_get_type (void) G_GNUC_CONST;
+function gtk_css_provider_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_preview_get_type
+  integer(c_size_t) :: gtk_css_provider_get_type
 end function
 
-! void gtk_preview_uninit (void);
-subroutine gtk_preview_uninit() bind(c) 
-  use iso_c_binding, only: 
-end subroutine
-
-! GtkWidget* gtk_preview_new (GtkPreviewType type);
-function gtk_preview_new(type) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_preview_new
-  integer(c_int), value :: type
+!  GtkCssProvider * gtk_css_provider_new (void);
+function gtk_css_provider_new() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_css_provider_new
 end function
 
-! void gtk_preview_size (GtkPreview *preview, gint width, gint height);
-subroutine gtk_preview_size(preview, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: preview
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_preview_put (GtkPreview *preview, GdkWindow *window, GdkGC *gc, gint srcx, gint srcy, gint destx, gint desty, gint width, gint height);
-subroutine gtk_preview_put(preview, window, gc, srcx, srcy, destx, desty, width&
-&, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: preview
-  type(c_ptr), value :: window
-  type(c_ptr), value :: gc
-  integer(c_int), value :: srcx
-  integer(c_int), value :: srcy
-  integer(c_int), value :: destx
-  integer(c_int), value :: desty
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void gtk_preview_draw_row (GtkPreview *preview, guchar *data, gint x, gint y, gint w);
-subroutine gtk_preview_draw_row(preview, data, x, y, w) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int
-  type(c_ptr), value :: preview
+!  gboolean gtk_css_provider_load_from_data (GtkCssProvider *css_provider, const gchar *data, gssize length, GError **error);
+function gtk_css_provider_load_from_data(css_provider, data, length, error) bin&
+&d(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
+  integer(c_int) :: gtk_css_provider_load_from_data
+  type(c_ptr), value :: css_provider
   character(kind=c_char), dimension(*) :: data
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: w
-end subroutine
-
-! void gtk_preview_set_expand (GtkPreview *preview, gboolean expand);
-subroutine gtk_preview_set_expand(preview, expand) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: preview
-  integer(c_int), value :: expand
-end subroutine
-
-!  void gtk_preview_set_gamma (double gamma_);
-subroutine gtk_preview_set_gamma(gamma_) bind(c) 
-  use iso_c_binding, only: c_double
-  real(c_double), value :: gamma_
-end subroutine
-
-! void gtk_preview_set_color_cube (guint nred_shades, guint ngreen_shades, guint nblue_shades, guint ngray_shades);
-subroutine gtk_preview_set_color_cube(nred_shades, ngreen_shades, nblue_shades,&
-& ngray_shades) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: nred_shades
-  integer(c_int), value :: ngreen_shades
-  integer(c_int), value :: nblue_shades
-  integer(c_int), value :: ngray_shades
-end subroutine
-
-! void gtk_preview_set_install_cmap (gint install_cmap);
-subroutine gtk_preview_set_install_cmap(install_cmap) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: install_cmap
-end subroutine
-
-! void gtk_preview_set_reserved (gint nreserved);
-subroutine gtk_preview_set_reserved(nreserved) bind(c) 
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: nreserved
-end subroutine
-
-! void gtk_preview_set_dither (GtkPreview *preview, GdkRgbDither dither);
-subroutine gtk_preview_set_dither(preview, dither) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: preview
-  integer(c_int), value :: dither
-end subroutine
-
-! GdkVisual* gtk_preview_get_visual (void);
-function gtk_preview_get_visual() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_preview_get_visual
+  integer(c_size_t), value :: length
+  type(c_ptr), value :: error
 end function
 
-! GdkColormap* gtk_preview_get_cmap (void);
-function gtk_preview_get_cmap() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_preview_get_cmap
+! gboolean gtk_css_provider_load_from_file (GtkCssProvider *css_provider, GFile *file, GError **error);
+function gtk_css_provider_load_from_file(css_provider, file, error) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_css_provider_load_from_file
+  type(c_ptr), value :: css_provider
+  type(c_ptr), value :: file
+  type(c_ptr), value :: error
 end function
 
-! GtkPreviewInfo* gtk_preview_get_info (void);
-function gtk_preview_get_info() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_preview_get_info
+! gboolean gtk_css_provider_load_from_path (GtkCssProvider *css_provider, const gchar *path, GError **error);
+function gtk_css_provider_load_from_path(css_provider, path, error) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_css_provider_load_from_path
+  type(c_ptr), value :: css_provider
+  character(kind=c_char), dimension(*) :: path
+  type(c_ptr), value :: error
 end function
 
-!  void gtk_preview_reset (void);
-subroutine gtk_preview_reset() bind(c) 
-  use iso_c_binding, only: 
-end subroutine
+!  GtkCssProvider * gtk_css_provider_get_default (void);
+function gtk_css_provider_get_default() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_css_provider_get_default
+end function
+
+!  GtkCssProvider * gtk_css_provider_get_named (const gchar *name, const gchar *variant);
+function gtk_css_provider_get_named(name, variant) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_css_provider_get_named
+  character(kind=c_char), dimension(*) :: name
+  character(kind=c_char), dimension(*) :: variant
+end function
 
 !   GType gtk_table_get_type (void) G_GNUC_CONST;
 function gtk_table_get_type() bind(c) 
@@ -26576,18 +24745,6 @@ subroutine gtk_table_get_size(table, rows, columns) bind(c)
   type(c_ptr), value :: columns
 end subroutine
 
-!   GType gtk_hruler_get_type (void) G_GNUC_CONST;
-function gtk_hruler_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_hruler_get_type
-end function
-
-! GtkWidget* gtk_hruler_new (void);
-function gtk_hruler_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_hruler_new
-end function
-
 !   GType gtk_calendar_get_type (void) G_GNUC_CONST;
 function gtk_calendar_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
@@ -26600,14 +24757,13 @@ function gtk_calendar_new() bind(c)
   type(c_ptr) :: gtk_calendar_new
 end function
 
-!  gboolean gtk_calendar_select_month (GtkCalendar *calendar, guint month, guint year);
-function gtk_calendar_select_month(calendar, month, year) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_calendar_select_month
+!  void gtk_calendar_select_month (GtkCalendar *calendar, guint month, guint year);
+subroutine gtk_calendar_select_month(calendar, month, year) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: calendar
   integer(c_int), value :: month
   integer(c_int), value :: year
-end function
+end subroutine
 
 ! void gtk_calendar_select_day (GtkCalendar *calendar, guint day);
 subroutine gtk_calendar_select_day(calendar, day) bind(c) 
@@ -26616,21 +24772,19 @@ subroutine gtk_calendar_select_day(calendar, day) bind(c)
   integer(c_int), value :: day
 end subroutine
 
-!  gboolean gtk_calendar_mark_day (GtkCalendar *calendar, guint day);
-function gtk_calendar_mark_day(calendar, day) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_calendar_mark_day
+!  void gtk_calendar_mark_day (GtkCalendar *calendar, guint day);
+subroutine gtk_calendar_mark_day(calendar, day) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: calendar
   integer(c_int), value :: day
-end function
+end subroutine
 
-! gboolean gtk_calendar_unmark_day (GtkCalendar *calendar, guint day);
-function gtk_calendar_unmark_day(calendar, day) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_calendar_unmark_day
+! void gtk_calendar_unmark_day (GtkCalendar *calendar, guint day);
+subroutine gtk_calendar_unmark_day(calendar, day) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: calendar
   integer(c_int), value :: day
-end function
+end subroutine
 
 ! void gtk_calendar_clear_marks (GtkCalendar *calendar);
 subroutine gtk_calendar_clear_marks(calendar) bind(c) 
@@ -26652,14 +24806,7 @@ function gtk_calendar_get_display_options(calendar) bind(c)
   type(c_ptr), value :: calendar
 end function
 
-!  void gtk_calendar_display_options (GtkCalendar *calendar, GtkCalendarDisplayOptions flags);
-subroutine gtk_calendar_display_options(calendar, flags) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: calendar
-  integer(c_int), value :: flags
-end subroutine
-
-!  void gtk_calendar_get_date (GtkCalendar *calendar, guint *year, guint *month, guint *day);
+! void gtk_calendar_get_date (GtkCalendar *calendar, guint *year, guint *month, guint *day);
 subroutine gtk_calendar_get_date(calendar, year, month, day) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: calendar
@@ -26705,17 +24852,13 @@ function gtk_calendar_get_detail_height_rows(calendar) bind(c)
   type(c_ptr), value :: calendar
 end function
 
-!  void gtk_calendar_freeze (GtkCalendar *calendar);
-subroutine gtk_calendar_freeze(calendar) bind(c) 
-  use iso_c_binding, only: c_ptr
+!  gboolean gtk_calendar_get_day_is_marked (GtkCalendar *calendar, guint day);
+function gtk_calendar_get_day_is_marked(calendar, day) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_calendar_get_day_is_marked
   type(c_ptr), value :: calendar
-end subroutine
-
-! void gtk_calendar_thaw (GtkCalendar *calendar);
-subroutine gtk_calendar_thaw(calendar) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: calendar
-end subroutine
+  integer(c_int), value :: day
+end function
 
 !   GType gtk_vbox_get_type (void) G_GNUC_CONST;
 function gtk_vbox_get_type() bind(c) 
@@ -26750,26 +24893,7 @@ subroutine gtk_widget_destroyed(widget, widget_pointer) bind(c)
   type(c_ptr), value :: widget_pointer
 end subroutine
 
-!  GtkWidget* gtk_widget_ref (GtkWidget *widget);
-function gtk_widget_ref(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_widget_ref
-  type(c_ptr), value :: widget
-end function
-
-! void gtk_widget_unref (GtkWidget *widget);
-subroutine gtk_widget_unref(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: widget
-end subroutine
-
-!  void gtk_widget_hide_all (GtkWidget *widget);
-subroutine gtk_widget_hide_all(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: widget
-end subroutine
-
-!  void gtk_widget_unparent (GtkWidget *widget);
+! void gtk_widget_unparent (GtkWidget *widget);
 subroutine gtk_widget_unparent(widget) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
@@ -26781,14 +24905,14 @@ subroutine gtk_widget_show(widget) bind(c)
   type(c_ptr), value :: widget
 end subroutine
 
-! void gtk_widget_show_now (GtkWidget *widget);
-subroutine gtk_widget_show_now(widget) bind(c) 
+! void gtk_widget_hide (GtkWidget *widget);
+subroutine gtk_widget_hide(widget) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
 end subroutine
 
-! void gtk_widget_hide (GtkWidget *widget);
-subroutine gtk_widget_hide(widget) bind(c) 
+! void gtk_widget_show_now (GtkWidget *widget);
+subroutine gtk_widget_show_now(widget) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
 end subroutine
@@ -26837,6 +24961,13 @@ subroutine gtk_widget_unrealize(widget) bind(c)
   type(c_ptr), value :: widget
 end subroutine
 
+!  void gtk_widget_draw (GtkWidget *widget, cairo_t *cr);
+subroutine gtk_widget_draw(widget, cr) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: cr
+end subroutine
+
 !  void gtk_widget_queue_draw (GtkWidget *widget);
 subroutine gtk_widget_queue_draw(widget) bind(c) 
   use iso_c_binding, only: c_ptr
@@ -26853,23 +24984,14 @@ subroutine gtk_widget_queue_draw_area(widget, x, y, width, height) bind(c)
   integer(c_int), value :: height
 end subroutine
 
-!  void gtk_widget_queue_clear (GtkWidget *widget);
-subroutine gtk_widget_queue_clear(widget) bind(c) 
+! void gtk_widget_queue_draw_region (GtkWidget *widget, cairo_region_t *region);
+subroutine gtk_widget_queue_draw_region(widget, region) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
+  type(c_ptr), value :: region
 end subroutine
 
-! void gtk_widget_queue_clear_area (GtkWidget *widget, gint x, gint y, gint width, gint height);
-subroutine gtk_widget_queue_clear_area(widget, x, y, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: widget
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-!  void gtk_widget_queue_resize (GtkWidget *widget);
+! void gtk_widget_queue_resize (GtkWidget *widget);
 subroutine gtk_widget_queue_resize(widget) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
@@ -26881,13 +25003,6 @@ subroutine gtk_widget_queue_resize_no_redraw(widget) bind(c)
   type(c_ptr), value :: widget
 end subroutine
 
-!  void gtk_widget_draw (GtkWidget *widget, const GdkRectangle *area);
-subroutine gtk_widget_draw(widget, area) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: widget
-  type(c_ptr), value :: area
-end subroutine
-
 !  void gtk_widget_size_request (GtkWidget *widget, GtkRequisition *requisition);
 subroutine gtk_widget_size_request(widget, requisition) bind(c) 
   use iso_c_binding, only: c_ptr
@@ -26895,21 +25010,75 @@ subroutine gtk_widget_size_request(widget, requisition) bind(c)
   type(c_ptr), value :: requisition
 end subroutine
 
-! void gtk_widget_size_allocate (GtkWidget *widget, GtkAllocation *allocation);
+!  void gtk_widget_size_allocate (GtkWidget *widget, GtkAllocation *allocation);
 subroutine gtk_widget_size_allocate(widget, allocation) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
   type(c_ptr), value :: allocation
 end subroutine
 
-! void gtk_widget_get_child_requisition (GtkWidget *widget, GtkRequisition *requisition);
+!  GtkSizeRequestMode gtk_widget_get_request_mode (GtkWidget *widget);
+function gtk_widget_get_request_mode(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_request_mode
+  type(c_ptr), value :: widget
+end function
+
+! void gtk_widget_get_preferred_width (GtkWidget *widget, gint *minimum_width, gint *natural_width);
+subroutine gtk_widget_get_preferred_width(widget, minimum_width, natural_width)&
+& bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: minimum_width
+  type(c_ptr), value :: natural_width
+end subroutine
+
+! void gtk_widget_get_preferred_height_for_width (GtkWidget *widget, gint width, gint *minimum_height, gint *natural_height);
+subroutine gtk_widget_get_preferred_height_for_width(widget, width, minimum_hei&
+&ght, natural_height) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: width
+  type(c_ptr), value :: minimum_height
+  type(c_ptr), value :: natural_height
+end subroutine
+
+! void gtk_widget_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint *natural_height);
+subroutine gtk_widget_get_preferred_height(widget, minimum_height, natural_heig&
+&ht) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: minimum_height
+  type(c_ptr), value :: natural_height
+end subroutine
+
+! void gtk_widget_get_preferred_width_for_height (GtkWidget *widget, gint height, gint *minimum_width, gint *natural_width);
+subroutine gtk_widget_get_preferred_width_for_height(widget, height, minimum_wi&
+&dth, natural_width) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: height
+  type(c_ptr), value :: minimum_width
+  type(c_ptr), value :: natural_width
+end subroutine
+
+! void gtk_widget_get_preferred_size (GtkWidget *widget, GtkRequisition *minimum_size, GtkRequisition *natural_size);
+subroutine gtk_widget_get_preferred_size(widget, minimum_size, natural_size) bi&
+&nd(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: minimum_size
+  type(c_ptr), value :: natural_size
+end subroutine
+
+!  void gtk_widget_get_child_requisition (GtkWidget *widget, GtkRequisition *requisition);
 subroutine gtk_widget_get_child_requisition(widget, requisition) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
   type(c_ptr), value :: requisition
 end subroutine
 
-! void gtk_widget_add_accelerator (GtkWidget *widget, const gchar *accel_signal, GtkAccelGroup *accel_group, guint accel_key, GdkModifierType accel_mods, GtkAccelFlags accel_flags);
+!  void gtk_widget_add_accelerator (GtkWidget *widget, const gchar *accel_signal, GtkAccelGroup *accel_group, guint accel_key, GdkModifierType accel_mods, GtkAccelFlags accel_flags);
 subroutine gtk_widget_add_accelerator(widget, accel_signal, accel_group, accel_&
 &key, accel_mods, accel_flags) bind(c) 
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -26994,16 +25163,6 @@ function gtk_widget_activate(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
-! gboolean gtk_widget_set_scroll_adjustments (GtkWidget *widget, GtkAdjustment *hadjustment, GtkAdjustment *vadjustment);
-function gtk_widget_set_scroll_adjustments(widget, hadjustment, vadjustment) bi&
-&nd(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_widget_set_scroll_adjustments
-  type(c_ptr), value :: widget
-  type(c_ptr), value :: hadjustment
-  type(c_ptr), value :: vadjustment
-end function
-
 !  void gtk_widget_reparent (GtkWidget *widget, GtkWidget *new_parent);
 subroutine gtk_widget_reparent(widget, new_parent) bind(c) 
   use iso_c_binding, only: c_ptr
@@ -27020,7 +25179,7 @@ function gtk_widget_intersect(widget, area, intersection) bind(c)
   type(c_ptr), value :: intersection
 end function
 
-! GdkRegion *gtk_widget_region_intersect (GtkWidget *widget, const GdkRegion *region);
+! cairo_region_t *gtk_widget_region_intersect (GtkWidget *widget, const cairo_region_t *region);
 function gtk_widget_region_intersect(widget, region) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_widget_region_intersect
@@ -27129,6 +25288,14 @@ function gtk_widget_has_grab(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
+!  gboolean gtk_widget_device_is_shadowed (GtkWidget *widget, GdkDevice *device);
+function gtk_widget_device_is_shadowed(widget, device) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_device_is_shadowed
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: device
+end function
+
 !  void gtk_widget_set_name (GtkWidget *widget, const gchar *name);
 subroutine gtk_widget_set_name(widget, name) bind(c) 
   use iso_c_binding, only: c_ptr, c_char
@@ -27154,6 +25321,28 @@ end subroutine
 function gtk_widget_get_state(widget) bind(c) 
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_widget_get_state
+  type(c_ptr), value :: widget
+end function
+
+!  void gtk_widget_set_state_flags (GtkWidget *widget, GtkStateFlags flags, gboolean clear);
+subroutine gtk_widget_set_state_flags(widget, flags, clear) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: flags
+  integer(c_int), value :: clear
+end subroutine
+
+! void gtk_widget_unset_state_flags (GtkWidget *widget, GtkStateFlags flags);
+subroutine gtk_widget_unset_state_flags(widget, flags) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: flags
+end subroutine
+
+! GtkStateFlags gtk_widget_get_state_flags (GtkWidget *widget);
+function gtk_widget_get_state_flags(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_state_flags
   type(c_ptr), value :: widget
 end function
 
@@ -27340,6 +25529,20 @@ function gtk_widget_get_window(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
+!  int gtk_widget_get_allocated_width (GtkWidget *widget);
+function gtk_widget_get_allocated_width(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_allocated_width
+  type(c_ptr), value :: widget
+end function
+
+! int gtk_widget_get_allocated_height (GtkWidget *widget);
+function gtk_widget_get_allocated_height(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_allocated_height
+  type(c_ptr), value :: widget
+end function
+
 !  void gtk_widget_get_allocation (GtkWidget *widget, GtkAllocation *allocation);
 subroutine gtk_widget_get_allocation(widget, allocation) bind(c) 
   use iso_c_binding, only: c_ptr
@@ -27399,23 +25602,7 @@ subroutine gtk_widget_get_size_request(widget, width, height) bind(c)
   type(c_ptr), value :: height
 end subroutine
 
-!  void gtk_widget_set_uposition (GtkWidget *widget, gint x, gint y);
-subroutine gtk_widget_set_uposition(widget, x, y) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: widget
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-end subroutine
-
-! void gtk_widget_set_usize (GtkWidget *widget, gint width, gint height);
-subroutine gtk_widget_set_usize(widget, width, height) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: widget
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-!  void gtk_widget_set_events (GtkWidget *widget, gint events);
+! void gtk_widget_set_events (GtkWidget *widget, gint events);
 subroutine gtk_widget_set_events(widget, events) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
@@ -27429,21 +25616,39 @@ subroutine gtk_widget_add_events(widget, events) bind(c)
   integer(c_int), value :: events
 end subroutine
 
-! void gtk_widget_set_extension_events (GtkWidget *widget, GdkExtensionMode mode);
-subroutine gtk_widget_set_extension_events(widget, mode) bind(c) 
+! void gtk_widget_set_device_events (GtkWidget *widget, GdkDevice *device, GdkEventMask events);
+subroutine gtk_widget_set_device_events(widget, device, events) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
-  integer(c_int), value :: mode
+  type(c_ptr), value :: device
+  integer(c_int), value :: events
 end subroutine
 
-!  GdkExtensionMode gtk_widget_get_extension_events (GtkWidget *widget);
-function gtk_widget_get_extension_events(widget) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_widget_get_extension_events
+! void gtk_widget_add_device_events (GtkWidget *widget, GdkDevice *device, GdkEventMask events);
+subroutine gtk_widget_add_device_events(widget, device, events) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: widget
+  type(c_ptr), value :: device
+  integer(c_int), value :: events
+end subroutine
+
+!  void gtk_widget_set_device_enabled (GtkWidget *widget, GdkDevice *device, gboolean enabled);
+subroutine gtk_widget_set_device_enabled(widget, device, enabled) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: device
+  integer(c_int), value :: enabled
+end subroutine
+
+! gboolean gtk_widget_get_device_enabled (GtkWidget *widget, GdkDevice *device);
+function gtk_widget_get_device_enabled(widget, device) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_device_enabled
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: device
 end function
 
-! GtkWidget* gtk_widget_get_toplevel (GtkWidget *widget);
+!  GtkWidget* gtk_widget_get_toplevel (GtkWidget *widget);
 function gtk_widget_get_toplevel(widget) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_widget_get_toplevel
@@ -27458,19 +25663,19 @@ function gtk_widget_get_ancestor(widget, widget_type) bind(c)
   integer(c_size_t), value :: widget_type
 end function
 
-! GdkColormap* gtk_widget_get_colormap (GtkWidget *widget);
-function gtk_widget_get_colormap(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_widget_get_colormap
-  type(c_ptr), value :: widget
-end function
-
 ! GdkVisual* gtk_widget_get_visual (GtkWidget *widget);
 function gtk_widget_get_visual(widget) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_widget_get_visual
   type(c_ptr), value :: widget
 end function
+
+! void gtk_widget_set_visual (GtkWidget *widget, GdkVisual *visual);
+subroutine gtk_widget_set_visual(widget, visual) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: visual
+end subroutine
 
 !  GdkScreen * gtk_widget_get_screen (GtkWidget *widget);
 function gtk_widget_get_screen(widget) bind(c) 
@@ -27515,13 +25720,90 @@ function gtk_widget_get_clipboard(widget, selection) bind(c)
   type(c_ptr), value :: selection
 end function
 
-! GdkPixmap * gtk_widget_get_snapshot (GtkWidget *widget, GdkRectangle *clip_rect);
-function gtk_widget_get_snapshot(widget, clip_rect) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_widget_get_snapshot
+!  gboolean gtk_widget_get_hexpand (GtkWidget *widget);
+function gtk_widget_get_hexpand(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_hexpand
   type(c_ptr), value :: widget
-  type(c_ptr), value :: clip_rect
 end function
+
+! void gtk_widget_set_hexpand (GtkWidget *widget, gboolean expand);
+subroutine gtk_widget_set_hexpand(widget, expand) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: expand
+end subroutine
+
+! gboolean gtk_widget_get_hexpand_set (GtkWidget *widget);
+function gtk_widget_get_hexpand_set(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_hexpand_set
+  type(c_ptr), value :: widget
+end function
+
+! void gtk_widget_set_hexpand_set (GtkWidget *widget, gboolean set);
+subroutine gtk_widget_set_hexpand_set(widget, set) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: set
+end subroutine
+
+! gboolean gtk_widget_get_vexpand (GtkWidget *widget);
+function gtk_widget_get_vexpand(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_vexpand
+  type(c_ptr), value :: widget
+end function
+
+! void gtk_widget_set_vexpand (GtkWidget *widget, gboolean expand);
+subroutine gtk_widget_set_vexpand(widget, expand) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: expand
+end subroutine
+
+! gboolean gtk_widget_get_vexpand_set (GtkWidget *widget);
+function gtk_widget_get_vexpand_set(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_vexpand_set
+  type(c_ptr), value :: widget
+end function
+
+! void gtk_widget_set_vexpand_set (GtkWidget *widget, gboolean set);
+subroutine gtk_widget_set_vexpand_set(widget, set) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: set
+end subroutine
+
+! void gtk_widget_queue_compute_expand (GtkWidget *widget);
+subroutine gtk_widget_queue_compute_expand(widget) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
+end subroutine
+
+! gboolean gtk_widget_compute_expand (GtkWidget *widget, GtkOrientation orientation);
+function gtk_widget_compute_expand(widget, orientation) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_compute_expand
+  type(c_ptr), value :: widget
+  integer(c_int), value :: orientation
+end function
+
+!  gboolean gtk_widget_get_support_multidevice (GtkWidget *widget);
+function gtk_widget_get_support_multidevice(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_support_multidevice
+  type(c_ptr), value :: widget
+end function
+
+! void gtk_widget_set_support_multidevice (GtkWidget *widget, gboolean support_multidevice);
+subroutine gtk_widget_set_support_multidevice(widget, support_multidevice) bind&
+&(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: support_multidevice
+end subroutine
 
 !  AtkObject* gtk_widget_get_accessible (GtkWidget *widget);
 function gtk_widget_get_accessible(widget) bind(c) 
@@ -27530,11 +25812,88 @@ function gtk_widget_get_accessible(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
-!  void gtk_widget_set_colormap (GtkWidget *widget, GdkColormap *colormap);
-subroutine gtk_widget_set_colormap(widget, colormap) bind(c) 
-  use iso_c_binding, only: c_ptr
+!  GtkAlign gtk_widget_get_halign (GtkWidget *widget);
+function gtk_widget_get_halign(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_halign
   type(c_ptr), value :: widget
-  type(c_ptr), value :: colormap
+end function
+
+! void gtk_widget_set_halign (GtkWidget *widget, GtkAlign align);
+subroutine gtk_widget_set_halign(widget, align) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: align
+end subroutine
+
+! GtkAlign gtk_widget_get_valign (GtkWidget *widget);
+function gtk_widget_get_valign(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_valign
+  type(c_ptr), value :: widget
+end function
+
+! void gtk_widget_set_valign (GtkWidget *widget, GtkAlign align);
+subroutine gtk_widget_set_valign(widget, align) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: align
+end subroutine
+
+! gint gtk_widget_get_margin_left (GtkWidget *widget);
+function gtk_widget_get_margin_left(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_margin_left
+  type(c_ptr), value :: widget
+end function
+
+! void gtk_widget_set_margin_left (GtkWidget *widget, gint margin);
+subroutine gtk_widget_set_margin_left(widget, margin) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: margin
+end subroutine
+
+! gint gtk_widget_get_margin_right (GtkWidget *widget);
+function gtk_widget_get_margin_right(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_margin_right
+  type(c_ptr), value :: widget
+end function
+
+! void gtk_widget_set_margin_right (GtkWidget *widget, gint margin);
+subroutine gtk_widget_set_margin_right(widget, margin) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: margin
+end subroutine
+
+! gint gtk_widget_get_margin_top (GtkWidget *widget);
+function gtk_widget_get_margin_top(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_margin_top
+  type(c_ptr), value :: widget
+end function
+
+! void gtk_widget_set_margin_top (GtkWidget *widget, gint margin);
+subroutine gtk_widget_set_margin_top(widget, margin) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: margin
+end subroutine
+
+! gint gtk_widget_get_margin_bottom (GtkWidget *widget);
+function gtk_widget_get_margin_bottom(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_margin_bottom
+  type(c_ptr), value :: widget
+end function
+
+! void gtk_widget_set_margin_bottom (GtkWidget *widget, gint margin);
+subroutine gtk_widget_set_margin_bottom(widget, margin) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: margin
 end subroutine
 
 !  gint gtk_widget_get_events (GtkWidget *widget);
@@ -27542,6 +25901,14 @@ function gtk_widget_get_events(widget) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_widget_get_events
   type(c_ptr), value :: widget
+end function
+
+! GdkEventMask gtk_widget_get_device_events (GtkWidget *widget, GdkDevice *device);
+function gtk_widget_get_device_events(widget, device) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_device_events
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: device
 end function
 
 ! void gtk_widget_get_pointer (GtkWidget *widget, gint *x, gint *y);
@@ -27580,10 +25947,55 @@ function gtk_widget_hide_on_delete(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
-!  void gtk_widget_style_attach (GtkWidget *style);
-subroutine gtk_widget_style_attach(style) bind(c) 
+!  void gtk_widget_override_color (GtkWidget *widget, GtkStateFlags state, const GdkRGBA *color);
+subroutine gtk_widget_override_color(widget, state, color) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: state
+  type(c_ptr), value :: color
+end subroutine
+
+! void gtk_widget_override_background_color (GtkWidget *widget, GtkStateFlags state, const GdkRGBA *color);
+subroutine gtk_widget_override_background_color(widget, state, color) bind(c) 
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: widget
+  integer(c_int), value :: state
+  type(c_ptr), value :: color
+end subroutine
+
+!  void gtk_widget_override_font (GtkWidget *widget, const PangoFontDescription *font_desc);
+subroutine gtk_widget_override_font(widget, font_desc) bind(c) 
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: style
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: font_desc
+end subroutine
+
+!  void gtk_widget_override_symbolic_color (GtkWidget *widget, const gchar *name, const GdkRGBA *color);
+subroutine gtk_widget_override_symbolic_color(widget, name, color) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: name
+  type(c_ptr), value :: color
+end subroutine
+
+! void gtk_widget_override_cursor (GtkWidget *widget, const GdkRGBA *cursor, const GdkRGBA *secondary_cursor);
+subroutine gtk_widget_override_cursor(widget, cursor, secondary_cursor) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: cursor
+  type(c_ptr), value :: secondary_cursor
+end subroutine
+
+!  void gtk_widget_reset_style (GtkWidget *widget);
+subroutine gtk_widget_reset_style(widget) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
+end subroutine
+
+!  void gtk_widget_style_attach (GtkWidget *widget);
+subroutine gtk_widget_style_attach(widget) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
 end subroutine
 
 !  gboolean gtk_widget_has_rc_style (GtkWidget *widget);
@@ -27674,6 +26086,47 @@ subroutine gtk_widget_modify_font(widget, font_desc) bind(c)
   type(c_ptr), value :: font_desc
 end subroutine
 
+!  void gtk_widget_reset_rc_styles (GtkWidget *widget);
+subroutine gtk_widget_reset_rc_styles(widget) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: widget
+end subroutine
+
+!  GtkStyle* gtk_widget_get_default_style (void);
+function gtk_widget_get_default_style() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_widget_get_default_style
+end function
+
+!  void gtk_widget_path (GtkWidget *widget, guint *path_length, gchar **path, gchar **path_reversed);
+subroutine gtk_widget_path(widget, path_length, path, path_reversed) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: path_length
+  character(kind=c_char), dimension(*) :: path
+  character(kind=c_char), dimension(*) :: path_reversed
+end subroutine
+
+! void gtk_widget_class_path (GtkWidget *widget, guint *path_length, gchar **path, gchar **path_reversed);
+subroutine gtk_widget_class_path(widget, path_length, path, path_reversed) bind&
+&(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: path_length
+  character(kind=c_char), dimension(*) :: path
+  character(kind=c_char), dimension(*) :: path_reversed
+end subroutine
+
+!  GdkPixbuf *gtk_widget_render_icon (GtkWidget *widget, const gchar *stock_id, GtkIconSize size, const gchar *detail);
+function gtk_widget_render_icon(widget, stock_id, size, detail) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr) :: gtk_widget_render_icon
+  type(c_ptr), value :: widget
+  character(kind=c_char), dimension(*) :: stock_id
+  integer(c_int), value :: size
+  character(kind=c_char), dimension(*) :: detail
+end function
+
 !  PangoContext *gtk_widget_create_pango_context (GtkWidget *widget);
 function gtk_widget_create_pango_context(widget) bind(c) 
   use iso_c_binding, only: c_ptr
@@ -27696,14 +26149,13 @@ function gtk_widget_create_pango_layout(widget, text) bind(c)
   character(kind=c_char), dimension(*) :: text
 end function
 
-!  GdkPixbuf *gtk_widget_render_icon (GtkWidget *widget, const gchar *stock_id, GtkIconSize size, const gchar *detail);
-function gtk_widget_render_icon(widget, stock_id, size, detail) bind(c) 
+!  GdkPixbuf *gtk_widget_render_icon_pixbuf (GtkWidget *widget, const gchar *stock_id, GtkIconSize size);
+function gtk_widget_render_icon_pixbuf(widget, stock_id, size) bind(c) 
   use iso_c_binding, only: c_ptr, c_char, c_int
-  type(c_ptr) :: gtk_widget_render_icon
+  type(c_ptr) :: gtk_widget_render_icon_pixbuf
   type(c_ptr), value :: widget
   character(kind=c_char), dimension(*) :: stock_id
   integer(c_int), value :: size
-  character(kind=c_char), dimension(*) :: detail
 end function
 
 !  void gtk_widget_set_composite_name (GtkWidget *widget, const gchar *name);
@@ -27720,30 +26172,13 @@ function gtk_widget_get_composite_name(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
-!   void gtk_widget_reset_rc_styles (GtkWidget *widget);
-subroutine gtk_widget_reset_rc_styles(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: widget
-end subroutine
-
-!  void gtk_widget_push_colormap (GdkColormap *cmap);
-subroutine gtk_widget_push_colormap(cmap) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: cmap
-end subroutine
-
-! void gtk_widget_push_composite_child (void);
+!   void gtk_widget_push_composite_child (void);
 subroutine gtk_widget_push_composite_child() bind(c) 
   use iso_c_binding, only: 
 end subroutine
 
 ! void gtk_widget_pop_composite_child (void);
 subroutine gtk_widget_pop_composite_child() bind(c) 
-  use iso_c_binding, only: 
-end subroutine
-
-! void gtk_widget_pop_colormap (void);
-subroutine gtk_widget_pop_colormap() bind(c) 
   use iso_c_binding, only: 
 end subroutine
 
@@ -27796,30 +26231,6 @@ subroutine gtk_widget_style_get_valist(widget, first_property_name, var_args) b&
   type(c_ptr), value :: var_args
 end subroutine
 
-!  void gtk_widget_set_default_colormap (GdkColormap *colormap);
-subroutine gtk_widget_set_default_colormap(colormap) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: colormap
-end subroutine
-
-! GtkStyle* gtk_widget_get_default_style (void);
-function gtk_widget_get_default_style() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_widget_get_default_style
-end function
-
-!  GdkColormap* gtk_widget_get_default_colormap (void);
-function gtk_widget_get_default_colormap() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_widget_get_default_colormap
-end function
-
-! GdkVisual* gtk_widget_get_default_visual (void);
-function gtk_widget_get_default_visual() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_widget_get_default_visual
-end function
-
 !  void gtk_widget_set_direction (GtkWidget *widget, GtkTextDirection dir);
 subroutine gtk_widget_set_direction(widget, dir) bind(c) 
   use iso_c_binding, only: c_ptr, c_int
@@ -27853,49 +26264,18 @@ function gtk_widget_is_composited(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
-!  void gtk_widget_shape_combine_mask (GtkWidget *widget, GdkBitmap *shape_mask, gint offset_x, gint offset_y);
-subroutine gtk_widget_shape_combine_mask(widget, shape_mask, offset_x, offset_y&
-&) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: widget
-  type(c_ptr), value :: shape_mask
-  integer(c_int), value :: offset_x
-  integer(c_int), value :: offset_y
-end subroutine
-
-! void gtk_widget_input_shape_combine_mask (GtkWidget *widget, GdkBitmap *shape_mask, gint offset_x, gint offset_y);
-subroutine gtk_widget_input_shape_combine_mask(widget, shape_mask, offset_x, of&
-&fset_y) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: widget
-  type(c_ptr), value :: shape_mask
-  integer(c_int), value :: offset_x
-  integer(c_int), value :: offset_y
-end subroutine
-
-!  void gtk_widget_reset_shapes (GtkWidget *widget);
-subroutine gtk_widget_reset_shapes(widget) bind(c) 
+!  void gtk_widget_shape_combine_region (GtkWidget *widget, cairo_region_t *region);
+subroutine gtk_widget_shape_combine_region(widget, region) bind(c) 
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
+  type(c_ptr), value :: region
 end subroutine
 
-!  void gtk_widget_path (GtkWidget *widget, guint *path_length, gchar **path, gchar **path_reversed);
-subroutine gtk_widget_path(widget, path_length, path, path_reversed) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
+! void gtk_widget_input_shape_combine_region (GtkWidget *widget, cairo_region_t *region);
+subroutine gtk_widget_input_shape_combine_region(widget, region) bind(c) 
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
-  type(c_ptr), value :: path_length
-  character(kind=c_char), dimension(*) :: path
-  character(kind=c_char), dimension(*) :: path_reversed
-end subroutine
-
-! void gtk_widget_class_path (GtkWidget *widget, guint *path_length, gchar **path, gchar **path_reversed);
-subroutine gtk_widget_class_path(widget, path_length, path, path_reversed) bind&
-&(c) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: widget
-  type(c_ptr), value :: path_length
-  character(kind=c_char), dimension(*) :: path
-  character(kind=c_char), dimension(*) :: path_reversed
+  type(c_ptr), value :: region
 end subroutine
 
 !  GList* gtk_widget_list_mnemonic_labels (GtkWidget *widget);
@@ -27981,10 +26361,32 @@ function gtk_widget_get_has_tooltip(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
+!  gboolean gtk_cairo_should_draw_window (cairo_t *cr, GdkWindow *window);
+function gtk_cairo_should_draw_window(cr, window) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_cairo_should_draw_window
+  type(c_ptr), value :: cr
+  type(c_ptr), value :: window
+end function
+
+! void gtk_cairo_transform_to_window (cairo_t *cr, GtkWidget *widget, GdkWindow *window);
+subroutine gtk_cairo_transform_to_window(cr, widget, window) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: cr
+  type(c_ptr), value :: widget
+  type(c_ptr), value :: window
+end subroutine
+
 !  GType gtk_requisition_get_type (void) G_GNUC_CONST;
 function gtk_requisition_get_type() bind(c) 
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_requisition_get_type
+end function
+
+! GtkRequisition *gtk_requisition_new (void) G_GNUC_MALLOC;
+function gtk_requisition_new() bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_requisition_new
 end function
 
 ! GtkRequisition *gtk_requisition_copy (const GtkRequisition *requisition);
@@ -27999,6 +26401,27 @@ subroutine gtk_requisition_free(requisition) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: requisition
 end subroutine
+
+!  gboolean gtk_widget_in_destruction (GtkWidget *widget);
+function gtk_widget_in_destruction(widget) bind(c) 
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_in_destruction
+  type(c_ptr), value :: widget
+end function
+
+!  GtkStyleContext * gtk_widget_get_style_context (GtkWidget *widget);
+function gtk_widget_get_style_context(widget) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_widget_get_style_context
+  type(c_ptr), value :: widget
+end function
+
+!  GtkWidgetPath * gtk_widget_get_path (GtkWidget *widget);
+function gtk_widget_get_path(widget) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_widget_get_path
+  type(c_ptr), value :: widget
+end function
 
 !  void ubuntu_gtk_widget_set_has_grab (GtkWidget *widget, gboolean has_grab);
 subroutine ubuntu_gtk_widget_set_has_grab(widget, has_grab) bind(c) 
@@ -28030,20 +26453,6 @@ function gtk_recent_manager_get_default() bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_recent_manager_get_default
 end function
-
-!  GtkRecentManager *gtk_recent_manager_get_for_screen (GdkScreen *screen);
-function gtk_recent_manager_get_for_screen(screen) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_recent_manager_get_for_screen
-  type(c_ptr), value :: screen
-end function
-
-! void gtk_recent_manager_set_screen (GtkRecentManager *manager, GdkScreen *screen);
-subroutine gtk_recent_manager_set_screen(manager, screen) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: manager
-  type(c_ptr), value :: screen
-end subroutine
 
 !  gboolean gtk_recent_manager_add_item (GtkRecentManager *manager, const gchar *uri);
 function gtk_recent_manager_add_item(manager, uri) bind(c) 
@@ -28096,20 +26505,6 @@ function gtk_recent_manager_move_item(manager, uri, new_uri, error) bind(c)
   character(kind=c_char), dimension(*) :: uri
   character(kind=c_char), dimension(*) :: new_uri
   type(c_ptr), value :: error
-end function
-
-! void gtk_recent_manager_set_limit (GtkRecentManager *manager, gint limit);
-subroutine gtk_recent_manager_set_limit(manager, limit) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: manager
-  integer(c_int), value :: limit
-end subroutine
-
-! gint gtk_recent_manager_get_limit (GtkRecentManager *manager);
-function gtk_recent_manager_get_limit(manager) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_recent_manager_get_limit
-  type(c_ptr), value :: manager
 end function
 
 ! GList * gtk_recent_manager_get_items (GtkRecentManager *manager);
@@ -28214,6 +26609,15 @@ function gtk_recent_info_get_application_info(info, app_name, app_exec, count, &
   type(c_ptr), value :: time_
 end function
 
+! GAppInfo * gtk_recent_info_create_app_info (GtkRecentInfo *info, const gchar *app_name, GError **error);
+function gtk_recent_info_create_app_info(info, app_name, error) bind(c) 
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_recent_info_create_app_info
+  type(c_ptr), value :: info
+  character(kind=c_char), dimension(*) :: app_name
+  type(c_ptr), value :: error
+end function
+
 ! gchar ** gtk_recent_info_get_applications (GtkRecentInfo *info, gsize *length) G_GNUC_MALLOC;
 function gtk_recent_info_get_applications(info, length) bind(c) 
   use iso_c_binding, only: c_ptr
@@ -28259,6 +26663,13 @@ function gtk_recent_info_get_icon(info, size) bind(c)
   type(c_ptr) :: gtk_recent_info_get_icon
   type(c_ptr), value :: info
   integer(c_int), value :: size
+end function
+
+! GIcon * gtk_recent_info_get_gicon (GtkRecentInfo *info);
+function gtk_recent_info_get_gicon(info) bind(c) 
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_recent_info_get_gicon
+  type(c_ptr), value :: info
 end function
 
 ! gchar * gtk_recent_info_get_short_name (GtkRecentInfo *info) G_GNUC_MALLOC;
@@ -28336,70 +26747,6 @@ subroutine gtk_im_multicontext_set_context_id(context, context_id) bind(c)
   type(c_ptr), value :: context
   character(kind=c_char), dimension(*) :: context_id
 end subroutine
-
-!   GType gtk_tooltips_get_type (void) G_GNUC_CONST;
-function gtk_tooltips_get_type() bind(c) 
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_tooltips_get_type
-end function
-
-! GtkTooltips* gtk_tooltips_new (void);
-function gtk_tooltips_new() bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_tooltips_new
-end function
-
-!  void gtk_tooltips_enable (GtkTooltips *tooltips);
-subroutine gtk_tooltips_enable(tooltips) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tooltips
-end subroutine
-
-! void gtk_tooltips_disable (GtkTooltips *tooltips);
-subroutine gtk_tooltips_disable(tooltips) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tooltips
-end subroutine
-
-! void gtk_tooltips_set_delay (GtkTooltips *tooltips, guint delay);
-subroutine gtk_tooltips_set_delay(tooltips, delay) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: tooltips
-  integer(c_int), value :: delay
-end subroutine
-
-! void gtk_tooltips_set_tip (GtkTooltips *tooltips, GtkWidget *widget, const gchar *tip_text, const gchar *tip_private);
-subroutine gtk_tooltips_set_tip(tooltips, widget, tip_text, tip_private) bind(c&
-&) 
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: tooltips
-  type(c_ptr), value :: widget
-  character(kind=c_char), dimension(*) :: tip_text
-  character(kind=c_char), dimension(*) :: tip_private
-end subroutine
-
-! GtkTooltipsData* gtk_tooltips_data_get (GtkWidget *widget);
-function gtk_tooltips_data_get(widget) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_tooltips_data_get
-  type(c_ptr), value :: widget
-end function
-
-! void gtk_tooltips_force_window (GtkTooltips *tooltips);
-subroutine gtk_tooltips_force_window(tooltips) bind(c) 
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: tooltips
-end subroutine
-
-!  gboolean gtk_tooltips_get_info_from_tip_window (GtkWindow *tip_window, GtkTooltips **tooltips, GtkWidget **current_widget);
-function gtk_tooltips_get_info_from_tip_window(tip_window, tooltips, current_wi&
-&dget) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_tooltips_get_info_from_tip_window
-  type(c_ptr), value :: tip_window
-  type(c_ptr), value :: tooltips
-  type(c_ptr), value :: current_widget
-end function
 
 !   GType gtk_expander_get_type (void) G_GNUC_CONST;
 function gtk_expander_get_type() bind(c) 

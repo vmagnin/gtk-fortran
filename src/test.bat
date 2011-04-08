@@ -2,7 +2,7 @@ echo OFF
 echo Please be patient...
 echo The hl_ examples need GTK+ 2.18 or higher
 echo
-echo Compiling gtk-fortran
+echo Compiling gtk-fortran for GTK+ 2
 echo ON
 
 gfortran -c glib-auto.f90 gtk.f90 gtk-hl.f90 gtk-sup.f90 atk-auto.f90 cairo-auto.f90 gdk-auto.f90 gdk-pixbuf-auto.f90 pango-auto.f90 -L. -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
