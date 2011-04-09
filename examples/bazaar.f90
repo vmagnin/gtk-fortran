@@ -44,7 +44,7 @@ end module
 
 module handlers
   use gtk, only: gtk_about_dialog_new, gtk_about_dialog_set_authors, &
-  & gtk_about_dialog_set_comments, gtk_about_dialog_set_license, gtk_about_dialog_set_name,&
+  & gtk_about_dialog_set_comments, gtk_about_dialog_set_license, gtk_about_dialog_set_program_name,&
   & gtk_about_dialog_set_website, gtk_button_new, gtk_button_new_with_label, &
   & gtk_container_add, gtk_container_set_border_width, gtk_dialog_run, gtk_drawing_area_new,&
   & gtk_entry_get_text, gtk_entry_new, gtk_file_chooser_button_new, &
@@ -207,7 +207,7 @@ contains
     integer(c_int) :: response_id
     
     dialog = gtk_about_dialog_new()
-    call gtk_about_dialog_set_name(dialog, "Gtk-fortran"//CNULL)
+    call gtk_about_dialog_set_program_name(dialog, "Gtk-fortran"//CNULL)
     call gtk_about_dialog_set_license(dialog, "GNU GPL 3"//CNULL)
     call gtk_about_dialog_set_comments(dialog, "The gtk-fortran project &
     & aims to offer scientists programming in Fortran a cross-platform library &
