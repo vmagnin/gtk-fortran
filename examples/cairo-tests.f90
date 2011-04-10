@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g mandelbrot.f90 `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -I../src ../src/gtk.o cairo-tests.f90 `pkg-config --cflags --libs gtk+-3.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
 
 module handlers
@@ -43,14 +43,12 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
   
-  use iso_c_binding
+  use iso_c_binding, only: c_int, c_ptr, c_char
 
   implicit none
-
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
-  
   type(c_ptr) :: my_pixbuf
   character(c_char), dimension(:), pointer :: pixel
   integer :: nch, rowstride, width, height
@@ -67,11 +65,13 @@ contains
     ret = FALSE
   end function delete_event
 
+
   subroutine pending_events ()
     do while(IAND(gtk_events_pending(), run_status) /= FALSE)
       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
     end do
   end subroutine pending_events
+
 
   function expose_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding
@@ -129,7 +129,7 @@ end module handlers
 
 
 program mandelbrot
-  use iso_c_binding
+  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
   use handlers
   implicit none
   type(c_ptr) :: my_window
@@ -149,10 +149,10 @@ program mandelbrot
   call g_signal_connect (my_window, "delete-event"//CNULL, c_funloc(delete_event))
       
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect (my_drawing_area, "expose-event"//CNULL, c_funloc(expose_event))
+  ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
+  call g_signal_connect (my_drawing_area, "draw"//CNULL, c_funloc(expose_event))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
-
   
   call gtk_widget_show (my_window)
       
@@ -181,74 +181,74 @@ program mandelbrot
 end program mandelbrot 
 
 
-  !*********************************************
-  ! A tribute to Benoit MANDELBROT (1924-2010)
-  ! http://en.wikipedia.org/wiki/Mandelbrot_set
-  !*********************************************
-  subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
-    ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
-    ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
-    use iso_c_binding
-    use handlers
-    implicit none
+!*********************************************
+! A tribute to Benoit MANDELBROT (1924-2010)
+! http://en.wikipedia.org/wiki/Mandelbrot_set
+!*********************************************
+subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
+  ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
+  ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
+  use iso_c_binding
+  use handlers
+  implicit none
 
-    type(c_ptr) :: my_drawing_area
-    integer(4) :: i, j, k, p, itermax
-    real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-    complex(8) :: c, z   
-    real(8)    :: scx, scy             ! scales
-    integer(1) :: red, green, blue     ! rgb color
-    real(8) :: system_time, t0, t1
+  type(c_ptr) :: my_drawing_area
+  integer(4) :: i, j, k, p, itermax
+  real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+  complex(8) :: c, z   
+  real(8)    :: scx, scy             ! scales
+  integer(1) :: red, green, blue     ! rgb color
+  real(8) :: system_time, t0, t1
+  
+  t0=system_time()
+  scx = ((xmax-xmin)/(width/2))   ! x scale
+  scy = ((ymax-ymin)/(height/2))  ! y scale
+  
+  do i=0, width/2
+    ! We provoke an expose_event:
+    !if (mod(i,10)==0) then
+    if (mod(i,1)==0) then
+      call gtk_widget_queue_draw(my_drawing_area)
+    end if
     
-    t0=system_time()
-    scx = ((xmax-xmin)/(width/2))   ! x scale
-    scy = ((ymax-ymin)/(height/2))  ! y scale
-    
-    do i=0, width/2
-      ! We provoke an expose_event:
-      !if (mod(i,10)==0) then
-      if (mod(i,1)==0) then
-        call gtk_widget_queue_draw(my_drawing_area)
+    x = xmin + scx * i
+    do j=0, height/2
+      y = ymin + scy * j
+      c = x + y*(0d0,1d0)   ! Starting point
+      z = (0d0, 0d0)        ! z0
+      k = 1
+      do while ((k <= itermax) .and. (abs(z)<2d0))
+        z = z*z+c
+        k = k+1
+      end do
+      
+      if (k>itermax) then
+        ! Black pixel:
+        red   = 0
+        green = 0
+        blue  = 0
+      else
+        red   = min(255, k*2)
+        green = min(255, k*5)
+        blue  = min(255, k*10)
       end if
       
-      x = xmin + scx * i
-      do j=0, height/2
-        y = ymin + scy * j
-        c = x + y*(0d0,1d0)   ! Starting point
-        z = (0d0, 0d0)        ! z0
-        k = 1
-        do while ((k <= itermax) .and. (abs(z)<2d0))
-          z = z*z+c
-          k = k+1
-        end do
-        
-        if (k>itermax) then
-          ! Black pixel:
-          red   = 0
-          green = 0
-          blue  = 0
-        else
-          red   = min(255, k*2)
-          green = min(255, k*5)
-          blue  = min(255, k*10)
-        end if
-        
-        p = i * nch + j * rowstride + 1
-        pixel(p)=char(red)
-        pixel(p+1)=char(green)
-        pixel(p+2)=char(blue)
-        pixel(p+3)=char(255)  ! Opacity (alpha channel)
+      p = i * nch + j * rowstride + 1
+      pixel(p)=char(red)
+      pixel(p+1)=char(green)
+      pixel(p+2)=char(blue)
+      pixel(p+3)=char(255)  ! Opacity (alpha channel)
 
-        ! This subrountine processes gtk events as needed during the computation.
-        call pending_events()
-        if (run_status == FALSE) return ! Exit if we had a delete event.
-      end do
+      ! This subrountine processes gtk events as needed during the computation.
+      call pending_events()
+      if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
-    finished = .true.
-    call gtk_widget_queue_draw(my_drawing_area)
-    t1=system_time()
-    print *, "System time = ", t1-t0
-  end subroutine mandelbrot_set
+  end do
+  finished = .true.
+  call gtk_widget_queue_draw(my_drawing_area)
+  t1=system_time()
+  print *, "System time = ", t1-t0
+end subroutine mandelbrot_set
 
 !***********************************************************
 !  system time since 00:00

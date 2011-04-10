@@ -56,12 +56,16 @@ module handlers
   & gtk_window_set_default_size, gtk_window_set_title, &
   & g_signal_connect, gtk_init, FALSE, TRUE, CNULL, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&
   & GTK_WINDOW_TOPLEVEL, NULL
+  
   use cairo, only: cairo_create, cairo_curve_to, cairo_destroy, cairo_line_to, &
   & cairo_move_to, cairo_paint, cairo_set_line_width, cairo_set_source, &
   & cairo_set_source_rgb, cairo_stroke
+  
   use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  
   use gdk_pixbuf, only: gdk_pixbuf_get_has_alpha, gdk_pixbuf_get_n_channels, &
   & gdk_pixbuf_get_pixels, gdk_pixbuf_get_rowstride, gdk_pixbuf_new
+  
   use my_widgets
   implicit none
   
@@ -161,7 +165,6 @@ contains
     call cairo_line_to(my_cairo_context, 100d0, 50d0)
     call cairo_stroke(my_cairo_context) 
 
-
     call cairo_destroy(my_cairo_context)
     ret = FALSE
   end function expose_event
@@ -186,6 +189,7 @@ contains
     print *, "Hello World!"
     ret = FALSE
   end function firstbutton
+
   
   ! GtkButton signal:
   function secondbutton (widget, gdata ) result(ret)  bind(c)
@@ -322,7 +326,8 @@ program gtkFortran
   call gtk_table_attach_defaults(table, scrolled_window, 0, 3, 3, 6)  
 
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect (my_drawing_area, "expose-event"//CNULL, c_funloc(expose_event))
+  ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
+  call g_signal_connect (my_drawing_area, "draw"//CNULL, c_funloc(expose_event))
   call gtk_table_attach_defaults(table, my_drawing_area, 0, 3, 6, 11)  
   
   file_selector = gtk_file_chooser_button_new ("gtk_file_chooser_button_new"//CNULL, 0)

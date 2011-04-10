@@ -21,6 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
+! gfortran -I../src ../src/gtk.o julia_pixbuf.f90 `pkg-config --cflags --libs gtk+-3.0`
 ! Contributed by Vincent Magnin and Jerry DeLisle 
 
 module handlers
@@ -29,21 +30,25 @@ module handlers
   &idget_queue_draw, gtk_widget_show, gtk_window_new, gtk_window_set_default, gtk&
   &_window_set_default_size, gtk_window_set_title, TRUE, FALSE, NULL, CNULL, &
   &GDK_COLORSPACE_RGB, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect
+  
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
+  
   use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
-  use iso_c_binding
+  
+  use iso_c_binding, only: c_int, c_char, c_ptr
   
   implicit none
 
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
-  logical :: boolevent
-  
+  logical :: boolevent  
   type(c_ptr) :: my_pixbuf
   character(c_char), dimension(:), pointer :: pixel
   integer :: nch, rowstride, width, height
+
   
 contains
   ! User defined event handlers go here
@@ -56,14 +61,16 @@ contains
     ret = FALSE
   end function delete_event
 
+
   subroutine pending_events ()
     do while(IAND(gtk_events_pending(), run_status) /= FALSE)
       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
     end do
   end subroutine pending_events
 
+
   function expose_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding
+    use iso_c_binding, only: c_int, c_ptr
     implicit none
     
     integer(c_int)    :: ret
@@ -78,8 +85,9 @@ contains
   end function expose_event
 end module handlers
 
+
 program julia
-  use iso_c_binding
+  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
   use handlers
   implicit none
   type(c_ptr) :: my_window
@@ -98,10 +106,10 @@ program julia
   call g_signal_connect (my_window, "delete-event"//CNULL, c_funloc(delete_event))
       
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect (my_drawing_area, "expose-event"//CNULL, c_funloc(expose_event))
+  ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
+  call g_signal_connect (my_drawing_area, "draw"//CNULL, c_funloc(expose_event))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
-
   
   call gtk_widget_show (my_window)
   

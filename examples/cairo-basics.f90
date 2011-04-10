@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -I../src ../src/gtk.o cairo-basics.f90 `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -I../src ../src/gtk.o cairo-basics.f90 `pkg-config --cflags --libs gtk+-3.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
 
 module handlers
@@ -42,11 +42,11 @@ module handlers
   use gdk, only: gdk_cairo_create
   
   implicit none
-
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
   integer :: width, height
+  
   
 contains
   ! User defined event handlers go here
@@ -58,11 +58,13 @@ contains
     ret = FALSE
   end function delete_event
 
+
   subroutine pending_events ()
     do while(IAND(gtk_events_pending(), run_status) /= FALSE)
       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
     end do
   end subroutine pending_events
+
 
   function expose_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_int, c_ptr
@@ -138,7 +140,8 @@ program cairo_basics
   call g_signal_connect (my_window, "delete-event"//CNULL, c_funloc(delete_event))
       
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect (my_drawing_area, "expose-event"//CNULL, c_funloc(expose_event))
+  ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
+  call g_signal_connect (my_drawing_area, "draw"//CNULL, c_funloc(expose_event))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
 
