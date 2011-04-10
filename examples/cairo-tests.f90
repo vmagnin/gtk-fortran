@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g mandelbrot.f90 `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -I../src ../src/gtk.o cairo-tests.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
 
 module handlers
@@ -29,15 +29,20 @@ module handlers
   &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
   &idget_queue_draw, gtk_widget_show, gtk_window_new, gtk_window_set_default, gtk&
   &_window_set_default_size, gtk_window_set_title, TRUE, FALSE, NULL, CNULL, &
-  & GTK_WINDOW_TOPLEVEL, GDK_COLORSPACE_RGB, gtk_init, g_signal_connect
+  & GTK_WINDOW_TOPLEVEL, GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, &
+  &CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
+  
   use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, cairo_&
   &get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, cairo_paint, cai&
   &ro_select_font_face, cairo_set_font_size, cairo_set_line_width, cairo_set_sour&
   &ce, cairo_set_source_rgb, cairo_show_text, cairo_stroke, cairo_surface_write_t&
   &o_png
+  
   use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
+  
   use iso_c_binding
 
   implicit none
@@ -69,8 +74,7 @@ contains
   end subroutine pending_events
 
   function expose_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding
-    use gtk
+    use iso_c_binding, only: c_int, c_ptr
     implicit none
     integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, event, gdata
