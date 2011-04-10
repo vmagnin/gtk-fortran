@@ -26,10 +26,11 @@
 
 module handlers
   use gtk_hl
-  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
-  & gtk_container_add, gtk_events_pending, gtk_main, gtk_main_iteration, gtk_main&
-  &_iteration_do, gtk_main_quit, gtk_object_destroy, gtk_progress_bar_new, gtk_vb&
-  &ox_new, gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
+  use gtk, only: gtk_button_new, gtk_container_add, gtk_events_pending, gtk_main,&
+       & gtk_main_iteration, gtk_main_iteration_do, gtk_main_quit, gtk_widget_destroy,&
+       & gtk_progress_bar_new, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
+       & gtk_init
+
   use g, only: g_usleep
 
   implicit none
@@ -41,7 +42,7 @@ contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     print *, "Exit called"
-!    call gtk_object_destroy(win)
+!    call gtk_widget_destroy(win)
 !    call gtk_main_quit ()
     run_status = FALSE
   end subroutine my_destroy
@@ -73,18 +74,18 @@ program progress
   win = hl_gtk_window_new("Progress"//cnull, destroy=c_funloc(my_destroy))
 
   ! Make a column box to contain our widgets and put it in the window
-  box=gtk_vbox_new(FALSE, 0)
+  box=hl_gtk_box_new()
   call gtk_container_add(win, box)
 
   ! Make 2 horizontal progress bars and put them in the box
   bar = hl_gtk_progress_bar_new()
-  call gtk_box_pack_start_defaults(box, bar)
+  call hl_gtk_box_pack(box, bar)
   pbar = hl_gtk_progress_bar_new(step=0.05_c_double)
-  call gtk_box_pack_start_defaults(box, pbar)
+  call hl_gtk_box_pack(box, pbar)
 
   ! Make a quit button and put that in the box.
   qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
-  call gtk_box_pack_start_defaults(box, qbut)
+  call hl_gtk_box_pack(box, qbut)
 
   ! Display the window
   call gtk_widget_show_all(Win) 
@@ -107,5 +108,5 @@ program progress
           & call hl_gtk_progress_bar_set(pbar, text="Working"//cnull)
      ! There's an issue with string arguments in overloaded procedures
   end do
-  call gtk_object_destroy(Win)
+  call gtk_widget_destroy(Win)
 end program progress

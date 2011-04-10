@@ -27,10 +27,9 @@
 module rb_handlers
 
   use gtk_hl
-  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
-  & gtk_container_add, gtk_main, gtk_main_quit, gtk_object_destroy, gtk_radio_but&
-  &ton_new, gtk_toggle_button_get_active, gtk_vbox_new, gtk_widget_show, gtk_widg&
-  &et_show_all, gtk_window_new, gtk_init
+  use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
+       &widget_destroy, gtk_radio_button_new, gtk_toggle_button_get_active, gtk_widget&
+       &_show, gtk_widget_show_all, gtk_window_new, gtk_init
 
   implicit none
 
@@ -41,7 +40,7 @@ contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     print *, "Exit called"
-    call gtk_object_destroy(window)
+    call gtk_widget_destroy(window)
     call gtk_main_quit ()
   end subroutine my_destroy
 
@@ -86,7 +85,7 @@ program radio
 
   ! Create a window and a vertical box
   window = hl_gtk_window_new('radios'//cnull, destroy=c_funloc(my_destroy))
-  box = gtk_vbox_new(TRUE, 0)
+  box = hl_gtk_box_new(homogeneous=TRUE)
   call gtk_container_add(window, box)
 
   ! make 6 radio buttons and put them into the box (the group is
@@ -100,7 +99,7 @@ program radio
      write(label,"('Choice #',i0)") i-1
      rbut(i) = hl_gtk_radio_button_new(group, trim(label)//cnull, &
           & toggled=c_funloc(rb_toggle), data=c_loc(isel(i)))
-     call gtk_box_pack_start_defaults(box, rbut(i))
+     call hl_gtk_box_pack(box, rbut(i))
   end do
 
   ! Set a selection (3)
@@ -109,7 +108,7 @@ program radio
   ! Make a "quit" button and put it in the box as well, then put the
   ! box in the window
   qbut = hl_gtk_button_new('Quit'//cnull, clicked=c_funloc(my_destroy))
-  call gtk_box_pack_start_defaults(box, qbut)
+  call hl_gtk_box_pack(box, qbut)
 
   ! Realize the hierarchy
   call gtk_widget_show_all(window)

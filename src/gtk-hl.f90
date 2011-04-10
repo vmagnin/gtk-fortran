@@ -52,6 +52,21 @@ module gtk_hl
   ! hl_gtk_menu_item: Add a button to a menu
   ! hl_gtk_progress_bar_new: A progress bar.
   ! hl_gtk_progress_bar_set: Set the value of a progress bar.
+  ! hl_gtk_message_dialog_show
+
+  ! To facilitate the automatic extraction of API information, there are
+  ! 2 types of comment block that are extracted:
+  !
+  ! Blocks delimited by !* and !/ which provide a section header and
+  ! an optional description for a group of widgets.
+  !
+  ! Block delimited by !+ and !- describe an individual routine.
+  ! !+ should immediately precede the function or subroutine statement.
+  ! The descriptive comments should come between that and the start of
+  ! the declarations. The arguments are described in a colon-separated list
+  ! with name: type : status : description.
+  ! If there is any description following the table, then a line with just
+  ! a ! character must terminate the table.
 
   ! The iso_c_binding & gtk modules are implicitly included in the
   ! gtk_sup -- speeds compilation to omit them here.
@@ -59,48 +74,53 @@ module gtk_hl
   ! use gtk
   use gtk_sup
 
-  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
-  & gtk_button_new_with_label, gtk_cell_renderer_set_alignment, gtk_cell_renderer&
-  &_set_padding, gtk_cell_renderer_set_visible, gtk_cell_renderer_text_new, gtk_c&
-  &heck_button_new, gtk_check_button_new_with_label, gtk_container_add, gtk_conta&
-  &iner_set_border_width, gtk_dialog_add_button, gtk_dialog_get_content_area, gtk&
-  &_dialog_new, gtk_dialog_run, gtk_editable_set_editable, gtk_entry_new, gtk_ent&
-  &ry_set_activates_default, gtk_entry_set_max_length, gtk_entry_set_text, gtk_la&
-  &bel_new, gtk_list_store_append, gtk_list_store_clear, gtk_list_store_insert, g&
-  &tk_list_store_newv, gtk_list_store_remove, gtk_list_store_set_value, gtk_menu_&
-  &bar_new, gtk_menu_bar_set_pack_direction, gtk_menu_item_new, gtk_menu_item_new&
-  &_with_label, gtk_menu_item_set_submenu, gtk_menu_new, gtk_menu_shell_append, g&
-  &tk_menu_shell_insert, gtk_object_destroy, gtk_progress_bar_new, gtk_progress_b&
-  &ar_pulse, gtk_progress_bar_set_fraction, gtk_progress_bar_set_orientation, gtk&
-  &_progress_bar_set_pulse_step, gtk_progress_bar_set_text, gtk_radio_button_get_&
-  &group, gtk_radio_button_new, gtk_radio_button_new_with_label, gtk_scrolled_win&
-  &dow_new, gtk_scrolled_window_set_policy, gtk_separator_menu_item_new, gtk_togg&
-  &le_button_get_active, gtk_toggle_button_set_active, gtk_tree_model_get_iter, g&
-  &tk_tree_model_get_value, gtk_tree_model_iter_n_children, gtk_tree_model_iter_n&
-  &ext, gtk_tree_model_iter_nth_child, gtk_tree_path_free, gtk_tree_selection_get&
-  &_selected, gtk_tree_selection_get_selected_rows, gtk_tree_selection_set_mode, &
-  &gtk_tree_view_append_column, gtk_tree_view_column_add_attribute, gtk_tree_view&
-  &_column_new, gtk_tree_view_column_pack_start, gtk_tree_view_column_set_fixed_w&
-  &idth, gtk_tree_view_column_set_max_width, gtk_tree_view_column_set_reorderable&
-  &, gtk_tree_view_column_set_resizable, gtk_tree_view_column_set_sizing, gtk_tre&
-  &e_view_column_set_title, gtk_tree_view_get_model, gtk_tree_view_get_selection,&
-  & gtk_tree_view_new, gtk_tree_view_new_with_model, gtk_widget_destroy, gtk_widg&
-  &et_set_sensitive, gtk_widget_set_size_request, gtk_widget_set_tooltip_text, gt&
-  &k_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_default, gt&
-  &k_window_set_default_size, gtk_window_set_modal, gtk_window_set_title,&
-  &GTK_BUTTONS_NONE, GTK_BUTTONS_OK, GTK_RESPONSE_OK, GTK_BUTTONS_CLOSE, &
-  &GTK_BUTTONS_YES_NO, GTK_BUTTONS_OK_CANCEL, GTK_RESPONSE_CANCEL, GTK_RESPONSE_CLOSE,&
-  &GTK_RESPONSE_NO, GTK_RESPONSE_NONE, GTK_RESPONSE_YES, GTK_PACK_DIRECTION_LTR,&
-  &GTK_POLICY_AUTOMATIC, GTK_SELECTION_MULTIPLE, GTK_TREE_VIEW_COLUMN_FIXED, &
-  &GTK_WINDOW_TOPLEVEL, GTK_BUTTONS_CANCEL, TRUE, FALSE, NULL, CNULL, g_signal_connect,&
-  &gtk_init
+  use gtk, only: gtk_box_pack_start, gtk_button_new,&
+       & gtk_button_new_with_label, gtk_cell_renderer_set_alignment, gtk_cell_renderer&
+       &_set_padding, gtk_cell_renderer_set_visible, gtk_cell_renderer_text_new, gtk_c&
+       &heck_button_new, gtk_check_button_new_with_label, gtk_container_add, gtk_conta&
+       &iner_set_border_width, gtk_dialog_add_button, gtk_dialog_get_content_area, gtk&
+       &_dialog_new, gtk_dialog_run, gtk_editable_set_editable, gtk_entry_new, gtk_ent&
+       &ry_set_activates_default, gtk_entry_set_max_length, gtk_entry_set_text, gtk_hb&
+       &ox_new, gtk_label_new, gtk_list_store_append, gtk_list_store_clear, gtk_list_s&
+       &tore_insert, gtk_list_store_newv, gtk_list_store_remove, gtk_list_store_set_va&
+       &lue, gtk_menu_bar_new, gtk_menu_bar_set_pack_direction, gtk_menu_item_new, gtk&
+       &_menu_item_new_with_label, gtk_menu_item_set_submenu, gtk_menu_new, gtk_menu_s&
+       &hell_append, gtk_menu_shell_insert, gtk_orientable_set_orientation, gtk_progre&
+       &ss_bar_new, gtk_progress_bar_pulse, gtk_progress_bar_set_fraction, &
+       & gtk_progress_bar_set_pulse_step, gtk_progress_bar_set_t&
+       &ext, gtk_radio_button_get_group, gtk_radio_button_new, gtk_radio_button_new_wi&
+       &th_label, gtk_scrolled_window_new, gtk_scrolled_window_set_policy, gtk_separat&
+       &or_menu_item_new, gtk_toggle_button_get_active, gtk_toggle_button_set_active, &
+       &gtk_tree_model_get_iter, gtk_tree_model_get_value, gtk_tree_model_iter_n_child&
+       &ren, gtk_tree_model_iter_next, gtk_tree_model_iter_nth_child, gtk_tree_path_fr&
+       &ee, gtk_tree_selection_get_selected, gtk_tree_selection_get_selected_rows, gtk&
+       &_tree_selection_set_mode, gtk_tree_view_append_column, gtk_tree_view_column_ad&
+       &d_attribute, gtk_tree_view_column_new, gtk_tree_view_column_pack_start, gtk_tr&
+       &ee_view_column_set_fixed_width, gtk_tree_view_column_set_max_width, gtk_tree_v&
+       &iew_column_set_reorderable, gtk_tree_view_column_set_resizable, gtk_tree_view_&
+       &column_set_sizing, gtk_tree_view_column_set_title, gtk_tree_view_get_model, gt&
+       &k_tree_view_get_selection, gtk_tree_view_new, gtk_tree_view_new_with_model, gt&
+       &k_vbox_new, gtk_widget_destroy, gtk_widget_set_sensitive, gtk_widget_set_size_&
+       &request, gtk_widget_set_tooltip_text, gtk_widget_show, gtk_widget_show_all, gt&
+       &k_window_new, gtk_window_set_default, gtk_window_set_default_size, gtk_window_&
+       &set_modal, gtk_window_set_title, g_signal_connect, TRUE, FALSE, &
+       & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
+       & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
+       & GTK_BUTTONS_OK, GTK_BUTTONS_CLOSE, GTK_BUTTONS_CANCEL, GTK_BUTTONS_YES_NO, &
+       & GTK_BUTTONS_OK_CANCEL, GTK_RESPONSE_OK, GTK_RESPONSE_CLOSE, GTK_RESPONSE_CANCEL, &
+       & GTK_RESPONSE_YES, GTK_RESPONSE_NO, GTK_RESPONSE_NONE, &
+!       & gtk_progress_bar_set_orientation, gtk_box_pack_start_defaults, &
+!       &GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
+!       & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT
+! Replace the last 2 lines with the next one for GTK3
+       & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL, gtk_progress_bar_set_inverted
 
   use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
-  &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int,&
-  & g_value_init, g_value_set_int, g_value_set_static_string
+       &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int,&
+       & g_value_init, g_value_set_int, g_value_set_static_string
 
   use iso_c_binding
-  
+
   implicit none
 
   ! A progress bar value can be given as a fraction or m of n
@@ -111,6 +131,9 @@ module gtk_hl
 
 contains
 
+  !*
+  ! Window
+  !/
   !+
   function hl_gtk_window_new(title, destroy, delete_event, data_destroy, &
        & data_delete_event, border, wsize, sensitive) result(win)
@@ -167,6 +190,9 @@ contains
 
   end function hl_gtk_window_new
 
+  !*
+  ! Buttons
+  !/
   !+
   function hl_gtk_button_new(label, clicked, data, tooltip, sensitive) &
        & result(but)
@@ -257,7 +283,7 @@ contains
     ! GROUP: c_ptr: required: The group to which the button belongs.
     ! 		This is an INOUT argument so it must be a variable
     ! 		of type(c_ptr). To start a new group (menu) initialize
-    ! 		the variable to CNULL, to add a new button use the value
+    ! 		the variable to NULL, to add a new button use the value
     ! 		returned from the last call to hl_gtk_radio_button_new. This
     ! 		is the variable which you use to do things like setting the
     ! 		selection.
@@ -327,7 +353,7 @@ contains
     !
     ! GROUP: c_ptr: required: The group of the last button added to
     ! 		the radio menu
-    !+
+    !-
 
     integer(kind=c_int) :: index
     type(c_ptr), intent(in) :: group
@@ -348,6 +374,10 @@ contains
        end if
     end do
   end function hl_gtk_radio_group_get_select
+
+  !*
+  ! Text Entry
+  !/
 
   !+
   function hl_gtk_entry_new(len, editable, activate, data, tooltip, value, &
@@ -400,6 +430,10 @@ contains
 
   end function hl_gtk_entry_new
 
+  !*
+  ! List1
+  ! This is a single column list based on the GtkTreeView widget system.
+  !/
   !+
   function hl_gtk_list1_new(scroll, width, changed, data, multiple, &
        & sensitive, tooltip, title, height) result(list)
@@ -673,6 +707,9 @@ contains
 
   end function hl_gtk_list1_get_selections
 
+  !*
+  ! Pulldown Menu
+  !/
   !+
   function hl_gtk_menu_new(orientation) result(menu)
     ! Menu initializer (mainly for consistency)
@@ -789,8 +826,12 @@ contains
     if (present(tooltip)) call gtk_widget_set_tooltip_text(item, tooltip)
   end function hl_gtk_menu_item_new
 
+  !*
+  ! Progress Bar
+  !/
+
   !+
-  function hl_gtk_progress_bar_new(orientation, step) result(bar)
+  function hl_gtk_progress_bar_new(vertical, reversed, step) result(bar)
     ! Intializer for a progress bar
     !
     ! ORIENTATION: integer: optional: The orientation of the bar.
@@ -799,13 +840,38 @@ contains
     !-
 
     type(c_ptr) :: bar
-    integer(kind=c_int), optional :: orientation
+    integer(kind=c_int), optional :: vertical, reversed
     real(kind=c_double), optional :: step
+
+    integer(kind=c_int) :: orientation
 
     bar = gtk_progress_bar_new()
 
-    if (present(orientation)) &
-         & call gtk_progress_bar_set_orientation(bar, orientation)
+    ! GTK2 version
+!    orientation = GTK_PROGRESS_LEFT_TO_RIGHT
+!    if (present(vertical)) then
+!       if (vertical == TRUE) orientation = GTK_PROGRESS_BOTTOM_TO_TOP
+!       if (present(reversed)) then
+!          if (reversed == TRUE) orientation = GTK_PROGRESS_TOP_TO_BOTTOM
+!       end if
+!    else if (present(reversed)) then
+!       if (reversed == TRUE) orientation = GTK_PROGRESS_RIGHT_TO_LEFT
+!    end if
+!    call gtk_progress_bar_set_orientation(bar, orientation)
+    ! end GTK2 version
+    ! GTK3 version
+    if (present(vertical)) then
+       if (vertical == TRUE) then
+          call gtk_orientable_set_orientation (bar, &
+               & GTK_ORIENTATION_VERTICAL)
+       else
+          call gtk_orientable_set_orientation (bar, &
+               & GTK_ORIENTATION_HORIZONTAL)
+       end if
+    end if
+
+    if (present(reversed)) call gtk_progress_bar_set_inverted(bar, reversed)
+    ! end GTK3 version
 
     if (present(step)) &
          & call gtk_progress_bar_set_pulse_step(bar, step)
@@ -814,12 +880,15 @@ contains
 
   !+
   subroutine hl_gtk_progress_bar_set_f(bar, val, string, text)
-    ! Set the value of a progress bar )fraction or pulse)
+    ! Set the value of a progress bar (fraction or pulse)
     !
     ! BAR: c_ptr: required: The bar to set
     ! VAL: double: optional: The value to set. If absent, the bar is pulsed
     ! STRING: boolean: optional: Whether to put a string on the bar.
     ! TEXT: string: optional: Text to put in the bar, (overrides STRING)
+    !
+    ! This routine is normally accessed via the generic interface
+    ! hl_gtk_progress_bar
     !-
 
     type(c_ptr) :: bar
@@ -860,6 +929,9 @@ contains
     ! MAXV: int: required: The maximum value for the bar
     ! STRING: boolean: optional: Whether to put a string on the bar.
     ! TEXT: string: optional: Text to put in the bar, (overrides STRING)
+    !
+    ! This routine is normally accessed via the generic interface
+    ! hl_gtk_progress_bar
     !-
 
     type(c_ptr) :: bar
@@ -878,11 +950,19 @@ contains
        call gtk_progress_bar_set_text (bar, text//cnull)
     else if (present(string)) then
        if (string == FALSE) return
-        ! Otherwise we display n or m
+       ! Otherwise we display n or m
        write(sval, "(I0,' of ',I0)") val, maxv
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
     end if
   end subroutine hl_gtk_progress_bar_set_ii
+
+  !*
+  ! Dialogue
+  ! The message dialogue provided is here because, the built-in message
+  ! dialogue GtkMessageDialog cannot be created without calling variadic
+  ! functions which are not compatible with Fortran, therefore this is
+  ! based around the plain GtkDialog family. 
+  !/
 
   !+
   function hl_gtk_message_dialog_show(message, button_set, title) &
@@ -890,11 +970,13 @@ contains
     ! A DIY version of the message dialogue, needed because both creators
     ! for the built in one are variadic and so not callable from Fortran.
     !
-    ! MESSAGE: string(n): required: The message to display.
+    ! MESSAGE: string(n): required: The message to display. Since this is
+    ! 		a string array, the CNULL terminations are provided internally
     ! BUTTON_SET: integer: required: The set of buttons to display
     ! TITLE: string: optional: Title for the window.
     !
     ! The return value is the response code, not the widget.
+    !-
 
     integer(kind=c_int) :: resp
     character(len=*), dimension(:), intent(in) :: message
@@ -915,7 +997,7 @@ contains
 
     do i = 1, size(message)
        junk = gtk_label_new(trim(message(i))//cnull)
-       call gtk_box_pack_start_defaults(content, junk)
+       call gtk_box_pack_start(content, junk, TRUE, TRUE, 0)
     end do
 
     select case (button_set)
@@ -943,8 +1025,102 @@ contains
 
     call gtk_widget_show_all (dialog)
     resp = gtk_dialog_run(dialog)
-    call gtk_object_destroy(dialog)
+    call gtk_widget_destroy(dialog)
 
   end function hl_gtk_message_dialog_show
 
+  !*
+  ! Box
+  ! A simplified way to make vertical or horizontal boxes
+  ! This was added because the gtk_box_pack_start_defaults
+  ! procedure is removed from GTK3.x
+  !/
+  !+
+  function hl_gtk_box_new(horizontal, homogeneous, spacing) result(box)
+    ! Generic packing box
+    !
+    ! HORIZONTAL: boolean: optional: Set to TRUE to make a row box. FALSE or
+    !		absent implies a column box.
+    ! HOMOGENEOUS: boolean: optional: If set to TRUE then all children are
+    ! 		the same size, FALSE or absent allows each widget to take its
+    ! 		natural size.
+    ! SPACING: c_int: optional: Set the space between children.
+    !-
+
+    type(c_ptr) :: box
+    integer(kind=c_int), intent(in), optional :: horizontal, homogeneous
+    integer(kind=c_int), intent(in), optional :: spacing
+
+    integer(kind=c_int) :: grid, space
+
+    if (present(homogeneous)) then
+       grid = homogeneous
+    else
+       grid=FALSE
+    end if
+
+    if (present(spacing)) then
+       space = spacing
+    else
+       space=0
+    end if
+
+    if (present(horizontal)) then
+       if (horizontal == TRUE) then
+          box = gtk_hbox_new(grid, space)
+       else
+          box = gtk_vbox_new(grid, space)
+       end if
+    else
+       box = gtk_vbox_new(grid, space)
+    end if
+  end function hl_gtk_box_new
+
+  !+
+  subroutine hl_gtk_box_pack(box, child, expand, fill, padding, atend)
+    ! Put a widget into a box
+    !
+    ! BOX: c_ptr: required: The box into which to put the child
+    ! CHILD: c_ptr: required: The child to pack
+    ! EXPAND: boolean: optional: If TRUE then expand this child when
+    ! 		filling the box, if FALSE don't, (Default TRUE)
+    ! FILL: boolean: optional: If TRUE, then expand the widget when
+    ! 		expanding, if FALSE, then put space round it. (Default TRUE,
+    ! 		ignored if EXPAND==FALSE.
+    ! PADDING: c_int: optional: Extra space to put around the child in the
+    ! 		fill direction.
+    ! ATEND: boolean: optional: If present and TRUE, then put the child at
+    ! 		the end of the box rather than the start.
+    !-
+
+    type(c_ptr), intent(in) :: box, child
+    integer(kind=c_int), intent(in), optional :: expand, fill
+    integer(kind=c_int), intent(in), optional :: padding
+    integer(kind=c_int), intent(in), optional :: atend
+
+    integer(kind=c_int) :: iexp, ifill, ipad, iend
+
+    if (present(expand)) then
+       iexp = expand
+    else
+       iexp = TRUE
+    end if
+    if (present(fill)) then
+       ifill = fill
+    else
+       ifill = TRUE
+    end if
+    if (present(padding)) then
+       ipad = padding
+    else
+       ipad = 0
+    end if
+    if (present(atend)) then
+       iend = atend
+    else
+       iend = FALSE
+    end if
+
+    call gtk_box_pack_start(box, child, iexp, ifill, ipad)
+  end subroutine hl_gtk_box_pack
 end module gtk_hl

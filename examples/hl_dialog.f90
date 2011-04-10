@@ -1,8 +1,8 @@
 module handlers
   use gtk_hl
-  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
-& gtk_container_add, gtk_hbox_new, gtk_main, gtk_main_quit, gtk_object_destroy,&
-& gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
+  use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
+       &widget_destroy, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
+       & gtk_init
 
   implicit none
 
@@ -56,15 +56,15 @@ program dialog_demo
   call gtk_init()
   ! Make a window & put a horizontal box in it
   win = hl_gtk_window_new('Dialogue Demo'//cnull, destroy=c_funloc(my_destroy))
-  box = gtk_hbox_new(FALSE, 0)
+  box = hl_gtk_box_new(horizontal=TRUE)
   call gtk_container_add(win, box)
 
   ! 2 Buttons one shows a message, the other a confirm exit dialog
   but = hl_gtk_button_new('Alert', clicked=c_funloc(msg_alert))
-  call gtk_box_pack_start_defaults(box, but)
+  call hl_gtk_box_pack(box, but)
 
   kbut = hl_gtk_button_new('Quit', clicked=c_funloc(msg_quit))
-  call gtk_box_pack_start_defaults(box, kbut)
+  call hl_gtk_box_pack(box, kbut)
 
   ! Display the window
   call gtk_widget_show_all(Win)

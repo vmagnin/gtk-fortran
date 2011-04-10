@@ -26,13 +26,13 @@
 
 module l1_handlers
   use gtk_hl
-  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
-& gtk_check_button_new, gtk_container_add, gtk_entry_get_text, gtk_entry_get_te&
-&xt_length, gtk_entry_new, gtk_entry_set_text, gtk_hbox_new, gtk_main, gtk_main&
-&_quit, gtk_object_destroy, gtk_toggle_button_get_active, gtk_toggle_button_set&
-&_active, gtk_vbox_new, gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
+  use gtk, only: gtk_button_new, gtk_check_button_new, gtk_container_add, gtk_ent&
+       &ry_get_text, gtk_entry_get_text_length, gtk_entry_new, gtk_entry_set_text, gtk&
+       &_main, gtk_main_quit, gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
+       &ggle_button_set_active, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
+       & gtk_init
   use g, only: alloca
-  
+
   implicit none
 
   ! The widgets. (Strictly only those that need to be accessed
@@ -45,7 +45,7 @@ contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     print *, "Exit called"
-    call gtk_object_destroy(ihwin)
+    call gtk_widget_destroy(ihwin)
     call gtk_main_quit ()
   end subroutine my_destroy
 
@@ -149,7 +149,7 @@ program list1
   ihwin=hl_gtk_window_new('list demo'//cnull, destroy=c_funloc(my_destroy))
 
   ! Now make a column box & put it into the window
-  base = gtk_vbox_new(FALSE, 0)
+  base = hl_gtk_box_new()
   call gtk_container_add(ihwin, base)
 
   ! Now make a single column list with multiple selections enabled
@@ -166,39 +166,39 @@ program list1
   end do
 
   ! It is the scrollcontainer that is placed into the box.
-  call gtk_box_pack_start_defaults(base, ihscrollcontain)
+  call hl_gtk_box_pack(base, ihscrollcontain)
 
   ! Make row box put it in the column box and put an editable
   ! 1-line text widget and a button in it
-  jbox = gtk_hbox_new(FALSE, 0)
-  call gtk_box_pack_start_defaults(base, jbox)
+  jbox = hl_gtk_box_new(horizontal=TRUE)
+  call hl_gtk_box_pack(base, jbox)
 
   newline = hl_gtk_entry_new(len=35, editable=TRUE, &
        & activate=c_funloc(text_cr), data=c_loc(iappend), &
        & tooltip="Enter some text followed by <CR>"//c_new_line//&
        &"then click 'Append' to add it to the list"//cnull)
-  call gtk_box_pack_start_defaults(jbox, newline)
+  call hl_gtk_box_pack(jbox, newline)
   abut = hl_gtk_button_new("Append"//cnull, clicked=c_funloc(b_click),&
        & data=c_loc(iappend))
-  call gtk_box_pack_start_defaults(jbox, abut)
+  call hl_gtk_box_pack(jbox, abut)
 
   ! Make a row box and put it in the main box
-  jbox2 = gtk_hbox_new(FALSE, 0)
-  call gtk_box_pack_start_defaults(base, jbox2)
+  jbox2 = hl_gtk_box_new(horizontal=TRUE)
+  call hl_gtk_box_pack(base, jbox2)
   ! Make a checkbox button and put it in the row box
   dbut = hl_gtk_check_button_new("Delete line"//cnull,&
        & toggled=c_funloc(del_toggle), initial_state=FALSE, &
        & data=c_loc(idel), &
        & tooltip="Set this then click on a line to delete it"//cnull)
-  call gtk_box_pack_start_defaults(jbox2, dbut)
+  call hl_gtk_box_pack(jbox2, dbut)
 
   ! And a delete all button.
   dabut = hl_gtk_button_new("Clear"//cnull, clicked=c_funloc(delete_all))
-  call gtk_box_pack_start_defaults(jbox2, dabut)
+  call hl_gtk_box_pack(jbox2, dabut)
 
   ! Also a quit button
   qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
-  call gtk_box_pack_start_defaults(base,qbut)
+  call hl_gtk_box_pack(base,qbut)
 
   ! realize the window
 
