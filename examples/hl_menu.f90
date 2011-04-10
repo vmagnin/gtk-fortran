@@ -26,10 +26,10 @@
 
 module handlers
   use gtk_hl
-  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
-  & gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, gtk_menu_item_new,&
-  & gtk_menu_new, gtk_object_destroy, gtk_vbox_new, gtk_widget_show, gtk_widget_s&
-  &how_all, gtk_window_new, gtk_init
+  use gtk, only: gtk_button_new, gtk_container_add, gtk_label_new, gtk_main, gtk_&
+       &main_quit, gtk_menu_item_new, gtk_menu_new, gtk_object_destroy, gtk_widget_sho&
+       &w, gtk_widget_show_all, gtk_window_new, gtk_init
+
   implicit none
 
   type(c_ptr) :: win, box, menubar, qbut,lab, smnu,mba
@@ -110,16 +110,16 @@ program menu_test
   win = hl_gtk_window_new("Menu Demo"//cnull, destroy=c_funloc(my_destroy))
 
   ! Make a vertical box, and add a label to it
-  box=gtk_vbox_new(FALSE, 0)
+  box=hl_gtk_box_new()
   call gtk_container_add(win, box)
 
   lab = gtk_label_new("Menu Example"//cnull)
-  call gtk_box_pack_start_defaults(box, lab)
+  call hl_gtk_box_pack(box, lab)
 
   ! Make a menubar with the buttons horizontally aranged and put it in the
   ! box
   menubar = hl_gtk_menu_new(GTK_PACK_DIRECTION_LTR)
-  call gtk_box_pack_start_defaults(box, menubar)
+  call hl_gtk_box_pack(box, menubar)
 
   ! Make a submenu in the first (0) location
   smnu = hl_gtk_menu_submenu_new(menubar, "Choose"//cnull)
@@ -136,7 +136,7 @@ program menu_test
 
   ! Now a second menu with just a single tlb
   mnu2 =  hl_gtk_menu_new()
-  call gtk_box_pack_start_defaults(box, mnu2)
+  call hl_gtk_box_pack(box, mnu2)
 
   sm1 = hl_gtk_menu_submenu_new(mnu2, "Select"//cnull)
 
@@ -155,7 +155,7 @@ program menu_test
   ! Make a quit button and put it in the box, put the box
   ! into the window
   qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
-  call gtk_box_pack_start_defaults(box, qbut)
+  call hl_gtk_box_pack(box, qbut)
 
   ! Realize the hierarchy
   call gtk_widget_show_all(win)
