@@ -25,7 +25,17 @@
 ! Contributed by Jerry DeLisle and Vincent Magnin
 
 module handlers
-  use gtk
+  use iso_c_binding, only: c_int
+  use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
+  &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
+  &idget_show, gtk_window_new, gtk_window_set_default, gtk_window_set_default_siz&
+  &e, gtk_window_set_title,&
+  &TRUE, FALSE, CNULL, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect
+  use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, cairo_&
+  &get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, cairo_select_fon&
+  &t_face, cairo_set_font_size, cairo_set_line_width, cairo_set_source, cairo_set&
+  &_source_rgb, cairo_show_text, cairo_stroke, cairo_surface_write_to_png
+  use gdk, only: gdk_cairo_create
   implicit none
 
   integer(c_int) :: run_status = TRUE

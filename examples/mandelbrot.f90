@@ -25,7 +25,15 @@
 ! Contributed by Jerry DeLisle and Vincent Magnin
 
 module handlers
-  use gtk
+  use iso_c_binding, only: c_int
+  use gtk, only: gtk_container_add, gtk_events_pending, gtk_image_new, gtk_image_&
+  &new_from_image, gtk_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widge&
+  &t_map, gtk_widget_show, gtk_widget_unmap, gtk_window_new, gtk_window_set_defau&
+  &lt, gtk_window_set_default_size, gtk_window_set_title,&
+  &FALSE, TRUE, CNULL, NULL, GTK_WINDOW_TOPLEVEL, GDK_IMAGE_FASTEST,&
+  &gtk_init, g_signal_connect
+  use gdk, only: gdk_image_new, gdk_image_put_pixel, gdk_rgb_get_visual
+
   implicit none
 
   integer(c_int) :: run_status = TRUE

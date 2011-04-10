@@ -36,7 +36,11 @@ end module
 
 module handlers
   ! This module is just copied from gtkhello2.f90
-  use gtk
+  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
+  &der_connect_signals_full, gtk_builder_get_object, gtk_builder_new, gtk_main, g&
+  &tk_main_quit, gtk_widget_show,&
+  &FALSE, CNULL, NULL, gtk_init, g_signal_connect
+  use g, only: g_object_unref, g_signal_connect_object
   use widgets
   implicit none
 
@@ -98,7 +102,7 @@ contains
 end module handlers
 
 module connect
-! necessary because gtk_builder_connect_signals is not working
+! replacement for gtk_builder_connect_signals from GModule (see also gtkbuilder2.f90)
    use handlers
    implicit none
    
@@ -207,10 +211,6 @@ program gtkbuilder
   ! get a pointer to the GObject "window" from GtkBuilder
   window = gtk_builder_get_object (builder, "window"//CNULL)
   
-  ! use GModule to look at the applications symbol table to find the function name 
-  ! that matches the handler name we specified in Glade3 --> not yet working in gtk-fortran
-  ! call gtk_builder_connect_signals (builder, NULL)  
-
   ! connect signals to objects using the subroutine "connect_signals" in the module "connect"
   call gtk_builder_connect_signals_full (builder, c_funloc(connect_signals), NULL)  
      

@@ -1,5 +1,9 @@
 module handlers
   use gtk_hl
+  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
+& gtk_container_add, gtk_hbox_new, gtk_main, gtk_main_quit, gtk_object_destroy,&
+& gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
+
   implicit none
 
   type(c_ptr) :: win, box, but, kbut, label

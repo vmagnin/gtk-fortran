@@ -19,14 +19,29 @@
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
-! gfortran gtk.f90 gtkhello2.f90 `pkg-config --cflags --libs gtk+-2.0`
-! Jerry DeLisle , Tobias Burnus, and Vincent Magnin, 01-23-2011
-! Data passing: James Tappin
-! Last modified: 03-13-2011
+
+! Example using GtkBuilder with gtk_builder_connect_signals from GModule
+! gfortran gtk.f90 gtkbuilder2.f90 -o gtkbuilder2 `pkg-config --cflags --libs gtk+-2.0` `pkg-config --cflags --libs gmodule-2.0`
+! tested with GTK+ 2.24 and GModule 2.28.3
+! Jens Hunger, 04-01-2011
+! Last modified: 04-05-2011
+
+module widgets
+  ! declares the used GTK widgets
+  use iso_c_binding
+  implicit none
+
+  type(c_ptr) :: window
+  type(c_ptr) :: builder
+
+end module
 
 module handlers
-  use gtk, only: gtk_main_quit, FALSE
+  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
+  &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&
+  &FALSE, CNULL, NULL, gtk_init
+  use g, only: g_object_unref
+  use widgets
   implicit none
 
 contains
@@ -69,75 +84,47 @@ contains
   end function button1clicked
 
   function button2clicked (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_associated, c_f_pointer
+    use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-
-    integer, pointer :: val
-
     print *, "Button 2 clicked!"
     ret = FALSE
-    if (c_associated(gdata)) then
-       call c_f_pointer(gdata, val)
-       print *, "Value =", val
-       val = val + 1
-    end if
   end function button2clicked
 
 end module handlers
 
-
-program gtkFortran
-  use iso_c_binding, only: c_ptr, c_funloc, c_loc
-  use gtk, only: gtk_init, gtk_window_new, GTK_WINDOW_TOPLEVEL, gtk_window_set_title, &
-      & gtk_container_set_border_width, g_signal_connect, gtk_hbox_new, gtk_container_add, &
-      & gtk_button_new_with_label, gtk_box_pack_start, gtk_widget_show, gtk_main, FALSE, &
-      & CNULL, TRUE
-  ! The "only" statement can divide the compilation time by a factor 10 !
+program gtkbuilder
+  
   use handlers
+  
   implicit none
 
-  type(c_ptr) :: window
-  type(c_ptr) :: box1
-  type(c_ptr) :: button1, button2, button3
+  integer(c_int) :: guint
+  type(c_ptr) :: error
 
-  integer, target :: val = 4
-
+  ! Initialize the GTK+ Library
   call gtk_init ()
 
-  ! Create the window and set up some signals for it.
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
-  !call gtk_window_set_default_size(window, 500, 500)
-  call gtk_window_set_title(window, "My title"//CNULL)
-  call gtk_container_set_border_width (window, 10)
-  call g_signal_connect (window, "delete-event"//CNULL, c_funloc(delete_event))
-  call g_signal_connect (window, "destroy"//CNULL, c_funloc(destroy))
+  ! create a new GtkBuilder object
+  builder = gtk_builder_new ()
 
-  box1 = gtk_hbox_new (TRUE, 10);
-  call gtk_container_add (window, box1)
+  ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
+  guint = gtk_builder_add_from_file (builder, "gtkbuilder.glade"//CNULL, error)
 
-  button1 = gtk_button_new_with_label ("Button1"//CNULL)
-  call gtk_box_pack_start (box1, button1, FALSE, FALSE, 0)
-  call g_signal_connect (button1, "clicked"//CNULL, c_funloc(button1clicked))
-  call g_signal_connect (button1, "clicked"//CNULL, c_funloc(hello))
-  call gtk_widget_show (button1)
+  ! get a pointer to the GObject "window" from GtkBuilder
+  window = gtk_builder_get_object (builder, "window"//CNULL)
+  
+  ! use GModule to look at the applications symbol table to find the function name 
+  ! that matches the handler name we specified in Glade3
+  call gtk_builder_connect_signals (builder, NULL)  
 
-  ! This is an example of passing data to the callback function:
-  button2 = gtk_button_new_with_label ("Button2"//CNULL)
-  call gtk_box_pack_start (box1, button2, FALSE, FALSE, 0)
-  call g_signal_connect (button2, "clicked"//CNULL, c_funloc(button2clicked), &
-       & c_loc(val))
-  call gtk_widget_show (button2)
-
-  button3 = gtk_button_new_with_label ("Exit"//CNULL)
-  call gtk_box_pack_start (box1, button3, FALSE, FALSE, 0)
-  call g_signal_connect (button3, "clicked"//CNULL, c_funloc(destroy))
-  call g_signal_connect (button3, "clicked"//CNULL, c_funloc(hello))
-  call gtk_widget_show (button3)
-
-  call gtk_widget_show (box1)
-  call gtk_widget_show (window)
-
+  ! free all memory used by XML stuff      
+  call g_object_unref (builder)
+  
+  ! Show the Application Window      
+  call gtk_widget_show (window)       
+  
+  ! Enter the GTK+ Main Loop
   call gtk_main ()
-
-end program gtkFortran
+        
+end program gtkbuilder

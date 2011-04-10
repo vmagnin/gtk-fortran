@@ -35,8 +35,9 @@ module gtk_sup
   ! GValue: Pseudo type definition.
 
   use iso_c_binding
-  use gtk
-
+  use gtk, only: NULL, CNULL
+  use g, only: alloca, g_type_fundamental
+  
   implicit none
 
   ! Gtype definitions
@@ -332,6 +333,7 @@ contains
     iter%p1=NULL
     iter%p2=NULL
   end subroutine clear_gtktreeiter
+
   subroutine clear_gvalue(gval)
     type(gvalue) :: gval
     gval%il=0
@@ -418,5 +420,4 @@ contains
        ii = ii+1
     end do
   end subroutine convert_f_string
-
 end module gtk_sup

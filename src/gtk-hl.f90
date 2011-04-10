@@ -74,6 +74,48 @@ module gtk_hl
   ! use gtk
   use gtk_sup
 
+  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
+  & gtk_button_new_with_label, gtk_cell_renderer_set_alignment, gtk_cell_renderer&
+  &_set_padding, gtk_cell_renderer_set_visible, gtk_cell_renderer_text_new, gtk_c&
+  &heck_button_new, gtk_check_button_new_with_label, gtk_container_add, gtk_conta&
+  &iner_set_border_width, gtk_dialog_add_button, gtk_dialog_get_content_area, gtk&
+  &_dialog_new, gtk_dialog_run, gtk_editable_set_editable, gtk_entry_new, gtk_ent&
+  &ry_set_activates_default, gtk_entry_set_max_length, gtk_entry_set_text, gtk_la&
+  &bel_new, gtk_list_store_append, gtk_list_store_clear, gtk_list_store_insert, g&
+  &tk_list_store_newv, gtk_list_store_remove, gtk_list_store_set_value, gtk_menu_&
+  &bar_new, gtk_menu_bar_set_pack_direction, gtk_menu_item_new, gtk_menu_item_new&
+  &_with_label, gtk_menu_item_set_submenu, gtk_menu_new, gtk_menu_shell_append, g&
+  &tk_menu_shell_insert, gtk_object_destroy, gtk_progress_bar_new, gtk_progress_b&
+  &ar_pulse, gtk_progress_bar_set_fraction, gtk_progress_bar_set_orientation, gtk&
+  &_progress_bar_set_pulse_step, gtk_progress_bar_set_text, gtk_radio_button_get_&
+  &group, gtk_radio_button_new, gtk_radio_button_new_with_label, gtk_scrolled_win&
+  &dow_new, gtk_scrolled_window_set_policy, gtk_separator_menu_item_new, gtk_togg&
+  &le_button_get_active, gtk_toggle_button_set_active, gtk_tree_model_get_iter, g&
+  &tk_tree_model_get_value, gtk_tree_model_iter_n_children, gtk_tree_model_iter_n&
+  &ext, gtk_tree_model_iter_nth_child, gtk_tree_path_free, gtk_tree_selection_get&
+  &_selected, gtk_tree_selection_get_selected_rows, gtk_tree_selection_set_mode, &
+  &gtk_tree_view_append_column, gtk_tree_view_column_add_attribute, gtk_tree_view&
+  &_column_new, gtk_tree_view_column_pack_start, gtk_tree_view_column_set_fixed_w&
+  &idth, gtk_tree_view_column_set_max_width, gtk_tree_view_column_set_reorderable&
+  &, gtk_tree_view_column_set_resizable, gtk_tree_view_column_set_sizing, gtk_tre&
+  &e_view_column_set_title, gtk_tree_view_get_model, gtk_tree_view_get_selection,&
+  & gtk_tree_view_new, gtk_tree_view_new_with_model, gtk_widget_destroy, gtk_widg&
+  &et_set_sensitive, gtk_widget_set_size_request, gtk_widget_set_tooltip_text, gt&
+  &k_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_default, gt&
+  &k_window_set_default_size, gtk_window_set_modal, gtk_window_set_title,&
+  &GTK_BUTTONS_NONE, GTK_BUTTONS_OK, GTK_RESPONSE_OK, GTK_BUTTONS_CLOSE, &
+  &GTK_BUTTONS_YES_NO, GTK_BUTTONS_OK_CANCEL, GTK_RESPONSE_CANCEL, GTK_RESPONSE_CLOSE,&
+  &GTK_RESPONSE_NO, GTK_RESPONSE_NONE, GTK_RESPONSE_YES, GTK_PACK_DIRECTION_LTR,&
+  &GTK_POLICY_AUTOMATIC, GTK_SELECTION_MULTIPLE, GTK_TREE_VIEW_COLUMN_FIXED, &
+  &GTK_WINDOW_TOPLEVEL, GTK_BUTTONS_CANCEL, TRUE, FALSE, NULL, CNULL, g_signal_connect,&
+  &gtk_init
+
+  use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
+  &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int,&
+  & g_value_init, g_value_set_int, g_value_set_static_string
+
+  use iso_c_binding
+  
   implicit none
 
   ! A progress bar value can be given as a fraction or m of n

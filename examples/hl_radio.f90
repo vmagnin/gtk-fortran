@@ -27,6 +27,10 @@
 module rb_handlers
 
   use gtk_hl
+  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
+  & gtk_container_add, gtk_main, gtk_main_quit, gtk_object_destroy, gtk_radio_but&
+  &ton_new, gtk_toggle_button_get_active, gtk_vbox_new, gtk_widget_show, gtk_widg&
+  &et_show_all, gtk_window_new, gtk_init
 
   implicit none
 

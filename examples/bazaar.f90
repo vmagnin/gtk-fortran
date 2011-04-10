@@ -43,7 +43,26 @@ end module
 
 
 module handlers
-  use gtk
+  use gtk, only: gtk_about_dialog_new, gtk_about_dialog_set_authors, &
+  & gtk_about_dialog_set_comments, gtk_about_dialog_set_license, gtk_about_dialog_set_name,&
+  & gtk_about_dialog_set_website, gtk_button_new, gtk_button_new_with_label, &
+  & gtk_container_add, gtk_container_set_border_width, gtk_dialog_run, gtk_drawing_area_new,&
+  & gtk_entry_get_text, gtk_entry_new, gtk_file_chooser_button_new, &
+  & gtk_file_chooser_get_file, gtk_file_chooser_get_filename, gtk_label_new, gtk_main, &
+  & gtk_main_quit, gtk_progress_bar_new, gtk_progress_bar_pulse, &
+  & gtk_progress_bar_set_fraction, gtk_progress_bar_set_text, gtk_scrolled_window_new,&
+  & gtk_table_attach, gtk_table_attach_defaults, gtk_table_new, gtk_text_buffer_set_text,&
+  & gtk_text_view_get_buffer, gtk_text_view_new, gtk_widget_destroy, gtk_widget_get_window,&
+  & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_default,&
+  & gtk_window_set_default_size, gtk_window_set_title, &
+  & g_signal_connect, gtk_init, FALSE, TRUE, CNULL, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&
+  & GTK_WINDOW_TOPLEVEL, NULL
+  use cairo, only: cairo_create, cairo_curve_to, cairo_destroy, cairo_line_to, &
+  & cairo_move_to, cairo_paint, cairo_set_line_width, cairo_set_source, &
+  & cairo_set_source_rgb, cairo_stroke
+  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  use gdk_pixbuf, only: gdk_pixbuf_get_has_alpha, gdk_pixbuf_get_n_channels, &
+  & gdk_pixbuf_get_pixels, gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use my_widgets
   implicit none
   

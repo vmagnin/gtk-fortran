@@ -26,6 +26,11 @@
 
 module handlers
   use gtk_hl
+  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
+  & gtk_container_add, gtk_events_pending, gtk_main, gtk_main_iteration, gtk_main&
+  &_iteration_do, gtk_main_quit, gtk_object_destroy, gtk_progress_bar_new, gtk_vb&
+  &ox_new, gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
+  use g, only: g_usleep
 
   implicit none
 

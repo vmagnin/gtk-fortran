@@ -6,8 +6,19 @@ program list_demo
   ! varargs calls replaced & translated into Fortran: James Tappin
   ! 21-Mar-2011
 
-  ! use gtk
   use gtk_sup  ! Contains iter structure and gtypes definitions
+
+  use gtk, only: gtk_cell_renderer_text_new, gtk_container_add, gtk_list_store_ap&
+  &pend, gtk_list_store_newv, gtk_list_store_set_value, gtk_main, gtk_main_quit, &
+  &gtk_tree_view_column_add_attribute, gtk_tree_view_column_new, gtk_tree_view_co&
+  &lumn_pack_start, gtk_tree_view_column_set_title, gtk_tree_view_insert_column, &
+  &gtk_tree_view_new, gtk_tree_view_set_model, gtk_widget_show, gtk_widget_show_a&
+  &ll, gtk_window_new,&
+  &FALSE, CNULL, NULL, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect
+
+  use g, only: g_object_unref, g_value_init, g_value_set_static_string, g_value_s&
+  &et_uint
+
 
   enum, bind(c)
      enumerator :: COL_NAME = 0

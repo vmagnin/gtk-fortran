@@ -29,6 +29,18 @@
 ! with informations on your system (OS version, GTK+ version, compiler...)
 
 module tests
+  use gtk, only: gtk_false, gtk_true, TRUE, FALSE, NULL, CNULL
+  use g, only: g_ascii_tolower, g_bit_storage, g_date_get_day, g_date_get_days_in&
+  &_month, g_hostname_is_ip_address, g_inet_socket_address_get_port, g_inet_socke&
+  &t_address_new, g_random_double, g_random_double_range, g_random_int, g_random_&
+  &int_range, g_variant_get_boolean, g_variant_get_byte, g_variant_get_double, g_&
+  &variant_get_int16, g_variant_get_int32, g_variant_get_int64, g_variant_get_str&
+  &ing, g_variant_get_uint16, g_variant_get_uint32, g_variant_get_uint64, g_varia&
+  &nt_new_boolean, g_variant_new_byte, g_variant_new_double, g_variant_new_int16,&
+  & g_variant_new_int32, g_variant_new_int64, g_variant_new_string, g_variant_new&
+  &_uint16, g_variant_new_uint32, g_variant_new_uint64, guint64
+  use iso_c_binding
+  
 contains
   integer function test_iso_c_binding()
     use iso_c_binding
@@ -154,7 +166,6 @@ contains
 
 
   integer function test_c_char_in_out()
-    use gtk
     implicit none
     integer :: i
     integer :: errors
@@ -194,7 +205,6 @@ contains
 
 
   integer function test_gdouble_in_out()
-    use gtk
     implicit none
     integer :: i
     integer :: errors
@@ -234,7 +244,6 @@ contains
 
 
   integer function test_gulong_in()
-    use gtk
     implicit none
     integer :: i
     integer :: errors
@@ -262,7 +271,6 @@ contains
 
 
   integer function test_uint16_in_out()
-    use gtk
     implicit none
     integer :: i
     integer :: errors
@@ -326,7 +334,6 @@ contains
 
 
   integer function test_int16_in_out()
-    use gtk
     implicit none
     integer(c_int16_t) :: a, b
     integer :: errors
@@ -344,7 +351,6 @@ contains
 
 
   integer function test_int32_in_out()
-    use gtk
     implicit none
     integer :: i
     integer :: errors
@@ -381,7 +387,6 @@ contains
 
 
   integer function test_uint32_in_out()
-    use gtk
     implicit none
     integer :: i
     integer :: errors
@@ -432,7 +437,6 @@ contains
 
 
   integer function test_guchar_in_out()
-    use gtk
     implicit none
     integer(c_int16_t) :: i, j
     integer :: errors 
@@ -454,7 +458,6 @@ contains
 
 
   integer function test_gboolean_in_out()
-    use gtk
     implicit none
     integer(c_int) :: l1, l2, l3, l4
     integer :: errors
@@ -524,7 +527,6 @@ end module tests
 
 program gtk_fortran_test
   use tests
-  use gtk
   implicit none
   integer :: errors
   
