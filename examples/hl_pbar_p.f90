@@ -26,10 +26,10 @@
 
 module handlers
   use gtk_hl
-  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
-  & gtk_container_add, gtk_events_pending, gtk_main, gtk_main_iteration, gtk_main&
-  &_iteration_do, gtk_main_quit, gtk_object_destroy, gtk_progress_bar_new, gtk_vb&
-  &ox_new, gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
+  use gtk, only: gtk_button_new, gtk_container_add, gtk_events_pending, gtk_main,&
+       & gtk_main_iteration, gtk_main_iteration_do, gtk_main_quit, gtk_object_destroy,&
+       & gtk_progress_bar_new, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
+       & gtk_init
   use g, only: g_usleep
 
   implicit none
@@ -76,20 +76,20 @@ program progress
   win = hl_gtk_window_new("Progress"//cnull, destroy=c_funloc(my_destroy))
 
   ! Make a column box to contain our widgets and put it in the window
-  box=gtk_vbox_new(FALSE, 0)
+  box=hl_gtk_box_new()
   call gtk_container_add(win, box)
 
   ! Make several horizontal progress bars and put them in the box
   do i=1,10
      bar(i) = hl_gtk_progress_bar_new()
-     call gtk_box_pack_start_defaults(box, bar(i))
+     call hl_gtk_box_pack(box, bar(i))
   end do
   pbar = hl_gtk_progress_bar_new(step=0.05_c_double)
-  call gtk_box_pack_start_defaults(box, pbar)
+  call hl_gtk_box_pack(box, pbar)
 
   ! Make a quit button and put that in the box.
   qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
-  call gtk_box_pack_start_defaults(box, qbut)
+  call hl_gtk_box_pack(box, qbut)
 
   ! Display the window
   call gtk_widget_show_all(Win) 
@@ -111,7 +111,7 @@ program progress
         if (mod(istep, 20) == 0) &
              & call hl_gtk_progress_bar_set(pbar, text="Working"//cnull)
      end do
-     if (run_status == FALSE) exit
+     if (run_status == FALSE) cycle
   end do
   !$omp end parallel do
   call gtk_object_destroy(Win)
