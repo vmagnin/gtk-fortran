@@ -21,21 +21,26 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g ../src/gtk.f90 cairo-basics.f90 `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -I../src ../src/gtk.o cairo-basics.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
 
 module handlers
   use iso_c_binding, only: c_int
+  
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
   &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
   &idget_show, gtk_window_new, gtk_window_set_default, gtk_window_set_default_siz&
   &e, gtk_window_set_title,&
-  &TRUE, FALSE, CNULL, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect
+  &TRUE, FALSE, CNULL, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
+  &CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
+  
   use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, cairo_&
   &get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, cairo_select_fon&
   &t_face, cairo_set_font_size, cairo_set_line_width, cairo_set_source, cairo_set&
   &_source_rgb, cairo_show_text, cairo_stroke, cairo_surface_write_to_png
+  
   use gdk, only: gdk_cairo_create
+  
   implicit none
 
   integer(c_int) :: run_status = TRUE
@@ -60,8 +65,7 @@ contains
   end subroutine pending_events
 
   function expose_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding
-    use gtk
+    use iso_c_binding, only: c_int, c_ptr
     implicit none
     real(8), parameter :: pi = 4*atan(1d0)
     integer(c_int)    :: ret
@@ -117,7 +121,7 @@ end module handlers
 
 
 program cairo_basics
-  use iso_c_binding
+  use iso_c_binding, only: c_ptr, c_funloc
   use handlers
   implicit none
   type(c_ptr) :: my_window
