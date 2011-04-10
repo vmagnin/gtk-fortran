@@ -24,8 +24,7 @@
 ! This program is used to test GTK+ widgets
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
 ! To compile under Linux:
-! gfortran gtk.f90 ../examples/bazaar.f90 `pkg-config --cflags --libs gtk+-2.0`
-
+! gfortran -I../src ../src/gtk.o bazaar.f90 `pkg-config --cflags --libs gtk+-3.0`
 
 module my_widgets
   use iso_c_binding
@@ -263,37 +262,6 @@ contains
 end module handlers
 
 
-subroutine test_enums
-  use gtk
-  !enumerator :: GDK_PIXBUF_FORMAT_WRITABLE = b'1'
-  !enumerator :: GDK_PIXBUF_FORMAT_SCALABLE = b'10'
-  !enumerator :: GDK_PIXBUF_FORMAT_THREADSAFE = b'100'
-  print *, GDK_PIXBUF_FORMAT_WRITABLE
-  print *, GDK_PIXBUF_FORMAT_SCALABLE
-  print *, GDK_PIXBUF_FORMAT_THREADSAFE
-  print *
-  print *, PANGO_STYLE_NORMAL
-  print *, PANGO_STYLE_OBLIQUE
-  print *, PANGO_STYLE_ITALIC
-  print *
-  !enumerator :: GTK_ACCEL_MASK = z'07'
-  print *, GTK_ACCEL_MASK
-  print *
-  !enumerator :: GTK_RESPONSE_NONE = -1
-  print *, GTK_RESPONSE_NONE
-  print *
-  !enumerator :: G_VARIANT_CLASS_ARRAY = iachar('a')
-  print *, G_VARIANT_CLASS_ARRAY
-  print *
-  !enumerator :: G_REGEX_NEWLINE_CRLF = ior(G_REGEX_NEWLINE_CR , G_REGEX_NEWLINE_LF)
-  print *, G_REGEX_NEWLINE_CRLF
-  print *
-  !enumerator :: G_LOG_LEVEL_MASK = ior(not(G_LOG_FLAG_RECURSION) , G_LOG_FLAG_FATAL)
-  print *, G_LOG_LEVEL_MASK
-  print *
-end subroutine test_enums  
-
-
 program gtkFortran
   use handlers
   use my_widgets
@@ -302,9 +270,6 @@ program gtkFortran
   integer(1) :: i
   character(c_char), dimension(:), pointer :: textptr
   character(len=512) :: my_string
-  
-  !call test_enums()
-  !STOP 
   
   call gtk_init ()
 
