@@ -113,7 +113,8 @@ module gtk_hl
 !       &GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
 !       & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT
 ! Replace the last 2 lines with the next one for GTK3
-       & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL, gtk_progress_bar_set_inverted
+       & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL, &
+       & gtk_progress_bar_set_inverted, gtk_progress_bar_set_show_text
 
   use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
        &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int,&
@@ -911,12 +912,16 @@ contains
     ! If annotation is needed, add it.
     if (present(text)) then
        call gtk_progress_bar_set_text (bar, text//cnull)
+       call gtk_progress_bar_set_show_text(bar, TRUE)
     else if (present(string)) then
        if (string == FALSE .or. .not. present(val)) return
        ! Otherwise we display a percentage
        write(sval, "(F5.1,'%')") val*100.
 
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
+       call gtk_progress_bar_set_show_text(bar, TRUE)
+    else
+       call gtk_progress_bar_set_show_text(bar, FALSE)
     end if
   end subroutine hl_gtk_progress_bar_set_f
 
@@ -948,11 +953,15 @@ contains
     ! If annotation is needed, add it.
     if (present(text)) then
        call gtk_progress_bar_set_text (bar, text//cnull)
+       call gtk_progress_bar_set_show_text(bar, TRUE)
     else if (present(string)) then
        if (string == FALSE) return
        ! Otherwise we display n or m
        write(sval, "(I0,' of ',I0)") val, maxv
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
+       call gtk_progress_bar_set_show_text(bar, TRUE)
+    else
+       call gtk_progress_bar_set_show_text(bar, TRUE)
     end if
   end subroutine hl_gtk_progress_bar_set_ii
 
