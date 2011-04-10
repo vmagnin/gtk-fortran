@@ -30,7 +30,8 @@ module handlers
   &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
   &idget_show, gtk_window_new, gtk_window_set_default, gtk_window_set_default_siz&
   &e, gtk_window_set_title,&
-  &TRUE, FALSE, CNULL, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect
+  &TRUE, FALSE, CNULL, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
+  &CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
   use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, cairo_&
   &get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, cairo_select_fon&
   &t_face, cairo_set_font_size, cairo_set_line_width, cairo_set_source, cairo_set&
@@ -60,8 +61,7 @@ contains
   end subroutine pending_events
 
   function expose_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding
-    use gtk
+    use iso_c_binding, only: c_int, c_ptr
     implicit none
     real(8), parameter :: pi = 4*atan(1d0)
     integer(c_int)    :: ret
@@ -117,7 +117,7 @@ end module handlers
 
 
 program cairo_basics
-  use iso_c_binding
+  use iso_c_binding, only: c_ptr, c_funloc
   use handlers
   implicit none
   type(c_ptr) :: my_window
