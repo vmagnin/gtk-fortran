@@ -28,7 +28,7 @@ module rb_handlers
 
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
-       &object_destroy, gtk_radio_button_new, gtk_toggle_button_get_active, gtk_widget&
+       &widget_destroy, gtk_radio_button_new, gtk_toggle_button_get_active, gtk_widget&
        &_show, gtk_widget_show_all, gtk_window_new, gtk_init
 
   implicit none
@@ -40,7 +40,7 @@ contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     print *, "Exit called"
-    call gtk_object_destroy(window)
+    call gtk_widget_destroy(window)
     call gtk_main_quit ()
   end subroutine my_destroy
 

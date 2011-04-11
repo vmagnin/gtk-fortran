@@ -27,7 +27,7 @@
 module handlers
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_container_add, gtk_events_pending, gtk_main,&
-       & gtk_main_iteration, gtk_main_iteration_do, gtk_main_quit, gtk_object_destroy,&
+       & gtk_main_iteration, gtk_main_iteration_do, gtk_main_quit, gtk_widget_destroy,&
        & gtk_progress_bar_new, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
        & gtk_init
 
@@ -42,7 +42,7 @@ contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     print *, "Exit called"
-!    call gtk_object_destroy(win)
+!    call gtk_widget_destroy(win)
 !    call gtk_main_quit ()
     run_status = FALSE
   end subroutine my_destroy
@@ -108,5 +108,5 @@ program progress
           & call hl_gtk_progress_bar_set(pbar, text="Working"//cnull)
      ! There's an issue with string arguments in overloaded procedures
   end do
-  call gtk_object_destroy(Win)
+  call gtk_widget_destroy(Win)
 end program progress

@@ -12,7 +12,7 @@ contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     print *, "Exit called"
-!    call gtk_object_destroy(win)
+!    call gtk_widget_destroy(win)
     call gtk_main_quit ()
   end subroutine my_destroy
 
