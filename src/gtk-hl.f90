@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 03-30-2011
+! Last modification: 04-10-2011
 
 module gtk_hl
   ! A bunch of procedures to implement higher level creators for
@@ -103,7 +103,13 @@ module gtk_hl
        &k_vbox_new, gtk_widget_destroy, gtk_widget_set_sensitive, gtk_widget_set_size_&
        &request, gtk_widget_set_tooltip_text, gtk_widget_show, gtk_widget_show_all, gt&
        &k_window_new, gtk_window_set_default, gtk_window_set_default_size, gtk_window_&
-       &set_modal, gtk_window_set_title, g_signal_connect, TRUE, FALSE, &
+       &set_modal, gtk_window_set_title, g_signal_connect, &
+       & gtk_hscale_new, gtk_hscale_new_with_range, gtk_range_get_value, & ! Scales start
+       &gtk_range_set_value, gtk_scale_set_digits, gtk_spin_button_get_value, gtk_spin&
+       &_button_new, gtk_spin_button_new_with_range, gtk_spin_button_set_digits, gtk_s&
+       &pin_button_set_numeric, gtk_spin_button_set_value, gtk_vscale_new, gtk_vscale_&
+       &new_with_range, gtk_scale_set_draw_value, gtk_spin_button_set_wrap, & ! Scales end
+       & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
        & GTK_BUTTONS_OK, GTK_BUTTONS_CLOSE, GTK_BUTTONS_CANCEL, GTK_BUTTONS_YES_NO, &
@@ -127,6 +133,25 @@ module gtk_hl
      module procedure  hl_gtk_progress_bar_set_f
      module procedure  hl_gtk_progress_bar_set_ii
   end interface hl_gtk_progress_bar_set
+
+  ! A slider or a spin button can use integers or floats for its settings.
+  interface hl_gtk_slider_new
+     module procedure hl_gtk_slider_flt_new
+     module procedure hl_gtk_slider_int_new
+  end interface hl_gtk_slider_new
+  interface hl_gtk_slider_set_value
+     module procedure hl_gtk_slider_set_flt
+     module procedure hl_gtk_slider_set_int
+  end interface hl_gtk_slider_set_value
+
+  interface hl_gtk_spin_button_new
+     module procedure hl_gtk_spin_button_flt_new
+     module procedure hl_gtk_spin_button_int_new
+  end interface hl_gtk_spin_button_new
+  interface hl_gtk_spin_button_set_value
+     module procedure hl_gtk_spin_button_set_flt
+     module procedure hl_gtk_spin_button_set_int
+  end interface hl_gtk_spin_button_set_value
 
 contains
 
@@ -1122,4 +1147,393 @@ contains
 
     call gtk_box_pack_start(box, child, iexp, ifill, ipad)
   end subroutine hl_gtk_box_pack
+
+  !*
+  ! Sliders and Spin buttons
+  ! GTK sliders and spin buttons use floating point values, the HL interface
+  ! implements an automatic interface selection between a floating point or
+  ! an integer slider.
+  !
+  ! Although they belong to completely different widget families in GTK, the
+  ! interfaces are very similar, which is why they are grouped together here.
+  !/
+  !+
+  function hl_gtk_slider_flt_new(vmin, vmax, step, vertical, initial_value, &
+       & value_changed, data, digits, sensitive, tooltip, draw, length) &
+       & result(slider)
+    ! Floating point version of a slider
+    !
+    ! VMIN: c_double: required: The minimum value for the slider
+    ! VMAX: c_double: required: The maximum value for the slider
+    ! STEP: c_double: required: The step for the slider.
+    ! VERTICAL: boolean: optional: if TRUE then a vertical slider is created
+    ! 		if FALSE or absent, then a horizontal silder is created.
+    ! INITIAL_VALUE: c_double: optional: Set the intial value of the slider
+    ! VALUE_CHANGED: c_funptr: optional: Callback function for the
+    ! 		"value-changed" signal.
+    ! DATA: c_ptr: optional: User data to pass the the value_changed callback.
+    ! DIGITS: c_int: optional: Number of decimal places to show.
+    ! SENSITIVE: boolean: optional: Whether the widget is created in the
+    ! 		sensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display.
+    ! DRAW: boolean: optional: Set to FALSE to suppress writing the
+    ! 		value.
+    ! LENGTH: c_int: optional: Set the length of the slider in pixels
+    !
+    ! This routine is usually called via its generic interface
+    ! hl_gtk_slider_new
+    !-
+    type(c_ptr) :: slider
+    real(kind=c_double), intent(in) :: vmin, vmax, step
+    integer(kind=c_int), intent(in), optional :: vertical
+    real(kind=c_double), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: digits
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: draw
+    integer(kind=c_int), intent(in), optional :: length
+
+    integer(kind=c_int) :: isvertical, idraw
+
+    ! Create the slider
+    if (present(vertical)) then
+       isvertical = vertical
+    else
+       isvertical = FALSE
+    end if
+    if (isvertical == TRUE) then
+       slider = gtk_vscale_new_with_range(vmin, vmax, step)
+       if (present(length)) &
+            & call gtk_widget_set_size_request(slider, 0, length)
+    else
+       slider = gtk_hscale_new_with_range(vmin, vmax, step)
+       if (present(length)) &
+            & call gtk_widget_set_size_request(slider, length, 0)
+    end if
+
+    ! Formatting
+    if (present(draw)) then
+       idraw = draw
+    else
+       idraw = TRUE
+    end if
+    call gtk_scale_set_draw_value(slider, idraw)
+    if (present(digits)) call gtk_scale_set_digits(slider, digits)
+
+    ! Initial value
+    if (present(initial_value)) call gtk_range_set_value(slider, initial_value)
+
+    ! Callback connection
+    if (present(value_changed)) then
+       if (present(data)) then
+          call g_signal_connect(slider, "value-changed", value_changed, data)
+       else
+          call g_signal_connect(slider, "value-changed", value_changed)
+       end if
+    end if
+
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(slider, &
+         & trim(tooltip)//cnull)
+
+    if (present(sensitive)) &
+         & call gtk_widget_set_sensitive(slider, sensitive)
+  end function hl_gtk_slider_flt_new
+
+  !+
+  function hl_gtk_slider_int_new(imin, imax, vertical, initial_value, &
+       & value_changed, data, sensitive, tooltip, draw, length) result(slider)
+    ! Floating point version of a slider
+    !
+    ! IMIN: c_int: required: The minimum value for the slider
+    ! IMAX: c_int: required: The maximum value for the slider
+    ! VERTICAL: boolean: optional: if TRUE then a vertical slider is created
+    ! 		if FALSE or absent, then a horizontal silder is created.
+    ! INITIAL_VALUE: c_int: optional: Set the intial value of the slider
+    ! VALUE_CHANGED: c_funptr: optional: Callback function for the
+    ! 		"value-changed" signal.
+    ! DATA: c_ptr: optional: User data to pass the the value_changed callback.
+    ! SENSITIVE: boolean: optional: Whether the widget is created in the
+    ! 		sensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display.
+    ! DRAW: boolean: optional: Set to FALSE to suppress writing the
+    ! 		value.
+    ! LENGTH: c_int: optional: Set the length of the slider in pixels
+    !
+    ! This routine is usually called via its generic interface
+    ! hl_gtk_slider_new
+    !-
+    type(c_ptr) :: slider
+    integer(kind=c_int), intent(in) :: imin, imax
+    integer(kind=c_int), intent(in), optional :: vertical
+    integer(kind=c_int), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: draw
+    integer(kind=c_int), intent(in), optional :: length
+
+    integer(kind=c_int) :: isvertical, idraw
+
+    ! Create the slider
+    if (present(vertical)) then
+       isvertical = vertical
+    else
+       isvertical = FALSE
+    end if
+    if (isvertical == TRUE) then
+       slider = gtk_vscale_new_with_range(real(imin, c_double), &
+            &real(imax, c_double), 1.0_c_double)
+       if (present(length)) &
+            & call gtk_widget_set_size_request(slider, 0, length)
+    else
+       slider = gtk_hscale_new_with_range(real(imin, c_double), &
+            &real(imax, c_double), 1.0_c_double)
+       if (present(length)) &
+            & call gtk_widget_set_size_request(slider, length, 0)
+    end if
+
+    ! Formatting
+    if (present(draw)) then
+       idraw = draw
+    else
+       idraw = TRUE
+    end if
+    call gtk_scale_set_draw_value(slider, idraw)
+
+    ! Initial value
+    if (present(initial_value)) call gtk_range_set_value(slider, &
+         & real(initial_value, c_double))
+
+    ! Callback connection
+    if (present(value_changed)) then
+       if (present(data)) then
+          call g_signal_connect(slider, "value-changed", value_changed, data)
+       else
+          call g_signal_connect(slider, "value-changed", value_changed)
+       end if
+    end if
+
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(slider, &
+         & trim(tooltip)//cnull)
+
+    if (present(sensitive)) &
+         & call gtk_widget_set_sensitive(slider, sensitive)
+  end function hl_gtk_slider_int_new
+
+  !+
+  function hl_gtk_slider_get_value(slider) result(val)
+    ! Get the value of a slider
+    !
+    ! SLIDER: c_ptr: required: The slider to read.
+    !
+    ! Note even for an integer slider we get a float value but there's
+    ! no problem letting Fortran do the truncation
+    !-
+    real(kind=c_double) :: val
+    type(c_ptr) :: slider
+
+    val = gtk_range_get_value(slider)
+  end function hl_gtk_slider_get_value
+
+  !+
+  subroutine hl_gtk_slider_set_flt(slider, val)
+    ! Set a floating point value for a slider
+    !
+    ! SLIDER: c_ptr: required: The slider to set.
+    ! VAL: c_double: required: The value to set.
+    !
+    ! This is usually accessed via the generic interface hl_gtk_slider_set_value
+    !-
+    type(c_ptr), intent(in) :: slider
+    real(kind=c_double), intent(in) :: val
+
+    call gtk_range_set_value(slider, val)
+  end subroutine hl_gtk_slider_set_flt
+
+  !+
+  subroutine hl_gtk_slider_set_int(slider, val)
+    ! Set a floating point value for a slider
+    !
+    ! SLIDER: c_ptr: required: The slider to set.
+    ! VAL: c_int: required: The value to set.
+    !
+    ! This is usually accessed via the generic interface hl_gtk_slider_set_value
+    !-
+    type(c_ptr), intent(in) :: slider
+    integer(kind=c_int), intent(in) :: val
+
+    call gtk_range_set_value(slider, real(val, c_double))
+  end subroutine hl_gtk_slider_set_int
+
+  !+
+  function hl_gtk_spin_button_flt_new(vmin, vmax, step, initial_value, &
+       & value_changed, data, digits, sensitive, tooltip, wrap) &
+       & result(spin_button)
+    ! Floating point version of a spin_button
+    !
+    ! VMIN: c_double: required: The minimum value for the spin_button
+    ! VMAX: c_double: required: The maximum value for the spin_button
+    ! STEP: c_double: required: The step for the spin_button.
+    ! INITIAL_VALUE: c_double: optional: Set the intial value of the spin_button
+    ! VALUE_CHANGED: c_funptr: optional: Callback function for the
+    ! 		"value-changed" signal.
+    ! DATA: c_ptr: optional: User data to pass the the value_changed callback.
+    ! DIGITS: c_int: optional: Number of decimal places to show.
+    ! SENSITIVE: boolean: optional: Whether the widget is created in the
+    ! 		sensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display.
+    ! WRAP: boolean: optional: If set to TRUE then wrap around if limit is
+    ! 		exceeded
+    !
+    ! This routine is usually called via its generic interface
+    ! hl_gtk_spin_button_new
+    !-
+    type(c_ptr) :: spin_button
+    real(kind=c_double), intent(in) :: vmin, vmax, step
+    real(kind=c_double), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: digits
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: wrap
+
+    integer(kind=c_int) :: isvertical, idraw
+
+    ! Create the spin_button
+    spin_button = gtk_spin_button_new_with_range(vmin, vmax, step)
+
+    ! Formatting
+    call gtk_spin_button_set_numeric(spin_button, TRUE)
+    if (present(digits)) call gtk_spin_button_set_digits(spin_button, digits)
+    if (present(wrap)) call gtk_spin_button_set_wrap(spin_button, wrap)
+
+    ! Initial value
+    if (present(initial_value)) &
+         & call gtk_spin_button_set_value(spin_button, initial_value)
+
+    ! Callback connection
+    if (present(value_changed)) then
+       if (present(data)) then
+          call g_signal_connect(spin_button, "value-changed", value_changed, &
+               & data)
+       else
+          call g_signal_connect(spin_button, "value-changed", value_changed)
+       end if
+    end if
+
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(spin_button, &
+         & trim(tooltip)//cnull)
+
+    if (present(sensitive)) &
+         & call gtk_widget_set_sensitive(spin_button, sensitive)
+  end function hl_gtk_spin_button_flt_new
+
+  !+
+  function hl_gtk_spin_button_int_new(imin, imax, initial_value, &
+       & value_changed, data, sensitive, tooltip, wrap) result(spin_button)
+    ! Floating point version of a spin_button
+    !
+    ! IMIN: c_int: required: The minimum value for the spin_button
+    ! IMAX: c_int: required: The maximum value for the spin_button
+    ! INITIAL_VALUE: c_int: optional: Set the intial value of the spin_button
+    ! VALUE_CHANGED: c_funptr: optional: Callback function for the
+    ! 		"value-changed" signal.
+    ! DATA: c_ptr: optional: User data to pass the the value_changed callback.
+    ! SENSITIVE: boolean: optional: Whether the widget is created in the
+    ! 		sensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display.
+    ! WRAP: boolean: optional: If set to TRUE then wrap around if limit is
+    ! 		exceeded
+    !
+    ! This routine is usually called via its generic interface
+    ! hl_gtk_spin_button_new
+    !-
+    type(c_ptr) :: spin_button
+    integer(kind=c_int), intent(in) :: imin, imax
+    integer(kind=c_int), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: wrap
+
+    integer(kind=c_int) :: isvertical, idraw
+
+    ! Create the spin_button
+    spin_button = gtk_spin_button_new_with_range(real(imin, c_double), &
+         &real(imax, c_double), 1.0_c_double)
+
+    ! Formatting
+    call gtk_spin_button_set_numeric(spin_button, TRUE)
+    if (present(wrap)) call gtk_spin_button_set_wrap(spin_button, wrap)
+
+    ! Initial value
+    if (present(initial_value)) call gtk_spin_button_set_value(spin_button, &
+         & real(initial_value, c_double))
+
+    ! Callback connection
+    if (present(value_changed)) then
+       if (present(data)) then
+          call g_signal_connect(spin_button, "value-changed", value_changed, &
+               & data)
+       else
+          call g_signal_connect(spin_button, "value-changed", value_changed)
+       end if
+    end if
+
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(spin_button, &
+         & trim(tooltip)//cnull)
+
+    if (present(sensitive)) &
+         & call gtk_widget_set_sensitive(spin_button, sensitive)
+  end function hl_gtk_spin_button_int_new
+
+  !+
+  function hl_gtk_spin_button_get_value(spin_button) result(val)
+    ! Get the value of a spin_button
+    !
+    ! SPIN_BUTTON: c_ptr: required: The spin_button to read.
+    !
+    ! Note even for an integer spin_button we get a float value but there's
+    ! no problem letting Fortran do the truncation
+    !-
+    real(kind=c_double) :: val
+    type(c_ptr) :: spin_button
+
+    val = gtk_spin_button_get_value(spin_button)
+  end function hl_gtk_spin_button_get_value
+
+  !+
+  subroutine hl_gtk_spin_button_set_flt(spin_button, val)
+    ! Set a floating point value for a spin_button
+    !
+    ! SPIN_BUTTON: c_ptr: required: The spin_button to set.
+    ! VAL: c_double: required: The value to set.
+    !
+    ! This is usually accessed via the generic interface hl_gtk_spin_button_set_value
+    !-
+    type(c_ptr), intent(in) :: spin_button
+    real(kind=c_double), intent(in) :: val
+
+    call gtk_spin_button_set_value(spin_button, val)
+  end subroutine hl_gtk_spin_button_set_flt
+
+  !+
+  subroutine hl_gtk_spin_button_set_int(spin_button, val)
+    ! Set a floating point value for a spin_button
+    !
+    ! SPIN_BUTTON: c_ptr: required: The spin_button to set.
+    ! VAL: c_int: required: The value to set.
+    !
+    ! This is usually accessed via the generic interface hl_gtk_spin_button_set_value
+    !-
+    type(c_ptr), intent(in) :: spin_button
+    integer(kind=c_int), intent(in) :: val
+
+    call gtk_spin_button_set_value(spin_button, real(val, c_double))
+  end subroutine hl_gtk_spin_button_set_int
 end module gtk_hl
