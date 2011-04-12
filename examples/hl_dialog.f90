@@ -60,10 +60,10 @@ program dialog_demo
   call gtk_container_add(win, box)
 
   ! 2 Buttons one shows a message, the other a confirm exit dialog
-  but = hl_gtk_button_new('Alert', clicked=c_funloc(msg_alert))
+  but = hl_gtk_button_new('Alert'//cnull, clicked=c_funloc(msg_alert))
   call hl_gtk_box_pack(box, but)
 
-  kbut = hl_gtk_button_new('Quit', clicked=c_funloc(msg_quit))
+  kbut = hl_gtk_button_new('Quit'//cnull, clicked=c_funloc(msg_quit))
   call hl_gtk_box_pack(box, kbut)
 
   ! Display the window

@@ -33,6 +33,8 @@ module gtk_sup
   ! GTYPE: Definitions of the integer length and the values for each type.
   ! GtkTreeIter: Type definition.
   ! GValue: Pseudo type definition.
+  ! GtkTextIter: Type definition.
+  ! Various GTK_STOCK strings.
 
   use iso_c_binding
   use gtk, only: NULL, CNULL
@@ -95,12 +97,22 @@ module gtk_sup
      type(c_ptr) :: p0=NULL, p1=NULL, p2=NULL
   end type gtktreeiter
 
-! Define a spacemaker for GValue It's 24 bytes on 64 bit & 20 on 32,
-! i.e. one long and 2 64-bit integers
+  ! Define a spacemaker for GValue It's 24 bytes on 64 bit & 20 on 32,
+  ! i.e. one long and 2 64-bit integers
   type, bind(c) :: gvalue
      integer(kind=c_long) :: il = 0
      integer(kind=c_int64_t), dimension(2) :: i64 = (/0, 0/)
   end type gvalue
+
+  ! Define a GtkTextIter (this has to be pre-allocated in the calls)
+  type, bind(c) :: gtktextiter 
+     type(c_ptr) :: d1, d2
+     integer(kind=c_int) :: d3, d4, d5, d6, d7, d8
+     type(c_ptr) :: d9, d10
+     integer(kind=c_int) :: d11, d12, d13
+     type(c_ptr) :: d14
+  end type gtktextiter
+
 
 ! Stock button and icon names extracted from gtk/gtkstock.h
 character(len=len("gtk-about")+1), parameter :: GTK_STOCK_ABOUT = &
