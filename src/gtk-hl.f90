@@ -103,7 +103,23 @@ module gtk_hl
        &k_vbox_new, gtk_widget_destroy, gtk_widget_set_sensitive, gtk_widget_set_size_&
        &request, gtk_widget_set_tooltip_text, gtk_widget_show, gtk_widget_show_all, gt&
        &k_window_new, gtk_window_set_default, gtk_window_set_default_size, gtk_window_&
-       &set_modal, gtk_window_set_title, g_signal_connect, TRUE, FALSE, &
+       &set_modal, gtk_window_set_title, g_signal_connect, &
+       & gtk_hscale_new, gtk_hscale_new_with_range, gtk_range_get_value, & ! Scales start
+       &gtk_range_set_value, gtk_scale_set_digits, gtk_spin_button_get_value, gtk_spin&
+       &_button_new, gtk_spin_button_new_with_range, gtk_spin_button_set_digits, gtk_s&
+       &pin_button_set_numeric, gtk_spin_button_set_value, gtk_vscale_new, gtk_vscale_&
+       &new_with_range, gtk_scale_set_draw_value, gtk_spin_button_set_wrap, & ! Scales end
+       &gtk_text_buffer_delete, gtk_text_buffer_get_end_iter, gtk_text_buf& ! Text view start
+       &fer_get_insert, gtk_text_buffer_get_iter_at_line, gtk_text_buffer_get_iter_at_&
+       &line_offset, gtk_text_buffer_get_iter_at_mark, gtk_text_buffer_get_modified, g&
+       &tk_text_buffer_get_selection_bound, gtk_text_buffer_get_selection_bounds, gtk_&
+       &text_buffer_get_start_iter, gtk_text_buffer_get_text, gtk_text_buffer_insert, &
+       &gtk_text_buffer_insert_at_cursor, gtk_text_buffer_new, gtk_text_buffer_set_mod&
+       &ified, gtk_text_buffer_set_text, gtk_text_iter_forward_char, gtk_text_iter_for&
+       &ward_chars, gtk_text_iter_forward_line, gtk_text_iter_forward_lines, gtk_text_&
+       &iter_get_line, gtk_text_iter_get_line_offset, gtk_text_view_get_buffer, gtk_te&
+       &xt_view_new, gtk_text_view_new_with_buffer, gtk_text_view_set_editable, gtk_text_iter_get_offset, &
+       & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
        & GTK_BUTTONS_OK, GTK_BUTTONS_CLOSE, GTK_BUTTONS_CANCEL, GTK_BUTTONS_YES_NO, &
@@ -130,6 +146,25 @@ module gtk_hl
      module procedure  hl_gtk_progress_bar_set_ii
   end interface hl_gtk_progress_bar_set
 
+! A slider or a spin button can use integers or floats for its settings.
+  interface hl_gtk_slider_new
+     module procedure hl_gtk_slider_flt_new
+     module procedure hl_gtk_slider_int_new
+  end interface hl_gtk_slider_new
+  interface hl_gtk_slider_set_value
+     module procedure hl_gtk_slider_set_flt
+     module procedure hl_gtk_slider_set_int
+  end interface hl_gtk_slider_set_value
+
+  interface hl_gtk_spin_button_new
+     module procedure hl_gtk_spin_button_flt_new
+     module procedure hl_gtk_spin_button_int_new
+  end interface hl_gtk_spin_button_new
+  interface hl_gtk_spin_button_set_value
+     module procedure hl_gtk_spin_button_set_flt
+     module procedure hl_gtk_spin_button_set_int
+  end interface hl_gtk_spin_button_set_value
+  
 contains
 
   !*
@@ -1132,4 +1167,873 @@ contains
 
     call gtk_box_pack_start(box, child, iexp, ifill, ipad)
   end subroutine hl_gtk_box_pack
+
+  !*
+  ! Sliders and Spin buttons
+  ! GTK sliders and spin buttons use floating point values, the HL interface
+  ! implements an automatic interface selection between a floating point or
+  ! an integer slider.
+  !
+  ! Although they belong to completely different widget families in GTK, the
+  ! interfaces are very similar, which is why they are grouped together here.
+  !/
+  !+
+  function hl_gtk_slider_flt_new(vmin, vmax, step, vertical, initial_value, &
+       & value_changed, data, digits, sensitive, tooltip, draw, length) &
+       & result(slider)
+    ! Floating point version of a slider
+    !
+    ! VMIN: c_double: required: The minimum value for the slider
+    ! VMAX: c_double: required: The maximum value for the slider
+    ! STEP: c_double: required: The step for the slider.
+    ! VERTICAL: boolean: optional: if TRUE then a vertical slider is created
+    ! 		if FALSE or absent, then a horizontal silder is created.
+    ! INITIAL_VALUE: c_double: optional: Set the intial value of the slider
+    ! VALUE_CHANGED: c_funptr: optional: Callback function for the
+    ! 		"value-changed" signal.
+    ! DATA: c_ptr: optional: User data to pass the the value_changed callback.
+    ! DIGITS: c_int: optional: Number of decimal places to show.
+    ! SENSITIVE: boolean: optional: Whether the widget is created in the
+    ! 		sensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display.
+    ! DRAW: boolean: optional: Set to FALSE to suppress writing the
+    ! 		value.
+    ! LENGTH: c_int: optional: Set the length of the slider in pixels
+    !
+    ! This routine is usually called via its generic interface
+    ! hl_gtk_slider_new
+    !-
+    type(c_ptr) :: slider
+    real(kind=c_double), intent(in) :: vmin, vmax, step
+    integer(kind=c_int), intent(in), optional :: vertical
+    real(kind=c_double), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: digits
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: draw
+    integer(kind=c_int), intent(in), optional :: length
+
+    integer(kind=c_int) :: isvertical, idraw
+
+    ! Create the slider
+    if (present(vertical)) then
+       isvertical = vertical
+    else
+       isvertical = FALSE
+    end if
+    if (isvertical == TRUE) then
+       slider = gtk_vscale_new_with_range(vmin, vmax, step)
+       if (present(length)) &
+            & call gtk_widget_set_size_request(slider, -1, length)
+    else
+       slider = gtk_hscale_new_with_range(vmin, vmax, step)
+       if (present(length)) &
+            & call gtk_widget_set_size_request(slider, length, -1)
+    end if
+
+    ! Formatting
+    if (present(draw)) then
+       idraw = draw
+    else
+       idraw = TRUE
+    end if
+    call gtk_scale_set_draw_value(slider, idraw)
+    if (present(digits)) call gtk_scale_set_digits(slider, digits)
+
+    ! Initial value
+    if (present(initial_value)) call gtk_range_set_value(slider, initial_value)
+
+    ! Callback connection
+    if (present(value_changed)) then
+       if (present(data)) then
+          call g_signal_connect(slider, "value-changed", value_changed, data)
+       else
+          call g_signal_connect(slider, "value-changed", value_changed)
+       end if
+    end if
+
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(slider, &
+         & trim(tooltip)//cnull)
+
+    if (present(sensitive)) &
+         & call gtk_widget_set_sensitive(slider, sensitive)
+  end function hl_gtk_slider_flt_new
+
+  !+
+  function hl_gtk_slider_int_new(imin, imax, vertical, initial_value, &
+       & value_changed, data, sensitive, tooltip, draw, length) result(slider)
+    ! Floating point version of a slider
+    !
+    ! IMIN: c_int: required: The minimum value for the slider
+    ! IMAX: c_int: required: The maximum value for the slider
+    ! VERTICAL: boolean: optional: if TRUE then a vertical slider is created
+    ! 		if FALSE or absent, then a horizontal silder is created.
+    ! INITIAL_VALUE: c_int: optional: Set the intial value of the slider
+    ! VALUE_CHANGED: c_funptr: optional: Callback function for the
+    ! 		"value-changed" signal.
+    ! DATA: c_ptr: optional: User data to pass the the value_changed callback.
+    ! SENSITIVE: boolean: optional: Whether the widget is created in the
+    ! 		sensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display.
+    ! DRAW: boolean: optional: Set to FALSE to suppress writing the
+    ! 		value.
+    ! LENGTH: c_int: optional: Set the length of the slider in pixels
+    !
+    ! This routine is usually called via its generic interface
+    ! hl_gtk_slider_new
+    !-
+    type(c_ptr) :: slider
+    integer(kind=c_int), intent(in) :: imin, imax
+    integer(kind=c_int), intent(in), optional :: vertical
+    integer(kind=c_int), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: draw
+    integer(kind=c_int), intent(in), optional :: length
+
+    integer(kind=c_int) :: isvertical, idraw
+
+    ! Create the slider
+    if (present(vertical)) then
+       isvertical = vertical
+    else
+       isvertical = FALSE
+    end if
+    if (isvertical == TRUE) then
+       slider = gtk_vscale_new_with_range(real(imin, c_double), &
+            &real(imax, c_double), 1.0_c_double)
+       if (present(length)) &
+            & call gtk_widget_set_size_request(slider, -1, length)
+    else
+       slider = gtk_hscale_new_with_range(real(imin, c_double), &
+            &real(imax, c_double), 1.0_c_double)
+       if (present(length)) &
+            & call gtk_widget_set_size_request(slider, length, -1)
+    end if
+
+    ! Formatting
+    if (present(draw)) then
+       idraw = draw
+    else
+       idraw = TRUE
+    end if
+    call gtk_scale_set_draw_value(slider, idraw)
+
+    ! Initial value
+    if (present(initial_value)) call gtk_range_set_value(slider, &
+         & real(initial_value, c_double))
+
+    ! Callback connection
+    if (present(value_changed)) then
+       if (present(data)) then
+          call g_signal_connect(slider, "value-changed", value_changed, data)
+       else
+          call g_signal_connect(slider, "value-changed", value_changed)
+       end if
+    end if
+
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(slider, &
+         & trim(tooltip)//cnull)
+
+    if (present(sensitive)) &
+         & call gtk_widget_set_sensitive(slider, sensitive)
+  end function hl_gtk_slider_int_new
+
+  !+
+  function hl_gtk_slider_get_value(slider) result(val)
+    ! Get the value of a slider
+    !
+    ! SLIDER: c_ptr: required: The slider to read.
+    !
+    ! Note even for an integer slider we get a float value but there's
+    ! no problem letting Fortran do the truncation
+    !-
+    real(kind=c_double) :: val
+    type(c_ptr) :: slider
+
+    val = gtk_range_get_value(slider)
+  end function hl_gtk_slider_get_value
+
+  !+
+  subroutine hl_gtk_slider_set_flt(slider, val)
+    ! Set a floating point value for a slider
+    !
+    ! SLIDER: c_ptr: required: The slider to set.
+    ! VAL: c_double: required: The value to set.
+    !
+    ! This is usually accessed via the generic interface hl_gtk_slider_set_value
+    !-
+    type(c_ptr), intent(in) :: slider
+    real(kind=c_double), intent(in) :: val
+
+    call gtk_range_set_value(slider, val)
+  end subroutine hl_gtk_slider_set_flt
+
+  !+
+  subroutine hl_gtk_slider_set_int(slider, val)
+    ! Set a floating point value for a slider
+    !
+    ! SLIDER: c_ptr: required: The slider to set.
+    ! VAL: c_int: required: The value to set.
+    !
+    ! This is usually accessed via the generic interface hl_gtk_slider_set_value
+    !-
+    type(c_ptr), intent(in) :: slider
+    integer(kind=c_int), intent(in) :: val
+
+    call gtk_range_set_value(slider, real(val, c_double))
+  end subroutine hl_gtk_slider_set_int
+
+  !+
+  function hl_gtk_spin_button_flt_new(vmin, vmax, step, initial_value, &
+       & value_changed, data, digits, sensitive, tooltip, wrap) &
+       & result(spin_button)
+    ! Floating point version of a spin_button
+    !
+    ! VMIN: c_double: required: The minimum value for the spin_button
+    ! VMAX: c_double: required: The maximum value for the spin_button
+    ! STEP: c_double: required: The step for the spin_button.
+    ! INITIAL_VALUE: c_double: optional: Set the intial value of the spin_button
+    ! VALUE_CHANGED: c_funptr: optional: Callback function for the
+    ! 		"value-changed" signal.
+    ! DATA: c_ptr: optional: User data to pass the the value_changed callback.
+    ! DIGITS: c_int: optional: Number of decimal places to show.
+    ! SENSITIVE: boolean: optional: Whether the widget is created in the
+    ! 		sensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display.
+    ! WRAP: boolean: optional: If set to TRUE then wrap around if limit is
+    ! 		exceeded
+    !
+    ! This routine is usually called via its generic interface
+    ! hl_gtk_spin_button_new
+    !-
+    type(c_ptr) :: spin_button
+    real(kind=c_double), intent(in) :: vmin, vmax, step
+    real(kind=c_double), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: digits
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: wrap
+
+    integer(kind=c_int) :: isvertical, idraw
+
+    ! Create the spin_button
+    spin_button = gtk_spin_button_new_with_range(vmin, vmax, step)
+
+    ! Formatting
+    call gtk_spin_button_set_numeric(spin_button, TRUE)
+    if (present(digits)) call gtk_spin_button_set_digits(spin_button, digits)
+    if (present(wrap)) call gtk_spin_button_set_wrap(spin_button, wrap)
+
+    ! Initial value
+    if (present(initial_value)) &
+         & call gtk_spin_button_set_value(spin_button, initial_value)
+
+    ! Callback connection
+    if (present(value_changed)) then
+       if (present(data)) then
+          call g_signal_connect(spin_button, "value-changed", value_changed, &
+               & data)
+       else
+          call g_signal_connect(spin_button, "value-changed", value_changed)
+       end if
+    end if
+
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(spin_button, &
+         & trim(tooltip)//cnull)
+
+    if (present(sensitive)) &
+         & call gtk_widget_set_sensitive(spin_button, sensitive)
+  end function hl_gtk_spin_button_flt_new
+
+  !+
+  function hl_gtk_spin_button_int_new(imin, imax, initial_value, &
+       & value_changed, data, sensitive, tooltip, wrap) result(spin_button)
+    ! Floating point version of a spin_button
+    !
+    ! IMIN: c_int: required: The minimum value for the spin_button
+    ! IMAX: c_int: required: The maximum value for the spin_button
+    ! INITIAL_VALUE: c_int: optional: Set the intial value of the spin_button
+    ! VALUE_CHANGED: c_funptr: optional: Callback function for the
+    ! 		"value-changed" signal.
+    ! DATA: c_ptr: optional: User data to pass the the value_changed callback.
+    ! SENSITIVE: boolean: optional: Whether the widget is created in the
+    ! 		sensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display.
+    ! WRAP: boolean: optional: If set to TRUE then wrap around if limit is
+    ! 		exceeded
+    !
+    ! This routine is usually called via its generic interface
+    ! hl_gtk_spin_button_new
+    !-
+    type(c_ptr) :: spin_button
+    integer(kind=c_int), intent(in) :: imin, imax
+    integer(kind=c_int), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: wrap
+
+    integer(kind=c_int) :: isvertical, idraw
+
+    ! Create the spin_button
+    spin_button = gtk_spin_button_new_with_range(real(imin, c_double), &
+         &real(imax, c_double), 1.0_c_double)
+
+    ! Formatting
+    call gtk_spin_button_set_numeric(spin_button, TRUE)
+    if (present(wrap)) call gtk_spin_button_set_wrap(spin_button, wrap)
+
+    ! Initial value
+    if (present(initial_value)) call gtk_spin_button_set_value(spin_button, &
+         & real(initial_value, c_double))
+
+    ! Callback connection
+    if (present(value_changed)) then
+       if (present(data)) then
+          call g_signal_connect(spin_button, "value-changed", value_changed, &
+               & data)
+       else
+          call g_signal_connect(spin_button, "value-changed", value_changed)
+       end if
+    end if
+
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(spin_button, &
+         & trim(tooltip)//cnull)
+
+    if (present(sensitive)) &
+         & call gtk_widget_set_sensitive(spin_button, sensitive)
+  end function hl_gtk_spin_button_int_new
+
+  !+
+  function hl_gtk_spin_button_get_value(spin_button) result(val)
+    ! Get the value of a spin_button
+    !
+    ! SPIN_BUTTON: c_ptr: required: The spin_button to read.
+    !
+    ! Note even for an integer spin_button we get a float value but there's
+    ! no problem letting Fortran do the truncation
+    !-
+    real(kind=c_double) :: val
+    type(c_ptr) :: spin_button
+
+    val = gtk_spin_button_get_value(spin_button)
+  end function hl_gtk_spin_button_get_value
+
+  !+
+  subroutine hl_gtk_spin_button_set_flt(spin_button, val)
+    ! Set a floating point value for a spin_button
+    !
+    ! SPIN_BUTTON: c_ptr: required: The spin_button to set.
+    ! VAL: c_double: required: The value to set.
+    !
+    ! This is usually accessed via the generic interface hl_gtk_spin_button_set_value
+    !-
+    type(c_ptr), intent(in) :: spin_button
+    real(kind=c_double), intent(in) :: val
+
+    call gtk_spin_button_set_value(spin_button, val)
+  end subroutine hl_gtk_spin_button_set_flt
+
+  !+
+  subroutine hl_gtk_spin_button_set_int(spin_button, val)
+    ! Set a floating point value for a spin_button
+    !
+    ! SPIN_BUTTON: c_ptr: required: The spin_button to set.
+    ! VAL: c_int: required: The value to set.
+    !
+    ! This is usually accessed via the generic interface hl_gtk_spin_button_set_value
+    !-
+    type(c_ptr), intent(in) :: spin_button
+    integer(kind=c_int), intent(in) :: val
+
+    call gtk_spin_button_set_value(spin_button, real(val, c_double))
+  end subroutine hl_gtk_spin_button_set_int
+
+  !*
+  ! Multi-line text box
+  ! This is based around the GtkTextView widget family. The HL interface hides
+  ! the text buffer from the user, except in some callbacks where the signal
+  ! is attached to the buffer not the view.
+  !
+  ! If you do need to access the text buffer directly it can be obtained with
+  ! the gtk_text_view_get_buffer function.
+  !/
+
+  !+
+  function hl_gtk_text_view_new(scroll, editable, activate, data_activate, &
+       & insert_text, data_insert_text, delete_range, data_delete_range, &
+       & initial_text, sensitive, tooltip, ssize) result(view)
+    ! A multiline text edit widget
+    !
+    ! SCROLL: c_ptr: required?: A scrolled window in which the text editor
+    ! 		is placed. [Should this be required?] used for packing the
+    ! 		widget into your application.
+    ! EDITABLE: boolean: optional: Set to FALSE to make a non-editable text box.
+    ! ACTIVATE: c_funptr: optional: Callback for the "activate" signal.
+    ! DATA_ACTIVATE: c_ptr: optional: User data to pass to/from the activate
+    ! 		callback
+    ! INSERT_TEXT: c_funptr: optional: Callback for the "insert-text" signal.
+    ! 		This handler is attached to the text buffer not the text view.
+    ! DATA_INSERT_TEXT: c_ptr: optional: User data for the insert-text callback.
+    ! DELETE_RANGE: c_funptr: optional: Callback for the "delete-range" signal.
+    ! 		This handler is attached to the text buffer not the text view.
+    ! DATA_DELETE_RANGE: c_ptr: optional: User data for the delete-range callback.
+    ! INITIAL_TEXT: string(): optional: Initial text to put in the text window.
+    ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
+    ! 		insensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display when the pointer is
+    ! 		held over the widget.
+    ! SSIZE: c_int(2): optional: Size of the scroll widget.
+    !-
+
+    type(c_ptr) :: view
+    type(c_ptr), intent(out) :: scroll
+    integer(kind=c_int), intent(in), optional :: editable
+    type(c_funptr), optional :: activate, insert_text, delete_range
+    type(c_ptr), optional :: data_activate, data_insert_text, data_delete_range
+    character(len=*), dimension(:), intent(in), optional :: initial_text
+    integer(kind=c_int), intent(in), optional :: sensitive
+    character(kind=c_char), dimension(*), optional :: tooltip
+    integer(kind=c_int), dimension(:), optional :: ssize
+
+    type(c_ptr) :: buffer
+    character(kind=c_char), dimension(:), allocatable :: text0
+    type(gtktextiter), target :: iter
+
+    buffer = gtk_text_buffer_new(NULL)
+    view = gtk_text_view_new_with_buffer(buffer)
+
+    scroll = gtk_scrolled_window_new(NULL, NULL)
+    call gtk_scrolled_window_set_policy(scroll, GTK_POLICY_AUTOMATIC, &
+         & GTK_POLICY_AUTOMATIC)
+    if (present(ssize)) call gtk_widget_set_size_request(scroll,ssize(1), ssize(2))
+    call gtk_container_add(scroll, view)
+
+    if (present(editable)) then
+       call gtk_text_view_set_editable(view, editable)
+    else
+       call gtk_text_view_set_editable(view, TRUE)
+    end if
+
+    ! If there's an initial value, set it before binding the signals.
+    if (present(initial_text)) then
+       call convert_f_string(initial_text, text0)
+       call gtk_text_buffer_get_start_iter(buffer, c_loc(iter))
+       call gtk_text_buffer_insert(buffer, c_loc(iter), text0, -1)
+       deallocate(text0)
+    end if
+
+    ! Attach the various signals
+    if (present(activate)) then
+       if (present(data_activate)) then
+          call g_signal_connect(view, "activate"//cnull, activate, &
+               & data_activate)
+       else
+          call g_signal_connect(view, "activate"//cnull, activate)
+       end if
+    end if
+    if (present(insert_text)) then
+       if (present(data_insert_text)) then
+          call g_signal_connect(buffer, "insert-text", insert_text, &
+               & data_insert_text)
+       else
+          call g_signal_connect(buffer, "insert-text", insert_text)
+       end if
+    end if
+    if (present(delete_range)) then
+       if (present(data_delete_range)) then
+          call g_signal_connect(buffer, "delete-range", delete_range, &
+               & data_delete_range)
+       else
+          call g_signal_connect(buffer, "delete-range", delete_range)
+       end if
+    end if
+
+    if (present(sensitive)) call gtk_widget_set_sensitive(view, sensitive)
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(view, tooltip)
+
+  end function hl_gtk_text_view_new
+
+  !+
+  subroutine hl_gtk_text_view_insert(view, text, line, column, replace, &
+       & at_cursor, buffer)
+    ! Insert text to an text view
+    !
+    ! VIEW: c_ptr: required: The text view into which to insert.
+    ! TEXT: string(): required: The text to insert.
+    ! LINE: c_int: optional: The line at which to insert (if omitted,
+    ! 		then the text is appended).
+    ! COLUMN: c_int: optional: The column as which to insert the text
+    ! 		(If omitted, then insert at the start of the line).
+    ! REPLACE: boolean: optional: If set to TRUE and LINE and COLUMN are omitted
+    ! 		then replace the text in the buffer.
+    ! AT_CURSOR: boolean: optional: Set to TRUE to insert the text at the
+    ! 		cursor. 
+    ! BUFFER: c_ptr: optional: The text buffer in which to insert the text
+    ! 		If this is given, then VIEW is ignored -- used in signal
+    ! 		handlers attached to the buffer.
+    !-
+
+    type(c_ptr), intent(in) :: view
+    character(len=*), dimension(:), intent(in) :: text
+    integer(kind=c_int), optional, intent(in) :: line, column
+    integer(kind=c_int), optional, intent(in) :: replace, at_cursor
+    type(c_ptr), intent(in), optional :: buffer
+
+    type(c_ptr) :: tbuf
+    type(gtktextiter), target :: iter
+    integer(kind=c_int) :: icol, irep, atc
+    character(kind=c_char), dimension(:), allocatable :: text0
+
+    if (present(buffer)) then
+       tbuf = buffer
+    else
+       tbuf= gtk_text_view_get_buffer(view)
+    end if
+
+    call convert_f_string(text, text0)
+
+    ! Check if we are going to insert at the cursor, and if so do so.
+    if (present(at_cursor)) then
+       atc = at_cursor
+    else
+       atc = FALSE
+    end if
+
+    if (atc == TRUE) then
+       call gtk_text_buffer_insert_at_cursor(tbuf, text0, -1)
+       deallocate(text0)
+       return
+    end if
+
+    if (present(line)) then
+       if (present(column)) then
+          icol = column
+       else
+          icol = 0
+       end if
+       if (present(replace)) then 
+          call hl_gtk_text_view_delete(NULL, line=line, column=icol, &
+               & n_chars=size(text0), buffer=tbuf)
+       end if
+       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(iter), &
+            & line, column)
+    else
+       if (present(replace)) then
+          irep = replace
+       else
+          irep = FALSE
+       end if
+       if (irep == TRUE) then
+          call gtk_text_buffer_set_text(tbuf, text0, -1)
+          deallocate(text0)
+          return
+       end if
+       call gtk_text_buffer_get_end_iter(tbuf, c_loc(iter))
+    end if
+
+    call gtk_text_buffer_insert(tbuf, c_loc(iter), text0, -1)
+    deallocate(text0)
+  end subroutine hl_gtk_text_view_insert
+
+  !+
+  subroutine hl_gtk_text_view_delete(view, line, column, n_chars, n_lines, &
+       & buffer)
+    ! Delete from a text view
+    !
+    ! VIEW: c_ptr: required: The text view from which to delete.
+    ! LINE: c_int: optional: The line at which to start the deletion
+    ! COLUMN: c_int: optional: The column at which to start the deletion.
+    ! 		required if N_CHARS is given. Ignored if N_LINES is given.
+    ! N_CHARS: c_int: optional: How many characters to delete. 
+    ! N_LINES: c_int: optional: How many lines to delete.
+    ! BUFFER: c_ptr: optional: The text buffer from which to delete. If this
+    ! 		is given, then VIEW is ignored, used in signal handlers
+    ! 		attached to the buffer.
+    !
+    ! If no location specifiers are given then the buffer is cleared
+    !-
+
+    type(c_ptr), intent(in) :: view
+    integer(kind=c_int), intent(in), optional :: line, column, n_chars, n_lines
+    type(c_ptr), intent(in), optional :: buffer
+
+    type(c_ptr) :: tbuf
+    type(gtktextiter), target :: s_iter, e_iter
+    integer(kind=c_int) :: isok
+
+    ! Input checking
+    if (present(n_chars) .and. present(n_lines)) then
+       write(0, *) &
+            & "hl_gtk_text_view_delete:: May not specify both N_CHARS and N_LINES"
+       return
+    end if
+
+    if (present(n_chars) .and. .not. present(column)) then
+       write(0, *) &
+            & "hl_gtk_text_view_delete:: Character delete requires a start column"
+       return
+    end if
+
+    ! Find the buffer
+
+    if (present(buffer)) then
+       tbuf = buffer
+    else
+       tbuf = gtk_text_view_get_buffer(view)
+    end if
+
+    if (present(n_chars)) then
+       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
+            & line, column)
+       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
+            & line, column)
+       isok = gtk_text_iter_forward_chars(c_loc(e_iter), n_chars)
+    else if (present(n_lines)) then
+       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(s_iter), line)
+       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(e_iter), line)
+       isok = gtk_text_iter_forward_lines(c_loc(e_iter), n_lines)
+    else
+       call gtk_text_buffer_get_start_iter(tbuf, c_loc(s_iter))
+       call gtk_text_buffer_get_end_iter(tbuf, c_loc(s_iter))
+    end if
+
+    call gtk_text_buffer_delete(tbuf, c_loc(s_iter), c_loc(e_iter))
+  end subroutine hl_gtk_text_view_delete
+
+  !+
+  subroutine hl_gtk_text_view_get_text(view, text, start_line, start_column, &
+       & end_line, end_column, hidden, buffer)
+    ! Get text from s text view.
+    !
+    ! VIEW: c_ptr: required: The text view to read.
+    ! TEXT: string(): required: A variable to contain the output text.
+    ! START_LINE: c_int: optional: The first line to read.
+    ! START_COLUMN: c_int: optional: The column at which to start reading.
+    ! END_LINE: c_int: optional: The last line to read.
+    ! END_COLUMN: c_int: optional: The column at which to stop reading.
+    ! HIDDEN: boolean: optional: If set to FALSE, then do not get hidden
+    ! 		characters
+    ! BUFFER: c_ptr: optional: The text buffer from which to read. If this
+    ! 		is given, then VIEW is ignored, useful for signal handlers
+    ! 		attached to the buffer.
+    !
+    ! Note the rules for selection.
+    !
+    ! * If no selection arguments are present, the whole text is returned.
+    ! * If either start_column or end_column is absent, but the matching line
+    ! is present, then selection is by line.
+    ! * If end_line is absent, but both columns are present, then the selection
+    ! is within start_line
+    ! * If neither start_line nor start_column is present, then the selection is
+    ! from the start of the buffer
+    ! * If neither end_line nor end_column is present, then the selection is
+    ! to the end of the buffer.
+    !-
+
+    type(c_ptr), intent(in) :: view
+    character(len=*), dimension(:), allocatable, intent(out) :: text
+    integer(kind=c_int), intent(in), optional :: start_column, start_line, &
+         & end_line, end_column
+    integer(kind=c_int), intent(in), optional :: hidden
+    type(c_ptr), intent(in), optional :: buffer
+
+    type(c_ptr) :: tbuf, ctext0
+    character(kind=c_char), dimension(:), pointer :: ftext0
+    type(gtktextiter), target :: s_iter, e_iter
+    integer(kind=c_int) :: ihid
+    integer(kind=c_int) :: nchars_r
+
+    if (present(buffer)) then
+       tbuf = buffer
+    else
+       tbuf = gtk_text_view_get_buffer(view)
+    end if
+
+    ! Fully specified
+    if (present(start_line) .and. present(start_column) .and. &
+         & present(end_line) .and. present(end_column)) then
+       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
+            & start_line, start_column)
+       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
+            & end_line, end_column)
+
+       ! Both columns only start line
+    else if (present(start_line) .and. present(start_column) .and. &
+         &  present(end_column)) then
+       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
+            & start_line, start_column)
+       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
+            & start_line, end_column)
+
+       ! Both lines, at least one column not given
+    else if (present(start_line) .and. present(start_column)) then
+       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(s_iter), &
+            & start_line)
+       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(e_iter), &
+            & end_line)
+
+       ! Fully specified start, no end
+    else if (present(start_line) .and. present(start_column)) then
+       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
+            & start_line, start_column)
+       call gtk_text_buffer_get_end_iter(tbuf, c_loc(e_iter))
+
+       ! Start line only
+    else if (present(start_line)) then
+       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(s_iter), &
+            & start_line)
+       call gtk_text_buffer_get_end_iter(tbuf, c_loc(e_iter))
+
+       ! Fully specified end, no start
+    else if (present(end_line) .and. present(end_column)) then
+       call gtk_text_buffer_get_start_iter(tbuf, c_loc(s_iter))
+       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
+            & start_line, end_column)
+
+       ! End line only
+    else if (present(end_line)) then
+       call gtk_text_buffer_get_start_iter(tbuf, c_loc(s_iter))
+       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(e_iter), &
+            & end_line)
+
+       ! Should only get here with nothing specified
+    else
+       call gtk_text_buffer_get_start_iter(tbuf, c_loc(s_iter))
+       call gtk_text_buffer_get_end_iter(tbuf, c_loc(e_iter))
+    end if
+
+    if (present(hidden)) then
+       ihid = hidden
+    else
+       ihid = TRUE
+    end if
+    ctext0 = gtk_text_buffer_get_text(tbuf, c_loc(s_iter), c_loc(e_iter), ihid)
+    nchars_r = gtk_text_iter_get_offset(c_loc(e_iter)) - &
+         &gtk_text_iter_get_offset(c_loc(s_iter)) + 1
+
+    call c_f_pointer(ctext0, ftext0, (/ nchars_r /))
+    call convert_c_string(ftext0, text)
+
+  end subroutine hl_gtk_text_view_get_text
+
+  !+
+  function hl_gtk_text_view_get_cursor(view, buffer) result(ipos)
+    ! Get the current cursor location
+    !
+    ! VIEW: c_ptr: required: The text view to query
+    ! BUFFER: c_ptr: optional: The buffer to query (if given, then
+    ! 		VIEW is ignored).
+    !
+    ! Returns a 2-element array with the line and column of the cursor
+    !-
+
+    integer(kind=c_int), dimension(2) :: ipos
+    type(c_ptr), intent(in) :: view
+    type(c_ptr), intent(in), optional :: buffer
+
+    type(c_ptr) :: tbuf, mark
+    type(gtktextiter), target :: iter
+
+    if (present(buffer)) then
+       tbuf = buffer
+    else
+       tbuf = gtk_text_view_get_buffer(view)
+    end if
+
+    mark = gtk_text_buffer_get_insert(tbuf)
+    call gtk_text_buffer_get_iter_at_mark(tbuf, c_loc(iter), mark)
+    ipos(1) = gtk_text_iter_get_line(c_loc(iter))
+    ipos(2) = gtk_text_iter_get_line_offset(c_loc(iter))
+
+  end function hl_gtk_text_view_get_cursor
+
+  !+
+  function hl_gtk_text_view_get_selection(view, s_start, s_end, buffer) &
+       & result(issel)
+    ! Get the selection range 
+    !
+    ! VIEW: c_ptr: required: The text view to query.
+    ! S_START: c_int(): required: The start of the selection. (line, column)
+    ! S_END: c_int(): required: The end of the selection. (line, column)
+    ! BUFFER: c_ptr: optional: The text buffer to query. If present, then the
+    ! 		view argument is ignored.
+    !
+    ! Returns TRUE if there is a selection, FALSE if there isn't
+    !-
+
+    integer(kind=c_int) :: issel
+    type(c_ptr), intent(in) :: view
+    integer(kind=c_int), dimension(2), intent(out) :: s_start, s_end
+    type(c_ptr), intent(in), optional :: buffer
+
+    type(c_ptr) :: tbuf
+    type(gtktextiter), target :: s_iter, e_iter
+
+    if (present(buffer)) then
+       tbuf = buffer
+    else
+       tbuf = gtk_text_view_get_buffer(view)
+    end if
+
+    issel = gtk_text_buffer_get_selection_bounds(tbuf, c_loc(s_iter), &
+         & c_loc(e_iter))
+
+    if (issel == FALSE) then ! No selection
+       s_start(:) = -1
+       s_end(:) = -1
+    else
+       s_start(1) = gtk_text_iter_get_line(c_loc(s_iter))
+       s_start(2) = gtk_text_iter_get_line_offset(c_loc(s_iter))
+       s_end(1) = gtk_text_iter_get_line(c_loc(e_iter))
+       s_end(2) = gtk_text_iter_get_line_offset(c_loc(e_iter))
+    end if
+  end function hl_gtk_text_view_get_selection
+
+  !+
+  function hl_gtk_text_view_get_modified(view) result(ismod)
+    ! Check if the buffer of a text view is modified
+    !
+    ! VIEW: c_ptr: required: The text view to check.
+    !
+    ! N.B. No BUFFER argument is provided as gtk_text_buffer_get_modified
+    ! is just a single call
+    !-
+
+    integer(kind=c_int) :: ismod
+    type(c_ptr), intent(in) :: view
+
+    type(c_ptr) :: tbuf
+
+    tbuf = gtk_text_view_get_buffer(view)
+    ismod = gtk_text_buffer_get_modified(tbuf) 
+
+  end function hl_gtk_text_view_get_modified
+
+  !+
+  subroutine hl_gtk_text_view_set_modified(view, state)
+    ! Set/clear the modified flag on the text buffer of a text view
+    !
+    ! VIEW: c_ptr: required: The text view to set
+    ! STATE: boolean: required: The state to set the flag to.
+    !-
+
+    type(c_ptr), intent(in) :: view
+    integer(kind=c_int), intent(in) :: state
+
+    type(c_ptr) :: tbuf
+
+    tbuf = gtk_text_view_get_buffer(view)
+    call gtk_text_buffer_set_modified(tbuf, state)
+
+  end subroutine hl_gtk_text_view_set_modified
+
 end module gtk_hl
