@@ -74,7 +74,7 @@ module gtk_hl
   ! use gtk
   use gtk_sup
 
-  use gtk, only: gtk_box_pack_start, gtk_box_pack_start_defaults, gtk_button_new,&
+  use gtk, only: gtk_box_pack_start, gtk_button_new,&
        & gtk_button_new_with_label, gtk_cell_renderer_set_alignment, gtk_cell_renderer&
        &_set_padding, gtk_cell_renderer_set_visible, gtk_cell_renderer_text_new, gtk_c&
        &heck_button_new, gtk_check_button_new_with_label, gtk_container_add, gtk_conta&
@@ -87,8 +87,8 @@ module gtk_hl
        &lue, gtk_menu_bar_new, gtk_menu_bar_set_pack_direction, gtk_menu_item_new, gtk&
        &_menu_item_new_with_label, gtk_menu_item_set_submenu, gtk_menu_new, gtk_menu_s&
        &hell_append, gtk_menu_shell_insert, gtk_orientable_set_orientation, gtk_progre&
-       &ss_bar_new, gtk_progress_bar_pulse, gtk_progress_bar_set_fraction, gtk_progres&
-       &s_bar_set_orientation, gtk_progress_bar_set_pulse_step, gtk_progress_bar_set_t&
+       &ss_bar_new, gtk_progress_bar_pulse, gtk_progress_bar_set_fraction, &
+       & gtk_progress_bar_set_pulse_step, gtk_progress_bar_set_t&
        &ext, gtk_radio_button_get_group, gtk_radio_button_new, gtk_radio_button_new_wi&
        &th_label, gtk_scrolled_window_new, gtk_scrolled_window_set_policy, gtk_separat&
        &or_menu_item_new, gtk_toggle_button_get_active, gtk_toggle_button_set_active, &
@@ -128,10 +128,12 @@ module gtk_hl
        & GTK_BUTTONS_OK, GTK_BUTTONS_CLOSE, GTK_BUTTONS_CANCEL, GTK_BUTTONS_YES_NO, &
        & GTK_BUTTONS_OK_CANCEL, GTK_RESPONSE_OK, GTK_RESPONSE_CLOSE, GTK_RESPONSE_CANCEL, &
        & GTK_RESPONSE_YES, GTK_RESPONSE_NO, GTK_RESPONSE_NONE, &
-       & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
+       & gtk_progress_bar_set_orientation, &
+      & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
        & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT
-  ! Replace the last 2 lines with the next one for GTK3
-  ! & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL
+  ! Replace the last 2 lines with the next 2 for GTK3
+  !3 & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL
+  !3      & gtk_progress_bar_set_inverted, gtk_progress_bar_set_show_text
 
   use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
        &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int,&
@@ -926,17 +928,17 @@ contains
     call gtk_progress_bar_set_orientation(bar, orientation)
     ! end GTK2 version
     ! GTK3 version
-!!$    if (present(vertical)) then
-!!$       if (vertical == TRUE) then
-!!$          call gtk_orientable_set_orientation (bar, &
-!!$               & GTK_ORIENTATION_VERTICAL)
-!!$       else
-!!$          call gtk_orientable_set_orientation (bar, &
-!!$               & GTK_ORIENTATION_HORIZONTAL)
-!!$       end if
-!!$    end if
-!!$
-!!$    if (present(reversed)) call gtk_progress_bar_set_inverted(bar, reversed)
+!3    if (present(vertical)) then
+!3       if (vertical == TRUE) then
+!3          call gtk_orientable_set_orientation (bar, &
+!3               & GTK_ORIENTATION_VERTICAL)
+!3       else
+!3          call gtk_orientable_set_orientation (bar, &
+!3               & GTK_ORIENTATION_HORIZONTAL)
+!3       end if
+!3    end if
+!3
+!3    if (present(reversed)) call gtk_progress_bar_set_inverted(bar, reversed)
     ! end GTK3 version
 
     if (present(step)) &
@@ -977,12 +979,20 @@ contains
     ! If annotation is needed, add it.
     if (present(text)) then
        call gtk_progress_bar_set_text (bar, text//cnull)
+! GTK3 Only
+!3      call gtk_progress_bar_set_show_text(bar, TRUE)
+! End GTK3 only
     else if (present(string)) then
        if (string == FALSE .or. .not. present(val)) return
        ! Otherwise we display a percentage
        write(sval, "(F5.1,'%')") val*100.
 
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
+! GTK3 Only
+!3      call gtk_progress_bar_set_show_text(bar, TRUE)
+!3    else
+!3       call gtk_progress_bar_set_show_text(bar, FALSE)
+! End GTK3 only
     end if
   end subroutine hl_gtk_progress_bar_set_f
 
@@ -1014,11 +1024,19 @@ contains
     ! If annotation is needed, add it.
     if (present(text)) then
        call gtk_progress_bar_set_text (bar, text//cnull)
+! GTK3 Only
+!3       call gtk_progress_bar_set_show_text(bar, TRUE)
+! End GTK3 only
     else if (present(string)) then
        if (string == FALSE) return
        ! Otherwise we display n or m
        write(sval, "(I0,' of ',I0)") val, maxv
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
+! GTK3 Only
+!3       call gtk_progress_bar_set_show_text(bar, TRUE)
+!3    else
+!3       call gtk_progress_bar_set_show_text(bar, TRUE)
+! End GTK3 only
     end if
   end subroutine hl_gtk_progress_bar_set_ii
 
@@ -1996,8 +2014,8 @@ contains
     ! Get the selection range 
     !
     ! VIEW: c_ptr: required: The text view to query.
-    ! S_START: c_int(): required: The start of the selection. (line, column)
-    ! S_END: c_int(): required: The end of the selection. (line, column)
+    ! S_START: c_int(): required: The start of the selection. (line, column, offset)
+    ! S_END: c_int(): required: The end of the selection. (line, column, offset)
     ! BUFFER: c_ptr: optional: The text buffer to query. If present, then the
     ! 		view argument is ignored.
     !
