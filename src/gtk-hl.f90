@@ -80,7 +80,8 @@ module gtk_hl
        &heck_button_new, gtk_check_button_new_with_label, gtk_container_add, gtk_conta&
        &iner_set_border_width, gtk_dialog_add_button, gtk_dialog_get_content_area, gtk&
        &_dialog_new, gtk_dialog_run, gtk_editable_set_editable, gtk_entry_new, gtk_ent&
-       &ry_set_activates_default, gtk_entry_set_max_length, gtk_entry_set_text, gtk_hb&
+       &ry_set_activates_default, gtk_entry_set_max_length, gtk_entry_set_text, &
+       & gtk_entry_get_text, gtk_entry_get_text_length, gtk_hb&
        &ox_new, gtk_label_new, gtk_list_store_append, gtk_list_store_clear, gtk_list_s&
        &tore_insert, gtk_list_store_newv, gtk_list_store_remove, gtk_list_store_set_va&
        &lue, gtk_menu_bar_new, gtk_menu_bar_set_pack_direction, gtk_menu_item_new, gtk&
@@ -119,7 +120,8 @@ module gtk_hl
        &ward_chars, gtk_text_iter_forward_line, gtk_text_iter_forward_lines, gtk_text_&
        &iter_get_line, gtk_text_iter_get_line_offset, gtk_text_view_get_buffer, gtk_te&
        &xt_view_new, gtk_text_view_new_with_buffer, gtk_text_view_set_editable, &
-       & gtk_text_iter_get_offset, & ! text view end
+       & gtk_text_iter_get_offset, gtk_text_buffer_get_char_count, &
+       & gtk_text_buffer_get_line_count, & ! text view end
        & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -464,6 +466,35 @@ contains
          & call gtk_widget_set_sensitive(entry, sensitive)
 
   end function hl_gtk_entry_new
+
+  !+
+  subroutine hl_gtk_entry_get_text(entry, text, status)
+    ! Return the text in an entry box as a fortran string.
+    !
+    ! ENTRY: c_ptr: required: The text entry to read
+    ! TEXT: f_string: required: The text read.
+    ! STATUS: c_int: optional: Returns -1 if the string is truncated.
+    !
+    ! To return the text as a c-pointer use gtk_entry_get_text
+    !-
+
+    type(c_ptr), intent(in) :: entry
+    character(len=*), intent(out) :: text
+    integer(kind=c_int), optional, intent(out) :: status
+
+    type(c_ptr) :: ctext
+    character(c_char), dimension(:), pointer :: textptr
+    integer(kind=c_int16_t) :: ntext
+    integer(kind=c_int) :: istat
+
+    ntext = gtk_entry_get_text_length(entry)
+    ctext = gtk_entry_get_text(entry)
+
+    call c_f_pointer(ctext, textptr, (/int(ntext,c_int)/))
+    call convert_c_string(textptr, text, istat)
+
+    if (present(status)) status=istat
+  end subroutine hl_gtk_entry_get_text
 
   !*
   ! List1
@@ -1555,21 +1586,23 @@ contains
   ! is attached to the buffer not the view.
   !
   ! If you do need to access the text buffer directly it can be obtained with
-  ! the gtk_text_view_get_buffer function.
+  ! the gtk_text_view_get_buffer function, or it can be returned via the optional
+  ! BUFFER argument to the constructor.
   !/
 
   !+
-  function hl_gtk_text_view_new(scroll, editable, activate, data_activate, &
+  function hl_gtk_text_view_new(scroll, editable, changed, data_changed, &
        & insert_text, data_insert_text, delete_range, data_delete_range, &
-       & initial_text, sensitive, tooltip, ssize) result(view)
+       & initial_text, sensitive, tooltip, ssize, buffer) result(view)
     ! A multiline text edit widget
     !
-    ! SCROLL: c_ptr: required?: A scrolled window in which the text editor
-    ! 		is placed. [Should this be required?] used for packing the
-    ! 		widget into your application.
+    ! SCROLL: c_ptr: optional: A scrolled window in which the text editor
+    ! 		is placed. If it is present, then it must be used used for packing the
+    ! 		widget into your application. If it is not used, then scroll bars
+    ! 		will not be added if the text goes beyond the edge of the box.
     ! EDITABLE: boolean: optional: Set to FALSE to make a non-editable text box.
-    ! ACTIVATE: c_funptr: optional: Callback for the "activate" signal.
-    ! DATA_ACTIVATE: c_ptr: optional: User data to pass to/from the activate
+    ! CHANGED: c_funptr: optional: Callback for the "activate" signal.
+    ! DATA_CHANGED: c_ptr: optional: User data to pass to/from the activate
     ! 		callback
     ! INSERT_TEXT: c_funptr: optional: Callback for the "insert-text" signal.
     ! 		This handler is attached to the text buffer not the text view.
@@ -1583,30 +1616,40 @@ contains
     ! TOOLTIP: string: optional: A tooltip to display when the pointer is
     ! 		held over the widget.
     ! SSIZE: c_int(2): optional: Size of the scroll widget.
+    ! BUFFER: c_ptr: optional: Variable to return the buffer pointer/
+    !
+    ! NOTE -- The insert-text and delete-range callbacks take extra arguments. They
+    ! are called before the buffer is actually modified. The changed callback is called
+    ! after the change.
     !-
 
     type(c_ptr) :: view
-    type(c_ptr), intent(out) :: scroll
+    type(c_ptr), intent(out), optional :: scroll
     integer(kind=c_int), intent(in), optional :: editable
-    type(c_funptr), optional :: activate, insert_text, delete_range
-    type(c_ptr), optional :: data_activate, data_insert_text, data_delete_range
+    type(c_funptr), optional :: changed, insert_text, delete_range
+    type(c_ptr), optional :: data_changed, data_insert_text, data_delete_range
     character(len=*), dimension(:), intent(in), optional :: initial_text
     integer(kind=c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), optional :: tooltip
     integer(kind=c_int), dimension(:), optional :: ssize
+    type(c_ptr), intent(out), optional :: buffer
 
-    type(c_ptr) :: buffer
+    type(c_ptr) :: tbuf
     character(kind=c_char), dimension(:), allocatable :: text0
     type(gtktextiter), target :: iter
 
-    buffer = gtk_text_buffer_new(NULL)
-    view = gtk_text_view_new_with_buffer(buffer)
+    tbuf = gtk_text_buffer_new(NULL)
+    view = gtk_text_view_new_with_buffer(tbuf)
 
-    scroll = gtk_scrolled_window_new(NULL, NULL)
-    call gtk_scrolled_window_set_policy(scroll, GTK_POLICY_AUTOMATIC, &
-         & GTK_POLICY_AUTOMATIC)
-    if (present(ssize)) call gtk_widget_set_size_request(scroll,ssize(1), ssize(2))
-    call gtk_container_add(scroll, view)
+    if (present(scroll)) then
+       scroll = gtk_scrolled_window_new(NULL, NULL)
+       call gtk_scrolled_window_set_policy(scroll, GTK_POLICY_AUTOMATIC, &
+            & GTK_POLICY_AUTOMATIC)
+       if (present(ssize)) call gtk_widget_set_size_request(scroll, ssize(1), ssize(2))
+       call gtk_container_add(scroll, view)
+    else if (present(ssize)) then
+       call gtk_widget_set_size_request(view, ssize(1), ssize(2))
+    end if
 
     if (present(editable)) then
        call gtk_text_view_set_editable(view, editable)
@@ -1617,34 +1660,34 @@ contains
     ! If there's an initial value, set it before binding the signals.
     if (present(initial_text)) then
        call convert_f_string(initial_text, text0)
-       call gtk_text_buffer_get_start_iter(buffer, c_loc(iter))
-       call gtk_text_buffer_insert(buffer, c_loc(iter), text0, -1)
+       call gtk_text_buffer_get_start_iter(tbuf, c_loc(iter))
+       call gtk_text_buffer_insert(tbuf, c_loc(iter), text0, -1)
        deallocate(text0)
     end if
 
     ! Attach the various signals
-    if (present(activate)) then
-       if (present(data_activate)) then
-          call g_signal_connect(view, "activate"//cnull, activate, &
-               & data_activate)
+    if (present(changed)) then
+       if (present(data_changed)) then
+          call g_signal_connect(tbuf, "changed"//cnull, changed, &
+               & data_changed)
        else
-          call g_signal_connect(view, "activate"//cnull, activate)
+          call g_signal_connect(tbuf, "changed"//cnull, changed)
        end if
     end if
     if (present(insert_text)) then
        if (present(data_insert_text)) then
-          call g_signal_connect(buffer, "insert-text", insert_text, &
+          call g_signal_connect(tbuf, "insert-text"//cnull, insert_text, &
                & data_insert_text)
        else
-          call g_signal_connect(buffer, "insert-text", insert_text)
+          call g_signal_connect(tbuf, "insert-text"//cnull, insert_text)
        end if
     end if
     if (present(delete_range)) then
        if (present(data_delete_range)) then
-          call g_signal_connect(buffer, "delete-range", delete_range, &
+          call g_signal_connect(tbuf, "delete-range"//cnull, delete_range, &
                & data_delete_range)
        else
-          call g_signal_connect(buffer, "delete-range", delete_range)
+          call g_signal_connect(tbuf, "delete-range"//cnull, delete_range)
        end if
     end if
 
@@ -1794,7 +1837,7 @@ contains
        isok = gtk_text_iter_forward_lines(c_loc(e_iter), n_lines)
     else
        call gtk_text_buffer_get_start_iter(tbuf, c_loc(s_iter))
-       call gtk_text_buffer_get_end_iter(tbuf, c_loc(s_iter))
+       call gtk_text_buffer_get_end_iter(tbuf, c_loc(e_iter))
     end if
 
     call gtk_text_buffer_delete(tbuf, c_loc(s_iter), c_loc(e_iter))
@@ -1924,10 +1967,10 @@ contains
     ! BUFFER: c_ptr: optional: The buffer to query (if given, then
     ! 		VIEW is ignored).
     !
-    ! Returns a 2-element array with the line and column of the cursor
+    ! Returns a 3-element array with the line, column and offset of the cursor
     !-
 
-    integer(kind=c_int), dimension(2) :: ipos
+    integer(kind=c_int), dimension(3) :: ipos
     type(c_ptr), intent(in) :: view
     type(c_ptr), intent(in), optional :: buffer
 
@@ -1944,7 +1987,7 @@ contains
     call gtk_text_buffer_get_iter_at_mark(tbuf, c_loc(iter), mark)
     ipos(1) = gtk_text_iter_get_line(c_loc(iter))
     ipos(2) = gtk_text_iter_get_line_offset(c_loc(iter))
-
+    ipos(3) = gtk_text_iter_get_offset(c_loc(iter))
   end function hl_gtk_text_view_get_cursor
 
   !+
@@ -1963,7 +2006,7 @@ contains
 
     integer(kind=c_int) :: issel
     type(c_ptr), intent(in) :: view
-    integer(kind=c_int), dimension(2), intent(out) :: s_start, s_end
+    integer(kind=c_int), dimension(3), intent(out) :: s_start, s_end
     type(c_ptr), intent(in), optional :: buffer
 
     type(c_ptr) :: tbuf
@@ -1984,8 +2027,10 @@ contains
     else
        s_start(1) = gtk_text_iter_get_line(c_loc(s_iter))
        s_start(2) = gtk_text_iter_get_line_offset(c_loc(s_iter))
+       s_start(3) = gtk_text_iter_get_offset(c_loc(s_iter))
        s_end(1) = gtk_text_iter_get_line(c_loc(e_iter))
        s_end(2) = gtk_text_iter_get_line_offset(c_loc(e_iter))
+       s_end(3) = gtk_text_iter_get_offset(c_loc(e_iter))
     end if
   end function hl_gtk_text_view_get_selection
 
@@ -2027,4 +2072,53 @@ contains
 
   end subroutine hl_gtk_text_view_set_modified
 
+  !+
+  subroutine hl_gtk_text_view_get_info(view, nlines, nchars, ncline, buffer)
+    ! Get various useful information about a text view
+    !
+    ! VIEW: c_ptr: required: The view to query
+    ! NLINES: c_int: optional: Return the number of lines in the view
+    ! NCHARS: c_int: optional: Return the number of characters in the view
+    ! NCLINE: c_int(): optional: Return the nuber of characters in each
+    ! 		line. Must be an allocatable array.
+    ! BUFFER: c_ptr: optional: If present use this buffer and ignore the
+    ! 		VIEW argument
+    !-
+
+    type(c_ptr), intent(in) :: view
+    integer(kind=c_int), intent(out), optional :: nlines, nchars
+    integer(kind=c_int), intent(out), optional, allocatable, dimension(:) :: ncline
+    type(c_ptr), intent(in), optional :: buffer
+
+    type(c_ptr) :: tbuf
+    type(gtktextiter), target :: i1, i2
+    integer(kind=c_int) :: nl
+    integer(kind=c_int) :: i
+    if (present(buffer)) then
+       tbuf = buffer
+    else
+       tbuf = gtk_text_view_get_buffer(view)
+    end if
+
+    if (present(nlines) .or. present(ncline)) &
+         &  nl = gtk_text_buffer_get_line_count(tbuf)
+    if (present(nlines)) nlines = nl
+
+    if (present(nchars)) &
+         & nchars = gtk_text_buffer_get_char_count(tbuf)
+
+    if (present(ncline)) then
+       allocate(ncline(nl))
+       call gtk_text_buffer_get_start_iter(tbuf, c_loc(i1))
+       do i = 1, nl-1
+          call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(i2), i)
+          ncline(i) = gtk_text_iter_get_offset(c_loc(i2)) - &
+               & gtk_text_iter_get_offset(c_loc(i1))-1
+          i1 = i2
+       end do
+       call gtk_text_buffer_get_end_iter(tbuf, c_loc(i2))
+       ncline(nl) = gtk_text_iter_get_offset(c_loc(i2)) - &
+               & gtk_text_iter_get_offset(c_loc(i1))
+    end if
+  end subroutine hl_gtk_text_view_get_info
 end module gtk_hl
