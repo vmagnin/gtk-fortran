@@ -39,7 +39,7 @@ module gtk_sup
   use iso_c_binding
   use gtk, only: NULL, CNULL
   use g, only: alloca, g_type_fundamental
-  
+
   implicit none
 
   ! Gtype definitions
@@ -332,6 +332,8 @@ character(len=len("gtk-zoom-out")+1), parameter :: GTK_STOCK_ZOOM_OUT = &
 interface convert_c_string
    module procedure convert_c_string_scalar
    module procedure convert_c_string_array
+   module procedure convert_c_string_scalar_cptr
+   module procedure convert_c_string_array_cptr
 end interface convert_c_string
 
 contains
@@ -358,7 +360,7 @@ contains
     ! Convert a null-terminated c-string to  a fortran string
     use iso_c_binding, only: c_char
     implicit none
-    character(c_char), dimension(:), pointer, intent(in) :: textptr
+    character(c_char), dimension(:), intent(in) :: textptr
     character(len=*), intent(out) :: f_string
     integer, intent(out), optional :: status
     integer :: i
@@ -378,7 +380,7 @@ contains
     ! string array
     use iso_c_binding, only: c_char
     implicit none
-    character(c_char), dimension(:), pointer, intent(in) :: textptr
+    character(c_char), dimension(:), intent(in) :: textptr
     character(len=*), intent(out), dimension(:), allocatable :: f_string
     integer, intent(out), optional :: status
     integer :: i, j, ii, count
@@ -398,8 +400,11 @@ contains
        f_string(j) = ""
        do i = 1, len(f_string)
           if (textptr(ii) == cnull) return
-          if (textptr(i) == c_new_line) exit
-          f_string(i:i)=textptr(ii)
+          if (textptr(ii) == c_new_line) then
+             ii = ii+1
+             exit
+          end if
+          f_string(j)(i:i)=textptr(ii)
           ii = ii+1
        end do
        if (i > len(f_string) .and. present(status)) &
@@ -407,16 +412,86 @@ contains
     end do
   end subroutine convert_c_string_array
 
-  subroutine convert_f_string(f_string, textptr)
+  subroutine convert_c_string_scalar_cptr(ctext, clen, f_string, status)
+    ! Convert a null-terminated c-string to  a fortran string
+
+    type(c_ptr), intent(in) :: ctext
+    integer(kind=c_int), intent(in) :: clen
+    character(len=*), intent(out) :: f_string
+    integer, intent(out), optional :: status
+
+    integer :: i
+    character(c_char), dimension(:), pointer :: textptr
+
+    call c_f_pointer(ctext, textptr, (/clen/))
+
+    f_string=""
+
+    if (present(status)) status = 0
+    do i = 1, len(f_string)
+       if (textptr(i) == cnull) return
+       f_string(i:i)=textptr(i)
+    end do
+    if (present(status)) status = -1  ! Output string not long enough
+  end subroutine convert_c_string_scalar_cptr
+
+  subroutine convert_c_string_array_cptr(ctext, clen, f_string, status)
+    ! Convert a null-terminated LF-separated c-string into a fortran
+    ! string array
+
+    type(c_ptr), intent(in) :: ctext
+    integer(kind=c_int), intent(in) :: clen
+    character(len=*), intent(out), dimension(:), allocatable :: f_string
+    integer, intent(out), optional :: status
+
+    integer :: i, j, ii, count
+    character(c_char), dimension(:), pointer :: textptr
+
+    call c_f_pointer(ctext, textptr, (/clen/))
+
+    count = 1
+    i = 1
+    do
+       if (textptr(i) == cnull) exit
+       if (textptr(i) == c_new_line) count = count+1
+       i = i+1
+    end do
+    allocate(f_string(count))
+
+    if (present(status)) status = 0
+    ii = 1
+    do j = 1, count
+       f_string(j) = ""
+       do i = 1, len(f_string)
+          if (textptr(ii) == cnull) return
+          if (textptr(ii) == c_new_line) then
+             ii = ii+1
+             exit
+          end if
+          f_string(j)(i:i)=textptr(ii)
+          ii = ii+1
+       end do
+       if (i > len(f_string) .and. present(status)) &
+            & status = -1  ! Output string not long enough
+    end do
+  end subroutine convert_c_string_array_cptr
+
+  subroutine convert_f_string(f_string, textptr, length)
     ! Convert a fortran string array into a null-terminated, LF_separated
     ! c-string
     character(len=*), intent(in), dimension(:) :: f_string
     character(c_char), dimension(:), intent(out), allocatable :: textptr
+    integer(kind=c_int), intent(out), optional :: length
 
-    integer :: lmax, i, j, ii
+    integer :: lcstr, i, j, ii
 
-    lmax = size(f_string)*(len(f_string)+1)
-    allocate(textptr(lmax))
+    lcstr = 0
+    do i = 1, size(f_string)
+       lcstr = lcstr + len_trim(f_string(i))+1 ! The +1 is for the LF and NULL characters
+    end do
+
+    allocate(textptr(lcstr))
+    if (present(length)) length = lcstr
 
     ii = 1
     do i = 1, size(f_string)
