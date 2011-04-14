@@ -122,6 +122,7 @@ module gtk_hl
        &xt_view_new, gtk_text_view_new_with_buffer, gtk_text_view_set_editable, &
        & gtk_text_iter_get_offset, gtk_text_buffer_get_char_count, &
        & gtk_text_buffer_get_line_count, & ! text view end
+       &gtk_combo_box_get_active, gtk_combo_box_new, & ! COMBO 
        & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -129,15 +130,24 @@ module gtk_hl
        & GTK_BUTTONS_OK_CANCEL, GTK_RESPONSE_OK, GTK_RESPONSE_CLOSE, GTK_RESPONSE_CANCEL, &
        & GTK_RESPONSE_YES, GTK_RESPONSE_NO, GTK_RESPONSE_NONE, &
        & gtk_progress_bar_set_orientation, &
+       & gtk_combo_box_append_text, gtk_combo_box_entry_new, &
+       & gtk_combo_box_entry_new_text, &
+       & gtk_combo_box_get_active_text, gtk_combo_box_insert_text, &
+       & gtk_combo_box_new_text, gtk_combo_box_prepend_text, &
+       & gtk_combo_box_remove_text, &
       & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
        & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT
   ! Replace the last 2 lines with the next 2 for GTK3
   !3 & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL
-  !3      & gtk_progress_bar_set_inverted, gtk_progress_bar_set_show_text
+  !3      & gtk_progress_bar_set_inverted, gtk_progress_bar_set_show_text, &
+!3 & gtk_combo_box_text_append_text, &
+!3 & gtk_combo_box_text_get_active_text, gtk_combo_box_text_insert_text, &
+!3 gtk_combo_box_text_new, gtk_combo_box_text_new_with_entry, &
+!3 gtk_combo_box_text_prepend_text, gtk_combo_box_text_remove &
 
   use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
        &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int,&
-       & g_value_init, g_value_set_int, g_value_set_static_string
+       & g_value_init, g_value_set_int, g_value_set_static_string, g_strv_length
 
   use iso_c_binding
 
@@ -2139,4 +2149,176 @@ contains
                & gtk_text_iter_get_offset(c_loc(i1))
     end if
   end subroutine hl_gtk_text_view_get_info
+
+  !*
+  ! ComboBox
+  ! This interface implements the GtkComboBoxText widget for making a chooser.
+  ! While this has more limited capabilities than the full GtkComboBox, it
+  ! is adequate for the vast majority of uses.
+  !/
+
+  !+
+  function hl_gtk_combo_box_new(has_entry, changed, data, initial_choices, &
+       & sensitive, tooltip) result(cbox)
+    ! Creator for the combobox.
+    !
+    ! HAS_ENTRY: boolean: optional: Set to TRUE to add an entry field.
+    ! CHANGED: c_funptr: optional: Callback routine for the "changed" signal.
+    ! DATA: c_ptr: optional: User data for the changed callback.
+    ! INITIAL_CHOICES: string(): optional: Initial list of choices.
+    ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
+    ! 		insensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display when the pointer is
+    ! 		held over the widget.
+    !-
+
+    type(c_ptr) :: cbox
+    integer(kind=c_int), intent(in), optional :: has_entry
+    type(c_funptr), optional :: changed
+    type(c_ptr), intent(in), optional :: data
+    character(len=*), dimension(:), intent(in), optional :: initial_choices
+    integer(kind=c_int), intent(in), optional :: sensitive
+    character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
+
+    integer(kind=c_int) :: ientry
+    integer(kind=c_int) :: i
+
+    if (present(has_entry)) then
+       ientry = has_entry
+    else
+       ientry = FALSE
+    end if
+
+    if (ientry == TRUE) then
+!GTK3
+!3       cbox = gtk_combo_box_text_new_with_entry()
+!GTK2
+       cbox = gtk_combo_box_entry_new_text()
+    else
+!GTK3
+!3       cbox = gtk_combo_box_text_new()
+!GTK2
+       cbox =  gtk_combo_box_new_text()
+    end if
+
+    if (present(initial_choices)) then
+       do i=1,size(initial_choices)
+!GTK3
+!3          call gtk_combo_box_text_append_text(cbox, &
+!3               & trim(initial_choices(i))//CNULL)
+!GTK2
+          call gtk_combo_box_append_text(cbox, &
+               & trim(initial_choices(i))//CNULL)
+       end do
+    end if
+
+    if (present(changed)) then
+       if (present(data)) then
+          call g_signal_connect(cbox, "changed"//CNULL, changed, data)
+       else
+          call g_signal_connect(cbox, "changed"//CNULL, changed)
+       end if
+    end if
+
+    if (present(sensitive)) call gtk_widget_set_sensitive(cbox, sensitive)
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(cbox, tooltip)
+  end function hl_gtk_combo_box_new
+
+  !+
+  subroutine hl_gtk_combo_box_add_text(cbox, text, index, at_start)
+    ! Add a new choice to a combo box.
+    !
+    ! CBOX: c_ptr: required: The combo box to modify.
+    ! TEXT: string: required: The text to add.
+    ! INDEX: c_int: optional: The location at which to add the text.
+    ! AT_START: boolean: optional: If set to TRUE and INDEX is not given
+    ! 		then add the text at the start of the list.
+    !
+    ! If neither INDEX nor AT_START is present the text is appended.
+    !-
+
+    type(c_ptr), intent(in) :: cbox
+    character(kind=c_char), dimension(*), optional :: text
+    integer(kind=c_int), intent(in), optional :: index
+    integer(kind=c_int), intent(in), optional :: at_start
+
+    integer(kind=c_int) :: prepend
+
+    if (present(index)) then
+!GTK3
+!3       call gtk_combo_box_text_insert_text(cbox, index, text)
+!GTK2
+       call gtk_combo_box_insert_text(cbox, index, text)
+    else
+       if (present(at_start)) then
+          prepend = at_start
+       else
+          prepend = FALSE
+       end if
+       if (prepend == TRUE) then
+!GTK3
+!3          call gtk_combo_box_text_prepend_text(cbox, text)
+!GTK2
+          call gtk_combo_box_prepend_text(cbox, text)
+       else
+!GTK3
+!3          call gtk_combo_box_text_append_text(cbox, text)
+!GTK2
+          call gtk_combo_box_append_text(cbox, text)
+       end if
+    end if
+  end subroutine hl_gtk_combo_box_add_text
+
+  !+
+  subroutine hl_gtk_combo_box_delete(cbox, index)
+    ! Delete a line from a combo box
+    !
+    ! CBOX: c_ptr: required: The combo box to update
+    ! INDEX: c_int: required: The index of the choce to remove
+    !-
+
+    type(c_ptr), intent(in) :: cbox
+    integer(kind=c_int), intent(in) :: index
+
+!GTK3
+!3    call gtk_combo_box_text_remove(cbox, index)
+!GTK2
+    call gtk_combo_box_remove_text(cbox, index)
+
+  end subroutine hl_gtk_combo_box_delete
+
+  !+
+  function hl_gtk_combo_box_get_active(cbox, text, ftext) result(index)
+    ! Get the selection from a combo box
+    !
+    ! CBOX: c_ptr: required: The combo box to query.
+    ! TEXT: c_ptr: optional: C pointer to the text.
+    ! FTEXT: fstring: optional: The string as a Fortran string.
+    !-
+
+    integer(kind=c_int) :: index
+    type(c_ptr), intent(in) :: cbox
+    type(c_ptr), intent(out), optional :: text
+    character(len=*), intent(out), optional :: ftext
+
+    type(c_ptr), target :: ctext
+    integer(kind=c_int) :: tlen
+
+    index = gtk_combo_box_get_active(cbox)
+
+    if (present(text) .or. present(ftext)) then
+
+!GTK3
+!3      ctext = gtk_combo_box_text_get_active_text(cbox)
+!GTK2
+       ctext = gtk_combo_box_get_active_text(cbox)
+
+       ! This is a bit ugly
+       if (present(ftext)) &
+            & call convert_c_string(ctext, len(ftext), ftext)
+
+       if (present(text)) text=ctext
+    end if
+  end function hl_gtk_combo_box_get_active
+
 end module gtk_hl
