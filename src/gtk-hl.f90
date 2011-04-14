@@ -122,7 +122,7 @@ module gtk_hl
        &xt_view_new, gtk_text_view_new_with_buffer, gtk_text_view_set_editable, &
        & gtk_text_iter_get_offset, gtk_text_buffer_get_char_count, &
        & gtk_text_buffer_get_line_count, & ! text view end
-       & gtk_text_buffer_get_line_count, & ! text view end
+       & gtk_image_new_from_stock, &
        &gtk_combo_box_get_active, gtk_combo_box_new, & ! COMBO 
        & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
@@ -130,6 +130,8 @@ module gtk_hl
        & GTK_BUTTONS_OK, GTK_BUTTONS_CLOSE, GTK_BUTTONS_CANCEL, GTK_BUTTONS_YES_NO, &
        & GTK_BUTTONS_OK_CANCEL, GTK_RESPONSE_OK, GTK_RESPONSE_CLOSE, GTK_RESPONSE_CANCEL, &
        & GTK_RESPONSE_YES, GTK_RESPONSE_NO, GTK_RESPONSE_NONE, &
+       & GTK_MESSAGE_INFO, GTK_MESSAGE_WARNING, GTK_MESSAGE_ERROR, &
+       & GTK_MESSAGE_QUESTION, GTK_MESSAGE_OTHER, GTK_ICON_SIZE_DIALOG, &
 !GTK2
 !2       & gtk_progress_bar_set_orientation, &
 !2       & gtk_combo_box_append_text, gtk_combo_box_entry_new, &
@@ -1061,7 +1063,7 @@ contains
   !/
 
   !+
-  function hl_gtk_message_dialog_show(message, button_set, title) &
+  function hl_gtk_message_dialog_show(message, button_set, title, type) &
        & result(resp)
     ! A DIY version of the message dialogue, needed because both creators
     ! for the built in one are variadic and so not callable from Fortran.
@@ -1070,6 +1072,7 @@ contains
     ! 		a string array, the CNULL terminations are provided internally
     ! BUTTON_SET: integer: required: The set of buttons to display
     ! TITLE: string: optional: Title for the window.
+    ! TYPE: c_int: optional: Message type (a GTK_MESSAGE_ value)
     !
     ! The return value is the response code, not the widget.
     !-
@@ -1078,9 +1081,11 @@ contains
     character(len=*), dimension(:), intent(in) :: message
     integer(kind=c_int), intent(in) :: button_set
     character(kind=c_char), dimension(*), intent(in), optional :: title
+    integer(kind=c_int), intent(in), optional :: type
 
-    type(c_ptr) :: dialog, content, junk
+    type(c_ptr) :: dialog, content, junk, hb, vb
     integer :: i
+    integer(kind=c_int) :: itype
 
     ! Create the dialog window and make it modal.
 
@@ -1090,10 +1095,43 @@ contains
 
     ! Get the content area and put the message in it.
     content = gtk_dialog_get_content_area(dialog)
+    if (present(type)) then
+       itype = type
+    else if (button_set == GTK_BUTTONS_YES_NO) then
+       itype = GTK_MESSAGE_QUESTION
+    else
+       itype = GTK_MESSAGE_OTHER
+    end if
 
+    if (itype /= GTK_MESSAGE_OTHER) then
+       hb = gtk_hbox_new(FALSE, 0)
+       call gtk_box_pack_start(content, hb, TRUE, TRUE, 0)
+       select case (itype)
+       case (GTK_MESSAGE_ERROR)
+          junk = gtk_image_new_from_stock(GTK_STOCK_DIALOG_ERROR, &
+               & GTK_ICON_SIZE_DIALOG)
+       case (GTK_MESSAGE_WARNING)
+          junk = gtk_image_new_from_stock(GTK_STOCK_DIALOG_WARNING, &
+               & GTK_ICON_SIZE_DIALOG)
+       case (GTK_MESSAGE_INFO)
+          junk = gtk_image_new_from_stock(GTK_STOCK_DIALOG_INFO, &
+               & GTK_ICON_SIZE_DIALOG)
+       case (GTK_MESSAGE_QUESTION)
+          junk = gtk_image_new_from_stock(GTK_STOCK_DIALOG_QUESTION, &
+               & GTK_ICON_SIZE_DIALOG)
+       case default
+          junk=NULL
+       end select
+       if (c_associated(junk)) call gtk_box_pack_start(hb, junk, TRUE, TRUE, 0)
+       vb = gtk_vbox_new(FALSE, 0)
+       call gtk_box_pack_start(hb, vb, TRUE, TRUE, 0)
+    else
+       vb = content
+    end if
+    
     do i = 1, size(message)
        junk = gtk_label_new(trim(message(i))//cnull)
-       call gtk_box_pack_start(content, junk, TRUE, TRUE, 0)
+       call gtk_box_pack_start(vb, junk, TRUE, TRUE, 0)
     end do
 
     select case (button_set)
@@ -1300,9 +1338,10 @@ contains
     ! Callback connection
     if (present(value_changed)) then
        if (present(data)) then
-          call g_signal_connect(slider, "value-changed", value_changed, data)
+          call g_signal_connect(slider, "value-changed"//cnull, &
+               & value_changed, data)
        else
-          call g_signal_connect(slider, "value-changed", value_changed)
+          call g_signal_connect(slider, "value-changed"//cnull, value_changed)
        end if
     end if
 
@@ -1382,9 +1421,10 @@ contains
     ! Callback connection
     if (present(value_changed)) then
        if (present(data)) then
-          call g_signal_connect(slider, "value-changed", value_changed, data)
+          call g_signal_connect(slider, "value-changed"//cnull, &
+               & value_changed, data)
        else
-          call g_signal_connect(slider, "value-changed", value_changed)
+          call g_signal_connect(slider, "value-changed"//cnull, value_changed)
        end if
     end if
 
@@ -1490,10 +1530,11 @@ contains
     ! Callback connection
     if (present(value_changed)) then
        if (present(data)) then
-          call g_signal_connect(spin_button, "value-changed", value_changed, &
-               & data)
+          call g_signal_connect(spin_button, "value-changed"//cnull, &
+               & value_changed, data)
        else
-          call g_signal_connect(spin_button, "value-changed", value_changed)
+          call g_signal_connect(spin_button, "value-changed"//cnull, &
+               & value_changed)
        end if
     end if
 
@@ -1550,10 +1591,11 @@ contains
     ! Callback connection
     if (present(value_changed)) then
        if (present(data)) then
-          call g_signal_connect(spin_button, "value-changed", value_changed, &
-               & data)
+          call g_signal_connect(spin_button, "value-changed"//cnull, &
+               & value_changed, data)
        else
-          call g_signal_connect(spin_button, "value-changed", value_changed)
+          call g_signal_connect(spin_button, "value-changed"//cnull, &
+               & value_changed)
        end if
     end if
 

@@ -29,7 +29,8 @@ contains
     msg(4) = ""
     msg(5) = "You know that's dangerous"
 
-    resp = hl_gtk_message_dialog_show(msg, GTK_BUTTONS_OK, "ALERT"//cnull)
+    resp = hl_gtk_message_dialog_show(msg, GTK_BUTTONS_OK, "ALERT"//cnull, &
+         & type=GTK_MESSAGE_WARNING)
   end subroutine msg_alert
 
   subroutine msg_quit(widget, gdata) bind(c)
