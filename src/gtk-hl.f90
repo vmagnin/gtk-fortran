@@ -1298,9 +1298,9 @@ contains
     ! Callback connection
     if (present(value_changed)) then
        if (present(data)) then
-          call g_signal_connect(slider, "value-changed", value_changed, data)
+          call g_signal_connect(slider, "value-changed"//cnull, value_changed, data)
        else
-          call g_signal_connect(slider, "value-changed", value_changed)
+          call g_signal_connect(slider, "value-changed"//cnull, value_changed)
        end if
     end if
 
@@ -1380,9 +1380,9 @@ contains
     ! Callback connection
     if (present(value_changed)) then
        if (present(data)) then
-          call g_signal_connect(slider, "value-changed", value_changed, data)
+          call g_signal_connect(slider, "value-changed"//cnull, value_changed, data)
        else
-          call g_signal_connect(slider, "value-changed", value_changed)
+          call g_signal_connect(slider, "value-changed"//cnull, value_changed)
        end if
     end if
 
@@ -1488,10 +1488,10 @@ contains
     ! Callback connection
     if (present(value_changed)) then
        if (present(data)) then
-          call g_signal_connect(spin_button, "value-changed", value_changed, &
+          call g_signal_connect(spin_button, "value-changed"//cnull, value_changed, &
                & data)
        else
-          call g_signal_connect(spin_button, "value-changed", value_changed)
+          call g_signal_connect(spin_button, "value-changed"//cnull, value_changed)
        end if
     end if
 
@@ -1548,10 +1548,10 @@ contains
     ! Callback connection
     if (present(value_changed)) then
        if (present(data)) then
-          call g_signal_connect(spin_button, "value-changed", value_changed, &
+          call g_signal_connect(spin_button, "value-changed"//cnull, value_changed, &
                & data)
        else
-          call g_signal_connect(spin_button, "value-changed", value_changed)
+          call g_signal_connect(spin_button, "value-changed"//cnull, value_changed)
        end if
     end if
 
