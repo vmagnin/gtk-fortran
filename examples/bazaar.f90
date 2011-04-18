@@ -338,5 +338,5 @@ program gtkFortran
   call g_signal_connect (file_selector, "selection-changed"//CNULL, c_funloc(file_changed));
 
   call gtk_widget_show_all (window)
-  call gtk_main ()
+  call gtk_main () 
 end program gtkFortran
