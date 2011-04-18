@@ -24,7 +24,7 @@
 ! This program is used to test GTK+ widgets
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
 ! To compile under Linux:
-! gfortran -I../src ../src/gtk.o bazaar.f90 `pkg-config --cflags --libs gtk+-3.0`
+! gfortran -I../src/ ../src/gtk.o ../src/gtk-sup.o ../src/gtk-hl.o bazaar.f90  `pkg-config --cflags --libs gtk+-2.0`
 
 module my_widgets
   use iso_c_binding
@@ -174,9 +174,16 @@ contains
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
-    
+    character(c_char), dimension(:), pointer :: textptr
+    character(len=512) :: my_string
+
     print *, "my destroy"
-    call gtk_main_quit ()
+    
+    call C_F_POINTER(gtk_entry_get_text(entry1), textptr, (/0/))
+    call convert_c_string(textptr, my_string)
+    print *, "Entry box:", TRIM(my_string)
+    
+    call gtk_main_quit()
   end subroutine destroy
 
 
@@ -270,10 +277,7 @@ program gtkFortran
   use handlers
   use my_widgets
   implicit none
-  
   integer(1) :: i
-  character(c_char), dimension(:), pointer :: textptr
-  character(len=512) :: my_string
   
   call gtk_init ()
 
@@ -299,8 +303,7 @@ program gtkFortran
   button3 = gtk_button_new_with_label ("Exit"//CNULL)
   call gtk_table_attach_defaults(table, button3, 2, 3, 0, 1)
   call g_signal_connect (button3, "clicked"//CNULL, c_funloc(destroy))
-  call g_signal_connect (button3, "clicked"//CNULL, c_funloc(firstbutton))
-
+ 
   button4 = gtk_button_new_with_label ("About"//CNULL)
   call gtk_table_attach_defaults(table, button4, 3, 4, 0, 1)
   call g_signal_connect (button4, "clicked"//CNULL, c_funloc(aboutbutton))
@@ -336,9 +339,4 @@ program gtkFortran
 
   call gtk_widget_show_all (window)
   call gtk_main ()
- 
-  call C_F_POINTER(gtk_entry_get_text(entry1), textptr, (/512/))
-  call convert_c_string(textptr, my_string)
-  print *, my_string
-  print *, TRIM(my_string)
 end program gtkFortran
