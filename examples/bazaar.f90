@@ -24,7 +24,7 @@
 ! This program is used to test GTK+ widgets
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
 ! To compile under Linux:
-! gfortran -I../src ../src/gtk.o bazaar.f90 `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -I../src/ ../src/gtk.o ../src/gtk-sup.o ../src/gtk-hl.o bazaar.f90  `pkg-config --cflags --libs gtk+-2.0`
 
 module my_widgets
   use iso_c_binding
@@ -113,7 +113,6 @@ contains
     call cairo_move_to(my_cairo_context, 60d0, 0d0)  
     call cairo_curve_to(my_cairo_context, 60d0, 50d0, 135d0, 45d0, 100d0, 50d0)
     call cairo_stroke(my_cairo_context) 
-
     !*************
     ! Pixbuffers :
     !*************
@@ -153,14 +152,12 @@ contains
     end do
     
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 20d0, 0d0)
-
     call cairo_paint(my_cairo_context)
     !************
     call cairo_set_line_width(my_cairo_context, 4d0)
     call cairo_move_to(my_cairo_context, 0d0, 0d0)
     call cairo_line_to(my_cairo_context, 100d0, 50d0)
     call cairo_stroke(my_cairo_context) 
-
 
     call cairo_destroy(my_cairo_context)
     ret = FALSE
@@ -171,9 +168,16 @@ contains
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
-    
+    character(c_char), dimension(:), pointer :: textptr
+    character(len=512) :: my_string
+
     print *, "my destroy"
-    call gtk_main_quit ()
+    
+    call C_F_POINTER(gtk_entry_get_text(entry1), textptr, (/0/))
+    call convert_c_string(textptr, my_string)
+    print *, "Entry box:", TRIM(my_string)
+    
+    call gtk_main_quit()
   end subroutine destroy
 
 
@@ -186,7 +190,8 @@ contains
     print *, "Hello World!"
     ret = FALSE
   end function firstbutton
-  
+
+
   ! GtkButton signal:
   function secondbutton (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr
@@ -266,10 +271,7 @@ program gtkFortran
   use handlers
   use my_widgets
   implicit none
-  
   integer(1) :: i
-  character(c_char), dimension(:), pointer :: textptr
-  character(len=512) :: my_string
   
   call gtk_init ()
 
@@ -295,7 +297,6 @@ program gtkFortran
   button3 = gtk_button_new_with_label ("Exit"//CNULL)
   call gtk_table_attach_defaults(table, button3, 2, 3, 0, 1)
   call g_signal_connect (button3, "clicked"//CNULL, c_funloc(destroy))
-  call g_signal_connect (button3, "clicked"//CNULL, c_funloc(firstbutton))
 
   button4 = gtk_button_new_with_label ("About"//CNULL)
   call gtk_table_attach_defaults(table, button4, 3, 4, 0, 1)
@@ -331,9 +332,4 @@ program gtkFortran
 
   call gtk_widget_show_all (window)
   call gtk_main ()
- 
-  call C_F_POINTER(gtk_entry_get_text(entry1), textptr, (/512/))
-  call convert_c_string(textptr, my_string)
-  print *, my_string
-  print *, TRIM(my_string)
 end program gtkFortran
