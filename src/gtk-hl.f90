@@ -22,38 +22,70 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 04-10-2011
+! Last modification: 04-17-2011
 
 module gtk_hl
   ! A bunch of procedures to implement higher level creators for
   ! the gtk-fortran widgets. Some settings and operations are also
   ! provided for the more intricate widgets.
   !
-  ! To date this is very incomplete.
+  ! To date this is somewhat incomplete.
   !
   ! Many ideas in this module were taken from the pilib gtk<->fortran
   ! interface.
 
-  ! Currently included:
-  ! hl_gtk_window_new: A top-level window.
-  ! hl_gtk_button_new: A simple button
-  ! hl_gtk_check_button_new: A check button
-  ! hl_gtk_radio_button_new: A radio button with group.
-  !     hl_gtk_radio_group_get_select: Which member of a radio group
-  !     	is selected.
-  !     hl_gtk_radio_group_set_select: Select a member of a radio group.
-  ! hl_gtk_entry_new: A 1-line text box
-  ! hl_gtk_list1_new: A single column list with indexing
-  !     hl_gtk_list1_get_selections: Get the selected row(s) from a list.
-  !     hl_gtk_list1_ins: Insert a row into a list
-  !     hl_gtk_list1_rem: Delete a row from a list, or clear the list.
-  ! hl_gtk_menu_new: Create a menubar.
-  ! hl_gtk_menu_submenu: Add a submenu to a menu
-  ! hl_gtk_menu_item: Add a button to a menu
-  ! hl_gtk_progress_bar_new: A progress bar.
-  ! hl_gtk_progress_bar_set: Set the value of a progress bar.
-  ! hl_gtk_message_dialog_show
-
+  !*
+  ! Routine list
+  ! Currently included
+  !
+  ! * hl_gtk_window_new; A top-level window.
+  ! * hl_gtk_button_new; A simple button
+  ! * hl_gtk_check_button_new; A check button
+  ! * hl_gtk_radio_button_new; A radio button with group.
+  ! *     hl_gtk_radio_group_get_select; Which member of a radio group
+  !      is selected.
+  ! *     hl_gtk_radio_group_set_select; Select a member of a radio group.
+  ! * hl_gtk_entry_new; A 1-line text box
+  ! * hl_gtk_list1_new; A single column list with indexing
+  ! *     hl_gtk_list1_get_selections; Get the selected row(s) from a list.
+  ! *     hl_gtk_list1_ins; Insert a row into a list
+  ! *     hl_gtk_list1_rem; Delete a row from a list, or clear the list.
+  ! * hl_gtk_menu_new; Create a menubar.
+  ! * hl_gtk_menu_submenu; Add a submenu to a menu
+  ! * hl_gtk_menu_item; Add a button to a menu
+  ! * hl_gtk_progress_bar_new; A progress bar.
+  ! * hl_gtk_progress_bar_set; Set the value of a progress bar.
+  ! * hl_gtk_message_dialog_show; Show a message dialogue
+  ! * hl_gtk_box_new; A packing box
+  ! * hl_gtk_box_pack; Pack widget into a box
+  ! * hl_gtk_slider_flt_new; Floating point slider
+  ! * hl_gtk_slider_int_new; Integer slider
+  ! * hl_gtk_slider_get_value; Get the value of a slider (FP)
+  ! * hl_gtk_slider_set_flt; Set a floating point slider
+  ! * hl_gtk_slider_set_int; Set an integer slider
+  ! * hl_gtk_spin_button_flt_new; Floating point spin button
+  ! * hl_gtk_spin_button_int_new; Integer slider
+  ! * hl_gtk_spin_button_get_value; Get a spin box value
+  ! * hl_gtk_spin_button_set_flt; Set a floating point spin box
+  ! * hl_gtk_spin_button_set_int; Set an integer spin box
+  ! * hl_gtk_text_view_new; Multiline text view/edit
+  ! * hl_gtk_text_view_insert; Insert text to text view
+  ! * hl_gtk_text_view_delete; Delete text from text view
+  ! * hl_gtk_text_view_get_text; Get text from text view
+  ! * hl_gtk_text_view_get_cursor; Get text view cursor location
+  ! * hl_gtk_text_view_get_selection; Get text view selection
+  ! * hl_gtk_text_view_get_modified; Get modified status
+  ! * hl_gtk_text_view_set_modified; Set/clear modified status
+  ! * hl_gtk_text_view_get_info; Miscellaneous information
+  ! * hl_gtk_combo_box_new; Combo box
+  ! * hl_gtk_combo_box_add_text; Add an item to combo box
+  ! * hl_gtk_combo_box_delete; Delete item
+  ! * hl_gtk_combo_box_get_active; Get selected element
+  ! * hl_gtk_file_chooser_button_new; Simple file chooser button
+  ! * hl_gtk_file_chooser_show; Run a more advanced file chooser
+  ! * hl_gtk_chooser_resp_cb; Internal signal handler
+  ! * hl_gtk_chooser_filt_cb; Internal signal handler
+  !/
   ! To facilitate the automatic extraction of API information, there are
   ! 2 types of comment block that are extracted:
   !
@@ -104,7 +136,8 @@ module gtk_hl
        &k_vbox_new, gtk_widget_destroy, gtk_widget_set_sensitive, gtk_widget_set_size_&
        &request, gtk_widget_set_tooltip_text, gtk_widget_show, gtk_widget_show_all, gt&
        &k_window_new, gtk_window_set_default, gtk_window_set_default_size, gtk_window_&
-       &set_modal, gtk_window_set_title, g_signal_connect, &
+       &set_modal, gtk_window_set_title, g_signal_connect, gtk_label_set_markup, &
+       & gtk_window_set_transient_for, gtk_window_set_destroy_with_parent, &
        & gtk_hscale_new, gtk_hscale_new_with_range, gtk_range_get_value, & ! Scales start
        &gtk_range_set_value, gtk_scale_set_digits, gtk_spin_button_get_value, gtk_spin&
        &_button_new, gtk_spin_button_new_with_range, gtk_spin_button_set_digits, gtk_s&
@@ -124,6 +157,25 @@ module gtk_hl
        & gtk_text_buffer_get_line_count, & ! text view end
        & gtk_image_new_from_stock, &
        &gtk_combo_box_get_active, gtk_combo_box_new, & ! COMBO 
+       & gtk_file_chooser_add_filter,&   ! File chooser start
+       & gtk_file_chooser_button_new,&
+       & gtk_file_chooser_get_current_folder,&
+       & gtk_file_chooser_get_file, gtk_file_chooser_get_filename,&
+       & gtk_file_chooser_get_filenames,&
+       & gtk_file_chooser_get_local_only, gtk_file_chooser_get_uri,&
+       & gtk_file_chooser_get_uris, gtk_file_chooser_select_file,&
+       & gtk_file_chooser_select_filename,&
+       & gtk_file_chooser_set_current_folder,&
+       & gtk_file_chooser_set_file, gtk_file_chooser_set_filename,&
+       & gtk_file_chooser_set_local_only,&
+       & gtk_file_chooser_set_show_hidden,&
+       & gtk_file_chooser_widget_new, gtk_file_filter_add_pattern,&
+       & gtk_file_filter_new, gtk_file_filter_set_name,&
+       & gtk_file_chooser_set_select_multiple,&
+       & gtk_file_chooser_set_extra_widget,&
+       & gtk_file_filter_add_mime_type,&
+       & gtk_file_chooser_set_do_overwrite_confirmation, & ! File
+       !  chooser end
        & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -132,6 +184,10 @@ module gtk_hl
        & GTK_RESPONSE_YES, GTK_RESPONSE_NO, GTK_RESPONSE_NONE, &
        & GTK_MESSAGE_INFO, GTK_MESSAGE_WARNING, GTK_MESSAGE_ERROR, &
        & GTK_MESSAGE_QUESTION, GTK_MESSAGE_OTHER, GTK_ICON_SIZE_DIALOG, &
+       & GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,& ! File chooser const
+       & GTK_FILE_CHOOSER_ACTION_OPEN, GTK_RESPONSE_APPLY,&
+       & GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER,&
+       & GTK_FILE_CHOOSER_ACTION_SAVE, GTK_RESPONSE_DELETE_EVENT, & ! End file chooser consts
 !GTK2
 !2       & gtk_progress_bar_set_orientation, &
 !2       & gtk_combo_box_append_text, gtk_combo_box_entry_new, &
@@ -151,7 +207,9 @@ module gtk_hl
 
   use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
        &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int,&
-       & g_value_init, g_value_set_int, g_value_set_static_string
+       & g_value_init, g_value_set_int, g_value_set_static_string, g_strv_length, g_free, &
+       & g_slist_free
+
 
   use iso_c_binding
 
@@ -181,6 +239,17 @@ module gtk_hl
      module procedure hl_gtk_spin_button_set_flt
      module procedure hl_gtk_spin_button_set_int
   end interface hl_gtk_spin_button_set_value
+
+  ! These items must be shared between the file chooser widget and its event
+  ! handler or the filter editor. They are passed to the signal handlers
+  ! via the user data argument. Even though it's never used in the C code,
+  ! it still has to be bind(c) otherwise c_loc() will croak on it.
+
+  type, bind(c) :: hl_gtk_chooser_info
+     type(c_ptr) :: chooser=NULL, chooser_sel_list=NULL
+     type(c_ptr) :: chooser_curdir=NULL, fentry=NULL
+     integer(kind=c_int) :: iselect=0
+  end type hl_gtk_chooser_info
 
 contains
 
@@ -504,8 +573,11 @@ contains
     integer(kind=c_int) :: istat
 
     ntext = gtk_entry_get_text_length(entry)
+    if (ntext == 0) then
+       text = ''
+       return
+    end if
     ctext = gtk_entry_get_text(entry)
-
     call c_f_pointer(ctext, textptr, (/int(ntext,c_int)/))
     call convert_c_string(textptr, text, istat)
 
@@ -1063,8 +1135,8 @@ contains
   !/
 
   !+
-  function hl_gtk_message_dialog_show(message, button_set, title, type) &
-       & result(resp)
+  function hl_gtk_message_dialog_show(message, button_set, title, type, &
+       & parent) result(resp)
     ! A DIY version of the message dialogue, needed because both creators
     ! for the built in one are variadic and so not callable from Fortran.
     !
@@ -1073,6 +1145,7 @@ contains
     ! BUTTON_SET: integer: required: The set of buttons to display
     ! TITLE: string: optional: Title for the window.
     ! TYPE: c_int: optional: Message type (a GTK_MESSAGE_ value)
+    ! PARENT: c_ptr: optional: An optional parent for the dialogue.
     !
     ! The return value is the response code, not the widget.
     !-
@@ -1086,12 +1159,18 @@ contains
     type(c_ptr) :: dialog, content, junk, hb, vb
     integer :: i
     integer(kind=c_int) :: itype
+    type(c_ptr), intent(in), optional :: parent
 
     ! Create the dialog window and make it modal.
 
     dialog=gtk_dialog_new()
     call gtk_window_set_modal(dialog, TRUE)
     if (present(title)) call gtk_window_set_title(dialog, title)
+
+    if (present(parent)) then
+       call gtk_window_set_transient_for(dialog, parent)
+       call gtk_window_set_destroy_with_parent(dialog, TRUE)
+    end if
 
     ! Get the content area and put the message in it.
     content = gtk_dialog_get_content_area(dialog)
@@ -1130,7 +1209,13 @@ contains
     end if
     
     do i = 1, size(message)
-       junk = gtk_label_new(trim(message(i))//cnull)
+       if (i == 1) then
+          junk = gtk_label_new(cnull)
+          call gtk_label_set_markup(junk, '<b><big>'//trim(message(i))// &
+               & '</big></b>'//cnull)
+       else
+          junk = gtk_label_new(trim(message(i))//cnull)
+       end if
        call gtk_box_pack_start(vb, junk, TRUE, TRUE, 0)
     end do
 
@@ -1717,7 +1802,8 @@ contains
        scroll = gtk_scrolled_window_new(NULL, NULL)
        call gtk_scrolled_window_set_policy(scroll, GTK_POLICY_AUTOMATIC, &
             & GTK_POLICY_AUTOMATIC)
-       if (present(ssize)) call gtk_widget_set_size_request(scroll, ssize(1), ssize(2))
+       if (present(ssize)) &
+            & call gtk_widget_set_size_request(scroll, ssize(1), ssize(2))
        call gtk_container_add(scroll, view)
     else if (present(ssize)) then
        call gtk_widget_set_size_request(view, ssize(1), ssize(2))
@@ -2024,7 +2110,7 @@ contains
     end if
     ctext0 = gtk_text_buffer_get_text(tbuf, c_loc(s_iter), c_loc(e_iter), ihid)
     nchars_r = gtk_text_iter_get_offset(c_loc(e_iter)) - &
-         &gtk_text_iter_get_offset(c_loc(s_iter)) + 1
+         & gtk_text_iter_get_offset(c_loc(s_iter)) + 1
 
     call c_f_pointer(ctext0, ftext0, (/ nchars_r /))
     call convert_c_string(ftext0, text)
@@ -2364,5 +2450,501 @@ contains
        if (present(text)) text=ctext
     end if
   end function hl_gtk_combo_box_get_active
+
+  !*
+  ! File Choosers
+  ! hl_gtk_file_chooser_button_new implements the GtkFileChooserButton
+  ! and its GtkFileChooser options in a convenient package.
+  !
+  ! hl_gtk_file_chooser_show implements a more general chooser dialogue
+  ! via the file_chooser_widget (file_choose_dialog only has variadic
+  ! constructors).
+  !
+  ! Filters may be either patterns (e.g. '*.f90' or '2011*.lis') or mime types
+  ! (e.g. 'image/png' or 'text/*'). The constructors recognise the difference by
+  ! the presence or absence of a '/' character. Each filter is a
+  ! comma-separated list, which may contain any mixture of patterns and mime
+  ! types (e.g. '*.png,image/tiff,*.jpg'). If a name is not provided, then
+  ! the filter specification is used as the name.
+  !/
+  !+
+  function hl_gtk_file_chooser_button_new(directory, title, &
+       & width, show_hidden, &
+       & initial_folder, initial_file, filter, filter_name, file_set, &
+       & data, sensitive, tooltip) result(cbutton)
+    ! Bundled file chooser button
+    !
+    ! DIRECTORY: boolean: optional: Set to TRUE to select directories rather
+    ! 		than files.
+    ! TITLE: string: optional: A title for the button.
+    ! WIDTH: c_int: optional: A maximum number of characters to show.
+    ! SHOW_HIDDEN: boolean: optional: Set to TRUE to display hidden files.
+    ! INITIAL_FOLDER: string: optional: Use to start the search other than
+    ! 		in the current directory.
+    ! INITIAL_FILE: string: optional: An initial file selection.
+    ! FILTER: string(): optional: An initial list of filename patterns to
+    ! 		allow. Each filter is a comma-separated list.
+    ! FILTER_NAME: string(): optional: Names for the filters.
+    ! FILE_SET: f_funptr: optional: The callback routine for the "file-set"
+    ! 		signal.
+    ! DATA: c_ptr: optional: User data to pass to the file_Set callback.
+    ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
+    ! 		insensitive state.
+    ! TOOLTIP: string: optional: A tooltip to display when the pointer is
+    ! 		held over the widget.
+    !-
+
+    type(c_ptr) :: cbutton
+    integer(kind=c_int), intent(in), optional :: directory
+    character(kind=c_char), dimension(*), optional, intent(in) :: title
+    integer(kind=c_int), intent(in), optional :: width
+    integer(kind=c_int), intent(in), optional :: show_hidden
+    character(kind=c_char), dimension(*), optional, intent(in) :: initial_folder, initial_file
+    character(len=*), dimension(:), intent(in), optional :: filter
+    character(len=*), dimension(:), optional, intent(in) :: filter_name
+    type(c_funptr), optional :: file_set
+    type(c_ptr), optional :: data
+    integer(kind=c_int), intent(in), optional :: sensitive
+    character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
+
+    integer(kind=c_int) :: mode, lval
+    type(c_ptr) :: gfilter
+    integer :: i, j, idx0, idx1
+    integer, dimension(2) :: fshape
+
+    if (present(directory)) then
+       if (directory == TRUE) then
+          mode = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
+       else
+          mode = GTK_FILE_CHOOSER_ACTION_OPEN
+       end if
+    else
+       mode = GTK_FILE_CHOOSER_ACTION_OPEN
+    end if
+
+    if (present(title)) then
+       cbutton = gtk_file_chooser_button_new(title, mode)
+    else  if (mode == GTK_FILE_CHOOSER_ACTION_OPEN) then
+       cbutton = gtk_file_chooser_button_new("Choose file"//cnull, mode)
+    else
+       cbutton = gtk_file_chooser_button_new("Choose directory"//cnull, mode)
+    end if
+
+    call gtk_file_chooser_set_local_only(cbutton, TRUE)
+
+    if (present(show_hidden)) then
+       lval = show_hidden
+    else
+       lval = FALSE
+    end if
+    call gtk_file_chooser_set_show_hidden(cbutton, lval)
+
+    if (present(initial_folder)) &
+         & lval = gtk_file_chooser_set_current_folder(cbutton, initial_folder)
+    if (present(initial_file)) &
+         & lval = gtk_file_chooser_set_filename(cbutton, initial_file)
+
+    if (present(filter)) then
+       do i = 1, size(filter)
+          gfilter = gtk_file_filter_new()
+
+          idx0 = 1
+          do
+             idx1 = index(filter(i),',')-2
+             if (idx1 < 0) then
+                if (index(filter(i)(idx0:), '/') == 0) then
+                   call gtk_file_filter_add_pattern(gfilter, &
+                        & trim(adjustl(filter(i)(idx0:)))//cnull)
+                else
+                   call gtk_file_filter_add_mime_type(gfilter, &
+                        & trim(adjustl(filter(i)(idx0:)))//cnull)
+                end if
+                exit
+             else
+                if (index(filter(i)(idx0:idx1), '/') == 0) then
+                   call gtk_file_filter_add_pattern(gfilter, &
+                        & trim(adjustl(filter(i)(idx0:idx1)))//cnull)
+                else
+                   call gtk_file_filter_add_mime_type(gfilter, &
+                        & trim(adjustl(filter(i)(idx0:idx1)))//cnull)
+                end if
+                idx0=idx1+2
+             end if
+          end do
+          if (present(filter_name)) then
+             call gtk_file_filter_set_name(gfilter, filter_name(i)//cnull)
+          else
+             call gtk_file_filter_set_name(gfilter, trim(filter(i))//cnull)
+          end if
+          call gtk_file_chooser_add_filter(cbutton, gfilter)
+       end do
+    end if
+
+    if (present(file_set)) then
+       if (present(data)) then
+          call g_signal_connect(cbutton, "file-set"//cnull, file_set, data)
+       else
+          call g_signal_connect(cbutton, "file-set"//cnull, file_set)
+       end if
+    end if
+
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(cbutton, &
+         & tooltip)
+
+    if (present(sensitive)) &
+         & call gtk_widget_set_sensitive(cbutton, sensitive)
+  end function hl_gtk_file_chooser_button_new
+
+  !+
+  function hl_gtk_file_chooser_show(files, cdir, directory, create, &
+       & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
+       & initial_dir, initial_file, filter, filter_name, parent, all, &
+       & wsize, edit_filters) result(isel)
+    ! Create and show a file chooser widget.
+    !
+    ! FILES: string(): required: The file or files selected.
+    ! CDIR: string: optional: The directory from which they were chosen.
+    ! DIRECTORY: boolean: optional: Set to TRUE to select directories
+    ! 		instead of files.
+    ! CREATE: boolean: optional: Set to FALSE to prohibit creating new files.
+    ! MULTIPLE: boolean: optional: Set to TRUE to allow the selection of
+    ! 		multiple files.
+    ! ALLOW_URI: boolean: optional: Set to TRUE to allow nonlocal selections.
+    ! SHOW_HIDDEN: boolean: optional: Set to TRUE to show hidden files.
+    ! CONFIRM_OVERWRITE: boolean: optional: Set to TRUE to request
+    ! 		confirmation of an overwrite (only used if CREATE
+    ! 		is TRUE).
+    ! TITLE: string: optional: Title for the window.
+    ! INITIAL_DIR: string: optional: Set the initial directory here instead
+    ! 		of the current directory.
+    ! INITIAL_FILE: string: optional: Set the initial file selection.
+    ! FILTER: string(): optional:  The file selection filter. Elements
+    ! 		may either be patterns or mime types. Each filter is a
+    ! 		comma-separated list of patterns
+    ! FILTER_NAME: string(): optional: Names for the filters
+    ! PARENT: c_ptr: optional: Parent window for the dialogue.
+    ! ALL: boolean: optional: Set to TRUE to add an all-files filter pattern
+    ! WSIZE: c_int(2): optional: Set the size for the dialog.
+    ! EDIT_FILTERS: boolean: optional: Set to TRUE to proves an entry window
+    ! 		to add extra filters.
+    !
+    ! Returns TRUE if one or more files was selected, FALSE otherwise.
+    !-
+
+    integer(kind=c_int) :: isel
+    character(len=*), dimension(:), intent(out), allocatable :: files
+    character(len=*), intent(out), optional :: cdir
+    integer(kind=c_int), intent(in), optional :: directory, create, multiple
+    integer(kind=c_int), intent(in), optional :: allow_uri, show_hidden
+    integer(kind=c_int), intent(in), optional :: confirm_overwrite
+    character(kind=c_char), dimension(*), intent(in), optional :: title, initial_dir, initial_file
+    character(len=*), dimension(:), intent(in), optional :: filter
+    character(len=*), dimension(:), intent(in), optional :: filter_name
+    type(c_ptr), intent(in), optional :: parent
+    integer(kind=c_int), intent(in), optional :: all
+    integer(kind=c_int), intent(in), dimension(2), optional :: wsize
+    integer(kind=c_int), intent(in), optional :: edit_filters
+
+    type(c_ptr) :: dialog, content, junk, gfilter
+    integer(kind=c_int) :: icreate, idir, action, lval
+    integer :: i, j, idx0, idx1
+    integer, dimension(2) :: fshape
+    integer(kind=c_int), target :: iselect
+    integer(kind=c_int) :: nsel, resp
+    type(c_ptr) :: strptr
+    type(c_ptr) :: fbox, fapply
+    type(hl_gtk_chooser_info), target :: chooser_info
+
+    ! Create a modal dialogue
+    dialog = gtk_dialog_new()
+    call gtk_window_set_modal(dialog, TRUE)
+    if (present(title)) call gtk_window_set_title(dialog, title)
+    if (present(wsize)) then
+       call gtk_window_set_default_size(dialog, wsize(1),&
+            & wsize(2))
+    else
+       call gtk_window_set_default_size(dialog, 700, 500)
+    end if
+
+    if (present(parent)) then
+       call gtk_window_set_transient_for(dialog, parent)
+       call gtk_window_set_destroy_with_parent(dialog, TRUE)
+    end if
+
+    ! Attach the action buttonsa to the dialogue
+    junk = gtk_dialog_add_button(dialog, GTK_STOCK_OPEN, GTK_RESPONSE_APPLY)
+    junk = gtk_dialog_add_button(dialog, GTK_STOCK_CANCEL, &
+            & GTK_RESPONSE_CANCEL)
+
+    ! Decode the action
+    if (present(create)) then
+       icreate = create
+    else
+       icreate = TRUE
+    end if
+    if (present(directory)) then
+       idir = directory
+    else
+       idir = FALSE
+    end if
+
+    if (idir == TRUE) then
+       if (icreate == TRUE) then
+          action = GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER
+       else
+          action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
+       end if
+    else
+       if (icreate == TRUE) then
+          action = GTK_FILE_CHOOSER_ACTION_SAVE
+       else
+          action = GTK_FILE_CHOOSER_ACTION_OPEN
+       end if
+    end if
+
+    ! Create the chooser & put it in the content area
+    content = gtk_dialog_get_content_area(dialog)
+    chooser_info%chooser = gtk_file_chooser_widget_new(action)
+    call gtk_box_pack_start(content, chooser_info%chooser, TRUE, TRUE, 0)
+
+    ! Local/URI
+    if (present(allow_uri)) then
+       if (allow_uri == FALSE) then
+          lval = TRUE
+       else
+          lval = FALSE
+       end if
+    else
+       lval = TRUE
+    end if
+    call gtk_file_chooser_set_local_only(chooser_info%chooser, lval)
+
+    ! Multiple selections
+    if (present(multiple)) then
+       lval = multiple
+    else
+       lval = FALSE
+    end if
+    call gtk_file_chooser_set_select_multiple(chooser_info%chooser, lval)
+
+    ! Hidden files
+    if (present(show_hidden)) then
+       lval = show_hidden
+    else
+       lval = FALSE
+    end if
+    call gtk_file_chooser_set_show_hidden(chooser_info%chooser, lval)
+
+    ! Confirm overwrite
+    if (icreate == TRUE) then
+       if (present(confirm_overwrite)) then
+          lval = confirm_overwrite
+       else
+          lval = FALSE
+       end if
+       call gtk_file_chooser_set_do_overwrite_confirmation(chooser_info%chooser,&
+            & lval)
+    end if
+
+    ! Initial directory (precedes file so if file contains a dir it
+    ! will overwrite)
+
+    if (present(initial_dir)) &
+         & lval = gtk_file_chooser_set_current_folder(chooser_info%chooser, &
+         & initial_dir)
+
+    ! Initial file
+
+    if (present(initial_file)) &
+         & lval = gtk_file_chooser_select_filename(chooser_info%chooser, &
+         & initial_file)
+
+    ! Set up filters
+    if (present(filter)) then
+       do i = 1, size(filter)
+          gfilter = gtk_file_filter_new()
+
+          idx0 = 1
+          do
+             idx1 = index(filter(i)(idx0:),',')+idx0-2
+             if (idx1 < idx0) then
+                if (index(filter(i)(idx0:), '/') == 0) then
+                   call gtk_file_filter_add_pattern(gfilter, &
+                        & trim(adjustl(filter(i)(idx0:)))//cnull)
+                else
+                   call gtk_file_filter_add_mime_type(gfilter, &
+                        & trim(adjustl(filter(i)(idx0:)))//cnull)
+                end if
+                exit
+             else
+                if (index(filter(i)(idx0:idx1), '/') == 0) then
+                   call gtk_file_filter_add_pattern(gfilter, &
+                        & trim(adjustl(filter(i)(idx0:idx1)))//cnull)
+                else
+                   call gtk_file_filter_add_mime_type(gfilter, &
+                        & trim(adjustl(filter(i)(idx0:idx1)))//cnull)
+                end if
+                idx0=idx1+2
+             end if
+          end do
+          if (present(filter_name)) then
+             call gtk_file_filter_set_name(gfilter, &
+                  & trim(filter_name(i))//cnull)
+          else
+             call gtk_file_filter_set_name(gfilter, &
+                  & trim(filter(i))//cnull)
+          end if
+          call gtk_file_chooser_add_filter(chooser_info%chooser, gfilter)
+       end do
+       if (present(all)) then
+          if (all == TRUE) then
+             gfilter = gtk_file_filter_new()
+             call gtk_file_filter_add_pattern(gfilter, &
+                  & "*"//cnull)
+             call gtk_file_filter_set_name(gfilter, &
+                  "All Files"//cnull)
+             call gtk_file_chooser_add_filter(chooser_info%chooser, gfilter)
+          end if
+       end if
+    end if
+
+    ! Add an entry box for extra filters.
+    if (present(edit_filters)) then
+       if (edit_filters == TRUE) then
+          fbox = hl_gtk_box_new(horizontal=TRUE)
+          junk = gtk_label_new("New filter:"//cnull)
+          call hl_gtk_box_pack(fbox, junk)
+          chooser_info%fentry = &
+               & hl_gtk_entry_new(activate=c_funloc(hl_gtk_chooser_filt_cb), &
+               & len=60, tooltip="Enter a new filter here."//cnull, &
+               & data=c_loc(chooser_info))
+          call hl_gtk_box_pack(fbox, chooser_info%fentry)
+          fapply = hl_gtk_button_new("Apply"//cnull, &
+               & clicked=c_funloc(hl_gtk_chooser_filt_cb), &
+               & data=c_loc(chooser_info) )
+          call hl_gtk_box_pack(fbox, fapply)
+          call gtk_file_chooser_set_extra_widget(chooser_info%chooser, fbox)
+       end if
+    end if
+
+    call g_signal_connect(dialog, "response"//cnull, &
+         & c_funloc(hl_gtk_chooser_resp_cb), c_loc(chooser_info))
+
+    call gtk_widget_show_all (dialog)
+    resp = gtk_dialog_run(dialog)
+    call gtk_widget_destroy(dialog)
+
+    isel = chooser_info%iselect
+    if (chooser_info%iselect == TRUE) then
+       nsel = g_slist_length(chooser_info%chooser_sel_list)
+       allocate(files(nsel))
+       do i = 1, nsel
+          strptr = g_slist_nth_data(chooser_info%chooser_sel_list, i-1)
+          call convert_c_string(strptr, len(files), files(i))
+          call g_free(strptr)
+       end do
+       call g_slist_free(chooser_info%chooser_sel_list)
+
+       if (present(cdir)) call convert_c_string(chooser_info%chooser_curdir,&
+            & len(cdir), cdir)
+    end if
+  end function hl_gtk_file_chooser_show
+
+  !+
+  subroutine hl_gtk_chooser_resp_cb(dialog, response, gdata) bind(c)
+    ! Callback for the "response" signal of the chooser
+    !
+    ! DIALOG: c_ptr: required: The dialog sending the response
+    ! RESPONSE: c_int: required: The response code.
+    ! GDATA: c_ptr: required: User data used to return a select/cancel value
+    !
+    ! The application developer should never need to use this routine directly.
+    !-
+
+    type(c_ptr), value :: dialog
+    integer(c_int), value :: response
+    type(c_ptr), value :: gdata
+
+    type(hl_gtk_chooser_info), pointer :: chooser_info
+
+    call c_f_pointer(gdata, chooser_info)
+
+    select case (response)
+    case (GTK_RESPONSE_DELETE_EVENT)
+       chooser_info%iselect = FALSE
+    case (GTK_RESPONSE_CANCEL)
+       chooser_info%iselect = FALSE
+    case (GTK_RESPONSE_APPLY)
+       chooser_info%iselect = TRUE
+       if (gtk_file_chooser_get_local_only(chooser_info%chooser) == TRUE) then
+          chooser_info%chooser_sel_list = &
+               & gtk_file_chooser_get_filenames(chooser_info%chooser)
+       else
+          chooser_info%chooser_sel_list = &
+               & gtk_file_chooser_get_uris(chooser_info%chooser)
+       end if
+       chooser_info%chooser_curdir = &
+            & gtk_file_chooser_get_current_folder(chooser_info%chooser)
+    case default
+       chooser_info%iselect = FALSE
+       write(0,*) "hl_gtk_chooser_resp_cb:: Invalid response received", response
+    end select
+  end subroutine hl_gtk_chooser_resp_cb
+
+  !+
+  subroutine hl_gtk_chooser_filt_cb(widget, gdata) bind(c)
+    ! Callback for the new filter entry.
+    !
+    ! WIDGET: c_ptr: required: The widget sending the signal
+    ! GDATA: c_ptr: required: User data used to return a select/cancel value
+    !
+    ! The application developer should never need to use this routine directly.
+    !-
+
+    type(c_ptr), value :: widget
+    type(c_ptr), value :: gdata
+
+    type(hl_gtk_chooser_info), pointer :: chooser_info
+
+    character(len=60) :: filter
+    type(c_ptr) :: gfilter
+    integer :: idx0, idx1
+
+    call c_f_pointer(gdata, chooser_info)
+
+    call hl_gtk_entry_get_text(chooser_info%fentry, filter)
+    if (filter == "") return   ! No filter was given.
+ 
+    gfilter = gtk_file_filter_new()
+
+    idx0 = 1
+    do
+       idx1 = index(filter(idx0:),',')+idx0-2
+       if (idx1 < idx0) then
+          if (index(filter(idx0:), '/') == 0) then
+             call gtk_file_filter_add_pattern(gfilter, &
+                  & trim(adjustl(filter(idx0:)))//cnull)
+          else
+             call gtk_file_filter_add_mime_type(gfilter, &
+                  & trim(adjustl(filter(idx0:)))//cnull)
+          end if
+          exit
+       else
+          if (index(filter(idx0:idx1), '/') == 0) then
+             call gtk_file_filter_add_pattern(gfilter, &
+                  & trim(adjustl(filter(idx0:idx1)))//cnull)
+          else
+             call gtk_file_filter_add_mime_type(gfilter, &
+                  & trim(adjustl(filter(idx0:idx1)))//cnull)
+          end if
+          idx0=idx1+2
+       end if
+    end do
+    call gtk_file_filter_set_name(gfilter, &
+         & trim(filter)//cnull)
+
+    call gtk_file_chooser_add_filter(chooser_info%chooser, gfilter)
+    call gtk_entry_set_text(chooser_info%fentry, CNULL)
+  end subroutine hl_gtk_chooser_filt_cb
 
 end module gtk_hl
