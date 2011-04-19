@@ -30,7 +30,7 @@ contains
     msg(5) = "You know that's dangerous"
 
     resp = hl_gtk_message_dialog_show(msg, GTK_BUTTONS_OK, "ALERT"//cnull, &
-         & type=GTK_MESSAGE_WARNING)
+         & type=GTK_MESSAGE_WARNING, parent=win)
   end subroutine msg_alert
 
   subroutine msg_quit(widget, gdata) bind(c)
@@ -44,7 +44,8 @@ contains
     msg(2) = ""
     msg(3) = "Do you really want to quit?"
 
-    resp = hl_gtk_message_dialog_show(msg, GTK_BUTTONS_YES_NO, "QUIT"//cnull)
+    resp = hl_gtk_message_dialog_show(msg, GTK_BUTTONS_YES_NO, &
+         & "QUIT"//cnull, parent=win)
     if (resp == GTK_RESPONSE_YES) call gtk_main_quit()
 
   end subroutine msg_quit
@@ -56,8 +57,9 @@ program dialog_demo
 
   call gtk_init()
   ! Make a window & put a horizontal box in it
-  win = hl_gtk_window_new('Dialogue Demo'//cnull, destroy=c_funloc(my_destroy))
-  box = hl_gtk_box_new(horizontal=TRUE)
+  win = hl_gtk_window_new('Dialogue Demo'//cnull, destroy=c_funloc(my_destroy), &
+       & border=10 )
+  box = hl_gtk_box_new(horizontal=TRUE, spacing=10)
   call gtk_container_add(win, box)
 
   ! 2 Buttons one shows a message, the other a confirm exit dialog
