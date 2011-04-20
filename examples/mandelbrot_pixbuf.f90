@@ -30,16 +30,19 @@ module handlers
   &idget_queue_draw, gtk_widget_show, gtk_window_new, gtk_window_set_default, gtk&
   &_window_set_default_size, gtk_window_set_title, GDK_COLORSPACE_RGB,&
   &gtk_init, g_signal_connect, FALSE, TRUE, NULL, CNULL, GTK_WINDOW_TOPLEVEL
+  
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
+  
   use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
-  use iso_c_binding
+  
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  
   implicit none
-
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
-  
   type(c_ptr) :: my_pixbuf
   character(c_char), dimension(:), pointer :: pixel
   integer :: nch, rowstride, width, height
@@ -50,10 +53,11 @@ contains
     use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
-    !print *, "Delete_event"
+
     run_status = FALSE
     ret = FALSE
   end function delete_event
+
 
   subroutine pending_events ()
     do while(IAND(gtk_events_pending(), run_status) /= FALSE)
@@ -61,10 +65,10 @@ contains
     end do
   end subroutine pending_events
 
+
   function expose_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding
-    implicit none
-    
+    use iso_c_binding, only: c_ptr, c_int
+    implicit none    
     integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, event, gdata
     type(c_ptr) :: my_cairo_context
@@ -77,8 +81,9 @@ contains
   end function expose_event
 end module handlers
 
+
 program mandelbrot
-  use iso_c_binding
+  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
   use handlers
   implicit none
   type(c_ptr) :: my_window
@@ -100,7 +105,6 @@ program mandelbrot
   call g_signal_connect (my_drawing_area, "expose-event"//CNULL, c_funloc(expose_event))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
-
   
   call gtk_widget_show (my_window)
   
@@ -196,6 +200,8 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
       if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
   end do
+  call gtk_widget_queue_draw(my_drawing_area)
+
   t1=system_time()
   print *, "System time = ", t1-t0
 end subroutine mandelbrot_set
