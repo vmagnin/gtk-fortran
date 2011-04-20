@@ -13,7 +13,7 @@
    height="128"
    id="svg6843"
    sodipodi:version="0.32"
-   inkscape:version="0.48.0 r9654"
+   inkscape:version="0.48.1 r9760"
    version="1.0"
    sodipodi:docname="gtk-fortran-logo.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
@@ -37,9 +37,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.6632895"
-     inkscape:cx="53.711784"
-     inkscape:cy="38.816194"
+     inkscape:zoom="2.640177"
+     inkscape:cx="43.508003"
+     inkscape:cy="24.649231"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:document-units="px"
@@ -48,8 +48,8 @@
      height="128px"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1024"
-     inkscape:window-height="1226"
+     inkscape:window-width="1366"
+     inkscape:window-height="713"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1">
@@ -65,7 +65,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:date />
         <dc:creator>
           <cc:Agent>
@@ -112,7 +112,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <g
-       transform="matrix(0.78301023,0,0,0.78301023,-50.923825,270.04483)"
+       transform="matrix(0.55321333,0,0,0.55321333,49.264292,197.51944)"
        id="g3888">
       <path
          inkscape:connector-curvature="0"
@@ -144,7 +144,7 @@
          style="fill:#babdb6;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     </g>
     <g
-       transform="matrix(1.1923781,0,0,1.1923781,-0.38522102,4.0819892)"
+       transform="matrix(0.43273822,0,0,0.43273822,36.331463,41.378687)"
        id="g3059">
       <path
          inkscape:connector-curvature="0"
@@ -177,7 +177,7 @@
     </g>
     <g
        id="g3052"
-       transform="matrix(0.60090756,0,0,0.60090756,27.745702,195.29669)"
+       transform="matrix(0.42455394,0,0,0.42455394,39.973811,85.411074)"
        inkscape:export-filename="/media/USB_VINCENT/essailogo.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300">
@@ -212,7 +212,7 @@
     </g>
     <g
        id="g3853"
-       transform="matrix(0.30108334,0,0,0.3125778,106.83635,74.275065)">
+       transform="matrix(0.21272177,0,0,0.22084284,13.242378,94.680915)">
       <path
          style="fill:#729fcf;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.12364459;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
          d="M 20.88413,30.82696 53.816977,55.527708 107.33282,39.060543 70.587303,17.177763 20.88413,30.82696 z"
@@ -244,20 +244,20 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-size:54.18122101px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="-73.391624"
-       y="-16.375286"
+       style="font-size:19.6634655px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="20.249399"
+       y="33.954327"
        id="text3008"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3010"
-         x="-73.391624"
-         y="-16.375286">gtk-fortran</tspan></text>
+         x="20.249399"
+         y="33.954327">gtk-fortran</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:16.11018372px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="5.4300704"
-       y="179.34962"
+       style="font-size:11.38218689px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="24.207342"
+       y="74.144135"
        id="text3012"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/media/USB_VINCENT/essailogo.png"
@@ -265,13 +265,13 @@
        inkscape:export-ydpi="300"><tspan
          sodipodi:role="line"
          id="tspan3014"
-         x="5.4300704"
-         y="179.34962">gtk</tspan></text>
+         x="24.207342"
+         y="74.144135">gtk</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:27.70095634px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="37.469883"
-       y="198.6189"
+       style="font-size:19.57131386px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="46.844154"
+       y="87.758286"
        id="text3016"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/media/USB_VINCENT/essailogo.png"
@@ -279,11 +279,11 @@
        inkscape:export-ydpi="300"><tspan
          sodipodi:role="line"
          id="tspan3018"
-         x="37.469883"
-         y="198.6189">fortran</tspan></text>
+         x="46.844154"
+         y="87.758286">fortran</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:2.24093938;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 16.16589,184.80121 11.944639,14.03079 9.410927,-24.34754 98.452774,-0.41268"
+       style="fill:none;stroke:#000000;stroke-width:1.58327115;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 31.792428,77.995795 8.439141,9.91305 6.64902,-17.202053 69.558971,-0.291567"
        id="path3020"
        inkscape:connector-curvature="0"
        inkscape:export-filename="/media/USB_VINCENT/essailogo.png"
@@ -291,77 +291,77 @@
        inkscape:export-ydpi="300" />
     <text
        xml:space="preserve"
-       style="font-size:24.55330086px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="166.59387"
-       y="104.63623"
+       style="font-size:17.34742737px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="55.462334"
+       y="116.13172"
        id="text3839"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3843"
-         x="166.59387"
-         y="104.63623">∂gtk</tspan><tspan
+         x="55.462334"
+         y="116.13172">∂gtk</tspan><tspan
          sodipodi:role="line"
          id="tspan3845"
-         x="166.59387"
-         y="135.32787">∂fortran</tspan></text>
+         x="55.462334"
+         y="137.81601">∂fortran</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 117.02617,113.15076 95.81297,0"
+       style="fill:none;stroke:#000000;stroke-width:0.70652121px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 20.441702,122.14742 67.693898,0"
        id="path3851"
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="-82.124893"
-       y="166.88046"
+       style="font-size:28.260849px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="-40.692978"
+       y="124.63163"
        id="text3872"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3874"
-         x="-82.124893"
-         y="166.88046">∞</tspan></text>
+         x="-40.692978"
+         y="124.63163">∞</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:32.2853241px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="-75.66674"
-       y="254.62787"
+       style="font-size:22.81026649px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="31.782896"
+       y="186.62703"
        id="text3876"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3878"
-         x="-75.66674"
-         y="254.62787">∑</tspan></text>
+         x="31.782896"
+         y="186.62703">∑</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="-77.528694"
-       y="124.45406"
+       style="font-size:28.260849px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="-37.445663"
+       y="94.656471"
        id="text3880"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3882"
-         x="-77.528694"
-         y="124.45406">∫</tspan></text>
+         x="-37.445663"
+         y="94.656471">∫</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text3900"
-       y="223.19023"
-       x="-76.947884"
-       style="font-size:16.11018372px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       y="164.41568"
+       x="30.877745"
+       style="font-size:11.38218689px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
        xml:space="preserve"><tspan
-         y="223.19023"
-         x="-76.947884"
+         y="164.41568"
+         x="30.877745"
          id="tspan3902"
          sodipodi:role="line">gtk</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text3904"
-       y="259.78363"
-       x="-51.625572"
-       style="font-size:27.70095634px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       y="190.26968"
+       x="48.768494"
+       style="font-size:19.57131386px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
        xml:space="preserve"><tspan
-         y="259.78363"
-         x="-51.625572"
+         y="190.26968"
+         x="48.768494"
          id="tspan3906"
          sodipodi:role="line">fortran</tspan></text>
   </g>
