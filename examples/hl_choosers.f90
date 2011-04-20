@@ -1,3 +1,29 @@
+! Copyright (C) 2011
+! Free Software Foundation, Inc.
+
+! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+
+! This is free software; you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation; either version 3, or (at your option)
+! any later version.
+
+! This software is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+
+! Under Section 7 of GPL version 3, you are granted additional
+! permissions described in the GCC Runtime Library Exception, version
+! 3.1, as published by the Free Software Foundation.
+
+! You should have received a copy of the GNU General Public License along with
+! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! If not, see <http://www.gnu.org/licenses/>.
+!
+! gfortran -g gtk.f90 gtk-sup.f90 gtk-hl.f90 hl_choosers.f90 `pkg-config --cflags --libs gtk+-2.0`
+! Contributed by James Tappin.
+
 ! Demo of file choosers.
 
 module handlers
@@ -18,7 +44,7 @@ module handlers
   ! Other variables that need to be shared between handlers
 
   logical, private :: file_is_changed = .FALSE.
-  character(len=120), private :: filename
+  character(len=120), private :: filename=''
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
@@ -172,6 +198,7 @@ contains
     deallocate(text)
 
     file_is_changed = .FALSE.
+
     call gtk_widget_set_sensitive(sbut, false)
   end subroutine save_file_as
 
@@ -179,9 +206,12 @@ contains
     type(c_ptr), value :: widget, gdata
 
     file_is_changed = .true.
-    call gtk_widget_set_sensitive(sbut, TRUE)
+    if (filename == '') then
+       call gtk_widget_set_sensitive(sabut, TRUE)
+    else
+       call gtk_widget_set_sensitive(sbut, TRUE)
+    end if
   end subroutine file_edited
-  
 end module handlers
 
 program choosers_demo
