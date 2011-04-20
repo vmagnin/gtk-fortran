@@ -191,7 +191,7 @@ subroutine Julia_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
       pixel(p+1)=char(green)
       pixel(p+2)=char(blue)
 
-      ! This subrountine processes gtk events as needed during the computation.
+      ! This subroutine processes gtk events as needed during the computation.
       call pending_events()
       if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
