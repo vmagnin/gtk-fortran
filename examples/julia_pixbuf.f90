@@ -24,14 +24,28 @@
 ! Contributed by Vincent Magnin and Jerry DeLisle 
 ! Last modification: 04-20-2011
 
+module global_widgets
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: my_pixbuf, my_drawing_area, spinButton1, spinButton2, spinButton3
+  character(c_char), dimension(:), pointer :: pixel
+  integer :: nch, rowstride, width, height, pixwidth, pixheight
+  logical :: computing = .false.
+end module global_widgets
+
+
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
   &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
   &idget_queue_draw, gtk_widget_show, gtk_window_new, gtk_window_set_default, gtk&
   &_window_set_default_size, gtk_window_set_title, TRUE, FALSE, NULL, CNULL, &
-  &GDK_COLORSPACE_RGB, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect
+  &GDK_COLORSPACE_RGB, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
+  &gtk_table_new, gtk_table_attach_defaults, gtk_container_add, gtk_button_new_with_label,&
+  &gtk_widget_show_all, gtk_vbox_new, gtk_box_pack_start, gtk_spin_button_new,&
+  &gtk_adjustment_new, gtk_spin_button_get_value, gtk_label_new, &
+  &gtk_expander_new_with_mnemonic, gtk_expander_set_expanded, gtk_main_quit
   
-  use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
+  use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
+  &cairo_surface_write_to_png, cairo_get_target
   
   use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
   
@@ -39,14 +53,11 @@ module handlers
   &buf_get_rowstride, gdk_pixbuf_new
   
   use iso_c_binding, only: c_int, c_ptr, c_char
-  
+
   implicit none
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
-  type(c_ptr) :: my_pixbuf
-  character(c_char), dimension(:), pointer :: pixel
-  integer :: nch, rowstride, width, height
   
 contains
   ! User defined event handlers go here
@@ -57,6 +68,7 @@ contains
 
     run_status = FALSE
     ret = FALSE
+    call gtk_main_quit()
   end function delete_event
 
 
@@ -69,26 +81,75 @@ contains
 
   function expose_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_int, c_ptr
+    use global_widgets
     implicit none
     integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, event, gdata
     type(c_ptr) :: my_cairo_context
+    integer(c_int) :: cstatus
     
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0) 
-    call cairo_paint(my_cairo_context)
+    call cairo_paint(my_cairo_context)    
     call cairo_destroy(my_cairo_context)
     ret = FALSE
   end function expose_event
+
+
+  ! GtkButton signal:
+  function firstbutton (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr
+    use global_widgets
+    implicit none
+    
+    integer(c_int)    :: ret
+    type(c_ptr), value :: widget, gdata
+    double complex :: c
+    integer :: iterations
+    
+    c = gtk_spin_button_get_value (spinButton1) + &
+        & (0d0, 1d0)*gtk_spin_button_get_value (spinButton2)
+    iterations = INT(gtk_spin_button_get_value (spinButton3))
+    print *, c, iterations
+    call Julia_set(-2d0, +2d0, -2d0, +2d0, c, iterations)
+
+    ret = FALSE
+  end function firstbutton
+
+  ! GtkButton signal:
+  function secondbutton (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr
+    use global_widgets
+    implicit none
+    
+    integer(c_int)    :: ret
+    type(c_ptr), value :: widget, gdata
+    type(c_ptr) :: my_cairo_context
+    integer(c_int) :: cstatus
+    
+    !my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
+    my_cairo_context = gdk_cairo_create (gtk_widget_get_window(my_drawing_area))
+    call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0) 
+    ! Save the picture if finished:
+    if (.not. computing) then
+      cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "julia.png"//CNULL)
+    end if
+    ! FIXME: how to save only the drawing_area
+    call cairo_destroy(my_cairo_context)
+
+    ret = FALSE
+  end function secondbutton
+
 end module handlers
 
 
 program julia
   use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
   use handlers
+  use global_widgets
   implicit none
-  type(c_ptr) :: my_window
-  type(c_ptr) :: my_drawing_area
+  
+  type(c_ptr) :: my_window, table, button1, button2, box1, label1, label2, label3, expander
   integer :: i
   
   call gtk_init ()
@@ -96,43 +157,69 @@ program julia
   ! Properties of the main window :
   width = 700
   height = 700
-
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_default_size(my_window, width, height)
   call gtk_window_set_title(my_window, "Julia Set"//CNULL)
   call g_signal_connect (my_window, "delete-event"//CNULL, c_funloc(delete_event))
-      
+
+  button1 = gtk_button_new_with_label ("Compute"//CNULL)
+  call g_signal_connect (button1, "clicked"//CNULL, c_funloc(firstbutton))
+  button2 = gtk_button_new_with_label ("Save as PNG"//CNULL)
+  call g_signal_connect (button2, "clicked"//CNULL, c_funloc(secondbutton))
+
+  label1 = gtk_label_new("real(c)"//CNULL)
+  spinButton1 = gtk_spin_button_new (gtk_adjustment_new(-0.835d0,-2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7)
+  label2 = gtk_label_new("imag(c) "//CNULL)
+  spinButton2 = gtk_spin_button_new (gtk_adjustment_new(-0.2321d0, -2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7)
+  label3 = gtk_label_new("iterations"//CNULL)
+  spinButton3 = gtk_spin_button_new (gtk_adjustment_new(1000d0,1d0,+100000d0,10d0,100d0,0d0),10d0, 0)
+
+  ! A table container will contain buttons and labels:
+  table = gtk_table_new (4, 4, TRUE)
+  call gtk_table_attach_defaults(table, button1, 0, 1, 3, 4)
+  call gtk_table_attach_defaults(table, button2, 1, 2, 3, 4)
+  call gtk_table_attach_defaults(table, label1, 0, 1, 0, 1)
+  call gtk_table_attach_defaults(table, label2, 0, 1, 1, 2)
+  call gtk_table_attach_defaults(table, label3, 0, 1, 2, 3)
+  call gtk_table_attach_defaults(table, spinButton1, 1, 2, 0, 1)
+  call gtk_table_attach_defaults(table, spinButton2, 1, 2, 1, 2)
+  call gtk_table_attach_defaults(table, spinButton3, 1, 2, 2, 3)
+
+  ! The table is contained in an expander, which is contained in the vertical box:
+  expander = gtk_expander_new_with_mnemonic ("Parameters:")
+  ! with "_Parameters:", we obtain: Pango-WARNING **: Invalid UTF-8 string passed to pango_layout_set_text()
+  call gtk_container_add (expander, table)
+  call gtk_expander_set_expanded(expander, TRUE)
+
+  ! We create a vertical box container:
+  box1 = gtk_vbox_new (FALSE, 10);
+  call gtk_box_pack_start (box1, expander, FALSE, FALSE, 0)
+
+  ! The drawing area is contained in the vertical box:
   my_drawing_area = gtk_drawing_area_new()
   call g_signal_connect (my_drawing_area, "expose-event"//CNULL, c_funloc(expose_event))
-  call gtk_container_add(my_window, my_drawing_area)
-  call gtk_widget_show (my_drawing_area)
+  ! In GTK+ 3.0 expose-event will be replaced by draw event:
+  !call g_signal_connect (my_drawing_area, "draw"//CNULL, c_funloc(expose_event))
+  call gtk_box_pack_start (box1, my_drawing_area, TRUE, TRUE, 0)
 
-  call gtk_widget_show (my_window)
+  call gtk_container_add (my_window, box1)
+  call gtk_widget_show_all (my_window)
   
-  ! We create a pixbuffer to store the pixels of the image:
-  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, width, height)    
+  ! We create a "pixbuffer" to store the pixels of the image:
+  pixwidth  = 550
+  pixheight = 550
+  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, pixwidth, pixheight)    
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
   
   ! We use char() because we need unsigned integers.
-  ! This pixbuffer has no Alpha channel (15% faster).
-  do i=1, width*height*nch, nch
-    pixel(i)=char(0)      ! Red
-    pixel(i+1)=char(0)    ! Green
-    pixel(i+2)=char(0)    ! Blue
-  end do
+  ! This pixbuffer has no Alpha channel (15% faster), only RGB.
+  pixel = char(0)
 
-  call Julia_set(my_drawing_area, -2d0, +2d0, -2d0, +2d0, 1000)
-
-  ! The window stays opened after the computation:
-  do
-    call pending_events()
-    if (run_status == FALSE) exit
-    call sleep(1) ! So we don't burn CPU cycles
-  end do
+  ! Main loop:
+  call gtk_main ()
   print *, "All done"
-
 end program julia 
 
 
@@ -140,38 +227,38 @@ end program julia
 ! Julia Set
 ! http://en.wikipedia.org/wiki/Julia_set
 !*********************************************
-subroutine Julia_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
+subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
   use iso_c_binding
   use handlers
+  use global_widgets
   implicit none
 
-  type(c_ptr) :: my_drawing_area
   integer    :: i, j, k, p, itermax
-  real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-  double precision :: c, z   
-  real(8)    :: scx, scy             ! scales
+  double precision :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+  double complex :: c, z   
+  double precision :: scx, scy       ! scales
   integer(1) :: red, green, blue     ! rgb color
-  real(8) :: system_time, t0, t1
+  double precision :: system_time, t0, t1
   
+  computing = .true.
   t0=system_time()
-  scx = ((xmax-xmin)/width)   ! x scale
-  scy = ((ymax-ymin)/height)  ! y scale
+  scx = ((xmax - xmin) / pixwidth)   ! x scale
+  scy = ((ymax - ymin) / pixheight)  ! y scale
   
-  do i=0, width-1
-    ! We provoke an expose_event once in a while to improve performances:
+  do i=0, pixwidth-1
+    ! We provoke an expose_event only once in a while to improve performances:
     if (mod(i,10)==0) then
       call gtk_widget_queue_draw(my_drawing_area)
     end if
     
     x = xmin + scx * i
-    do j=0, height-1
+    do j=0, pixheight-1
       y = ymin + scy * j
       z = x + y*(0d0,1d0)   ! Starting point
-      c = (-0.835d0, -0.2321d0)    !(-0.4d0, +0.6d0)        
       k = 1
       do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4d0)) 
-        z = z*z+c
-        k = k+1
+        z = z*z + c
+        k = k + 1
       end do
       
       if (k>itermax) then
@@ -180,6 +267,7 @@ subroutine Julia_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
         green = 0
         blue  = 0
       else
+        ! User defined palette:
         red   = min(255, k*2)
         green = min(255, k*5)
         blue  = min(255, k*10)
@@ -187,16 +275,18 @@ subroutine Julia_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
       
       ! We write in the pixbuffer:
       p = i * nch + j * rowstride + 1
-      pixel(p)=char(red)
-      pixel(p+1)=char(green)
-      pixel(p+2)=char(blue)
+      pixel(p)   = char(red)
+      pixel(p+1) = char(green)
+      pixel(p+2) = char(blue)
 
       ! This subroutine processes gtk events as needed during the computation.
       call pending_events()
       if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
   end do
+  ! Final update of the display:
   call gtk_widget_queue_draw(my_drawing_area)
+  computing = .false.
 
   t1=system_time()
   print *, "System time = ", t1-t0
