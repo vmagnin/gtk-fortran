@@ -1,3 +1,29 @@
+! Copyright (C) 2011
+! Free Software Foundation, Inc.
+
+! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+
+! This is free software; you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation; either version 3, or (at your option)
+! any later version.
+
+! This software is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+
+! Under Section 7 of GPL version 3, you are granted additional
+! permissions described in the GCC Runtime Library Exception, version
+! 3.1, as published by the Free Software Foundation.
+
+! You should have received a copy of the GNU General Public License along with
+! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! If not, see <http://www.gnu.org/licenses/>.
+!
+! gfortran -g gtk.f90 gtk-sup.f90 gtk-hl.f90 hl_dialog.f90 `pkg-config --cflags --libs gtk+-2.0`
+! Contributed by James Tappin.
+
 module handlers
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
