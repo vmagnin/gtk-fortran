@@ -27,9 +27,11 @@
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: my_pixbuf, my_drawing_area, spinButton1, spinButton2, spinButton3
+  type(c_ptr) :: textView, buffer, scrolled_window
   character(c_char), dimension(:), pointer :: pixel
   integer :: nch, rowstride, width, height, pixwidth, pixheight
   logical :: computing = .false.
+  character(LEN=80) :: string
 end module global_widgets
 
 
@@ -42,7 +44,11 @@ module handlers
   &gtk_table_new, gtk_table_attach_defaults, gtk_container_add, gtk_button_new_with_label,&
   &gtk_widget_show_all, gtk_vbox_new, gtk_box_pack_start, gtk_spin_button_new,&
   &gtk_adjustment_new, gtk_spin_button_get_value, gtk_label_new, &
-  &gtk_expander_new_with_mnemonic, gtk_expander_set_expanded, gtk_main_quit
+  &gtk_expander_new_with_mnemonic, gtk_expander_set_expanded, gtk_main_quit, &
+  &gtk_toggle_button_new_with_label, gtk_toggle_button_get_active, gtk_notebook_new,&
+  &gtk_notebook_append_page, gtk_text_view_new, gtk_text_view_get_buffer, gtk_text_buffer_set_text,&
+  &gtk_scrolled_window_new, C_NEW_LINE, gtk_text_buffer_insert_at_cursor, gtk_statusbar_new,&
+  &gtk_statusbar_push, gtk_statusbar_get_context_id
   
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
   &cairo_surface_write_to_png, cairo_get_target
@@ -110,7 +116,10 @@ contains
     c = gtk_spin_button_get_value (spinButton1) + &
         & (0d0, 1d0)*gtk_spin_button_get_value (spinButton2)
     iterations = INT(gtk_spin_button_get_value (spinButton3))
-    print *, c, iterations
+
+    write(string, '("c=",F8.6,"+i*",F8.6,"   ", I6, " iterations")') c, iterations
+    call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//CNULL, -1)
+    
     call Julia_set(-2d0, +2d0, -2d0, +2d0, c, iterations)
 
     ret = FALSE
@@ -140,6 +149,25 @@ contains
     ret = FALSE
   end function secondbutton
 
+
+  ! GtkToggleButton signal:
+  function firstToggle (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr
+    use global_widgets
+    implicit none
+    
+    integer(c_int)    :: ret
+    type(c_ptr), value :: widget, gdata
+
+    if (gtk_toggle_button_get_active(widget) == TRUE) then
+      call gtk_text_buffer_insert_at_cursor (buffer, "In pause (currently not functionnal)"//C_NEW_LINE//CNULL, -1)
+    else
+      call gtk_text_buffer_insert_at_cursor (buffer, "Not in pause"//C_NEW_LINE//CNULL, -1)
+    end if
+    
+    ret = FALSE
+  end function firstToggle
+  
 end module handlers
 
 
@@ -149,7 +177,9 @@ program julia
   use global_widgets
   implicit none
   
-  type(c_ptr) :: my_window, table, button1, button2, box1, label1, label2, label3, expander
+  type(c_ptr) :: my_window, table, button1, button2, box1, label1, label2, label3
+  type(c_ptr) :: toggle1, expander, notebook, notebookLabel1, notebookLabel2, statusBar
+  integer(c_int) :: message_id
   integer :: i
   
   call gtk_init ()
@@ -174,6 +204,9 @@ program julia
   label3 = gtk_label_new("iterations"//CNULL)
   spinButton3 = gtk_spin_button_new (gtk_adjustment_new(1000d0,1d0,+100000d0,10d0,100d0,0d0),10d0, 0)
 
+  toggle1 = gtk_toggle_button_new_with_label ("Pause")
+  call g_signal_connect (toggle1, "toggled"//CNULL, c_funloc(firstToggle))
+  
   ! A table container will contain buttons and labels:
   table = gtk_table_new (4, 4, TRUE)
   call gtk_table_attach_defaults(table, button1, 0, 1, 3, 4)
@@ -184,6 +217,7 @@ program julia
   call gtk_table_attach_defaults(table, spinButton1, 1, 2, 0, 1)
   call gtk_table_attach_defaults(table, spinButton2, 1, 2, 1, 2)
   call gtk_table_attach_defaults(table, spinButton3, 1, 2, 2, 3)
+  call gtk_table_attach_defaults(table, toggle1, 3, 4, 0, 1)
 
   ! The table is contained in an expander, which is contained in the vertical box:
   expander = gtk_expander_new_with_mnemonic ("Parameters:")
@@ -200,14 +234,35 @@ program julia
   call g_signal_connect (my_drawing_area, "expose-event"//CNULL, c_funloc(expose_event))
   ! In GTK+ 3.0 expose-event will be replaced by draw event:
   !call g_signal_connect (my_drawing_area, "draw"//CNULL, c_funloc(expose_event))
-  call gtk_box_pack_start (box1, my_drawing_area, TRUE, TRUE, 0)
+  notebook = gtk_notebook_new ()
+  notebookLabel1 = gtk_label_new("Graphics"//CNULL)
+  print *, gtk_notebook_append_page (notebook, my_drawing_area, notebookLabel1)
+  
+  textView = gtk_text_view_new ()
+  buffer = gtk_text_view_get_buffer (textView)
+  call gtk_text_buffer_set_text (buffer, "Julia Set"//C_NEW_LINE// &
+      & "..."//c_new_line//"..."//CNULL, -1)
+  scrolled_window = gtk_scrolled_window_new (NULL, NULL)
+  notebookLabel2 = gtk_label_new("Text"//CNULL)
+  call gtk_container_add (scrolled_window, textView)
+  print *, gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
+  
+  call gtk_box_pack_start (box1, notebook, TRUE, TRUE, 0)
+ 
+  statusBar = gtk_statusbar_new ()
+  message_id = gtk_statusbar_push (statusbar, gtk_statusbar_get_context_id(statusbar, &
+              & "Julia"//CNULL), "Waiting..."//CNULL)
+  call gtk_box_pack_start (box1, statusBar, FALSE, FALSE, 0)
+
 
   call gtk_container_add (my_window, box1)
+
+              
   call gtk_widget_show_all (my_window)
   
   ! We create a "pixbuffer" to store the pixels of the image:
-  pixwidth  = 550
-  pixheight = 550
+  pixwidth  = 500
+  pixheight = 500
   my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, pixwidth, pixheight)    
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
