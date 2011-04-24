@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 04-17-2011
+! Last modification: 04-24-2011
 
 module gtk_hl
   ! A bunch of procedures to implement higher level creators for
@@ -85,6 +85,13 @@ module gtk_hl
   ! * hl_gtk_file_chooser_show; Run a more advanced file chooser
   ! * hl_gtk_chooser_resp_cb; Internal signal handler
   ! * hl_gtk_chooser_filt_cb; Internal signal handler
+  ! * hl_gtk_listn_new; Create a multi-column list
+  ! * hl_gtk_listn_ins; Insert a row to a multi column list
+  ! * hl_gtk_listn_rem; Delete a row from a multi column list
+  ! * hl_gtk_listn_get_selections; Get the selected row(s) in a multi-column
+  ! list
+  ! * hl_gtk_listn_set_cell; Set the value of a cell in a multi column list
+  ! * hl_gtk_list1_set_cell; Wrapper for above for a single column list.
   !/
   ! To facilitate the automatic extraction of API information, there are
   ! 2 types of comment block that are extracted:
@@ -176,6 +183,7 @@ module gtk_hl
        & gtk_file_filter_add_mime_type,&
        & gtk_file_chooser_set_do_overwrite_confirmation, & ! File
        !  chooser end
+       & gtk_tree_model_get_column_type, gtk_tree_view_column_set_sort_column_id, & ! List-n
        & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -208,7 +216,9 @@ module gtk_hl
   use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
        &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int,&
        & g_value_init, g_value_set_int, g_value_set_static_string, g_strv_length, g_free, &
-       & g_slist_free
+       & g_slist_free, g_value_set_char, g_value_set_long, g_value_set_int64, g_value_set_float, &
+       & g_value_set_string, g_value_set_double, g_value_set_uchar, g_value_set_ulong, &
+       & g_value_set_uint64, g_value_set_boolean, g_value_set_uint
 
   use iso_c_binding
 
@@ -743,7 +753,8 @@ contains
           valid = gtk_tree_model_iter_next(store, c_loc(iter))
           if (valid == FALSE) exit
           i = i+1
-          call gtk_list_store_set_value(store, c_loc(iter), 0, c_loc(i))
+          call g_value_set_int(c_loc(vali), i)
+         call gtk_list_store_set_value(store, c_loc(iter), 0, c_loc(vali))
        end do
     end if
   end subroutine hl_gtk_list1_ins
@@ -965,7 +976,7 @@ contains
     ! If present, connect the callback
     if (present(activate)) then
        if (.not. present(label)) then
-          print *, "HL_GTK_MENU_ITEM: Cannot connect a callback to a separator"
+          write(0, *) "HL_GTK_MENU_ITEM: Cannot connect a callback to a separator"
           return
        end if
 
@@ -2943,5 +2954,614 @@ contains
     call gtk_file_chooser_add_filter(chooser_info%chooser, gfilter)
     call gtk_entry_set_text(chooser_info%fentry, CNULL)
   end subroutine hl_gtk_chooser_filt_cb
+
+  !*
+  ! Multicolumn list
+  ! These routines implement a very basic multi column list. At present, there
+  ! is no support for determining selected columns, or for editing the cell
+  ! contents, because to date I've not been able to decipher the documentation
+  ! on how to do it.
+  !/
+  !+
+  function hl_gtk_listn_new(scroll, ncols, types, changed, data, multiple,&
+       & width, titles, height, swidth, align, ixpad, iypad, sensitive, tooltip, &
+       & reorderable) result(list)
+    ! Make a multi column list
+    !
+    ! SCROLL: c_ptr: required: The scrollable widget to contain the list.
+    ! 		(This is used to pack the list)
+    ! NCOLS: c_int: Optional: The number of columns.
+    ! TYPES: GType(): Optional: The types for each column.
+    ! CHANGED: c_funptr: optional: Callback function for the "changed"
+    ! 		signal to the associated selection object.
+    ! DATA: c_ptr: optional: Data to be passed to/from the callback.
+    ! MULTIPLE: boolean: optional: Whether multiple selections are allowed.
+    ! WIDTH: integer(): optional: The width of the displayed columns.
+    ! TITLES: string(): optional: Titles for the visible columns.
+    ! HEIGHT: c_int: optional: The height of the display (this is
+    !            actually the height of the scroll box).
+    ! SWIDTH: c_int: Optional: The width for the scroll box
+    ! ALIGN: c_float(): optional: The alignment of the columns
+    ! IXPAD: c_int(): optional: The X-padding around the cells.
+    ! IYPAD: c_int(): optional: The Y-Padding around the cells.
+    ! SENSITIVE: boolean: optional: Whether the widget is intially sensitive.
+    ! TOOLTIP: string: optional: Tooltip for the widget
+    ! REORDERABLE: boolean(): optional: Set whether the list can be sorted
+    ! 		on that column.
+    !
+    ! At least one of the array arguments or NCOLS must be given.
+    ! If TYPES is not given, then strings are assumed.
+    !-
+
+    type(c_ptr) :: list
+    type(c_ptr), intent(out) :: scroll
+    integer(kind=c_int), intent(in), optional :: ncols
+    integer(kind=type_kind), dimension(:), intent(in), optional :: types
+    type(c_funptr), optional :: changed
+    type(c_ptr), intent(in), optional :: data
+    integer(kind=c_int), intent(in), optional :: multiple
+    integer(kind=c_int), intent(in), optional, dimension(:) :: width
+    character(len=*), dimension(:), intent(in), optional :: titles
+    integer(kind=c_int), intent(in), optional :: height, swidth
+    real(kind=c_float), intent(in), optional, dimension(:) :: align
+    integer(kind=c_int), intent(in), optional, dimension(:) :: ixpad, iypad
+    integer(kind=c_int), intent(in), optional :: sensitive
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), intent(in), optional, dimension(:) :: reorderable
+
+    integer(kind=c_int) :: ncols_all, nc, i
+    integer(kind=type_kind), dimension(:), allocatable, target :: types_all
+
+    type(c_ptr) :: model, renderer, column, select
+
+    ! First find how many columns there are (with the index column there's
+    ! one more than we ask for)
+
+    if (present(ncols)) then
+       ncols_all = ncols+1
+    else if (present(types)) then
+       ncols_all = size(types)+1
+    else if (present(titles)) then
+       ncols_all = size(titles)+1
+    else if (present(align)) then
+       ncols_all = size(align)+1
+    else if (present(width)) then
+       ncols_all = size(width)+1
+    else if (present(reorderable)) then
+       ncols_all = size(reorderable)+1
+    else if (present(ixpad)) then
+       ncols_all = size(ixpad)+1
+    else if (present(iypad)) then
+       ncols_all = size(iypad)+1
+    else
+       write(0,*) "hl_gtk_listn_new: Cannot determine the number of columns"
+       list = NULL
+       scroll=NULL
+       return
+    end if
+
+    ! Now determine the column types.
+    allocate(types_all(ncols_all))
+    if (present(types)) then
+       types_all = (/ g_type_int, types /)
+    else
+       types_all = (/ g_type_int, (ncols_all-1)*g_type_string /)
+    end if
+
+    ! Create the storage model
+    model = gtk_list_store_newv(ncols_all, c_loc(types_all))
+
+    ! Create the list in the scroll box
+    scroll = gtk_scrolled_window_new(NULL, NULL)
+    call gtk_scrolled_window_set_policy(scroll, GTK_POLICY_AUTOMATIC, &
+         & GTK_POLICY_AUTOMATIC)
+    list = gtk_tree_view_new_with_model(model)
+    call gtk_container_add(scroll, list)
+    if (present(height) .and. present(swidth)) then
+       call gtk_widget_set_size_request(scroll,swidth,height)
+    else if (present(height)) then
+       call gtk_widget_set_size_request(scroll,0,height)
+    else if (present(swidth)) then
+       call gtk_widget_set_size_request(scroll,swidth,0)
+    end if
+
+    ! Insert index column (invisible)
+    renderer = gtk_cell_renderer_text_new()
+    call gtk_cell_renderer_set_visible(renderer, FALSE)
+    column = gtk_tree_view_column_new()
+    call gtk_tree_view_column_pack_start(column, renderer, FALSE)
+    call gtk_tree_view_column_set_title(column, "#"//cnull)
+    call gtk_tree_view_column_add_attribute(column, renderer, &
+         & "text"//CNULL, FALSE)
+    nc = gtk_tree_view_append_column(list, column)
+    call gtk_tree_view_column_set_sizing (column,GTK_TREE_VIEW_COLUMN_FIXED)
+    call gtk_tree_view_column_set_max_width(column,0)
+
+    ! Now the visible columns
+    do i = 1, ncols_all-1
+       renderer = gtk_cell_renderer_text_new()
+       if (present(align)) &
+            & call gtk_cell_renderer_set_alignment(renderer, &
+            & align(i), 0._c_float)
+       if (present(ixpad) .and. present(iypad)) then
+          call gtk_cell_renderer_set_padding(renderer, &
+               & ixpad(i), iypad(i))
+       else if (present(ixpad)) then
+          call gtk_cell_renderer_set_padding(renderer, &
+               & ixpad(i), 0)
+       else if (present(iypad)) then
+          call gtk_cell_renderer_set_padding(renderer, &
+               & 0, iypad(i))
+       end if
+       column = gtk_tree_view_column_new()
+       call gtk_tree_view_column_pack_start(column, renderer, FALSE)
+       if (present(align)) then
+          call gtk_cell_renderer_set_alignment(renderer, align(i), 0.)
+       else if (types_all(i+1) == G_TYPE_STRING) then
+          call gtk_cell_renderer_set_alignment(renderer, 0., 0.)
+       else
+          call gtk_cell_renderer_set_alignment(renderer, 1., 0.)
+       end if
+
+       if (present(titles)) call gtk_tree_view_column_set_title(column, &
+            &trim(titles(i))//cnull)
+       call gtk_tree_view_column_add_attribute(column, renderer, &
+            & "text"//CNULL, i)
+       nc = gtk_tree_view_append_column(list, column)
+       if (present(reorderable)) then
+          call gtk_tree_view_column_set_reorderable(column, reorderable(i))
+          if (reorderable(i) == TRUE) &
+               & call gtk_tree_view_column_set_sort_column_id (column, i)
+       else
+          call gtk_tree_view_column_set_reorderable(column, FALSE)
+       end if
+       if (present(width)) then
+          call gtk_tree_view_column_set_sizing (column, &
+               & GTK_TREE_VIEW_COLUMN_FIXED)
+          call gtk_tree_view_column_set_fixed_width(column, width(i))
+       end if
+       call gtk_tree_view_column_set_resizable(column,TRUE)
+    end do
+
+    ! The event handler is attached to the selection object, as is
+    ! the multiple selection property.
+
+    select = gtk_tree_view_get_selection(list)
+
+    if (present(multiple)) then
+       if (multiple == TRUE) &
+            & call gtk_tree_selection_set_mode(select, GTK_SELECTION_MULTIPLE)
+    end if
+
+    if (present(changed)) then
+       if (present(data)) then
+          call g_signal_connect(select, "changed"//cnull, changed, data)
+       else
+          call g_signal_connect(select, "changed"//cnull, changed)
+       end if
+    end if
+
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(list, tooltip)
+
+    if (present(sensitive)) &
+         & call gtk_widget_set_sensitive(list, sensitive)
+
+    deallocate(types_all)
+  end function hl_gtk_listn_new
+
+  !+
+  subroutine hl_gtk_listn_ins(list, row)
+    ! Insert a row into a tabular list.
+    !
+    ! LIST: c_ptr: required: The list into which to insert the row.
+    ! ROW: c_int: optional: The row BEFORE which to insert the row
+    ! 		(append if absent)
+    !-
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in), optional :: row
+
+    type(c_ptr) :: store, rowp
+    type(gtktreeiter), target :: iter
+    integer(kind=c_int) :: nrow, valid
+    type(gvalue), target :: rowv
+
+    ! Get the ListStore
+    store = gtk_tree_view_get_model(list)
+
+    ! Set up the gvalue
+    rowp = c_loc(rowv)
+    rowp= g_value_init(rowp, g_type_int)
+
+    ! Insert the row
+    if (present(row)) then
+       call gtk_list_store_insert(store, c_loc(iter), row)
+       nrow = row
+       call g_value_set_int(rowp, nrow)
+       call gtk_list_store_set_value(store, c_loc(iter), 0, rowp)
+       ! Reset the indices for the rest of the list
+       do
+          valid = gtk_tree_model_iter_next(store, c_loc(iter))
+          if (valid == FALSE) exit
+          nrow = nrow+1
+          call g_value_set_int(rowp, nrow)
+          call gtk_list_store_set_value(store, c_loc(iter), 0, rowp)
+       end do
+    else
+       nrow = gtk_tree_model_iter_n_children(store, NULL)
+       call g_value_set_int(rowp, nrow)
+       call gtk_list_store_append(store, c_loc(iter))
+       call gtk_list_store_set_value(store, c_loc(iter), 0, rowp)
+    end if
+  end subroutine hl_gtk_listn_ins
+
+  !+
+  subroutine hl_gtk_listn_rem(list, row)
+    ! Remove a row or clear a list
+    !
+    ! LIST: c_ptr: required: The list to modify
+    ! ROW: integer: optional: The row to remove, if absent clear the list
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), optional, intent(in) :: row
+
+    integer(kind=c_int), target :: i
+    integer(kind=c_int) :: valid
+    type(c_ptr) :: store, val
+    type(gtktreeiter), target :: iter
+    type(gvalue), target :: vali
+
+    ! Get list store
+    store = gtk_tree_view_get_model(list)
+
+    ! If 2 arguments, then remove a row
+    if (present(row)) then
+       valid = gtk_tree_model_iter_nth_child(store, c_loc(iter), NULL, row)
+       if (valid==FALSE) return
+
+       valid = gtk_list_store_remove(store, c_loc(iter))
+       if (valid==TRUE) then   ! Not the last element
+          i = row
+          val = c_loc(vali)
+          val = g_value_init(val, g_type_int)
+          do
+             call g_value_set_int(val, i)
+             call gtk_list_store_set_value(store, c_loc(iter), 0, val)
+             valid=gtk_tree_model_iter_next(store, c_loc(iter));
+             if (valid==FALSE) exit
+             i=i+1
+          end do
+       end if
+
+    else   ! 1 argument clear the whole list
+       call gtk_list_store_clear(store)
+    end if
+  end subroutine hl_gtk_listn_rem
+
+  !+
+  function hl_gtk_listn_get_selections(list, indices, selection) result(count)
+    ! Get the indices of the selected rows
+    !
+    ! LIST: c_ptr: required: The list whose selections are to be found.
+    ! INDICES: integer: optional: An allocatable array to return the
+    ! 		list of selections. (If count = 0 it will not be allocated).
+    ! 		If this argument is not given, then the number of
+    ! 		selected rows is returned.
+    ! SELECTION: c_ptr: optional: A selection. If this is given then LIST
+    !           is ignored. This is most often used in the callback routine
+    !           for the changed signal when that needs to find which element(s)
+    !           are selected.
+    !
+    ! Returns the number of selections.
+    !-
+
+    integer(kind=c_int) :: count
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), dimension(:), allocatable, target, &
+         & intent(out), optional :: indices
+    type(c_ptr), optional :: selection
+
+    type(c_ptr) :: slist, vselection
+    type(c_ptr), target :: model
+    integer(kind=c_int) :: i
+    type(c_ptr) :: cindex
+    integer(kind=c_int) :: valid
+    type(gtktreeiter), target :: iter
+    type(gvalue), target :: val
+
+    if (present(selection)) then
+       vselection = selection
+    else
+       vselection = gtk_tree_view_get_selection(list)
+    end if
+
+    slist = gtk_tree_selection_get_selected_rows(vselection, &
+         & c_loc(model))
+
+    ! If no selections, then set the count to 0 and return
+    if (.not. c_associated(slist)) then
+       count=0
+       return
+    end if
+
+    ! Determine how many rows are selected. Then if no output list was
+    ! supplied, return, otherwise go on and make a list.
+    count = g_list_length(slist)
+    if (.not. present(indices)) return
+
+    allocate(indices(count))
+
+    ! For each of the elements in the selection list, find its index
+    ! from the hidden first column
+    do i = 1, count
+       valid = gtk_tree_model_get_iter(model, c_loc(iter), &
+            & g_list_nth_data(slist, i-1))
+       call gtk_tree_model_get_value(model, c_loc(iter), 0, c_loc(val))
+       indices(i) = g_value_get_int(c_loc(val))
+       call clear_gvalue(val)
+    end do
+
+    ! Free the selection list.
+    call g_list_foreach(slist, c_funloc(gtk_tree_path_free), NULL)
+    call g_list_free(slist)
+
+  end function hl_gtk_listn_get_selections
+
+  !+
+  subroutine hl_gtk_listn_set_cell(list, row, col, &
+       & svalue, fvalue, dvalue, ivalue, lvalue, l64value)
+    ! Set the value of a cell.
+    !
+    ! LIST: c_ptr: required: The list containing the cell.
+    ! ROW: c_int: required: The row of the cell
+    ! COL: c_int: required: The column of the cell, N.B., column
+    ! 		zero is the hidden index column.
+    ! SVALUE: string: optional: A string value for the cell.
+    ! FVALUE: float: optional: A single precision FP value for the cell.
+    ! DVALUE: double: optional: A double precision FP value for the cell.
+    ! IVALUE: c_int: optional: A normal integer value for the cell.
+    ! LVALUE: c_long: optional: A long integer value for the cell.
+    ! L64VALUE: c_int64_t: optional: A 64-bit integer value for the cell.
+    !
+    ! Note that reasonable conversions are made between types.
+    !-
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row, col
+    character(len=*), intent(in), optional :: svalue
+    real(kind=c_float), intent(in), optional :: fvalue
+    real(kind=c_double), intent(in), optional :: dvalue
+    integer(kind=c_int), intent(in), optional :: ivalue
+    integer(kind=c_long), intent(in), optional :: lvalue
+    integer(kind=c_int64_t), intent(in), optional :: l64value
+
+    integer(kind=type_kind) :: ctype
+    type(c_ptr) :: store, val
+    integer(kind=c_int) :: valid
+    type(gtktreeiter), target :: iter
+    type(gvalue), target :: value
+
+    character(len=120) :: sconv
+    integer(kind=c_int) :: iconv
+    integer(kind=c_long) :: lconv
+    integer(kind=c_int64_t) :: l64conv
+    real(kind=c_float) :: fconv
+    real(kind=c_double) :: dconv
+
+    ! Get list store
+    store = gtk_tree_view_get_model(list)
+
+    ! Find the type for the requested column
+    ctype = gtk_tree_model_get_column_type(store, col)
+
+    ! Get the iterator of the row
+    valid = gtk_tree_model_iter_nth_child(store, c_loc(iter), NULL, row)
+    if (valid == FALSE) return
+
+    ! Set up the GValue to the right type.
+    val = c_loc(value)
+    val = g_value_init(val, ctype)
+
+    ! Select according to the cell type
+    select case(ctype)
+    case(G_TYPE_CHAR)
+       if (present(svalue)) then
+          call g_value_set_char(val, svalue(1:1))
+       else if (present(ivalue)) then
+          call g_value_set_char(val, char(ivalue, c_char))
+       else if (present(lvalue)) then
+          call g_value_set_char(val, char(lvalue, c_char))
+       else if (present(l64value)) then
+          call g_value_set_char(val, char(l64value, c_char))
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make a 'char' type from given value(s)"
+          return
+       end if
+    case(G_TYPE_UCHAR)
+       if (present(svalue)) then
+          call g_value_set_uchar(val, svalue(1:1))
+       else if (present(ivalue)) then
+          call g_value_set_uchar(val, char(ivalue, c_char))
+       else if (present(lvalue)) then
+          call g_value_set_uchar(val, char(lvalue, c_char))
+       else if (present(l64value)) then
+          call g_value_set_uchar(val, char(l64value, c_char))
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make a 'char' type from given value(s)"
+          return
+       end if
+
+    case (G_TYPE_INT)
+       if (present(ivalue)) then
+          call g_value_set_int(val, ivalue)
+       else if (present(lvalue)) then
+          call g_value_set_int(val, int(lvalue, c_int))
+       else if (present(l64value)) then
+          call g_value_set_int(val, int(l64value, c_int))
+       else if (present(svalue)) then
+          read(svalue,*) iconv
+          call g_value_set_int(val, iconv)
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make an 'int' type from given value(s)"
+          return
+       end if
+    case (G_TYPE_UINT)
+       if (present(ivalue)) then
+          call g_value_set_uint(val, ivalue)
+       else if (present(lvalue)) then
+          call g_value_set_uint(val, int(lvalue, c_int))
+       else if (present(l64value)) then
+          call g_value_set_uint(val, int(l64value, c_int))
+       else if (present(svalue)) then
+          read(svalue,*) iconv
+          call g_value_set_uint(val, iconv)
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make an 'int' type from given value(s)"
+          return
+       end if
+    case (G_TYPE_BOOLEAN)
+       if (present(ivalue)) then
+          call g_value_set_boolean(val, ivalue)
+       else if (present(lvalue)) then
+          call g_value_set_boolean(val, int(lvalue, c_int))
+       else if (present(l64value)) then
+          call g_value_set_boolean(val, int(l64value, c_int))
+       else if (present(svalue)) then
+          read(svalue,*) iconv
+          call g_value_set_boolean(val, iconv)
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make an 'int' type from given value(s)"
+          return
+       end if
+
+    case (G_TYPE_LONG)
+       if (present(lvalue)) then
+          call g_value_set_long(val, lvalue)
+       else if (present(l64value)) then
+          call g_value_set_long(val, int(l64value, c_long))
+       else if (present(ivalue)) then
+          call g_value_set_long(val, int(ivalue, c_long))
+       else if (present(svalue)) then
+          read(svalue,*) lconv
+          call g_value_set_long(val, lconv)
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make a 'long' type from given value(s)"
+          return
+       end if
+    case (G_TYPE_ULONG)
+       if (present(lvalue)) then
+          call g_value_set_ulong(val, lvalue)
+       else if (present(l64value)) then
+          call g_value_set_ulong(val, int(l64value, c_long))
+       else if (present(ivalue)) then
+          call g_value_set_ulong(val, int(ivalue, c_long))
+       else if (present(svalue)) then
+          read(svalue,*) lconv
+          call g_value_set_ulong(val, lconv)
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make a 'long' type from given value(s)"
+          return
+       end if
+
+    case (G_TYPE_INT64)
+       if (present(l64value)) then
+          call g_value_set_int64(val, l64value)
+       else if (present(lvalue)) then
+          call g_value_set_int64(val, int(lvalue, c_int64_t))
+       else if (present(ivalue)) then
+          call g_value_set_int64(val, int(ivalue, c_int64_t))
+       else if (present(svalue)) then
+          read(svalue,*) l64conv
+          call g_value_set_int64(val, l64conv)
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make an 'int64' type from given value(s)"
+          return
+       end if
+    case (G_TYPE_UINT64)
+       if (present(l64value)) then
+          call g_value_set_uint64(val, l64value)
+       else if (present(lvalue)) then
+          call g_value_set_uint64(val, int(lvalue, c_int64_t))
+       else if (present(ivalue)) then
+          call g_value_set_uint64(val, int(ivalue, c_int64_t))
+       else if (present(svalue)) then
+          read(svalue,*) l64conv
+          call g_value_set_uint64(val, l64conv)
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make an 'int64' type from given value(s)"
+          return
+       end if
+
+    case(G_TYPE_FLOAT)
+       if (present(fvalue)) then
+          call g_value_set_float(val, fvalue)
+       else if (present(dvalue)) then
+          call g_value_set_float(val, real(dvalue, c_float))
+       else if (present(svalue)) then
+          read(svalue,*) fconv
+          call g_value_set_float(val, fconv)
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make a 'float' type from given value(s)"
+          return
+       end if
+
+    case(G_TYPE_DOUBLE)
+       if (present(dvalue)) then
+          call g_value_set_double(val, dvalue)
+       else if (present(fvalue)) then
+          call g_value_set_double(val, real(fvalue, c_double))
+       else if (present(svalue)) then
+          read(svalue,*) dconv
+          call g_value_set_double(val, dconv)
+       else
+          write(0,*) "hl_gtk_listn_set:: Cannot make a 'double' type from given value(s)"
+          return
+       end if
+
+    case (G_TYPE_STRING)
+       if (present(svalue)) then
+          call g_value_set_string(val, trim(svalue)//cnull)
+       else
+          if (present(ivalue)) then
+             write(sconv,*) ivalue
+          else if (present(lvalue)) then
+             write(sconv,*) lvalue
+          else if (present(l64value)) then
+             write(sconv,*) l64value
+          else if (present(fvalue)) then
+             write(sconv,*) fvalue
+          else if (present(dvalue)) then
+             write(sconv,*) dvalue
+          else
+             write(0,*) "hl_gtk_listn_set:: Cannot make a 'string' type from given value(s)"
+             return
+          end if
+          call g_value_set_string(val, trim(sconv)//cnull)
+       end if
+
+    case default
+       write(0,*)  "hl_gtk_listn_set:: Cell type ",ctype," is unknown"
+       return
+    end select
+
+    call gtk_list_store_set_value(store, c_loc(iter), col, val)
+
+  end subroutine hl_gtk_listn_set_cell
+
+  !+
+  subroutine hl_gtk_list1_set_cell(list, row, svalue)
+    ! Set a cell in a single column list
+    !
+    ! LIST: c_ptr: required: The list containing the cell.
+    ! ROW: c_int: required: The row of the cell
+    ! SVALUE: string: required: A string value for the cell.
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row
+    character(len=*), intent(in) :: svalue
+
+    call hl_gtk_listn_set_cell(list, row, 1, svalue=svalue)
+
+  end subroutine hl_gtk_list1_set_cell
 
 end module gtk_hl
