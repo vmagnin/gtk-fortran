@@ -50,7 +50,8 @@ module handlers
   &gtk_scrolled_window_new, C_NEW_LINE, gtk_text_buffer_insert_at_cursor, gtk_statusbar_new,&
   &gtk_statusbar_push, gtk_statusbar_get_context_id, gtk_handle_box_new,&
   &CAIRO_STATUS_SUCCESS, CAIRO_STATUS_NO_MEMORY, CAIRO_STATUS_SURFACE_TYPE_MISMATCH,&
-  &CAIRO_STATUS_WRITE_ERROR
+  &CAIRO_STATUS_WRITE_ERROR, gtk_button_new_with_mnemonic, &
+  &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic
   
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
   &cairo_surface_write_to_png, cairo_get_target
@@ -220,9 +221,9 @@ program julia
   call gtk_window_set_title(my_window, "Julia Set"//CNULL)
   call g_signal_connect (my_window, "delete-event"//CNULL, c_funloc(delete_event))
 
-  button1 = gtk_button_new_with_label ("Compute"//CNULL)
+  button1 = gtk_button_new_with_mnemonic ("_Compute"//CNULL)
   call g_signal_connect (button1, "clicked"//CNULL, c_funloc(firstbutton))
-  button2 = gtk_button_new_with_label ("Save as PNG"//CNULL)
+  button2 = gtk_button_new_with_mnemonic ("_Save as PNG"//CNULL)
   call g_signal_connect (button2, "clicked"//CNULL, c_funloc(secondbutton))
 
   label1 = gtk_label_new("real(c)"//CNULL)
@@ -232,7 +233,7 @@ program julia
   label3 = gtk_label_new("iterations"//CNULL)
   spinButton3 = gtk_spin_button_new (gtk_adjustment_new(1000d0,1d0,+100000d0,10d0,100d0,0d0),10d0, 0)
 
-  toggle1 = gtk_toggle_button_new_with_label ("Pause")
+  toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause")
   call g_signal_connect (toggle1, "toggled"//CNULL, c_funloc(firstToggle))
   
   ! A table container will contain buttons and labels:
@@ -248,8 +249,7 @@ program julia
   call gtk_table_attach_defaults(table, toggle1, 3, 4, 0, 1)
 
   ! The table is contained in an expander, which is contained in the vertical box:
-  expander = gtk_expander_new_with_mnemonic ("Parameters:")
-  ! with "_Parameters:", we obtain: Pango-WARNING **: Invalid UTF-8 string passed to pango_layout_set_text()
+  expander = gtk_expander_new_with_mnemonic ("_The parameters:"//CNULL)
   call gtk_container_add (expander, table)
   call gtk_expander_set_expanded(expander, TRUE)
 
@@ -263,7 +263,7 @@ program julia
   ! In GTK+ 3.0 expose-event will be replaced by draw event:
   !call g_signal_connect (my_drawing_area, "draw"//CNULL, c_funloc(expose_event))
   notebook = gtk_notebook_new ()
-  notebookLabel1 = gtk_label_new("Graphics"//CNULL)
+  notebookLabel1 = gtk_label_new_with_mnemonic("_Graphics"//CNULL)
   firstTab = gtk_notebook_append_page (notebook, my_drawing_area, notebookLabel1)
 
   !handle1 = gtk_handle_box_new()
@@ -273,7 +273,7 @@ program julia
   call gtk_text_buffer_set_text (buffer, "Julia Set"//C_NEW_LINE// &
       & "You can copy this text and even edit it !"//C_NEW_LINE//CNULL, -1)
   scrolled_window = gtk_scrolled_window_new (NULL, NULL)
-  notebookLabel2 = gtk_label_new("Text"//CNULL)
+  notebookLabel2 = gtk_label_new_with_mnemonic("_Messages"//CNULL)
   call gtk_container_add (scrolled_window, textView)
   !call gtk_container_add (handle1, scrolled_window)
   secondTab = gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
