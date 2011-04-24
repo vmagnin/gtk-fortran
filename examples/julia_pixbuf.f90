@@ -205,7 +205,7 @@ program julia
   use global_widgets
   implicit none
   
-  type(c_ptr) :: my_window, table, button1, button2, box1, label1, label2, label3
+  type(c_ptr) :: my_window, table, button1, button2, button3, box1, label1, label2, label3
   type(c_ptr) :: toggle1, expander, notebook, notebookLabel1, notebookLabel2
   type(c_ptr) :: handle1, linkButton
   integer(c_int) :: message_id, firstTab, secondTab
@@ -225,6 +225,8 @@ program julia
   call g_signal_connect (button1, "clicked"//CNULL, c_funloc(firstbutton))
   button2 = gtk_button_new_with_mnemonic ("_Save as PNG"//CNULL)
   call g_signal_connect (button2, "clicked"//CNULL, c_funloc(secondbutton))
+  button3 = gtk_button_new_with_mnemonic ("_Exit"//CNULL)
+  call g_signal_connect (button3, "clicked"//CNULL, c_funloc(delete_event))
 
   label1 = gtk_label_new("real(c)"//CNULL)
   spinButton1 = gtk_spin_button_new (gtk_adjustment_new(-0.835d0,-2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7)
@@ -233,7 +235,7 @@ program julia
   label3 = gtk_label_new("iterations"//CNULL)
   spinButton3 = gtk_spin_button_new (gtk_adjustment_new(1000d0,1d0,+100000d0,10d0,100d0,0d0),10d0, 0)
 
-  toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause")
+  toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause"//CNULL)
   call g_signal_connect (toggle1, "toggled"//CNULL, c_funloc(firstToggle))
   
   linkButton = gtk_link_button_new_with_label ("http://en.wikipedia.org/wiki/Julia_set"//CNULL,&
@@ -243,14 +245,15 @@ program julia
   table = gtk_table_new (4, 4, TRUE)
   call gtk_table_attach_defaults(table, button1, 0, 1, 3, 4)
   call gtk_table_attach_defaults(table, button2, 1, 2, 3, 4)
+  call gtk_table_attach_defaults(table, button3, 3, 4, 3, 4)
   call gtk_table_attach_defaults(table, label1, 0, 1, 0, 1)
   call gtk_table_attach_defaults(table, label2, 0, 1, 1, 2)
   call gtk_table_attach_defaults(table, label3, 0, 1, 2, 3)
   call gtk_table_attach_defaults(table, spinButton1, 1, 2, 0, 1)
   call gtk_table_attach_defaults(table, spinButton2, 1, 2, 1, 2)
-  call gtk_table_attach_defaults(table, spinButton3, 1, 2, 2, 3)
+  call gtk_table_attach_defaults(table, spinButton3, 1, 2, 2, 3)  
   call gtk_table_attach_defaults(table, linkButton, 3, 4, 0, 1)
-  call gtk_table_attach_defaults(table, toggle1, 3, 4, 3, 4)
+  call gtk_table_attach_defaults(table, toggle1, 2, 3, 3, 4)
 
   ! The table is contained in an expander, which is contained in the vertical box:
   expander = gtk_expander_new_with_mnemonic ("_The parameters:"//CNULL)
