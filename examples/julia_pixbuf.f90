@@ -27,7 +27,7 @@
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: my_pixbuf, my_drawing_area, spinButton1, spinButton2, spinButton3
-  type(c_ptr) :: textView, buffer, scrolled_window
+  type(c_ptr) :: textView, buffer, scrolled_window, statusBar
   character(c_char), dimension(:), pointer :: pixel
   integer :: nch, rowstride, width, height, pixwidth, pixheight
   logical :: computing = .false.
@@ -48,7 +48,9 @@ module handlers
   &gtk_toggle_button_new_with_label, gtk_toggle_button_get_active, gtk_notebook_new,&
   &gtk_notebook_append_page, gtk_text_view_new, gtk_text_view_get_buffer, gtk_text_buffer_set_text,&
   &gtk_scrolled_window_new, C_NEW_LINE, gtk_text_buffer_insert_at_cursor, gtk_statusbar_new,&
-  &gtk_statusbar_push, gtk_statusbar_get_context_id
+  &gtk_statusbar_push, gtk_statusbar_get_context_id, gtk_handle_box_new,&
+  &CAIRO_STATUS_SUCCESS, CAIRO_STATUS_NO_MEMORY, CAIRO_STATUS_SURFACE_TYPE_MISMATCH,&
+  &CAIRO_STATUS_WRITE_ERROR
   
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
   &cairo_surface_write_to_png, cairo_get_target
@@ -57,6 +59,8 @@ module handlers
   
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
+
+  use g, only: g_usleep
   
   use iso_c_binding, only: c_int, c_ptr, c_char
 
@@ -108,7 +112,7 @@ contains
     use global_widgets
     implicit none
     
-    integer(c_int)    :: ret
+    integer(c_int)    :: ret, message_id
     type(c_ptr), value :: widget, gdata
     double complex :: c
     integer :: iterations
@@ -119,8 +123,12 @@ contains
 
     write(string, '("c=",F8.6,"+i*",F8.6,"   ", I6, " iterations")') c, iterations
     call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//CNULL, -1)
-    
+
+    message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
+              & "Julia"//CNULL), "Computing..."//CNULL)
     call Julia_set(-2d0, +2d0, -2d0, +2d0, c, iterations)
+    message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
+              & "Julia"//CNULL), "Finished."//CNULL)
 
     ret = FALSE
   end function firstbutton
@@ -134,7 +142,7 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     type(c_ptr) :: my_cairo_context
-    integer(c_int) :: cstatus
+    integer(c_int) :: cstatus, message_id
     
     !my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(my_drawing_area))
@@ -142,6 +150,19 @@ contains
     ! Save the picture if finished:
     if (.not. computing) then
       cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "julia.png"//CNULL)
+      if (cstatus == CAIRO_STATUS_SUCCESS) then
+        string = "Successfully saved: julia.png"//CNULL
+      else if (cstatus == CAIRO_STATUS_NO_MEMORY) then
+        string = "Failed: memory allocation"//CNULL
+      else if (cstatus == CAIRO_STATUS_SURFACE_TYPE_MISMATCH) then
+        string = "Failed: no pixel content"//CNULL
+      else if (cstatus == CAIRO_STATUS_WRITE_ERROR) then
+        string = "Failed: I/O error"//CNULL
+      else
+        string = "Failed"
+      end if
+      message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
+              & "Julia"//CNULL), TRIM(string))
     end if
     ! FIXME: how to save only the drawing_area
     call cairo_destroy(my_cairo_context)
@@ -160,7 +181,13 @@ contains
     type(c_ptr), value :: widget, gdata
 
     if (gtk_toggle_button_get_active(widget) == TRUE) then
-      call gtk_text_buffer_insert_at_cursor (buffer, "In pause (currently not functionnal)"//C_NEW_LINE//CNULL, -1)
+      call gtk_text_buffer_insert_at_cursor (buffer, "In pause (don't try to quit the window)"//C_NEW_LINE//CNULL, -1)
+      do while (gtk_toggle_button_get_active(widget) == TRUE)
+        call pending_events
+        call g_usleep(500000)   ! microseconds
+        !call sleep(1)   ! Seconds. GNU Fortran extension. 
+      end do
+      !FIXME: if we try to quit during pause, the application crashes
     else
       call gtk_text_buffer_insert_at_cursor (buffer, "Not in pause"//C_NEW_LINE//CNULL, -1)
     end if
@@ -178,8 +205,9 @@ program julia
   implicit none
   
   type(c_ptr) :: my_window, table, button1, button2, box1, label1, label2, label3
-  type(c_ptr) :: toggle1, expander, notebook, notebookLabel1, notebookLabel2, statusBar
-  integer(c_int) :: message_id
+  type(c_ptr) :: toggle1, expander, notebook, notebookLabel1, notebookLabel2
+  type(c_ptr) :: handle1
+  integer(c_int) :: message_id, firstTab, secondTab
   integer :: i
   
   call gtk_init ()
@@ -236,27 +264,28 @@ program julia
   !call g_signal_connect (my_drawing_area, "draw"//CNULL, c_funloc(expose_event))
   notebook = gtk_notebook_new ()
   notebookLabel1 = gtk_label_new("Graphics"//CNULL)
-  print *, gtk_notebook_append_page (notebook, my_drawing_area, notebookLabel1)
+  firstTab = gtk_notebook_append_page (notebook, my_drawing_area, notebookLabel1)
+
+  !handle1 = gtk_handle_box_new()
   
   textView = gtk_text_view_new ()
   buffer = gtk_text_view_get_buffer (textView)
   call gtk_text_buffer_set_text (buffer, "Julia Set"//C_NEW_LINE// &
-      & "..."//c_new_line//"..."//CNULL, -1)
+      & "You can copy this text and even edit it !"//C_NEW_LINE//CNULL, -1)
   scrolled_window = gtk_scrolled_window_new (NULL, NULL)
   notebookLabel2 = gtk_label_new("Text"//CNULL)
   call gtk_container_add (scrolled_window, textView)
-  print *, gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
+  !call gtk_container_add (handle1, scrolled_window)
+  secondTab = gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
   
   call gtk_box_pack_start (box1, notebook, TRUE, TRUE, 0)
  
   statusBar = gtk_statusbar_new ()
-  message_id = gtk_statusbar_push (statusbar, gtk_statusbar_get_context_id(statusbar, &
+  message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
               & "Julia"//CNULL), "Waiting..."//CNULL)
   call gtk_box_pack_start (box1, statusBar, FALSE, FALSE, 0)
 
-
   call gtk_container_add (my_window, box1)
-
               
   call gtk_widget_show_all (my_window)
   
@@ -267,7 +296,6 @@ program julia
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
-  
   ! We use char() because we need unsigned integers.
   ! This pixbuffer has no Alpha channel (15% faster), only RGB.
   pixel = char(0)
@@ -297,6 +325,7 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
   
   computing = .true.
   t0=system_time()
+
   scx = ((xmax - xmin) / pixwidth)   ! x scale
   scy = ((ymax - ymin) / pixheight)  ! y scale
   
@@ -344,7 +373,9 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
   computing = .false.
 
   t1=system_time()
-  print *, "System time = ", t1-t0
+  write(string, '("System time = ",F8.3, " s")') t1-t0
+  call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//CNULL, -1)
+  
 end subroutine Julia_set
 
 !***********************************************************
