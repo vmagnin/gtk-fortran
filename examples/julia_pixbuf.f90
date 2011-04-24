@@ -50,8 +50,8 @@ module handlers
   &gtk_scrolled_window_new, C_NEW_LINE, gtk_text_buffer_insert_at_cursor, gtk_statusbar_new,&
   &gtk_statusbar_push, gtk_statusbar_get_context_id, gtk_handle_box_new,&
   &CAIRO_STATUS_SUCCESS, CAIRO_STATUS_NO_MEMORY, CAIRO_STATUS_SURFACE_TYPE_MISMATCH,&
-  &CAIRO_STATUS_WRITE_ERROR, gtk_button_new_with_mnemonic, &
-  &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic
+  &CAIRO_STATUS_WRITE_ERROR, gtk_button_new_with_mnemonic, gtk_link_button_new_with_label,&
+  &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic, gtk_window_set_mnemonics_visible
   
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
   &cairo_surface_write_to_png, cairo_get_target
@@ -207,7 +207,7 @@ program julia
   
   type(c_ptr) :: my_window, table, button1, button2, box1, label1, label2, label3
   type(c_ptr) :: toggle1, expander, notebook, notebookLabel1, notebookLabel2
-  type(c_ptr) :: handle1
+  type(c_ptr) :: handle1, linkButton
   integer(c_int) :: message_id, firstTab, secondTab
   integer :: i
   
@@ -236,6 +236,9 @@ program julia
   toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause")
   call g_signal_connect (toggle1, "toggled"//CNULL, c_funloc(firstToggle))
   
+  linkButton = gtk_link_button_new_with_label ("http://en.wikipedia.org/wiki/Julia_set"//CNULL,&
+               & "More on Julia sets"//CNULL)
+               
   ! A table container will contain buttons and labels:
   table = gtk_table_new (4, 4, TRUE)
   call gtk_table_attach_defaults(table, button1, 0, 1, 3, 4)
@@ -246,7 +249,8 @@ program julia
   call gtk_table_attach_defaults(table, spinButton1, 1, 2, 0, 1)
   call gtk_table_attach_defaults(table, spinButton2, 1, 2, 1, 2)
   call gtk_table_attach_defaults(table, spinButton3, 1, 2, 2, 3)
-  call gtk_table_attach_defaults(table, toggle1, 3, 4, 0, 1)
+  call gtk_table_attach_defaults(table, linkButton, 3, 4, 0, 1)
+  call gtk_table_attach_defaults(table, toggle1, 3, 4, 3, 4)
 
   ! The table is contained in an expander, which is contained in the vertical box:
   expander = gtk_expander_new_with_mnemonic ("_The parameters:"//CNULL)
@@ -286,7 +290,7 @@ program julia
   call gtk_box_pack_start (box1, statusBar, FALSE, FALSE, 0)
 
   call gtk_container_add (my_window, box1)
-              
+  call gtk_window_set_mnemonics_visible (my_window, TRUE)
   call gtk_widget_show_all (my_window)
   
   ! We create a "pixbuffer" to store the pixels of the image:
