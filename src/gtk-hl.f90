@@ -92,6 +92,8 @@ module gtk_hl
   ! list
   ! * hl_gtk_listn_set_cell; Set the value of a cell in a multi column list
   ! * hl_gtk_list1_set_cell; Wrapper for above for a single column list.
+  ! * hl_gtk_listn_get_cell; Get the contents of a cell in a multi-column list
+  ! * hl_gtk_list1_get_cell; Wrapper for above for a single column list.
   !/
   ! To facilitate the automatic extraction of API information, there are
   ! 2 types of comment block that are extracted:
@@ -184,6 +186,7 @@ module gtk_hl
        & gtk_file_chooser_set_do_overwrite_confirmation, & ! File
        !  chooser end
        & gtk_tree_model_get_column_type, gtk_tree_view_column_set_sort_column_id, & ! List-n
+       & gtk_tree_model_get_value, & ! List-n end
        & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -214,11 +217,15 @@ module gtk_hl
        & gtk_combo_box_text_prepend_text, gtk_combo_box_text_remove 
 
   use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
-       &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int,&
+       &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int, &
        & g_value_init, g_value_set_int, g_value_set_static_string, g_strv_length, g_free, &
        & g_slist_free, g_value_set_char, g_value_set_long, g_value_set_int64, g_value_set_float, &
        & g_value_set_string, g_value_set_double, g_value_set_uchar, g_value_set_ulong, &
-       & g_value_set_uint64, g_value_set_boolean, g_value_set_uint
+       & g_value_set_uint64, g_value_set_boolean, g_value_set_uint,  &
+       & g_value_get_char, g_value_get_long, g_value_get_int64, g_value_get_float, &
+       & g_value_get_string, g_value_get_double, g_value_get_uchar, g_value_get_ulong, &
+       & g_value_get_uint64, g_value_get_boolean, g_value_get_uint
+
 
 
   use iso_c_binding
@@ -3350,7 +3357,7 @@ contains
     integer(kind=c_int64_t) :: l64conv
     real(kind=c_float) :: fconv
     real(kind=c_double) :: dconv
-
+    integer :: ios
     ! Get list store
     store = gtk_tree_view_get_model(list)
 
@@ -3377,7 +3384,7 @@ contains
        else if (present(l64value)) then
           call g_value_set_char(val, char(l64value, c_char))
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make a 'char' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make a 'char' type from given value(s)"
           return
        end if
     case(G_TYPE_UCHAR)
@@ -3390,7 +3397,7 @@ contains
        else if (present(l64value)) then
           call g_value_set_uchar(val, char(l64value, c_char))
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make a 'char' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make a 'char' type from given value(s)"
           return
        end if
 
@@ -3402,10 +3409,14 @@ contains
        else if (present(l64value)) then
           call g_value_set_int(val, int(l64value, c_int))
        else if (present(svalue)) then
-          read(svalue,*) iconv
+          read(svalue,*,iostat=ios) iconv
+          if (ios /= 0) then
+             write(0,*) "hl_gtk_listn_set_cell:: Failed to convert string to 'int'"
+             return
+          end if
           call g_value_set_int(val, iconv)
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make an 'int' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make an 'int' type from given value(s)"
           return
        end if
     case (G_TYPE_UINT)
@@ -3416,10 +3427,14 @@ contains
        else if (present(l64value)) then
           call g_value_set_uint(val, int(l64value, c_int))
        else if (present(svalue)) then
-          read(svalue,*) iconv
+          read(svalue,*,iostat=ios) iconv
+          if (ios /= 0) then
+             write(0,*) "hl_gtk_listn_set_cell:: Failed to convert string to 'int'"
+             return
+          end if
           call g_value_set_uint(val, iconv)
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make an 'int' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make an 'int' type from given value(s)"
           return
        end if
     case (G_TYPE_BOOLEAN)
@@ -3430,10 +3445,28 @@ contains
        else if (present(l64value)) then
           call g_value_set_boolean(val, int(l64value, c_int))
        else if (present(svalue)) then
-          read(svalue,*) iconv
-          call g_value_set_boolean(val, iconv)
+          if (svalue=='T' .or. svalue=='t' .or. svalue=='TRUE' .or. &
+               & svalue=='true' .or. svalue=='True' .or. svalue=='Y' &
+               & .or. svalue=='y' .or. svalue=='YES' .or. svalue=='yes' &
+               & .or. svalue=='Yes' .or. svalue=='.TRUE.' .or. &
+               & svalue=='.true.') then
+             call g_value_set_boolean(val, TRUE)
+          else if (svalue=='F' .or. svalue=='f' .or. svalue=='FALSE' .or. &
+               & svalue=='false' .or. svalue=='False' .or. svalue=='N' .or. &
+               & svalue=='n' .or. svalue=='NO' .or. svalue=='no' .or. &
+               & svalue=='No' .or. svalue=='.FALSE.' .or. &
+               & svalue=='.false.') then
+             call g_value_set_boolean(val, FALSE)
+          else
+             read(svalue,*,iostat=ios) iconv
+             if (ios /= 0) then
+                write(0,*) "hl_gtk_listn_set_cell:: Failed to convert string to 'int'"
+                return
+             end if
+             call g_value_set_boolean(val, iconv)
+          end if
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make an 'int' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make an 'int' type from given value(s)"
           return
        end if
 
@@ -3445,10 +3478,14 @@ contains
        else if (present(ivalue)) then
           call g_value_set_long(val, int(ivalue, c_long))
        else if (present(svalue)) then
-          read(svalue,*) lconv
+          read(svalue,*,iostat=ios) lconv
+          if (ios /= 0) then
+             write(0,*) "hl_gtk_listn_set_cell:: Failed to convert string to 'long'"
+             return
+          end if
           call g_value_set_long(val, lconv)
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make a 'long' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make a 'long' type from given value(s)"
           return
        end if
     case (G_TYPE_ULONG)
@@ -3459,10 +3496,14 @@ contains
        else if (present(ivalue)) then
           call g_value_set_ulong(val, int(ivalue, c_long))
        else if (present(svalue)) then
-          read(svalue,*) lconv
+          read(svalue,*,iostat=ios) lconv
+          if (ios /= 0) then
+             write(0,*) "hl_gtk_listn_set_cell:: Failed to convert string to 'long'"
+             return
+          end if
           call g_value_set_ulong(val, lconv)
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make a 'long' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make a 'long' type from given value(s)"
           return
        end if
 
@@ -3474,10 +3515,14 @@ contains
        else if (present(ivalue)) then
           call g_value_set_int64(val, int(ivalue, c_int64_t))
        else if (present(svalue)) then
-          read(svalue,*) l64conv
+          read(svalue,*,iostat=ios) l64conv
+          if (ios /= 0) then
+             write(0,*) "hl_gtk_listn_set_cell:: Failed to convert string to 'int64'"
+             return
+          end if
           call g_value_set_int64(val, l64conv)
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make an 'int64' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make an 'int64' type from given value(s)"
           return
        end if
     case (G_TYPE_UINT64)
@@ -3488,10 +3533,14 @@ contains
        else if (present(ivalue)) then
           call g_value_set_uint64(val, int(ivalue, c_int64_t))
        else if (present(svalue)) then
-          read(svalue,*) l64conv
+          read(svalue,*,iostat=ios) l64conv
+          if (ios /= 0) then
+             write(0,*) "hl_gtk_listn_set_cell:: Failed to convert string to 'int64'"
+             return
+          end if
           call g_value_set_uint64(val, l64conv)
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make an 'int64' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make an 'int64' type from given value(s)"
           return
        end if
 
@@ -3501,10 +3550,14 @@ contains
        else if (present(dvalue)) then
           call g_value_set_float(val, real(dvalue, c_float))
        else if (present(svalue)) then
-          read(svalue,*) fconv
+          read(svalue,*,iostat=ios) fconv
+          if (ios /= 0) then
+             write(0,*) "hl_gtk_listn_set_cell:: Failed to convert string to 'float'"
+             return
+          end if
           call g_value_set_float(val, fconv)
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make a 'float' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make a 'float' type from given value(s)"
           return
        end if
 
@@ -3514,10 +3567,14 @@ contains
        else if (present(fvalue)) then
           call g_value_set_double(val, real(fvalue, c_double))
        else if (present(svalue)) then
-          read(svalue,*) dconv
+          read(svalue,*,iostat=ios) dconv
+          if (ios /= 0) then
+             write(0,*) "hl_gtk_listn_set_cell:: Failed to convert string to 'double'"
+             return
+          end if
           call g_value_set_double(val, dconv)
        else
-          write(0,*) "hl_gtk_listn_set:: Cannot make a 'double' type from given value(s)"
+          write(0,*) "hl_gtk_listn_set_cell:: Cannot make a 'double' type from given value(s)"
           return
        end if
 
@@ -3536,14 +3593,14 @@ contains
           else if (present(dvalue)) then
              write(sconv,*) dvalue
           else
-             write(0,*) "hl_gtk_listn_set:: Cannot make a 'string' type from given value(s)"
+             write(0,*) "hl_gtk_listn_set_cell:: Cannot make a 'string' type from given value(s)"
              return
           end if
           call g_value_set_string(val, trim(sconv)//cnull)
        end if
 
     case default
-       write(0,*)  "hl_gtk_listn_set:: Cell type ",ctype," is unknown"
+       write(0,*)  "hl_gtk_listn_set_cell:: Cell type ",ctype," is unknown"
        return
     end select
 
@@ -3567,5 +3624,239 @@ contains
     call hl_gtk_listn_set_cell(list, row, 1, svalue=svalue)
 
   end subroutine hl_gtk_list1_set_cell
+
+  !+
+  subroutine hl_gtk_listn_get_cell(list, row, col, &
+    & svalue, fvalue, dvalue, ivalue, lvalue, l64value)
+    ! Retrieve the value of a cell.
+    !
+    ! LIST: c_ptr: required: The list containing the cell.
+    ! ROW: c_int: required: The row of the cell
+    ! COL: c_int: required: The column of the cell, N.B., column
+    ! 		zero is the hidden index column.
+    ! SVALUE: string: optional: A string value from the cell.
+    ! FVALUE: float: optional: A single precision FP value from the cell.
+    ! DVALUE: double: optional: A double precision FP value from the cell.
+    ! IVALUE: c_int: optional: A normal integer value from the cell.
+    ! LVALUE: c_long: optional: A long integer value from the cell.
+    ! L64VALUE: c_int64_t: optional: A 64-bit integer value from the cell.
+    !
+    ! Note that a similar conversion system to the set_cell routine
+    ! except that strings can only be returned to SVALUE.
+    !-
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row, col
+    character(len=*), intent(out), optional :: svalue
+    real(kind=c_float), intent(out), optional :: fvalue
+    real(kind=c_double), intent(out), optional :: dvalue
+    integer(kind=c_int), intent(out), optional :: ivalue
+    integer(kind=c_long), intent(out), optional :: lvalue
+    integer(kind=c_int64_t), intent(out), optional :: l64value
+
+    integer(kind=type_kind) :: ctype
+    type(c_ptr) :: store, val, cstr
+    integer(kind=c_int) :: valid
+    type(gtktreeiter), target :: iter
+    type(gvalue), target :: value
+
+    ! Get list store
+    store = gtk_tree_view_get_model(list)
+
+    ! Find the type for the requested column
+    ctype = gtk_tree_model_get_column_type(store, col)
+
+    ! Get the iterator of the row
+    valid = gtk_tree_model_iter_nth_child(store, c_loc(iter), NULL, row)
+    if (valid == FALSE) return
+
+    ! Set up the GValue pointer (for convenience) gtk_tree_model_get_value
+    ! does the initialization.
+    val = c_loc(value)
+
+    ! Get the GValue of the cell.
+    call gtk_tree_model_get_value(store, c_loc(iter), col, val)
+
+    ! Now extract the value to a useful form according to the type
+    ! of cell.
+    select case(ctype)
+    case(G_TYPE_CHAR)
+       if (present(svalue)) then
+          svalue(1:1) = g_value_get_char(val)
+       else if (present(ivalue)) then
+          ivalue = ichar(g_value_get_char(val))
+       else if (present(lvalue)) then
+          lvalue = ichar(g_value_get_char(val))
+       else if (present(l64value)) then
+          l64value = ichar(g_value_get_char(val))
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'char' type to any available output"
+          return
+       end if
+    case(G_TYPE_UCHAR)
+       if (present(svalue)) then
+           svalue(1:1)= g_value_get_uchar(val)
+       else if (present(ivalue)) then
+          ivalue = ichar(g_value_get_uchar(val))
+       else if (present(lvalue)) then
+          lvalue = ichar(g_value_get_uchar(val))
+       else if (present(l64value)) then
+          l64value = ichar(g_value_get_uchar(val))
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'char' type to any available output"
+          return
+       end if
+
+    case (G_TYPE_INT)
+       if (present(ivalue)) then
+          ivalue = g_value_get_int(val)
+       else if (present(lvalue)) then
+          lvalue = g_value_get_int(val)
+       else if (present(l64value)) then
+          l64value = g_value_get_int(val)
+       else if (present(svalue)) then
+          write(svalue,*) g_value_get_int(val)
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'int' type to any available output"
+          return
+       end if
+    case (G_TYPE_UINT)
+       if (present(ivalue)) then
+          ivalue = g_value_get_uint(val)
+       else if (present(lvalue)) then
+          lvalue = g_value_get_uint(val)
+       else if (present(l64value)) then
+          l64value = g_value_get_uint(val)
+       else if (present(svalue)) then
+          write(svalue,*) g_value_get_uint(val)
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'int' type to any available output"
+          return
+       end if
+    case (G_TYPE_BOOLEAN)
+       if (present(ivalue)) then
+          ivalue = g_value_get_boolean(val)
+       else if (present(lvalue)) then
+          lvalue = g_value_get_boolean(val)
+       else if (present(l64value)) then
+          l64value = g_value_get_boolean(val)
+       else if (present(svalue)) then
+          if (g_value_get_boolean(val) == TRUE) then
+             svalue = 'True'
+          else
+             svalue='False'
+          end if
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'bool' type to any available output"
+          return
+       end if
+
+    case (G_TYPE_LONG)
+       if (present(lvalue)) then
+          lvalue = g_value_get_long(val)
+       else if (present(l64value)) then
+          l64value = g_value_get_long(val)
+       else if (present(ivalue)) then
+          ivalue = g_value_get_long(val)
+       else if (present(svalue)) then
+          write(svalue,*) g_value_get_long(val)
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'long' type to any available output"
+          return
+       end if
+    case (G_TYPE_ULONG)
+       if (present(lvalue)) then
+          lvalue = g_value_get_ulong(val)
+       else if (present(l64value)) then
+          l64value = g_value_get_ulong(val)
+       else if (present(ivalue)) then
+          ivalue = g_value_get_ulong(val)
+       else if (present(svalue)) then
+          write(svalue,*) g_value_get_ulong(val)
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'long' type to any available output"
+          return
+       end if
+
+    case (G_TYPE_INT64)
+       if (present(l64value)) then
+          l64value = g_value_get_int64(val)
+       else if (present(lvalue)) then
+          lvalue = g_value_get_int64(val)
+       else if (present(ivalue)) then
+          ivalue = g_value_get_int64(val)
+       else if (present(svalue)) then
+          write (svalue,*) g_value_get_int64(val)
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'int64' type to any available output"
+          return
+       end if
+    case (G_TYPE_UINT64)
+       if (present(l64value)) then
+          l64value = g_value_get_uint64(val)
+       else if (present(lvalue)) then
+          lvalue = g_value_get_uint64(val)
+       else if (present(ivalue)) then
+          ivalue = g_value_get_uint64(val)
+       else if (present(svalue)) then
+          write(svalue,*) g_value_get_uint64(val)
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'int64' type to any available output"
+          return
+       end if
+
+    case(G_TYPE_FLOAT)
+       if (present(fvalue)) then
+          fvalue = g_value_get_float(val)
+       else if (present(dvalue)) then
+          dvalue = g_value_get_float(val)
+       else if (present(svalue)) then
+          write(svalue,*) g_value_get_float(val)
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'float' type to any available output"
+          return
+       end if
+
+    case(G_TYPE_DOUBLE)
+       if (present(dvalue)) then
+          dvalue = g_value_get_double(val)
+       else if (present(fvalue)) then
+          fvalue = g_value_get_double(val)
+       else if (present(svalue)) then
+          write(svalue,*) g_value_get_double(val)
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'double' type to any available output"
+          return
+       end if
+
+    case (G_TYPE_STRING)
+       if (present(svalue)) then
+          cstr = g_value_get_string(val)
+          call convert_c_string(cstr, len(svalue), svalue)
+       else
+          write(0,*) "hl_gtk_listn_get_cell:: Cannot return 'string' type to any available output"
+       end if
+
+    case default
+       write(0,*)  "hl_gtk_listn_get_cell:: Cell type ",ctype," is unknown"
+       return
+    end select
+  end subroutine hl_gtk_listn_get_cell
+
+  !+
+  subroutine hl_gtk_list1_get_cell(list, row, svalue)
+    ! Set a cell in a single column list
+    !
+    ! LIST: c_ptr: required: The list containing the cell.
+    ! ROW: c_int: required: The row of the cell
+    ! SVALUE: string: required: A string value from the cell.
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row
+    character(len=*), intent(out) :: svalue
+
+    call hl_gtk_listn_get_cell(list, row, 1, svalue=svalue)
+
+  end subroutine hl_gtk_list1_get_cell
 
 end module gtk_hl
