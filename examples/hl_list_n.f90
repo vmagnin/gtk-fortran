@@ -55,6 +55,11 @@ contains
     integer, pointer :: fdata
     integer(kind=c_int) :: nsel
     integer(kind=c_int), dimension(:), allocatable :: selections
+    integer(kind=c_int) :: n, n3
+    integer(kind=c_int64_t) :: n4
+    real(kind=c_float) :: nlog
+    character(len=30) :: name
+    character(len=10) :: nodd
 
     nsel = hl_gtk_listn_get_selections(NULL, selections, list)
     if (nsel == 0) then
@@ -65,6 +70,18 @@ contains
     ! Find and print the selected row(s)
     print *, nsel,"Rows selected"
     print *, selections
+    if (nsel == 1) then
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 1, svalue=name)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 2, ivalue=n)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 3, ivalue=n3)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 5, l64value=n4)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 4, fvalue=nlog)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 6, svalue=nodd)
+       print "('Row:',I3,' Name: ',a,' N:',I3,' 3N:',I4,' N**4:',I7,&
+            &' log(n):',F7.5,' Odd?: ',a)", selections(1), trim(name), &
+            & n, n3, n4, nlog, nodd
+    end if
+
     deallocate(selections)
   end subroutine list_select
 
@@ -81,8 +98,8 @@ program list1
   character(len=35) :: line
   integer :: i, ltr
   integer, target :: iappend=0, idel=0
-  integer(kind=type_kind), dimension(5) :: ctypes
-  character(len=20), dimension(5) :: titles
+  integer(kind=type_kind), dimension(6) :: ctypes
+  character(len=20), dimension(6) :: titles
 
   ! Initialize GTK+
   call gtk_init()
@@ -95,12 +112,14 @@ program list1
   call gtk_container_add(ihwin, base)
 
   ! Now make a multi column list with multiple selections enabled
-  ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, G_TYPE_UINT64 /)
+  ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
+       & G_TYPE_UINT64, G_TYPE_BOOLEAN /)
   titles(1) = "Name"
   titles(2) = "N"
   titles(3) = "3N"
   titles(4) = "Log(n)"
   titles(5) = "N**4"
+  titles(6) = "Odd?"
 
   ihlist = hl_gtk_listn_new(ihscrollcontain, types=ctypes, changed=c_funloc(list_select),&
        &  multiple=TRUE, height=250, swidth=400, titles=titles)
@@ -116,6 +135,7 @@ program list1
      call hl_gtk_listn_set_cell(ihlist, i-1, 3, ivalue=3*i)
      call hl_gtk_listn_set_cell(ihlist, i-1, 4, fvalue=log10(real(i)))
      call hl_gtk_listn_set_cell(ihlist, i-1, 5, l64value=int(i,c_int64_t)**4)
+     call hl_gtk_listn_set_cell(ihlist, i-1, 6, ivalue=mod(i,2))
   end do
 
   ! It is the scrollcontainer that is placed into the box.
