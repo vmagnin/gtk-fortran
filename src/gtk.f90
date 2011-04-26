@@ -48,7 +48,7 @@ module gtk
   end interface 
 
   ! Some useful parameters to ease coding:
-  character(c_char), parameter :: CNULL = c_null_char
+  character(kind=c_char), parameter :: CNULL = c_null_char
   type(c_ptr), parameter       :: NULL = c_null_ptr
   type(c_funptr), parameter    :: FNULL = c_null_funptr
   ! In GTK+ gboolean is int:
@@ -59,7 +59,7 @@ contains
   subroutine g_signal_connect (instance, detailed_signal, c_handler, data0)
     use iso_c_binding, only: c_ptr, c_char, c_funptr
     use g, only: g_signal_connect_data
-    character(c_char):: detailed_signal(*)
+    character(kind=c_char):: detailed_signal(*)
     type(c_ptr)      :: instance
     type(c_funptr)   :: c_handler
     type(c_ptr), optional :: data0
