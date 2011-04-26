@@ -583,7 +583,7 @@ contains
     integer(kind=c_int), optional, intent(out) :: status
 
     type(c_ptr) :: ctext
-    character(c_char), dimension(:), pointer :: textptr
+    character(kind=c_char), dimension(:), pointer :: textptr
     integer(kind=c_int16_t) :: ntext
     integer(kind=c_int) :: istat
 

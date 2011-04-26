@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle 
-! Last modification: 04-20-2011
+! Last modification: 04-26-2011
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char
@@ -174,7 +174,7 @@ contains
 
   ! GtkToggleButton signal:
   function firstToggle (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_long
     use global_widgets
     implicit none
     
@@ -185,7 +185,7 @@ contains
       call gtk_text_buffer_insert_at_cursor (buffer, "In pause (don't try to quit the window)"//C_NEW_LINE//CNULL, -1)
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
-        call g_usleep(500000)   ! microseconds
+        call g_usleep(500000_c_long)   ! microseconds
         !call sleep(1)   ! Seconds. GNU Fortran extension. 
       end do
       !FIXME: if we try to quit during pause, the application crashes
