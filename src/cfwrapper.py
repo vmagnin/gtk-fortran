@@ -212,8 +212,8 @@ TYPES_DICT = {
     "time_t":("integer(c_long)","c_long"),  #typedef __time_t time_t;
     "short":("integer(c_short)","c_short"),
     "boolean":("logical(c_bool)","c_bool"),
-    "gchar":("character(c_char)","c_char"),
-    "guchar":("character(c_char)","c_char"),
+    "gchar":("character(kind=c_char)","c_char"),
+    "guchar":("character(kind=c_char)","c_char"),
 #    "gboolean":("logical(c_bool)","c_bool"), typedef int gint; typedef gint gboolean;
     "double": ("real(c_double)","c_double"),
     "float":("real(c_float)","c_float"),
@@ -242,7 +242,7 @@ TYPES_DICT = {
     "XID":("integer(c_long)","c_long"),
     "VisualID":("integer(c_long)","c_long"),
     "Time":("integer(c_long)","c_long"),
-    "KeyCode":("character(c_char)","c_char"),   #define KeyCode CARD8   => unsigned char
+    "KeyCode":("character(kind=c_char)","c_char"),   #define KeyCode CARD8   => unsigned char
     "KeySym":("integer(c_long)","c_long"),
      }
 # TODO:
