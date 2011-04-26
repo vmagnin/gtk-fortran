@@ -219,7 +219,7 @@ program notebook_example
   call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, (/64/))
   call convert_c_string(textptr, my_string)
   print *, "group name = <"//TRIM(my_string)//">"
-  print *, "=> This should work with GTK+ 2.24 and later"
+  print *, "=> This will work with GTK+ 3"
 
   !append a bunch of pages to the notebook
   do i=1,3
