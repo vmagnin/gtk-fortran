@@ -67,7 +67,7 @@ contains
   function expose_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_int, c_ptr
     implicit none
-    real(8), parameter :: pi = 4*atan(1d0)
+    real(8), parameter :: pi = 3.14159265358979323846d0
     integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, event, gdata
     type(c_ptr) :: my_cairo_context
