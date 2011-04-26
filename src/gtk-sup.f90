@@ -407,7 +407,7 @@ subroutine convert_c_string_scalar(textptr, f_string, status)
   !-
 use iso_c_binding, only: c_char
 implicit none
-character(c_char), dimension(:), intent(in) :: textptr
+character(kind=c_char), dimension(:), intent(in) :: textptr
 character(len=*), intent(out) :: f_string
 integer, intent(out), optional :: status
 integer :: i
@@ -436,7 +436,7 @@ subroutine convert_c_string_array(textptr, f_string, status)
   !-
 use iso_c_binding, only: c_char
 implicit none
-character(c_char), dimension(:), intent(in) :: textptr
+character(kind=c_char), dimension(:), intent(in) :: textptr
 character(len=*), intent(out), dimension(:), allocatable :: f_string
 integer, intent(out), optional :: status
 integer :: i, j, ii, count
@@ -489,7 +489,7 @@ character(len=*), intent(out) :: f_string
 integer, intent(out), optional :: status
 
 integer :: i
-character(c_char), dimension(:), pointer :: textptr
+character(kind=c_char), dimension(:), pointer :: textptr
 
 call c_f_pointer(ctext, textptr, (/clen/))
 
@@ -524,7 +524,7 @@ character(len=*), intent(out), dimension(:), allocatable :: f_string
 integer, intent(out), optional :: status
 
 integer :: i, j, ii, count
-character(c_char), dimension(:), pointer :: textptr
+character(kind=c_char), dimension(:), pointer :: textptr
 
 call c_f_pointer(ctext, textptr, (/clen/))
 
@@ -565,7 +565,7 @@ subroutine convert_f_string(f_string, textptr, length)
   ! LENGTH: c_int: optional: The lenght of the generated c string.
   !-
 character(len=*), intent(in), dimension(:) :: f_string
-character(c_char), dimension(:), intent(out), allocatable :: textptr
+character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
 integer(kind=c_int), intent(out), optional :: length
 
 integer :: lcstr, i, j, ii

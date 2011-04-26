@@ -63,7 +63,7 @@ module handlers
 
   use g, only: g_usleep
   
-  use iso_c_binding, only: c_int, c_ptr, c_char
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_long
 
   implicit none
   integer(c_int) :: run_status = TRUE
@@ -185,7 +185,7 @@ contains
       call gtk_text_buffer_insert_at_cursor (buffer, "In pause (don't try to quit the window)"//C_NEW_LINE//CNULL, -1)
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
-        call g_usleep(500000)   ! microseconds
+        call g_usleep(500000_c_long)   ! microseconds
         !call sleep(1)   ! Seconds. GNU Fortran extension. 
       end do
       !FIXME: if we try to quit during pause, the application crashes
