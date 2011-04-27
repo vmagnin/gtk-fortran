@@ -52,7 +52,7 @@ module handlers
   logical :: boolevent
   
   type(c_ptr) :: my_pixbuf
-  character(c_char), dimension(:), pointer :: pixel
+  character(kind=c_char), dimension(:), pointer :: pixel
   integer :: nch, rowstride, width, height
   logical :: finished
   

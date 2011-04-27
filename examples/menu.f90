@@ -137,7 +137,7 @@ contains
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
     implicit none
-    character(c_char), dimension(:), pointer, intent(in) :: textptr
+    character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
     character(len=*), intent(out) :: f_string
     integer :: i
           
@@ -168,7 +168,7 @@ program simplemenu
   type(c_ptr) :: mainwindow
   type(c_ptr) :: box
   type(c_ptr) :: action_group,menu_manager,error
-  character(c_char), dimension(:), pointer :: textptr
+  character(kind=c_char), dimension(:), pointer :: textptr
   character(len=512) :: error_string
   integer(c_size_t) :: buffer_length
   integer :: ui,i

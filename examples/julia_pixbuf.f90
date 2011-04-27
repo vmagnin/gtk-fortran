@@ -251,7 +251,7 @@ contains
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
     implicit none
-    character(c_char), dimension(:), pointer, intent(in) :: textptr
+    character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
     character(len=*), intent(out) :: f_string
     integer :: i
           
