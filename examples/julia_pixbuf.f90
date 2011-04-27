@@ -28,7 +28,7 @@ module global_widgets
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: my_pixbuf, my_drawing_area, spinButton1, spinButton2, spinButton3
   type(c_ptr) :: textView, buffer, scrolled_window, statusBar
-  character(c_char), dimension(:), pointer :: pixel
+  character(kind=c_char), dimension(:), pointer :: pixel
   integer :: nch, rowstride, width, height, pixwidth, pixheight
   logical :: computing = .false.
   character(LEN=80) :: string
