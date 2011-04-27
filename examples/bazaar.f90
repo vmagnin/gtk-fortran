@@ -168,7 +168,7 @@ contains
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
-    character(c_char), dimension(:), pointer :: textptr
+    character(kind=c_char), dimension(:), pointer :: textptr
     character(len=512) :: my_string
 
     print *, "my destroy"
