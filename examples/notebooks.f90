@@ -41,7 +41,7 @@ contains
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
     implicit none
-    character(c_char), dimension(:), pointer, intent(in) :: textptr
+    character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
     character(len=*), intent(out) :: f_string
     integer :: i
           
@@ -175,7 +175,7 @@ program notebook_example
   character(kind=c_char,len=12) :: istr
   integer(c_int) :: nb
 
-  character(c_char), dimension(:), pointer :: textptr
+  character(kind=c_char), dimension(:), pointer :: textptr
   character(len=512) :: my_string
 
   ! GTK initialisation      
