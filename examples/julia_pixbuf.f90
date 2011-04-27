@@ -27,7 +27,7 @@
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: my_pixbuf, my_drawing_area, spinButton1, spinButton2, spinButton3
-  type(c_ptr) :: textView, buffer, scrolled_window, statusBar
+  type(c_ptr) :: textView, buffer, scrolled_window, statusBar, combo1
   character(kind=c_char), dimension(:), pointer :: pixel
   integer :: nch, rowstride, width, height, pixwidth, pixheight
   logical :: computing = .false.
@@ -51,7 +51,10 @@ module handlers
   &gtk_statusbar_push, gtk_statusbar_get_context_id, gtk_handle_box_new,&
   &CAIRO_STATUS_SUCCESS, CAIRO_STATUS_NO_MEMORY, CAIRO_STATUS_SURFACE_TYPE_MISMATCH,&
   &CAIRO_STATUS_WRITE_ERROR, gtk_button_new_with_mnemonic, gtk_link_button_new_with_label,&
-  &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic, gtk_window_set_mnemonics_visible
+  &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic, &
+  &gtk_window_set_mnemonics_visible, gtk_combo_box_text_new, gtk_combo_box_set_title, &
+  &gtk_combo_box_text_append_text, gtk_combo_box_text_get_active_text, &
+  &gtk_combo_box_text_insert_text
   
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
   &cairo_surface_write_to_png, cairo_get_target
@@ -134,6 +137,36 @@ contains
     ret = FALSE
   end function firstbutton
 
+
+  ! GtkComboBox signal:
+  function firstCombo (widget, gdata ) result(ret)  bind(c)
+    use iso_c_binding, only: c_ptr
+    use global_widgets
+    implicit none
+    
+    integer(c_int)    :: ret
+    type(c_ptr), value :: widget, gdata
+    double complex :: c
+    integer :: iterations
+    character(len=512) :: my_string
+    character(kind=c_char), dimension(:), pointer :: textptr
+
+    print *, "Combo selection has changed:"
+    call C_F_POINTER(gtk_combo_box_text_get_active_text(combo1), textptr, (/0/))
+    call convert_c_string(textptr, my_string)
+    print *, TRIM(my_string)
+
+!    c = gtk_spin_button_get_value (spinButton1) + &
+!        & (0d0, 1d0)*gtk_spin_button_get_value (spinButton2)
+!    iterations = INT(gtk_spin_button_get_value (spinButton3))
+
+!    write(string, '("c=",F8.6,"+i*",F8.6,"   ", I6, " iterations")') c, iterations
+!    call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//CNULL, -1)
+
+    ret = FALSE
+  end function firstCombo
+  
+  
   ! GtkButton signal:
   function secondbutton (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr
@@ -196,6 +229,22 @@ contains
     ret = FALSE
   end function firstToggle
   
+  ! This is not a handler:
+  subroutine convert_c_string(textptr, f_string)
+    use iso_c_binding, only: c_char
+    implicit none
+    character(c_char), dimension(:), pointer, intent(in) :: textptr
+    character(len=*), intent(out) :: f_string
+    integer :: i
+          
+    f_string=""
+    i=1
+    do while(textptr(i) .NE. char(0))
+      f_string(i:i)=textptr(i)
+      i=i+1
+    end do
+  end subroutine convert_c_string
+
 end module handlers
 
 
@@ -235,6 +284,13 @@ program julia
   label3 = gtk_label_new("iterations"//CNULL)
   spinButton3 = gtk_spin_button_new (gtk_adjustment_new(1000d0,1d0,+100000d0,10d0,100d0,0d0),10d0, 0)
 
+  combo1 = gtk_combo_box_text_new()
+  !call gtk_combo_box_set_title(combo1, "Predefined values"//CNULL)
+  call gtk_combo_box_text_insert_text(combo1, 0, "(-0.835d0, -0.2321d0)"//CNULL)
+  call gtk_combo_box_text_append_text(combo1, "(1d0, 0d0)"//CNULL)
+  call gtk_combo_box_text_append_text(combo1, "(0d0, 1d0)"//CNULL)
+  call g_signal_connect (combo1, "changed"//CNULL, c_funloc(firstCombo))
+  
   toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause"//CNULL)
   call g_signal_connect (toggle1, "toggled"//CNULL, c_funloc(firstToggle))
   
@@ -253,6 +309,7 @@ program julia
   call gtk_table_attach_defaults(table, spinButton2, 1, 2, 1, 2)
   call gtk_table_attach_defaults(table, spinButton3, 1, 2, 2, 3)  
   call gtk_table_attach_defaults(table, linkButton, 3, 4, 0, 1)
+  call gtk_table_attach_defaults(table, combo1, 2, 3, 0, 1)
   call gtk_table_attach_defaults(table, toggle1, 2, 3, 3, 4)
 
   ! The table is contained in an expander, which is contained in the vertical box:
