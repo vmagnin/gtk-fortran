@@ -52,9 +52,9 @@ module handlers
   &CAIRO_STATUS_SUCCESS, CAIRO_STATUS_NO_MEMORY, CAIRO_STATUS_SURFACE_TYPE_MISMATCH,&
   &CAIRO_STATUS_WRITE_ERROR, gtk_button_new_with_mnemonic, gtk_link_button_new_with_label,&
   &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic, &
-  &gtk_window_set_mnemonics_visible, gtk_combo_box_text_new, gtk_combo_box_set_title, &
+  &gtk_window_set_mnemonics_visible, gtk_combo_box_text_new, &
   &gtk_combo_box_text_append_text, gtk_combo_box_text_get_active_text, &
-  &gtk_combo_box_text_insert_text
+  &gtk_combo_box_text_insert_text, gtk_spin_button_set_value, gtk_spin_button_update
   
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
   &cairo_surface_write_to_png, cairo_get_target
@@ -140,28 +140,46 @@ contains
 
   ! GtkComboBox signal:
   function firstCombo (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use iso_c_binding, only: c_ptr, c_int, c_double, c_f_pointer
     use global_widgets
     implicit none
-    
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-    double complex :: c
-    integer :: iterations
+    real(c_double) :: x, y
+    integer :: choice
     character(len=512) :: my_string
     character(kind=c_char), dimension(:), pointer :: textptr
 
-    print *, "Combo selection has changed:"
     call C_F_POINTER(gtk_combo_box_text_get_active_text(combo1), textptr, (/0/))
     call convert_c_string(textptr, my_string)
-    print *, TRIM(my_string)
-
-!    c = gtk_spin_button_get_value (spinButton1) + &
-!        & (0d0, 1d0)*gtk_spin_button_get_value (spinButton2)
-!    iterations = INT(gtk_spin_button_get_value (spinButton3))
-
-!    write(string, '("c=",F8.6,"+i*",F8.6,"   ", I6, " iterations")') c, iterations
-!    call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//CNULL, -1)
+    read(my_string, *) choice
+    
+    select case (choice)
+    case(1)
+      x = +0d0
+      y = +1d0
+    case(2)
+      x = -1d0
+      y = +0d0
+    case(3)
+      x = -0.8d0
+      y = +0.2d0
+    case(4)
+      x = +0.39d0
+      y = +0.60d0
+    case(5)
+      x = -0.2d0
+      y = +0.8d0
+    case(6)
+      x = -0.8d0
+      y = +0.4d0
+    case(7)
+      x = +0.39d0
+      y = +0.00d0
+    end select
+    
+    call gtk_spin_button_set_value (spinButton1, x)
+    call gtk_spin_button_set_value (spinButton2, y)
 
     ret = FALSE
   end function firstCombo
@@ -254,7 +272,8 @@ program julia
   use global_widgets
   implicit none
   
-  type(c_ptr) :: my_window, table, button1, button2, button3, box1, label1, label2, label3
+  type(c_ptr) :: my_window, table, button1, button2, button3, box1
+  type(c_ptr) :: label1, label2, label3, label4
   type(c_ptr) :: toggle1, expander, notebook, notebookLabel1, notebookLabel2
   type(c_ptr) :: handle1, linkButton
   integer(c_int) :: message_id, firstTab, secondTab
@@ -284,11 +303,15 @@ program julia
   label3 = gtk_label_new("iterations"//CNULL)
   spinButton3 = gtk_spin_button_new (gtk_adjustment_new(1000d0,1d0,+100000d0,10d0,100d0,0d0),10d0, 0)
 
+  label4 = gtk_label_new("Predefined values:"//CNULL)
   combo1 = gtk_combo_box_text_new()
-  !call gtk_combo_box_set_title(combo1, "Predefined values"//CNULL)
-  call gtk_combo_box_text_insert_text(combo1, 0, "(-0.835d0, -0.2321d0)"//CNULL)
-  call gtk_combo_box_text_append_text(combo1, "(1d0, 0d0)"//CNULL)
-  call gtk_combo_box_text_append_text(combo1, "(0d0, 1d0)"//CNULL)
+  call gtk_combo_box_text_append_text(combo1, "1"//CNULL)
+  call gtk_combo_box_text_append_text(combo1, "2"//CNULL)
+  call gtk_combo_box_text_append_text(combo1, "3"//CNULL)
+  call gtk_combo_box_text_append_text(combo1, "4"//CNULL)
+  call gtk_combo_box_text_append_text(combo1, "5"//CNULL)
+  call gtk_combo_box_text_append_text(combo1, "6"//CNULL)
+  call gtk_combo_box_text_append_text(combo1, "7"//CNULL)
   call g_signal_connect (combo1, "changed"//CNULL, c_funloc(firstCombo))
   
   toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause"//CNULL)
@@ -309,7 +332,8 @@ program julia
   call gtk_table_attach_defaults(table, spinButton2, 1, 2, 1, 2)
   call gtk_table_attach_defaults(table, spinButton3, 1, 2, 2, 3)  
   call gtk_table_attach_defaults(table, linkButton, 3, 4, 0, 1)
-  call gtk_table_attach_defaults(table, combo1, 2, 3, 0, 1)
+  call gtk_table_attach_defaults(table, label4, 2, 3, 0, 1)
+  call gtk_table_attach_defaults(table, combo1, 2, 3, 1, 2)
   call gtk_table_attach_defaults(table, toggle1, 2, 3, 3, 4)
 
   ! The table is contained in an expander, which is contained in the vertical box:
