@@ -5,13 +5,15 @@ echo
 echo Compiling gtk-fortran
 echo ON
 
-gfortran -c glib-auto.f90 gtk.f90 gtk-hl.f90 gtk-sup.f90 atk-auto.f90 cairo-auto.f90 gdk-auto.f90 gdk-pixbuf-auto.f90 pango-auto.f90 -L. -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
+gfortran -c glib-auto.f90 gtk.f90 gtk-sup.f90 gtk-hl.f90 atk-auto.f90 cairo-auto.f90 gdk-auto.f90 gdk-pixbuf-auto.f90 pango-auto.f90 -L. -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
 
+gfortran gtk.o gtk-sup.o gtk-hl.o ../examples/hl_choosers.f90 -o hl_choosers.exe -L. -llibglib-2.0-0 -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
 gfortran gtk.o gtk-sup.o gtk-hl.o ../examples/hl_radio.f90 -o hl_radio.exe -L. -llibglib-2.0-0 -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
 gfortran gtk.o gtk-sup.o gtk-hl.o ../examples/hl_pbar.f90 -o hl_pbar.exe -L. -llibglib-2.0-0 -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
 gfortran gtk.o gtk-sup.o gtk-hl.o ../examples/hl_pbar_p.f90 -o hl_pbar_p.exe -L. -llibglib-2.0-0 -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
 gfortran gtk.o gtk-sup.o gtk-hl.o ../examples/hl_menu.f90 -o hl_menu.exe -L. -llibglib-2.0-0 -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
 gfortran gtk.o gtk-sup.o gtk-hl.o ../examples/hl_list1.f90 -o hl_list1.exe -L. -llibglib-2.0-0 -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
+gfortran gtk.o gtk-sup.o gtk-hl.o ../examples/hl_list_n.f90 -o hl_list_n.exe -L. -llibglib-2.0-0 -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
 gfortran gtk.o gtk-sup.o gtk-hl.o ../examples/hl_dialog.f90 -o hl_dialog.exe -L. -llibglib-2.0-0 -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
 gfortran gtk.o gtk-sup.o gtk-hl.o ../examples/hl_combo.f90 -o hl_combo.exe -L. -llibglib-2.0-0 -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
 gfortran gtk.o gtk-sup.o gtk-hl.o ../examples/hl_sliders.f90 -o hl_sliders.exe -L. -llibglib-2.0-0 -llibgtk-win32-2.0-0 -llibgdk-win32-2.0-0 -llibgobject-2.0-0 -llibgdk_pixbuf-2.0-0 -llibcairo-2
