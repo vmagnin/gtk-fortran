@@ -25,4 +25,7 @@ gfortran gtk.o ../examples/gtkbuilder2.f90 -o ../examples/gtkbuilder2.f90.out $g
 
 echo "running the examples..."
 cd ../examples/
-for i in *.out ; do ./$i ; done
+for i in *.out ; do 
+  echo $i
+  ./$i
+done
