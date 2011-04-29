@@ -100,6 +100,7 @@ program list1
   integer, target :: iappend=0, idel=0
   integer(kind=type_kind), dimension(6) :: ctypes
   character(len=20), dimension(6) :: titles
+  integer(kind=c_int), dimension(6) :: sortable
 
   ! Initialize GTK+
   call gtk_init()
@@ -114,6 +115,7 @@ program list1
   ! Now make a multi column list with multiple selections enabled
   ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
        & G_TYPE_UINT64, G_TYPE_BOOLEAN /)
+  sortable = (/ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE /)
   titles(1) = "Name"
   titles(2) = "N"
   titles(3) = "3N"
@@ -122,7 +124,7 @@ program list1
   titles(6) = "Odd?"
 
   ihlist = hl_gtk_listn_new(ihscrollcontain, types=ctypes, changed=c_funloc(list_select),&
-       &  multiple=TRUE, height=250, swidth=400, titles=titles)
+       &  multiple=TRUE, height=250, swidth=400, titles=titles, sortable=sortable)
 
   ! Now put 10 rows into it
   do i=1,10

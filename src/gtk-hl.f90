@@ -186,7 +186,8 @@ module gtk_hl
        & gtk_file_chooser_set_do_overwrite_confirmation, & ! File
        !  chooser end
        & gtk_tree_model_get_column_type, gtk_tree_view_column_set_sort_column_id, & ! List-n
-       & gtk_tree_model_get_value, & ! List-n end
+       & gtk_tree_model_get_value, gtk_tree_view_column_get_tree_view, &
+       & gtk_tree_model_get_iter_first, gtk_tree_view_column_set_sort_indicator, & ! List-n end
        & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -2976,7 +2977,7 @@ contains
   !+
   function hl_gtk_listn_new(scroll, ncols, types, changed, data, multiple,&
        & width, titles, height, swidth, align, ixpad, iypad, sensitive, tooltip, &
-       & reorderable) result(list)
+       & sortable) result(list)
     ! Make a multi column list
     !
     ! SCROLL: c_ptr: required: The scrollable widget to contain the list.
@@ -2997,7 +2998,7 @@ contains
     ! IYPAD: c_int(): optional: The Y-Padding around the cells.
     ! SENSITIVE: boolean: optional: Whether the widget is intially sensitive.
     ! TOOLTIP: string: optional: Tooltip for the widget
-    ! REORDERABLE: boolean(): optional: Set whether the list can be sorted
+    ! SORTABLE: boolean(): optional: Set whether the list can be sorted
     ! 		on that column.
     !
     ! At least one of the array arguments or NCOLS must be given.
@@ -3018,7 +3019,7 @@ contains
     integer(kind=c_int), intent(in), optional, dimension(:) :: ixpad, iypad
     integer(kind=c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional, dimension(:) :: reorderable
+    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable
 
     integer(kind=c_int) :: ncols_all, nc, i
     integer(kind=type_kind), dimension(:), allocatable, target :: types_all
@@ -3038,8 +3039,8 @@ contains
        ncols_all = size(align)+1
     else if (present(width)) then
        ncols_all = size(width)+1
-    else if (present(reorderable)) then
-       ncols_all = size(reorderable)+1
+    else if (present(sortable)) then
+       ncols_all = size(sortable)+1
     else if (present(ixpad)) then
        ncols_all = size(ixpad)+1
     else if (present(iypad)) then
@@ -3119,12 +3120,13 @@ contains
        call gtk_tree_view_column_add_attribute(column, renderer, &
             & "text"//CNULL, i)
        nc = gtk_tree_view_append_column(list, column)
-       if (present(reorderable)) then
-          call gtk_tree_view_column_set_reorderable(column, reorderable(i))
-          if (reorderable(i) == TRUE) &
-               & call gtk_tree_view_column_set_sort_column_id (column, i)
-       else
-          call gtk_tree_view_column_set_reorderable(column, FALSE)
+       if (present(sortable)) then
+          if (sortable(i) == TRUE) then
+             call gtk_tree_view_column_set_sort_column_id(column, i)
+             call gtk_tree_view_column_set_sort_indicator(column, TRUE)
+             call g_signal_connect(column, "clicked"//cnull, &
+                  & c_funloc(hl_gtk_listn_sort_cb))
+          end if
        end if
        if (present(width)) then
           call gtk_tree_view_column_set_sizing (column, &
@@ -3159,6 +3161,49 @@ contains
 
     deallocate(types_all)
   end function hl_gtk_listn_new
+
+  !+
+  subroutine hl_gtk_listn_sort_cb(widget, gdata) bind(c)
+    ! Internal callback for when a sortable column is clicked.
+    !
+    ! WIDGET: c_ptr: required: The column sending the signal
+    ! GDATA: c_ptr: required: User data (not used)
+    !
+    ! Application developers should not need to use this routine
+    ! directly
+    !-
+    type(c_ptr), value :: widget
+    type(c_ptr), value :: gdata
+
+    type(c_ptr) :: tree, store, rowp
+    type(gtktreeiter), target :: iter
+    type(gvalue), target :: rowv
+    integer(kind=c_int) :: valid, i
+
+    ! Find the tree and the model
+    tree = gtk_tree_view_column_get_tree_view(widget)
+    if (.not. c_associated(tree)) return  ! shouldn't happen, but just in case
+    store = gtk_tree_view_get_model(tree)
+
+    ! Set up the gvalue
+    rowp = c_loc(rowv)
+    rowp= g_value_init(rowp, g_type_int)
+
+    ! Get the first row
+    valid = gtk_tree_model_get_iter_first(store, c_loc(iter))
+
+    if (valid == FALSE) return   ! Empty list
+
+    i=0
+    ! Iterate over rows
+    do
+       call g_value_set_int(rowp, i)
+       call gtk_list_store_set_value(store, c_loc(iter), 0, rowp)
+       valid = gtk_tree_model_iter_next(store, c_loc(iter))
+       if (valid == FALSE) exit
+       i = i+1
+    end do
+  end subroutine hl_gtk_listn_sort_cb
 
   !+
   subroutine hl_gtk_listn_ins(list, row)
