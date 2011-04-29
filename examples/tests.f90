@@ -169,12 +169,12 @@ contains
     implicit none
     integer :: i
     integer :: errors
-    character(c_char) :: c
+    character(kind=c_char) :: c
   !    !  gchar g_ascii_tolower (gchar c) G_GNUC_CONST;
   !    function g_ascii_tolower(c) bind(c) 
   !      use iso_c_binding, only: c_char
-  !      character(c_char) :: g_ascii_tolower
-  !      character(c_char), value :: c
+  !      character(kind=c_char) :: g_ascii_tolower
+  !      character(kind=c_char), value :: c
   !    end function
     errors = 0
     do i=0, 64, +1
@@ -440,7 +440,7 @@ contains
     implicit none
     integer(c_int16_t) :: i, j
     integer :: errors 
-    character(c_char) :: a, b
+    character(kind=c_char) :: a, b
   !GVariant *          g_variant_new_byte     (guchar value);
   !guchar              g_variant_get_byte     (GVariant *value);
     errors = 0

@@ -93,7 +93,7 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     type(c_ptr) :: my_cairo_surface, my_cairo_context, my_pixbuf
-    character(c_char), dimension(:), pointer :: pixel
+    character(kind=c_char), dimension(:), pointer :: pixel
     integer :: j
     integer :: i, nch, rowstride, width, height
     integer :: x, y
@@ -174,7 +174,7 @@ contains
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
-    character(c_char), dimension(:), pointer :: textptr
+    character(kind=c_char), dimension(:), pointer :: textptr
     character(len=512) :: my_string
 
     print *, "my destroy"
@@ -242,7 +242,7 @@ contains
   function file_changed (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_char
     integer(c_int)    :: ret
-    character(c_char), dimension(:), pointer :: textptr
+    character(kind=c_char), dimension(:), pointer :: textptr
     type(c_ptr), value :: widget, gdata
     character(len=512) :: my_string
     
@@ -259,7 +259,7 @@ contains
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
     implicit none
-    character(c_char), dimension(:), pointer, intent(in) :: textptr
+    character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
     character(len=*), intent(out) :: f_string
     integer :: i
           
