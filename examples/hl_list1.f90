@@ -93,16 +93,17 @@ contains
     integer, pointer :: fdata
     type(c_ptr) :: text
     integer(c_int16_t) :: ntext
-    character(kind=c_char), dimension(:), pointer :: ftext
+    character(kind=c_char, len=100) :: ftext
 
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
        if (fdata == 1) then
           ntext = gtk_entry_get_text_length(newline)
           text=gtk_entry_get_text(newline)
-          call c_f_pointer(text, ftext, (/int(ntext,c_int)/))
-          print *, ntext, "*",ftext(:ntext),"*"
-          call hl_gtk_list1_ins(ihlist, (/ftext(:ntext),cnull/))
+          call convert_c_string(text, len(ftext), ftext)
+
+          print *, len_trim(ftext), "*",trim(ftext),"*"
+          call hl_gtk_list1_ins(ihlist, trim(ftext)//cnull)
           fdata = 0
           call gtk_entry_set_text(newline, ""//cnull)
        end if
