@@ -206,8 +206,8 @@ module gtk_hl
        & gtk_tree_store_insert_before, gtk_tree_path_get_indices,  & ! Tree end
        & gtk_notebook_append_page, gtk_notebook_insert_pag& ! Containers
        &e, gtk_notebook_new, gtk_notebook_popup_disable, gtk_notebook_popup_enable, gt&
-       &k_notebook_prepend_page, gtk_notebook_set_group, &
-       &gtk_notebook_set_homogeneous_tabs, gtk_notebook_set_scrollable, gtk_notebook_s&
+       &k_notebook_prepend_page, &
+       & gtk_notebook_set_scrollable, gtk_notebook_s&
        &et_show_tabs, gtk_notebook_set_tab_detachable, gtk_notebook_set_tab_pos, gtk_n&
        &otebook_set_tab_reorderable, gtk_table_attach, gtk_table_get_size, gtk_table_n&
        &ew, gtk_table_resize, gtk_table_set_col_spacing, gtk_table_set_col_spacings, g&
@@ -231,7 +231,7 @@ module gtk_hl
   !GTK2
        & gtk_progress_bar_set_orientation, &
        & gtk_combo_box_append_text, gtk_combo_box_entry_new, &
-       & gtk_combo_box_entry_new_text, &
+       & gtk_combo_box_entry_new_text, gtk_notebook_set_group, &
        & gtk_combo_box_get_active_text, gtk_combo_box_insert_text, &
        & gtk_combo_box_new_text, gtk_combo_box_prepend_text, &
        & gtk_combo_box_remove_text, gtk_notebook_set_group, &
@@ -244,7 +244,7 @@ module gtk_hl
 !3 & gtk_combo_box_text_get_active_text, gtk_combo_box_text_insert_text, &
 !3 & gtk_combo_box_text_new, gtk_combo_box_text_new_with_entry, &
 !3 & gtk_combo_box_text_prepend_text, gtk_combo_box_text_remove, &
-!3 & gtk_notebook_set_group_name &
+!3 & gtk_notebook_set_group_name
 
   use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
        &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int, &
@@ -602,7 +602,7 @@ contains
 
   !+
   function hl_gtk_notebook_new(show_tabs, tab_position, popup, &
-       & scrollable, homogeneous, group) result(nbook)
+       & scrollable, group) result(nbook)
     ! Convenience function to create a notebook (tabbed) container
     !
     ! SHOW_TABS: boolean: optional: Whether the tabs are visible
@@ -611,7 +611,6 @@ contains
     ! POPUP: boolean: optional: Whether to have a popup tab selector.
     ! SCROLLABLE: boolean: optional: Whether the tabs are scrollable if
     ! 		there are too many to fit.
-    ! HOMOGENEOUS: boolean: optional: Whether the tabs are all the same size.
     ! GROUP: string: optional: A group name for the notebook (needed if you
     ! 		want to drag tabs from one book to another). N.B. For GTK+2,
     ! 		this probably has to be a variable to work.
@@ -620,7 +619,7 @@ contains
     type(c_ptr) :: nbook
     integer(kind=c_int), intent(in), optional :: show_tabs
     integer(kind=c_int), intent(in), optional :: tab_position
-    integer(kind=c_int), intent(in), optional :: popup, scrollable, homogeneous
+    integer(kind=c_int), intent(in), optional :: popup, scrollable
     character(kind=c_char), intent(in), optional, dimension(*), target :: group
 
     nbook = gtk_notebook_new()
@@ -638,9 +637,6 @@ contains
           call gtk_notebook_popup_enable(nbook)
        end if
     end if
-
-    if (present(homogeneous)) &
-         & call gtk_notebook_set_homogeneous_tabs(nbook, homogeneous)
 
     if (present(scrollable)) &
          & call gtk_notebook_set_scrollable(nbook, scrollable)
