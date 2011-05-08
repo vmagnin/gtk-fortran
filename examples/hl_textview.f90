@@ -133,6 +133,23 @@ contains
     end if
     call hl_gtk_text_view_set_modified(zedt, FALSE)
   end subroutine tv_info
+
+  subroutine entry_text(widget, gdata) bind(c)
+    type(c_ptr), value :: widget, gdata
+
+    integer(kind=c_int16_t) :: ntext
+
+    ntext = gtk_entry_get_text_length(widget)
+    if (ntext > 0) then
+       call gtk_widget_set_sensitive(abut, TRUE)
+       call gtk_widget_set_sensitive(ibut, TRUE)
+    else
+       call gtk_widget_set_sensitive(abut, FALSE)
+       call gtk_widget_set_sensitive(ibut, FALSE)
+    end if
+
+  end subroutine entry_text
+
 end module handlers
 
 program ztext
@@ -164,17 +181,19 @@ program ztext
   ! Make a single line text entry, and buttons to append or place at cursor.
 
   entry = hl_gtk_entry_new(60, editable=TRUE, tooltip = &
-       & "Enter text here, then click 'append' or 'insert'"//cnull)
+       & "Enter text here, then click 'append' or 'insert'"//cnull, &
+       & changed=c_funloc(entry_text))
   call hl_gtk_box_pack(box, entry, expand=FALSE)
 
   box2 = hl_gtk_box_new(horizontal=TRUE)
   call hl_gtk_box_pack(box, box2, expand=FALSE)
 
   abut = hl_gtk_button_new("Append"//cnull, clicked=c_funloc(tv_append), &
-       & tooltip = "Add contents of entry box at end"//cnull)
+       & tooltip = "Add contents of entry box at end"//cnull, sensitive=FALSE)
   call hl_gtk_box_pack(box2, abut)
   ibut = hl_gtk_button_new("Insert"//cnull, clicked=c_funloc(tv_insert), &
-       & tooltip = "Add contents of entry box at cursor"//cnull)
+       & tooltip = "Add contents of entry box at cursor"//cnull, &
+       & sensitive=FALSE)
   call hl_gtk_box_pack(box2, ibut)
 
   ! And a clear button, and an info button
