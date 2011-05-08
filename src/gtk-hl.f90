@@ -918,19 +918,22 @@ contains
 
   !+
   function hl_gtk_entry_new(len, editable, activate, data, tooltip, value, &
-       & sensitive) result(entry)
+       & sensitive, changed, data_changed) result(entry)
     ! Higher level text entry box
     !
     ! LEN: integer: optional: The maximum length of the entry field.
     ! EDITABLE: boolean: optional: whether the entry box can be edited
     ! 		by the user
     ! ACTIVATE: c_funptr: optional: Callback function for the "activate" signal
-    ! DATA: c_ptr: optional: Data to be passed to the activate callback
+    ! DATA: c_ptr: optional: Data to be passed to the activate callback (this
+    ! 		is a plain DATA as the changed signal was added later)
     ! TOOLTIP: string: optional: tooltip to be displayed when the pointer
     ! 		is held over the button.
     ! VALUE: string: optional: An initial value for the entry box.
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
+    ! CHANGED: c_funptr: optional: Callback for the "changed" signal
+    ! DATA_CHANGED: c_ptr: optional: Data to be passed to the changed callback.
     !-
 
     type(c_ptr) :: entry
@@ -940,6 +943,8 @@ contains
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip, value
     integer(kind=c_int), intent(in), optional :: sensitive
+    type(c_funptr), optional :: changed
+    type(c_ptr), optional :: data_changed
 
     entry = gtk_entry_new()
     call gtk_entry_set_activates_default(entry, TRUE)
@@ -956,6 +961,15 @@ contains
        else
           call g_signal_connect(entry, &
                & "activate"//CNULL, activate)
+       end if
+    end if
+
+    if (present(changed)) then
+       if (present(data_changed)) then
+          call g_signal_connect(entry, "changed"//CNULL, changed, &
+               & data_changed)
+       else
+          call g_signal_connect(entry, "changed"//CNULL, changed)
        end if
     end if
 
@@ -1687,8 +1701,6 @@ contains
           if (sortable(i) == TRUE) then
              call gtk_tree_view_column_set_sort_column_id(column, i-1)
              call gtk_tree_view_column_set_sort_indicator(column, TRUE)
-!!$             call g_signal_connect(column, "clicked"//cnull, &
-!!$                  & c_funloc(hl_gtk_listn_sort_cb))
           end if
        end if
        if (present(width)) then
@@ -2467,6 +2479,7 @@ contains
     ! Reorder the list
     call gtk_list_store_reorder(store, c_loc(idx))
 
+    deallocate(idx)
   end subroutine hl_gtk_listn_reorder
 
   !+

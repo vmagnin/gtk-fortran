@@ -144,7 +144,7 @@ contains
        selections = (/ (i-1, i=1, nrows) /)
        selections = cshift(selections, 1)
        call hl_gtk_list1_reorder(ihlist, selections)
-    case(1) ! One row selected (move it up one unless its the first)
+    case(1) ! One row selected (move it up one unless it's the first)
        if (selections(1) == 0) then
           call hl_gtk_list1_move_row(ihlist, selections(1), 1, after=TRUE)
        else
