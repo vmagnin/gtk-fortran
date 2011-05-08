@@ -39,7 +39,7 @@ module l1_handlers
   ! by the handlers need to go here).
 
   type(c_ptr) :: ihwin,ihscrollcontain,ihlist, base, &
-       & newline, qbut, dbut, dabut, jbox, jbox2, abut
+       & newline, qbut, dbut, dabut, jbox, jbox2, abut, swbut
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
@@ -123,11 +123,39 @@ contains
   end subroutine del_toggle
 
   subroutine delete_all(widget, gdata) bind(c)
-    integer(kind=c_int) :: res
     type(c_ptr), value :: widget, gdata
 
     call hl_gtk_list1_rem(ihlist)
   end subroutine delete_all
+
+  subroutine swap_rows(widget, gdata) bind(c)
+    type(c_ptr), value :: widget, gdata
+
+    integer(kind=c_int) :: nsel, nrows
+    integer(kind=c_int), dimension(:), allocatable :: selections
+    integer :: i
+
+    nsel = hl_gtk_list1_get_selections(ihlist, selections)
+    nrows = hl_gtk_list1_get_n_rows(ihlist)
+
+    select case(nsel)
+    case(0) ! No selected rows (roll the list)
+       allocate(selections(nrows))
+       selections = (/ (i-1, i=1, nrows) /)
+       selections = cshift(selections, 1)
+       call hl_gtk_list1_reorder(ihlist, selections)
+    case(1) ! One row selected (move it up one unless its the first)
+       if (selections(1) == 0) then
+          call hl_gtk_list1_move_row(ihlist, selections(1), 1, after=TRUE)
+       else
+          call hl_gtk_list1_move_row(ihlist, selections(1), selections(1)-1)
+       end if
+    case default ! Multiple selections (swap first 2 selected rows)
+       call hl_gtk_list1_swap_rows(ihlist, selections(1), selections(2))
+    end select
+
+    deallocate(selections)
+  end subroutine swap_rows
 
 end module l1_handlers
 
@@ -196,6 +224,10 @@ program list1
   ! And a delete all button.
   dabut = hl_gtk_button_new("Clear"//cnull, clicked=c_funloc(delete_all))
   call hl_gtk_box_pack(jbox2, dabut)
+
+  ! And a swap rows button
+  swbut = hl_gtk_button_new("Swap rows"//cnull, clicked=c_funloc(swap_rows))
+  call hl_gtk_box_pack(jbox2, swbut)
 
   ! Also a quit button
   qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))

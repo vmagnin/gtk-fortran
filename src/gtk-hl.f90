@@ -67,12 +67,20 @@ module gtk_hl
   ! list
   ! * hl_gtk_listn_set_cell; Set the value of a cell in a multi column list
   ! * hl_gtk_listn_get_cell; Get the contents of a cell in a multi-column list
+  ! * hl_gtk_listn_move_row; Move a row to a new location
+  ! * hl_gtk_listn_swap_rows; Exchange 2 rows
+  ! * hl_gtk_listn_reorder; New order of rows.
+  ! * hl_gtk_listn_get_n_rows; How many rows?
   ! * hl_gtk_list1_new; A single column list with indexing
   ! * hl_gtk_list1_get_selections; Get the selected row(s) from a list.
   ! * hl_gtk_list1_ins; Insert a row into a list
   ! * hl_gtk_list1_rem; Delete a row from a list, or clear the list.
   ! * hl_gtk_list1_set_cell; Wrapper for above for a single column list.
   ! * hl_gtk_list1_get_cell; Wrapper for above for a single column list.
+  ! * hl_gtk_list1_move_row; Move a row to a new location
+  ! * hl_gtk_list1_swap_rows; Exchange 2 rows
+  ! * hl_gtk_list1_reorder; New order of rows.
+  ! * hl_gtk_list1_get_n_rows; How many rows?
   ! * hl_gtk_tree_new; Create a tree view
   ! * hl_gtk_tree_ins; Insert a row to a tree view
   ! * hl_gtk_tree_abs_iter; Find the iter for a given "absolute" row
@@ -214,7 +222,8 @@ module gtk_hl
        &tk_table_set_row_spacing, gtk_table_set_row_spacings, gtk_notebook_set_group_name,  & ! end containers
        & gtk_window_set_resizable, gtk_window_set_decorated, & !Window new stuff
        & gtk_window_set_deletable, gtk_window_set_keep_above, gtk_window_set_keep_below, & ! End W
-       & gtk_tearoff_menu_item_new, &
+       & gtk_tearoff_menu_item_new, gtk_list_store_reorder, gtk_list_store_swap, &
+       & gtk_list_store_move_after, gtk_list_store_move_before, &
        & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -2347,6 +2356,140 @@ contains
   end subroutine hl_gtk_listn_get_cell
 
   !+
+  subroutine hl_gtk_listn_move_row(list, row1, row2, after)
+    ! Move a row in a list to a new location
+    !
+    ! LIST: c_ptr: required: The list to work on.
+    ! ROW1: c_int: required: The index of the row to move.
+    ! ROW2: c_int: optional: The location before which to place
+    ! 		the row. (If omitted, then move to start (or end if AFTER
+    ! 		is TRUE)).
+    ! AFTER: boolean: optional:  Set this to TRUE to put the row after
+    ! 		the location instead of before.
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row1
+    integer(kind=c_int), intent(in), optional :: row2
+    integer(kind=c_int), intent(in), optional :: after
+
+    type(c_ptr) :: store
+    type(gtktreeiter), target :: iter1, iter2
+    integer(kind=c_int) :: isafter
+    integer(kind=c_int) :: valid
+
+    if (present(after)) then
+       isafter = after
+    else
+       isafter = FALSE
+    end if
+
+    ! Get list store
+    store = gtk_tree_view_get_model(list)
+
+    ! Get the iterator of the row to move
+    valid = gtk_tree_model_iter_nth_child(store, c_loc(iter1), NULL, row1)
+    if (valid == FALSE) return
+    ! And of the target location
+    if (present(row2)) then
+       valid = gtk_tree_model_iter_nth_child(store, c_loc(iter2), NULL, row2)
+       if (valid == FALSE) return
+    end if
+
+    ! Move it
+    if (isafter == TRUE) then
+       if (present(row2)) then
+          call gtk_list_store_move_after(store, c_loc(iter1), c_loc(iter2))
+       else
+          call gtk_list_store_move_before(store, c_loc(iter1), NULL)
+       end if
+    else
+       if (present(row2)) then
+          call gtk_list_store_move_before(store, c_loc(iter1), c_loc(iter2))
+       else
+          call gtk_list_store_move_after(store, c_loc(iter1), NULL)
+       end if
+    end if
+  end subroutine hl_gtk_listn_move_row
+
+  !+
+  subroutine hl_gtk_listn_swap_rows(list, row1, row2)
+    ! Move a row in a list to a new location
+    !
+    ! LIST: c_ptr: required: The list to work on.
+    ! ROW1: c_int: required: The index of the first row to move.
+    ! ROW2: c_int: required: The index of the second row to move
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row1, row2
+
+    type(c_ptr) :: store
+    type(gtktreeiter), target :: iter1, iter2
+    integer(kind=c_int) :: valid
+
+    ! Get list store
+    store = gtk_tree_view_get_model(list)
+
+    ! Get the iterator of the first row to move
+    valid = gtk_tree_model_iter_nth_child(store, c_loc(iter1), NULL, row1)
+    if (valid == FALSE) return
+    ! And of the second
+    valid = gtk_tree_model_iter_nth_child(store, c_loc(iter2), NULL, row2)
+    if (valid == FALSE) return
+
+    ! Exchange the rows
+    call gtk_list_store_swap(store, c_loc(iter1), c_loc(iter2))
+
+  end subroutine hl_gtk_listn_swap_rows
+
+  !+
+  subroutine hl_gtk_listn_reorder(list, indices)
+    ! Move a row in a list to a new location
+    !
+    ! LIST: c_ptr: required: The list to work on.
+    ! INDICES: c_int(): required: The sorting array. The ith element
+    ! 		contains the old location of the new (i-1)th row.
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in), dimension(:) :: indices
+
+    type(c_ptr) :: store
+    integer(kind=c_int), dimension(:), allocatable, target :: idx
+
+    allocate(idx(size(indices)))
+    idx = indices
+
+    ! Get list store
+    store = gtk_tree_view_get_model(list)
+
+    ! Reorder the list
+    call gtk_list_store_reorder(store, c_loc(idx))
+
+  end subroutine hl_gtk_listn_reorder
+
+  !+
+  function hl_gtk_listn_get_n_rows(list) result(nrows)
+    ! Return the number of rows in a list.
+    !
+    ! LIST: c_ptr: required: the list to query
+    !-
+
+    integer(kind=c_int) :: nrows
+    type(c_ptr), intent(in) :: list
+
+    type(c_ptr) :: store
+
+    ! Get list store
+    store = gtk_tree_view_get_model(list)
+
+    ! Find how many rows
+    nrows = gtk_tree_model_iter_n_children(store, NULL)
+
+  end function hl_gtk_listn_get_n_rows
+
+  !+
   function hl_gtk_list1_new(scroll, width, changed, data, multiple, &
        & sensitive, tooltip, title, height) result(list)
     ! A single column selectable list based on the GTK Tree View
@@ -2508,6 +2651,72 @@ contains
     call hl_gtk_listn_get_cell(list, row, 0, svalue=svalue)
 
   end subroutine hl_gtk_list1_get_cell
+
+  !+
+  subroutine hl_gtk_list1_move_row(list, row1, row2, after)
+    ! Move a row in a list to a new location
+    !
+    ! LIST: c_ptr: required: The list to work on.
+    ! ROW1: c_int: required: The index of the row to move.
+    ! ROW2: c_int: optional: The location before which to place
+    ! 		the row.
+    ! AFTER: boolean: optional:  Set this to TRUE to put the row after
+    ! 		the location instead of before.
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row1
+    integer(kind=c_int), intent(in), optional :: row2
+    integer(kind=c_int), intent(in), optional :: after
+
+    call hl_gtk_listn_move_row(list, row1, row2, after)
+
+  end subroutine hl_gtk_list1_move_row
+
+  !+
+  subroutine hl_gtk_list1_swap_rows(list, row1, row2)
+    ! Move a row in a list to a new location
+    !
+    ! LIST: c_ptr: required: The list to work on.
+    ! ROW1: c_int: required: The index of the first row to move.
+    ! ROW2: c_int: required: The index of the second row to move
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row1, row2
+
+    call hl_gtk_listn_swap_rows(list, row1, row2)
+
+  end subroutine hl_gtk_list1_swap_rows
+
+  !+
+  subroutine hl_gtk_list1_reorder(list, indices)
+    ! Move a row in a list to a new location
+    !
+    ! LIST: c_ptr: required: The list to work on.
+    ! INDICES: c_int(): required: The sorting array. The ith element
+    ! 		contains the old location of the new (i-1)th row.
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in), dimension(:), target :: indices
+
+    call hl_gtk_listn_reorder(list, indices)
+
+  end subroutine hl_gtk_list1_reorder
+
+  !+
+  function hl_gtk_list1_get_n_rows(list) result(nrows)
+    ! Return the number of rows in a list.
+    !
+    ! LIST: c_ptr: required: the list to query
+    !-
+
+    integer(kind=c_int) :: nrows
+    type(c_ptr), intent(in) :: list
+
+    nrows=hl_gtk_listn_get_n_rows(list)
+  end function hl_gtk_list1_get_n_rows
 
   !+
   function hl_gtk_tree_new(scroll, ncols, types, changed, data, multiple,&
