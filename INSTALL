@@ -1,0 +1,53 @@
+Building & Installing GtkFortran
+================================
+
+The build install system uses 'cmake'.
+
+This is has been tested on Debian (Wheezy, Sid) and Pardus (2011)
+Linux installations.
+
+To do an "out of source" build from the top-level directory on a
+Unix/Linux system: 
+    mkdir build
+    cd build
+    cmake ..
+    make
+    sudo make install
+
+cmake variables are set by using -D<variable>=<value>
+for example to change the default install directory from /usr/local to /usr:
+cmake -DCMAKE_INSTALL_DIR=/usr ..
+
+To interactively control the build, use 'ccmake' in place of 'cmake'
+
+Dependencies:
+-------------
+
+GtkFortran needs Gtk 2.24 or better (it will mostly work with 2.22) and
+the associated libraries. For 2.xx use the "master" git tree, for 3.x
+us "gtk3".
+
+To build with gfortran, version 4.6 or better is needed (in 4.4 &
+4.5 c_funloc doesn't work correctly, at least for Fortran routines with
+the bind(c) attribute).
+
+The build system needs cmake 2.6 or better and doxygen. 
+
+GTK3:
+-----
+
+For the Gtk3 version, a FindGTK3.cmake module is included in the
+distribution, to use it you need to do one of the following: 
+
+* Copy it to the standard cmake modules directory
+(/usr/share/cmake-2.8/Modules on Debian Sid), or;
+
+* Add its directory to CMAKE_MODULE_PATH e.g.
+     export CMAKE_MODULE_PATH ..  
+if you are using the build sequence described above.
+
+N.B. FindGTK3.cmake has only been tested on Debian Sid, it is possible
+that other systems may have different naming conventions (If you have
+problems look for the lines with several asterisks in the comments, as
+these are the places where I think there could be issues [i.e. I was
+guessing until it worked]).
