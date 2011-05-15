@@ -37,14 +37,8 @@ GTK3:
 -----
 
 For the Gtk3 version, a FindGTK3.cmake module is included in the
-distribution, to use it you need to do one of the following: 
-
-* Copy it to the standard cmake modules directory
-(/usr/share/cmake-2.8/Modules on Debian Sid), or;
-
-* Add its directory to CMAKE_MODULE_PATH e.g.
-     export CMAKE_MODULE_PATH ..  
-if you are using the build sequence described above.
+distribution, it is placed in the cmake subdirectory which should be
+added to the module search path by the top-level CMakeLists.txt rules.
 
 N.B. FindGTK3.cmake has only been tested on Debian Sid, it is possible
 that other systems may have different naming conventions (If you have
