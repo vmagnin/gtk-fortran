@@ -21,6 +21,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
+# Tests redesigned, James Tappin 05/17/2011
 
 # CMAKE build file for GtkFortran
 
@@ -45,14 +46,28 @@ add_executable(gtkhello2 "gtkhello2.f90")
 target_link_libraries(gtkhello2 gtk-fortran_static ${GTK_LIBRARIES})
 add_test(gtkhello2 ./gtkhello2)
 
+# This command is for Unix/Linux, please add a windows equivalent in an
+# Else section
+if (UNIX)
+   add_custom_command(
+	OUTPUT gtkbuilder.glade
+	COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder.glade
+	DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade
+   )
+endif()
+
+add_custom_target(glade ALL DEPENDS "gtkbuilder.glade")
+
 add_executable(gtkbuilder "gtkbuilder.f90")
 target_link_libraries(gtkbuilder gtk-fortran_static ${GTK_LIBRARIES})
-add_test(gtkbuilder ./gtkbuilder)
+# This test is excluded because the directories don't match up.
+#add_test(gtkbuilder ./gtkbuilder)
 
 if (GTK2_MINOR_VERSION GREATER 23)
-   add_executable(gtkbuilder2 "gtkbuilder2.f90")
+   add_executable(gtkbuilder2 "gtkbuilder2.f90" "gtkbuilder.glade")
    target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
-   add_test(gtkbuilder2 ./gtkbuilder2)
+# This test is excluded because the directories don't match up.
+#   add_test(gtkbuilder2 ./gtkbuilder2)
 endif()
 
 add_executable(hl_choosers "hl_choosers.f90")

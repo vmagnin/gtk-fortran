@@ -381,7 +381,7 @@ contains
     iter%p2=NULL
   end subroutine clear_gtktreeiter
 
-  !+
+!+
   subroutine clear_gvalue(gval)
     ! Clear a GValue
     !
@@ -395,201 +395,215 @@ contains
 ! Some string conversion routines
 
 !+
-subroutine convert_c_string_scalar(textptr, f_string, status)
-  ! Convert a null-terminated c-string to  a fortran string
-  !
-  ! TEXTPTR: string: required:  The C string to be converted.
-  ! F_STRING: f_string: required: A Scalar Fortran string.
-  ! STATUS: integer: optional: Is set to -1 if the Fortran string
-  ! 		is too short.
-  !
-  ! Usually called via the convert_c_string generic interface.
-  !-
-use iso_c_binding, only: c_char
-implicit none
-character(kind=c_char), dimension(:), intent(in) :: textptr
-character(len=*), intent(out) :: f_string
-integer, intent(out), optional :: status
-integer :: i
+  subroutine convert_c_string_scalar(textptr, f_string, status)
+    ! Convert a null-terminated c-string to  a fortran string
+    !
+    ! TEXTPTR: string: required:  The C string to be converted.
+    ! F_STRING: f_string: required: A Scalar Fortran string.
+    ! STATUS: integer: optional: Is set to -1 if the Fortran string
+    ! 		is too short.
+    !
+    ! Usually called via the convert_c_string generic interface.
+    !-
+    use iso_c_binding, only: c_char
+    implicit none
+    character(kind=c_char), dimension(:), intent(in) :: textptr
+    character(len=*), intent(out) :: f_string
+    integer, intent(out), optional :: status
+    integer :: i
 
-f_string=""
+    f_string=""
 
-if (present(status)) status = 0
-do i = 1, len(f_string)
-if (textptr(i) == cnull) return
-f_string(i:i)=textptr(i)
-end do
-if (present(status)) status = -1  ! Output string not long enough
-end subroutine convert_c_string_scalar
-
-!+
-subroutine convert_c_string_array(textptr, f_string, status)
-  ! Convert a null-terminated LF-separated c-string into a fortran
-  ! string array
-  !
-  ! TEXTPTR: string: required:  The C string to be converted.
-  ! F_STRING: f_string(): required: A Fortran string array.
-  ! STATUS: integer: optional: Is set to -1 if the Fortran string
-  ! 		is too short for any line.
-  !
-  ! Usually called via the convert_c_string generic interface.
-  !-
-use iso_c_binding, only: c_char
-implicit none
-character(kind=c_char), dimension(:), intent(in) :: textptr
-character(len=*), intent(out), dimension(:), allocatable :: f_string
-integer, intent(out), optional :: status
-integer :: i, j, ii, count
-
-count = 1
-i = 1
-do
-if (textptr(i) == cnull) exit
-if (textptr(i) == c_new_line) count = count+1
-i = i+1
-end do
-allocate(f_string(count))
-
-if (present(status)) status = 0
-ii = 1
-do j = 1, count
-f_string(j) = ""
-do i = 1, len(f_string)
- if (textptr(ii) == cnull) return
- if (textptr(ii) == c_new_line) then
-    ii = ii+1
-    exit
- end if
- f_string(j)(i:i)=textptr(ii)
- ii = ii+1
-end do
-if (i > len(f_string) .and. present(status)) &
-   & status = -1  ! Output string not long enough
-end do
-end subroutine convert_c_string_array
-
+    if (present(status)) status = 0
+    do i = 1, len(f_string)
+       if (i > size(textptr)) return
+       if (textptr(i) == cnull) return
+       f_string(i:i)=textptr(i)
+    end do
+    if (present(status)) status = -1  ! Output string not long enough
+  end subroutine convert_c_string_scalar
 
 !+
-subroutine convert_c_string_scalar_cptr(ctext, clen, f_string, status)
-  ! Convert a null-terminated c-string to  a fortran string
-  !
-  ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
-  ! CLEN: c_int: required: The length of the string (or of the Fortran
-  ! 		string if the C-string is of unknow length,=.
-  ! F_STRING: f_string: required: A Scalar Fortran string.
-  ! STATUS: integer: optional: Is set to -1 if the Fortran string
-  ! 		is too short.
-  !
-  ! Usually called via the convert_c_string generic interface.
-  !-
+  subroutine convert_c_string_array(textptr, f_string, status)
+    ! Convert a null-terminated LF-separated c-string into a fortran
+    ! string array
+    !
+    ! TEXTPTR: string: required:  The C string to be converted.
+    ! F_STRING: f_string(): required: A Fortran string array.
+    ! STATUS: integer: optional: Is set to -1 if the Fortran string
+    ! 		is too short for any line.
+    !
+    ! Usually called via the convert_c_string generic interface.
+    !-
+    use iso_c_binding, only: c_char
+    implicit none
+    character(kind=c_char), dimension(:), intent(in) :: textptr
+    character(len=*), intent(out), dimension(:), allocatable :: f_string
+    integer, intent(out), optional :: status
+    integer :: i, j, ii, count
 
-type(c_ptr), intent(in) :: ctext
-integer(kind=c_int), intent(in) :: clen
-character(len=*), intent(out) :: f_string
-integer, intent(out), optional :: status
+    count = 1
+    i = 1
+    do
+       if (i > size(textptr)) exit
+       if (textptr(i) == cnull) exit
+       if (textptr(i) == c_new_line) count = count+1
+       i = i+1
+    end do
+    allocate(f_string(count))
 
-integer :: i
-character(kind=c_char), dimension(:), pointer :: textptr
+    if (present(status)) status = 0
+    ii = 1
+    do j = 1, count
+       f_string(j) = ""
+       do i = 1, len(f_string)
+          if (ii > size(textptr)) then
+             if (j < count .and. present(status)) status=-1
+             return
+          end if
 
-call c_f_pointer(ctext, textptr, (/clen/))
-
-f_string=""
-
-if (present(status)) status = 0
-do i = 1, len(f_string)
-if (textptr(i) == cnull) return
-f_string(i:i)=textptr(i)
-end do
-if (present(status)) status = -1  ! Output string not long enough
-end subroutine convert_c_string_scalar_cptr
+          if (textptr(ii) == cnull) return
+          if (textptr(ii) == c_new_line) then
+             ii = ii+1
+             exit
+          end if
+          f_string(j)(i:i)=textptr(ii)
+          ii = ii+1
+       end do
+       if (i > len(f_string) .and. present(status)) &
+            & status = -1  ! Output string not long enough
+    end do
+  end subroutine convert_c_string_array
 
 
 !+
-subroutine convert_c_string_array_cptr(ctext, clen, f_string, status)
-  ! Convert a null-terminated LF-separated c-string into a fortran
-  ! string array
-  ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
-  ! CLEN: c_int: required: The length of the string (or of the Fortran
-  ! 		string if the C-string is of unknow length,=.
-  ! F_STRING: f_string(): required: A  Fortran string. array
-  ! STATUS: integer: optional: Is set to -1 if the Fortran string
-  ! 		is too short for any of the lines.
-  !
-  ! Usually called via the convert_c_string generic interface.
-  !-
+  subroutine convert_c_string_scalar_cptr(ctext, clen, f_string, status)
+    ! Convert a null-terminated c-string to  a fortran string
+    !
+    ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
+    ! CLEN: c_int: required: The length of the string (or of the Fortran
+    ! 		string if the C-string is of unknow length,=.
+    ! F_STRING: f_string: required: A Scalar Fortran string.
+    ! STATUS: integer: optional: Is set to -1 if the Fortran string
+    ! 		is too short.
+    !
+    ! Usually called via the convert_c_string generic interface.
+    !-
 
-type(c_ptr), intent(in) :: ctext
-integer(kind=c_int), intent(in) :: clen
-character(len=*), intent(out), dimension(:), allocatable :: f_string
-integer, intent(out), optional :: status
+    type(c_ptr), intent(in) :: ctext
+    integer(kind=c_int), intent(in) :: clen
+    character(len=*), intent(out) :: f_string
+    integer, intent(out), optional :: status
 
-integer :: i, j, ii, count
-character(kind=c_char), dimension(:), pointer :: textptr
+    integer :: i
+    character(kind=c_char), dimension(:), pointer :: textptr
 
-call c_f_pointer(ctext, textptr, (/clen/))
+    call c_f_pointer(ctext, textptr, (/clen/))
 
-count = 1
-i = 1
-do
-if (textptr(i) == cnull) exit
-if (textptr(i) == c_new_line) count = count+1
-i = i+1
-end do
-allocate(f_string(count))
+    f_string=""
 
-if (present(status)) status = 0
-ii = 1
-do j = 1, count
-f_string(j) = ""
-do i = 1, len(f_string)
- if (textptr(ii) == cnull) return
- if (textptr(ii) == c_new_line) then
-    ii = ii+1
-    exit
- end if
- f_string(j)(i:i)=textptr(ii)
- ii = ii+1
-end do
-if (i > len(f_string) .and. present(status)) &
-   & status = -1  ! Output string not long enough
-end do
-end subroutine convert_c_string_array_cptr
+    if (present(status)) status = 0
+    do i = 1, len(f_string)
+       if (i > clen) return
+       if (textptr(i) == cnull) return
+       f_string(i:i)=textptr(i)
+    end do
+    if (present(status)) status = -1  ! Output string not long enough
+  end subroutine convert_c_string_scalar_cptr
+
 
 !+
-subroutine convert_f_string(f_string, textptr, length)
-  ! Convert a fortran string array into a null-terminated, LF_separated
-  ! c-string
-  !
-  ! F_STRING: f_string: required: The fortran string to convert
-  ! TEXTPR: string: required: A C tyoe string, (allocatable).
-  ! LENGTH: c_int: optional: The lenght of the generated c string.
-  !-
-character(len=*), intent(in), dimension(:) :: f_string
-character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
-integer(kind=c_int), intent(out), optional :: length
+  subroutine convert_c_string_array_cptr(ctext, clen, f_string, status)
+    ! Convert a null-terminated LF-separated c-string into a fortran
+    ! string array
+    ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
+    ! CLEN: c_int: required: The length of the string (or of the Fortran
+    ! 		string if the C-string is of unknow length,=.
+    ! F_STRING: f_string(): required: A  Fortran string. array
+    ! STATUS: integer: optional: Is set to -1 if the Fortran string
+    ! 		is too short for any of the lines.
+    !
+    ! Usually called via the convert_c_string generic interface.
+    !-
 
-integer :: lcstr, i, j, ii
+    type(c_ptr), intent(in) :: ctext
+    integer(kind=c_int), intent(in) :: clen
+    character(len=*), intent(out), dimension(:), allocatable :: f_string
+    integer, intent(out), optional :: status
 
-lcstr = 0
-do i = 1, size(f_string)
-lcstr = lcstr + len_trim(f_string(i))+1 ! The +1 is for the LF and NULL characters
-end do
+    integer :: i, j, ii, count
+    character(kind=c_char), dimension(:), pointer :: textptr
 
-allocate(textptr(lcstr))
-if (present(length)) length = lcstr
+    call c_f_pointer(ctext, textptr, (/clen/))
 
-ii = 1
-do i = 1, size(f_string)
-do j = 1, len_trim(f_string(i))
- textptr(ii) = f_string(i)(j:j)
- ii = ii+1
-end do
-if (i < size(f_string)) then
- textptr(ii) = c_new_line
-else
- textptr(ii) = cnull
-end if
-ii = ii+1
-end do
-end subroutine convert_f_string
+    count = 1
+    i = 1
+    do
+       if (i > clen) exit
+       if (textptr(i) == cnull) exit
+       if (textptr(i) == c_new_line) count = count+1
+       i = i+1
+    end do
+    allocate(f_string(count))
+
+    if (present(status)) status = 0
+    ii = 1
+    do j = 1, count
+       f_string(j) = ""
+       do i = 1, len(f_string)
+          if (ii > size(textptr)) then
+             if (j < count .and. present(status)) status=-1
+             return
+          end if
+
+          if (textptr(ii) == cnull) return
+          if (textptr(ii) == c_new_line) then
+             ii = ii+1
+             exit
+          end if
+          f_string(j)(i:i)=textptr(ii)
+          ii = ii+1
+       end do
+       if (i > len(f_string) .and. present(status)) &
+            & status = -1  ! Output string not long enough
+    end do
+  end subroutine convert_c_string_array_cptr
+
+!+
+  subroutine convert_f_string(f_string, textptr, length)
+    ! Convert a fortran string array into a null-terminated, LF_separated
+    ! c-string
+    !
+    ! F_STRING: f_string: required: The fortran string to convert
+    ! TEXTPR: string: required: A C tyoe string, (allocatable).
+    ! LENGTH: c_int: optional: The lenght of the generated c string.
+    !-
+    character(len=*), intent(in), dimension(:) :: f_string
+    character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
+    integer(kind=c_int), intent(out), optional :: length
+
+    integer :: lcstr, i, j, ii
+
+    lcstr = 0
+    do i = 1, size(f_string)
+       lcstr = lcstr + len_trim(f_string(i))+1 ! The +1 is for the LF and NULL characters
+    end do
+
+    allocate(textptr(lcstr))
+    if (present(length)) length = lcstr
+
+    ii = 1
+    do i = 1, size(f_string)
+       do j = 1, len_trim(f_string(i))
+          textptr(ii) = f_string(i)(j:j)
+          ii = ii+1
+       end do
+       if (i < size(f_string)) then
+          textptr(ii) = c_new_line
+       else
+          textptr(ii) = cnull
+       end if
+       ii = ii+1
+    end do
+  end subroutine convert_f_string
 end module gtk_sup
