@@ -28,7 +28,8 @@
 cmake_minimum_required(VERSION 2.6)
 project(gtk-fortran C Fortran)
 
-set(CMAKE_BUILD_TYPE debug)
+# Uncomment this to debug
+# set(CMAKE_BUILD_TYPE debug)
 
 set(CMAKE_Fortran_FLAGS_DEBUG
 "-g -pthread -Wall -Wtabs -fcheck-array-temporaries -fbacktrace -fbounds-check -ffpe-trap=invalid,zero,overflow")
