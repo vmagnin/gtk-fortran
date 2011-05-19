@@ -20,12 +20,14 @@ cmake -DCMAKE_INSTALL_DIR=/usr ..
 
 To interactively control the build, use 'ccmake' in place of 'cmake'
 
+In place of src/test.sh, use make test
+
 Dependencies:
 -------------
 
 GtkFortran needs Gtk 2.24 or better (it will mostly work with 2.22) and
 the associated libraries. For 2.xx use the "master" git tree, for 3.x
-us "gtk3".
+use "gtk3".
 
 To build with gfortran, version 4.6 or better is needed (in 4.4 &
 4.5 c_funloc doesn't work correctly, at least for Fortran routines with
@@ -45,3 +47,22 @@ that other systems may have different naming conventions (If you have
 problems look for the lines with several asterisks in the comments, as
 these are the places where I think there could be issues [i.e. I was
 guessing until it worked]).
+
+Known issues
+------------
+
+On Gtk3, there is a warning
+
+    -- Some or all of the gtk libraries were not found. (missing:  GTK3_GDKCONFIG_INCLUDE_DIR) 
+that appears harmless and is probably a failing of the FindGTK3.cmake file.
+
+On Gtk3, building with the Debug options all the examples fail with a 
+floating-point exception as soon as the pointer is moved over the widget, 
+cause unknown.
+
+With the debug options enabled, the cairo examples fail because of an array
+bounds violation (due to the use of a length 0 for some arrays when 
+extracting from a C-pointer).
+
+The gtkbuilder examples cannot be run from make tests because the directories
+are not right to finr gtkbuilder.glade

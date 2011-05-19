@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 05-07-2011
+! Last modification: 05-18-2011
 
 module gtk_hl
   ! A bunch of procedures to implement higher level creators for
@@ -186,7 +186,7 @@ module gtk_hl
        & gtk_image_new_from_stock, &
        &gtk_combo_box_get_active, gtk_combo_box_new, & ! COMBO
        & gtk_file_chooser_add_filter,&   ! File chooser start
-       & gtk_file_chooser_button_new,&
+       & gtk_file_chooser_button_new, gtk_file_chooser_button_set_width_chars,&
        & gtk_file_chooser_get_current_folder,&
        & gtk_file_chooser_get_file, gtk_file_chooser_get_filename,&
        & gtk_file_chooser_get_filenames,&
@@ -683,7 +683,7 @@ contains
     character(kind=c_char), dimension(*), intent(in), optional :: label
 
     type(c_ptr) :: lwidget
-    integer(kind=c_int) :: index, istart
+    integer(kind=c_int) :: istart
 
     if (present(label)) then
        lwidget = gtk_label_new(label)
@@ -706,7 +706,7 @@ contains
        end if
     end if
 
-    if (index < 0) return
+    if (location < 0) return
 
     if (present(reorderable)) &
          & call gtk_notebook_set_tab_reorderable(nbook, page, reorderable)
@@ -1117,6 +1117,7 @@ contains
 
     if (present(sensitive)) call gtk_widget_set_sensitive(view, sensitive)
     if (present(tooltip)) call gtk_widget_set_tooltip_text(view, tooltip)
+    if (present(buffer)) buffer = tbuf
 
   end function hl_gtk_text_view_new
 
@@ -1750,7 +1751,6 @@ contains
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter
-    integer(kind=c_int) :: nrow, valid
 
     ! Get the ListStore
     store = gtk_tree_view_get_model(list)
@@ -1774,7 +1774,6 @@ contains
     type(c_ptr), intent(in) :: list
     integer(kind=c_int), optional, intent(in) :: row
 
-    integer(kind=c_int), target :: i
     integer(kind=c_int) :: valid
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter
@@ -1822,9 +1821,6 @@ contains
     integer(kind=c_int) :: i
     type(c_ptr) :: cindex
     integer(kind=c_int), pointer :: findex
-    integer(kind=c_int) :: valid
-    type(gtktreeiter), target :: iter
-    type(gvalue), target :: val
 
     if (present(selection)) then
        vselection = selection
@@ -2235,9 +2231,9 @@ contains
        if (present(ivalue)) then
           ivalue = g_value_get_int(val)
        else if (present(lvalue)) then
-          lvalue = g_value_get_int(val)
+          lvalue = int(g_value_get_int(val), c_long)
        else if (present(l64value)) then
-          l64value = g_value_get_int(val)
+          l64value = int(g_value_get_int(val), c_int64_t)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_int(val)
        else
@@ -2248,9 +2244,9 @@ contains
        if (present(ivalue)) then
           ivalue = g_value_get_uint(val)
        else if (present(lvalue)) then
-          lvalue = g_value_get_uint(val)
+          lvalue = int(g_value_get_uint(val), c_long)
        else if (present(l64value)) then
-          l64value = g_value_get_uint(val)
+          l64value = int(g_value_get_uint(val), c_int64_t)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_uint(val)
        else
@@ -2261,9 +2257,9 @@ contains
        if (present(ivalue)) then
           ivalue = g_value_get_boolean(val)
        else if (present(lvalue)) then
-          lvalue = g_value_get_boolean(val)
+          lvalue = int(g_value_get_boolean(val), c_long)
        else if (present(l64value)) then
-          l64value = g_value_get_boolean(val)
+          l64value = int(g_value_get_boolean(val), c_int64_t)
        else if (present(svalue)) then
           if (g_value_get_boolean(val) == TRUE) then
              svalue = 'True'
@@ -2279,9 +2275,9 @@ contains
        if (present(lvalue)) then
           lvalue = g_value_get_long(val)
        else if (present(l64value)) then
-          l64value = g_value_get_long(val)
+          l64value = int(g_value_get_long(val), c_int64_t)
        else if (present(ivalue)) then
-          ivalue = g_value_get_long(val)
+          ivalue = int(g_value_get_long(val), c_int)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_long(val)
        else
@@ -2292,9 +2288,9 @@ contains
        if (present(lvalue)) then
           lvalue = g_value_get_ulong(val)
        else if (present(l64value)) then
-          l64value = g_value_get_ulong(val)
+          l64value = int(g_value_get_ulong(val), c_int64_t)
        else if (present(ivalue)) then
-          ivalue = g_value_get_ulong(val)
+          ivalue = int(g_value_get_ulong(val), c_int)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_ulong(val)
        else
@@ -2306,9 +2302,9 @@ contains
        if (present(l64value)) then
           l64value = g_value_get_int64(val)
        else if (present(lvalue)) then
-          lvalue = g_value_get_int64(val)
+          lvalue = int(g_value_get_int64(val), c_long)
        else if (present(ivalue)) then
-          ivalue = g_value_get_int64(val)
+          ivalue = int(g_value_get_int64(val), c_int)
        else if (present(svalue)) then
           write (svalue,*) g_value_get_int64(val)
        else
@@ -2319,9 +2315,9 @@ contains
        if (present(l64value)) then
           l64value = g_value_get_uint64(val)
        else if (present(lvalue)) then
-          lvalue = g_value_get_uint64(val)
+          lvalue = int(g_value_get_uint64(val), c_long)
        else if (present(ivalue)) then
-          ivalue = g_value_get_uint64(val)
+          ivalue = int(g_value_get_uint64(val), c_int)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_uint64(val)
        else
@@ -2333,7 +2329,7 @@ contains
        if (present(fvalue)) then
           fvalue = g_value_get_float(val)
        else if (present(dvalue)) then
-          dvalue = g_value_get_float(val)
+          dvalue = real(g_value_get_float(val), c_double)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_float(val)
        else
@@ -2345,7 +2341,7 @@ contains
        if (present(dvalue)) then
           dvalue = g_value_get_double(val)
        else if (present(fvalue)) then
-          fvalue = g_value_get_double(val)
+          fvalue = real(g_value_get_double(val), c_float)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_double(val)
        else
@@ -2480,6 +2476,7 @@ contains
     call gtk_list_store_reorder(store, c_loc(idx))
 
     deallocate(idx)
+
   end subroutine hl_gtk_listn_reorder
 
   !+
@@ -2573,7 +2570,7 @@ contains
     integer(kind=c_int), intent(in), optional :: row
 
     integer(kind=c_int) :: irow
-    type(c_ptr) :: store, val
+    type(c_ptr) :: store
 
     call hl_gtk_listn_ins(list, row)
     if (.not. present(text)) return
@@ -2917,10 +2914,9 @@ contains
     integer(kind=c_int), intent(in), optional, dimension(:) :: row
     integer(kind=c_int), intent(in), optional :: absrow
 
-    type(c_ptr) :: store, rowp
+    type(c_ptr) :: store
     type(gtktreeiter), target :: iter1, iter2
-    integer(kind=c_int) :: nrow, valid, irow
-    type(gvalue), target :: rowv
+    integer(kind=c_int) ::  valid
     integer :: i, ndep
 
     ! Get the TreeStore
@@ -3086,7 +3082,6 @@ contains
     integer(kind=c_int), optional, intent(in), dimension(:) :: row
     integer(kind=c_int), intent(in), optional :: absrow
 
-    integer(kind=c_int), target :: i
     integer(kind=c_int) :: valid
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter
@@ -3143,10 +3138,6 @@ contains
     type(c_ptr) :: slist, vselection
     type(c_ptr), target :: model
     integer(kind=c_int) :: i
-    type(c_ptr) :: cindex
-    integer(kind=c_int) :: valid
-    type(gtktreeiter), target :: iter
-    type(gvalue), target :: val
     integer(kind=c_int) :: maxdepth
     integer(kind=c_int), dimension(:), pointer :: idxl
     integer(kind=c_int), target :: dep
@@ -3606,9 +3597,9 @@ contains
        if (present(ivalue)) then
           ivalue = g_value_get_int(val)
        else if (present(lvalue)) then
-          lvalue = g_value_get_int(val)
+          lvalue = int(g_value_get_int(val), c_long)
        else if (present(l64value)) then
-          l64value = g_value_get_int(val)
+          l64value = int(g_value_get_int(val), c_int64_t)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_int(val)
        else
@@ -3619,9 +3610,9 @@ contains
        if (present(ivalue)) then
           ivalue = g_value_get_uint(val)
        else if (present(lvalue)) then
-          lvalue = g_value_get_uint(val)
+          lvalue = int(g_value_get_uint(val), c_long)
        else if (present(l64value)) then
-          l64value = g_value_get_uint(val)
+          l64value = int(g_value_get_uint(val), c_int64_t)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_uint(val)
        else
@@ -3632,9 +3623,9 @@ contains
        if (present(ivalue)) then
           ivalue = g_value_get_boolean(val)
        else if (present(lvalue)) then
-          lvalue = g_value_get_boolean(val)
+          lvalue = int(g_value_get_boolean(val), c_long)
        else if (present(l64value)) then
-          l64value = g_value_get_boolean(val)
+          l64value = int(g_value_get_boolean(val), c_int64_t)
        else if (present(svalue)) then
           if (g_value_get_boolean(val) == TRUE) then
              svalue = 'True'
@@ -3650,9 +3641,9 @@ contains
        if (present(lvalue)) then
           lvalue = g_value_get_long(val)
        else if (present(l64value)) then
-          l64value = g_value_get_long(val)
+          l64value = int(g_value_get_long(val), c_int64_t)
        else if (present(ivalue)) then
-          ivalue = g_value_get_long(val)
+          ivalue = int(g_value_get_long(val), c_int)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_long(val)
        else
@@ -3663,9 +3654,9 @@ contains
        if (present(lvalue)) then
           lvalue = g_value_get_ulong(val)
        else if (present(l64value)) then
-          l64value = g_value_get_ulong(val)
+          l64value = int(g_value_get_ulong(val), c_int64_t)
        else if (present(ivalue)) then
-          ivalue = g_value_get_ulong(val)
+          ivalue = int(g_value_get_ulong(val), c_int)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_ulong(val)
        else
@@ -3677,9 +3668,9 @@ contains
        if (present(l64value)) then
           l64value = g_value_get_int64(val)
        else if (present(lvalue)) then
-          lvalue = g_value_get_int64(val)
+          lvalue = int(g_value_get_int64(val), c_long)
        else if (present(ivalue)) then
-          ivalue = g_value_get_int64(val)
+          ivalue = int(g_value_get_int64(val), c_int)
        else if (present(svalue)) then
           write (svalue,*) g_value_get_int64(val)
        else
@@ -3690,9 +3681,9 @@ contains
        if (present(l64value)) then
           l64value = g_value_get_uint64(val)
        else if (present(lvalue)) then
-          lvalue = g_value_get_uint64(val)
+          lvalue = int(g_value_get_uint64(val), c_long)
        else if (present(ivalue)) then
-          ivalue = g_value_get_uint64(val)
+          ivalue = int(g_value_get_uint64(val), c_int)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_uint64(val)
        else
@@ -3704,7 +3695,7 @@ contains
        if (present(fvalue)) then
           fvalue = g_value_get_float(val)
        else if (present(dvalue)) then
-          dvalue = g_value_get_float(val)
+          dvalue = real(g_value_get_float(val), c_double)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_float(val)
        else
@@ -3716,7 +3707,7 @@ contains
        if (present(dvalue)) then
           dvalue = g_value_get_double(val)
        else if (present(fvalue)) then
-          fvalue = g_value_get_double(val)
+          fvalue = real(g_value_get_double(val), c_float)
        else if (present(svalue)) then
           write(svalue,*) g_value_get_double(val)
        else
@@ -3889,7 +3880,7 @@ contains
     integer(kind=c_int), optional :: vertical, reversed
     real(kind=c_double), optional :: step
 
-    integer(kind=c_int) :: orientation
+!2    integer(kind=c_int) :: orientation
 
     bar = gtk_progress_bar_new()
 
@@ -3943,7 +3934,6 @@ contains
     ! character(kind=c_char), dimension(*), intent(in), optional :: text
     character(len=*), intent(in), optional:: text
 
-    real(kind=c_double) :: frac
     character(len=50) :: sval
 
     ! If no value given pulse the bar
@@ -4198,8 +4188,7 @@ contains
 
     integer(kind=c_int) :: mode, lval
     type(c_ptr) :: gfilter
-    integer :: i, j, idx0, idx1
-    integer, dimension(2) :: fshape
+    integer :: i, idx0, idx1
 
     if (present(directory)) then
        if (directory == TRUE) then
@@ -4227,6 +4216,9 @@ contains
        lval = FALSE
     end if
     call gtk_file_chooser_set_show_hidden(cbutton, lval)
+
+    if (present(width)) call &
+         & gtk_file_chooser_button_set_width_chars(cbutton, width)
 
     if (present(initial_folder)) &
          & lval = gtk_file_chooser_set_current_folder(cbutton, initial_folder)
@@ -4336,9 +4328,7 @@ contains
 
     type(c_ptr) :: dialog, content, junk, gfilter
     integer(kind=c_int) :: icreate, idir, action, lval
-    integer :: i, j, idx0, idx1
-    integer, dimension(2) :: fshape
-    integer(kind=c_int), target :: iselect
+    integer :: i, idx0, idx1
     integer(kind=c_int) :: nsel, resp
     type(c_ptr) :: strptr
     type(c_ptr) :: fbox, fapply
@@ -4891,8 +4881,6 @@ contains
     character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
     integer(kind=c_int), intent(in), optional :: wrap
 
-    integer(kind=c_int) :: isvertical, idraw
-
     ! Create the spin_button
     spin_button = gtk_spin_button_new_with_range(vmin, vmax, step)
 
@@ -4950,8 +4938,6 @@ contains
     integer(kind=c_int), optional, intent(in) :: sensitive
     character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
     integer(kind=c_int), intent(in), optional :: wrap
-
-    integer(kind=c_int) :: isvertical, idraw
 
     ! Create the spin_button
     spin_button = gtk_spin_button_new_with_range(real(imin, c_double), &
@@ -5179,7 +5165,6 @@ contains
     character(len=*), intent(out), optional :: ftext
 
     type(c_ptr), target :: ctext
-    integer(kind=c_int) :: tlen
 
     index = gtk_combo_box_get_active(cbox)
 
