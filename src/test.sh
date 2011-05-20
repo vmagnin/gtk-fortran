@@ -1,6 +1,6 @@
 #! /bin/sh
 # Compilation of gtk-fortran and its examples, using GTK+ 3.0
-# April 8th 2011
+# April 8th 2011, last modification: May 20th, 2011
 
 echo "Removing old files..."
 rm *.o
@@ -22,6 +22,7 @@ for i in ../examples/*.f90 ; do
   gfortran gtk.o gtk-sup.o gtk-hl.o $i $gtkversion -o $i.out
 done
 gfortran gtk.o ../examples/gtkbuilder2.f90 -o ../examples/gtkbuilder2.f90.out $gtkversion `pkg-config --cflags --libs gmodule-2.0`
+gfortran gtk.o gtk-sup.o gtk-hl.o ../sketcher/gtkf-sketcher.f90 -o ../sketcher/gtkf-sketcher.f90.out $gtkversion `pkg-config --cflags --libs gmodule-2.0`
 
 echo "running the examples..."
 cd ../examples/
