@@ -33,7 +33,8 @@ set(sources
 	"gtk.f90"
 	"gtk-hl.f90"
 	"gtk-sup.f90"
-	"pango-auto.f90")
+	"pango-auto.f90"
+	"gdkevents-auto3.f90")
 
 include_directories("/usr/include")
 include_directories(${GTK_INCLUDES})
@@ -77,6 +78,7 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
 	DESTINATION include)
 if (UNIX)
   install(FILES

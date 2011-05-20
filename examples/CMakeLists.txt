@@ -42,6 +42,10 @@ add_executable(cairo-basics "cairo-basics.f90")
 target_link_libraries(cairo-basics gtk-fortran_static ${GTK_LIBRARIES})
 add_test(cairo-basics ./cairo-basics)
 
+add_executable(cairo-basics-click "cairo-basics-click.f90")
+target_link_libraries(cairo-basics-click gtk-fortran_static ${GTK_LIBRARIES})
+add_test(cairo-basics-click ./cairo-basics-click)
+
 add_executable(gtkhello2 "gtkhello2.f90")
 target_link_libraries(gtkhello2 gtk-fortran_static ${GTK_LIBRARIES})
 add_test(gtkhello2 ./gtkhello2)

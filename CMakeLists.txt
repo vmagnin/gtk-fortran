@@ -88,5 +88,5 @@ add_custom_target(doc)
 add_dependencies(doc doxygen)
 
 add_subdirectory(src)
-# add_subdirectory(tests)
 add_subdirectory(examples)
+add_subdirectory(sketcher)
