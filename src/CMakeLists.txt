@@ -54,6 +54,17 @@ gtk-fortran_shared PROPERTIES VERSION "0.1")
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
 SOVERSION "0.1")
 
+# Does pkg-config have an equivalent in Windows? If so, then please
+# add a suitable generator and installation.
+if (UNIX)
+  add_custom_command(
+    OUTPUT gtk-fortran.pc
+    COMMAND sed -e s+@prefix@+${CMAKE_INSTALL_PREFIX}+ -e s/@version@/${CPACK_PACKAGE_VERSION}/ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran.pc.in > ${CMAKE_CURRENT_BINARY_DIR}/gtk-fortran.pc
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran.pc.in
+    )
+  add_custom_target(pkgconfig ALL DEPENDS "gtk-fortran.pc")
+endif()
+
 install(TARGETS gtk-fortran_static ARCHIVE DESTINATION lib)
 install(TARGETS gtk-fortran_shared LIBRARY DESTINATION lib)
 install(FILES
@@ -67,3 +78,9 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
 	DESTINATION include)
+if (UNIX)
+  install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk-fortran.pc"
+    DESTINATION lib/pkgconfig
+    )
+endif()
