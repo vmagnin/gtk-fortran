@@ -44,7 +44,7 @@ add_test(cairo-basics ./cairo-basics)
 
 add_executable(cairo-basics-click "cairo-basics-click.f90")
 target_link_libraries(cairo-basics-click gtk-fortran_static ${GTK_LIBRARIES})
-add_test(cairo-basics-click ./cairo-basics-click)
+add_test(cairo-basics ./cairo-basics-click)
 
 add_executable(gtkhello2 "gtkhello2.f90")
 target_link_libraries(gtkhello2 gtk-fortran_static ${GTK_LIBRARIES})
@@ -136,6 +136,11 @@ add_executable(mandelbrot_pixbuf "mandelbrot_pixbuf.f90")
 target_link_libraries(mandelbrot_pixbuf gtk-fortran_static
   ${GTK_LIBRARIES})
 add_test(mandelbrot_pixbuf ./mandelbrot_pixbuf)
+
+add_executable(mandelbrot_pixbuf_zoom "mandelbrot_pixbuf_zoom.f90")
+target_link_libraries(mandelbrot_pixbuf_zoom gtk-fortran_static
+  ${GTK_LIBRARIES})
+add_test(mandelbrot_pixbuf_zoom ./mandelbrot_pixbuf_zoom)
 
 add_executable(menu "menu.f90")
 target_link_libraries(menu gtk-fortran_static ${GTK_LIBRARIES})
