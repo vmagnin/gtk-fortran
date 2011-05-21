@@ -42,6 +42,10 @@ add_executable(cairo-basics "cairo-basics.f90")
 target_link_libraries(cairo-basics gtk-fortran_static ${GTK_LIBRARIES})
 add_test(cairo-basics ./cairo-basics)
 
+add_executable(cairo-basics-click "cairo-basics-click.f90")
+target_link_libraries(cairo-basics-click gtk-fortran_static ${GTK_LIBRARIES})
+add_test(cairo-basics ./cairo-basics-click)
+
 add_executable(gtkhello2 "gtkhello2.f90")
 target_link_libraries(gtkhello2 gtk-fortran_static ${GTK_LIBRARIES})
 add_test(gtkhello2 ./gtkhello2)
@@ -61,14 +65,12 @@ add_custom_target(glade ALL DEPENDS "gtkbuilder.glade")
 add_executable(gtkbuilder "gtkbuilder.f90")
 target_link_libraries(gtkbuilder gtk-fortran_static ${GTK_LIBRARIES})
 # This test is excluded because the directories don't match up.
-#add_test(gtkbuilder ./gtkbuilder)
+#add_test(gtkbuilder gtkbuilder)
 
-if (GTK2_MINOR_VERSION GREATER 23)
-   add_executable(gtkbuilder2 "gtkbuilder2.f90" "gtkbuilder.glade")
-   target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
+add_executable(gtkbuilder2 "gtkbuilder2.f90" "gtkbuilder.glade")
+target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
 # This test is excluded because the directories don't match up.
-#   add_test(gtkbuilder2 ./gtkbuilder2)
-endif()
+# add_test(gtkbuilder2 gtkbuilder2)
 
 add_executable(hl_choosers "hl_choosers.f90")
 target_link_libraries(hl_choosers gtk-fortran_static ${GTK_LIBRARIES})
@@ -120,7 +122,7 @@ add_test(hl_textview ./hl_textview)
 
 add_executable(hl_tree "hl_tree.f90")
 target_link_libraries(hl_tree gtk-fortran_static ${GTK_LIBRARIES})
-add_test(hl_tree hl_tree)
+add_test(hl_tree ./hl_tree)
 
 if (GTK2_MINOR_VERSION GREATER 23)
    add_executable(julia_pixbuf "julia_pixbuf.f90")
@@ -132,13 +134,15 @@ add_executable(list_demo "list_demo.f90")
 target_link_libraries(list_demo gtk-fortran_static ${GTK_LIBRARIES})
 add_test(list_demo ./list_demo)
 
-add_executable(mandelbrot "mandelbrot.f90")
-target_link_libraries(mandelbrot gtk-fortran_static ${GTK_LIBRARIES})
-add_test(mandelbrot ./mandelbrot)
-
 add_executable(mandelbrot_pixbuf "mandelbrot_pixbuf.f90")
-target_link_libraries(mandelbrot_pixbuf gtk-fortran_static ${GTK_LIBRARIES})
+target_link_libraries(mandelbrot_pixbuf gtk-fortran_static
+  ${GTK_LIBRARIES})
 add_test(mandelbrot_pixbuf ./mandelbrot_pixbuf)
+
+add_executable(mandelbrot "mandelbrot.f90")
+target_link_libraries(mandelbrot gtk-fortran_static
+  ${GTK_LIBRARIES})
+add_test(mandelbrot ./mandelbrot)
 
 add_executable(menu "menu.f90")
 target_link_libraries(menu gtk-fortran_static ${GTK_LIBRARIES})
