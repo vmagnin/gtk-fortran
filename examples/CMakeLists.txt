@@ -139,6 +139,11 @@ target_link_libraries(mandelbrot_pixbuf gtk-fortran_static
   ${GTK_LIBRARIES})
 add_test(mandelbrot_pixbuf ./mandelbrot_pixbuf)
 
+add_executable(mandelbrot_pixbuf_zoom "mandelbrot_pixbuf_zoom.f90")
+target_link_libraries(mandelbrot_pixbuf_zoom gtk-fortran_static
+  ${GTK_LIBRARIES})
+add_test(mandelbrot_pixbuf_zoom ./mandelbrot_pixbuf_zoom)
+
 add_executable(mandelbrot "mandelbrot.f90")
 target_link_libraries(mandelbrot gtk-fortran_static
   ${GTK_LIBRARIES})
