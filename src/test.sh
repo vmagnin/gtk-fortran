@@ -1,6 +1,6 @@
 #! /bin/sh
 # Compilation of gtk-fortran and its examples, using GTK+ 3.0
-# April 8th 2011, last modification: May 20th, 2011
+# April 8th 2011, last modification: May 22th, 2011
 
 echo "Removing old files..."
 rm *.o
@@ -12,7 +12,7 @@ rm ../examples/*.out
 gtkversion="`pkg-config --cflags --libs gtk+-3.0`"
 
 echo "gtk..."
-for file in "gdk-auto.f90" "glib-auto.f90" "gtk.f90" "unix-print-auto.f90" "atk-auto.f90" "cairo-auto.f90" "gdk-pixbuf-auto.f90" "pango-auto.f90" "gtk-sup.f90" "gtk-hl.f90"; do 
+for file in "gdk-auto.f90" "glib-auto.f90" "gtk.f90" "unix-print-auto.f90" "atk-auto.f90" "cairo-auto.f90" "gdk-pixbuf-auto.f90" "pango-auto.f90" "gtk-sup.f90" "gtk-hl.f90" "gdkevents-auto3.f90"; do 
   gfortran -c $file $gtkversion
 done
 
