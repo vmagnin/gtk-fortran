@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011, Python 2.7.1, Linux Ubuntu 11.04
-# Last modification:  05.04.2011
+# Last modification:  05.23.2011
 
 """ This program generates the *-auto.f90 files
     from the C header files of GTK+ in Linux.
@@ -69,12 +69,15 @@ def iso_c_binding(declaration, returned):
     #typedef void* gpointer;
     if c_type.find("gpointer")!=-1 or c_type.find("gconstpointer")!=-1:
         return "type(c_ptr)", "c_ptr"
-    
+
     # Is it a pointer ?
     if declaration.find("*") != -1:
         # Is it a string (char or gchar array) ? "unsigned char"   "guchar" gunichar ?
         if (((c_type.find("char") != -1) or (c_type.find("char*") != -1))) and (not returned):
-            return "character(kind=c_char), dimension(*)", "c_char"
+            if declaration.find("**") != -1:
+                return "type(c_ptr), dimension(*)", "c_ptr"
+            else:
+                return "character(kind=c_char), dimension(*)", "c_char"
         else:
             return "type(c_ptr)", "c_ptr"
 
