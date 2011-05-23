@@ -65,6 +65,7 @@ module gtk_hl
   ! * hl_gtk_listn_rem; Delete a row from a multi column list
   ! * hl_gtk_listn_get_selections; Get the selected row(s) in a multi-column
   ! list
+  ! * hl_gtk_listn_set_selection; Select a row in a multi-column list.
   ! * hl_gtk_listn_set_cell; Set the value of a cell in a multi column list
   ! * hl_gtk_listn_get_cell; Get the contents of a cell in a multi-column list
   ! * hl_gtk_listn_move_row; Move a row to a new location
@@ -73,6 +74,7 @@ module gtk_hl
   ! * hl_gtk_listn_get_n_rows; How many rows?
   ! * hl_gtk_list1_new; A single column list with indexing
   ! * hl_gtk_list1_get_selections; Get the selected row(s) from a list.
+  ! * hl_gtk_list1_set_selection; Select a row in a single column list.
   ! * hl_gtk_list1_ins; Insert a row into a list
   ! * hl_gtk_list1_rem; Delete a row from a list, or clear the list.
   ! * hl_gtk_list1_set_cell; Wrapper for above for a single column list.
@@ -206,6 +208,7 @@ module gtk_hl
        !  chooser end
        & gtk_tree_model_get_column_type, gtk_tree_view_column_set_sort_column_id, & ! List-n
        & gtk_tree_model_get_value, gtk_tree_view_column_get_tree_view, &
+       & gtk_tree_selection_unselect_all, gtk_tree_selection_select_iter, &
        & gtk_tree_model_get_iter_first, gtk_tree_view_column_set_sort_indicator, & ! List-n end
        & gtk_tree_path_get_depth, gtk_tree_path_get_indices_with_depth, & ! Tree
        & gtk_tree_store_remove, gtk_tree_model_iter_children, gtk_tree_model_iter_parent, &
@@ -1859,6 +1862,36 @@ contains
   end function hl_gtk_listn_get_selections
 
   !+
+  subroutine  hl_gtk_listn_set_selection(list, row)
+    ! Set the selected row in a list (single row only)
+    !
+    ! LIST: c_ptr: required: The list to work on.
+    ! ROW: c_int: optional: The row to select (absent or < 0 is clear selection)
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in), optional :: row
+
+    type(c_ptr) :: selection, store
+    type(gtktreeiter), target :: iter
+    integer(kind=c_int) :: valid
+
+    ! Get list store, & selection
+    store = gtk_tree_view_get_model(list)
+    selection = gtk_tree_view_get_selection(list)
+
+    if (.not. present(row)) then
+       call gtk_tree_selection_unselect_all(selection)
+    else if (row < 0) then
+       call gtk_tree_selection_unselect_all(selection)
+    else
+       valid = gtk_tree_model_iter_nth_child(store, c_loc(iter), NULL, row)
+       if (valid == FALSE) return
+       call gtk_tree_selection_select_iter(selection, c_loc(iter))
+    end if
+  end subroutine hl_gtk_listn_set_selection
+
+  !+
   subroutine hl_gtk_listn_set_cell(list, row, col, &
        & svalue, fvalue, dvalue, ivalue, lvalue, l64value)
     ! Set the value of a cell.
@@ -2627,6 +2660,21 @@ contains
     count = hl_gtk_listn_get_selections(list, indices, selection)
 
   end function hl_gtk_list1_get_selections
+
+  !+
+  subroutine  hl_gtk_list1_set_selection(list, row)
+    ! Set the selected row in a list (single row only)
+    !
+    ! LIST: c_ptr: required: The list to work on.
+    ! ROW: c_int: optional: The row to select (absent or < 0 is clear selection)
+    !-
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in), optional :: row
+
+    call hl_gtk_listn_set_selection(list, row)
+
+  end subroutine hl_gtk_list1_set_selection
 
   !+
   subroutine hl_gtk_list1_set_cell(list, row, svalue)
