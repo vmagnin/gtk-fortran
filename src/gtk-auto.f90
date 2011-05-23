@@ -996,8 +996,8 @@ end subroutine
 
 ! void gtk_rc_set_default_files (gchar **filenames);
 subroutine gtk_rc_set_default_files(filenames) bind(c) 
-  use iso_c_binding, only: c_char
-  character(kind=c_char), dimension(*) :: filenames
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), dimension(*) :: filenames
 end subroutine
 
 ! gchar** gtk_rc_get_default_files (void);
@@ -2920,9 +2920,9 @@ end subroutine
 ! void gtk_im_context_get_preedit_string (GtkIMContext *context, gchar **str, PangoAttrList **attrs, gint *cursor_pos);
 subroutine gtk_im_context_get_preedit_string(context, str, attrs, cursor_pos) b&
 &ind(c) 
-  use iso_c_binding, only: c_ptr, c_char
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: context
-  character(kind=c_char), dimension(*) :: str
+  type(c_ptr), dimension(*) :: str
   type(c_ptr), value :: attrs
   type(c_ptr), value :: cursor_pos
 end subroutine
@@ -2979,10 +2979,10 @@ end subroutine
 
 ! gboolean gtk_im_context_get_surrounding (GtkIMContext *context, gchar **text, gint *cursor_index);
 function gtk_im_context_get_surrounding(context, text, cursor_index) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
+  use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_im_context_get_surrounding
   type(c_ptr), value :: context
-  character(kind=c_char), dimension(*) :: text
+  type(c_ptr), dimension(*) :: text
   type(c_ptr), value :: cursor_index
 end function
 
@@ -4352,20 +4352,20 @@ end function
 
 ! GtkWidget * gtk_scale_button_new (GtkIconSize size, gdouble min, gdouble max, gdouble step, const gchar **icons);
 function gtk_scale_button_new(size, min, max, step, icons) bind(c) 
-  use iso_c_binding, only: c_ptr, c_int, c_double, c_char
+  use iso_c_binding, only: c_ptr, c_int, c_double
   type(c_ptr) :: gtk_scale_button_new
   integer(c_int), value :: size
   real(c_double), value :: min
   real(c_double), value :: max
   real(c_double), value :: step
-  character(kind=c_char), dimension(*) :: icons
+  type(c_ptr), dimension(*) :: icons
 end function
 
 ! void gtk_scale_button_set_icons (GtkScaleButton *button, const gchar **icons);
 subroutine gtk_scale_button_set_icons(button, icons) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: button
-  character(kind=c_char), dimension(*) :: icons
+  type(c_ptr), dimension(*) :: icons
 end subroutine
 
 ! gdouble gtk_scale_button_get_value (GtkScaleButton *button);
@@ -7198,9 +7198,9 @@ end subroutine
 
 ! void gtk_icon_theme_get_search_path (GtkIconTheme *icon_theme, gchar **path[], gint *n_elements);
 subroutine gtk_icon_theme_get_search_path(icon_theme, path, n_elements) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: icon_theme
-  character(kind=c_char), dimension(*) :: path
+  type(c_ptr), dimension(*) :: path
   type(c_ptr), value :: n_elements
 end subroutine
 
@@ -9042,10 +9042,10 @@ end function
 
 ! gboolean gtk_selection_data_set_uris (GtkSelectionData *selection_data, gchar **uris);
 function gtk_selection_data_set_uris(selection_data, uris) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
+  use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_selection_data_set_uris
   type(c_ptr), value :: selection_data
-  character(kind=c_char), dimension(*) :: uris
+  type(c_ptr), dimension(*) :: uris
 end function
 
 ! gchar **gtk_selection_data_get_uris (const GtkSelectionData *selection_data);
@@ -15524,9 +15524,9 @@ end function
 
 ! void gtk_about_dialog_set_authors (GtkAboutDialog *about, const gchar **authors);
 subroutine gtk_about_dialog_set_authors(about, authors) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: about
-  character(kind=c_char), dimension(*) :: authors
+  type(c_ptr), dimension(*) :: authors
 end subroutine
 
 ! G_CONST_RETURN gchar* G_CONST_RETURN * gtk_about_dialog_get_documenters (GtkAboutDialog *about);
@@ -15538,9 +15538,9 @@ end function
 
 ! void gtk_about_dialog_set_documenters (GtkAboutDialog *about, const gchar **documenters);
 subroutine gtk_about_dialog_set_documenters(about, documenters) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: about
-  character(kind=c_char), dimension(*) :: documenters
+  type(c_ptr), dimension(*) :: documenters
 end subroutine
 
 ! G_CONST_RETURN gchar* G_CONST_RETURN * gtk_about_dialog_get_artists (GtkAboutDialog *about);
@@ -15552,9 +15552,9 @@ end function
 
 ! void gtk_about_dialog_set_artists (GtkAboutDialog *about, const gchar **artists);
 subroutine gtk_about_dialog_set_artists(about, artists) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: about
-  character(kind=c_char), dimension(*) :: artists
+  type(c_ptr), dimension(*) :: artists
 end subroutine
 
 ! G_CONST_RETURN gchar *gtk_about_dialog_get_translator_credits (GtkAboutDialog *about);
@@ -17064,18 +17064,18 @@ end function
 
 !  gboolean gtk_parse_args (int *argc, char ***argv);
 function gtk_parse_args(argc, argv) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
+  use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_parse_args
   type(c_ptr), value :: argc
-  character(kind=c_char), dimension(*) :: argv
+  type(c_ptr), dimension(*) :: argv
 end function
 
 !  gboolean gtk_init_check (int *argc, char ***argv);
 function gtk_init_check(argc, argv) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char
+  use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_init_check
   type(c_ptr), value :: argc
-  character(kind=c_char), dimension(*) :: argv
+  type(c_ptr), dimension(*) :: argv
 end function
 
 !  gboolean gtk_init_with_args (gint *argc, gchar ***argv, const gchar *parameter_string, const GOptionEntry *entries, const gchar *translation_domain, GError **error);
@@ -17084,7 +17084,7 @@ function gtk_init_with_args(argc, argv, parameter_string, entries, translation_&
   use iso_c_binding, only: c_int, c_ptr, c_char
   integer(c_int) :: gtk_init_with_args
   type(c_ptr), value :: argc
-  character(kind=c_char), dimension(*) :: argv
+  type(c_ptr), dimension(*) :: argv
   character(kind=c_char), dimension(*) :: parameter_string
   type(c_ptr), value :: entries
   character(kind=c_char), dimension(*) :: translation_domain
@@ -17101,9 +17101,9 @@ end function
 !  void gtk_init_abi_check (int *argc, char ***argv, int num_checks, size_t sizeof_GtkWindow, size_t sizeof_GtkBox);
 subroutine gtk_init_abi_check(argc, argv, num_checks, sizeof_GtkWindow, sizeof_&
 &GtkBox) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int, c_size_t
+  use iso_c_binding, only: c_ptr, c_int, c_size_t
   type(c_ptr), value :: argc
-  character(kind=c_char), dimension(*) :: argv
+  type(c_ptr), dimension(*) :: argv
   integer(c_int), value :: num_checks
   integer(c_size_t), value :: sizeof_GtkWindow
   integer(c_size_t), value :: sizeof_GtkBox
@@ -17112,10 +17112,10 @@ end subroutine
 ! gboolean gtk_init_check_abi_check (int *argc, char ***argv, int num_checks, size_t sizeof_GtkWindow, size_t sizeof_GtkBox);
 function gtk_init_check_abi_check(argc, argv, num_checks, sizeof_GtkWindow, siz&
 &eof_GtkBox) bind(c) 
-  use iso_c_binding, only: c_int, c_ptr, c_char, c_size_t
+  use iso_c_binding, only: c_int, c_ptr, c_size_t
   integer(c_int) :: gtk_init_check_abi_check
   type(c_ptr), value :: argc
-  character(kind=c_char), dimension(*) :: argv
+  type(c_ptr), dimension(*) :: argv
   integer(c_int), value :: num_checks
   integer(c_size_t), value :: sizeof_GtkWindow
   integer(c_size_t), value :: sizeof_GtkBox
@@ -18058,9 +18058,9 @@ end function
 
 ! void gtk_image_get_stock (GtkImage *image, gchar **stock_id, GtkIconSize *size);
 subroutine gtk_image_get_stock(image, stock_id, size) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: image
-  character(kind=c_char), dimension(*) :: stock_id
+  type(c_ptr), dimension(*) :: stock_id
   integer(c_int), value :: size
 end subroutine
 
@@ -18081,9 +18081,9 @@ end function
 
 ! void gtk_image_get_icon_name (GtkImage *image, G_CONST_RETURN gchar **icon_name, GtkIconSize *size);
 subroutine gtk_image_get_icon_name(image, icon_name, size) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char, c_int
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: image
-  character(kind=c_char), dimension(*) :: icon_name
+  type(c_ptr), dimension(*) :: icon_name
   integer(c_int), value :: size
 end subroutine
 
@@ -20427,7 +20427,7 @@ function gtk_builder_add_objects_from_file(builder, filename, object_ids, error&
   integer(c_int) :: gtk_builder_add_objects_from_file
   type(c_ptr), value :: builder
   character(kind=c_char), dimension(*) :: filename
-  character(kind=c_char), dimension(*) :: object_ids
+  type(c_ptr), dimension(*) :: object_ids
   type(c_ptr), value :: error
 end function
 
@@ -20439,7 +20439,7 @@ function gtk_builder_add_objects_from_string(builder, buffer, length, object_id&
   type(c_ptr), value :: builder
   character(kind=c_char), dimension(*) :: buffer
   integer(c_size_t), value :: length
-  character(kind=c_char), dimension(*) :: object_ids
+  type(c_ptr), dimension(*) :: object_ids
   type(c_ptr), value :: error
 end function
 
@@ -26100,21 +26100,21 @@ end function
 
 !  void gtk_widget_path (GtkWidget *widget, guint *path_length, gchar **path, gchar **path_reversed);
 subroutine gtk_widget_path(widget, path_length, path, path_reversed) bind(c) 
-  use iso_c_binding, only: c_ptr, c_char
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
   type(c_ptr), value :: path_length
-  character(kind=c_char), dimension(*) :: path
-  character(kind=c_char), dimension(*) :: path_reversed
+  type(c_ptr), dimension(*) :: path
+  type(c_ptr), dimension(*) :: path_reversed
 end subroutine
 
 ! void gtk_widget_class_path (GtkWidget *widget, guint *path_length, gchar **path, gchar **path_reversed);
 subroutine gtk_widget_class_path(widget, path_length, path, path_reversed) bind&
 &(c) 
-  use iso_c_binding, only: c_ptr, c_char
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: widget
   type(c_ptr), value :: path_length
-  character(kind=c_char), dimension(*) :: path
-  character(kind=c_char), dimension(*) :: path_reversed
+  type(c_ptr), dimension(*) :: path
+  type(c_ptr), dimension(*) :: path_reversed
 end subroutine
 
 !  GdkPixbuf *gtk_widget_render_icon (GtkWidget *widget, const gchar *stock_id, GtkIconSize size, const gchar *detail);
@@ -26604,7 +26604,7 @@ function gtk_recent_info_get_application_info(info, app_name, app_exec, count, &
   integer(c_int) :: gtk_recent_info_get_application_info
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: app_name
-  character(kind=c_char), dimension(*) :: app_exec
+  type(c_ptr), dimension(*) :: app_exec
   type(c_ptr), value :: count
   type(c_ptr), value :: time_
 end function
