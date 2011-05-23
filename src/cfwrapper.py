@@ -74,7 +74,10 @@ def iso_c_binding(declaration, returned):
     if declaration.find("*") != -1:
         # Is it a string (char or gchar array) ? "unsigned char"   "guchar" gunichar ?
         if (((c_type.find("char") != -1) or (c_type.find("char*") != -1))) and (not returned):
-            return "character(kind=c_char), dimension(*)", "c_char"
+            if declaration.find("**") != -1:
+                return "type(c_ptr), dimension(*)", "c_ptr"
+            else:
+                return "character(kind=c_char), dimension(*)", "c_char"
         else:
             return "type(c_ptr)", "c_ptr"
 
