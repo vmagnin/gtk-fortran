@@ -227,6 +227,7 @@ module gtk_hl
        & gtk_window_set_deletable, gtk_window_set_keep_above, gtk_window_set_keep_below, & ! End W
        & gtk_tearoff_menu_item_new, gtk_list_store_reorder, gtk_list_store_swap, &
        & gtk_list_store_move_after, gtk_list_store_move_before, &
+       & gtk_window_set_transient_for, &
        & TRUE, FALSE, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -324,7 +325,7 @@ contains
   !+
   function hl_gtk_window_new(title, destroy, delete_event, data_destroy, &
        & data_delete_event, border, wsize, sensitive, resizable, decorated, &
-       & deletable, above, below) result(win)
+       & deletable, above, below, parent) result(win)
     ! Higher-level interface to make a gtk_window
     !
     ! TITLE: String: optional: Title for the window
@@ -343,6 +344,7 @@ contains
     ! DELETABLE: boolean: optional: Set to FALSE to remove the "delete" button.
     ! ABOVE: boolean: optional: Set to TRUE to make the window stay on to of others.
     ! BELOW: boolean: optional: Set to TRUE to make the window stay below others.
+    ! PARENT: c_ptr: Optional: An optional parent window for the new window
     !-
 
     type(c_ptr) :: win
@@ -353,6 +355,7 @@ contains
     integer, optional, intent(in), dimension(2) :: wsize
     integer(kind=c_int), intent(in), optional :: sensitive, resizable, decorated
     integer(kind=c_int), intent(in), optional :: deletable, above, below
+    type(c_ptr), intent(in), optional :: parent
 
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL)
     call gtk_window_set_title(win, title)
@@ -393,8 +396,11 @@ contains
     if (present(below)) &
          & call gtk_window_set_keep_below(win, below)
 
+    if (present(parent)) call gtk_window_set_transient_for(win, parent)
+
   end function hl_gtk_window_new
 
+  !+
   function hl_gtk_box_new(horizontal, homogeneous, spacing) result(box)
     ! Generic packing box
     !
