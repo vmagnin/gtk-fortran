@@ -89,6 +89,10 @@ contains
   subroutine display_int(col, cell, model, iter, data) bind(c)
     type(c_ptr), value :: col, cell, model, iter, data
 
+    ! Formatting routine attached via hl_gtk_listn_set_cell_data_func
+    ! Note that the column index is passed via the DATA argument, so
+    ! far as I can see the only other way is to use constants.
+
     character(len=10) :: rstring
     integer(kind=c_int) :: ival
     type(gvalue), target :: ivalue, svalue
