@@ -72,6 +72,7 @@ module gtk_hl
   ! * hl_gtk_listn_swap_rows; Exchange 2 rows
   ! * hl_gtk_listn_reorder; New order of rows.
   ! * hl_gtk_listn_get_n_rows; How many rows?
+  ! * hl_gtk_listn_set_cell_data_func; Set a rendering function for a list
   ! * hl_gtk_list1_new; A single column list with indexing
   ! * hl_gtk_list1_get_selections; Get the selected row(s) from a list.
   ! * hl_gtk_list1_set_selection; Set the selected row in a single column list
@@ -83,6 +84,7 @@ module gtk_hl
   ! * hl_gtk_list1_swap_rows; Exchange 2 rows
   ! * hl_gtk_list1_reorder; New order of rows.
   ! * hl_gtk_list1_get_n_rows; How many rows?
+  ! * hl_gtk_list1_set_cell_data_func; Set a rendering function for a list
   ! * hl_gtk_tree_new; Create a tree view
   ! * hl_gtk_tree_ins; Insert a row to a tree view
   ! * hl_gtk_tree_abs_iter; Find the iter for a given "absolute" row
@@ -91,6 +93,7 @@ module gtk_hl
   ! * hl_gtk_tree_get_selections; Get the selected rows of a tree view
   ! * hl_gtk_tree_set_cell; Set a cell in a tree view
   ! * hl_gtk_tree_get_cell; Get the value of a cell in a tree view
+  ! * hl_gtk_tree_set_cell_data_func; Set a rendering function for a tree
   ! * hl_gtk_menu_new; Create a menubar.
   ! * hl_gtk_menu_submenu; Add a submenu to a menu
   ! * hl_gtk_menu_item; Add a button to a menu
@@ -227,8 +230,9 @@ module gtk_hl
        & gtk_window_set_deletable, gtk_window_set_keep_above, gtk_window_set_keep_below, & ! End W
        & gtk_tearoff_menu_item_new, gtk_list_store_reorder, gtk_list_store_swap, &
        & gtk_list_store_move_after, gtk_list_store_move_before, &
-       & gtk_window_set_transient_for, &
-       & TRUE, FALSE, &
+       & gtk_window_set_transient_for, gtk_tree_view_get_column, gtk_cell_layout_get_cells, &
+       & gtk_tree_view_column_set_cell_data_func, &
+       & TRUE, FALSE, NULL, CNULL, FNULL, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
        & GTK_BUTTONS_OK, GTK_BUTTONS_CLOSE, GTK_BUTTONS_CANCEL, GTK_BUTTONS_YES_NO, &
@@ -267,8 +271,7 @@ module gtk_hl
        & g_value_set_uint64, g_value_set_boolean, g_value_set_uint,  &
        & g_value_get_char, g_value_get_long, g_value_get_int64, g_value_get_float, &
        & g_value_get_string, g_value_get_double, g_value_get_uchar, g_value_get_ulong, &
-       & g_value_get_uint64, g_value_get_boolean, g_value_get_uint
-
+       & g_value_get_uint64, g_value_get_boolean, g_value_get_uint, g_list_nth_data
   use iso_c_binding
 
   implicit none
@@ -2540,6 +2543,58 @@ contains
   end function hl_gtk_listn_get_n_rows
 
   !+
+  subroutine hl_gtk_listn_set_cell_data_func(list, colno, func, &
+       & data, destroy_notify)
+    ! Add a custom rendering function to a column of a list
+    !
+    ! LIST: c_ptr: required: The list to which to apply the rendering function
+    ! COLNO: c_int: required: The column index to which to apply it.
+    ! FUNC: c_funptr: optional: The function (actually subroutine)
+    ! 		to do the rendering (see: GtkTreeCellDataFunc, for
+    ! 		details). Omit or set to FNULL to remove a function.
+    ! DATA: c_ptr: optional: User data to pass to the function.
+    ! DESTROY_NOTIFY: c_funptr: optional: A destroy notify subroutine.
+    !-
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: colno
+    type(c_funptr), optional :: func
+    type(c_ptr), optional :: data
+    type(c_funptr), optional :: destroy_notify
+
+    type(c_funptr) :: funpass, destpass
+    type(c_ptr) :: datapass
+
+    type(c_ptr) :: col, renderer, rlist
+
+    if (present(func)) then
+       funpass = func
+    else
+       funpass = FNULL
+    end if
+
+    if (present(data)) then
+       datapass = data
+    else
+       datapass = NULL
+    end if
+
+    if (present(destroy_notify)) then
+       destpass = destroy_notify
+    else
+       destpass = FNULL
+    end if
+
+    col = gtk_tree_view_get_column(list, colno)
+    rlist = gtk_cell_layout_get_cells(col)
+    renderer = g_list_nth_data(rlist, 0)
+    call g_list_free(rlist)
+
+    call gtk_tree_view_column_set_cell_data_func(col, renderer,&
+         & funpass, datapass, destpass)
+
+  end subroutine hl_gtk_listn_set_cell_data_func
+
+  !+
   function hl_gtk_list1_new(scroll, width, changed, data, multiple, &
        & sensitive, tooltip, title, height) result(list)
     ! A single column selectable list based on the GTK Tree View
@@ -2782,6 +2837,27 @@ contains
 
     nrows=hl_gtk_listn_get_n_rows(list)
   end function hl_gtk_list1_get_n_rows
+
+  !+
+  subroutine hl_gtk_list1_set_cell_data_func(list, func, &
+       & data, destroy_notify)
+    ! Add a custom rendering function to a column of a list
+    !
+    ! LIST: c_ptr: required: The list to which to apply the rendering function
+    ! FUNC: c_funptr: optional: The function (actually subroutine)
+    ! 		to do the rendering (see: GtkTreeCellDataFunc, for
+    ! 		details). Omit or set to FNULL to remove a function.
+    ! DATA: c_ptr: optional: User data to pass to the function.
+    ! DESTROY_NOTIFY: c_funptr: optional: A destroy notify subroutine.
+    !-
+    type(c_ptr), intent(in) :: list
+    type(c_funptr), optional :: func
+    type(c_ptr), optional :: data
+    type(c_funptr), optional :: destroy_notify
+
+    call hl_gtk_listn_set_cell_data_func(list, 0, func, &
+         & data, destroy_notify)
+  end subroutine hl_gtk_list1_set_cell_data_func
 
   !+
   function hl_gtk_tree_new(scroll, ncols, types, changed, data, multiple,&
@@ -3783,6 +3859,28 @@ contains
        return
     end select
   end subroutine hl_gtk_tree_get_cell
+
+  !+
+  subroutine hl_gtk_tree_set_cell_data_func(list, colno, func, &
+       & data, destroy_notify)
+    ! Add a custom rendering function to a column of a tree
+    !
+    ! LIST: c_ptr: required: The list to which to apply the rendering function
+    ! FUNC: c_funptr: optional: The function (actually subroutine)
+    ! 		to do the rendering (see: GtkTreeCellDataFunc, for
+    ! 		details). Omit or set to FNULL to remove a function.
+    ! DATA: c_ptr: optional: User data to pass to the function.
+    ! DESTROY_NOTIFY: c_funptr: optional: A destroy notify subroutine.
+    !-
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: colno
+    type(c_funptr), optional :: func
+    type(c_ptr), optional :: data
+    type(c_funptr), optional :: destroy_notify
+
+    call hl_gtk_listn_set_cell_data_func(list, colno, func, &
+         & data, destroy_notify)
+  end subroutine hl_gtk_tree_set_cell_data_func
 
   !*
   ! Pulldown Menu
