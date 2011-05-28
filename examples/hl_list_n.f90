@@ -31,7 +31,8 @@ module ln_handlers
        &_main, gtk_main_quit, gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
        &ggle_button_set_active, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
        & gtk_init
-  use g, only: alloca
+  use g, only: alloca, g_object_set_property
+
 
   implicit none
 
@@ -85,6 +86,32 @@ contains
     deallocate(selections)
   end subroutine list_select
 
+  subroutine display_int(col, cell, model, iter, data) bind(c)
+    type(c_ptr), value :: col, cell, model, iter, data
+
+    ! Formatting routine attached via hl_gtk_listn_set_cell_data_func
+    ! Note that the column index is passed via the DATA argument, so
+    ! far as I can see the only other way is to use constants.
+
+    character(len=10) :: rstring
+    integer(kind=c_int) :: ival
+    type(gvalue), target :: ivalue, svalue
+    type(c_ptr) :: val_ptr
+    integer(kind=c_int), pointer :: colno
+
+    call c_f_pointer(data, colno)
+
+    call gtk_tree_model_get_value(model, iter, colno, c_loc(ivalue))
+    ival = g_value_get_int(c_loc(ivalue))
+
+    write(rstring, "(I7.7)") ival
+
+    val_ptr = c_loc(svalue)
+    val_ptr = g_value_init(val_ptr, G_TYPE_STRING)
+
+    call g_value_set_string(val_ptr, trim(rstring)//cnull)
+    call g_object_set_property(cell, "text"//cnull, val_ptr)
+  end subroutine display_int
 end module ln_handlers
 
 program list_n
@@ -101,7 +128,7 @@ program list_n
   integer(kind=type_kind), dimension(6) :: ctypes
   character(len=20), dimension(6) :: titles
   integer(kind=c_int), dimension(6) :: sortable
-
+  integer(kind=c_int), target :: fmt_col = 2
   ! Initialize GTK+
   call gtk_init()
 
@@ -127,6 +154,9 @@ program list_n
        & changed=c_funloc(list_select),&
        & multiple=TRUE, height=250, swidth=400, titles=titles, &
        & sortable=sortable)
+
+  call hl_gtk_listn_set_cell_data_func(ihlist, fmt_col, func=c_funloc(display_int), &
+       & data=c_loc(fmt_col))
 
   ! Now put 10 rows into it
   do i=1,10
