@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 05-18-2011
+! Last modification: 05-28-2011
 
 module gtk_hl
   ! A bunch of procedures to implement higher level creators for
@@ -931,7 +931,8 @@ contains
 
   !+
   function hl_gtk_entry_new(len, editable, activate, data, tooltip, value, &
-       & sensitive, changed, data_changed) result(entry)
+       & sensitive, changed, data_changed, delete_text, data_delete_text, &
+       & insert_text, data_insert_text) result(entry)
     ! Higher level text entry box
     !
     ! LEN: integer: optional: The maximum length of the entry field.
@@ -947,6 +948,12 @@ contains
     ! 		be sensitive or not.
     ! CHANGED: c_funptr: optional: Callback for the "changed" signal
     ! DATA_CHANGED: c_ptr: optional: Data to be passed to the changed callback.
+    ! DELETE_TEXT: c_funptr: optional: Callback for the "delete-text" signal
+    ! DATA_DELETE_TEXT: c_ptr: optional: Data to pass to the delete_text
+    !  		callback
+    ! INSERT_TEXT: c_funptr: optional: Callback for the "insert-text" signal.
+    ! DATA_INSERT_TEXT: c_ptr: optional: Data to pass to the insert_text
+    ! 		callback.
     !-
 
     type(c_ptr) :: entry
@@ -956,8 +963,8 @@ contains
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip, value
     integer(kind=c_int), intent(in), optional :: sensitive
-    type(c_funptr), optional :: changed
-    type(c_ptr), optional :: data_changed
+    type(c_funptr), optional :: changed, delete_text, insert_text
+    type(c_ptr), optional :: data_changed, data_delete_text, data_insert_text
 
     entry = gtk_entry_new()
     call gtk_entry_set_activates_default(entry, TRUE)
@@ -983,6 +990,22 @@ contains
                & data_changed)
        else
           call g_signal_connect(entry, "changed"//CNULL, changed)
+       end if
+    end if
+    if (present(delete_text)) then
+       if (present(data_delete_text)) then
+          call g_signal_connect(entry, "delete-text"//CNULL, delete_text, &
+               & data_delete_text)
+       else
+          call g_signal_connect(entry, "delete-text"//CNULL, delete_text)
+       end if
+    end if
+    if (present(insert_text)) then
+       if (present(data_insert_text)) then
+          call g_signal_connect(entry, "insert-text"//CNULL, insert_text, &
+               & data_insert_text)
+       else
+          call g_signal_connect(entry, "insert-text"//CNULL, insert_text)
        end if
     end if
 
