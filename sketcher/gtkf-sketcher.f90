@@ -103,9 +103,9 @@ module connect
   gtk_combo_box_get_active, gtk_combo_box_get_model, gtk_combo_box_get_active_iter,&
   gtk_tree_model_get_value, gtk_tree_model_iter_nth_child
   use g, only: g_object_unref, g_slist_length, g_slist_nth_data, g_object_get_property,&
-  g_object_get_valist, g_value_get_string
+  g_object_get_valist, g_value_get_string, g_mkdir_with_parents
   use gtk_hl, only: hl_gtk_file_chooser_show, gtktreeiter, gvalue
-
+  
    implicit none
 
    type signal_connection
@@ -184,6 +184,7 @@ contains
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
+    if (allocated(connections)) deallocate(connections)
     call gtk_main_quit ()
   end subroutine destroy
 
@@ -241,6 +242,7 @@ contains
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     call g_object_unref (b)
     
+    if (allocated(connections)) deallocate(connections)
     allocate(connections(n_connections))
     n_connections=0
     b = gtk_builder_new ()
@@ -277,7 +279,7 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     
-    character(len=256,kind=c_char)::subdir, license_file, line
+    character(len=256,kind=c_char)::subdir, license_file, line,test
     integer::status_read
     integer::i,j
     logical::already_used
@@ -285,11 +287,20 @@ contains
     call chdir(working_dir)
     subdir=filename(index(filename,"/",.true.)+1:index(filename,".",.true.)-1)
     if (create_subdir) then
-      if (.not.(files_written)) then
-        call system ("mkdir "//subdir)
-        call system ("cp "//filename(1:len_trim(filename))//" "//subdir)        
+      if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//CNULL,488) .ge. 0) then
         working_dir=working_dir(1:len_trim(working_dir))//"/"//subdir
         call chdir(working_dir)
+        open(50, file=filename(index(filename,"/",.true.)+1:len_trim(filename)), action='write')
+        open(60, file=filename(1:len_trim(filename)), action='read')
+        do
+          read(60,'(A)',iostat=status_read) line
+          if ( status_read /= 0 ) exit
+          write(50,'(A)')line(1:len_trim(line))
+        enddo
+        close(60)
+        close(50)
+      else
+        print*,"Unable to create subdirectory "//subdir
       endif
     endif
 
@@ -390,6 +401,7 @@ contains
     write(50,'(A)')""
     write(50,'(A)')"  integer(c_int) :: guint"
     write(50,'(A)')"  type(c_ptr) :: error"
+    write(50,'(A)')"  error = NULL"
     write(50,'(A)')""
     write(50,'(A)')"  ! Initialize the GTK+ Library"
     write(50,'(A)')"  call gtk_init ()"
@@ -446,7 +458,8 @@ program gtkfsketcher
 
   integer(c_int) :: guint
   type(c_ptr) :: error
-
+  error = NULL
+  
   ! get default options
   call default_options (builder, error)
  
