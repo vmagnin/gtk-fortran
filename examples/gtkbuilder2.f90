@@ -101,6 +101,7 @@ program gtkbuilder
 
   integer(c_int) :: guint
   type(c_ptr) :: error
+  error = NULL
 
   ! Initialize the GTK+ Library
   call gtk_init ()
