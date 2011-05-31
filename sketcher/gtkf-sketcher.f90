@@ -33,14 +33,22 @@ module widgets
   type(c_ptr) :: builder
   type(c_ptr) :: textbuffer
   type(c_ptr) :: license_selector
+  type(c_ptr) :: create_subdir_button
+  type(c_ptr) :: create_handlerfiles_button
+  type(c_ptr) :: overwrite_handlerfiles_button
+  type(c_ptr) :: widget_symbols_button
 
   character(len=256,kind=c_char)::filename
   character(len=256,kind=c_char)::working_dir, base_dir
   character(len=65000,kind=c_char)::fileinfo
   logical::files_written=.false.
+  logical::file_loaded=.false.
 
 ! options
   logical::create_subdir=.true.
+  logical::create_handlerfiles=.true.
+  logical::overwrite_handlerfiles=.false.
+  logical::widget_symbols=.false.
    
 end module
 
@@ -48,7 +56,7 @@ module strings
 
   use widgets
 
-  use gtk, only: CNULL
+  use gtk, only: CNULL, TRUE, FALSE
 
 contains
 
@@ -90,6 +98,38 @@ contains
     end if
   end subroutine C_F_string_ptr
 
+  function gbool_equal_fbool(gbool,fbool) result(ret)
+    integer(c_int), intent(in) :: gbool
+    logical, intent(in) :: fbool
+    logical :: ret    
+    if (((gbool.eq.true).and.(fbool)).or.((gbool.eq.false).and.(.not.fbool))) then
+      ret=.true.
+    else
+      ret=.false.
+    endif
+    write(*,*),gbool,fbool,ret
+  end function gbool_equal_fbool
+  
+  function gbool(fbool) result(ret)
+    logical, intent(in) :: fbool
+    integer(c_int) :: ret    
+    if (fbool) then
+      ret=true
+    else
+      ret=false
+    endif
+  end function gbool
+
+  function fbool(gbool) result(ret)
+    integer(c_int), intent(in) :: gbool
+    logical :: ret    
+    if (gbool.eq.true) then
+      ret=.true.
+    else
+      ret=.false.
+    endif
+  end function fbool
+
 end module strings
 
 module connect
@@ -100,69 +140,71 @@ module connect
   &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&
   &FALSE, CNULL, NULL, TRUE, gtk_init, gtk_builder_get_objects, gtk_builder_connect_signals_full,&
   gtk_buildable_get_name, gtk_text_view_get_buffer, gtk_text_buffer_set_text,&
-  gtk_combo_box_get_active, gtk_combo_box_get_model, gtk_combo_box_get_active_iter,&
-  gtk_tree_model_get_value, gtk_tree_model_iter_nth_child
+  gtk_combo_box_get_active, gtk_combo_box_set_active, gtk_combo_box_get_model, gtk_combo_box_get_active_iter,&
+  gtk_tree_model_get_value, gtk_tree_model_iter_nth_child,&
+  gtk_toggle_button_get_active, gtk_toggle_button_set_active,GTK_BUTTONS_OK
   use g, only: g_object_unref, g_slist_length, g_slist_nth_data, g_object_get_property,&
   g_object_get_valist, g_value_get_string, g_mkdir_with_parents
-  use gtk_hl, only: hl_gtk_file_chooser_show, gtktreeiter, gvalue
+  use gtk_hl, only: hl_gtk_file_chooser_show, gtktreeiter, gvalue, hl_gtk_message_dialog_show
   
-   implicit none
+  implicit none
 
-   type signal_connection
-      character(len=64)::object_name
-      character(len=64)::signal_name
-      character(len=64)::handler_name
-   end type signal_connection
+  type signal_connection
+    character(len=64)::object_name
+    character(len=64)::signal_name
+    character(len=64)::handler_name
+  end type signal_connection
       
-   integer::n_connections
-   type(signal_connection), dimension(:), allocatable::connections
-   
-   contains
-   
-   subroutine count_connections (builder, object, signal_name, handler_name, connect_object, flags, user_data) bind(c)
-      use iso_c_binding, only: c_ptr, c_char, c_int
-      type(c_ptr), value                     :: builder        !a GtkBuilder
-      type(c_ptr), value                     :: object         !object to connect a signal to
-      character(kind=c_char), dimension(*)   :: signal_name    !name of the signal
-      character(kind=c_char), dimension(*)   :: handler_name   !name of the handler
-      type(c_ptr), value                     :: connect_object !a GObject, if non-NULL, use g_signal_connect_object()
-      integer(c_int), value                  :: flags          !GConnectFlags to use
-      type(c_ptr), value                     :: user_data      !user data 
-      
-      n_connections=n_connections+1
-   end subroutine count_connections
-
-   subroutine get_connections (builder, object, signal_name, handler_name, connect_object, flags, user_data) bind(c)
-      use iso_c_binding, only: c_ptr, c_char, c_int
-      type(c_ptr), value                     :: builder        !a GtkBuilder
-      type(c_ptr), value                     :: object         !object to connect a signal to
-      character(kind=c_char), dimension(*)   :: signal_name    !name of the signal
-      character(kind=c_char), dimension(*)   :: handler_name   !name of the handler
-      type(c_ptr), value                     :: connect_object !a GObject, if non-NULL, use g_signal_connect_object()
-      integer(c_int), value                  :: flags          !GConnectFlags to use
-      type(c_ptr), value                     :: user_data      !user data 
-      
-      character(len=64)                      :: sname
-      character(len=64)                      :: hname
-      type(c_ptr)                            :: object_name_ptr
-      character(len=64)                      :: oname
+  integer::n_connections
+  type(signal_connection), dimension(:), allocatable::connections
+  type(c_ptr) :: gslist !list containing the widgets 
   
-      call C_F_string_chars(signal_name, sname)
-      call C_F_string_chars(handler_name, hname)
-      object_name_ptr=gtk_buildable_get_name (object)
-      if (.not. C_associated(object_name_ptr)) then
-        oname="unknown"
-      else
-        call C_F_string_ptr(object_name_ptr, oname)
-      endif
-      fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//"object: "//trim(adjustl(oname))//"  signal: "//&
-         trim(adjustl(sname))//"  handler: "//trim(adjustl(hname))
-      n_connections=n_connections+1
-      connections(n_connections)%object_name=oname
-      connections(n_connections)%signal_name=sname
-      connections(n_connections)%handler_name=hname
+  contains
+   
+  subroutine count_connections (builder, object, signal_name, handler_name, connect_object, flags, user_data) bind(c)
+    use iso_c_binding, only: c_ptr, c_char, c_int
+    type(c_ptr), value                     :: builder        !a GtkBuilder
+    type(c_ptr), value                     :: object         !object to connect a signal to
+    character(kind=c_char), dimension(*)   :: signal_name    !name of the signal
+    character(kind=c_char), dimension(*)   :: handler_name   !name of the handler
+    type(c_ptr), value                     :: connect_object !a GObject, if non-NULL, use g_signal_connect_object()
+    integer(c_int), value                  :: flags          !GConnectFlags to use
+    type(c_ptr), value                     :: user_data      !user data 
+     
+    n_connections=n_connections+1
+  end subroutine count_connections
 
-   end subroutine get_connections
+  subroutine get_connections (builder, object, signal_name, handler_name, connect_object, flags, user_data) bind(c)
+    use iso_c_binding, only: c_ptr, c_char, c_int
+    type(c_ptr), value                     :: builder        !a GtkBuilder
+    type(c_ptr), value                     :: object         !object to connect a signal to
+    character(kind=c_char), dimension(*)   :: signal_name    !name of the signal
+    character(kind=c_char), dimension(*)   :: handler_name   !name of the handler
+    type(c_ptr), value                     :: connect_object !a GObject, if non-NULL, use g_signal_connect_object()
+    integer(c_int), value                  :: flags          !GConnectFlags to use
+    type(c_ptr), value                     :: user_data      !user data 
+      
+    character(len=64)                      :: sname
+    character(len=64)                      :: hname
+    type(c_ptr)                            :: object_name_ptr
+    character(len=64)                      :: oname
+  
+    call C_F_string_chars(signal_name, sname)
+    call C_F_string_chars(handler_name, hname)
+    object_name_ptr=gtk_buildable_get_name (object)
+    if (.not. C_associated(object_name_ptr)) then
+      oname="unknown"
+    else
+      call C_F_string_ptr(object_name_ptr, oname)
+    endif
+    fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//"object: "//trim(adjustl(oname))//"  signal: "//&
+       trim(adjustl(sname))//"  handler: "//trim(adjustl(hname))
+    n_connections=n_connections+1
+    connections(n_connections)%object_name=oname
+    connections(n_connections)%signal_name=sname
+    connections(n_connections)%handler_name=hname
+
+  end subroutine get_connections
    
 end module connect
 
@@ -174,6 +216,22 @@ module handlers
 
 contains
 
+  subroutine copy_file(source,destination)
+    character(len=100),intent(in) :: source
+    character(len=100),intent(in) :: destination
+    character(len=256,kind=c_char)::line
+    integer::status_read
+    open(50, file=destination, action='write')
+    open(60, file=source, action='read')
+    do
+      read(60,'(A)',iostat=status_read) line
+      if ( status_read /= 0 ) exit
+      write(50,'(A)')line(1:len_trim(line))
+    enddo
+    close(60)
+    close(50)
+  end subroutine copy_file
+
   function delete_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
@@ -184,9 +242,40 @@ contains
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
+    logical::lopened
     if (allocated(connections)) deallocate(connections)
+    inquire(unit=99,opened=lopened)
+    if (lopened) close(99)
     call gtk_main_quit ()
   end subroutine destroy
+
+  subroutine create_subdir_toggled (widget, gdata) bind(c)
+    use iso_c_binding, only: c_ptr
+    type(c_ptr), value :: widget, gdata
+    create_subdir=fbool(gtk_toggle_button_get_active(create_subdir_button))
+    write(*,*)"subdir creation = ",create_subdir
+  end subroutine create_subdir_toggled
+
+  subroutine create_handlerfiles_toggled (widget, gdata) bind(c)
+    use iso_c_binding, only: c_ptr
+    type(c_ptr), value :: widget, gdata
+    create_handlerfiles=fbool(gtk_toggle_button_get_active(create_handlerfiles_button))
+    write(*,*)"handlerfiles creation = ",create_handlerfiles
+  end subroutine create_handlerfiles_toggled
+
+  subroutine overwrite_handlerfiles_toggled (widget, gdata) bind(c)
+    use iso_c_binding, only: c_ptr
+    type(c_ptr), value :: widget, gdata
+    overwrite_handlerfiles=fbool(gtk_toggle_button_get_active(overwrite_handlerfiles_button))
+    write(*,*)"handlerfiles overwrite = ",overwrite_handlerfiles
+  end subroutine overwrite_handlerfiles_toggled
+
+  subroutine widget_symbols_toggled (widget, gdata) bind(c)
+    use iso_c_binding, only: c_ptr
+    type(c_ptr), value :: widget, gdata
+    widget_symbols=fbool(gtk_toggle_button_get_active(widget_symbols_button))
+    write(*,*)"symbols for all widgets = ",widget_symbols
+  end subroutine widget_symbols_toggled
 
   function file_open (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
@@ -203,7 +292,7 @@ contains
 
     integer(c_int) :: guint, i
     type(c_ptr) :: error = c_null_ptr
-    type(c_ptr) :: gslist
+!    type(c_ptr) :: gslist
     type(c_ptr) :: gpointer,object_name_ptr
     type(c_ptr) :: b
     character(len=128) :: F_string
@@ -251,6 +340,8 @@ contains
     call g_object_unref (b)
     call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//CNULL, -1)
 
+    file_loaded=.true.
+    
     ret = FALSE
 
   end function file_open
@@ -268,7 +359,7 @@ contains
     model = gtk_combo_box_get_model(license_selector)
     valid = gtk_tree_model_iter_nth_child(model, c_loc(iter), NULL, gtk_combo_box_get_active (combobox))
     val = c_loc(value)
-    call gtk_tree_model_get_value(model, c_loc(iter), 1, val)
+    call gtk_tree_model_get_value(model, c_loc(iter), column, val)
     textptr = g_value_get_string(val)
     call C_F_string_ptr(textptr, text)
 
@@ -279,172 +370,222 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     
-    character(len=256,kind=c_char)::subdir, license_file, line,test
+    character(len=256,kind=c_char)::subdir, license_file, line,test, handlerfile
     integer::status_read
     integer::i,j
-    logical::already_used
+    logical::already_used, lexist
+    type(c_ptr) :: gpointer,object_name_ptr
+    character(len=128) :: F_string
     
-    call chdir(working_dir)
-    subdir=filename(index(filename,"/",.true.)+1:index(filename,".",.true.)-1)
-    if (create_subdir) then
-      if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//CNULL,488) .ge. 0) then
-        working_dir=working_dir(1:len_trim(working_dir))//"/"//subdir
-        call chdir(working_dir)
-        open(50, file=filename(index(filename,"/",.true.)+1:len_trim(filename)), action='write')
-        open(60, file=filename(1:len_trim(filename)), action='read')
-        do
-          read(60,'(A)',iostat=status_read) line
-          if ( status_read /= 0 ) exit
-          write(50,'(A)')line(1:len_trim(line))
-        enddo
-        close(60)
-        close(50)
-      else
-        print*,"Unable to create subdirectory "//subdir
-      endif
-    endif
-
-    call combobox_get_active_string_value(license_selector, 1, license_file)
-    license_file=adjustl(license_file)
-
-    open(50, file=subdir(1:len_trim(subdir))//".f90", action='write')
-
-    write(50,'(A)')"! "//subdir(1:len_trim(subdir))//" main program generated by gtkf-sketcher, "//fdate()
-    write(50,'(A)')"!"
-    write(50,'(A)')"! gtkf-sketcher is part of the gtk-fortran GTK+ Fortran Interface Library."
-    write(50,'(A)')"!"
-    write(50,'(A)')"!"
-    open(60, file=base_dir(1:len_trim(base_dir))//"/data/"//license_file(1:len_trim(license_file)), action='read')
-    do
-      read(60,'(A)',iostat=status_read) line
-      if ( status_read /= 0 ) exit
-      write(50,'(A)')"! "//line(1:len_trim(line))
-    enddo
-    close(60)
-    
-    write(50,'(A)')"!"
-    write(50,'(A)')"!"
-    write(50,'(A)')"! Compile with:"
-    write(50,'(A)')"! gfortran gtk.f90 "//subdir(1:len_trim(subdir))//".f90 -o "//subdir(1:len_trim(subdir))//&
-      " `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gmodule-2.0`"
-    write(50,'(A)')"!"
-    write(50,'(A)')""
-
-    write(50,'(A)')"module widgets"
-    write(50,'(A)')"! declares the used GTK widgets"
-    write(50,'(A)')"  use iso_c_binding"
-    write(50,'(A)')"  implicit none"
-    write(50,'(A)')""
-    write(50,'(A)')"  type(c_ptr) :: window"
-    write(50,'(A)')"  type(c_ptr) :: builder"
-    write(50,'(A)')""
-    write(50,'(A)')"end module"
-    write(50,'(A)')""
-    write(50,'(A)')""
-    
-    write(50,'(A)')"module handlers"
-    write(50,'(A)')"  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&"
-    write(50,'(A)')"  &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&"
-    write(50,'(A)')"  &FALSE, CNULL, NULL, gtk_init"
-    write(50,'(A)')"  use g, only: g_object_unref"
-
-    write(50,'(A)')"  use widgets"
-    write(50,'(A)')"  implicit none"
-    write(50,'(A)')""
-    write(50,'(A)')"contains"
-    write(50,'(A)')"  !*************************************"
-    write(50,'(A)')"  ! User defined event handlers go here"
-    write(50,'(A)')"  !*************************************"
-
-    do i=1,n_connections
-      already_used=.false.
-      if (i.gt.1) then
-        do j=1,i-1
-          if (connections(i)%handler_name.eq.connections(j)%handler_name) then
-            already_used=.true.
-            exit
-          endif
-        enddo
-      endif
-      if (.not.already_used) then
-        write(50,'(A)')"! handler function for signal "//connections(i)%signal_name(1:len_trim(connections(i)%signal_name))//&
-          " ("//connections(i)%object_name(1:len_trim(connections(i)%object_name))//")"
-        if (index(connections(i)%signal_name,"event").gt.0) then
-          write(50,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
-            " (widget, event, gdata) result(ret) bind(c)"
-          write(50,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
-          write(50,'(A)')"    integer(c_int)    :: ret"
-          write(50,'(A)')"    type(c_ptr), value :: widget, event, gdata"
+    if (.not.file_loaded) then
+      status_read=hl_gtk_message_dialog_show((/"Please load some Glade3 UI file first!"/), GTK_BUTTONS_OK, &
+        title="No Glade3 file loaded yet")
+      return
+    else
+      call chdir(working_dir)
+      subdir=filename(index(filename,"/",.true.)+1:index(filename,".",.true.)-1)
+      if (create_subdir) then
+        if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//CNULL,488) .ge. 0) then
+          working_dir=working_dir(1:len_trim(working_dir))//"/"//subdir
+          call chdir(working_dir)
+          call copy_file(filename(1:len_trim(filename)),filename(index(filename,"/",.true.)+1:len_trim(filename)))
         else
-          write(50,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
-            " (widget, gdata) result(ret) bind(c)"
-          write(50,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
-          write(50,'(A)')"    integer(c_int)    :: ret"
-          write(50,'(A)')"    type(c_ptr), value :: widget, gdata"
+          print*,"Unable to create subdirectory "//subdir
         endif
-        write(50,'(A)')"!########## INSERT YOUR HANDLER CODE HERE ##########"
-        write(50,'(A)')"print*,""handler function: "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//""""
-        write(50,'(A)')"!###################################################"
-        write(50,'(A)')"    ret = FALSE"
-        write(50,'(A)')"  end function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))
-        write(50,'(A)')""
       endif
-    enddo
-    write(50,'(A)')"end module handlers"
-    write(50,'(A)')""
-    write(50,'(A)')""
-    write(50,'(A)')"program "//subdir(1:len_trim(subdir))
-    write(50,'(A)')""
-    write(50,'(A)')"  use handlers"
-    write(50,'(A)')""
-    write(50,'(A)')"  implicit none"
-    write(50,'(A)')""
-    write(50,'(A)')"  integer(c_int) :: guint"
-    write(50,'(A)')"  type(c_ptr) :: error"
-    write(50,'(A)')"  error = NULL"
-    write(50,'(A)')""
-    write(50,'(A)')"  ! Initialize the GTK+ Library"
-    write(50,'(A)')"  call gtk_init ()"
-    write(50,'(A)')""
-    write(50,'(A)')"  ! create a new GtkBuilder object"
-    write(50,'(A)')"  builder = gtk_builder_new ()"
-    write(50,'(A)')""
-    write(50,'(A)')"  ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object"
-    write(50,'(A)')"  guint = gtk_builder_add_from_file (builder, """//subdir(1:len_trim(subdir))//".glade""//CNULL, error)"
-    write(50,'(A)')""
-    write(50,'(A)')"  ! get a pointer to the GObject ""window"" from GtkBuilder"
-    write(50,'(A)')"  window = gtk_builder_get_object (builder, ""window""//CNULL)"
-    write(50,'(A)')""
-    write(50,'(A)')"  ! use GModule to look at the applications symbol table to find the function name"
-    write(50,'(A)')"  ! that matches the handler name specified in Glade3"
-    write(50,'(A)')"  call gtk_builder_connect_signals (builder, NULL)"
-    write(50,'(A)')""
-    write(50,'(A)')"  ! free all memory used by XML stuff"     
-    write(50,'(A)')"  call g_object_unref (builder)"
-    write(50,'(A)')""
-    write(50,'(A)')"  ! Show the Application Window"
-    write(50,'(A)')"  call gtk_widget_show (window)"      
-    write(50,'(A)')""
-    write(50,'(A)')"  ! Enter the GTK+ Main Loop"
-    write(50,'(A)')"  call gtk_main ()"
-    write(50,'(A)')""
-    write(50,'(A)')"end program "//subdir(1:len_trim(subdir))
 
-    close(50)
+      call combobox_get_active_string_value(license_selector, 1, license_file)
+      license_file=adjustl(license_file)
 
-    files_written=.true.
+      open(50, file=subdir(1:len_trim(subdir))//".f90", action='write')
+
+      write(50,'(A)')"! "//subdir(1:len_trim(subdir))//" main program generated by gtkf-sketcher, "//fdate()
+      write(50,'(A)')"!"
+      write(50,'(A)')"! gtkf-sketcher is part of the gtk-fortran GTK+ Fortran Interface Library."
+      write(50,'(A)')"!"
+      write(50,'(A)')"!"
+      open(60, file=base_dir(1:len_trim(base_dir))//"/data/"//license_file(1:len_trim(license_file)), action='read')
+      do
+        read(60,'(A)',iostat=status_read) line
+        if ( status_read /= 0 ) exit
+        write(50,'(A)')"! "//line(1:len_trim(line))
+      enddo
+      close(60)
+    
+      write(50,'(A)')"!"
+      write(50,'(A)')"!"
+      write(50,'(A)')"! Compile with:"
+      write(50,'(A)')"! gfortran gtk.f90 "//subdir(1:len_trim(subdir))//".f90 -o "//subdir(1:len_trim(subdir))//&
+        " `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gmodule-2.0`"
+      write(50,'(A)')"!"
+      write(50,'(A)')""
+
+      write(50,'(A)')"module widgets"
+      write(50,'(A)')"! declares the used GTK widgets"
+      write(50,'(A)')"  use iso_c_binding"
+      write(50,'(A)')"  implicit none"
+      write(50,'(A)')""
+      if (widget_symbols) then
+        do i=0, g_slist_length(gslist)-1
+          gpointer=g_slist_nth_data (gslist,i)
+          object_name_ptr=gtk_buildable_get_name (gpointer)
+          call C_F_string_ptr(object_name_ptr, F_string)
+          write(50,'(A)')"  type(c_ptr) :: "//f_string
+        enddo
+      else
+        write(50,'(A)')"  type(c_ptr) :: window"
+      endif
+      write(50,'(A)')"  type(c_ptr) :: builder"
+      write(50,'(A)')""
+      write(50,'(A)')"end module"
+      write(50,'(A)')""
+      write(50,'(A)')""
+      
+      write(50,'(A)')"module handlers"
+      write(50,'(A)')"  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&"
+      write(50,'(A)')"  &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&"
+      write(50,'(A)')"  &FALSE, CNULL, NULL, gtk_init"
+      write(50,'(A)')"  use g, only: g_object_unref"
+  
+      write(50,'(A)')"  use widgets"
+      write(50,'(A)')"  implicit none"
+      write(50,'(A)')""
+      write(50,'(A)')"contains"
+      write(50,'(A)')"  !*************************************"
+      write(50,'(A)')"  ! User defined event handlers go here"
+      write(50,'(A)')"  !*************************************"
+
+      do i=1,n_connections
+        already_used=.false.
+        if (i.gt.1) then
+          do j=1,i-1
+            if (connections(i)%handler_name.eq.connections(j)%handler_name) then
+              already_used=.true.
+              exit
+            endif
+          enddo
+        endif
+        if (.not.already_used) then
+          write(50,'(A)')"! handler function for signal "//connections(i)%signal_name(1:len_trim(connections(i)%signal_name))//&
+            " ("//connections(i)%object_name(1:len_trim(connections(i)%object_name))//")"
+          if (index(connections(i)%signal_name,"event").gt.0) then
+            write(50,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
+              " (widget, event, gdata) result(ret) bind(c)"
+            write(50,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
+            write(50,'(A)')"    integer(c_int)    :: ret"
+            write(50,'(A)')"    type(c_ptr), value :: widget, event, gdata"
+          else
+            write(50,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
+              " (widget, gdata) result(ret) bind(c)"
+            write(50,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
+            write(50,'(A)')"    integer(c_int)    :: ret"
+            write(50,'(A)')"    type(c_ptr), value :: widget, gdata"
+          endif
+          if (create_handlerfiles) then
+            handlerfile="handler_"//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//".f90"
+            write(50,'(A)')"!########## INSERT YOUR HANDLER CODE IN FILE "//handlerfile(1:len_trim(handlerfile))//" ##########"
+            write(50,'(A)')"    INCLUDE '"//handlerfile(1:len_trim(handlerfile))//"'"
+            inquire(file=handlerfile,exist=lexist)
+            if ((.not.lexist).or.(overwrite_handlerfiles)) then
+              open(70,file=handlerfile,action='write')
+              write(70,'(A)')"! handler for signal "//connections(i)%signal_name(1:len_trim(connections(i)%signal_name))//&
+                " ("//connections(i)%object_name(1:len_trim(connections(i)%object_name))//")"
+              write(70,'(A)')"!########## INSERT YOUR HANDLER CODE HERE ##########"
+              write(70,'(A)')"print*,""handler function: "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//""""
+              write(70,'(A)')"!###################################################"
+              close(70)
+            endif
+          else
+            write(50,'(A)')"!########## INSERT YOUR HANDLER CODE HERE ##########"
+            write(50,'(A)')"print*,""handler function: "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//""""
+            write(50,'(A)')"!###################################################"
+          endif
+          write(50,'(A)')"    ret = FALSE"
+          write(50,'(A)')"  end function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))
+          write(50,'(A)')""
+        endif
+      enddo
+      write(50,'(A)')"end module handlers"
+      write(50,'(A)')""
+      write(50,'(A)')""
+      write(50,'(A)')"program "//subdir(1:len_trim(subdir))
+      write(50,'(A)')""
+      write(50,'(A)')"  use handlers"
+      write(50,'(A)')""
+      write(50,'(A)')"  implicit none"
+      write(50,'(A)')""
+      write(50,'(A)')"  integer(c_int) :: guint"
+      write(50,'(A)')"  type(c_ptr) :: error"
+      write(50,'(A)')"  error = NULL"
+      write(50,'(A)')""
+      write(50,'(A)')"  ! Initialize the GTK+ Library"
+      write(50,'(A)')"  call gtk_init ()"
+      write(50,'(A)')""
+      write(50,'(A)')"  ! create a new GtkBuilder object"
+      write(50,'(A)')"  builder = gtk_builder_new ()"
+      write(50,'(A)')""
+      write(50,'(A)')"  ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object"
+      write(50,'(A)')"  guint = gtk_builder_add_from_file (builder, """//subdir(1:len_trim(subdir))//".glade""//CNULL, error)"
+      write(50,'(A)')""
+      write(50,'(A)')"  ! get a pointer to the GObject ""window"" from GtkBuilder"
+      write(50,'(A)')"  window = gtk_builder_get_object (builder, ""window""//CNULL)"
+      write(50,'(A)')""
+      write(50,'(A)')"  ! use GModule to look at the applications symbol table to find the function name"
+      write(50,'(A)')"  ! that matches the handler name specified in Glade3"
+      write(50,'(A)')"  call gtk_builder_connect_signals (builder, NULL)"
+      write(50,'(A)')""
+      write(50,'(A)')"  ! free all memory used by XML stuff"     
+      write(50,'(A)')"  call g_object_unref (builder)"
+      write(50,'(A)')""
+      write(50,'(A)')"  ! Show the Application Window"
+      write(50,'(A)')"  call gtk_widget_show (window)"      
+      write(50,'(A)')""
+      write(50,'(A)')"  ! Enter the GTK+ Main Loop"
+      write(50,'(A)')"  call gtk_main ()"
+      write(50,'(A)')""
+      write(50,'(A)')"end program "//subdir(1:len_trim(subdir))
+      close(50)
+      files_written=.true.
+    endif
+    
     ret = FALSE
-
   end function write_files
+
+  subroutine save_default_options (widget, gdata ) bind(c)
+    use iso_c_binding, only: c_ptr, c_int
+    type(c_ptr), value :: widget, gdata
+    character(len=20)::defaultsfile="default.options"
+   
+    open(111,file=base_dir(1:len_trim(base_dir))//"/"//defaultsfile, action='write')
+    write(111,'(4L)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols
+    write(111,'(I2)')gtk_combo_box_get_active(license_selector)
+    close(111)
+ 
+  end subroutine save_default_options  
+
+  subroutine load_default_options
+    character(len=20)::defaultsfile="default.options"
+    integer(c_int) ::license_no
+   
+    open(111,file=base_dir(1:len_trim(base_dir))//"/"//defaultsfile, action='read')
+    read(111,'(4L)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols
+    read(111,'(I2)')license_no
+    call gtk_combo_box_set_active(license_selector,license_no)
+    close(111)
+ 
+  end subroutine load_default_options  
   
   subroutine default_options (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
     type(c_ptr), value :: widget, gdata
    
-   filename="test.glade"
-   call getcwd(working_dir)
-   base_dir=working_dir
-   create_subdir=.true.
+    filename="example.glade"
+    call getcwd(working_dir)
+    call load_default_options
+    call gtk_toggle_button_set_active (create_subdir_button, gbool(create_subdir))
+    call gtk_toggle_button_set_active (create_handlerfiles_button, gbool(create_handlerfiles))
+    call gtk_toggle_button_set_active (overwrite_handlerfiles_button, gbool(overwrite_handlerfiles))
+    call gtk_toggle_button_set_active (widget_symbols_button, gbool(widget_symbols))
  
   end subroutine default_options  
   
@@ -459,10 +600,10 @@ program gtkfsketcher
   integer(c_int) :: guint
   type(c_ptr) :: error
   error = NULL
-  
-  ! get default options
-  call default_options (builder, error)
- 
+
+  call getcwd(base_dir)
+  open(99, file="gtkf-sketcher.log", action='write')
+
   ! Initialize the GTK+ Library
   call gtk_init ()
 
@@ -481,6 +622,15 @@ program gtkfsketcher
   ! get a pointer to the license selection combo box
   license_selector = gtk_builder_get_object (builder, "license"//CNULL)
 
+  ! get pointers to the option ckeck buttons
+  create_subdir_button = gtk_builder_get_object (builder, "create_subdir"//CNULL)
+  create_handlerfiles_button = gtk_builder_get_object (builder, "create_handlerfiles"//CNULL)
+  overwrite_handlerfiles_button = gtk_builder_get_object (builder, "overwrite_handlerfiles"//CNULL)
+  widget_symbols_button = gtk_builder_get_object (builder, "widget_symbols"//CNULL)
+
+  ! get default options
+  call default_options (builder, error)
+ 
   ! use GModule to look at the applications symbol table to find the function name 
   ! that matches the handler name we specified in Glade3
   call gtk_builder_connect_signals (builder, NULL)  
