@@ -1712,9 +1712,6 @@ contains
     ! Now the visible columns
     do i = 1, ncols_all
        renderer = gtk_cell_renderer_text_new()
-       if (present(align)) &
-            & call gtk_cell_renderer_set_alignment(renderer, &
-            & align(i), 0._c_float)
        if (present(ixpad) .and. present(iypad)) then
           call gtk_cell_renderer_set_padding(renderer, &
                & ixpad(i), iypad(i))
@@ -1725,8 +1722,6 @@ contains
           call gtk_cell_renderer_set_padding(renderer, &
                & 0, iypad(i))
        end if
-       column = gtk_tree_view_column_new()
-       call gtk_tree_view_column_pack_start(column, renderer, FALSE)
        if (present(align)) then
           call gtk_cell_renderer_set_alignment(renderer, align(i), 0.)
        else if (types_all(i) == G_TYPE_STRING) then
@@ -1734,6 +1729,8 @@ contains
        else
           call gtk_cell_renderer_set_alignment(renderer, 1., 0.)
        end if
+       column = gtk_tree_view_column_new()
+       call gtk_tree_view_column_pack_start(column, renderer, FALSE)
 
        if (present(titles)) call gtk_tree_view_column_set_title(column, &
             &trim(titles(i))//cnull)
