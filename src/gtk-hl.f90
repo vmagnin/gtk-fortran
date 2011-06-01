@@ -95,8 +95,12 @@ module gtk_hl
   ! * hl_gtk_tree_get_cell; Get the value of a cell in a tree view
   ! * hl_gtk_tree_set_cell_data_func; set custom formatting for column
   ! * hl_gtk_menu_new; Create a menubar.
-  ! * hl_gtk_menu_submenu; Add a submenu to a menu
-  ! * hl_gtk_menu_item; Add a button to a menu
+  ! * hl_gtk_menu_submenu_new; Add a submenu to a menu
+  ! * hl_gtk_menu_item_new; Add a button to a menu
+  ! * hl_gtk_check_menu_item_new: A checkable item in a menu
+  ! * hl_gtk_radio_menu_item_new: A radio checkable item in a menu
+  ! * hl_gtk_radio_menu_group_set_select: Select an item in a radio
+  ! group in a menu
   ! * hl_gtk_progress_bar_new; A progress bar.
   ! * hl_gtk_progress_bar_set; Set the value of a progress bar.
   ! * hl_gtk_message_dialog_show; Show a message dialogue
@@ -232,6 +236,8 @@ module gtk_hl
        & gtk_list_store_move_after, gtk_list_store_move_before, &
        & gtk_window_set_transient_for, gtk_tree_view_get_column, gtk_cell_layout_get_cells, &
        & gtk_tree_view_column_set_cell_data_func, &
+       & gtk_radio_menu_item_new_with_label, gtk_check_menu_item_new_with_label, &
+       & gtk_check_menu_item_set_active, gtk_radio_menu_item_get_group, &
        & TRUE, FALSE, NULL, FNULL, CNULL, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -3970,8 +3976,8 @@ contains
   end function hl_gtk_menu_submenu_new
 
   !+
-  function hl_gtk_menu_item_new(menu, label, activate, data, tooltip, pos, tearoff) &
-       & result(item)
+  function hl_gtk_menu_item_new(menu, label, activate, data, tooltip, &
+       & pos, tearoff, sensitive) result(item)
     ! Make a menu item or separator
     !
     ! MENU: c_ptr: required: The parent menu.
@@ -3984,6 +3990,8 @@ contains
     ! POS: integer: optional: The position at which to insert the item
     ! 		(omit to append)
     ! TEAROFF: boolean: optional: Set to TRUE to make a tearoff point.
+    ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
+    ! 		insensitive state.
     !-
 
     type(c_ptr) ::  item
@@ -3993,7 +4001,7 @@ contains
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
     integer(kind=c_int), optional :: pos
-    integer(kind=c_int), optional :: tearoff
+    integer(kind=c_int), optional :: tearoff, sensitive
 
     integer(kind=c_int) :: istear
 
@@ -4035,7 +4043,148 @@ contains
 
     ! Attach a tooltip
     if (present(tooltip)) call gtk_widget_set_tooltip_text(item, tooltip)
+
+    ! sensitive?
+    if (present(sensitive)) call gtk_widget_set_sensitive(item, sensitive)
+
   end function hl_gtk_menu_item_new
+
+  !+
+  function hl_gtk_check_menu_item_new(menu, label, toggled, data, &
+       & tooltip, pos, initial_state, sensitive)  result(item)
+    ! Make a menu item or separator
+    !
+    ! MENU: c_ptr: required: The parent menu.
+    ! LABEL: string: required: The label for the menu.
+    ! TOGGLED: c_funptr: optional: The callback function for the
+    ! 		"toggled" signal
+    ! DATA: c_ptr: optional: Data to pass to the callback.
+    ! TOOLTIP: string: optional: A tooltip for the menu item.
+    ! POS: integer: optional: The position at which to insert the item
+    ! 		(omit to append)
+    ! INITIAL_STATE: boolean: optional: Whether the item is initially selected.
+    ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
+    ! 		insensitive state.
+    !-
+
+    type(c_ptr) ::  item
+    type(c_ptr) :: menu
+    character(kind=c_char), dimension(*), intent(in) :: label
+    type(c_funptr), optional :: toggled
+    type(c_ptr), optional :: data
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), optional :: pos
+    integer(kind=c_int), optional :: initial_state
+    integer(kind=c_int), optional :: sensitive
+
+    ! Create the menu item
+    item = gtk_check_menu_item_new_with_label(label)
+
+    ! Insert it to the parent
+    if (present(pos)) then
+       call gtk_menu_shell_insert(menu, item, pos)
+    else
+       call gtk_menu_shell_append(menu, item)
+    end if
+
+    ! Set the state
+    if (present(initial_state)) &
+         & call gtk_check_menu_item_set_active(item, initial_state)
+
+    ! If present, connect the callback
+    if (present(toggled)) then
+       if (present(data)) then
+          call g_signal_connect(item, "toggled"//cnull, toggled, data)
+       else
+          call g_signal_connect(item, "toggled"//cnull, toggled)
+       end if
+    end if
+
+    ! Attach a tooltip
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(item, tooltip)
+    ! sensitive?
+    if (present(sensitive)) call gtk_widget_set_sensitive(item, sensitive)
+  end function hl_gtk_check_menu_item_new
+
+  !+
+  function hl_gtk_radio_menu_item_new(group, menu, label, toggled, data, &
+       & tooltip, pos, sensitive)  result(item)
+    ! Make a menu item or separator
+    !
+    ! GROUP: c_ptr: required: The group for the radio item (NULL for a
+    ! 		new group).
+    ! MENU: c_ptr: required: The parent menu.
+    ! LABEL: string: required: The label for the menu.
+    ! TOGGLED: c_funptr: optional: The callback function for the
+    ! 		"toggled" signal
+    ! DATA: c_ptr: optional: Data to pass to the callback.
+    ! TOOLTIP: string: optional: A tooltip for the menu item.
+    ! POS: integer: optional: The position at which to insert the item
+    ! 		(omit to append)
+    ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
+    ! 		insensitive state.
+    !-
+
+    type(c_ptr) ::  group, item
+    type(c_ptr) :: menu
+    character(kind=c_char), dimension(*), intent(in) :: label
+    type(c_funptr), optional :: toggled
+    type(c_ptr), optional :: data
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), optional :: pos
+    integer(kind=c_int), optional :: sensitive
+
+    ! Create the menu item
+    item = gtk_radio_menu_item_new_with_label(group, label)
+    group = gtk_radio_menu_item_get_group(item)
+
+    ! Insert it to the parent
+    if (present(pos)) then
+       call gtk_menu_shell_insert(menu, item, pos)
+    else
+       call gtk_menu_shell_append(menu, item)
+    end if
+
+    ! If present, connect the callback
+    if (present(toggled)) then
+       if (present(data)) then
+          call g_signal_connect(item, "toggled"//cnull, toggled, data)
+       else
+          call g_signal_connect(item, "toggled"//cnull, toggled)
+       end if
+    end if
+
+    ! Attach a tooltip
+    if (present(tooltip)) call gtk_widget_set_tooltip_text(item, tooltip)
+    ! sensitive?
+    if (present(sensitive)) call gtk_widget_set_sensitive(item, sensitive)
+
+  end function hl_gtk_radio_menu_item_new
+
+  subroutine hl_gtk_radio_menu_group_set_select(group, index)
+    ! Set the indexth button of a radio menu group
+    !
+    ! GROUP: c_ptr: required: The group of the last button added to
+    ! 		the radio menu
+    ! INDEX: integer: required: The index of the button to set
+    ! 		(starting from the first as 0).
+    !-
+
+    type(c_ptr), intent(in) :: group
+    integer(kind=c_int), intent(in) :: index
+
+    integer(kind=c_int) :: nbuts
+    type(c_ptr) :: datan
+
+    nbuts = g_slist_length(group)
+
+    ! Note that GROUP actually points to the last button added and to the
+    ! group of the next to last & so on
+
+    datan= g_slist_nth_data(group, nbuts-index-1)
+    call gtk_check_menu_item_set_active(datan, TRUE)
+
+  end subroutine hl_gtk_radio_menu_group_set_select
 
   !*
   ! Progress Bar
