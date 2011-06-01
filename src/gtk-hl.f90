@@ -1712,9 +1712,6 @@ contains
     ! Now the visible columns
     do i = 1, ncols_all
        renderer = gtk_cell_renderer_text_new()
-       if (present(align)) &
-            & call gtk_cell_renderer_set_alignment(renderer, &
-            & align(i), 0._c_float)
        if (present(ixpad) .and. present(iypad)) then
           call gtk_cell_renderer_set_padding(renderer, &
                & ixpad(i), iypad(i))
