@@ -65,7 +65,7 @@ module gtk_hl
   ! * hl_gtk_listn_rem; Delete a row from a multi column list
   ! * hl_gtk_listn_get_selections; Get the selected row(s) in a multi-column
   ! list
-  ! * hl_get_listn_set_selection; Set the selected row in a multi column list
+  ! * hl_gtk_listn_set_selection; Set the selected row in a multi column list
   ! * hl_gtk_listn_set_cell; Set the value of a cell in a multi column list
   ! * hl_gtk_listn_get_cell; Get the contents of a cell in a multi-column list
   ! * hl_gtk_listn_move_row; Move a row to a new location
@@ -335,6 +335,17 @@ contains
   function hl_gtk_window_new(title, destroy, delete_event, data_destroy, &
        & data_delete_event, border, wsize, sensitive, resizable, decorated, &
        & deletable, above, below, parent) result(win)
+
+    type(c_ptr) :: win
+    character(kind=c_char), dimension(*), intent(in), optional :: title
+    type(c_funptr), optional :: destroy, delete_event
+    type(c_ptr), optional :: data_destroy, data_delete_event
+    integer, optional, intent(in) :: border
+    integer, optional, intent(in), dimension(2) :: wsize
+    integer(kind=c_int), intent(in), optional :: sensitive, resizable, decorated
+    integer(kind=c_int), intent(in), optional :: deletable, above, below
+    type(c_ptr), intent(in), optional :: parent
+
     ! Higher-level interface to make a gtk_window
     !
     ! TITLE: String: optional: Title for the window
@@ -355,16 +366,6 @@ contains
     ! BELOW: boolean: optional: Set to TRUE to make the window stay below others.
     ! PARENT: c_ptr: optional: An optional parent window for the new window.
     !-
-
-    type(c_ptr) :: win
-    character(kind=c_char), dimension(*), intent(in), optional :: title
-    type(c_funptr), optional :: destroy, delete_event
-    type(c_ptr), optional :: data_destroy, data_delete_event
-    integer, optional, intent(in) :: border
-    integer, optional, intent(in), dimension(2) :: wsize
-    integer(kind=c_int), intent(in), optional :: sensitive, resizable, decorated
-    integer(kind=c_int), intent(in), optional :: deletable, above, below
-    type(c_ptr), intent(in), optional :: parent
 
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL)
     call gtk_window_set_title(win, title)
@@ -411,6 +412,11 @@ contains
 
   !+
   function hl_gtk_box_new(horizontal, homogeneous, spacing) result(box)
+
+    type(c_ptr) :: box
+    integer(kind=c_int), intent(in), optional :: horizontal, homogeneous
+    integer(kind=c_int), intent(in), optional :: spacing
+
     ! Generic packing box
     !
     ! HORIZONTAL: boolean: optional: Set to TRUE to make a row box. FALSE or
@@ -420,10 +426,6 @@ contains
     ! 		natural size.
     ! SPACING: c_int: optional: Set the space between children.
     !-
-
-    type(c_ptr) :: box
-    integer(kind=c_int), intent(in), optional :: horizontal, homogeneous
-    integer(kind=c_int), intent(in), optional :: spacing
 
     integer(kind=c_int) :: grid, space
 
@@ -452,6 +454,12 @@ contains
 
   !+
   subroutine hl_gtk_box_pack(box, child, expand, fill, padding, atend)
+
+    type(c_ptr), intent(in) :: box, child
+    integer(kind=c_int), intent(in), optional :: expand, fill
+    integer(kind=c_int), intent(in), optional :: padding
+    integer(kind=c_int), intent(in), optional :: atend
+
     ! Put a widget into a box
     !
     ! BOX: c_ptr: required: The box into which to put the child
@@ -466,11 +474,6 @@ contains
     ! ATEND: boolean: optional: If present and TRUE, then put the child at
     ! 		the end of the box rather than the start.
     !-
-
-    type(c_ptr), intent(in) :: box, child
-    integer(kind=c_int), intent(in), optional :: expand, fill
-    integer(kind=c_int), intent(in), optional :: padding
-    integer(kind=c_int), intent(in), optional :: atend
 
     integer(kind=c_int) :: iexp, ifill, ipad, iend
 
@@ -501,6 +504,12 @@ contains
   !+
   function hl_gtk_table_new(nrows, ncols, homogeneous, row_spacing, &
        & col_spacing) result(table)
+
+    type(c_ptr) :: table
+    integer(kind=c_int), intent(in) :: nrows, ncols
+    integer(kind=c_int), intent(in), optional :: homogeneous
+    integer(kind=c_int), intent(in), optional :: row_spacing, col_spacing
+
     ! Utility interface to create a table container
     !
     ! NROWS: c_int: required: The initial number of rows.
@@ -510,11 +519,6 @@ contains
     ! ROW_SPACING: c_int: optional: Spacing between rows.
     ! COL_SPACING: c_int: optional: Spacing between columns.
     !-
-
-    type(c_ptr) :: table
-    integer(kind=c_int), intent(in) :: nrows, ncols
-    integer(kind=c_int), intent(in), optional :: homogeneous
-    integer(kind=c_int), intent(in), optional :: row_spacing, col_spacing
 
     integer(kind=c_int) :: grid
 
@@ -536,6 +540,13 @@ contains
   !+
   subroutine hl_gtk_table_attach(table, widget, ix, iy, xspan, yspan, &
        & xpad, ypad, xopts, yopts)
+
+    type(c_ptr), intent(in) :: table, widget
+    integer(kind=c_int), intent(in) :: ix, iy
+    integer(kind=c_int), intent(in), optional :: xspan, yspan
+    integer(kind=c_int), intent(in), optional :: xpad, ypad
+    integer(kind=c_int), intent(in), optional :: xopts, yopts
+
     ! Attach a widget to a table
     !
     ! TABLE: c_ptr: required: The table to which to attach
@@ -550,12 +561,6 @@ contains
     ! 		GtkAttachOptions enumerator, or 0 for none)
     ! YOPTS: c_int: optional: Y fill/expand options.
     !-
-
-    type(c_ptr), intent(in) :: table, widget
-    integer(kind=c_int), intent(in) :: ix, iy
-    integer(kind=c_int), intent(in), optional :: xspan, yspan
-    integer(kind=c_int), intent(in), optional :: xpad, ypad
-    integer(kind=c_int), intent(in), optional :: xopts, yopts
 
     integer(kind=c_int) :: ixtop, iytop
     integer(kind=c_int) :: ixpad, iypad
@@ -601,6 +606,10 @@ contains
 
   !+
   subroutine hl_gtk_table_expand(table, ny, nx)
+
+    type(c_ptr), intent(in) :: table
+    integer(kind=c_int), intent(in), optional :: ny, nx
+
     ! Add rows and/or columns to a table
     !
     ! TABLE: c_ptr: required: The table to enlarge
@@ -610,9 +619,6 @@ contains
     ! To set an absolute size, use gtk_table_resize
     ! directly. Negative NX and/or NY will reduce the table.
     !-
-
-    type(c_ptr), intent(in) :: table
-    integer(kind=c_int), intent(in), optional :: ny, nx
 
     integer(kind=c_int), target :: sx, sy
 
@@ -630,6 +636,13 @@ contains
   !+
   function hl_gtk_notebook_new(show_tabs, tab_position, popup, &
        & scrollable, group) result(nbook)
+
+    type(c_ptr) :: nbook
+    integer(kind=c_int), intent(in), optional :: show_tabs
+    integer(kind=c_int), intent(in), optional :: tab_position
+    integer(kind=c_int), intent(in), optional :: popup, scrollable
+    character(kind=c_char), intent(in), optional, dimension(*), target :: group
+
     ! Convenience function to create a notebook (tabbed) container
     !
     ! SHOW_TABS: boolean: optional: Whether the tabs are visible
@@ -642,12 +655,6 @@ contains
     ! 		want to drag tabs from one book to another). N.B. For GTK+2,
     ! 		this probably has to be a variable to work.
     !-
-
-    type(c_ptr) :: nbook
-    integer(kind=c_int), intent(in), optional :: show_tabs
-    integer(kind=c_int), intent(in), optional :: tab_position
-    integer(kind=c_int), intent(in), optional :: popup, scrollable
-    character(kind=c_char), intent(in), optional, dimension(*), target :: group
 
     nbook = gtk_notebook_new()
 
@@ -677,6 +684,14 @@ contains
   !+
   function hl_gtk_notebook_add_page(nbook, page, position, at_start, &
        & reorderable, detachable, label) result(location)
+
+    integer(kind=c_int) :: location
+    type(c_ptr), intent(in) :: nbook, page
+    integer(kind=c_int), intent(in), optional :: position
+    integer(kind=c_int), intent(in), optional :: at_start, reorderable, &
+         & detachable
+    character(kind=c_char), dimension(*), intent(in), optional :: label
+
     ! Convenience function to add a page to a notebook.
     !
     ! NBOOK: c_ptr: required: The book to which to add the page
@@ -692,13 +707,6 @@ contains
     !
     ! Returns the location at which the tab was added or -1 for failure.
     !-
-
-    integer(kind=c_int) :: location
-    type(c_ptr), intent(in) :: nbook, page
-    integer(kind=c_int), intent(in), optional :: position
-    integer(kind=c_int), intent(in), optional :: at_start, reorderable, &
-         & detachable
-    character(kind=c_char), dimension(*), intent(in), optional :: label
 
     type(c_ptr) :: lwidget
     integer(kind=c_int) :: istart
@@ -779,6 +787,15 @@ contains
   !+
   function hl_gtk_check_button_new(label, toggled, data, tooltip, &
        & initial_state, sensitive) result(but)
+
+    type(c_ptr) :: but
+    character(kind=c_char), dimension(*), intent(in) :: label
+    type(c_funptr), optional :: toggled
+    type(c_ptr), optional :: data
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), intent(in), optional :: initial_state
+    integer(kind=c_int), intent(in), optional :: sensitive
+
     ! Higher level check box.
     !
     ! LABEL: string: required:  The label on the button.
@@ -790,14 +807,6 @@ contains
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
     !-
-
-    type(c_ptr) :: but
-    character(kind=c_char), dimension(*), intent(in) :: label
-    type(c_funptr), optional :: toggled
-    type(c_ptr), optional :: data
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional :: initial_state
-    integer(kind=c_int), intent(in), optional :: sensitive
 
     but = gtk_check_button_new_with_label(label)
 
@@ -822,6 +831,15 @@ contains
   !+
   function hl_gtk_radio_button_new(group, label, toggled, data, tooltip, &
        & sensitive) result(but)
+
+    type(c_ptr) :: but
+    type(c_ptr), intent(inout) :: group
+    character(kind=c_char), dimension(*), intent(in) :: label
+    type(c_funptr), optional :: toggled
+    type(c_ptr), optional :: data
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), intent(in), optional :: sensitive
+
     ! Radio button
     !
     ! GROUP: c_ptr: required: The group to which the button belongs.
@@ -839,14 +857,6 @@ contains
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
     !-
-
-    type(c_ptr) :: but
-    type(c_ptr), intent(inout) :: group
-    character(kind=c_char), dimension(*), intent(in) :: label
-    type(c_funptr), optional :: toggled
-    type(c_ptr), optional :: data
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional :: sensitive
 
     but = gtk_radio_button_new_with_label(group, label)
     group = gtk_radio_button_get_group(but)
@@ -867,6 +877,10 @@ contains
 
   !+
   subroutine hl_gtk_radio_group_set_select(group, index)
+
+    type(c_ptr), intent(in) :: group
+    integer(kind=c_int), intent(in) :: index
+
     ! Set the indexth button of a radio group
     !
     ! GROUP: c_ptr: required: The group of the last button added to
@@ -874,9 +888,6 @@ contains
     ! INDEX: integer: required: The index of the button to set
     ! 		(starting from the first as 0).
     !-
-
-    type(c_ptr), intent(in) :: group
-    integer(kind=c_int), intent(in) :: index
 
     integer(kind=c_int) :: nbuts
     type(c_ptr) :: datan
@@ -893,14 +904,15 @@ contains
 
   !+
   function hl_gtk_radio_group_get_select(group) result(index)
+
+    integer(kind=c_int) :: index
+    type(c_ptr) :: group
+
     ! Find the selected button in a radio group.
     !
     ! GROUP: c_ptr: required: The group of the last button added to
     ! 		the radio menu
     !-
-
-    integer(kind=c_int) :: index
-    type(c_ptr), intent(in) :: group
 
     integer(kind=c_int) :: nbuts, i
     type(c_ptr) :: but
@@ -938,6 +950,17 @@ contains
   function hl_gtk_entry_new(len, editable, activate, data, tooltip, value, &
        & sensitive, changed, data_changed, delete_text, data_delete_text, &
        & insert_text, data_insert_text) result(entry)
+
+    type(c_ptr) :: entry
+    integer, intent(in), optional :: len
+    integer(c_int), intent(in), optional :: editable
+    type(c_funptr), optional :: activate
+    type(c_ptr), optional :: data
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip, value
+    integer(kind=c_int), intent(in), optional :: sensitive
+    type(c_funptr), optional :: changed, delete_text, insert_text
+    type(c_ptr), optional :: data_changed, data_delete_text, data_insert_text
+
     ! Higher level text entry box
     !
     ! LEN: integer: optional: The maximum length of the entry field.
@@ -961,16 +984,6 @@ contains
     ! DATA_INSERT_TEXT: c_ptr: optional: Data to be passed to the insert_text
     !            callback
     !-
-
-    type(c_ptr) :: entry
-    integer, intent(in), optional :: len
-    integer(c_int), intent(in), optional :: editable
-    type(c_funptr), optional :: activate
-    type(c_ptr), optional :: data
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip, value
-    integer(kind=c_int), intent(in), optional :: sensitive
-    type(c_funptr), optional :: changed, delete_text, insert_text
-    type(c_ptr), optional :: data_changed, data_delete_text, data_insert_text
 
     entry = gtk_entry_new()
     call gtk_entry_set_activates_default(entry, TRUE)
@@ -1025,6 +1038,11 @@ contains
 
   !+
   subroutine hl_gtk_entry_get_text(entry, text, status)
+
+    type(c_ptr), intent(in) :: entry
+    character(len=*), intent(out) :: text
+    integer(kind=c_int), optional, intent(out) :: status
+
     ! Return the text in an entry box as a fortran string.
     !
     ! ENTRY: c_ptr: required: The text entry to read
@@ -1033,10 +1051,6 @@ contains
     !
     ! To return the text as a c-pointer use gtk_entry_get_text
     !-
-
-    type(c_ptr), intent(in) :: entry
-    character(len=*), intent(out) :: text
-    integer(kind=c_int), optional, intent(out) :: status
 
     type(c_ptr) :: ctext
     character(kind=c_char), dimension(:), pointer :: textptr
@@ -1060,6 +1074,18 @@ contains
   function hl_gtk_text_view_new(scroll, editable, changed, data_changed, &
        & insert_text, data_insert_text, delete_range, data_delete_range, &
        & initial_text, sensitive, tooltip, ssize, buffer) result(view)
+
+    type(c_ptr) :: view
+    type(c_ptr), intent(out), optional :: scroll
+    integer(kind=c_int), intent(in), optional :: editable
+    type(c_funptr), optional :: changed, insert_text, delete_range
+    type(c_ptr), optional :: data_changed, data_insert_text, data_delete_range
+    character(len=*), dimension(:), intent(in), optional :: initial_text
+    integer(kind=c_int), intent(in), optional :: sensitive
+    character(kind=c_char), dimension(*), optional :: tooltip
+    integer(kind=c_int), dimension(:), optional :: ssize
+    type(c_ptr), intent(out), optional :: buffer
+
     ! A multiline text edit widget
     !
     ! SCROLL: c_ptr: optional: A scrolled window in which the text editor
@@ -1088,17 +1114,6 @@ contains
     ! are called before the buffer is actually modified. The changed callback is called
     ! after the change.
     !-
-
-    type(c_ptr) :: view
-    type(c_ptr), intent(out), optional :: scroll
-    integer(kind=c_int), intent(in), optional :: editable
-    type(c_funptr), optional :: changed, insert_text, delete_range
-    type(c_ptr), optional :: data_changed, data_insert_text, data_delete_range
-    character(len=*), dimension(:), intent(in), optional :: initial_text
-    integer(kind=c_int), intent(in), optional :: sensitive
-    character(kind=c_char), dimension(*), optional :: tooltip
-    integer(kind=c_int), dimension(:), optional :: ssize
-    type(c_ptr), intent(out), optional :: buffer
 
     type(c_ptr) :: tbuf
     character(kind=c_char), dimension(:), allocatable :: text0
@@ -1166,6 +1181,13 @@ contains
   !+
   subroutine hl_gtk_text_view_insert(view, text, line, column, replace, &
        & at_cursor, buffer)
+
+    type(c_ptr), intent(in) :: view
+    character(len=*), dimension(:), intent(in) :: text
+    integer(kind=c_int), optional, intent(in) :: line, column
+    integer(kind=c_int), optional, intent(in) :: replace, at_cursor
+    type(c_ptr), intent(in), optional :: buffer
+
     ! Insert text to an text view
     !
     ! VIEW: c_ptr: required: The text view into which to insert.
@@ -1182,12 +1204,6 @@ contains
     ! 		If this is given, then VIEW is ignored -- used in signal
     ! 		handlers attached to the buffer.
     !-
-
-    type(c_ptr), intent(in) :: view
-    character(len=*), dimension(:), intent(in) :: text
-    integer(kind=c_int), optional, intent(in) :: line, column
-    integer(kind=c_int), optional, intent(in) :: replace, at_cursor
-    type(c_ptr), intent(in), optional :: buffer
 
     type(c_ptr) :: tbuf
     type(gtktextiter), target :: iter
@@ -1248,6 +1264,11 @@ contains
   !+
   subroutine hl_gtk_text_view_delete(view, line, column, n_chars, n_lines, &
        & buffer)
+
+    type(c_ptr), intent(in) :: view
+    integer(kind=c_int), intent(in), optional :: line, column, n_chars, n_lines
+    type(c_ptr), intent(in), optional :: buffer
+
     ! Delete from a text view
     !
     ! VIEW: c_ptr: required: The text view from which to delete.
@@ -1262,10 +1283,6 @@ contains
     !
     ! If no location specifiers are given then the buffer is cleared
     !-
-
-    type(c_ptr), intent(in) :: view
-    integer(kind=c_int), intent(in), optional :: line, column, n_chars, n_lines
-    type(c_ptr), intent(in), optional :: buffer
 
     type(c_ptr) :: tbuf
     type(gtktextiter), target :: s_iter, e_iter
@@ -1313,6 +1330,14 @@ contains
   !+
   subroutine hl_gtk_text_view_get_text(view, text, start_line, start_column, &
        & end_line, end_column, hidden, buffer)
+
+    type(c_ptr), intent(in) :: view
+    character(len=*), dimension(:), allocatable, intent(out) :: text
+    integer(kind=c_int), intent(in), optional :: start_column, start_line, &
+         & end_line, end_column
+    integer(kind=c_int), intent(in), optional :: hidden
+    type(c_ptr), intent(in), optional :: buffer
+
     ! Get text from s text view.
     !
     ! VIEW: c_ptr: required: The text view to read.
@@ -1339,13 +1364,6 @@ contains
     ! * If neither end_line nor end_column is present, then the selection is
     ! to the end of the buffer.
     !-
-
-    type(c_ptr), intent(in) :: view
-    character(len=*), dimension(:), allocatable, intent(out) :: text
-    integer(kind=c_int), intent(in), optional :: start_column, start_line, &
-         & end_line, end_column
-    integer(kind=c_int), intent(in), optional :: hidden
-    type(c_ptr), intent(in), optional :: buffer
 
     type(c_ptr) :: tbuf, ctext0
     character(kind=c_char), dimension(:), pointer :: ftext0
@@ -1428,6 +1446,11 @@ contains
 
   !+
   function hl_gtk_text_view_get_cursor(view, buffer) result(ipos)
+
+    integer(kind=c_int), dimension(3) :: ipos
+    type(c_ptr), intent(in) :: view
+    type(c_ptr), intent(in), optional :: buffer
+
     ! Get the current cursor location
     !
     ! VIEW: c_ptr: required: The text view to query
@@ -1436,10 +1459,6 @@ contains
     !
     ! Returns a 3-element array with the line, column and offset of the cursor
     !-
-
-    integer(kind=c_int), dimension(3) :: ipos
-    type(c_ptr), intent(in) :: view
-    type(c_ptr), intent(in), optional :: buffer
 
     type(c_ptr) :: tbuf, mark
     type(gtktextiter), target :: iter
@@ -1460,6 +1479,12 @@ contains
   !+
   function hl_gtk_text_view_get_selection(view, s_start, s_end, buffer) &
        & result(issel)
+
+    integer(kind=c_int) :: issel
+    type(c_ptr), intent(in) :: view
+    integer(kind=c_int), dimension(3), intent(out) :: s_start, s_end
+    type(c_ptr), intent(in), optional :: buffer
+
     ! Get the selection range
     !
     ! VIEW: c_ptr: required: The text view to query.
@@ -1470,11 +1495,6 @@ contains
     !
     ! Returns TRUE if there is a selection, FALSE if there isn't
     !-
-
-    integer(kind=c_int) :: issel
-    type(c_ptr), intent(in) :: view
-    integer(kind=c_int), dimension(3), intent(out) :: s_start, s_end
-    type(c_ptr), intent(in), optional :: buffer
 
     type(c_ptr) :: tbuf
     type(gtktextiter), target :: s_iter, e_iter
@@ -1503,6 +1523,10 @@ contains
 
   !+
   function hl_gtk_text_view_get_modified(view) result(ismod)
+
+    integer(kind=c_int) :: ismod
+    type(c_ptr), intent(in) :: view
+
     ! Check if the buffer of a text view is modified
     !
     ! VIEW: c_ptr: required: The text view to check.
@@ -1510,9 +1534,6 @@ contains
     ! N.B. No BUFFER argument is provided as gtk_text_buffer_get_modified
     ! is just a single call
     !-
-
-    integer(kind=c_int) :: ismod
-    type(c_ptr), intent(in) :: view
 
     type(c_ptr) :: tbuf
 
@@ -1523,14 +1544,15 @@ contains
 
   !+
   subroutine hl_gtk_text_view_set_modified(view, state)
+
+    type(c_ptr), intent(in) :: view
+    integer(kind=c_int), intent(in) :: state
+
     ! Set/clear the modified flag on the text buffer of a text view
     !
     ! VIEW: c_ptr: required: The text view to set
     ! STATE: boolean: required: The state to set the flag to.
     !-
-
-    type(c_ptr), intent(in) :: view
-    integer(kind=c_int), intent(in) :: state
 
     type(c_ptr) :: tbuf
 
@@ -1541,6 +1563,12 @@ contains
 
   !+
   subroutine hl_gtk_text_view_get_info(view, nlines, nchars, ncline, buffer)
+
+    type(c_ptr), intent(in) :: view
+    integer(kind=c_int), intent(out), optional :: nlines, nchars
+    integer(kind=c_int), intent(out), optional, allocatable, dimension(:) :: ncline
+    type(c_ptr), intent(in), optional :: buffer
+
     ! Get various useful information about a text view
     !
     ! VIEW: c_ptr: required: The view to query
@@ -1551,11 +1579,6 @@ contains
     ! BUFFER: c_ptr: optional: If present use this buffer and ignore the
     ! 		VIEW argument
     !-
-
-    type(c_ptr), intent(in) :: view
-    integer(kind=c_int), intent(out), optional :: nlines, nchars
-    integer(kind=c_int), intent(out), optional, allocatable, dimension(:) :: ncline
-    type(c_ptr), intent(in), optional :: buffer
 
     type(c_ptr) :: tbuf
     type(gtktextiter), target :: i1, i2
@@ -1607,8 +1630,25 @@ contains
 
   !+
   function hl_gtk_listn_new(scroll, ncols, types, changed, data, multiple,&
-       & width, titles, height, swidth, align, ixpad, iypad, sensitive, tooltip, &
-       & sortable) result(list)
+       & width, titles, height, swidth, align, ixpad, iypad, sensitive, &
+       & tooltip, sortable) result(list)
+
+    type(c_ptr) :: list
+    type(c_ptr), intent(out) :: scroll
+    integer(kind=c_int), intent(in), optional :: ncols
+    integer(kind=type_kind), dimension(:), intent(in), optional :: types
+    type(c_funptr), optional :: changed
+    type(c_ptr), intent(in), optional :: data
+    integer(kind=c_int), intent(in), optional :: multiple
+    integer(kind=c_int), intent(in), optional, dimension(:) :: width
+    character(len=*), dimension(:), intent(in), optional :: titles
+    integer(kind=c_int), intent(in), optional :: height, swidth
+    real(kind=c_float), intent(in), optional, dimension(:) :: align
+    integer(kind=c_int), intent(in), optional, dimension(:) :: ixpad, iypad
+    integer(kind=c_int), intent(in), optional :: sensitive
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable
+
     ! Make a multi column list
     !
     ! SCROLL: c_ptr: required: The scrollable widget to contain the list.
@@ -1635,22 +1675,6 @@ contains
     ! At least one of the array arguments or NCOLS must be given.
     ! If TYPES is not given, then strings are assumed.
     !-
-
-    type(c_ptr) :: list
-    type(c_ptr), intent(out) :: scroll
-    integer(kind=c_int), intent(in), optional :: ncols
-    integer(kind=type_kind), dimension(:), intent(in), optional :: types
-    type(c_funptr), optional :: changed
-    type(c_ptr), intent(in), optional :: data
-    integer(kind=c_int), intent(in), optional :: multiple
-    integer(kind=c_int), intent(in), optional, dimension(:) :: width
-    character(len=*), dimension(:), intent(in), optional :: titles
-    integer(kind=c_int), intent(in), optional :: height, swidth
-    real(kind=c_float), intent(in), optional, dimension(:) :: align
-    integer(kind=c_int), intent(in), optional, dimension(:) :: ixpad, iypad
-    integer(kind=c_int), intent(in), optional :: sensitive
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable
 
     integer(kind=c_int) :: ncols_all, nc, i
     integer(kind=type_kind), dimension(:), allocatable, target :: types_all
@@ -1779,14 +1803,16 @@ contains
   end function hl_gtk_listn_new
   !+
   subroutine hl_gtk_listn_ins(list, row)
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in), optional :: row
+
     ! Insert a row into a tabular list.
     !
     ! LIST: c_ptr: required: The list into which to insert the row.
     ! ROW: c_int: optional: The row BEFORE which to insert the row
     ! 		(append if absent)
     !-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in), optional :: row
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter
@@ -1804,14 +1830,15 @@ contains
 
   !+
   subroutine hl_gtk_listn_rem(list, row)
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), optional, intent(in) :: row
+
     ! Remove a row or clear a list
     !
     ! LIST: c_ptr: required: The list to modify
     ! ROW: integer: optional: The row to remove, if absent clear the list
     !-
-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), optional, intent(in) :: row
 
     integer(kind=c_int) :: valid
     type(c_ptr) :: store
@@ -1834,6 +1861,13 @@ contains
 
   !+
   function hl_gtk_listn_get_selections(list, indices, selection) result(count)
+
+    integer(kind=c_int) :: count
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), dimension(:), allocatable, target, &
+         & intent(out), optional :: indices
+    type(c_ptr), optional :: selection
+
     ! Get the indices of the selected rows
     !
     ! LIST: c_ptr: required: The list whose selections are to be found.
@@ -1848,12 +1882,6 @@ contains
     !
     ! Returns the number of selections.
     !-
-
-    integer(kind=c_int) :: count
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), dimension(:), allocatable, target, &
-         & intent(out), optional :: indices
-    type(c_ptr), optional :: selection
 
     type(c_ptr) :: slist, vselection
     type(c_ptr), target :: model
@@ -1900,14 +1928,16 @@ contains
 
   !+
   subroutine  hl_gtk_listn_set_selection(list, row)
-    ! Set the selected row in a list (single row only)
-    !
-    ! LIST: c_ptr: required: The list to work on.
-    ! ROW: c_int: optional: The row to select (absent or < 0 is clear selection)
-    !-
 
     type(c_ptr), intent(in) :: list
     integer(kind=c_int), intent(in), optional :: row
+
+    ! Set the selected row in a list (single row only).
+    !
+    ! LIST: c_ptr: required: The list to work on.
+    ! ROW: c_int: optional: The row to select (absent or < 0 is clear
+    ! selection)
+    !-
 
     type(c_ptr) :: selection, store
     type(gtktreeiter), target :: iter
@@ -1931,6 +1961,16 @@ contains
   !+
   subroutine hl_gtk_listn_set_cell(list, row, col, &
        & svalue, fvalue, dvalue, ivalue, lvalue, l64value)
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row, col
+    character(len=*), intent(in), optional :: svalue
+    real(kind=c_float), intent(in), optional :: fvalue
+    real(kind=c_double), intent(in), optional :: dvalue
+    integer(kind=c_int), intent(in), optional :: ivalue
+    integer(kind=c_long), intent(in), optional :: lvalue
+    integer(kind=c_int64_t), intent(in), optional :: l64value
+
     ! Set the value of a cell.
     !
     ! LIST: c_ptr: required: The list containing the cell.
@@ -1945,14 +1985,6 @@ contains
     !
     ! Note that reasonable conversions are made between types.
     !-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row, col
-    character(len=*), intent(in), optional :: svalue
-    real(kind=c_float), intent(in), optional :: fvalue
-    real(kind=c_double), intent(in), optional :: dvalue
-    integer(kind=c_int), intent(in), optional :: ivalue
-    integer(kind=c_long), intent(in), optional :: lvalue
-    integer(kind=c_int64_t), intent(in), optional :: l64value
 
     integer(kind=type_kind) :: ctype
     type(c_ptr) :: store, val
@@ -2220,6 +2252,16 @@ contains
   !+
   subroutine hl_gtk_listn_get_cell(list, row, col, &
     & svalue, fvalue, dvalue, ivalue, lvalue, l64value)
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row, col
+    character(len=*), intent(out), optional :: svalue
+    real(kind=c_float), intent(out), optional :: fvalue
+    real(kind=c_double), intent(out), optional :: dvalue
+    integer(kind=c_int), intent(out), optional :: ivalue
+    integer(kind=c_long), intent(out), optional :: lvalue
+    integer(kind=c_int64_t), intent(out), optional :: l64value
+
     ! Retrieve the value of a cell.
     !
     ! LIST: c_ptr: required: The list containing the cell.
@@ -2235,14 +2277,6 @@ contains
     ! Note that a similar conversion system to the set_cell routine
     ! except that strings can only be returned to SVALUE.
     !-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row, col
-    character(len=*), intent(out), optional :: svalue
-    real(kind=c_float), intent(out), optional :: fvalue
-    real(kind=c_double), intent(out), optional :: dvalue
-    integer(kind=c_int), intent(out), optional :: ivalue
-    integer(kind=c_long), intent(out), optional :: lvalue
-    integer(kind=c_int64_t), intent(out), optional :: l64value
 
     integer(kind=type_kind) :: ctype
     type(c_ptr) :: store, val, cstr
@@ -2435,6 +2469,12 @@ contains
 
   !+
   subroutine hl_gtk_listn_move_row(list, row1, row2, after)
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row1
+    integer(kind=c_int), intent(in), optional :: row2
+    integer(kind=c_int), intent(in), optional :: after
+
     ! Move a row in a list to a new location
     !
     ! LIST: c_ptr: required: The list to work on.
@@ -2445,11 +2485,6 @@ contains
     ! AFTER: boolean: optional:  Set this to TRUE to put the row after
     ! 		the location instead of before.
     !-
-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row1
-    integer(kind=c_int), intent(in), optional :: row2
-    integer(kind=c_int), intent(in), optional :: after
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter1, iter2
@@ -2492,15 +2527,16 @@ contains
 
   !+
   subroutine hl_gtk_listn_swap_rows(list, row1, row2)
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row1, row2
+
     ! Move a row in a list to a new location
     !
     ! LIST: c_ptr: required: The list to work on.
     ! ROW1: c_int: required: The index of the first row to move.
     ! ROW2: c_int: required: The index of the second row to move
     !-
-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row1, row2
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter1, iter2
@@ -2523,15 +2559,16 @@ contains
 
   !+
   subroutine hl_gtk_listn_reorder(list, indices)
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in), dimension(:) :: indices
+
     ! Move a row in a list to a new location
     !
     ! LIST: c_ptr: required: The list to work on.
     ! INDICES: c_int(): required: The sorting array. The ith element
     ! 		contains the old location of the new (i-1)th row.
     !-
-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in), dimension(:) :: indices
 
     type(c_ptr) :: store
     integer(kind=c_int), dimension(:), allocatable, target :: idx
@@ -2551,13 +2588,14 @@ contains
 
   !+
   function hl_gtk_listn_get_n_rows(list) result(nrows)
+
+    integer(kind=c_int) :: nrows
+    type(c_ptr), intent(in) :: list
+
     ! Return the number of rows in a list.
     !
     ! LIST: c_ptr: required: the list to query
     !-
-
-    integer(kind=c_int) :: nrows
-    type(c_ptr), intent(in) :: list
 
     type(c_ptr) :: store
 
@@ -2572,6 +2610,13 @@ contains
   !+
   subroutine hl_gtk_listn_set_cell_data_func(list, colno, func, &
        & data, destroy_notify)
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: colno
+    type(c_funptr), optional :: func
+    type(c_ptr), optional :: data
+    type(c_funptr), optional :: destroy_notify
+
     ! Add a custom rendering function to a column of a list
     !
     ! LIST: c_ptr: required: The list to which to apply the rendering function
@@ -2582,11 +2627,6 @@ contains
     ! DATA: c_ptr: optional: User data to pass to the function.
     ! DESTROY_NOTIFY: c_funptr: optional: A destroy notify subroutine.
     !-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: colno
-    type(c_funptr), optional :: func
-    type(c_ptr), optional :: data
-    type(c_funptr), optional :: destroy_notify
 
     type(c_funptr) :: funpass, destpass
     type(c_ptr) :: datapass
@@ -2624,6 +2664,17 @@ contains
   !+
   function hl_gtk_list1_new(scroll, width, changed, data, multiple, &
        & sensitive, tooltip, title, height) result(list)
+
+    type(c_ptr) :: list
+    type(c_ptr), intent(out) :: scroll
+    integer(kind=c_int), intent(in), optional :: width
+    type(c_funptr), intent(in), optional :: changed
+    type(c_ptr), intent(in), optional :: data
+    integer(kind=c_int), intent(in),  optional :: multiple, sensitive
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    character(len=*), intent(in), optional :: title
+    integer(kind=c_int), intent(in), optional :: height
+
     ! A single column selectable list based on the GTK Tree View
     !
     ! SCROLL: c_ptr: required: The scroll box containing the list
@@ -2639,16 +2690,6 @@ contains
     ! HEIGHT: integer: optional: The height of the display (this is
     !            actually the height of the scroll box).
     !-
-
-    type(c_ptr) :: list
-    type(c_ptr), intent(out) :: scroll
-    integer(kind=c_int), intent(in), optional :: width
-    type(c_funptr), intent(in), optional :: changed
-    type(c_ptr), intent(in), optional :: data
-    integer(kind=c_int), intent(in),  optional :: multiple, sensitive
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    character(len=*), intent(in), optional :: title
-    integer(kind=c_int), intent(in), optional :: height
 
     integer(kind=type_kind), target, dimension(1) :: types
 
@@ -2679,6 +2720,11 @@ contains
 
   !+
   subroutine hl_gtk_list1_ins(list, text, row)
+
+    type(c_ptr), intent(in) :: list
+    character(kind=c_char, len=*), intent(in), optional :: text
+    integer(kind=c_int), intent(in), optional :: row
+
     ! Insert a row into a list
     !
     ! LIST: c_ptr: required: The list to insert to.
@@ -2686,10 +2732,6 @@ contains
     ! ROW: integer: optional: The row at which to insert the text
     ! 		(omit to append)
     !-
-
-    type(c_ptr), intent(in) :: list
-    character(kind=c_char, len=*), intent(in), optional :: text
-    integer(kind=c_int), intent(in), optional :: row
 
     integer(kind=c_int) :: irow
     type(c_ptr) :: store
@@ -2710,14 +2752,15 @@ contains
 
   !+
   subroutine hl_gtk_list1_rem(list, row)
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), optional, intent(in) :: row
+
     ! Remove a row or clear a list
     !
     ! LIST: c_ptr: required: The list to modify
     ! ROW: integer: optional: The row to remove, if absent clear the list
     !-
-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), optional, intent(in) :: row
 
     call hl_gtk_listn_rem(list, row)
 
@@ -2725,6 +2768,13 @@ contains
 
   !+
   function hl_gtk_list1_get_selections(list, indices, selection) result(count)
+
+    integer(kind=c_int) :: count
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), dimension(:), allocatable, target, &
+         & intent(out), optional :: indices
+    type(c_ptr), optional :: selection
+
     ! Get the indices of the selected rows
     !
     ! LIST: c_ptr: required: The list whose selections are to be found.
@@ -2739,12 +2789,6 @@ contains
     !
     ! Returns the number of selections.
     !-
-
-    integer(kind=c_int) :: count
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), dimension(:), allocatable, target, &
-         & intent(out), optional :: indices
-    type(c_ptr), optional :: selection
 
     count = hl_gtk_listn_get_selections(list, indices, selection)
 
@@ -2854,13 +2898,14 @@ contains
 
   !+
   function hl_gtk_list1_get_n_rows(list) result(nrows)
+
+    integer(kind=c_int) :: nrows
+    type(c_ptr), intent(in) :: list
+
     ! Return the number of rows in a list.
     !
     ! LIST: c_ptr: required: the list to query
     !-
-
-    integer(kind=c_int) :: nrows
-    type(c_ptr), intent(in) :: list
 
     nrows=hl_gtk_listn_get_n_rows(list)
   end function hl_gtk_list1_get_n_rows
@@ -2868,6 +2913,12 @@ contains
   !+
   subroutine hl_gtk_list1_set_cell_data_func(list, func, &
        & data, destroy_notify)
+
+    type(c_ptr), intent(in) :: list
+    type(c_funptr), optional :: func
+    type(c_ptr), optional :: data
+    type(c_funptr), optional :: destroy_notify
+
     ! Add a custom rendering function to a column of a list
     !
     ! LIST: c_ptr: required: The list to which to apply the rendering function
@@ -2877,10 +2928,6 @@ contains
     ! DATA: c_ptr: optional: User data to pass to the function.
     ! DESTROY_NOTIFY: c_funptr: optional: A destroy notify subroutine.
     !-
-    type(c_ptr), intent(in) :: list
-    type(c_funptr), optional :: func
-    type(c_ptr), optional :: data
-    type(c_funptr), optional :: destroy_notify
 
     call hl_gtk_listn_set_cell_data_func(list, 0, func, &
          & data, destroy_notify)
@@ -2890,6 +2937,23 @@ contains
   function hl_gtk_tree_new(scroll, ncols, types, changed, data, multiple,&
        & width, titles, height, swidth, align, ixpad, iypad, sensitive, &
        & tooltip, sortable) result(tree)
+
+    type(c_ptr) :: tree
+    type(c_ptr), intent(out) :: scroll
+    integer(kind=c_int), intent(in), optional :: ncols
+    integer(kind=type_kind), dimension(:), intent(in), optional :: types
+    type(c_funptr), optional :: changed
+    type(c_ptr), intent(in), optional :: data
+    integer(kind=c_int), intent(in), optional :: multiple
+    integer(kind=c_int), intent(in), optional, dimension(:) :: width
+    character(len=*), dimension(:), intent(in), optional :: titles
+    integer(kind=c_int), intent(in), optional :: height, swidth
+    real(kind=c_float), intent(in), optional, dimension(:) :: align
+    integer(kind=c_int), intent(in), optional, dimension(:) :: ixpad, iypad
+    integer(kind=c_int), intent(in), optional :: sensitive
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable
+
     ! Make a tree veiw
     !
     ! SCROLL: c_ptr: required: The scrollable widget to contain the tree.
@@ -2916,22 +2980,6 @@ contains
     ! At least one of the array arguments or NCOLS must be given.
     ! If TYPES is not given, then strings are assumed.
     !-
-
-    type(c_ptr) :: tree
-    type(c_ptr), intent(out) :: scroll
-    integer(kind=c_int), intent(in), optional :: ncols
-    integer(kind=type_kind), dimension(:), intent(in), optional :: types
-    type(c_funptr), optional :: changed
-    type(c_ptr), intent(in), optional :: data
-    integer(kind=c_int), intent(in), optional :: multiple
-    integer(kind=c_int), intent(in), optional, dimension(:) :: width
-    character(len=*), dimension(:), intent(in), optional :: titles
-    integer(kind=c_int), intent(in), optional :: height, swidth
-    real(kind=c_float), intent(in), optional, dimension(:) :: align
-    integer(kind=c_int), intent(in), optional, dimension(:) :: ixpad, iypad
-    integer(kind=c_int), intent(in), optional :: sensitive
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable
 
     integer(kind=c_int) :: ncols_all, nc, i
     integer(kind=type_kind), dimension(:), allocatable, target :: types_all
@@ -3058,6 +3106,11 @@ contains
 
   !+
   subroutine hl_gtk_tree_ins(tree, row, absrow)
+
+    type(c_ptr), intent(in) :: tree
+    integer(kind=c_int), intent(in), optional, dimension(:) :: row
+    integer(kind=c_int), intent(in), optional :: absrow
+
     ! Insert a row into a tabular tree.
     !
     ! TREE: c_ptr: required: The tree into which to insert the row.
@@ -3068,9 +3121,6 @@ contains
     ! ABSROW: c_int: optional: The row BEFORE which to insert the new row
     ! 		treating the tree as a flat list.
     !-
-    type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), intent(in), optional, dimension(:) :: row
-    integer(kind=c_int), intent(in), optional :: absrow
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter1, iter2
@@ -3132,6 +3182,13 @@ contains
 
   !+
   function hl_gtk_tree_abs_iter(tree, iter, index, model) result(valid)
+
+    integer(kind=c_int) :: valid
+    type(c_ptr), intent(in) :: tree
+    type(gtktreeiter), intent(out), target :: iter
+    integer(kind=c_int), intent(in) :: index
+    type(c_ptr), intent(in), optional :: model
+
     ! Get the indexth iterator of a tree (treating it as a flat list)
     !
     ! TREE: c_ptr: required: The tree to traverse
@@ -3143,12 +3200,6 @@ contains
     ! Returns TRUE if the search was successful, FALSE otherwise (not usually
     ! called directly by applications).
     !-
-
-    integer(kind=c_int) :: valid
-    type(c_ptr), intent(in) :: tree
-    type(gtktreeiter), intent(out), target :: iter
-    integer(kind=c_int), intent(in) :: index
-    type(c_ptr), intent(in), optional :: model
 
     type(gtktreeiter), target :: iter2
     integer(kind=c_int) :: irow
@@ -3188,6 +3239,12 @@ contains
 
   !+
   function hl_gtk_tree_row_iter(tree, iter, row, model) result(valid)
+
+    type(gtktreeiter), target :: iter
+    type(c_ptr), intent(in) :: tree
+    integer(kind=c_int), intent(in), dimension(:) :: row
+    type(c_ptr), intent(in), optional :: model
+
     ! Get the iterator for a given row of the tree
     !
     ! TREE: c_ptr: required: The tree to traverse
@@ -3196,11 +3253,6 @@ contains
     ! MODEL: c_ptr: optional: The tree model (if this is givem then TREE is
     ! 		ignored
     !-
-
-    type(gtktreeiter), target :: iter
-    type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), intent(in), dimension(:) :: row
-    type(c_ptr), intent(in), optional :: model
 
     type(gtktreeiter), target :: iter2
     integer :: i, ndep
@@ -3228,6 +3280,11 @@ contains
 
   !+
   subroutine hl_gtk_tree_rem(tree, row, absrow)
+
+    type(c_ptr), intent(in) :: tree
+    integer(kind=c_int), optional, intent(in), dimension(:) :: row
+    integer(kind=c_int), intent(in), optional :: absrow
+
     ! Remove a row or clear a tree
     !
     ! TREE: c_ptr: required: The tree to modify
@@ -3235,10 +3292,6 @@ contains
     ! ABSROW: c_int: optional: The row to remove, treating the tree as a
     ! 		flat list.
     !-
-
-    type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), optional, intent(in), dimension(:) :: row
-    integer(kind=c_int), intent(in), optional :: absrow
 
     integer(kind=c_int) :: valid
     type(c_ptr) :: store
@@ -3267,6 +3320,15 @@ contains
   !+
   function hl_gtk_tree_get_selections(tree, indices, depths, &
        & selection) result(count)
+
+    integer(kind=c_int) :: count
+    type(c_ptr), intent(in) :: tree
+    integer(kind=c_int), dimension(:,:), allocatable, target, &
+         & intent(out), optional :: indices
+    integer(kind=c_int), dimension(:), allocatable, target, &
+         & intent(out), optional :: depths
+    type(c_ptr), optional :: selection
+
     ! Get the indices of the selected rows
     !
     ! TREE: c_ptr: required: The tree whose selections are to be found.
@@ -3284,14 +3346,6 @@ contains
     !
     ! Returns the number of selections.
     !-
-
-    integer(kind=c_int) :: count
-    type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), dimension(:,:), allocatable, target, &
-         & intent(out), optional :: indices
-    integer(kind=c_int), dimension(:), allocatable, target, &
-         & intent(out), optional :: depths
-    type(c_ptr), optional :: selection
 
     type(c_ptr) :: slist, vselection
     type(c_ptr), target :: model
@@ -3349,6 +3403,17 @@ contains
   !+
   subroutine hl_gtk_tree_set_cell(tree, row, col, absrow, &
        & svalue, fvalue, dvalue, ivalue, lvalue, l64value)
+
+    type(c_ptr), intent(in) :: tree
+    integer(kind=c_int), intent(in), optional :: absrow, col
+    integer(kind=c_int), intent(in), optional, dimension(:) :: row
+    character(len=*), intent(in), optional :: svalue
+    real(kind=c_float), intent(in), optional :: fvalue
+    real(kind=c_double), intent(in), optional :: dvalue
+    integer(kind=c_int), intent(in), optional :: ivalue
+    integer(kind=c_long), intent(in), optional :: lvalue
+    integer(kind=c_int64_t), intent(in), optional :: l64value
+
     ! Set the value of a cell.
     !
     ! TREE: c_ptr: required: The tree containing the cell.
@@ -3366,15 +3431,6 @@ contains
     !
     ! Note that reasonable conversions are made between types.
     !-
-    type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), intent(in), optional :: absrow, col
-    integer(kind=c_int), intent(in), optional, dimension(:) :: row
-    character(len=*), intent(in), optional :: svalue
-    real(kind=c_float), intent(in), optional :: fvalue
-    real(kind=c_double), intent(in), optional :: dvalue
-    integer(kind=c_int), intent(in), optional :: ivalue
-    integer(kind=c_long), intent(in), optional :: lvalue
-    integer(kind=c_int64_t), intent(in), optional :: l64value
 
     integer(kind=type_kind) :: ctype
     type(c_ptr) :: store, val
@@ -3657,6 +3713,17 @@ contains
   !+
   subroutine hl_gtk_tree_get_cell(tree, row, col, absrow, &
        & svalue, fvalue, dvalue, ivalue, lvalue, l64value)
+
+    type(c_ptr), intent(in) :: tree
+    integer(kind=c_int), intent(in), optional :: absrow, col
+    integer(kind=c_int), intent(in), optional, dimension(:) :: row
+    character(len=*), intent(out), optional :: svalue
+    real(kind=c_float), intent(out), optional :: fvalue
+    real(kind=c_double), intent(out), optional :: dvalue
+    integer(kind=c_int), intent(out), optional :: ivalue
+    integer(kind=c_long), intent(out), optional :: lvalue
+    integer(kind=c_int64_t), intent(out), optional :: l64value
+
     ! Retrieve the value of a cell.
     !
     ! TREE: c_ptr: required: The tree containing the cell.
@@ -3675,15 +3742,6 @@ contains
     ! Note that a similar conversion system to the set_cell routine
     ! except that strings can only be returned to SVALUE.
     !-
-    type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), intent(in), optional :: absrow, col
-    integer(kind=c_int), intent(in), optional, dimension(:) :: row
-    character(len=*), intent(out), optional :: svalue
-    real(kind=c_float), intent(out), optional :: fvalue
-    real(kind=c_double), intent(out), optional :: dvalue
-    integer(kind=c_int), intent(out), optional :: ivalue
-    integer(kind=c_long), intent(out), optional :: lvalue
-    integer(kind=c_int64_t), intent(out), optional :: l64value
 
     integer(kind=type_kind) :: ctype
     type(c_ptr) :: store, val, cstr
@@ -3890,6 +3948,13 @@ contains
   !+
   subroutine hl_gtk_tree_set_cell_data_func(list, colno, func, &
        & data, destroy_notify)
+
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: colno
+    type(c_funptr), optional :: func
+    type(c_ptr), optional :: data
+    type(c_funptr), optional :: destroy_notify
+
     ! Add a custom rendering function to a column of a tree
     !
     ! LIST: c_ptr: required: The list to which to apply the rendering function
@@ -3899,11 +3964,6 @@ contains
     ! DATA: c_ptr: optional: User data to pass to the function.
     ! DESTROY_NOTIFY: c_funptr: optional: A destroy notify subroutine.
     !-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: colno
-    type(c_funptr), optional :: func
-    type(c_ptr), optional :: data
-    type(c_funptr), optional :: destroy_notify
 
     call hl_gtk_listn_set_cell_data_func(list, colno, func, &
          & data, destroy_notify)
@@ -3915,14 +3975,15 @@ contains
   !/
   !+
   function hl_gtk_menu_new(orientation) result(menu)
+
+    type(c_ptr) :: menu
+    integer(kind=c_int), intent(in), optional :: orientation
+
     ! Menu initializer (mainly for consistency)
     !
     ! ORIENTATION: integer: optional: Whether to lay out the top level
     ! 		horizontaly or vertically.
     !-
-
-    type(c_ptr) :: menu
-    integer(kind=c_int), intent(in), optional :: orientation
 
     integer(kind=c_int) :: orient
     if (present(orientation)) then
@@ -3938,6 +3999,13 @@ contains
 
   !+
   function hl_gtk_menu_submenu_new(menu, label, tooltip, pos) result(submenu)
+
+    type(c_ptr) :: submenu
+    type(c_ptr) :: menu
+    character(kind=c_char), dimension(*), intent(in) :: label
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), optional :: pos
+
     ! Make a submenu node
     !
     ! MENU: c_ptr: required:  The parent of the submenu
@@ -3946,12 +4014,6 @@ contains
     ! POS: integer: optional: The position at which to insert the item
     ! 		(omit to append)
     !-
-
-    type(c_ptr) :: submenu
-    type(c_ptr) :: menu
-    character(kind=c_char), dimension(*), intent(in) :: label
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), optional :: pos
 
     type(c_ptr) :: item
 
@@ -3976,6 +4038,16 @@ contains
   !+
   function hl_gtk_menu_item_new(menu, label, activate, data, tooltip, &
        & pos, tearoff, sensitive) result(item)
+
+    type(c_ptr) ::  item
+    type(c_ptr) :: menu
+    character(kind=c_char), dimension(*), intent(in), optional :: label
+    type(c_funptr), optional :: activate
+    type(c_ptr), optional :: data
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), optional :: pos
+    integer(kind=c_int), optional :: tearoff, sensitive
+
     ! Make a menu item or separator
     !
     ! MENU: c_ptr: required: The parent menu.
@@ -3991,15 +4063,6 @@ contains
     ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
     ! 		insensitive state.
     !-
-
-    type(c_ptr) ::  item
-    type(c_ptr) :: menu
-    character(kind=c_char), dimension(*), intent(in), optional :: label
-    type(c_funptr), optional :: activate
-    type(c_ptr), optional :: data
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), optional :: pos
-    integer(kind=c_int), optional :: tearoff, sensitive
 
     integer(kind=c_int) :: istear
 
@@ -4050,6 +4113,17 @@ contains
   !+
   function hl_gtk_check_menu_item_new(menu, label, toggled, data, &
        & tooltip, pos, initial_state, sensitive)  result(item)
+
+    type(c_ptr) ::  item
+    type(c_ptr) :: menu
+    character(kind=c_char), dimension(*), intent(in) :: label
+    type(c_funptr), optional :: toggled
+    type(c_ptr), optional :: data
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), optional :: pos
+    integer(kind=c_int), optional :: initial_state
+    integer(kind=c_int), optional :: sensitive
+
     ! Make a menu item or separator
     !
     ! MENU: c_ptr: required: The parent menu.
@@ -4064,16 +4138,6 @@ contains
     ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
     ! 		insensitive state.
     !-
-
-    type(c_ptr) ::  item
-    type(c_ptr) :: menu
-    character(kind=c_char), dimension(*), intent(in) :: label
-    type(c_funptr), optional :: toggled
-    type(c_ptr), optional :: data
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), optional :: pos
-    integer(kind=c_int), optional :: initial_state
-    integer(kind=c_int), optional :: sensitive
 
     ! Create the menu item
     item = gtk_check_menu_item_new_with_label(label)
@@ -4107,6 +4171,16 @@ contains
   !+
   function hl_gtk_radio_menu_item_new(group, menu, label, toggled, data, &
        & tooltip, pos, sensitive)  result(item)
+
+    type(c_ptr) ::  group, item
+    type(c_ptr) :: menu
+    character(kind=c_char), dimension(*), intent(in) :: label
+    type(c_funptr), optional :: toggled
+    type(c_ptr), optional :: data
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), optional :: pos
+    integer(kind=c_int), optional :: sensitive
+
     ! Make a menu item or separator
     !
     ! GROUP: c_ptr: required: The group for the radio item (NULL for a
@@ -4122,15 +4196,6 @@ contains
     ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
     ! 		insensitive state.
     !-
-
-    type(c_ptr) ::  group, item
-    type(c_ptr) :: menu
-    character(kind=c_char), dimension(*), intent(in) :: label
-    type(c_funptr), optional :: toggled
-    type(c_ptr), optional :: data
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), optional :: pos
-    integer(kind=c_int), optional :: sensitive
 
     ! Create the menu item
     item = gtk_radio_menu_item_new_with_label(group, label)
@@ -4192,16 +4257,17 @@ contains
 
   !+
   function hl_gtk_progress_bar_new(vertical, reversed, step) result(bar)
+
+    type(c_ptr) :: bar
+    integer(kind=c_int), optional :: vertical, reversed
+    real(kind=c_double), optional :: step
+
     ! Intializer for a progress bar
     !
     ! ORIENTATION: integer: optional: The orientation of the bar.
     ! STEP: double: optional: The fractional step to advance when
     ! 		pulsing the bar
     !-
-
-    type(c_ptr) :: bar
-    integer(kind=c_int), optional :: vertical, reversed
-    real(kind=c_double), optional :: step
 
     integer(kind=c_int) :: orientation
 
@@ -4240,6 +4306,12 @@ contains
 
   !+
   subroutine hl_gtk_progress_bar_set_f(bar, val, string, text)
+
+    type(c_ptr) :: bar
+    real(kind=c_double), optional :: val
+    integer(kind=c_int), optional :: string
+    character(len=*), intent(in), optional:: text
+
     ! Set the value of a progress bar (fraction or pulse)
     !
     ! BAR: c_ptr: required: The bar to set
@@ -4250,12 +4322,6 @@ contains
     ! This routine is normally accessed via the generic interface
     ! hl_gtk_progress_bar
     !-
-
-    type(c_ptr) :: bar
-    real(kind=c_double), optional :: val
-    integer(kind=c_int), optional :: string
-    ! character(kind=c_char), dimension(*), intent(in), optional :: text
-    character(len=*), intent(in), optional:: text
 
     character(len=50) :: sval
 
@@ -4289,6 +4355,15 @@ contains
 
   !+
   subroutine hl_gtk_progress_bar_set_ii(bar, val, maxv, string, text)
+
+    type(c_ptr) :: bar
+    integer(kind=c_int) :: val, maxv
+    integer(kind=c_int), optional :: string
+    !    character(kind=c_char), dimension(*), intent(in), optional :: text
+    character(len=*), intent(in), optional:: text
+    real(kind=c_double) :: frac
+    character(len=50) :: sval
+
     ! Set the value of a progress bar (n of m)
     !
     ! BAR: c_ptr: required: The bar to set
@@ -4300,14 +4375,6 @@ contains
     ! This routine is normally accessed via the generic interface
     ! hl_gtk_progress_bar
     !-
-
-    type(c_ptr) :: bar
-    integer(kind=c_int) :: val, maxv
-    integer(kind=c_int), optional :: string
-    !    character(kind=c_char), dimension(*), intent(in), optional :: text
-    character(len=*), intent(in), optional:: text
-    real(kind=c_double) :: frac
-    character(len=50) :: sval
 
     frac = real(val,c_double)/real(maxv,c_double)
     call gtk_progress_bar_set_fraction(bar, frac)
@@ -4342,6 +4409,14 @@ contains
   !+
   function hl_gtk_message_dialog_show(message, button_set, title, type, &
        & parent) result(resp)
+
+    integer(kind=c_int) :: resp
+    character(len=*), dimension(:), intent(in) :: message
+    integer(kind=c_int), intent(in) :: button_set
+    character(kind=c_char), dimension(*), intent(in), optional :: title
+    integer(kind=c_int), intent(in), optional :: type
+    type(c_ptr), intent(in), optional :: parent
+
     ! A DIY version of the message dialogue, needed because both creators
     ! for the built in one are variadic and so not callable from Fortran.
     !
@@ -4354,13 +4429,6 @@ contains
     !
     ! The return value is the response code, not the widget.
     !-
-
-    integer(kind=c_int) :: resp
-    character(len=*), dimension(:), intent(in) :: message
-    integer(kind=c_int), intent(in) :: button_set
-    character(kind=c_char), dimension(*), intent(in), optional :: title
-    integer(kind=c_int), intent(in), optional :: type
-    type(c_ptr), intent(in), optional :: parent
 
     type(c_ptr) :: dialog, content, junk, hb, vb
     integer :: i
@@ -4474,6 +4542,20 @@ contains
        & width, show_hidden, &
        & initial_folder, initial_file, filter, filter_name, file_set, &
        & data, sensitive, tooltip) result(cbutton)
+
+    type(c_ptr) :: cbutton
+    integer(kind=c_int), intent(in), optional :: directory
+    character(kind=c_char), dimension(*), optional, intent(in) :: title
+    integer(kind=c_int), intent(in), optional :: width
+    integer(kind=c_int), intent(in), optional :: show_hidden
+    character(kind=c_char), dimension(*), optional, intent(in) :: initial_folder, initial_file
+    character(len=*), dimension(:), intent(in), optional :: filter
+    character(len=*), dimension(:), optional, intent(in) :: filter_name
+    type(c_funptr), optional :: file_set
+    type(c_ptr), optional :: data
+    integer(kind=c_int), intent(in), optional :: sensitive
+    character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
+
     ! Bundled file chooser button
     !
     ! DIRECTORY: boolean: optional: Set to TRUE to select directories rather
@@ -4495,19 +4577,6 @@ contains
     ! TOOLTIP: string: optional: A tooltip to display when the pointer is
     ! 		held over the widget.
     !-
-
-    type(c_ptr) :: cbutton
-    integer(kind=c_int), intent(in), optional :: directory
-    character(kind=c_char), dimension(*), optional, intent(in) :: title
-    integer(kind=c_int), intent(in), optional :: width
-    integer(kind=c_int), intent(in), optional :: show_hidden
-    character(kind=c_char), dimension(*), optional, intent(in) :: initial_folder, initial_file
-    character(len=*), dimension(:), intent(in), optional :: filter
-    character(len=*), dimension(:), optional, intent(in) :: filter_name
-    type(c_funptr), optional :: file_set
-    type(c_ptr), optional :: data
-    integer(kind=c_int), intent(in), optional :: sensitive
-    character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
 
     integer(kind=c_int) :: mode, lval
     type(c_ptr) :: gfilter
@@ -4604,6 +4673,21 @@ contains
        & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
        & initial_dir, initial_file, filter, filter_name, parent, all, &
        & wsize, edit_filters) result(isel)
+
+    integer(kind=c_int) :: isel
+    character(len=*), dimension(:), intent(out), allocatable :: files
+    character(len=*), intent(out), optional :: cdir
+    integer(kind=c_int), intent(in), optional :: directory, create, multiple
+    integer(kind=c_int), intent(in), optional :: allow_uri, show_hidden
+    integer(kind=c_int), intent(in), optional :: confirm_overwrite
+    character(kind=c_char), dimension(*), intent(in), optional :: title, initial_dir, initial_file
+    character(len=*), dimension(:), intent(in), optional :: filter
+    character(len=*), dimension(:), intent(in), optional :: filter_name
+    type(c_ptr), intent(in), optional :: parent
+    integer(kind=c_int), intent(in), optional :: all
+    integer(kind=c_int), intent(in), dimension(2), optional :: wsize
+    integer(kind=c_int), intent(in), optional :: edit_filters
+
     ! Create and show a file chooser widget.
     !
     ! FILES: string(): required: The file or files selected.
@@ -4634,20 +4718,6 @@ contains
     !
     ! Returns TRUE if one or more files was selected, FALSE otherwise.
     !-
-
-    integer(kind=c_int) :: isel
-    character(len=*), dimension(:), intent(out), allocatable :: files
-    character(len=*), intent(out), optional :: cdir
-    integer(kind=c_int), intent(in), optional :: directory, create, multiple
-    integer(kind=c_int), intent(in), optional :: allow_uri, show_hidden
-    integer(kind=c_int), intent(in), optional :: confirm_overwrite
-    character(kind=c_char), dimension(*), intent(in), optional :: title, initial_dir, initial_file
-    character(len=*), dimension(:), intent(in), optional :: filter
-    character(len=*), dimension(:), intent(in), optional :: filter_name
-    type(c_ptr), intent(in), optional :: parent
-    integer(kind=c_int), intent(in), optional :: all
-    integer(kind=c_int), intent(in), dimension(2), optional :: wsize
-    integer(kind=c_int), intent(in), optional :: edit_filters
 
     type(c_ptr) :: dialog, content, junk, gfilter
     integer(kind=c_int) :: icreate, idir, action, lval
@@ -4855,6 +4925,11 @@ contains
 
   !+
   subroutine hl_gtk_chooser_resp_cb(dialog, response, gdata) bind(c)
+
+    type(c_ptr), value :: dialog
+    integer(c_int), value :: response
+    type(c_ptr), value :: gdata
+
     ! Callback for the "response" signal of the chooser
     !
     ! DIALOG: c_ptr: required: The dialog sending the response
@@ -4863,10 +4938,6 @@ contains
     !
     ! The application developer should never need to use this routine directly.
     !-
-
-    type(c_ptr), value :: dialog
-    integer(c_int), value :: response
-    type(c_ptr), value :: gdata
 
     type(hl_gtk_chooser_info), pointer :: chooser_info
 
@@ -4896,6 +4967,10 @@ contains
 
   !+
   subroutine hl_gtk_chooser_filt_cb(widget, gdata) bind(c)
+
+    type(c_ptr), value :: widget
+    type(c_ptr), value :: gdata
+
     ! Callback for the new filter entry.
     !
     ! WIDGET: c_ptr: required: The widget sending the signal
@@ -4903,9 +4978,6 @@ contains
     !
     ! The application developer should never need to use this routine directly.
     !-
-
-    type(c_ptr), value :: widget
-    type(c_ptr), value :: gdata
 
     type(hl_gtk_chooser_info), pointer :: chooser_info
 
@@ -4963,6 +5035,19 @@ contains
   function hl_gtk_slider_flt_new(vmin, vmax, step, vertical, initial_value, &
        & value_changed, data, digits, sensitive, tooltip, draw, length) &
        & result(slider)
+
+    type(c_ptr) :: slider
+    real(kind=c_double), intent(in) :: vmin, vmax, step
+    integer(kind=c_int), intent(in), optional :: vertical
+    real(kind=c_double), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: digits
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip
+    integer(kind=c_int), intent(in), optional :: draw
+    integer(kind=c_int), intent(in), optional :: length
+
     ! Floating point version of a slider
     !
     ! VMIN: c_double: required: The minimum value for the slider
@@ -4985,17 +5070,6 @@ contains
     ! This routine is usually called via its generic interface
     ! hl_gtk_slider_new
     !-
-    type(c_ptr) :: slider
-    real(kind=c_double), intent(in) :: vmin, vmax, step
-    integer(kind=c_int), intent(in), optional :: vertical
-    real(kind=c_double), intent(in), optional :: initial_value
-    type(c_funptr), optional :: value_changed
-    type(c_ptr), optional :: data
-    integer(kind=c_int), optional, intent(in) :: digits
-    integer(kind=c_int), optional, intent(in) :: sensitive
-    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
-    integer(kind=c_int), intent(in), optional :: draw
-    integer(kind=c_int), intent(in), optional :: length
 
     integer(kind=c_int) :: isvertical, idraw
 
@@ -5046,6 +5120,18 @@ contains
   !+
   function hl_gtk_slider_int_new(imin, imax, vertical, initial_value, &
        & value_changed, data, sensitive, tooltip, draw, length) result(slider)
+
+    type(c_ptr) :: slider
+    integer(kind=c_int), intent(in) :: imin, imax
+    integer(kind=c_int), intent(in), optional :: vertical
+    integer(kind=c_int), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: draw
+    integer(kind=c_int), intent(in), optional :: length
+
     ! Floating point version of a slider
     !
     ! IMIN: c_int: required: The minimum value for the slider
@@ -5066,16 +5152,6 @@ contains
     ! This routine is usually called via its generic interface
     ! hl_gtk_slider_new
     !-
-    type(c_ptr) :: slider
-    integer(kind=c_int), intent(in) :: imin, imax
-    integer(kind=c_int), intent(in), optional :: vertical
-    integer(kind=c_int), intent(in), optional :: initial_value
-    type(c_funptr), optional :: value_changed
-    type(c_ptr), optional :: data
-    integer(kind=c_int), optional, intent(in) :: sensitive
-    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
-    integer(kind=c_int), intent(in), optional :: draw
-    integer(kind=c_int), intent(in), optional :: length
 
     integer(kind=c_int) :: isvertical, idraw
 
@@ -5128,6 +5204,10 @@ contains
 
   !+
   function hl_gtk_slider_get_value(slider) result(val)
+
+    real(kind=c_double) :: val
+    type(c_ptr) :: slider
+
     ! Get the value of a slider
     !
     ! SLIDER: c_ptr: required: The slider to read.
@@ -5135,14 +5215,16 @@ contains
     ! Note even for an integer slider we get a float value but there's
     ! no problem letting Fortran do the truncation
     !-
-    real(kind=c_double) :: val
-    type(c_ptr) :: slider
 
     val = gtk_range_get_value(slider)
   end function hl_gtk_slider_get_value
 
   !+
   subroutine hl_gtk_slider_set_flt(slider, val)
+
+    type(c_ptr), intent(in) :: slider
+    real(kind=c_double), intent(in) :: val
+
     ! Set a floating point value for a slider
     !
     ! SLIDER: c_ptr: required: The slider to set.
@@ -5150,14 +5232,16 @@ contains
     !
     ! This is usually accessed via the generic interface hl_gtk_slider_set_value
     !-
-    type(c_ptr), intent(in) :: slider
-    real(kind=c_double), intent(in) :: val
 
     call gtk_range_set_value(slider, val)
   end subroutine hl_gtk_slider_set_flt
 
   !+
   subroutine hl_gtk_slider_set_int(slider, val)
+
+    type(c_ptr), intent(in) :: slider
+    integer(kind=c_int), intent(in) :: val
+
     ! Set a floating point value for a slider
     !
     ! SLIDER: c_ptr: required: The slider to set.
@@ -5165,8 +5249,6 @@ contains
     !
     ! This is usually accessed via the generic interface hl_gtk_slider_set_value
     !-
-    type(c_ptr), intent(in) :: slider
-    integer(kind=c_int), intent(in) :: val
 
     call gtk_range_set_value(slider, real(val, c_double))
   end subroutine hl_gtk_slider_set_int
@@ -5175,6 +5257,17 @@ contains
   function hl_gtk_spin_button_flt_new(vmin, vmax, step, initial_value, &
        & value_changed, data, digits, sensitive, tooltip, wrap) &
        & result(spin_button)
+
+    type(c_ptr) :: spin_button
+    real(kind=c_double), intent(in) :: vmin, vmax, step
+    real(kind=c_double), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: digits
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: wrap
+
     ! Floating point version of a spin_button
     !
     ! VMIN: c_double: required: The minimum value for the spin_button
@@ -5194,15 +5287,6 @@ contains
     ! This routine is usually called via its generic interface
     ! hl_gtk_spin_button_new
     !-
-    type(c_ptr) :: spin_button
-    real(kind=c_double), intent(in) :: vmin, vmax, step
-    real(kind=c_double), intent(in), optional :: initial_value
-    type(c_funptr), optional :: value_changed
-    type(c_ptr), optional :: data
-    integer(kind=c_int), optional, intent(in) :: digits
-    integer(kind=c_int), optional, intent(in) :: sensitive
-    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
-    integer(kind=c_int), intent(in), optional :: wrap
 
     ! Create the spin_button
     spin_button = gtk_spin_button_new_with_range(vmin, vmax, step)
@@ -5236,6 +5320,16 @@ contains
   !+
   function hl_gtk_spin_button_int_new(imin, imax, initial_value, &
        & value_changed, data, sensitive, tooltip, wrap) result(spin_button)
+
+    type(c_ptr) :: spin_button
+    integer(kind=c_int), intent(in) :: imin, imax
+    integer(kind=c_int), intent(in), optional :: initial_value
+    type(c_funptr), optional :: value_changed
+    type(c_ptr), optional :: data
+    integer(kind=c_int), optional, intent(in) :: sensitive
+    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
+    integer(kind=c_int), intent(in), optional :: wrap
+
     ! Floating point version of a spin_button
     !
     ! IMIN: c_int: required: The minimum value for the spin_button
@@ -5253,14 +5347,6 @@ contains
     ! This routine is usually called via its generic interface
     ! hl_gtk_spin_button_new
     !-
-    type(c_ptr) :: spin_button
-    integer(kind=c_int), intent(in) :: imin, imax
-    integer(kind=c_int), intent(in), optional :: initial_value
-    type(c_funptr), optional :: value_changed
-    type(c_ptr), optional :: data
-    integer(kind=c_int), optional, intent(in) :: sensitive
-    character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
-    integer(kind=c_int), intent(in), optional :: wrap
 
     ! Create the spin_button
     spin_button = gtk_spin_button_new_with_range(real(imin, c_double), &
@@ -5293,6 +5379,10 @@ contains
 
   !+
   function hl_gtk_spin_button_get_value(spin_button) result(val)
+
+    real(kind=c_double) :: val
+    type(c_ptr) :: spin_button
+
     ! Get the value of a spin_button
     !
     ! SPIN_BUTTON: c_ptr: required: The spin_button to read.
@@ -5300,14 +5390,16 @@ contains
     ! Note even for an integer spin_button we get a float value but there's
     ! no problem letting Fortran do the truncation
     !-
-    real(kind=c_double) :: val
-    type(c_ptr) :: spin_button
 
     val = gtk_spin_button_get_value(spin_button)
   end function hl_gtk_spin_button_get_value
 
   !+
   subroutine hl_gtk_spin_button_set_flt(spin_button, val)
+
+    type(c_ptr), intent(in) :: spin_button
+    real(kind=c_double), intent(in) :: val
+
     ! Set a floating point value for a spin_button
     !
     ! SPIN_BUTTON: c_ptr: required: The spin_button to set.
@@ -5315,14 +5407,16 @@ contains
     !
     ! This is usually accessed via the generic interface hl_gtk_spin_button_set_value
     !-
-    type(c_ptr), intent(in) :: spin_button
-    real(kind=c_double), intent(in) :: val
 
     call gtk_spin_button_set_value(spin_button, val)
   end subroutine hl_gtk_spin_button_set_flt
 
   !+
   subroutine hl_gtk_spin_button_set_int(spin_button, val)
+
+    type(c_ptr), intent(in) :: spin_button
+    integer(kind=c_int), intent(in) :: val
+
     ! Set a floating point value for a spin_button
     !
     ! SPIN_BUTTON: c_ptr: required: The spin_button to set.
@@ -5330,8 +5424,6 @@ contains
     !
     ! This is usually accessed via the generic interface hl_gtk_spin_button_set_value
     !-
-    type(c_ptr), intent(in) :: spin_button
-    integer(kind=c_int), intent(in) :: val
 
     call gtk_spin_button_set_value(spin_button, real(val, c_double))
   end subroutine hl_gtk_spin_button_set_int
@@ -5346,6 +5438,15 @@ contains
   !+
   function hl_gtk_combo_box_new(has_entry, changed, data, initial_choices, &
        & sensitive, tooltip) result(cbox)
+
+    type(c_ptr) :: cbox
+    integer(kind=c_int), intent(in), optional :: has_entry
+    type(c_funptr), optional :: changed
+    type(c_ptr), intent(in), optional :: data
+    character(len=*), dimension(:), intent(in), optional :: initial_choices
+    integer(kind=c_int), intent(in), optional :: sensitive
+    character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
+
     ! Creator for the combobox.
     !
     ! HAS_ENTRY: boolean: optional: Set to TRUE to add an entry field.
@@ -5357,14 +5458,6 @@ contains
     ! TOOLTIP: string: optional: A tooltip to display when the pointer is
     ! 		held over the widget.
     !-
-
-    type(c_ptr) :: cbox
-    integer(kind=c_int), intent(in), optional :: has_entry
-    type(c_funptr), optional :: changed
-    type(c_ptr), intent(in), optional :: data
-    character(len=*), dimension(:), intent(in), optional :: initial_choices
-    integer(kind=c_int), intent(in), optional :: sensitive
-    character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
 
     integer(kind=c_int) :: ientry
     integer(kind=c_int) :: i
@@ -5412,6 +5505,12 @@ contains
 
   !+
   subroutine hl_gtk_combo_box_add_text(cbox, text, index, at_start)
+
+    type(c_ptr), intent(in) :: cbox
+    character(kind=c_char), dimension(*), optional :: text
+    integer(kind=c_int), intent(in), optional :: index
+    integer(kind=c_int), intent(in), optional :: at_start
+
     ! Add a new choice to a combo box.
     !
     ! CBOX: c_ptr: required: The combo box to modify.
@@ -5422,11 +5521,6 @@ contains
     !
     ! If neither INDEX nor AT_START is present the text is appended.
     !-
-
-    type(c_ptr), intent(in) :: cbox
-    character(kind=c_char), dimension(*), optional :: text
-    integer(kind=c_int), intent(in), optional :: index
-    integer(kind=c_int), intent(in), optional :: at_start
 
     integer(kind=c_int) :: prepend
 
@@ -5457,14 +5551,15 @@ contains
 
   !+
   subroutine hl_gtk_combo_box_delete(cbox, index)
+
+    type(c_ptr), intent(in) :: cbox
+    integer(kind=c_int), intent(in) :: index
+
     ! Delete a line from a combo box
     !
     ! CBOX: c_ptr: required: The combo box to update
     ! INDEX: c_int: required: The index of the choce to remove
     !-
-
-    type(c_ptr), intent(in) :: cbox
-    integer(kind=c_int), intent(in) :: index
 
 !GTK3
 !3    call gtk_combo_box_text_remove(cbox, index)
@@ -5475,17 +5570,18 @@ contains
 
   !+
   function hl_gtk_combo_box_get_active(cbox, text, ftext) result(index)
+
+    integer(kind=c_int) :: index
+    type(c_ptr), intent(in) :: cbox
+    type(c_ptr), intent(out), optional :: text
+    character(len=*), intent(out), optional :: ftext
+
     ! Get the selection from a combo box
     !
     ! CBOX: c_ptr: required: The combo box to query.
     ! TEXT: c_ptr: optional: C pointer to the text.
     ! FTEXT: fstring: optional: The string as a Fortran string.
     !-
-
-    integer(kind=c_int) :: index
-    type(c_ptr), intent(in) :: cbox
-    type(c_ptr), intent(out), optional :: text
-    character(len=*), intent(out), optional :: ftext
 
     type(c_ptr), target :: ctext
 
