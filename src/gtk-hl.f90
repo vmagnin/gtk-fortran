@@ -238,6 +238,7 @@ module gtk_hl
        & gtk_tree_view_column_set_cell_data_func, &
        & gtk_radio_menu_item_new_with_label, gtk_check_menu_item_new_with_label, &
        & gtk_check_menu_item_set_active, gtk_radio_menu_item_get_group, &
+       & gtk_tree_path_new_from_string, &
        & TRUE, FALSE, NULL, CNULL, FNULL, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -258,16 +259,16 @@ module gtk_hl
        & gtk_combo_box_get_active_text, gtk_combo_box_insert_text, &
        & gtk_combo_box_new_text, gtk_combo_box_prepend_text, &
        & gtk_combo_box_remove_text, gtk_notebook_set_group, &
-      & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
+       & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
        & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT
   ! Replace the last 2 lines with the next 2 for GTK3
-  !3 & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL
-  !3      & gtk_progress_bar_set_inverted, gtk_progress_bar_set_show_text, &
-!3 & gtk_combo_box_text_append_text, &
-!3 & gtk_combo_box_text_get_active_text, gtk_combo_box_text_insert_text, &
-!3 & gtk_combo_box_text_new, gtk_combo_box_text_new_with_entry, &
-!3 & gtk_combo_box_text_prepend_text, gtk_combo_box_text_remove, &
-!3 & gtk_notebook_set_group_name
+!!3       & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL
+!!3       & gtk_progress_bar_set_inverted, gtk_progress_bar_set_show_text, &
+!!3       & gtk_combo_box_text_append_text, &
+!!3       & gtk_combo_box_text_get_active_text, gtk_combo_box_text_insert_text, &
+!!3       & gtk_combo_box_text_new, gtk_combo_box_text_new_with_entry, &
+!!3       & gtk_combo_box_text_prepend_text, gtk_combo_box_text_remove, &
+!!3       & gtk_notebook_set_group_name
 
   use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
        &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int, &
@@ -277,7 +278,9 @@ module gtk_hl
        & g_value_set_uint64, g_value_set_boolean, g_value_set_uint,  &
        & g_value_get_char, g_value_get_long, g_value_get_int64, g_value_get_float, &
        & g_value_get_string, g_value_get_double, g_value_get_uchar, g_value_get_ulong, &
-       & g_value_get_uint64, g_value_get_boolean, g_value_get_uint, g_list_nth_data
+       & g_value_get_uint64, g_value_get_boolean, g_value_get_uint, &
+       & g_list_nth_data, g_object_set_property, g_object_set_data, &
+       & g_object_get_data
   use iso_c_binding
 
   implicit none
@@ -676,7 +679,7 @@ contains
          & call gtk_notebook_set_scrollable(nbook, scrollable)
 
     if (present(group)) &
-!3         & call gtk_notebook_set_group_name(nbook, group)
+!!3         & call gtk_notebook_set_group_name(nbook, group)
          & call gtk_notebook_set_group(nbook, c_loc(group))
 
   end function hl_gtk_notebook_new
@@ -1631,7 +1634,7 @@ contains
   !+
   function hl_gtk_listn_new(scroll, ncols, types, changed, data, multiple,&
        & width, titles, height, swidth, align, ixpad, iypad, sensitive, &
-       & tooltip, sortable) result(list)
+       & tooltip, sortable, editable, colnos, edited, data_edited) result(list)
 
     type(c_ptr) :: list
     type(c_ptr), intent(out) :: scroll
@@ -1647,7 +1650,10 @@ contains
     integer(kind=c_int), intent(in), optional, dimension(:) :: ixpad, iypad
     integer(kind=c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable
+    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable, editable
+    integer(kind=c_int), dimension(:), allocatable, intent(out), optional, target :: colnos
+    type(c_funptr), optional :: edited
+    type(c_ptr), optional, intent(in) :: data_edited
 
     ! Make a multi column list
     !
@@ -1671,6 +1677,15 @@ contains
     ! TOOLTIP: string: optional: Tooltip for the widget
     ! SORTABLE: boolean(): optional: Set whether the list can be sorted
     ! 		on that column.
+    ! EDITABLE: boolean(): optional: Set whether the column can be edited.
+    ! COLNOS: c_int(): optional: An array of column numbers for the editing
+    ! 		callback to use, must be an argument to prevent automatic
+    ! 		deallocation, must be present if EDITABLE is present.
+    ! EDITED: f_funptr: optional: An alternative callback for the "edited"
+    ! 		signal on edited cells. N.B. Only a single callback can be set
+    ! 		if different actions are needed for different columns,
+    ! 		you must use the column number inside the callback.
+    ! DATA_EDITED: c_ptr: optional: Data to pass to the edited callback.
     !
     ! At least one of the array arguments or NCOLS must be given.
     ! If TYPES is not given, then strings are assumed.
@@ -1680,6 +1695,8 @@ contains
     integer(kind=type_kind), dimension(:), allocatable, target :: types_all
 
     type(c_ptr) :: model, renderer, column, select
+    type(gvalue), target :: isedit
+    type(c_ptr) :: pisedit
 
     ! First find how many columns there are (with the index column there's
     ! one more than we ask for)
@@ -1700,6 +1717,8 @@ contains
        ncols_all = size(ixpad)
     else if (present(iypad)) then
        ncols_all = size(iypad)
+    else if (present(editable)) then
+       ncols_all = size(editable)
     else
        write(0,*) "hl_gtk_listn_new: Cannot determine the number of columns"
        list = NULL
@@ -1713,6 +1732,20 @@ contains
        types_all = types
     else
        types_all = (/ (ncols_all-1)*g_type_string /)
+    end if
+
+    ! If editable is present, initialize the GValue
+    if (present(editable)) then
+       if (.not. present(colnos)) then
+          write(0,*) "hl_gtk_listn_new: EDITABLE requires COLNOS"
+          list=NULL
+          scroll=NULL
+          return
+       end if
+       pisedit = c_loc(isedit)
+       pisedit = g_value_init(pisedit, G_TYPE_BOOLEAN)
+       allocate(colnos(ncols_all))
+       colnos = (/ (i-1, i=1, ncols_all) /)
     end if
 
     ! Create the storage model
@@ -1746,8 +1779,27 @@ contains
           call gtk_cell_renderer_set_padding(renderer, &
                & 0, iypad(i))
        end if
-       column = gtk_tree_view_column_new()
-       call gtk_tree_view_column_pack_start(column, renderer, FALSE)
+       if (present(editable)) then
+          call g_value_set_boolean(pisedit, editable(i))
+          call g_object_set_property(renderer, "editable"//cnull, pisedit)
+          if (editable(i) == TRUE) then
+             call g_object_set_data(renderer, "column-number"//cnull, &
+                  & c_loc(colnos(i)))
+             call g_object_set_data(renderer, "view"//cnull, list)
+             if (present(edited)) then
+                if (present(data_edited)) then
+                   call g_signal_connect(renderer, "edited"//cnull, &
+                        & edited, data_edited)
+                else
+                   call g_signal_connect(renderer, "edited"//cnull, &
+                        & edited)
+                end if
+             else
+                call g_signal_connect(renderer, "edited"//cnull, &
+                     & c_funloc(hl_gtk_listn_edit_cb))
+             endif
+          end if
+       end if
        if (present(align)) then
           call gtk_cell_renderer_set_alignment(renderer, align(i), 0.)
        else if (types_all(i) == G_TYPE_STRING) then
@@ -1755,6 +1807,9 @@ contains
        else
           call gtk_cell_renderer_set_alignment(renderer, 1., 0.)
        end if
+
+       column = gtk_tree_view_column_new()
+       call gtk_tree_view_column_pack_start(column, renderer, FALSE)
 
        if (present(titles)) call gtk_tree_view_column_set_title(column, &
             &trim(titles(i))//cnull)
@@ -1772,7 +1827,7 @@ contains
                & GTK_TREE_VIEW_COLUMN_FIXED)
           call gtk_tree_view_column_set_fixed_width(column, width(i))
        end if
-       call gtk_tree_view_column_set_resizable(column,TRUE)
+      call gtk_tree_view_column_set_resizable(column,TRUE)
     end do
 
     ! The event handler is attached to the selection object, as is
@@ -1801,6 +1856,41 @@ contains
 
     deallocate(types_all)
   end function hl_gtk_listn_new
+
+  !+
+  subroutine hl_gtk_listn_edit_cb(renderer, path, text, gdata) bind(c)
+    type(c_ptr), value :: renderer, path, text, gdata
+    ! Default callback for list cell edited.
+    !
+    ! RENDERER: c_ptr: required: The renderer which sent the signal
+    ! PATH: c_ptr: required: The path at which to insert
+    ! TEXT: c_ptr: required: The text to insert
+    ! GDATA: c_ptr: required: User data, Not used.
+    !
+    ! The column number is passed via the "column-number" gobject data value.
+    ! The treeview containing the cell is passed via the "view" gobject
+    ! data value.
+    ! The row number is passed as a string in the PATH argument.
+    ! This routine is not normally called by the application developer.
+    !-
+
+    character(len=200) :: fpath, ftext
+    integer(kind=c_int) :: irow
+    integer(kind=c_int), pointer :: icol
+    integer :: ios
+    type(c_ptr) :: pcol, list
+
+    call convert_c_string(path, 200, fpath)
+    read(fpath, *) irow
+    pcol = g_object_get_data(renderer, "column-number"//cnull)
+    call c_f_pointer(pcol, icol)
+    call convert_c_string(text, 200, ftext)
+    list = g_object_get_data(renderer, "view"//cnull)
+
+    call hl_gtk_listn_set_cell(list, irow, icol, &
+         & svalue=trim(ftext))
+  end subroutine hl_gtk_listn_edit_cb
+
   !+
   subroutine hl_gtk_listn_ins(list, row)
 
@@ -2689,6 +2779,9 @@ contains
     ! TITLE: string: optional: Title for the visible column.
     ! HEIGHT: integer: optional: The height of the display (this is
     !            actually the height of the scroll box).
+    !
+    ! If other options (e.g. sortable columns or editable cells are needed,
+    ! the use hl_gtk_listn_new with 1 column).
     !-
 
     integer(kind=type_kind), target, dimension(1) :: types
@@ -2936,7 +3029,7 @@ contains
   !+
   function hl_gtk_tree_new(scroll, ncols, types, changed, data, multiple,&
        & width, titles, height, swidth, align, ixpad, iypad, sensitive, &
-       & tooltip, sortable) result(tree)
+       & tooltip, sortable, editable, colnos, edited, data_edited) result(tree)
 
     type(c_ptr) :: tree
     type(c_ptr), intent(out) :: scroll
@@ -2952,9 +3045,12 @@ contains
     integer(kind=c_int), intent(in), optional, dimension(:) :: ixpad, iypad
     integer(kind=c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable
+    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable, editable
+    integer(kind=c_int), dimension(:), allocatable, intent(out), optional, target :: colnos
+    type(c_funptr), optional :: edited
+    type(c_ptr), optional, intent(in) :: data_edited
 
-    ! Make a tree veiw
+    ! Make a tree view
     !
     ! SCROLL: c_ptr: required: The scrollable widget to contain the tree.
     ! 		(This is used to pack the tree)
@@ -2976,6 +3072,15 @@ contains
     ! TOOLTIP: string: optional: Tooltip for the widget
     ! SORTABLE: boolean(): optional: Set whether the tree can be sorted
     ! 		on that column.
+    ! EDITABLE: boolean(): optional: Set whether the column can be edited.
+    ! COLNOS: c_int(): optional: An array of column numbers for the editing
+    ! 		callback to use, must be an argument to prevent automatic
+    ! 		deallocation, must be present if EDITABLE is present.
+    ! EDITED: f_funptr: optional: An alternative callback for the "edited"
+    ! 		signal on edited cells. N.B. Only a single callback can be set
+    ! 		if different actions are needed for different columns,
+    ! 		you must use the column number inside the callback.
+    ! DATA_EDITED: c_ptr: optional: Data to pass to the edited callback.
     !
     ! At least one of the array arguments or NCOLS must be given.
     ! If TYPES is not given, then strings are assumed.
@@ -2985,6 +3090,8 @@ contains
     integer(kind=type_kind), dimension(:), allocatable, target :: types_all
 
     type(c_ptr) :: model, renderer, column, select
+    type(gvalue), target :: isedit
+    type(c_ptr) :: pisedit
 
     ! First find how many columns there are.
 
@@ -3004,6 +3111,8 @@ contains
        ncols_all = size(ixpad)
     else if (present(iypad)) then
        ncols_all = size(iypad)
+    else if (present(editable)) then
+       ncols_all = size(editable)
     else
        write(0,*) "hl_gtk_tree_new: Cannot determine the number of columns"
        tree = NULL
@@ -3017,6 +3126,20 @@ contains
        types_all = types
     else
        types_all = (/ (ncols_all-1)*g_type_string /)
+    end if
+
+    ! If editable is present, initialize the GValue
+    if (present(editable)) then
+       if (.not. present(colnos)) then
+          write(0,*) "hl_gtk_listn_new: EDITABLE requires COLNOS"
+          tree=NULL
+          scroll=NULL
+          return
+       end if
+       pisedit = c_loc(isedit)
+       pisedit = g_value_init(pisedit, G_TYPE_BOOLEAN)
+       allocate(colnos(ncols_all))
+       colnos = (/ (i-1, i=1, ncols_all) /)
     end if
 
     ! Create the storage model
@@ -3049,8 +3172,6 @@ contains
           call gtk_cell_renderer_set_padding(renderer, &
                & 0, iypad(i))
        end if
-       column = gtk_tree_view_column_new()
-       call gtk_tree_view_column_pack_start(column, renderer, FALSE)
        if (present(align)) then
           call gtk_cell_renderer_set_alignment(renderer, align(i), 0.)
        else if (types_all(i) == G_TYPE_STRING) then
@@ -3058,7 +3179,30 @@ contains
        else
           call gtk_cell_renderer_set_alignment(renderer, 1., 0.)
        end if
+       if (present(editable)) then
+          call g_value_set_boolean(pisedit, editable(i))
+          call g_object_set_property(renderer, "editable"//cnull, pisedit)
+          if (editable(i) == TRUE) then
+             call g_object_set_data(renderer, "column-number"//cnull, &
+                  & c_loc(colnos(i)))
+             call g_object_set_data(renderer, "view"//cnull, tree)
+             if (present(edited)) then
+                if (present(data_edited)) then
+                   call g_signal_connect(renderer, "edited"//cnull, &
+                        & edited, data_edited)
+                else
+                   call g_signal_connect(renderer, "edited"//cnull, &
+                        & edited)
+                end if
+             else
+                call g_signal_connect(renderer, "edited"//cnull, &
+                     & c_funloc(hl_gtk_tree_edit_cb))
+             endif
+          end if
+       end if
 
+       column = gtk_tree_view_column_new()
+       call gtk_tree_view_column_pack_start(column, renderer, FALSE)
        if (present(titles)) call gtk_tree_view_column_set_title(column, &
             &trim(titles(i))//cnull)
        call gtk_tree_view_column_add_attribute(column, renderer, &
@@ -3103,6 +3247,52 @@ contains
 
     deallocate(types_all)
   end function hl_gtk_tree_new
+
+  !+
+  subroutine hl_gtk_tree_edit_cb(renderer, path, text, gdata) bind(c)
+    type(c_ptr), value :: renderer, path, text, gdata
+    ! Default callback for tree cell edited.
+    !
+    ! RENDERER: c_ptr: required: The renderer which sent the signal
+    ! PATH: c_ptr: required: The path at which to insert
+    ! TEXT: c_ptr: required: The text to insert
+    ! GDATA: c_ptr: required: User data, not used.
+    !
+    ! The column number is passed via the "column-number" gobject data value.
+    ! The treeview containing the cell is passed via the "view" gobject
+    ! data value.
+    ! The row number is passed as a string in the PATH argument.
+    !
+    ! This routine is not normally called by the application developer.
+    !-
+
+    character(len=200) :: fpath, ftext
+    integer(kind=c_int), allocatable, dimension(:) :: irow
+    integer(kind=c_int), pointer :: icol
+    integer :: ios, i, n
+    type(c_ptr) :: tree, pcol
+
+    call convert_c_string(path, 200, fpath)
+    pcol = g_object_get_data(renderer, "column-number"//cnull)
+    call c_f_pointer(pcol, icol)
+    call convert_c_string(text, 200, ftext)
+
+    n = 0
+    do i = 1, len_trim(fpath)
+       if (fpath(i:i) == ":") then
+          n = n+1
+          fpath(i:i) = ' '   ! : is not a separator for a Fortran read
+       end if
+    end do
+    allocate(irow(n+1))
+    read(fpath, *) irow
+    tree = g_object_get_data(renderer, "view"//cnull)
+
+    call hl_gtk_tree_set_cell(tree, irow, icol, &
+         & svalue=trim(ftext))
+
+    deallocate(irow)
+  end subroutine hl_gtk_tree_edit_cb
 
   !+
   subroutine hl_gtk_tree_ins(tree, row, absrow)
@@ -3418,8 +3608,7 @@ contains
     !
     ! TREE: c_ptr: required: The tree containing the cell.
     ! ROW: c_int(): optional: The row of the cell
-    ! COL: c_int: optional: The column of the cell, N.B., column
-    ! 		zero is the hidden index column. (Only optional to
+    ! COL: c_int: optional: The column of the cell, (Only optional to
     ! 		allow format similar to the LISTs).
     ! ABSROW: c_int: optional: The row, treating the tree as a flat list.
     ! SVALUE: string: optional: A string value for the cell.
@@ -4286,17 +4475,17 @@ contains
     call gtk_progress_bar_set_orientation(bar, orientation)
     ! end GTK2 version
     ! GTK3 version
-!3    if (present(vertical)) then
-!3       if (vertical == TRUE) then
-!3          call gtk_orientable_set_orientation (bar, &
-!3               & GTK_ORIENTATION_VERTICAL)
-!3       else
-!3          call gtk_orientable_set_orientation (bar, &
-!3               & GTK_ORIENTATION_HORIZONTAL)
-!3       end if
-!3    end if
-!3
-!3    if (present(reversed)) call gtk_progress_bar_set_inverted(bar, reversed)
+!!3    if (present(vertical)) then
+!!3       if (vertical == TRUE) then
+!!3          call gtk_orientable_set_orientation (bar, &
+!!3               & GTK_ORIENTATION_VERTICAL)
+!!3       else
+!!3          call gtk_orientable_set_orientation (bar, &
+!!3               & GTK_ORIENTATION_HORIZONTAL)
+!!3       end if
+!!3    end if
+!!3
+!!3    if (present(reversed)) call gtk_progress_bar_set_inverted(bar, reversed)
     ! end GTK3 version
 
     if (present(step)) &
@@ -4337,7 +4526,7 @@ contains
     if (present(text)) then
        call gtk_progress_bar_set_text (bar, text//cnull)
 ! GTK3 Only
-!3      call gtk_progress_bar_set_show_text(bar, TRUE)
+!!3      call gtk_progress_bar_set_show_text(bar, TRUE)
 ! End GTK3 only
     else if (present(string)) then
        if (string == FALSE .or. .not. present(val)) return
@@ -4346,9 +4535,9 @@ contains
 
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
 ! GTK3 Only
-!3      call gtk_progress_bar_set_show_text(bar, TRUE)
-!3    else
-!3       call gtk_progress_bar_set_show_text(bar, FALSE)
+!!3      call gtk_progress_bar_set_show_text(bar, TRUE)
+!!3    else
+!!3       call gtk_progress_bar_set_show_text(bar, FALSE)
 ! End GTK3 only
     end if
   end subroutine hl_gtk_progress_bar_set_f
@@ -4383,7 +4572,7 @@ contains
     if (present(text)) then
        call gtk_progress_bar_set_text (bar, text//cnull)
 ! GTK3 Only
-!3       call gtk_progress_bar_set_show_text(bar, TRUE)
+!!3       call gtk_progress_bar_set_show_text(bar, TRUE)
 ! End GTK3 only
     else if (present(string)) then
        if (string == FALSE) return
@@ -4391,9 +4580,9 @@ contains
        write(sval, "(I0,' of ',I0)") val, maxv
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
 ! GTK3 Only
-!3       call gtk_progress_bar_set_show_text(bar, TRUE)
-!3    else
-!3       call gtk_progress_bar_set_show_text(bar, FALSE)
+!!3       call gtk_progress_bar_set_show_text(bar, TRUE)
+!!3    else
+!!3       call gtk_progress_bar_set_show_text(bar, FALSE)
 ! End GTK3 only
     end if
   end subroutine hl_gtk_progress_bar_set_ii
@@ -5470,12 +5659,12 @@ contains
 
     if (ientry == TRUE) then
 !GTK3
-!3       cbox = gtk_combo_box_text_new_with_entry()
+!!3       cbox = gtk_combo_box_text_new_with_entry()
 !GTK2
        cbox = gtk_combo_box_entry_new_text()
     else
 !GTK3
-!3       cbox = gtk_combo_box_text_new()
+!!3       cbox = gtk_combo_box_text_new()
 !GTK2
        cbox =  gtk_combo_box_new_text()
     end if
@@ -5483,8 +5672,8 @@ contains
     if (present(initial_choices)) then
        do i=1,size(initial_choices)
 !GTK3
-!3          call gtk_combo_box_text_append_text(cbox, &
-!3               & trim(initial_choices(i))//CNULL)
+!!3          call gtk_combo_box_text_append_text(cbox, &
+!!3               & trim(initial_choices(i))//CNULL)
 !GTK2
           call gtk_combo_box_append_text(cbox, &
                & trim(initial_choices(i))//CNULL)
@@ -5526,7 +5715,7 @@ contains
 
     if (present(index)) then
 !GTK3
-!3       call gtk_combo_box_text_insert_text(cbox, index, text)
+!!3       call gtk_combo_box_text_insert_text(cbox, index, text)
 !GTK2
        call gtk_combo_box_insert_text(cbox, index, text)
     else
@@ -5537,12 +5726,12 @@ contains
        end if
        if (prepend == TRUE) then
 !GTK3
-!3          call gtk_combo_box_text_prepend_text(cbox, text)
+!!3          call gtk_combo_box_text_prepend_text(cbox, text)
 !GTK2
           call gtk_combo_box_prepend_text(cbox, text)
        else
 !GTK3
-!3          call gtk_combo_box_text_append_text(cbox, text)
+!!3          call gtk_combo_box_text_append_text(cbox, text)
 !GTK2
           call gtk_combo_box_append_text(cbox, text)
        end if
@@ -5562,7 +5751,7 @@ contains
     !-
 
 !GTK3
-!3    call gtk_combo_box_text_remove(cbox, index)
+!!3    call gtk_combo_box_text_remove(cbox, index)
 !GTK2
     call gtk_combo_box_remove_text(cbox, index)
 
@@ -5590,7 +5779,7 @@ contains
     if (present(text) .or. present(ftext)) then
 
 !GTK3
-!3      ctext = gtk_combo_box_text_get_active_text(cbox)
+!!3      ctext = gtk_combo_box_text_get_active_text(cbox)
 !GTK2
        ctext = gtk_combo_box_get_active_text(cbox)
 

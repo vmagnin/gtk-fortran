@@ -39,7 +39,7 @@ module tr_handlers
   ! by the handlers need to go here).
 
   type(c_ptr) :: ihwin,ihscrollcontain,ihlist, base, &
-       &  qbut, dbut
+       &  qbut, dbut, lbl
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
@@ -129,8 +129,8 @@ program tree
   integer :: i, ltr, j
   integer(kind=type_kind), dimension(6) :: ctypes
   character(len=20), dimension(6) :: titles
-  integer(kind=c_int), dimension(6) :: sortable
-
+  integer(kind=c_int), dimension(6) :: sortable, editable
+  integer(kind=c_int), allocatable, dimension(:) :: colnos
   ! Initialize GTK+
   call gtk_init()
 
@@ -145,6 +145,8 @@ program tree
   ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
        & G_TYPE_UINT64, G_TYPE_BOOLEAN /)
   sortable = (/ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE /)
+  editable = (/ TRUE, FALSE, TRUE, FALSE, FALSE, FALSE /)
+
   titles(1) = "Name"
   titles(2) = "N"
   titles(3) = "3N"
@@ -154,7 +156,8 @@ program tree
 
   ihlist = hl_gtk_tree_new(ihscrollcontain, types=ctypes, &
        & changed=c_funloc(list_select),&
-       &  multiple=TRUE, height=250, swidth=400, titles=titles, sortable=sortable)
+       &  multiple=TRUE, height=250, swidth=400, titles=titles, &
+       & sortable=sortable, editable=editable, colnos=colnos)
 
   ! Now put 10 top level rows into it
   do i=1,10
@@ -188,6 +191,10 @@ program tree
 
   ! It is the scrollcontainer that is placed into the box.
   call hl_gtk_box_pack(base, ihscrollcontain)
+
+  ! Add a note about editable columns
+  lbl = gtk_label_new("The ""Name"" and ""3N"" columns are editable"//cnull)
+  call hl_gtk_box_pack(base, lbl)
 
   ! Delete selected row
   dbut = hl_gtk_button_new("Delete selected row"//cnull, clicked=c_funloc(del_row), &

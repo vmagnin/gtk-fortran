@@ -40,7 +40,7 @@ module ln_handlers
   ! by the handlers need to go here).
 
   type(c_ptr) :: ihwin,ihscrollcontain,ihlist, base, &
-       &  qbut
+       &  qbut, lbl
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
@@ -104,7 +104,7 @@ contains
     call gtk_tree_model_get_value(model, iter, colno, c_loc(ivalue))
     ival = g_value_get_int(c_loc(ivalue))
 
-    write(rstring, "(I7.7)") ival
+    write(rstring, "(I7.6)") ival
 
     val_ptr = c_loc(svalue)
     val_ptr = g_value_init(val_ptr, G_TYPE_STRING)
@@ -112,6 +112,42 @@ contains
     call g_value_set_string(val_ptr, trim(rstring)//cnull)
     call g_object_set_property(cell, "text"//cnull, val_ptr)
   end subroutine display_int
+
+  subroutine cell_edited(renderer, path, text, gdata) bind(c)
+    type(c_ptr), value :: renderer, path, text, gdata
+
+    ! Callback for edited cells. 
+
+    character(len=200) :: fpath, ftext
+    integer(kind=c_int) :: irow
+    integer(kind=c_int), pointer :: icol
+    integer :: ios
+    type(c_ptr) :: pcol, list
+    integer(kind=c_int) :: n
+
+    call convert_c_string(path, 200, fpath)
+    read(fpath, *) irow
+    pcol = g_object_get_data(renderer, "column-number"//cnull)
+    call c_f_pointer(pcol, icol)
+    call convert_c_string(text, 200, ftext)
+    list = g_object_get_data(renderer, "view"//cnull)
+
+    if (icol == 0) then
+       call hl_gtk_listn_set_cell(list, irow, icol, &
+            & svalue=trim(ftext))
+    else
+       read(ftext, *, iostat=ios) n
+       if (ios /= 0) return
+       call hl_gtk_listn_set_cell(ihlist, irow, 2, ivalue=3*n)
+       call hl_gtk_listn_set_cell(ihlist, irow, 3, fvalue=log10(real(n)))
+       call hl_gtk_listn_set_cell(ihlist, irow, 4, l64value=int(n,c_int64_t)**4)
+       call hl_gtk_listn_set_cell(ihlist, irow, 5, ivalue=mod(n,2))
+       ! Note we set the N value last as this is a sortable column, if we
+       ! are sorted on ODD/EVEN it will probably still go wrong.
+       call hl_gtk_listn_set_cell(ihlist, irow, 1, ivalue=n)
+    end if
+  end subroutine cell_edited
+
 end module ln_handlers
 
 program list_n
@@ -127,13 +163,15 @@ program list_n
   integer, target :: iappend=0, idel=0
   integer(kind=type_kind), dimension(6) :: ctypes
   character(len=20), dimension(6) :: titles
-  integer(kind=c_int), dimension(6) :: sortable
+  integer(kind=c_int), dimension(6) :: sortable, editable
   integer(kind=c_int), target :: fmt_col = 2
+  integer(kind=c_int), dimension(:), allocatable :: colnos
   ! Initialize GTK+
   call gtk_init()
 
   ! Create a window that will hold the widget system
-  ihwin=hl_gtk_window_new('multi-column list demo'//cnull, destroy=c_funloc(my_destroy))
+  ihwin=hl_gtk_window_new('multi-column list demo'//cnull, &
+       & destroy=c_funloc(my_destroy))
 
   ! Now make a column box & put it into the window
   base = hl_gtk_box_new()
@@ -143,6 +181,8 @@ program list_n
   ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
        & G_TYPE_UINT64, G_TYPE_BOOLEAN /)
   sortable = (/ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE /)
+  editable = (/ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE /)
+
   titles(1) = "Name"
   titles(2) = "N"
   titles(3) = "3N"
@@ -153,9 +193,11 @@ program list_n
   ihlist = hl_gtk_listn_new(ihscrollcontain, types=ctypes, &
        & changed=c_funloc(list_select),&
        & multiple=TRUE, height=250, swidth=400, titles=titles, &
-       & sortable=sortable)
+       & sortable=sortable, editable=editable, colnos=colnos, &
+       & edited=c_funloc(cell_edited))
 
-  call hl_gtk_listn_set_cell_data_func(ihlist, fmt_col, func=c_funloc(display_int), &
+  call hl_gtk_listn_set_cell_data_func(ihlist, fmt_col, &
+       & func=c_funloc(display_int), &
        & data=c_loc(fmt_col))
 
   ! Now put 10 rows into it
@@ -174,6 +216,10 @@ program list_n
 
   ! It is the scrollcontainer that is placed into the box.
   call hl_gtk_box_pack(base, ihscrollcontain)
+
+  ! Add a note about editable columns
+  lbl = gtk_label_new("The ""Name"" and ""N"" columns are editable"//cnull)
+  call hl_gtk_box_pack(base, lbl)
 
   ! Also a quit button
   qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
