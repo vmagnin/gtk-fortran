@@ -491,7 +491,8 @@ contains
               write(70,'(A)')"! handler for signal "//connections(i)%signal_name(1:len_trim(connections(i)%signal_name))//&
                 " ("//connections(i)%object_name(1:len_trim(connections(i)%object_name))//")"
               write(70,'(A)')"!########## INSERT YOUR HANDLER CODE HERE ##########"
-              write(70,'(A)')"print*,""handler function: "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//""""
+              write(70,'(A)')"print*,""handler function: "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
+                """"
               write(70,'(A)')"!###################################################"
               close(70)
             endif
