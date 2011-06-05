@@ -28,7 +28,8 @@ module handlers
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_container_add, gtk_label_new, gtk_main, gtk_&
        &main_quit, gtk_menu_item_new, gtk_menu_new, gtk_widget_destroy, gtk_widget_sho&
-       &w, gtk_widget_show_all, gtk_window_new, gtk_init
+       &w, gtk_widget_show_all, gtk_window_new, gtk_init, &
+       & gtk_check_menu_item_get_active
 
   implicit none
 
@@ -36,6 +37,7 @@ module handlers
   type(c_ptr), dimension(10) :: mbuts
   type(c_ptr) :: mnu2, sm1, sm2
   type(c_ptr), dimension(4) :: mb1, mb2
+  type(c_ptr) :: rgroup
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
@@ -64,23 +66,36 @@ contains
 
   subroutine sm1_act(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
+
     integer(kind=c_int), pointer :: fdata
+    integer(kind=c_int) :: istat
 
     print *, "Menu 2"
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
-       print *, "Selected:",fdata
+       istat = gtk_check_menu_item_get_active(widget)
+       if (istat == TRUE) then
+          print *, "Selected:",fdata
+       else
+          print *, "Deselected:",fdata
+       end if
     end if
   end subroutine sm1_act
 
   subroutine sm2_act(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     integer(kind=c_int), pointer :: fdata
+    integer(kind=c_int) :: istat
 
     print *, "Menu 2 (submenu)"
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
-       print *, "Subselected:",fdata
+       istat = gtk_check_menu_item_get_active(widget)
+       if (istat == TRUE) then
+          print *, "Sub-Selected:",fdata
+       else
+          print *, "Sub-Deselected:",fdata
+       end if
     end if
   end subroutine sm2_act
 
@@ -142,15 +157,18 @@ program menu_test
 
   do i = 1, 4
      write(holder,'("Select: ",I2)') i
-     mb1(i) = hl_gtk_menu_item_new(sm1, trim(holder)//cnull, &
-          & activate=c_funloc(sm1_act), data=c_loc(mc1(i)))
+     mb1(i) = hl_gtk_check_menu_item_new(sm1, trim(holder)//cnull, &
+          & toggled=c_funloc(sm1_act), data=c_loc(mc1(i)))
      if (i == 3) sm2 = hl_gtk_menu_submenu_new(sm1, "Sub choice"//cnull)
   end do
+
+  rgroup = NULL
   do i = 1, 4
      write(holder,'("Sub Sel: ",I2)') i
-     mb2(i) = hl_gtk_menu_item_new(sm2, trim(holder)//cnull, &
-          & activate=c_funloc(sm2_act), data=c_loc(mc2(i)))
+     mb2(i) = hl_gtk_radio_menu_item_new(rgroup, sm2, trim(holder)//cnull, &
+          & toggled=c_funloc(sm2_act), data=c_loc(mc2(i)))
   end do
+  call hl_gtk_radio_menu_group_set_select(rgroup, 2)
 
   ! Make a quit button and put it in the box, put the box
   ! into the window
