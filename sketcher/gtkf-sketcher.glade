@@ -63,7 +63,6 @@
           <object class="GtkMenuBar" id="menu">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="ubuntu_local">True</property>
             <child>
               <object class="GtkMenuItem" id="menu_file">
                 <property name="visible">True</property>
@@ -75,7 +74,6 @@
                   <object class="GtkMenu" id="menu1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem2">
                         <property name="label">gtk-open</property>
@@ -130,7 +128,6 @@
                   <object class="GtkMenu" id="menu2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem6">
                         <property name="label">gtk-cut</property>
@@ -186,7 +183,6 @@
                   <object class="GtkMenu" id="menu3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem10">
                         <property name="label">gtk-about</property>
