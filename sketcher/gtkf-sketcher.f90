@@ -375,7 +375,7 @@ contains
     integer::i,j
     logical::already_used, lexist
     type(c_ptr) :: gpointer,object_name_ptr
-    character(len=128) :: F_string
+    character(len=128) :: f_string, f_string_ori
     
     if (.not.file_loaded) then
       status_read=hl_gtk_message_dialog_show((/"Please load some Glade3 UI file first!"/), GTK_BUTTONS_OK, &
@@ -430,7 +430,17 @@ contains
           gpointer=g_slist_nth_data (gslist,i)
           object_name_ptr=gtk_buildable_get_name (gpointer)
           call C_F_string_ptr(object_name_ptr, F_string)
-          write(50,'(A)')"  type(c_ptr) :: "//f_string
+          if (len_trim(f_string).gt.0) then
+            do
+              j=index(f_string,"-")
+              if (j.gt.0) then
+                f_string(j:j)="_"
+              else
+                exit
+              endif
+            enddo
+            write(50,'(A)')"  type(c_ptr) :: "//f_string(1:len_trim(f_string))
+          endif
         enddo
       else
         write(50,'(A)')"  type(c_ptr) :: window"
@@ -472,13 +482,13 @@ contains
             write(50,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
               " (widget, event, gdata) result(ret) bind(c)"
             write(50,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
-            write(50,'(A)')"    integer(c_int)    :: ret"
+            write(50,'(A)')"    integer(c_int)     :: ret"
             write(50,'(A)')"    type(c_ptr), value :: widget, event, gdata"
           else
             write(50,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
               " (widget, gdata) result(ret) bind(c)"
             write(50,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
-            write(50,'(A)')"    integer(c_int)    :: ret"
+            write(50,'(A)')"    integer(c_int)     :: ret"
             write(50,'(A)')"    type(c_ptr), value :: widget, gdata"
           endif
           if (create_handlerfiles) then
@@ -528,8 +538,31 @@ contains
       write(50,'(A)')"  ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object"
       write(50,'(A)')"  guint = gtk_builder_add_from_file (builder, """//subdir(1:len_trim(subdir))//".glade""//CNULL, error)"
       write(50,'(A)')""
-      write(50,'(A)')"  ! get a pointer to the GObject ""window"" from GtkBuilder"
-      write(50,'(A)')"  window = gtk_builder_get_object (builder, ""window""//CNULL)"
+      if (widget_symbols) then
+        write(50,'(A)')"  ! get pointers to all GObjects from GtkBuilder"
+        do i=0, g_slist_length(gslist)-1
+          gpointer=g_slist_nth_data (gslist,i)
+          object_name_ptr=gtk_buildable_get_name (gpointer)
+          call C_F_string_ptr(object_name_ptr, F_string)
+          if (len_trim(f_string).gt.0) then
+            f_string_ori=f_string
+            do
+              j=index(f_string,"-")
+              if (j.gt.0) then
+                f_string(j:j)="_"
+              else
+                exit
+              endif
+            enddo
+            write(50,'(A)')"  "//f_string(1:len_trim(f_string))//" = gtk_builder_get_object (builder, """//&
+              f_string_ori(1:len_trim(f_string_ori))//"""//CNULL)"
+          endif
+        enddo
+      else
+      ! this have to be expanded for application windows with other names, maybe as option....
+        write(50,'(A)')"  ! get a pointer to the GObject ""window"" from GtkBuilder"
+        write(50,'(A)')"  window = gtk_builder_get_object (builder, ""window""//CNULL)"
+      endif
       write(50,'(A)')""
       write(50,'(A)')"  ! use GModule to look at the applications symbol table to find the function name"
       write(50,'(A)')"  ! that matches the handler name specified in Glade3"
