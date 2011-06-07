@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkTextBuffer" id="fileinfo_buffer">
     <property name="text" translatable="yes">No Glade3 file loaded yet.</property>
   </object>
@@ -45,6 +45,12 @@
         <col id="1" translatable="yes">zlib.lic</col>
       </row>
     </data>
+  </object>
+  <object class="GtkListStore" id="toplevel_widgets">
+    <columns>
+      <!-- column-name widget -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkWindow" id="window">
     <property name="can_focus">False</property>
@@ -310,6 +316,24 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkCheckButton" id="update_used_functions">
+                    <property name="label" translatable="yes">Update used GTK functions in USE statements</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="update_used_functions_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="widget_symbols">
                     <property name="label" translatable="yes">Create Fortran symbols for all widgets</property>
                     <property name="visible">True</property>
@@ -323,29 +347,101 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">3</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBox" id="license">
+                  <object class="GtkHBox" id="hbox2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="model">licenses</property>
-                    <property name="active">4</property>
-                    <property name="has_entry">True</property>
-                    <property name="entry_text_column">0</property>
-                    <property name="id_column">0</property>
-                    <child internal-child="entry">
-                      <object class="GtkEntry" id="combobox-entry">
+                    <child>
+                      <object class="GtkLabel" id="label_appwindow">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Application window</property>
                       </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">4</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="appwindow">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="model">toplevel_widgets</property>
+                        <property name="has_entry">True</property>
+                        <property name="entry_text_column">0</property>
+                        <property name="id_column">0</property>
+                        <child internal-child="entry">
+                          <object class="GtkEntry" id="combobox-entry3">
+                            <property name="can_focus">False</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">4</property>
+                    <property name="position">5</property>
                   </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkLabel" id="label_license">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">License</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">4</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="license">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="model">licenses</property>
+                        <property name="active">4</property>
+                        <property name="has_entry">True</property>
+                        <property name="entry_text_column">0</property>
+                        <property name="id_column">0</property>
+                        <child internal-child="entry">
+                          <object class="GtkEntry" id="combobox-entry">
+                            <property name="can_focus">False</property>
+                            <property name="editable">False</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <object class="GtkButtonBox" id="buttonbox1">
@@ -390,7 +486,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">5</property>
+                    <property name="position">8</property>
                   </packing>
                 </child>
               </object>
