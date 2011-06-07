@@ -40,6 +40,8 @@ module widgets
   type(c_ptr) :: overwrite_handlerfiles_button
   type(c_ptr) :: widget_symbols_button
   type(c_ptr) :: update_used_functions_button
+  type(c_ptr) :: use_hl_gtk_button
+  type(c_ptr) :: include_files_button
 
   character(len=256,kind=c_char)::filename
   character(len=256,kind=c_char)::working_dir, base_dir
@@ -53,6 +55,8 @@ module widgets
   logical::overwrite_handlerfiles=.false.
   logical::widget_symbols=.false.
   logical::update_used_functions=.false.
+  logical::use_hl_gtk=.true.
+  logical::include_files=.true.
    
 end module
 
@@ -289,6 +293,20 @@ contains
     write(*,*)"update used functions = ",update_used_functions
   end subroutine update_used_functions_toggled
 
+  subroutine use_hl_gtk_toggled (widget, gdata) bind(c)
+    use iso_c_binding, only: c_ptr
+    type(c_ptr), value :: widget, gdata
+    use_hl_gtk=fbool(gtk_toggle_button_get_active(use_hl_gtk_button))
+    write(*,*)"use high level interface = ",use_hl_gtk
+  end subroutine use_hl_gtk_toggled
+
+  subroutine include_files_toggled (widget, gdata) bind(c)
+    use iso_c_binding, only: c_ptr
+    type(c_ptr), value :: widget, gdata
+    include_files=fbool(gtk_toggle_button_get_active(include_files_button))
+    write(*,*)"generate include files = ",include_files
+  end subroutine include_files_toggled
+
   function file_open (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
@@ -397,7 +415,7 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     
-    character(len=256,kind=c_char)::subdir, license_file, line, test, handlerfile, appwindow
+    character(len=256,kind=c_char)::subdir, license_file, line, test, handlerfile, appwindow, additional_modules
     integer::status_read
     integer::i,j
     logical::already_used, lexist
@@ -442,7 +460,13 @@ contains
       write(50,'(A)')"!"
       write(50,'(A)')"!"
       write(50,'(A)')"! Compile with:"
-      write(50,'(A)')"! gfortran gtk.f90 "//subdir(1:len_trim(subdir))//".f90 -o "//subdir(1:len_trim(subdir))//&
+      if (use_hl_gtk) then
+        additional_modules="gtk-sup.f90 gtk-hl.f90"
+      else
+        additional_modules=""
+      endif
+      write(50,'(A)')"! gfortran gtk.f90 "//additional_modules(1:len_trim(additional_modules))//" "//&
+        subdir(1:len_trim(subdir))//".f90 -o "//subdir(1:len_trim(subdir))//&
         " `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs gmodule-2.0`"
       write(50,'(A)')"!"
       write(50,'(A)')""
@@ -495,16 +519,48 @@ contains
             do
               read(40,'(A)',iostat=status_read) line
               if ((status_read /= 0).or.(len_trim(line).eq.0)) exit
-              write(50,'(A)')line(1:len_trim(line))
+              write(50,'(A)')"  "//line(1:len_trim(line))
             enddo
           endif
         enddo
         close (40)
         call chdir(working_dir)
       endif
+      
+      if (use_hl_gtk) then
+        write(50,'(A)')"  use gtk_hl"
+      endif
   
+      if (include_files) then
+        inquire(file=subdir(1:len_trim(subdir))//"_used_modules.inc",exist=lexist)
+        if ((.not.lexist).or.(overwrite_handlerfiles)) then
+          open(70,file=subdir(1:len_trim(subdir))//"_used_modules.inc",action='write')
+          write(70,'(A)')"! Additionally used modules for "//subdir(1:len_trim(subdir))
+          write(70,'(A)')"!########## INSERT YOUR USE STATEMENTS HERE ##########"
+          write(70,'(A)')""
+          write(70,'(A)')"!#####################################################"
+          close(70)
+        endif
+        write(50,'(A)')"  include """//subdir(1:len_trim(subdir))//"_used_modules.inc"""
+      endif
+        
       write(50,'(A)')"  use widgets"
       write(50,'(A)')"  implicit none"
+      write(50,'(A)')""
+
+      if (include_files) then
+        inquire(file=subdir(1:len_trim(subdir))//"_global_variables.inc",exist=lexist)
+        if ((.not.lexist).or.(overwrite_handlerfiles)) then
+          open(70,file=subdir(1:len_trim(subdir))//"_global_variables.inc",action='write')
+          write(70,'(A)')"! Global variables for "//subdir(1:len_trim(subdir))
+          write(70,'(A)')"!########## INSERT YOUR DECLARATIONS HERE ##########"
+          write(70,'(A)')""
+          write(70,'(A)')"!###################################################"
+          close(70)
+        endif
+        write(50,'(A)')"  include """//subdir(1:len_trim(subdir))//"_global_variables.inc"""
+      endif
+
       write(50,'(A)')""
       write(50,'(A)')"contains"
       write(50,'(A)')"  !*************************************"
@@ -639,7 +695,8 @@ contains
     character(len=20)::defaultsfile="default.options"
    
     open(111,file=base_dir(1:len_trim(base_dir))//"/"//defaultsfile, action='write')
-    write(111,'(5L)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols,update_used_functions
+    write(111,'(7L)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols,update_used_functions,&
+      use_hl_gtk,include_files
     write(111,'(I2)')gtk_combo_box_get_active(license_selector)
     close(111)
  
@@ -650,7 +707,8 @@ contains
     integer(c_int) ::license_no
    
     open(111,file=base_dir(1:len_trim(base_dir))//"/"//defaultsfile, action='read')
-    read(111,'(5L)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols,update_used_functions
+    read(111,'(7L)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols,update_used_functions,&
+      use_hl_gtk,include_files
     read(111,'(I2)')license_no
     call gtk_combo_box_set_active(license_selector,license_no)
     close(111)
@@ -669,6 +727,8 @@ contains
     call gtk_toggle_button_set_active (overwrite_handlerfiles_button, gbool(overwrite_handlerfiles))
     call gtk_toggle_button_set_active (widget_symbols_button, gbool(widget_symbols))
     call gtk_toggle_button_set_active (update_used_functions_button, gbool(update_used_functions))
+    call gtk_toggle_button_set_active (use_hl_gtk_button, gbool(use_hl_gtk))
+    call gtk_toggle_button_set_active (include_files_button, gbool(include_files))
      
   end subroutine default_options  
   
@@ -713,6 +773,8 @@ program gtkfsketcher
   overwrite_handlerfiles_button = gtk_builder_get_object (builder, "overwrite_handlerfiles"//CNULL)
   widget_symbols_button = gtk_builder_get_object (builder, "widget_symbols"//CNULL)
   update_used_functions_button = gtk_builder_get_object (builder, "update_used_functions"//CNULL)
+  use_hl_gtk_button = gtk_builder_get_object (builder, "use_hl_gtk"//CNULL)
+  include_files_button = gtk_builder_get_object (builder, "include_files"//CNULL)
 
   ! get default options
   call default_options (builder, error)
