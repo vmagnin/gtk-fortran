@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 06-07-2011
+! Last modification: 05-25-2011
 
 module gtk_hl
   ! A bunch of procedures to implement higher level creators for
@@ -122,6 +122,7 @@ module gtk_hl
   ! * hl_gtk_combo_box_get_active; Get selected element
   ! * hl_gtk_chooser_resp_cb; Internal signal handler
   ! * hl_gtk_chooser_filt_cb; Internal signal handler
+  ! * hl_gtk_widget_add_accelerator; Add an accelerator to a widget
   !/
   ! To facilitate the automatic extraction of API information, there are
   ! 2 types of comment block that are extracted:
@@ -193,7 +194,7 @@ module gtk_hl
        & gtk_text_iter_get_offset, gtk_text_buffer_get_char_count, &
        & gtk_text_buffer_get_line_count, & ! text view end
        & gtk_image_new_from_stock, &
-       &gtk_combo_box_get_active, gtk_combo_box_new, &
+       &gtk_combo_box_get_active, gtk_combo_box_new,  &
        & gtk_combo_box_set_active, & ! COMBO
        & gtk_file_chooser_add_filter,&   ! File chooser start
        & gtk_file_chooser_button_new, gtk_file_chooser_button_set_width_chars, &
@@ -239,7 +240,8 @@ module gtk_hl
        & gtk_tree_view_column_set_cell_data_func, &
        & gtk_radio_menu_item_new_with_label, gtk_check_menu_item_new_with_label, &
        & gtk_check_menu_item_set_active, gtk_radio_menu_item_get_group, &
-       & gtk_tree_path_new_from_string, &
+       & gtk_tree_path_new_from_string, gtk_accel_group_new, &
+       & gtk_widget_add_accelerator, gtk_window_add_accel_group, &
        & TRUE, FALSE, NULL, CNULL, FNULL, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -252,7 +254,8 @@ module gtk_hl
        & GTK_FILE_CHOOSER_ACTION_OPEN, GTK_RESPONSE_APPLY,&
        & GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER,&
        & GTK_FILE_CHOOSER_ACTION_SAVE, GTK_RESPONSE_DELETE_EVENT, & ! End file chooser consts
-       & GTK_TREE_VIEW_COLUMN_FIXED, GTK_EXPAND, GTK_FILL, &
+       & GTK_TREE_VIEW_COLUMN_FIXED, GTK_EXPAND, GTK_FILL, GDK_CONTROL_MASK, &
+       & GTK_ACCEL_VISIBLE, &
   !GTK2
        & gtk_progress_bar_set_orientation, &
        & gtk_combo_box_append_text, gtk_combo_box_entry_new, &
@@ -270,6 +273,8 @@ module gtk_hl
 !!3       & gtk_combo_box_text_new, gtk_combo_box_text_new_with_entry, &
 !!3       & gtk_combo_box_text_prepend_text, gtk_combo_box_text_remove, &
 !!3       & gtk_notebook_set_group_name
+
+       use gdk, only: gdk_keyval_from_name
 
   use g, only: alloca, g_list_foreach, g_list_free, g_list_length, g_list_nth, g_&
        &list_nth_data, g_slist_length, g_slist_nth, g_slist_nth_data, g_value_get_int, &
@@ -338,7 +343,7 @@ contains
   !+
   function hl_gtk_window_new(title, destroy, delete_event, data_destroy, &
        & data_delete_event, border, wsize, sensitive, resizable, decorated, &
-       & deletable, above, below, parent) result(win)
+       & deletable, above, below, parent, accel_group) result(win)
 
     type(c_ptr) :: win
     character(kind=c_char), dimension(*), intent(in), optional :: title
@@ -349,6 +354,7 @@ contains
     integer(kind=c_int), intent(in), optional :: sensitive, resizable, decorated
     integer(kind=c_int), intent(in), optional :: deletable, above, below
     type(c_ptr), intent(in), optional :: parent
+    type(c_ptr), intent(out), optional :: accel_group
 
     ! Higher-level interface to make a gtk_window
     !
@@ -369,6 +375,8 @@ contains
     ! ABOVE: boolean: optional: Set to TRUE to make the window stay on top of others.
     ! BELOW: boolean: optional: Set to TRUE to make the window stay below others.
     ! PARENT: c_ptr: optional: An optional parent window for the new window.
+    ! ACCEL_GROUP: c_ptr: optional: An accelerator group, used to add
+    ! 		accelerators to widgets within the window.
     !-
 
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL)
@@ -412,6 +420,10 @@ contains
 
     if (present(parent)) call gtk_window_set_transient_for(win, parent)
 
+    if (present(accel_group)) then
+       accel_group = gtk_accel_group_new()
+       call gtk_window_add_accel_group(win, accel_group)
+    end if
   end function hl_gtk_window_new
 
   !+
@@ -750,8 +762,19 @@ contains
   ! Buttons
   ! Convenience interfaces for regular buttons, checkboxes and radio menus.
   !/
-  function hl_gtk_button_new(label, clicked, data, tooltip, sensitive) &
-       & result(but)
+  function hl_gtk_button_new(label, clicked, data, tooltip, sensitive, &
+       & accel_key, accel_mods, accel_group, accel_flags) result(but)
+
+    type(c_ptr) :: but
+    character(kind=c_char), dimension(*), intent(in) :: label
+    type(c_funptr), optional :: clicked
+    type(c_ptr), optional :: data
+    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
+    integer(kind=c_int), intent(in), optional :: sensitive
+    character(kind=c_char), dimension(*), optional, intent(in) :: accel_key
+    integer(kind=c_int), optional, intent(in) :: accel_mods, accel_flags
+    type(c_ptr), optional, intent(in) :: accel_group
+
     ! Higher-level button
     !
     ! LABEL: string: required: The label on the button
@@ -761,14 +784,17 @@ contains
     ! 		is held over the button.
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
+    ! ACCEL_KEY: string: optional: Set to the character value or code of a
+    ! 		key to use as an accelerator.
+    ! ACCEL_MODS: c_int: optional: Set to the modifiers for the accelerator.
+    ! 		(If not given then GTK_CONTROL_MASK is assumed).
+    ! ACCEL_GROUP: c_ptr: optional: The accelerator group to which the
+    ! 		accelerator is attached, must have been added to the top-level
+    ! 		window.
+    ! ACCEL_FLAGS: c_int: optional: Flags for the accelerator, if not present
+    ! 		then GTK_ACCEL_VISIBLE, is used (to hide the accelerator,
+    ! 		use ACCEL_FLAGS=0).
     !-
-
-    type(c_ptr) :: but
-    character(kind=c_char), dimension(*), intent(in) :: label
-    type(c_funptr), optional :: clicked
-    type(c_ptr), optional :: data
-    character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional :: sensitive
 
     but=gtk_button_new_with_label(label)
 
@@ -780,6 +806,12 @@ contains
           call g_signal_connect(but, "clicked"//CNULL, &
                & clicked)
        end if
+
+       ! An accelerator
+       if (present(accel_key) .and. present(accel_group)) &
+            & call hl_gtk_widget_add_accelerator(but, "clicked"//cnull, &
+            & accel_group, accel_key, accel_mods, accel_flags)
+
     end if
 
     if (present(tooltip)) call gtk_widget_set_tooltip_text(but, tooltip)
@@ -4227,7 +4259,8 @@ contains
 
   !+
   function hl_gtk_menu_item_new(menu, label, activate, data, tooltip, &
-       & pos, tearoff, sensitive) result(item)
+       & pos, tearoff, sensitive, accel_key, accel_mods, accel_group, &
+       & accel_flags) result(item)
 
     type(c_ptr) ::  item
     type(c_ptr) :: menu
@@ -4237,7 +4270,10 @@ contains
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
     integer(kind=c_int), optional :: pos
     integer(kind=c_int), optional :: tearoff, sensitive
-
+    character(kind=c_char), dimension(*), optional, intent(in) :: accel_key
+    integer(kind=c_int), optional, intent(in) :: accel_mods, accel_flags
+    type(c_ptr), optional, intent(in) :: accel_group
+    
     ! Make a menu item or separator
     !
     ! MENU: c_ptr: required: The parent menu.
@@ -4252,6 +4288,16 @@ contains
     ! TEAROFF: boolean: optional: Set to TRUE to make a tearoff point.
     ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
     ! 		insensitive state.
+    ! ACCEL_KEY: string: optional: Set to the character value or code of a
+    ! 		key to use as an accelerator.
+    ! ACCEL_MODS: c_int: optional: Set to the modifiers for the accelerator.
+    ! 		(If not given then GTK_CONTROL_MASK is assumed).
+    ! ACCEL_GROUP: c_ptr: optional: The accelerator group to which the
+    ! 		accelerator is attached, must have been added to the top-level
+    ! 		window.
+    ! ACCEL_FLAGS: c_int: optional: Flags for the accelerator, if not present
+    ! 		then GTK_ACCEL_VISIBLE, is used (to hide the accelerator,
+    ! 		use ACCEL_FLAGS=0).
     !-
 
     integer(kind=c_int) :: istear
@@ -4290,6 +4336,11 @@ contains
        else
           call g_signal_connect(item, "activate"//cnull, activate)
        end if
+
+       ! An accelerator
+       if (present(accel_key) .and. present(accel_group)) &
+            & call hl_gtk_widget_add_accelerator(item, "activate"//cnull, &
+            & accel_group, accel_key, accel_mods, accel_flags)
     end if
 
     ! Attach a tooltip
@@ -5637,6 +5688,7 @@ contains
     integer(kind=c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
     integer(kind=c_int), optional, intent(in) :: active
+
     ! Creator for the combobox.
     !
     ! HAS_ENTRY: boolean: optional: Set to TRUE to add an entry field.
@@ -5793,4 +5845,48 @@ contains
        if (present(text)) text=ctext
     end if
   end function hl_gtk_combo_box_get_active
+
+  !+
+  subroutine hl_gtk_widget_add_accelerator(widget, signal, accel_group, &
+       & accel_key, accel_mods, accel_flags)
+    type(c_ptr), intent(in) :: widget
+    character(kind=c_char), dimension(*), intent(in) :: signal
+    type(c_ptr), intent(in) :: accel_group
+    character(kind=c_char), dimension(*), intent(in) :: accel_key
+    integer(kind=c_int), intent(in), optional :: accel_mods, accel_flags
+    
+    ! Add an accelerator to a widget (just saves a lot of code duplication)
+    !
+    ! WIDGET: c_ptr: required: The widget with which the accelerator is
+    ! 		associated.
+    ! SIGNAL: string: required: The signal with which the accelerator is
+    ! 		associated
+    ! ACCEL_GROUP: c_ptr: required: The accelerator group to which the
+    ! 		accelerator belongs (must have been created and added to
+    ! 		the top-level window).
+    ! ACCEL_KEY: string: required: The key name to use for the accelerator
+    ! ACCEL_MODS: c_int: optional: The key modifiers for the accelerator,
+    ! 		This defaults to GDK_CONTROL_MASK, set it to 0 to use the
+    ! 		unmodified key.
+    ! ACCEL_FLAGS: c_int: optional: Flags for the accelerator, if not present
+    ! 		then GTK_ACCEL_VISIBLE, is used (to hide the accelerator,
+    ! 		use ACCEL_FLAGS=0).
+    !-
+
+    integer(kind=c_int) :: ikey, imods, iflags
+
+    ikey = gdk_keyval_from_name(accel_key)
+    if (present(accel_mods)) then
+       imods = accel_mods
+    else
+       imods = GDK_CONTROL_MASK
+    end if
+    if (present(accel_flags)) then
+       iflags = accel_flags
+    else
+       iflags = GTK_ACCEL_VISIBLE
+    end if
+    call gtk_widget_add_accelerator(widget, signal, &
+               & accel_group, ikey, imods, iflags)
+  end subroutine hl_gtk_widget_add_accelerator
 end module gtk_hl
