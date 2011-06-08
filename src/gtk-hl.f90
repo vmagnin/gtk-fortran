@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 05-25-2011
+! Last modification: 06-07-2011
 
 module gtk_hl
   ! A bunch of procedures to implement higher level creators for
@@ -193,7 +193,8 @@ module gtk_hl
        & gtk_text_iter_get_offset, gtk_text_buffer_get_char_count, &
        & gtk_text_buffer_get_line_count, & ! text view end
        & gtk_image_new_from_stock, &
-       &gtk_combo_box_get_active, gtk_combo_box_new, & ! COMBO
+       &gtk_combo_box_get_active, gtk_combo_box_new, &
+       & gtk_combo_box_set_active, & ! COMBO
        & gtk_file_chooser_add_filter,&   ! File chooser start
        & gtk_file_chooser_button_new, gtk_file_chooser_button_set_width_chars, &
        & gtk_file_chooser_get_current_folder,&
@@ -262,7 +263,7 @@ module gtk_hl
        & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
        & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT
   ! Replace the last 2 lines with the next 2 for GTK3
-!!3       & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL
+!!3       & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL, & 
 !!3       & gtk_progress_bar_set_inverted, gtk_progress_bar_set_show_text, &
 !!3       & gtk_combo_box_text_append_text, &
 !!3       & gtk_combo_box_text_get_active_text, gtk_combo_box_text_insert_text, &
@@ -5626,7 +5627,7 @@ contains
 
   !+
   function hl_gtk_combo_box_new(has_entry, changed, data, initial_choices, &
-       & sensitive, tooltip) result(cbox)
+       & sensitive, tooltip, active) result(cbox)
 
     type(c_ptr) :: cbox
     integer(kind=c_int), intent(in), optional :: has_entry
@@ -5635,7 +5636,7 @@ contains
     character(len=*), dimension(:), intent(in), optional :: initial_choices
     integer(kind=c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
-
+    integer(kind=c_int), optional, intent(in) :: active
     ! Creator for the combobox.
     !
     ! HAS_ENTRY: boolean: optional: Set to TRUE to add an entry field.
@@ -5646,6 +5647,7 @@ contains
     ! 		insensitive state.
     ! TOOLTIP: string: optional: A tooltip to display when the pointer is
     ! 		held over the widget.
+    ! ACTIVE: c_int: optional: The initial active selection.
     !-
 
     integer(kind=c_int) :: ientry
@@ -5688,6 +5690,7 @@ contains
        end if
     end if
 
+    if (present(active)) call gtk_combo_box_set_active(cbox, active)
     if (present(sensitive)) call gtk_widget_set_sensitive(cbox, sensitive)
     if (present(tooltip)) call gtk_widget_set_tooltip_text(cbox, tooltip)
   end function hl_gtk_combo_box_new
