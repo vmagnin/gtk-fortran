@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011, Python 2.7.1, Linux Ubuntu 11.04
-# Last modification:  05.23.2011
+# Last modification:  06.15.2011
 
 """ This program generates the *-auto.f90 files
     from the C header files of GTK+ in Linux.
@@ -438,7 +438,7 @@ for library_path in PATH_DICT.keys():
                     continue    # Next prototype
 
                 # Is it a function or a subroutine ?
-                if function_type.find("void") != -1:
+                if (function_type.find("void") != -1) and (function_type.find("*") == -1):
                     f_procedure = "subroutine "
                     f_the_end = "end subroutine"
                     isfunction = False
