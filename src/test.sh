@@ -15,7 +15,7 @@ gtkversion="`pkg-config --cflags --libs gtk+-2.0`"
 
 echo "gtk..."
 # gtk3 only: "unix-print-auto.f90"
-for file in "gdk-auto.f90" "glib-auto.f90" "gtk.f90" "atk-auto.f90" "cairo-auto.f90" "gdk-pixbuf-auto.f90" "pango-auto.f90" "gtk-sup.f90" "gtk-hl.f90" "gdkevents-auto2.f90"; do 
+for file in "gdk-auto.f90" "glib-auto.f90" "gtk.f90" "atk-auto.f90" "cairo-auto.f90" "gdk-pixbuf-auto.f90" "pango-auto.f90" "gtk-sup.f90" "gtk-hl.f90" "gdkevents-auto2.f90" "gtk-draw-hl.f90" ; do 
   gfortran -c $file $gtkversion
 done
 
