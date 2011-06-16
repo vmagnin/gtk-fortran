@@ -124,6 +124,10 @@ add_executable(hl_tree "hl_tree.f90")
 target_link_libraries(hl_tree gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_tree ./hl_tree)
 
+add_executable(hl_cairo1 "hl_cairo1.f90")
+target_link_libraries(hl_cairo1 gtk-fortran_static ${GTK_LIBRARIES})
+add_test(hl_cairo1 ./hl_cairo1)
+
 add_executable(julia_pixbuf "julia_pixbuf.f90")
 target_link_libraries(julia_pixbuf gtk-fortran_static ${GTK_LIBRARIES})
 add_test(julia_pixbuf ./julia_pixbuf)

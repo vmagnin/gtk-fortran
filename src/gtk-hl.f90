@@ -257,14 +257,14 @@ module gtk_hl
        & GTK_TREE_VIEW_COLUMN_FIXED, GTK_EXPAND, GTK_FILL, GDK_CONTROL_MASK, &
        & GTK_ACCEL_VISIBLE, &
   !GTK2
-!!2       & gtk_progress_bar_set_orientation, &
-!!2       & gtk_combo_box_append_text, gtk_combo_box_entry_new, &
-!!2       & gtk_combo_box_entry_new_text, gtk_notebook_set_group, &
-!!2       & gtk_combo_box_get_active_text, gtk_combo_box_insert_text, &
-!!2       & gtk_combo_box_new_text, gtk_combo_box_prepend_text, &
-!!2       & gtk_combo_box_remove_text, gtk_notebook_set_group, &
-!!2       & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
-!!2       & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT
+!!$2       & gtk_progress_bar_set_orientation, &
+!!$2       & gtk_combo_box_append_text, gtk_combo_box_entry_new, &
+!!$2       & gtk_combo_box_entry_new_text, gtk_notebook_set_group, &
+!!$2       & gtk_combo_box_get_active_text, gtk_combo_box_insert_text, &
+!!$2       & gtk_combo_box_new_text, gtk_combo_box_prepend_text, &
+!!$2       & gtk_combo_box_remove_text, gtk_notebook_set_group, &
+!!$2       & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
+!!$2       & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT
   ! Replace the last 2 lines with the next 2 for GTK3
        & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL, & 
        & gtk_progress_bar_set_inverted, gtk_progress_bar_set_show_text, &
@@ -693,7 +693,7 @@ contains
 
     if (present(group)) &
          & call gtk_notebook_set_group_name(nbook, group)
-!!2         & call gtk_notebook_set_group(nbook, c_loc(group))
+!!$2         & call gtk_notebook_set_group(nbook, c_loc(group))
 
   end function hl_gtk_notebook_new
 
@@ -4515,16 +4515,16 @@ contains
     bar = gtk_progress_bar_new()
 
     ! GTK2 version
-!!2    orientation = GTK_PROGRESS_LEFT_TO_RIGHT
-!!2    if (present(vertical)) then
-!!2       if (vertical == TRUE) orientation = GTK_PROGRESS_BOTTOM_TO_TOP
-!!2       if (present(reversed)) then
-!!2          if (reversed == TRUE) orientation = GTK_PROGRESS_TOP_TO_BOTTOM
-!!2       end if
-!!2    else if (present(reversed)) then
-!!2       if (reversed == TRUE) orientation = GTK_PROGRESS_RIGHT_TO_LEFT
-!!2    end if
-!!2    call gtk_progress_bar_set_orientation(bar, orientation)
+!!$2    orientation = GTK_PROGRESS_LEFT_TO_RIGHT
+!!$2    if (present(vertical)) then
+!!$2       if (vertical == TRUE) orientation = GTK_PROGRESS_BOTTOM_TO_TOP
+!!$2       if (present(reversed)) then
+!!$2          if (reversed == TRUE) orientation = GTK_PROGRESS_TOP_TO_BOTTOM
+!!$2       end if
+!!$2    else if (present(reversed)) then
+!!$2       if (reversed == TRUE) orientation = GTK_PROGRESS_RIGHT_TO_LEFT
+!!$2    end if
+!!$2    call gtk_progress_bar_set_orientation(bar, orientation)
     ! end GTK2 version
     ! GTK3 version
     if (present(vertical)) then
@@ -5715,12 +5715,12 @@ contains
 !GTK3
        cbox = gtk_combo_box_text_new_with_entry()
 !GTK2
-!!2       cbox = gtk_combo_box_entry_new_text()
+!!$2       cbox = gtk_combo_box_entry_new_text()
     else
 !GTK3
        cbox = gtk_combo_box_text_new()
 !GTK2
-!!2       cbox =  gtk_combo_box_new_text()
+!!$2       cbox =  gtk_combo_box_new_text()
     end if
 
     if (present(initial_choices)) then
@@ -5729,8 +5729,8 @@ contains
           call gtk_combo_box_text_append_text(cbox, &
                & trim(initial_choices(i))//CNULL)
 !GTK2
-!!2          call gtk_combo_box_append_text(cbox, &
-!!2               & trim(initial_choices(i))//CNULL)
+!!$2          call gtk_combo_box_append_text(cbox, &
+!!$2               & trim(initial_choices(i))//CNULL)
        end do
     end if
 
@@ -5772,7 +5772,7 @@ contains
 !GTK3
        call gtk_combo_box_text_insert_text(cbox, index, text)
 !GTK2
-!!2       call gtk_combo_box_insert_text(cbox, index, text)
+!!$2       call gtk_combo_box_insert_text(cbox, index, text)
     else
        if (present(at_start)) then
           prepend = at_start
@@ -5783,12 +5783,12 @@ contains
 !GTK3
           call gtk_combo_box_text_prepend_text(cbox, text)
 !GTK2
-!!2          call gtk_combo_box_prepend_text(cbox, text)
+!!$2          call gtk_combo_box_prepend_text(cbox, text)
        else
 !GTK3
           call gtk_combo_box_text_append_text(cbox, text)
 !GTK2
-!!2          call gtk_combo_box_append_text(cbox, text)
+!!$2          call gtk_combo_box_append_text(cbox, text)
        end if
     end if
   end subroutine hl_gtk_combo_box_add_text
@@ -5808,7 +5808,7 @@ contains
 !GTK3
     call gtk_combo_box_text_remove(cbox, index)
 !GTK2
-!!2    call gtk_combo_box_remove_text(cbox, index)
+!!$2    call gtk_combo_box_remove_text(cbox, index)
 
   end subroutine hl_gtk_combo_box_delete
 
@@ -5836,7 +5836,7 @@ contains
 !GTK3
       ctext = gtk_combo_box_text_get_active_text(cbox)
 !GTK2
-!!2       ctext = gtk_combo_box_get_active_text(cbox)
+!!$2       ctext = gtk_combo_box_get_active_text(cbox)
 
        ! This is a bit ugly
        if (present(ftext)) &
