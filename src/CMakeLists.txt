@@ -32,6 +32,7 @@ set(sources
 	"glib-auto.f90"
 	"gtk.f90"
 	"gtk-hl.f90"
+	"gtk-draw-hl.f90"
 	"gtk-sup.f90"
 	"pango-auto.f90"
 	"gdkevents-auto2.f90")
@@ -76,6 +77,7 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/g.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_draw_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"

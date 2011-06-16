@@ -266,13 +266,13 @@ module gtk_hl
        & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
        & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT
   ! Replace the last 2 lines with the next 2 for GTK3
-!!3       & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL, & 
-!!3       & gtk_progress_bar_set_inverted, gtk_progress_bar_set_show_text, &
-!!3       & gtk_combo_box_text_append_text, &
-!!3       & gtk_combo_box_text_get_active_text, gtk_combo_box_text_insert_text, &
-!!3       & gtk_combo_box_text_new, gtk_combo_box_text_new_with_entry, &
-!!3       & gtk_combo_box_text_prepend_text, gtk_combo_box_text_remove, &
-!!3       & gtk_notebook_set_group_name
+!!$3       & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL, & 
+!!$3       & gtk_progress_bar_set_inverted, gtk_progress_bar_set_show_text, &
+!!$3       & gtk_combo_box_text_append_text, &
+!!$3       & gtk_combo_box_text_get_active_text, gtk_combo_box_text_insert_text, &
+!!$3       & gtk_combo_box_text_new, gtk_combo_box_text_new_with_entry, &
+!!$3       & gtk_combo_box_text_prepend_text, gtk_combo_box_text_remove, &
+!!$3       & gtk_notebook_set_group_name
 
        use gdk, only: gdk_keyval_from_name
 
@@ -692,7 +692,7 @@ contains
          & call gtk_notebook_set_scrollable(nbook, scrollable)
 
     if (present(group)) &
-!!3         & call gtk_notebook_set_group_name(nbook, group)
+!!$3         & call gtk_notebook_set_group_name(nbook, group)
          & call gtk_notebook_set_group(nbook, c_loc(group))
 
   end function hl_gtk_notebook_new
@@ -4527,17 +4527,17 @@ contains
     call gtk_progress_bar_set_orientation(bar, orientation)
     ! end GTK2 version
     ! GTK3 version
-!!3    if (present(vertical)) then
-!!3       if (vertical == TRUE) then
-!!3          call gtk_orientable_set_orientation (bar, &
-!!3               & GTK_ORIENTATION_VERTICAL)
-!!3       else
-!!3          call gtk_orientable_set_orientation (bar, &
-!!3               & GTK_ORIENTATION_HORIZONTAL)
-!!3       end if
-!!3    end if
-!!3
-!!3    if (present(reversed)) call gtk_progress_bar_set_inverted(bar, reversed)
+!!$3    if (present(vertical)) then
+!!$3       if (vertical == TRUE) then
+!!$3          call gtk_orientable_set_orientation (bar, &
+!!$3               & GTK_ORIENTATION_VERTICAL)
+!!$3       else
+!!$3          call gtk_orientable_set_orientation (bar, &
+!!$3               & GTK_ORIENTATION_HORIZONTAL)
+!!$3       end if
+!!$3    end if
+!!$3
+!!$3    if (present(reversed)) call gtk_progress_bar_set_inverted(bar, reversed)
     ! end GTK3 version
 
     if (present(step)) &
@@ -4578,7 +4578,7 @@ contains
     if (present(text)) then
        call gtk_progress_bar_set_text (bar, text//cnull)
 ! GTK3 Only
-!!3      call gtk_progress_bar_set_show_text(bar, TRUE)
+!!$3      call gtk_progress_bar_set_show_text(bar, TRUE)
 ! End GTK3 only
     else if (present(string)) then
        if (string == FALSE .or. .not. present(val)) return
@@ -4587,9 +4587,9 @@ contains
 
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
 ! GTK3 Only
-!!3      call gtk_progress_bar_set_show_text(bar, TRUE)
-!!3    else
-!!3       call gtk_progress_bar_set_show_text(bar, FALSE)
+!!$3      call gtk_progress_bar_set_show_text(bar, TRUE)
+!!$3    else
+!!$3       call gtk_progress_bar_set_show_text(bar, FALSE)
 ! End GTK3 only
     end if
   end subroutine hl_gtk_progress_bar_set_f
@@ -4624,7 +4624,7 @@ contains
     if (present(text)) then
        call gtk_progress_bar_set_text (bar, text//cnull)
 ! GTK3 Only
-!!3       call gtk_progress_bar_set_show_text(bar, TRUE)
+!!$3       call gtk_progress_bar_set_show_text(bar, TRUE)
 ! End GTK3 only
     else if (present(string)) then
        if (string == FALSE) return
@@ -4632,9 +4632,9 @@ contains
        write(sval, "(I0,' of ',I0)") val, maxv
        call gtk_progress_bar_set_text (bar, trim(sval)//cnull)
 ! GTK3 Only
-!!3       call gtk_progress_bar_set_show_text(bar, TRUE)
-!!3    else
-!!3       call gtk_progress_bar_set_show_text(bar, FALSE)
+!!$3       call gtk_progress_bar_set_show_text(bar, TRUE)
+!!$3    else
+!!$3       call gtk_progress_bar_set_show_text(bar, FALSE)
 ! End GTK3 only
     end if
   end subroutine hl_gtk_progress_bar_set_ii
@@ -5713,12 +5713,12 @@ contains
 
     if (ientry == TRUE) then
 !GTK3
-!!3       cbox = gtk_combo_box_text_new_with_entry()
+!!$3       cbox = gtk_combo_box_text_new_with_entry()
 !GTK2
        cbox = gtk_combo_box_entry_new_text()
     else
 !GTK3
-!!3       cbox = gtk_combo_box_text_new()
+!!$3       cbox = gtk_combo_box_text_new()
 !GTK2
        cbox =  gtk_combo_box_new_text()
     end if
@@ -5726,8 +5726,8 @@ contains
     if (present(initial_choices)) then
        do i=1,size(initial_choices)
 !GTK3
-!!3          call gtk_combo_box_text_append_text(cbox, &
-!!3               & trim(initial_choices(i))//CNULL)
+!!$3          call gtk_combo_box_text_append_text(cbox, &
+!!$3               & trim(initial_choices(i))//CNULL)
 !GTK2
           call gtk_combo_box_append_text(cbox, &
                & trim(initial_choices(i))//CNULL)
@@ -5770,7 +5770,7 @@ contains
 
     if (present(index)) then
 !GTK3
-!!3       call gtk_combo_box_text_insert_text(cbox, index, text)
+!!$3       call gtk_combo_box_text_insert_text(cbox, index, text)
 !GTK2
        call gtk_combo_box_insert_text(cbox, index, text)
     else
@@ -5781,12 +5781,12 @@ contains
        end if
        if (prepend == TRUE) then
 !GTK3
-!!3          call gtk_combo_box_text_prepend_text(cbox, text)
+!!$3          call gtk_combo_box_text_prepend_text(cbox, text)
 !GTK2
           call gtk_combo_box_prepend_text(cbox, text)
        else
 !GTK3
-!!3          call gtk_combo_box_text_append_text(cbox, text)
+!!$3          call gtk_combo_box_text_append_text(cbox, text)
 !GTK2
           call gtk_combo_box_append_text(cbox, text)
        end if
@@ -5806,7 +5806,7 @@ contains
     !-
 
 !GTK3
-!!3    call gtk_combo_box_text_remove(cbox, index)
+!!$3    call gtk_combo_box_text_remove(cbox, index)
 !GTK2
     call gtk_combo_box_remove_text(cbox, index)
 
@@ -5834,7 +5834,7 @@ contains
     if (present(text) .or. present(ftext)) then
 
 !GTK3
-!!3      ctext = gtk_combo_box_text_get_active_text(cbox)
+!!$3      ctext = gtk_combo_box_text_get_active_text(cbox)
 !GTK2
        ctext = gtk_combo_box_get_active_text(cbox)
 
