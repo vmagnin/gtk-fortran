@@ -76,6 +76,10 @@ add_executable(hl_cairo1 "hl_cairo1.f90")
 target_link_libraries(hl_cairo1 gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_cairo1 ./hl_cairo1)
 
+add_executable(hl_cairo_clock "hl_cairo_clock.f90")
+target_link_libraries(hl_cairo_clock gtk-fortran_static ${GTK_LIBRARIES})
+add_test(hl_cairo_clock ./hl_cairo_clock)
+
 add_executable(hl_choosers "hl_choosers.f90")
 target_link_libraries(hl_choosers gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_choosers ./hl_choosers)

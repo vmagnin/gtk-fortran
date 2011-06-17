@@ -241,7 +241,7 @@ contains
     ! Save:
     cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//CNULL)
     
-    pixbuf = hl_gtk_pixbuf_cairo_destroy(my_cairo_context, key)
+    call hl_gtk_pixbuf_cairo_destroy(my_cairo_context, key)
   end subroutine draw_pattern
 
 end module handlers

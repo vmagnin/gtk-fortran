@@ -23,7 +23,7 @@
 !
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modification: 06-15-2011
+! Last modification: 06-16-2011
 
 module gtk_draw_hl
   !*
@@ -38,7 +38,7 @@ module gtk_draw_hl
   ! * hl_gtk_drawing_area_expose_cb; Default callback for expose events.
   ! * hl_gtk_pixbuf_cairo_new; Create a cairo context attached to the pixbuf.
   ! * hl_gtk_pixbuf_cairo_destroy; Update the pixbuf and destroy the context.
-  ! * is_big_endian; Utility function to determine endianness.
+  ! * is_big_endian; Utility function to determine endianness. (GTK2 only)
   !/
 
   use gtk, only: gtk_drawing_area_new, gtk_widget_add_events, &
@@ -51,21 +51,26 @@ module gtk_draw_hl
        & GDK_SCROLL_MASK, GDK_ENTER_NOTIFY_MASK, GDK_KEY_PRESS_MASK, &
        & GDK_KEY_RELEASE_MASK, GDK_LEAVE_NOTIFY_MASK, GDK_POINTER_MOTION_MASK,&
        & GDK_STRUCTURE_MASK, GDK_ALL_EVENTS_MASK, CAIRO_FORMAT_ARGB32, &
-       & GDK_COLORSPACE_RGB, GTK_POLICY_AUTOMATIC, &
+       & GDK_COLORSPACE_RGB, GTK_POLICY_AUTOMATIC, CAIRO_FORMAT_RGB24, &
        & CNULL, NULL, FNULL, TRUE, FALSE
 
   use cairo, only: cairo_image_surface_create, cairo_set_user_data, &
        & cairo_get_user_data, cairo_get_target, cairo_image_surface_get_data, &
-       & cairo_create, cairo_destroy, cairo_surface_destroy, cairo_paint
+       & cairo_create, cairo_destroy, cairo_surface_destroy, cairo_paint, &
+       & cairo_image_surface_get_stride
 
   use g, only: g_object_unref, g_object_ref, g_object_set_data, &
        & g_object_get_data
 
   use gdk_pixbuf, only: gdk_pixbuf_new, gdk_pixbuf_copy, &
        & gdk_pixbuf_get_height, gdk_pixbuf_get_width, &
-       & gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels
+       & gdk_pixbuf_get_rowstride, gdk_pixbuf_get_has_alpha, &
+       & gdk_pixbuf_new_from_data, gdk_pixbuf_get_pixels, &
+       & gdk_pixbuf_copy_area, gdk_pixbuf_get_n_channels
 
-  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  use gdk, only: gdk_cairo_create, &
+!!$3       & gdk_pixbuf_get_from_surface, &
+       & gdk_cairo_set_source_pixbuf
 
   use iso_c_binding
 
@@ -424,6 +429,10 @@ contains
     type(c_ptr) :: cr, pixbuf
 
     pixbuf = g_object_get_data(area, "backing-pixbuf")
+    if (.not. c_associated(pixbuf)) then
+       write(0,*) 'hl_gtk_drawing_area_expose_cb: Pixbuf is NULL'
+       return
+    end if
     cr = gdk_cairo_create (gtk_widget_get_window(area))
     call gdk_cairo_set_source_pixbuf(cr, pixbuf, 0._c_double, 0._c_double) 
     call cairo_paint(cr)
@@ -450,13 +459,8 @@ contains
 
     type(c_ptr) :: pixbuf
     integer(kind=c_int) :: width, height, n_channels
-    character(kind=c_char), dimension(:,:,:), pointer :: p_pixels, s_pixels
-    type(c_ptr) :: pp_pixels, ss_pixels
     type(c_ptr) :: surface
-    integer, dimension(4) :: idx
-    integer :: ih, iw
-    real(kind=c_double) :: alpha_factor
-    integer(kind=c_int) :: ok
+    integer(kind=c_int) :: ok, cairo_type
 
     pixbuf = g_object_get_data(area, "backing-pixbuf")
     if (.not. c_associated(pixbuf)) then
@@ -470,61 +474,28 @@ contains
     height = gdk_pixbuf_get_height(pixbuf)
     n_channels = gdk_pixbuf_get_n_channels(pixbuf)
 
-    ! And its pixels
-    pp_pixels = gdk_pixbuf_get_pixels(pixbuf)
-    call c_f_pointer(pp_pixels, p_pixels, (/n_channels, width, height/))
-
     ! Now make a matching cairo surface.
 
-    surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, &
-         & width, height)
-    ss_pixels = cairo_image_surface_get_data(surface)
-    call c_f_pointer(ss_pixels, s_pixels, (/4, width, height/))
-
-    ! The mapping of channels to indices in the cairo surface depends on
-    ! the endianness of the platform
-    if (is_big_endian()) then
-       idx = [4,3,2,1]
-    else
-       idx = [1,2,3,4]
-    end if
-
     if (n_channels == 3) then
-       do ih = 1, height
-          do iw = 1, width
-             s_pixels(idx(1), iw, ih) = p_pixels(3, iw, ih)
-             s_pixels(idx(2), iw, ih) = p_pixels(2, iw, ih)
-             s_pixels(idx(3), iw, ih) = p_pixels(1, iw, ih)
-             s_pixels(idx(4), iw, ih) = char(255)
-          end do
-       end do
+       cairo_type = CAIRO_FORMAT_RGB24
     else
-       do ih = 1, height
-          do iw = 1, width
-             alpha_factor = real(ichar(p_pixels(4, iw, ih)), c_double) / &
-                  & 255._c_double
-             s_pixels(idx(1), iw, ih) = &
-                  & char(nint(ichar(p_pixels(3, iw, ih))*alpha_factor))
-             s_pixels(idx(2), iw, ih) = &
-                  & char(nint(ichar(p_pixels(2, iw, ih))*alpha_factor))
-             s_pixels(idx(3), iw, ih) = &
-                  & char(nint(ichar(p_pixels(1, iw, ih))*alpha_factor))
-             s_pixels(idx(4), iw, ih) = p_pixels(4, iw, ih)
-          end do
-       end do
+       cairo_type = CAIRO_FORMAT_ARGB32
     end if
+    surface = cairo_image_surface_create(cairo_type, &
+         & width, height)
+    cr = cairo_create(surface)
+
+    call gdk_cairo_set_source_pixbuf(cr, pixbuf, 0._c_double, 0._c_double)
+    call cairo_paint(cr)
+    call cairo_surface_destroy(surface)
+    ok = cairo_set_user_data(cr, c_loc(key), pixbuf, FNULL)
 
     ! Create the cairo context from the surface
-    cr = cairo_create(surface)
-    call cairo_surface_destroy(surface)
-    ok = cairo_set_user_data(cr, c_loc(key), pixbuf, c_funloc(g_object_unref))
   end function hl_gtk_pixbuf_cairo_new
 
   !+
-  function hl_gtk_pixbuf_cairo_destroy(cr, key) &
-       & result(pixbuf)
+  subroutine hl_gtk_pixbuf_cairo_destroy(cr, key)
 
-    type(c_ptr) :: pixbuf
     type(c_ptr), intent(inout) :: cr
     type(cairo_user_data_key_t), intent(in), target :: key
 
@@ -536,15 +507,47 @@ contains
     ! 		has to be the same variable as KEY in hl_gtk_pixbuf_cairo_new
     !
     ! This is called following drawing operations to the context created by
-    ! `hl_gtk_pixbuf_cairo_new`
+    ! `hl_gtk_pixbuf_cairo_new`.
+    ! Because GDK-2 does not have the gdk_pixbuf_get_from_surface function
+    ! for GDK2 a manual pixel copy must be made.
     !-
 
-    integer(kind=c_int) :: width, height, n_channels !, p_stride, s_stride
-    character(kind=c_char), dimension(:,:,:), pointer :: p_pixels, s_pixels
+    ! GTK+3 Version of the routine
+!!$3    integer(kind=c_int) :: width, height
+!!$3    type(c_ptr) :: surface, tpixb, pixbuf
+!!$3    integer, dimension(4) :: idx
+!!$3    integer :: ih, iw
+!!$3
+!!$3    ! Get the pixbuf from the context
+!!$3    pixbuf = cairo_get_user_data(cr, c_loc(key))
+!!$3    if (.not. c_associated(pixbuf)) then
+!!$3       write(0,*) 'hl_gtk_pixbuf_cairo_destroy: Pixbuf is NULL'
+!!$3       return
+!!$3    end if
+!!$3
+!!$3    ! Get the cairo surface from which to read the pixels
+!!$3    surface = cairo_get_target(cr)
+!!$3
+!!$3    ! Get pixbuf information
+!!$3    height = gdk_pixbuf_get_height(pixbuf)
+!!$3    width = gdk_pixbuf_get_width(pixbuf)
+!!$3
+!!$3    ! Read the surface into a pixbuf, then copy the pixels to
+!!$3    ! the original pixbuf (gdk_pixbuf_get_from_surface) produces a
+!!$3    ! new pixbuf.
+!!$3    tpixb = gdk_pixbuf_get_from_surface(surface, 0, 0, width, height)
+!!$3    call gdk_pixbuf_copy_area (tpixb, 0, 0, width, height, pixbuf, 0, 0)
+!!$3
+!!$3    call cairo_destroy(cr)
+
+    ! GTK+2 version of the routine
+    integer(kind=c_int) :: width, height, n_channels, p_stride, s_stride
+    character(kind=c_char), dimension(:), pointer :: p_pixels, s_pixels
     type(c_ptr) :: pp_pixels, ss_pixels
-    type(c_ptr) :: surface
-    integer, dimension(4) :: idx
-    integer :: ih, iw
+    type(c_ptr) :: surface, pixbuf
+    integer, dimension(4) :: idxa
+    integer, dimension(3) :: idxo
+    integer :: ih, iw, ipoff, isoff
     real(kind=c_double) :: alpha_factor
 
     ! Get the pixbuf from the context
@@ -556,21 +559,25 @@ contains
     ! Get pixbuf information
     height = gdk_pixbuf_get_height(pixbuf)
     width = gdk_pixbuf_get_width(pixbuf)
+    p_stride = gdk_pixbuf_get_rowstride(pixbuf)
     n_channels = gdk_pixbuf_get_n_channels(pixbuf)
-    
+
     ! And its pixels
     pp_pixels = gdk_pixbuf_get_pixels(pixbuf)
-    call c_f_pointer(pp_pixels, p_pixels, (/ n_channels, width, height/))
+    call c_f_pointer(pp_pixels, p_pixels, (/ p_stride*height/))
 
     ! Also the pixels of the surface
     ss_pixels = cairo_image_surface_get_data(surface)
-    call c_f_pointer(ss_pixels, s_pixels, (/ 4, width, height/))
+    s_stride = cairo_image_surface_get_stride( surface )
+    call c_f_pointer(ss_pixels, s_pixels, (/ s_stride*height/))
 
     ! Set the indexing
     if (is_big_endian()) then
-       idx = [4,3,2,1]
+       idxa = [4,3,2,1]
+       idxo = [3,2,1]
     else
-       idx = [1,2,3,4]
+       idxa = [1,2,3,4]
+       idxo = [1,2,3]
     end if
 
     ! Copy the pixels (we are going to assume that if the pixbuf
@@ -578,31 +585,40 @@ contains
     ! useful information in it).
     if (n_channels == 3) then
        do ih = 1, height
+          ipoff = (ih-1)*p_stride
+          isoff = (ih-1)*s_stride
           do iw = 1, width
-             p_pixels(1, iw, ih) = s_pixels(idx(3), iw, ih)
-             p_pixels(2, iw, ih) = s_pixels(idx(2), iw, ih)
-             p_pixels(3, iw, ih) = s_pixels(idx(1), iw, ih)
+             p_pixels(1+ipoff) = s_pixels(idxo(3)+isoff)
+             p_pixels(2+ipoff) = s_pixels(idxo(2)+isoff)
+             p_pixels(3+ipoff) = s_pixels(idxo(1)+isoff)
+             ipoff = ipoff+n_channels
+             isoff = isoff+4
           end do
        end do
     else
        do ih = 1, height
+          ipoff = (ih-1)*p_stride
+          isoff = (ih-1)*s_stride
           do iw = 1, width
              alpha_factor = 255._c_double / &
-                  & real(ichar(s_pixels(idx(4), iw, ih)), c_double)
+                  & real(ichar(s_pixels(idxa(4)+isoff)), c_double)
 
-             p_pixels(1, iw, ih) = &
-                  & char(nint(ichar(s_pixels(idx(3), iw, ih))*alpha_factor))
-             p_pixels(2, iw, ih) = &
-                  & char(nint(ichar(s_pixels(idx(2), iw, ih))*alpha_factor))
-             p_pixels(3, iw, ih) = &
-                  & char(nint(ichar(s_pixels(idx(1), iw, ih))*alpha_factor))
-             p_pixels(4, iw, ih) = s_pixels(idx(4), iw, ih)
+             p_pixels(1+ipoff) = &
+                  & char(nint(ichar(s_pixels(idxa(3)+isoff))*alpha_factor))
+             p_pixels(2+ipoff) = &
+                  & char(nint(ichar(s_pixels(idxa(2)+isoff))*alpha_factor))
+             p_pixels(3+ipoff) = &
+                  & char(nint(ichar(s_pixels(idxa(1)+isoff))*alpha_factor))
+             p_pixels(4+ipoff) = s_pixels(idxa(4)+isoff)
+             ipoff = ipoff+n_channels
+             isoff = isoff+4
           end do
        end do
     end if
 
     call cairo_destroy(cr)
-  end function hl_gtk_pixbuf_cairo_destroy
+
+  end subroutine hl_gtk_pixbuf_cairo_destroy
 
   !+
   function is_big_endian()
@@ -618,5 +634,4 @@ contains
 
     is_big_endian = (i2 == 1)
   end function is_big_endian
-
  end module gtk_draw_hl
