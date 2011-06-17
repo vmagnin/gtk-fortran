@@ -32,7 +32,7 @@ project(gtk-fortran C Fortran)
 # SET(CMAKE_BUILD_TYPE debug)
 
 set(CMAKE_Fortran_FLAGS_DEBUG 
-  "-g -pthread -Wall -Wtabs -fcheck-array-temporaries -fbacktrace -fbounds-check -ffpe-trap=invalid,zero,overflow") 
+  "-g -pthread -Wall -Wtabs -fcheck-array-temporaries -fbacktrace -fbounds-check -ffpe-trap=invalid,zero,overflow -Wno-unused-dummy-argument") 
 set(CMAKE_Fortran_FLAGS_RELEASE
 "-pthread -O3 -mtune=native -march=native")
 
