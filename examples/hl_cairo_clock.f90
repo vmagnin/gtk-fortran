@@ -29,12 +29,14 @@ module cl_handlers
   use cairo, only: cairo_destroy, cairo_line_to, cairo_move_to, cairo_paint, cair&
        &o_rectangle, cairo_set_line_width, cairo_set_source, cairo_set_source_rgb, cai&
        &ro_stroke, cairo_set_line_cap, cairo_arc, cairo_new_sub_path, &
-       & cairo_fill, cairo_close_path, cairo_stroke_preserve, cairo_rectangle
+       & cairo_fill, cairo_close_path, cairo_fill_preserve, cairo_rectangle, &
+       & cairo_new_path, cairo_set_source_rgba, cairo_select_font_face, &
+       & cairo_show_text,  cairo_set_font_size
 
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
        &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_queue_draw, gtk_w&
        &idget_show, gtk_widget_show_all, gtk_window_new, &
-       & CAIRO_LINE_CAP_ROUND, &
+       & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD, &
        &  TRUE, FALSE, CNULL, gtk_init, g_signal_connect
 
   use g, only: g_usleep
@@ -69,15 +71,20 @@ contains
     end do
   end subroutine pending_events
 
-  subroutine show_time(area, h,m,s)
+  subroutine show_time(area, dat)
     type(c_ptr), intent(in) :: area
-    integer, intent(in) :: h,m,s
+    integer, intent(in), dimension(:) :: dat
 
     type(cairo_user_data_key_t) :: key
     type(c_ptr) :: cr, pixbuf
+    character(len=3) :: sdate
 
+    character(len=4), parameter, dimension(12) :: mnames = &
+         & (/'JAN'//cnull, 'FEB'//cnull, 'MAR'//cnull, 'APR'//cnull, &
+         &   'MAY'//cnull, 'JUN'//cnull, 'JUL'//cnull, 'AUG'//cnull, &
+         &   'SEP'//cnull, 'OCT'//cnull, 'NOV'//cnull, 'DEC'//cnull /)
     integer :: i
-    real(kind=c_double) :: r0, r1, x0, x1, y0, y1, th, xc, yc
+    real(kind=c_double) :: r0, r1, x0, x1, y0, y1, th, xc, yc, ycs
 
     cr = hl_gtk_pixbuf_cairo_new(area, key)
 
@@ -85,76 +92,175 @@ contains
     yc = real(height, c_double) / 2._c_double
 
     ! Background
-    call cairo_set_source_rgb(cr, 0.5_c_double, 0.0_c_double, &
+    call cairo_set_source_rgb(cr, 0.3_c_double, 0.0_c_double, &
          & 0.0_c_double)
     call cairo_rectangle(cr, 0._c_double, 0._c_double,&
          & real(width, c_double), real(height, c_double))
     call cairo_paint(cr)
 
-    ! Clock dial
+    ! Face
+    r0 = min(xc,yc) * 0.85_c_double
+    call cairo_set_source_rgb(cr, 0.3_c_double, 0.3_c_double, 0._c_double)
+    call cairo_new_path(cr)
+    call cairo_move_to(cr, xc+r0, yc)
+    call cairo_arc(cr, xc, yc, r0, 0._c_double, 2.*pi)
+    call cairo_fill(cr)
+
+    ! Sub face
+    r0 =  min(xc,yc) * 0.25_c_double
+    call cairo_set_source_rgb(cr, 0.2_c_double, 0.7_c_double, 0.7_c_double)
+    ycs = 1.375_c_double * yc
+    call cairo_new_path(cr)
+    call cairo_move_to(cr, xc+r0, ycs)
+    call cairo_arc(cr, xc, ycs, r0, 0._c_double, 2.*pi)
+    call cairo_fill(cr)
+
+    ! Clock dials
+    ! Main
     call cairo_set_source_rgb(cr, 1._c_double, 1._c_double, &
          & 1._c_double)
     call cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND)
-    do i = 1, 12
-       if (mod(i,3) == 0) then
+    do i = 1, 60
+       if (mod(i,15) == 0) then
           call cairo_set_line_width(cr, 5._c_double)
           r0 = min(xc,yc) * 0.75_c_double
-       else
+          r1 = min(xc,yc) * 0.9_c_double
+       else if (mod(i,5) == 0) then
           call cairo_set_line_width(cr, 4._c_double)
           r0 = min(xc,yc) * 0.8_c_double
+          r1 = min(xc,yc) * 0.9_c_double
+       else
+          call cairo_set_line_width(cr, 2._c_double)
+          r0 = min(xc,yc) * 0.8_c_double
+          r1 = min(xc,yc) * 0.85_c_double
        end if
-       r1 = min(xc,yc) * 0.9_c_double
-       th = real(i,c_double)*pi/6._c_double
+       th = real(i,c_double)*pi/30._c_double
 
        x0 = sin(th)*r0+xc
        x1 = sin(th)*r1+xc
        y0 = cos(th)*r0+yc
        y1 = cos(th)*r1+yc
-       
+
        call cairo_move_to(cr, x0, y0)
        call cairo_line_to(cr, x1, y1)
        call cairo_stroke(cr)
     end do
 
-    ! Hour hand
-    call cairo_set_source_rgb(cr, 0.5_c_double, 0.5_c_double, &
-         & 1._c_double)
-    call cairo_set_line_width(cr, 6._c_double)
-    r0 = min(xc,yc) * 0.6_c_double
-    th = (real(mod(h,12),c_double) + real(m,c_double)/60._c_double +&
-         & real(s, c_double)/3600._c_double) * pi / 6._c_double
-    x1 = r0*sin(th) + xc
-    y1 = -r0*cos(th) + xc
+    ! Seconds
+    do i = 1, 60
+       if (mod(i,15) == 0) then
+          call cairo_set_line_width(cr, 2._c_double)
+          r0 = min(xc,ycs) * 0.2_c_double
+          r1 = min(xc,ycs) * 0.275_c_double
+       else if (mod(i,5) == 0) then
+          call cairo_set_line_width(cr, 1._c_double)
+          r0 = min(xc,ycs) * 0.225_c_double
+          r1 = min(xc,ycs) * 0.275_c_double
+       else
+          call cairo_set_line_width(cr, 1._c_double)
+          r0 = min(xc,ycs) * 0.225_c_double
+          r1 = min(xc,ycs) * 0.25_c_double
+       end if
+       th = real(i,c_double)*pi/30._c_double
 
-    call cairo_move_to(cr, xc, yc)
+       x0 = sin(th)*r0+xc
+       x1 = sin(th)*r1+xc
+       y0 = cos(th)*r0+ycs
+       y1 = cos(th)*r1+ycs
+
+       call cairo_move_to(cr, x0, y0)
+       call cairo_line_to(cr, x1, y1)
+       call cairo_stroke(cr)
+    end do
+
+
+    !  Date
+    if (dat(5) >= 12) then
+       call cairo_set_source_rgb(cr, 0._c_double, 0._c_double, 0._c_double)
+    else
+       call cairo_set_source_rgb(cr, 1._c_double, 1._c_double, 1._c_double)
+    end if
+    call cairo_select_font_face(cr, "sans-serif"//cnull, &
+         & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
+    x0 = xc*.4_c_double
+    call cairo_set_line_width(cr, 1._c_double)
+    call cairo_rectangle(cr, x0-2., yc+10., 42._c_double,-16._c_double)
+    call cairo_fill_preserve(cr)
+    if (dat(5) < 12) then
+       call cairo_set_source_rgb(cr, 0._c_double, 0._c_double, 0._c_double)
+    else
+       call cairo_set_source_rgb(cr, 1._c_double, 1._c_double, 1._c_double)
+    end if
+    call cairo_stroke(cr)
+    call cairo_set_font_size (cr, 12._c_double)
+    write(sdate,"(I2.2,a1)") dat(3), char(0)
+    call cairo_move_to(cr, x0,yc+6)
+    call cairo_show_text(cr, sdate)
+    call cairo_set_font_size (cr, 9._c_double)
+    call cairo_show_text(cr, ' '//mnames(dat(2)))
+
+
+    ! Second hand
+    ! Trail
+    th = real(dat(7),c_double) * pi / 30._c_double - pi/2._c_double
+    r0 = min(xc,yc) * 0.24_c_double
+    do i = 1, 15
+       call cairo_set_source_rgba(cr, 1._c_double, 0.1_c_double, &
+            & 1._c_double, 1._c_double-real(i,c_double)/15._c_double)
+       call cairo_new_path(cr)
+       call cairo_move_to(cr, xc, ycs)
+       call cairo_arc(cr, xc, ycs, r0, th-pi/30._c_double, th)
+       call cairo_fill(cr)
+       th = th-pi/30._c_double
+    end do
+
+    ! Hand
+    call cairo_set_source_rgb(cr, .6_c_double, 0.1_c_double, &
+         & .6_c_double)
+    call cairo_set_line_width(cr, 2._c_double)
+
+    th = real(dat(7),c_double) * pi / 30._c_double
+    x1 = r0*sin(th) + xc
+    x0 = xc
+    y1 = -r0*cos(th) + ycs
+    y0 = ycs
+
+    call cairo_move_to(cr, x0, y0)
+    call cairo_line_to(cr, x1, y1)
+    call cairo_stroke(cr)
+
+
+    ! Hour hand
+    call cairo_set_source_rgb(cr, 0.1_c_double, 0.8_c_double, &
+         & 1._c_double)
+    call cairo_set_line_width(cr, 8._c_double)
+    r0 = min(xc,yc) * 0.6_c_double
+    th = (real(mod(dat(5),12),c_double) + &
+         & real(dat(6),c_double)/60._c_double + &
+         & real(dat(7), c_double)/3600._c_double) * pi / 6._c_double
+    x1 = r0*sin(th) + xc
+    x0 = -r0*sin(th)/10._c_double + xc
+    y1 = -r0*cos(th) + xc
+    y0 = r0*cos(th)/10._c_double + yc
+
+    call cairo_move_to(cr, x0, y0)
     call cairo_line_to(cr, x1, y1)
     call cairo_stroke(cr)
 
     ! Minute hand
-    call cairo_set_source_rgb(cr, 1.0_c_double, 1._c_double, &
-         & 0.1_c_double)
+    call cairo_set_source_rgba(cr, 1.0_c_double, 1._c_double, &
+         & 0.1_c_double, 0.9_c_double)
     call cairo_set_line_width(cr, 3._c_double)
     r0 = min(xc,yc) * 0.85_c_double
 
-    th = (real(m,c_double) + real(s,c_double)/60._c_double) * pi / 30._c_double
+    th = (real(dat(6),c_double) + &
+         & real(dat(7),c_double)/60._c_double) * pi / 30._c_double
     x1 = r0*sin(th) + xc
+    x0 = -r0*sin(th)/10._c_double + xc
     y1 = -r0*cos(th) + xc
+    y0 = r0*cos(th)/10._c_double + yc
 
-    call cairo_move_to(cr, xc, yc)
-    call cairo_line_to(cr, x1, y1)
-    call cairo_stroke(cr)
-
-    ! Second hand
-    call cairo_set_source_rgb(cr, 1._c_double, 0.1_c_double, &
-         & 1._c_double)
-    call cairo_set_line_width(cr, 2._c_double)
-    r0 = min(xc,yc) * 0.8_c_double
-
-    th = real(s,c_double) * pi / 30._c_double
-    x1 = r0*sin(th) + xc
-    y1 = -r0*cos(th) + xc
-
-    call cairo_move_to(cr, xc, yc)
+    call cairo_move_to(cr, x0, y0)
     call cairo_line_to(cr, x1, y1)
     call cairo_stroke(cr)
 
@@ -180,13 +286,14 @@ program cairo_clock
   window = hl_gtk_window_new("Cairo Clock"//cnull, &
        & delete_event = c_funloc(delete_cb))
 
-  drawing = hl_gtk_drawing_area_new(size=(/width, height/))
+  drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
+       & has_alpha = TRUE)
 
   call gtk_container_add(window, drawing)
   call gtk_widget_show_all (window)
 
   call date_and_time(values=t0)
-  call show_time(drawing, t0(5), t0(6), t0(7))
+  call show_time(drawing, t0)
 
   do
      call pending_events()
@@ -195,7 +302,7 @@ program cairo_clock
      call date_and_time(values=t1)
      if (t1(7) /= t0(7) .or. t1(6) /= t0(6) .or. t1(5) /= t0(5)) then
         t0=t1
-        call show_time(drawing, t0(5), t0(6), t0(7))
+        call show_time(drawing, t0)
      end if
   end do
   print *, "All done"
