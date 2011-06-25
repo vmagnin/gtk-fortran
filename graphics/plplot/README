@@ -1,0 +1,94 @@
+Gtk-fortran & PLplot
+====================
+
+In this directory there are a few examples of using the plplot library
+(http://plplot.sourceforge.net/) in conjunction with gtk-fortran.
+
+Plplot is a scientific graphics library that has a Fortran 95 binding.
+
+Requirements
+------------
+
+gtk-fortran (including for these examples the gtk_hl module), gtk2 or
+gtk3 should work. It is easiest to build the examples if gtk-fortran
+and it's pkg-config file are installed on your system.
+
+plplot, including the fortran95 bindings and the cairo drivers. They
+are tested with the current release -- 5.9.7.
+
+
+Issues
+------
+
+The plsmema routine is missing from the fortan95 bindings in plplot, so
+transparency is not supported until that is fixed. There is a simple
+patch to fix this (included in this directory as plplot_plsmema.pat, I
+have submitted it to the plplot bug tracker so I hope that it will be
+included in the next release). If this patch is applied then you can
+have transparency, however transparency is not used in the examples.
+
+Because of the way in which a gdk pixbuf stores its pixels compared
+with how plplot writes to a memory buffer, the window width must be a
+multiple of 4 pixels. For pixbufs and memory mappings with transparency
+this limitation does not apply.
+
+Different releases of gfortran cannot read each other's module files,
+therefore plplot must be built with the same compiler as
+gtk-fortran. Since not many Linux distros use gcc/gfortran 4.6 yet,
+this means you will probably need to build plplot from source. In
+addition the x86_64 gfortran binary snapshots for 4.6 & 4.7 fail to
+build the C++ parts of plplot, unless you remove the c++ compiler
+binaries/links from the snapshot directory (I tried forcing the c++
+compiler to be /usr/bin/c++ with ccmake but I couldn't get it to
+stick).
+
+Concept
+-------
+
+The example code here uses the "memcairo" driver in plplot to write to
+the pixels of the backing pixbuf of a gtk drawable created by
+hl_gtk_drawing_area_new.
+
+While it would probably be possible to use an offscreen GdkWindow
+instead of a pixbuf to provide the backing store, this would require
+making an interface to some of the very low-level C-only routines in plplot.
+
+The typical program structure is summarized as:
+
+Main:
+	Create the gtk widgets, including a drawing area.
+	Realize the widget heirarchy
+	Call the PLplot drawing routine(s)
+	Enter the event loop
+
+Handlers:
+	Handle events and if needed, call the PLplot drawing routine(s)
+	with updated settings.
+
+PLplot drawing:
+        Get the pixbuf from the gtk_drawing_area.
+       	And its pixel array.
+       	Initialize the "memcairo" device and tell it to draw to the
+       	pixel array.
+       	Make the plot(s)
+       	call gtk_widget_queue_draw on the drawing area to force a
+        redraw.
+
+Globals:
+	For convenience in both examples I've put all the gtk use
+	statements and any global variables into a separate module that
+	can be used by all of the other units.
+
+Building the examples
+---------------------
+
+The plplot example(s) are most easily built if gtk-fortran has been
+installed. Then it is simply a matter of:
+
+    gfortran -o hl_plplot hl_plplot.f90 `pkg-config --cflags --libs \
+    	     gtk-fortran plplotd-f95`
+
+A basic Makefile to do this is provided.
+
+The examples are derived from the Fortran95 versions of Examples 1 and
+8 on the PLplot web site.

@@ -172,8 +172,6 @@ contains
     ! * It does not appear to be possible to remove events by unsetting bits
     ! in the event mask.
     ! * Adding a tooltip looks to implicitly enables some events.
-    ! * If you want to get at the backing pixbuf explicitly, then use
-    ! pixbuf = g_object_get_data(area, "backing-pixbuf").
     ! * An example where an explict EVENT_MASK and EVENT_EXCLUDE might be
     ! useful would be to enable motion events only if a button is down.
     !-
@@ -411,6 +409,20 @@ contains
   end function hl_gtk_drawing_area_new
 
   !+
+  function hl_gtk_drawing_area_get_pixbuf(area) result(pixbuf)
+    type(c_ptr) :: pixbuf
+    type(c_ptr), intent(in) :: area
+
+    ! Convenience routine to get the backing pixbuf of a drawing area.
+    !
+    ! AREA: c_ptr: required: The drawing area whose pixbuf is required.
+    !-
+
+    pixbuf = g_object_get_data(area, "backing-pixbuf")
+
+  end function hl_gtk_drawing_area_get_pixbuf
+
+  !+
   function hl_gtk_drawing_area_expose_cb(area, event, data) bind(c) &
        & result(rv)
     integer(kind=c_int) :: rv
@@ -447,7 +459,6 @@ contains
     type(cairo_user_data_key_t), intent(in), target :: key
 
     ! Create a cairo context which will draw into the pixbuf
-    ! Based on C code posted to GtkForums by "tadeboro".
     !
     ! PIXBUF: c_ptr: required: The pixbuf to which we will draw.
     ! KEY: cairo_user_data_key_t: required: A key to identify the user
@@ -500,7 +511,7 @@ contains
     type(cairo_user_data_key_t), intent(in), target :: key
 
     ! Update the pixbuf and destroy the cairo context
-    ! Based on C code posted to GtkForums by "tadeboro".
+    ! GTK2 version is based on C code posted to GtkForums by "tadeboro".
     !
     ! CR: c_ptr: required: The cairo context to put in the pixbuf
     ! KEY: cairo_user_data_key_t: required: The key to find the pixbuf (just
