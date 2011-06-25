@@ -172,8 +172,6 @@ contains
     ! * It does not appear to be possible to remove events by unsetting bits
     ! in the event mask.
     ! * Adding a tooltip looks to implicitly enables some events.
-    ! * If you want to get at the backing pixbuf explicitly, then use
-    ! pixbuf = g_object_get_data(area, "backing-pixbuf").
     ! * An example where an explict EVENT_MASK and EVENT_EXCLUDE might be
     ! useful would be to enable motion events only if a button is down.
     !-
@@ -409,6 +407,20 @@ contains
     if (present(tooltip)) call gtk_widget_set_tooltip_text(plota, tooltip)
 
   end function hl_gtk_drawing_area_new
+
+  !+
+  function hl_gtk_drawing_area_get_pixbuf(area) result(pixbuf)
+    type(c_ptr) :: pixbuf
+    type(c_ptr), intent(in) :: area
+
+    ! Convenience routine to get the backing pixbuf of a drawing area.
+    !
+    ! AREA: c_ptr: required: The drawing area whose pixbuf is required.
+    !-
+
+    pixbuf = g_object_get_data(area, "backing-pixbuf")
+
+  end function hl_gtk_drawing_area_get_pixbuf
 
   !+
   function hl_gtk_drawing_area_expose_cb(area, event, data) bind(c) &

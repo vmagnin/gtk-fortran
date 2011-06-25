@@ -762,6 +762,7 @@ contains
   ! Buttons
   ! Convenience interfaces for regular buttons, checkboxes and radio menus.
   !/
+  !+
   function hl_gtk_button_new(label, clicked, data, tooltip, sensitive, &
        & accel_key, accel_mods, accel_group, accel_flags) result(but)
 
@@ -2922,14 +2923,14 @@ contains
 
   !+
   subroutine  hl_gtk_list1_set_selection(list, row)
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in), optional :: row
+
     ! Set the selected row in a list (single row only)
     !
     ! LIST: c_ptr: required: The list to work on.
     ! ROW: c_int: optional: The row to select (absent or < 0 is clear selection)
     !-
-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in), optional :: row
 
     call hl_gtk_listn_set_selection(list, row)
 
@@ -2937,6 +2938,10 @@ contains
 
   !+
   subroutine hl_gtk_list1_set_cell(list, row, svalue)
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row
+    character(len=*), intent(in) :: svalue
+
     ! Set a cell in a single column list
     !
     ! LIST: c_ptr: required: The list containing the cell.
@@ -2944,16 +2949,16 @@ contains
     ! SVALUE: string: required: A string value for the cell.
     !-
 
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row
-    character(len=*), intent(in) :: svalue
-
     call hl_gtk_listn_set_cell(list, row, 0, svalue=svalue)
 
   end subroutine hl_gtk_list1_set_cell
 
   !+
   subroutine hl_gtk_list1_get_cell(list, row, svalue)
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row
+    character(len=*), intent(out) :: svalue
+
     ! Set a cell in a single column list
     !
     ! LIST: c_ptr: required: The list containing the cell.
@@ -2961,16 +2966,17 @@ contains
     ! SVALUE: string: required: A string value from the cell.
     !-
 
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row
-    character(len=*), intent(out) :: svalue
-
     call hl_gtk_listn_get_cell(list, row, 0, svalue=svalue)
 
   end subroutine hl_gtk_list1_get_cell
 
   !+
   subroutine hl_gtk_list1_move_row(list, row1, row2, after)
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row1
+    integer(kind=c_int), intent(in), optional :: row2
+    integer(kind=c_int), intent(in), optional :: after
+
     ! Move a row in a list to a new location
     !
     ! LIST: c_ptr: required: The list to work on.
@@ -2981,17 +2987,15 @@ contains
     ! 		the location instead of before.
     !-
 
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row1
-    integer(kind=c_int), intent(in), optional :: row2
-    integer(kind=c_int), intent(in), optional :: after
-
     call hl_gtk_listn_move_row(list, row1, row2, after)
 
   end subroutine hl_gtk_list1_move_row
 
   !+
   subroutine hl_gtk_list1_swap_rows(list, row1, row2)
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in) :: row1, row2
+
     ! Move a row in a list to a new location
     !
     ! LIST: c_ptr: required: The list to work on.
@@ -2999,24 +3003,21 @@ contains
     ! ROW2: c_int: required: The index of the second row to move
     !-
 
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row1, row2
-
     call hl_gtk_listn_swap_rows(list, row1, row2)
 
   end subroutine hl_gtk_list1_swap_rows
 
   !+
   subroutine hl_gtk_list1_reorder(list, indices)
+    type(c_ptr), intent(in) :: list
+    integer(kind=c_int), intent(in), dimension(:), target :: indices
+
     ! Move a row in a list to a new location
     !
     ! LIST: c_ptr: required: The list to work on.
     ! INDICES: c_int(): required: The sorting array. The ith element
     ! 		contains the old location of the new (i-1)th row.
     !-
-
-    type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in), dimension(:), target :: indices
 
     call hl_gtk_listn_reorder(list, indices)
 
@@ -3284,6 +3285,7 @@ contains
   !+
   subroutine hl_gtk_tree_edit_cb(renderer, path, text, gdata) bind(c)
     type(c_ptr), value :: renderer, path, text, gdata
+
     ! Default callback for tree cell edited.
     !
     ! RENDERER: c_ptr: required: The renderer which sent the signal
