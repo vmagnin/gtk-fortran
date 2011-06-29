@@ -39,24 +39,9 @@ module global
 
   use gtk_hl
   use gtk_draw_hl
+  use plplot_extra
 
   implicit none
-
-  !      Plotting options for 3d plots, see plplot.h for the C definitions
-  !      of these options.
-  integer DRAW_LINEX, DRAW_LINEY, DRAW_LINEXY, MAG_COLOR, &
-       BASE_CONT, TOP_CONT, SURF_CONT, DRAW_SIDES, FACETED, MESH
-  parameter(DRAW_LINEX = 1)
-  parameter(DRAW_LINEY = 2)
-  parameter(DRAW_LINEXY = 3)
-  parameter(MAG_COLOR = 4)
-  parameter(BASE_CONT = 8)
-  parameter(TOP_CONT = 16)
-  parameter(SURF_CONT = 32)
-  parameter(DRAW_SIDES = 64)
-  parameter(FACETED = 128)
-  parameter(MESH = 256)
-
 
   type(c_ptr) :: window, draw, alt_sl, az_sl, fun_but, col_but, &
        & facet_but, scont_but, bcont_but, qbut
@@ -87,10 +72,10 @@ contains
     parameter (xdim=99, ydim=100, xpts=35, ypts=46)
     real(kind=plflt) x(xdim), y(ydim), z(xdim,ypts), xx, yy, r
 
-    character*80 title
-    type(c_ptr) :: pixbuf, pixels
-    character(kind=c_char), dimension(:), pointer :: fpixels
-    integer(kind=c_int) :: width, height
+    character(len=80) :: title
+    character(len=20) :: geometry
+    type(c_ptr) :: cc 
+    type(cairo_user_data_key_t) :: key
 
     integer nlevel
     parameter (nlevel = 10)
@@ -135,18 +120,26 @@ contains
        clevel(i) = zmin + step*i
     enddo
 
+    ! Get a cairo context from the drawing area.
+
+    cc = hl_gtk_pixbuf_cairo_new(area, key)
 
     !  Initialize plplot
-    call plsdev("memcairo")
+    call plsdev("extcairo")
 
-    pixbuf = hl_gtk_drawing_area_get_pixbuf(area)
-    width = gdk_pixbuf_get_width(pixbuf)
-    height = gdk_pixbuf_get_height(pixbuf)
-    pixels = gdk_pixbuf_get_pixels(pixbuf)
-    call c_f_pointer(pixels, fpixels, (/ width*height*3 /))
-    call plsmem(width, height, fpixels)
+    ! By default the "extcairo" driver does not reset the background
+    ! This is equivalent to the command line option "-drvopt set_background=1"
+    call plsetopt("drvopt", "set_background=1")  
+
+    ! The "extcairo" device doesn't read the size from the context.
+    write(geometry, "(I0,'x',I0)") width, height
+    call plsetopt("geometry",  geometry)
+ 
 
     call plinit
+
+    ! Tell the "extcairo" driver where the context is located.
+    call pl_cmd(PLESC_DEVINIT, cc)
 
     call pllightsource(1._plflt, 1._plflt, 1._plflt)
 
@@ -185,6 +178,7 @@ contains
     call plend
 
     call gtk_widget_queue_draw(area)
+    call hl_gtk_pixbuf_cairo_destroy(cc, key)
 
   end subroutine draw_08
 
@@ -350,7 +344,7 @@ program hl_plplot8
 
   call gtk_init()
 
-  window = hl_gtk_window_new("PLplot x08 / gtk-fortran (memcairo)"//cnull, &
+  window = hl_gtk_window_new("PLplot x08 / gtk-fortran (extcairo)"//cnull, &
        & destroy = c_funloc(quit_cb))
   base = hl_gtk_box_new()
   call gtk_container_add(window, base)
