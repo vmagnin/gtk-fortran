@@ -75,7 +75,6 @@ contains
     character(len=80) :: title
     character(len=20) :: geometry
     type(c_ptr) :: cc 
-    type(cairo_user_data_key_t) :: key
 
     integer nlevel
     parameter (nlevel = 10)
@@ -122,7 +121,7 @@ contains
 
     ! Get a cairo context from the drawing area.
 
-    cc = hl_gtk_pixbuf_cairo_new(area, key)
+    cc = hl_gtk_drawing_area_cairo_new(area)
 
     !  Initialize plplot
     call plsdev("extcairo")
@@ -178,7 +177,7 @@ contains
     call plend
 
     call gtk_widget_queue_draw(area)
-    call hl_gtk_pixbuf_cairo_destroy(cc, key)
+    call hl_gtk_drawing_area_cairo_destroy(cc)
 
   end subroutine draw_08
 
