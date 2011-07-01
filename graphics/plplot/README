@@ -20,8 +20,8 @@ are tested with the current release -- 5.9.7.
 Concept
 -------
 
-The example codes here use the "extcairo" or the "memcairo" driver in
-plplot to write to the backing pixbuf of a gtk drawable created by
+The example codes here use the "extcairo" driver in plplot to write to
+the backing surface of a gtk drawable created by
 hl_gtk_drawing_area_new.
 
 The typical program structure is summarized as:
@@ -37,7 +37,7 @@ Handlers:
 	with updated settings.
 
 PLplot drawing:
-        Connect plplot's output to the pixbuf (see below).
+        Connect plplot's output to the backing surface (see below).
        	Make the plot(s)
        	call gtk_widget_queue_draw on the drawing area to force a
         redraw.
@@ -49,18 +49,15 @@ Globals:
 
 Connecting PLplot's output to the pixbuf.
 
-This is done differently according to the driver in use:
-
-extcairo: 
-
 For the extcairo driver, output is to an externally greated cairo
 context. So here you need to create a cairo context connected to the
-pixbuf (this is most easily done with hl_gtk_pixbuf_cairo_new). And
-then use pl_cmd to connect plplot's output to the context.  To do this
-the following code needs to precede the call to plinit (or plstar):
+backing surface (this is most easily done with
+hl_gtk_drawing_area_cairo_new). And then use pl_cmd to connect plplot's
+output to the context.  To do this the following code needs to precede
+the call to plinit (or plstar):
 
     ! Get a cairo context from the drawing area.
-    cc = hl_gtk_pixbuf_cairo_new(area, key)
+    cc = hl_gtk_drawing_area_cairo_new(area)
 
     !  Initialize plplot
     call plsdev("extcairo")
@@ -80,37 +77,6 @@ And then after plinit you need:
 A fortran interface to pl_cmd is provided by the plplot_extras module
 in this directory.
 
-memcairo:
-
-The memcairo driver sends output to an arbitrary area of memory, which
-can be the pixels of a gdk pixbuf. A typical setup code might be
-(before plinit):
-
-    !  Initialize plplot
-    call plsdev("memcairo")
-
-    pixbuf = g_object_get_data(area, "backing-pixbuf")
-    width = gdk_pixbuf_get_width(pixbuf)
-    height = gdk_pixbuf_get_height(pixbuf)
-    pixels = gdk_pixbuf_get_pixels(pixbuf)
-    call c_f_pointer(pixels, fpixels, (/ width*height*3 /))
-    call plsmem(width, height, fpixels)
-
-This method has some limitations which are not present in the extcairo
-method:
-
-The plsmema routine is missing from the fortran95 bindings in plplot, so
-transparency is not supported until that is fixed. There is a simple
-patch to fix this (included in this directory as plplot_plsmema.pat, I
-have submitted it to the plplot bug tracker so I hope that it will be
-included in the next release). If this patch is applied then you can
-have transparency, however transparency is not used in the memcairo
-examples.
-
-Because of the way in which a gdk pixbuf stores its pixels compared
-with how plplot writes to a memory buffer, the window width must be a
-multiple of 4 pixels. For pixbufs and memory mappings with transparency
-this limitation does not apply.
 
 Building the examples
 ---------------------
@@ -118,18 +84,22 @@ Building the examples
 The plplot example(s) are most easily built if gtk-fortran has been
 installed. Then it is simply a matter of:
 
-    gfortran -o hl_plplot hl_plplot.f90 `pkg-config --cflags --libs \
+    gfortran -o hl_plplot<x> hl_plplot<x>.f90 `pkg-config --cflags --libs \
     	     gtk-fortran plplotd-f95`
 
-A basic Makefile to do this is provided.
+where <x> is the number of the example. A basic Makefile to do this is
+provided.
 
-The examples are derived from the Fortran95 versions of Examples 1, 8
-and 30 on the PLplot web site. The examples with an "e" at the end of
-the name use the extcairo device, the ones without use the memcairo
-device.
+The examples are derived from the Fortran95 versions of Examples 1, 8,
+30 and 17 on the PLplot web site.
 
-Other known issues
-------------------
+hl_plplot1e: Basic x-y plots on multiple pages
+hl_plplot8e: 3-D data display
+hl_plplot17e: Strip charts, shows continuous updating
+hl_plplot30e: Transparency.
+
+Known issues
+------------
 
 Different releases of gfortran (let alone different fortran compilers)
 cannot read each other's module files, therefore plplot must be built
@@ -140,3 +110,7 @@ from source. In addition the x86_64 gfortran binary snapshots for 4.6 &
 compiler binaries/links from the snapshot directory (I tried forcing
 the c++ compiler to be /usr/bin/c++ with ccmake but I couldn't get it
 to stick).
+
+Since the modifications to the high-level drawing routines, it is no
+longer possible to use the "memcairo" device to capture cairo output
+into a pixbuf (but that was somewhat of a kludge anyway).

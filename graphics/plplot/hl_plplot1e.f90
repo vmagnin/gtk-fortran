@@ -57,7 +57,6 @@ contains
     type(c_ptr), intent(in) :: area
 
     type(c_ptr) :: cc
-    type(cairo_user_data_key_t) :: key
 
     character(len=80) :: version
     character(len=20) :: geometry
@@ -81,7 +80,7 @@ contains
 
     ! Get a cairo context from the drawing area.
 
-    cc = hl_gtk_pixbuf_cairo_new(area, key)
+    cc = hl_gtk_drawing_area_cairo_new(area)
 
     !  Initialize plplot
     call plscmap0(rval, gval, bval)
@@ -129,7 +128,7 @@ contains
     !  Don't forget to call PLEND to finish off!
 
     call plend()
-    call hl_gtk_pixbuf_cairo_destroy(cc, key)
+    call hl_gtk_drawing_area_cairo_destroy(cc)
 
   end subroutine x01f95
 

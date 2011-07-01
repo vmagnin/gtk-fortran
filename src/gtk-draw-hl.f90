@@ -23,7 +23,7 @@
 !
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modification: 06-16-2011
+! Last modification: 07-01-2011
 
 module gtk_draw_hl
   !*
@@ -32,21 +32,31 @@ module gtk_draw_hl
   ! handles redrawing on exposure, and bundles the most likely events to
   ! be needed.
   !
+  ! Note:
+  ! 
+  ! This module has undergone a major rewrite which has considerably
+  ! streamlined the code. To the ordinary user, the most noticable difference
+  ! is that the backing image is now a cairo image surface rather than a
+  ! GDK pixbuf. When using PLplot, the "memcairo" device is not readily usable
+  ! any more, however cumulative plotting (e.g. PLplot's strip charts) now
+  ! works correctly.
+  !
   ! ### Routine List
   !
   ! * hl_gtk_drawing_area_new; Create the drawing area.
+  ! * hl_gtk_drawing_area_get_surface; Get the backing cairo surface
   ! * hl_gtk_drawing_area_expose_cb; Default callback for expose events.
-  ! * hl_gtk_pixbuf_cairo_new; Create a cairo context attached to the pixbuf.
-  ! * hl_gtk_pixbuf_cairo_destroy; Update the pixbuf and destroy the context.
-  ! * is_big_endian; Utility function to determine endianness. (GTK2 only)
+  ! * hl_gtk_drawing_area_destroy_cb; Default callback for destroy signal
+  ! * hl_gtk_drawing_area_cairo_new; Create a cairo context attached to the
+  ! backing surface.
+  ! * hl_gtk_drawing_area_cairo_destroy; Destroy the context.
   !/
 
-  use gtk, only: gtk_drawing_area_new, gtk_widget_add_events, &
-       & gtk_widget_set_size_request, g_signal_connect, &
-       & gtk_widget_set_tooltip_text, gtk_widget_get_events, &
-       & gtk_widget_set_events, gtk_widget_set_can_focus, &
-       & gtk_widget_get_window, gtk_scrolled_window_set_policy,&
-       & gtk_scrolled_window_new, gtk_scrolled_window_add_with_viewport, &
+  use gtk, only: gtk_drawing_area_new, gtk_scrolled_window_add_with_viewport,&
+       & gtk_scrolled_window_new, gtk_scrolled_window_set_policy, &
+       & gtk_widget_add_events, gtk_widget_get_window, gtk_widget_queue_draw, &
+       & gtk_widget_set_can_focus, gtk_widget_set_size_request, &
+       & gtk_widget_set_tooltip_text, g_signal_connect, & 
        & GDK_EXPOSURE_MASK, GDK_BUTTON_PRESS_MASK, GDK_BUTTON_RELEASE_MASK, &
        & GDK_SCROLL_MASK, GDK_ENTER_NOTIFY_MASK, GDK_KEY_PRESS_MASK, &
        & GDK_KEY_RELEASE_MASK, GDK_LEAVE_NOTIFY_MASK, GDK_POINTER_MOTION_MASK,&
@@ -54,23 +64,14 @@ module gtk_draw_hl
        & GDK_COLORSPACE_RGB, GTK_POLICY_AUTOMATIC, CAIRO_FORMAT_RGB24, &
        & CNULL, NULL, FNULL, TRUE, FALSE
 
-  use cairo, only: cairo_image_surface_create, cairo_set_user_data, &
-       & cairo_get_user_data, cairo_get_target, cairo_image_surface_get_data, &
-       & cairo_create, cairo_destroy, cairo_surface_destroy, cairo_paint, &
-       & cairo_image_surface_get_stride
+  use cairo, only: cairo_create, cairo_destroy, cairo_get_target, &
+       & cairo_image_surface_create, cairo_paint, cairo_set_source, &
+       & cairo_set_source_surface, cairo_surface_destroy, &
+       & cairo_surface_reference
 
-  use g, only: g_object_unref, g_object_ref, g_object_set_data, &
-       & g_object_get_data
+  use gdk, only: gdk_cairo_create
 
-  use gdk_pixbuf, only: gdk_pixbuf_new, gdk_pixbuf_copy, &
-       & gdk_pixbuf_get_height, gdk_pixbuf_get_width, &
-       & gdk_pixbuf_get_rowstride, gdk_pixbuf_get_has_alpha, &
-       & gdk_pixbuf_new_from_data, gdk_pixbuf_get_pixels, &
-       & gdk_pixbuf_copy_area, gdk_pixbuf_get_n_channels
-
-  use gdk, only: gdk_cairo_create, &
-!!$3       & gdk_pixbuf_get_from_surface, &
-       & gdk_cairo_set_source_pixbuf
+  use g, only: g_object_get_data, g_object_set_data
 
   use iso_c_binding
 
@@ -90,8 +91,9 @@ contains
        & data_scroll, motion_event, data_motion, realize, data_realize, &
        & configure_event, data_configure, key_press_event, data_key_press, &
        & key_release_event, data_key_release, enter_event, data_enter, &
-       & leave_event, data_leave, event_mask, event_exclude, auto_add_mask, &
-       & tooltip, has_alpha, use_pixbuf) result(plota)
+       & leave_event, data_leave, destroy, data_destroy, event_mask, &
+       & event_exclude, auto_add_mask, &
+       & tooltip, has_alpha) result(plota)
 
     type(c_ptr) :: plota
     type(c_ptr), intent(out), optional :: scroll
@@ -99,15 +101,15 @@ contains
     type(c_funptr), optional :: expose_event, button_press_event, &
          & button_release_event, scroll_event, key_press_event, &
          & key_release_event, motion_event, realize, configure_event,&
-         & enter_event, leave_event
+         & enter_event, leave_event, destroy
     type(c_ptr), intent(in), optional :: data_expose, data_button_press, &
          & data_button_release, data_scroll, data_motion, data_realize, &
          & data_configure, data_key_press, data_key_release, data_enter, &
-         & data_leave
+         & data_leave, data_destroy
     integer(kind=c_int), intent(in), optional :: event_mask, event_exclude
     integer(kind=c_int), intent(in), optional :: auto_add_mask
     character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
-    integer(kind=c_int), intent(in), optional :: has_alpha, use_pixbuf
+    integer(kind=c_int), intent(in), optional :: has_alpha
 
     ! A high-level drawing area
     !
@@ -120,8 +122,8 @@ contains
     ! SSIZE: c_int() :: optional: The requested size for a scrolling window
     ! EXPOSE_EVENT: c_funptr: optional: Callback for expose-event signal
     ! 		N.B. In GTK3 the signal is called "draw". If this is not given
-    ! 		and a pixbuf backing is requested, then a default handler is
-    ! 		provided which copies the pixbuf to the drawing area.
+    ! 		then a default handler is provided which copies the image
+    ! 		surface to the drawing area.
     ! DATA_EXPOSE: c_ptr: optional: Data for expose_event callback
     ! BUTTON_PRESS_EVENT: c_funptr: optional: Callback for button-press-event
     ! 		signal
@@ -152,6 +154,8 @@ contains
     ! LEAVE_EVENT: c_funptr: optional: Callback for the leave-notify-event
     ! 		signal
     ! DATA_LEAVE: c_ptr: optional: Data for leave_event
+    ! DESTROY: c_funptr: optional: Callback when the widget is destroyed.
+    ! DATA_DESTROY: c_ptr: optional: Data to pass to the destroy callback.
     ! EVENT_MASK: c_int: optional: Mask for which events to pass.
     ! EVENT_EXCLUDE: c_int: optional: Mask for events not to pass (this might
     ! 		used to prevent auto-enabling an event that should only
@@ -161,8 +165,6 @@ contains
     ! TOOLTIP: string: optional: Tooltip for the drawing area.
     ! HAS_ALPHA: boolean: optional: If a pixbuf is used, should it have
     ! 		an alpha (transparency) channel (default=FALSE)
-    ! USE_PIXBUF: boolean: optional: Set to FALSE to disable the backing
-    ! 		store pixbuf
     !
     ! Odd notes on mask interactions and other things.
     !
@@ -171,16 +173,15 @@ contains
     ! to mask wheel events while allowing button presses to be processed.
     ! * It does not appear to be possible to remove events by unsetting bits
     ! in the event mask.
-    ! * Adding a tooltip looks to implicitly enables some events.
+    ! * Adding a tooltip looks to implicitly enable some events.
     ! * An example where an explict EVENT_MASK and EVENT_EXCLUDE might be
     ! useful would be to enable motion events only if a button is down.
     !-
 
-    type(c_ptr) :: pixbuf
+    type(c_ptr) :: isurface
     integer(kind=c_int) :: mask, insert_mask
-    integer(kind=c_int) :: auto_add, alpha
+    integer(kind=c_int) :: auto_add, s_type
     integer(kind=c_int) :: szx, szy
-    logical :: backing_pixbuf
 
     plota = gtk_drawing_area_new()
     if (present(size)) then
@@ -193,12 +194,6 @@ contains
        szy = 256
     end if
 
-    if (present(use_pixbuf)) then
-       backing_pixbuf = (use_pixbuf == TRUE)
-    else
-       backing_pixbuf = .TRUE.
-    end if
-
     ! Add it to a scrolling window if one is requested
     if (present(scroll)) then
        scroll = gtk_scrolled_window_new(NULL, NULL)
@@ -209,18 +204,15 @@ contains
        call gtk_scrolled_window_add_with_viewport (scroll, plota)
     end if
 
-    ! If a backing pixbuf is requested, then create it.
-    if (backing_pixbuf) then
-       if (present(has_alpha)) then
-          alpha = has_alpha
-       else
-          alpha = FALSE
-       end if
-       pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, &
-            & alpha, 8_c_int, szx, szy)
-       pixbuf = g_object_ref(pixbuf)
-       call g_object_set_data(plota, "backing-pixbuf", pixbuf)
+    ! Create the backing surface
+    if (present(has_alpha)) then
+       s_type = CAIRO_FORMAT_ARGB32
+    else
+       s_type = CAIRO_FORMAT_RGB24
     end if
+    isurface = cairo_image_surface_create(s_type, szx, szy)
+    isurface = cairo_surface_reference(isurface)   ! Prevent accidental deletion
+    call g_object_set_data(plota, "backing-surface", isurface)
 
     ! Set the event mask, if event callbacks are provided, then
     ! the corresponding mask will be ORed in unless disabled by setting
@@ -257,6 +249,19 @@ contains
        endif
     end if
 
+    ! Destroy signal
+    if (present(destroy)) then
+       if (present(data_destroy)) then
+          call g_signal_connect(plota, "destroy"//cnull, destroy, &
+               & data_destroy)
+       else
+          call g_signal_connect(plota, "destroy"//cnull, destroy)
+       end if
+    else
+       call g_signal_connect(plota, "destroy"//cnull, &
+            & c_funloc(hl_gtk_drawing_area_destroy_cb))
+    end if
+
     ! Expose event
     if (present(expose_event)) then
        if (present(data_expose)) then
@@ -265,7 +270,7 @@ contains
 !!$3         call g_signal_connect(plota, "draw"//cnull, expose_event, &
 !!$3              & data_expose)
        endif
-    else if (backing_pixbuf) then
+    else
        call g_signal_connect(plota, "expose-event"//cnull, &
             & c_funloc(hl_gtk_drawing_area_expose_cb))
 !!$3       call g_signal_connect(plota, "draw"//cnull, &
@@ -409,18 +414,18 @@ contains
   end function hl_gtk_drawing_area_new
 
   !+
-  function hl_gtk_drawing_area_get_pixbuf(area) result(pixbuf)
-    type(c_ptr) :: pixbuf
+  function hl_gtk_drawing_area_get_surface(area) result(isurface)
+    type(c_ptr) :: isurface
     type(c_ptr), intent(in) :: area
 
-    ! Convenience routine to get the backing pixbuf of a drawing area.
+    ! Convenience routine to get the backing surface of a drawing area.
     !
-    ! AREA: c_ptr: required: The drawing area whose pixbuf is required.
+    ! AREA: c_ptr: required: The drawing area whose surface is required.
     !-
 
-    pixbuf = g_object_get_data(area, "backing-pixbuf")
+    isurface = g_object_get_data(area, "backing-surface")
 
-  end function hl_gtk_drawing_area_get_pixbuf
+  end function hl_gtk_drawing_area_get_surface
 
   !+
   function hl_gtk_drawing_area_expose_cb(area, event, data) bind(c) &
@@ -429,8 +434,7 @@ contains
     type(c_ptr), value :: area, event, data
 
     ! Default callback for exposing a drawing area. For this to be connected
-    ! a pixbuf must be requested, and no explicit expose callback should
-    ! be specified.
+    ! no explicit expose callback should be specified.
     !
     ! AREA: c_ptr: required: The drawing area
     ! EVENT: c_ptr: required: GTK2 = event structure, GTK3 = a cairo context
@@ -438,211 +442,136 @@ contains
     ! DATA: c_ptr: required: A pointer to user data (not used).
     !-
 
-    type(c_ptr) :: cr, pixbuf
+    type(c_ptr) :: cr, isurface
 
-    pixbuf = g_object_get_data(area, "backing-pixbuf")
-    if (.not. c_associated(pixbuf)) then
-       write(0,*) 'hl_gtk_drawing_area_expose_cb: Pixbuf is NULL'
+    isurface = g_object_get_data(area, "backing-surface")
+    if (.not. c_associated(isurface)) then
+       write(0,*) 'hl_gtk_drawing_area_expose_cb: Backing surface is NULL'
        return
     end if
-    cr = gdk_cairo_create (gtk_widget_get_window(area))
-    call gdk_cairo_set_source_pixbuf(cr, pixbuf, 0._c_double, 0._c_double) 
+
+    ! Note for plplot users, this cairo context is a different one from
+    ! the context used by plplot for the actual drawing.
+
+    cr = gdk_cairo_create(gtk_widget_get_window(area))
+    call cairo_set_source_surface(cr, isurface, 0._c_double, 0._c_double) 
     call cairo_paint(cr)
     call cairo_destroy(cr)
     rv = FALSE
   end function hl_gtk_drawing_area_expose_cb
 
-!+
-  function hl_gtk_pixbuf_cairo_new(area, key) result(cr)
-    type(c_ptr) :: cr
-    type(c_ptr), intent(in) :: area
-    type(cairo_user_data_key_t), intent(in), target :: key
+  !+
+  subroutine hl_gtk_drawing_area_destroy_cb(area, data) bind(c)
+    type(c_ptr), value :: area, data
 
-    ! Create a cairo context which will draw into the pixbuf
+    ! Default callback for the destroy signal on the drawing area.
+    ! Just destroys the backing surface.
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to which we will draw.
-    ! KEY: cairo_user_data_key_t: required: A key to identify the user
-    ! 		data between this and hl_gtk_pixbuf_cairo_destroy.
-    ! 
-    ! After the drawing operations, you must call `hl_gtk_pixbuf_cairo_destroy`
-    ! to update the pixbuf and destroy the cairo context.
+    ! AREA: c_ptr: required: The drawing area being destroyed.
+    ! DATA: c_ptr: required: User data for the callback (not used)
     !-
 
-    type(c_ptr) :: pixbuf
+    type(c_ptr) :: isurface
+
+    isurface = g_object_get_data(area, "backing-surface")
+    if (c_associated(isurface)) call cairo_surface_destroy(isurface)
+
+  end subroutine hl_gtk_drawing_area_destroy_cb
+
+  !+
+  function hl_gtk_drawing_area_cairo_new(area) result(cr)
+    type(c_ptr) :: cr
+    type(c_ptr), intent(in) :: area
+
+    ! Create a cairo context which will draw into the backing surface
+    !
+    ! AREA: c_ptr: required: The drawing area to which we will draw.
+    ! 
+    ! After the drawing operations, you should call `gtk_widget_queue_draw`
+    ! to update the plot on the screen and `hl_gtk_pixbuf_cairo_destroy`
+    ! to destroy the cairo context.
+    !-
+
+    type(c_ptr) :: isurface
     integer(kind=c_int) :: width, height, n_channels
     type(c_ptr) :: surface
     integer(kind=c_int) :: ok, cairo_type
 
-    pixbuf = g_object_get_data(area, "backing-pixbuf")
-    if (.not. c_associated(pixbuf)) then
+    isurface = g_object_get_data(area, "backing-surface")
+    if (.not. c_associated(isurface)) then
        cr = NULL
-       write(0,*) "hl_gtk_pixbuf_cairo_new:: pixbuf is NULL"
+       write(0,*) "hl_gtk_pixbuf_cairo_new:: Backing surface is NULL"
        return
     end if
 
-    ! Extract the pixbuf dimensions
-    width = gdk_pixbuf_get_width(pixbuf)
-    height = gdk_pixbuf_get_height(pixbuf)
-    n_channels = gdk_pixbuf_get_n_channels(pixbuf)
+    cr = cairo_create(isurface)
 
-    ! Now make a matching cairo surface.
-
-    if (n_channels == 3) then
-       cairo_type = CAIRO_FORMAT_RGB24
-    else
-       cairo_type = CAIRO_FORMAT_ARGB32
-    end if
-    surface = cairo_image_surface_create(cairo_type, &
-         & width, height)
-    cr = cairo_create(surface)
-
-    call gdk_cairo_set_source_pixbuf(cr, pixbuf, 0._c_double, 0._c_double)
-    call cairo_paint(cr)
-    call cairo_surface_destroy(surface)
-    ok = cairo_set_user_data(cr, c_loc(key), pixbuf, FNULL)
-
-    ! Create the cairo context from the surface
-  end function hl_gtk_pixbuf_cairo_new
+  end function hl_gtk_drawing_area_cairo_new
 
   !+
-  subroutine hl_gtk_pixbuf_cairo_destroy(cr, key)
+  subroutine hl_gtk_drawing_area_cairo_destroy(cr, destroy_surface)
 
     type(c_ptr), intent(inout) :: cr
-    type(cairo_user_data_key_t), intent(in), target :: key
+    integer(kind=c_int), intent(in), optional :: destroy_surface
 
-    ! Update the pixbuf and destroy the cairo context
-    ! GTK2 version is based on C code posted to GtkForums by "tadeboro".
+    !    type(cairo_user_data_key_t), intent(in), target :: key
+
+    ! Update the backing surface and destroy the cairo context
     !
     ! CR: c_ptr: required: The cairo context to put in the pixbuf
-    ! KEY: cairo_user_data_key_t: required: The key to find the pixbuf (just
-    ! 		has to be the same variable as KEY in hl_gtk_pixbuf_cairo_new
+    ! DESTROY_SURFACE: boolean : optional: Set to TRUE to destroy the
+    ! 		cairo_surface as well as the context. Normally the cairo
+    ! 		surface is destroyed by the destroy callback of the drawing
+    ! 		area, so does not need to be explicitly destroyed.
     !
     ! This is called following drawing operations to the context created by
-    ! `hl_gtk_pixbuf_cairo_new`.
-    ! Because GDK-2 does not have the gdk_pixbuf_get_from_surface function
-    ! for GDK2 a manual pixel copy must be made.
+    ! `hl_gtk_drawing_area_cairo_new`. N.B. This does not update the window,
+    ! use gtk_widget_queue_draw to do that.
     !-
 
-    ! GTK+3 Version of the routine
-!!$3    integer(kind=c_int) :: width, height
-!!$3    type(c_ptr) :: surface, tpixb, pixbuf
-!!$3    integer, dimension(4) :: idx
-!!$3    integer :: ih, iw
-!!$3
-!!$3    ! Get the pixbuf from the context
-!!$3    pixbuf = cairo_get_user_data(cr, c_loc(key))
-!!$3    if (.not. c_associated(pixbuf)) then
-!!$3       write(0,*) 'hl_gtk_pixbuf_cairo_destroy: Pixbuf is NULL'
-!!$3       return
-!!$3    end if
-!!$3
-!!$3    ! Get the cairo surface from which to read the pixels
-!!$3    surface = cairo_get_target(cr)
-!!$3
-!!$3    ! Get pixbuf information
-!!$3    height = gdk_pixbuf_get_height(pixbuf)
-!!$3    width = gdk_pixbuf_get_width(pixbuf)
-!!$3
-!!$3    ! Read the surface into a pixbuf, then copy the pixels to
-!!$3    ! the original pixbuf (gdk_pixbuf_get_from_surface) produces a
-!!$3    ! new pixbuf.
-!!$3    tpixb = gdk_pixbuf_get_from_surface(surface, 0, 0, width, height)
-!!$3    call gdk_pixbuf_copy_area (tpixb, 0, 0, width, height, pixbuf, 0, 0)
-!!$3
-!!$3    call cairo_destroy(cr)
+    integer(kind=c_int) :: width, height
+    type(c_ptr) :: isurface
 
-    ! GTK+2 version of the routine
-    integer(kind=c_int) :: width, height, n_channels, p_stride, s_stride
-    character(kind=c_char), dimension(:), pointer :: p_pixels, s_pixels
-    type(c_ptr) :: pp_pixels, ss_pixels
-    type(c_ptr) :: surface, pixbuf
-    integer, dimension(4) :: idxa
-    integer, dimension(3) :: idxo
-    integer :: ih, iw, ipoff, isoff
-    real(kind=c_double) :: alpha_factor
-
-    ! Get the pixbuf from the context
-    pixbuf = cairo_get_user_data(cr, c_loc(key))
-
-    ! Get the cairo surface from which to read the pixels
-    surface = cairo_get_target(cr)
-
-    ! Get pixbuf information
-    height = gdk_pixbuf_get_height(pixbuf)
-    width = gdk_pixbuf_get_width(pixbuf)
-    p_stride = gdk_pixbuf_get_rowstride(pixbuf)
-    n_channels = gdk_pixbuf_get_n_channels(pixbuf)
-
-    ! And its pixels
-    pp_pixels = gdk_pixbuf_get_pixels(pixbuf)
-    call c_f_pointer(pp_pixels, p_pixels, (/ p_stride*height/))
-
-    ! Also the pixels of the surface
-    ss_pixels = cairo_image_surface_get_data(surface)
-    s_stride = cairo_image_surface_get_stride( surface )
-    call c_f_pointer(ss_pixels, s_pixels, (/ s_stride*height/))
-
-    ! Set the indexing
-    if (is_big_endian()) then
-       idxa = [4,3,2,1]
-       idxo = [3,2,1]
-    else
-       idxa = [1,2,3,4]
-       idxo = [1,2,3]
-    end if
-
-    ! Copy the pixels (we are going to assume that if the pixbuf
-    ! doesn't have an alpha channel then the surface doesn't have
-    ! useful information in it).
-    if (n_channels == 3) then
-       do ih = 1, height
-          ipoff = (ih-1)*p_stride
-          isoff = (ih-1)*s_stride
-          do iw = 1, width
-             p_pixels(1+ipoff) = s_pixels(idxo(3)+isoff)
-             p_pixels(2+ipoff) = s_pixels(idxo(2)+isoff)
-             p_pixels(3+ipoff) = s_pixels(idxo(1)+isoff)
-             ipoff = ipoff+n_channels
-             isoff = isoff+4
-          end do
-       end do
-    else
-       do ih = 1, height
-          ipoff = (ih-1)*p_stride
-          isoff = (ih-1)*s_stride
-          do iw = 1, width
-             alpha_factor = 255._c_double / &
-                  & real(ichar(s_pixels(idxa(4)+isoff)), c_double)
-
-             p_pixels(1+ipoff) = &
-                  & char(nint(ichar(s_pixels(idxa(3)+isoff))*alpha_factor))
-             p_pixels(2+ipoff) = &
-                  & char(nint(ichar(s_pixels(idxa(2)+isoff))*alpha_factor))
-             p_pixels(3+ipoff) = &
-                  & char(nint(ichar(s_pixels(idxa(1)+isoff))*alpha_factor))
-             p_pixels(4+ipoff) = s_pixels(idxa(4)+isoff)
-             ipoff = ipoff+n_channels
-             isoff = isoff+4
-          end do
-       end do
+    if (present(destroy_surface)) then
+       if (destroy_surface == TRUE) then
+          ! Get the cairo surface and destroy it
+          isurface = cairo_get_target(cr)
+          call cairo_surface_destroy(isurface)
+       end if
     end if
 
     call cairo_destroy(cr)
 
+  end subroutine hl_gtk_drawing_area_cairo_destroy
+
+  !*********************************************************************
+  ! These routines are obsolete, but are retained for the time being to
+  ! let older codes work
+
+  function hl_gtk_pixbuf_cairo_new(area, key) result(cr)
+    type(c_ptr) :: cr
+    type(c_ptr), intent(in) :: area
+    type(cairo_user_data_key_t), intent(in), target :: key
+    write(0,*) "hl_gtk_pixbuf_cairo_new(area, key) is deprecated,"
+    write(0,*) "use hl_gtk_drawing_area_cairo_new(area) instead"
+    cr = hl_gtk_drawing_area_cairo_new(area)
+  end function hl_gtk_pixbuf_cairo_new
+
+  subroutine hl_gtk_pixbuf_cairo_destroy(cr, key)
+    type(c_ptr), intent(inout) :: cr
+    type(cairo_user_data_key_t), intent(in), target :: key
+    write(0,*) "hl_gtk_pixbuf_cairo_destroy(area, key) is deprecated,"
+    write(0,*) "use hl_gtk_drawing_area_cairo_destroy(area) instead"
+    call hl_gtk_drawing_area_cairo_destroy(cr)
   end subroutine hl_gtk_pixbuf_cairo_destroy
 
-  !+
-  function is_big_endian()
-    logical is_big_endian
+  function hl_gtk_drawing_area_get_pixbuf(area) result(isurface)
+    type(c_ptr) :: isurface
+    type(c_ptr), intent(in) :: area
+    write(0,*) "hl_gtk_drawing_area_get_pixbuf(area) is deprecated,"
+    write(0,*) "use hl_gtk_drawing_area_get_surface(area) instead"
+    isurface = hl_gtk_drawing_area_get_surface(area)
+  end function hl_gtk_drawing_area_get_pixbuf
 
-    ! Determine if the machine is big-endian or not
-    !-
 
-    integer(kind=c_int8_t), dimension(2) :: i1 = (/ 0_c_int8_t, 1_c_int8_t /)
-    integer(kind=c_int16_t) :: i2
-
-    i2 = transfer(i1, i2)
-
-    is_big_endian = (i2 == 1)
-  end function is_big_endian
- end module gtk_draw_hl
+end module gtk_draw_hl

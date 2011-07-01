@@ -86,7 +86,7 @@ contains
     integer :: i
     real(kind=c_double) :: r0, r1, x0, x1, y0, y1, th, xc, yc, ycs
 
-    cr = hl_gtk_pixbuf_cairo_new(area, key)
+    cr = hl_gtk_drawing_area_cairo_new(area)
 
     xc = real(width, c_double) / 2._c_double
     yc = real(height, c_double) / 2._c_double
@@ -264,7 +264,7 @@ contains
     call cairo_line_to(cr, x1, y1)
     call cairo_stroke(cr)
 
-    call hl_gtk_pixbuf_cairo_destroy(cr, key)
+    call hl_gtk_drawing_area_cairo_destroy(cr)
     call gtk_widget_queue_draw(area)
   end subroutine show_time
 

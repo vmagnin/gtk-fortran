@@ -32,6 +32,7 @@ module handlers
   &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
   &idget_show, gtk_window_new, gtk_window_set_default, gtk_window_set_default_siz&
   &e, gtk_window_set_title, gtk_widget_show_all, gtk_main_quit, &
+  & gtk_widget_queue_draw, &
   & TRUE, FALSE, CNULL, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
   & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, gtk_event_box_new, &
   & GDK_ENTER_NOTIFY, GDK_LEAVE_NOTIFY, GDK_2BUTTON_PRESS, GDK_KEY_RELEASE, &
@@ -177,10 +178,8 @@ contains
     type(c_ptr) :: my_cairo_context, pixbuf
     integer :: cstatus
     integer :: t
-    type(cairo_user_data_key_t) :: key
 
-    print *, "DRAW_PATTERN"
-    my_cairo_context = hl_gtk_pixbuf_cairo_new(widget, key)
+    my_cairo_context = hl_gtk_drawing_area_cairo_new(widget)
     if (.not. c_associated(my_cairo_context)) then
        print *, "ERROR failed to create cairo context"
        return
@@ -239,9 +238,11 @@ contains
     end do
     
     ! Save:
-    cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//CNULL)
+    cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), &
+         & "cairo.png"//CNULL)
     
-    call hl_gtk_pixbuf_cairo_destroy(my_cairo_context, key)
+    call gtk_widget_queue_draw(widget)
+    call hl_gtk_drawing_area_cairo_destroy(my_cairo_context)
   end subroutine draw_pattern
 
 end module handlers
