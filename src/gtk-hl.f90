@@ -114,7 +114,7 @@ module gtk_hl
   ! * hl_gtk_slider_set_range; Set the limits of a slider (float)
   ! * hl_gtk_slider_set_range_int; Set the limits of a slider (integer)
   ! * hl_gtk_spin_button_flt_new; Floating point spin button
-  ! * hl_gtk_spin_button_int_new; Integer slider
+  ! * hl_gtk_spin_button_int_new; Integer spin button
   ! * hl_gtk_spin_button_get_value; Get a spin box value
   ! * hl_gtk_spin_button_set_flt; Set a floating point spin box
   ! * hl_gtk_spin_button_set_int; Set an integer spin box
@@ -247,7 +247,7 @@ module gtk_hl
        & gtk_tree_path_new_from_string, gtk_accel_group_new, &
        & gtk_widget_add_accelerator, gtk_window_add_accel_group, &
        & gtk_range_get_adjustment, gtk_range_set_range, gtk_adjustment_get_upper, &
-       & gtk_adjustment_get_lower, gtk_spin_button_get_range, &
+       & gtk_adjustment_get_lower, gtk_spin_button_get_adjustment, &
        & gtk_spin_button_set_range, &
        & TRUE, FALSE, NULL, CNULL, FNULL, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
@@ -5332,11 +5332,11 @@ contains
     if (isvertical == TRUE) then
        slider = gtk_vscale_new_with_range(vmin, vmax, step)
        if (present(length)) &
-            & call gtk_widget_set_size_request(slider, 0, length)
+            & call gtk_widget_set_size_request(slider, -1, length)
     else
        slider = gtk_hscale_new_with_range(vmin, vmax, step)
        if (present(length)) &
-            & call gtk_widget_set_size_request(slider, length, 0)
+            & call gtk_widget_set_size_request(slider, length, -1)
     end if
 
     ! Formatting
@@ -5775,27 +5775,24 @@ contains
     ! doubles or use a separate call than to specify an unchanged bound.
     !-
 
-    type(c_ptr), target :: clower, cupper
-    real(kind=c_double), pointer :: olower, oupper
+    type(c_ptr) :: adjustment
     real(kind=c_double) :: nlower, nupper
 
     ! Check it's not a do-nothing
     if (.not. (present(upper) .or. present(lower))) return
 
-    call gtk_spin_button_get_range(spin_button, clower, cupper)
+    adjustment = gtk_spin_button_get_adjustment(spin_button)
 
     if (present(lower)) then
        nlower = lower
     else
-       call c_f_pointer(clower, olower)
-       nlower = olower
+       nlower = gtk_adjustment_get_lower(adjustment)
     end if
 
     if (present(upper)) then
        nupper = upper
     else
-       call c_f_pointer(cupper, oupper)
-       nupper = oupper
+       nupper = gtk_adjustment_get_upper(adjustment)
     end if
 
     call gtk_spin_button_set_range(spin_button, nlower, nupper)
@@ -5819,27 +5816,24 @@ contains
     ! call than to specify an unchanged bound.
     !-
 
-    type(c_ptr), target :: clower, cupper
-    real(kind=c_double), pointer :: olower, oupper
+    type(c_ptr) :: adjustment
     real(kind=c_double) :: nlower, nupper
 
     ! Check it's not a do-nothing
     if (.not. (present(upper) .or. present(lower))) return
 
-    call gtk_spin_button_get_range(spin_button, clower, cupper)
+    adjustment = gtk_spin_button_get_adjustment(spin_button)
 
     if (present(lower)) then
        nlower = real(lower, c_double)
     else
-       call c_f_pointer(clower, olower)
-       nlower = olower
+       nlower = gtk_adjustment_get_lower(adjustment)
     end if
 
     if (present(upper)) then
        nupper = real(upper, c_double)
     else
-       call c_f_pointer(cupper, oupper)
-       nupper = oupper
+       nupper = gtk_adjustment_get_upper(adjustment)
     end if
 
     call gtk_spin_button_set_range(spin_button, nlower, nupper)

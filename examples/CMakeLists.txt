@@ -116,6 +116,10 @@ add_executable(hl_sliders "hl_sliders.f90")
 target_link_libraries(hl_sliders gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_sliders ./hl_sliders)
 
+add_executable(hl_sliders2 "hl_sliders2.f90")
+target_link_libraries(hl_sliders2 gtk-fortran_static ${GTK_LIBRARIES})
+add_test(hl_sliders2 ./hl_sliders2)
+
 add_executable(hl_textview "hl_textview.f90")
 target_link_libraries(hl_textview gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_textview ./hl_textview)
