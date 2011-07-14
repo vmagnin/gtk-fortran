@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 05-25-2011
+! Last modification: 07-13-2011
 
 module gtk_hl
   ! A bunch of procedures to implement higher level creators for
@@ -111,11 +111,15 @@ module gtk_hl
   ! * hl_gtk_slider_get_value; Get the value of a slider (FP)
   ! * hl_gtk_slider_set_flt; Set a floating point slider
   ! * hl_gtk_slider_set_int; Set an integer slider
+  ! * hl_gtk_slider_set_range; Set the limits of a slider (float)
+  ! * hl_gtk_slider_set_range_int; Set the limits of a slider (integer)
   ! * hl_gtk_spin_button_flt_new; Floating point spin button
   ! * hl_gtk_spin_button_int_new; Integer slider
   ! * hl_gtk_spin_button_get_value; Get a spin box value
   ! * hl_gtk_spin_button_set_flt; Set a floating point spin box
   ! * hl_gtk_spin_button_set_int; Set an integer spin box
+  ! * hl_gtk_spin_button_set_range; Set the limits of a spin box (float)
+  ! * hl_gtk_spin_button_set_range_int; Set the limits of a spin box (integer)
   ! * hl_gtk_combo_box_new; Combo box
   ! * hl_gtk_combo_box_add_text; Add an item to combo box
   ! * hl_gtk_combo_box_delete; Delete item
@@ -242,6 +246,9 @@ module gtk_hl
        & gtk_check_menu_item_set_active, gtk_radio_menu_item_get_group, &
        & gtk_tree_path_new_from_string, gtk_accel_group_new, &
        & gtk_widget_add_accelerator, gtk_window_add_accel_group, &
+       & gtk_range_get_adjustment, gtk_range_set_range, gtk_adjustment_get_upper, &
+       & gtk_adjustment_get_lower, gtk_spin_button_get_range, &
+       & gtk_spin_button_set_range, &
        & TRUE, FALSE, NULL, CNULL, FNULL, &
        & GTK_WINDOW_TOPLEVEL, GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, GTK_PACK_DIRECTION_LTR, GTK_BUTTONS_NONE, &
@@ -4602,10 +4609,7 @@ contains
     type(c_ptr) :: bar
     integer(kind=c_int) :: val, maxv
     integer(kind=c_int), optional :: string
-    !    character(kind=c_char), dimension(*), intent(in), optional :: text
     character(len=*), intent(in), optional:: text
-    real(kind=c_double) :: frac
-    character(len=50) :: sval
 
     ! Set the value of a progress bar (n of m)
     !
@@ -4618,6 +4622,9 @@ contains
     ! This routine is normally accessed via the generic interface
     ! hl_gtk_progress_bar
     !-
+
+    real(kind=c_double) :: frac
+    character(len=50) :: sval
 
     frac = real(val,c_double)/real(maxv,c_double)
     call gtk_progress_bar_set_fraction(bar, frac)
@@ -5497,6 +5504,86 @@ contains
   end subroutine hl_gtk_slider_set_int
 
   !+
+  subroutine hl_gtk_slider_set_range(slider, lower, upper)
+    type(c_ptr), intent(in) :: slider
+    real(kind=c_double), intent(in), optional :: lower, upper
+
+    ! Adjust the bounds of a slider
+    !
+    ! SLIDER: c_ptr: required: The slider to modify
+    ! LOWER: c_double: optional: The new lower bound
+    ! UPPER: c_double: optional: The new uppper bound
+    !
+    ! Note: This routine is not a generic interface as
+    ! overloading requires that the interface be distinguishable by its
+    ! required arguments, and it seems less annoying to have to convert to
+    ! doubles or use a separate call than to specify an unchanged bound.
+    !-
+
+    type(c_ptr) :: adjustment
+    real(kind=c_double) :: nlower, nupper
+
+    ! Check it's not a do-nothing
+    if (.not. (present(upper) .or. present(lower))) return
+
+    adjustment = gtk_range_get_adjustment(slider)
+    if (present(lower)) then
+       nlower = lower
+    else
+       nlower = gtk_adjustment_get_lower(adjustment)
+    end if
+
+    if (present(upper)) then
+       nupper = upper
+    else
+       nupper = gtk_adjustment_get_upper(adjustment)
+    end if
+
+    call gtk_range_set_range(slider, nlower, nupper)
+
+  end subroutine hl_gtk_slider_set_range
+
+  !+
+  subroutine hl_gtk_slider_set_range_int(slider, lower, upper)
+    type(c_ptr), intent(in) :: slider
+    integer(kind=c_int), intent(in), optional :: lower, upper
+
+    ! Adjust the bounds of a slider, integer values
+    !
+    ! SLIDER: c_ptr: required: The slider to modify
+    ! LOWER: c_int: optional: The new lower bound
+    ! UPPER: c_int: optional: The new uppper bound
+    !
+    ! Note: This routine is not a generic interface as
+    ! overloading requires that the interface be distinguishable by its
+    ! required arguments, and it seems less annoying to use a separate
+    ! call than to specify an unchanged bound.
+    !-
+
+    type(c_ptr) :: adjustment
+    real(kind=c_double) :: nlower, nupper
+
+    ! Check it's not a do-nothing
+    if (.not. (present(upper) .or. present(lower))) return
+
+    adjustment = gtk_range_get_adjustment(slider)
+    if (present(lower)) then
+       nlower = real(lower, c_double)
+    else
+       nlower = gtk_adjustment_get_lower(adjustment)
+    end if
+
+    if (present(upper)) then
+       nupper = real(upper, c_double)
+    else
+       nupper = gtk_adjustment_get_upper(adjustment)
+    end if
+
+    call gtk_range_set_range(slider, nlower, nupper)
+
+  end subroutine hl_gtk_slider_set_range_int
+
+  !+
   function hl_gtk_spin_button_flt_new(vmin, vmax, step, initial_value, &
        & value_changed, data, digits, sensitive, tooltip, wrap) &
        & result(spin_button)
@@ -5670,6 +5757,94 @@ contains
 
     call gtk_spin_button_set_value(spin_button, real(val, c_double))
   end subroutine hl_gtk_spin_button_set_int
+
+  !+
+  subroutine hl_gtk_spin_button_set_range(spin_button, lower, upper)
+    type(c_ptr), intent(in) :: spin_button
+    real(kind=c_double), intent(in), optional :: lower, upper
+
+    ! Adjust the bounds of a spin box
+    !
+    ! SLIDER: c_ptr: required: The slider to modify
+    ! LOWER: c_double: optional: The new lower bound
+    ! UPPER: c_double: optional: The new uppper bound
+    !
+    ! Note: This routine is not a generic interface as
+    ! overloading requires that the interface be distinguishable by its
+    ! required arguments, and it seems less annoying to have to convert to
+    ! doubles or use a separate call than to specify an unchanged bound.
+    !-
+
+    type(c_ptr), target :: clower, cupper
+    real(kind=c_double), pointer :: olower, oupper
+    real(kind=c_double) :: nlower, nupper
+
+    ! Check it's not a do-nothing
+    if (.not. (present(upper) .or. present(lower))) return
+
+    call gtk_spin_button_get_range(spin_button, clower, cupper)
+
+    if (present(lower)) then
+       nlower = lower
+    else
+       call c_f_pointer(clower, olower)
+       nlower = olower
+    end if
+
+    if (present(upper)) then
+       nupper = upper
+    else
+       call c_f_pointer(cupper, oupper)
+       nupper = oupper
+    end if
+
+    call gtk_spin_button_set_range(spin_button, nlower, nupper)
+
+  end subroutine hl_gtk_spin_button_set_range
+
+  !+
+  subroutine hl_gtk_spin_button_set_range_int(spin_button, lower, upper)
+    type(c_ptr), intent(in) :: spin_button
+    integer(kind=c_int), intent(in), optional :: lower, upper
+
+    ! Adjust the bounds of a spin box, integer values
+    !
+    ! SLIDER: c_ptr: required: The slider to modify
+    ! LOWER: c_int: optional: The new lower bound
+    ! UPPER: c_int: optional: The new uppper bound
+    !
+    ! Note: This routine is not a generic interface as
+    ! overloading requires that the interface be distinguishable by its
+    ! required arguments, and it seems less annoying to use a separate
+    ! call than to specify an unchanged bound.
+    !-
+
+    type(c_ptr), target :: clower, cupper
+    real(kind=c_double), pointer :: olower, oupper
+    real(kind=c_double) :: nlower, nupper
+
+    ! Check it's not a do-nothing
+    if (.not. (present(upper) .or. present(lower))) return
+
+    call gtk_spin_button_get_range(spin_button, clower, cupper)
+
+    if (present(lower)) then
+       nlower = real(lower, c_double)
+    else
+       call c_f_pointer(clower, olower)
+       nlower = olower
+    end if
+
+    if (present(upper)) then
+       nupper = real(upper, c_double)
+    else
+       call c_f_pointer(cupper, oupper)
+       nupper = oupper
+    end if
+
+    call gtk_spin_button_set_range(spin_button, nlower, nupper)
+
+  end subroutine hl_gtk_spin_button_set_range_int
 
   !*
   ! ComboBox
