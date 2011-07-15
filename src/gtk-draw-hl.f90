@@ -23,7 +23,7 @@
 !
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modification: 07-01-2011
+! Last modification: 07-14-2011
 
 module gtk_draw_hl
   !*
@@ -62,7 +62,7 @@ module gtk_draw_hl
        & GDK_KEY_RELEASE_MASK, GDK_LEAVE_NOTIFY_MASK, GDK_POINTER_MOTION_MASK,&
        & GDK_STRUCTURE_MASK, GDK_ALL_EVENTS_MASK, CAIRO_FORMAT_ARGB32, &
        & GDK_COLORSPACE_RGB, GTK_POLICY_AUTOMATIC, CAIRO_FORMAT_RGB24, &
-       & CNULL, NULL, FNULL, TRUE, FALSE
+       & CNULL, NULL, FNULL, TRUE, FALSE, GDK_FOCUS_CHANGE_MASK
 
   use cairo, only: cairo_create, cairo_destroy, cairo_get_target, &
        & cairo_image_surface_create, cairo_paint, cairo_set_source, &
@@ -92,8 +92,8 @@ contains
        & configure_event, data_configure, key_press_event, data_key_press, &
        & key_release_event, data_key_release, enter_event, data_enter, &
        & leave_event, data_leave, destroy, data_destroy, event_mask, &
-       & event_exclude, auto_add_mask, &
-       & tooltip, has_alpha) result(plota)
+       & event_exclude, auto_add_mask, tooltip, has_alpha, focus_out_event, &
+       & data_focus_out, focus_in_event, data_focus_in) result(plota)
 
     type(c_ptr) :: plota
     type(c_ptr), intent(out), optional :: scroll
@@ -110,6 +110,8 @@ contains
     integer(kind=c_int), intent(in), optional :: auto_add_mask
     character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
     integer(kind=c_int), intent(in), optional :: has_alpha
+    type(c_funptr), optional :: focus_out_event, focus_in_event
+    type(c_ptr), optional :: data_focus_out, data_focus_in
 
     ! A high-level drawing area
     !
@@ -165,6 +167,16 @@ contains
     ! TOOLTIP: string: optional: Tooltip for the drawing area.
     ! HAS_ALPHA: boolean: optional: If a pixbuf is used, should it have
     ! 		an alpha (transparency) channel (default=FALSE)
+    ! FOCUS_OUT_EVENT: c_funptr: optional: Callback for the "focus-out-event"
+    ! 		signal, this is a GDK event rather than a GTK signal, so the
+    ! 		call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_OUT: c_ptr: optional: Data to pass to the focus_out_event
+    ! 		callback
+    ! FOCUS_IN_EVENT: c_funptr: optional: Callback for the "focus-in-event"
+    ! 		signal, this is a GDK event rather than a GTK signal, so the
+    ! 		call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_IN: c_ptr: optional: Data to pass to the focus_in_event
+    ! 		callback
     !
     ! Odd notes on mask interactions and other things.
     !
@@ -405,6 +417,34 @@ contains
             & iand(GDK_STRUCTURE_MASK, insert_mask))
     end if
 
+    if (present(focus_out_event)) then
+       if (present(data_focus_out)) then
+          call g_signal_connect(plota, &
+               & "focus-out-event"//CNULL, focus_out_event, data_focus_out)
+       else
+          call g_signal_connect(plota, &
+               & "focus-out-event"//CNULL, focus_out_event)
+       end if
+       if (auto_add == TRUE) then
+          mask = ior(mask, iand(GDK_FOCUS_CHANGE_MASK, insert_mask))
+          call gtk_widget_set_can_focus(plota, TRUE)
+       end if
+    end if
+
+    if (present(focus_in_event)) then
+       if (present(data_focus_in)) then
+          call g_signal_connect(plota, &
+               & "focus-in-event"//CNULL, focus_in_event, data_focus_in)
+       else
+          call g_signal_connect(plota, &
+               & "focus-in-event"//CNULL, focus_in_event)
+       end if
+       if (auto_add == TRUE) then
+          mask = ior(mask, iand(GDK_FOCUS_CHANGE_MASK, insert_mask))
+          call gtk_widget_set_can_focus(plota, TRUE)
+       end if
+    end if
+
     ! Apply the event mask
 
     if (mask /= 0) call gtk_widget_add_events(plota, mask)
@@ -514,8 +554,6 @@ contains
     type(c_ptr), intent(inout) :: cr
     integer(kind=c_int), intent(in), optional :: destroy_surface
 
-    !    type(cairo_user_data_key_t), intent(in), target :: key
-
     ! Update the backing surface and destroy the cairo context
     !
     ! CR: c_ptr: required: The cairo context to put in the pixbuf
@@ -544,7 +582,7 @@ contains
 
   end subroutine hl_gtk_drawing_area_cairo_destroy
 
-  !*********************************************************************
+  ! *********************************************************************
   ! These routines are obsolete, but are retained for the time being to
   ! let older codes work
 
