@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 07-13-2011
+! Last modification: 07-14-2011
 
 module gtk_hl
   ! A bunch of procedures to implement higher level creators for
@@ -993,7 +993,8 @@ contains
   !+
   function hl_gtk_entry_new(len, editable, activate, data, tooltip, value, &
        & sensitive, changed, data_changed, delete_text, data_delete_text, &
-       & insert_text, data_insert_text) result(entry)
+       & insert_text, data_insert_text, focus_out_event, data_focus_out, &
+       & focus_in_event, data_focus_in) result(entry)
 
     type(c_ptr) :: entry
     integer, intent(in), optional :: len
@@ -1002,8 +1003,10 @@ contains
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip, value
     integer(kind=c_int), intent(in), optional :: sensitive
-    type(c_funptr), optional :: changed, delete_text, insert_text
-    type(c_ptr), optional :: data_changed, data_delete_text, data_insert_text
+    type(c_funptr), optional :: changed, delete_text, insert_text, &
+         & focus_out_event, focus_in_event
+    type(c_ptr), optional :: data_changed, data_delete_text, data_insert_text, &
+         & data_focus_out, data_focus_in
 
     ! Higher level text entry box
     !
@@ -1027,6 +1030,16 @@ contains
     ! INSERT_TEXT: c_funptr: optional: Callback for the "insert-text" signal.
     ! DATA_INSERT_TEXT: c_ptr: optional: Data to be passed to the insert_text
     !            callback
+    ! FOCUS_OUT_EVENT: c_funptr: optional: Callback for the "focus-out-event"
+    ! 		signal, this is a GDK event rather than a GTK signal, so the
+    ! 		call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_OUT: c_ptr: optional: Data to pass to the focus_out_event
+    ! 		callback
+    ! FOCUS_IN_EVENT: c_funptr: optional: Callback for the "focus-in-event"
+    ! 		signal, this is a GDK event rather than a GTK signal, so the
+    ! 		call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_IN: c_ptr: optional: Data to pass to the focus_in_event
+    ! 		callback
     !-
 
     entry = gtk_entry_new()
@@ -1044,6 +1057,26 @@ contains
        else
           call g_signal_connect(entry, &
                & "activate"//CNULL, activate)
+       end if
+    end if
+
+    if (present(focus_out_event)) then
+       if (present(data_focus_out)) then
+          call g_signal_connect(entry, &
+               & "focus-out-event"//CNULL, focus_out_event, data_focus_out)
+       else
+          call g_signal_connect(entry, &
+               & "focus-out-event"//CNULL, focus_out_event)
+       end if
+    end if
+
+    if (present(focus_in_event)) then
+       if (present(data_focus_in)) then
+          call g_signal_connect(entry, &
+               & "focus-in-event"//CNULL, focus_in_event, data_focus_in)
+       else
+          call g_signal_connect(entry, &
+               & "focus-in-event"//CNULL, focus_in_event)
        end if
     end if
 
@@ -1117,7 +1150,8 @@ contains
   !+
   function hl_gtk_text_view_new(scroll, editable, changed, data_changed, &
        & insert_text, data_insert_text, delete_range, data_delete_range, &
-       & initial_text, sensitive, tooltip, ssize, buffer) result(view)
+       & initial_text, sensitive, tooltip, ssize, buffer, focus_out_event, &
+       & data_focus_out, focus_in_event, data_focus_in) result(view)
 
     type(c_ptr) :: view
     type(c_ptr), intent(out), optional :: scroll
@@ -1129,6 +1163,8 @@ contains
     character(kind=c_char), dimension(*), optional :: tooltip
     integer(kind=c_int), dimension(:), optional :: ssize
     type(c_ptr), intent(out), optional :: buffer
+    type(c_funptr), optional :: focus_out_event, focus_in_event
+    type(c_ptr), optional :: data_focus_out, data_focus_in
 
     ! A multiline text edit widget
     !
@@ -1153,10 +1189,23 @@ contains
     ! 		held over the widget.
     ! SSIZE: c_int(2): optional: Size of the scroll widget.
     ! BUFFER: c_ptr: optional: Variable to return the buffer pointer
+    ! FOCUS_OUT_EVENT: c_funptr: optional: Callback for the "focus-out-event"
+    ! 		signal, this is a GDK event rather than a GTK signal, so the
+    ! 		call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_OUT: c_ptr: optional: Data to pass to the focus_out_event
+    ! 		callback
+    ! FOCUS_IN_EVENT: c_funptr: optional: Callback for the "focus-in-event"
+    ! 		signal, this is a GDK event rather than a GTK signal, so the
+    ! 		call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_IN: c_ptr: optional: Data to pass to the focus_in_event
+    ! 		callback
     !
-    ! NOTE -- The insert-text and delete-range callbacks take extra arguments. They
-    ! are called before the buffer is actually modified. The changed callback is called
-    ! after the change.
+    ! NOTE -- The insert-text and delete-range callbacks take extra arguments.
+    ! They are called before the buffer is actually modified. The changed
+    ! callback is called after the change.
+    ! The CHANGED, INSERT_TEXT and DELETE_RANGE signals are attached to the
+    ! buffer, while the FOCUS_[IN|OUT]_EVENT events are attached to the text
+    ! view, since they need a gdk window.
     !-
 
     type(c_ptr) :: tbuf
@@ -1215,6 +1264,26 @@ contains
           call g_signal_connect(tbuf, "delete-range"//cnull, delete_range)
        end if
     end if
+    if (present(focus_out_event)) then
+       if (present(data_focus_out)) then
+          call g_signal_connect(view, &
+               & "focus-out-event"//CNULL, focus_out_event, data_focus_out)
+       else
+          call g_signal_connect(view, &
+               & "focus-out-event"//CNULL, focus_out_event)
+       end if
+    end if
+
+    if (present(focus_in_event)) then
+       if (present(data_focus_in)) then
+          call g_signal_connect(view, &
+               & "focus-in-event"//CNULL, focus_in_event, data_focus_in)
+       else
+          call g_signal_connect(view, &
+               & "focus-in-event"//CNULL, focus_in_event)
+       end if
+    end if
+
 
     if (present(sensitive)) call gtk_widget_set_sensitive(view, sensitive)
     if (present(tooltip)) call gtk_widget_set_tooltip_text(view, tooltip)
