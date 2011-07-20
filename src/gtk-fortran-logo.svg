@@ -37,11 +37,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.640177"
-     inkscape:cx="43.508003"
-     inkscape:cy="24.649231"
+     inkscape:zoom="4.125"
+     inkscape:cx="64"
+     inkscape:cy="64"
      inkscape:current-layer="layer1"
-     showgrid="false"
+     showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      width="128px"
@@ -55,7 +55,11 @@
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
-       id="grid7947" />
+       id="grid7947"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
   </sodipodi:namedview>
   <metadata
      id="metadata6848">
@@ -65,7 +69,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
         <dc:date />
         <dc:creator>
           <cc:Agent>
@@ -97,7 +101,7 @@
           </cc:Agent>
         </dc:contributor>
         <cc:license
-           rdf:resource="" />
+           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
       </cc:Work>
       <cc:Work
          rdf:about="">
@@ -105,6 +109,21 @@
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
       </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
     </rdf:RDF>
   </metadata>
   <g
@@ -177,10 +196,10 @@
     </g>
     <g
        id="g3052"
-       transform="matrix(0.42455394,0,0,0.42455394,39.973811,85.411074)"
-       inkscape:export-filename="/media/USB_VINCENT/essailogo.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
+       transform="matrix(0.42455394,0,0,0.42455394,39.224137,86.536885)"
+       inkscape:export-filename="/home/vmagnin/Bureau/logo-gtk-fortran-big.png"
+       inkscape:export-xdpi="677.46509"
+       inkscape:export-ydpi="677.46509">
       <path
          style="fill:#729fcf;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.12364459;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
          d="m -70.447955,-71.837996 32.932845,24.70074 53.515843,-16.46716 -36.745517,-21.88278 -49.703171,13.6492 z"
@@ -256,17 +275,17 @@
     <text
        xml:space="preserve"
        style="font-size:11.38218689px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="24.207342"
-       y="74.144135"
+       x="24.653889"
+       y="75.269974"
        id="text3012"
        sodipodi:linespacing="125%"
-       inkscape:export-filename="/media/USB_VINCENT/essailogo.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"><tspan
+       inkscape:export-filename="/home/vmagnin/Bureau/logo-gtk-fortran-big.png"
+       inkscape:export-xdpi="677.46509"
+       inkscape:export-ydpi="677.46509"><tspan
          sodipodi:role="line"
          id="tspan3014"
-         x="24.207342"
-         y="74.144135">gtk</tspan></text>
+         x="24.653889"
+         y="75.269974">gtk</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:19.57131386px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
@@ -274,21 +293,22 @@
        y="87.758286"
        id="text3016"
        sodipodi:linespacing="125%"
-       inkscape:export-filename="/media/USB_VINCENT/essailogo.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"><tspan
+       inkscape:export-filename="/home/vmagnin/Bureau/logo-gtk-fortran-big.png"
+       inkscape:export-xdpi="677.46509"
+       inkscape:export-ydpi="677.46509"><tspan
          sodipodi:role="line"
          id="tspan3018"
          x="46.844154"
-         y="87.758286">fortran</tspan></text>
+         y="87.758286"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">fortran</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.58327115;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 31.792428,77.995795 8.439141,9.91305 6.64902,-17.202053 69.558971,-0.291567"
+       style="fill:none;stroke:#000000;stroke-width:1.56975043;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 31.792428,77.995795 8.29562,9.91305 L 46.623991,70.706792 115,70.415225"
        id="path3020"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="/media/USB_VINCENT/essailogo.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/vmagnin/Bureau/logo-gtk-fortran-big.png"
+       inkscape:export-xdpi="677.46509"
+       inkscape:export-ydpi="677.46509" />
     <text
        xml:space="preserve"
        style="font-size:17.34742737px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
