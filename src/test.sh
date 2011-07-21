@@ -22,7 +22,7 @@ done
 echo "examples..."
 for i in ../examples/*.f90 ; do 
   echo $i
-  gfortran gtk.o gtk-sup.o gtk-hl.o $i $gtkversion -o $i.out
+  gfortran gtk.o gtk-sup.o gtk-hl.o gtk-draw-hl.o $i $gtkversion -o $i.out
 done
 gfortran gtk.o ../examples/gtkbuilder2.f90 -o ../examples/gtkbuilder2.f90.out $gtkversion `pkg-config --cflags --libs gmodule-2.0`
 
