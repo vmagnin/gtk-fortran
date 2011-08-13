@@ -23,7 +23,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 04-17-2011
+! Last modification: 08-13-2011
 
 !*
 ! Supplementary material
@@ -45,7 +45,7 @@ module gtk_sup
   ! Various GTK_STOCK strings.
 
   use iso_c_binding
-  use gtk, only: NULL, CNULL
+  use gtk, only: NULL, CNULL, TRUE, FALSE
   use g, only: alloca, g_type_fundamental
 
   implicit none
@@ -363,6 +363,12 @@ module gtk_sup
      module procedure convert_c_string_array_cptr
   end interface convert_c_string
 
+  ! Interfaces for logical conversion
+  interface f_c_logical
+     module procedure f_c_logical4
+     module procedure f_c_logical1
+  end interface f_c_logical
+
 contains
   ! These 2 clear_ routines are only needed of you need to re-initialize
   ! the types. The definitions include the intial setting to zero or NULL.
@@ -571,6 +577,10 @@ contains
 
   !+
   subroutine convert_f_string(f_string, textptr, length)
+    character(len=*), intent(in), dimension(:) :: f_string
+    character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
+    integer(kind=c_int), intent(out), optional :: length
+
     ! Convert a fortran string array into a null-terminated, LF_separated
     ! c-string
     !
@@ -578,9 +588,6 @@ contains
     ! TEXTPR: string: required: A C tyoe string, (allocatable).
     ! LENGTH: c_int: optional: The lenght of the generated c string.
     !-
-    character(len=*), intent(in), dimension(:) :: f_string
-    character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
-    integer(kind=c_int), intent(out), optional :: length
 
     integer :: lcstr, i, j, ii
 
@@ -606,4 +613,61 @@ contains
        ii = ii+1
     end do
   end subroutine convert_f_string
+
+  !+
+  function c_f_logical(cbool)
+    logical :: c_f_logical
+    integer(kind=c_int), intent(in) :: cbool
+
+    ! Convert a gboolean to a Fortran logical
+    !
+    ! CBOOL: boolean: required: The Gboolean to convert.
+    !-
+
+    if (cbool == FALSE) then
+       c_f_logical = .false.
+    else
+       c_f_logical = .true.
+    end if
+
+  end function c_f_logical
+
+  !+
+  function f_c_logical4(flog)
+    integer(kind=c_int) :: f_c_logical4
+    logical, intent(in) :: flog
+
+    ! Convert a Fortran default logical to a gboolean
+    !
+    ! FLOG: logical: required: The fortran logical to convert.
+    !
+    ! Usually accessed via the generic f_c_logical interface
+    !-
+
+    if (flog) then
+       f_c_logical4 = TRUE
+    else
+       f_c_logical4 = FALSE
+    end if
+  end function f_c_logical4
+
+  !+
+  function f_c_logical1(flog)
+    integer(kind=c_int) :: f_c_logical1
+    logical(kind=1), intent(in) :: flog
+
+    ! Convert a Fortran 1-byte logical to a gboolean
+    !
+    ! FLOG: logical*1: required: The fortran logical to convert.
+    !
+    ! Usually accessed via the generic f_c_logical interface
+    !-
+
+    if (flog) then
+       f_c_logical1 = TRUE
+    else
+       f_c_logical1 = FALSE
+    end if
+  end function f_c_logical1
+
 end module gtk_sup

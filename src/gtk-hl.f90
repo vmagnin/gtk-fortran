@@ -339,6 +339,7 @@ contains
   !*
   ! Containers
   ! The high-level interface provides convenience interfaces for:
+  ! 
   ! * Window, the gtk top-level window.
   ! * Box, Horizontal and vertical boxes to pack widgets. This was added because the
   !   gtk_box_pack_start_defaults procedure is removed from GTK3.x
@@ -1137,6 +1138,7 @@ contains
     ntext = gtk_entry_get_text_length(entry)
     if (ntext == 0) then
        text=''
+       if (present(status)) status = 0
        return
     end if
     ctext = gtk_entry_get_text(entry)
@@ -4583,7 +4585,9 @@ contains
 
     ! Intializer for a progress bar
     !
-    ! ORIENTATION: integer: optional: The orientation of the bar.
+    ! VERTICAL: boolean: optional: Set to TRUE to make a vertical bar
+    ! REVERSED: boolean: optional: Set to TRUE to make a reversed
+    ! 		R->L or T->B bar).
     ! STEP: double: optional: The fractional step to advance when
     ! 		pulsing the bar
     !-
@@ -4639,7 +4643,7 @@ contains
     ! TEXT: string: optional: Text to put in the bar, (overrides STRING)
     !
     ! This routine is normally accessed via the generic interface
-    ! hl_gtk_progress_bar
+    ! hl_gtk_progress_bar_set
     !-
 
     character(len=50) :: sval
@@ -4689,7 +4693,7 @@ contains
     ! TEXT: string: optional: Text to put in the bar, (overrides STRING)
     !
     ! This routine is normally accessed via the generic interface
-    ! hl_gtk_progress_bar
+    ! hl_gtk_progress_bar_set
     !-
 
     real(kind=c_double) :: frac
@@ -5583,7 +5587,7 @@ contains
     ! LOWER: c_double: optional: The new lower bound
     ! UPPER: c_double: optional: The new uppper bound
     !
-    ! Note: This routine is not a generic interface as
+    ! **Note** This routine is not a generic interface as
     ! overloading requires that the interface be distinguishable by its
     ! required arguments, and it seems less annoying to have to convert to
     ! doubles or use a separate call than to specify an unchanged bound.
@@ -5623,7 +5627,7 @@ contains
     ! LOWER: c_int: optional: The new lower bound
     ! UPPER: c_int: optional: The new uppper bound
     !
-    ! Note: This routine is not a generic interface as
+    ! **Note** This routine is not a generic interface as
     ! overloading requires that the interface be distinguishable by its
     ! required arguments, and it seems less annoying to use a separate
     ! call than to specify an unchanged bound.
@@ -5838,7 +5842,7 @@ contains
     ! LOWER: c_double: optional: The new lower bound
     ! UPPER: c_double: optional: The new uppper bound
     !
-    ! Note: This routine is not a generic interface as
+    ! **Note** This routine is not a generic interface as
     ! overloading requires that the interface be distinguishable by its
     ! required arguments, and it seems less annoying to have to convert to
     ! doubles or use a separate call than to specify an unchanged bound.
@@ -5879,7 +5883,7 @@ contains
     ! LOWER: c_int: optional: The new lower bound
     ! UPPER: c_int: optional: The new uppper bound
     !
-    ! Note: This routine is not a generic interface as
+    ! **Note** This routine is not a generic interface as
     ! overloading requires that the interface be distinguishable by its
     ! required arguments, and it seems less annoying to use a separate
     ! call than to specify an unchanged bound.
