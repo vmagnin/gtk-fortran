@@ -268,14 +268,14 @@ contains
        if (present(data_expose)) then
 !!$2         call g_signal_connect(plota, "expose-event"//cnull, expose_event, &
 !!$2              & data_expose)
-         call g_signal_connect(plota, "draw"//cnull, expose_event, &
-              & data_expose)
+!!$3         call g_signal_connect(plota, "draw"//cnull, expose_event, &
+!!$3              & data_expose)
        endif
     else
 !!$2       call g_signal_connect(plota, "expose-event"//cnull, &
 !!$2            & c_funloc(hl_gtk_drawing_area_expose_cb))
-       call g_signal_connect(plota, "draw"//cnull, &
-            & c_funloc(hl_gtk_drawing_area_expose_cb))
+!!$3       call g_signal_connect(plota, "draw"//cnull, &
+!!$3            & c_funloc(hl_gtk_drawing_area_expose_cb))
     end if
 
 

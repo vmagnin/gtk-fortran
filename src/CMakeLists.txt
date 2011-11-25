@@ -21,6 +21,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
+# Last modifications: James Tappin: 11.21.2011
 
 # CMAKE build file for GtkFortran
 
@@ -32,6 +33,17 @@ set(sources
 	"glib-auto.f90"
 	"gtk.f90"
 	"gtk-hl.f90"
+	"gtk-hl-container.f90"
+	"gtk-hl-button.f90"
+	"gtk-hl-entry.f90"
+	"gtk-hl-tree.f90"
+	"gtk-hl-menu.f90"
+	"gtk-hl-combobox.f90"
+	"gtk-hl-spin-slider.f90"
+	"gtk-hl-chooser.f90"
+	"gtk-hl-dialog.f90"
+	"gtk-hl-progress.f90"
+	"gtk-hl-accelerator.f90"
 	"gtk-draw-hl.f90"
 	"gtk-sup.f90"
 	"pango-auto.f90"
@@ -45,7 +57,7 @@ add_library(gtk-fortran_shared SHARED ${sources})
 target_link_libraries(gtk-fortran_shared ${GTK_LIBRARIES})
 
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
-OUTPUT_NAME gtk-fortran)
+OUTPUT_NAME gtk-3-fortran)
 set_target_properties(gtk-fortran_static
 gtk-fortran_shared PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
@@ -60,11 +72,11 @@ SOVERSION "0.1")
 # add a suitable generator and installation.
 if (UNIX)
   add_custom_command(
-    OUTPUT gtk-fortran.pc
-    COMMAND sed -e s+@prefix@+${CMAKE_INSTALL_PREFIX}+ -e s/@version@/${CPACK_PACKAGE_VERSION}/ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran.pc.in > ${CMAKE_CURRENT_BINARY_DIR}/gtk-fortran.pc
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran.pc.in
+    OUTPUT gtk-3-fortran.pc
+    COMMAND sed -e s+@prefix@+${CMAKE_INSTALL_PREFIX}+ -e s/@version@/${CPACK_PACKAGE_VERSION}/ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-3-fortran.pc.in > ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-3-fortran.pc.in
     )
-  add_custom_target(pkgconfig ALL DEPENDS "gtk-fortran.pc")
+  add_custom_target(pkgconfig ALL DEPENDS "gtk-3-fortran.pc")
 endif()
 
 install(TARGETS gtk-fortran_static ARCHIVE DESTINATION lib)
@@ -77,14 +89,25 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/g.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_container.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_button.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_entry.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_tree.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_menu.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_combobox.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_spin_slider.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_chooser.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_dialog.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_progress.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_accelerator.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_draw_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
-	DESTINATION include)
+	DESTINATION include/gtk-3-fortran)
 if (UNIX)
   install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk-fortran.pc"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc"
     DESTINATION lib/pkgconfig
     )
 endif()
