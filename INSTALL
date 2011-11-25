@@ -22,6 +22,17 @@ To interactively control the build, use 'ccmake' in place of 'cmake'
 
 In place of src/test.sh, use make test
 
+**************************************************************************
+* Following the install path and name changes on 25 Nov 11, it is
+* strongly recommended to uninstall any current installation, and then 
+* clean out the build directory and re-run cmake
+*     cd build
+*     sudo make uninstall
+*     rm -r *   ## MAKE SURE YOU ARE IN THE BUILD DIRECTORY BEFORE
+*     	    	## DOING THIS
+*     cmake ..
+**************************************************************************
+
 Dependencies:
 -------------
 
