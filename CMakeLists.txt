@@ -37,7 +37,7 @@ set(CMAKE_Fortran_FLAGS_RELEASE
 "-pthread -O3 -mtune=native -march=native")
 
 set(CPACK_PACKAGE_VERSION "0.1.0")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk-fortran")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk2-fortran")
 set(CPACK_GENERATOR "STGZ;TGZ")
 set(CPACK_SOURCE_GENERATOR "STGZ;TGZ")
 include(CPack)
