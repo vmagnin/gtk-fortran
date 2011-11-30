@@ -23,7 +23,15 @@
 !
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modification: 07-01-2011
+! Last modification: 11-30-2011
+
+!!$T Template file for gtk-draw-hl.f90.
+!!$T  Make edits to this file, and keep them identical between the
+!!$T  GTK2 & GTK3 branches.
+
+!!$T Lines to be used only in the GTK2 tree should be prefixed with !!$2
+!!$T Lines to be used only in the GTK3 tree should be prefixed with !!$3
+!!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
 module gtk_draw_hl
   !*

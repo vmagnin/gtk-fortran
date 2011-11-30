@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 11-21-2011
+! Last modification: 11-30-2011
 
 !!$T Template file for gtk-hl-button.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -47,6 +47,7 @@ module gtk_hl_button
        & gtk_radio_button_new_with_label, gtk_toggle_button_get_active,&
        & gtk_toggle_button_set_active, gtk_widget_add_accelerator,&
        & gtk_widget_set_sensitive, gtk_widget_set_tooltip_text, &
+       & gtk_label_new, gtk_label_set_markup, gtk_container_add, &
        & NULL, CNULL, FNULL, TRUE, FALSE, g_signal_connect
 
   use g, only: g_slist_length, g_slist_nth, g_slist_nth_data
@@ -58,7 +59,7 @@ module gtk_hl_button
 contains
   !+
   function hl_gtk_button_new(label, clicked, data, tooltip, sensitive, &
-       & accel_key, accel_mods, accel_group, accel_flags) result(but)
+       & accel_key, accel_mods, accel_group, accel_flags, is_markup) result(but)
 
     type(c_ptr) :: but
     character(kind=c_char), dimension(*), intent(in) :: label
@@ -69,6 +70,7 @@ contains
     character(kind=c_char), dimension(*), optional, intent(in) :: accel_key
     integer(kind=c_int), optional, intent(in) :: accel_mods, accel_flags
     type(c_ptr), optional, intent(in) :: accel_group
+    integer(kind=c_int), optional, intent(in) :: is_markup
 
     ! Higher-level button
     !
@@ -89,9 +91,27 @@ contains
     ! ACCEL_FLAGS: c_int: optional: Flags for the accelerator, if not present
     ! 		then GTK_ACCEL_VISIBLE, is used (to hide the accelerator,
     ! 		use ACCEL_FLAGS=0).
+    ! IS_MARKUP: boolean: optional: Set this to TRUE if the label contains
+    ! 		Pango markup.
     !-
 
-    but=gtk_button_new_with_label(label)
+    type(c_ptr) :: label_w
+    logical :: markup
+
+    if (present(is_markup)) then
+       markup = c_f_logical(is_markup)
+    else
+       markup = .false.
+    end if
+
+    if(markup) then
+       but = gtk_button_new()
+       label_w=gtk_label_new(cnull)
+       call gtk_label_set_markup(label_w, label)
+       call gtk_container_add(but, label_w)
+    else
+       but=gtk_button_new_with_label(label)
+    end if
 
     if (present(clicked)) then
        if (present(data)) then
@@ -117,7 +137,7 @@ contains
 
   !+
   function hl_gtk_check_button_new(label, toggled, data, tooltip, &
-       & initial_state, sensitive) result(but)
+       & initial_state, sensitive, is_markup) result(but)
 
     type(c_ptr) :: but
     character(kind=c_char), dimension(*), intent(in) :: label
@@ -125,7 +145,7 @@ contains
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
     integer(kind=c_int), intent(in), optional :: initial_state
-    integer(kind=c_int), intent(in), optional :: sensitive
+    integer(kind=c_int), intent(in), optional :: sensitive, is_markup
 
     ! Higher level check box.
     !
@@ -137,9 +157,27 @@ contains
     !               check_button.
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
+    ! IS_MARKUP: boolean: optional: Set this to TRUE if the label contains
+    ! 		Pango markup.
     !-
 
-    but = gtk_check_button_new_with_label(label)
+    type(c_ptr) :: label_w
+    logical :: markup
+
+    if (present(is_markup)) then
+       markup = c_f_logical(is_markup)
+    else
+       markup = .false.
+    end if
+
+    if(markup) then
+       but = gtk_check_button_new()
+       label_w=gtk_label_new(cnull)
+       call gtk_label_set_markup(label_w, label)
+       call gtk_container_add(but, label_w)
+    else
+       but = gtk_check_button_new_with_label(label)
+    end if
 
     if (present(toggled)) then
        if (present(data)) then
@@ -161,7 +199,7 @@ contains
 
   !+
   function hl_gtk_radio_button_new(group, label, toggled, data, tooltip, &
-       & sensitive) result(but)
+       & sensitive, is_markup) result(but)
 
     type(c_ptr) :: but
     type(c_ptr), intent(inout) :: group
@@ -169,7 +207,7 @@ contains
     type(c_funptr), optional :: toggled
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional :: sensitive
+    integer(kind=c_int), intent(in), optional :: sensitive, is_markup
 
     ! Radio button
     !
@@ -187,9 +225,28 @@ contains
     ! TOOLTIP: string: optional: A tooltip for the radio button
     ! SENSITIVE: boolean: optional: Whether the widget should initially
     ! 		be sensitive or not.
+    ! IS_MARKUP: boolean: optional: Set this to TRUE if the label contains
+    ! 		Pango markup.
     !-
 
-    but = gtk_radio_button_new_with_label(group, label)
+    type(c_ptr) :: label_w
+    logical :: markup
+
+    if (present(is_markup)) then
+       markup = c_f_logical(is_markup)
+    else
+       markup = .false.
+    end if
+
+    if(markup) then
+       but = gtk_radio_button_new(group)
+       label_w=gtk_label_new(cnull)
+       call gtk_label_set_markup(label_w, label)
+       call gtk_container_add(but, label_w)
+    else
+       but = gtk_radio_button_new_with_label(group, label)
+    end if
+
     group = gtk_radio_button_get_group(but)
 
     if (present(toggled)) then
