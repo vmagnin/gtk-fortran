@@ -45,5 +45,6 @@ module gtk_hl
   use gtk_hl_chooser
   use gtk_hl_spin_slider
   use gtk_hl_combobox
+  use gtk_hl_misc
 
 end module gtk_hl

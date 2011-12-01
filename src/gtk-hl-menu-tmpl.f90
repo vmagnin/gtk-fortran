@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 11-30-2011
+! Last modification: 12-1-2011
 
 !!$T Template file for gtk-hl-menu.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -39,6 +39,8 @@ module gtk_hl_menu
   !/
 
   use gtk_sup
+  use gtk_hl_misc
+
   use iso_c_binding
   use iso_fortran_env, only: error_unit
 
@@ -193,7 +195,7 @@ contains
 
     integer(kind=c_int) :: istear
     logical :: markup
-    type(c_ptr) :: label_w
+    type(c_ptr) :: label_w, junk
 
     if (present(tearoff)) then
        istear = tearoff
@@ -409,7 +411,11 @@ contains
 
   end function hl_gtk_radio_menu_item_new
 
+  !+
   subroutine hl_gtk_radio_menu_group_set_select(group, index)
+    type(c_ptr), intent(in) :: group
+    integer(kind=c_int), intent(in) :: index
+
     ! Set the indexth button of a radio menu group
     !
     ! GROUP: c_ptr: required: The group of the last button added to
@@ -417,9 +423,6 @@ contains
     ! INDEX: integer: required: The index of the button to set
     ! 		(starting from the first as 0).
     !-
-
-    type(c_ptr), intent(in) :: group
-    integer(kind=c_int), intent(in) :: index
 
     integer(kind=c_int) :: nbuts
     type(c_ptr) :: datan
@@ -433,4 +436,22 @@ contains
     call gtk_check_menu_item_set_active(datan, TRUE)
 
   end subroutine hl_gtk_radio_menu_group_set_select
+
+  !+
+  subroutine hl_gtk_menu_item_set_label_markup(item, label)
+    type(c_ptr) :: item
+    character(kind=c_char), dimension(*), intent(in) :: label
+
+    ! Set a markup label on a menu item
+    !
+    ! ITEM: c_ptr: required: The menu item to relabel
+    ! LABEL: string: required: The string (with Pango markup) to apply.
+    !
+    ! Normally if the label does not need Pango markup, then
+    ! gtk_menu_item_set_label can be used.
+    !-
+
+    call hl_gtk_bin_set_label_markup(item, label)
+
+  end subroutine hl_gtk_menu_item_set_label_markup
 end module gtk_hl_menu

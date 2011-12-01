@@ -21,7 +21,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin: 11.21.2011
+# Last modifications: James Tappin: 12.1.2011
 
 # CMAKE build file for GtkFortran
 
@@ -44,6 +44,7 @@ set(sources
 	"gtk-hl-dialog.f90"
 	"gtk-hl-progress.f90"
 	"gtk-hl-accelerator.f90"
+	"gtk-hl-misc.f90"
 	"gtk-draw-hl.f90"
 	"gtk-sup.f90"
 	"pango-auto.f90"
@@ -100,6 +101,7 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_dialog.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_progress.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_accelerator.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_misc.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_draw_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
