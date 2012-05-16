@@ -44,7 +44,7 @@ module gtk_hl_misc
   use iso_fortran_env, only: error_unit
 
   use gtk, only: gtk_bin_get_child, gtk_label_set_markup,&
-       & TRUE, FALSE, CNULL, NULL
+       & TRUE, FALSE
 
 contains
 

@@ -59,7 +59,7 @@ module gtk_hl_combobox
 !!$3       & gtk_combo_box_text_append_text,&
 !!$3       & gtk_combo_box_text_insert_text,&
 !!$3       & gtk_combo_box_text_prepend_text,&
-       & NULL, CNULL, FNULL, TRUE, FALSE, g_signal_connect
+       & TRUE, FALSE, g_signal_connect
 
   implicit none
 
@@ -115,18 +115,18 @@ contains
        do i=1,size(initial_choices)
 !GTK3
 !!$3          call gtk_combo_box_text_append_text(cbox, &
-!!$3               & trim(initial_choices(i))//CNULL)
+!!$3               & trim(initial_choices(i))//C_NULL_CHAR)
 !GTK2
 !!$2          call gtk_combo_box_append_text(cbox, &
-!!$2               & trim(initial_choices(i))//CNULL)
+!!$2               & trim(initial_choices(i))//C_NULL_CHAR)
        end do
     end if
 
     if (present(changed)) then
        if (present(data)) then
-          call g_signal_connect(cbox, "changed"//CNULL, changed, data)
+          call g_signal_connect(cbox, "changed"//C_NULL_CHAR, changed, data)
        else
-          call g_signal_connect(cbox, "changed"//CNULL, changed)
+          call g_signal_connect(cbox, "changed"//C_NULL_CHAR, changed)
        end if
     end if
 

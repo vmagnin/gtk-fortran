@@ -57,7 +57,7 @@ module gtk_hl_menu
        & gtk_widget_add_accelerator, gtk_widget_set_sensitive,&
        & gtk_label_new, gtk_label_set_markup, gtk_container_add, &
        & gtk_widget_set_tooltip_text, GTK_PACK_DIRECTION_LTR, &
-       & NULL, CNULL, FNULL, TRUE, FALSE, g_signal_connect
+       & TRUE, FALSE, g_signal_connect
 
   use g, only: g_slist_length, g_slist_nth, g_slist_nth_data
 
@@ -241,14 +241,14 @@ contains
        end if
 
        if (present(data)) then
-          call g_signal_connect(item, "activate"//cnull, activate, data)
+          call g_signal_connect(item, "activate"//c_null_char, activate, data)
        else
-          call g_signal_connect(item, "activate"//cnull, activate)
+          call g_signal_connect(item, "activate"//c_null_char, activate)
        end if
 
        ! An accelerator
        if (present(accel_key) .and. present(accel_group)) &
-            & call hl_gtk_widget_add_accelerator(item, "activate"//cnull, &
+            & call hl_gtk_widget_add_accelerator(item, "activate"//c_null_char, &
             & accel_group, accel_key, accel_mods, accel_flags)
     end if
 
@@ -303,7 +303,7 @@ contains
     ! Create the menu item
     if (markup) then
        item = gtk_check_menu_item_new()
-       label_w=gtk_label_new(cnull)
+       label_w=gtk_label_new(c_null_char)
        call gtk_label_set_markup(label_w, label)
        call gtk_container_add(item, label_w)
     else
@@ -324,9 +324,9 @@ contains
     ! If present, connect the callback
     if (present(toggled)) then
        if (present(data)) then
-          call g_signal_connect(item, "toggled"//cnull, toggled, data)
+          call g_signal_connect(item, "toggled"//c_null_char, toggled, data)
        else
-          call g_signal_connect(item, "toggled"//cnull, toggled)
+          call g_signal_connect(item, "toggled"//c_null_char, toggled)
        end if
     end if
 
@@ -352,7 +352,7 @@ contains
 
     ! Make a menu item or separator
     !
-    ! GROUP: c_ptr: required: The group for the radio item (NULL for a
+    ! GROUP: c_ptr: required: The group for the radio item (C_NULL_PTR for a
     ! 		new group).
     ! MENU: c_ptr: required: The parent menu.
     ! LABEL: string: required: The label for the menu.
@@ -380,7 +380,7 @@ contains
     ! Create the menu item
     if (markup) then
        item = gtk_radio_menu_item_new(group)
-       label_w=gtk_label_new(cnull)
+       label_w=gtk_label_new(c_null_char)
        call gtk_label_set_markup(label_w, label)
        call gtk_container_add(item, label_w)
     else
@@ -398,9 +398,9 @@ contains
     ! If present, connect the callback
     if (present(toggled)) then
        if (present(data)) then
-          call g_signal_connect(item, "toggled"//cnull, toggled, data)
+          call g_signal_connect(item, "toggled"//c_null_char, toggled, data)
        else
-          call g_signal_connect(item, "toggled"//cnull, toggled)
+          call g_signal_connect(item, "toggled"//c_null_char, toggled)
        end if
     end if
 

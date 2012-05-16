@@ -44,7 +44,7 @@ module gtk_hl_accelerator
   ! Auto-generated use's
   use gtk, only: gtk_widget_add_accelerator, &
        & GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE, &
-       & NULL, CNULL, FNULL, TRUE, FALSE
+       & TRUE, FALSE
 
   use gdk, only: gdk_keyval_from_name
 
