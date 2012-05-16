@@ -77,7 +77,7 @@ module gtk_hl_entry
        & gtk_text_view_new_with_buffer, gtk_text_view_set_editable,&
        & gtk_widget_set_sensitive, gtk_widget_set_size_request,&
        & gtk_widget_set_tooltip_text, GTK_POLICY_AUTOMATIC, &
-       & NULL, CNULL, FNULL, TRUE, FALSE, g_signal_connect
+       & TRUE, FALSE, g_signal_connect
 
   implicit none
 
@@ -132,35 +132,35 @@ contains
     if (present(activate)) then
        if (present(data)) then
           call g_signal_connect(entry, &
-               & "activate"//CNULL, activate, data)
+               & "activate"//C_NULL_CHAR, activate, data)
        else
           call g_signal_connect(entry, &
-               & "activate"//CNULL, activate)
+               & "activate"//C_NULL_CHAR, activate)
        end if
     end if
 
     if (present(changed)) then
        if (present(data_changed)) then
-          call g_signal_connect(entry, "changed"//CNULL, changed, &
+          call g_signal_connect(entry, "changed"//C_NULL_CHAR, changed, &
                & data_changed)
        else
-          call g_signal_connect(entry, "changed"//CNULL, changed)
+          call g_signal_connect(entry, "changed"//C_NULL_CHAR, changed)
        end if
     end if
     if (present(delete_text)) then
        if (present(data_delete_text)) then
-          call g_signal_connect(entry, "delete-text"//CNULL, delete_text, &
+          call g_signal_connect(entry, "delete-text"//C_NULL_CHAR, delete_text, &
                & data_delete_text)
        else
-          call g_signal_connect(entry, "delete-text"//CNULL, delete_text)
+          call g_signal_connect(entry, "delete-text"//C_NULL_CHAR, delete_text)
        end if
     end if
     if (present(insert_text)) then
        if (present(data_insert_text)) then
-          call g_signal_connect(entry, "insert-text"//CNULL, insert_text, &
+          call g_signal_connect(entry, "insert-text"//C_NULL_CHAR, insert_text, &
                & data_insert_text)
        else
-          call g_signal_connect(entry, "insert-text"//CNULL, insert_text)
+          call g_signal_connect(entry, "insert-text"//C_NULL_CHAR, insert_text)
        end if
     end if
 
@@ -255,11 +255,11 @@ contains
     character(kind=c_char), dimension(:), allocatable :: text0
     type(gtktextiter), target :: iter
 
-    tbuf = gtk_text_buffer_new(NULL)
+    tbuf = gtk_text_buffer_new(C_NULL_PTR)
     view = gtk_text_view_new_with_buffer(tbuf)
 
     if (present(scroll)) then
-       scroll = gtk_scrolled_window_new(NULL, NULL)
+       scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
        call gtk_scrolled_window_set_policy(scroll, GTK_POLICY_AUTOMATIC, &
             & GTK_POLICY_AUTOMATIC)
        if (present(ssize)) call gtk_widget_set_size_request(scroll, ssize(1), ssize(2))
@@ -285,26 +285,26 @@ contains
     ! Attach the various signals
     if (present(changed)) then
        if (present(data_changed)) then
-          call g_signal_connect(tbuf, "changed"//cnull, changed, &
+          call g_signal_connect(tbuf, "changed"//c_null_char, changed, &
                & data_changed)
        else
-          call g_signal_connect(tbuf, "changed"//cnull, changed)
+          call g_signal_connect(tbuf, "changed"//c_null_char, changed)
        end if
     end if
     if (present(insert_text)) then
        if (present(data_insert_text)) then
-          call g_signal_connect(tbuf, "insert-text"//cnull, insert_text, &
+          call g_signal_connect(tbuf, "insert-text"//c_null_char, insert_text, &
                & data_insert_text)
        else
-          call g_signal_connect(tbuf, "insert-text"//cnull, insert_text)
+          call g_signal_connect(tbuf, "insert-text"//c_null_char, insert_text)
        end if
     end if
     if (present(delete_range)) then
        if (present(data_delete_range)) then
-          call g_signal_connect(tbuf, "delete-range"//cnull, delete_range, &
+          call g_signal_connect(tbuf, "delete-range"//c_null_char, delete_range, &
                & data_delete_range)
        else
-          call g_signal_connect(tbuf, "delete-range"//cnull, delete_range)
+          call g_signal_connect(tbuf, "delete-range"//c_null_char, delete_range)
        end if
     end if
 
@@ -374,7 +374,7 @@ contains
           icol = 0
        end if
        if (present(replace)) then
-          call hl_gtk_text_view_delete(NULL, line=line, column=icol, &
+          call hl_gtk_text_view_delete(C_NULL_PTR, line=line, column=icol, &
                & n_chars=size(text0), buffer=tbuf)
        end if
        call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(iter), &
