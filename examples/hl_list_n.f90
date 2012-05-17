@@ -62,7 +62,7 @@ contains
     character(len=30) :: name
     character(len=10) :: nodd
 
-    nsel = hl_gtk_listn_get_selections(NULL, selections, list)
+    nsel = hl_gtk_listn_get_selections(C_NULL_PTR, selections, list)
     if (nsel == 0) then
        print *, "No selection"
        return
@@ -109,8 +109,8 @@ contains
     val_ptr = c_loc(svalue)
     val_ptr = g_value_init(val_ptr, G_TYPE_STRING)
 
-    call g_value_set_string(val_ptr, trim(rstring)//cnull)
-    call g_object_set_property(cell, "text"//cnull, val_ptr)
+    call g_value_set_string(val_ptr, trim(rstring)//c_null_char)
+    call g_object_set_property(cell, "text"//c_null_char, val_ptr)
   end subroutine display_int
 
   subroutine cell_edited(renderer, path, text, gdata) bind(c)
@@ -127,10 +127,10 @@ contains
 
     call convert_c_string(path, 200, fpath)
     read(fpath, *) irow
-    pcol = g_object_get_data(renderer, "column-number"//cnull)
+    pcol = g_object_get_data(renderer, "column-number"//c_null_char)
     call c_f_pointer(pcol, icol)
     call convert_c_string(text, 200, ftext)
-    list = g_object_get_data(renderer, "view"//cnull)
+    list = g_object_get_data(renderer, "view"//c_null_char)
 
     if (icol == 0) then
        call hl_gtk_listn_set_cell(list, irow, icol, &
@@ -170,7 +170,7 @@ program list_n
   call gtk_init()
 
   ! Create a window that will hold the widget system
-  ihwin=hl_gtk_window_new('multi-column list demo'//cnull, &
+  ihwin=hl_gtk_window_new('multi-column list demo'//c_null_char, &
        & destroy=c_funloc(my_destroy))
 
   ! Now make a column box & put it into the window
@@ -205,7 +205,7 @@ program list_n
      call hl_gtk_listn_ins(ihlist)
      write(line,"('List entry number ',I0)") i
      ltr=len_trim(line)+1
-     line(ltr:ltr)=cnull
+     line(ltr:ltr)=c_null_char
      call hl_gtk_listn_set_cell(ihlist, i-1, 0, svalue=line)
      call hl_gtk_listn_set_cell(ihlist, i-1, 1, ivalue=i)
      call hl_gtk_listn_set_cell(ihlist, i-1, 2, ivalue=3*i)
@@ -218,11 +218,11 @@ program list_n
   call hl_gtk_box_pack(base, ihscrollcontain)
 
   ! Add a note about editable columns
-  lbl = gtk_label_new("The ""Name"" and ""N"" columns are editable"//cnull)
+  lbl = gtk_label_new("The ""Name"" and ""N"" columns are editable"//c_null_char)
   call hl_gtk_box_pack(base, lbl)
 
   ! Also a quit button
-  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(base,qbut)
 
   ! realize the window

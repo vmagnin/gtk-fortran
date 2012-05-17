@@ -29,8 +29,8 @@ contains
 
     print *, "CHANGED event"
 
-    call hl_gtk_text_view_get_info(NULL, buffer=widget, nlines=nl, nchars=nc, &
-         & ncline=ncl)
+    call hl_gtk_text_view_get_info(C_NULL_PTR, buffer=widget, nlines=nl, &
+         & nchars=nc, ncline=ncl)
     print *, nl, nc
     print *, ncl
     deallocate(ncl)
@@ -54,8 +54,8 @@ contains
     print "(a)", f_text
     deallocate(f_text)
 
-    call hl_gtk_text_view_get_info(NULL, buffer=widget, nlines=nl, nchars=nc, &
-         & ncline=ncl)
+    call hl_gtk_text_view_get_info(C_NULL_PTR, buffer=widget, nlines=nl, &
+         & nchars=nc, ncline=ncl)
     print *, nl, nc
     print *, ncl
     deallocate(ncl)
@@ -165,7 +165,7 @@ program ztext
   call gtk_init()
 
   ! Make a window and a vertical box
-  win = hl_gtk_window_new("Scrolling text"//cnull, destroy=c_funloc(my_destroy))
+  win = hl_gtk_window_new("Scrolling text"//c_null_char, destroy=c_funloc(my_destroy))
   box = hl_gtk_box_new()
   call gtk_container_add(win, box)
 
@@ -175,36 +175,36 @@ program ztext
        & insert_text=c_funloc(tv_ins), &
        & delete_range=c_funloc(tv_del), &
        & ssize=(/350, 200/), tooltip = &
-       & "Try typing, pasting or cutting text in here"//cnull)
+       & "Try typing, pasting or cutting text in here"//c_null_char)
   call hl_gtk_box_pack(box, contain)
 
   ! Make a single line text entry, and buttons to append or place at cursor.
 
   entry = hl_gtk_entry_new(60, editable=TRUE, tooltip = &
-       & "Enter text here, then click 'append' or 'insert'"//cnull, &
+       & "Enter text here, then click 'append' or 'insert'"//c_null_char, &
        & changed=c_funloc(entry_text))
   call hl_gtk_box_pack(box, entry, expand=FALSE)
 
   box2 = hl_gtk_box_new(horizontal=TRUE)
   call hl_gtk_box_pack(box, box2, expand=FALSE)
 
-  abut = hl_gtk_button_new("Append"//cnull, clicked=c_funloc(tv_append), &
-       & tooltip = "Add contents of entry box at end"//cnull, sensitive=FALSE)
+  abut = hl_gtk_button_new("Append"//c_null_char, clicked=c_funloc(tv_append), &
+       & tooltip = "Add contents of entry box at end"//c_null_char, sensitive=FALSE)
   call hl_gtk_box_pack(box2, abut)
-  ibut = hl_gtk_button_new("Insert"//cnull, clicked=c_funloc(tv_insert), &
-       & tooltip = "Add contents of entry box at cursor"//cnull, &
+  ibut = hl_gtk_button_new("Insert"//c_null_char, clicked=c_funloc(tv_insert), &
+       & tooltip = "Add contents of entry box at cursor"//c_null_char, &
        & sensitive=FALSE)
   call hl_gtk_box_pack(box2, ibut)
 
   ! And a clear button, and an info button
-  infobut = hl_gtk_button_new("Information"//cnull, clicked=c_funloc(tv_info))
+  infobut = hl_gtk_button_new("Information"//c_null_char, clicked=c_funloc(tv_info))
   call hl_gtk_box_pack(box, infobut, expand=FALSE)
-  clbut = hl_gtk_button_new("Clear"//cnull, clicked=c_funloc(tv_clr))
+  clbut = hl_gtk_button_new("Clear"//c_null_char, clicked=c_funloc(tv_clr))
   call hl_gtk_box_pack(box, clbut, expand=FALSE)
 
   ! Make a quit button and put that in the box, then
   ! put the box in the window.
-  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(box, qbut, expand=FALSE)
 
   ! Realize the window
