@@ -84,7 +84,7 @@ program radio
   call gtk_init()
 
   ! Create a window and a vertical box
-  window = hl_gtk_window_new('radios'//cnull, destroy=c_funloc(my_destroy))
+  window = hl_gtk_window_new('radios'//c_null_char, destroy=c_funloc(my_destroy))
   box = hl_gtk_box_new(homogeneous=TRUE)
   call gtk_container_add(window, box)
 
@@ -93,11 +93,11 @@ program radio
   ! collective operations on the set of buttons. The group must be set to
   ! a NULL pointer before entry otherwise the internals may get confused.
 
-  group=NULL
+  group=C_NULL_PTR
 
   do i=1,6
      write(label,"('Choice #',i0)") i-1
-     rbut(i) = hl_gtk_radio_button_new(group, trim(label)//cnull, &
+     rbut(i) = hl_gtk_radio_button_new(group, trim(label)//c_null_char, &
           & toggled=c_funloc(rb_toggle), data=c_loc(isel(i)))
      call hl_gtk_box_pack(box, rbut(i))
   end do
@@ -107,7 +107,7 @@ program radio
 
   ! Make a "quit" button and put it in the box as well, then put the
   ! box in the window
-  qbut = hl_gtk_button_new('Quit'//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new('Quit'//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(box, qbut)
 
   ! Realize the hierarchy

@@ -123,14 +123,14 @@ program menu_test
   call gtk_init()
 
   ! Make a window for the hierarchy
-  win = hl_gtk_window_new("Menu Demo"//cnull, destroy=c_funloc(my_destroy), &
+  win = hl_gtk_window_new("Menu Demo"//c_null_char, destroy=c_funloc(my_destroy), &
        & accel_group=accel)
 
   ! Make a vertical box, and add a label to it
   box=hl_gtk_box_new()
   call gtk_container_add(win, box)
 
-  lab = gtk_label_new("Menu Example"//cnull)
+  lab = gtk_label_new("Menu Example"//c_null_char)
   call hl_gtk_box_pack(box, lab)
 
   ! Make a menubar with the buttons horizontally aranged and put it in the
@@ -139,44 +139,44 @@ program menu_test
   call hl_gtk_box_pack(box, menubar)
 
   ! Make a submenu in the first (0) location
-  smnu = hl_gtk_menu_submenu_new(menubar, "Choose"//cnull)
+  smnu = hl_gtk_menu_submenu_new(menubar, "Choose"//c_null_char)
 
   ! Populate the submenu with buttons
   do i = 1, size(mbuts)
      write(holder,'("Item: ",I2)') i
-     mbuts(i) = hl_gtk_menu_item_new(smnu, trim(holder)//cnull, &
+     mbuts(i) = hl_gtk_menu_item_new(smnu, trim(holder)//c_null_char, &
           & activate=c_funloc(mbut_act), data=c_loc(mclicks(i)), &
-          & accel_key=char(ichar("a")+i-1)//cnull, accel_group=accel)
+          & accel_key=char(ichar("a")+i-1)//c_null_char, accel_group=accel)
   end do
   ! Add a single button
-  mba =  hl_gtk_menu_item_new(menubar, "Extra"//cnull, &
+  mba =  hl_gtk_menu_item_new(menubar, "Extra"//c_null_char, &
        & activate=c_funloc(mbut_act), data=c_loc(mca))
 
   ! Now a second menu with just a single tlb
   mnu2 =  hl_gtk_menu_new()
   call hl_gtk_box_pack(box, mnu2)
 
-  sm1 = hl_gtk_menu_submenu_new(mnu2, "Select"//cnull)
+  sm1 = hl_gtk_menu_submenu_new(mnu2, "Select"//c_null_char)
 
   do i = 1, 4
      write(holder,'("Select: ",I2)') i
-     mb1(i) = hl_gtk_check_menu_item_new(sm1, trim(holder)//cnull, &
+     mb1(i) = hl_gtk_check_menu_item_new(sm1, trim(holder)//c_null_char, &
           & toggled=c_funloc(sm1_act), data=c_loc(mc1(i)))
-     if (i == 3) sm2 = hl_gtk_menu_submenu_new(sm1, "Sub choice"//cnull)
+     if (i == 3) sm2 = hl_gtk_menu_submenu_new(sm1, "Sub choice"//c_null_char)
   end do
 
-  rgroup = NULL
+  rgroup = C_NULL_PTR
   do i = 1, 4
      write(holder,'("Sub Sel: ",I2)') i
-     mb2(i) = hl_gtk_radio_menu_item_new(rgroup, sm2, trim(holder)//cnull, &
+     mb2(i) = hl_gtk_radio_menu_item_new(rgroup, sm2, trim(holder)//c_null_char, &
           & toggled=c_funloc(sm2_act), data=c_loc(mc2(i)))
   end do
   call hl_gtk_radio_menu_group_set_select(rgroup, 2)
 
   ! Make a quit button and put it in the box, put the box
   ! into the window
-  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy), &
-       & accel_key="q"//cnull, accel_group=accel)
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy), &
+       & accel_key="q"//c_null_char, accel_group=accel)
   call hl_gtk_box_pack(box, qbut)
 
   ! Realize the hierarchy

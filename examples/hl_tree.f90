@@ -82,7 +82,7 @@ contains
     character(len=30) :: name
     character(len=10) :: nodd
     integer :: i
-    nsel = hl_gtk_tree_get_selections(NULL, selections, selection=list, &
+    nsel = hl_gtk_tree_get_selections(C_NULL_PTR, selections, selection=list, &
          & depths=dep)
     if (nsel == 0) then
        print *, "No selection"
@@ -135,7 +135,7 @@ program tree
   call gtk_init()
 
   ! Create a window that will hold the widget system
-  ihwin=hl_gtk_window_new('Tree view demo'//cnull, destroy=c_funloc(my_destroy))
+  ihwin=hl_gtk_window_new('Tree view demo'//c_null_char, destroy=c_funloc(my_destroy))
 
   ! Now make a column box & put it into the window
   base = hl_gtk_box_new()
@@ -164,7 +164,7 @@ program tree
      call hl_gtk_tree_ins(ihlist, row = (/ -1 /))
      write(line,"('List entry number ',I0)") i
      ltr=len_trim(line)+1
-     line(ltr:ltr)=cnull
+     line(ltr:ltr)=c_null_char
      call hl_gtk_tree_set_cell(ihlist, absrow=i-1, col=0, svalue=line)
      call hl_gtk_tree_set_cell(ihlist, absrow=i-1, col=1, ivalue=i)
      call hl_gtk_tree_set_cell(ihlist, absrow=i-1, col=2, ivalue=3*i)
@@ -179,7 +179,7 @@ program tree
         call hl_gtk_tree_ins(ihlist, row = (/ j, -1 /))
         write(line,"('List entry number',I0,':',I0)") j,i
         ltr=len_trim(line)+1
-        line(ltr:ltr)=cnull
+        line(ltr:ltr)=c_null_char
         call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1/), col=0, svalue=line)
         call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1/), col=1, ivalue=i)
         call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1/), col=2, ivalue=3*i)
@@ -193,17 +193,17 @@ program tree
   call hl_gtk_box_pack(base, ihscrollcontain)
 
   ! Add a note about editable columns
-  lbl = gtk_label_new("The ""Name"" and ""3N"" columns are editable"//cnull)
+  lbl = gtk_label_new("The ""Name"" and ""3N"" columns are editable"//c_null_char)
   call hl_gtk_box_pack(base, lbl)
 
   ! Delete selected row
-  dbut = hl_gtk_button_new("Delete selected row"//cnull, clicked=c_funloc(del_row), &
-       & tooltip="Delete the selected row"//cnull, sensitive=FALSE)
+  dbut = hl_gtk_button_new("Delete selected row"//c_null_char, clicked=c_funloc(del_row), &
+       & tooltip="Delete the selected row"//c_null_char, sensitive=FALSE)
 
   call hl_gtk_box_pack(base, dbut)
 
 ! Also a quit button
-  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(base,qbut)
 
   ! realize the window

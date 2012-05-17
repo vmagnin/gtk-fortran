@@ -59,7 +59,7 @@ contains
 
     if (file_is_changed) then
        ok = hl_gtk_message_dialog_show(msg, GTK_BUTTONS_YES_NO, &
-            & "Really Quit"//cnull, parent=window)
+            & "Really Quit"//c_null_char, parent=window)
        if (ok == GTK_RESPONSE_NO) return
     end if
 
@@ -84,7 +84,7 @@ contains
     filtnames(2) = "Fortran code"
 
     isel = hl_gtk_file_chooser_show(chfile, create=FALSE,&
-         & title="Select input file"//cnull, filter=filters, &
+         & title="Select input file"//c_null_char, filter=filters, &
          & filter_name=filtnames, wsize=(/ 600, 400 /), edit_filters=TRUE, &
          & parent=window)
 
@@ -102,7 +102,7 @@ contains
     end do
     close(37)
     idxs = index(filename, '/', .true.)+1
-    call gtk_window_set_title(window, trim(filename(idxs:))//cnull)
+    call gtk_window_set_title(window, trim(filename(idxs:))//c_null_char)
 
     ! We manually reset the changed flag as the text box signal handler sets it.
 
@@ -132,7 +132,7 @@ contains
     end do
     close(37)
     idxs = index(filename, '/', .true.)+1
-    call gtk_window_set_title(window, trim(filename(idxs:))//cnull)
+    call gtk_window_set_title(window, trim(filename(idxs:))//c_null_char)
 
     ! We manually reset the changed flag as the text box signal handler sets it.
 
@@ -178,8 +178,8 @@ contains
     filtnames(2) = "Fortran code"
 
     isel = hl_gtk_file_chooser_show(chfile, create=TRUE,&
-         & title="Select input file"//cnull, filter=filters, &
-         & filter_name=filtnames, initial_file=trim(filename)//cnull, &
+         & title="Select input file"//c_null_char, filter=filters, &
+         & filter_name=filtnames, initial_file=trim(filename)//c_null_char, &
          & confirm_overwrite=TRUE, all=TRUE, parent=window)
 
     if (isel == FALSE) return   ! No selection made
@@ -187,7 +187,7 @@ contains
     filename = chfile(1)
     deallocate(chfile)
     idxs = index(filename, '/', .true.)+1
-    call gtk_window_set_title(window, trim(filename(idxs:))//cnull)
+    call gtk_window_set_title(window, trim(filename(idxs:))//c_null_char)
     call hl_gtk_text_view_get_text(tedit, text)
 
     open(37, file=filename, action='write')
@@ -238,7 +238,7 @@ program choosers_demo
 
   ! Create a window and a column box
 
-  window = hl_gtk_window_new("Choosers Demo"//cnull, &
+  window = hl_gtk_window_new("Choosers Demo"//c_null_char, &
        & destroy=c_funloc(my_destroy))
 
   base = hl_gtk_box_new()
@@ -248,15 +248,15 @@ program choosers_demo
 
   jb = hl_gtk_box_new(horizontal=TRUE, homogeneous=TRUE)
   call hl_gtk_box_pack(base, jb)
-  junk = hl_gtk_button_new("Open"//cnull, clicked=c_funloc(open_file))
+  junk = hl_gtk_button_new("Open"//c_null_char, clicked=c_funloc(open_file))
   call hl_gtk_box_pack(jb, junk)
-  junk = hl_gtk_file_chooser_button_new(title="Alt-open"//cnull, &
+  junk = hl_gtk_file_chooser_button_new(title="Alt-open"//c_null_char, &
        & filter=filters, filter_name=filtnames, file_set=c_funloc(do_open))
   call hl_gtk_box_pack(jb, junk)
-  sbut = hl_gtk_button_new("Save"//cnull, clicked=c_funloc(save_file),&
+  sbut = hl_gtk_button_new("Save"//c_null_char, clicked=c_funloc(save_file),&
        & sensitive=FALSE)
   call hl_gtk_box_pack(jb, sbut)
-  sabut = hl_gtk_button_new("Save as"//cnull, clicked=c_funloc(save_file_as), &
+  sabut = hl_gtk_button_new("Save as"//c_null_char, clicked=c_funloc(save_file_as), &
        & sensitive=FALSE)
   call hl_gtk_box_pack(jb, sabut)
 
@@ -267,7 +267,7 @@ program choosers_demo
   call hl_gtk_box_pack(base, jb)
 
   ! A quit button
-  junk = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
+  junk = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(base, junk)
 
   ! Realise & enter event loop

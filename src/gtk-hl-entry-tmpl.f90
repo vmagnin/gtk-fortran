@@ -216,7 +216,8 @@ contains
     integer(kind=c_int), intent(in), optional :: editable
     type(c_funptr), optional :: changed, insert_text, delete_range
     type(c_ptr), optional :: data_changed, data_insert_text, data_delete_range
-    character(len=*), dimension(:), intent(in), optional :: initial_text
+    character(kind=c_char, len=*), dimension(:), intent(in), &
+         & optional :: initial_text
     integer(kind=c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), optional :: tooltip
     integer(kind=c_int), dimension(:), optional :: ssize
@@ -225,9 +226,10 @@ contains
     ! A multiline text edit widget
     !
     ! SCROLL: c_ptr: optional: A scrolled window in which the text editor
-    ! 		is placed. If it is present, then it must be used used for packing the
-    ! 		widget into your application. If it is not used, then scroll bars
-    ! 		will not be added if the text goes beyond the edge of the box.
+    ! 		is placed. If it is present, then it must be used used for
+    ! 		packing the widget into your application. If it is not used,
+    ! 		then scroll bars will not be added if the text goes beyond
+    ! 		the edge of the box.
     ! EDITABLE: boolean: optional: Set to FALSE to make a non-editable text box.
     ! CHANGED: c_funptr: optional: Callback for the "activate" signal.
     ! DATA_CHANGED: c_ptr: optional: User data to pass to/from the activate
@@ -237,7 +239,8 @@ contains
     ! DATA_INSERT_TEXT: c_ptr: optional: User data for the insert-text callback.
     ! DELETE_RANGE: c_funptr: optional: Callback for the "delete-range" signal.
     ! 		This handler is attached to the text buffer not the text view.
-    ! DATA_DELETE_RANGE: c_ptr: optional: User data for the delete-range callback.
+    ! DATA_DELETE_RANGE: c_ptr: optional: User data for the delete-range
+    ! 		callback.
     ! INITIAL_TEXT: string(): optional: Initial text to put in the text window.
     ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
     ! 		insensitive state.
@@ -254,6 +257,7 @@ contains
     type(c_ptr) :: tbuf
     character(kind=c_char), dimension(:), allocatable :: text0
     type(gtktextiter), target :: iter
+    integer(kind=c_int) :: itextlen
 
     tbuf = gtk_text_buffer_new(C_NULL_PTR)
     view = gtk_text_view_new_with_buffer(tbuf)
@@ -262,7 +266,8 @@ contains
        scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
        call gtk_scrolled_window_set_policy(scroll, GTK_POLICY_AUTOMATIC, &
             & GTK_POLICY_AUTOMATIC)
-       if (present(ssize)) call gtk_widget_set_size_request(scroll, ssize(1), ssize(2))
+       if (present(ssize)) &
+            & call gtk_widget_set_size_request(scroll, ssize(1), ssize(2))
        call gtk_container_add(scroll, view)
     else if (present(ssize)) then
        call gtk_widget_set_size_request(view, ssize(1), ssize(2))
@@ -276,10 +281,20 @@ contains
 
     ! If there's an initial value, set it before binding the signals.
     if (present(initial_text)) then
-       call convert_f_string(initial_text, text0)
        call gtk_text_buffer_get_start_iter(tbuf, c_loc(iter))
-       call gtk_text_buffer_insert(tbuf, c_loc(iter), text0, -1)
-       deallocate(text0)
+      if (len(initial_text) > 1) then
+          call convert_f_string(initial_text, text0)
+           call gtk_text_buffer_insert(tbuf, c_loc(iter), text0, -1)
+          deallocate(text0)
+       else
+          if (initial_text(size(initial_text)) == c_null_char) then
+             itextlen = -1
+          else
+             itextlen = size(initial_text)
+          end if
+          call gtk_text_buffer_insert(tbuf, c_loc(iter), initial_text, &
+               & itextlen)
+       end if
     end if
 
     ! Attach the various signals

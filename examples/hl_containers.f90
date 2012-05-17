@@ -59,7 +59,7 @@ program containers
   call gtk_init()
 
   ! Create a window that will hold the widget system
-  win=hl_gtk_window_new('Table/notebook'//cnull, destroy=c_funloc(my_destroy))
+  win=hl_gtk_window_new('Table/notebook'//c_null_char, destroy=c_funloc(my_destroy))
 
   ! Now make a column box & put it into the window
   base = hl_gtk_box_new()
@@ -71,13 +71,13 @@ program containers
 
   ! First page is a 3x6 table
   table=hl_gtk_table_new(6, 3, homogeneous=TRUE)
-  ipos = hl_gtk_notebook_add_page(nbook, table, label="Example table"//cnull)
+  ipos = hl_gtk_notebook_add_page(nbook, table, label="Example table"//c_null_char)
 
   do i = 1, 6
      write(ltext, "('Table row',I2)") i
-     junk = gtk_label_new(trim(ltext)//cnull)
+     junk = gtk_label_new(trim(ltext)//c_null_char)
      call hl_gtk_table_attach(table, junk, 0, i-1, xspan=2)
-     junk = hl_gtk_button_new("Press"//cnull, clicked=c_funloc(bpress), &
+     junk = hl_gtk_button_new("Press"//c_null_char, clicked=c_funloc(bpress), &
           & data = c_loc(bval(i)))
      call hl_gtk_table_attach(table, junk, 2, i-1)
   end do
@@ -85,22 +85,22 @@ program containers
   ! Then 4 relocatable dummy pages
   do i = 1,4
      write(ltext, "('Dummy page',I2)") i+1
-     junk = gtk_label_new(trim(ltext)//cnull)
+     junk = gtk_label_new(trim(ltext)//c_null_char)
 
-     ipos = hl_gtk_notebook_add_page(nbook, junk, label=trim(ltext)//cnull, &
+     ipos = hl_gtk_notebook_add_page(nbook, junk, label=trim(ltext)//c_null_char, &
           & reorderable=TRUE)
   end do
 
   ! Add rows / columns
   jb = hl_gtk_box_new(horizontal=TRUE)
-  junk = hl_gtk_button_new("Add Row"//cnull, clicked=c_funloc(add_row))
+  junk = hl_gtk_button_new("Add Row"//c_null_char, clicked=c_funloc(add_row))
   call hl_gtk_box_pack(jb, junk)
-  junk = hl_gtk_button_new("Add col"//cnull, clicked=c_funloc(add_col))
+  junk = hl_gtk_button_new("Add col"//c_null_char, clicked=c_funloc(add_col))
   call hl_gtk_box_pack(jb, junk)
   call hl_gtk_box_pack(base, jb, expand=FALSE)
 
   ! And a quit button
-  junk = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
+  junk = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(base, junk, expand=FALSE)
 
   ! realize the window

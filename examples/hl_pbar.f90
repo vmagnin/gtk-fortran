@@ -71,7 +71,7 @@ program progress
 
   ! Initialize gtk & create a window for the heirarchy
   call gtk_init()
-  win = hl_gtk_window_new("Progress"//cnull, destroy=c_funloc(my_destroy))
+  win = hl_gtk_window_new("Progress"//c_null_char, destroy=c_funloc(my_destroy))
 
   ! Make a column box to contain our widgets and put it in the window
   box=hl_gtk_box_new()
@@ -84,7 +84,7 @@ program progress
   call hl_gtk_box_pack(box, pbar)
 
   ! Make a quit button and put that in the box.
-  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(box, qbut)
 
   ! Display the window
@@ -105,7 +105,7 @@ program progress
      if (bval > 1._c_double) exit
      call hl_gtk_progress_bar_set(bar, bval, string=TRUE)
      if (mod(istep, 20) == 0) &
-          & call hl_gtk_progress_bar_set(pbar, text="Working"//cnull)
+          & call hl_gtk_progress_bar_set(pbar, text="Working"//c_null_char)
      ! There's an issue with string arguments in overloaded procedures
   end do
   call gtk_widget_destroy(Win)

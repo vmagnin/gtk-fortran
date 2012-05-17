@@ -102,7 +102,7 @@ program sliders
   call gtk_init()
 
   ! Create a window and 2 boxes, one horizontal,one vertical
-  win = hl_gtk_window_new("Sliders demo"//cnull, destroy=c_funloc(my_destroy))
+  win = hl_gtk_window_new("Sliders demo"//c_null_char, destroy=c_funloc(my_destroy))
   base = hl_gtk_box_new()
   call gtk_container_add(win, base)
   box = hl_gtk_box_new(horizontal=TRUE, homogeneous=TRUE)
@@ -134,7 +134,7 @@ program sliders
   ! Finally make a quit button, put that in the vertical box and put
   ! the vertical box in the window.
 
-  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(base, qbut)
 
   ! Realize the hierarchy

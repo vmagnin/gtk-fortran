@@ -76,7 +76,7 @@ program combo_demo
   call gtk_init()
 
   ! Top level window, and column box
-  win = hl_gtk_window_new("Combo box demo"//cnull, &
+  win = hl_gtk_window_new("Combo box demo"//c_null_char, &
        & destroy=c_funloc(my_destroy))
 
   box = hl_gtk_box_new()
@@ -97,11 +97,11 @@ program combo_demo
 
   do i = 1, 5
      write(item2, "('Choice Number',I2)") i
-     call hl_gtk_combo_box_add_text(c2, trim(item2)//cnull, at_start=TRUE)
+     call hl_gtk_combo_box_add_text(c2, trim(item2)//c_null_char, at_start=TRUE)
   end do
 
   ! Quit button
-  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(box, qbut)
 
   ! Realize & enter event loop

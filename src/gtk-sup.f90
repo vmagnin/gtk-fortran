@@ -45,7 +45,7 @@ module gtk_sup
   ! Various GTK_STOCK strings.
 
   use iso_c_binding
-  use gtk, only: NULL, CNULL, TRUE, FALSE
+  use gtk, only:  TRUE, FALSE
   use g, only: alloca, g_type_fundamental
 
   implicit none
@@ -116,7 +116,7 @@ module gtk_sup
   ! Define a GtkTreeIter (this has to be pre-allocated in the calls)
   type, bind(c) :: gtktreeiter
      integer(kind=c_int) :: intv=0
-     type(c_ptr) :: p0=NULL, p1=NULL, p2=NULL
+     type(c_ptr) :: p0=C_NULL_PTR, p1=C_NULL_PTR, p2=C_NULL_PTR
   end type gtktreeiter
 
   ! Define a spacemaker for GValue It's 24 bytes on 64 bit & 20 on 32,
@@ -142,217 +142,217 @@ module gtk_sup
   ! omitted.
   !-
 
-  character(len=len("gtk-about")+1), parameter :: GTK_STOCK_ABOUT = &
-       & "gtk-about"//cnull
+  character(len=*), parameter :: GTK_STOCK_ABOUT = &
+       & "gtk-about"//c_null_char
 !!$  GTK_STOCK_ADD clashes with the routine gtk_stock_add
-!!$  character(len=len("gtk-add")+1), parameter :: GTK_STOCK_ADD = &
-!!$       & "gtk-add"//cnull
-  character(len=len("gtk-apply")+1), parameter :: GTK_STOCK_APPLY = &
-       & "gtk-apply"//cnull
-  character(len=len("gtk-bold")+1), parameter :: GTK_STOCK_BOLD = &
-       & "gtk-bold"//cnull
-  character(len=len("gtk-cancel")+1), parameter :: GTK_STOCK_CANCEL = &
-       & "gtk-cancel"//cnull
-  character(len=len("gtk-caps-lock-warning")+1), parameter :: GTK_STOCK_CAPS_LOCK_WARNING= &
-       & "gtk-caps-lock-warning"//cnull
-  character(len=len("gtk-cdrom")+1), parameter :: GTK_STOCK_CDROM = &
-       & "gtk-cdrom"//cnull
-  character(len=len("gtk-clear")+1), parameter :: GTK_STOCK_CLEAR = &
-       & "gtk-clear"//cnull
-  character(len=len("gtk-close")+1), parameter :: GTK_STOCK_CLOSE = &
-       & "gtk-close"//cnull
-  character(len=len("gtk-color-picker")+1), parameter :: GTK_STOCK_COLOR_PICKER = &
-       & "gtk-color-picker"//cnull
-  character(len=len("gtk-connect")+1), parameter :: GTK_STOCK_CONNECT = &
-       & "gtk-connect"//cnull
-  character(len=len("gtk-convert")+1), parameter :: GTK_STOCK_CONVERT = &
-       & "gtk-convert"//cnull
-  character(len=len("gtk-copy")+1), parameter :: GTK_STOCK_COPY = &
-       & "gtk-copy"//cnull
-  character(len=len("gtk-cut")+1), parameter :: GTK_STOCK_CUT = &
-       & "gtk-cut"//cnull
-  character(len=len("gtk-delete")+1), parameter :: GTK_STOCK_DELETE = &
-       & "gtk-delete"//cnull
-  character(len=len("gtk-dialog-authentication")+1), parameter :: GTK_STOCK_DIALOG_AUTHENTICATION= &
-       & "gtk-dialog-authentication"//cnull
-  character(len=len("gtk-dialog-info")+1), parameter :: GTK_STOCK_DIALOG_INFO = &
-       & "gtk-dialog-info"//cnull
-  character(len=len("gtk-dialog-warning")+1), parameter :: GTK_STOCK_DIALOG_WARNING = &
-       & "gtk-dialog-warning"//cnull
-  character(len=len("gtk-dialog-error")+1), parameter :: GTK_STOCK_DIALOG_ERROR = &
-       & "gtk-dialog-error"//cnull
-  character(len=len("gtk-dialog-question")+1), parameter :: GTK_STOCK_DIALOG_QUESTION = &
-       & "gtk-dialog-question"//cnull
-  character(len=len("gtk-directory")+1), parameter :: GTK_STOCK_DIRECTORY = &
-       & "gtk-directory"//cnull
-  character(len=len("gtk-discard")+1), parameter :: GTK_STOCK_DISCARD = &
-       & "gtk-discard"//cnull
-  character(len=len("gtk-disconnect")+1), parameter :: GTK_STOCK_DISCONNECT = &
-       & "gtk-disconnect"//cnull
-  character(len=len("gtk-dnd")+1), parameter :: GTK_STOCK_DND = &
-       & "gtk-dnd"//cnull
-  character(len=len("gtk-dnd-multiple")+1), parameter :: GTK_STOCK_DND_MULTIPLE = &
-       & "gtk-dnd-multiple"//cnull
-  character(len=len("gtk-edit")+1), parameter :: GTK_STOCK_EDIT = &
-       & "gtk-edit"//cnull
-  character(len=len("gtk-execute")+1), parameter :: GTK_STOCK_EXECUTE = &
-       & "gtk-execute"//cnull
-  character(len=len("gtk-file")+1), parameter :: GTK_STOCK_FILE = &
-       & "gtk-file"//cnull
-  character(len=len("gtk-find")+1), parameter :: GTK_STOCK_FIND = &
-       & "gtk-find"//cnull
-  character(len=len("gtk-find-and-replace")+1), parameter :: GTK_STOCK_FIND_AND_REPLACE= &
-       & "gtk-find-and-replace"//cnull
-  character(len=len("gtk-floppy")+1), parameter :: GTK_STOCK_FLOPPY = &
-       & "gtk-floppy"//cnull
-  character(len=len("gtk-fullscreen")+1), parameter :: GTK_STOCK_FULLSCREEN = &
-       & "gtk-fullscreen"//cnull
-  character(len=len("gtk-goto-bottom")+1), parameter :: GTK_STOCK_GOTO_BOTTOM = &
-       & "gtk-goto-bottom"//cnull
-  character(len=len("gtk-goto-first")+1), parameter :: GTK_STOCK_GOTO_FIRST = &
-       & "gtk-goto-first"//cnull
-  character(len=len("gtk-goto-last")+1), parameter :: GTK_STOCK_GOTO_LAST = &
-       & "gtk-goto-last"//cnull
-  character(len=len("gtk-goto-top")+1), parameter :: GTK_STOCK_GOTO_TOP = &
-       & "gtk-goto-top"//cnull
-  character(len=len("gtk-go-back")+1), parameter :: GTK_STOCK_GO_BACK = &
-       & "gtk-go-back"//cnull
-  character(len=len("gtk-go-down")+1), parameter :: GTK_STOCK_GO_DOWN = &
-       & "gtk-go-down"//cnull
-  character(len=len("gtk-go-forward")+1), parameter :: GTK_STOCK_GO_FORWARD = &
-       & "gtk-go-forward"//cnull
-  character(len=len("gtk-go-up")+1), parameter :: GTK_STOCK_GO_UP = &
-       & "gtk-go-up"//cnull
-  character(len=len("gtk-harddisk")+1), parameter :: GTK_STOCK_HARDDISK = &
-       & "gtk-harddisk"//cnull
-  character(len=len("gtk-help")+1), parameter :: GTK_STOCK_HELP = &
-       & "gtk-help"//cnull
-  character(len=len("gtk-home")+1), parameter :: GTK_STOCK_HOME = &
-       & "gtk-home"//cnull
-  character(len=len("gtk-index")+1), parameter :: GTK_STOCK_INDEX = &
-       & "gtk-index"//cnull
-  character(len=len("gtk-indent")+1), parameter :: GTK_STOCK_INDENT = &
-       & "gtk-indent"//cnull
-  character(len=len("gtk-info")+1), parameter :: GTK_STOCK_INFO = &
-       & "gtk-info"//cnull
-  character(len=len("gtk-italic")+1), parameter :: GTK_STOCK_ITALIC = &
-       & "gtk-italic"//cnull
-  character(len=len("gtk-jump-to")+1), parameter :: GTK_STOCK_JUMP_TO = &
-       & "gtk-jump-to"//cnull
-  character(len=len("gtk-justify-center")+1), parameter :: GTK_STOCK_JUSTIFY_CENTER = &
-       & "gtk-justify-center"//cnull
-  character(len=len("gtk-justify-fill")+1), parameter :: GTK_STOCK_JUSTIFY_FILL = &
-       & "gtk-justify-fill"//cnull
-  character(len=len("gtk-justify-left")+1), parameter :: GTK_STOCK_JUSTIFY_LEFT = &
-       & "gtk-justify-left"//cnull
-  character(len=len("gtk-justify-right")+1), parameter :: GTK_STOCK_JUSTIFY_RIGHT = &
-       & "gtk-justify-right"//cnull
-  character(len=len("gtk-leave-fullscreen")+1), parameter :: GTK_STOCK_LEAVE_FULLSCREEN= &
-       & "gtk-leave-fullscreen"//cnull
-  character(len=len("gtk-missing-image")+1), parameter :: GTK_STOCK_MISSING_IMAGE = &
-       & "gtk-missing-image"//cnull
-  character(len=len("gtk-media-forward")+1), parameter :: GTK_STOCK_MEDIA_FORWARD = &
-       & "gtk-media-forward"//cnull
-  character(len=len("gtk-media-next")+1), parameter :: GTK_STOCK_MEDIA_NEXT = &
-       & "gtk-media-next"//cnull
-  character(len=len("gtk-media-pause")+1), parameter :: GTK_STOCK_MEDIA_PAUSE = &
-       & "gtk-media-pause"//cnull
-  character(len=len("gtk-media-play")+1), parameter :: GTK_STOCK_MEDIA_PLAY = &
-       & "gtk-media-play"//cnull
-  character(len=len("gtk-media-previous")+1), parameter :: GTK_STOCK_MEDIA_PREVIOUS = &
-       & "gtk-media-previous"//cnull
-  character(len=len("gtk-media-record")+1), parameter :: GTK_STOCK_MEDIA_RECORD = &
-       & "gtk-media-record"//cnull
-  character(len=len("gtk-media-rewind")+1), parameter :: GTK_STOCK_MEDIA_REWIND = &
-       & "gtk-media-rewind"//cnull
-  character(len=len("gtk-media-stop")+1), parameter :: GTK_STOCK_MEDIA_STOP = &
-       & "gtk-media-stop"//cnull
-  character(len=len("gtk-network")+1), parameter :: GTK_STOCK_NETWORK = &
-       & "gtk-network"//cnull
-  character(len=len("gtk-new")+1), parameter :: GTK_STOCK_NEW = &
-       & "gtk-new"//cnull
-  character(len=len("gtk-no")+1), parameter :: GTK_STOCK_NO = &
-       & "gtk-no"//cnull
-  character(len=len("gtk-ok")+1), parameter :: GTK_STOCK_OK = &
-       & "gtk-ok"//cnull
-  character(len=len("gtk-open")+1), parameter :: GTK_STOCK_OPEN = &
-       & "gtk-open"//cnull
-  character(len=len("gtk-orientation-portrait")+1), parameter :: GTK_STOCK_ORIENTATION_PORTRAIT= &
-       & "gtk-orientation-portrait"//cnull
-  character(len=len("gtk-orientation-landscape")+1), parameter :: GTK_STOCK_ORIENTATION_LANDSCAPE= &
-       & "gtk-orientation-landscape"//cnull
-  character(len=len("gtk-orientation-reverse-landscape")+1), parameter :: GTK_STOCK_ORIENTATION_REVERSE_LANDSCAPE= &
-       & "gtk-orientation-reverse-landscape"//cnull
-  character(len=len("gtk-orientation-reverse-portrait")+1), parameter :: GTK_STOCK_ORIENTATION_REVERSE_PORTRAIT= &
-       & "gtk-orientation-reverse-portrait"//cnull
-  character(len=len("gtk-page-setup")+1), parameter :: GTK_STOCK_PAGE_SETUP = &
-       & "gtk-page-setup"//cnull
-  character(len=len("gtk-paste")+1), parameter :: GTK_STOCK_PASTE = &
-       & "gtk-paste"//cnull
-  character(len=len("gtk-preferences")+1), parameter :: GTK_STOCK_PREFERENCES = &
-       & "gtk-preferences"//cnull
-  character(len=len("gtk-print")+1), parameter :: GTK_STOCK_PRINT = &
-       & "gtk-print"//cnull
-  character(len=len("gtk-print-error")+1), parameter :: GTK_STOCK_PRINT_ERROR = &
-       & "gtk-print-error"//cnull
-  character(len=len("gtk-print-paused")+1), parameter :: GTK_STOCK_PRINT_PAUSED = &
-       & "gtk-print-paused"//cnull
-  character(len=len("gtk-print-preview")+1), parameter :: GTK_STOCK_PRINT_PREVIEW = &
-       & "gtk-print-preview"//cnull
-  character(len=len("gtk-print-report")+1), parameter :: GTK_STOCK_PRINT_REPORT = &
-       & "gtk-print-report"//cnull
-  character(len=len("gtk-print-warning")+1), parameter :: GTK_STOCK_PRINT_WARNING = &
-       & "gtk-print-warning"//cnull
-  character(len=len("gtk-properties")+1), parameter :: GTK_STOCK_PROPERTIES = &
-       & "gtk-properties"//cnull
-  character(len=len("gtk-quit")+1), parameter :: GTK_STOCK_QUIT = &
-       & "gtk-quit"//cnull
-  character(len=len("gtk-redo")+1), parameter :: GTK_STOCK_REDO = &
-       & "gtk-redo"//cnull
-  character(len=len("gtk-refresh")+1), parameter :: GTK_STOCK_REFRESH = &
-       & "gtk-refresh"//cnull
-  character(len=len("gtk-remove")+1), parameter :: GTK_STOCK_REMOVE = &
-       & "gtk-remove"//cnull
-  character(len=len("gtk-revert-to-saved")+1), parameter :: GTK_STOCK_REVERT_TO_SAVED = &
-       & "gtk-revert-to-saved"//cnull
-  character(len=len("gtk-save")+1), parameter :: GTK_STOCK_SAVE = &
-       & "gtk-save"//cnull
-  character(len=len("gtk-save-as")+1), parameter :: GTK_STOCK_SAVE_AS = &
-       & "gtk-save-as"//cnull
-  character(len=len("gtk-select-all")+1), parameter :: GTK_STOCK_SELECT_ALL = &
-       & "gtk-select-all"//cnull
-  character(len=len("gtk-select-color")+1), parameter :: GTK_STOCK_SELECT_COLOR = &
-       & "gtk-select-color"//cnull
-  character(len=len("gtk-select-font")+1), parameter :: GTK_STOCK_SELECT_FONT = &
-       & "gtk-select-font"//cnull
-  character(len=len("gtk-sort-ascending")+1), parameter :: GTK_STOCK_SORT_ASCENDING = &
-       & "gtk-sort-ascending"//cnull
-  character(len=len("gtk-sort-descending")+1), parameter :: GTK_STOCK_SORT_DESCENDING = &
-       & "gtk-sort-descending"//cnull
-  character(len=len("gtk-spell-check")+1), parameter :: GTK_STOCK_SPELL_CHECK = &
-       & "gtk-spell-check"//cnull
-  character(len=len("gtk-stop")+1), parameter :: GTK_STOCK_STOP = &
-       & "gtk-stop"//cnull
-  character(len=len("gtk-strikethrough")+1), parameter :: GTK_STOCK_STRIKETHROUGH = &
-       & "gtk-strikethrough"//cnull
-  character(len=len("gtk-undelete")+1), parameter :: GTK_STOCK_UNDELETE = &
-       & "gtk-undelete"//cnull
-  character(len=len("gtk-underline")+1), parameter :: GTK_STOCK_UNDERLINE = &
-       & "gtk-underline"//cnull
-  character(len=len("gtk-undo")+1), parameter :: GTK_STOCK_UNDO = &
-       & "gtk-undo"//cnull
-  character(len=len("gtk-unindent")+1), parameter :: GTK_STOCK_UNINDENT = &
-       & "gtk-unindent"//cnull
-  character(len=len("gtk-yes")+1), parameter :: GTK_STOCK_YES = &
-       & "gtk-yes"//cnull
-  character(len=len("gtk-zoom-100")+1), parameter :: GTK_STOCK_ZOOM_100 = &
-       & "gtk-zoom-100"//cnull
-  character(len=len("gtk-zoom-fit")+1), parameter :: GTK_STOCK_ZOOM_FIT = &
-       & "gtk-zoom-fit"//cnull
-  character(len=len("gtk-zoom-in")+1), parameter :: GTK_STOCK_ZOOM_IN = &
-       & "gtk-zoom-in"//cnull
-  character(len=len("gtk-zoom-out")+1), parameter :: GTK_STOCK_ZOOM_OUT = &
-       & "gtk-zoom-out"//cnull
+!!$  character(len=*), parameter :: GTK_STOCK_ADD = &
+!!$       & "gtk-add"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_APPLY = &
+       & "gtk-apply"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_BOLD = &
+       & "gtk-bold"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_CANCEL = &
+       & "gtk-cancel"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_CAPS_LOCK_WARNING= &
+       & "gtk-caps-lock-warning"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_CDROM = &
+       & "gtk-cdrom"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_CLEAR = &
+       & "gtk-clear"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_CLOSE = &
+       & "gtk-close"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_COLOR_PICKER = &
+       & "gtk-color-picker"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_CONNECT = &
+       & "gtk-connect"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_CONVERT = &
+       & "gtk-convert"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_COPY = &
+       & "gtk-copy"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_CUT = &
+       & "gtk-cut"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DELETE = &
+       & "gtk-delete"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DIALOG_AUTHENTICATION= &
+       & "gtk-dialog-authentication"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DIALOG_INFO = &
+       & "gtk-dialog-info"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DIALOG_WARNING = &
+       & "gtk-dialog-warning"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DIALOG_ERROR = &
+       & "gtk-dialog-error"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DIALOG_QUESTION = &
+       & "gtk-dialog-question"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DIRECTORY = &
+       & "gtk-directory"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DISCARD = &
+       & "gtk-discard"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DISCONNECT = &
+       & "gtk-disconnect"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DND = &
+       & "gtk-dnd"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_DND_MULTIPLE = &
+       & "gtk-dnd-multiple"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_EDIT = &
+       & "gtk-edit"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_EXECUTE = &
+       & "gtk-execute"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_FILE = &
+       & "gtk-file"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_FIND = &
+       & "gtk-find"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_FIND_AND_REPLACE= &
+       & "gtk-find-and-replace"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_FLOPPY = &
+       & "gtk-floppy"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_FULLSCREEN = &
+       & "gtk-fullscreen"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_GOTO_BOTTOM = &
+       & "gtk-goto-bottom"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_GOTO_FIRST = &
+       & "gtk-goto-first"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_GOTO_LAST = &
+       & "gtk-goto-last"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_GOTO_TOP = &
+       & "gtk-goto-top"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_GO_BACK = &
+       & "gtk-go-back"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_GO_DOWN = &
+       & "gtk-go-down"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_GO_FORWARD = &
+       & "gtk-go-forward"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_GO_UP = &
+       & "gtk-go-up"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_HARDDISK = &
+       & "gtk-harddisk"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_HELP = &
+       & "gtk-help"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_HOME = &
+       & "gtk-home"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_INDEX = &
+       & "gtk-index"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_INDENT = &
+       & "gtk-indent"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_INFO = &
+       & "gtk-info"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_ITALIC = &
+       & "gtk-italic"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_JUMP_TO = &
+       & "gtk-jump-to"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_JUSTIFY_CENTER = &
+       & "gtk-justify-center"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_JUSTIFY_FILL = &
+       & "gtk-justify-fill"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_JUSTIFY_LEFT = &
+       & "gtk-justify-left"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_JUSTIFY_RIGHT = &
+       & "gtk-justify-right"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_LEAVE_FULLSCREEN= &
+       & "gtk-leave-fullscreen"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_MISSING_IMAGE = &
+       & "gtk-missing-image"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_MEDIA_FORWARD = &
+       & "gtk-media-forward"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_MEDIA_NEXT = &
+       & "gtk-media-next"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_MEDIA_PAUSE = &
+       & "gtk-media-pause"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_MEDIA_PLAY = &
+       & "gtk-media-play"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_MEDIA_PREVIOUS = &
+       & "gtk-media-previous"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_MEDIA_RECORD = &
+       & "gtk-media-record"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_MEDIA_REWIND = &
+       & "gtk-media-rewind"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_MEDIA_STOP = &
+       & "gtk-media-stop"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_NETWORK = &
+       & "gtk-network"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_NEW = &
+       & "gtk-new"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_NO = &
+       & "gtk-no"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_OK = &
+       & "gtk-ok"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_OPEN = &
+       & "gtk-open"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_ORIENTATION_PORTRAIT= &
+       & "gtk-orientation-portrait"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_ORIENTATION_LANDSCAPE= &
+       & "gtk-orientation-landscape"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_ORIENTATION_REVERSE_LANDSCAPE= &
+       & "gtk-orientation-reverse-landscape"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_ORIENTATION_REVERSE_PORTRAIT= &
+       & "gtk-orientation-reverse-portrait"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_PAGE_SETUP = &
+       & "gtk-page-setup"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_PASTE = &
+       & "gtk-paste"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_PREFERENCES = &
+       & "gtk-preferences"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_PRINT = &
+       & "gtk-print"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_PRINT_ERROR = &
+       & "gtk-print-error"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_PRINT_PAUSED = &
+       & "gtk-print-paused"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_PRINT_PREVIEW = &
+       & "gtk-print-preview"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_PRINT_REPORT = &
+       & "gtk-print-report"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_PRINT_WARNING = &
+       & "gtk-print-warning"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_PROPERTIES = &
+       & "gtk-properties"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_QUIT = &
+       & "gtk-quit"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_REDO = &
+       & "gtk-redo"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_REFRESH = &
+       & "gtk-refresh"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_REMOVE = &
+       & "gtk-remove"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_REVERT_TO_SAVED = &
+       & "gtk-revert-to-saved"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_SAVE = &
+       & "gtk-save"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_SAVE_AS = &
+       & "gtk-save-as"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_SELECT_ALL = &
+       & "gtk-select-all"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_SELECT_COLOR = &
+       & "gtk-select-color"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_SELECT_FONT = &
+       & "gtk-select-font"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_SORT_ASCENDING = &
+       & "gtk-sort-ascending"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_SORT_DESCENDING = &
+       & "gtk-sort-descending"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_SPELL_CHECK = &
+       & "gtk-spell-check"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_STOP = &
+       & "gtk-stop"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_STRIKETHROUGH = &
+       & "gtk-strikethrough"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_UNDELETE = &
+       & "gtk-undelete"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_UNDERLINE = &
+       & "gtk-underline"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_UNDO = &
+       & "gtk-undo"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_UNINDENT = &
+       & "gtk-unindent"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_YES = &
+       & "gtk-yes"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_ZOOM_100 = &
+       & "gtk-zoom-100"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_ZOOM_FIT = &
+       & "gtk-zoom-fit"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_ZOOM_IN = &
+       & "gtk-zoom-in"//c_null_char
+  character(len=*), parameter :: GTK_STOCK_ZOOM_OUT = &
+       & "gtk-zoom-out"//c_null_char
 
 
   ! Interfaces for string conversions
@@ -382,9 +382,9 @@ contains
     type(gtktreeiter), intent(inout) :: iter
 
     iter%intv=0
-    iter%p0=NULL
-    iter%p1=NULL
-    iter%p2=NULL
+    iter%p0=C_NULL_PTR
+    iter%p1=C_NULL_PTR
+    iter%p2=C_NULL_PTR
   end subroutine clear_gtktreeiter
 
   !+
@@ -423,7 +423,7 @@ contains
     if (present(status)) status = 0
     do i = 1, len(f_string)
        if (i > size(textptr)) return
-       if (textptr(i) == cnull) return
+       if (textptr(i) == c_null_char) return
        f_string(i:i)=textptr(i)
     end do
     if (present(status)) status = -1  ! Output string not long enough
@@ -452,7 +452,7 @@ contains
     i = 1
     do
        if (i > size(textptr)) exit
-       if (textptr(i) == cnull) exit
+       if (textptr(i) == c_null_char) exit
        if (textptr(i) == c_new_line) count = count+1
        i = i+1
     end do
@@ -468,7 +468,7 @@ contains
              return
           end if
 
-          if (textptr(ii) == cnull) return
+          if (textptr(ii) == c_null_char) return
           if (textptr(ii) == c_new_line) then
              ii = ii+1
              exit
@@ -511,7 +511,7 @@ contains
     if (present(status)) status = 0
     do i = 1, len(f_string)
        if (i > clen) return
-       if (textptr(i) == cnull) return
+       if (textptr(i) == c_null_char) return
        f_string(i:i)=textptr(i)
     end do
     if (present(status)) status = -1  ! Output string not long enough
@@ -546,7 +546,7 @@ contains
     i = 1
     do
        if (i > clen) exit
-       if (textptr(i) == cnull) exit
+       if (textptr(i) == c_null_char) exit
        if (textptr(i) == c_new_line) count = count+1
        i = i+1
     end do
@@ -562,7 +562,7 @@ contains
              return
           end if
 
-          if (textptr(ii) == cnull) return
+          if (textptr(ii) == c_null_char) return
           if (textptr(ii) == c_new_line) then
              ii = ii+1
              exit
@@ -608,7 +608,7 @@ contains
        if (i < size(f_string)) then
           textptr(ii) = c_new_line
        else
-          textptr(ii) = cnull
+          textptr(ii) = c_null_char
        end if
        ii = ii+1
     end do

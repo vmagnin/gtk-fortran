@@ -117,7 +117,7 @@ program sliders_2
   call gtk_init()
 
   ! Create a window and 2 boxes, one horizontal,one vertical
-  win = hl_gtk_window_new("Sliders demo"//cnull, destroy=c_funloc(my_destroy))
+  win = hl_gtk_window_new("Sliders demo"//c_null_char, destroy=c_funloc(my_destroy))
   base = hl_gtk_box_new()
   call gtk_container_add(win, base)
 
@@ -139,23 +139,23 @@ program sliders_2
   box = hl_gtk_box_new(horizontal=TRUE)
   call hl_gtk_box_pack(base, box)
 
-  junk = gtk_label_new("Lower bound:"//cnull)
+  junk = gtk_label_new("Lower bound:"//c_null_char)
   call hl_gtk_box_pack(box, junk)
-  junk = hl_gtk_entry_new(value="0."//cnull, activate=c_funloc(set_lower))
+  junk = hl_gtk_entry_new(value="0."//c_null_char, activate=c_funloc(set_lower))
   call hl_gtk_box_pack(box, junk)
 
   box = hl_gtk_box_new(horizontal=TRUE)
   call hl_gtk_box_pack(base, box)
 
-  junk = gtk_label_new("Upper bound:"//cnull)
+  junk = gtk_label_new("Upper bound:"//c_null_char)
   call hl_gtk_box_pack(box, junk)
-  junk = hl_gtk_entry_new(value="10."//cnull, activate=c_funloc(set_upper))
+  junk = hl_gtk_entry_new(value="10."//c_null_char, activate=c_funloc(set_upper))
   call hl_gtk_box_pack(box, junk)
 
   ! Finally make a quit button, put that in the vertical box and put
   ! the vertical box in the window.
 
-  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(base, qbut)
 
   ! Realize the hierarchy

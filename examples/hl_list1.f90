@@ -58,7 +58,7 @@ contains
 
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
-       nsel = hl_gtk_list1_get_selections(NULL, selections, list)
+       nsel = hl_gtk_list1_get_selections(C_NULL_PTR, selections, list)
        if (nsel == 0) return
 
        if (fdata == 0) then
@@ -103,9 +103,9 @@ contains
           call convert_c_string(text, len(ftext), ftext)
 
           print *, len_trim(ftext), "*",trim(ftext),"*"
-          call hl_gtk_list1_ins(ihlist, trim(ftext)//cnull)
+          call hl_gtk_list1_ins(ihlist, trim(ftext)//c_null_char)
           fdata = 0
-          call gtk_entry_set_text(newline, ""//cnull)
+          call gtk_entry_set_text(newline, ""//c_null_char)
        end if
     end if
 
@@ -175,7 +175,7 @@ program list1
   call gtk_init()
 
   ! Create a window that will hold the widget system
-  ihwin=hl_gtk_window_new('list demo'//cnull, destroy=c_funloc(my_destroy))
+  ihwin=hl_gtk_window_new('list demo'//c_null_char, destroy=c_funloc(my_destroy))
 
   ! Now make a column box & put it into the window
   base = hl_gtk_box_new()
@@ -183,13 +183,13 @@ program list1
 
   ! Now make a single column list with multiple selections enabled
   ihlist = hl_gtk_list1_new(ihscrollcontain, changed=c_funloc(list_select),&
-       & data=c_loc(idel), multiple=TRUE, height=400, title="My list"//cnull)
+       & data=c_loc(idel), multiple=TRUE, height=400, title="My list"//c_null_char)
 
   ! Now put 10 rows into it
   do i=1,10
      write(line,"('List entry number ',I0)") i
      ltr=len_trim(line)+1
-     line(ltr:ltr)=cnull
+     line(ltr:ltr)=c_null_char
      print *, line
      call hl_gtk_list1_ins(ihlist, line)
   end do
@@ -205,9 +205,9 @@ program list1
   newline = hl_gtk_entry_new(len=35, editable=TRUE, &
        & activate=c_funloc(text_cr), data=c_loc(iappend), &
        & tooltip="Enter some text followed by <CR>"//c_new_line//&
-       &"then click 'Append' to add it to the list"//cnull)
+       &"then click 'Append' to add it to the list"//c_null_char)
   call hl_gtk_box_pack(jbox, newline)
-  abut = hl_gtk_button_new("Append"//cnull, clicked=c_funloc(b_click),&
+  abut = hl_gtk_button_new("Append"//c_null_char, clicked=c_funloc(b_click),&
        & data=c_loc(iappend))
   call hl_gtk_box_pack(jbox, abut)
 
@@ -215,22 +215,22 @@ program list1
   jbox2 = hl_gtk_box_new(horizontal=TRUE)
   call hl_gtk_box_pack(base, jbox2)
   ! Make a checkbox button and put it in the row box
-  dbut = hl_gtk_check_button_new("Delete line"//cnull,&
+  dbut = hl_gtk_check_button_new("Delete line"//c_null_char,&
        & toggled=c_funloc(del_toggle), initial_state=FALSE, &
        & data=c_loc(idel), &
-       & tooltip="Set this then click on a line to delete it"//cnull)
+       & tooltip="Set this then click on a line to delete it"//c_null_char)
   call hl_gtk_box_pack(jbox2, dbut)
 
   ! And a delete all button.
-  dabut = hl_gtk_button_new("Clear"//cnull, clicked=c_funloc(delete_all))
+  dabut = hl_gtk_button_new("Clear"//c_null_char, clicked=c_funloc(delete_all))
   call hl_gtk_box_pack(jbox2, dabut)
 
   ! And a swap rows button
-  swbut = hl_gtk_button_new("Swap rows"//cnull, clicked=c_funloc(swap_rows))
+  swbut = hl_gtk_button_new("Swap rows"//c_null_char, clicked=c_funloc(swap_rows))
   call hl_gtk_box_pack(jbox2, swbut)
 
   ! Also a quit button
-  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(my_destroy))
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(base,qbut)
 
   ! realize the window
