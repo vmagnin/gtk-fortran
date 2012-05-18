@@ -39,7 +39,7 @@ module handlers
   use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
   &der_connect_signals_full, gtk_builder_get_object, gtk_builder_new, gtk_main, g&
   &tk_main_quit, gtk_widget_show,&
-  &FALSE, CNULL, NULL, gtk_init, g_signal_connect
+  &FALSE, c_null_char, c_null_ptr, gtk_init, g_signal_connect
   use g, only: g_object_unref, g_signal_connect_object
   use widgets
   implicit none
@@ -112,11 +112,11 @@ module connect
    end type handler
    
    type(handler),dimension(5)::h=(/&
-    handler("delete_event"//CNULL, c_null_funptr),&
-    handler("destroy"//CNULL, c_null_funptr),&
-    handler("hello"//CNULL, c_null_funptr),&
-    handler("button1clicked"//CNULL, c_null_funptr),&
-    handler("button2clicked"//CNULL, c_null_funptr)&
+    handler("delete_event"//c_null_char, c_null_funptr),&
+    handler("destroy"//c_null_char, c_null_funptr),&
+    handler("hello"//c_null_char, c_null_funptr),&
+    handler("button1clicked"//c_null_char, c_null_funptr),&
+    handler("button2clicked"//c_null_char, c_null_funptr)&
     /)
 
    logical::handlers_initialized=.false.
@@ -131,7 +131,7 @@ module connect
     character(len=*), intent(out) :: F_string
     integer :: i
     i=1
-    do while(C_string(i)/=CNULL .and. i<=len(F_string))
+    do while(C_string(i)/=c_null_char .and. i<=len(F_string))
       F_string(i:i) = C_string(i)
       i=i+1
     end do
@@ -198,7 +198,7 @@ program gtkbuilder
 
   integer(c_int) :: guint
   type(c_ptr) :: error
-  error = NULL
+  error = c_null_ptr
 
   ! Initialize the GTK+ Library
   call gtk_init ()
@@ -207,13 +207,13 @@ program gtkbuilder
   builder = gtk_builder_new ()
 
   ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
-  guint = gtk_builder_add_from_file (builder, "gtkbuilder.glade"//CNULL, error)
+  guint = gtk_builder_add_from_file (builder, "gtkbuilder.glade"//c_null_char, error)
 
   ! get a pointer to the GObject "window" from GtkBuilder
-  window = gtk_builder_get_object (builder, "window"//CNULL)
+  window = gtk_builder_get_object (builder, "window"//c_null_char)
   
   ! connect signals to objects using the subroutine "connect_signals" in the module "connect"
-  call gtk_builder_connect_signals_full (builder, c_funloc(connect_signals), NULL)  
+  call gtk_builder_connect_signals_full (builder, c_funloc(connect_signals), c_null_ptr)  
      
   ! free all memory used by XML stuff      
   call g_object_unref (builder)

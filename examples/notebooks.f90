@@ -69,7 +69,7 @@ module handlers
   & gtk_notebook_set_tab_reorderable, gtk_table_attach, gtk_table_attach_defaults, &
   & gtk_table_new, gtk_widget_queue_draw, gtk_widget_set_size_request, gtk_widget_show, &
   & gtk_widget_show_all, gtk_window_new, gtk_window_set_title, &
-  & FALSE, TRUE, CNULL, GTK_WINDOW_TOPLEVEL, GTK_POS_TOP, &
+  & FALSE, TRUE, c_null_char, GTK_WINDOW_TOPLEVEL, GTK_POS_TOP, &
   & gtk_notebook_set_group_name, gtk_notebook_get_group_name
 
   use widgets
@@ -183,12 +183,12 @@ program notebook_example
   
   ! Properties of the main window :
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL)
-  call gtk_window_set_title(mainwindow, "Notebook Example"//CNULL)
+  call gtk_window_set_title(mainwindow, "Notebook Example"//c_null_char)
   call gtk_container_set_border_width (mainwindow, 10)
 
   ! Connect signals to the main window
-  call g_signal_connect (mainwindow, "delete-event"//CNULL, c_funloc(delete_event))
-  call g_signal_connect (mainwindow, "destroy"//CNULL, c_funloc(destroy))
+  call g_signal_connect (mainwindow, "delete-event"//c_null_char, c_funloc(delete_event))
+  call g_signal_connect (mainwindow, "destroy"//c_null_char, c_funloc(destroy))
 
   ! Container for notebook
   table = gtk_table_new (3, 6, FALSE)
@@ -200,7 +200,7 @@ program notebook_example
   call gtk_table_attach_defaults (table, notebook_1, 0, 6, 0, 1)
 
   ! Attach notebook to group, necessary to enable drag and drop between the two notebooks
-  call gtk_notebook_set_group_name(notebook_1,"group"//CNULL)
+  call gtk_notebook_set_group_name(notebook_1,"group"//c_null_char)
   call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, (/64/))
   call convert_c_string(textptr, my_string)
   print *, "group name = <"//TRIM(my_string)//">"
@@ -209,24 +209,24 @@ program notebook_example
   do i=1,3
     write(istr,*)i
     
-    frame = gtk_frame_new ("Append Frame "//trim(adjustl(istr))//CNULL)
+    frame = gtk_frame_new ("Append Frame "//trim(adjustl(istr))//c_null_char)
     call gtk_container_set_border_width (frame, 10)
     call gtk_widget_set_size_request (frame, 100, 75)
     
-    label = gtk_label_new ("Append Frame "//trim(adjustl(istr))//CNULL)
+    label = gtk_label_new ("Append Frame "//trim(adjustl(istr))//c_null_char)
     call gtk_container_add (frame, label)
     
-    label = gtk_label_new ("Page "//trim(adjustl(istr))//CNULL)
+    label = gtk_label_new ("Page "//trim(adjustl(istr))//c_null_char)
     nb = gtk_notebook_append_page (notebook_1, frame, label)
     call gtk_notebook_set_tab_reorderable (notebook_1, frame, TRUE)
     call gtk_notebook_set_tab_detachable (notebook_1, frame, TRUE)
   enddo
  
   ! add a page to a specific spot
-  checkbutton = gtk_check_button_new_with_label ("Check me please!"//CNULL)
+  checkbutton = gtk_check_button_new_with_label ("Check me please!"//c_null_char)
   call gtk_widget_set_size_request (checkbutton, 20, 75)
    
-  label = gtk_label_new ("Add page"//CNULL)
+  label = gtk_label_new ("Add page"//c_null_char)
   nb = gtk_notebook_insert_page (notebook_1, checkbutton, label, 2)
   call gtk_notebook_set_tab_reorderable (notebook_1, label, TRUE)
   call gtk_notebook_set_tab_detachable (notebook_1, label, TRUE)
@@ -235,14 +235,14 @@ program notebook_example
   do i=1,3
     write(istr,*) i
     
-    frame = gtk_frame_new ("Prepend Frame "//trim(adjustl(istr))//CNULL)
+    frame = gtk_frame_new ("Prepend Frame "//trim(adjustl(istr))//c_null_char)
     call gtk_container_set_border_width (frame, 10)
     call gtk_widget_set_size_request (frame, 100, 75)
     
-    label = gtk_label_new ("Prepend Frame "//trim(adjustl(istr))//CNULL)
+    label = gtk_label_new ("Prepend Frame "//trim(adjustl(istr))//c_null_char)
     call gtk_container_add (frame, label)
     
-    label = gtk_label_new ("PPage "//trim(adjustl(istr))//CNULL)
+    label = gtk_label_new ("PPage "//trim(adjustl(istr))//c_null_char)
     nb = gtk_notebook_prepend_page (notebook_1, frame, label)
     call gtk_notebook_set_tab_reorderable (notebook_1, frame, TRUE)
     call gtk_notebook_set_tab_detachable (notebook_1, frame, TRUE)
@@ -252,28 +252,28 @@ program notebook_example
   call gtk_notebook_set_current_page (notebook_1, 4)
 
   ! Create a bunch of buttons
-  button = gtk_button_new_with_label ("close"//CNULL)
-  call g_signal_connect (button, "clicked"//CNULL, c_funloc(destroy))
+  button = gtk_button_new_with_label ("close"//c_null_char)
+  call g_signal_connect (button, "clicked"//c_null_char, c_funloc(destroy))
   call gtk_table_attach_defaults (table, button, 0, 1, 1, 2)
     
-  button = gtk_button_new_with_label ("next page"//CNULL)
-  call g_signal_connect (button, "clicked"//CNULL, c_funloc(next_page_book))
+  button = gtk_button_new_with_label ("next page"//c_null_char)
+  call g_signal_connect (button, "clicked"//c_null_char, c_funloc(next_page_book))
   call gtk_table_attach_defaults (table, button, 1, 2, 1, 2)
     
-  button = gtk_button_new_with_label ("prev page"//CNULL)
-  call g_signal_connect (button, "clicked"//CNULL, c_funloc(prev_page_book))
+  button = gtk_button_new_with_label ("prev page"//c_null_char)
+  call g_signal_connect (button, "clicked"//c_null_char, c_funloc(prev_page_book))
   call gtk_table_attach_defaults (table, button, 2, 3, 1, 2)
     
-  button = gtk_button_new_with_label ("tab position"//CNULL)
-  call g_signal_connect (button, "clicked"//CNULL, c_funloc(rotate_book))
+  button = gtk_button_new_with_label ("tab position"//c_null_char)
+  call g_signal_connect (button, "clicked"//c_null_char, c_funloc(rotate_book))
   call gtk_table_attach_defaults (table, button, 3, 4, 1, 2)
     
-  button = gtk_button_new_with_label ("tabs/border on/off"//CNULL)
-  call g_signal_connect (button, "clicked"//CNULL, c_funloc(tabsborder_book))
+  button = gtk_button_new_with_label ("tabs/border on/off"//c_null_char)
+  call g_signal_connect (button, "clicked"//c_null_char, c_funloc(tabsborder_book))
   call gtk_table_attach_defaults (table, button, 4, 5, 1, 2)
     
-  button = gtk_button_new_with_label ("remove page"//CNULL)
-  call g_signal_connect (button, "clicked"//CNULL, c_funloc(remove_book))
+  button = gtk_button_new_with_label ("remove page"//c_null_char)
+  call g_signal_connect (button, "clicked"//c_null_char, c_funloc(remove_book))
   call gtk_table_attach_defaults (table, button, 5, 6, 1, 2)
 
   ! Create second notebook, place the position of the tabs
@@ -282,20 +282,20 @@ program notebook_example
   call gtk_table_attach_defaults (table, notebook_2, 0, 6, 2, 3)
 
   ! Attach notebook to group
-  call gtk_notebook_set_group_name(notebook_2,"group"//CNULL)
+  call gtk_notebook_set_group_name(notebook_2,"group"//c_null_char)
 
   !append a bunch of pages to the notebook
   do i=1,3
     write(istr,*) i
     
-    frame = gtk_frame_new ("Notebook 2 - Frame "//trim(adjustl(istr))//CNULL)
+    frame = gtk_frame_new ("Notebook 2 - Frame "//trim(adjustl(istr))//c_null_char)
     call gtk_container_set_border_width (frame, 10)
     call gtk_widget_set_size_request (frame, 100, 75)
     
-    label = gtk_label_new ("Notebook 2 - Frame "//trim(adjustl(istr))//CNULL)
+    label = gtk_label_new ("Notebook 2 - Frame "//trim(adjustl(istr))//c_null_char)
     call gtk_container_add (frame, label)
     
-    label = gtk_label_new ("Notebook 2 - Page "//trim(adjustl(istr))//CNULL)
+    label = gtk_label_new ("Notebook 2 - Page "//trim(adjustl(istr))//c_null_char)
     nb = gtk_notebook_append_page (notebook_2, frame, label)
     call gtk_notebook_set_tab_reorderable (notebook_2, frame, TRUE)
     call gtk_notebook_set_tab_detachable (notebook_2, frame, TRUE)

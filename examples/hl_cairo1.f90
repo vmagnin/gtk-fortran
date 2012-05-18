@@ -33,7 +33,7 @@ module handlers
   &idget_show, gtk_window_new, gtk_window_set_default, gtk_window_set_default_siz&
   &e, gtk_window_set_title, gtk_widget_show_all, gtk_main_quit, &
   & gtk_widget_queue_draw, &
-  & TRUE, FALSE, CNULL, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
+  & TRUE, FALSE, c_null_char, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
   & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, gtk_event_box_new, &
   & GDK_ENTER_NOTIFY, GDK_LEAVE_NOTIFY, GDK_2BUTTON_PRESS, GDK_KEY_RELEASE, &
   & GDK_CONTROL_MASK, GDK_POINTER_MOTION_MASK, GDK_BUTTON_PRESS, &
@@ -156,7 +156,7 @@ contains
     type(c_ptr) :: keystr
     character(len=20) :: keyname
 
-    key_q = gdk_keyval_from_name("q"//cnull)
+    key_q = gdk_keyval_from_name("q"//c_null_char)
     print *, "Key event"
     if (c_associated(event)) then
        call c_f_pointer(event,bevent)
@@ -216,13 +216,13 @@ contains
     ! Text:
     call cairo_set_source_rgb(my_cairo_context, 0._c_double, 0._c_double, &
          & 1._c_double)
-    call cairo_select_font_face(my_cairo_context, "Times"//CNULL, &
+    call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, &
          & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
     call cairo_set_font_size (my_cairo_context, 40._c_double)
     call cairo_move_to(my_cairo_context, 100._c_double, 30._c_double)
-    call cairo_show_text (my_cairo_context, "gtk-fortran"//CNULL)
+    call cairo_show_text (my_cairo_context, "gtk-fortran"//c_null_char)
     call cairo_move_to(my_cairo_context, 100._c_double, 75._c_double)
-    call cairo_show_text (my_cairo_context, "Cairo & Fortran are good friends"//CNULL)
+    call cairo_show_text (my_cairo_context, "Cairo & Fortran are good friends"//c_null_char)
 
     ! Circles:
     call cairo_new_sub_path(my_cairo_context)
@@ -239,7 +239,7 @@ contains
     
     ! Save:
     cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), &
-         & "cairo.png"//CNULL)
+         & "cairo.png"//c_null_char)
     
     call gtk_widget_queue_draw(widget)
     call hl_gtk_drawing_area_cairo_destroy(my_cairo_context)
@@ -261,7 +261,7 @@ program cairo_basics_click
   ! Properties of the main window :
   width = 700
   height = 700
-  my_window = hl_gtk_window_new("Cairo events demo"//CNULL, &
+  my_window = hl_gtk_window_new("Cairo events demo"//c_null_char, &
        & delete_event = c_funloc(delete_h))
       
   my_drawing_area = hl_gtk_drawing_area_new(&

@@ -31,7 +31,7 @@ module handlers
   &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
   &idget_show, gtk_window_new, gtk_window_set_default, gtk_window_set_default_siz&
   &e, gtk_window_set_title,&
-  &TRUE, FALSE, CNULL, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
+  &TRUE, FALSE, c_null_char, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
   &CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
   
   use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, cairo_&
@@ -96,13 +96,13 @@ contains
   
     ! Text:
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 1d0)
-    call cairo_select_font_face(my_cairo_context, "Times"//CNULL, CAIRO_FONT_SLANT_NORMAL, &
+    call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, CAIRO_FONT_SLANT_NORMAL, &
                                  &  CAIRO_FONT_WEIGHT_NORMAL)
     call cairo_set_font_size (my_cairo_context, 40d0)
     call cairo_move_to(my_cairo_context, 100d0, 30d0)
-    call cairo_show_text (my_cairo_context, "gtk-fortran"//CNULL)
+    call cairo_show_text (my_cairo_context, "gtk-fortran"//c_null_char)
     call cairo_move_to(my_cairo_context, 100d0, 75d0)
-    call cairo_show_text (my_cairo_context, "Cairo & Fortran are good friends"//CNULL)
+    call cairo_show_text (my_cairo_context, "Cairo & Fortran are good friends"//c_null_char)
 
     ! Circles:
     call cairo_new_sub_path(my_cairo_context)
@@ -114,7 +114,7 @@ contains
     end do
     
     ! Save:
-    cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//CNULL)
+    cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//c_null_char)
     
     call cairo_destroy(my_cairo_context)
     ret = FALSE
@@ -136,12 +136,12 @@ program cairo_basics
   height = 700
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_default_size(my_window, width, height)
-  call gtk_window_set_title(my_window, "Cairo basics demo"//CNULL)
-  call g_signal_connect (my_window, "delete-event"//CNULL, c_funloc(delete_event))
+  call gtk_window_set_title(my_window, "Cairo basics demo"//c_null_char)
+  call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
       
   my_drawing_area = gtk_drawing_area_new()
   ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
-  call g_signal_connect (my_drawing_area, "draw"//CNULL, c_funloc(expose_event))
+  call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
 

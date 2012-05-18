@@ -48,9 +48,9 @@ module gtk
   end interface 
 
   ! Some useful parameters to ease coding:
-  character(kind=c_char), parameter :: CNULL = c_null_char
-  type(c_ptr), parameter       :: NULL = c_null_ptr
-  type(c_funptr), parameter    :: FNULL = c_null_funptr
+!  character(kind=c_char), parameter :: c_null_char = c_null_char
+!  type(c_ptr), parameter       :: NULL = c_null_ptr
+!  type(c_funptr), parameter    :: FNULL = c_null_funptr
   ! In GTK+ gboolean is int:
   integer(c_int), parameter   :: FALSE = 0
   integer(c_int), parameter   :: TRUE = 1
@@ -67,10 +67,10 @@ contains
     
     if (present(data0)) then
       handler_id =  g_signal_connect_data (instance, detailed_signal, c_handler, &
-            & data0, FNULL, 0)
+            & data0, c_null_funptr, 0)
     else
       handler_id =  g_signal_connect_data (instance, detailed_signal, c_handler, &
-            & NULL, FNULL, 0)
+            & c_null_ptr, c_null_funptr, 0)
     end if
   end subroutine
 

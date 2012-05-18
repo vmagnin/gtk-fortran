@@ -64,7 +64,7 @@ module strings
 
   use widgets
 
-  use gtk, only: CNULL, TRUE, FALSE
+  use gtk, only: c_null_char, TRUE, FALSE
 
 contains
 
@@ -76,7 +76,7 @@ contains
     character(len=*), intent(out) :: F_string
     integer :: i
     i=1
-    do while(C_string(i)/=CNULL .and. i<=len(F_string))
+    do while(C_string(i)/=c_null_char .and. i<=len(F_string))
       F_string(i:i) = C_string(i)
       i=i+1
     end do
@@ -98,7 +98,7 @@ contains
     else
       call C_F_pointer(C_string,p_chars,[huge(0)])
       i=1
-      do while(p_chars(i)/=CNULL .and. i<=len(F_string))
+      do while(p_chars(i)/=c_null_char .and. i<=len(F_string))
         F_string(i:i) = p_chars(i)
         i=i+1
       end do
@@ -146,7 +146,7 @@ module connect
 
   use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
   &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&
-  &FALSE, CNULL, NULL, TRUE, gtk_init, gtk_builder_get_objects, gtk_builder_connect_signals_full,&
+  &FALSE, c_null_char, c_null_ptr, TRUE, gtk_init, gtk_builder_get_objects, gtk_builder_connect_signals_full,&
   gtk_buildable_get_name, gtk_text_view_get_buffer, gtk_text_buffer_set_text,&
   gtk_combo_box_get_active, gtk_combo_box_set_active, gtk_combo_box_get_model, gtk_combo_box_get_active_iter,&
   gtk_tree_model_get_value, gtk_tree_model_iter_nth_child,&
@@ -334,7 +334,7 @@ contains
     filtnames(1) = "Glade3 file"
 
     isel = hl_gtk_file_chooser_show(chfile, cdir=working_dir, create=FALSE,&
-         & title="Select input file"//cnull, filter=filters, &
+         & title="Select input file"//c_null_char, filter=filters, &
          & filter_name=filtnames, wsize=(/ 600, 400 /), edit_filters=TRUE, &
          & parent=window)
 
@@ -351,7 +351,7 @@ contains
     
     b = gtk_builder_new ()
     fileinfo=filename(1:len_trim(filename))
-    guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//CNULL, error)
+    guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
     gslist = gtk_builder_get_objects(b)
     write(f_string,*) g_slist_length(gslist)," objects found"
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
@@ -361,14 +361,14 @@ contains
       call C_F_string_ptr(object_name_ptr, F_string)
       if (fbool(gtk_widget_is_toplevel(gpointer))) then
         call gtk_list_store_append (toplevel_widgets,c_loc(iter))
-        call g_value_set_string(val, f_string(1:len_trim(f_string))//cnull)
+        call g_value_set_string(val, f_string(1:len_trim(f_string))//c_null_char)
         call gtk_list_store_set_value (toplevel_widgets,c_loc(iter),0,val)
       endif
       fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     enddo
     
     n_connections=0
-    call gtk_builder_connect_signals_full (b, c_funloc(count_connections), NULL)  
+    call gtk_builder_connect_signals_full (b, c_funloc(count_connections), c_null_ptr)  
     write(f_string,*) n_connections," signal connections found"
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     call g_object_unref (b)
@@ -377,10 +377,10 @@ contains
     allocate(connections(n_connections))
     n_connections=0
     b = gtk_builder_new ()
-    guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//CNULL, error)
-    call gtk_builder_connect_signals_full (b, c_funloc(get_connections), NULL)  
+    guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
+    call gtk_builder_connect_signals_full (b, c_funloc(get_connections), c_null_ptr)  
     call g_object_unref (b)
-    call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//CNULL, -1)
+    call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//c_null_char, -1)
 
     call gtk_combo_box_set_active(appwindow_selector,0)
     call g_value_unset(val)
@@ -402,7 +402,7 @@ contains
     type(gvalue), target :: value
 
     model = gtk_combo_box_get_model(combobox)
-    valid = gtk_tree_model_iter_nth_child(model, c_loc(iter), NULL, gtk_combo_box_get_active (combobox))
+    valid = gtk_tree_model_iter_nth_child(model, c_loc(iter), c_null_ptr, gtk_combo_box_get_active (combobox))
     val = c_loc(value)
     call gtk_tree_model_get_value(model, c_loc(iter), column, val)
     textptr = g_value_get_string(val)
@@ -430,7 +430,7 @@ contains
       call chdir(working_dir)
       subdir=filename(index(filename,"/",.true.)+1:index(filename,".",.true.)-1)
       if (create_subdir) then
-        if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//CNULL,488) .ge. 0) then
+        if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//c_null_char,488) .ge. 0) then
           working_dir=working_dir(1:len_trim(working_dir))//"/"//subdir
           call chdir(working_dir)
           call copy_file(filename(1:len_trim(filename)),filename(index(filename,"/",.true.)+1:len_trim(filename)))
@@ -505,7 +505,7 @@ contains
       write(50,'(A)')"module handlers"
       write(50,'(A)')"  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&"
       write(50,'(A)')"  &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&"
-      write(50,'(A)')"  &FALSE, CNULL, NULL, gtk_init"
+      write(50,'(A)')"  &FALSE, c_null_char, c_null_ptr, gtk_init"
       write(50,'(A)')"  use g, only: g_object_unref"
       if (update_used_functions) then
         call chdir(base_dir(1:len_trim(base_dir))//"/../src")
@@ -629,7 +629,7 @@ contains
       write(50,'(A)')""
       write(50,'(A)')"  integer(c_int) :: guint"
       write(50,'(A)')"  type(c_ptr) :: error"
-      write(50,'(A)')"  error = NULL"
+      write(50,'(A)')"  error = c_null_ptr"
       write(50,'(A)')""
       write(50,'(A)')"  ! Initialize the GTK+ Library"
       write(50,'(A)')"  call gtk_init ()"
@@ -638,7 +638,7 @@ contains
       write(50,'(A)')"  builder = gtk_builder_new ()"
       write(50,'(A)')""
       write(50,'(A)')"  ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object"
-      write(50,'(A)')"  guint = gtk_builder_add_from_file (builder, """//subdir(1:len_trim(subdir))//".glade""//CNULL, error)"
+      write(50,'(A)')"  guint = gtk_builder_add_from_file (builder, """//subdir(1:len_trim(subdir))//".glade""//c_null_char, error)"
       write(50,'(A)')""
       call combobox_get_active_string_value(appwindow_selector, 0, appwindow)
       if (widget_symbols) then
@@ -658,19 +658,19 @@ contains
               endif
             enddo
             write(50,'(A)')"  "//f_string(1:len_trim(f_string))//" = gtk_builder_get_object (builder, """//&
-              f_string_ori(1:len_trim(f_string_ori))//"""//CNULL)"
+              f_string_ori(1:len_trim(f_string_ori))//"""//c_null_char)"
           endif
         enddo
       else
         write(50,'(A)')"  ! get a pointer to the application window """//appwindow(1:len_trim(appwindow))//&
           """ from GtkBuilder"
         write(50,'(A)')"  "//appwindow(1:len_trim(appwindow))//" = gtk_builder_get_object (builder, """//&
-          appwindow(1:len_trim(appwindow))//"""//CNULL)"
+          appwindow(1:len_trim(appwindow))//"""//c_null_char)"
       endif
       write(50,'(A)')""
       write(50,'(A)')"  ! use GModule to look at the applications symbol table to find the function name"
       write(50,'(A)')"  ! that matches the handler name specified in Glade3"
-      write(50,'(A)')"  call gtk_builder_connect_signals (builder, NULL)"
+      write(50,'(A)')"  call gtk_builder_connect_signals (builder, c_null_ptr)"
       write(50,'(A)')""
       write(50,'(A)')"  ! free all memory used by XML stuff"     
       write(50,'(A)')"  call g_object_unref (builder)"
@@ -742,7 +742,7 @@ program gtkfsketcher
 
   integer(c_int) :: guint
   type(c_ptr) :: error
-  error = NULL
+  error = c_null_ptr
 
   call getcwd(base_dir)
   open(99, file="gtkf-sketcher.log", action='write')
@@ -754,34 +754,34 @@ program gtkfsketcher
   builder = gtk_builder_new ()
   
   ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
-  guint = gtk_builder_add_from_file (builder, "gtkf-sketcher.glade"//CNULL, error)
+  guint = gtk_builder_add_from_file (builder, "gtkf-sketcher.glade"//c_null_char, error)
 
   ! get a pointer to the GObject "window" from GtkBuilder
-  window = gtk_builder_get_object (builder, "window"//CNULL)
+  window = gtk_builder_get_object (builder, "window"//c_null_char)
 
   ! get a pointer to the file info text field buffer
-  textbuffer = gtk_builder_get_object (builder, "fileinfo_buffer"//CNULL)
+  textbuffer = gtk_builder_get_object (builder, "fileinfo_buffer"//c_null_char)
   
   ! get a pointer to the selection combo boxes
-  license_selector = gtk_builder_get_object (builder, "license"//CNULL)
-  appwindow_selector = gtk_builder_get_object (builder, "appwindow"//CNULL)
-  toplevel_widgets = gtk_builder_get_object (builder, "toplevel_widgets"//CNULL)
+  license_selector = gtk_builder_get_object (builder, "license"//c_null_char)
+  appwindow_selector = gtk_builder_get_object (builder, "appwindow"//c_null_char)
+  toplevel_widgets = gtk_builder_get_object (builder, "toplevel_widgets"//c_null_char)
 
   ! get pointers to the option check buttons
-  create_subdir_button = gtk_builder_get_object (builder, "create_subdir"//CNULL)
-  create_handlerfiles_button = gtk_builder_get_object (builder, "create_handlerfiles"//CNULL)
-  overwrite_handlerfiles_button = gtk_builder_get_object (builder, "overwrite_handlerfiles"//CNULL)
-  widget_symbols_button = gtk_builder_get_object (builder, "widget_symbols"//CNULL)
-  update_used_functions_button = gtk_builder_get_object (builder, "update_used_functions"//CNULL)
-  use_hl_gtk_button = gtk_builder_get_object (builder, "use_hl_gtk"//CNULL)
-  include_files_button = gtk_builder_get_object (builder, "include_files"//CNULL)
+  create_subdir_button = gtk_builder_get_object (builder, "create_subdir"//c_null_char)
+  create_handlerfiles_button = gtk_builder_get_object (builder, "create_handlerfiles"//c_null_char)
+  overwrite_handlerfiles_button = gtk_builder_get_object (builder, "overwrite_handlerfiles"//c_null_char)
+  widget_symbols_button = gtk_builder_get_object (builder, "widget_symbols"//c_null_char)
+  update_used_functions_button = gtk_builder_get_object (builder, "update_used_functions"//c_null_char)
+  use_hl_gtk_button = gtk_builder_get_object (builder, "use_hl_gtk"//c_null_char)
+  include_files_button = gtk_builder_get_object (builder, "include_files"//c_null_char)
 
   ! get default options
   call default_options (builder, error)
  
   ! use GModule to look at the applications symbol table to find the function name 
   ! that matches the handler name we specified in Glade3
-  call gtk_builder_connect_signals (builder, NULL)  
+  call gtk_builder_connect_signals (builder, c_null_ptr)  
 
   ! free all memory used by XML stuff      
   call g_object_unref (builder)

@@ -31,7 +31,7 @@ module handlers
        &ation_do, gtk_widget_get_window, gtk_widget_queue_draw, gtk_widget_set_size_re&
        &quest, gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_de&
        &fault, gtk_window_set_title, GDK_COLORSPACE_RGB,&
-       &gtk_init, g_signal_connect, FALSE, TRUE, NULL, CNULL, GTK_WINDOW_TOPLEVEL, &
+       &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char, GTK_WINDOW_TOPLEVEL, &
        & GDK_SCROLL_UP, GDK_SCROLL_DOWN, gtk_vbox_new, gtk_statusbar_new, &
        & gtk_statusbar_remove_all, gtk_statusbar_push, gtk_box_pack_start, &
        & GDK_SHIFT_MASK, GDK_CONTROL_MASK, gtk_label_new, gtk_label_set_text
@@ -115,7 +115,7 @@ contains
        need_point=.false.
 !       call gtk_statusbar_remove_all(status_bar, 0)
        id = gtk_statusbar_push(status_bar, 0, &
-            & "Left|Centre mark: region corner, Right: Reset, Wheel: Zoom in/out"//cnull)
+            & "Left|Centre mark: region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
     else if (need_point) then ! Already have one point
        call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x1, y1)
        mxmin=min(x0,x1)
@@ -153,19 +153,19 @@ contains
        write(rangestr, &
             & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4)") &
             & mxmin,  mxmax, mymin, mymax
-       call gtk_label_set_text(rangeid, trim(rangestr)//cnull)
+       call gtk_label_set_text(rangeid, trim(rangestr)//c_null_char)
 
        call mandelbrot_set(drawing_area, 1000)
 !       call paint_set(gtk_widget_get_window(drawing_area))
        need_point=.false.
 !       call gtk_statusbar_remove_all(status_bar, 0)
        id = gtk_statusbar_push(status_bar, 0, &
-            & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//cnull)
+            & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
    else
        call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x0, y0)
        need_point=.true.
        id = gtk_statusbar_push(status_bar, 0, &
-            & "Click the opposite corner of the region"//cnull)
+            & "Click the opposite corner of the region"//c_null_char)
     end if
   end subroutine mark_point
 
@@ -215,7 +215,7 @@ contains
     write(rangestr, &
          & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4)") &
          & mxmin,  mxmax, mymin, mymax
-    call gtk_label_set_text(rangeid, trim(rangestr)//cnull)
+    call gtk_label_set_text(rangeid, trim(rangestr)//c_null_char)
 
     print *, "Window:", mxmin,mxmax,mymin, mymax
 
@@ -226,7 +226,7 @@ contains
     need_point=.false.
 !    call gtk_statusbar_remove_all(status_bar, 0)
     id = gtk_statusbar_push(status_bar, 0, &
-         & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//cnull)
+         & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
 
   end subroutine zoom_view
 
@@ -343,8 +343,8 @@ program mandelbrot_zoom
 
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_title(my_window, &
-       & "A tribute to Benoit MANDELBROT (1924-2010)"//CNULL)
-  call g_signal_connect (my_window, "delete-event"//CNULL, &
+       & "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
+  call g_signal_connect (my_window, "delete-event"//c_null_char, &
        & c_funloc(delete_event))
 
   jb = gtk_vbox_new(FALSE, 0)
@@ -355,24 +355,24 @@ program mandelbrot_zoom
   call gtk_widget_set_size_request(my_drawing_area, &
        & width, height)
   call gtk_container_add(my_event_box, my_drawing_area)
-  call g_signal_connect (my_drawing_area, "draw"//CNULL, &
+  call g_signal_connect (my_drawing_area, "draw"//c_null_char, &
        & c_funloc(expose_event))
-  call g_signal_connect(my_event_box, "button-press-event"//cnull, &
+  call g_signal_connect(my_event_box, "button-press-event"//c_null_char, &
        & c_funloc(mark_point))
-  call g_signal_connect(my_event_box, "scroll-event"//cnull, &
+  call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
        & c_funloc(zoom_view))
   call gtk_box_pack_start(jb, my_event_box, FALSE, FALSE, 0)
 
   write(rangestr, &
        & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4)") &
        & mxmin,  mxmax, mymin, mymax
-  rangeid = gtk_label_new(trim(rangestr)//cnull)
+  rangeid = gtk_label_new(trim(rangestr)//c_null_char)
   call gtk_box_pack_start(jb, rangeid, FALSE, FALSE, 0)
 
   status_bar = gtk_statusbar_new()
   call gtk_box_pack_start(jb, status_bar, FALSE, FALSE, 0)
   id = gtk_statusbar_push(status_bar, 0, &
-       & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//cnull)
+       & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
 
   call gtk_widget_show_all (my_window)
 
