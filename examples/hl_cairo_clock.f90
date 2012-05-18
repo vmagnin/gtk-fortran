@@ -37,7 +37,7 @@ module cl_handlers
        &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_queue_draw, gtk_w&
        &idget_show, gtk_widget_show_all, gtk_window_new, &
        & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD, &
-       &  TRUE, FALSE, CNULL, gtk_init, g_signal_connect
+       &  TRUE, FALSE, c_null_char, gtk_init, g_signal_connect
 
   use g, only: g_usleep
 
@@ -80,9 +80,9 @@ contains
     character(len=3) :: sdate
 
     character(len=4), parameter, dimension(12) :: mnames = &
-         & (/'JAN'//cnull, 'FEB'//cnull, 'MAR'//cnull, 'APR'//cnull, &
-         &   'MAY'//cnull, 'JUN'//cnull, 'JUL'//cnull, 'AUG'//cnull, &
-         &   'SEP'//cnull, 'OCT'//cnull, 'NOV'//cnull, 'DEC'//cnull /)
+         & (/'JAN'//c_null_char, 'FEB'//c_null_char, 'MAR'//c_null_char, 'APR'//c_null_char, &
+         &   'MAY'//c_null_char, 'JUN'//c_null_char, 'JUL'//c_null_char, 'AUG'//c_null_char, &
+         &   'SEP'//c_null_char, 'OCT'//c_null_char, 'NOV'//c_null_char, 'DEC'//c_null_char /)
     integer :: i
     real(kind=c_double) :: r0, r1, x0, x1, y0, y1, th, xc, yc, ycs
 
@@ -180,7 +180,7 @@ contains
     else
        call cairo_set_source_rgb(cr, 1._c_double, 1._c_double, 1._c_double)
     end if
-    call cairo_select_font_face(cr, "sans-serif"//cnull, &
+    call cairo_select_font_face(cr, "sans-serif"//c_null_char, &
          & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
     x0 = xc*.4_c_double
     call cairo_set_line_width(cr, 1._c_double)
@@ -283,7 +283,7 @@ program cairo_clock
 
   call gtk_init()
 
-  window = hl_gtk_window_new("Cairo Clock"//cnull, &
+  window = hl_gtk_window_new("Cairo Clock"//c_null_char, &
        & delete_event = c_funloc(delete_cb))
 
   drawing = hl_gtk_drawing_area_new(size=(/width, height/), &

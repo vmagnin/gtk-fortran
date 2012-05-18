@@ -29,7 +29,7 @@
 ! with informations on your system (OS version, GTK+ version, compiler...)
 
 module tests
-  use gtk, only: gtk_false, gtk_true, TRUE, FALSE, NULL, CNULL
+  use gtk, only: gtk_false, gtk_true, TRUE, FALSE, c_null_ptr, c_null_char
   use g, only: g_ascii_tolower, g_bit_storage, g_date_get_day, g_date_get_days_in&
   &_month, g_hostname_is_ip_address, g_inet_socket_address_get_port, g_inet_socke&
   &t_address_new, g_random_double, g_random_double_range, g_random_int, g_random_&
@@ -485,10 +485,10 @@ contains
   !      logical(c_bool) :: g_hostname_is_ip_address
   !      character(kind=c_char), dimension(*) :: hostname
   !    end function
-    l1 = g_hostname_is_ip_address("192.168.0.1"//CNULL)
-    l2 = g_hostname_is_ip_address("1AA.168.0.1"//CNULL)
-    l3 = g_hostname_is_ip_address("blabla"//CNULL)
-    l4 = g_hostname_is_ip_address("192.168,0.1"//CNULL)
+    l1 = g_hostname_is_ip_address("192.168.0.1"//c_null_char)
+    l2 = g_hostname_is_ip_address("1AA.168.0.1"//c_null_char)
+    l3 = g_hostname_is_ip_address("blabla"//c_null_char)
+    l4 = g_hostname_is_ip_address("192.168,0.1"//c_null_char)
     if ((l1 /= TRUE) .or. (l2 /= FALSE) .or. (l3 /= FALSE) .or. (l4 /= FALSE)) then
       write(1,*) "ERROR g_hostname_is_ip_address:", l1, l2, l3, l4
       errors = errors + 1

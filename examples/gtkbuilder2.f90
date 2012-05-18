@@ -39,7 +39,7 @@ end module
 module handlers
   use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
   &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&
-  &FALSE, CNULL, NULL, gtk_init
+  &FALSE, c_null_char, c_null_ptr, gtk_init
   use g, only: g_object_unref
   use widgets
   implicit none
@@ -101,7 +101,7 @@ program gtkbuilder
 
   integer(c_int) :: guint
   type(c_ptr) :: error
-  error=NULL
+  error=c_null_ptr
 
   ! Initialize the GTK+ Library
   call gtk_init ()
@@ -110,14 +110,14 @@ program gtkbuilder
   builder = gtk_builder_new ()
 
   ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
-  guint = gtk_builder_add_from_file (builder, "gtkbuilder.glade"//CNULL, error)
+  guint = gtk_builder_add_from_file (builder, "gtkbuilder.glade"//c_null_char, error)
 
   ! get a pointer to the GObject "window" from GtkBuilder
-  window = gtk_builder_get_object (builder, "window"//CNULL)
+  window = gtk_builder_get_object (builder, "window"//c_null_char)
   
   ! use GModule to look at the applications symbol table to find the function name 
   ! that matches the handler name we specified in Glade3
-  call gtk_builder_connect_signals (builder, NULL)  
+  call gtk_builder_connect_signals (builder, c_null_ptr)  
 
   ! free all memory used by XML stuff      
   call g_object_unref (builder)

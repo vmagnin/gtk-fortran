@@ -30,7 +30,7 @@ module handlers
   use gtk, only: gtk_container_add, gtk_main, gtk_widget_get_window, gtk_widget_show_all,&
   gtk_window_new, gtk_window_set_title, gtk_box_pack_start, gtk_table_new, gtk_vbox_new,&
   gtk_table_attach, gtk_label_new, gtk_button_new_with_label, gtk_main_quit,&
-  TRUE, FALSE, CNULL, NULL, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect,&
+  TRUE, FALSE, c_null_char, c_null_ptr, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect,&
   gtk_justify_center, gtk_widget_show, gtk_widget_queue_draw
 
   use g, only: g_timeout_add
@@ -100,8 +100,8 @@ program gtkextra_plot_demo
   
   ! Properties of the main window :
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
-  call gtk_window_set_title(my_window, "GtkExtra Plot Demo"//CNULL)
-  call g_signal_connect (my_window, "delete-event"//CNULL, c_funloc(delete_event))
+  call gtk_window_set_title(my_window, "GtkExtra Plot Demo"//c_null_char)
+  call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
 
   ! VBox container
   w_vbox = gtk_vbox_new(FALSE, 0)
@@ -114,7 +114,7 @@ program gtkextra_plot_demo
 !GTK_PLOT_CANVAS_SET_FLAGS (GTK_PLOT_CANVAS (w_plot_canvas),GTK_PLOT_CANVAS_CAN_RESIZE);
 
   ! Create new GtkExtra plot and add it to plot canvas
-  w_plot = gtk_plot_new(NULL)
+  w_plot = gtk_plot_new(c_null_ptr)
   call gtk_plot_set_range(w_plot, 0.0_c_double, 1._c_double, -0.5_c_double, 1.4_c_double)
   call gtk_plot_axis_set_ticks(gtk_plot_get_axis(w_plot,GTK_PLOT_AXIS_LEFT),0.5_c_double,5)
   child = gtk_plot_canvas_plot_new(w_plot)
@@ -126,12 +126,12 @@ program gtkextra_plot_demo
   call gtk_plot_axis_set_visible(gtk_plot_get_axis(w_plot,GTK_PLOT_AXIS_RIGHT), FALSE)
   x_axis = gtk_plot_get_axis(w_plot, GTK_PLOT_AXIS_BOTTOM)
   y_axis = gtk_plot_get_axis(w_plot, GTK_PLOT_AXIS_LEFT)
-  call gtk_plot_axis_set_title(x_axis, "Time [s]"//CNULL)
+  call gtk_plot_axis_set_title(x_axis, "Time [s]"//c_null_char)
   call gtk_plot_axis_hide_title(y_axis)
   call gtk_plot_x0_set_visible(w_plot, TRUE)
   call gtk_plot_y0_set_visible(w_plot, TRUE)
   call gtk_plot_canvas_put_child(w_plot_canvas,&
-  gtk_plot_canvas_text_new("Helvetica"//CNULL,12, 0,NULL, NULL,FALSE,GTK_JUSTIFY_CENTER,"Intensity [a.u.]"//CNULL),&
+  gtk_plot_canvas_text_new("Helvetica"//c_null_char,12, 0,c_null_ptr, c_null_ptr,FALSE,GTK_JUSTIFY_CENTER,"Intensity [a.u.]"//c_null_char),&
   .10_c_double, .1_c_double, .20_c_double, .20_c_double)
 
   ! Build data and put it in plot
@@ -143,7 +143,7 @@ program gtkextra_plot_demo
   dataset = gtk_plot_data_new()
   call gtk_plot_data_set_points(dataset, x, y, dx, dy, points)
   !error = gdk_colormap_alloc_color() !not in gdk-auto.f90
-  !gbool = gdk_color_parse("red"//CNULL, colorptr) !colorptr have to be allocated before
+  !gbool = gdk_color_parse("red"//c_null_char, colorptr) !colorptr have to be allocated before
   color%red = 65535
   color%green = 0
   color%blue = 0
@@ -157,17 +157,17 @@ program gtkextra_plot_demo
   ! Show widgets and put the into vbox container
   call gtk_widget_show(dataset)
   call gtk_widget_show(w_plot)
-!  call g_signal_connect(w_plot_canvas, "expose-event",G_CALLBACK(&plot_expose_event), NULL);
+!  call g_signal_connect(w_plot_canvas, "expose-event",G_CALLBACK(&plot_expose_event), c_null_ptr);
   call gtk_box_pack_start(w_vbox, w_plot_canvas, TRUE, TRUE, 0)
   
   ! Add OK button
-  w_button = gtk_button_new_with_label("OK"//CNULL)
+  w_button = gtk_button_new_with_label("OK"//c_null_char)
   call gtk_box_pack_start(w_vbox, w_button, FALSE, FALSE, 0)
-  call g_signal_connect(w_button,"clicked"//CNULL,c_funloc(delete_event))
+  call g_signal_connect(w_button,"clicked"//c_null_char,c_funloc(delete_event))
 
   call gtk_widget_show_all (my_window)
         
-  boolresult = g_timeout_add(500,c_funloc(cb_change_dataset),NULL)
+  boolresult = g_timeout_add(500,c_funloc(cb_change_dataset),c_null_ptr)
 
   call gtk_main()
 

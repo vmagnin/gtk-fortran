@@ -39,7 +39,7 @@ module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
   &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
   &idget_queue_draw, gtk_widget_show, gtk_window_new, gtk_window_set_default, gtk&
-  &_window_set_default_size, gtk_window_set_title, TRUE, FALSE, NULL, CNULL, &
+  &_window_set_default_size, gtk_window_set_title, TRUE, FALSE, c_null_ptr, c_null_char, &
   &GDK_COLORSPACE_RGB, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
   &gtk_table_new, gtk_table_attach_defaults, gtk_container_add, gtk_button_new_with_label,&
   &gtk_widget_show_all, gtk_vbox_new, gtk_box_pack_start, gtk_spin_button_new,&
@@ -126,13 +126,13 @@ contains
     iterations = INT(gtk_spin_button_get_value (spinButton3))
 
     write(string, '("c=",F8.6,"+i*",F8.6,"   ", I6, " iterations")') c, iterations
-    call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//CNULL, -1)
+    call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//c_null_char, -1)
 
     message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
-              & "Julia"//CNULL), "Computing..."//CNULL)
+              & "Julia"//c_null_char), "Computing..."//c_null_char)
     call Julia_set(-2d0, +2d0, -2d0, +2d0, c, iterations)
     message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
-              & "Julia"//CNULL), "Finished."//CNULL)
+              & "Julia"//c_null_char), "Finished."//c_null_char)
 
     ret = FALSE
   end function firstbutton
@@ -201,20 +201,20 @@ contains
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0) 
     ! Save the picture if finished:
     if (.not. computing) then
-      cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "julia.png"//CNULL)
+      cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "julia.png"//c_null_char)
       if (cstatus == CAIRO_STATUS_SUCCESS) then
-        string = "Successfully saved: julia.png"//CNULL
+        string = "Successfully saved: julia.png"//c_null_char
       else if (cstatus == CAIRO_STATUS_NO_MEMORY) then
-        string = "Failed: memory allocation"//CNULL
+        string = "Failed: memory allocation"//c_null_char
       else if (cstatus == CAIRO_STATUS_SURFACE_TYPE_MISMATCH) then
-        string = "Failed: no pixel content"//CNULL
+        string = "Failed: no pixel content"//c_null_char
       else if (cstatus == CAIRO_STATUS_WRITE_ERROR) then
-        string = "Failed: I/O error"//CNULL
+        string = "Failed: I/O error"//c_null_char
       else
         string = "Failed"
       end if
       message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
-              & "Julia"//CNULL), TRIM(string))
+              & "Julia"//c_null_char), TRIM(string))
     end if
     ! FIXME: how to save only the drawing_area
     call cairo_destroy(my_cairo_context)
@@ -233,7 +233,7 @@ contains
     type(c_ptr), value :: widget, gdata
 
     if (gtk_toggle_button_get_active(widget) == TRUE) then
-      call gtk_text_buffer_insert_at_cursor (buffer, "In pause (don't try to quit the window)"//C_NEW_LINE//CNULL, -1)
+      call gtk_text_buffer_insert_at_cursor (buffer, "In pause (don't try to quit the window)"//C_NEW_LINE//c_null_char, -1)
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
         call g_usleep(500000_c_long)   ! microseconds
@@ -241,7 +241,7 @@ contains
       end do
       !FIXME: if we try to quit during pause, the application crashes
     else
-      call gtk_text_buffer_insert_at_cursor (buffer, "Not in pause"//C_NEW_LINE//CNULL, -1)
+      call gtk_text_buffer_insert_at_cursor (buffer, "Not in pause"//C_NEW_LINE//c_null_char, -1)
     end if
     
     ret = FALSE
@@ -286,39 +286,39 @@ program julia
   height = 700
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_default_size(my_window, width, height)
-  call gtk_window_set_title(my_window, "Julia Set"//CNULL)
-  call g_signal_connect (my_window, "delete-event"//CNULL, c_funloc(delete_event))
+  call gtk_window_set_title(my_window, "Julia Set"//c_null_char)
+  call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
 
-  button1 = gtk_button_new_with_mnemonic ("_Compute"//CNULL)
-  call g_signal_connect (button1, "clicked"//CNULL, c_funloc(firstbutton))
-  button2 = gtk_button_new_with_mnemonic ("_Save as PNG"//CNULL)
-  call g_signal_connect (button2, "clicked"//CNULL, c_funloc(secondbutton))
-  button3 = gtk_button_new_with_mnemonic ("_Exit"//CNULL)
-  call g_signal_connect (button3, "clicked"//CNULL, c_funloc(delete_event))
+  button1 = gtk_button_new_with_mnemonic ("_Compute"//c_null_char)
+  call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(firstbutton))
+  button2 = gtk_button_new_with_mnemonic ("_Save as PNG"//c_null_char)
+  call g_signal_connect (button2, "clicked"//c_null_char, c_funloc(secondbutton))
+  button3 = gtk_button_new_with_mnemonic ("_Exit"//c_null_char)
+  call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(delete_event))
 
-  label1 = gtk_label_new("real(c)"//CNULL)
+  label1 = gtk_label_new("real(c)"//c_null_char)
   spinButton1 = gtk_spin_button_new (gtk_adjustment_new(-0.835d0,-2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7)
-  label2 = gtk_label_new("imag(c) "//CNULL)
+  label2 = gtk_label_new("imag(c) "//c_null_char)
   spinButton2 = gtk_spin_button_new (gtk_adjustment_new(-0.2321d0, -2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7)
-  label3 = gtk_label_new("iterations"//CNULL)
+  label3 = gtk_label_new("iterations"//c_null_char)
   spinButton3 = gtk_spin_button_new (gtk_adjustment_new(1000d0,1d0,+100000d0,10d0,100d0,0d0),10d0, 0)
 
-  label4 = gtk_label_new("Predefined values:"//CNULL)
+  label4 = gtk_label_new("Predefined values:"//c_null_char)
   combo1 = gtk_combo_box_text_new()
-  call gtk_combo_box_text_append_text(combo1, "1"//CNULL)
-  call gtk_combo_box_text_append_text(combo1, "2"//CNULL)
-  call gtk_combo_box_text_append_text(combo1, "3"//CNULL)
-  call gtk_combo_box_text_append_text(combo1, "4"//CNULL)
-  call gtk_combo_box_text_append_text(combo1, "5"//CNULL)
-  call gtk_combo_box_text_append_text(combo1, "6"//CNULL)
-  call gtk_combo_box_text_append_text(combo1, "7"//CNULL)
-  call g_signal_connect (combo1, "changed"//CNULL, c_funloc(firstCombo))
+  call gtk_combo_box_text_append_text(combo1, "1"//c_null_char)
+  call gtk_combo_box_text_append_text(combo1, "2"//c_null_char)
+  call gtk_combo_box_text_append_text(combo1, "3"//c_null_char)
+  call gtk_combo_box_text_append_text(combo1, "4"//c_null_char)
+  call gtk_combo_box_text_append_text(combo1, "5"//c_null_char)
+  call gtk_combo_box_text_append_text(combo1, "6"//c_null_char)
+  call gtk_combo_box_text_append_text(combo1, "7"//c_null_char)
+  call g_signal_connect (combo1, "changed"//c_null_char, c_funloc(firstCombo))
   
-  toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause"//CNULL)
-  call g_signal_connect (toggle1, "toggled"//CNULL, c_funloc(firstToggle))
+  toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause"//c_null_char)
+  call g_signal_connect (toggle1, "toggled"//c_null_char, c_funloc(firstToggle))
   
-  linkButton = gtk_link_button_new_with_label ("http://en.wikipedia.org/wiki/Julia_set"//CNULL,&
-               & "More on Julia sets"//CNULL)
+  linkButton = gtk_link_button_new_with_label ("http://en.wikipedia.org/wiki/Julia_set"//c_null_char,&
+               & "More on Julia sets"//c_null_char)
                
   ! A table container will contain buttons and labels:
   table = gtk_table_new (4, 4, TRUE)
@@ -337,7 +337,7 @@ program julia
   call gtk_table_attach_defaults(table, toggle1, 2, 3, 3, 4)
 
   ! The table is contained in an expander, which is contained in the vertical box:
-  expander = gtk_expander_new_with_mnemonic ("_The parameters:"//CNULL)
+  expander = gtk_expander_new_with_mnemonic ("_The parameters:"//c_null_char)
   call gtk_container_add (expander, table)
   call gtk_expander_set_expanded(expander, TRUE)
 
@@ -347,11 +347,11 @@ program julia
 
   ! The drawing area is contained in the vertical box:
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect (my_drawing_area, "expose-event"//CNULL, c_funloc(expose_event))
+  call g_signal_connect (my_drawing_area, "expose-event"//c_null_char, c_funloc(expose_event))
   ! In GTK+ 3.0 expose-event will be replaced by draw event:
-  !call g_signal_connect (my_drawing_area, "draw"//CNULL, c_funloc(expose_event))
+  !call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
   notebook = gtk_notebook_new ()
-  notebookLabel1 = gtk_label_new_with_mnemonic("_Graphics"//CNULL)
+  notebookLabel1 = gtk_label_new_with_mnemonic("_Graphics"//c_null_char)
   firstTab = gtk_notebook_append_page (notebook, my_drawing_area, notebookLabel1)
 
   !handle1 = gtk_handle_box_new()
@@ -359,9 +359,9 @@ program julia
   textView = gtk_text_view_new ()
   buffer = gtk_text_view_get_buffer (textView)
   call gtk_text_buffer_set_text (buffer, "Julia Set"//C_NEW_LINE// &
-      & "You can copy this text and even edit it !"//C_NEW_LINE//CNULL, -1)
-  scrolled_window = gtk_scrolled_window_new (NULL, NULL)
-  notebookLabel2 = gtk_label_new_with_mnemonic("_Messages"//CNULL)
+      & "You can copy this text and even edit it !"//C_NEW_LINE//c_null_char, -1)
+  scrolled_window = gtk_scrolled_window_new (c_null_ptr, c_null_ptr)
+  notebookLabel2 = gtk_label_new_with_mnemonic("_Messages"//c_null_char)
   call gtk_container_add (scrolled_window, textView)
   !call gtk_container_add (handle1, scrolled_window)
   secondTab = gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
@@ -370,7 +370,7 @@ program julia
  
   statusBar = gtk_statusbar_new ()
   message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
-              & "Julia"//CNULL), "Waiting..."//CNULL)
+              & "Julia"//c_null_char), "Waiting..."//c_null_char)
   call gtk_box_pack_start (box1, statusBar, FALSE, FALSE, 0)
 
   call gtk_container_add (my_window, box1)
@@ -462,7 +462,7 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
 
   t1=system_time()
   write(string, '("System time = ",F8.3, " s")') t1-t0
-  call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//CNULL, -1)
+  call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//c_null_char, -1)
   
 end subroutine Julia_set
 

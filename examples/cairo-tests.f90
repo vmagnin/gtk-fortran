@@ -28,7 +28,7 @@ module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
   &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
   &idget_queue_draw, gtk_widget_show, gtk_window_new, gtk_window_set_default, gtk&
-  &_window_set_default_size, gtk_window_set_title, TRUE, FALSE, NULL, CNULL, &
+  &_window_set_default_size, gtk_window_set_title, TRUE, FALSE, c_null_ptr, c_null_char, &
   & GTK_WINDOW_TOPLEVEL, GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, &
   &CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
   
@@ -107,18 +107,18 @@ contains
     call cairo_line_to(my_cairo_context, width/2d0+width/12d0, height*1d0)
     call cairo_stroke(my_cairo_context) 
 
-    call cairo_select_font_face(my_cairo_context, "Times"//CNULL, CAIRO_FONT_SLANT_NORMAL, &
+    call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, CAIRO_FONT_SLANT_NORMAL, &
                                  &  CAIRO_FONT_WEIGHT_NORMAL)
     call cairo_set_font_size (my_cairo_context, 16d0)
     call cairo_move_to(my_cairo_context, 200d0, 200d0)
-    call cairo_show_text (my_cairo_context, "Mandelbrot set"//CNULL)
+    call cairo_show_text (my_cairo_context, "Mandelbrot set"//c_null_char)
 
     call cairo_new_sub_path(my_cairo_context)
     call cairo_arc(my_cairo_context, 300d0, 300d0, 100d0, 0d0, 3.14159d0) 
     call cairo_stroke(my_cairo_context) 
     
     if (finished) then
-      cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//CNULL)
+      cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//c_null_char)
       print *, cstatus
     end if
     
@@ -145,11 +145,11 @@ program mandelbrot
 
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_default_size(my_window, width, height)
-  call gtk_window_set_title(my_window, "A tribute to Benoit MANDELBROT (1924-2010)"//CNULL)
-  call g_signal_connect (my_window, "delete-event"//CNULL, c_funloc(delete_event))
+  call gtk_window_set_title(my_window, "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
+  call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
       
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect (my_drawing_area, "expose-event"//CNULL, c_funloc(expose_event))
+  call g_signal_connect (my_drawing_area, "expose-event"//c_null_char, c_funloc(expose_event))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
 

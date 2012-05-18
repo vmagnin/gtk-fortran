@@ -30,7 +30,7 @@ module handlers
   &new_from_image, gtk_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widge&
   &t_map, gtk_widget_show, gtk_widget_unmap, gtk_window_new, gtk_window_set_defau&
   &lt, gtk_window_set_default_size, gtk_window_set_title,&
-  &FALSE, TRUE, CNULL, NULL, GTK_WINDOW_TOPLEVEL, GDK_IMAGE_FASTEST,&
+  &FALSE, TRUE, c_null_char, c_null_ptr, GTK_WINDOW_TOPLEVEL, GDK_IMAGE_FASTEST,&
   &gtk_init, g_signal_connect
   use gdk, only: gdk_image_new, gdk_image_put_pixel, gdk_rgb_get_visual
 
@@ -69,11 +69,11 @@ program mandelbrot
   ! Properties of the main window :
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_default_size(my_window, 600, 600)
-  call gtk_window_set_title(my_window, "A tribute to Benoit MANDELBROT (1924-2010)"//CNULL)
-  call g_signal_connect (my_window, "delete-event"//CNULL, c_funloc(delete_event))
+  call gtk_window_set_title(my_window, "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
+  call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
     
   my_gdk_image = gdk_image_new(GDK_IMAGE_FASTEST, gdk_rgb_get_visual(), 600, 600)
-  my_gtk_image = gtk_image_new_from_image(my_gdk_image, NULL)    
+  my_gtk_image = gtk_image_new_from_image(my_gdk_image, c_null_ptr)    
   call gtk_container_add(my_window, my_gtk_image)
   call gtk_widget_show (my_gtk_image)
   

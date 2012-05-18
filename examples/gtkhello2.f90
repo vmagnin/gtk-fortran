@@ -92,7 +92,7 @@ program gtkFortran
   use gtk, only: gtk_init, gtk_window_new, GTK_WINDOW_TOPLEVEL, gtk_window_set_title, &
       & gtk_container_set_border_width, g_signal_connect, gtk_hbox_new, gtk_container_add, &
       & gtk_button_new_with_label, gtk_box_pack_start, gtk_widget_show, gtk_main, FALSE, &
-      & CNULL, TRUE
+      & c_null_char, TRUE
   ! The "only" statement can divide the compilation time by a factor 10 !
   use handlers
   implicit none
@@ -108,31 +108,31 @@ program gtkFortran
   ! Create the window and set up some signals for it.
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   !call gtk_window_set_default_size(window, 500, 500)
-  call gtk_window_set_title(window, "My title"//CNULL)
+  call gtk_window_set_title(window, "My title"//c_null_char)
   call gtk_container_set_border_width (window, 10)
-  call g_signal_connect (window, "delete-event"//CNULL, c_funloc(delete_event))
-  call g_signal_connect (window, "destroy"//CNULL, c_funloc(destroy))
+  call g_signal_connect (window, "delete-event"//c_null_char, c_funloc(delete_event))
+  call g_signal_connect (window, "destroy"//c_null_char, c_funloc(destroy))
 
   box1 = gtk_hbox_new (TRUE, 10);
   call gtk_container_add (window, box1)
 
-  button1 = gtk_button_new_with_label ("Button1"//CNULL)
+  button1 = gtk_button_new_with_label ("Button1"//c_null_char)
   call gtk_box_pack_start (box1, button1, FALSE, FALSE, 0)
-  call g_signal_connect (button1, "clicked"//CNULL, c_funloc(button1clicked))
-  call g_signal_connect (button1, "clicked"//CNULL, c_funloc(hello))
+  call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(button1clicked))
+  call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(hello))
   call gtk_widget_show (button1)
 
   ! This is an example of passing data to the callback function:
-  button2 = gtk_button_new_with_label ("Button2"//CNULL)
+  button2 = gtk_button_new_with_label ("Button2"//c_null_char)
   call gtk_box_pack_start (box1, button2, FALSE, FALSE, 0)
-  call g_signal_connect (button2, "clicked"//CNULL, c_funloc(button2clicked), &
+  call g_signal_connect (button2, "clicked"//c_null_char, c_funloc(button2clicked), &
        & c_loc(val))
   call gtk_widget_show (button2)
 
-  button3 = gtk_button_new_with_label ("Exit"//CNULL)
+  button3 = gtk_button_new_with_label ("Exit"//c_null_char)
   call gtk_box_pack_start (box1, button3, FALSE, FALSE, 0)
-  call g_signal_connect (button3, "clicked"//CNULL, c_funloc(destroy))
-  call g_signal_connect (button3, "clicked"//CNULL, c_funloc(hello))
+  call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(destroy))
+  call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(hello))
   call gtk_widget_show (button3)
 
   call gtk_widget_show (box1)

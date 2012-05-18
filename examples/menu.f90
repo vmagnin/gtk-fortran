@@ -33,7 +33,7 @@ module handlers
   &ui_manager_add_ui_from_string, gtk_ui_manager_get_widget, gtk_ui_manager_inser&
   &t_action_group, gtk_ui_manager_new, gtk_vbox_new, gtk_widget_set_size_request,&
   & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_title,&
-  &gtk_init, g_signal_connect, FALSE, TRUE, NULL, CNULL, GTK_WINDOW_TOPLEVEL
+  &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char, GTK_WINDOW_TOPLEVEL
   implicit none
 
 contains
@@ -195,17 +195,17 @@ program simplemenu
   
   ! Menu action data
   type(ui_action),dimension(11)::action = (/&
-    ui_action("FileMenuAction"//CNULL, "_File"//CNULL, CNULL, CNULL, c_null_funptr),&
-    ui_action("OpenAction"//CNULL, "_Open"//CNULL, CNULL, CNULL, c_null_funptr),&
-    ui_action("SaveAction"//CNULL, "_Save"//CNULL, CNULL, CNULL, c_null_funptr),&
-    ui_action("CloseAction"//CNULL, "_Close"//CNULL, CNULL, CNULL, c_null_funptr),&
-    ui_action("QuitAction"//CNULL, "_Quit"//CNULL, CNULL, CNULL, c_null_funptr),&
-    ui_action("EditMenuAction"//CNULL, "_Edit"//CNULL, CNULL, CNULL, c_null_funptr),&
-    ui_action("CutAction"//CNULL, "_Cut"//CNULL, CNULL, CNULL, c_null_funptr),&
-    ui_action("CopyAction"//CNULL, "_Copy"//CNULL, CNULL, CNULL, c_null_funptr),&
-    ui_action("PasteAction"//CNULL, "_Paste"//CNULL, CNULL, CNULL, c_null_funptr),&
-    ui_action("HelpMenuAction"//CNULL, "_Help"//CNULL, CNULL, CNULL, c_null_funptr),&
-    ui_action("HelpAction"//CNULL, "_Help"//CNULL, CNULL, CNULL, c_null_funptr)&
+    ui_action("FileMenuAction"//c_null_char, "_File"//c_null_char, c_null_char, c_null_char, c_null_funptr),&
+    ui_action("OpenAction"//c_null_char, "_Open"//c_null_char, c_null_char, c_null_char, c_null_funptr),&
+    ui_action("SaveAction"//c_null_char, "_Save"//c_null_char, c_null_char, c_null_char, c_null_funptr),&
+    ui_action("CloseAction"//c_null_char, "_Close"//c_null_char, c_null_char, c_null_char, c_null_funptr),&
+    ui_action("QuitAction"//c_null_char, "_Quit"//c_null_char, c_null_char, c_null_char, c_null_funptr),&
+    ui_action("EditMenuAction"//c_null_char, "_Edit"//c_null_char, c_null_char, c_null_char, c_null_funptr),&
+    ui_action("CutAction"//c_null_char, "_Cut"//c_null_char, c_null_char, c_null_char, c_null_funptr),&
+    ui_action("CopyAction"//c_null_char, "_Copy"//c_null_char, c_null_char, c_null_char, c_null_funptr),&
+    ui_action("PasteAction"//c_null_char, "_Paste"//c_null_char, c_null_char, c_null_char, c_null_funptr),&
+    ui_action("HelpMenuAction"//c_null_char, "_Help"//c_null_char, c_null_char, c_null_char, c_null_funptr),&
+    ui_action("HelpAction"//c_null_char, "_Help"//c_null_char, c_null_char, c_null_char, c_null_funptr)&
     /)
   
   ! this is necessary because gfortran gives error:
@@ -229,15 +229,15 @@ program simplemenu
   
   ! Properties of the main window :
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL)
-  call gtk_window_set_title(mainwindow, "Simple Menu Example"//CNULL)
+  call gtk_window_set_title(mainwindow, "Simple Menu Example"//c_null_char)
   call gtk_widget_set_size_request(mainwindow, 500, 500)
   ! You can also use the following statement to automatically 
   ! adapt the vertical size of the window:
   !call gtk_widget_set_size_request(mainwindow, 500, -1)
 
   ! Connect signals to the main window
-  call g_signal_connect (mainwindow, "delete-event"//CNULL, c_funloc(delete_event))
-  call g_signal_connect (mainwindow, "destroy"//CNULL, c_funloc(destroy))
+  call g_signal_connect (mainwindow, "delete-event"//c_null_char, c_funloc(delete_event))
+  call g_signal_connect (mainwindow, "destroy"//c_null_char, c_funloc(destroy))
 
   ! Fill action group with actions and connect signals
   action_group = gtk_action_group_new("Menu");
@@ -245,16 +245,16 @@ program simplemenu
       call gtk_action_group_add_action(action_group, gtk_action_new(action(i)%name,&
         action(i)%label,action(i)%tooltip,action(i)%stock_id))
       call g_signal_connect (gtk_action_group_get_action(action_group,action(i)%name),&
-        "activate"//CNULL, action(i)%c_handler)
+        "activate"//c_null_char, action(i)%c_handler)
   enddo
   
   ! Insert action group into ui manager
   menu_manager = gtk_ui_manager_new ()
   call gtk_ui_manager_insert_action_group (menu_manager, action_group, 0)
-  error = NULL
-  !ui = gtk_ui_manager_add_ui_from_file (menu_manager, "menu.xml"//CNULL, error)
+  error = c_null_ptr
+  !ui = gtk_ui_manager_add_ui_from_file (menu_manager, "menu.xml"//c_null_char, error)
   buffer_length = len_trim(buffer)
-  ui = gtk_ui_manager_add_ui_from_string (menu_manager, trim(buffer)//CNULL, buffer_length, error)
+  ui = gtk_ui_manager_add_ui_from_string (menu_manager, trim(buffer)//c_null_char, buffer_length, error)
 
   ! Handle error
   if (c_associated(error)) then
@@ -266,7 +266,7 @@ program simplemenu
   ! Container for menu
   box = gtk_vbox_new (FALSE,0)
   call gtk_container_add (mainwindow, box)
-  call gtk_box_pack_start (box, gtk_ui_manager_get_widget (menu_manager, "/MainMenu"//CNULL), FALSE, FALSE, 0)
+  call gtk_box_pack_start (box, gtk_ui_manager_get_widget (menu_manager, "/MainMenu"//c_null_char), FALSE, FALSE, 0)
 
   ! Show all
   call gtk_widget_show_all (mainwindow)

@@ -312,7 +312,7 @@ program cairo_plplot
 
   call gtk_init()
 
-  window = hl_gtk_window_new("PLplot x01 / gtk-fortran (extcairo)"//cnull, &
+  window = hl_gtk_window_new("PLplot x01 / gtk-fortran (extcairo)"//c_null_char, &
        & delete_event = c_funloc(delete_cb))
   base = hl_gtk_box_new()
   call gtk_container_add(window, base)
@@ -323,7 +323,7 @@ program cairo_plplot
        & ssize=(/ 600, 500 /))
   call hl_gtk_box_pack(base, scroll_w)
 
-  qbut = hl_gtk_button_new("Quit"//cnull, clicked=c_funloc(quit_cb))
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
   call hl_gtk_box_pack(base, qbut, expand=FALSE)
 
   call gtk_widget_show_all (window)

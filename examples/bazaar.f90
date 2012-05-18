@@ -55,8 +55,8 @@ module handlers
   & gtk_text_view_get_buffer, gtk_text_view_new, gtk_widget_destroy, gtk_widget_get_window,&
   & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_default,&
   & gtk_window_set_default_size, gtk_window_set_title, &
-  & g_signal_connect, gtk_init, FALSE, TRUE, CNULL, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&
-  & GTK_WINDOW_TOPLEVEL, NULL
+  & g_signal_connect, gtk_init, FALSE, TRUE, c_null_char, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&
+  & GTK_WINDOW_TOPLEVEL, c_null_ptr
   use cairo, only: cairo_create, cairo_curve_to, cairo_destroy, cairo_line_to, &
   & cairo_move_to, cairo_paint, cairo_set_line_width, cairo_set_source, &
   & cairo_set_source_rgb, cairo_stroke
@@ -212,8 +212,8 @@ contains
     integer(c_int) :: response_id
     
     dialog = gtk_about_dialog_new()
-    call gtk_about_dialog_set_program_name(dialog, "Gtk-fortran"//CNULL)
-    call gtk_about_dialog_set_license(dialog, "GNU GPL 3"//CNULL)
+    call gtk_about_dialog_set_program_name(dialog, "Gtk-fortran"//c_null_char)
+    call gtk_about_dialog_set_license(dialog, "GNU GPL 3"//c_null_char)
     call gtk_about_dialog_set_comments(dialog, "The gtk-fortran project &
     & aims to offer scientists programming in Fortran a cross-platform library &
     &to build Graphical User Interfaces (GUI)."//c_new_line//" Gtk-fortran&
@@ -221,8 +221,8 @@ contains
     & to the ISO_C_BINDING module for interoperability between C and Fortran,&
     & which is a part of the Fortran 2003 standard."//c_new_line//" GTK+ &
     &is a free software cross-platform graphical library available for &
-    &Linux, Unix, Windows and MacOs X."//CNULL)
-    call gtk_about_dialog_set_website(dialog, "https://github.com/jerryd/gtk-fortran/wiki"//CNULL)
+    &Linux, Unix, Windows and MacOs X."//c_null_char)
+    call gtk_about_dialog_set_website(dialog, "https://github.com/jerryd/gtk-fortran/wiki"//c_null_char)
     !TODO: to add authors we need a pointer toward null terminated array of strings.
     !call gtk_about_dialog_set_authors(dialog, authors)
     response_id =  gtk_dialog_run(dialog)
@@ -279,31 +279,31 @@ program gtkFortran
   ! Create the window and set up some signals for it.
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   !call gtk_window_set_default_size(window, 500, 500)
-  call gtk_window_set_title(window, "GTK+ & Fortran are good friends"//CNULL)
+  call gtk_window_set_title(window, "GTK+ & Fortran are good friends"//c_null_char)
   call gtk_container_set_border_width (window, 10)
-  call g_signal_connect (window, "delete-event"//CNULL, c_funloc(delete_event))
-  call g_signal_connect (window, "destroy"//CNULL, c_funloc(destroy))
+  call g_signal_connect (window, "delete-event"//c_null_char, c_funloc(delete_event))
+  call g_signal_connect (window, "destroy"//c_null_char, c_funloc(destroy))
 
   table = gtk_table_new (15, 4, TRUE)
   call gtk_container_add (window, table)
 
-  button1 = gtk_button_new_with_label ("Button1"//CNULL)
+  button1 = gtk_button_new_with_label ("Button1"//c_null_char)
   call gtk_table_attach_defaults(table, button1, 0, 1, 0, 1)
-  call g_signal_connect (button1, "clicked"//CNULL, c_funloc(firstbutton))
+  call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(firstbutton))
 
-  button2 = gtk_button_new_with_label ("Button2"//CNULL)
+  button2 = gtk_button_new_with_label ("Button2"//c_null_char)
   call gtk_table_attach_defaults(table, button2, 1, 2, 0, 1)
-  call g_signal_connect (button2, "clicked"//CNULL, c_funloc(secondbutton))
+  call g_signal_connect (button2, "clicked"//c_null_char, c_funloc(secondbutton))
 
-  button3 = gtk_button_new_with_label ("Exit"//CNULL)
+  button3 = gtk_button_new_with_label ("Exit"//c_null_char)
   call gtk_table_attach_defaults(table, button3, 2, 3, 0, 1)
-  call g_signal_connect (button3, "clicked"//CNULL, c_funloc(destroy))
+  call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(destroy))
 
-  button4 = gtk_button_new_with_label ("About"//CNULL)
+  button4 = gtk_button_new_with_label ("About"//c_null_char)
   call gtk_table_attach_defaults(table, button4, 3, 4, 0, 1)
-  call g_signal_connect (button4, "clicked"//CNULL, c_funloc(aboutbutton))
+  call g_signal_connect (button4, "clicked"//c_null_char, c_funloc(aboutbutton))
 
-  label1 = gtk_label_new("My label"//CNULL)
+  label1 = gtk_label_new("My label"//c_null_char)
   call gtk_table_attach_defaults(table, label1, 0, 1, 1, 2)
   
   entry1 = gtk_entry_new()
@@ -311,25 +311,25 @@ program gtkFortran
   
   progress = gtk_progress_bar_new()
   call gtk_progress_bar_set_fraction (progress, 0.15d0)
-  call gtk_progress_bar_set_text (progress, "My progress bar"//CNULL)
+  call gtk_progress_bar_set_text (progress, "My progress bar"//c_null_char)
   call gtk_table_attach_defaults(table, progress, 0, 3, 2, 3)  
 
   view = gtk_text_view_new ()
   buffer = gtk_text_view_get_buffer (view)
   call gtk_text_buffer_set_text (buffer, "This is not clean code, just a great bazaar"//char(13)// &
       & "where I test widgets"//c_new_line//"Vincent"//c_new_line//&
-      &"You can edit this text."//CNULL, -1)
-  scrolled_window = gtk_scrolled_window_new (NULL, NULL)
+      &"You can edit this text."//c_null_char, -1)
+  scrolled_window = gtk_scrolled_window_new (c_null_ptr, c_null_ptr)
   call gtk_container_add (scrolled_window, view)
   call gtk_table_attach_defaults(table, scrolled_window, 0, 3, 3, 6)  
 
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect (my_drawing_area, "expose-event"//CNULL, c_funloc(expose_event))
+  call g_signal_connect (my_drawing_area, "expose-event"//c_null_char, c_funloc(expose_event))
   call gtk_table_attach_defaults(table, my_drawing_area, 0, 3, 6, 11)  
   
-  file_selector = gtk_file_chooser_button_new ("gtk_file_chooser_button_new"//CNULL, 0)
+  file_selector = gtk_file_chooser_button_new ("gtk_file_chooser_button_new"//c_null_char, 0)
   call gtk_table_attach_defaults(table, file_selector, 0, 3, 12, 13)  
-  call g_signal_connect (file_selector, "selection-changed"//CNULL, c_funloc(file_changed));
+  call g_signal_connect (file_selector, "selection-changed"//c_null_char, c_funloc(file_changed));
 
   call gtk_widget_show_all (window)
   call gtk_main ()
