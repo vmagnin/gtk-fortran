@@ -24,8 +24,8 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by Vincent Magnin, 01.28.2011, Python 2.7.1, Linux Ubuntu 11.04
-# Last modification:  06.15.2011
+# Contributed by Vincent Magnin, 01.28.2011
+# Last modification:  05.19.2012 (Python 2.7.3, Linux Ubuntu 12.04)
 
 """ This program generates the *-auto.f90 files
     from the C header files of GTK+ in Linux.
@@ -122,11 +122,12 @@ def multiline(ch, maxlength):
 def set_bit_field(match):
     """ Returns the Fortran bitfield from a C enum flag"""
     b = int(match.group(1))
-    field = "1"
-    for i in range(0, b):
-        field += "0"
-    return "b'"+field+"'"
-
+    #field = "1"
+    #for i in range(0, b):
+    #    field += "0"
+    #return "b'"+field+"'"
+    s = "ISHFTC(1, " + str(b) + ")"
+    return s
 
 def translate_enums(errorsfile, enum_list):
     """Receive a C enum and returns a Fortran enum"""
@@ -153,7 +154,7 @@ def translate_enums(errorsfile, enum_list):
             parameters[0] = re.sub("(?m),$", "", parameters[0])
             
             # Is it in hexadecimal ?
-            parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "z'\\1'", parameters[0])
+            parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "INT(z'\\1')", parameters[0])
             # Is it a char ?
             # Est-ce que ça marche ??????? (voir entiers)
             parameters[0] = re.sub("('.?')", "iachar(\\1)", parameters[0])
