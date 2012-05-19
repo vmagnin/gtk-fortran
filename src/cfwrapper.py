@@ -469,7 +469,7 @@ for library_path in PATH_DICT.keys():
                 if RGX_UNDERSCORE.match(f_name) != None:
                     continue    # Next prototype
                 
-                if f_name in ["gtk_init","g_bit_nth_lsf","g_once_init_enter"]:
+                if f_name in ["gtk_init","g_bit_nth_lsf","g_once_init_enter","g_trash_stack_push"]:
                     continue    # Next prototype
                 
                     
@@ -553,7 +553,6 @@ for library_path in PATH_DICT.keys():
 # End of the processing
 # *********************
 
-#TODO: use ";" instead of "," as CSV separator
 index_file = csv.writer(open("gtk-fortran-index.csv", "w"), delimiter=";")
 index.sort()
 index_file.writerows(index)
