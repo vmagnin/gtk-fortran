@@ -97,12 +97,12 @@ module gtk_hl_tree
 
   use g, only: g_list_foreach, g_list_free, g_list_length, g_list_nth&
        &, g_list_nth_data, g_object_get_data, g_object_set_data,&
-       & g_object_set_property, g_value_get_boolean, g_value_get_char&
+       & g_object_set_property, g_value_get_boolean, g_value_get_schar&
        &, g_value_get_double, g_value_get_float, g_value_get_int,&
        & g_value_get_int64, g_value_get_long, g_value_get_string,&
        & g_value_get_uchar, g_value_get_uint, g_value_get_uint64,&
        & g_value_get_ulong, g_value_init, g_value_set_boolean,&
-       & g_value_set_char, g_value_set_double, g_value_set_float,&
+       & g_value_set_schar, g_value_set_double, g_value_set_float,&
        & g_value_set_int, g_value_set_int64, g_value_set_long,&
        & g_value_set_string, g_value_set_uchar, g_value_set_uint,&
        & g_value_set_uint64, g_value_set_ulong
@@ -587,13 +587,13 @@ contains
     select case(ctype)
     case(G_TYPE_CHAR)
        if (present(svalue)) then
-          call g_value_set_char(val, svalue(1:1))
+          call g_value_set_schar(val, int(iachar(svalue(1:1)), kind=1))
        else if (present(ivalue)) then
-          call g_value_set_char(val, char(ivalue, c_char))
+          call g_value_set_schar(val, int(ivalue, kind=1))
        else if (present(lvalue)) then
-          call g_value_set_char(val, char(lvalue, c_char))
+          call g_value_set_schar(val, int(lvalue, kind=1))
        else if (present(l64value)) then
-          call g_value_set_char(val, char(l64value, c_char))
+          call g_value_set_schar(val, int(l64value, kind=1))
        else
           write(error_unit,*) "hl_gtk_listn_set_cell:: Cannot make a 'char' type from given value(s)"
           return
@@ -876,13 +876,13 @@ contains
     select case(ctype)
     case(G_TYPE_CHAR)
        if (present(svalue)) then
-          svalue(1:1) = g_value_get_char(val)
+          svalue(1:1) = char(g_value_get_schar(val))
        else if (present(ivalue)) then
-          ivalue = ichar(g_value_get_char(val))
+          ivalue = g_value_get_schar(val)
        else if (present(lvalue)) then
-          lvalue = ichar(g_value_get_char(val))
+          lvalue = g_value_get_schar(val)
        else if (present(l64value)) then
-          l64value = ichar(g_value_get_char(val))
+          l64value = g_value_get_schar(val)
        else
           write(error_unit,*) "hl_gtk_listn_get_cell:: Cannot return 'char' type to any available output"
           return
@@ -2148,13 +2148,13 @@ contains
     select case(ctype)
     case(G_TYPE_CHAR)
        if (present(svalue)) then
-          call g_value_set_char(val, svalue(1:1))
+          call g_value_set_schar(val, int(iachar(svalue(1:1)), kind=1))
        else if (present(ivalue)) then
-          call g_value_set_char(val, char(ivalue, c_char))
+          call g_value_set_schar(val, int(ivalue, kind=1))
        else if (present(lvalue)) then
-          call g_value_set_char(val, char(lvalue, c_char))
+          call g_value_set_schar(val, int(lvalue, kind=1))
        else if (present(l64value)) then
-          call g_value_set_char(val, char(l64value, c_char))
+          call g_value_set_schar(val, int(l64value, kind=1))
        else
           write(error_unit,*) "hl_gtk_tree_set_cell:: Cannot make a 'char' type from given value(s)"
           return
@@ -2454,13 +2454,13 @@ contains
     select case(ctype)
     case(G_TYPE_CHAR)
        if (present(svalue)) then
-          svalue(1:1) = g_value_get_char(val)
+          svalue(1:1) = char(g_value_get_schar(val))
        else if (present(ivalue)) then
-          ivalue = ichar(g_value_get_char(val))
+          ivalue = g_value_get_schar(val)
        else if (present(lvalue)) then
-          lvalue = ichar(g_value_get_char(val))
+          lvalue = g_value_get_schar(val)
        else if (present(l64value)) then
-          l64value = ichar(g_value_get_char(val))
+          l64value = g_value_get_schar(val)
        else
           write(error_unit,*) "hl_gtk_tree_get_cell:: Cannot return 'char' type to any available output"
           return
