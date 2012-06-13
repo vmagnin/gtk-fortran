@@ -62,7 +62,7 @@ contains
     character(len=30) :: name
     character(len=10) :: nodd
     character :: code, ucode
-
+    integer :: icode, iucode
     nsel = hl_gtk_listn_get_selections(C_NULL_PTR, selections, list)
     if (nsel == 0) then
        print *, "No selection"
@@ -80,10 +80,14 @@ contains
        call hl_gtk_listn_get_cell(ihlist, selections(1), 3, fvalue=nlog)
        call hl_gtk_listn_get_cell(ihlist, selections(1), 5, svalue=nodd)
        call hl_gtk_listn_get_cell(ihlist, selections(1), 6, svalue=code)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 6, svalue=ucode)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 7, svalue=ucode)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 6, ivalue=icode)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 7, ivalue=iucode)
        print "('Row:',I3,' Name: ',a,' N:',I3,' 3N:',I4,' N**4:',I7,&
             &' log(n):',F7.5,' Odd?: ',a, ' Code:',a,a)", &
             & selections(1), trim(name), n, n3, n4, nlog, nodd, code, ucode
+       print *, ichar(code), ichar(ucode)
+       print *, icode, iucode
     end if
 
     deallocate(selections)
@@ -221,7 +225,12 @@ program list_n
      call hl_gtk_listn_set_cell(ihlist, i-1, 5, ivalue=mod(i,2))
      call hl_gtk_listn_set_cell(ihlist, i-1, 6, svalue=codes(i))
      call hl_gtk_listn_set_cell(ihlist, i-1, 7, svalue=codes(i))
-    end do
+  end do
+
+  ! A silly idea to test a hunch
+  print *, codes
+  codes = char(ichar(codes)-2)
+  print *, codes
 
   ! It is the scrollcontainer that is placed into the box.
   call hl_gtk_box_pack(base, ihscrollcontain)
