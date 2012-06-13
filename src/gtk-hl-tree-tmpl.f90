@@ -587,13 +587,13 @@ contains
     select case(ctype)
     case(G_TYPE_CHAR)
        if (present(svalue)) then
-          call g_value_set_schar(val, svalue(1:1))
+          call g_value_set_schar(val, int(iachar(svalue(1:1)), kind=c_int8_t))
        else if (present(ivalue)) then
-          call g_value_set_schar(val, char(ivalue, c_char))
+          call g_value_set_schar(val, int(ivalue, kind=c_int8_t))
        else if (present(lvalue)) then
-          call g_value_set_schar(val, char(lvalue, c_char))
+          call g_value_set_schar(val, int(lvalue, kind=c_int8_t))
        else if (present(l64value)) then
-          call g_value_set_schar(val, char(l64value, c_char))
+          call g_value_set_schar(val, int(l64value, kind=c_int8_t))
        else
           write(error_unit,*) "hl_gtk_listn_set_cell:: Cannot make a 'char' type from given value(s)"
           return
@@ -876,13 +876,13 @@ contains
     select case(ctype)
     case(G_TYPE_CHAR)
        if (present(svalue)) then
-          svalue(1:1) = g_value_get_schar(val)
+          svalue(1:1) = char(g_value_get_schar(val))
        else if (present(ivalue)) then
-          ivalue = ichar(g_value_get_schar(val))
+          ivalue = g_value_get_schar(val)
        else if (present(lvalue)) then
-          lvalue = ichar(g_value_get_schar(val))
+          lvalue = g_value_get_schar(val)
        else if (present(l64value)) then
-          l64value = ichar(g_value_get_schar(val))
+          l64value = g_value_get_schar(val)
        else
           write(error_unit,*) "hl_gtk_listn_get_cell:: Cannot return 'char' type to any available output"
           return
@@ -2148,13 +2148,13 @@ contains
     select case(ctype)
     case(G_TYPE_CHAR)
        if (present(svalue)) then
-          call g_value_set_schar(val, svalue(1:1))
+          call g_value_set_schar(val, int(iachar(svalue(1:1)), kind=c_int8_t))
        else if (present(ivalue)) then
-          call g_value_set_schar(val, char(ivalue, c_char))
+          call g_value_set_schar(val, int(ivalue, kind=c_int8_t))
        else if (present(lvalue)) then
-          call g_value_set_schar(val, char(lvalue, c_char))
+          call g_value_set_schar(val, int(lvalue, kind=c_int8_t))
        else if (present(l64value)) then
-          call g_value_set_schar(val, char(l64value, c_char))
+          call g_value_set_schar(val, int(l64value, kind=c_int8_t))
        else
           write(error_unit,*) "hl_gtk_tree_set_cell:: Cannot make a 'char' type from given value(s)"
           return
@@ -2454,13 +2454,13 @@ contains
     select case(ctype)
     case(G_TYPE_CHAR)
        if (present(svalue)) then
-          svalue(1:1) = g_value_get_schar(val)
+          svalue(1:1) = char(g_value_get_schar(val))
        else if (present(ivalue)) then
-          ivalue = ichar(g_value_get_schar(val))
+          ivalue = g_value_get_schar(val)
        else if (present(lvalue)) then
-          lvalue = ichar(g_value_get_schar(val))
+          lvalue = g_value_get_schar(val)
        else if (present(l64value)) then
-          l64value = ichar(g_value_get_schar(val))
+          l64value = g_value_get_schar(val)
        else
           write(error_unit,*) "hl_gtk_tree_get_cell:: Cannot return 'char' type to any available output"
           return
