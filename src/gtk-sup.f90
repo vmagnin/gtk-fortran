@@ -23,7 +23,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 08-13-2011
+! Last modification: 06-20-2012
 
 !*
 ! Supplementary material
@@ -42,11 +42,12 @@ module gtk_sup
   ! GtkTreeIter: Type definition.
   ! GValue: Pseudo type definition.
   ! GtkTextIter: Type definition.
+  ! GError: Type definition.
   ! Various GTK_STOCK strings.
 
   use iso_c_binding
   use gtk, only:  TRUE, FALSE
-  use g, only: alloca, g_type_fundamental
+  use g, only: g_type_fundamental
 
   implicit none
 
@@ -134,6 +135,16 @@ module gtk_sup
      integer(kind=c_int) :: d11, d12, d13
      type(c_ptr) :: d14
   end type gtktextiter
+
+  !+
+  ! GError
+  ! GError is a transparent structure that returns error information.
+  !-
+  type, bind(c) :: gerror
+     integer(kind=c_int32_t) :: domain
+     integer(kind=c_int) :: code
+     type(c_ptr) :: message    ! A C pointer to the error message.
+  end type gerror
 
   !+
   ! GTK_STOCK
@@ -362,6 +373,20 @@ module gtk_sup
      module procedure convert_c_string_scalar_cptr
      module procedure convert_c_string_array_cptr
   end interface convert_c_string
+  interface c_f_string
+     module procedure convert_c_string_scalar
+     module procedure convert_c_string_array
+     module procedure convert_c_string_scalar_cptr
+     module procedure convert_c_string_array_cptr
+  end interface c_f_string
+  interface f_c_string
+     module procedure convert_f_string_a
+     module procedure convert_f_string_s
+  end interface f_c_string
+  interface convert_f_string
+     module procedure convert_f_string_a
+     module procedure convert_f_string_s
+  end interface convert_f_string
 
   ! Interfaces for logical conversion
   interface f_c_logical
@@ -576,7 +601,7 @@ contains
   end subroutine convert_c_string_array_cptr
 
   !+
-  subroutine convert_f_string(f_string, textptr, length)
+  subroutine convert_f_string_a(f_string, textptr, length)
     character(len=*), intent(in), dimension(:) :: f_string
     character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
     integer(kind=c_int), intent(out), optional :: length
@@ -591,10 +616,7 @@ contains
 
     integer :: lcstr, i, j, ii
 
-    lcstr = 0
-    do i = 1, size(f_string)
-       lcstr = lcstr + len_trim(f_string(i))+1 ! The +1 is for the LF and NULL characters
-    end do
+    lcstr = sum(len_trim(f_string)) + size(f_string)
 
     allocate(textptr(lcstr))
     if (present(length)) length = lcstr
@@ -612,7 +634,33 @@ contains
        end if
        ii = ii+1
     end do
-  end subroutine convert_f_string
+  end subroutine convert_f_string_a
+  !+
+  subroutine convert_f_string_s(f_string, textptr, length)
+    character(len=*), intent(in) :: f_string
+    character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
+    integer(kind=c_int), intent(out), optional :: length
+
+    ! Convert a fortran string into a null-terminated c-string
+    !
+    ! F_STRING: f_string: required: The fortran string to convert
+    ! TEXTPR: string: required: A C tyoe string, (allocatable).
+    ! LENGTH: c_int: optional: The lenght of the generated c string.
+    !-
+
+    integer :: lcstr, j
+
+    lcstr = len_trim(f_string) + 1
+
+    allocate(textptr(lcstr))
+    if (present(length)) length = lcstr
+
+    do j = 1, len_trim(f_string)
+       textptr(j) = f_string(j:j)
+    end do
+    textptr(lcstr) = c_null_char
+
+  end subroutine convert_f_string_s
 
   !+
   function c_f_logical(cbool)
