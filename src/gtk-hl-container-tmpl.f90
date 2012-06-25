@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 11-21-2011
+! Last modification: 06-25-2012
 
 !!$T Template file for gtk-hl-container.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -394,13 +394,15 @@ contains
 
   !+
   function hl_gtk_notebook_new(show_tabs, tab_position, popup, &
-       & scrollable, group) result(nbook)
+       & scrollable, group, switch_page, data) result(nbook)
 
     type(c_ptr) :: nbook
     integer(kind=c_int), intent(in), optional :: show_tabs
     integer(kind=c_int), intent(in), optional :: tab_position
     integer(kind=c_int), intent(in), optional :: popup, scrollable
     character(kind=c_char), intent(in), optional, dimension(*), target :: group
+    type(c_funptr), optional :: switch_page
+    type(c_ptr), intent(in), optional :: data
 
     ! Convenience function to create a notebook (tabbed) container
     !
@@ -413,6 +415,11 @@ contains
     ! GROUP: string: optional: A group name for the notebook (needed if you
     ! 		want to drag tabs from one book to another). N.B. For GTK+2,
     ! 		this probably has to be a variable to work.
+    ! SWITCH_PAGE: c_funptr: optional: A callback to be called when the page
+    ! 		selection is changed (signal switch-page). Note that this
+    ! 		callback has 4 arguments: the notebook, the selected page, the
+    ! 		index of that page and the user data.
+    ! DATA: c_ptr: optional: Data to pass the the switch-page callback.
     !-
 
     nbook = gtk_notebook_new()
@@ -437,6 +444,16 @@ contains
     if (present(group)) &
 !!$3         & call gtk_notebook_set_group_name(nbook, group)
 !!$2         & call gtk_notebook_set_group(nbook, c_loc(group))
+
+    if (present(switch_page)) then
+       if (present(data)) then
+          call g_signal_connect(nbook, "switch-page"//c_null_char, &
+               & switch_page, data)
+       else
+          call g_signal_connect(nbook, "switch-page"//c_null_char, &
+               & switch_page)
+       end if
+    end if
 
   end function hl_gtk_notebook_new
 
