@@ -10,27 +10,38 @@ to anyone who has developed GUIs in IDL).
 The routines make use of the optional arguments in Fortran90+ to
 simplify creating and initializing widgets.
 
-**WARNING** This module is still incomplete and is provided as a
-  "taster".
+The following modules are implemented:
 
-Routines currently included
-hl_gtk_window_new: A top-level window.
-hl_gtk_button_new: A simple button
-hl_gtk_check_button_new: A check button
-hl_gtk_radio_button_new: A radio button with group.
-    hl_gtk_radio_group_get_select: Which member of a radio group
-    	is selected.
-    hl_gtk_radio_group_set_select: Select a member of a radio group.
-hl_gtk_entry_new: A 1-line text box
-hl_gtk_list1_new: A single column list with indexing
-    hl_gtk_list1_get_selections: Get the selected row(s) from a list.
-    hl_gtk_list1_ins: Insert a row into a list
-    hl_gtk_list1_rem: Delete a row from a list, or clear the list.
-hl_gtk_menu_new: Create a menubar.
-hl_gtk_menu_submenu_new: Add a submenu to a menu
-hl_gtk_menu_item_new: Add a button to a menu
-hl_gtk_progress_bar_new: A progress bar.
-hl_gtk_progress_bar_set: Set the value of a progress bar.
+gtk_hl: A wrapper that includes all of the other modules.
+
+gtk_hl_button: Implements interfaces to various kinds of button.
+
+gtk_hl_chooser: Implements file choosers that do not need variadic
+       arguments. 
+
+gtk_hl_combobox: Implements interfaces to text comboboxes.
+
+gtk_hl_container: Implements interfaces to: Window, box, table
+       (implemented as grid in Gtk+ 3.x), notebook and scrolled window.
+
+gtk_hl_dialog: Implements a message dialog widget that does not require
+       variadic calls.
+
+gtk_draw_hl: Implements interfaces to drawing areas and their
+       relationship to cairo. (N.B. The reversed naming convention is a
+       historical accident).
+
+gtk_hl_entry: Implements interfaces to entry and textview widgets.
+
+gtk_hl_menu: Implements interfaces to pull-down menus.
+
+gtk_hl_progress: Implements progress bars, including m of n settings
+       and automated text addition.
+
+gtk_hl_spin_slider: Implements spin boxes and sliders (including
+       convenient integer interfaces).
+
+gtk_hl_tree: Implements interfaces to the list & tree widgets. 
 
 Several demos are provided in the examples directory: they have the
 prefix hl_.
