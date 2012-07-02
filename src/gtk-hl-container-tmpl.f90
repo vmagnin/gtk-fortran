@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 06-25-2012
+! Last modification: 07-02-2012
 
 !!$T Template file for gtk-hl-container.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -59,10 +59,18 @@ module gtk_hl_container
        & gtk_notebook_set_scrollable,&
        & gtk_notebook_set_show_tabs, gtk_notebook_set_tab_detachable,&
        & gtk_notebook_set_tab_pos, gtk_notebook_set_tab_reorderable,&
-       & gtk_table_attach, gtk_table_get_size, gtk_table_new,&
-       & gtk_table_resize, gtk_table_set_col_spacing,&
-       & gtk_table_set_col_spacings, gtk_table_set_row_spacing,&
-       & gtk_table_set_row_spacings, gtk_vbox_new,&
+!!$2       & gtk_table_attach, gtk_table_get_size, gtk_table_new,&
+!!$2       & gtk_table_resize, gtk_table_set_col_spacing,&
+!!$2       & gtk_table_set_col_spacings, gtk_table_set_row_spacing,&
+!!$2       & gtk_table_set_row_spacings, &
+!!$3       & gtk_grid_new, gtk_grid_set_row_homogeneous, &
+!!$3       & gtk_grid_set_column_homogeneous, gtk_grid_set_row_spacing, &
+!!$3       & gtk_grid_set_column_spacing, gtk_grid_attach, &
+!!$3       & gtk_widget_set_margin_left, gtk_widget_set_margin_right, &
+!!$3       & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom, &
+!!$3       & gtk_widget_set_hexpand, gtk_widget_set_vexpand,  &
+!!$3       & gtk_widget_set_halign, gtk_widget_set_valign, &
+       & gtk_vbox_new,&
        & gtk_widget_set_sensitive, gtk_window_add_accel_group,&
        & gtk_window_new, gtk_window_set_decorated,&
        & gtk_window_set_default, gtk_window_set_default_size,&
@@ -75,6 +83,7 @@ module gtk_hl_container
        & gtk_widget_set_size_request, gtk_scrolled_window_add_with_viewport, &
        & gtk_container_add, &
        & GTK_WINDOW_TOPLEVEL, GTK_EXPAND, GTK_FILL, &
+!!$3       & GTK_ALIGN_FILL, GTK_ALIGN_CENTER, &
        & TRUE, FALSE, g_signal_connect, &
        & GTK_POLICY_AUTOMATIC
 
@@ -262,37 +271,94 @@ contains
 
   !+
   function hl_gtk_table_new(nrows, ncols, homogeneous, row_spacing, &
-       & col_spacing) result(table)
+       & col_spacing, row_homogeneous, col_homogeneous) result(table)
 
     type(c_ptr) :: table
-    integer(kind=c_int), intent(in) :: nrows, ncols
+    integer(kind=c_int), intent(in), optional :: nrows, ncols
     integer(kind=c_int), intent(in), optional :: homogeneous
     integer(kind=c_int), intent(in), optional :: row_spacing, col_spacing
+    integer(kind=c_int), intent(in), optional :: row_homogeneous,&
+         & col_homogeneous
 
     ! Utility interface to create a table container
     !
-    ! NROWS: c_int: required: The initial number of rows.
-    ! NCOLS: c_int: required: The initial number of columns.
+    ! NROWS: c_int: optional: The initial number of rows.
+    ! NCOLS: c_int: optional: The initial number of columns.
     ! HOMOGENEOUS: boolean: optional: Whether the cells all have the
+    ! 	same size.
+    ! ROW_HOMOGENEOUS: boolean: optional: Whether the rows all have the
+    ! 	same size.
+    ! COL_HOMOGENEOUS: boolean: optional: Whether the columns all have the
     ! 	same size.
     ! ROW_SPACING: c_int: optional: Spacing between rows.
     ! COL_SPACING: c_int: optional: Spacing between columns.
+    !
+    ! Note
+    ! This is implemented as a GtkTable for Gtk+2.x and as a GtkGrid for 3.x
+    ! For 2.x, the ROW and COL_HOMOGENEOUS settings are treated as HOMOGENOUS
+    ! except that if both are given and their values differ then homogenous is
+    ! not set.
+    ! For 3.x the ROW and COL settings take precedence over the common setting.
+    ! The NROWS and NCOLS arguments are ignored for Gtk+ 3.x
     !-
 
-    integer(kind=c_int) :: grid
+!!$2    integer(kind=c_int) :: grid, nr,nc
+!!$2
+!!$2    if (present(homogeneous)) then
+!!$2       grid = homogeneous
+!!$2    else if (present(row_homogeneous) .and. present(col_homogeneous)) then
+!!$2       if (row_homogeneous == col_homogeneous) then
+!!$2          grid = row_homogeneous
+!!$2       else
+!!$2          grid = FALSE
+!!$2       end if
+!!$2    else if (present(row_homogeneous)) then
+!!$2       grid = row_homogeneous
+!!$2    else if (present(col_homogeneous)) then
+!!$2       grid = col_homogeneous
+!!$2    else
+!!$2       grid = FALSE
+!!$2    end if
+!!$2
+!!$2    if (present(nrows)) then
+!!$2       nr = nrows
+!!$2    else
+!!$2       nr = 1
+!!$2    end if
+!!$2    if (present(ncols)) then
+!!$2       nc = ncols
+!!$2    else
+!!$2       nc = 1
+!!$2    end if
+!!$2
+!!$2    table = gtk_table_new(nr, nc, grid)
+!!$2
+!!$2    if (present(row_spacing)) &
+!!$2         & call gtk_table_set_row_spacings(table, row_spacing)
+!!$2    if (present(col_spacing)) &
+!!$2         & call gtk_table_set_col_spacings(table, col_spacing)
 
-    if (present(homogeneous)) then
-       grid = homogeneous
-    else
-       grid = FALSE
-    end if
-
-    table = gtk_table_new(nrows, ncols, grid)
-
-    if (present(row_spacing)) &
-         & call gtk_table_set_row_spacings(table, row_spacing)
-    if (present(col_spacing)) &
-         & call gtk_table_set_col_spacings(table, col_spacing)
+!!$3    integer(kind=c_int) :: gridr, gridc
+!!$3
+!!$3    if (present(homogeneous)) then
+!!$3       gridr = homogeneous
+!!$3       gridc = homogeneous
+!!$3    else
+!!$3       gridr = FALSE
+!!$3       gridc = FALSE
+!!$3    end if
+!!$3
+!!$3    if (present(row_homogeneous)) gridr = row_homogeneous
+!!$3    if (present(col_homogeneous)) gridc = col_homogeneous
+!!$3
+!!$3    table = gtk_grid_new()
+!!$3    call gtk_grid_set_row_homogeneous(table, gridr)
+!!$3    call gtk_grid_set_column_homogeneous(table, gridc)
+!!$3
+!!$3    if (present(row_spacing)) &
+!!$3         & call gtk_grid_set_row_spacing(table, row_spacing)
+!!$3    if (present(col_spacing)) &
+!!$3         & call gtk_grid_set_column_spacing(table, col_spacing)
 
   end function hl_gtk_table_new
 
@@ -319,47 +385,86 @@ contains
     ! XOPTS: c_int: optional: X fill/expand options (from the
     ! 		GtkAttachOptions enumerator, or 0 for none)
     ! YOPTS: c_int: optional: Y fill/expand options.
+    !
+    ! N.B. GTK_SHRINK in the options is ignored in Gtk+ 3.x
     !-
 
-    integer(kind=c_int) :: ixtop, iytop
-    integer(kind=c_int) :: ixpad, iypad
-    integer(kind=c_int) :: ixopt, iyopt
+!!$2    integer(kind=c_int) :: ixtop, iytop
+!!$2    integer(kind=c_int) :: ixpad, iypad
+!!$2    integer(kind=c_int) :: ixopt, iyopt
+!!$3    integer(kind=c_int) :: ixsz, iysz
+    integer(kind=c_int) :: ixexp, iyexp, ixfill, iyfill
 
     if (present(xspan)) then
-       ixtop = ix + xspan
+!!$2       ixtop = ix + xspan
+!!$3       ixsz = xspan
     else
-       ixtop = ix+1
+!!$2       ixtop = ix+1
+!!$3       ixsz = 1
     end if
     if (present(yspan)) then
-       iytop = iy + yspan
+!!$2       iytop = iy + yspan
+!!$3       iysz = yspan
     else
-       iytop = iy+1
+!!$2       iytop = iy+1
+!!$3       iysz = 1
     end if
 
-    if (present(xpad)) then
-       ixpad = xpad
-    else
-       ixpad = 0
-    end if
-    if (present(ypad)) then
-       iypad = ypad
-    else
-       iypad = 0
-    end if
+!!$2    if (present(xpad)) then
+!!$2       ixpad = xpad
+!!$2    else
+!!$2       ixpad = 0
+!!$2    end if
+!!$2    if (present(ypad)) then
+!!$2       iypad = ypad
+!!$2    else
+!!$2       iypad = 0
+!!$2    end if
 
     if (present(xopts)) then
-       ixopt = xopts
+!!$2       ixopt = xopts
+!!$3       ixexp = f_c_logical(iand(xopts, GTK_EXPAND) == GTK_EXPAND)
+!!$3       if (iand(xopts, GTK_FILL) == GTK_FILL) then
+!!$3          ixfill = GTK_ALIGN_FILL
+!!$3       else
+!!$3          ixfill = GTK_ALIGN_CENTER
+!!$3       end if
     else
-       ixopt = ior(GTK_EXPAND, GTK_FILL)
+!!$2       ixopt = ior(GTK_EXPAND, GTK_FILL)
+!!$3       ixexp = TRUE
+!!$3       ixfill = GTK_ALIGN_FILL
     end if
     if (present(yopts)) then
-       iyopt = yopts
+!!$2       iyopt = yopts
+!!$3       iyexp = f_c_logical(iand(yopts, GTK_EXPAND) == GTK_EXPAND)
+!!$3       if (iand(yopts, GTK_FILL) == GTK_FILL) then
+!!$3          iyfill = GTK_ALIGN_FILL
+!!$3       else
+!!$3          iyfill = GTK_ALIGN_CENTER
+!!$3       end if
     else
-       iyopt = ior(GTK_EXPAND, GTK_FILL)
+!!$2       iyopt = ior(GTK_EXPAND, GTK_FILL)
+!!$3       iyexp = TRUE
+!!$3       iyfill = GTK_ALIGN_FILL
     end if
 
-    call gtk_table_attach(table, widget, ix, ixtop, iy, iytop, &
-         & ixopt, iyopt, ixpad, iypad)
+!!$2    call gtk_table_attach(table, widget, ix, ixtop, iy, iytop, &
+!!$2         & ixopt, iyopt, ixpad, iypad)
+
+!!$3    call gtk_grid_attach(table, widget, ix, iy, ixsz, iysz)
+!!$3    if (present(xpad)) then
+!!$3       call gtk_widget_set_margin_left(widget, xpad)
+!!$3       call gtk_widget_set_margin_right(widget, xpad)
+!!$3    end if
+!!$3    if (present(ypad)) then
+!!$3       call gtk_widget_set_margin_top(widget, ypad)
+!!$3       call gtk_widget_set_margin_bottom(widget, ypad)
+!!$3    end if
+!!$3
+!!$3    call gtk_widget_set_hexpand (widget, ixexp)
+!!$3    call gtk_widget_set_vexpand (widget, iyexp)
+!!$3    call gtk_widget_set_halign (widget, ixfill)
+!!$3    call gtk_widget_set_valign (widget, iyfill)
 
   end subroutine hl_gtk_table_attach
 
@@ -377,18 +482,19 @@ contains
     !
     ! To set an absolute size, use gtk_table_resize
     ! directly. Negative NX and/or NY will reduce the table.
+    ! For Gtk+3.x this is a do-nothing routine.
     !-
 
-    integer(kind=c_int), target :: sx, sy
-
-    if (.not. (present(nx) .or. present(ny))) return  ! No resize
-
-    call gtk_table_get_size(table, c_loc(sy), c_loc(sx))
-
-    if (present(nx)) sx = sx+nx
-    if (present(ny)) sy = sy+ny
-
-    call gtk_table_resize(table, sy, sx)
+!!$2    integer(kind=c_int), target :: sx, sy
+!!$2
+!!$2    if (.not. (present(nx) .or. present(ny))) return  ! No resize
+!!$2
+!!$2    call gtk_table_get_size(table, c_loc(sy), c_loc(sx))
+!!$2
+!!$2    if (present(nx)) sx = sx+nx
+!!$2    if (present(ny)) sy = sy+ny
+!!$2
+!!$2   call gtk_table_resize(table, sy, sx)
 
   end subroutine hl_gtk_table_expand
 
