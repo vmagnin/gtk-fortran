@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 05-22-2012
+! Last modification: 07-04-2012
 
 !!$T Template file for gtk-hl-spin-slider.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -156,9 +156,11 @@ contains
     ! Callback connection
     if (present(value_changed)) then
        if (present(data)) then
-          call g_signal_connect(slider, "value-changed"//c_null_char, value_changed, data)
+          call g_signal_connect(slider, "value-changed"//c_null_char, &
+               & value_changed, data)
        else
-          call g_signal_connect(slider, "value-changed"//c_null_char, value_changed)
+          call g_signal_connect(slider, "value-changed"//c_null_char, &
+               & value_changed)
        end if
     end if
 
@@ -205,53 +207,19 @@ contains
     ! hl_gtk_slider_new
     !-
 
-    integer(kind=c_int) :: isvertical, idraw
-
-    ! Create the slider
-    if (present(vertical)) then
-       isvertical = vertical
+    if (present(initial_value)) then
+       slider = hl_gtk_slider_flt_new(real(imin, c_double), &
+         & real(imax, c_double), 1.0_c_double, &
+         & vertical=vertical, initial_value=real(initial_value, c_double), &
+         & value_changed=value_changed, data=data, sensitive=sensitive, &
+         & tooltip=tooltip, draw=draw, length=length)
     else
-       isvertical = FALSE
+       slider = hl_gtk_slider_flt_new(real(imin, c_double), &
+         & real(imax, c_double), 1.0_c_double, &
+         & vertical=vertical, &
+         & value_changed=value_changed, data=data, sensitive=sensitive, &
+         & tooltip=tooltip, draw=draw, length=length)
     end if
-    if (isvertical == TRUE) then
-       slider = gtk_vscale_new_with_range(real(imin, c_double), &
-            &real(imax, c_double), 1.0_c_double)
-       if (present(length)) &
-            & call gtk_widget_set_size_request(slider, 0, length)
-    else
-       slider = gtk_hscale_new_with_range(real(imin, c_double), &
-            &real(imax, c_double), 1.0_c_double)
-       if (present(length)) &
-            & call gtk_widget_set_size_request(slider, length, 0)
-    end if
-
-    ! Formatting
-    if (present(draw)) then
-       idraw = draw
-    else
-       idraw = TRUE
-    end if
-    call gtk_scale_set_draw_value(slider, idraw)
-
-    ! Initial value
-    if (present(initial_value)) call gtk_range_set_value(slider, &
-         & real(initial_value, c_double))
-
-    ! Callback connection
-    if (present(value_changed)) then
-       if (present(data)) then
-          call g_signal_connect(slider, "value-changed"//c_null_char, &
-               & value_changed, data)
-       else
-          call g_signal_connect(slider, "value-changed"//c_null_char, value_changed)
-       end if
-    end if
-
-    if (present(tooltip)) call gtk_widget_set_tooltip_text(slider, &
-         & trim(tooltip)//c_null_char)
-
-    if (present(sensitive)) &
-         & call gtk_widget_set_sensitive(slider, sensitive)
   end function hl_gtk_slider_int_new
 
   !+
@@ -498,7 +466,7 @@ contains
     type(c_funptr), optional :: focus_in_event, focus_out_event
     type(c_ptr), optional :: data_focus_in, data_focus_out
 
-    ! Floating point version of a spin_button
+    ! Integer version of a spin_button
     !
     ! IMIN: c_int: required: The minimum value for the spin_button
     ! IMAX: c_int: required: The maximum value for the spin_button
@@ -527,52 +495,25 @@ contains
     !-
 
     ! Create the spin_button
-    spin_button = gtk_spin_button_new_with_range(real(imin, c_double), &
-         &real(imax, c_double), 1.0_c_double)
-
-    ! Formatting
-    call gtk_spin_button_set_numeric(spin_button, TRUE)
-    if (present(wrap)) call gtk_spin_button_set_wrap(spin_button, wrap)
-
-    ! Initial value
-    if (present(initial_value)) call gtk_spin_button_set_value(spin_button, &
-         & real(initial_value, c_double))
-
-    ! Callback connection
-    if (present(value_changed)) then
-       if (present(data)) then
-          call g_signal_connect(spin_button, "value-changed"//c_null_char, value_changed, &
-               & data)
-       else
-          call g_signal_connect(spin_button, "value-changed"//c_null_char, value_changed)
-       end if
+    if (present(initial_value))  then
+       spin_button = hl_gtk_spin_button_flt_new(real(imin, c_double), &
+            & real(imax, c_double), 1.0_c_double, &
+            & value_changed=value_changed, &
+            & initial_value=real(initial_value, c_double), &
+            & data=data, sensitive=sensitive, tooltip=tooltip, &
+            & wrap=wrap, focus_out_event=focus_out_event, &
+            & data_focus_out=data_focus_out, focus_in_event=focus_in_event, &
+            & data_focus_in=data_focus_in)
+    else
+       spin_button = hl_gtk_spin_button_flt_new(real(imin, c_double), &
+            & real(imax, c_double), 1.0_c_double, &
+            & value_changed=value_changed, &
+            & data=data, sensitive=sensitive, tooltip=tooltip, &
+            & wrap=wrap, focus_out_event=focus_out_event, &
+            & data_focus_out=data_focus_out, focus_in_event=focus_in_event, &
+            & data_focus_in=data_focus_in)
     end if
 
-    if (present(focus_out_event)) then
-       if (present(data_focus_out)) then
-          call g_signal_connect(spin_button, &
-               & "focus-out-event"//C_NULL_CHAR, focus_out_event, data_focus_out)
-       else
-          call g_signal_connect(spin_button, &
-               & "focus-out-event"//C_NULL_CHAR, focus_out_event)
-       end if
-    end if
-
-    if (present(focus_in_event)) then
-       if (present(data_focus_in)) then
-          call g_signal_connect(spin_button, &
-               & "focus-in-event"//C_NULL_CHAR, focus_in_event, data_focus_in)
-       else
-          call g_signal_connect(spin_button, &
-               & "focus-in-event"//C_NULL_CHAR, focus_in_event)
-       end if
-    end if
-
-    if (present(tooltip)) call gtk_widget_set_tooltip_text(spin_button, &
-         & trim(tooltip)//c_null_char)
-
-    if (present(sensitive)) &
-         & call gtk_widget_set_sensitive(spin_button, sensitive)
   end function hl_gtk_spin_button_int_new
 
   !+
@@ -620,7 +561,8 @@ contains
     ! SPIN_BUTTON: c_ptr: required: The spin_button to set.
     ! VAL: c_int: required: The value to set.
     !
-    ! This is usually accessed via the generic interface hl_gtk_spin_button_set_value
+    ! This is usually accessed via the generic interface
+    ! hl_gtk_spin_button_set_value
     !-
 
     call gtk_spin_button_set_value(spin_button, real(val, c_double))

@@ -13,6 +13,8 @@ die "No version given.\nUsage:\n   $0 {2|3} [tmplfile...]\n" if ($#ARGV < 0);
 my $tmpl, $f90, $tflag, @flist;
 
 # Get the list of files in the current directory.
+die "Invalid version argument: $ARGV[0]\n" if ( $ARGV[0] !~/[23]/ );
+
 if ($#ARGV == 0) {
     opendir(DIR,'.') || die "Failed to open current directory: $!\n";
     @flist=readdir(DIR);
