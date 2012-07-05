@@ -86,7 +86,7 @@ contains
   function hl_gtk_entry_new(len, editable, activate, data, tooltip, value, &
        & sensitive, changed, data_changed, delete_text, data_delete_text, &
        & insert_text, data_insert_text, focus_in_event, focus_out_event, &
-       & data_focus_in, data_focus_out) result(entry)
+       & data_focus_in, data_focus_out, size) result(entry)
 
     type(c_ptr) :: entry
     integer, intent(in), optional :: len
@@ -98,6 +98,7 @@ contains
     type(c_funptr), optional :: changed, delete_text, insert_text
     type(c_ptr), optional :: data_changed, data_delete_text, data_insert_text
     type(c_ptr), optional :: data_focus_in, data_focus_out
+    integer(kind=c_int), intent(in), optional :: size
 
     ! Higher level text entry box
     !
@@ -131,12 +132,16 @@ contains
     ! 		call back is a function of 3 arguments returning gboolean.
     ! DATA_FOCUS_IN: c_ptr: optional: Data to pass to the focus_in_event
     ! 		callback
+    ! SIZE: integer : optional : The X-size request for the widget. Y is set
+    ! 		to default (-1). Note that Gtk may make the widget bigger than
+    ! 		this if expand/fill options in the packing require it.
     !-
 
     entry = gtk_entry_new()
     call gtk_entry_set_activates_default(entry, TRUE)
 
     if (present(len)) call gtk_entry_set_max_length(entry, len)
+    if (present(size)) call gtk_widget_set_size_request(entry, size, -1_c_int)
 
     if (present(editable)) &
          & call gtk_editable_set_editable(entry, editable)
