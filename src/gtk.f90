@@ -96,6 +96,12 @@ contains
     end do
 
     argc = argc + 1
+
+    ! This is a workaround to prevent locales with decimal comma
+    ! from behaving wrongly reading reals after gtk_init is called
+    ! when the code is compiled using gfortran.
+    call gtk_disable_setlocale()
+
     call gtk_init_real (argc, c_loc(argv))
     !deallocate(argv)
     !deallocate(carg)
