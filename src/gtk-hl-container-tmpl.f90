@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 07-02-2012
+! Last modification: 07-09-2012
 
 !!$T Template file for gtk-hl-container.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -77,6 +77,8 @@ module gtk_hl_container
        & gtk_window_set_deletable, gtk_window_set_keep_above,&
        & gtk_window_set_keep_below, gtk_window_set_resizable,&
        & gtk_window_set_title, gtk_window_set_transient_for, &
+       & gtk_window_set_icon_name, gtk_window_set_icon_from_file, &
+       & gtk_window_set_icon, &
 !!$2       & gtk_notebook_set_group, &
 !!$3       & gtk_notebook_set_group_name, &
        & gtk_scrolled_window_new, gtk_scrolled_window_set_policy, &
@@ -93,7 +95,8 @@ contains
   !+
   function hl_gtk_window_new(title, destroy, delete_event, data_destroy, &
        & data_delete_event, border, wsize, sensitive, resizable, decorated, &
-       & deletable, above, below, parent, accel_group) result(win)
+       & deletable, above, below, parent, accel_group, icon, icon_file,&
+       & icon_name) result(win)
 
     type(c_ptr) :: win
     character(kind=c_char), dimension(*), intent(in), optional :: title
@@ -105,6 +108,9 @@ contains
     integer(kind=c_int), intent(in), optional :: deletable, above, below
     type(c_ptr), intent(in), optional :: parent
     type(c_ptr), intent(out), optional :: accel_group
+    type(c_ptr), intent(in), optional :: icon
+    character(kind=c_char), dimension(*), intent(in), optional :: icon_name, &
+         & icon_file
 
     ! Higher-level interface to make a gtk_window
     !
@@ -129,7 +135,17 @@ contains
     ! PARENT: c_ptr: optional: An optional parent window for the new window.
     ! ACCEL_GROUP: c_ptr: optional: An accelerator group, used to add
     ! 		accelerators to widgets within the window.
+    ! ICON: c_ptr: optional : A GdkPixbuf containing the icon for the window.
+    ! ICON_FILE: String : optional : A file from which to read the icon for
+    ! 		the window.
+    ! ICON_NAME: String : optional : The name of a standard icon to use for
+    ! 		the window.
+    !
+    ! Only one way of setting the icon should be given, if more than one
+    ! is specified the priority is ICON, ICON_FILE, ICON_NAME.
     !-
+
+    integer(kind=c_int) :: icon_ok
 
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL)
     call gtk_window_set_title(win, title)
@@ -171,6 +187,14 @@ contains
          & call gtk_window_set_keep_below(win, below)
 
     if (present(parent)) call gtk_window_set_transient_for(win, parent)
+
+    if (present(icon)) then
+       call gtk_window_set_icon(win, icon)
+    else if (present(icon_file)) then
+       icon_ok = gtk_window_set_icon_from_file (win, icon_file, c_null_ptr)
+    else if (present(icon_name)) then
+       call gtk_window_set_icon_name(win, icon_name)
+    end if
 
     if (present(accel_group)) then
        accel_group = gtk_accel_group_new()
