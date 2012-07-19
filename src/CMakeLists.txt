@@ -21,7 +21,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin: 11.21.2011
+# Last modifications: James Tappin: 07.19.2012
 
 # CMAKE build file for GtkFortran
 
@@ -47,13 +47,14 @@ set(sources
 	"gtk-hl-misc.f90"
 	"gtk-draw-hl.f90"
 	"gtk-sup.f90"
+	"gdk-pixbuf-hl.f90"
 	"pango-auto.f90"
 	"gdkevents-auto2.f90")
 
 include_directories("/usr/include")
 include_directories(${GTK_INCLUDES})
 include_directories("/usr/local/include")
-include_directories("/usr/local/include/gtk-2/fortran")
+include_directories("/usr/local/include/gtk-2-fortran")
 
 add_library(gtk-fortran_static STATIC ${sources})
 add_library(gtk-fortran_shared SHARED ${sources})
@@ -105,6 +106,7 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_accelerator.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_misc.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_draw_hl.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
