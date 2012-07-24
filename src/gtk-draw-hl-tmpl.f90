@@ -23,7 +23,7 @@
 !
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modification: 11-30-2011
+! Last modification: 07-24-2012
 
 !!$T Template file for gtk-draw-hl.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -55,8 +55,11 @@ module gtk_draw_hl
   ! * hl_gtk_drawing_area_get_surface; Get the backing cairo surface
   ! * hl_gtk_drawing_area_expose_cb; Default callback for expose events.
   ! * hl_gtk_drawing_area_destroy_cb; Default callback for destroy signal
+  ! * hl_gtk_drawing_area_resize_cb; Default callback for size-allocate signal
   ! * hl_gtk_drawing_area_cairo_new; Create a cairo context attached to the
   ! backing surface.
+  ! * hl_gtk_drawing_area_resize: Resize the drawing area and the backing
+  ! surface
   ! * hl_gtk_drawing_area_cairo_destroy; Destroy the context.
   !/
 
@@ -75,8 +78,8 @@ module gtk_draw_hl
   use cairo, only: cairo_create, cairo_destroy, cairo_get_target, &
        & cairo_image_surface_create, cairo_paint, cairo_set_source, &
        & cairo_set_source_surface, cairo_surface_destroy, &
-       & cairo_surface_reference, cairo_surface_get_type
-
+       & cairo_surface_reference, cairo_surface_get_type, &
+       & cairo_surface_get_reference_count
   use gdk, only: gdk_cairo_create
 
   use g, only: g_object_get_data, g_object_set_data
@@ -90,6 +93,7 @@ module gtk_draw_hl
   type, bind(c) :: cairo_user_data_key_t
      integer(kind=c_int) :: dummy
   end type cairo_user_data_key_t
+
   type, bind(c) :: gtkallocation
      integer(kind=c_int) :: x,y,width,height
   end type gtkallocation
@@ -105,7 +109,7 @@ contains
        & key_release_event, data_key_release, enter_event, data_enter, &
        & leave_event, data_leave, destroy, data_destroy, event_mask, &
        & event_exclude, auto_add_mask, &
-       & tooltip, has_alpha) result(plota)
+       & tooltip, has_alpha, size_allocate, data_size_allocate) result(plota)
 
     type(c_ptr) :: plota
     type(c_ptr), intent(out), optional :: scroll
@@ -113,11 +117,11 @@ contains
     type(c_funptr), optional :: expose_event, button_press_event, &
          & button_release_event, scroll_event, key_press_event, &
          & key_release_event, motion_event, realize, configure_event,&
-         & enter_event, leave_event, destroy
+         & enter_event, leave_event, destroy, size_allocate
     type(c_ptr), intent(in), optional :: data_expose, data_button_press, &
          & data_button_release, data_scroll, data_motion, data_realize, &
          & data_configure, data_key_press, data_key_release, data_enter, &
-         & data_leave, data_destroy
+         & data_leave, data_destroy, data_size_allocate
     integer(kind=c_int), intent(in), optional :: event_mask, event_exclude
     integer(kind=c_int), intent(in), optional :: auto_add_mask
     character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
@@ -177,6 +181,9 @@ contains
     ! TOOLTIP: string: optional: Tooltip for the drawing area.
     ! HAS_ALPHA: boolean: optional: If a pixbuf is used, should it have
     ! 		an alpha (transparency) channel (default=FALSE)
+    ! SIZE_ALLOCATE: c_funptr: optional: Callback for the
+    ! 		'size-allocate' signal
+    ! DATA_SIZE_ALLOCATE: c_ptr: optional: Data for size_allocate.
     !
     ! Odd notes on mask interactions and other things.
     !
@@ -188,6 +195,8 @@ contains
     ! * Adding a tooltip looks to implicitly enable some events.
     ! * An example where an explict EVENT_MASK and EVENT_EXCLUDE might be
     ! useful would be to enable motion events only if a button is down.
+    ! * If an explicit size is given then the drawing area cannot be made
+    ! smaller than that by resizing the containing window
     !-
 
     type(c_ptr) :: isurface
@@ -201,9 +210,9 @@ contains
        szx = size(1)
        szy = size(2)
     else
-       call gtk_widget_set_size_request(plota, 256, 256)
-       szx = 256
-       szy = 256
+       call gtk_widget_set_size_request(plota, -1, -1)
+       szx = -1
+       szy = -1
     end if
 
     ! Add it to a scrolling window if one is requested
@@ -272,6 +281,20 @@ contains
     else
        call g_signal_connect(plota, "destroy"//c_null_char, &
             & c_funloc(hl_gtk_drawing_area_destroy_cb))
+    end if
+
+    ! Size-allocate signal
+    if (present(size_allocate)) then
+       if (present(data_size_allocate)) then
+          call g_signal_connect(plota, "size-allocate"//c_null_char, &
+               & size_allocate, data_size_allocate)
+       else
+          call g_signal_connect(plota, "size-allocate"//c_null_char, &
+               & size_allocate)
+       end if
+    else
+       call g_signal_connect(plota, "size-allocate"//c_null_char, &
+            & c_funloc(hl_gtk_drawing_area_resize_cb))
     end if
 
     ! Expose event
@@ -492,6 +515,20 @@ contains
   end subroutine hl_gtk_drawing_area_destroy_cb
 
   !+
+  subroutine hl_gtk_drawing_area_resize_cb(area, data) bind(c)
+    type(c_ptr), value :: area, data
+
+    ! Default call back for resizing the drawing area, just
+    ! copies the old backing store to the new one
+    !
+    ! AREA: c_ptr: required: The drawing area being destroyed.
+    ! DATA: c_ptr: required: User data for the callback (not used)
+    !-
+
+    call hl_gtk_drawing_area_resize(area, copy=.true.)
+  end subroutine hl_gtk_drawing_area_resize_cb
+    
+  !+
   function hl_gtk_drawing_area_cairo_new(area) result(cr)
     type(c_ptr) :: cr
     type(c_ptr), intent(in) :: area
@@ -558,37 +595,68 @@ contains
   end subroutine hl_gtk_drawing_area_cairo_destroy
 
   !+
-  subroutine hl_gtk_drawing_area_resize(widget, size)
-    type(c_ptr), intent(in) :: widget
+  subroutine hl_gtk_drawing_area_resize(area, size, copy)
+    type(c_ptr), intent(in) :: area
     integer(kind=c_int), intent(in), optional, dimension(2) :: size
+    logical, optional, intent(in) :: copy
 
     ! Resize a drawing area and its backing store.
     !
-    ! WIDGET: c_ptr: required: The widget to resize.
+    ! AREA: c_ptr: required: The area to resize.
     ! SIZE: int(2) : optional: The new size, if omitted, then the
-    ! 		backing store is resized to match the drawing area.
+    ! 		backing store is resized to match the drawing area (e.g.
+    ! 		after resizing the containing window).
     !-
 
-    type(c_ptr) :: cback, cback_old
+    type(c_ptr) :: cback, cback_old, cr, gdk_w
     integer(kind=c_int) :: szx, szy, s_type
     type(gtkallocation), target:: alloc
+    logical :: copy_surface
 
+    if (present(copy)) then
+       copy_surface = copy
+    else
+       copy_surface = .false.
+    end if
+
+    ! If the SIZE keyword is present then resize the window
     if (present(size)) then
-       call gtk_widget_set_size_request(widget, size(1), size(2))
+       call gtk_widget_set_size_request(area, size(1), size(2))
        szx = size(1)
        szy = size(2)
     endif
-    call gtk_widget_get_allocation(widget,c_loc(alloc))
+
+    ! Ensure that the allocation is up-to-date
+    call gtk_widget_get_allocation(area,c_loc(alloc))
     szx = alloc%width
     szy = alloc%height
 
-    cback_old = g_object_get_data(widget, "backing-surface")
+    ! Get the backing store and make a new one with the right type. Then
+    ! make that into the backing store.
+    cback_old = g_object_get_data(area, "backing-surface")
     s_type = cairo_surface_get_type(cback_old)
-    call cairo_surface_destroy(cback_old)
     cback = cairo_image_surface_create(s_type, szx, szy)
     cback = cairo_surface_reference(cback)   ! Prevent accidental deletion
-    call g_object_set_data(widget, "backing-surface", cback)
+    call g_object_set_data(area, "backing-surface", cback)
 
+    ! If the copy keyword is set then make a copy from the old
+    ! backing store to the new if the gdk window is really there.
+    if (copy_surface) then
+       gdk_w = gtk_widget_get_window(area)
+       if (c_associated(gdk_w)) then
+          cr = cairo_create(cback)
+          call cairo_set_source_surface(cr, cback_old, &
+               & 0._c_double, 0._c_double)
+          call cairo_paint(cr)
+          call cairo_destroy(cr)
+       end if
+    end if
+    
+    ! Ensure that the old backing store is fully dereferenced.
+    do
+       if (cairo_surface_get_reference_count(cback_old) <= 0) exit
+       call cairo_surface_destroy(cback_old)
+    end do
   end subroutine hl_gtk_drawing_area_resize
 
 
