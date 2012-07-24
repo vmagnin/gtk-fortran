@@ -71,8 +71,7 @@ module gtk_draw_hl
        & GDK_STRUCTURE_MASK, GDK_ALL_EVENTS_MASK, CAIRO_FORMAT_ARGB32, &
        & GDK_COLORSPACE_RGB, GTK_POLICY_AUTOMATIC, CAIRO_FORMAT_RGB24, &
        & TRUE, FALSE, &
-!!$3       & gtk_widget_get_allocated_width, gtk_widget_get_allocated_height
-!!$2       & gtk_widget_get_allocation
+       & gtk_widget_get_allocation
   use cairo, only: cairo_create, cairo_destroy, cairo_get_target, &
        & cairo_image_surface_create, cairo_paint, cairo_set_source, &
        & cairo_set_source_surface, cairo_surface_destroy, &
@@ -91,9 +90,9 @@ module gtk_draw_hl
   type, bind(c) :: cairo_user_data_key_t
      integer(kind=c_int) :: dummy
   end type cairo_user_data_key_t
-!!$2  type, bind(c) :: gtkallocation
-!!$2     integer(kind=c_int) :: x,y,width,height
-!!$2  end type gtkallocation
+  type, bind(c) :: gtkallocation
+     integer(kind=c_int) :: x,y,width,height
+  end type gtkallocation
 
 contains
 
@@ -572,19 +571,16 @@ contains
 
     type(c_ptr) :: cback, cback_old
     integer(kind=c_int) :: szx, szy, s_type
-!!$2    type(gtkallocation), target:: alloc
+    type(gtkallocation), target:: alloc
 
     if (present(size)) then
        call gtk_widget_set_size_request(widget, size(1), size(2))
        szx = size(1)
        szy = size(2)
-    else
-!!$2       call gtk_widget_get_allocation(widget,c_loc(alloc))
-!!$2       szx = alloc%width
-!!$2       szy = alloc%height
-!!$3       szx = gtk_widget_get_allocated_width(widget)
-!!$3       szy = gtk_widget_get_allocated_height(widget)
-    end if
+    endif
+    call gtk_widget_get_allocation(widget,c_loc(alloc))
+    szx = alloc%width
+    szy = alloc%height
 
     cback_old = g_object_get_data(widget, "backing-surface")
     s_type = cairo_surface_get_type(cback_old)
