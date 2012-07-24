@@ -70,12 +70,12 @@ module gtk_draw_hl
        & GDK_KEY_RELEASE_MASK, GDK_LEAVE_NOTIFY_MASK, GDK_POINTER_MOTION_MASK,&
        & GDK_STRUCTURE_MASK, GDK_ALL_EVENTS_MASK, CAIRO_FORMAT_ARGB32, &
        & GDK_COLORSPACE_RGB, GTK_POLICY_AUTOMATIC, CAIRO_FORMAT_RGB24, &
-       & TRUE, FALSE
-
+       & TRUE, FALSE, &
+       & gtk_widget_get_allocation
   use cairo, only: cairo_create, cairo_destroy, cairo_get_target, &
        & cairo_image_surface_create, cairo_paint, cairo_set_source, &
        & cairo_set_source_surface, cairo_surface_destroy, &
-       & cairo_surface_reference
+       & cairo_surface_reference, cairo_surface_get_type
 
   use gdk, only: gdk_cairo_create
 
@@ -90,6 +90,9 @@ module gtk_draw_hl
   type, bind(c) :: cairo_user_data_key_t
      integer(kind=c_int) :: dummy
   end type cairo_user_data_key_t
+  type, bind(c) :: gtkallocation
+     integer(kind=c_int) :: x,y,width,height
+  end type gtkallocation
 
 contains
 
@@ -455,7 +458,8 @@ contains
 
     isurface = g_object_get_data(area, "backing-surface")
     if (.not. c_associated(isurface)) then
-       write(error_unit,*) 'hl_gtk_drawing_area_expose_cb: Backing surface is NULL'
+       write(error_unit,*) &
+            & 'hl_gtk_drawing_area_expose_cb: Backing surface is NULL'
        return
     end if
 
@@ -553,6 +557,41 @@ contains
 
   end subroutine hl_gtk_drawing_area_cairo_destroy
 
+  !+
+  subroutine hl_gtk_drawing_area_resize(widget, size)
+    type(c_ptr), intent(in) :: widget
+    integer(kind=c_int), intent(in), optional, dimension(2) :: size
+
+    ! Resize a drawing area and its backing store.
+    !
+    ! WIDGET: c_ptr: required: The widget to resize.
+    ! SIZE: int(2) : optional: The new size, if omitted, then the
+    ! 		backing store is resized to match the drawing area.
+    !-
+
+    type(c_ptr) :: cback, cback_old
+    integer(kind=c_int) :: szx, szy, s_type
+    type(gtkallocation), target:: alloc
+
+    if (present(size)) then
+       call gtk_widget_set_size_request(widget, size(1), size(2))
+       szx = size(1)
+       szy = size(2)
+    endif
+    call gtk_widget_get_allocation(widget,c_loc(alloc))
+    szx = alloc%width
+    szy = alloc%height
+
+    cback_old = g_object_get_data(widget, "backing-surface")
+    s_type = cairo_surface_get_type(cback_old)
+    call cairo_surface_destroy(cback_old)
+    cback = cairo_image_surface_create(s_type, szx, szy)
+    cback = cairo_surface_reference(cback)   ! Prevent accidental deletion
+    call g_object_set_data(widget, "backing-surface", cback)
+
+  end subroutine hl_gtk_drawing_area_resize
+
+
   !*********************************************************************
   ! These routines are obsolete, but are retained for the time being to
   ! let older codes work
@@ -581,6 +620,5 @@ contains
     write(error_unit,*) "use hl_gtk_drawing_area_get_surface(area) instead"
     isurface = hl_gtk_drawing_area_get_surface(area)
   end function hl_gtk_drawing_area_get_pixbuf
-
 
 end module gtk_draw_hl
