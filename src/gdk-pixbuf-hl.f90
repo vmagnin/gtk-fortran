@@ -73,7 +73,9 @@ module gdk_pixbuf_hl
      module procedure hl_gdk_pixbuf_set_pixels16
   end interface hl_gdk_pixbuf_set_pixels
 
-  integer, parameter :: gdk_pixbuf_type_len=20
+  integer, parameter :: hl_gdk_pixbuf_type_len=20
+  integer, parameter :: hl_gdk_pixbuf_option_len=80
+
 contains
 
   !+
@@ -569,14 +571,15 @@ contains
     ! ERROR: f_string: optional: An error message if the write failed.
     !-
 
-    character(len=gdk_pixbuf_type_len) :: ftype
+    character(len=hl_gdk_pixbuf_type_len) :: ftype
     integer :: pd
     type(c_ptr), target :: err
     type(gerror), pointer :: ferr
     integer(kind=c_int) :: iok
     character(len=120) :: ferrmsg
     type(c_ptr), dimension(:), allocatable :: copt_names, copt_vals
-    character(len=20), target, dimension(:), allocatable :: opt_names, opt_vals
+    character(len=hl_gdk_pixbuf_option_len), target, &
+         & dimension(:), allocatable :: opt_names, opt_vals
     integer :: peq, i, nopt
 
     if (.not. present(type)) then
@@ -726,7 +729,7 @@ contains
     ! Returns .true. if the type is found, .false. if it is not.
     !-
 
-    character(len=gdk_pixbuf_type_len), dimension(:), allocatable :: names
+    character(len=hl_gdk_pixbuf_type_len), dimension(:), allocatable :: names
     integer :: idx, i
     type(c_ptr) :: flist, fmt
     type(c_ptr), target :: vlist
@@ -806,7 +809,7 @@ contains
 
   !+
   function hl_gdk_pixbuf_format_find(mime_type, extension) result(name)
-    character(len=gdk_pixbuf_type_len) :: name
+    character(len=hl_gdk_pixbuf_type_len) :: name
     character(len=*), intent(in), optional :: mime_type, extension
 
     ! Find the format type appropriate to a mime_type or a
@@ -816,10 +819,10 @@ contains
     ! EXTENSION: f_string: optional: The file extension to match.
     !
     ! If no match is found then an empty string is returned.
-    ! mime_type has precedence over extension.
+    ! Mime_type has precedence over extension.
     !-
 
-    character(len=gdk_pixbuf_type_len), dimension(:), allocatable :: names
+    character(len=hl_gdk_pixbuf_type_len), dimension(:), allocatable :: names
     character(len=20), dimension(:), allocatable :: types
     integer :: i, zidx
     logical :: found

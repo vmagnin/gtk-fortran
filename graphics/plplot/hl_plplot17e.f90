@@ -33,9 +33,6 @@ module common
        & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init, &
        & gtk_widget_queue_draw
   use g, only: g_object_get_data, g_usleep
-  use gdk_pixbuf, only: gdk_pixbuf_get_height, gdk_pixbuf_get_pixels, &
-       &gdk_pixbuf_&
-       &get_width
 
   use gtk_draw_hl
 
