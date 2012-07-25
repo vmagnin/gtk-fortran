@@ -17,6 +17,11 @@ system.
 plplot: including the fortran95 bindings and the cairo drivers. They
 are tested with the current release -- 5.9.7.
 
+N.B. As of version 5.9.9 (8?) the drawing codes are defined in the
+plplot Fortran interface. I have therefore commented them out in the
+plplot_extra module (but left them for those with older plplot
+versions).
+
 Concept
 -------
 
@@ -70,7 +75,7 @@ the call to plinit (or plstar):
     write(geometry, "(I0,'x',I0)") width, height
     call plsetopt("geometry",  geometry)
 
-And then after plinit you need:
+And then after plinit or plstar you need:
 
    call pl_cmd(PLESC_DEVINIT, cc)
 
@@ -85,7 +90,7 @@ The plplot example(s) are most easily built if gtk-fortran has been
 installed. Then it is simply a matter of:
 
     gfortran -o hl_plplot<x> hl_plplot<x>.f90 `pkg-config --cflags --libs \
-    	     gtk-fortran plplotd-f95`
+    	     gtk-2-fortran plplotd-f95`
 
 where <x> is the number of the example. A basic Makefile to do this is
 provided.

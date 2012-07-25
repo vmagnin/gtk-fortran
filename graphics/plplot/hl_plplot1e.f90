@@ -31,8 +31,6 @@ module common
        &_new, gtk_events_pending, gtk_main, gtk_main_iteration, gtk_main_iteration_do,&
        & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
   use g, only: g_object_get_data, g_usleep
-  use gdk_pixbuf, only: gdk_pixbuf_get_height, gdk_pixbuf_get_pixels, gdk_pixbuf_&
-       &get_width
 
   use gtk_draw_hl
 
@@ -312,7 +310,8 @@ program cairo_plplot
 
   call gtk_init()
 
-  window = hl_gtk_window_new("PLplot x01 / gtk-fortran (extcairo)"//c_null_char, &
+  window = hl_gtk_window_new("PLplot x01 / gtk-fortran (extcairo)"&
+       & //c_null_char, &
        & delete_event = c_funloc(delete_cb))
   base = hl_gtk_box_new()
   call gtk_container_add(window, base)
