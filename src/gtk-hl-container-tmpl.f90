@@ -71,7 +71,7 @@ module gtk_hl_container
 !!$3       & gtk_widget_set_hexpand, gtk_widget_set_vexpand,  &
 !!$3       & gtk_widget_set_halign, gtk_widget_set_valign, &
 !!$2       & gtk_hbox_new, gtk_vbox_new,&
-!!$3       & gtk_box_new, &
+!!$3       & gtk_box_new, gtk_box_set_homogeneous, &
        & gtk_widget_set_sensitive, gtk_window_add_accel_group,&
        & gtk_window_new, gtk_window_set_decorated,&
        & gtk_window_set_default, gtk_window_set_default_size,&

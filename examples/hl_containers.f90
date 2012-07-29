@@ -2,7 +2,7 @@ module handlers
   use iso_c_binding
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_container_add, gtk_label_new, gtk_main, gtk_&
-       &main_quit, gtk_notebook_new, gtk_table_attach, gtk_table_new, gtk_widget_destr&
+       &main_quit, gtk_notebook_new, gtk_widget_destr&
        &oy, gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
 
   implicit none
