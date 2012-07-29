@@ -72,14 +72,6 @@ target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
 # This test is excluded because the directories don't match up.
 # add_test(gtkbuilder2 gtkbuilder2)
 
-add_executable(hl_cairo1 "hl_cairo1.f90")
-target_link_libraries(hl_cairo1 gtk-fortran_static ${GTK_LIBRARIES})
-add_test(hl_cairo1 ./hl_cairo1)
-
-add_executable(hl_cairo_clock "hl_cairo_clock.f90")
-target_link_libraries(hl_cairo_clock gtk-fortran_static ${GTK_LIBRARIES})
-add_test(hl_cairo_clock ./hl_cairo_clock)
-
 add_executable(hl_choosers "hl_choosers.f90")
 target_link_libraries(hl_choosers gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_choosers ./hl_choosers)
@@ -136,11 +128,17 @@ add_executable(hl_tree "hl_tree.f90")
 target_link_libraries(hl_tree gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_tree ./hl_tree)
 
-if (GTK2_MINOR_VERSION GREATER 23)
-   add_executable(julia_pixbuf "julia_pixbuf.f90")
-   target_link_libraries(julia_pixbuf gtk-fortran_static ${GTK_LIBRARIES})
-   add_test(julia_pixbuf ./julia_pixbuf)
-endif()
+add_executable(hl_cairo1 "hl_cairo1.f90")
+target_link_libraries(hl_cairo1 gtk-fortran_static ${GTK_LIBRARIES})
+add_test(hl_cairo1 ./hl_cairo1)
+
+add_executable(hl_cairo_clock "hl_cairo_clock.f90")
+target_link_libraries(hl_cairo_clock gtk-fortran_static ${GTK_LIBRARIES})
+add_test(hl_cairo_clock ./hl_cairo_clock)
+
+add_executable(julia_pixbuf "julia_pixbuf.f90")
+target_link_libraries(julia_pixbuf gtk-fortran_static ${GTK_LIBRARIES})
+add_test(julia_pixbuf ./julia_pixbuf)
 
 add_executable(list_demo "list_demo.f90")
 target_link_libraries(list_demo gtk-fortran_static ${GTK_LIBRARIES})
@@ -155,11 +153,6 @@ add_executable(mandelbrot_pixbuf_zoom "mandelbrot_pixbuf_zoom.f90")
 target_link_libraries(mandelbrot_pixbuf_zoom gtk-fortran_static
   ${GTK_LIBRARIES})
 add_test(mandelbrot_pixbuf_zoom ./mandelbrot_pixbuf_zoom)
-
-add_executable(mandelbrot "mandelbrot.f90")
-target_link_libraries(mandelbrot gtk-fortran_static
-  ${GTK_LIBRARIES})
-add_test(mandelbrot ./mandelbrot)
 
 add_executable(menu "menu.f90")
 target_link_libraries(menu gtk-fortran_static ${GTK_LIBRARIES})
