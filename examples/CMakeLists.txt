@@ -96,6 +96,10 @@ add_executable(hl_list_n "hl_list_n.f90")
 target_link_libraries(hl_list_n gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_list_n ./hl_list_n)
 
+add_executable(hl_list_renderers "hl_list_renderers.f90")
+target_link_libraries(hl_list_renderers gtk-fortran_static ${GTK_LIBRARIES})
+add_test(hl_list_renderers ./hl_list_renderers)
+
 add_executable(hl_menu "hl_menu.f90")
 target_link_libraries(hl_menu gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_menu ./hl_menu)
