@@ -28,8 +28,11 @@
 !!$T  Make edits to this file, and keep them identical between the
 !!$T  GTK2 & GTK3 branches.
 
-!!$T Lines to be used only in the GTK2 tree should be prefixed with !!$2
-!!$T Lines to be used only in the GTK3 tree should be prefixed with !!$3
+!!$T Lines to appear only in specific versions should be prefixed by
+!!$T !!$<lib><op><ver>!
+!!$T Where <lib> is GTK or GLIB, <op> is one of < > <= >=
+!!$T and <ver> is the version boundary, e.g. !!$GTK<=2.24! to include
+!!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
 module gtk_hl_combobox
@@ -46,19 +49,19 @@ module gtk_hl_combobox
   use gtk, only: gtk_combo_box_get_active, gtk_combo_box_new,&
        & gtk_combo_box_set_active, &
        & gtk_widget_set_sensitive, gtk_widget_set_tooltip_text,&
-!!$2       & gtk_combo_box_get_active_text, &
-!!$2       & gtk_combo_box_new_with_entry, &
-!!$2       & gtk_combo_box_new_text, gtk_combo_box_entry_new_text, &
-!!$2       & gtk_combo_box_append_text,&
-!!$2       & gtk_combo_box_insert_text,&
-!!$2       & gtk_combo_box_prepend_text,&
-!!$2       & gtk_combo_box_remove_text,&
-!!$3       & gtk_combo_box_text_get_active_text, gtk_combo_box_text_new,&
-!!$3       & gtk_combo_box_text_new_with_entry, &
-!!$3       & gtk_combo_box_text_remove, &
-!!$3       & gtk_combo_box_text_append_text,&
-!!$3       & gtk_combo_box_text_insert_text,&
-!!$3       & gtk_combo_box_text_prepend_text,&
+!!$GTK< 3.0!       & gtk_combo_box_get_active_text, &
+!!$GTK< 3.0!       & gtk_combo_box_new_with_entry, &
+!!$GTK< 3.0!       & gtk_combo_box_new_text, gtk_combo_box_entry_new_text, &
+!!$GTK< 3.0!       & gtk_combo_box_append_text,&
+!!$GTK< 3.0!       & gtk_combo_box_insert_text,&
+!!$GTK< 3.0!       & gtk_combo_box_prepend_text,&
+!!$GTK< 3.0!       & gtk_combo_box_remove_text,&
+!!$GTK>=3.0!       & gtk_combo_box_text_get_active_text, gtk_combo_box_text_new,&
+!!$GTK>=3.0!       & gtk_combo_box_text_new_with_entry, &
+!!$GTK>=3.0!       & gtk_combo_box_text_remove, &
+!!$GTK>=3.0!       & gtk_combo_box_text_append_text,&
+!!$GTK>=3.0!       & gtk_combo_box_text_insert_text,&
+!!$GTK>=3.0!       & gtk_combo_box_text_prepend_text,&
        & TRUE, FALSE, g_signal_connect
 
   implicit none
@@ -101,24 +104,24 @@ contains
 
     if (ientry == TRUE) then
 !GTK3
-!!$3       cbox = gtk_combo_box_text_new_with_entry()
+!!$GTK>=3.0!       cbox = gtk_combo_box_text_new_with_entry()
 !GTK2
-!!$2       cbox = gtk_combo_box_entry_new_text()
+!!$GTK< 3.0!       cbox = gtk_combo_box_entry_new_text()
     else
 !GTK3
-!!$3       cbox = gtk_combo_box_text_new()
+!!$GTK>=3.0!       cbox = gtk_combo_box_text_new()
 !GTK2
-!!$2       cbox =  gtk_combo_box_new_text()
+!!$GTK< 3.0!       cbox =  gtk_combo_box_new_text()
     end if
 
     if (present(initial_choices)) then
        do i=1,size(initial_choices)
 !GTK3
-!!$3          call gtk_combo_box_text_append_text(cbox, &
-!!$3               & trim(initial_choices(i))//C_NULL_CHAR)
+!!$GTK>=3.0!          call gtk_combo_box_text_append_text(cbox, &
+!!$GTK>=3.0!               & trim(initial_choices(i))//C_NULL_CHAR)
 !GTK2
-!!$2          call gtk_combo_box_append_text(cbox, &
-!!$2               & trim(initial_choices(i))//C_NULL_CHAR)
+!!$GTK< 3.0!          call gtk_combo_box_append_text(cbox, &
+!!$GTK< 3.0!               & trim(initial_choices(i))//C_NULL_CHAR)
        end do
     end if
 
@@ -158,9 +161,9 @@ contains
 
     if (present(index)) then
 !GTK3
-!!$3       call gtk_combo_box_text_insert_text(cbox, index, text)
+!!$GTK>=3.0!       call gtk_combo_box_text_insert_text(cbox, index, text)
 !GTK2
-!!$2       call gtk_combo_box_insert_text(cbox, index, text)
+!!$GTK< 3.0!       call gtk_combo_box_insert_text(cbox, index, text)
     else
        if (present(at_start)) then
           prepend = at_start
@@ -169,14 +172,14 @@ contains
        end if
        if (prepend == TRUE) then
 !GTK3
-!!$3          call gtk_combo_box_text_prepend_text(cbox, text)
+!!$GTK>=3.0!          call gtk_combo_box_text_prepend_text(cbox, text)
 !GTK2
-!!$2          call gtk_combo_box_prepend_text(cbox, text)
+!!$GTK< 3.0!          call gtk_combo_box_prepend_text(cbox, text)
        else
 !GTK3
-!!$3          call gtk_combo_box_text_append_text(cbox, text)
+!!$GTK>=3.0!          call gtk_combo_box_text_append_text(cbox, text)
 !GTK2
-!!$2          call gtk_combo_box_append_text(cbox, text)
+!!$GTK< 3.0!          call gtk_combo_box_append_text(cbox, text)
        end if
     end if
   end subroutine hl_gtk_combo_box_add_text
@@ -194,9 +197,9 @@ contains
     !-
 
 !GTK3
-!!$3    call gtk_combo_box_text_remove(cbox, index)
+!!$GTK>=3.0!    call gtk_combo_box_text_remove(cbox, index)
 !GTK2
-!!$2    call gtk_combo_box_remove_text(cbox, index)
+!!$GTK< 3.0!    call gtk_combo_box_remove_text(cbox, index)
 
   end subroutine hl_gtk_combo_box_delete
 
@@ -222,9 +225,9 @@ contains
     if (present(text) .or. present(ftext)) then
 
 !GTK3
-!!$3      ctext = gtk_combo_box_text_get_active_text(cbox)
+!!$GTK>=3.0!      ctext = gtk_combo_box_text_get_active_text(cbox)
 !GTK2
-!!$2       ctext = gtk_combo_box_get_active_text(cbox)
+!!$GTK< 3.0!       ctext = gtk_combo_box_get_active_text(cbox)
 
        ! This is a bit ugly
        if (present(ftext)) &

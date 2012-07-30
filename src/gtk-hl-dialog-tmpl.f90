@@ -28,8 +28,11 @@
 !!$T  Make edits to this file, and keep them identical between the
 !!$T  GTK2 & GTK3 branches.
 
-!!$T Lines to be used only in the GTK2 tree should be prefixed with !!$2
-!!$T Lines to be used only in the GTK3 tree should be prefixed with !!$3
+!!$T Lines to appear only in specific versions should be prefixed by
+!!$T !!$<lib><op><ver>!
+!!$T Where <lib> is GTK or GLIB, <op> is one of < > <= >=
+!!$T and <ver> is the version boundary, e.g. !!$GTK<=2.24! to include
+!!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
 module gtk_hl_dialog
@@ -48,8 +51,8 @@ module gtk_hl_dialog
        & gtk_dialog_get_content_area, gtk_dialog_new, gtk_dialog_run,&
        & gtk_image_new, gtk_image_new_from_stock,&
        & gtk_label_new, gtk_label_set_markup, &
-!!$2       & gtk_hbox_new, gtk_vbox_new,&
-!!$3       & gtk_box_new,&
+!!$GTK< 3.0!       & gtk_hbox_new, gtk_vbox_new,&
+!!$GTK>=3.0!       & gtk_box_new,&
        & gtk_widget_destroy, gtk_widget_show, gtk_widget_show_all,&
        & gtk_window_set_destroy_with_parent, gtk_window_set_modal,&
        & gtk_window_set_title, gtk_window_set_transient_for, &
@@ -59,7 +62,7 @@ module gtk_hl_dialog
        & GTK_RESPONSE_OK, GTK_BUTTONS_CLOSE, GTK_RESPONSE_CLOSE,&
        & GTK_BUTTONS_CANCEL, GTK_RESPONSE_CANCEL, GTK_RESPONSE_YES,&
        & GTK_RESPONSE_NO, GTK_BUTTONS_OK_CANCEL, GTK_RESPONSE_NONE,&
-!!$3       & GTK_ORIENTATION_HORIZONTAL,  GTK_ORIENTATION_VERTICAL, &
+!!$GTK>=3.0!       & GTK_ORIENTATION_HORIZONTAL,  GTK_ORIENTATION_VERTICAL, &
        & TRUE, FALSE
 
   implicit none
@@ -117,8 +120,8 @@ contains
     end if
 
     if (itype /= GTK_MESSAGE_OTHER) then
-!!$2       hb = gtk_hbox_new(FALSE, 0)
-!!$3       hb = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0)
+!!$GTK< 3.0!       hb = gtk_hbox_new(FALSE, 0)
+!!$GTK>=3.0!       hb = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0)
        call gtk_box_pack_start(content, hb, TRUE, TRUE, 0)
        select case (itype)
        case (GTK_MESSAGE_ERROR)
@@ -137,8 +140,8 @@ contains
           junk=C_NULL_PTR
        end select
        if (c_associated(junk)) call gtk_box_pack_start(hb, junk, TRUE, TRUE, 0)
-!!$2       vb = gtk_vbox_new(FALSE, 0)
-!!$3       vb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0)
+!!$GTK< 3.0!       vb = gtk_vbox_new(FALSE, 0)
+!!$GTK>=3.0!       vb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0)
        call gtk_box_pack_start(hb, vb, TRUE, TRUE, 0)
     else
        vb = content
