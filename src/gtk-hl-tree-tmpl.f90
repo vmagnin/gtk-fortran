@@ -2251,7 +2251,7 @@ contains
     case(G_TYPE_CHAR)
        if (present(svalue)) then
 !!$GLIB< 2.32!          tchar = svalue(1:1)
-!!$GLIB< 2.32!          call g_value_set_char(val, svalue(1:1), c_int8_t)
+!!$GLIB< 2.32!          call g_value_set_char(val, svalue(1:1))
 !!$GLIB>=2.32!          call g_value_set_schar(val, ichar(svalue(1:1), c_int8_t))
        else if (present(i8value)) then
 !!$GLIB< 2.32!          call g_value_set_char(val, char(i8value, c_char))
@@ -2584,7 +2584,7 @@ contains
 !!$GLIB< 2.32!          ivalue = ichar(g_value_get_char(val), c_long)
 !!$GLIB>=2.32!          lvalue = int(g_value_get_schar(val), c_long)
        else if (present(l64value)) then
-!!$GLIB< 2.32!          l64value = ichar(g_value_get_char(val), c_int64t)
+!!$GLIB< 2.32!          l64value = ichar(g_value_get_char(val), c_int64_t)
 !!$GLIB>=2.32!          l64value = int(g_value_get_schar(val), c_int64_t)
        else
           write(error_unit,*) "hl_gtk_list_tree_get_gvalue:: "//&
