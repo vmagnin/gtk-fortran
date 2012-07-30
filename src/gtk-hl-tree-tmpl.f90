@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 11-21-2011
+! Last modification: 07-30-2012
 
 !!$T Template file for gtk-hl-tree.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -99,7 +99,7 @@ module gtk_hl_tree
        & gtk_adjustment_set_page_increment, gtk_adjustment_set_value, &
        & gtk_cell_renderer_toggle_new, gtk_cell_renderer_spin_new, &
        & gtk_cell_renderer_toggle_get_active, gtk_cell_renderer_progress_new, &
-       & gtk_cell_renderer_set_fixed_size, &
+       & gtk_cell_renderer_set_fixed_size, gtk_cell_renderer_pixbuf_new, &
 !!$       & gtk_cell_renderer_toggle_set_radio, &
        & GTK_POLICY_AUTOMATIC, GTK_TREE_VIEW_COLUMN_FIXED, &
        & GTK_SELECTION_MULTIPLE, &
@@ -2040,8 +2040,13 @@ contains
        renderer = gtk_cell_renderer_progress_new()
        editable_property = ""
 
-    case(hl_gtk_cell_combo, hl_gtk_cell_pixbuf, &
-         &  hl_gtk_cell_spinner, hl_gtk_cell_radio)
+    case(hl_gtk_cell_pixbuf)
+       renderer = gtk_cell_renderer_pixbuf_new()
+       editable_property = ""
+
+    case(hl_gtk_cell_combo, &
+         & hl_gtk_cell_spinner, &
+         & hl_gtk_cell_radio)
        write(error_unit, *) "hl_gtk_list_tree_add_column: "//&
             & "Renderer type ",trim(render_id)," not yet implemented"
        return
@@ -2182,6 +2187,9 @@ contains
             & "value"//c_null_char, icol-1)
        call gtk_tree_view_column_add_attribute(column, renderer, &
             & "text"//C_NULL_CHAR, icol-1)
+    case(hl_gtk_cell_pixbuf)
+       call gtk_tree_view_column_add_attribute(column, renderer, &
+            & "pixbuf"//c_null_char, icol-1)
     end select
 
     nc = gtk_tree_view_append_column(view, column)
@@ -2236,11 +2244,7 @@ contains
     integer :: ios
     character(len=1,kind=c_char) :: tchar
 
-    if (ctype==gdk_pixbuf_get_type()) then
-       val = g_value_init(val, G_TYPE_OBJECT)
-    else
-       val = g_value_init(val, ctype)
-    end if
+    val = g_value_init(val, ctype)
 
     ! Select according to the cell type
     select case(ctype)
