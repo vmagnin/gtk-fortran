@@ -28,8 +28,11 @@
 !!$T  Make edits to this file, and keep them identical between the
 !!$T  GTK2 & GTK3 branches.
 
-!!$T Lines to be used only in the GTK2 tree should be prefixed with !!$2
-!!$T Lines to be used only in the GTK3 tree should be prefixed with !!$3
+!!$T Lines to appear only in specific versions should be prefixed by
+!!$T !!$<lib><op><ver>!
+!!$T Where <lib> is GTK or GLIB, <op> is one of < > <= >=
+!!$T and <ver> is the version boundary, e.g. !!$GTK<=2.24! to include
+!!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
 module gtk_hl_misc
@@ -44,9 +47,9 @@ module gtk_hl_misc
   use iso_fortran_env, only: error_unit
 
   use gtk, only: gtk_bin_get_child, gtk_label_set_markup,&
-!!$2       & gtk_hseparator_new, gtk_vseparator_new, &
-!!$3       & gtk_separator_new, &
-!!$3       & GTK_ORIENTATION_HORIZONTAL, GTK_ORIENTATION_VERTICAL, &
+!!$GTK< 3.0!       & gtk_hseparator_new, gtk_vseparator_new, &
+!!$GTK>=3.0!       & gtk_separator_new, &
+!!$GTK>=3.0!       & GTK_ORIENTATION_HORIZONTAL, GTK_ORIENTATION_VERTICAL, &
        & TRUE, FALSE
 
   implicit none
@@ -88,32 +91,32 @@ contains
     ! 		a vertical separator.
     !-
 
-!!$2    logical :: is_vertical
-!!$3    integer(kind=c_int) :: direction
+!!$GTK< 3.0!    logical :: is_vertical
+!!$GTK>=3.0!    integer(kind=c_int) :: direction
 
-!!$2    if (present(vertical)) then
-!!$2       is_vertical = c_f_logical(vertical)
-!!$2    else
-!!$2       is_vertical = .false.
-!!$2    end if
-!!$2
-!!$2    if (is_vertical) then
-!!$2       spacer = gtk_vseparator_new()
-!!$2    else
-!!$2       spacer = gtk_hseparator_new()
-!!$2    end if
+!!$GTK< 3.0!    if (present(vertical)) then
+!!$GTK< 3.0!       is_vertical = c_f_logical(vertical)
+!!$GTK< 3.0!    else
+!!$GTK< 3.0!       is_vertical = .false.
+!!$GTK< 3.0!    end if
+!!$GTK< 3.0!
+!!$GTK< 3.0!    if (is_vertical) then
+!!$GTK< 3.0!       spacer = gtk_vseparator_new()
+!!$GTK< 3.0!    else
+!!$GTK< 3.0!       spacer = gtk_hseparator_new()
+!!$GTK< 3.0!    end if
 
-!!$3    if (present(vertical)) then
-!!$3       if (c_f_logical(vertical)) then
-!!$3          direction = GTK_ORIENTATION_VERTICAL
-!!$3       else
-!!$3          direction = GTK_ORIENTATION_HORIZONTAL
-!!$3       end if
-!!$3    else
-!!$3       direction = GTK_ORIENTATION_HORIZONTAL
-!!$3    end if
-!!$3
-!!$3    spacer = gtk_separator_new(direction)
+!!$GTK>=3.0!    if (present(vertical)) then
+!!$GTK>=3.0!       if (c_f_logical(vertical)) then
+!!$GTK>=3.0!          direction = GTK_ORIENTATION_VERTICAL
+!!$GTK>=3.0!       else
+!!$GTK>=3.0!          direction = GTK_ORIENTATION_HORIZONTAL
+!!$GTK>=3.0!       end if
+!!$GTK>=3.0!    else
+!!$GTK>=3.0!       direction = GTK_ORIENTATION_HORIZONTAL
+!!$GTK>=3.0!    end if
+!!$GTK>=3.0!
+!!$GTK>=3.0!    spacer = gtk_separator_new(direction)
 
   end function hl_gtk_separator_new
 end module gtk_hl_misc

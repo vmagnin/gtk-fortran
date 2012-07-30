@@ -29,8 +29,11 @@
 !!$T  Make edits to this file, and keep them identical between the
 !!$T  GTK2 & GTK3 branches.
 
-!!$T Lines to be used only in the GTK2 tree should be prefixed with !!$2
-!!$T Lines to be used only in the GTK3 tree should be prefixed with !!$3
+!!$T Lines to appear only in specific versions should be prefixed by
+!!$T !!$<lib><op><ver>!
+!!$T Where <lib> is GTK or GLIB, <op> is one of < > <= >=
+!!$T and <ver> is the version boundary, e.g. !!$GTK<=2.24! to include
+!!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
 module gtk_draw_hl
@@ -300,16 +303,16 @@ contains
     ! Expose event
     if (present(expose_event)) then
        if (present(data_expose)) then
-!!$2         call g_signal_connect(plota, "expose-event"//c_null_char, expose_event, &
-!!$2              & data_expose)
-!!$3         call g_signal_connect(plota, "draw"//c_null_char, expose_event, &
-!!$3              & data_expose)
+!!$GTK< 3.0!         call g_signal_connect(plota, "expose-event"//c_null_char, expose_event, &
+!!$GTK< 3.0!              & data_expose)
+!!$GTK>=3.0!         call g_signal_connect(plota, "draw"//c_null_char, expose_event, &
+!!$GTK>=3.0!              & data_expose)
        endif
     else
-!!$2       call g_signal_connect(plota, "expose-event"//c_null_char, &
-!!$2            & c_funloc(hl_gtk_drawing_area_expose_cb))
-!!$3       call g_signal_connect(plota, "draw"//c_null_char, &
-!!$3            & c_funloc(hl_gtk_drawing_area_expose_cb))
+!!$GTK< 3.0!       call g_signal_connect(plota, "expose-event"//c_null_char, &
+!!$GTK< 3.0!            & c_funloc(hl_gtk_drawing_area_expose_cb))
+!!$GTK>=3.0!       call g_signal_connect(plota, "draw"//c_null_char, &
+!!$GTK>=3.0!            & c_funloc(hl_gtk_drawing_area_expose_cb))
     end if
 
 

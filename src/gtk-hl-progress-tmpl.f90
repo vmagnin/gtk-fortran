@@ -28,8 +28,11 @@
 !!$T  Make edits to this file, and keep them identical between the
 !!$T  GTK2 & GTK3 branches.
 
-!!$T Lines to be used only in the GTK2 tree should be prefixed with !!$2
-!!$T Lines to be used only in the GTK3 tree should be prefixed with !!$3
+!!$T Lines to appear only in specific versions should be prefixed by
+!!$T !!$<lib><op><ver>!
+!!$T Where <lib> is GTK or GLIB, <op> is one of < > <= >=
+!!$T and <ver> is the version boundary, e.g. !!$GTK<=2.24! to include
+!!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
 module gtk_hl_progress
@@ -46,12 +49,12 @@ module gtk_hl_progress
        &, gtk_progress_bar_pulse, gtk_progress_bar_set_fraction,&
        & gtk_progress_bar_set_pulse_step,&
        & gtk_progress_bar_set_text, &
-!!$2       & gtk_progress_bar_set_orientation, &
-!!$3       & gtk_progress_bar_set_show_text, &
-!!$3       & gtk_progress_bar_set_inverted, &
-!!$2   & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
-!!$2   & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT, &
-!!$3   & GTK_ORIENTATION_VERTICAL,  GTK_ORIENTATION_HORIZONTAL, &
+!!$GTK< 3.0!       & gtk_progress_bar_set_orientation, &
+!!$GTK>=3.0!       & gtk_progress_bar_set_show_text, &
+!!$GTK>=3.0!       & gtk_progress_bar_set_inverted, &
+!!$GTK< 3.0!   & GTK_PROGRESS_LEFT_TO_RIGHT, GTK_PROGRESS_BOTTOM_TO_TOP, &
+!!$GTK< 3.0!   & GTK_PROGRESS_TOP_TO_BOTTOM, GTK_PROGRESS_RIGHT_TO_LEFT, &
+!!$GTK>=3.0!   & GTK_ORIENTATION_VERTICAL,  GTK_ORIENTATION_HORIZONTAL, &
        & TRUE, FALSE
 
   implicit none
@@ -83,29 +86,29 @@ contains
     bar = gtk_progress_bar_new()
 
     ! GTK2 version
-!!$2    orientation = GTK_PROGRESS_LEFT_TO_RIGHT
-!!$2    if (present(vertical)) then
-!!$2       if (vertical == TRUE) orientation = GTK_PROGRESS_BOTTOM_TO_TOP
-!!$2       if (present(reversed)) then
-!!$2          if (reversed == TRUE) orientation = GTK_PROGRESS_TOP_TO_BOTTOM
-!!$2       end if
-!!$2    else if (present(reversed)) then
-!!$2       if (reversed == TRUE) orientation = GTK_PROGRESS_RIGHT_TO_LEFT
-!!$2    end if
-!!$2    call gtk_progress_bar_set_orientation(bar, orientation)
+!!$GTK< 3.0!    orientation = GTK_PROGRESS_LEFT_TO_RIGHT
+!!$GTK< 3.0!    if (present(vertical)) then
+!!$GTK< 3.0!       if (vertical == TRUE) orientation = GTK_PROGRESS_BOTTOM_TO_TOP
+!!$GTK< 3.0!       if (present(reversed)) then
+!!$GTK< 3.0!          if (reversed == TRUE) orientation = GTK_PROGRESS_TOP_TO_BOTTOM
+!!$GTK< 3.0!       end if
+!!$GTK< 3.0!    else if (present(reversed)) then
+!!$GTK< 3.0!       if (reversed == TRUE) orientation = GTK_PROGRESS_RIGHT_TO_LEFT
+!!$GTK< 3.0!    end if
+!!$GTK< 3.0!    call gtk_progress_bar_set_orientation(bar, orientation)
     ! end GTK2 version
     ! GTK3 version
-!!$3    if (present(vertical)) then
-!!$3       if (vertical == TRUE) then
-!!$3          call gtk_orientable_set_orientation (bar, &
-!!$3               & GTK_ORIENTATION_VERTICAL)
-!!$3       else
-!!$3          call gtk_orientable_set_orientation (bar, &
-!!$3               & GTK_ORIENTATION_HORIZONTAL)
-!!$3       end if
-!!$3    end if
-!!$3
-!!$3    if (present(reversed)) call gtk_progress_bar_set_inverted(bar, reversed)
+!!$GTK>=3.0!    if (present(vertical)) then
+!!$GTK>=3.0!       if (vertical == TRUE) then
+!!$GTK>=3.0!          call gtk_orientable_set_orientation (bar, &
+!!$GTK>=3.0!               & GTK_ORIENTATION_VERTICAL)
+!!$GTK>=3.0!       else
+!!$GTK>=3.0!          call gtk_orientable_set_orientation (bar, &
+!!$GTK>=3.0!               & GTK_ORIENTATION_HORIZONTAL)
+!!$GTK>=3.0!       end if
+!!$GTK>=3.0!    end if
+!!$GTK>=3.0!
+!!$GTK>=3.0!    if (present(reversed)) call gtk_progress_bar_set_inverted(bar, reversed)
     ! end GTK3 version
 
     if (present(step)) &
@@ -146,7 +149,7 @@ contains
     if (present(text)) then
        call gtk_progress_bar_set_text (bar, text//c_null_char)
 ! GTK3 Only
-!!$3      call gtk_progress_bar_set_show_text(bar, TRUE)
+!!$GTK>=3.0!      call gtk_progress_bar_set_show_text(bar, TRUE)
 ! End GTK3 only
     else if (present(string)) then
        if (string == FALSE .or. .not. present(val)) return
@@ -155,9 +158,9 @@ contains
 
        call gtk_progress_bar_set_text (bar, trim(sval)//c_null_char)
 ! GTK3 Only
-!!$3      call gtk_progress_bar_set_show_text(bar, TRUE)
-!!$3    else
-!!$3       call gtk_progress_bar_set_show_text(bar, FALSE)
+!!$GTK>=3.0!      call gtk_progress_bar_set_show_text(bar, TRUE)
+!!$GTK>=3.0!    else
+!!$GTK>=3.0!       call gtk_progress_bar_set_show_text(bar, FALSE)
 ! End GTK3 only
     end if
   end subroutine hl_gtk_progress_bar_set_f
@@ -192,7 +195,7 @@ contains
     if (present(text)) then
        call gtk_progress_bar_set_text (bar, text//c_null_char)
 ! GTK3 Only
-!!$3       call gtk_progress_bar_set_show_text(bar, TRUE)
+!!$GTK>=3.0!       call gtk_progress_bar_set_show_text(bar, TRUE)
 ! End GTK3 only
     else if (present(string)) then
        if (string == FALSE) return
@@ -200,9 +203,9 @@ contains
        write(sval, "(I0,' of ',I0)") val, maxv
        call gtk_progress_bar_set_text (bar, trim(sval)//c_null_char)
 ! GTK3 Only
-!!$3       call gtk_progress_bar_set_show_text(bar, TRUE)
-!!$3    else
-!!$3       call gtk_progress_bar_set_show_text(bar, FALSE)
+!!$GTK>=3.0!       call gtk_progress_bar_set_show_text(bar, TRUE)
+!!$GTK>=3.0!    else
+!!$GTK>=3.0!       call gtk_progress_bar_set_show_text(bar, FALSE)
 ! End GTK3 only
     end if
   end subroutine hl_gtk_progress_bar_set_ii
