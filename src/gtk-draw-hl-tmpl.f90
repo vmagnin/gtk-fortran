@@ -307,6 +307,9 @@ contains
 !!$GTK< 3.0!              & data_expose)
 !!$GTK>=3.0!         call g_signal_connect(plota, "draw"//c_null_char, expose_event, &
 !!$GTK>=3.0!              & data_expose)
+       else
+!!$GTK< 3.0!         call g_signal_connect(plota, "expose-event"//c_null_char, expose_event)
+!!$GTK>=3.0!         call g_signal_connect(plota, "draw"//c_null_char, expose_event) 
        endif
     else
 !!$GTK< 3.0!       call g_signal_connect(plota, "expose-event"//c_null_char, &
@@ -345,10 +348,11 @@ contains
     ! Scroll event
     if (present(scroll_event)) then
        if (present(data_scroll)) then
-          call g_signal_connect(plota, "scroll-event"//c_null_char, scroll_event, &
-               & data_scroll)
+          call g_signal_connect(plota, "scroll-event"//c_null_char, &
+               &scroll_event, data_scroll)
        else
-          call g_signal_connect(plota, "scroll-event"//c_null_char, scroll_event)
+          call g_signal_connect(plota, "scroll-event"//c_null_char, &
+               & scroll_event)
        endif
        if (auto_add == TRUE) mask = ior(mask, &
             & iand(GDK_SCROLL_MASK, insert_mask))
