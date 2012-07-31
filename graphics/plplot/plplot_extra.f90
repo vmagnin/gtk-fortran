@@ -30,7 +30,7 @@ module plplot_extra
 
   implicit none
 
-  ! The operation codes
+  ! The operation codes for pl_cmd
   integer, parameter :: PLESC_SET_RGB          = 1      ! obsolete
   integer, parameter :: PLESC_ALLOC_NCOL       = 2      ! obsolete
   integer, parameter :: PLESC_SET_LPB          = 3      ! obsolete
@@ -70,16 +70,20 @@ module plplot_extra
   !      Plotting options for 3d plots, see plplot.h for the C definitions
   !      of these options.
 
-  integer, parameter :: DRAW_LINEX = 1
-  integer, parameter :: DRAW_LINEY = 2
-  integer, parameter :: DRAW_LINEXY = 3
-  integer, parameter :: MAG_COLOR = 4
-  integer, parameter :: BASE_CONT = 8
-  integer, parameter :: TOP_CONT = 16
-  integer, parameter :: SURF_CONT = 32
-  integer, parameter :: DRAW_SIDES = 64
-  integer, parameter :: FACETED = 128
-  integer, parameter :: MESH = 256
+  ! As of (at worst) plplot 5.9.9 these definitions are in the standard plplot
+  ! modules. They are left in so that users with an older version (e.g. 5.9.7)
+  ! can uncomment them.
+
+!!$  integer, parameter :: DRAW_LINEX = 1
+!!$  integer, parameter :: DRAW_LINEY = 2
+!!$  integer, parameter :: DRAW_LINEXY = 3
+!!$  integer, parameter :: MAG_COLOR = 4
+!!$  integer, parameter :: BASE_CONT = 8
+!!$  integer, parameter :: TOP_CONT = 16
+!!$  integer, parameter :: SURF_CONT = 32
+!!$  integer, parameter :: DRAW_SIDES = 64
+!!$  integer, parameter :: FACETED = 128
+!!$  integer, parameter :: MESH = 256
 
   ! Interface for the pl_cmd routine
   interface

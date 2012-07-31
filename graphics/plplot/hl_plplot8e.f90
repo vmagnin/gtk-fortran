@@ -34,9 +34,6 @@ module global
        &able_new, gtk_toggle_button_get_active, gtk_widget_destroy, gtk_widget_show, g&
        &tk_widget_show_all, gtk_window_new, gtk_init, gtk_widget_queue_draw
 
-  use gdk_pixbuf, only: gdk_pixbuf_get_height, gdk_pixbuf_get_pixels, gdk_pixbuf_&
-       &get_width
-
   use gtk_hl
   use gtk_draw_hl
   use plplot_extra
@@ -325,6 +322,22 @@ contains
     end if
     call draw_08(draw, disp_type, alt, az, ifun)
   end subroutine set_bcont
+
+  subroutine resize_area(widget, gdata) bind(c)
+    type(c_ptr), value :: widget, gdata
+
+    type(gtkallocation), target:: alloc
+
+    call gtk_widget_get_allocation(draw,c_loc(alloc))
+    call hl_gtk_drawing_area_resize(draw)
+    print*,"resize",alloc%width,alloc%height
+    width=alloc%width
+    height=alloc%height
+
+    call draw_08(draw, disp_type, alt, az, ifun)
+
+  end subroutine resize_area
+
 end module plpl8_handlers
 
 
@@ -350,7 +363,7 @@ program hl_plplot8
 
   ! The drawing area for the plot
   draw = hl_gtk_drawing_area_new(size=(/width, height/), &
-       & has_alpha = FALSE)
+       & has_alpha = FALSE, size_allocate=c_funloc(resize_area))
   call hl_gtk_box_pack(base, draw)
 
   ! Put the direction settings in a table.
