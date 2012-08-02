@@ -48,6 +48,7 @@ set(sources
 	"gtk-draw-hl.f90"
 	"gtk-sup.f90"
 	"pango-auto.f90"
+	"gdk-pixbuf-hl.f90"
 	"gdkevents-auto2.f90")
 
 include_directories("/usr/include")
@@ -104,6 +105,7 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_misc.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_draw_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
 	DESTINATION include/gtk-2-fortran)

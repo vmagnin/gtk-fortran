@@ -22,14 +22,17 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 11-21-2011
+! Last modification: 07-04-2012
 
 !!$T Template file for gtk-hl-chooser.f90.
 !!$T  Make edits to this file, and keep them identical between the
 !!$T  GTK2 & GTK3 branches.
 
-!!$T Lines to be used only in the GTK2 tree should be prefixed with !!$2
-!!$T Lines to be used only in the GTK3 tree should be prefixed with !!$3
+!!$T Lines to appear only in specific versions should be prefixed by
+!!$T !!$<lib><op><ver>!
+!!$T Where <lib> is GTK or GLIB, <op> is one of < > <= >=
+!!$T and <ver> is the version boundary, e.g. !!$GTK<=2.24! to include
+!!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
 module gtk_hl_chooser
@@ -94,6 +97,7 @@ module gtk_hl_chooser
        & g_slist_nth_data
 
   ! Building the chooser uses a number of other high-level inderfaces.
+
   use gtk_hl_container
   use gtk_hl_entry
   use gtk_hl_button
@@ -114,7 +118,7 @@ module gtk_hl_chooser
 contains
   !+
   function hl_gtk_file_chooser_button_new(directory, title, &
-       & width, show_hidden, &
+       & width, show_hidden, initial_dir, current, &
        & initial_folder, initial_file, filter, filter_name, file_set, &
        & data, sensitive, tooltip) result(cbutton)
 
@@ -122,8 +126,9 @@ contains
     integer(kind=c_int), intent(in), optional :: directory
     character(kind=c_char), dimension(*), optional, intent(in) :: title
     integer(kind=c_int), intent(in), optional :: width
-    integer(kind=c_int), intent(in), optional :: show_hidden
-    character(kind=c_char), dimension(*), optional, intent(in) :: initial_folder, initial_file
+    integer(kind=c_int), intent(in), optional :: show_hidden, current
+    character(kind=c_char), dimension(*), optional, intent(in) :: &
+         & initial_folder, initial_file, initial_dir
     character(len=*), dimension(:), intent(in), optional :: filter
     character(len=*), dimension(:), optional, intent(in) :: filter_name
     type(c_funptr), optional :: file_set
@@ -138,8 +143,10 @@ contains
     ! TITLE: string: optional: A title for the button.
     ! WIDTH: c_int: optional: A maximum number of characters to show.
     ! SHOW_HIDDEN: boolean: optional: Set to TRUE to display hidden files.
-    ! INITIAL_FOLDER: string: optional: Use to start the search other than
-    ! 		in the current directory.
+    ! INITIAL_DIR: string: optional: Use to start the search other than
+    ! 		in the current directory. (INITIAL_FOLDER is a deprecated
+    ! 		alias).
+    ! CURRENT: boolean: optional: Use to force start in current directory.
     ! INITIAL_FILE: string: optional: An initial file selection.
     ! FILTER: string(): optional: An initial list of filename patterns to
     ! 		allow. Each filter is a comma-separated list.
@@ -172,7 +179,8 @@ contains
     else  if (mode == GTK_FILE_CHOOSER_ACTION_OPEN) then
        cbutton = gtk_file_chooser_button_new("Choose file"//c_null_char, mode)
     else
-       cbutton = gtk_file_chooser_button_new("Choose directory"//c_null_char, mode)
+       cbutton = gtk_file_chooser_button_new("Choose directory"//c_null_char,&
+            & mode)
     end if
 
     call gtk_file_chooser_set_local_only(cbutton, TRUE)
@@ -187,8 +195,16 @@ contains
     if (present(width)) call &
          & gtk_file_chooser_button_set_width_chars(cbutton, width)
 
-    if (present(initial_folder)) &
-         & lval = gtk_file_chooser_set_current_folder(cbutton, initial_folder)
+    if (present(initial_dir)) then
+       lval = gtk_file_chooser_set_current_folder(cbutton, initial_dir)
+    else if (present(initial_folder)) then
+       lval = gtk_file_chooser_set_current_folder(cbutton, initial_folder)
+       write(error_unit, *) "HL_GTK_FILE_CHOOSER_BUTTON_NEW:: "// &
+            & "INITIAL_FOLDER is deprecated, INITIAL_DIR is preferred"
+    else if (present(current)) then
+       if (c_f_logical(current)) &
+       & lval = gtk_file_chooser_set_current_folder(cbutton, "."//c_null_char)
+    end if
     if (present(initial_file)) &
          & lval = gtk_file_chooser_set_filename(cbutton, initial_file)
 
@@ -222,7 +238,8 @@ contains
           if (present(filter_name)) then
              call gtk_file_filter_set_name(gfilter, filter_name(i)//c_null_char)
           else
-             call gtk_file_filter_set_name(gfilter, trim(filter(i))//c_null_char)
+             call gtk_file_filter_set_name(gfilter, &
+                  & trim(filter(i))//c_null_char)
           end if
           call gtk_file_chooser_add_filter(cbutton, gfilter)
        end do
@@ -230,7 +247,8 @@ contains
 
     if (present(file_set)) then
        if (present(data)) then
-          call g_signal_connect(cbutton, "file-set"//c_null_char, file_set, data)
+          call g_signal_connect(cbutton, "file-set"//c_null_char,&
+               & file_set, data)
        else
           call g_signal_connect(cbutton, "file-set"//c_null_char, file_set)
        end if
@@ -246,8 +264,8 @@ contains
   !+
   function hl_gtk_file_chooser_show(files, cdir, directory, create, &
        & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
-       & initial_dir, initial_file, filter, filter_name, parent, all, &
-       & wsize, edit_filters) result(isel)
+       & initial_dir, current, initial_file, filter, filter_name, parent, &
+       & all, wsize, edit_filters) result(isel)
 
     integer(kind=c_int) :: isel
     character(len=*), dimension(:), intent(out), allocatable :: files
@@ -256,6 +274,7 @@ contains
     integer(kind=c_int), intent(in), optional :: allow_uri, show_hidden
     integer(kind=c_int), intent(in), optional :: confirm_overwrite
     character(kind=c_char), dimension(*), intent(in), optional :: title, initial_dir, initial_file
+    integer(kind=c_int), intent(in), optional :: current
     character(len=*), dimension(:), intent(in), optional :: filter
     character(len=*), dimension(:), intent(in), optional :: filter_name
     type(c_ptr), intent(in), optional :: parent
@@ -280,6 +299,7 @@ contains
     ! TITLE: string: optional: Title for the window.
     ! INITIAL_DIR: string: optional: Set the initial directory here instead
     ! 		of the current directory.
+    ! CURRENT: boolean: optional: Use to force start in current directory.
     ! INITIAL_FILE: string: optional: Set the initial file selection.
     ! FILTER: string(): optional:  The file selection filter. Elements
     ! 		may either be patterns or mime types. Each filter is a
@@ -396,9 +416,14 @@ contains
     ! Initial directory (precedes file so if file contains a dir it
     ! will overwrite)
 
-    if (present(initial_dir)) &
-         & lval = gtk_file_chooser_set_current_folder(chooser_info%chooser, &
-         & initial_dir)
+    if (present(initial_dir)) then
+       lval = gtk_file_chooser_set_current_folder(chooser_info%chooser, &
+            & initial_dir)
+    else if (present(current)) then
+       if (c_f_logical(current)) &
+            & lval = gtk_file_chooser_set_current_folder(chooser_info%chooser, &
+            & "."//c_null_char)
+    end if
 
     ! Initial file
 

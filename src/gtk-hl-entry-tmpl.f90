@@ -22,14 +22,17 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 11-21-2011
+! Last modification: 05-22-2012
 
 !!$T Template file for gtk-hl-entry.f90.
 !!$T  Make edits to this file, and keep them identical between the
 !!$T  GTK2 & GTK3 branches.
 
-!!$T Lines to be used only in the GTK2 tree should be prefixed with !!$2
-!!$T Lines to be used only in the GTK3 tree should be prefixed with !!$3
+!!$T Lines to appear only in specific versions should be prefixed by
+!!$T !!$<lib><op><ver>!
+!!$T Where <lib> is GTK or GLIB, <op> is one of < > <= >=
+!!$T and <ver> is the version boundary, e.g. !!$GTK<=2.24! to include
+!!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
 module gtk_hl_entry
@@ -77,7 +80,7 @@ module gtk_hl_entry
        & gtk_text_view_new_with_buffer, gtk_text_view_set_editable,&
        & gtk_widget_set_sensitive, gtk_widget_set_size_request,&
        & gtk_widget_set_tooltip_text, GTK_POLICY_AUTOMATIC, &
-       & TRUE, FALSE, g_signal_connect
+       & TRUE, FALSE, g_signal_connect, GDK_FOCUS_CHANGE_MASK
 
   implicit none
 
@@ -85,17 +88,20 @@ contains
   !+
   function hl_gtk_entry_new(len, editable, activate, data, tooltip, value, &
        & sensitive, changed, data_changed, delete_text, data_delete_text, &
-       & insert_text, data_insert_text) result(entry)
+       & insert_text, data_insert_text, focus_in_event, focus_out_event, &
+       & data_focus_in, data_focus_out, size) result(entry)
 
     type(c_ptr) :: entry
     integer, intent(in), optional :: len
     integer(c_int), intent(in), optional :: editable
-    type(c_funptr), optional :: activate
+    type(c_funptr), optional :: activate, focus_in_event, focus_out_event
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip, value
     integer(kind=c_int), intent(in), optional :: sensitive
     type(c_funptr), optional :: changed, delete_text, insert_text
     type(c_ptr), optional :: data_changed, data_delete_text, data_insert_text
+    type(c_ptr), optional :: data_focus_in, data_focus_out
+    integer(kind=c_int), intent(in), optional :: size
 
     ! Higher level text entry box
     !
@@ -119,12 +125,26 @@ contains
     ! INSERT_TEXT: c_funptr: optional: Callback for the "insert-text" signal.
     ! DATA_INSERT_TEXT: c_ptr: optional: Data to be passed to the insert_text
     !            callback
+    ! FOCUS_OUT_EVENT: c_funptr: optional: Callback for the "focus-out-event"
+    ! 		signal, this is a GDK event rather than a GTK signal, so the
+    ! 		call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_OUT: c_ptr: optional: Data to pass to the focus_out_event
+    ! 		callback
+    ! FOCUS_IN_EVENT: c_funptr: optional: Callback for the "focus-in-event"
+    ! 		signal, this is a GDK event rather than a GTK signal, so the
+    ! 		call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_IN: c_ptr: optional: Data to pass to the focus_in_event
+    ! 		callback
+    ! SIZE: integer : optional : The X-size request for the widget. Y is set
+    ! 		to default (-1). Note that Gtk may make the widget bigger than
+    ! 		this if expand/fill options in the packing require it.
     !-
 
     entry = gtk_entry_new()
     call gtk_entry_set_activates_default(entry, TRUE)
 
     if (present(len)) call gtk_entry_set_max_length(entry, len)
+    if (present(size)) call gtk_widget_set_size_request(entry, size, -1_c_int)
 
     if (present(editable)) &
          & call gtk_editable_set_editable(entry, editable)
@@ -161,6 +181,25 @@ contains
                & data_insert_text)
        else
           call g_signal_connect(entry, "insert-text"//C_NULL_CHAR, insert_text)
+       end if
+    end if
+    if (present(focus_out_event)) then
+       if (present(data_focus_out)) then
+          call g_signal_connect(entry, &
+               & "focus-out-event"//C_NULL_CHAR, focus_out_event, data_focus_out)
+       else
+          call g_signal_connect(entry, &
+               & "focus-out-event"//C_NULL_CHAR, focus_out_event)
+       end if
+    end if
+
+    if (present(focus_in_event)) then
+       if (present(data_focus_in)) then
+          call g_signal_connect(entry, &
+               & "focus-in-event"//C_NULL_CHAR, focus_in_event, data_focus_in)
+       else
+          call g_signal_connect(entry, &
+               & "focus-in-event"//C_NULL_CHAR, focus_in_event)
        end if
     end if
 
@@ -209,7 +248,8 @@ contains
   !+
   function hl_gtk_text_view_new(scroll, editable, changed, data_changed, &
        & insert_text, data_insert_text, delete_range, data_delete_range, &
-       & initial_text, sensitive, tooltip, ssize, buffer) result(view)
+       & initial_text, sensitive, tooltip, ssize, buffer, focus_in_event, &
+       & focus_out_event, data_focus_in, data_focus_out) result(view)
 
     type(c_ptr) :: view
     type(c_ptr), intent(out), optional :: scroll
@@ -222,6 +262,8 @@ contains
     character(kind=c_char), dimension(*), optional :: tooltip
     integer(kind=c_int), dimension(:), optional :: ssize
     type(c_ptr), intent(out), optional :: buffer
+    type(c_funptr), optional :: focus_in_event, focus_out_event
+    type(c_ptr), optional :: data_focus_in, data_focus_out
 
     ! A multiline text edit widget
     !
@@ -248,6 +290,16 @@ contains
     ! 		held over the widget.
     ! SSIZE: c_int(2): optional: Size of the scroll widget.
     ! BUFFER: c_ptr: optional: Variable to return the buffer pointer
+    ! FOCUS_OUT_EVENT: c_funptr: optional: Callback for the "focus-out-event"
+    ! 		signal, this is a GDK event rather than a GTK signal, so the
+    ! 		call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_OUT: c_ptr: optional: Data to pass to the focus_out_event
+    ! 		callback
+    ! FOCUS_IN_EVENT: c_funptr: optional: Callback for the "focus-in-event"
+    ! 		signal, this is a GDK event rather than a GTK signal, so the
+    ! 		call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_IN: c_ptr: optional: Data to pass to the focus_in_event
+    ! 		callback
     !
     ! NOTE -- The insert-text and delete-range callbacks take extra arguments. They
     ! are called before the buffer is actually modified. The changed callback is called
@@ -320,6 +372,26 @@ contains
                & data_delete_range)
        else
           call g_signal_connect(tbuf, "delete-range"//c_null_char, delete_range)
+       end if
+    end if
+
+    if (present(focus_out_event)) then
+       if (present(data_focus_out)) then
+          call g_signal_connect(view, &
+               & "focus-out-event"//C_NULL_CHAR, focus_out_event, data_focus_out)
+       else
+          call g_signal_connect(view, &
+               & "focus-out-event"//C_NULL_CHAR, focus_out_event)
+       end if
+    end if
+
+    if (present(focus_in_event)) then
+       if (present(data_focus_in)) then
+          call g_signal_connect(view, &
+               & "focus-in-event"//C_NULL_CHAR, focus_in_event, data_focus_in)
+       else
+          call g_signal_connect(view, &
+               & "focus-in-event"//C_NULL_CHAR, focus_in_event)
        end if
     end if
 
