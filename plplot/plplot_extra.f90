@@ -22,6 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by: James Tappin
+! Last modification: 8/2/2012
 
 module plplot_extra
   ! Plplot extras for accessing the pl_cmd routine.
@@ -66,6 +67,8 @@ module plplot_extra
   integer, parameter :: PLESC_END_RASTERIZE    = 33     ! end rasterized rendering
   integer, parameter :: PLESC_ARC              = 34     ! render an arc
   integer, parameter :: PLESC_GRADIENT         = 35     ! render a gradient
+  integer, parameter :: PLESC_MODESET          = 36     ! set drawing mode
+  integer, parameter :: PLESC_MODEGET          = 37     ! get drawing mode
 
   !      Plotting options for 3d plots, see plplot.h for the C definitions
   !      of these options.

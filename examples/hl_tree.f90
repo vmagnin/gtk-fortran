@@ -130,7 +130,6 @@ program tree
   integer(kind=type_kind), dimension(6) :: ctypes
   character(len=20), dimension(6) :: titles
   integer(kind=c_int), dimension(6) :: sortable, editable
-  integer(kind=c_int), allocatable, dimension(:) :: colnos
   ! Initialize GTK+
   call gtk_init()
 
@@ -157,7 +156,7 @@ program tree
   ihlist = hl_gtk_tree_new(ihscrollcontain, types=ctypes, &
        & changed=c_funloc(list_select),&
        &  multiple=TRUE, height=250, swidth=400, titles=titles, &
-       & sortable=sortable, editable=editable, colnos=colnos)
+       & sortable=sortable, editable=editable)
 
   ! Now put 10 top level rows into it
   do i=1,10

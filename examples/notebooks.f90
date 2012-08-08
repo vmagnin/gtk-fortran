@@ -215,11 +215,13 @@ program notebook_example
 
   ! Attach notebook to group, necessary to enable drag and drop between the two notebooks
   call gtk_notebook_set_group_name(notebook_1,"group"//c_null_char)
-! --> this is not working!!! (available in GTK+ 2.24): 
-  call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, (/64/))
-  call convert_c_string(textptr, my_string)
-  print *, "group name = <"//TRIM(my_string)//">"
-  print *, "=> This will work with GTK+ 3"
+
+  ! --> this is not working!!! (available in GTK+ 2.24, but fails): 
+
+!!$  call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, (/64/))
+!!$  call convert_c_string(textptr, my_string)
+!!$  print *, "group name = <"//TRIM(my_string)//">"
+!!$  print *, "=> This will work with GTK+ 3"
 
   !append a bunch of pages to the notebook
   do i=1,3
@@ -317,6 +319,7 @@ program notebook_example
     call gtk_notebook_set_tab_detachable (notebook_2, frame, TRUE)
   enddo
 
+  print *, "Created"
   call gtk_widget_show_all (mainwindow)
    
   ! Main loop

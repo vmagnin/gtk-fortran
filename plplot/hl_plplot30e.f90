@@ -25,10 +25,11 @@
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 30 by Hazen Babcock and Andrew Ross
 
-module common
+module common_ex30
   use iso_c_binding
   use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area&
-       &_new, gtk_events_pending, gtk_main, gtk_main_iteration, gtk_main_iteration_do,&
+       &_new, gtk_events_pending, gtk_main, gtk_main_quit, &
+!!$       &gtk_main_iteration, gtk_main_iteration_do,&
        & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init, &
        & gtk_widget_queue_draw
   use g, only: g_object_get_data, g_usleep
@@ -37,14 +38,17 @@ module common
 
   use plplot_extra
 
+  implicit none
+
   integer(kind=c_int) :: height, width
+  type(c_ptr) :: window
 
-end module common
+end module common_ex30
 
-module plplot_code
+module plplot_code_ex30
   use plplot, PI => PL_PI
   use iso_c_binding
-  use common 
+  use common_ex30
 
   implicit none
 
@@ -210,11 +214,11 @@ contains
   end subroutine x30f95
 
 
-end module plplot_code
+end module plplot_code_ex30
 
-module cl_handlers
+module handlers_ex30
 
-  use common
+  use common_ex30
 
   use gtk_hl
   use gtk_draw_hl
@@ -222,8 +226,6 @@ module cl_handlers
   use iso_c_binding
 
   implicit none
-
-  integer(kind=c_int) :: run_status = TRUE
 
   real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
 
@@ -233,34 +235,30 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
-    run_status = FALSE
+    call gtk_widget_destroy(window)
+    call gtk_main_quit ()
+!!$    run_status = FALSE
     ret = FALSE
   end function delete_cb
 
   subroutine quit_cb(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
-    run_status = FALSE
+    call gtk_widget_destroy(window)
+    call gtk_main_quit ()
+
   end subroutine quit_cb
 
-  subroutine pending_events ()
-    integer(kind=c_int) :: boolresult
-    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
-       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
-    end do
-  end subroutine pending_events
+end module handlers_ex30
 
+program cairo_plplot_ex30
 
-end module cl_handlers
-
-program cairo_plplot
-
-  use cl_handlers
-  use plplot_code
+  use handlers_ex30
+  use plplot_code_ex30
 
   implicit none
 
-  type(c_ptr) :: window, drawing, scroll_w, base, qbut
+  type(c_ptr) :: drawing, scroll_w, base, qbut
 
   height = 600
   width = 1200
@@ -285,10 +283,7 @@ program cairo_plplot
 
   call x30f95(drawing)
 
-  do
-     call pending_events()
-     if (run_status == FALSE) exit
-     call g_usleep(10000_c_long) ! So we don't burn CPU cycles
-  end do
+  call gtk_main()
+
   print *, "All done"
-end program cairo_plplot
+end program cairo_plplot_ex30

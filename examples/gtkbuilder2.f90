@@ -24,7 +24,7 @@
 ! gfortran gtk.f90 gtkbuilder2.f90 -o gtkbuilder2 `pkg-config --cflags --libs gtk+-2.0` `pkg-config --cflags --libs gmodule-2.0`
 ! tested with GTK+ 2.24 and GModule 2.28.3
 ! Jens Hunger, 04-01-2011
-! Last modified: 26-06-2012
+! Last modified: 04-05-2011
 
 module widgets
   ! declares the used GTK widgets
@@ -52,7 +52,6 @@ contains
   ! X Window system. Then callback functions must have an event argument:
   function delete_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
-    !GCC$ ATTRIBUTES DLLEXPORT :: delete_event
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     print *, "my delete_event"
@@ -62,7 +61,6 @@ contains
   ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
-    !GCC$ ATTRIBUTES DLLEXPORT :: destroy
     type(c_ptr), value :: widget, gdata
     print *, "my destroy"
     call gtk_main_quit ()
@@ -71,7 +69,6 @@ contains
   ! "clicked" is a GtkButton signal
   function hello (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
-    !GCC$ ATTRIBUTES DLLEXPORT :: hello
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Hello World!"
@@ -80,7 +77,6 @@ contains
 
   function button1clicked (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
-    !GCC$ ATTRIBUTES DLLEXPORT :: button1clicked
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Button 1 clicked!"
@@ -89,7 +85,6 @@ contains
 
   function button2clicked (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
-    !GCC$ ATTRIBUTES DLLEXPORT :: button2clicked
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Button 2 clicked!"
@@ -116,6 +111,10 @@ program gtkbuilder
 
   ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
   guint = gtk_builder_add_from_file (builder, "gtkbuilder.glade"//c_null_char, error)
+    if (guint == 0) then
+     print *, "Could not open gtkbuilder.glade"
+     stop
+  end if
 
   ! get a pointer to the GObject "window" from GtkBuilder
   window = gtk_builder_get_object (builder, "window"//c_null_char)

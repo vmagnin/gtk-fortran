@@ -25,25 +25,25 @@
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 1 by Alan W. Irwin
 
-module common
+module common_ex1
   use iso_c_binding
   use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area&
-       &_new, gtk_events_pending, gtk_main, gtk_main_iteration, gtk_main_iteration_do,&
+       &_new, gtk_main, gtk_main_quit, &
        & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
-  use g, only: g_object_get_data, g_usleep
+  use g, only: g_object_get_data
 
   use gtk_draw_hl
 
   use plplot_extra
 
   integer(kind=c_int) :: height, width
+  type(c_ptr) :: window
+end module common_ex1
 
-end module common
-
-module plplot_code
+module plplot_code_ex1
   use plplot, PI => PL_PI
   use iso_c_binding
-  use common 
+  use common_ex1
 
   implicit none
 
@@ -95,7 +95,9 @@ contains
     !  Divide page into 2x2 plots
     call plstar(2,2)
 
-    ! Tell the "extcairo" driver where the context is located.
+    ! Tell the "extcairo" driver where the context is located. This must be
+    ! done AFTER the plstar or plinit call.
+
     call pl_cmd(PLESC_DEVINIT, cc)
 
     !  Set up the data
@@ -123,7 +125,9 @@ contains
 
     call plot2()
     call plot3()
-    !  Don't forget to call PLEND to finish off!
+
+    !  Don't forget to call PLEND to finish off, and then delete the
+    !  cairo context.
 
     call plend()
     call hl_gtk_drawing_area_cairo_destroy(cc)
@@ -253,11 +257,11 @@ contains
 
   end subroutine plot3
 
-end module plplot_code
+end module plplot_code_ex1
 
-module cl_handlers
+module handlers_ex1
 
-  use common
+  use common_Ex1
 
   use gtk_hl
   use gtk_draw_hl
@@ -272,38 +276,31 @@ module cl_handlers
 
 contains
   function delete_cb (widget, event, gdata) result(ret)  bind(c)
-
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
-    run_status = FALSE
+    call gtk_widget_destroy(window)
+    call gtk_main_quit ()
     ret = FALSE
   end function delete_cb
 
   subroutine quit_cb(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
-    run_status = FALSE
+    call gtk_widget_destroy(window)
+    call gtk_main_quit ()
   end subroutine quit_cb
 
-  subroutine pending_events ()
-    integer(kind=c_int) :: boolresult
-    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
-       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
-    end do
-  end subroutine pending_events
+end module handlers_ex1
 
+program cairo_plplot_ex1
 
-end module cl_handlers
-
-program cairo_plplot
-
-  use cl_handlers
-  use plplot_code
+  use handlers_ex1
+  use plplot_code_ex1
 
   implicit none
 
-  type(c_ptr) :: window, drawing, scroll_w, base, qbut
+  type(c_ptr) :: drawing, scroll_w, base, qbut
 
   height = 1000
   width = 1200
@@ -329,10 +326,7 @@ program cairo_plplot
 
   call x01f95(drawing)
 
-  do
-     call pending_events()
-     if (run_status == FALSE) exit
-     call g_usleep(10000_c_long) ! So we don't burn CPU cycles
-  end do
+  call gtk_main()
+
   print *, "All done"
-end program cairo_plplot
+end program cairo_plplot_ex1
