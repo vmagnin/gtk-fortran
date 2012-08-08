@@ -28,7 +28,7 @@
 # Extracts the structure definitions for Gdk events from the gdk 
 # header files.
 
-my $gdkvers="2";
+my $gdkvers="3";
 my $gdktypes="/usr/include/gtk-".$gdkvers.".0/gdk/gdktypes.h";
 my $gdkevents="/usr/include/gtk-".$gdkvers.".0/gdk/gdkevents.h";
 my $ftninterface="gdkevents-auto".$gdkvers.".f90";
