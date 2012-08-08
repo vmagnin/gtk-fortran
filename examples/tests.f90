@@ -179,24 +179,24 @@ contains
     errors = 0
     do i=0, 64, +1
       c = char(i)
-      if (iachar(g_ascii_tolower(c)) /= i) then
-        write(1,*) "ERROR gchar g_ascii_tolower (gchar c): ", i, iachar(g_ascii_tolower(c))
+      if (g_ascii_tolower(int(i,c_int8_t)) /= int(i,c_int8_t)) then
+        write(1,*) "ERROR gchar g_ascii_tolower (gchar c): ", i, g_ascii_tolower(int(i,c_int8_t))
         errors = errors + 1
       end if
     end do
 
     do i=65, 90, +1
       c = char(i)
-      if (iachar(g_ascii_tolower(c)) /= i+32) then
-        write(1,*) "ERROR gchar g_ascii_tolower (gchar c): ", i, iachar(g_ascii_tolower(c))
+      if (g_ascii_tolower(int(i,c_int8_t)) /= int(i,c_int8_t)+32) then
+        write(1,*) "ERROR gchar g_ascii_tolower (gchar c): ", i, g_ascii_tolower(int(i,c_int8_t))
         errors = errors + 1
       end if
     end do
 
     do i=91, 255, +1
       c = char(i)
-      if (iachar(g_ascii_tolower(c)) /= i) then
-        write(1,*) "ERROR gchar g_ascii_tolower (gchar c): ", i, iachar(g_ascii_tolower(c))
+      if (g_ascii_tolower(int(i,c_int8_t)) /= int(i,c_int8_t)) then
+        write(1,*) "ERROR gchar g_ascii_tolower (gchar c): ", i, g_ascii_tolower(int(i,c_int8_t))
         errors = errors + 1
       end if
     end do
@@ -336,15 +336,16 @@ contains
   integer function test_int16_in_out()
     implicit none
     integer(c_int16_t) :: a, b
-    integer :: errors
+    integer :: errors, i
     errors = 0
-    
-    do a = -32768, 32767
-      b = g_variant_get_int16(g_variant_new_int16 (a))
-      if (a /= b) then
-        write(1,*) "ERROR g_variant_get_int16:", a, b
-        errors = errors + 1
-      end if
+
+    do i = -32768, 32767
+       a = int(i,c_int16_t)
+       b = g_variant_get_int16(g_variant_new_int16 (a))
+       if (a /= b) then
+          write(1,*) "ERROR g_variant_get_int16:", a, b
+          errors = errors + 1
+       end if
     end do
     test_int16_in_out = errors
   end function test_int16_in_out
@@ -446,9 +447,9 @@ contains
     errors = 0
     do i = 0, 255, +1
       a = char(i)
-      b = g_variant_get_byte(g_variant_new_byte (a))
-      j = iachar(b)
-      if ((a /= b) .or. (i /= j)) then
+      j = g_variant_get_byte(g_variant_new_byte (int(i,c_int8_t))) 
+      b = achar(j)
+      if ((a /= b) .or. (iand(i,255_c_int16_t) /= iand(j, 255_c_int16_t))) then
         write(1,*) "ERROR test_guchar_in_out:", a, b, i, j
         errors = errors + 1
       end if

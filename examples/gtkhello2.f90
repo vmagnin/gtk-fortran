@@ -90,9 +90,9 @@ end module handlers
 program gtkFortran
   use iso_c_binding, only: c_ptr, c_funloc, c_loc
   use gtk, only: gtk_init, gtk_window_new, GTK_WINDOW_TOPLEVEL, gtk_window_set_title, &
-      & gtk_container_set_border_width, g_signal_connect, gtk_hbox_new, gtk_container_add, &
+      & gtk_container_set_border_width, g_signal_connect, gtk_box_new, gtk_container_add, &
       & gtk_button_new_with_label, gtk_box_pack_start, gtk_widget_show, gtk_main, FALSE, &
-      & c_null_char, TRUE
+      & c_null_char, TRUE, GTK_ORIENTATION_HORIZONTAL
   ! The "only" statement can divide the compilation time by a factor 10 !
   use handlers
   implicit none
@@ -113,7 +113,7 @@ program gtkFortran
   call g_signal_connect (window, "delete-event"//c_null_char, c_funloc(delete_event))
   call g_signal_connect (window, "destroy"//c_null_char, c_funloc(destroy))
 
-  box1 = gtk_hbox_new (TRUE, 10);
+  box1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 10);
   call gtk_container_add (window, box1)
 
   button1 = gtk_button_new_with_label ("Button1"//c_null_char)

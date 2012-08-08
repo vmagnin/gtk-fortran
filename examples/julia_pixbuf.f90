@@ -41,8 +41,8 @@ module handlers
   &idget_queue_draw, gtk_widget_show, gtk_window_new, gtk_window_set_default, gtk&
   &_window_set_default_size, gtk_window_set_title, TRUE, FALSE, c_null_ptr, c_null_char, &
   &GDK_COLORSPACE_RGB, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
-  &gtk_table_new, gtk_table_attach_defaults, gtk_container_add, gtk_button_new_with_label,&
-  &gtk_widget_show_all, gtk_vbox_new, gtk_box_pack_start, gtk_spin_button_new,&
+  &gtk_grid_new, gtk_grid_attach, gtk_container_add, gtk_button_new_with_label,&
+  &gtk_widget_show_all, gtk_box_new, gtk_box_pack_start, gtk_spin_button_new,&
   &gtk_adjustment_new, gtk_spin_button_get_value, gtk_label_new, &
   &gtk_expander_new_with_mnemonic, gtk_expander_set_expanded, gtk_main_quit, &
   &gtk_toggle_button_new_with_label, gtk_toggle_button_get_active, gtk_notebook_new,&
@@ -54,8 +54,11 @@ module handlers
   &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic, &
   &gtk_window_set_mnemonics_visible, gtk_combo_box_text_new, &
   &gtk_combo_box_text_append_text, gtk_combo_box_text_get_active_text, &
-  &gtk_combo_box_text_insert_text, gtk_spin_button_set_value, gtk_spin_button_update
-  
+  &gtk_combo_box_text_insert_text, gtk_spin_button_set_value, gtk_spin_button_update, &
+  & GTK_ORIENTATION_VERTICAL, &
+  & gtk_grid_set_column_homogeneous, &
+  & gtk_grid_set_row_homogeneous
+
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
   &cairo_surface_write_to_png, cairo_get_target
   
@@ -321,20 +324,23 @@ program julia
                & "More on Julia sets"//c_null_char)
                
   ! A table container will contain buttons and labels:
-  table = gtk_table_new (4, 4, TRUE)
-  call gtk_table_attach_defaults(table, button1, 0, 1, 3, 4)
-  call gtk_table_attach_defaults(table, button2, 1, 2, 3, 4)
-  call gtk_table_attach_defaults(table, button3, 3, 4, 3, 4)
-  call gtk_table_attach_defaults(table, label1, 0, 1, 0, 1)
-  call gtk_table_attach_defaults(table, label2, 0, 1, 1, 2)
-  call gtk_table_attach_defaults(table, label3, 0, 1, 2, 3)
-  call gtk_table_attach_defaults(table, spinButton1, 1, 2, 0, 1)
-  call gtk_table_attach_defaults(table, spinButton2, 1, 2, 1, 2)
-  call gtk_table_attach_defaults(table, spinButton3, 1, 2, 2, 3)  
-  call gtk_table_attach_defaults(table, linkButton, 3, 4, 0, 1)
-  call gtk_table_attach_defaults(table, label4, 2, 3, 0, 1)
-  call gtk_table_attach_defaults(table, combo1, 2, 3, 1, 2)
-  call gtk_table_attach_defaults(table, toggle1, 2, 3, 3, 4)
+  table = gtk_grid_new ()
+  call gtk_grid_set_column_homogeneous(table, TRUE)
+  call gtk_grid_set_row_homogeneous(table, TRUE)
+
+  call gtk_grid_attach(table, button1, 0, 3, 1, 1)
+  call gtk_grid_attach(table, button2, 1, 3, 1, 1)
+  call gtk_grid_attach(table, button3, 3, 3, 1, 1)
+  call gtk_grid_attach(table, label1, 0, 0, 1, 1)
+  call gtk_grid_attach(table, label2, 0, 1, 1, 1)
+  call gtk_grid_attach(table, label3, 0, 2, 1, 1)
+  call gtk_grid_attach(table, spinButton1, 1, 0, 1, 1)
+  call gtk_grid_attach(table, spinButton2, 1, 1, 1, 1)
+  call gtk_grid_attach(table, spinButton3, 1, 2, 2, 3)  
+  call gtk_grid_attach(table, linkButton, 3, 0, 1, 1)
+  call gtk_grid_attach(table, label4, 2, 0, 1, 1)
+  call gtk_grid_attach(table, combo1, 2, 1, 1,1)
+  call gtk_grid_attach(table, toggle1, 2, 3, 1,1)
 
   ! The table is contained in an expander, which is contained in the vertical box:
   expander = gtk_expander_new_with_mnemonic ("_The parameters:"//c_null_char)
@@ -342,12 +348,12 @@ program julia
   call gtk_expander_set_expanded(expander, TRUE)
 
   ! We create a vertical box container:
-  box1 = gtk_vbox_new (FALSE, 10);
+  box1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
   call gtk_box_pack_start (box1, expander, FALSE, FALSE, 0)
 
   ! The drawing area is contained in the vertical box:
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect (my_drawing_area, "expose-event"//c_null_char, c_funloc(expose_event))
+  call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
   ! In GTK+ 3.0 expose-event will be replaced by draw event:
   !call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
   notebook = gtk_notebook_new ()
