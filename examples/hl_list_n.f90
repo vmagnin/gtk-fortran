@@ -172,7 +172,6 @@ program list_n
   character(len=20), dimension(8) :: titles
   integer(kind=c_int), dimension(8) :: sortable, editable
   integer(kind=c_int), target :: fmt_col = 2
-  integer(kind=c_int), dimension(:), allocatable :: colnos
   character(kind=c_char), dimension(10) :: codes
   ! Initialize GTK+
   call gtk_init()
@@ -204,7 +203,7 @@ program list_n
   ihlist = hl_gtk_listn_new(ihscrollcontain, types=ctypes, &
        & changed=c_funloc(list_select),&
        & multiple=TRUE, height=250, swidth=600, titles=titles, &
-       & sortable=sortable, editable=editable, colnos=colnos, &
+       & sortable=sortable, editable=editable, &
        & edited=c_funloc(cell_edited))
 
   call hl_gtk_listn_set_cell_data_func(ihlist, fmt_col, &
