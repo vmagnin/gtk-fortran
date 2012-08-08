@@ -290,6 +290,7 @@ type_errors_list = []
 # Libraries to parse and resulting Fortran files (must have a -auto.f90 termination): 
 PATH_DICT = { "/usr/include/gtk-3.0/gtk":"gtk-auto.f90",
               "/usr/include/gtk-3.0/gdk":"gdk-auto.f90",
+              "/usr/include/gtk-unix-print-2.0/gtk":"unix-print-auto.f90",
               "/usr/include/cairo":"cairo-auto.f90",
               "/usr/include/pango-1.0":"pango-auto.f90",
               "/usr/include/glib-2.0":"glib-auto.f90",

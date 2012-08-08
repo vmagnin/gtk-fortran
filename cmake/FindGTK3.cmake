@@ -387,7 +387,7 @@ list(APPEND GTK3_LIBRARIES ${FREETYPE_LIBRARIES})
 foreach(_GTK3_component ${GTK3_FIND_COMPONENTS})
     if(_GTK3_component STREQUAL "gtk")
         _GTK3_FIND_INCLUDE_DIR(GTK3_GLIB_INCLUDE_DIR glib.h)
-        _GTK3_FIND_INCLUDE_DIR(GTK3_GLIBCONFIG_INCLUDE_DIR glibconfig.h)
+#        _GTK3_FIND_INCLUDE_DIR(GTK3_GLIBCONFIG_INCLUDE_DIR glibconfig.h)
         _GTK3_FIND_LIBRARY    (GTK3_GLIB_LIBRARY glib false true)
         
         _GTK3_FIND_INCLUDE_DIR(GTK3_GOBJECT_INCLUDE_DIR gobject/gobject.h)
@@ -397,7 +397,7 @@ foreach(_GTK3_component ${GTK3_FIND_COMPONENTS})
         _GTK3_FIND_LIBRARY    (GTK3_GDK_PIXBUF_LIBRARY gdk_pixbuf false true)
 
         _GTK3_FIND_INCLUDE_DIR(GTK3_GDK_INCLUDE_DIR gdk/gdk.h)
-        _GTK3_FIND_INCLUDE_DIR(GTK3_GDKCONFIG_INCLUDE_DIR gdkconfig.h)
+        _GTK3_FIND_INCLUDE_DIR(GTK3_GDKCONFIG_INCLUDE_DIR gdk/gdkconfig.h)
         _GTK3_FIND_INCLUDE_DIR(GTK3_GTK_INCLUDE_DIR gtk/gtk.h)
 
  # ********* At least on Debian the gdk & gtk libraries

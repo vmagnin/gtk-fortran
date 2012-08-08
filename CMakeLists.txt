@@ -21,23 +21,25 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by Kyle Horne: 05.11.2011 (Gtk3 conversion James Tappin)
+# Contributed by Kyle Horne: 05.11.2011
+# Last modifications: James Tappin 8/7/2012.
 
 # CMAKE build file for GtkFortran
 
 cmake_minimum_required(VERSION 2.6)
 project(gtk-fortran C Fortran)
 
-# Uncomment this for a debug build
-# SET(CMAKE_BUILD_TYPE debug)
+# Uncomment this to debug or use "cmake -D CMAKE_BUILD_TYPE=debug .."
+# set(CMAKE_BUILD_TYPE debug)
+# set(CMAKE_BUILD_TYPE release)
 
-set(CMAKE_Fortran_FLAGS_DEBUG 
-  "-g -pthread -Wall -Wtabs -fcheck-array-temporaries -fbacktrace -fbounds-check -ffpe-trap=invalid,zero,overflow -Wno-unused-dummy-argument") 
+set(CMAKE_Fortran_FLAGS_DEBUG
+"-g -pthread -Wall -Wtabs -fcheck-array-temporaries -fbacktrace -fbounds-check -ffpe-trap=invalid,zero,overflow -Wno-unused-dummy-argument")
 set(CMAKE_Fortran_FLAGS_RELEASE
 "-pthread -O3 -mtune=native -march=native")
 
 set(CPACK_PACKAGE_VERSION "0.1.0")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk3-fortran")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk2-fortran")
 set(CPACK_GENERATOR "STGZ;TGZ")
 set(CPACK_SOURCE_GENERATOR "STGZ;TGZ")
 include(CPack)
@@ -87,6 +89,24 @@ documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 add_custom_target(doc)
 add_dependencies(doc doxygen)
 
+# 
+if (NOT EXCLUDE_PLPLOT)
+  find_package(PlplotF95 QUIET)
+  set(HAVE_LIBPLPLOTF95D ${PLPLOT_FOUND})
+  if(PLPLOT_FOUND)
+    set(LIBRARIES ${LIBRARIES} ${PLPLOT_LIBRARIES})
+    include_directories(${PLPLOT_INCLUDE_DIR})
+    include_directories(${PLPLOT_MODULE_DIR})
+  else(PLPLOT_FOUND)
+    message(STATUS "PLPLOT not found: PLPLOT integration and examples will not be built")
+  endif(PLPLOT_FOUND)
+else(NOT EXCLUDE_PLPLOT)
+  message(STATUS "PLPLOT Excluded as command option")
+endif(NOT EXCLUDE_PLPLOT)
+
 add_subdirectory(src)
+add_subdirectory(test)
 add_subdirectory(examples)
-add_subdirectory(sketcher)
+if(PLPLOT_FOUND AND NOT EXCLUDE_PLPLOT)
+  add_subdirectory(plplot)
+endif(PLPLOT_FOUND AND NOT EXCLUDE_PLPLOT)

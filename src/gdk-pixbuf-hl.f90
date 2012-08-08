@@ -61,6 +61,8 @@ module gdk_pixbuf_hl
      module procedure hl_gdk_pixbuf_new_file
      module procedure hl_gdk_pixbuf_new_data8
      module procedure hl_gdk_pixbuf_new_data16
+     module procedure hl_gdk_pixbuf_new_data8g
+     module procedure hl_gdk_pixbuf_new_data16g
   end interface hl_gdk_pixbuf_new
 
   interface hl_gdk_pixbuf_get_pixels
@@ -71,6 +73,8 @@ module gdk_pixbuf_hl
   interface hl_gdk_pixbuf_set_pixels
      module procedure hl_gdk_pixbuf_set_pixels8
      module procedure hl_gdk_pixbuf_set_pixels16
+     module procedure hl_gdk_pixbuf_set_pixels8g
+     module procedure hl_gdk_pixbuf_set_pixels16g
   end interface hl_gdk_pixbuf_set_pixels
 
   integer, parameter :: hl_gdk_pixbuf_type_len=20
@@ -199,16 +203,18 @@ contains
     integer(kind=c_int) :: alpha
 
     sz = shape(data)
-    if (sz(1) == 3) then
+    select case (sz(1))
+    case(1,3)
        alpha = FALSE
-    else if (sz(1) == 4) then
+    case(2,4)
        alpha = TRUE
-    else
+    case default
        pixbuf = c_null_ptr
        write(error_unit, *) &
-            & "HL_GDK_PIXBUF_NEW_DATA: first dimension of the data"//&
-            & " must be 3 or 4"
-    end if
+            & "HL_GDK_PIXBUF_NEW_DATA8: first dimension of the data"//&
+            & " must be between 1 and 4"
+       return
+    end select
 
     pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, alpha, 8, &
          & sz(2), sz(3))
@@ -216,9 +222,73 @@ contains
     call hl_gdk_pixbuf_set_pixels(pixbuf, data)
   end function hl_gdk_pixbuf_new_data8
 
+
+  !+
+  function hl_gdk_pixbuf_new_data8g(data) result(pixbuf)
+    type(c_ptr) :: pixbuf
+    integer(kind=c_int8_t), dimension(:,:), intent(in) :: data
+
+    ! Create a pixbuf from an GS array of values.
+    !
+    ! DATA: int8: required: The data values as a 3|4 x n x m array.
+    !
+    ! This routine will usually be called via the generic interface
+    ! hl_gdk_pixbuf_new.
+    !-
+
+    integer, dimension(2) :: sz
+    integer(kind=c_int) :: alpha
+
+    sz = shape(data)
+
+    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, &
+         & sz(1), sz(2))
+
+    call hl_gdk_pixbuf_set_pixels(pixbuf, data)
+  end function hl_gdk_pixbuf_new_data8g
+
+
+  !+
   function hl_gdk_pixbuf_new_data16(data) result(pixbuf)
     type(c_ptr) :: pixbuf
     integer(kind=c_short), dimension(:,:,:), intent(in) :: data
+
+    ! Create a pixbuf from an RGB(A) array of values.
+    !
+    ! DATA: int8: required: The data values as a 3|4 x n x m array.
+    !
+    ! This routine will usually be called via the generic interface
+    ! hl_gdk_pixbuf_new.
+    !-
+
+    integer, dimension(3) :: sz
+    integer(kind=c_int) :: alpha
+
+    sz = shape(data)
+
+    select case (sz(1))
+    case(1,3)
+       alpha = FALSE
+    case(2,4)
+       alpha = TRUE
+    case default
+       pixbuf = c_null_ptr
+       write(error_unit, *) &
+            & "HL_GDK_PIXBUF_NEW_DATA16: first dimension of the data"//&
+            & " must be between 1 and 4"
+       return
+    end select
+
+    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, alpha, 8, &
+         & sz(2), sz(3))
+
+    call hl_gdk_pixbuf_set_pixels(pixbuf, data)
+  end function hl_gdk_pixbuf_new_data16
+
+  !+
+  function hl_gdk_pixbuf_new_data16g(data) result(pixbuf)
+    type(c_ptr) :: pixbuf
+    integer(kind=c_short), dimension(:,:), intent(in) :: data
 
     ! Create a pixbuf from an RGB(A) array of values. This version
     ! uses 2-byte integers to avoid the signing issues of the c_int8_t type.
@@ -229,27 +299,18 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer, dimension(3) :: sz
+    integer, dimension(2) :: sz
     integer(kind=c_int) :: alpha
 
     sz = shape(data)
-    if (sz(1) == 3) then
-       alpha = FALSE
-    else if (sz(1) == 4) then
-       alpha = TRUE
-    else
-       pixbuf = c_null_ptr
-       write(error_unit, *) &
-            & "HL_GDK_PIXBUF_NEW_DATA: first dimension of the data"//&
-            & " must be 3 or 4"
-    end if
 
-    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, alpha, 8, &
-         & sz(2), sz(3))
+    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, &
+         & sz(1), sz(2))
 
     call hl_gdk_pixbuf_set_pixels(pixbuf, data)
-  end function hl_gdk_pixbuf_new_data16
+  end function hl_gdk_pixbuf_new_data16g
 
+  !+
   subroutine hl_gdk_pixbuf_get_pixels8(pixbuf, pixels)
     type(c_ptr), intent(in) :: pixbuf
     integer(kind=c_int8_t), dimension(:,:,:), allocatable, intent(out) :: pixels
@@ -287,6 +348,7 @@ contains
     end do
   end subroutine hl_gdk_pixbuf_get_pixels8
 
+  !+
   subroutine hl_gdk_pixbuf_get_pixels16(pixbuf, pixels)
     type(c_ptr), intent(in) :: pixbuf
     integer(kind=c_short), dimension(:,:,:), allocatable, intent(out) :: pixels
@@ -326,6 +388,7 @@ contains
     end do
   end subroutine hl_gdk_pixbuf_get_pixels16
 
+  !+
   subroutine hl_gdk_pixbuf_set_pixels8(pixbuf, pixels, xoff, yoff)
     type(c_ptr), intent(in) :: pixbuf
     integer(kind=c_int8_t), dimension(:,:,:), intent(in) :: pixels
@@ -333,8 +396,8 @@ contains
 
     ! Set the pixels of a pixuf from a Fortran array.
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to read
-    ! PIXELS: short: required: Contains the image to insert.
+    ! PIXBUF: c_ptr: required: The pixbuf to update
+    ! PIXELS: int8: required: Contains the image to insert.
     ! XOFF: int: optional: The X-offset at which to write the image.
     ! YOFF: int: optional: The Y-offset at which to write the image.
     !
@@ -349,7 +412,7 @@ contains
     type(c_ptr), target :: cpixels
     integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
     integer, dimension(3) :: sz
-    logical :: salpha
+    logical :: salpha, gscale
 
     sz=shape(pixels)
     if (present(xoff)) then
@@ -387,6 +450,8 @@ contains
     end if
 
     salpha = .false.
+    gscale = .false.
+
     select case (sz(1))
     case(3)
        if (nchans == 4) then
@@ -399,10 +464,19 @@ contains
           write(error_unit, *) &
                & "HL_GDK_SET_PIXELS8: No alpha channel in output, omitting."
        end if
-    case(:2)
-       write(error_unit, *) &
-            & "HL_GDK_SET_PIXELS8: too few channels in input, aborting."
-       return
+    case(2)
+       gscale = .true.
+       if (nchans == 3) then
+          write(error_unit, *) &
+               & "HL_GDK_SET_PIXELS8: No alpha channel in output, omitting."
+       end if
+    case(1)
+       gscale = .true.
+       if (nchans == 4) then
+          write(error_unit, *) &
+               & "HL_GDK_SET_PIXELS8: No alpha channel in input, using opaque."
+          salpha = .true.
+       end if
     case(5:)
        write(error_unit, *) &
             & "HL_GDK_SET_PIXELS8: too many channels in input, omitting excess."
@@ -413,25 +487,116 @@ contains
     cpixels = gdk_pixbuf_get_pixels(pixbuf)
     call c_f_pointer(cpixels, fpixels, [lpix])
 
+    if (gscale) then
+       do j = 0, ytop-1
+          iroff = (j+ystart)*rowstr + 1 + xstart
+          do i = 0,xtop-1
+             ioff = iroff + i*nchans
+             fpixels(ioff:ioff+2) = pixels(1, i+1,j+1)
+             if (salpha) then 
+                fpixels(ioff+3) = -1_c_int8_t
+             else if (nchans == 4) then
+                fpixels(ioff+3) = pixels(2, i+1,j+1)
+             end if
+          end do
+       end do
+    else
+       do j = 0, ytop-1
+          iroff = (j+ystart)*rowstr + 1 + xstart
+          do i = 0,xtop-1
+             ioff = iroff + i*nchans
+             fpixels(ioff:ioff+lput-1) = pixels(:lput, i+1,j+1)
+             if (salpha) fpixels(ioff+lput) = -1_c_int8_t
+          end do
+       end do
+    end if
+
+  end subroutine hl_gdk_pixbuf_set_pixels8
+
+  !+
+  subroutine hl_gdk_pixbuf_set_pixels8g(pixbuf, pixels, xoff, yoff)
+    type(c_ptr), intent(in) :: pixbuf
+    integer(kind=c_int8_t), dimension(:,:), intent(in) :: pixels
+    integer, intent(in), optional :: xoff, yoff
+
+    ! Set the pixels of a pixuf from a Fortran array (greyscale).
+    !
+    ! PIXBUF: c_ptr: required: The pixbuf to update
+    ! PIXELS: int8: required: Contains the image to insert.
+    ! XOFF: int: optional: The X-offset at which to write the image.
+    ! YOFF: int: optional: The Y-offset at which to write the image.
+    !
+    ! This is normally called via the generic hl_gdk_pixbuf_set_pixels
+    ! interface.
+    ! N.B. To leave a gap at the "high" sides of the pixbuf, just use a
+    ! smaller input array or array slice than the pixbuf size.
+    !-
+
+    integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop, lput
+    integer(kind=c_int) :: rowstr, nrows, ncols, nchans, lpix
+    type(c_ptr), target :: cpixels
+    integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
+    integer, dimension(2) :: sz
+
+    sz=shape(pixels)
+    if (present(xoff)) then
+       xstart = xoff
+    else
+       xstart = 0
+    end if
+    if (present(yoff)) then
+       ystart = yoff
+    else
+       ystart = 0
+    end if
+
+    call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
+         & width=ncols, rowstride=rowstr)
+    lpix = rowstr*(nrows-1) + ncols
+
+    ! Checks on sizes etc.
+
+    if (sz(1) > ncols-xstart) then
+       write(error_unit, *) &
+            & "HL_GDK_SET_PIXELS8G: Input image has too many columns,"// &
+            & " using lower part."
+       xtop = ncols-xstart
+    else
+       xtop = sz(1)
+    end if
+    if (sz(2) > nrows-ystart) then
+       write(error_unit, *) &
+            & "HL_GDK_SET_PIXELS8G: Input image has too many rows,"// &
+            & " using lower part."
+       ytop = nrows-ystart
+    else
+       ytop = sz(2)
+    end if
+
+    ! Actually set the pixels.
+    cpixels = gdk_pixbuf_get_pixels(pixbuf)
+    call c_f_pointer(cpixels, fpixels, [lpix])
+
     do j = 0, ytop-1
        iroff = (j+ystart)*rowstr + 1 + xstart
        do i = 0,xtop-1
           ioff = iroff + i*nchans
-          fpixels(ioff:ioff+lput-1) = pixels(:lput, i+1,j+1)
-          if (salpha) fpixels(ioff+lput) = -1_c_int8_t
+          fpixels(ioff:ioff+2) = pixels(i+1,j+1)
+          if (nchans == 4) fpixels(ioff+3) = -1_c_int8_t
        end do
     end do
 
-  end subroutine hl_gdk_pixbuf_set_pixels8
+  end subroutine hl_gdk_pixbuf_set_pixels8g
 
+  !+
   subroutine hl_gdk_pixbuf_set_pixels16(pixbuf, pixels, xoff, yoff)
     type(c_ptr), intent(in) :: pixbuf
     integer(kind=c_short), dimension(:,:,:), intent(in) :: pixels
     integer, intent(in), optional :: xoff, yoff
 
-    ! Set the pixels of a pixuf from a Fortran array.
+    ! Set the pixels of a pixuf from a Fortran array (16-bit).
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to read
+    ! PIXBUF: c_ptr: required: The pixbuf to update
     ! PIXELS: short: required: Contains the image to insert.
     ! XOFF: int: optional: The X-offset at which to write the image.
     ! YOFF: int: optional: The Y-offset at which to write the image.
@@ -447,7 +612,7 @@ contains
     type(c_ptr), target :: cpixels
     integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
     integer, dimension(3) :: sz
-    logical :: salpha
+    logical :: salpha, gscale
 
     sz=shape(pixels)
     if (present(xoff)) then
@@ -485,6 +650,8 @@ contains
     end if
 
     salpha = .false.
+    gscale = .false.
+
     select case (sz(1))
     case(3)
        if (nchans == 4) then
@@ -497,10 +664,19 @@ contains
           write(error_unit, *) &
                & "HL_GDK_SET_PIXELS16: No alpha channel in output, omitting."
        end if
-    case(:2)
-       write(error_unit, *) &
-            & "HL_GDK_SET_PIXELS16: too few channels in input, aborting."
-       return
+    case(2)
+       gscale = .true.
+       if (nchans == 3) then
+          write(error_unit, *) &
+               & "HL_GDK_SET_PIXELS16: No alpha channel in output, omitting."
+       end if
+    case(1)
+       gscale = .true.
+       if (nchans == 4) then
+          write(error_unit, *) &
+               & "HL_GDK_SET_PIXELS16: No alpha channel in input, using opaque."
+          salpha = .true.
+       end if
     case(5:)
        write(error_unit, *) &
             & "HL_GDK_SET_PIXELS16: too many channels in input, omitting excess."
@@ -511,16 +687,105 @@ contains
     cpixels = gdk_pixbuf_get_pixels(pixbuf)
     call c_f_pointer(cpixels, fpixels, [lpix])
 
+    if (gscale) then
+       do j = 0, ytop-1
+          iroff = (j+ystart)*rowstr + 1 + xstart
+          do i = 0,xtop-1
+             ioff = iroff + i*nchans
+             fpixels(ioff:ioff+2) = int(pixels(1, i+1,j+1), c_int8_t)
+             if (salpha) then
+                fpixels(ioff+3) = -1_c_int8_t
+             else if (nchans == 4) then
+                fpixels(ioff+3) = int(pixels(2, i+1,j+1), c_int8_t)
+             end if
+          end do
+       end do
+    else
+       do j = 0, ytop-1
+          iroff = (j+ystart)*rowstr + 1 + xstart
+          do i = 0,xtop-1
+             ioff = iroff + i*nchans
+             fpixels(ioff:ioff+lput-1) = int(pixels(:lput, i+1,j+1), c_int8_t)
+             if (salpha) fpixels(ioff+lput) = -1_c_int8_t
+          end do
+       end do
+    end if
+  end subroutine hl_gdk_pixbuf_set_pixels16
+
+  !+
+  subroutine hl_gdk_pixbuf_set_pixels16g(pixbuf, pixels, xoff, yoff)
+    type(c_ptr), intent(in) :: pixbuf
+    integer(kind=c_short), dimension(:,:), intent(in) :: pixels
+    integer, intent(in), optional :: xoff, yoff
+
+    ! Set the pixels of a pixuf from a Fortran array (16-bit, greyscale).
+    !
+    ! PIXBUF: c_ptr: required: The pixbuf to update
+    ! PIXELS: short: required: Contains the image to insert.
+    ! XOFF: int: optional: The X-offset at which to write the image.
+    ! YOFF: int: optional: The Y-offset at which to write the image.
+    !
+    ! This is normally called via the generic hl_gdk_pixbuf_set_pixels
+    ! interface. 
+    ! N.B. To leave a gap at the "high" sides of the pixbuf, just use a
+    ! smaller input array or array slice than the pixbuf size.
+    !-
+
+    integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop, lput
+    integer(kind=c_int) :: rowstr, nrows, ncols, nchans, lpix
+    type(c_ptr), target :: cpixels
+    integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
+    integer, dimension(2) :: sz
+
+    sz=shape(pixels)
+    if (present(xoff)) then
+       xstart = xoff
+    else
+       xstart = 0
+    end if
+    if (present(yoff)) then
+       ystart = yoff
+    else
+       ystart = 0
+    end if
+
+    call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
+         & width=ncols, rowstride=rowstr)
+    lpix = rowstr*(nrows-1) + ncols
+
+    ! Checks on sizes etc.
+
+    if (sz(1) > ncols-xstart) then
+       write(error_unit, *) &
+            & "HL_GDK_SET_PIXELS16G: Input image has too many columns,"// &
+            & " using lower part."
+       xtop = ncols-xstart
+    else
+       xtop = sz(1)
+    end if
+    if (sz(2) > nrows-ystart) then
+       write(error_unit, *) &
+            & "HL_GDK_SET_PIXELS16G: Input image has too many rows,"// &
+            & " using lower part."
+       ytop = nrows-ystart
+    else
+       ytop = sz(2)
+    end if
+
+
+    ! Actually set the pixels.
+    cpixels = gdk_pixbuf_get_pixels(pixbuf)
+    call c_f_pointer(cpixels, fpixels, [lpix])
+
     do j = 0, ytop-1
        iroff = (j+ystart)*rowstr + 1 + xstart
        do i = 0,xtop-1
           ioff = iroff + i*nchans
-          fpixels(ioff:ioff+lput-1) = int(pixels(:lput, i+1,j+1), c_int8_t)
-          if (salpha) fpixels(ioff+lput) = -1_c_int8_t
+          fpixels(ioff:ioff+2) = int(pixels(i+1,j+1), c_int8_t)
+          if (nchans == 4)  fpixels(ioff+3) = -1_c_int8_t
        end do
     end do
-
-  end subroutine hl_gdk_pixbuf_set_pixels16
+  end subroutine hl_gdk_pixbuf_set_pixels16g
 
   !+
   subroutine hl_gdk_pixbuf_info(pixbuf, nchannels, bits, alpha, &
@@ -626,7 +891,7 @@ contains
           copt_vals(i) = c_loc(opt_vals(i))
        end do
        iok = gdk_pixbuf_savev(pixbuf, trim(file)//c_null_char, &
-         & trim(ftype)//c_null_char, copt_names, copt_vals, c_loc(err))
+            & trim(ftype)//c_null_char, copt_names, copt_vals, c_loc(err))
     else
        iok = gdk_pixbuf_savev(pixbuf, trim(file)//c_null_char, &
             & trim(ftype)//c_null_char, c_null_ptr, c_null_ptr, c_loc(err))

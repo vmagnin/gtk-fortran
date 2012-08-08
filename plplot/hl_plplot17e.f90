@@ -23,9 +23,9 @@
 !
 ! gfortran hl_plplot17e.f90 `pkg-config --cflags --libs gtk-fortran plplotd-f95`
 ! Contributed by: James Tappin
-! PLplot code derived from PLplot's example 1 by Alan W. Irwin
+! PLplot code derived from PLplot's example 17 by Alan W. Irwin
 
-module common
+module common_ex17
   use iso_c_binding
   use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area_new, &
        & gtk_events_pending, gtk_main, gtk_main_iteration, &
@@ -38,15 +38,18 @@ module common
 
   use plplot_extra
 
+  implicit none
+
   integer(kind=c_int) :: height, width
   integer(kind=c_int) :: run_status = TRUE
+  type(c_ptr) :: window
 
-end module common
+end module common_ex17
 
-module plplot_code
+module plplot_code_ex17
   use plplot, PI => PL_PI
   use iso_c_binding
-  use common 
+  use common_ex17
 
   implicit none
 
@@ -228,17 +231,17 @@ contains
     call plend()
     call hl_gtk_drawing_area_cairo_destroy(cc)
   end subroutine close_strip
-end module plplot_code
+end module plplot_code_ex17
 
-module cl_handlers
+module handlers_ex17
 
-  use common
+  use common_ex17
 
   use gtk_hl
   use gtk_draw_hl
 
   use iso_c_binding
-  use plplot_code
+  use plplot_code_ex17
 
   implicit none
 
@@ -268,16 +271,17 @@ contains
   end subroutine pending_events
 
 
-end module cl_handlers
+end module handlers_ex17
 
-program cairo_plplot
+program cairo_plplot_ex17
 
-  use cl_handlers
-  use plplot_code
+  use handlers_ex17
+  use plplot_code_ex17
+  use common_ex17
 
   implicit none
 
-  type(c_ptr) :: window, drawing, base, qbut
+  type(c_ptr) :: drawing, base, qbut
 
   height = 500
   width = 1000
@@ -301,11 +305,16 @@ program cairo_plplot
 
   call x17f95(drawing)
 
+  ! Note that here rather than using gtk_main we look for events ourselves
+  ! this makes it easy to add a point every 1/10s.
+  ! An alternative would be to use g_timeout_add to control the updates.
+
   do
      call pending_events()
      if (run_status == FALSE) exit
      call g_usleep(100000_c_long) ! So we don't burn CPU cycles
      call add_point(drawing)
   end do
+
   print *, "All done"
-end program cairo_plplot
+end program cairo_plplot_ex17
