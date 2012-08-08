@@ -10,12 +10,20 @@ Requirements
 ------------
 
 gtk-fortran: (including for these examples the high-level modules gtk_hl
-and gtk_draw_hl), gtk2 or gtk3 should work. It is easiest to build the
+and gtk_draw_hl), gtk2 and gtk3 should both work. It is easiest to build the
 examples if gtk-fortran and its pkg-config file are installed on your
 system.
 
 plplot: including the fortran95 bindings and the cairo drivers. They
-are tested with the current release -- 5.9.7.
+are tested with the current release -- 5.9.9. 
+It is known that example 30 will not build with version 5.9.5, but is
+buildable with 5.9.7.
+
+A wrapper module plplot_extra.mod is created by the gtk-fortran system
+to allow access to the pl_cmd routine in plplot which is not in the
+Fortran95 binding. It provides low-level access to the system and is
+needed to correctly configure the "extcairo" driver. The module also
+provides the mnemonic command codes for pl_cmd.
 
 Concept
 -------
@@ -39,17 +47,25 @@ Handlers:
 PLplot drawing:
         Connect plplot's output to the backing surface (see below).
        	Make the plot(s)
-       	call gtk_widget_queue_draw on the drawing area to force a
+       	Call gtk_widget_queue_draw on the drawing area to force a
         redraw.
 
 Globals:
-	For convenience in both examples I've put all the gtk use
+	For convenience in all examples I've put all the gtk (etc.) use
 	statements and any global variables into a separate module that
 	can be used by all of the other units.
 
-Connecting PLplot's output to the pixbuf.
+In the example codes these are:
 
-For the extcairo driver, output is to an externally greated cairo
+* The main program (called cairo_plplot_ex<n>)
+* The common module (common_ex<n>)
+* The drawing module (plplot_code_ex<n>)
+* The handlers (handlers_ex<n>)
+
+Connecting PLplot's output to the drawing area.
+-----------------------------------------------
+
+For the "extcairo" driver, output is to an externally-created cairo
 context. So here you need to create a cairo context connected to the
 backing surface (this is most easily done with
 hl_gtk_drawing_area_cairo_new). And then use pl_cmd to connect plplot's
@@ -72,7 +88,7 @@ the call to plinit (or plstar):
 
 And then after plinit you need:
 
-   call pl_cmd(PLESC_DEVINIT, cc)
+    call pl_cmd(PLESC_DEVINIT, cc)
 
 A fortran interface to pl_cmd is provided by the plplot_extras module
 in this directory.
@@ -81,14 +97,19 @@ in this directory.
 Building the examples
 ---------------------
 
+If plplot is found when building gtk-fortran, then the interface module
+for pl_cmd will be built and installed and the examples will be
+built. The instructions that follow are therefore only needed if you
+want to build them manually for some reason.
+
 The plplot example(s) are most easily built if gtk-fortran has been
 installed. Then it is simply a matter of:
 
-    gfortran -o hl_plplot<x> hl_plplot<x>.f90 `pkg-config --cflags --libs \
-    	     gtk-fortran plplotd-f95`
+    gfortran -o hl_plplot<x>e hl_plplot<x>e.f90 `pkg-config --cflags --libs \
+    	     gtk-<n>-fortran plplotd-f95`
 
-where <x> is the number of the example. A basic Makefile to do this is
-provided.
+where <x> is the number of the example, and <n> is 2 or 3 according to
+which gtk version you are using. 
 
 The examples are derived from the Fortran95 versions of Examples 1, 8,
 30 and 17 on the PLplot web site.
@@ -96,21 +117,29 @@ The examples are derived from the Fortran95 versions of Examples 1, 8,
 hl_plplot1e: Basic x-y plots on multiple pages
 hl_plplot8e: 3-D data display
 hl_plplot17e: Strip charts, shows continuous updating
-hl_plplot30e: Transparency.
+hl_plplot30e: Transparency (needs at least plplot 5.9.7).
+
+
+If you wish to explicitly exclude building and installing plplot
+support, then when running cmake, include the option "-D
+EXCLUDE_PLPLOT=Y" (e.g.:
+      cmake -D EXCLUDE_PLPLOT=Y ..
+)
 
 Known issues
 ------------
 
 Different releases of gfortran (let alone different fortran compilers)
 cannot read each other's module files, therefore plplot must be built
-with the same compiler as gtk-fortran. Since not many Linux distros use
-gcc/gfortran 4.6 yet, this means you will probably need to build plplot
-from source. In addition the x86_64 gfortran binary snapshots for 4.6 &
-4.7 fail to build the C++ parts of plplot, unless you remove the c++
-compiler binaries/links from the snapshot directory (I tried forcing
-the c++ compiler to be /usr/bin/c++ with ccmake but I couldn't get it
-to stick).
+with the same compiler as gtk-fortran. For most Linux distributions,
+this is no longer an issue as most use gcc 4.6 or 4.7. However for
+those that are still based on 4.5 or lower [*], this means you will
+probably need to build plplot from source. In addition when I last used
+this method, the x86_64 gfortran binary snapshots for 4.6 & 4.7 failed
+to build the C++ parts of plplot, unless you remove the c++ compiler
+binaries/links from the snapshot directory (I tried forcing the c++
+compiler to be /usr/bin/c++ with ccmake but I couldn't get it to
+stick).
 
-Since the modifications to the high-level drawing routines, it is no
-longer possible to use the "memcairo" device to capture cairo output
-into a pixbuf (but that was somewhat of a kludge anyway).
+[*] To my knowledge RHEL, SUSE, Slackware and Debian Stable (and their
+derivatives), but not Fedora or OpenSUSE.

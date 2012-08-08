@@ -25,13 +25,13 @@
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 8 by Alan W. Irwin
 
-module global
+module common_ex8
   use iso_c_binding
 
   ! Gtk includes
   use gtk, only: gtk_button_new, gtk_check_button_new, gtk_container_add, gtk_dra&
-       &wing_area_new, gtk_label_new, gtk_main, gtk_main_quit, gtk_table_attach, gtk_t&
-       &able_new, gtk_toggle_button_get_active, gtk_widget_destroy, gtk_widget_show, g&
+       &wing_area_new, gtk_label_new, gtk_main, gtk_main_quit, &
+       & gtk_toggle_button_get_active, gtk_widget_destroy, gtk_widget_show, g&
        &tk_widget_show_all, gtk_window_new, gtk_init, gtk_widget_queue_draw
 
   use gtk_hl
@@ -48,13 +48,13 @@ module global
 
   integer(kind=c_int) :: width, height
 
-end module global
+end module common_ex8
 
-module x08f
+module plplot_code_ex8
 
   use plplot, PI => PL_PI
   use iso_c_binding
-  use global
+  use common_ex8
 
   implicit none
 
@@ -248,11 +248,11 @@ contains
        enddo
     enddo
   end subroutine a2mnmx
-end module x08f
+end module plplot_code_ex8
 
-module plpl8_handlers
-  use global
-  use x08f
+module handlers_ex8
+  use common_ex8
+  use plplot_code_ex8
 
   implicit none
 
@@ -338,14 +338,14 @@ contains
 
   end subroutine resize_area
 
-end module plpl8_handlers
+end module handlers_ex8
 
 
-program hl_plplot8
-  use plpl8_handlers
-  use x08f
+program cairo_plplot_ex8
+  use handlers_ex8
+  use plplot_code_ex8
 
-  use global
+  use common_ex8
 
   implicit none
 
@@ -416,4 +416,4 @@ program hl_plplot8
 
   call gtk_main()
 
-end program hl_plplot8
+end program cairo_plplot_ex8
