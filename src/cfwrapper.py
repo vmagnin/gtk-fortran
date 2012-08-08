@@ -217,8 +217,10 @@ TYPES_DICT = {
     "time_t":("integer(c_long)","c_long"),  #typedef __time_t time_t;
     "short":("integer(c_short)","c_short"),
     "boolean":("logical(c_bool)","c_bool"),
-    "gchar":("character(kind=c_char)","c_char"),
-    "guchar":("character(kind=c_char)","c_char"),
+    # For gchar & guchar, see https://github.com/jerryd/gtk-fortran/issues/41#issuecomment-7337877
+    "gchar":("integer(kind=c_int8_t)","c_int8_t"), #("character(kind=c_char)","c_char"),
+
+    "guchar":("integer(kind=c_int8_t)","c_int8_t"), #("character(kind=c_char)","c_char"),
 #    "gboolean":("logical(c_bool)","c_bool"), typedef int gint; typedef gint gboolean;
     "double": ("real(c_double)","c_double"),
     "float":("real(c_float)","c_float"),
@@ -469,7 +471,7 @@ for library_path in PATH_DICT.keys():
                 if RGX_UNDERSCORE.match(f_name) != None:
                     continue    # Next prototype
                 
-                if f_name in ["gtk_init","g_bit_nth_lsf","g_once_init_enter"]:
+                if f_name in ["gtk_init","g_bit_nth_lsf","g_once_init_enter","g_trash_stack_push"]:
                     continue    # Next prototype
                 
                     
