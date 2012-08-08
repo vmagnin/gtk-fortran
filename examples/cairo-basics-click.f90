@@ -178,7 +178,7 @@ program cairo_basics_click
   call gtk_container_add(my_event_box, my_drawing_area)
 
   ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
-  call g_signal_connect (my_drawing_area, "expose_event"//c_null_char, c_funloc(expose_event))
+  call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
   call g_signal_connect (my_event_box, "button_press_event"//c_null_char, &
        & c_funloc(button_event))
   call g_signal_connect (my_event_box, "scroll_event"//c_null_char, &

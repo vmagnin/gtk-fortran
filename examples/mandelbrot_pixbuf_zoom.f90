@@ -356,7 +356,7 @@ program mandelbrot_zoom
   call gtk_widget_set_size_request(my_drawing_area, &
        & width, height)
   call gtk_container_add(my_event_box, my_drawing_area)
-  call g_signal_connect (my_drawing_area, "expose-event"//c_null_char, &
+  call g_signal_connect (my_drawing_area, "draw"//c_null_char, &
        & c_funloc(expose_event))
   call g_signal_connect(my_event_box, "button-press-event"//c_null_char, &
        & c_funloc(mark_point))
