@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification:  05.19.2012 (Python 2.7.3, Linux Ubuntu 12.04)
+# Last modification:  19.05.2012 (Python 2.7.3, Linux Ubuntu 12.04)
 
 """ This program generates the *-auto.f90 files
     from the C header files of GTK+ in Linux.
@@ -69,7 +69,7 @@ def iso_c_binding(declaration, returned):
     #typedef void* gpointer;
     if c_type.find("gpointer")!=-1 or c_type.find("gconstpointer")!=-1:
         return "type(c_ptr)", "c_ptr"
-    
+
     # Is it a pointer ?
     if declaration.find("*") != -1:
         # Is it a string (char or gchar array) ? "unsigned char"   "guchar" gunichar ?
@@ -128,6 +128,7 @@ def set_bit_field(match):
     #return "b'"+field+"'"
     s = "ISHFTC(1, " + str(b) + ")"
     return s
+
 
 def translate_enums(errorsfile, enum_list):
     """Receive a C enum and returns a Fortran enum"""
@@ -216,8 +217,8 @@ TYPES_DICT = {
     "time_t":("integer(c_long)","c_long"),  #typedef __time_t time_t;
     "short":("integer(c_short)","c_short"),
     "boolean":("logical(c_bool)","c_bool"),
-    "gchar":("character(kind=c_char)","c_char"),
-    "guchar":("character(kind=c_char)","c_char"),
+    "gchar": ("integer(kind=c_int8_t)", "c_int8_t"), # ("character(kind=c_char)","c_char"),
+    "guchar":("integer(kind=c_int8_t)", "c_int8_t"), # ("character(kind=c_char)","c_char"),
 #    "gboolean":("logical(c_bool)","c_bool"), typedef int gint; typedef gint gboolean;
     "double": ("real(c_double)","c_double"),
     "float":("real(c_float)","c_float"),
@@ -289,7 +290,6 @@ type_errors_list = []
 # Libraries to parse and resulting Fortran files (must have a -auto.f90 termination): 
 PATH_DICT = { "/usr/include/gtk-3.0/gtk":"gtk-auto.f90",
               "/usr/include/gtk-3.0/gdk":"gdk-auto.f90",
-              "/usr/include/gtk-3.0/unix-print":"unix-print-auto.f90",
               "/usr/include/cairo":"cairo-auto.f90",
               "/usr/include/pango-1.0":"pango-auto.f90",
               "/usr/include/glib-2.0":"glib-auto.f90",
