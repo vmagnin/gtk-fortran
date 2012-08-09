@@ -162,9 +162,9 @@ add_executable(menu "menu.f90")
 target_link_libraries(menu gtk-fortran_static ${GTK_LIBRARIES})
 add_test(menu ./menu)
 
-# add_executable(notebooks "notebooks.f90")
-# target_link_libraries(notebooks gtk-fortran_static ${GTK_LIBRARIES})
-# add_test(notebooks ./notebooks)
+add_executable(notebooks "notebooks.f90")
+target_link_libraries(notebooks gtk-fortran_static ${GTK_LIBRARIES})
+add_test(notebooks ./notebooks)
 
 add_executable(tests "tests.f90")
 target_link_libraries(tests gtk-fortran_static ${GTK_LIBRARIES})

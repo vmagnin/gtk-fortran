@@ -38,22 +38,6 @@ module widgets
   type(c_ptr) :: checkbutton
 
 contains
-
-  ! *** These two functions will be avalaibable in GTK+ 2.24 ***
-  !void gtk_notebook_set_group_name (GtkNotebook *notebook, const gchar *group_name);
-  subroutine gtk_notebook_set_group_name (notebook, group_name) bind(c)
-    use iso_c_binding, only: c_ptr, c_char
-    type(c_ptr), value :: notebook
-    character(kind=c_char), dimension(*) :: group_name
-  end subroutine
-
-  !const gchar *gtk_notebook_get_group_name (GtkNotebook *notebook);
-  function gtk_notebook_get_group_name (notebook) bind(c)
-    use iso_c_binding, only: c_ptr
-    type(c_ptr), value :: notebook
-    type(c_ptr) :: gtk_notebook_get_group_name
-  end function
-
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
     implicit none
@@ -76,16 +60,18 @@ module handlers
   use gtk, only: g_signal_connect, gtk_init, gtk_button_new, gtk_button_new_with_label, gtk_check_button_new, &
   & gtk_check_button_new_with_label, gtk_container_add, gtk_container_set_border_width, &
   & gtk_frame_new, gtk_label_new, gtk_main, gtk_main_quit, gtk_notebook_append_page, &
-  & gtk_notebook_get_current_page, gtk_notebook_get_group, gtk_notebook_get_n_pages, &
+  & gtk_notebook_get_current_page, gtk_notebook_get_n_pages, &
   & gtk_notebook_get_show_border, gtk_notebook_get_show_tabs, gtk_notebook_get_tab_pos, &
   & gtk_notebook_insert_page, gtk_notebook_new, gtk_notebook_next_page, &
   & gtk_notebook_prepend_page, gtk_notebook_prev_page, gtk_notebook_remove_page, &
-  & gtk_notebook_set_current_page, gtk_notebook_set_group, gtk_notebook_set_show_border, &
+  & gtk_notebook_set_current_page, gtk_notebook_set_show_border, &
   & gtk_notebook_set_show_tabs, gtk_notebook_set_tab_detachable, gtk_notebook_set_tab_pos, &
   & gtk_notebook_set_tab_reorderable, gtk_table_attach, gtk_table_attach_defaults, &
   & gtk_table_new, gtk_widget_queue_draw, gtk_widget_set_size_request, gtk_widget_show, &
   & gtk_widget_show_all, gtk_window_new, gtk_window_set_title, &
-  & FALSE, TRUE, c_null_char, GTK_WINDOW_TOPLEVEL, GTK_POS_TOP
+  & FALSE, TRUE, c_null_char, GTK_WINDOW_TOPLEVEL, GTK_POS_TOP, &
+  & gtk_notebook_set_group_name, gtk_notebook_get_group_name
+
   use widgets
 
   implicit none
@@ -215,13 +201,9 @@ program notebook_example
 
   ! Attach notebook to group, necessary to enable drag and drop between the two notebooks
   call gtk_notebook_set_group_name(notebook_1,"group"//c_null_char)
-
-  ! --> this is not working!!! (available in GTK+ 2.24, but fails): 
-
-!!$  call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, (/64/))
-!!$  call convert_c_string(textptr, my_string)
-!!$  print *, "group name = <"//TRIM(my_string)//">"
-!!$  print *, "=> This will work with GTK+ 3"
+  call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, (/64/))
+  call convert_c_string(textptr, my_string)
+  print *, "group name = <"//TRIM(my_string)//">"
 
   !append a bunch of pages to the notebook
   do i=1,3
@@ -319,7 +301,6 @@ program notebook_example
     call gtk_notebook_set_tab_detachable (notebook_2, frame, TRUE)
   enddo
 
-  print *, "Created"
   call gtk_widget_show_all (mainwindow)
    
   ! Main loop
