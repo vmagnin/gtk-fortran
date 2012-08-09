@@ -101,7 +101,7 @@ program gtkbuilder
 
   integer(c_int) :: guint
   type(c_ptr) :: error
-  error = c_null_ptr
+  error=c_null_ptr
 
   ! Initialize the GTK+ Library
   call gtk_init ()
@@ -111,6 +111,10 @@ program gtkbuilder
 
   ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
   guint = gtk_builder_add_from_file (builder, "gtkbuilder.glade"//c_null_char, error)
+    if (guint == 0) then
+     print *, "Could not open gtkbuilder.glade"
+     stop
+  end if
 
   ! get a pointer to the GObject "window" from GtkBuilder
   window = gtk_builder_get_object (builder, "window"//c_null_char)

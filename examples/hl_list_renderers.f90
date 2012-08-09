@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g gtk.f90 gtk-sup.f90 gtk-hl.f90 hl_list_n.f90 `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -g  hl_list_renderers.90 `pkg-config --cflags --libs gtk-2-fortran`
 ! Contributed by James Tappin.
 
 module ln_handlers
@@ -131,6 +131,35 @@ contains
     end if
   end subroutine cell_edited
 
+  subroutine ccell_edit(renderer, path, text, gdata) bind(c)
+    type(c_ptr), value :: renderer, path, text, gdata
+
+    ! Basic callback to report what's called
+    character(len=200) :: fpath, ftext
+    integer(kind=c_int) :: irow
+
+    call c_f_string(path, len(fpath), fpath)
+    call c_f_string(text, len(ftext), ftext)
+    read(fpath, *) irow
+
+    print *, "Combo sent edited signal from ", trim(fpath)
+    print *, "Text was ", trim(ftext)
+    call hl_gtk_listn_set_cell(ihlist, irow, 9, svalue=trim(ftext))
+
+  end subroutine ccell_edit
+  subroutine ccell_changed(renderer, path, iter, gdata) bind(c)
+    type(c_ptr), value :: renderer, path, iter, gdata
+
+    ! Basic callback to report what's called
+
+    character(len=200) :: fpath
+
+    call c_f_string(path, len(fpath), fpath)
+    print *, "Combo sent changed signal from ", trim(fpath)
+
+  end subroutine ccell_changed
+
+  
   subroutine cell_clicked(renderer, path, gdata) bind(c)
     type(c_ptr), value :: renderer, path, gdata
 
@@ -157,6 +186,50 @@ contains
          & logvalue= .not. state)
 
   end subroutine cell_clicked
+  subroutine rcell_clicked(renderer, path, gdata) bind(c)
+    type(c_ptr), value :: renderer, path, gdata
+
+    ! Default callback for a toggle button in a list
+    !
+    ! RENDERER: c_ptr: required: The renderer which sent the signal
+    ! PATH: c_ptr: required: The path at which to insert
+    ! GDATA: c_ptr: required: User data, Not used.
+    !
+    ! The column number is passed via the "column-number" gobject data value.
+    ! The treeview containing the cell is passed via the "view" gobject
+    ! data value.
+    ! The row number is passed as a string in the PATH argument.
+    ! This routine is not normally called by the application developer.
+    !-
+    character(len=200) :: fpath
+    integer(kind=c_int) :: irow
+    integer(kind=c_int), pointer :: icol
+    integer :: ios, i
+    type(c_ptr) :: pcol, list
+    logical :: state
+    integer(kind=c_int) :: nrows
+
+    call convert_c_string(path, 200, fpath)
+    read(fpath, *) irow
+
+    pcol = g_object_get_data(renderer, "column-number"//c_null_char)
+    call c_f_pointer(pcol, icol)
+
+    list = g_object_get_data(renderer, "view"//c_null_char)
+
+    state = c_f_logical(gtk_cell_renderer_toggle_get_active(renderer))
+    print *, irow, state
+
+    if (state) return ! Don't act on an unset
+
+    ! Find the first iterator
+    nrows = gtk_tree_model_iter_n_children (gtk_tree_view_get_model(list), &
+         & c_null_ptr)
+    do i = 0,nrows-1
+       call hl_gtk_listn_set_cell(list, i, icol, &
+            & logvalue= i == irow)
+    end do
+  end subroutine rcell_clicked
 
   subroutine display_dbl(col, cell, model, iter, data) bind(c)
     type(c_ptr), value :: col, cell, model, iter, data
@@ -194,7 +267,7 @@ program list_rend
 
   implicit none
 
-  integer, parameter :: ncols = 9, nrows=10
+  integer, parameter :: ncols = 11, nrows=10
   character(len=35) :: line
   integer :: i, ltr
   integer, target :: iappend=0, idel=0
@@ -203,7 +276,7 @@ program list_rend
   integer(kind=c_int), dimension(ncols) :: editable
   integer(kind=c_int), dimension(ncols) :: widths
   integer(kind=c_int), dimension(2), target :: fmt_col = [1, 2]
-  integer(kind=c_short), dimension(3, 100, 32) :: image
+  integer(kind=c_short), dimension(3, 100, 24) :: image
   integer(kind=c_short), dimension(nrows) :: red, green, blue
   type(c_ptr) :: pixbuf
 
@@ -225,25 +298,33 @@ program list_rend
   ! Now make a multi column list with multiple selections enabled
   ctypes = (/ G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_DOUBLE, &
        & G_TYPE_UINT64, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_INT,&
-       & gdk_pixbuf_get_type() /)
-  editable = (/ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE /)
-  widths = [-1, -1, -1, -1, -1, -1, -1, 200, -1]
+       & gdk_pixbuf_get_type(), G_TYPE_STRING , G_TYPE_BOOLEAN /)
+  editable = (/ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, &
+       & FALSE, TRUE, TRUE /)
+  widths = [-1, -1, -1, -1, -1, -1, -1, 150, -1, -1, -1]
 
   titles = (/ character(len=20) :: "Name", "N", "3N", "Log(n)", &
-       & "N**4", "Odd?", "Select?", "Fraction", "Colour" /)
+       & "N**4", "Odd?", "Select?", "Fraction", "Colour", "Choose", "Pick" /)
   renderers = (/ hl_gtk_cell_text, hl_gtk_cell_spin, hl_gtk_cell_text, &
        & hl_gtk_cell_text, hl_gtk_cell_text, hl_gtk_cell_text,&
-       & hl_gtk_cell_toggle, hl_gtk_cell_progress, hl_gtk_cell_pixbuf /)
+       & hl_gtk_cell_toggle, hl_gtk_cell_progress, hl_gtk_cell_pixbuf, &
+       & hl_gtk_cell_combo, hl_gtk_cell_radio /)
 
   ihlist = hl_gtk_listn_new(ihscrollcontain, types=ctypes, &
        & changed=c_funloc(list_select),&
        & multiple=TRUE, titles=titles, width=widths, &
        & renderers=renderers, editable=editable, &
        & edited=c_funloc(cell_edited), hscroll_policy=GTK_POLICY_NEVER,&
-       & vscroll_policy=GTK_POLICY_NEVER, toggled=c_funloc(cell_clicked))
+       & vscroll_policy=GTK_POLICY_NEVER, toggled=c_funloc(cell_clicked), &
+       & toggled_radio=c_funloc(rcell_clicked), &
+       & edited_combo=c_funloc(ccell_edit), &
+       & changed_combo=c_funloc(ccell_changed))
 
   call hl_gtk_listn_config_spin(ihlist, 1_c_int, vmax = huge(1._c_double), &
        & step = 0.1_c_double, digits=1)
+  call hl_gtk_listn_config_combo(ihlist, 9_c_int, &
+       & vals=['one  ', 'two  ', 'three'], &
+       & has_entry=FALSE)
 
   do i = 1, size(fmt_col)
      call hl_gtk_listn_set_cell_data_func(ihlist, fmt_col(i), &
@@ -262,13 +343,16 @@ program list_rend
      call hl_gtk_listn_set_cell(ihlist, i-1, 3, fvalue=log10(real(i)))
      call hl_gtk_listn_set_cell(ihlist, i-1, 4, l64value=int(i, c_int64_t)**4)
      call hl_gtk_listn_set_cell(ihlist, i-1, 5, ivalue=mod(i,2))
-     call hl_gtk_listn_set_cell(ihlist, i-1, 6, logvalue=mod(i,2) == 0)
+     call hl_gtk_listn_set_cell(ihlist, i-1, 6, logvalue=mod(i,3) == 0)
      call hl_gtk_listn_set_cell(ihlist, i-1, 7, ivalue=mod(3*i, 100))
      image(1,:,:) = red(i)
      image(2,:,:) = green(i)
      image(3,:,:) = blue(i)
      pixbuf = hl_gdk_pixbuf_new(image)
      call hl_gtk_listn_set_cell(ihlist, i-1, 8, pbvalue=pixbuf)
+     call hl_gtk_listn_combo_set_select(ihlist, i-1, 9_c_int, &
+          & selection=mod(i,3))
+     call hl_gtk_listn_set_cell(ihlist, i-1, 10, logvalue= i==4)
   end do
 
   ! It is the scrollcontainer that is placed into the box.

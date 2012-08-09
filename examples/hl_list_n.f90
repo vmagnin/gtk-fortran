@@ -61,7 +61,8 @@ contains
     real(kind=c_float) :: nlog
     character(len=30) :: name
     character(len=10) :: nodd
-
+    character :: code, ucode
+    integer :: icode, iucode
     nsel = hl_gtk_listn_get_selections(C_NULL_PTR, selections, list)
     if (nsel == 0) then
        print *, "No selection"
@@ -78,9 +79,15 @@ contains
        call hl_gtk_listn_get_cell(ihlist, selections(1), 4, l64value=n4)
        call hl_gtk_listn_get_cell(ihlist, selections(1), 3, fvalue=nlog)
        call hl_gtk_listn_get_cell(ihlist, selections(1), 5, svalue=nodd)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 6, svalue=code)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 7, svalue=ucode)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 6, ivalue=icode)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 7, ivalue=iucode)
        print "('Row:',I3,' Name: ',a,' N:',I3,' 3N:',I4,' N**4:',I7,&
-            &' log(n):',F7.5,' Odd?: ',a)", selections(1), trim(name), &
-            & n, n3, n4, nlog, nodd
+            &' log(n):',F7.5,' Odd?: ',a, ' Code:',a,a)", &
+            & selections(1), trim(name), n, n3, n4, nlog, nodd, code, ucode
+       print *, ichar(code), ichar(ucode)
+       print *, icode, iucode
     end if
 
     deallocate(selections)
@@ -161,11 +168,11 @@ program list_n
   character(len=35) :: line
   integer :: i, ltr
   integer, target :: iappend=0, idel=0
-  integer(kind=type_kind), dimension(6) :: ctypes
-  character(len=20), dimension(6) :: titles
-  integer(kind=c_int), dimension(6) :: sortable, editable
+  integer(kind=type_kind), dimension(8) :: ctypes
+  character(len=20), dimension(8) :: titles
+  integer(kind=c_int), dimension(8) :: sortable, editable
   integer(kind=c_int), target :: fmt_col = 2
-  integer(kind=c_int), dimension(:), allocatable :: colnos
+  character(kind=c_char), dimension(10) :: codes
   ! Initialize GTK+
   call gtk_init()
 
@@ -179,9 +186,10 @@ program list_n
 
   ! Now make a multi column list with multiple selections enabled
   ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
-       & G_TYPE_UINT64, G_TYPE_BOOLEAN /)
-  sortable = (/ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE /)
-  editable = (/ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE /)
+       & G_TYPE_UINT64, G_TYPE_BOOLEAN, G_TYPE_CHAR, G_TYPE_UCHAR /)
+  sortable = (/ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE /)
+  editable = (/ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE /)
+  codes = [ 'A', 'X', 'B', '?', 'A', 'C', char(185), 'u', '*', char(201)]
 
   titles(1) = "Name"
   titles(2) = "N"
@@ -189,11 +197,13 @@ program list_n
   titles(4) = "Log(n)"
   titles(5) = "N**4"
   titles(6) = "Odd?"
+  titles(7) = "Code"
+  titles(8) = "Ucode"
 
   ihlist = hl_gtk_listn_new(ihscrollcontain, types=ctypes, &
        & changed=c_funloc(list_select),&
-       & multiple=TRUE, height=250, swidth=400, titles=titles, &
-       & sortable=sortable, editable=editable, colnos=colnos, &
+       & multiple=TRUE, height=250, swidth=600, titles=titles, &
+       & sortable=sortable, editable=editable, &
        & edited=c_funloc(cell_edited))
 
   call hl_gtk_listn_set_cell_data_func(ihlist, fmt_col, &
@@ -212,7 +222,14 @@ program list_n
      call hl_gtk_listn_set_cell(ihlist, i-1, 3, fvalue=log10(real(i)))
      call hl_gtk_listn_set_cell(ihlist, i-1, 4, l64value=int(i,c_int64_t)**4)
      call hl_gtk_listn_set_cell(ihlist, i-1, 5, ivalue=mod(i,2))
+     call hl_gtk_listn_set_cell(ihlist, i-1, 6, svalue=codes(i))
+     call hl_gtk_listn_set_cell(ihlist, i-1, 7, svalue=codes(i))
   end do
+
+  ! A silly idea to test a hunch
+  print *, codes
+  codes = char(ichar(codes)-2)
+  print *, codes
 
   ! It is the scrollcontainer that is placed into the box.
   call hl_gtk_box_pack(base, ihscrollcontain)
