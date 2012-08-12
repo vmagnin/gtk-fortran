@@ -336,7 +336,7 @@ program julia
   call gtk_grid_attach(table, label3, 0, 2, 1, 1)
   call gtk_grid_attach(table, spinButton1, 1, 0, 1, 1)
   call gtk_grid_attach(table, spinButton2, 1, 1, 1, 1)
-  call gtk_grid_attach(table, spinButton3, 1, 2, 2, 3)  
+  call gtk_grid_attach(table, spinButton3, 1, 2, 1,1)  
   call gtk_grid_attach(table, linkButton, 3, 0, 1, 1)
   call gtk_grid_attach(table, label4, 2, 0, 1, 1)
   call gtk_grid_attach(table, combo1, 2, 1, 1,1)
