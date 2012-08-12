@@ -67,9 +67,10 @@ contains
           print *, selections
           deallocate(selections)
        else    ! Delete the selected row
-          call hl_gtk_list1_rem(ihlist, selections(1))
           call gtk_toggle_button_set_active(dbut, FALSE)
           fdata = 0
+          print *, "Delete row:", selections(1)
+          call hl_gtk_list1_rem(ihlist, selections(1))
        end if
     end if
 
