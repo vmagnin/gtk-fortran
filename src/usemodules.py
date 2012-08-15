@@ -36,6 +36,7 @@ import os
 import csv
 import sys
 import time
+import re        # Regular expression library
 
 
 def multiline(ch, maxlength):
@@ -92,7 +93,8 @@ for directory in tree:
                 module_name = row[0]
                 function_name = row[1]
                 
-                if whole_file.find(function_name) != -1:
+                pattern = function_name + "[^a-zA-Z0-9_]"
+                if re.search(pattern, whole_file) is not None:
                     # Is this module found for the first time ?
                     if not module_name in used_modules:
                         used_modules.append(module_name)
