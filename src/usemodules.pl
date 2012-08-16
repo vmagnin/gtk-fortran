@@ -245,7 +245,7 @@ sub read_csv
     }
 
     $tokens{gtk} = [] unless exists $tokens{gtk};
-    push @{$tokens{gtk}}, ('gtk_init', 'gtk_signal_connect');
+    push @{$tokens{gtk}}, ('gtk_init', 'g_signal_connect');
 
     close(CSV);
 }
