@@ -83,6 +83,27 @@ if (UNIX)
   add_custom_target(pkgconfig ALL DEPENDS "gtk-3-fortran.pc")
 endif()
 
+# The USE generator system.
+add_custom_command(
+  OUTPUT gtk-3-fortran-modscan
+  COMMAND sed -e s+@PREFIX@+${CMAKE_INSTALL_PREFIX}+ -e s/@GTK@/3/ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl > ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan
+  COMMAND chmod a+x ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl
+)
+add_custom_command(
+  OUTPUT gtk-3-fortran-index.csv
+  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv
+)
+add_custom_command(
+  OUTPUT gtk-3-enumerators.lis
+  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
+)
+
+add_custom_target(usemodules ALL DEPENDS gtk-3-fortran-modscan
+  gtk-3-fortran-index.csv gtk-3-enumerators.lis)
+
 install(TARGETS gtk-fortran_static ARCHIVE DESTINATION lib)
 install(TARGETS gtk-fortran_shared LIBRARY DESTINATION lib)
 install(FILES
@@ -111,6 +132,16 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
 	DESTINATION include/gtk-3-fortran)
+install(PROGRAMS
+  "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan"
+  DESTINATION bin
+)
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv"
+  "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis"
+  DESTINATION share/gtk-fortran
+)
+
 if (UNIX)
   install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc"

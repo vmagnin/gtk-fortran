@@ -32,10 +32,10 @@ use Getopt::Long;
 
 my %tokens;
 my @enumerators;
-# my $csvfile='@PREFIX@/share/gtk-fortran/gtk-@GTK@-fortran-index.csv';
-# my $enumfile='@PREFIX@/share/gtk-fortran/gtk-@GTK@-enumerators.lis';
-my $csvfile='gtk-fortran-index.csv';
-my $enumfile='gtk-enumerators.lis';
+my $csvfile='@PREFIX@/share/gtk-fortran/gtk-@GTK@-fortran-index.csv';
+my $enumfile='@PREFIX@/share/gtk-fortran/gtk-@GTK@-enumerators.lis';
+# my $csvfile='gtk-fortran-index.csv';
+# my $enumfile='gtk-enumerators.lis';
 
 my $outfile='gtk-modules.txt';
 my @sources;
@@ -102,9 +102,6 @@ if ($#ARGV >= 0) {
 print "\n";
 
 open(OUT, ">$outfile") || die "Failed to open output $outfile: $!\n";
-print OUT "N.B. The use statements do not include any enumeration\n";
-print OUT "     constants used in the program. These should be added\n";
-print OUT "     to the `use gtk` statement.\n";
 
 # Check each file
 foreach $sfile (sort @sources) {
