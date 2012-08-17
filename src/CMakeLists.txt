@@ -102,8 +102,17 @@ add_custom_command(
 add_custom_target(usemodules ALL DEPENDS gtk-2-fortran-modscan
   gtk-2-fortran-index.csv gtk-2-enumerators.lis)
 
-install(TARGETS gtk-fortran_static ARCHIVE DESTINATION lib)
-install(TARGETS gtk-fortran_shared LIBRARY DESTINATION lib)
+# Man page(s)
+add_custom_command(
+  OUTPUT gtk-2-fortran-modscan.1
+  COMMAND sed -e s/@GTK@/2/  ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan.1
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man
+)
+
+add_custom_target(manpage ALL DEPENDS gtk-2-fortran-modscan.1)
+
+install(TARGETS gtk-fortran_static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(TARGETS gtk-fortran_shared LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/atk.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/cairo.mod"
@@ -129,20 +138,25 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
-	DESTINATION include/gtk-2-fortran)
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-2-fortran)
 install(PROGRAMS
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan"
-  DESTINATION bin
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-index.csv"
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-2-enumerators.lis"
-  DESTINATION share/gtk-fortran
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran
 )
 
 if (UNIX)
   install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran.pc"
-    DESTINATION lib/pkgconfig
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
     )
 endif()
+
+install(FILES
+   "${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan.1"
+   DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
+)
