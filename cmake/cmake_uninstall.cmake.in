@@ -1,0 +1,49 @@
+# Free Software Foundation, Inc.
+#
+# This file is part of the gtk-fortran gtk+ Fortran Interface library.
+#
+# This is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3, or (at your option)
+# any later version.
+#
+# This software is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# Under Section 7 of GPL version 3, you are granted additional
+# permissions described in the GCC Runtime Library Exception, version
+# 3.1, as published by the Free Software Foundation.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+# If not, see <http://www.gnu.org/licenses/>.
+#
+# Contributed by Kyle Horne: 05.11.2011
+
+# CMAKE build file for GtkFortran
+
+if (NOT EXISTS "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
+    message(FATAL_ERROR "Cannot find install manifest:
+\"@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt\"") 
+endif(NOT EXISTS "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
+
+file(READ "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt" files)
+string(REGEX REPLACE "\n" ";" files "${files}")
+foreach (file ${files})
+    message(STATUS "Uninstalling \"$ENV{DESTDIR}${file}\"")
+    if (EXISTS "$ENV{DESTDIR}${file}")
+        execute_process(
+            COMMAND @CMAKE_COMMAND@ -E remove "$ENV{DESTDIR}${file}"
+            OUTPUT_VARIABLE rm_out
+            RESULT_VARIABLE rm_retval
+        )
+        if(NOT ${rm_retval} EQUAL 0)
+            message(FATAL_ERROR "Problem when removing
+\"$ENV{DESTDIR}${file}\"") 
+endif (NOT ${rm_retval} EQUAL 0)
+    else (EXISTS "$ENV{DESTDIR}${file}")
+        message(STATUS "File \"$ENV{DESTDIR}${file}\" does not exist.")
+    endif (EXISTS "$ENV{DESTDIR}${file}")
+endforeach(file)
