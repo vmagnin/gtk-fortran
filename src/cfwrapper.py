@@ -219,7 +219,6 @@ TYPES_DICT = {
     "boolean":("logical(c_bool)","c_bool"),
     # For gchar & guchar, see https://github.com/jerryd/gtk-fortran/issues/41#issuecomment-7337877
     "gchar":("integer(kind=c_int8_t)","c_int8_t"), #("character(kind=c_char)","c_char"),
-
     "guchar":("integer(kind=c_int8_t)","c_int8_t"), #("character(kind=c_char)","c_char"),
 #    "gboolean":("logical(c_bool)","c_bool"), typedef int gint; typedef gint gboolean;
     "double": ("real(c_double)","c_double"),

@@ -20,7 +20,7 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin: 7/31/2012
+# Contributed by James Tappin, last updated: 8/17/2012
 
 # set(sources
 #   "plplot_extra.f90")
@@ -40,7 +40,7 @@ add_custom_target(plplot_extra_module ALL DEPENDS plplot_extra.mod)
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/plplot_extra.mod"
-  DESTINATION include/gtk-2-fortran)
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-2-fortran)
 
 add_executable(hl_plplot1e "hl_plplot1e.f90")
 add_dependencies(hl_plplot1e plplot_extra_module)
