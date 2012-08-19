@@ -312,7 +312,7 @@ program gtkFortran
 
   label1 = gtk_label_new("My label"//c_null_char)
   call gtk_grid_attach(table, label1, 0, 1, 1, 1)
->  
+
   entry1 = gtk_entry_new()
   call gtk_grid_attach(table, entry1, 1, 1, 1, 1)  
   
