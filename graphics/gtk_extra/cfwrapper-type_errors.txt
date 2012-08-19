@@ -1,0 +1,133 @@
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+const GType entry_type
+const GType entry_type
+const GtkSheetDataType data_type
+const gboolean editable
+const gboolean is_key
+const gboolean is_readonly
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint col
+const gint gtk_sheet_get_column_width 
+const gint row
+const gint row
+const gint row
+const gint row
+const gint row
+const gint row
+const gint row
+const gint row
+const guint gtkextra_binary_age
+const guint gtkextra_interface_age
+const guint gtkextra_micro_version
+const guint gtkextra_minor_version
+typedef struct _GtkSheetButton GtkSheetButton
+typedef struct _GtkSheetCell GtkSheetCell
+typedef struct _GtkSheetCellAttr GtkSheetCellAttr
+typedef struct _GtkSheetCellBorder GtkSheetCellBorder
+typedef struct _GtkSheetChild GtkSheetChild
+typedef struct _GtkSheetClass GtkSheetClass
+typedef struct _GtkSheetColumn GtkSheetColumn
+typedef struct _GtkSheetColumnClass GtkSheetColumnClass
+typedef struct _GtkSheetRange GtkSheetRange
+typedef struct _GtkSheetRow GtkSheetRow

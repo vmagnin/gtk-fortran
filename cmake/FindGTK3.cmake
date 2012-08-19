@@ -397,7 +397,9 @@ foreach(_GTK3_component ${GTK3_FIND_COMPONENTS})
         _GTK3_FIND_LIBRARY    (GTK3_GDK_PIXBUF_LIBRARY gdk_pixbuf false true)
 
         _GTK3_FIND_INCLUDE_DIR(GTK3_GDK_INCLUDE_DIR gdk/gdk.h)
+
         _GTK3_FIND_INCLUDE_DIR(GTK3_GDKCONFIG_INCLUDE_DIR gdk/gdkconfig.h)
+
         _GTK3_FIND_INCLUDE_DIR(GTK3_GTK_INCLUDE_DIR gtk/gtk.h)
 
  # ********* At least on Debian the gdk & gtk libraries

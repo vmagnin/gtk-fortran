@@ -22,12 +22,15 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/7/2012.
+
+# Last modifications: James Tappin 8/17/2012.
 
 # CMAKE build file for GtkFortran
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.5)
 project(gtk-fortran C Fortran)
+
+include(GNUInstallDirs)
 
 # Uncomment this to debug or use "cmake -D CMAKE_BUILD_TYPE=debug .."
 # set(CMAKE_BUILD_TYPE debug)

@@ -48,7 +48,7 @@ module gtk
   end interface 
 
   ! Some useful parameters to ease coding:
-!  character(kind=c_char), parameter :: c_null_char = c_null_char
+!  character(kind=c_char), parameter :: CNULL = c_null_char
 !  type(c_ptr), parameter       :: NULL = c_null_ptr
 !  type(c_funptr), parameter    :: FNULL = c_null_funptr
   ! In GTK+ gboolean is int:

@@ -1,0 +1,48 @@
+.TH "GTK-FORTRAN-MODSCAN" "1" "16 August 2012" "Function scanner for gtk-fortran" 
+.SH NAME
+gtk-@GTK@-fortran-modscan \- scan one or more Fortran sources for gtk+
+functions.
+.SH SYNOPSIS
+.B gtk\-@GTK@\-fortran-modscan
+.I [\-\-csv=CSVFILE] [\-\-enum=ENUMFILE] [\-\-out=OUTFILE] [INFILES]
+
+.SH DESCRIPTION
+gtk\-@GTK@\-fortran-modscan is a utility to find the gtk+ (and related
+library) functions used in a Fortran program and generate appropriate
+USE statements. Using the generated USE statements rather than the
+entire module(s) can produce a manyfold improvement in compilation
+times, and also any module files that use gtk+ will be many times
+smaller. This version uses the function lists for GTK+-@GTK@ by
+default.
+
+.SH OPTIONS
+.IP \-\-csv=CSVFILE
+Specify a list of functions other than the default.
+.IP \-\-enum=ENUMFILE
+Specify a list of enumeration constants other than the default.
+.IP \-\-out=OUTFILE
+Specify the output file for the generated USE statements (default is
+gtk-modules.txt)
+
+.SH INPUTS
+The inputs may be either a list of Fortran source files or a single
+directory. If no inputs are given then the current directory is
+used. If a directory (including the current) is specified, then only
+those files that have an ending
+.B .f90, .f95, .f03
+or
+.B .f08
+(case insensitive) will be scanned.
+
+.SH AUTHORS
+
+.PP
+James Tappin (jtappin at gmail dot com). 
+.PP
+
+.SH LICENCE
+
+.PP
+gtk\-@GTK@\-fortran-modscan is free software and may be modified and
+redistributed under the terms of the GNU General Public Licence Version
+3.

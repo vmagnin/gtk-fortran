@@ -66,8 +66,8 @@ module handlers
   & gtk_notebook_prepend_page, gtk_notebook_prev_page, gtk_notebook_remove_page, &
   & gtk_notebook_set_current_page, gtk_notebook_set_show_border, &
   & gtk_notebook_set_show_tabs, gtk_notebook_set_tab_detachable, gtk_notebook_set_tab_pos, &
-  & gtk_notebook_set_tab_reorderable, gtk_table_attach, gtk_table_attach_defaults, &
-  & gtk_table_new, gtk_widget_queue_draw, gtk_widget_set_size_request, gtk_widget_show, &
+  & gtk_notebook_set_tab_reorderable, gtk_grid_attach, &
+  & gtk_grid_new, gtk_widget_queue_draw, gtk_widget_set_size_request, gtk_widget_show, &
   & gtk_widget_show_all, gtk_window_new, gtk_window_set_title, &
   & FALSE, TRUE, c_null_char, GTK_WINDOW_TOPLEVEL, GTK_POS_TOP, &
   & gtk_notebook_set_group_name, gtk_notebook_get_group_name
@@ -191,13 +191,13 @@ program notebook_example
   call g_signal_connect (mainwindow, "destroy"//c_null_char, c_funloc(destroy))
 
   ! Container for notebook
-  table = gtk_table_new (3, 6, FALSE)
+  table = gtk_grid_new ()
   call gtk_container_add (mainwindow, table)
  
   ! Create a new notebook, place the position of the tabs
   notebook_1=gtk_notebook_new()
   call gtk_notebook_set_tab_pos (notebook_1, GTK_POS_TOP)
-  call gtk_table_attach_defaults (table, notebook_1, 0, 6, 0, 1)
+  call gtk_grid_attach (table, notebook_1, 0, 0, 6, 1)
 
   ! Attach notebook to group, necessary to enable drag and drop between the two notebooks
   call gtk_notebook_set_group_name(notebook_1,"group"//c_null_char)
@@ -254,32 +254,33 @@ program notebook_example
   ! Create a bunch of buttons
   button = gtk_button_new_with_label ("close"//c_null_char)
   call g_signal_connect (button, "clicked"//c_null_char, c_funloc(destroy))
-  call gtk_table_attach_defaults (table, button, 0, 1, 1, 2)
+
+  call gtk_grid_attach (table, button, 0, 1, 1, 1)
     
   button = gtk_button_new_with_label ("next page"//c_null_char)
   call g_signal_connect (button, "clicked"//c_null_char, c_funloc(next_page_book))
-  call gtk_table_attach_defaults (table, button, 1, 2, 1, 2)
+  call gtk_grid_attach (table, button, 1, 1, 1, 1)
     
   button = gtk_button_new_with_label ("prev page"//c_null_char)
   call g_signal_connect (button, "clicked"//c_null_char, c_funloc(prev_page_book))
-  call gtk_table_attach_defaults (table, button, 2, 3, 1, 2)
+  call gtk_grid_attach (table, button, 2, 1, 1, 1)
     
   button = gtk_button_new_with_label ("tab position"//c_null_char)
   call g_signal_connect (button, "clicked"//c_null_char, c_funloc(rotate_book))
-  call gtk_table_attach_defaults (table, button, 3, 4, 1, 2)
+  call gtk_grid_attach (table, button, 3, 1, 1, 1)
     
   button = gtk_button_new_with_label ("tabs/border on/off"//c_null_char)
   call g_signal_connect (button, "clicked"//c_null_char, c_funloc(tabsborder_book))
-  call gtk_table_attach_defaults (table, button, 4, 5, 1, 2)
+  call gtk_grid_attach (table, button, 4, 1, 1, 1)
     
   button = gtk_button_new_with_label ("remove page"//c_null_char)
   call g_signal_connect (button, "clicked"//c_null_char, c_funloc(remove_book))
-  call gtk_table_attach_defaults (table, button, 5, 6, 1, 2)
+  call gtk_grid_attach (table, button, 5, 1, 1, 1)
 
   ! Create second notebook, place the position of the tabs
   notebook_2=gtk_notebook_new()
   call gtk_notebook_set_tab_pos (notebook_2, GTK_POS_TOP)
-  call gtk_table_attach_defaults (table, notebook_2, 0, 6, 2, 3)
+  call gtk_grid_attach (table, notebook_2, 0, 2, 6, 1)
 
   ! Attach notebook to group
   call gtk_notebook_set_group_name(notebook_2,"group"//c_null_char)

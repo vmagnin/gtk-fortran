@@ -43,20 +43,22 @@ end module
 
 module handlers
   use gtk, only: gtk_about_dialog_new, gtk_about_dialog_set_authors, &
-  & gtk_about_dialog_set_comments, gtk_about_dialog_set_license, gtk_about_dialog_set_program_name,&
+  & gtk_about_dialog_set_comments, gtk_about_dialog_set_license, &
+  & gtk_about_dialog_set_program_name,&
   & gtk_about_dialog_set_website, gtk_button_new, gtk_button_new_with_label, &
   & gtk_container_add, gtk_container_set_border_width, gtk_dialog_run, gtk_drawing_area_new,&
   & gtk_entry_get_text, gtk_entry_new, gtk_file_chooser_button_new, &
   & gtk_file_chooser_get_file, gtk_file_chooser_get_filename, gtk_label_new, gtk_main, &
   & gtk_main_quit, gtk_progress_bar_new, gtk_progress_bar_pulse, &
   & gtk_progress_bar_set_fraction, gtk_progress_bar_set_text, gtk_scrolled_window_new,&
-  & gtk_table_attach, gtk_table_attach_defaults, gtk_table_new, gtk_text_buffer_set_text,&
+  & gtk_grid_attach, gtk_grid_new, gtk_text_buffer_set_text,&
   & gtk_text_view_get_buffer, gtk_text_view_new, gtk_widget_destroy, gtk_widget_get_window,&
   & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_default,&
   & gtk_window_set_default_size, gtk_window_set_title, &
   & g_signal_connect, gtk_init, FALSE, TRUE, c_null_char, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&
-  & GTK_WINDOW_TOPLEVEL, c_null_ptr
-  
+  & GTK_WINDOW_TOPLEVEL, c_null_ptr, gtk_grid_set_row_homogeneous, &
+  & gtk_grid_set_column_homogeneous
+
   use cairo, only: cairo_create, cairo_curve_to, cairo_destroy, cairo_line_to, &
   & cairo_move_to, cairo_paint, cairo_set_line_width, cairo_set_source, &
   & cairo_set_source_rgb, cairo_stroke
@@ -117,7 +119,6 @@ contains
     call cairo_move_to(my_cairo_context, 60d0, 0d0)  
     call cairo_curve_to(my_cairo_context, 60d0, 50d0, 135d0, 45d0, 100d0, 50d0)
     call cairo_stroke(my_cairo_context) 
-
     !*************
     ! Pixbuffers :
     !*************
@@ -157,7 +158,6 @@ contains
     end do
     
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 20d0, 0d0)
-
     call cairo_paint(my_cairo_context)
     !************
     call cairo_set_line_width(my_cairo_context, 4d0)
@@ -197,7 +197,6 @@ contains
     ret = FALSE
   end function firstbutton
 
-  
   ! GtkButton signal:
   function secondbutton (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr
@@ -289,35 +288,39 @@ program gtkFortran
   call g_signal_connect (window, "delete-event"//c_null_char, c_funloc(delete_event))
   call g_signal_connect (window, "destroy"//c_null_char, c_funloc(destroy))
 
-  table = gtk_table_new (15, 4, TRUE)
+  table = gtk_grid_new ()
+  call gtk_grid_set_column_homogeneous(table, TRUE)
+  call gtk_grid_set_row_homogeneous(table, TRUE)
   call gtk_container_add (window, table)
 
   button1 = gtk_button_new_with_label ("Button1"//c_null_char)
-  call gtk_table_attach_defaults(table, button1, 0, 1, 0, 1)
+
+  call gtk_grid_attach(table, button1, 0, 0, 1, 1)
   call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(firstbutton))
 
   button2 = gtk_button_new_with_label ("Button2"//c_null_char)
-  call gtk_table_attach_defaults(table, button2, 1, 2, 0, 1)
+  call gtk_grid_attach(table, button2, 1, 0, 1, 1)
   call g_signal_connect (button2, "clicked"//c_null_char, c_funloc(secondbutton))
 
   button3 = gtk_button_new_with_label ("Exit"//c_null_char)
-  call gtk_table_attach_defaults(table, button3, 2, 3, 0, 1)
+  call gtk_grid_attach(table, button3, 2, 0, 1, 1)
   call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(destroy))
- 
+
   button4 = gtk_button_new_with_label ("About"//c_null_char)
-  call gtk_table_attach_defaults(table, button4, 3, 4, 0, 1)
+  call gtk_grid_attach(table, button4, 3, 0, 1, 1)
   call g_signal_connect (button4, "clicked"//c_null_char, c_funloc(aboutbutton))
 
   label1 = gtk_label_new("My label"//c_null_char)
-  call gtk_table_attach_defaults(table, label1, 0, 1, 1, 2)
-  
+  call gtk_grid_attach(table, label1, 0, 1, 1, 1)
+>  
   entry1 = gtk_entry_new()
-  call gtk_table_attach_defaults(table, entry1, 1, 2, 1, 2)  
+  call gtk_grid_attach(table, entry1, 1, 1, 1, 1)  
   
   progress = gtk_progress_bar_new()
   call gtk_progress_bar_set_fraction (progress, 0.15d0)
   call gtk_progress_bar_set_text (progress, "My progress bar"//c_null_char)
-  call gtk_table_attach_defaults(table, progress, 0, 3, 2, 3)  
+
+  call gtk_grid_attach(table, progress, 1, 2, 3,1)  
 
   view = gtk_text_view_new ()
   buffer = gtk_text_view_get_buffer (view)
@@ -326,17 +329,17 @@ program gtkFortran
       &"You can edit this text."//c_null_char, -1)
   scrolled_window = gtk_scrolled_window_new (c_null_ptr, c_null_ptr)
   call gtk_container_add (scrolled_window, view)
-  call gtk_table_attach_defaults(table, scrolled_window, 0, 3, 3, 6)  
+  call gtk_grid_attach(table, scrolled_window, 0, 3, 3, 3)  
 
   my_drawing_area = gtk_drawing_area_new()
-  ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
+
   call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
-  call gtk_table_attach_defaults(table, my_drawing_area, 0, 3, 6, 11)  
+  call gtk_grid_attach(table, my_drawing_area, 0, 6, 3, 6)  
   
   file_selector = gtk_file_chooser_button_new ("gtk_file_chooser_button_new"//c_null_char, 0)
-  call gtk_table_attach_defaults(table, file_selector, 0, 3, 12, 13)  
+  call gtk_grid_attach(table, file_selector, 0, 12, 3, 1)  
   call g_signal_connect (file_selector, "selection-changed"//c_null_char, c_funloc(file_changed));
 
   call gtk_widget_show_all (window)
-  call gtk_main () 
+  call gtk_main ()
 end program gtkFortran

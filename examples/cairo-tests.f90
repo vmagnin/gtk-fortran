@@ -43,7 +43,7 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
   
-  use iso_c_binding, only: c_int, c_ptr, c_char
+  use iso_c_binding
 
   implicit none
   integer(c_int) :: run_status = TRUE

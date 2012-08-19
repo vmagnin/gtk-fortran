@@ -31,9 +31,14 @@ module handlers
   &tion_group_new, gtk_action_new, gtk_box_pack_start, gtk_container_add, gtk_mai&
   &n, gtk_main_quit, gtk_ui_manager_add_ui, gtk_ui_manager_add_ui_from_file, gtk_&
   &ui_manager_add_ui_from_string, gtk_ui_manager_get_widget, gtk_ui_manager_inser&
-  &t_action_group, gtk_ui_manager_new, gtk_vbox_new, gtk_widget_set_size_request,&
+  &t_action_group, gtk_ui_manager_new, gtk_box_new, gtk_widget_set_size_request,&
   & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_title,&
+<<<<<<< HEAD
   &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char, GTK_WINDOW_TOPLEVEL
+=======
+  &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char,&
+  & GTK_WINDOW_TOPLEVEL, GTK_ORIENTATION_VERTICAL
+>>>>>>> 11dbe782ae9b88a298b1290a3c26497758fd67f8
   implicit none
 
 contains
@@ -264,7 +269,7 @@ program simplemenu
   endif
   
   ! Container for menu
-  box = gtk_vbox_new (FALSE,0)
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL,0)
   call gtk_container_add (mainwindow, box)
   call gtk_box_pack_start (box, gtk_ui_manager_get_widget (menu_manager, "/MainMenu"//c_null_char), FALSE, FALSE, 0)
 

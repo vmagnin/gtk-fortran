@@ -32,9 +32,11 @@ module handlers
        &quest, gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_de&
        &fault, gtk_window_set_title, GDK_COLORSPACE_RGB,&
        &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char, GTK_WINDOW_TOPLEVEL, &
-       & GDK_SCROLL_UP, GDK_SCROLL_DOWN, gtk_vbox_new, gtk_statusbar_new, &
+
+       & GDK_SCROLL_UP, GDK_SCROLL_DOWN, gtk_box_new, gtk_statusbar_new, &
        & gtk_statusbar_remove_all, gtk_statusbar_push, gtk_box_pack_start, &
-       & GDK_SHIFT_MASK, GDK_CONTROL_MASK, gtk_label_new, gtk_label_set_text
+       & GDK_SHIFT_MASK, GDK_CONTROL_MASK, gtk_label_new, gtk_label_set_text, &
+       & GTK_ORIENTATION_VERTICAL
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
 
@@ -151,8 +153,9 @@ contains
        end select
 
        write(rangestr, &
-            & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4)") &
-            & mxmin,  mxmax, mymin, mymax
+            & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: '"//&
+            & ",g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
+            & mxmin, mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
        call gtk_label_set_text(rangeid, trim(rangestr)//c_null_char)
 
        call mandelbrot_set(drawing_area, 1000)
@@ -213,8 +216,9 @@ contains
        mymax = mymin + 2._c_double * yr
     end if
     write(rangestr, &
-         & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4)") &
-         & mxmin,  mxmax, mymin, mymax
+         & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',"//&
+         & "g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
+         & mxmin, mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
     call gtk_label_set_text(rangeid, trim(rangestr)//c_null_char)
 
     print *, "Window:", mxmin,mxmax,mymin, mymax
@@ -347,7 +351,8 @@ program mandelbrot_zoom
   call g_signal_connect (my_window, "delete-event"//c_null_char, &
        & c_funloc(delete_event))
 
-  jb = gtk_vbox_new(FALSE, 0)
+
+  jb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0)
   call gtk_container_add(my_window, jb)
 
   my_event_box = gtk_event_box_new()
@@ -364,8 +369,8 @@ program mandelbrot_zoom
   call gtk_box_pack_start(jb, my_event_box, FALSE, FALSE, 0)
 
   write(rangestr, &
-       & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4)") &
-       & mxmin,  mxmax, mymin, mymax
+       & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
+       & mxmin,  mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
   rangeid = gtk_label_new(trim(rangestr)//c_null_char)
   call gtk_box_pack_start(jb, rangeid, FALSE, FALSE, 0)
 

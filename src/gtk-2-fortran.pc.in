@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=@prefix@/lib
+includedir=@prefix@/include/gtk-2-fortran
+
+Name: GtkFortran
+Description: Fortran 95/2003 interface for Gtk+
+Version: @version@
+Requires: gtk+-2.0 gmodule-2.0
+Cflags: -I${includedir}
+Libs: -Xlinker -R${libdir} -lgtk-2-fortran

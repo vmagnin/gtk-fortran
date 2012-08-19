@@ -30,8 +30,8 @@ module common_ex8
 
   ! Gtk includes
   use gtk, only: gtk_button_new, gtk_check_button_new, gtk_container_add, gtk_dra&
-       &wing_area_new, gtk_label_new, gtk_main, gtk_main_quit, gtk_table_attach, gtk_t&
-       &able_new, gtk_toggle_button_get_active, gtk_widget_destroy, gtk_widget_show, g&
+       &wing_area_new, gtk_label_new, gtk_main, gtk_main_quit, &
+       & gtk_toggle_button_get_active, gtk_widget_destroy, gtk_widget_show, g&
        &tk_widget_show_all, gtk_window_new, gtk_init, gtk_widget_queue_draw
 
   use gtk_hl
