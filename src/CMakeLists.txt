@@ -75,14 +75,12 @@ SOVERSION "0.1")
 
 # Does pkg-config have an equivalent in Windows? If so, then please
 # add a suitable generator and installation.
-if (UNIX)
-  add_custom_command(
-    OUTPUT gtk-3-fortran.pc
-    COMMAND sed -e s+@prefix@+${CMAKE_INSTALL_PREFIX}+ -e s/@version@/${CPACK_PACKAGE_VERSION}/ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-3-fortran.pc.in > ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-3-fortran.pc.in
-    )
-  add_custom_target(pkgconfig ALL DEPENDS "gtk-3-fortran.pc")
-endif()
+add_custom_command(
+  OUTPUT gtk-3-fortran.pc
+  COMMAND sed -e s+@prefix@+${CMAKE_INSTALL_PREFIX}+ -e s/@version@/${CPACK_PACKAGE_VERSION}/ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-3-fortran.pc.in > ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-3-fortran.pc.in
+  )
+add_custom_target(pkgconfig ALL DEPENDS "gtk-3-fortran.pc")
 
 
 # The USE generator system.
@@ -155,12 +153,10 @@ install(FILES
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran
 )
 
-if (UNIX)
-  install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc"
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
-    )
-endif()
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc"
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+  )
 
 install(FILES
    "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan.1"

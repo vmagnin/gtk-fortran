@@ -41,7 +41,7 @@ add_custom_target(plplot_extra_module ALL DEPENDS plplot_extra.mod)
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/plplot_extra.mod"
-  DESTINATION ${CMAKE_INSTALL_INCLUDE}/gtk-3-fortran)
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-3-fortran)
 
 add_executable(hl_plplot1e "hl_plplot1e.f90")
 add_dependencies(hl_plplot1e plplot_extra_module)
