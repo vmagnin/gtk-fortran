@@ -4,7 +4,7 @@ gtk-@GTK@-fortran-modscan \- scan one or more Fortran sources for gtk+
 functions.
 .SH SYNOPSIS
 .B gtk\-@GTK@\-fortran-modscan
-.I [\-\-csv=CSVFILE] [\-\-enum=ENUMFILE] [\-\-out=OUTFILE] [INFILES]
+.I [\-\-csv=CSVFILE] [\-\-enum=ENUMFILE] [\-\-out=OUTFILE] [\-\-[no]link] [INFILES]
 
 .SH DESCRIPTION
 gtk\-@GTK@\-fortran-modscan is a utility to find the gtk+ (and related
@@ -23,6 +23,9 @@ Specify a list of enumeration constants other than the default.
 .IP \-\-out=OUTFILE
 Specify the output file for the generated USE statements (default is
 gtk-modules.txt)
+.IP \-\-[no]link
+Specify whether to scan symbolic links (default is yes). This is only
+applicable when scanning all the files in a directory.
 
 .SH INPUTS
 The inputs may be either a list of Fortran source files or a single

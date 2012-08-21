@@ -85,7 +85,7 @@ add_custom_target(pkgconfig ALL DEPENDS "gtk-2-fortran.pc")
 # The USE generator system.
 add_custom_command(
   OUTPUT gtk-2-fortran-modscan
-  COMMAND sed -e s+@PREFIX@+${CMAKE_INSTALL_PREFIX}+ -e s/@GTK@/2/ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
+  COMMAND sed -e s+@PREFIX@+${CMAKE_INSTALL_PREFIX}+ -e s/@GTK@/2/ -e s+@SHARE@+${CMAKE_INSTALL_DATAROOTDIR}+ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
   COMMAND chmod a+x ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl
 )
