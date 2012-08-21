@@ -32,8 +32,8 @@ use Getopt::Long;
 
 my %tokens;
 my @enumerators;
-my $csvfile='@PREFIX@/share/gtk-fortran/gtk-@GTK@-fortran-index.csv';
-my $enumfile='@PREFIX@/share/gtk-fortran/gtk-@GTK@-enumerators.lis';
+my $csvfile='@PREFIX@/@SHARE@/gtk-fortran/gtk-@GTK@-fortran-index.csv';
+my $enumfile='@PREFIX@/@SHARE@/gtk-fortran/gtk-@GTK@-enumerators.lis';
 # my $csvfile='gtk-fortran-index.csv';
 # my $enumfile='gtk-enumerators.lis';
 
@@ -41,29 +41,33 @@ my $outfile='gtk-modules.txt';
 my @sources;
 my $filter;
 my $help='';
+my $link=1;
 
 # Read the options
 GetOptions('csv=s' => \$csvfile,
 	   'out=s' => \$outfile,
 	   'enum=s' => \$enumfile, 
-	   'help' => \$help);
+	   'help' => \$help,
+	   'link!' => \$link);
 
 if ($help) {
-    print "/nScan Fortran source files for GTK+ and related library\n";
+    print "\nScan Fortran source files for GTK+ and related library\n";
     print "functions and generate the required USE statements.\n";
     print "Note that only one set of USE statements is generated for each\n";
     print "source file, even if it contains several program units.\n";
     print "Enumerator constants are found if the list is present.\n\n";
     print "Usage:\n";
-    print " $0 [--csv=<file> --out=<file> --enum=<file> --help] [files]\n";
+    print " $0 [--csv=<file> --out=<file> --enum=<file> --help --[no]link] [files]\n";
     print "\n";
-    print "--csv   Specify the CSV file with the function list [$csvfile]\n";
-    print "--out   Specify the output file for the use statements [$outfile]\n";
-    print "--enum  Specify the file with the list of constants [$enumfile]\n";
-    print "--help  Print this message\n";
-    print "files   A list of files to scan. If empty then look at all Fortran\n";
-    print "        sources in the current directory. If a single directory is\n";
-    print "        given, then all Fortran files in that directory are checked.\n\n";
+    print "--csv      Specify the CSV file with the function list [$csvfile]\n";
+    print "--out      Specify the output file for the use statements [$outfile]\n";
+    print "--enum     Specify the file with the list of constants [$enumfile]\n";
+    print "--help     Print this message\n";
+    print "--[no]link Specify whether to scan symbolic links (only applicable when\n";
+    print "           scanning a directory) [yes]\n";
+    print "files      A list of files to scan. If empty then look at all Fortran\n";
+    print "           sources in the current directory. If a single directory is\n";
+    print "           given, then all Fortran files in that directory are checked.\n\n";
     exit(0);
 }
 
@@ -107,7 +111,10 @@ open(OUT, ">$outfile") || die "Failed to open output $outfile: $!\n";
 foreach $sfile (sort @sources) {
     if ($filter) {      # If we are reading a directory skip non-Fortran files.
 	$sfile =~ /(.f90$)|(.f95$)|(.f03$)|(.f08$)/i || next;
+	next if (-l $sfile & ! $link);
     }
+    next if (-d $sfile);
+
     print "Scanning: $sfile ";
     $code = &read_source($sfile);
 
@@ -129,7 +136,7 @@ foreach $sfile (sort @sources) {
 	# I don't think there is any valid context in which a dot may
 	# immediately precede or follow a function/subroutine name.
 	# Since any program or module will start with PROGRAM or
-	# MODULE statement and end with a END, there should never
+	# MODULE statement and end with an END, there should never
 	# be a possibility of a function name right at the start
 	# or end of the program.
 	
