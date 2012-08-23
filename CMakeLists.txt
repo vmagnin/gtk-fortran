@@ -29,8 +29,10 @@
 cmake_minimum_required(VERSION 2.8.5)
 project(gtk-fortran C Fortran)
 
-
+# Note that we override the lib directory here because most
+# 64-bit systems don't actually work if we use the default.
 include(GNUInstallDirs)
+set(CMAKE_INSTALL_LIBDIR lib)
 
 # Uncomment this to debug or use "cmake -D CMAKE_BUILD_TYPE=debug .."
 # set(CMAKE_BUILD_TYPE debug)
