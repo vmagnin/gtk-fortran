@@ -26,25 +26,25 @@
 ! Event handling & Zoom : James Tappin
 
 module handlers
-  use gtk, only: gtk_bin_get_child, gtk_container_add, gtk_drawing_area_new, gtk_&
-       &event_box_new, gtk_events_pending, gtk_main, gtk_main_iteration, gtk_main_iter&
-       &ation_do, gtk_widget_get_window, gtk_widget_queue_draw, gtk_widget_set_size_re&
-       &quest, gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_de&
-       &fault, gtk_window_set_title, GDK_COLORSPACE_RGB,&
-       &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char, GTK_WINDOW_TOPLEVEL, &
-
-       & GDK_SCROLL_UP, GDK_SCROLL_DOWN, gtk_box_new, gtk_statusbar_new, &
-       & gtk_statusbar_remove_all, gtk_statusbar_push, gtk_box_pack_start, &
-       & GDK_SHIFT_MASK, GDK_CONTROL_MASK, gtk_label_new, gtk_label_set_text, &
-       & GTK_ORIENTATION_VERTICAL
-
-  use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
-
-  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
   use gdk_events, only: gdkeventbutton, gdkeventscroll
 
-  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
-       &buf_get_rowstride, gdk_pixbuf_new
+  use cairo, only: cairo_destroy, cairo_paint
+
+  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+
+  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
+       & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
+
+  use gtk, only: gtk_bin_get_child, gtk_box_new, gtk_box_pack_start, &
+       & gtk_container_add, gtk_drawing_area_new, gtk_event_box_new, &
+       & gtk_events_pending, gtk_label_new, gtk_label_set_text, &
+       & gtk_main_iteration_do, gtk_statusbar_new, gtk_statusbar_push, &
+       & gtk_widget_add_events, gtk_widget_get_window, gtk_widget_queue_draw, &
+       & gtk_widget_set_size_request, gtk_widget_show_all, gtk_window_new, &
+       & gtk_window_set_title, gtk_init, g_signal_connect, TRUE, FALSE, &
+       & GDK_SCROLL_UP, GDK_SCROLL_DOWN, GDK_SHIFT_MASK, GDK_CONTROL_MASK, &
+       & GDK_BUTTON_PRESS_MASK, GDK_SCROLL_MASK, GTK_ORIENTATION_VERTICAL, &
+       & GTK_WINDOW_TOPLEVEL, GDK_COLORSPACE_RGB
 
   use iso_c_binding
 
@@ -115,7 +115,7 @@ contains
        call mandelbrot_set(drawing_area, 1000)
        call paint_set(gtk_widget_get_window(drawing_area))
        need_point=.false.
-!       call gtk_statusbar_remove_all(status_bar, 0)
+       !       call gtk_statusbar_remove_all(status_bar, 0)
        id = gtk_statusbar_push(status_bar, 0, &
             & "Left|Centre mark: region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
     else if (need_point) then ! Already have one point
@@ -159,12 +159,12 @@ contains
        call gtk_label_set_text(rangeid, trim(rangestr)//c_null_char)
 
        call mandelbrot_set(drawing_area, 1000)
-!       call paint_set(gtk_widget_get_window(drawing_area))
+       !       call paint_set(gtk_widget_get_window(drawing_area))
        need_point=.false.
-!       call gtk_statusbar_remove_all(status_bar, 0)
+       !       call gtk_statusbar_remove_all(status_bar, 0)
        id = gtk_statusbar_push(status_bar, 0, &
             & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
-   else
+    else
        call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x0, y0)
        need_point=.true.
        id = gtk_statusbar_push(status_bar, 0, &
@@ -226,9 +226,9 @@ contains
     drawing_area = gtk_bin_get_child(widget)
 
     call mandelbrot_set(drawing_area, 1000)
-!    call paint_set(gtk_widget_get_window(drawing_area))
+    !    call paint_set(gtk_widget_get_window(drawing_area))
     need_point=.false.
-!    call gtk_statusbar_remove_all(status_bar, 0)
+    !    call gtk_statusbar_remove_all(status_bar, 0)
     id = gtk_statusbar_push(status_bar, 0, &
          & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
 
@@ -333,7 +333,9 @@ program mandelbrot_zoom
   type(c_ptr) :: my_window, jb
   type(c_ptr) :: my_event_box, my_drawing_area
   integer :: i, j
-  integer(kind=c_int) ::id
+  integer(kind=c_int) :: id
+  integer(kind=c_int), parameter :: ev_mask = ior(GDK_BUTTON_PRESS_MASK, &
+       & GDK_SCROLL_MASK)
 
   call gtk_init ()
 
@@ -356,6 +358,7 @@ program mandelbrot_zoom
   call gtk_container_add(my_window, jb)
 
   my_event_box = gtk_event_box_new()
+  call gtk_widget_add_events(my_event_box, ev_mask)
   my_drawing_area = gtk_drawing_area_new()
   call gtk_widget_set_size_request(my_drawing_area, &
        & width, height)

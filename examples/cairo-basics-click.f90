@@ -27,20 +27,23 @@
 
 module handlers
   use iso_c_binding
-  
-  use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
-  &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
-  &idget_show, gtk_window_new, gtk_window_set_default, gtk_window_set_default_siz&
-  &e, gtk_window_set_title, gtk_widget_show_all, &
-  &TRUE, FALSE, c_null_char, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
-  &CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, gtk_event_box_new
-  
-  use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, cairo_&
-  &get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, cairo_select_fon&
-  &t_face, cairo_set_font_size, cairo_set_line_width, cairo_set_source, cairo_set&
-  &_source_rgb, cairo_show_text, cairo_stroke, cairo_surface_write_to_png
-  
+
+  use cairo, only: cairo_arc, cairo_curve_to, cairo_destroy, &
+       & cairo_get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, &
+       & cairo_select_font_face, cairo_set_font_size, cairo_set_line_width, &
+       & cairo_set_source_rgb, cairo_show_text, cairo_stroke, &
+       & cairo_surface_write_to_png
+
   use gdk, only: gdk_cairo_create
+
+  use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_event_box_new, &
+       & gtk_events_pending, gtk_main_iteration_do, gtk_widget_add_events, &
+       & gtk_widget_get_window, gtk_widget_show_all, gtk_window_new, &
+       & gtk_window_set_default_size, gtk_window_set_title, gtk_init, &
+       & g_signal_connect, TRUE, FALSE, GDK_BUTTON_PRESS_MASK, &
+       & GDK_SCROLL_MASK, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, &
+       & GTK_WINDOW_TOPLEVEL
+
   use gdk_events
 
   implicit none
@@ -48,8 +51,8 @@ module handlers
   integer(c_int) :: boolresult
   logical :: boolevent
   integer :: width, height
-  
-  
+
+
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
@@ -63,7 +66,7 @@ contains
 
   subroutine pending_events ()
     do while(IAND(gtk_events_pending(), run_status) /= FALSE)
-      boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
+       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
     end do
   end subroutine pending_events
 
@@ -108,9 +111,9 @@ contains
     type(c_ptr) :: my_cairo_context
     integer :: cstatus
     integer :: t
-    
+
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
-    
+
     ! Bezier curve:
     call cairo_set_source_rgb(my_cairo_context, 0.9d0, 0.8d0, 0.8d0)
     call cairo_set_line_width(my_cairo_context, 4d0)
@@ -122,15 +125,15 @@ contains
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0.5d0, 0.5d0)
     call cairo_set_line_width(my_cairo_context, 2d0)
     do t = 0, int(height), +20
-      call cairo_move_to(my_cairo_context, 0d0, t*1d0)  
-      call cairo_line_to(my_cairo_context, t*1d0, height*1d0)
-      call cairo_stroke(my_cairo_context) 
+       call cairo_move_to(my_cairo_context, 0d0, t*1d0)  
+       call cairo_line_to(my_cairo_context, t*1d0, height*1d0)
+       call cairo_stroke(my_cairo_context) 
     end do
-  
+
     ! Text:
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 1d0)
     call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, CAIRO_FONT_SLANT_NORMAL, &
-                                 &  CAIRO_FONT_WEIGHT_NORMAL)
+         &  CAIRO_FONT_WEIGHT_NORMAL)
     call cairo_set_font_size (my_cairo_context, 40d0)
     call cairo_move_to(my_cairo_context, 100d0, 30d0)
     call cairo_show_text (my_cairo_context, "gtk-fortran"//c_null_char)
@@ -140,15 +143,15 @@ contains
     ! Circles:
     call cairo_new_sub_path(my_cairo_context)
     do t = 1, 50
-        call cairo_set_source_rgb(my_cairo_context, t/50d0, 0d0, 0d0)
-        call cairo_set_line_width(my_cairo_context, 5d0*t/50d0)
-        call cairo_arc(my_cairo_context, 353d0+200d0*cos(t*2d0*pi/50), 350d0+200d0*sin(t*2d0*pi/50), 50d0, 0d0, 2*pi) 
-        call cairo_stroke(my_cairo_context) 
+       call cairo_set_source_rgb(my_cairo_context, t/50d0, 0d0, 0d0)
+       call cairo_set_line_width(my_cairo_context, 5d0*t/50d0)
+       call cairo_arc(my_cairo_context, 353d0+200d0*cos(t*2d0*pi/50), 350d0+200d0*sin(t*2d0*pi/50), 50d0, 0d0, 2*pi) 
+       call cairo_stroke(my_cairo_context) 
     end do
-    
+
     ! Save:
     cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//c_null_char)
-    
+
     call cairo_destroy(my_cairo_context)
     ret = FALSE
   end function expose_event
@@ -162,7 +165,8 @@ program cairo_basics_click
   type(c_ptr) :: my_window
   type(c_ptr) :: my_drawing_area
   type(c_ptr) :: my_event_box
-
+  integer(kind=c_int), parameter :: ev_mask = ior(GDK_BUTTON_PRESS_MASK, &
+       & GDK_SCROLL_MASK)
   call gtk_init ()
   
   ! Properties of the main window :
@@ -176,6 +180,7 @@ program cairo_basics_click
   my_drawing_area = gtk_drawing_area_new()
   my_event_box=gtk_event_box_new()
   call gtk_container_add(my_event_box, my_drawing_area)
+  call gtk_widget_add_events(my_event_box, ev_mask)
 
   ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
   call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
