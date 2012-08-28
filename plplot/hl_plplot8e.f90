@@ -29,10 +29,10 @@ module common_ex8
   use iso_c_binding
 
   ! Gtk includes
-  use gtk, only: gtk_button_new, gtk_check_button_new, gtk_container_add, gtk_dra&
-       &wing_area_new, gtk_label_new, gtk_main, gtk_main_quit, &
-       & gtk_toggle_button_get_active, gtk_widget_destroy, gtk_widget_show, g&
-       &tk_widget_show_all, gtk_window_new, gtk_init, gtk_widget_queue_draw
+  use gtk, only: gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, &
+       & gtk_toggle_button_get_active, gtk_widget_destroy, &
+       & gtk_widget_get_allocation, gtk_widget_queue_draw, &
+       & gtk_widget_show_all, gtk_init, FALSE, GTK_FILL
 
   use gtk_hl
   use gtk_draw_hl
@@ -371,17 +371,17 @@ program cairo_plplot_ex8
   call hl_gtk_box_pack(base, btable, expand=FALSE)
 
   junk=gtk_label_new("Azimuth:"//c_null_char)
-  call hl_gtk_table_attach(btable, junk, 0, 0, xopts=0)
+  call hl_gtk_table_attach(btable, junk, 0, 0, xopts=0, yopts=0)
   az_sl = hl_gtk_slider_new(0, 360, initial_value=int(az), &
        & value_changed=c_funloc(set_azimuth))
-  call hl_gtk_table_attach(btable, az_sl, 1, 0)
+  call hl_gtk_table_attach(btable, az_sl, 1, 0, yopts=0)
 
   ! N.B. Elevation <0 doesn't seem to work.
   junk=gtk_label_new("Elevation:"//c_null_char)
-  call hl_gtk_table_attach(btable, junk, 0, 1, xopts=0)
+  call hl_gtk_table_attach(btable, junk, 0, 1, xopts=0, yopts=0)
   alt_sl = hl_gtk_slider_new(0, 90, initial_value=int(alt), &
        & value_changed=c_funloc(set_altitude))
-  call hl_gtk_table_attach(btable, alt_sl, 1, 1)
+  call hl_gtk_table_attach(btable, alt_sl, 1, 1, yopts=0)
 
   ! And another table for the selectors
   btable=hl_gtk_table_new(3,2)
@@ -389,23 +389,23 @@ program cairo_plplot_ex8
 
   fun_but = hl_gtk_check_button_new("Rosen"//c_null_char, &
        & toggled=c_funloc(set_rosen), initial_state=ifun)
-  call hl_gtk_table_attach(btable, fun_but, 0, 0)
+  call hl_gtk_table_attach(btable, fun_but, 0, 0, yopts=0, xopts=GTK_FILL)
 
   col_but=hl_gtk_check_button_new("Colour level"//c_null_char, &
        & toggled=c_funloc(set_colour))
-  call hl_gtk_table_attach(btable,col_but, 1, 0)
+  call hl_gtk_table_attach(btable,col_but, 1, 0, yopts=0, xopts=GTK_FILL)
 
   facet_but=hl_gtk_check_button_new("Facets"//c_null_char, &
        & toggled=c_funloc(set_facet))
-  call hl_gtk_table_attach(btable,facet_but, 2, 0)
+  call hl_gtk_table_attach(btable,facet_but, 2, 0, yopts=0, xopts=GTK_FILL)
 
   scont_but=hl_gtk_check_button_new("Surface contours"//c_null_char, &
        & toggled=c_funloc(set_scont))
-  call hl_gtk_table_attach(btable, scont_but, 0, 1)
+  call hl_gtk_table_attach(btable, scont_but, 0, 1, yopts=0, xopts=GTK_FILL)
 
   bcont_but=hl_gtk_check_button_new("Base contours"//c_null_char, &
        & toggled=c_funloc(set_bcont))
-  call hl_gtk_table_attach(btable, bcont_but, 1, 1)
+  call hl_gtk_table_attach(btable, bcont_but, 1, 1, yopts=0, xopts=GTK_FILL)
 
   qbut=hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
   call hl_gtk_box_pack(base, qbut, expand=FALSE)
