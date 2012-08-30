@@ -140,6 +140,10 @@ add_executable(hl_tree "hl_tree.f90")
 target_link_libraries(hl_tree gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_tree ./hl_tree)
 
+add_executable(hl_infobar "hl_infobar.f90")
+target_link_libraries(hl_infobar gtk-fortran_static ${GTK_LIBRARIES})
+add_test(hl_infobar ./hl_infobar)
+
 if (GTK2_MINOR_VERSION GREATER 23)
    add_executable(julia_pixbuf "julia_pixbuf.f90")
    target_link_libraries(julia_pixbuf gtk-fortran_static ${GTK_LIBRARIES})
