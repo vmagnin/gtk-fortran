@@ -52,7 +52,8 @@ module gtk_hl_button
        & gtk_toggle_button_set_active, gtk_widget_add_accelerator,&
        & gtk_widget_set_sensitive, gtk_widget_set_tooltip_text, &
        & gtk_label_new, gtk_label_set_markup, gtk_container_add,&
-       & gtk_button_set_label, &
+       & gtk_button_set_label, gtk_toggle_button_new, &
+       & gtk_toggle_button_new_with_label, &
        & TRUE, FALSE, g_signal_connect
 
   use g, only: g_slist_length, g_slist_nth, g_slist_nth_data
@@ -173,7 +174,7 @@ contains
 
   !+
   function hl_gtk_check_button_new(label, toggled, data, tooltip, &
-       & initial_state, sensitive, is_markup) result(but)
+       & initial_state, sensitive, is_markup, toggle) result(but)
 
     type(c_ptr) :: but
     character(kind=c_char), dimension(*), intent(in) :: label
@@ -181,7 +182,7 @@ contains
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
     integer(kind=c_int), intent(in), optional :: initial_state
-    integer(kind=c_int), intent(in), optional :: sensitive, is_markup
+    integer(kind=c_int), intent(in), optional :: sensitive, is_markup, toggle
 
     ! Higher level check box.
     !
@@ -195,24 +196,41 @@ contains
     ! 		be sensitive or not.
     ! IS_MARKUP: boolean: optional: Set this to TRUE if the label contains
     ! 		Pango markup.
+    ! TOGGLE: boolean: optional: Set this to TRUE to make a toggle button
+    ! 		rather than a check button.
     !-
 
     type(c_ptr) :: label_w
     logical :: markup
+    logical :: is_toggle
+
 
     if (present(is_markup)) then
        markup = c_f_logical(is_markup)
     else
        markup = .false.
     end if
+    if (present(toggle)) then
+       is_toggle = c_f_logical(toggle)
+    else
+       is_toggle = .false.
+    end if
 
     if(markup) then
-       but = gtk_check_button_new()
+       if (is_toggle) then
+          but = gtk_toggle_button_new()
+       else
+          but = gtk_check_button_new()
+       end if
        label_w=gtk_label_new(c_null_char)
        call gtk_label_set_markup(label_w, label)
        call gtk_container_add(but, label_w)
     else
-       but = gtk_check_button_new_with_label(label)
+       if (is_toggle) then
+          but = gtk_toggle_button_new_with_label(label)
+       else
+          but = gtk_check_button_new_with_label(label)
+       end if
     end if
 
     if (present(toggled)) then
