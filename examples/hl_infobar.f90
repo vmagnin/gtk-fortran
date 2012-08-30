@@ -154,14 +154,14 @@ program hl_infobar
   call hl_gtk_table_attach(jb, junk, 3, 0, yopts=0)
   junk=hl_gtk_button_new("Other"//c_null_char, &
        & clicked=c_funloc(button_h), data=c_loc(button_states(5)))
-  call hl_gtk_table_attach(jb, junk, 5, 0, yopts=0)
+  call hl_gtk_table_attach(jb, junk, 4, 0, yopts=0)
 
   infobar = hl_gtk_info_bar_new(buttons=&
        & [character(len=6) :: 'OK','Yes','No','Ignore','Quit'], &
        & ids=[my_ok, my_yes, my_no, my_ignore, my_quit], &
        & response=c_funloc(response_h), horizontal=TRUE, buttons_below=TRUE)
 
-  call hl_gtk_table_attach(jb,infobar,0,1,xspan=5, yopts=0)
+  call hl_gtk_table_attach(jb,infobar,0,1, xspan=5, yopts=0)
 
   call gtk_widget_show_all (tlwindow)
   call gtk_main()
