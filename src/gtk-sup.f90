@@ -610,20 +610,31 @@ contains
     ! c-string
     !
     ! F_STRING: f_string: required: The fortran string to convert
-    ! TEXTPR: string: required: A C tyoe string, (allocatable).
-    ! LENGTH: c_int: optional: The lenght of the generated c string.
+    ! TEXTPR: string: required: A C type string, (allocatable).
+    ! LENGTH: c_int: optional: The length of the generated c string.
     !-
 
     integer :: lcstr, i, j, ii
+    integer, dimension(:), allocatable :: lfstr
 
-    lcstr = sum(len_trim(f_string)) + size(f_string)
+    allocate(lfstr(size(f_string)))
+    lfstr = len_trim(f_string)
+
+    lcstr = sum(lfstr) 
+    do i = 1, size(f_string)
+       if (f_string(i)(lfstr(i):lfstr(i)) /= c_null_char .and. &
+            & f_string(i)(lfstr(i):lfstr(i)) /= c_new_line) lcstr = lcstr+1
+    end do
 
     allocate(textptr(lcstr))
     if (present(length)) length = lcstr
 
     ii = 1
     do i = 1, size(f_string)
-       do j = 1, len_trim(f_string(i))
+       do j = 1, lfstr(i)
+          if (j == lfstr(i) .and. &
+               & (f_string(i)(j:j) == c_null_char .or. &
+               & f_string(i)(j:j) == c_new_line)) exit
           textptr(ii) = f_string(i)(j:j)
           ii = ii+1
        end do
@@ -644,13 +655,20 @@ contains
     ! Convert a fortran string into a null-terminated c-string
     !
     ! F_STRING: f_string: required: The fortran string to convert
-    ! TEXTPR: string: required: A C tyoe string, (allocatable).
-    ! LENGTH: c_int: optional: The lenght of the generated c string.
+    ! TEXTPR: string: required: A C type string, (allocatable).
+    ! LENGTH: c_int: optional: The length of the generated c string.
     !-
 
     integer :: lcstr, j
+    logical :: add_null
 
-    lcstr = len_trim(f_string) + 1
+    lcstr = len_trim(f_string)
+    if (f_string(lcstr:lcstr) == c_null_char) then
+       lcstr = lcstr+1
+       add_null = .true.
+    else
+       add_null = .false.
+    end if
 
     allocate(textptr(lcstr))
     if (present(length)) length = lcstr
@@ -658,7 +676,7 @@ contains
     do j = 1, len_trim(f_string)
        textptr(j) = f_string(j:j)
     end do
-    textptr(lcstr) = c_null_char
+    if (add_null) textptr(lcstr) = c_null_char
 
   end subroutine convert_f_string_s
 
