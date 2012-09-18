@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 07-04-2012
+! Last modification: 18-09-2012
 
 !!$T Template file for gtk-hl-spin-slider.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -61,6 +61,7 @@ module gtk_hl_spin_slider
        & gtk_spin_button_get_adjustment, gtk_adjustment_get_lower, &
        & gtk_adjustment_get_upper, gtk_range_get_adjustment, &
        & gtk_spin_button_set_range, gtk_range_set_range, &
+       & gtk_range_set_increments, gtk_spin_button_set_increments, &
 !!$GTK>=3.0!       & GTK_ORIENTATION_HORIZONTAL,  GTK_ORIENTATION_VERTICAL, &
        & TRUE, FALSE, g_signal_connect, GDK_FOCUS_CHANGE_MASK
 
@@ -282,15 +283,18 @@ contains
   end subroutine hl_gtk_slider_set_int
 
   !+
-  subroutine hl_gtk_slider_set_range(slider, lower, upper)
+  subroutine hl_gtk_slider_set_range(slider, lower, upper, step, digits)
     type(c_ptr), intent(in) :: slider
-    real(kind=c_double), intent(in), optional :: lower, upper
+    real(kind=c_double), intent(in), optional :: lower, upper, step
+    integer(kind=c_int), intent(in), optional :: digits
 
     ! Adjust the bounds of a slider
     !
     ! SLIDER: c_ptr: required: The slider to modify
     ! LOWER: c_double: optional: The new lower bound
     ! UPPER: c_double: optional: The new uppper bound
+    ! STEP: c_double: optional: The new step size.
+    ! DIGITS: c_int: optional: The new number of decimals.
     !
     ! **Note** This routine is not a generic interface as
     ! overloading requires that the interface be distinguishable by its
@@ -301,23 +305,27 @@ contains
     type(c_ptr) :: adjustment
     real(kind=c_double) :: nlower, nupper
 
-    ! Check it's not a do-nothing
-    if (.not. (present(upper) .or. present(lower))) return
+    if (present(upper) .or. present(lower)) then
 
-    adjustment = gtk_range_get_adjustment(slider)
-    if (present(lower)) then
-       nlower = lower
-    else
-       nlower = gtk_adjustment_get_lower(adjustment)
+       adjustment = gtk_range_get_adjustment(slider)
+       if (present(lower)) then
+          nlower = lower
+       else
+          nlower = gtk_adjustment_get_lower(adjustment)
+       end if
+
+       if (present(upper)) then
+          nupper = upper
+       else
+          nupper = gtk_adjustment_get_upper(adjustment)
+       end if
+
+       call gtk_range_set_range(slider, nlower, nupper)
     end if
 
-    if (present(upper)) then
-       nupper = upper
-    else
-       nupper = gtk_adjustment_get_upper(adjustment)
-    end if
-
-    call gtk_range_set_range(slider, nlower, nupper)
+    if (present(step)) &
+         & call gtk_range_set_increments(slider, step, 10.*step)
+    if (present(digits)) call gtk_scale_set_digits(slider, digits)
 
   end subroutine hl_gtk_slider_set_range
 
@@ -424,16 +432,18 @@ contains
     ! Callback connection
     if (present(value_changed)) then
        if (present(data)) then
-          call g_signal_connect(spin_button, "value-changed"//c_null_char, value_changed, &
-               & data)
+          call g_signal_connect(spin_button, "value-changed"//c_null_char,&
+               & value_changed,  data)
        else
-          call g_signal_connect(spin_button, "value-changed"//c_null_char, value_changed)
+          call g_signal_connect(spin_button, "value-changed"//c_null_char ,&
+               & value_changed)
        end if
     end if
     if (present(focus_out_event)) then
        if (present(data_focus_out)) then
           call g_signal_connect(spin_button, &
-               & "focus-out-event"//C_NULL_CHAR, focus_out_event, data_focus_out)
+               & "focus-out-event"//C_NULL_CHAR, focus_out_event,&
+               &  data_focus_out)
        else
           call g_signal_connect(spin_button, &
                & "focus-out-event"//C_NULL_CHAR, focus_out_event)
@@ -577,9 +587,11 @@ contains
   end subroutine hl_gtk_spin_button_set_int
 
   !+
-  subroutine hl_gtk_spin_button_set_range(spin_button, lower, upper)
+  subroutine hl_gtk_spin_button_set_range(spin_button, lower, upper, &
+       & step, digits)
     type(c_ptr), intent(in) :: spin_button
-    real(kind=c_double), intent(in), optional :: lower, upper
+    real(kind=c_double), intent(in), optional :: lower, upper, step
+    integer(kind=c_int), intent(in), optional :: digits
 
     ! Adjust the bounds of a spin box
     !
@@ -596,24 +608,27 @@ contains
     type(c_ptr) :: adjustment
     real(kind=c_double) :: nlower, nupper
 
-    ! Check it's not a do-nothing
-    if (.not. (present(upper) .or. present(lower))) return
+    if (present(upper) .or. present(lower)) then
+       adjustment = gtk_spin_button_get_adjustment(spin_button)
 
-    adjustment = gtk_spin_button_get_adjustment(spin_button)
+       if (present(lower)) then
+          nlower = lower
+       else
+          nlower = gtk_adjustment_get_lower(adjustment)
+       end if
 
-    if (present(lower)) then
-       nlower = lower
-    else
-       nlower = gtk_adjustment_get_lower(adjustment)
+       if (present(upper)) then
+          nupper = upper
+       else
+          nupper = gtk_adjustment_get_upper(adjustment)
+       end if
+
+       call gtk_spin_button_set_range(spin_button, nlower, nupper)
     end if
+    if (present(step)) call gtk_spin_button_set_increments(spin_button,&
+         &  step, 10.*step)
 
-    if (present(upper)) then
-       nupper = upper
-    else
-       nupper = gtk_adjustment_get_upper(adjustment)
-    end if
-
-    call gtk_spin_button_set_range(spin_button, nlower, nupper)
+    if (present(digits)) call gtk_spin_button_set_digits(spin_button, digits)
 
   end subroutine hl_gtk_spin_button_set_range
 
