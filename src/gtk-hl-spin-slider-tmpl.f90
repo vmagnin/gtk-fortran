@@ -598,6 +598,8 @@ contains
     ! SLIDER: c_ptr: required: The slider to modify
     ! LOWER: c_double: optional: The new lower bound
     ! UPPER: c_double: optional: The new uppper bound
+    ! STEP: c_double: optional: The new step size.
+    ! DIGITS: c_int: optional: The new number of decimals.
     !
     ! **Note** This routine is not a generic interface as
     ! overloading requires that the interface be distinguishable by its
