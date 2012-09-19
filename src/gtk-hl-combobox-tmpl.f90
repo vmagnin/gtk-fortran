@@ -249,16 +249,16 @@ contains
     ! Usually called via the generic hl_gtk_combo_box_delete interface.
     !-
 
-!!$GTK<3.0    integer(kind=c_int) :: n, i
+!!$GTK<3.0!    integer(kind=c_int) :: n, i
 
 !GTK3
-!!$GTK>=3.0    call gtk_combo_box_text_remove_all(cbox)
+!!$GTK>=3.0!    call gtk_combo_box_text_remove_all(cbox)
 !GTK2
 ! Note that by using the hl delete we avoid 3-level conditional compilation.
-!!$GTK<3.0    n = hl_gtk_combo_box_n_entries(cbox)
-!!$GTK<3.0    do i = 1, n
-!!$GTK<3.0       call hl_gtk_combo_box_delete(cbox, 0)
-!!$GTK<3.0    end do
+!!$GTK<3.0!    n = hl_gtk_combo_box_n_entries(cbox)
+!!$GTK<3.0!    do i = 1, n
+!!$GTK<3.0!       call hl_gtk_combo_box_delete(cbox, 0)
+!!$GTK<3.0!    end do
 
   end subroutine hl_gtk_combo_box_delete_all
   !+
