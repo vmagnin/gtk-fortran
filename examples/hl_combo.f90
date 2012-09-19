@@ -47,7 +47,7 @@ contains
     type(c_ptr), value :: widget, gdata
 
     integer, pointer :: index
-    integer(kind=c_int) :: isel
+    integer(kind=c_int) :: isel, nrow
     character(len=40) :: value
 
     if (c_associated(gdata)) then
@@ -56,8 +56,9 @@ contains
     end if
 
     isel = hl_gtk_combo_box_get_active(widget, ftext=value)
+    nrow = hl_gtk_combo_box_n_entries(widget)
 
-    print "('Choice:',I2,' Text:',a)", isel, trim(value)
+    print "('Choice:',I2,' of ',i2,' Text:',a)", isel, nrow, trim(value)
   end subroutine c_change
 
 end module handlers
