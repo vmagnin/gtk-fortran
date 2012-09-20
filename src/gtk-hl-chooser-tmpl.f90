@@ -58,43 +58,33 @@ module gtk_hl_chooser
   use iso_fortran_env, only: error_unit
 
   ! Auto generated use's
-  use gtk, only: gtk_box_pack_start, gtk_button_new,&
-       & gtk_dialog_add_button, gtk_dialog_get_content_area,&
-       & gtk_dialog_new, gtk_dialog_run, gtk_entry_get_text,&
-       & gtk_entry_new, gtk_entry_set_text,&
-       & gtk_file_chooser_add_filter, gtk_file_chooser_button_new,&
-       & gtk_file_chooser_button_set_width_chars,&
-       & gtk_file_chooser_get_current_folder,&
-       & gtk_file_chooser_get_file, gtk_file_chooser_get_filename,&
-       & gtk_file_chooser_get_filenames,&
-       & gtk_file_chooser_get_local_only, gtk_file_chooser_get_uri,&
-       & gtk_file_chooser_get_uris, gtk_file_chooser_select_file,&
-       & gtk_file_chooser_select_filename,&
-       & gtk_file_chooser_set_current_folder,&
-       & gtk_file_chooser_set_do_overwrite_confirmation,&
-       & gtk_file_chooser_set_extra_widget, gtk_file_chooser_set_file&
-       &, gtk_file_chooser_set_filename,&
-       & gtk_file_chooser_set_local_only,&
-       & gtk_file_chooser_set_select_multiple,&
-       & gtk_file_chooser_set_show_hidden,&
-       & gtk_file_chooser_widget_new, gtk_file_filter_add_mime_type,&
-       & gtk_file_filter_add_pattern, gtk_file_filter_new,&
-       & gtk_file_filter_set_name, gtk_label_new, gtk_widget_destroy,&
-       & gtk_widget_set_sensitive, gtk_widget_set_tooltip_text,&
-       & gtk_widget_show, gtk_widget_show_all, gtk_window_set_default&
-       &, gtk_window_set_default_size,&
-       & gtk_window_set_destroy_with_parent, gtk_window_set_modal,&
-       & gtk_window_set_title, gtk_window_set_transient_for, &
-       & GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,&
-       & GTK_FILE_CHOOSER_ACTION_OPEN,&
-       & GTK_RESPONSE_APPLY, GTK_RESPONSE_CANCEL,&
-       & GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER,&
-       & GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,&
-       & GTK_FILE_CHOOSER_ACTION_SAVE, GTK_RESPONSE_DELETE_EVENT,&
-       & TRUE, FALSE, g_signal_connect
+  use g, only: g_free, g_slist_free, g_slist_length, g_slist_nth_data
 
-  use g, only: g_free, g_slist_free, g_slist_length, g_slist_nth,&
-       & g_slist_nth_data
+  use gtk, only: gtk_box_pack_start, gtk_dialog_add_button, &
+       & gtk_dialog_get_content_area, gtk_dialog_new, gtk_dialog_run, &
+       & gtk_entry_set_text, gtk_file_chooser_add_filter, &
+       & gtk_file_chooser_button_new, gtk_file_chooser_button_set_width_chars, &
+       & gtk_file_chooser_get_current_folder, gtk_file_chooser_get_filenames, &
+       & gtk_file_chooser_get_local_only, gtk_file_chooser_get_uris, &
+       & gtk_file_chooser_select_filename, &
+       & gtk_file_chooser_set_current_folder, &
+       & gtk_file_chooser_set_current_name, &
+       & gtk_file_chooser_set_do_overwrite_confirmation, &
+       & gtk_file_chooser_set_extra_widget, gtk_file_chooser_set_filename, &
+       & gtk_file_chooser_set_local_only, &
+       & gtk_file_chooser_set_select_multiple, &
+       & gtk_file_chooser_set_show_hidden, gtk_file_chooser_widget_new, &
+       & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
+       & gtk_file_filter_new, gtk_file_filter_set_name, gtk_label_new, &
+       & gtk_widget_destroy, gtk_widget_set_sensitive, &
+       & gtk_widget_set_tooltip_text, gtk_widget_show_all, &
+       & gtk_window_set_default_size, gtk_window_set_destroy_with_parent, &
+       & gtk_window_set_modal, gtk_window_set_title, &
+       & gtk_window_set_transient_for, g_signal_connect, TRUE, FALSE, &
+       & GTK_RESPONSE_DELETE_EVENT, GTK_RESPONSE_CANCEL, GTK_RESPONSE_APPLY, &
+       & GTK_FILE_CHOOSER_ACTION_OPEN, GTK_FILE_CHOOSER_ACTION_SAVE, &
+       & GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, &
+       & GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER
 
   ! Building the chooser uses a number of other high-level inderfaces.
 
@@ -203,7 +193,7 @@ contains
             & "INITIAL_FOLDER is deprecated, INITIAL_DIR is preferred"
     else if (present(current)) then
        if (c_f_logical(current)) &
-       & lval = gtk_file_chooser_set_current_folder(cbutton, "."//c_null_char)
+            & lval = gtk_file_chooser_set_current_folder(cbutton, "."//c_null_char)
     end if
     if (present(initial_file)) &
          & lval = gtk_file_chooser_set_filename(cbutton, initial_file)
@@ -341,7 +331,7 @@ contains
     ! Attach the action buttonsa to the dialogue
     junk = gtk_dialog_add_button(dialog, GTK_STOCK_OPEN, GTK_RESPONSE_APPLY)
     junk = gtk_dialog_add_button(dialog, GTK_STOCK_CANCEL, &
-            & GTK_RESPONSE_CANCEL)
+         & GTK_RESPONSE_CANCEL)
 
     ! Decode the action
     if (present(create)) then
@@ -427,10 +417,16 @@ contains
 
     ! Initial file
 
-    if (present(initial_file)) &
-         & lval = gtk_file_chooser_select_filename(chooser_info%chooser, &
-         & initial_file)
-
+    if (present(initial_file)) then
+       if (action == GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER .or. &
+            & action == GTK_FILE_CHOOSER_ACTION_SAVE) then
+          call gtk_file_chooser_set_current_name(chooser_info%chooser, &
+               & initial_file)
+       else
+          lval = gtk_file_chooser_select_filename(chooser_info%chooser, &
+               & initial_file)
+       end if
+    end if
 
     ! Set up filters
     if (present(filter)) then

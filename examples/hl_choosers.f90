@@ -31,7 +31,7 @@ module handlers
 
   use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
        &text_view_new, gtk_widget_set_sensitive, gtk_widget_show, gtk_widget_show_all,&
-       & gtk_window_new, gtk_init, TRUE, FALSE
+       & gtk_window_new, gtk_init, gtk_file_chooser_get_filename, TRUE, FALSE
 
   use g, only: alloca
 
