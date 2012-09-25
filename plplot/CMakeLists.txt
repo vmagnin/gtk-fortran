@@ -48,6 +48,11 @@ add_dependencies(hl_plplot1e plplot_extra_module)
 target_link_libraries(hl_plplot1e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
 add_test(hl_plplot1e ./hl_plplot1e)
 
+add_executable(hl_plplot4e "hl_plplot4e.f90")
+add_dependencies(hl_plplot4e plplot_extra_module)
+target_link_libraries(hl_plplot4e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
+add_test(hl_plplot4e ./hl_plplot4e)
+
 add_executable(hl_plplot8e "hl_plplot8e.f90")
 add_dependencies(hl_plplot8e plplot_extra_module)
 target_link_libraries(hl_plplot8e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
