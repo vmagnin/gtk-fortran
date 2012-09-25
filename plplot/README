@@ -111,12 +111,13 @@ installed. Then it is simply a matter of:
 where <x> is the number of the example, and <n> is 2 or 3 according to
 which gtk version you are using. 
 
-The examples are derived from the Fortran95 versions of Examples 1, 8,
+The examples are derived from the Fortran95 versions of Examples 1, 4, 8,
 30 and 17 on the PLplot web site.
 
-hl_plplot1e: Basic x-y plots on multiple pages
-hl_plplot8e: 3-D data display
-hl_plplot17e: Strip charts, shows continuous updating
+hl_plplot1e: Basic x-y plots on multiple pages.
+hl_plplot4e: Log plots, using 2 drawing areas.
+hl_plplot8e: 3-D data display.
+hl_plplot17e: Strip charts, shows continuous updating.
 hl_plplot30e: Transparency (needs at least plplot 5.9.7).
 
 
