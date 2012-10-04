@@ -622,8 +622,12 @@ contains
 
     lcstr = sum(lfstr) 
     do i = 1, size(f_string)
-       if (f_string(i)(lfstr(i):lfstr(i)) /= c_null_char .and. &
-            & f_string(i)(lfstr(i):lfstr(i)) /= c_new_line) lcstr = lcstr+1
+       if (lfstr(i) == 0) then
+          lcstr = lcstr+1
+       else if (f_string(i)(lfstr(i):lfstr(i)) /= c_null_char .and. &
+            & f_string(i)(lfstr(i):lfstr(i)) /= c_new_line) then
+          lcstr = lcstr+1
+       end if
     end do
 
     allocate(textptr(lcstr))
@@ -663,7 +667,10 @@ contains
     logical :: add_null
 
     lcstr = len_trim(f_string)
-    if (f_string(lcstr:lcstr) == c_null_char) then
+    if (lcstr == 0) then
+       lcstr = lcstr+1
+       add_null = .true.
+    else if (f_string(lcstr:lcstr) /= c_null_char) then
        lcstr = lcstr+1
        add_null = .true.
     else
