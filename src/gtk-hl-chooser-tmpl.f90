@@ -481,8 +481,10 @@ contains
     if (present(edit_filters)) then
        if (edit_filters == TRUE) then
           fbox = hl_gtk_box_new(horizontal=TRUE)
-          junk = gtk_label_new("New filter:"//c_null_char)
+          junk = gtk_label_new(c_null_char)
           call hl_gtk_box_pack(fbox, junk)
+          junk = gtk_label_new("New filter:"//c_null_char)
+          call hl_gtk_box_pack(fbox, junk, expand=FALSE)
           chooser_info%fentry = &
                & hl_gtk_entry_new(activate=c_funloc(hl_gtk_chooser_filt_cb), &
                & len=60, tooltip="Enter a new filter here."//c_null_char, &
@@ -491,7 +493,7 @@ contains
           fapply = hl_gtk_button_new("Apply"//c_null_char, &
                & clicked=c_funloc(hl_gtk_chooser_filt_cb), &
                & data=c_loc(chooser_info))
-          call hl_gtk_box_pack(fbox, fapply)
+          call hl_gtk_box_pack(fbox, fapply, expand=FALSE)
           call gtk_file_chooser_set_extra_widget(chooser_info%chooser, fbox)
        end if
     end if
