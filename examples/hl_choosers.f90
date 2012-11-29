@@ -86,7 +86,7 @@ contains
     isel = hl_gtk_file_chooser_show(chfile, create=FALSE,&
          & title="Select input file"//c_null_char, filter=filters, &
          & filter_name=filtnames, wsize=(/ 600, 400 /), edit_filters=TRUE, &
-         & parent=window)
+         & parent=window, all=TRUE)
 
     if (isel == FALSE) return   ! No selection made
 
