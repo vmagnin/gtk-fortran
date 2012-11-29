@@ -71,27 +71,39 @@ module gtk_hl_menu
 contains
 
   !+
-  function hl_gtk_menu_new(orientation) result(menu)
+  function hl_gtk_menu_new(orientation, bar) result(menu)
 
     type(c_ptr) :: menu
-    integer(kind=c_int), intent(in), optional :: orientation
+    integer(kind=c_int), intent(in), optional :: orientation, bar
 
     ! Menu initializer (mainly for consistency)
     !
     ! ORIENTATION: integer: optional: Whether to lay out the top level
     ! 		horizontaly or vertically.
+    ! BAR: boolean: optional: Set this to FALSE to create a GtkMenu rather than
+    ! 		a GtkMenuBar
     !-
 
     integer(kind=c_int) :: orient
+    logical :: isbar
+
     if (present(orientation)) then
        orient= orientation
     else
        orient = GTK_PACK_DIRECTION_LTR
     end if
+    if (present(bar)) then
+       isbar = c_f_logical(bar)
+    else
+       isbar = .true.
+    end if
 
-    menu = gtk_menu_bar_new()
-    call gtk_menu_bar_set_pack_direction (menu, orient)
-
+    if (isbar) then
+       menu = gtk_menu_bar_new()
+       call gtk_menu_bar_set_pack_direction (menu, orient)
+    else
+       menu = gtk_menu_new()
+    end if
   end function hl_gtk_menu_new
 
   !+
