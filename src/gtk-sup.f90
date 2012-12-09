@@ -435,7 +435,7 @@ contains
   subroutine convert_c_string_scalar(textptr, f_string, status)
     character(kind=c_char), dimension(:), intent(in) :: textptr
     character(len=*), intent(out) :: f_string
-    integer, intent(out), optional :: status
+    integer(kind=c_int), intent(out), optional :: status
 
     ! Convert a null-terminated c-string to  a fortran string
     !
@@ -518,7 +518,7 @@ contains
     type(c_ptr), intent(in) :: ctext
     integer(kind=c_int), intent(in) :: clen
     character(len=*), intent(out) :: f_string
-    integer, intent(out), optional :: status
+    integer(kind=c_int), intent(out), optional :: status
 
     ! Convert a null-terminated c-string to  a fortran string
     !
@@ -610,7 +610,7 @@ contains
   subroutine convert_c_string_scalar_cptr1(ctext, f_string, status)
     type(c_ptr), intent(in) :: ctext
     character(len=*), intent(out) :: f_string
-    integer, intent(out), optional :: status
+    integer(kind=c_int), intent(out), optional :: status
 
     ! Convert a null-terminated c-string to  a fortran string
     !
@@ -645,7 +645,7 @@ contains
   subroutine convert_c_string_array_cptr1(ctext, f_string, status)
     type(c_ptr), intent(in) :: ctext
     character(len=*), intent(out), dimension(:), allocatable :: f_string
-    integer, intent(out), optional :: status
+    integer(kind=c_int), intent(out), optional :: status
 
     ! Convert a null-terminated LF-separated c-string into a fortran
     ! string array

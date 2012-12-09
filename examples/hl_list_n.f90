@@ -62,7 +62,7 @@ contains
     character(len=30) :: name
     character(len=10) :: nodd
     character :: code, ucode
-    integer :: icode, iucode
+    integer(kind=c_int) :: icode, iucode
     nsel = hl_gtk_listn_get_selections(C_NULL_PTR, selections, list)
     if (nsel == 0) then
        print *, "No selection"
@@ -73,16 +73,16 @@ contains
     print *, nsel,"Rows selected"
     print *, selections
     if (nsel == 1) then
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 0, svalue=name)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 1, ivalue=n)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 2, ivalue=n3)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 4, l64value=n4)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 3, fvalue=nlog)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 5, svalue=nodd)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 6, svalue=code)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 7, svalue=ucode)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 6, ivalue=icode)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 7, ivalue=iucode)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 0_c_int, svalue=name)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 1_c_int, ivalue=n)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 2_c_int, ivalue=n3)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 4_c_int, l64value=n4)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 3_c_int, fvalue=nlog)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 5_c_int, svalue=nodd)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 6_c_int, svalue=code)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 7_c_int, svalue=ucode)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 6_c_int, ivalue=icode)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 7_c_int, ivalue=iucode)
        print "('Row:',I3,' Name: ',a,' N:',I3,' 3N:',I4,' N**4:',I7,&
             &' log(n):',F7.5,' Odd?: ',a, ' Code:',a,a)", &
             & selections(1), trim(name), n, n3, n4, nlog, nodd, code, ucode
@@ -132,11 +132,11 @@ contains
     type(c_ptr) :: pcol, list
     integer(kind=c_int) :: n
 
-    call convert_c_string(path, 200, fpath)
+    call convert_c_string(path, fpath)
     read(fpath, *) irow
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
     call c_f_pointer(pcol, icol)
-    call convert_c_string(text, 200, ftext)
+    call convert_c_string(text, ftext)
     list = g_object_get_data(renderer, "view"//c_null_char)
 
     if (icol == 0) then
@@ -145,13 +145,15 @@ contains
     else
        read(ftext, *, iostat=ios) n
        if (ios /= 0) return
-       call hl_gtk_listn_set_cell(ihlist, irow, 2, ivalue=3*n)
-       call hl_gtk_listn_set_cell(ihlist, irow, 3, fvalue=log10(real(n)))
-       call hl_gtk_listn_set_cell(ihlist, irow, 4, l64value=int(n,c_int64_t)**4)
-       call hl_gtk_listn_set_cell(ihlist, irow, 5, ivalue=mod(n,2))
+       call hl_gtk_listn_set_cell(ihlist, irow, 2_c_int, &
+            & ivalue=3_c_int*n)
+       call hl_gtk_listn_set_cell(ihlist, irow, 3_c_int, fvalue=log10(real(n)))
+       call hl_gtk_listn_set_cell(ihlist, irow, 4_c_int, &
+            & l64value=int(n,c_int64_t)**4)
+       call hl_gtk_listn_set_cell(ihlist, irow, 5_c_int, ivalue=mod(n,2_c_int))
        ! Note we set the N value last as this is a sortable column, if we
        ! are sorted on ODD/EVEN it will probably still go wrong.
-       call hl_gtk_listn_set_cell(ihlist, irow, 1, ivalue=n)
+       call hl_gtk_listn_set_cell(ihlist, irow, 1_c_int, ivalue=n)
     end if
   end subroutine cell_edited
 
@@ -166,7 +168,7 @@ program list_n
   implicit none
 
   character(len=35) :: line
-  integer :: i, ltr
+  integer(kind=c_int) :: i, ltr
   integer, target :: iappend=0, idel=0
   integer(kind=type_kind), dimension(8) :: ctypes
   character(len=20), dimension(8) :: titles
@@ -202,7 +204,7 @@ program list_n
 
   ihlist = hl_gtk_listn_new(ihscrollcontain, types=ctypes, &
        & changed=c_funloc(list_select),&
-       & multiple=TRUE, height=250, swidth=600, titles=titles, &
+       & multiple=TRUE, height=250_c_int, swidth=600_c_int, titles=titles, &
        & sortable=sortable, editable=editable, &
        & edited=c_funloc(cell_edited))
 
@@ -216,14 +218,17 @@ program list_n
      write(line,"('List entry number ',I0)") i
      ltr=len_trim(line)+1
      line(ltr:ltr)=c_null_char
-     call hl_gtk_listn_set_cell(ihlist, i-1, 0, svalue=line)
-     call hl_gtk_listn_set_cell(ihlist, i-1, 1, ivalue=i)
-     call hl_gtk_listn_set_cell(ihlist, i-1, 2, ivalue=3*i)
-     call hl_gtk_listn_set_cell(ihlist, i-1, 3, fvalue=log10(real(i)))
-     call hl_gtk_listn_set_cell(ihlist, i-1, 4, l64value=int(i,c_int64_t)**4)
-     call hl_gtk_listn_set_cell(ihlist, i-1, 5, ivalue=mod(i,2))
-     call hl_gtk_listn_set_cell(ihlist, i-1, 6, svalue=codes(i))
-     call hl_gtk_listn_set_cell(ihlist, i-1, 7, svalue=codes(i))
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 0_c_int, svalue=line)
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 1_c_int, ivalue=i)
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 2_c_int, ivalue=3_c_int*i)
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 3_c_int, &
+          & fvalue=log10(real(i)))
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 4_c_int, &
+          & l64value=int(i,c_int64_t)**4)
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 5_c_int, &
+          & ivalue=mod(i,2_c_int))
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 6_c_int, svalue=codes(i))
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 7_c_int, svalue=codes(i))
   end do
 
   ! A silly idea to test a hunch

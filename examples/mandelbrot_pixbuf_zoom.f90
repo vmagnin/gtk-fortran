@@ -51,7 +51,7 @@ module handlers
   integer(c_int) :: boolresult
   type(c_ptr) :: my_pixbuf, status_bar, rangeid
   character(kind=c_char), dimension(:,:,:), pointer :: pixel
-  integer :: nch, rowstride, width, height
+  integer(kind=c_int) :: nch, rowstride, width, height
   logical :: need_point
   character(len=120) :: rangestr
 
@@ -110,11 +110,11 @@ contains
 
     if (fevent%button == 3) then ! Right button reset to full set
        call set_limits
-       call mandelbrot_set(drawing_area, 1000)
+       call mandelbrot_set(drawing_area, 1000_c_int)
        call paint_set(gtk_widget_get_window(drawing_area))
        need_point=.false.
 !       call gtk_statusbar_remove_all(status_bar, 0)
-       id = gtk_statusbar_push(status_bar, 0, &
+       id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Left|Centre mark: region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
     else if (need_point) then ! Already have one point
        call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x1, y1)
@@ -155,16 +155,16 @@ contains
             & mxmin, mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
        call gtk_label_set_text(rangeid, trim(rangestr)//c_null_char)
 
-       call mandelbrot_set(drawing_area, 1000)
+       call mandelbrot_set(drawing_area, 1000_c_int)
 !       call paint_set(gtk_widget_get_window(drawing_area))
        need_point=.false.
 !       call gtk_statusbar_remove_all(status_bar, 0)
-       id = gtk_statusbar_push(status_bar, 0, &
+       id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
    else
        call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x0, y0)
        need_point=.true.
-       id = gtk_statusbar_push(status_bar, 0, &
+       id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Click the opposite corner of the region"//c_null_char)
     end if
   end subroutine mark_point
@@ -221,11 +221,11 @@ contains
 
     drawing_area = gtk_bin_get_child(widget)
 
-    call mandelbrot_set(drawing_area, 1000)
+    call mandelbrot_set(drawing_area, 1000_c_int)
 !    call paint_set(gtk_widget_get_window(drawing_area))
     need_point=.false.
 !    call gtk_statusbar_remove_all(status_bar, 0)
-    id = gtk_statusbar_push(status_bar, 0, &
+    id = gtk_statusbar_push(status_bar, 0_c_int, &
          & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
 
   end subroutine zoom_view
@@ -274,7 +274,7 @@ contains
 
     do i=0, width-1
        ! We provoke an expose_event once in a while to improve performances:
-       if (mod(i,10)==0) then
+       if (mod(i,10_c_int)==0) then
           call gtk_widget_queue_draw(my_drawing_area)
        end if
 
@@ -347,7 +347,7 @@ program mandelbrot_zoom
   call g_signal_connect (my_window, "delete-event"//c_null_char, &
        & c_funloc(delete_event))
 
-  jb = gtk_vbox_new(FALSE, 0)
+  jb = gtk_vbox_new(FALSE, 0_c_int)
   call gtk_container_add(my_window, jb)
 
   my_event_box = gtk_event_box_new()
@@ -361,25 +361,26 @@ program mandelbrot_zoom
        & c_funloc(mark_point))
   call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
        & c_funloc(zoom_view))
-  call gtk_box_pack_start(jb, my_event_box, FALSE, FALSE, 0)
+  call gtk_box_pack_start(jb, my_event_box, FALSE, FALSE, 0_c_int)
 
   write(rangestr, &
        & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
        & mxmin,  mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
   rangeid = gtk_label_new(trim(rangestr)//c_null_char)
-  call gtk_box_pack_start(jb, rangeid, FALSE, FALSE, 0)
+  call gtk_box_pack_start(jb, rangeid, FALSE, FALSE, 0_c_int)
 
   status_bar = gtk_statusbar_new()
-  call gtk_box_pack_start(jb, status_bar, FALSE, FALSE, 0)
-  id = gtk_statusbar_push(status_bar, 0, &
+  call gtk_box_pack_start(jb, status_bar, FALSE, FALSE, 0_c_int)
+  id = gtk_statusbar_push(status_bar, 0_c_int, &
        & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
 
   call gtk_widget_show_all (my_window)
 
   ! We create a pixbuffer to store the pixels of the image:
-  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, width, height)
+  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
-  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/nch, width, height/))
+  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, &
+       & (/nch, width, height/))
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
 
   ! We use char() because we need unsigned integers.
@@ -394,7 +395,7 @@ program mandelbrot_zoom
      end do
   end do
 
-  call Mandelbrot_set(my_drawing_area, 1000)
+  call Mandelbrot_set(my_drawing_area, 1000_c_int)
 
   ! Initialize the even/odd point flag
   need_point = .false.

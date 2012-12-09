@@ -213,7 +213,7 @@ contains
        szx = size(1)
        szy = size(2)
     else
-       call gtk_widget_set_size_request(plota, -1, -1)
+       call gtk_widget_set_size_request(plota, -1_c_int, -1_c_int)
        szx = -1
        szy = -1
     end if

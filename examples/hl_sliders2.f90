@@ -124,7 +124,7 @@ program sliders_2
   ! make a floating point vertical slider with a range 0-10 and step 0.1
   ! put it in the box
   slid = hl_gtk_slider_new(0._c_double, 10._c_double, 0.1_c_double, &
-       & vertical = FALSE, value_changed=c_funloc(slider1), length=200)
+       & vertical = FALSE, value_changed=c_funloc(slider1), length=200_c_int)
   call hl_gtk_box_pack(base, slid)
 
 

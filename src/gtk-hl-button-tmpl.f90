@@ -339,7 +339,7 @@ contains
     ! Note that GROUP actually points to the last button added and to the
     ! group of the next to last & so on
 
-    datan= g_slist_nth_data(group, nbuts-index-1)
+    datan= g_slist_nth_data(group, nbuts-index-1_c_int)
     call gtk_toggle_button_set_active(datan, TRUE)
 
   end subroutine hl_gtk_radio_group_set_select

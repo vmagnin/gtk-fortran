@@ -367,9 +367,9 @@ contains
     if (present(height) .and. present(swidth)) then
        call gtk_widget_set_size_request(scroll,swidth,height)
     else if (present(height)) then
-       call gtk_widget_set_size_request(scroll,0,height)
+       call gtk_widget_set_size_request(scroll,0_c_int,height)
     else if (present(swidth)) then
-       call gtk_widget_set_size_request(scroll,swidth,0)
+       call gtk_widget_set_size_request(scroll,swidth,0_c_int)
     end if
 
     ! Now the visible columns
@@ -531,7 +531,7 @@ contains
     ! For each of the elements in the selection list, find its index
     ! from the hidden first column
     do i = 1, count
-       cindex = gtk_tree_path_get_indices(g_list_nth_data(slist, i-1))
+       cindex = gtk_tree_path_get_indices(g_list_nth_data(slist, i-1_c_int))
        call c_f_pointer(cindex, findex)
        indices(i) = findex
     end do
@@ -890,19 +890,23 @@ contains
     ! This slightly clunky if /else cascade is needed because the attempt to convert
     ! an unset scalar argument to an array causes a segfault.
     if (present(title) .and. present(width)) then
-       list = hl_gtk_listn_new(scroll, ncols=1, types=types, changed=changed, &
+       list = hl_gtk_listn_new(scroll, ncols=1_c_int, types=types, &
+            & changed=changed, &
             & data=data, multiple=multiple, sensitive=sensitive, &
             & tooltip=tooltip, width=(/width/), titles=(/title/), height=height)
     else if (present(title)) then
-       list = hl_gtk_listn_new(scroll, ncols=1, types=types, changed=changed, &
+       list = hl_gtk_listn_new(scroll, ncols=1_c_int, types=types, &
+            & changed=changed, &
             & data=data, multiple=multiple, sensitive=sensitive, &
             & tooltip=tooltip, titles=(/title/), height=height)
     else if (present(width)) then
-       list = hl_gtk_listn_new(scroll, ncols=1, types=types, changed=changed, &
+       list = hl_gtk_listn_new(scroll, ncols=1_c_int, types=types, &
+            & changed=changed, &
             & data=data, multiple=multiple, sensitive=sensitive, &
             & tooltip=tooltip, width=(/width/), height=height)
     else
-       list = hl_gtk_listn_new(scroll, ncols=1, types=types, changed=changed, &
+       list = hl_gtk_listn_new(scroll, ncols=1_c_int, types=types, &
+            & changed=changed, &
             & data=data, multiple=multiple, sensitive=sensitive, &
             & tooltip=tooltip, height=height)
     end if
@@ -936,7 +940,7 @@ contains
        irow=gtk_tree_model_iter_n_children (store, C_NULL_PTR)-1
     end if
 
-    call hl_gtk_listn_set_cell(list, irow, 0, svalue=text)
+    call hl_gtk_listn_set_cell(list, irow, 0_c_int, svalue=text)
 
   end subroutine hl_gtk_list1_ins
 
@@ -1013,7 +1017,7 @@ contains
     ! SVALUE: string: required: A string value for the cell.
     !-
 
-    call hl_gtk_listn_set_cell(list, row, 0, svalue=svalue)
+    call hl_gtk_listn_set_cell(list, row, 0_c_int, svalue=svalue)
 
   end subroutine hl_gtk_list1_set_cell
 
@@ -1030,7 +1034,7 @@ contains
     ! SVALUE: string: required: A string value from the cell.
     !-
 
-    call hl_gtk_listn_get_cell(list, row, 0, svalue=svalue)
+    call hl_gtk_listn_get_cell(list, row, 0_c_int, svalue=svalue)
 
   end subroutine hl_gtk_list1_get_cell
 
@@ -1120,7 +1124,7 @@ contains
     ! DESTROY_NOTIFY: c_funptr: optional: A destroy notify subroutine.
     !-
 
-    call hl_gtk_listn_set_cell_data_func(list, 0, func, &
+    call hl_gtk_listn_set_cell_data_func(list, 0_c_int, func, &
          & data, destroy_notify)
   end subroutine hl_gtk_list1_set_cell_data_func
 
@@ -1294,9 +1298,9 @@ contains
     if (present(height) .and. present(swidth)) then
        call gtk_widget_set_size_request(scroll,swidth,height)
     else if (present(height)) then
-       call gtk_widget_set_size_request(scroll,0,height)
+       call gtk_widget_set_size_request(scroll,0_c_int,height)
     else if (present(swidth)) then
-       call gtk_widget_set_size_request(scroll,swidth,0)
+       call gtk_widget_set_size_request(scroll,swidth,0_c_int)
     end if
 
     ! Set up the columns
@@ -1622,14 +1626,16 @@ contains
     maxdepth = 0
     do i = 1, count
        maxdepth = max(maxdepth, &
-            & gtk_tree_path_get_depth(g_list_nth_data(slist, i-1))+1)
+            & gtk_tree_path_get_depth(g_list_nth_data(slist, i-1_c_int))&
+            & +1_c_int)
     end do
 
     allocate(indices(maxdepth,count))
     if (present(depths)) allocate(depths(count))
 
     do i = 1, count
-       idxlc = gtk_tree_path_get_indices_with_depth(g_list_nth_data(slist,i-1),&
+       idxlc = gtk_tree_path_get_indices_with_depth(g_list_nth_data(slist,&
+            & i-1_c_int),&
             & c_loc(dep))
        call c_f_pointer(idxlc, idxl, (/ dep /) )
        indices(:dep,i) = idxl
@@ -1842,7 +1848,7 @@ contains
     ! Find the renderer for the column
     col = gtk_tree_view_get_column(view, colno)
     rlist = gtk_cell_layout_get_cells(col)
-    renderer = g_list_nth_data(rlist, 0)
+    renderer = g_list_nth_data(rlist, 0_c_int)
     call g_list_free(rlist)
 
     ! Find the model for the combobox
@@ -1858,7 +1864,7 @@ contains
        pstring = c_loc(stringv)
        pstring = g_value_init(pstring, G_TYPE_STRING)
        call g_value_unset(pstring)
-       call gtk_tree_model_get_value(model, c_loc(citer), 0, pstring)
+       call gtk_tree_model_get_value(model, c_loc(citer), 0_c_int, pstring)
        call gtk_list_store_set_value(store, c_loc(viter), colno, pstring)
     end if
   end subroutine hl_gtk_listn_combo_set_select
@@ -1899,7 +1905,7 @@ contains
     ! Find the renderer for the column
     col = gtk_tree_view_get_column(view, colno)
     rlist = gtk_cell_layout_get_cells(col)
-    renderer = g_list_nth_data(rlist, 0)
+    renderer = g_list_nth_data(rlist, 0_c_int)
     call g_list_free(rlist)
 
     ! Find the model for the combobox
@@ -1914,7 +1920,7 @@ contains
     if (c_f_logical(valid)) then
        pstring = g_value_init(pstring, G_TYPE_STRING)
        call g_value_unset(pstring)
-       call gtk_tree_model_get_value(model, c_loc(citer), 0, pstring)
+       call gtk_tree_model_get_value(model, c_loc(citer), 0_c_int, pstring)
        call gtk_list_store_set_value(store, c_loc(viter), colno, pstring)
     end if
   end subroutine hl_gtk_tree_combo_set_select
@@ -1946,11 +1952,11 @@ contains
     integer :: ios
     type(c_ptr) :: pcol, list
 
-    call convert_c_string(path, 200, fpath)
+    call convert_c_string(path, 200_c_int, fpath)
     read(fpath, *) irow
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
     call c_f_pointer(pcol, icol)
-    call convert_c_string(text, 200, ftext)
+    call convert_c_string(text, 200_c_int, ftext)
     list = g_object_get_data(renderer, "view"//c_null_char)
 
     call hl_gtk_listn_set_cell(list, irow, icol, &
@@ -1980,7 +1986,7 @@ contains
     type(c_ptr) :: pcol, list
     logical :: state
 
-    call convert_c_string(path, 200, fpath)
+    call convert_c_string(path, 200_c_int, fpath)
     read(fpath, *) irow
 
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
@@ -2012,12 +2018,13 @@ contains
     character(len=200) :: fpath
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
-    integer :: ios, i
+    integer :: ios
+    integer(kind=c_int) :: i
     type(c_ptr) :: pcol, list
     logical :: state
     integer(kind=c_int) :: nrows
 
-    call convert_c_string(path, 200, fpath)
+    call convert_c_string(path, 200_c_int, fpath)
     read(fpath, *) irow
 
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
@@ -2062,10 +2069,10 @@ contains
     integer :: ios, i, n
     type(c_ptr) :: tree, pcol
 
-    call convert_c_string(path, 200, fpath)
+    call convert_c_string(path, 200_c_int, fpath)
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
     call c_f_pointer(pcol, icol)
-    call convert_c_string(text, 200, ftext)
+    call convert_c_string(text, 200_c_int, ftext)
 
     n = 0
     do i = 1, len_trim(fpath)
@@ -2107,7 +2114,7 @@ contains
     type(c_ptr) :: pcol, tree
     logical :: state
 
-    call convert_c_string(path, 200, fpath)
+    call convert_c_string(path, 200_c_int, fpath)
     n = 0
     do i = 1, len_trim(fpath)
        if (fpath(i:i) == ":") then
@@ -2155,7 +2162,7 @@ contains
     type(gtktreeiter), target :: iter, piter
     integer(kind=c_int) :: valid, nchild
 
-    call convert_c_string(path, 200, fpath)
+    call convert_c_string(path, 200_c_int, fpath)
     n = 0
     do i = 1, len_trim(fpath)
        if (fpath(i:i) == ":") then
@@ -2189,7 +2196,7 @@ contains
 
     do
        ipath = gtk_tree_model_get_string_from_iter (tree_model, c_loc(iter))
-       call convert_c_string(ipath, 200, fpath)
+       call convert_c_string(ipath, 200_c_int, fpath)
        n = 0
        do i = 1, len_trim(fpath)
           if (fpath(i:i) == ":") then
@@ -2264,7 +2271,7 @@ contains
 
     col = gtk_tree_view_get_column(list, colno)
     rlist = gtk_cell_layout_get_cells(col)
-    renderer = g_list_nth_data(rlist, 0)
+    renderer = g_list_nth_data(rlist, 0_c_int)
     call g_list_free(rlist)
 
     call gtk_tree_view_column_set_cell_data_func(col, renderer,&
@@ -2279,7 +2286,7 @@ contains
        & toggled, data_toggled, edited_spin, data_edited_spin, edited_combo, &
        & data_edited_combo, changed_combo, data_changed_combo, toggled_radio, &
        & data_toggled_radio)
-    integer, intent(in) :: icol
+    integer(kind=c_int), intent(in) :: icol
     type(c_ptr), intent(in) :: view
     logical, intent(in) :: is_list
     integer(kind=type_kind), intent(in) :: type
@@ -2383,10 +2390,10 @@ contains
             & ixpad(icol), iypad(icol))
     else if (present(ixpad)) then
        call gtk_cell_renderer_set_padding(renderer, &
-            & ixpad(icol), 0)
+            & ixpad(icol), 0_c_int)
     else if (present(iypad)) then
        call gtk_cell_renderer_set_padding(renderer, &
-            & 0, iypad(icol))
+            & 0_c_int, iypad(icol))
     end if
 
     if (present(editable) .and. editable_property /= '') then
@@ -2550,27 +2557,27 @@ contains
     select case (render_id)
     case(hl_gtk_cell_text, hl_gtk_cell_spin)
        call gtk_tree_view_column_add_attribute(column, renderer, &
-            & "text"//C_NULL_CHAR, icol-1)
+            & "text"//C_NULL_CHAR, icol-1_c_int)
     case(hl_gtk_cell_toggle, hl_gtk_cell_radio)
        call gtk_tree_view_column_add_attribute(column, renderer, &
-            & "active"//C_NULL_CHAR, icol-1)
+            & "active"//C_NULL_CHAR, icol-1_c_int)
     case(hl_gtk_cell_progress)
        call gtk_tree_view_column_add_attribute(column, renderer, &
-            & "value"//c_null_char, icol-1)
+            & "value"//c_null_char, icol-1_c_int)
        call gtk_tree_view_column_add_attribute(column, renderer, &
-            & "text"//C_NULL_CHAR, icol-1)
+            & "text"//C_NULL_CHAR, icol-1_c_int)
     case(hl_gtk_cell_pixbuf)
        call gtk_tree_view_column_add_attribute(column, renderer, &
-            & "pixbuf"//c_null_char, icol-1)
+            & "pixbuf"//c_null_char, icol-1_c_int)
     case(hl_gtk_cell_combo)
        call gtk_tree_view_column_add_attribute(column, renderer, &
-            & "text"//c_null_char, icol-1)
+            & "text"//c_null_char, icol-1_c_int)
     end select
 
     nc = gtk_tree_view_append_column(view, column)
     if (present(sortable)) then
        if (sortable(icol) == TRUE) then
-          call gtk_tree_view_column_set_sort_column_id(column, icol-1)
+          call gtk_tree_view_column_set_sort_column_id(column, icol-1_c_int)
           call gtk_tree_view_column_set_sort_indicator(column, TRUE)
        end if
     end if
@@ -2579,7 +2586,8 @@ contains
           call gtk_tree_view_column_set_sizing (column, &
                & GTK_TREE_VIEW_COLUMN_FIXED)
           call gtk_tree_view_column_set_fixed_width(column, width(icol))
-          call gtk_cell_renderer_set_fixed_size(renderer, width(icol), -1)
+          call gtk_cell_renderer_set_fixed_size(renderer, width(icol), &
+               & -1_c_int)
        end if
     end if
     call gtk_tree_view_column_set_resizable(column,TRUE)
@@ -2624,8 +2632,8 @@ contains
     select case(ctype)
     case(G_TYPE_CHAR)
        if (present(svalue)) then
-!!$GLIB< 2.32!          call g_value_set_char(val, ichar(svalue(1:1), c_int8_t))
-!!$GLIB>=2.32!          call g_value_set_schar(val, ichar(svalue(1:1), c_int8_t))
+!!$GLIB< 2.32!          call g_value_set_char(val, int(ichar(svalue(1:1)), c_int8_t))
+!!$GLIB>=2.32!          call g_value_set_schar(val, int(ichar(svalue(1:1)), c_int8_t))
        else if (present(i8value)) then
 !!$GLIB< 2.32!          call g_value_set_char(val, i8value)
 !!$GLIB>=2.32!          call g_value_set_schar(val, i8value)
@@ -2645,7 +2653,7 @@ contains
        end if
     case(G_TYPE_UCHAR)
        if (present(svalue)) then
-          call g_value_set_uchar(val, ichar(svalue(1:1), c_int8_t))
+          call g_value_set_uchar(val, int(ichar(svalue(1:1)), c_int8_t))
        else if (present(i8value)) then
           call g_value_set_uchar(val, int(i8value, c_int8_t))
        else if (present(ivalue)) then
@@ -3130,7 +3138,7 @@ contains
     case (G_TYPE_STRING)
        if (present(svalue)) then
           cstr = g_value_get_string(val)
-          call convert_c_string(cstr, len(svalue), svalue)
+          call convert_c_string(cstr, int(len(svalue), c_int), svalue)
        else
           write(error_unit,*) "hl_gtk_list_tree_get_gvalue:: "//&
                & "Cannot return 'string' type to any available output"
@@ -3219,7 +3227,7 @@ contains
     ! Extract the renderer
     col = gtk_tree_view_get_column(view, colno)
     rlist = gtk_cell_layout_get_cells(col)
-    renderer = g_list_nth_data(rlist, 0)
+    renderer = g_list_nth_data(rlist, 0_c_int)
     call g_list_free(rlist)
 
     ! Get the adjustment from the renderer.
@@ -3275,7 +3283,7 @@ contains
     ! be obtained from the PATH argument in the edited hander.
     !-
 
-    integer, parameter :: ncols=1
+    integer(kind=c_int), parameter :: ncols=1
     integer(kind=type_kind), dimension(ncols), target :: coltypes = &
          & [G_TYPE_STRING]
     type(gvalue), target :: modelv, columnv
@@ -3349,7 +3357,7 @@ contains
     ! Find the renderer for the column
     col = gtk_tree_view_get_column(view, colno)
     rlist = gtk_cell_layout_get_cells(col)
-    renderer = g_list_nth_data(rlist, 0)
+    renderer = g_list_nth_data(rlist, 0_c_int)
     call g_list_free(rlist)
 
     ! Find the model for the combobox
@@ -3365,12 +3373,12 @@ contains
        if (iappend) then
           nvals = gtk_tree_model_iter_n_children(model, c_null_ptr)
           valid = gtk_tree_model_iter_nth_child(model, c_loc(iter), &
-               & c_null_ptr, nvals-1)
+               & c_null_ptr, nvals-1_c_int)
           do i = 1, size(vals)
              call clear_gtktreeiter(iter)
              call gtk_list_store_append(model, c_loc(iter))
              call g_value_set_string(pstring, trim(vals(i))//c_null_char)
-             call gtk_list_store_set_value(model, c_loc(iter), 0, pstring)
+             call gtk_list_store_set_value(model, c_loc(iter), 0_c_int, pstring)
           end do
        else
           call gtk_list_store_clear(model)
@@ -3378,7 +3386,7 @@ contains
              call clear_gtktreeiter(iter)
              call gtk_list_store_append(model, c_loc(iter))
              call g_value_set_string(pstring, trim(vals(i))//c_null_char)
-             call gtk_list_store_set_value(model, c_loc(iter), 0, pstring)
+             call gtk_list_store_set_value(model, c_loc(iter), 0_c_int, pstring)
           end do
        end if
     end if

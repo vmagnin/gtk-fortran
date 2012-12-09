@@ -68,7 +68,8 @@ program progress
 
   implicit none
 
-  integer :: t0, t1, istep, i, itmax
+  integer :: t0, t1, i
+  integer(kind=c_int) :: istep, itmax
   real(kind=c_double) :: bval
 
   ! Initialize gtk & create a window for the heirarchy
@@ -108,7 +109,7 @@ program progress
         if (istep > itmax) exit
         call hl_gtk_progress_bar_set(bar(i), istep, &
              & itmax, string=TRUE)
-        if (mod(istep, 20) == 0) &
+        if (mod(istep, 20_c_int) == 0) &
              & call hl_gtk_progress_bar_set(pbar, text="Working"//c_null_char)
      end do
      if (run_status == FALSE) cycle

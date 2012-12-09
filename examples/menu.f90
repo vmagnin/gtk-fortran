@@ -230,7 +230,7 @@ program simplemenu
   ! Properties of the main window :
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_title(mainwindow, "Simple Menu Example"//c_null_char)
-  call gtk_widget_set_size_request(mainwindow, 500, 500)
+  call gtk_widget_set_size_request(mainwindow, 500_c_int, 500_c_int)
   ! You can also use the following statement to automatically 
   ! adapt the vertical size of the window:
   !call gtk_widget_set_size_request(mainwindow, 500, -1)
@@ -250,7 +250,7 @@ program simplemenu
   
   ! Insert action group into ui manager
   menu_manager = gtk_ui_manager_new ()
-  call gtk_ui_manager_insert_action_group (menu_manager, action_group, 0)
+  call gtk_ui_manager_insert_action_group (menu_manager, action_group, 0_c_int)
   error = c_null_ptr
   !ui = gtk_ui_manager_add_ui_from_file (menu_manager, "menu.xml"//c_null_char, error)
   buffer_length = len_trim(buffer)
@@ -264,9 +264,10 @@ program simplemenu
   endif
   
   ! Container for menu
-  box = gtk_vbox_new (FALSE,0)
+  box = gtk_vbox_new (FALSE,0_c_int)
   call gtk_container_add (mainwindow, box)
-  call gtk_box_pack_start (box, gtk_ui_manager_get_widget (menu_manager, "/MainMenu"//c_null_char), FALSE, FALSE, 0)
+  call gtk_box_pack_start (box, gtk_ui_manager_get_widget (menu_manager, &
+       & "/MainMenu"//c_null_char), FALSE, FALSE, 0_c_int)
 
   ! Show all
   call gtk_widget_show_all (mainwindow)

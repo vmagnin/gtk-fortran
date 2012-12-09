@@ -103,7 +103,7 @@ program radio
   end do
 
   ! Set a selection (3)
-  call hl_gtk_radio_group_set_select(group, 3)
+  call hl_gtk_radio_group_set_select(group, 3_c_int)
 
   ! Make a "quit" button and put it in the box as well, then put the
   ! box in the window

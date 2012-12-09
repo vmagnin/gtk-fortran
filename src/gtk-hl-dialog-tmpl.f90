@@ -120,9 +120,9 @@ contains
     end if
 
     if (itype /= GTK_MESSAGE_OTHER) then
-!!$GTK< 3.0!       hb = gtk_hbox_new(FALSE, 0)
-!!$GTK>=3.0!       hb = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0)
-       call gtk_box_pack_start(content, hb, TRUE, TRUE, 0)
+!!$GTK< 3.0!       hb = gtk_hbox_new(FALSE, 0_c_int)
+!!$GTK>=3.0!       hb = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0_c_int)
+       call gtk_box_pack_start(content, hb, TRUE, TRUE, 0_c_int)
        select case (itype)
        case (GTK_MESSAGE_ERROR)
           junk = gtk_image_new_from_stock(GTK_STOCK_DIALOG_ERROR, &
@@ -139,10 +139,11 @@ contains
        case default
           junk=C_NULL_PTR
        end select
-       if (c_associated(junk)) call gtk_box_pack_start(hb, junk, TRUE, TRUE, 0)
-!!$GTK< 3.0!       vb = gtk_vbox_new(FALSE, 0)
-!!$GTK>=3.0!       vb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0)
-       call gtk_box_pack_start(hb, vb, TRUE, TRUE, 0)
+       if (c_associated(junk)) call gtk_box_pack_start(hb, junk, TRUE, &
+            & TRUE, 0_c_int)
+!!$GTK< 3.0!       vb = gtk_vbox_new(FALSE, 0_c_int)
+!!$GTK>=3.0!       vb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
+       call gtk_box_pack_start(hb, vb, TRUE, TRUE, 0_c_int)
     else
        vb = content
     end if
@@ -155,7 +156,7 @@ contains
        else
           junk = gtk_label_new(trim(message(i))//c_null_char)
        end if
-       call gtk_box_pack_start(vb, junk, TRUE, TRUE, 0)
+       call gtk_box_pack_start(vb, junk, TRUE, TRUE, 0_c_int)
     end do
 
     select case (button_set)

@@ -171,7 +171,7 @@ program menu_test
      mb2(i) = hl_gtk_radio_menu_item_new(rgroup, sm2, trim(holder)//c_null_char, &
           & toggled=c_funloc(sm2_act), data=c_loc(mc2(i)))
   end do
-  call hl_gtk_radio_menu_group_set_select(rgroup, 2)
+  call hl_gtk_radio_menu_group_set_select(rgroup, 2_c_int)
 
   ! Make a quit button and put it in the box, put the box
   ! into the window

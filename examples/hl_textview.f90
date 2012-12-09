@@ -174,13 +174,13 @@ program ztext
        & changed=c_funloc(tv_change), &
        & insert_text=c_funloc(tv_ins), &
        & delete_range=c_funloc(tv_del), &
-       & ssize=(/350, 200/), tooltip = &
+       & ssize=(/350_c_int, 200_c_int/), tooltip = &
        & "Try typing, pasting or cutting text in here"//c_null_char)
   call hl_gtk_box_pack(box, contain)
 
   ! Make a single line text entry, and buttons to append or place at cursor.
 
-  entry = hl_gtk_entry_new(60, editable=TRUE, tooltip = &
+  entry = hl_gtk_entry_new(60_c_int, editable=TRUE, tooltip = &
        & "Enter text here, then click 'append' or 'insert'"//c_null_char, &
        & changed=c_funloc(entry_text))
   call hl_gtk_box_pack(box, entry, expand=FALSE)

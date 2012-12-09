@@ -174,7 +174,8 @@ contains
 
     if (.not. c_associated(pixbuf)) then
        call c_f_pointer(error_str, error_struct)
-       call convert_c_string(error_struct%message, len(errmsg), errmsg)
+       call convert_c_string(error_struct%message, &
+            & errmsg)
        if (present(error)) then
           error = errmsg
        else
@@ -199,7 +200,7 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer, dimension(3) :: sz
+    integer(kind=c_int), dimension(3) :: sz
     integer(kind=c_int) :: alpha
 
     sz = shape(data)
@@ -216,7 +217,7 @@ contains
        return
     end select
 
-    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, alpha, 8, &
+    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, alpha, 8_c_int, &
          & sz(2), sz(3))
 
     call hl_gdk_pixbuf_set_pixels(pixbuf, data)
@@ -236,12 +237,12 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer, dimension(2) :: sz
+    integer(kind=c_int), dimension(2) :: sz
     integer(kind=c_int) :: alpha
 
     sz = shape(data)
 
-    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, &
+    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, &
          & sz(1), sz(2))
 
     call hl_gdk_pixbuf_set_pixels(pixbuf, data)
@@ -261,7 +262,7 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer, dimension(3) :: sz
+    integer(kind=c_int), dimension(3) :: sz
     integer(kind=c_int) :: alpha
 
     sz = shape(data)
@@ -279,7 +280,7 @@ contains
        return
     end select
 
-    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, alpha, 8, &
+    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, alpha, 8_c_int, &
          & sz(2), sz(3))
 
     call hl_gdk_pixbuf_set_pixels(pixbuf, data)
@@ -299,12 +300,12 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer, dimension(2) :: sz
+    integer(kind=c_int), dimension(2) :: sz
     integer(kind=c_int) :: alpha
 
     sz = shape(data)
 
-    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, &
+    pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, &
          & sz(1), sz(2))
 
     call hl_gdk_pixbuf_set_pixels(pixbuf, data)
@@ -877,30 +878,29 @@ contains
     err = c_null_ptr
     if (present(options)) then
        nopt = size(options)
-       allocate(copt_names(nopt+1), copt_vals(nopt+1))
-       allocate(opt_names(nopt), opt_vals(nopt))
-
-       copt_names(nopt+1) = c_null_ptr
-       copt_vals(nopt+1) = c_null_ptr
-
-       do i = 1, nopt
-          peq = index(options(i), "=")
-          opt_names(i) = options(i)(:peq-1)//c_null_char
-          opt_vals(i) = trim(options(i)(peq+1:))//c_null_char
-          copt_names(i) = c_loc(opt_names(i))
-          copt_vals(i) = c_loc(opt_vals(i))
-       end do
-       iok = gdk_pixbuf_savev(pixbuf, trim(file)//c_null_char, &
-            & trim(ftype)//c_null_char, copt_names, copt_vals, c_loc(err))
     else
-       iok = gdk_pixbuf_savev(pixbuf, trim(file)//c_null_char, &
-            & trim(ftype)//c_null_char, c_null_ptr, c_null_ptr, c_loc(err))
+       nopt = 0
     end if
+    allocate(copt_names(nopt+1), copt_vals(nopt+1))
+    allocate(opt_names(nopt), opt_vals(nopt))
+    
+    copt_names(nopt+1) = c_null_ptr
+    copt_vals(nopt+1) = c_null_ptr
+    
+    do i = 1, nopt
+       peq = index(options(i), "=")
+       opt_names(i) = options(i)(:peq-1)//c_null_char
+       opt_vals(i) = trim(options(i)(peq+1:))//c_null_char
+       copt_names(i) = c_loc(opt_names(i))
+       copt_vals(i) = c_loc(opt_vals(i))
+    end do
+    iok = gdk_pixbuf_savev(pixbuf, trim(file)//c_null_char, &
+         & trim(ftype)//c_null_char, copt_names, copt_vals, c_loc(err))
 
     if (.not. c_f_logical(iok)) then
        if (present(ok)) ok = .false.
        call c_f_pointer(err, ferr)
-       call c_f_string(ferr%message, len(ferrmsg), ferrmsg)
+       call c_f_string(ferr%message, ferrmsg)
        if (present(error)) then 
           error=trim(ferrmsg)
        else
@@ -950,13 +950,13 @@ contains
 
     do i = 0, nfmt-1
        fmt = g_slist_nth_data(flist, i)
-       call c_f_string(gdk_pixbuf_format_get_name(fmt), len(names), names(i+1))
+       call c_f_string(gdk_pixbuf_format_get_name(fmt), names(i+1))
        if (present(description)) &
             & call c_f_string(gdk_pixbuf_format_get_description(fmt), &
-            & len(description), description(i+1)) 
+            & description(i+1)) 
        if (present(license)) &
             & call c_f_string(gdk_pixbuf_format_get_license(fmt), &
-            & len(license), license(i+1))
+            & license(i+1))
        if (present(writable)) &
             & writable(i+1) = c_f_logical(gdk_pixbuf_format_is_writable(fmt))
        if (present(scalable)) &
@@ -995,7 +995,7 @@ contains
     !-
 
     character(len=hl_gdk_pixbuf_type_len), dimension(:), allocatable :: names
-    integer :: idx, i
+    integer(kind=c_int) :: idx, i
     type(c_ptr) :: flist, fmt
     type(c_ptr), target :: vlist
     type(c_ptr), dimension(:), pointer :: val
@@ -1027,10 +1027,10 @@ contains
 
     if (present(description)) &
          & call c_f_string(gdk_pixbuf_format_get_description(fmt), &
-         & len(description), description) 
+         & description) 
     if (present(license)) &
          & call c_f_string(gdk_pixbuf_format_get_license(fmt), &
-         & len(license), license)
+         & license)
 
     if (present(mime_types)) then
        vlist = gdk_pixbuf_format_get_mime_types(fmt)
@@ -1047,7 +1047,7 @@ contains
        if (idx > 0) then
           allocate(mime_types(idx))
           do i = 1, idx
-             call c_f_string(val(i), len(mime_types), mime_types(i))
+             call c_f_string(val(i), mime_types(i))
           end do
        end if
     end if
@@ -1066,7 +1066,7 @@ contains
        if (idx > 0) then
           allocate(extensions(idx))
           do i = 1, idx
-             call c_f_string(val(i), len(extensions), extensions(i))
+             call c_f_string(val(i), extensions(i))
           end do
        end if
     end if
