@@ -23,7 +23,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 07-19-2012
+! Last modification: 12-13-2012
 
 module gdk_pixbuf_hl
 
@@ -335,7 +335,7 @@ contains
          & width=ncols, rowstride=rowstr)
 
     allocate(pixels(nchans, ncols, nrows))
-    lpix = rowstr*(nrows-1) + ncols
+    lpix = rowstr*(nrows-1) + ncols*nchans
 
     cpixels = gdk_pixbuf_get_pixels(pixbuf)
     call c_f_pointer(cpixels, fpixels, [lpix])
@@ -374,7 +374,7 @@ contains
          & width=ncols, rowstride=rowstr)
 
     allocate(pixels(nchans, ncols, nrows))
-    lpix = rowstr*(nrows-1) + ncols
+    lpix = rowstr*(nrows-1) + ncols*nchans
 
     cpixels = gdk_pixbuf_get_pixels(pixbuf)
     call c_f_pointer(cpixels, fpixels, [lpix])
@@ -429,7 +429,7 @@ contains
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
          & width=ncols, rowstride=rowstr)
-    lpix = rowstr*(nrows-1) + ncols
+    lpix = rowstr*(nrows-1) + ncols*nchans
 
     ! Checks on sizes etc.
 
@@ -553,7 +553,7 @@ contains
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
          & width=ncols, rowstride=rowstr)
-    lpix = rowstr*(nrows-1) + ncols
+    lpix = rowstr*(nrows-1) + ncols*nchans
 
     ! Checks on sizes etc.
 
@@ -629,7 +629,7 @@ contains
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
          & width=ncols, rowstride=rowstr)
-    lpix = rowstr*(nrows-1) + ncols
+    lpix = rowstr*(nrows-1) + ncols*nchans
 
     ! Checks on sizes etc.
 
@@ -752,7 +752,7 @@ contains
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
          & width=ncols, rowstride=rowstr)
-    lpix = rowstr*(nrows-1) + ncols
+    lpix = rowstr*(nrows-1) + ncols*nchans
 
     ! Checks on sizes etc.
 
