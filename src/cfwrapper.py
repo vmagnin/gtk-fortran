@@ -154,11 +154,11 @@ def translate_enums(errorsfile, enum_list):
             parameters[0] = re.sub("(?<!')(,)(?!')", "", parameters[0])
             parameters[0] = re.sub("(?m),$", "", parameters[0])
             
-            # Is it in hexadecimal ?
-            parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "INT(z'\\1')", parameters[0])
             # Is it a char ?
             # Est-ce que ça marche ??????? (voir entiers)
             parameters[0] = re.sub("('.?')", "iachar(\\1)", parameters[0])
+            # Is it in hexadecimal ?
+            parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "INT(z'\\1')", parameters[0])
             # Is it a bit field ?
             # on ne sait pas comment sont codés les entiers !!!!!
             # Utiliser les fonctions sur les bits ??????
@@ -168,7 +168,8 @@ def translate_enums(errorsfile, enum_list):
             # complement
             parameters[0] = re.sub("~(\w+)", "not(\\1)", parameters[0])
             # logical or
-            parameters[0] = re.sub("([\w\(\)]+)\s*\|\s*([\w\(\)]+)", "ior(\\1 , \\2)", parameters[0])
+            # parameters[0] = re.sub("([\w\(\)]+)\s*\|\s*([\w\(\)]+)", "ior(\\1 , \\2)", parameters[0])
+            parameters[0] = re.sub("([\w\(\)]+)\s*\|\s*([\w\(\), \d]+)", "ior(\\1 , \\2)", parameters[0])
 
             # Renamed flags (have the same name as a GTK+ function):
             parameters[0] = re.sub("(?m)^\s*ATK_HYPERLINK_IS_INLINE", "ATK_HYPERLINK_IS_INLINE_F", parameters[0])
