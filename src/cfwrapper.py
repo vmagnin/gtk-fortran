@@ -154,11 +154,11 @@ def translate_enums(errorsfile, enum_list):
             parameters[0] = re.sub("(?<!')(,)(?!')", "", parameters[0])
             parameters[0] = re.sub("(?m),$", "", parameters[0])
             
-            # Is it in hexadecimal ?
-            parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "INT(z'\\1')", parameters[0])
             # Is it a char ?
             # Est-ce que ça marche ??????? (voir entiers)
             parameters[0] = re.sub("('.?')", "iachar(\\1)", parameters[0])
+            # Is it in hexadecimal ?
+            parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "INT(z'\\1')", parameters[0])
             # Is it a bit field ?
             # on ne sait pas comment sont codés les entiers !!!!!
             # Utiliser les fonctions sur les bits ??????
@@ -168,7 +168,8 @@ def translate_enums(errorsfile, enum_list):
             # complement
             parameters[0] = re.sub("~(\w+)", "not(\\1)", parameters[0])
             # logical or
-            parameters[0] = re.sub("([\w\(\)]+)\s*\|\s*([\w\(\)]+)", "ior(\\1 , \\2)", parameters[0])
+            # parameters[0] = re.sub("([\w\(\)]+)\s*\|\s*([\w\(\)]+)", "ior(\\1 , \\2)", parameters[0])
+            parameters[0] = re.sub("([\w\(\)]+)\s*\|\s*([\w\(\), \d]+)", "ior(\\1 , \\2)", parameters[0])
 
             # Renamed flags (have the same name as a GTK+ function):
             parameters[0] = re.sub("(?m)^\s*ATK_HYPERLINK_IS_INLINE", "ATK_HYPERLINK_IS_INLINE_F", parameters[0])
@@ -217,9 +218,10 @@ TYPES_DICT = {
     "time_t":("integer(c_long)","c_long"),  #typedef __time_t time_t;
     "short":("integer(c_short)","c_short"),
     "boolean":("logical(c_bool)","c_bool"),
+
     # For gchar & guchar, see https://github.com/jerryd/gtk-fortran/issues/41#issuecomment-7337877
-    "gchar":("integer(kind=c_int8_t)","c_int8_t"), #("character(kind=c_char)","c_char"),
-    "guchar":("integer(kind=c_int8_t)","c_int8_t"), #("character(kind=c_char)","c_char"),
+    "gchar":("integer(kind=c_int8_t)","c_int8_t"),   #("character(kind=c_char)","c_char"),
+    "guchar":("integer(kind=c_int8_t)","c_int8_t"),   #("character(kind=c_char)","c_char"),
 #    "gboolean":("logical(c_bool)","c_bool"), typedef int gint; typedef gint gboolean;
     "double": ("real(c_double)","c_double"),
     "float":("real(c_float)","c_float"),
@@ -289,8 +291,9 @@ nb_files = 0
 type_errors_list = []
 
 # Libraries to parse and resulting Fortran files (must have a -auto.f90 termination): 
-PATH_DICT = { "/usr/include/gtk-2.0/gtk":"gtk-auto.f90",
-              "/usr/include/gtk-2.0/gdk":"gdk-auto.f90",
+PATH_DICT = { "/usr/include/gtk-3.0/gtk":"gtk-auto.f90",
+              "/usr/include/gtk-3.0/gdk":"gdk-auto.f90",
+              "/usr/include/gtk-3.0/unix-print":"unix-print-auto.f90",
               "/usr/include/cairo":"cairo-auto.f90",
               "/usr/include/pango-1.0":"pango-auto.f90",
               "/usr/include/glib-2.0":"glib-auto.f90",
