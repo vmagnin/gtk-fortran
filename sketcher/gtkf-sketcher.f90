@@ -335,7 +335,7 @@ contains
 
     isel = hl_gtk_file_chooser_show(chfile, cdir=working_dir, create=FALSE,&
          & title="Select input file"//c_null_char, filter=filters, &
-         & filter_name=filtnames, wsize=(/ 600, 400 /), edit_filters=TRUE, &
+         & filter_name=filtnames, wsize=(/ 600_c_int, 400_c_int /), edit_filters=TRUE, &
          & parent=window)
 
     if (isel == FALSE) return   ! No selection made
@@ -362,7 +362,7 @@ contains
       if (fbool(gtk_widget_is_toplevel(gpointer))) then
         call gtk_list_store_append (toplevel_widgets,c_loc(iter))
         call g_value_set_string(val, f_string(1:len_trim(f_string))//c_null_char)
-        call gtk_list_store_set_value (toplevel_widgets,c_loc(iter),0,val)
+        call gtk_list_store_set_value (toplevel_widgets,c_loc(iter),0_c_int,val)
       endif
       fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     enddo
@@ -380,9 +380,9 @@ contains
     guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
     call gtk_builder_connect_signals_full (b, c_funloc(get_connections), c_null_ptr)  
     call g_object_unref (b)
-    call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//c_null_char, -1)
+    call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//c_null_char, -1_c_int)
 
-    call gtk_combo_box_set_active(appwindow_selector,0)
+    call gtk_combo_box_set_active(appwindow_selector,0_c_int)
     call g_value_unset(val)
     
     file_loaded=.true.
@@ -417,7 +417,7 @@ contains
     
     character(len=256,kind=c_char)::subdir, license_file, line, test, handlerfile, appwindow, additional_modules
     integer::status_read
-    integer::i,j
+    integer(kind=c_int)::i,j
     logical::already_used, lexist
     type(c_ptr) :: gpointer,object_name_ptr
     character(len=128) :: f_string, f_string_ori
@@ -430,7 +430,7 @@ contains
       call chdir(working_dir)
       subdir=filename(index(filename,"/",.true.)+1:index(filename,".",.true.)-1)
       if (create_subdir) then
-        if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//c_null_char,488) .ge. 0) then
+        if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//c_null_char,488_c_int) .ge. 0) then
           working_dir=working_dir(1:len_trim(working_dir))//"/"//subdir
           call chdir(working_dir)
           call copy_file(filename(1:len_trim(filename)),filename(index(filename,"/",.true.)+1:len_trim(filename)))
@@ -439,7 +439,7 @@ contains
         endif
       endif
 
-      call combobox_get_active_string_value(license_selector, 1, license_file)
+      call combobox_get_active_string_value(license_selector, 1_c_int, license_file)
       license_file=adjustl(license_file)
 
       open(50, file=subdir(1:len_trim(subdir))//".f90", action='write')
@@ -640,7 +640,7 @@ contains
       write(50,'(A)')"  ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object"
       write(50,'(A)')"  guint = gtk_builder_add_from_file (builder, """//subdir(1:len_trim(subdir))//".glade""//c_null_char, error)"
       write(50,'(A)')""
-      call combobox_get_active_string_value(appwindow_selector, 0, appwindow)
+      call combobox_get_active_string_value(appwindow_selector, 0_c_int, appwindow)
       if (widget_symbols) then
         write(50,'(A)')"  ! get pointers to all GObjects from GtkBuilder"
         do i=0, g_slist_length(gslist)-1
@@ -695,7 +695,7 @@ contains
     character(len=20)::defaultsfile="default.options"
    
     open(111,file=base_dir(1:len_trim(base_dir))//"/"//defaultsfile, action='write')
-    write(111,'(7L)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols,update_used_functions,&
+    write(111,'(7L2)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols,update_used_functions,&
       use_hl_gtk,include_files
     write(111,'(I2)')gtk_combo_box_get_active(license_selector)
     close(111)
@@ -707,7 +707,7 @@ contains
     integer(c_int) ::license_no
    
     open(111,file=base_dir(1:len_trim(base_dir))//"/"//defaultsfile, action='read')
-    read(111,'(7L)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols,update_used_functions,&
+    read(111,'(7L2)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols,update_used_functions,&
       use_hl_gtk,include_files
     read(111,'(I2)')license_no
     call gtk_combo_box_set_active(license_selector,license_no)

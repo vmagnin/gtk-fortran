@@ -98,12 +98,18 @@ contains
     end do
 
     if (nsel == 1) then
-       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 0, svalue=name)
-       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 1, ivalue=n)
-       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 2, ivalue=n3)
-       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 4, l64value=n4)
-       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 3, fvalue=nlog)
-       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 5, svalue=nodd)
+       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 0_c_int, &
+            & svalue=name)
+       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 1_c_int, &
+            & ivalue=n)
+       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 2_c_int, &
+            & ivalue=n3)
+       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 4_c_int, &
+            & l64value=n4)
+       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 3_c_int, &
+            & fvalue=nlog)
+       call hl_gtk_tree_get_cell(ihlist, selections(:dep(1),1), 5_c_int,&
+            & svalue=nodd)
        print "('Name: ',a,' N:',I3,' 3N:',I4,' N**4:',I7,&
             &' log(n):',F7.5,' Odd?: ',a)", trim(name), &
             & n, n3, n4, nlog, nodd
@@ -126,7 +132,7 @@ program tree
   implicit none
 
   character(len=35) :: line
-  integer :: i, ltr, j
+  integer(kind=c_int) :: i, ltr, j
   integer(kind=type_kind), dimension(6) :: ctypes
   character(len=20), dimension(6) :: titles
   integer(kind=c_int), dimension(6) :: sortable, editable
@@ -155,36 +161,48 @@ program tree
 
   ihlist = hl_gtk_tree_new(ihscrollcontain, types=ctypes, &
        & changed=c_funloc(list_select),&
-       &  multiple=TRUE, height=250, swidth=400, titles=titles, &
+       &  multiple=TRUE, height=250_c_int, swidth=400_c_int, titles=titles, &
        & sortable=sortable, editable=editable)
 
   ! Now put 10 top level rows into it
   do i=1,10
-     call hl_gtk_tree_ins(ihlist, row = (/ -1 /))
+     call hl_gtk_tree_ins(ihlist, row = (/ -1_c_int /))
      write(line,"('List entry number ',I0)") i
      ltr=len_trim(line)+1
      line(ltr:ltr)=c_null_char
-     call hl_gtk_tree_set_cell(ihlist, absrow=i-1, col=0, svalue=line)
-     call hl_gtk_tree_set_cell(ihlist, absrow=i-1, col=1, ivalue=i)
-     call hl_gtk_tree_set_cell(ihlist, absrow=i-1, col=2, ivalue=3*i)
-     call hl_gtk_tree_set_cell(ihlist, absrow=i-1, col=3, fvalue=log10(real(i)))
-     call hl_gtk_tree_set_cell(ihlist, absrow=i-1, col=4, l64value=int(i,c_int64_t)**4)
-     call hl_gtk_tree_set_cell(ihlist, absrow=i-1, col=5, ivalue=mod(i,2))
+     call hl_gtk_tree_set_cell(ihlist, absrow=i-1_c_int, col=0_c_int, &
+          & svalue=line)
+     call hl_gtk_tree_set_cell(ihlist, absrow=i-1_c_int, col=1_c_int, &
+          & ivalue=i)
+     call hl_gtk_tree_set_cell(ihlist, absrow=i-1_c_int, col=2_c_int, &
+          & ivalue=3_c_int*i)
+     call hl_gtk_tree_set_cell(ihlist, absrow=i-1_c_int, col=3_c_int, &
+          & fvalue=log10(real(i)))
+     call hl_gtk_tree_set_cell(ihlist, absrow=i-1_c_int, col=4_c_int, &
+          & l64value=int(i,c_int64_t)**4)
+     call hl_gtk_tree_set_cell(ihlist, absrow=i-1_c_int, col=5_c_int, &
+          & ivalue=mod(i,2_c_int))
   end do
 
   ! Add some child rows
   do j = 2, 6, 2
      do i = 1, 5
-        call hl_gtk_tree_ins(ihlist, row = (/ j, -1 /))
+        call hl_gtk_tree_ins(ihlist, row = (/ j, -1_c_int /))
         write(line,"('List entry number',I0,':',I0)") j,i
         ltr=len_trim(line)+1
         line(ltr:ltr)=c_null_char
-        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1/), col=0, svalue=line)
-        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1/), col=1, ivalue=i)
-        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1/), col=2, ivalue=3*i)
-        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1/), col=3, fvalue=log10(real(i)))
-        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1/), col=4, l64value=int(i,c_int64_t)**4)
-        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1/), col=5, ivalue=mod(i,2))
+        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=0_c_int, &
+             & svalue=line)
+        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=1_c_int, &
+             & ivalue=i)
+        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=2_c_int, &
+             & ivalue=3_c_int*i)
+        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=3_c_int, &
+             & fvalue=log10(real(i)))
+        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=4_c_int, &
+             & l64value=int(i,c_int64_t)**4)
+        call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=5_c_int, &
+             & ivalue=mod(i,2_c_int))
      end do
   end do
 
@@ -192,11 +210,13 @@ program tree
   call hl_gtk_box_pack(base, ihscrollcontain)
 
   ! Add a note about editable columns
-  lbl = gtk_label_new("The ""Name"" and ""3N"" columns are editable"//c_null_char)
+  lbl = gtk_label_new("The ""Name"" and ""3N"" columns are editable"&
+       & //c_null_char)
   call hl_gtk_box_pack(base, lbl)
 
   ! Delete selected row
-  dbut = hl_gtk_button_new("Delete selected row"//c_null_char, clicked=c_funloc(del_row), &
+  dbut = hl_gtk_button_new("Delete selected row"//c_null_char, &
+       & clicked=c_funloc(del_row), &
        & tooltip="Delete the selected row"//c_null_char, sensitive=FALSE)
 
   call hl_gtk_box_pack(base, dbut)

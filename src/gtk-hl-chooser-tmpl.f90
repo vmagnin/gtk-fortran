@@ -306,7 +306,7 @@ contains
 
     type(c_ptr) :: dialog, content, junk, gfilter
     integer(kind=c_int) :: icreate, idir, action, lval
-    integer :: i, idx0, idx1
+    integer(kind=c_int) :: i, idx0, idx1
     integer(kind=c_int) :: nsel, resp
     type(c_ptr) :: strptr
     type(c_ptr) :: fbox, fapply
@@ -320,7 +320,7 @@ contains
        call gtk_window_set_default_size(dialog, wsize(1),&
             & wsize(2))
     else
-       call gtk_window_set_default_size(dialog, 700, 500)
+       call gtk_window_set_default_size(dialog, 700_c_int, 500_c_int)
     end if
 
     if (present(parent)) then
@@ -362,7 +362,7 @@ contains
     ! Create the chooser & put it in the content area
     content = gtk_dialog_get_content_area(dialog)
     chooser_info%chooser = gtk_file_chooser_widget_new(action)
-    call gtk_box_pack_start(content, chooser_info%chooser, TRUE, TRUE, 0)
+    call gtk_box_pack_start(content, chooser_info%chooser, TRUE, TRUE, 0_c_int)
 
     ! Local/URI
     if (present(allow_uri)) then
@@ -487,7 +487,8 @@ contains
           call hl_gtk_box_pack(fbox, junk, expand=FALSE)
           chooser_info%fentry = &
                & hl_gtk_entry_new(activate=c_funloc(hl_gtk_chooser_filt_cb), &
-               & len=60, tooltip="Enter a new filter here."//c_null_char, &
+               & len=60_c_int, &
+               & tooltip="Enter a new filter here."//c_null_char, &
                & data=c_loc(chooser_info))
           call hl_gtk_box_pack(fbox, chooser_info%fentry)
           fapply = hl_gtk_button_new("Apply"//c_null_char, &
@@ -510,14 +511,14 @@ contains
        nsel = g_slist_length(chooser_info%chooser_sel_list)
        allocate(files(nsel))
        do i = 1, nsel
-          strptr = g_slist_nth_data(chooser_info%chooser_sel_list, i-1)
-          call convert_c_string(strptr, len(files), files(i))
+          strptr = g_slist_nth_data(chooser_info%chooser_sel_list, i-1_c_int)
+          call convert_c_string(strptr, files(i))
           call g_free(strptr)
        end do
        call g_slist_free(chooser_info%chooser_sel_list)
 
-       if (present(cdir)) call convert_c_string(chooser_info%chooser_curdir,&
-            & len(cdir), cdir)
+       if (present(cdir)) call convert_c_string(chooser_info%chooser_curdir, &
+            & cdir)
     end if
   end function hl_gtk_file_chooser_show
 

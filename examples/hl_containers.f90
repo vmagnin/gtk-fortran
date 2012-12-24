@@ -1,9 +1,10 @@
 module handlers
   use iso_c_binding
   use gtk_hl
-  use gtk, only: gtk_button_new, gtk_container_add, gtk_label_new, gtk_main, gtk_&
-       &main_quit, gtk_notebook_new, gtk_widget_destr&
-       &oy, gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
+
+  use gtk, only: gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, &
+       & gtk_widget_destroy, gtk_widget_show_all, gtk_init, TRUE, FALSE
+
 
   implicit none
 
@@ -30,16 +31,16 @@ contains
   subroutine add_row(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
-    call hl_gtk_table_expand(table, ny=1)
+    call hl_gtk_table_expand(table, ny=1_c_int)
 
   end subroutine add_row
-    subroutine add_col(widget, gdata) bind(c)
+  subroutine add_col(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
-    call hl_gtk_table_expand(table, nx=1)
+    call hl_gtk_table_expand(table, nx=1_c_int)
 
   end subroutine add_col
-  
+
 end module handlers
 
 program containers
@@ -51,7 +52,7 @@ program containers
 
   integer(kind=c_int) :: ipos
   type(c_ptr) :: junk, jb
-  integer :: i
+  integer(kind=c_int) :: i
   integer(kind=c_int), dimension(6), target :: bval = (/ (i, i = 1,6) /)
   character(len=15) :: ltext
 
@@ -70,16 +71,17 @@ program containers
   call hl_gtk_box_pack(base, nbook)
 
   ! First page is a 3x6 table
-  table=hl_gtk_table_new(6, 3, homogeneous=TRUE)
-  ipos = hl_gtk_notebook_add_page(nbook, table, label="Example table"//c_null_char)
+  table=hl_gtk_table_new(homogeneous=TRUE)
+  ipos = hl_gtk_notebook_add_page(nbook, table, &
+       & label="Example table"//c_null_char)
 
   do i = 1, 6
      write(ltext, "('Table row',I2)") i
      junk = gtk_label_new(trim(ltext)//c_null_char)
-     call hl_gtk_table_attach(table, junk, 0, i-1, xspan=2)
+     call hl_gtk_table_attach(table, junk, 0_c_int, i-1_c_int, xspan=2_c_int)
      junk = hl_gtk_button_new("Press"//c_null_char, clicked=c_funloc(bpress), &
           & data = c_loc(bval(i)))
-     call hl_gtk_table_attach(table, junk, 2, i-1)
+     call hl_gtk_table_attach(table, junk, 2_c_int, i-1_c_int)
   end do
 
   ! Then 4 relocatable dummy pages

@@ -25,11 +25,11 @@
 ! Last modification: 04-26-2011
 
 module global_widgets
-  use iso_c_binding, only: c_ptr, c_char
+  use iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: my_pixbuf, my_drawing_area, spinButton1, spinButton2, spinButton3
   type(c_ptr) :: textView, buffer, scrolled_window, statusBar, combo1
   character(kind=c_char), dimension(:), pointer :: pixel
-  integer :: nch, rowstride, width, height, pixwidth, pixheight
+  integer(kind=c_int) :: nch, rowstride, width, height, pixwidth, pixheight
   logical :: computing = .false.
   character(LEN=80) :: string
 end module global_widgets
@@ -129,7 +129,8 @@ contains
     iterations = INT(gtk_spin_button_get_value (spinButton3))
 
     write(string, '("c=",F8.6,"+i*",F8.6,"   ", I6, " iterations")') c, iterations
-    call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//c_null_char, -1)
+    call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE&
+         & //c_null_char, -1_c_int)
 
     message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
               & "Julia"//c_null_char), "Computing..."//c_null_char)
@@ -236,7 +237,9 @@ contains
     type(c_ptr), value :: widget, gdata
 
     if (gtk_toggle_button_get_active(widget) == TRUE) then
-      call gtk_text_buffer_insert_at_cursor (buffer, "In pause (don't try to quit the window)"//C_NEW_LINE//c_null_char, -1)
+      call gtk_text_buffer_insert_at_cursor (buffer, &
+           & "In pause (don't try to quit the window)"//C_NEW_LINE//c_null_char,&
+           & -1_c_int)
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
         call g_usleep(500000_c_long)   ! microseconds
@@ -244,7 +247,7 @@ contains
       end do
       !FIXME: if we try to quit during pause, the application crashes
     else
-      call gtk_text_buffer_insert_at_cursor (buffer, "Not in pause"//C_NEW_LINE//c_null_char, -1)
+      call gtk_text_buffer_insert_at_cursor (buffer, "Not in pause"//C_NEW_LINE//c_null_char, -1_c_int)
     end if
     
     ret = FALSE
@@ -300,11 +303,11 @@ program julia
   call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(delete_event))
 
   label1 = gtk_label_new("real(c)"//c_null_char)
-  spinButton1 = gtk_spin_button_new (gtk_adjustment_new(-0.835d0,-2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7)
+  spinButton1 = gtk_spin_button_new (gtk_adjustment_new(-0.835d0,-2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7_c_int)
   label2 = gtk_label_new("imag(c) "//c_null_char)
-  spinButton2 = gtk_spin_button_new (gtk_adjustment_new(-0.2321d0, -2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7)
+  spinButton2 = gtk_spin_button_new (gtk_adjustment_new(-0.2321d0, -2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7_c_int)
   label3 = gtk_label_new("iterations"//c_null_char)
-  spinButton3 = gtk_spin_button_new (gtk_adjustment_new(1000d0,1d0,+100000d0,10d0,100d0,0d0),10d0, 0)
+  spinButton3 = gtk_spin_button_new (gtk_adjustment_new(1000d0,1d0,+100000d0,10d0,100d0,0d0),10d0, 0_c_int)
 
   label4 = gtk_label_new("Predefined values:"//c_null_char)
   combo1 = gtk_combo_box_text_new()
@@ -328,19 +331,19 @@ program julia
   call gtk_grid_set_column_homogeneous(table, TRUE)
   call gtk_grid_set_row_homogeneous(table, TRUE)
 
-  call gtk_grid_attach(table, button1, 0, 3, 1, 1)
-  call gtk_grid_attach(table, button2, 1, 3, 1, 1)
-  call gtk_grid_attach(table, button3, 3, 3, 1, 1)
-  call gtk_grid_attach(table, label1, 0, 0, 1, 1)
-  call gtk_grid_attach(table, label2, 0, 1, 1, 1)
-  call gtk_grid_attach(table, label3, 0, 2, 1, 1)
-  call gtk_grid_attach(table, spinButton1, 1, 0, 1, 1)
-  call gtk_grid_attach(table, spinButton2, 1, 1, 1, 1)
-  call gtk_grid_attach(table, spinButton3, 1, 2, 1,1)  
-  call gtk_grid_attach(table, linkButton, 3, 0, 1, 1)
-  call gtk_grid_attach(table, label4, 2, 0, 1, 1)
-  call gtk_grid_attach(table, combo1, 2, 1, 1,1)
-  call gtk_grid_attach(table, toggle1, 2, 3, 1,1)
+  call gtk_grid_attach(table, button1, 0_c_int, 3_c_int, 1_c_int, 1_c_int)
+  call gtk_grid_attach(table, button2, 1_c_int, 3_c_int, 1_c_int, 1_c_int)
+  call gtk_grid_attach(table, button3, 3_c_int, 3_c_int, 1_c_int, 1_c_int)
+  call gtk_grid_attach(table, label1, 0_c_int, 0_c_int, 1_c_int, 1_c_int)
+  call gtk_grid_attach(table, label2, 0_c_int, 1_c_int, 1_c_int, 1_c_int)
+  call gtk_grid_attach(table, label3, 0_c_int, 2_c_int, 1_c_int, 1_c_int)
+  call gtk_grid_attach(table, spinButton1, 1_c_int, 0_c_int, 1_c_int, 1_c_int)
+  call gtk_grid_attach(table, spinButton2, 1_c_int, 1_c_int, 1_c_int, 1_c_int)
+  call gtk_grid_attach(table, spinButton3, 1_c_int, 2_c_int, 1_c_int, 1_c_int)  
+  call gtk_grid_attach(table, linkButton, 3_c_int, 0_c_int, 1_c_int, 1_c_int)
+  call gtk_grid_attach(table, label4, 2_c_int, 0_c_int, 1_c_int, 1_c_int)
+  call gtk_grid_attach(table, combo1, 2_c_int, 1_c_int, 1_c_int,1_c_int)
+  call gtk_grid_attach(table, toggle1, 2_c_int, 3_c_int, 1_c_int,1_c_int)
 
   ! The table is contained in an expander, which is contained in the vertical box:
   expander = gtk_expander_new_with_mnemonic ("_The parameters:"//c_null_char)
@@ -348,8 +351,8 @@ program julia
   call gtk_expander_set_expanded(expander, TRUE)
 
   ! We create a vertical box container:
-  box1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
-  call gtk_box_pack_start (box1, expander, FALSE, FALSE, 0)
+  box1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10_c_int);
+  call gtk_box_pack_start (box1, expander, FALSE, FALSE, 0_c_int)
 
   ! The drawing area is contained in the vertical box:
   my_drawing_area = gtk_drawing_area_new()
@@ -365,19 +368,20 @@ program julia
   textView = gtk_text_view_new ()
   buffer = gtk_text_view_get_buffer (textView)
   call gtk_text_buffer_set_text (buffer, "Julia Set"//C_NEW_LINE// &
-      & "You can copy this text and even edit it !"//C_NEW_LINE//c_null_char, -1)
+      & "You can copy this text and even edit it !"//C_NEW_LINE//c_null_char,&
+      & -1_c_int)
   scrolled_window = gtk_scrolled_window_new (c_null_ptr, c_null_ptr)
   notebookLabel2 = gtk_label_new_with_mnemonic("_Messages"//c_null_char)
   call gtk_container_add (scrolled_window, textView)
   !call gtk_container_add (handle1, scrolled_window)
   secondTab = gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
   
-  call gtk_box_pack_start (box1, notebook, TRUE, TRUE, 0)
+  call gtk_box_pack_start (box1, notebook, TRUE, TRUE, 0_c_int)
  
   statusBar = gtk_statusbar_new ()
   message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
               & "Julia"//c_null_char), "Waiting..."//c_null_char)
-  call gtk_box_pack_start (box1, statusBar, FALSE, FALSE, 0)
+  call gtk_box_pack_start (box1, statusBar, FALSE, FALSE, 0_c_int)
 
   call gtk_container_add (my_window, box1)
   call gtk_window_set_mnemonics_visible (my_window, TRUE)
@@ -386,7 +390,7 @@ program julia
   ! We create a "pixbuffer" to store the pixels of the image:
   pixwidth  = 500
   pixheight = 500
-  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, pixwidth, pixheight)    
+  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, pixwidth, pixheight)    
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
@@ -468,7 +472,8 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
 
   t1=system_time()
   write(string, '("System time = ",F8.3, " s")') t1-t0
-  call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//c_null_char, -1)
+  call gtk_text_buffer_insert_at_cursor (buffer, &
+       & string//C_NEW_LINE//c_null_char, -1_c_int)
   
 end subroutine Julia_set
 

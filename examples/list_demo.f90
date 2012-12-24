@@ -67,21 +67,21 @@ contains
     call g_value_set_static_string(c_loc(valt), "Heinz El-Mann"//c_null_char)
     call gtk_list_store_set_value(store, c_loc(iter), COL_NAME, &
          & c_loc(valt))
-    call g_value_set_uint(c_loc(vali), 51)
+    call g_value_set_uint(c_loc(vali), 51_c_int)
     call gtk_list_store_set_value(store, c_loc(iter), COL_AGE, c_loc(vali))
 
     ! append another row and fill in some data
     call gtk_list_store_append (store, c_loc(iter))
     call g_value_set_static_string(c_loc(valt), "Jane Doe"//c_null_char)
     call gtk_list_store_set_value(store, c_loc(iter), COL_NAME, c_loc(valt))
-    call g_value_set_uint(c_loc(vali), 23)
+    call g_value_set_uint(c_loc(vali), 23_c_int)
     call gtk_list_store_set_value(store, c_loc(iter), COL_AGE, c_loc(vali))
 
     ! And a third
     call gtk_list_store_append (store, c_loc(iter))
     call g_value_set_static_string(c_loc(valt), "Joe Bungop"//c_null_char)
     call gtk_list_store_set_value(store, c_loc(iter), COL_NAME, c_loc(valt))
-    call g_value_set_uint(c_loc(vali), 91)
+    call g_value_set_uint(c_loc(vali), 91_c_int)
     call gtk_list_store_set_value(store, c_loc(iter), COL_AGE, c_loc(vali))
 
   end function create_and_fill_model
@@ -99,7 +99,7 @@ contains
     renderer = gtk_cell_renderer_text_new ()
     col = gtk_tree_view_column_new()
     call gtk_tree_view_column_pack_start(col, renderer, FALSE)
-    ncol= gtk_tree_view_insert_column(view, col, -1)
+    ncol= gtk_tree_view_insert_column(view, col, -1_c_int)
     call gtk_tree_view_column_add_attribute(col, renderer, &
          & "text"//c_null_char, COL_NAME)
     call gtk_tree_view_column_set_title(col, "Name"//c_null_char)
@@ -110,7 +110,7 @@ contains
     col = gtk_tree_view_column_new()
     renderer = gtk_cell_renderer_text_new ()
     call gtk_tree_view_column_pack_start(col, renderer, FALSE)
-    ncol = gtk_tree_view_insert_column(view, col, -1)
+    ncol = gtk_tree_view_insert_column(view, col, -1_c_int)
     call gtk_tree_view_column_set_title(col, "Age"//c_null_char)
     call gtk_tree_view_column_add_attribute(col, renderer, &
          & "text"//c_null_char, COL_AGE)

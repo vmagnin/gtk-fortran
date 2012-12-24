@@ -329,13 +329,15 @@ contains
     type(c_ptr), target :: cpixels
     integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
     integer :: i,j, iroff, ioff
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans, lpix
+    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer :: lpix
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
          & width=ncols, rowstride=rowstr)
 
     allocate(pixels(nchans, ncols, nrows))
-    lpix = rowstr*(nrows-1) + ncols*nchans
+
+    lpix = int(rowstr*(nrows-1) + ncols*nchans)
 
     cpixels = gdk_pixbuf_get_pixels(pixbuf)
     call c_f_pointer(cpixels, fpixels, [lpix])
@@ -368,13 +370,14 @@ contains
     type(c_ptr), target :: cpixels
     integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
     integer :: i,j, iroff, ioff
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans, lpix
+    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer :: lpix
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
          & width=ncols, rowstride=rowstr)
 
     allocate(pixels(nchans, ncols, nrows))
-    lpix = rowstr*(nrows-1) + ncols*nchans
+    lpix = int(rowstr*(nrows-1) + ncols*nchans)
 
     cpixels = gdk_pixbuf_get_pixels(pixbuf)
     call c_f_pointer(cpixels, fpixels, [lpix])
@@ -409,7 +412,8 @@ contains
     !-
 
     integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop, lput
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans, lpix
+    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer :: lpix
     type(c_ptr), target :: cpixels
     integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
     integer, dimension(3) :: sz
@@ -429,7 +433,7 @@ contains
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
          & width=ncols, rowstride=rowstr)
-    lpix = rowstr*(nrows-1) + ncols*nchans
+    lpix = int(rowstr*(nrows-1) + ncols*nchans)
 
     ! Checks on sizes etc.
 
@@ -534,7 +538,8 @@ contains
     !-
 
     integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop, lput
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans, lpix
+    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer :: lpix
     type(c_ptr), target :: cpixels
     integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
     integer, dimension(2) :: sz
@@ -553,7 +558,7 @@ contains
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
          & width=ncols, rowstride=rowstr)
-    lpix = rowstr*(nrows-1) + ncols*nchans
+    lpix = int(rowstr*(nrows-1) + ncols*nchans)
 
     ! Checks on sizes etc.
 
@@ -609,7 +614,8 @@ contains
     !-
 
     integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop, lput
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans, lpix
+    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer :: lpix
     type(c_ptr), target :: cpixels
     integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
     integer, dimension(3) :: sz
@@ -629,7 +635,7 @@ contains
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
          & width=ncols, rowstride=rowstr)
-    lpix = rowstr*(nrows-1) + ncols*nchans
+    lpix = int(rowstr*(nrows-1) + ncols*nchans)
 
     ! Checks on sizes etc.
 
@@ -733,7 +739,8 @@ contains
     !-
 
     integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop, lput
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans, lpix
+    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer :: lpix
     type(c_ptr), target :: cpixels
     integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
     integer, dimension(2) :: sz
@@ -752,7 +759,7 @@ contains
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
          & width=ncols, rowstride=rowstr)
-    lpix = rowstr*(nrows-1) + ncols*nchans
+    lpix = int(rowstr*(nrows-1) + ncols*nchans)
 
     ! Checks on sizes etc.
 

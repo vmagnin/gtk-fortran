@@ -97,7 +97,7 @@ contains
     type(c_ptr) :: my_cairo_surface, my_cairo_context, my_pixbuf
     character(kind=c_char), dimension(:), pointer :: pixel
     integer :: j
-    integer :: i, nch, rowstride, width, height
+    integer(kind=c_int) :: i, nch, rowstride, width, height
     integer :: x, y
     
     print *, "my expose_event"
@@ -124,7 +124,7 @@ contains
     !*************
     width = 200
     height = 100
-    my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, width, height)    
+    my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)    
     call C_F_POINTER(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
 
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
@@ -284,7 +284,7 @@ program gtkFortran
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   !call gtk_window_set_default_size(window, 500, 500)
   call gtk_window_set_title(window, "GTK+ & Fortran are good friends"//c_null_char)
-  call gtk_container_set_border_width (window, 10)
+  call gtk_container_set_border_width (window, 10_c_int)
   call g_signal_connect (window, "delete-event"//c_null_char, c_funloc(delete_event))
   call g_signal_connect (window, "destroy"//c_null_char, c_funloc(destroy))
 
@@ -295,49 +295,50 @@ program gtkFortran
 
   button1 = gtk_button_new_with_label ("Button1"//c_null_char)
 
-  call gtk_grid_attach(table, button1, 0, 0, 1, 1)
+  call gtk_grid_attach(table, button1, 0_c_int, 0_c_int, 1_c_int, 1_c_int)
   call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(firstbutton))
 
   button2 = gtk_button_new_with_label ("Button2"//c_null_char)
-  call gtk_grid_attach(table, button2, 1, 0, 1, 1)
+  call gtk_grid_attach(table, button2, 1_c_int, 0_c_int, 1_c_int, 1_c_int)
   call g_signal_connect (button2, "clicked"//c_null_char, c_funloc(secondbutton))
 
   button3 = gtk_button_new_with_label ("Exit"//c_null_char)
-  call gtk_grid_attach(table, button3, 2, 0, 1, 1)
+  call gtk_grid_attach(table, button3, 2_c_int, 0_c_int, 1_c_int, 1_c_int)
   call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(destroy))
 
   button4 = gtk_button_new_with_label ("About"//c_null_char)
-  call gtk_grid_attach(table, button4, 3, 0, 1, 1)
+  call gtk_grid_attach(table, button4, 3_c_int, 0_c_int, 1_c_int, 1_c_int)
   call g_signal_connect (button4, "clicked"//c_null_char, c_funloc(aboutbutton))
 
   label1 = gtk_label_new("My label"//c_null_char)
-  call gtk_grid_attach(table, label1, 0, 1, 1, 1)
+  call gtk_grid_attach(table, label1, 0_c_int, 1_c_int, 1_c_int, 1_c_int)
 
   entry1 = gtk_entry_new()
-  call gtk_grid_attach(table, entry1, 1, 1, 1, 1)  
+  call gtk_grid_attach(table, entry1, 1_c_int, 1_c_int, 1_c_int, 1_c_int)  
   
   progress = gtk_progress_bar_new()
   call gtk_progress_bar_set_fraction (progress, 0.15d0)
   call gtk_progress_bar_set_text (progress, "My progress bar"//c_null_char)
 
-  call gtk_grid_attach(table, progress, 1, 2, 3,1)  
+  call gtk_grid_attach(table, progress, 1_c_int, 2_c_int, 3_c_int, 1_c_int)  
 
   view = gtk_text_view_new ()
   buffer = gtk_text_view_get_buffer (view)
   call gtk_text_buffer_set_text (buffer, "This is not clean code, just a great bazaar"//char(13)// &
       & "where I test widgets"//c_new_line//"Vincent"//c_new_line//&
-      &"You can edit this text."//c_null_char, -1)
+      &"You can edit this text."//c_null_char, -1_c_int)
   scrolled_window = gtk_scrolled_window_new (c_null_ptr, c_null_ptr)
   call gtk_container_add (scrolled_window, view)
-  call gtk_grid_attach(table, scrolled_window, 0, 3, 3, 3)  
+  call gtk_grid_attach(table, scrolled_window, 0_c_int, 3_c_int, 3_c_int, 3_c_int)  
 
   my_drawing_area = gtk_drawing_area_new()
 
   call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
-  call gtk_grid_attach(table, my_drawing_area, 0, 6, 3, 6)  
+  call gtk_grid_attach(table, my_drawing_area, 0_c_int, 6_c_int, 3_c_int, 6_c_int)  
   
-  file_selector = gtk_file_chooser_button_new ("gtk_file_chooser_button_new"//c_null_char, 0)
-  call gtk_grid_attach(table, file_selector, 0, 12, 3, 1)  
+  file_selector = gtk_file_chooser_button_new ("gtk_file_chooser_button_new"//&
+       & c_null_char, 0_c_int)
+  call gtk_grid_attach(table, file_selector, 0_c_int, 12_c_int, 3_c_int, 1_c_int)  
   call g_signal_connect (file_selector, "selection-changed"//c_null_char, c_funloc(file_changed));
 
   call gtk_widget_show_all (window)

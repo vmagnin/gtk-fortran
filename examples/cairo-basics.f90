@@ -46,7 +46,7 @@ module handlers
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
-  integer :: width, height
+  integer(kind=c_int) :: width, height
   
   
 contains

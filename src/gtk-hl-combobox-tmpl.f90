@@ -257,7 +257,7 @@ contains
 ! Note that by using the hl delete we avoid 3-level conditional compilation.
 !!$GTK<3.0!    n = hl_gtk_combo_box_n_entries(cbox)
 !!$GTK<3.0!    do i = 1, n
-!!$GTK<3.0!       call hl_gtk_combo_box_delete(cbox, 0)
+!!$GTK<3.0!       call hl_gtk_combo_box_delete(cbox, 0_c_int)
 !!$GTK<3.0!    end do
 
   end subroutine hl_gtk_combo_box_delete_all
@@ -289,7 +289,7 @@ contains
 
        ! This is a bit ugly
        if (present(ftext)) &
-            & call convert_c_string(ctext, len(ftext), ftext)
+            & call convert_c_string(ctext, ftext)
 
        if (present(text)) text=ctext
     end if

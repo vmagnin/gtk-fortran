@@ -88,7 +88,7 @@ end module handlers
 
 
 program gtkFortran
-  use iso_c_binding, only: c_ptr, c_funloc, c_loc
+  use iso_c_binding, only: c_ptr, c_funloc, c_loc, c_int
   use gtk, only: gtk_init, gtk_window_new, GTK_WINDOW_TOPLEVEL, gtk_window_set_title, &
       & gtk_container_set_border_width, g_signal_connect, gtk_box_new, gtk_container_add, &
       & gtk_button_new_with_label, gtk_box_pack_start, gtk_widget_show, gtk_main, FALSE, &
@@ -110,28 +110,28 @@ program gtkFortran
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   !call gtk_window_set_default_size(window, 500, 500)
   call gtk_window_set_title(window, "My title"//c_null_char)
-  call gtk_container_set_border_width (window, 10)
+  call gtk_container_set_border_width (window, 10_c_int)
   call g_signal_connect (window, "delete-event"//c_null_char, c_funloc(delete_event))
   call g_signal_connect (window, "destroy"//c_null_char, c_funloc(destroy))
 
-  box1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 10);
+  box1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 10_c_int);
   call gtk_container_add (window, box1)
 
   button1 = gtk_button_new_with_label ("Button1"//c_null_char)
-  call gtk_box_pack_start (box1, button1, FALSE, FALSE, 0)
+  call gtk_box_pack_start (box1, button1, FALSE, FALSE, 0_c_int)
   call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(button1clicked))
   call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(hello))
   call gtk_widget_show (button1)
 
   ! This is an example of passing data to the callback function:
   button2 = gtk_button_new_with_label ("Button2"//c_null_char)
-  call gtk_box_pack_start (box1, button2, FALSE, FALSE, 0)
+  call gtk_box_pack_start (box1, button2, FALSE, FALSE, 0_c_int)
   call g_signal_connect (button2, "clicked"//c_null_char, c_funloc(button2clicked), &
        & c_loc(val))
   call gtk_widget_show (button2)
 
   button3 = gtk_button_new_with_label ("Exit"//c_null_char)
-  call gtk_box_pack_start (box1, button3, FALSE, FALSE, 0)
+  call gtk_box_pack_start (box1, button3, FALSE, FALSE, 0_c_int)
   call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(destroy))
   call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(hello))
   call gtk_widget_show (button3)

@@ -23,7 +23,7 @@
 !
 ! gfortran -I../src ../src/gtk.o cairo-basics.f90 `pkg-config --cflags --libs gtk+-3.0`
 ! Contributed by James Tappin,
-! originally derived from cairo_basics.f90 by Vindent Magnin & Jerry DeLisle
+! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
 
 module handlers
   use iso_c_binding
@@ -33,7 +33,7 @@ module handlers
   &idget_show, gtk_window_new, gtk_window_set_default, gtk_window_set_default_siz&
   &e, gtk_window_set_title, gtk_widget_show_all, gtk_main_quit, &
   & gtk_widget_queue_draw, &
-  & TRUE, FALSE, c_null_char, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
+  & TRUE, FALSE, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
   & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, gtk_event_box_new, &
   & GDK_ENTER_NOTIFY, GDK_LEAVE_NOTIFY, GDK_2BUTTON_PRESS, GDK_KEY_RELEASE, &
   & GDK_CONTROL_MASK, GDK_POINTER_MOTION_MASK, GDK_BUTTON_PRESS, &
@@ -60,7 +60,7 @@ module handlers
 !  integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
-  integer :: width, height
+  integer(kind=c_int) :: width, height
   
 contains
   ! User defined event handlers go here
@@ -160,7 +160,7 @@ contains
     print *, "Key event"
     if (c_associated(event)) then
        call c_f_pointer(event,bevent)
-       call convert_c_string(gdk_keyval_name(bevent%keyval), 20, keyname)
+       call convert_c_string(gdk_keyval_name(bevent%keyval), keyname)
        print *, "Code: ",bevent%keyval," Name: ", trim(keyname), &
             & " Modifier: ", bevent%state
        if (bevent%type == GDK_KEY_PRESS .and. &
@@ -267,7 +267,7 @@ program cairo_basics_click
   my_drawing_area = hl_gtk_drawing_area_new(&
        & scroll=my_scroll_box, &
        & size = (/width, height /), &
-       & ssize = (/ 400, 300 /), &
+       & ssize = (/ 400_c_int, 300_c_int /), &
        & button_press_event=c_funloc(button_event_h), &
        & scroll_event=c_funloc(scroll_event_h), &
        & enter_event=c_funloc(cross_event_h), &
