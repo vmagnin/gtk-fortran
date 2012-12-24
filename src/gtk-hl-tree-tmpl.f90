@@ -501,7 +501,6 @@ contains
     !-
 
     type(c_ptr) :: slist, vselection
-    type(c_ptr), target :: model
     integer(kind=c_int) :: i
     type(c_ptr) :: cindex
     integer(kind=c_int), pointer :: findex
@@ -513,7 +512,7 @@ contains
     end if
 
     slist = gtk_tree_selection_get_selected_rows(vselection, &
-         & c_loc(model))
+         & c_null_ptr)
 
     ! If no selections, then set the count to 0 and return
     if (.not. c_associated(slist)) then
@@ -1573,7 +1572,7 @@ contains
          & intent(out), optional :: indices
     integer(kind=c_int), dimension(:), allocatable, target, &
          & intent(out), optional :: depths
-    type(c_ptr), optional :: selection
+    type(c_ptr), intent(in), optional :: selection
 
     ! Get the indices of the selected rows
     !
@@ -1594,7 +1593,6 @@ contains
     !-
 
     type(c_ptr) :: slist, vselection
-    type(c_ptr), target :: model
     integer(kind=c_int) :: i
     integer(kind=c_int) :: maxdepth
     integer(kind=c_int), dimension(:), pointer :: idxl
@@ -1608,7 +1606,7 @@ contains
     end if
 
     slist = gtk_tree_selection_get_selected_rows(vselection, &
-         & c_loc(model))
+         & c_null_ptr)
 
     ! If no selections, then set the count to 0 and return
     if (.not. c_associated(slist)) then
@@ -1626,18 +1624,17 @@ contains
     maxdepth = 0
     do i = 1, count
        maxdepth = max(maxdepth, &
-            & gtk_tree_path_get_depth(g_list_nth_data(slist, i-1_c_int))&
-            & +1_c_int)
+            & gtk_tree_path_get_depth(g_list_nth_data(slist, i-1_c_int)))
     end do
 
     allocate(indices(maxdepth,count))
     if (present(depths)) allocate(depths(count))
 
     do i = 1, count
-       idxlc = gtk_tree_path_get_indices_with_depth(g_list_nth_data(slist,&
-            & i-1_c_int),&
+       idxlc = gtk_tree_path_get_indices_with_depth( &
+            & g_list_nth_data(slist, i-1_c_int), &
             & c_loc(dep))
-       call c_f_pointer(idxlc, idxl, (/ dep /) )
+       call c_f_pointer(idxlc, idxl, (/ int(dep) /) )
        indices(:dep,i) = idxl
        if (present(depths)) depths(i) = dep
     end do
@@ -1952,13 +1949,12 @@ contains
     integer :: ios
     type(c_ptr) :: pcol, list
 
-    call convert_c_string(path, 200_c_int, fpath)
+    call convert_c_string(path, fpath)
     read(fpath, *) irow
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
     call c_f_pointer(pcol, icol)
-    call convert_c_string(text, 200_c_int, ftext)
+    call convert_c_string(text, ftext)
     list = g_object_get_data(renderer, "view"//c_null_char)
-
     call hl_gtk_listn_set_cell(list, irow, icol, &
          & svalue=trim(ftext))
   end subroutine hl_gtk_listn_edit_cb
@@ -1986,14 +1982,13 @@ contains
     type(c_ptr) :: pcol, list
     logical :: state
 
-    call convert_c_string(path, 200_c_int, fpath)
+    call convert_c_string(path, fpath)
     read(fpath, *) irow
 
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
     call c_f_pointer(pcol, icol)
 
     list = g_object_get_data(renderer, "view"//c_null_char)
-
     state = c_f_logical(gtk_cell_renderer_toggle_get_active(renderer))
     call hl_gtk_listn_set_cell(list, irow, icol, &
          & logvalue= .not. state)
@@ -2024,14 +2019,13 @@ contains
     logical :: state
     integer(kind=c_int) :: nrows
 
-    call convert_c_string(path, 200_c_int, fpath)
+    call convert_c_string(path, fpath)
     read(fpath, *) irow
 
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
     call c_f_pointer(pcol, icol)
 
     list = g_object_get_data(renderer, "view"//c_null_char)
-
     state = c_f_logical(gtk_cell_renderer_toggle_get_active(renderer))
     if (state) return ! Don't act on an unset
 
@@ -2069,10 +2063,10 @@ contains
     integer :: ios, i, n
     type(c_ptr) :: tree, pcol
 
-    call convert_c_string(path, 200_c_int, fpath)
+    call convert_c_string(path, fpath)
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
     call c_f_pointer(pcol, icol)
-    call convert_c_string(text, 200_c_int, ftext)
+    call convert_c_string(text, ftext)
 
     n = 0
     do i = 1, len_trim(fpath)
@@ -2114,7 +2108,7 @@ contains
     type(c_ptr) :: pcol, tree
     logical :: state
 
-    call convert_c_string(path, 200_c_int, fpath)
+    call convert_c_string(path, fpath)
     n = 0
     do i = 1, len_trim(fpath)
        if (fpath(i:i) == ":") then
@@ -2162,7 +2156,7 @@ contains
     type(gtktreeiter), target :: iter, piter
     integer(kind=c_int) :: valid, nchild
 
-    call convert_c_string(path, 200_c_int, fpath)
+    call convert_c_string(path, fpath)
     n = 0
     do i = 1, len_trim(fpath)
        if (fpath(i:i) == ":") then
@@ -2196,7 +2190,7 @@ contains
 
     do
        ipath = gtk_tree_model_get_string_from_iter (tree_model, c_loc(iter))
-       call convert_c_string(ipath, 200_c_int, fpath)
+       call convert_c_string(ipath, fpath)
        n = 0
        do i = 1, len_trim(fpath)
           if (fpath(i:i) == ":") then
@@ -2287,7 +2281,7 @@ contains
        & data_edited_combo, changed_combo, data_changed_combo, toggled_radio, &
        & data_toggled_radio)
     integer(kind=c_int), intent(in) :: icol
-    type(c_ptr), intent(in) :: view
+    type(c_ptr), intent(in), target :: view
     logical, intent(in) :: is_list
     integer(kind=type_kind), intent(in) :: type
     integer(kind=c_int), dimension(:), optional, intent(in) :: editable, &
@@ -3138,7 +3132,7 @@ contains
     case (G_TYPE_STRING)
        if (present(svalue)) then
           cstr = g_value_get_string(val)
-          call convert_c_string(cstr, int(len(svalue), c_int), svalue)
+          call convert_c_string(cstr, svalue)
        else
           write(error_unit,*) "hl_gtk_list_tree_get_gvalue:: "//&
                & "Cannot return 'string' type to any available output"

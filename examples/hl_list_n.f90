@@ -63,6 +63,7 @@ contains
     character(len=10) :: nodd
     character :: code, ucode
     integer(kind=c_int) :: icode, iucode
+
     nsel = hl_gtk_listn_get_selections(C_NULL_PTR, selections, list)
     if (nsel == 0) then
        print *, "No selection"
@@ -249,7 +250,9 @@ program list_n
 
   ! realize the window
 
+  print *, "Created"
   call gtk_widget_show_all(ihwin)
+  print *, "Realized"
 
   ! Event loop
 

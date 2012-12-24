@@ -210,11 +210,13 @@ program tree
   call hl_gtk_box_pack(base, ihscrollcontain)
 
   ! Add a note about editable columns
-  lbl = gtk_label_new("The ""Name"" and ""3N"" columns are editable"//c_null_char)
+  lbl = gtk_label_new("The ""Name"" and ""3N"" columns are editable"&
+       & //c_null_char)
   call hl_gtk_box_pack(base, lbl)
 
   ! Delete selected row
-  dbut = hl_gtk_button_new("Delete selected row"//c_null_char, clicked=c_funloc(del_row), &
+  dbut = hl_gtk_button_new("Delete selected row"//c_null_char, &
+       & clicked=c_funloc(del_row), &
        & tooltip="Delete the selected row"//c_null_char, sensitive=FALSE)
 
   call hl_gtk_box_pack(base, dbut)

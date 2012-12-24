@@ -48,17 +48,17 @@ contains
     character(len=100), dimension(:), allocatable :: f_text
 
     print *, "INSERT event", nins
-    call c_f_pointer(text, cf_text, (/ nins /))
+    call c_f_pointer(text, cf_text, (/ int(nins) /))
     call convert_c_string(cf_text, f_text)
 
     print "(a)", f_text
-    deallocate(f_text)
+!!$    deallocate(f_text)
 
     call hl_gtk_text_view_get_info(C_NULL_PTR, buffer=widget, nlines=nl, &
          & nchars=nc, ncline=ncl)
     print *, nl, nc
     print *, ncl
-    deallocate(ncl)
+!!$    deallocate(ncl)
 
   end subroutine tv_ins
 
@@ -75,7 +75,7 @@ contains
          & gtk_text_iter_get_offset(s_iter)
 
     ctext = gtk_text_iter_get_text(s_iter, e_iter)
-    call convert_c_string(ctext, dlen, ftext)
+    call convert_c_string(ctext, int(dlen), ftext)
 
     print "(A)", ftext
     deallocate(ftext)

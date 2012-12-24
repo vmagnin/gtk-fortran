@@ -239,7 +239,7 @@ contains
     end if
     ctext = gtk_entry_get_text(entry)
 
-    call c_f_pointer(ctext, textptr, (/int(ntext,c_int)/))
+    call c_f_pointer(ctext, textptr, (/int(ntext)/))
     call convert_c_string(textptr, text, istat)
 
     if (present(status)) status=istat
@@ -592,7 +592,7 @@ contains
     character(kind=c_char), dimension(:), pointer :: ftext0
     type(gtktextiter), target :: s_iter, e_iter
     integer(kind=c_int) :: ihid
-    integer(kind=c_int) :: nchars_r
+    integer :: nchars_r
 
     if (present(buffer)) then
        tbuf = buffer
@@ -659,8 +659,8 @@ contains
        ihid = TRUE
     end if
     ctext0 = gtk_text_buffer_get_text(tbuf, c_loc(s_iter), c_loc(e_iter), ihid)
-    nchars_r = gtk_text_iter_get_offset(c_loc(e_iter)) - &
-         & gtk_text_iter_get_offset(c_loc(s_iter)) + 1
+    nchars_r = int(gtk_text_iter_get_offset(c_loc(e_iter)) - &
+         & gtk_text_iter_get_offset(c_loc(s_iter))) + 1
 
     call c_f_pointer(ctext0, ftext0, (/ nchars_r /))
     call convert_c_string(ftext0, text)

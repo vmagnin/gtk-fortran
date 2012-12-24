@@ -213,7 +213,8 @@ contains
        mymax = mymin + 2._c_double * yr
     end if
     write(rangestr, &
-         & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
+         & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,&
+         & ' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
          & mxmin, mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
     call gtk_label_set_text(rangeid, trim(rangestr)//c_null_char)
 
@@ -364,7 +365,8 @@ program mandelbrot_zoom
   call gtk_box_pack_start(jb, my_event_box, FALSE, FALSE, 0_c_int)
 
   write(rangestr, &
-       & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
+       & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' &
+       & Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
        & mxmin,  mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
   rangeid = gtk_label_new(trim(rangestr)//c_null_char)
   call gtk_box_pack_start(jb, rangeid, FALSE, FALSE, 0_c_int)
@@ -372,7 +374,8 @@ program mandelbrot_zoom
   status_bar = gtk_statusbar_new()
   call gtk_box_pack_start(jb, status_bar, FALSE, FALSE, 0_c_int)
   id = gtk_statusbar_push(status_bar, 0_c_int, &
-       & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out"//c_null_char)
+       & "Left|Centre: mark region corner, Right: Reset, Wheel: Zoom in/out" &
+       & //c_null_char)
 
   call gtk_widget_show_all (my_window)
 
@@ -380,7 +383,8 @@ program mandelbrot_zoom
   my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, &
-       & (/nch, width, height/))
+       & int((/nch, width, height/)))
+  print *, shape(pixel)
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
 
   ! We use char() because we need unsigned integers.
@@ -391,7 +395,7 @@ program mandelbrot_zoom
         pixel(1,j,i)=char(0)     ! Red
         pixel(2,j,i)=char(0)     ! Green
         pixel(3,j,i)=char(0)     ! Blue
-        pixel(4,j,i)=char(255)  ! Opacity (Alpha channel)
+        pixel(4,j,i)=char(255)   ! Opacity (Alpha channel)
      end do
   end do
 
