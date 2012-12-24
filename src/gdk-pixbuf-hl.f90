@@ -23,7 +23,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 07-19-2012
+! Last modification: 12-13-2012
 
 module gdk_pixbuf_hl
 
@@ -336,6 +336,7 @@ contains
          & width=ncols, rowstride=rowstr)
 
     allocate(pixels(nchans, ncols, nrows))
+
     lpix = int(rowstr*(nrows-1) + ncols*nchans)
 
     cpixels = gdk_pixbuf_get_pixels(pixbuf)
