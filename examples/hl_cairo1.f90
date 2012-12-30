@@ -60,7 +60,7 @@ module handlers
 !  integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
-  integer :: width, height
+  integer(kind=c_int) :: width, height
   
 contains
   ! User defined event handlers go here
@@ -160,7 +160,7 @@ contains
     print *, "Key event"
     if (c_associated(event)) then
        call c_f_pointer(event,bevent)
-       call convert_c_string(gdk_keyval_name(bevent%keyval), 20, keyname)
+       call convert_c_string(gdk_keyval_name(bevent%keyval), keyname)
        print *, "Code: ",bevent%keyval," Name: ", trim(keyname), &
             & " Modifier: ", bevent%state
        if (bevent%type == GDK_KEY_PRESS .and. &
@@ -267,7 +267,7 @@ program cairo_basics_click
   my_drawing_area = hl_gtk_drawing_area_new(&
        & scroll=my_scroll_box, &
        & size = (/width, height /), &
-       & ssize = (/ 400, 300 /), &
+       & ssize = (/ 400_c_int, 300_c_int /), &
        & button_press_event=c_funloc(button_event_h), &
        & scroll_event=c_funloc(scroll_event_h), &
        & enter_event=c_funloc(cross_event_h), &

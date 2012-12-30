@@ -92,7 +92,7 @@ contains
        & data_focus_in, data_focus_out, size) result(entry)
 
     type(c_ptr) :: entry
-    integer, intent(in), optional :: len
+    integer(kind=c_int), intent(in), optional :: len
     integer(c_int), intent(in), optional :: editable
     type(c_funptr), optional :: activate, focus_in_event, focus_out_event
     type(c_ptr), optional :: data
@@ -239,7 +239,7 @@ contains
     end if
     ctext = gtk_entry_get_text(entry)
 
-    call c_f_pointer(ctext, textptr, (/int(ntext,c_int)/))
+    call c_f_pointer(ctext, textptr, (/int(ntext)/))
     call convert_c_string(textptr, text, istat)
 
     if (present(status)) status=istat
@@ -336,7 +336,7 @@ contains
        call gtk_text_buffer_get_start_iter(tbuf, c_loc(iter))
       if (len(initial_text) > 1) then
           call convert_f_string(initial_text, text0)
-           call gtk_text_buffer_insert(tbuf, c_loc(iter), text0, -1)
+           call gtk_text_buffer_insert(tbuf, c_loc(iter), text0, -1_c_int)
           deallocate(text0)
        else
           if (initial_text(size(initial_text)) == c_null_char) then
@@ -449,7 +449,7 @@ contains
     end if
 
     if (atc == TRUE) then
-       call gtk_text_buffer_insert_at_cursor(tbuf, text0, -1)
+       call gtk_text_buffer_insert_at_cursor(tbuf, text0, -1_c_int)
        deallocate(text0)
        return
     end if
@@ -462,7 +462,7 @@ contains
        end if
        if (present(replace)) then
           call hl_gtk_text_view_delete(C_NULL_PTR, line=line, column=icol, &
-               & n_chars=size(text0), buffer=tbuf)
+               & n_chars=size(text0, kind=c_int), buffer=tbuf)
        end if
        call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(iter), &
             & line, column)
@@ -473,14 +473,14 @@ contains
           irep = FALSE
        end if
        if (irep == TRUE) then
-          call gtk_text_buffer_set_text(tbuf, text0, -1)
+          call gtk_text_buffer_set_text(tbuf, text0, -1_c_int)
           deallocate(text0)
           return
        end if
        call gtk_text_buffer_get_end_iter(tbuf, c_loc(iter))
     end if
 
-    call gtk_text_buffer_insert(tbuf, c_loc(iter), text0, -1)
+    call gtk_text_buffer_insert(tbuf, c_loc(iter), text0, -1_c_int)
     deallocate(text0)
   end subroutine hl_gtk_text_view_insert
 
@@ -592,7 +592,7 @@ contains
     character(kind=c_char), dimension(:), pointer :: ftext0
     type(gtktextiter), target :: s_iter, e_iter
     integer(kind=c_int) :: ihid
-    integer(kind=c_int) :: nchars_r
+    integer :: nchars_r
 
     if (present(buffer)) then
        tbuf = buffer
@@ -659,8 +659,8 @@ contains
        ihid = TRUE
     end if
     ctext0 = gtk_text_buffer_get_text(tbuf, c_loc(s_iter), c_loc(e_iter), ihid)
-    nchars_r = gtk_text_iter_get_offset(c_loc(e_iter)) - &
-         & gtk_text_iter_get_offset(c_loc(s_iter)) + 1
+    nchars_r = int(gtk_text_iter_get_offset(c_loc(e_iter)) - &
+         & gtk_text_iter_get_offset(c_loc(s_iter))) + 1
 
     call c_f_pointer(ctext0, ftext0, (/ nchars_r /))
     call convert_c_string(ftext0, text)

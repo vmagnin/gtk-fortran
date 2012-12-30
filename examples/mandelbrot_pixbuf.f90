@@ -45,7 +45,7 @@ module handlers
   integer(c_int) :: boolresult
   type(c_ptr) :: my_pixbuf
   character(kind=c_char), dimension(:), pointer :: pixel
-  integer :: nch, rowstride, width, height
+  integer(kind=c_int) :: nch, rowstride, width, height
   
 contains
   ! User defined event handlers go here
@@ -109,7 +109,8 @@ program mandelbrot
   call gtk_widget_show (my_window)
   
   ! We create a pixbuffer to store the pixels of the image:
-  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, width, height)    
+  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, &
+       & width, height)
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
@@ -124,7 +125,7 @@ program mandelbrot
     pixel(i+3)=char(255)  ! Opacity (Alpha channel)
   end do
 
-  call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 1000)
+  call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 1000_4)
 
   ! The window stays opened after the computation:
   do
@@ -162,7 +163,7 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
   
   do i=0, width-1
     ! We provoke an expose_event once in a while to improve performances:
-    if (mod(i,10)==0) then
+    if (mod(i,10_c_int)==0) then
       call gtk_widget_queue_draw(my_drawing_area)
     end if
     

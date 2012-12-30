@@ -83,9 +83,10 @@ program dialog_demo
 
   call gtk_init()
   ! Make a window & put a horizontal box in it
-  win = hl_gtk_window_new('Dialogue Demo'//c_null_char, destroy=c_funloc(my_destroy), &
-       & border=10 )
-  box = hl_gtk_box_new(horizontal=TRUE, spacing=10)
+  win = hl_gtk_window_new('Dialogue Demo'//c_null_char, &
+       & destroy=c_funloc(my_destroy), &
+       & border=10_c_int )
+  box = hl_gtk_box_new(horizontal=TRUE, spacing=10_c_int)
   call gtk_container_add(win, box)
 
   ! 2 Buttons one shows a message, the other a confirm exit dialog

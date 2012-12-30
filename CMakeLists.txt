@@ -40,6 +40,9 @@ set(CMAKE_INSTALL_LIBDIR lib)
 
 set(CMAKE_Fortran_FLAGS_DEBUG
 "-g -pthread -Wall -Wtabs -fcheck-array-temporaries -fbacktrace -fbounds-check -ffpe-trap=invalid,zero,overflow -Wno-unused-dummy-argument")
+# Not all of the above are understood by g95, the following is a minimal 
+# setting.
+# "-g -pthread  -fbounds-check")
 set(CMAKE_Fortran_FLAGS_RELEASE
 "-pthread -O3 -mtune=native -march=native")
 

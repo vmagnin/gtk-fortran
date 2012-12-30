@@ -85,7 +85,8 @@ contains
 
     isel = hl_gtk_file_chooser_show(chfile, create=FALSE,&
          & title="Select input file"//c_null_char, filter=filters, &
-         & filter_name=filtnames, wsize=(/ 600, 400 /), edit_filters=TRUE, &
+         & filter_name=filtnames, wsize=(/ 600_c_int, 400_c_int /), &
+         & edit_filters=TRUE, &
          & parent=window, all=TRUE)
 
     if (isel == FALSE) return   ! No selection made
@@ -120,7 +121,7 @@ contains
     integer :: idxs
 
     c_string = gtk_file_chooser_get_filename(widget)
-    call convert_c_string(c_string, len(filename), filename)
+    call convert_c_string(c_string, filename)
     call g_free(c_string)
 
     open(37, file=filename, action='read')
@@ -263,7 +264,7 @@ program choosers_demo
   ! A multiline text editor in which to display the file.
 
   tedit = hl_gtk_text_view_new(jb, editable=TRUE, &
-       & changed=c_funloc(file_edited), ssize = (/ 750, 400 /) )
+       & changed=c_funloc(file_edited), ssize = (/ 750_c_int, 400_c_int /) )
   call hl_gtk_box_pack(base, jb)
 
   ! A quit button

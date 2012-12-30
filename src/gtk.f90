@@ -67,10 +67,10 @@ contains
     
     if (present(data0)) then
       handler_id =  g_signal_connect_data (instance, detailed_signal, c_handler, &
-            & data0, c_null_funptr, 0)
+            & data0, c_null_funptr, 0_c_int)
     else
       handler_id =  g_signal_connect_data (instance, detailed_signal, c_handler, &
-            & c_null_ptr, c_null_funptr, 0)
+            & c_null_ptr, c_null_funptr, 0_c_int)
     end if
   end subroutine
 
@@ -80,7 +80,8 @@ contains
     character(len=256,kind=c_char) :: arg
     character(len=1,kind=c_char), dimension(:),pointer :: carg
     type(c_ptr), allocatable, target :: argv(:)
-    integer(c_int) :: argc, strlen, i, j
+    integer(c_int) :: argc, j
+    integer :: i, strlen
 
     argc = command_argument_count()
     allocate(argv(0:argc))

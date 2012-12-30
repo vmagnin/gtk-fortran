@@ -13,12 +13,13 @@ program list_demo
   &gtk_tree_view_column_add_attribute, gtk_tree_view_column_new, gtk_tree_view_co&
   &lumn_pack_start, gtk_tree_view_column_set_title, gtk_tree_view_insert_column, &
   &gtk_tree_view_new, gtk_tree_view_set_model, gtk_widget_show, gtk_widget_show_a&
-  &ll, gtk_window_new,&
+  &ll, gtk_window_new,gtk_window_set_title,&
   &FALSE, c_null_char, c_null_ptr, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect
 
   use g, only: g_object_unref, g_value_init, g_value_set_static_string, g_value_s&
   &et_uint
 
+  implicit none
 
   enum, bind(c)
      enumerator :: COL_NAME = 0
@@ -32,7 +33,8 @@ program list_demo
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call g_signal_connect (window, "delete_event"//c_null_char, &
        & c_funloc(gtk_main_quit), c_null_ptr); ! dirty
-
+  call gtk_window_set_title(window, "Simple List Example"//c_null_char)
+ 
   view = create_view_and_model ()
 
   call gtk_container_add (window, view)
@@ -52,6 +54,8 @@ contains
     type(c_ptr) :: val
 
     ! Initialize the GValues
+    call clear_gvalue(valt)
+    call clear_gvalue(vali)
     val = c_loc(valt)
     val = g_value_init(val, G_TYPE_STRING)
     val = c_loc(vali)
@@ -67,21 +71,21 @@ contains
     call g_value_set_static_string(c_loc(valt), "Heinz El-Mann"//c_null_char)
     call gtk_list_store_set_value(store, c_loc(iter), COL_NAME, &
          & c_loc(valt))
-    call g_value_set_uint(c_loc(vali), 51)
+    call g_value_set_uint(c_loc(vali), 51_c_int)
     call gtk_list_store_set_value(store, c_loc(iter), COL_AGE, c_loc(vali))
 
     ! append another row and fill in some data
     call gtk_list_store_append (store, c_loc(iter))
     call g_value_set_static_string(c_loc(valt), "Jane Doe"//c_null_char)
     call gtk_list_store_set_value(store, c_loc(iter), COL_NAME, c_loc(valt))
-    call g_value_set_uint(c_loc(vali), 23)
+    call g_value_set_uint(c_loc(vali), 23_c_int)
     call gtk_list_store_set_value(store, c_loc(iter), COL_AGE, c_loc(vali))
 
     ! And a third
     call gtk_list_store_append (store, c_loc(iter))
     call g_value_set_static_string(c_loc(valt), "Joe Bungop"//c_null_char)
     call gtk_list_store_set_value(store, c_loc(iter), COL_NAME, c_loc(valt))
-    call g_value_set_uint(c_loc(vali), 91)
+    call g_value_set_uint(c_loc(vali), 91_c_int)
     call gtk_list_store_set_value(store, c_loc(iter), COL_AGE, c_loc(vali))
 
   end function create_and_fill_model
@@ -99,7 +103,7 @@ contains
     renderer = gtk_cell_renderer_text_new ()
     col = gtk_tree_view_column_new()
     call gtk_tree_view_column_pack_start(col, renderer, FALSE)
-    ncol= gtk_tree_view_insert_column(view, col, -1)
+    ncol= gtk_tree_view_insert_column(view, col, -1_c_int)
     call gtk_tree_view_column_add_attribute(col, renderer, &
          & "text"//c_null_char, COL_NAME)
     call gtk_tree_view_column_set_title(col, "Name"//c_null_char)
@@ -110,7 +114,7 @@ contains
     col = gtk_tree_view_column_new()
     renderer = gtk_cell_renderer_text_new ()
     call gtk_tree_view_column_pack_start(col, renderer, FALSE)
-    ncol = gtk_tree_view_insert_column(view, col, -1)
+    ncol = gtk_tree_view_insert_column(view, col, -1_c_int)
     call gtk_tree_view_column_set_title(col, "Age"//c_null_char)
     call gtk_tree_view_column_add_attribute(col, renderer, &
          & "text"//c_null_char, COL_AGE)

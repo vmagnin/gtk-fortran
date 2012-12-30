@@ -141,13 +141,13 @@ contains
 !!$GTK>=3.0!       slider = gtk_scale_new_with_range(GTK_ORIENTATION_VERTICAL, &
 !!$GTK>=3.0!            & vmin, vmax, step)
        if (present(length)) &
-            & call gtk_widget_set_size_request(slider, -1, length)
+            & call gtk_widget_set_size_request(slider, -1_c_int, length)
     else
 !!$GTK< 3.0!       slider = gtk_hscale_new_with_range(vmin, vmax, step)
 !!$GTK>=3.0!       slider = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, &
 !!$GTK>=3.0!            & vmin, vmax, step)
        if (present(length)) &
-            & call gtk_widget_set_size_request(slider, length, -1)
+            & call gtk_widget_set_size_request(slider, length, -1_c_int)
     end if
 
     ! Formatting

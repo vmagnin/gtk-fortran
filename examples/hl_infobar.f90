@@ -142,26 +142,27 @@ program hl_infobar
 
   junk=hl_gtk_button_new("Info"//c_null_char, &
        & clicked=c_funloc(button_h), data=c_loc(button_states(1)))
-  call hl_gtk_table_attach(jb, junk, 0, 0, yopts=0)
+  call hl_gtk_table_attach(jb, junk, 0_c_int, 0_c_int, yopts=0_c_int)
   junk=hl_gtk_button_new("Warning"//c_null_char, &
        & clicked=c_funloc(button_h), data=c_loc(button_states(2)))
-  call hl_gtk_table_attach(jb, junk, 1, 0, yopts=0)
+  call hl_gtk_table_attach(jb, junk, 1_c_int, 0_c_int, yopts=0_c_int)
   junk=hl_gtk_button_new("Error"//c_null_char, &
        & clicked=c_funloc(button_h), data=c_loc(button_states(3)))
-  call hl_gtk_table_attach(jb, junk, 2, 0, yopts=0)
+  call hl_gtk_table_attach(jb, junk, 2_c_int, 0_c_int, yopts=0_c_int)
   junk=hl_gtk_button_new("Question"//c_null_char, &
        & clicked=c_funloc(button_h), data=c_loc(button_states(4)))
-  call hl_gtk_table_attach(jb, junk, 3, 0, yopts=0)
+  call hl_gtk_table_attach(jb, junk, 3_c_int, 0_c_int, yopts=0_c_int)
   junk=hl_gtk_button_new("Other"//c_null_char, &
        & clicked=c_funloc(button_h), data=c_loc(button_states(5)))
-  call hl_gtk_table_attach(jb, junk, 4, 0, yopts=0)
+  call hl_gtk_table_attach(jb, junk, 4_c_int, 0_c_int, yopts=0_c_int)
 
   infobar = hl_gtk_info_bar_new(buttons=&
        & [character(len=6) :: 'OK','Yes','No','Ignore','Quit'], &
        & ids=[my_ok, my_yes, my_no, my_ignore, my_quit], &
        & response=c_funloc(response_h), horizontal=TRUE, buttons_below=TRUE)
 
-  call hl_gtk_table_attach(jb,infobar,0,1, xspan=5, yopts=0)
+  call hl_gtk_table_attach(jb,infobar,0_c_int,1_c_int, &
+       & xspan=5_c_int, yopts=0_c_int)
 
   call gtk_widget_show_all (tlwindow)
   call gtk_main()

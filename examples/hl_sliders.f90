@@ -102,7 +102,8 @@ program sliders
   call gtk_init()
 
   ! Create a window and 2 boxes, one horizontal,one vertical
-  win = hl_gtk_window_new("Sliders demo"//c_null_char, destroy=c_funloc(my_destroy))
+  win = hl_gtk_window_new("Sliders demo"//c_null_char, &
+       & destroy=c_funloc(my_destroy))
   base = hl_gtk_box_new()
   call gtk_container_add(win, base)
   box = hl_gtk_box_new(horizontal=TRUE, homogeneous=TRUE)
@@ -111,12 +112,12 @@ program sliders
   ! make a floating point vertical slider with a range 0-10 and step 0.1
   ! put it in the horizontal box
   slid = hl_gtk_slider_new(0._c_double, 10._c_double, 0.1_c_double, &
-       & vertical = TRUE, value_changed=c_funloc(slider1), length=200)
+       & vertical = TRUE, value_changed=c_funloc(slider1), length=200_c_int)
   call hl_gtk_box_pack(box, slid)
 
   ! Now an integer slider from 0-64 and put it in the horizontal box
-  islid = hl_gtk_slider_new(0, 64, vertical=TRUE, &
-       & value_changed=c_funloc(slider2), length=200)
+  islid = hl_gtk_slider_new(0_c_int, 64_c_int, vertical=TRUE, &
+       & value_changed=c_funloc(slider2), length=200_c_int)
   call hl_gtk_box_pack(box, islid)
 
   ! Make a spin button with range 0-10 and step 0.1 and put it in
@@ -127,7 +128,8 @@ program sliders
 
   ! Make an integer spin button with range from 0-64 and put it in the
   ! vertical box
-  ispin = hl_gtk_spin_button_new(0, 64,  value_changed=c_funloc(spinner2), &
+  ispin = hl_gtk_spin_button_new(0_c_int, 64_c_int, &
+       & value_changed=c_funloc(spinner2), &
        & wrap=TRUE)
   call hl_gtk_box_pack(base, ispin)
 

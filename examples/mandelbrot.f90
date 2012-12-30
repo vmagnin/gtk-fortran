@@ -68,18 +68,21 @@ program mandelbrot
   
   ! Properties of the main window :
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
-  call gtk_window_set_default_size(my_window, 600, 600)
+  call gtk_window_set_default_size(my_window, 600_c_int, 600_c_int)
   call gtk_window_set_title(my_window, "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
-  call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
+  call g_signal_connect (my_window, "delete-event"//c_null_char, &
+       & c_funloc(delete_event))
     
-  my_gdk_image = gdk_image_new(GDK_IMAGE_FASTEST, gdk_rgb_get_visual(), 600, 600)
+  my_gdk_image = gdk_image_new(GDK_IMAGE_FASTEST, gdk_rgb_get_visual(), &
+       & 600_c_int, 600_c_int)
   my_gtk_image = gtk_image_new_from_image(my_gdk_image, c_null_ptr)    
   call gtk_container_add(my_window, my_gtk_image)
   call gtk_widget_show (my_gtk_image)
   
   call gtk_widget_show (my_window)
       
-  call Mandelbrot_set(my_gdk_image, my_gtk_image, 600, 600, -2d0, +1d0, -1.5d0, +1.5d0, 1000*10)
+  call Mandelbrot_set(my_gdk_image, my_gtk_image, 600_c_int, 600_c_int, &
+       & -2d0, +1d0, -1.5d0, +1.5d0, 1000_c_int*10_c_int)
 
   ! The window stays opened after the computation:
   do
@@ -133,12 +136,14 @@ subroutine Mandelbrot_set(the_gdk_image, the_gtk_image, width, height, xmin, xma
       
       if (k>itermax) then
         ! Black pixel:
-        call gdk_image_put_pixel(the_gdk_image, i, j, 0*65536+0*256+0)
+        call gdk_image_put_pixel(the_gdk_image, i, j, &
+             & int(0*65536+0*256+0,c_int))
       else
         red   = min(255, k*2)
         green = min(255, k*5)
         blue  = min(255, k*10)
-        call gdk_image_put_pixel(the_gdk_image, i, j, red*65536+green*256+blue)
+        call gdk_image_put_pixel(the_gdk_image, i, j, &
+             & int(red*65536+green*256+blue,c_int))
       end if
       ! This subrountine processes gtk events as needed during the computation.
       call pending_events()

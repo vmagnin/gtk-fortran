@@ -53,7 +53,7 @@ module handlers
   
   type(c_ptr) :: my_pixbuf
   character(kind=c_char), dimension(:), pointer :: pixel
-  integer :: nch, rowstride, width, height
+  integer(kind=c_int) :: nch, rowstride, width, height
   logical :: finished
   
 contains
@@ -156,7 +156,8 @@ program mandelbrot
   
   call gtk_widget_show (my_window)
       
-  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, width/2, height/2)    
+  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, &
+       & width/2_c_int, height/2_c_int)    
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
@@ -168,7 +169,7 @@ program mandelbrot
     pixel(i+3)=char(255)  ! Opacity (Alpha channel)
   end do
 
-  call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 100)
+  call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 100_c_int)
   
   ! The window stays opened after the computation:
   do
@@ -207,7 +208,7 @@ end program mandelbrot
     do i=0, width/2
       ! We provoke an expose_event:
       !if (mod(i,10)==0) then
-      if (mod(i,1)==0) then
+      if (mod(i,1_c_int)==0) then
         call gtk_widget_queue_draw(my_drawing_area)
       end if
       

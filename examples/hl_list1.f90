@@ -101,7 +101,7 @@ contains
        if (fdata == 1) then
           ntext = gtk_entry_get_text_length(newline)
           text=gtk_entry_get_text(newline)
-          call convert_c_string(text, len(ftext), ftext)
+          call convert_c_string(text, ftext)
 
           print *, len_trim(ftext), "*",trim(ftext),"*"
           call hl_gtk_list1_ins(ihlist, trim(ftext)//c_null_char)
@@ -147,9 +147,10 @@ contains
        call hl_gtk_list1_reorder(ihlist, selections)
     case(1) ! One row selected (move it up one unless it's the first)
        if (selections(1) == 0) then
-          call hl_gtk_list1_move_row(ihlist, selections(1), 1, after=TRUE)
+          call hl_gtk_list1_move_row(ihlist, selections(1), 1_c_int, after=TRUE)
        else
-          call hl_gtk_list1_move_row(ihlist, selections(1), selections(1)-1)
+          call hl_gtk_list1_move_row(ihlist, selections(1), &
+               & selections(1)-1_c_int)
        end if
     case default ! Multiple selections (swap first 2 selected rows)
        call hl_gtk_list1_swap_rows(ihlist, selections(1), selections(2))
@@ -184,7 +185,8 @@ program list1
 
   ! Now make a single column list with multiple selections enabled
   ihlist = hl_gtk_list1_new(ihscrollcontain, changed=c_funloc(list_select),&
-       & data=c_loc(idel), multiple=TRUE, height=400, title="My list"//c_null_char)
+       & data=c_loc(idel), multiple=TRUE, height=400_c_int, &
+       & title="My list"//c_null_char)
 
   ! Now put 10 rows into it
   do i=1,10
@@ -203,7 +205,7 @@ program list1
   jbox = hl_gtk_box_new(horizontal=TRUE)
   call hl_gtk_box_pack(base, jbox)
 
-  newline = hl_gtk_entry_new(len=35, editable=TRUE, &
+  newline = hl_gtk_entry_new(len=35_c_int, editable=TRUE, &
        & activate=c_funloc(text_cr), data=c_loc(iappend), &
        & tooltip="Enter some text followed by <CR>"//c_new_line//&
        &"then click 'Append' to add it to the list"//c_null_char)

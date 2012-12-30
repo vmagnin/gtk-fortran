@@ -76,14 +76,15 @@ contains
     print *, nsel,"Rows selected"
     print *, selections
     if (nsel == 1) then
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 0, svalue=name)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 1, dvalue=x)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 2, dvalue=x3)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 4, l64value=n4)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 3, fvalue=nlog)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 5, svalue=nodd)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 6, svalue=code)
-       call hl_gtk_listn_get_cell(ihlist, selections(1), 8, pbvalue=pixbuf)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 0_c_int, svalue=name)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 1_c_int, dvalue=x)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 2_c_int, dvalue=x3)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 4_c_int, l64value=n4)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 3_c_int, fvalue=nlog)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 5_c_int, svalue=nodd)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 6_c_int, svalue=code)
+       call hl_gtk_listn_get_cell(ihlist, selections(1), 8_c_int, &
+            & pbvalue=pixbuf)
        call hl_gdk_pixbuf_get_pixels(pixbuf, pixels)
        print "('Row:',I3,' Name: ',a,' X:',F7.2,' 3X:',F7.2,' X**4:',I7,&
             &' log(n):',F7.5,' Odd?: ',a, ' Code:',a)", &
@@ -106,11 +107,11 @@ contains
     type(c_ptr) :: pcol, list
     real(kind=c_double) :: x
 
-    call convert_c_string(path, 200, fpath)
+    call convert_c_string(path, fpath)
     read(fpath, *) irow
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
     call c_f_pointer(pcol, icol)
-    call convert_c_string(text, 200, ftext)
+    call convert_c_string(text, ftext)
     list = g_object_get_data(renderer, "view"//c_null_char)
 
     print *, "Edit in column", icol
@@ -121,13 +122,15 @@ contains
     else
        read(ftext, *, iostat=ios) x
        if (ios /= 0) return
-       call hl_gtk_listn_set_cell(ihlist, irow, 2, dvalue=3*x)
-       call hl_gtk_listn_set_cell(ihlist, irow, 3, dvalue=log10(x))
-       call hl_gtk_listn_set_cell(ihlist, irow, 4, &
+       call hl_gtk_listn_set_cell(ihlist, irow, 2_c_int, dvalue=3*x)
+       call hl_gtk_listn_set_cell(ihlist, irow, 3_c_int, dvalue=log10(x))
+       call hl_gtk_listn_set_cell(ihlist, irow, 4_c_int, &
             & l64value=int(x**4,c_int64_t))
-       call hl_gtk_listn_set_cell(ihlist, irow, 5, ivalue=mod(int(x),2))
-       call hl_gtk_listn_set_cell(ihlist, irow, 7, ivalue=mod(int(3*x),100))
-       call hl_gtk_listn_set_cell(ihlist, irow, 1, dvalue=x)
+       call hl_gtk_listn_set_cell(ihlist, irow, 5_c_int, &
+            & ivalue=mod(int(x, c_int),2_c_int))
+       call hl_gtk_listn_set_cell(ihlist, irow, 7_c_int, &
+            & ivalue=mod(int(3*x, c_int),100_c_int))
+       call hl_gtk_listn_set_cell(ihlist, irow, 1_c_int, dvalue=x)
     end if
   end subroutine cell_edited
 
@@ -138,13 +141,13 @@ contains
     character(len=200) :: fpath, ftext
     integer(kind=c_int) :: irow
 
-    call c_f_string(path, len(fpath), fpath)
-    call c_f_string(text, len(ftext), ftext)
+    call c_f_string(path, fpath)
+    call c_f_string(text, ftext)
     read(fpath, *) irow
 
     print *, "Combo sent edited signal from ", trim(fpath)
     print *, "Text was ", trim(ftext)
-    call hl_gtk_listn_set_cell(ihlist, irow, 9, svalue=trim(ftext))
+    call hl_gtk_listn_set_cell(ihlist, irow, 9_c_int, svalue=trim(ftext))
 
   end subroutine ccell_edit
   subroutine ccell_changed(renderer, path, iter, gdata) bind(c)
@@ -154,7 +157,7 @@ contains
 
     character(len=200) :: fpath
 
-    call c_f_string(path, len(fpath), fpath)
+    call c_f_string(path, fpath)
     print *, "Combo sent changed signal from ", trim(fpath)
 
   end subroutine ccell_changed
@@ -170,7 +173,7 @@ contains
     type(c_ptr) :: pcol, list
     logical :: state
 
-    call convert_c_string(path, 200, fpath)
+    call convert_c_string(path, fpath)
     read(fpath, *) irow
 
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
@@ -204,12 +207,13 @@ contains
     character(len=200) :: fpath
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
-    integer :: ios, i
+    integer :: ios
+    integer(kind=c_int) :: i
     type(c_ptr) :: pcol, list
     logical :: state
     integer(kind=c_int) :: nrows
 
-    call convert_c_string(path, 200, fpath)
+    call convert_c_string(path, fpath)
     read(fpath, *) irow
 
     pcol = g_object_get_data(renderer, "column-number"//c_null_char)
@@ -269,7 +273,7 @@ program list_rend
 
   integer, parameter :: ncols = 11, nrows=10
   character(len=35) :: line
-  integer :: i, ltr
+  integer(kind=c_int) :: i, ltr
   integer, target :: iappend=0, idel=0
   integer(kind=type_kind), dimension(ncols) :: ctypes
   character(len=20), dimension(ncols) :: titles, renderers
@@ -321,7 +325,7 @@ program list_rend
        & changed_combo=c_funloc(ccell_changed))
 
   call hl_gtk_listn_config_spin(ihlist, 1_c_int, vmax = huge(1._c_double), &
-       & step = 0.1_c_double, digits=1)
+       & step = 0.1_c_double, digits=1_c_int)
   call hl_gtk_listn_config_combo(ihlist, 9_c_int, &
        & vals=['one  ', 'two  ', 'three'], &
        & has_entry=FALSE)
@@ -337,22 +341,29 @@ program list_rend
      write(line,"('List entry number ',I0)") i
      ltr=len_trim(line)+1
      line(ltr:ltr)=c_null_char
-     call hl_gtk_listn_set_cell(ihlist, i-1, 0, svalue=line)
-     call hl_gtk_listn_set_cell(ihlist, i-1, 1, dvalue=real(i, c_double))
-     call hl_gtk_listn_set_cell(ihlist, i-1, 2, dvalue=real(3*i, c_double))
-     call hl_gtk_listn_set_cell(ihlist, i-1, 3, fvalue=log10(real(i)))
-     call hl_gtk_listn_set_cell(ihlist, i-1, 4, l64value=int(i, c_int64_t)**4)
-     call hl_gtk_listn_set_cell(ihlist, i-1, 5, ivalue=mod(i,2))
-     call hl_gtk_listn_set_cell(ihlist, i-1, 6, logvalue=mod(i,3) == 0)
-     call hl_gtk_listn_set_cell(ihlist, i-1, 7, ivalue=mod(3*i, 100))
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 0_c_int, svalue=line)
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 1_c_int, &
+          & dvalue=real(i, c_double))
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 2_c_int, &
+          & dvalue=real(3*i, c_double))
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 3_c_int, &
+          & fvalue=log10(real(i)))
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 4_c_int, &
+          & l64value=int(i, c_int64_t)**4)
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 5_c_int, &
+          & ivalue=mod(i,2_c_int))
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 6_c_int, &
+          & logvalue=mod(i,3_c_int) == 0)
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 7_c_int, &
+          & ivalue=mod(3_c_int*i, 100_c_int))
      image(1,:,:) = red(i)
      image(2,:,:) = green(i)
      image(3,:,:) = blue(i)
      pixbuf = hl_gdk_pixbuf_new(image)
-     call hl_gtk_listn_set_cell(ihlist, i-1, 8, pbvalue=pixbuf)
-     call hl_gtk_listn_combo_set_select(ihlist, i-1, 9_c_int, &
-          & selection=mod(i,3))
-     call hl_gtk_listn_set_cell(ihlist, i-1, 10, logvalue= i==4)
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 8_c_int, pbvalue=pixbuf)
+     call hl_gtk_listn_combo_set_select(ihlist, i-1_c_int, 9_c_int, &
+          & selection=mod(i,3_c_int))
+     call hl_gtk_listn_set_cell(ihlist, i-1_c_int, 10_c_int, logvalue= i==4)
   end do
 
   ! It is the scrollcontainer that is placed into the box.
