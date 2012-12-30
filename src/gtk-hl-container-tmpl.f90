@@ -106,8 +106,8 @@ contains
     character(kind=c_char), dimension(*), intent(in), optional :: title
     type(c_funptr), optional :: destroy, delete_event
     type(c_ptr), optional :: data_destroy, data_delete_event
-    integer, optional, intent(in) :: border
-    integer, optional, intent(in), dimension(2) :: wsize
+    integer(kind=c_int), optional, intent(in) :: border
+    integer(kind=c_int), optional, intent(in), dimension(2) :: wsize
     integer(kind=c_int), intent(in), optional :: sensitive, resizable, decorated
     integer(kind=c_int), intent(in), optional :: deletable, above, below
     type(c_ptr), intent(in), optional :: parent
