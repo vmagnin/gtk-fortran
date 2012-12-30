@@ -177,7 +177,7 @@ contains
     ! DATA_DESTROY: c_ptr: optional: Data to pass to the destroy callback.
     ! EVENT_MASK: c_int: optional: Mask for which events to pass.
     ! EVENT_EXCLUDE: c_int: optional: Mask for events not to pass (this might
-    ! 		used to prevent auto-enabling an event that should only
+    ! 		be used to prevent auto-enabling an event that should only
     ! 		be enabled by user actions)
     ! AUTO_ADD_MASK: boolean: optional: Set to FALSE to disable automatically
     ! 		adding events to the event mask if a handler is provided.
@@ -571,8 +571,6 @@ contains
     type(c_ptr), intent(inout) :: cr
     integer(kind=c_int), intent(in), optional :: destroy_surface
 
-    !    type(cairo_user_data_key_t), intent(in), target :: key
-
     ! Update the backing surface and destroy the cairo context
     !
     ! CR: c_ptr: required: The cairo context to put in the pixbuf
@@ -667,7 +665,7 @@ contains
   end subroutine hl_gtk_drawing_area_resize
 
 
-  !*********************************************************************
+  ! *********************************************************************
   ! These routines are obsolete, but are retained for the time being to
   ! let older codes work
 

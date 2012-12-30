@@ -40,10 +40,10 @@ module gtk_hl_tree
   ! Lists and Trees
   ! These functions attempt to hide some of the complexity of the GtkTreeView
   ! system of widgets and object, while still allowing the main functionality
-  ! to be accessed. Only "text" displays (this includes numeric values) are
-  ! supported.
+  ! to be accessed. Most possible renderers are supported (spinner is not).
   !
   ! There are three types of list and tree supported.
+  ! 
   ! 1. listn; A multi-column flat list.
   ! 2. list1; A single-column flat list, that allows only string values.
   !    (This is now implemented by calls to the corresponding listn routines).
@@ -2934,7 +2934,7 @@ contains
     ! Get the contents of a Gvalue (private)
     !
     ! VAL: c_ptr: required: The GValue
-    ! CTYPE: int(type_kind) :: The type of value it contains.
+    ! CTYPE: int(type_kind): required: The type of value it contains.
     !
     ! The output arguments are identical to the get_cell routines.
     !-

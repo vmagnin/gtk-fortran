@@ -556,7 +556,7 @@ contains
     ! 		this probably has to be a variable to work.
     ! SWITCH_PAGE: c_funptr: optional: A callback to be called when the page
     ! 		selection is changed (signal switch-page). Note that this
-    ! 		callback has 4 arguments: the notebook, the selected page, the
+    ! 		callback has 4 arguments; the notebook, the selected page, the
     ! 		index of that page and the user data.
     ! DATA: c_ptr: optional: Data to pass the the switch-page callback.
     !-

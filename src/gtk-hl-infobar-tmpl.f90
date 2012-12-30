@@ -39,7 +39,7 @@ module gtk_hl_infobar
   !*
   ! Infobar
   ! Convenience interface for the GtkInfoBar widget.
-  ! This is created because the rouine for adding multiple buttons is
+  ! This is created because the routine for adding multiple buttons is
   ! variadic, and setting the message involves several levels of indirection.
   !/
 
@@ -184,7 +184,7 @@ contains
     ! MESSAGE: c_str: required: The message to display.
     ! TYPE: c_int: optional: The severity level of the message.
     ! DEFAULT: c_int: optional: Set the default response ID.
-    ! IDS: c_int(): optional: Response IDs whose sensituvity will be set.
+    ! IDS: c_int(): optional: Response IDs whose sensitivity will be set.
     ! STATE: boolean(): optional: Sensitivity states of the IDS.
     !
     ! To set buttons to be sensitive or not, you must give BOTH ids

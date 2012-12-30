@@ -193,7 +193,7 @@ contains
 
     ! Create a pixbuf from an RGB(A) array of values.
     !
-    ! DATA: int8: required: The data values as a 3|4 x n x m array.
+    ! DATA: int8: required: The data values as a 1..4 x n x m array.
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -228,9 +228,9 @@ contains
     type(c_ptr) :: pixbuf
     integer(kind=c_int8_t), dimension(:,:), intent(in) :: data
 
-    ! Create a pixbuf from an GS array of values.
+    ! Create a pixbuf from a greyscale array of values.
     !
-    ! DATA: int8: required: The data values as a 3|4 x n x m array.
+    ! DATA: int8: required: The data values as a n x m array.
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -253,9 +253,10 @@ contains
     type(c_ptr) :: pixbuf
     integer(kind=c_short), dimension(:,:,:), intent(in) :: data
 
-    ! Create a pixbuf from an RGB(A) array of values.
+    ! Create a pixbuf from an RGB(A) array of values. This version
+    ! uses 2-byte integers to avoid the signing issues of the c_int8_t type.
     !
-    ! DATA: int8: required: The data values as a 3|4 x n x m array.
+    ! DATA: int8: required: The data values as a 1..4 x n x m array.
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -290,10 +291,10 @@ contains
     type(c_ptr) :: pixbuf
     integer(kind=c_short), dimension(:,:), intent(in) :: data
 
-    ! Create a pixbuf from an RGB(A) array of values. This version
+    ! Create a pixbuf from a greyscale array of values. This version
     ! uses 2-byte integers to avoid the signing issues of the c_int8_t type.
     !
-    ! DATA: short: required: The data values as a 3|4 x n x m array.
+    ! DATA: short: required: The data values as a n x m array.
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -394,7 +395,7 @@ contains
     integer(kind=c_int8_t), dimension(:,:,:), intent(in) :: pixels
     integer, intent(in), optional :: xoff, yoff
 
-    ! Set the pixels of a pixuf from a Fortran array.
+    ! Set the pixels of a pixbuf from a Fortran array.
     !
     ! PIXBUF: c_ptr: required: The pixbuf to update
     ! PIXELS: int8: required: Contains the image to insert.
@@ -519,7 +520,7 @@ contains
     integer(kind=c_int8_t), dimension(:,:), intent(in) :: pixels
     integer, intent(in), optional :: xoff, yoff
 
-    ! Set the pixels of a pixuf from a Fortran array (greyscale).
+    ! Set the pixels of a pixbuf from a Fortran array (greyscale).
     !
     ! PIXBUF: c_ptr: required: The pixbuf to update
     ! PIXELS: int8: required: Contains the image to insert.
@@ -594,7 +595,7 @@ contains
     integer(kind=c_short), dimension(:,:,:), intent(in) :: pixels
     integer, intent(in), optional :: xoff, yoff
 
-    ! Set the pixels of a pixuf from a Fortran array (16-bit).
+    ! Set the pixels of a pixbuf from a Fortran array (16-bit).
     !
     ! PIXBUF: c_ptr: required: The pixbuf to update
     ! PIXELS: short: required: Contains the image to insert.
@@ -718,7 +719,7 @@ contains
     integer(kind=c_short), dimension(:,:), intent(in) :: pixels
     integer, intent(in), optional :: xoff, yoff
 
-    ! Set the pixels of a pixuf from a Fortran array (16-bit, greyscale).
+    ! Set the pixels of a pixbuf from a Fortran array (16-bit, greyscale).
     !
     ! PIXBUF: c_ptr: required: The pixbuf to update
     ! PIXELS: short: required: Contains the image to insert.

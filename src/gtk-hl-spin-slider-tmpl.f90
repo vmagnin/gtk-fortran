@@ -195,7 +195,7 @@ contains
     integer(kind=c_int), intent(in), optional :: draw
     integer(kind=c_int), intent(in), optional :: length
 
-    ! Floating point version of a slider
+    ! Integer version of a slider
     !
     ! IMIN: c_int: required: The minimum value for the slider
     ! IMAX: c_int: required: The maximum value for the slider
@@ -259,7 +259,9 @@ contains
     ! SLIDER: c_ptr: required: The slider to set.
     ! VAL: c_double: required: The value to set.
     !
-    ! This is usually accessed via the generic interface hl_gtk_slider_set_value
+    ! This is usually accessed via the generic interface
+    ! hl_gtk_slider_set_value. Note that since GTK implements all sliders
+    ! a doubles, either type of value may be used to set any slider.
     !-
 
     call gtk_range_set_value(slider, val)
@@ -271,12 +273,14 @@ contains
     type(c_ptr), intent(in) :: slider
     integer(kind=c_int), intent(in) :: val
 
-    ! Set a floating point value for a slider
+    ! Set an integer value for a slider
     !
     ! SLIDER: c_ptr: required: The slider to set.
     ! VAL: c_int: required: The value to set.
     !
-    ! This is usually accessed via the generic interface hl_gtk_slider_set_value
+    ! This is usually accessed via the generic interface
+    ! hl_gtk_slider_set_value. Note that since GTK implements all sliders
+    ! a doubles, either type of value may be used to set any slider.
     !-
 
     call gtk_range_set_value(slider, real(val, c_double))
@@ -562,7 +566,9 @@ contains
     ! SPIN_BUTTON: c_ptr: required: The spin_button to set.
     ! VAL: c_double: required: The value to set.
     !
-    ! This is usually accessed via the generic interface hl_gtk_spin_button_set_value
+    ! This is usually accessed via the generic interface
+    ! hl_gtk_spin_button_set_value. Note that since GTK+ implements
+    ! all spin buttons as double either type may be used for any button.
     !-
 
     call gtk_spin_button_set_value(spin_button, val)
@@ -574,13 +580,14 @@ contains
     type(c_ptr), intent(in) :: spin_button
     integer(kind=c_int), intent(in) :: val
 
-    ! Set a floating point value for a spin_button
+    ! Set an integer value for a spin_button
     !
     ! SPIN_BUTTON: c_ptr: required: The spin_button to set.
     ! VAL: c_int: required: The value to set.
     !
     ! This is usually accessed via the generic interface
-    ! hl_gtk_spin_button_set_value
+    ! hl_gtk_spin_button_set_value. Note that since GTK+ implements
+    ! all spin buttons as double either type may be used for any button.
     !-
 
     call gtk_spin_button_set_value(spin_button, real(val, c_double))
