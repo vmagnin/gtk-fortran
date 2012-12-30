@@ -79,9 +79,9 @@ contains
     ! Menu initializer (mainly for consistency)
     !
     ! ORIENTATION: integer: optional: Whether to lay out the top level
-    ! 		horizontaly or vertically.
+    ! 		horizontally or vertically.
     ! BAR: boolean: optional: Set this to FALSE to create a GtkMenu rather than
-    ! 		a GtkMenuBar
+    ! 		a GtkMenuBar (useful in creating context menus).
     !-
 
     integer(kind=c_int) :: orient
@@ -289,7 +289,7 @@ contains
     integer(kind=c_int), optional, intent(in) :: initial_state
     integer(kind=c_int), optional, intent(in) :: sensitive, is_markup
 
-    ! Make a menu item or separator
+    ! Make a check button menu item.
     !
     ! MENU: c_ptr: required: The parent menu.
     ! LABEL: string: required: The label for the menu.
@@ -365,7 +365,7 @@ contains
     integer(kind=c_int), optional, intent(in) :: pos
     integer(kind=c_int), optional, intent(in) :: sensitive, is_markup
 
-    ! Make a menu item or separator
+    ! Make a radio button menu item
     !
     ! GROUP: c_ptr: required: The group for the radio item (C_NULL_PTR for a
     ! 		new group).
@@ -447,7 +447,7 @@ contains
     ! Note that GROUP actually points to the last button added and to the
     ! group of the next to last & so on
 
-    datan= g_slist_nth_data(group, nbuts-index-1_c_int)
+    datan= g_slist_nth_data(group, nbuts-index-1)
     call gtk_check_menu_item_set_active(datan, TRUE)
 
   end subroutine hl_gtk_radio_menu_group_set_select

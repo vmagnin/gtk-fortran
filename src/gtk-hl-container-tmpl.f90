@@ -106,8 +106,8 @@ contains
     character(kind=c_char), dimension(*), intent(in), optional :: title
     type(c_funptr), optional :: destroy, delete_event
     type(c_ptr), optional :: data_destroy, data_delete_event
-    integer(kind=c_int), optional, intent(in) :: border
-    integer(kind=c_int), optional, intent(in), dimension(2) :: wsize
+    integer, optional, intent(in) :: border
+    integer, optional, intent(in), dimension(2) :: wsize
     integer(kind=c_int), intent(in), optional :: sensitive, resizable, decorated
     integer(kind=c_int), intent(in), optional :: deletable, above, below
     type(c_ptr), intent(in), optional :: parent
@@ -556,7 +556,7 @@ contains
     ! 		this probably has to be a variable to work.
     ! SWITCH_PAGE: c_funptr: optional: A callback to be called when the page
     ! 		selection is changed (signal switch-page). Note that this
-    ! 		callback has 4 arguments: the notebook, the selected page, the
+    ! 		callback has 4 arguments; the notebook, the selected page, the
     ! 		index of that page and the user data.
     ! DATA: c_ptr: optional: Data to pass the the switch-page callback.
     !-
