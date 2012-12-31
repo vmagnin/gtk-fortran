@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! Containers
 module gtk_hl_container
-  !*
-  ! Containers
   ! The high-level interface provides convenience interfaces for:
   ! * Window, the gtk top-level window.
   ! * Box, Horizontal and vertical boxes to pack widgets. This was added

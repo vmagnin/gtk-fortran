@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 07-04-2012
+! Last modification: 12-31-2012
 
 !!$T Template file for gtk-hl-chooser.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -35,15 +35,16 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! File Choosers
 module gtk_hl_chooser
-  !*
-  ! File Choosers
   ! hl_gtk_file_chooser_button_new implements the GtkFileChooserButton
   ! and its GtkFileChooser options in a convenient package.
   !
-  ! hl_gtk_file_chooser_show implements a more general chooser dialogue
-  ! via the file_chooser_widget (file_choose_dialog only has variadic
-  ! constructors).
+  ! hl_gtk_file_chooser_new and _show implement a more general chooser
+  ! dialogue via the file_chooser_widget (file_choose_dialog only has
+  ! variadic constructors). Unless you need to add extra items to the
+  ! dialog it is usually easiest to use the hl_gtk_file_chooser_show function.
   !
   ! Filters may be either patterns (e.g. '*.f90' or '2011*.lis') or mime types
   ! (e.g. 'image/png' or 'text/*'). The constructors recognise the difference by
@@ -94,16 +95,18 @@ module gtk_hl_chooser
 
   implicit none
 
-  ! These items must be shared between the file chooser widget and its event
-  ! handler or the filter editor. They are passed to the signal handlers
-  ! via the user data argument. Even though it's never used in the C code,
-  ! it still has to be bind(c) otherwise c_loc() will croak on it.
-
+  !+
   type, bind(c) :: hl_gtk_chooser_info
      type(c_ptr) :: chooser=C_NULL_PTR, chooser_sel_list=C_NULL_PTR
      type(c_ptr) :: chooser_curdir=C_NULL_PTR, fentry=C_NULL_PTR
      integer(kind=c_int) :: iselect=0
   end type hl_gtk_chooser_info
+
+  ! These items must be shared between the file chooser widget and its event
+  ! handler or the filter editor. They are passed to the signal handlers
+  ! via the user data argument. Even though it's never used in the C code,
+  ! it still has to be bind(c) otherwise c_loc() will croak on it.
+  !-
 
 contains
   !+
@@ -252,13 +255,13 @@ contains
   end function hl_gtk_file_chooser_button_new
 
   !+
-  function hl_gtk_file_chooser_show(files, cdir, directory, create, &
+  function hl_gtk_file_chooser_new(chooser_info, cdir, directory, create, &
        & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
        & initial_dir, current, initial_file, filter, filter_name, parent, &
-       & all, wsize, edit_filters) result(isel)
+       & all, wsize, edit_filters) result(dialog)
 
-    integer(kind=c_int) :: isel
-    character(len=*), dimension(:), intent(out), allocatable :: files
+    type(c_ptr) :: dialog
+    type(hl_gtk_chooser_info), intent(out), target :: chooser_info
     character(len=*), intent(out), optional :: cdir
     integer(kind=c_int), intent(in), optional :: directory, create, multiple
     integer(kind=c_int), intent(in), optional :: allow_uri, show_hidden
@@ -272,9 +275,10 @@ contains
     integer(kind=c_int), intent(in), dimension(2), optional :: wsize
     integer(kind=c_int), intent(in), optional :: edit_filters
 
-    ! Create and show a file chooser widget.
+    ! Create a file chooser widget.
     !
-    ! FILES: string(): required: The file or files selected.
+    ! CHOOSER_INFO: hl_gtk_chooser_info: required: IDs and flags of various
+    ! 		subwidgets needed to process the dialog actions.
     ! CDIR: string: optional: The directory from which they were chosen.
     ! DIRECTORY: boolean: optional: Set to TRUE to select directories
     ! 		instead of files.
@@ -300,17 +304,14 @@ contains
     ! WSIZE: c_int(2): optional: Set the size for the dialog.
     ! EDIT_FILTERS: boolean: optional: Set to TRUE to proves an entry window
     ! 		to add extra filters.
-    !
-    ! Returns TRUE if one or more files was selected, FALSE otherwise.
     !-
 
-    type(c_ptr) :: dialog, content, junk, gfilter
+    type(c_ptr) :: content, junk, gfilter
     integer(kind=c_int) :: icreate, idir, action, lval
     integer(kind=c_int) :: i, idx0, idx1
     integer(kind=c_int) :: nsel, resp
     type(c_ptr) :: strptr
     type(c_ptr) :: fbox, fapply
-    type(hl_gtk_chooser_info), target :: chooser_info
 
     ! Create a modal dialogue
     dialog = gtk_dialog_new()
@@ -502,11 +503,74 @@ contains
     call g_signal_connect(dialog, "response"//c_null_char, &
          & c_funloc(hl_gtk_chooser_resp_cb), c_loc(chooser_info))
 
+  end function hl_gtk_file_chooser_new
+
+  !+
+  function hl_gtk_file_chooser_show(files, cdir, directory, create, &
+       & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
+       & initial_dir, current, initial_file, filter, filter_name, parent, &
+       & all, wsize, edit_filters) result(isel)
+
+    integer(kind=c_int) :: isel
+    character(len=*), dimension(:), intent(out), allocatable :: files
+    character(len=*), intent(out), optional :: cdir
+    integer(kind=c_int), intent(in), optional :: directory, create, multiple
+    integer(kind=c_int), intent(in), optional :: allow_uri, show_hidden
+    integer(kind=c_int), intent(in), optional :: confirm_overwrite
+    character(kind=c_char), dimension(*), intent(in), optional :: title, initial_dir, initial_file
+    integer(kind=c_int), intent(in), optional :: current
+    character(len=*), dimension(:), intent(in), optional :: filter
+    character(len=*), dimension(:), intent(in), optional :: filter_name
+    type(c_ptr), intent(in), optional :: parent
+    integer(kind=c_int), intent(in), optional :: all
+    integer(kind=c_int), intent(in), dimension(2), optional :: wsize
+    integer(kind=c_int), intent(in), optional :: edit_filters
+
+    ! Create and show a file chooser widget.
+    !
+    ! FILES: string(): required: The file or files selected.
+    ! CDIR: string: optional: The directory from which they were chosen.
+    ! DIRECTORY: boolean: optional: Set to TRUE to select directories
+    ! 		instead of files.
+    ! CREATE: boolean: optional: Set to FALSE to prohibit creating new files.
+    ! MULTIPLE: boolean: optional: Set to TRUE to allow the selection of
+    ! 		multiple files.
+    ! ALLOW_URI: boolean: optional: Set to TRUE to allow nonlocal selections.
+    ! SHOW_HIDDEN: boolean: optional: Set to TRUE to show hidden files.
+    ! CONFIRM_OVERWRITE: boolean: optional: Set to TRUE to request
+    ! 		confirmation of an overwrite (only used if CREATE
+    ! 		is TRUE).
+    ! TITLE: string: optional: Title for the window.
+    ! INITIAL_DIR: string: optional: Set the initial directory here instead
+    ! 		of the current directory.
+    ! CURRENT: boolean: optional: Use to force start in current directory.
+    ! INITIAL_FILE: string: optional: Set the initial file selection.
+    ! FILTER: string(): optional:  The file selection filter. Elements
+    ! 		may either be patterns or mime types. Each filter is a
+    ! 		comma-separated list of patterns
+    ! FILTER_NAME: string(): optional: Names for the filters
+    ! PARENT: c_ptr: optional: Parent window for the dialogue.
+    ! ALL: boolean: optional: Set to TRUE to add an all-files filter pattern
+    ! WSIZE: c_int(2): optional: Set the size for the dialog.
+    ! EDIT_FILTERS: boolean: optional: Set to TRUE to proves an entry window
+    ! 		to add extra filters.
+    !
+    ! Returns TRUE if one or more files was selected, FALSE otherwise.
+    !-
+
+    type(c_ptr) :: dialog, strptr
+    type(hl_gtk_chooser_info) :: chooser_info
+    integer(kind=c_int) :: i, nsel, resp
+
+    dialog =  hl_gtk_file_chooser_new(chooser_info, cdir, directory, create, &
+       & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
+       & initial_dir, current, initial_file, filter, filter_name, parent, &
+       & all, wsize, edit_filters)
+
     call gtk_widget_show_all (dialog)
     resp = gtk_dialog_run(dialog)
     call gtk_widget_destroy(dialog)
 
-    isel = chooser_info%iselect
     if (chooser_info%iselect == TRUE) then
        nsel = g_slist_length(chooser_info%chooser_sel_list)
        allocate(files(nsel))

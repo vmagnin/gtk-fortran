@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! Progress Bar
 module gtk_hl_progress
-  !*
-  ! Progress Bar
   ! Implements the GtkProgressBar widget. Includes the facility to
   ! make a bar display "n of m" as well as the usual fraction.
   !/

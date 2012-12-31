@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! Lists and Trees
 module gtk_hl_tree
-  !*
-  ! Lists and Trees
   ! These functions attempt to hide some of the complexity of the GtkTreeView
   ! system of widgets and object, while still allowing the main functionality
   ! to be accessed. Most possible renderers are supported (spinner is not).
@@ -131,7 +131,7 @@ module gtk_hl_tree
 
   ! Interfaces to give suitable names to procedures that are
   ! identical between lists and trees. (Yes I know this is the
-  ! reverse of how the construct is meant to be used).
+  ! reverse of how the construct is usually meant to be used).
 
   interface hl_gtk_listn_set_cell_data_func
      module procedure hl_gtk_list_tree_set_cell_data_func
@@ -139,18 +139,21 @@ module gtk_hl_tree
   interface hl_gtk_tree_set_cell_data_func
      module procedure hl_gtk_list_tree_set_cell_data_func
   end interface hl_gtk_tree_set_cell_data_func
+
   interface hl_gtk_listn_config_spin
      module procedure hl_gtk_list_tree_config_spin
   end interface hl_gtk_listn_config_spin
   interface hl_gtk_tree_config_spin
      module procedure hl_gtk_list_tree_config_spin
   end interface hl_gtk_tree_config_spin
+
   interface hl_gtk_listn_config_combo
      module procedure hl_gtk_list_tree_combo_model_config
   end interface hl_gtk_listn_config_combo
   interface hl_gtk_tree_config_combo
      module procedure hl_gtk_list_tree_combo_model_config
   end interface hl_gtk_tree_config_combo
+
   interface hl_gtk_listn_combo_set_model
      module procedure  hl_gtk_list_tree_combo_model_attach
   end interface hl_gtk_listn_combo_set_model

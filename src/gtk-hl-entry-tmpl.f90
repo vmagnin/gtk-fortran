@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! Text Entry
 module gtk_hl_entry
-  !*
-  ! Text Entry
   ! Convenience functions for both single and multiple line text boxes.
   !
   ! The single line is just wrappers for the GtkEntry widget.

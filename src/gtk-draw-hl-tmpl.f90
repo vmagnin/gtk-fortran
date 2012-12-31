@@ -36,9 +36,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! gtk_draw_hl
 module gtk_draw_hl
-  !*
-  ! gtk_draw_hl
   ! This module provides a high-level drawing interface which automatically
   ! handles redrawing on exposure, and bundles the most likely events to
   ! be needed.

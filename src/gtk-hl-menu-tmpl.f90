@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! Pulldown Menu
 module gtk_hl_menu
-  !*
-  ! Pulldown Menu
   ! Implements the GtkMenuBar menu system.
   !/
 

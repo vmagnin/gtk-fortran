@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! Sliders and Spin buttons
 module gtk_hl_spin_slider
-  !*
-  ! Sliders and Spin buttons
   ! GTK sliders and spin buttons use floating point values, the HL interface
   ! implements an automatic interface selection between a floating point or
   ! an integer slider.
