@@ -25,10 +25,9 @@
 ! Contributed by James Tappin
 ! Last modification: 12-13-2012
 
+!*
+! GDK_PIXBUF_HL
 module gdk_pixbuf_hl
-
-  !*
-  ! GDK_PIXBUF_HL
   ! Some routines to facilitate the use of GDK pixbufs from Fortran.
   ! Allows the use of short-int images to avoid the issues that may result
   ! from Fortran's 8-bit integers being signed while GdkPixbuf pixels are
@@ -257,7 +256,7 @@ contains
     ! Create a pixbuf from an RGB(A) array of values. This version
     ! uses 2-byte integers to avoid the signing issues of the c_int8_t type.
     !
-    ! DATA: int8: required: The data values as a 1..4 x n x m array.
+    ! DATA: short: required: The data values as a 1..4 x n x m array.
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -891,10 +890,10 @@ contains
     end if
     allocate(copt_names(nopt+1), copt_vals(nopt+1))
     allocate(opt_names(nopt), opt_vals(nopt))
-    
+
     copt_names(nopt+1) = c_null_ptr
     copt_vals(nopt+1) = c_null_ptr
-    
+
     do i = 1, nopt
        peq = index(options(i), "=")
        opt_names(i) = options(i)(:peq-1)//c_null_char

@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! Misc utility functions
 module gtk_hl_misc
-  !*
-  ! Misc utility functions
   ! Assorted functions and subroutines that don't fit anywhere else.
   !/
 

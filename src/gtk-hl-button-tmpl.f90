@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! Buttons
 module gtk_hl_button
-  !*
-  ! Buttons
   ! Convenience interfaces for regular buttons, checkboxes and radio menus.
   !/
 

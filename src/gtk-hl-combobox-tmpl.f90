@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! ComboBox
 module gtk_hl_combobox
-  !*
-  ! ComboBox
   ! This interface implements the GtkComboBoxText widget for making a chooser.
   ! While this has more limited capabilities than the full GtkComboBox, it
   ! is adequate for the vast majority of uses.

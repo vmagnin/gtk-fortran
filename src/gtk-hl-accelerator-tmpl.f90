@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! Accelerator
 module gtk_hl_accelerator
-  !*
-  ! Accelerator
   ! A convenience function to add an accelerator to a widget (button or
   ! menu item). 
   !/

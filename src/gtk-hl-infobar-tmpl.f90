@@ -35,9 +35,9 @@
 !!$T the line in GTK+ version 2.24 and higher. 
 !!$T The mk_gtk_hl.pl script should be used to generate the source file.
 
+!*
+! Infobar
 module gtk_hl_infobar
-  !*
-  ! Infobar
   ! Convenience interface for the GtkInfoBar widget.
   ! This is created because the routine for adding multiple buttons is
   ! variadic, and setting the message involves several levels of indirection.

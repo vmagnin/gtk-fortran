@@ -24,9 +24,9 @@
 ! Contributed by James Tappin
 ! Last modification: 11-21-2011
 
+!*
+! High Level GTK Fortran interfaces
 module gtk_hl
-  !*
-  ! High Level GTK Fortran interfaces
   !
   ! A collection of procedures to implement higher level creators for
   ! the gtk-fortran widgets. Some settings and operations are also
@@ -34,6 +34,9 @@ module gtk_hl
   !
   ! Many ideas in this module were taken from the pilib gtk<->fortran
   ! interface.
+  !
+  ! This module includes all the high-level modules apart from the
+  ! drawing modules.
   !/
 
   use gtk_hl_container
