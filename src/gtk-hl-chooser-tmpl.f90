@@ -571,6 +571,7 @@ contains
     resp = gtk_dialog_run(dialog)
     call gtk_widget_destroy(dialog)
 
+    isel = chooser_info%iselect
     if (chooser_info%iselect == TRUE) then
        nsel = g_slist_length(chooser_info%chooser_sel_list)
        allocate(files(nsel))
