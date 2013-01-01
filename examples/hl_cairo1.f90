@@ -47,7 +47,8 @@ module handlers
   & cairo_paint, cairo_rectangle
   
   use gdk, only: gdk_cairo_create, gdk_keyval_from_name, gdk_keyval_name, &
-       & gdk_cairo_set_source_window
+       & gdk_cairo_set_source_window, gdk_device_get_name, &
+       & gdk_event_get_source_device, gdk_device_get_source
 
   use g, only: g_usleep
 
@@ -78,7 +79,8 @@ contains
     type(c_ptr), value, intent(in) :: widget, event, gdata
     
     type(gdkeventbutton), pointer :: bevent
-    integer(kind=c_int) :: event_mask
+    type(c_ptr) :: hdevice, dcname
+    character(len=64) :: dname, hdname
 
     print *, "Button press detected"
     if (c_associated(event)) then
@@ -87,6 +89,14 @@ contains
        print *, "Type:", bevent%type
        print *, "State, Button:", bevent%state, bevent%button
        print *, "Root x,y:", int(bevent%x_root), int(bevent%y_root)
+       dcname = gdk_device_get_name(bevent%device)
+       call c_f_string(dcname, dname)
+       hdevice = gdk_event_get_source_device(event)
+       dcname = gdk_device_get_name(hdevice)
+       call c_f_string(dcname, hdname)
+       print *, "Device: ",trim(dname),' (',trim(hdname),') ', &
+            & gdk_device_get_source(bevent%device)
+       
        if (bevent%type == GDK_2BUTTON_PRESS .and. &
             & bevent%button == 3) call gtk_main_quit
     end if
@@ -114,6 +124,8 @@ contains
     type(c_ptr), value, intent(in) :: widget, event, gdata
 
     type(gdkeventscroll), pointer :: bevent
+    type(c_ptr) :: hdevice, dcname
+    character(len=64) :: dname, hdname
 
     print *, "Wheel event detected"
     if (c_associated(event)) then
@@ -121,6 +133,13 @@ contains
        print *, "Clicked at:", int(bevent%x), int(bevent%y)
        print *, "State, direction:", bevent%state, bevent%direction
        print *, "Root x,y:", int(bevent%x_root), int(bevent%y_root)
+       dcname = gdk_device_get_name(bevent%device)
+       call c_f_string(dcname, dname)
+       hdevice = gdk_event_get_source_device(event)
+       dcname = gdk_device_get_name(hdevice)
+       call c_f_string(dcname, hdname)
+       print *, "Device: ",trim(dname),' (',trim(hdname),') ', &
+            & gdk_device_get_source(bevent%device)
     end if
     print *
     rv = FALSE
