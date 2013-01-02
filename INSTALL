@@ -18,6 +18,15 @@ cmake variables are set by using -D<variable>=<value>
 for example to change the default install directory from /usr/local to /usr:
 cmake -DCMAKE_INSTALL_DIR=/usr ..
 
+Useful variables that are specific to gtk-fortran are:
+       EXCLUDE_PLPLOT -- set this to disable building the plplot
+       integration even if plplot is found
+       INSTALL_EXAMPLES -- set this to install the source code of the
+       examples into
+       ${CMAKE_INSTALL_DATAROOTDIR/gtk-fortran/examples<gtkversion>,
+       this would for example be useful if you were making a binary
+       package of gtk-fortran.
+
 To interactively control the build, use 'ccmake' in place of 'cmake'
 
 In place of src/test.sh, use make test
@@ -92,4 +101,4 @@ If you have made a default install to /usr/local you *may* need to run:
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 
 this will depend on your distribution, Ubuntu looks there by default,
-Pardus doesn't.
+Pardus and Manjaro don't.

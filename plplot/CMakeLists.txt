@@ -67,3 +67,16 @@ add_executable(hl_plplot30e "hl_plplot30e.f90")
 add_dependencies(hl_plplot30e plplot_extra_module)
 target_link_libraries(hl_plplot30e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
 add_test(hl_plplot30e ./hl_plplot30e)
+
+# If the INSTALL_EXAMPLES variable is set, then copy the examples
+# to ${CMAKE_INSTALL_DATAROOTDIR/gtk-fortran/examples<gtkversion>
+# useful (e.g.) for building binary packages.
+if (INSTALL_EXAMPLES)
+   install(FILES
+	"${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot1e.f90"
+   	"${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot4e.f90"
+   	"${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot8e.f90"
+   	"${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot17e.f90"
+   	"${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot30e.f90"
+	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples3)
+endif(INSTALL_EXAMPLES)
