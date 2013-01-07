@@ -51,6 +51,7 @@ module gtk_hl
   use gtk_hl_combobox
   use gtk_hl_accelerator
   use gtk_hl_infobar
+  use gtk_hl_assistant
 
   use gtk_hl_misc
 
