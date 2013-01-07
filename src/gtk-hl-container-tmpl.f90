@@ -152,7 +152,7 @@ contains
     integer(kind=c_int) :: icon_ok
 
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL)
-    call gtk_window_set_title(win, title)
+    if (present(title)) call gtk_window_set_title(win, title)
 
     if (present(border)) call gtk_container_set_border_width(win, border)
     if (present(wsize)) &

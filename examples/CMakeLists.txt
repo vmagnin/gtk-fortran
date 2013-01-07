@@ -72,6 +72,10 @@ target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
 # This test is excluded because the directories don't match up.
 # add_test(gtkbuilder2 gtkbuilder2)
 
+add_executable(hl_assistant "hl_assistant.f90")
+target_link_libraries(hl_assistant gtk-fortran_static ${GTK_LIBRARIES})
+add_test(hl_assistant ./hl_assistant)
+
 add_executable(hl_choosers "hl_choosers.f90")
 target_link_libraries(hl_choosers gtk-fortran_static ${GTK_LIBRARIES})
 add_test(hl_choosers ./hl_choosers)
@@ -187,6 +191,7 @@ if (INSTALL_EXAMPLES)
       "${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.f90"
       "${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder2.f90"
       "${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade"
+      "${CMAKE_CURRENT_SOURCE_DIR}/hl_assistant.f90"
       "${CMAKE_CURRENT_SOURCE_DIR}/hl_choosers.f90"
       "${CMAKE_CURRENT_SOURCE_DIR}/hl_combo.f90"
       "${CMAKE_CURRENT_SOURCE_DIR}/hl_containers.f90"
