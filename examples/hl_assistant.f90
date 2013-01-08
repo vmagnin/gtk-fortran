@@ -141,7 +141,7 @@ program hl_assistant
 
   ! Name entry
   algn = gtk_alignment_new(0.5_c_float, 0.5_c_float, 1.0_c_float, 0._c_float)
-  jb = hl_gtk_box_new(horizontal=TRUE, spacing=5)
+  jb = hl_gtk_box_new(horizontal=TRUE, spacing=5_c_int)
   call gtk_container_add(algn, jb)
   junk = gtk_label_new("Your name:"//c_null_char)
   call hl_gtk_box_pack(jb, junk, expand=FALSE)
