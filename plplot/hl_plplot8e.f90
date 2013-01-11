@@ -32,10 +32,11 @@ module common_ex8
   use gtk, only: gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, &
        & gtk_toggle_button_get_active, gtk_widget_destroy, &
        & gtk_widget_get_allocation, gtk_widget_queue_draw, &
-       & gtk_widget_show_all, gtk_init, FALSE, GTK_FILL
+       & gtk_widget_show_all, gtk_init, FALSE, GTK_FILL, GTK_EXPAND
 
   use gtk_hl
   use gtk_draw_hl
+  use gdk_pixbuf_hl
   use plplot_extra
 
   implicit none
@@ -338,6 +339,22 @@ contains
 
   end subroutine resize_area
 
+  subroutine dump_screen(widget, gdata) bind(c)
+    type(c_ptr), value :: widget, gdata
+
+    type(c_ptr) :: pixb
+    character(len=120), dimension(:), allocatable :: files
+    integer(kind=c_int) :: ipick
+
+    ipick = hl_gtk_file_chooser_show(files, current=TRUE, &
+         & title="Output image file"//c_null_char, &
+         & filter=['image/png ', 'image/jpeg', 'image/tiff'], &
+         & parent=window)
+    if (c_f_logical(ipick)) then
+       pixb = hl_gtk_drawing_area_get_gdk_pixbuf(draw)
+       call hl_gdk_pixbuf_save(pixb, files(1))
+    end if
+  end subroutine dump_screen
 end module handlers_ex8
 
 
@@ -356,7 +373,8 @@ program cairo_plplot_ex8
 
   call gtk_init()
 
-  window = hl_gtk_window_new("PLplot x08 / gtk-fortran (extcairo)"//c_null_char, &
+  window = hl_gtk_window_new("PLplot x08 / gtk-fortran (extcairo)"//&
+       & c_null_char, &
        & destroy = c_funloc(quit_cb))
   base = hl_gtk_box_new()
   call gtk_container_add(window, base)
@@ -384,7 +402,7 @@ program cairo_plplot_ex8
   call hl_gtk_table_attach(btable, alt_sl, 1, 1, yopts=0)
 
   ! And another table for the selectors
-  btable=hl_gtk_table_new(3,2)
+  btable=hl_gtk_table_new(homogeneous=TRUE)
   call hl_gtk_box_pack(base, btable, expand=FALSE)
 
   fun_but = hl_gtk_check_button_new("Rosen"//c_null_char, &
@@ -406,6 +424,11 @@ program cairo_plplot_ex8
   bcont_but=hl_gtk_check_button_new("Base contours"//c_null_char, &
        & toggled=c_funloc(set_bcont))
   call hl_gtk_table_attach(btable, bcont_but, 1, 1, yopts=0, xopts=GTK_FILL)
+
+  junk = hl_gtk_button_new("Dump"//c_new_line//"Screen"//c_null_char, &
+       & clicked=c_funloc(dump_screen))
+  call hl_gtk_table_attach(btable, junk, 3, 0, yopts=0, &
+       & xopts=GTK_FILL, yspan=2)
 
   qbut=hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
   call hl_gtk_box_pack(base, qbut, expand=FALSE)
