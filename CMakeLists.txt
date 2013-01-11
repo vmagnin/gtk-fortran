@@ -44,7 +44,7 @@ set(CMAKE_Fortran_FLAGS_DEBUG
 # setting.
 # "-g -pthread  -fbounds-check")
 set(CMAKE_Fortran_FLAGS_RELEASE
-"-pthread -O3")
+"-pthread -O3 -mtune=native -march=native")
 
 set(CPACK_PACKAGE_VERSION "0.1.0")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk2-fortran")

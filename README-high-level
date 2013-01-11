@@ -14,6 +14,11 @@ The following modules are implemented:
 
 gtk_hl: A wrapper that includes all of the other modules.
 
+gtk_hl_accelerator: Interfaces for adding accelerators to buttons and
+       menu items.
+
+gtk_hl_assistant: A bundled interface for the assistant widget.
+
 gtk_hl_button: Implements interfaces to various kinds of button.
 
 gtk_hl_chooser: Implements file choosers that do not need variadic
@@ -27,21 +32,35 @@ gtk_hl_container: Implements interfaces to: Window, box, table
 gtk_hl_dialog: Implements a message dialog widget that does not require
        variadic calls.
 
-gtk_draw_hl: Implements interfaces to drawing areas and their
-       relationship to cairo. (N.B. The reversed naming convention is a
-       historical accident).
-
 gtk_hl_entry: Implements interfaces to entry and textview widgets.
+
+gtk_hl_infobar: An interface to the infobar widget. Removes much of the
+       complexity of putting a message into the widget.
 
 gtk_hl_menu: Implements interfaces to pull-down menus.
 
-gtk_hl_progress: Implements progress bars, including m of n settings
+gtk_hl_misc: Miscellaneous interfaces, mostly used by other modules.
+
+gtk_hl_progress: Implements progress bars, including "m of n" settings
        and automated text addition.
 
 gtk_hl_spin_slider: Implements spin boxes and sliders (including
        convenient integer interfaces).
 
 gtk_hl_tree: Implements interfaces to the list & tree widgets. 
+
+
+In addition 2 graphics modules are available, but are not automatically
+included with the gtk_hl module.
+
+gtk_draw_hl: Implements interfaces to drawing areas and their
+       relationship to cairo. (N.B. The reversed naming convention is a
+       historical accident). Drawing areas created with this module
+       have the necessary features to be used as drawing surfaces by
+       plplot.
+
+gdk_pixbuf_hl: Implements convenient interfaces to gdk pixbufs and
+       formats. 
 
 Several demos are provided in the examples directory: they have the
 prefix hl_.

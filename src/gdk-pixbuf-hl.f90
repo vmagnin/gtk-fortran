@@ -824,6 +824,7 @@ contains
 
   end subroutine hl_gdk_pixbuf_info
 
+  !+
   subroutine hl_gdk_pixbuf_save(pixbuf, file, type, options, ok, error)
     type(c_ptr), intent(in) :: pixbuf
     character(len=*), intent(in) :: file
