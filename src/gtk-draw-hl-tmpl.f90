@@ -23,7 +23,7 @@
 !
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modification: 07-24-2012
+! Last modification: 01-12-2013
 
 !!$T Template file for gtk-draw-hl.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -494,8 +494,6 @@ contains
   !+
   function hl_gtk_drawing_area_get_gdk_pixbuf(area) &
        & result(pixb)
-    use iso_fortran_env, only: int8, int16
-
     type(c_ptr) :: pixb
     type(c_ptr), intent(in) :: area
 
@@ -512,9 +510,10 @@ contains
     integer :: i,j,n,m
 
     ! Define endianness
-    integer(kind=int8), dimension(2), parameter :: z1 = [0_int8, 1_int8]
-    integer(kind=int16), parameter :: z2 = transfer(z1, 0_int16)
-    logical, parameter :: is_big_endian = z2 == 1_int16
+    integer(kind=c_int8_t), dimension(2), parameter :: &
+         & z1 = [0_c_int8_t, 1_c_int8_t]
+    integer(kind=c_int16_t), parameter :: z2 = transfer(z1, 0_c_int16_t)
+    logical, parameter :: is_big_endian = z2 == 1_c_int16_t
 
     surface = hl_gtk_drawing_area_get_surface(area)
     nx = cairo_image_surface_get_width(surface)
