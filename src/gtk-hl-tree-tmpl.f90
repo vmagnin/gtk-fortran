@@ -342,7 +342,7 @@ contains
     if (present(types)) then
        types_all = types
     else
-       types_all = (/ (ncols_all-1)*G_TYPE_STRING /)
+       types_all(:) = G_TYPE_STRING
     end if
     if (present(renderers)) &
          & call hl_gtk_list_tree_type_adjust(types_all, renderers)
@@ -1283,7 +1283,7 @@ contains
     if (present(types)) then
        types_all = types
     else
-       types_all = (/ (ncols_all-1)*G_TYPE_STRING /)
+       types_all(:) = G_TYPE_STRING
     end if
     if (present(renderers)) &
          & call hl_gtk_list_tree_type_adjust(types_all, renderers)
