@@ -192,7 +192,7 @@ contains
        & hscroll_policy, vscroll_policy) result(list)
 
     type(c_ptr) :: list
-    type(c_ptr), intent(out) :: scroll
+    type(c_ptr), intent(out), optional :: scroll
     integer(kind=c_int), intent(in), optional :: ncols
     integer(kind=type_kind), dimension(:), intent(in), optional :: types
     type(c_funptr), optional :: changed
@@ -216,10 +216,10 @@ contains
 
     ! Make a multi column list
     !
-    ! SCROLL: c_ptr: required: The scrollable widget to contain the list.
-    ! 		(This is used to pack the list)
-    ! NCOLS: c_int: Optional: The number of columns.
-    ! TYPES: GType(): Optional: The types for each column.
+    ! SCROLL: c_ptr: optional: A scrollable widget containing the list.
+    ! 		(If present, then this is used to pack the list)
+    ! NCOLS: c_int: optional: The number of columns.
+    ! TYPES: GType(): optional: The types for each column.
     ! CHANGED: c_funptr: optional: Callback function for the "changed"
     ! 		signal to the associated selection object.
     ! DATA: c_ptr: optional: Data to be passed to/from the callback.
@@ -347,32 +347,43 @@ contains
     if (present(renderers)) &
          & call hl_gtk_list_tree_type_adjust(types_all, renderers)
 
-    if (present(hscroll_policy)) then
-       hscroll = hscroll_policy
-    else
-       hscroll = GTK_POLICY_AUTOMATIC
-    end if
-    if (present(vscroll_policy)) then
-       vscroll = vscroll_policy
-    else
-       vscroll = GTK_POLICY_AUTOMATIC
-    end if
-
-    ! Create the storage model
+    ! Create the storage model and the list.
     model = gtk_list_store_newv(ncols_all, c_loc(types_all))
-
-    ! Create the list in the scroll box
-    scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
-    call gtk_scrolled_window_set_policy(scroll, hscroll, &
-         & vscroll)
     list = gtk_tree_view_new_with_model(model)
-    call gtk_container_add(scroll, list)
-    if (present(height) .and. present(swidth)) then
-       call gtk_widget_set_size_request(scroll,swidth,height)
-    else if (present(height)) then
-       call gtk_widget_set_size_request(scroll,0_c_int,height)
-    else if (present(swidth)) then
-       call gtk_widget_set_size_request(scroll,swidth,0_c_int)
+
+    if (present(scroll)) then
+       if (present(hscroll_policy)) then
+          hscroll = hscroll_policy
+       else
+          hscroll = GTK_POLICY_AUTOMATIC
+       end if
+       if (present(vscroll_policy)) then
+          vscroll = vscroll_policy
+       else
+          vscroll = GTK_POLICY_AUTOMATIC
+       end if
+
+       ! Pack the list in the scroll box
+       scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
+       call gtk_scrolled_window_set_policy(scroll, hscroll, &
+            & vscroll)
+       call gtk_container_add(scroll, list)
+
+       if (present(height) .and. present(swidth)) then
+          call gtk_widget_set_size_request(scroll,swidth,height)
+       else if (present(height)) then
+          call gtk_widget_set_size_request(scroll,-1_c_int,height)
+       else if (present(swidth)) then
+          call gtk_widget_set_size_request(scroll,swidth,1_c_int)
+       end if
+    else
+       if (present(height) .and. present(swidth)) then
+          call gtk_widget_set_size_request(list,swidth,height)
+       else if (present(height)) then
+          call gtk_widget_set_size_request(list,-1_c_int,height)
+       else if (present(swidth)) then
+          call gtk_widget_set_size_request(list,swidth,1_c_int)
+       end if
     end if
 
     ! Now the visible columns
@@ -855,7 +866,7 @@ contains
        & sensitive, tooltip, title, height) result(list)
 
     type(c_ptr) :: list
-    type(c_ptr), intent(out) :: scroll
+    type(c_ptr), intent(out), optional :: scroll
     integer(kind=c_int), intent(in), optional :: width
     type(c_funptr), intent(in), optional :: changed
     type(c_ptr), intent(in), optional :: data
@@ -866,7 +877,7 @@ contains
 
     ! A single column selectable list based on the GTK Tree View
     !
-    ! SCROLL: c_ptr: required: The scroll box containing the list
+    ! SCROLL: c_ptr: optional: A scroll box that will contain the list
     ! 		(used for packing etc.)
     ! WIDTH: integer: optional: The width of the displayed column.
     ! CHANGED: c_funptr: optional: Callback function for the "changed"
@@ -1141,7 +1152,7 @@ contains
        & hscroll_policy, vscroll_policy) result(tree)
 
     type(c_ptr) :: tree
-    type(c_ptr), intent(out) :: scroll
+    type(c_ptr), intent(out), optional :: scroll
     integer(kind=c_int), intent(in), optional :: ncols
     integer(kind=type_kind), dimension(:), intent(in), optional :: types
     type(c_funptr), optional :: changed
@@ -1165,10 +1176,10 @@ contains
 
     ! Make a tree view
     !
-    ! SCROLL: c_ptr: required: The scrollable widget to contain the tree.
+    ! SCROLL: c_ptr: optional: A scrollable widget to contain the tree.
     ! 		(This is used to pack the tree)
-    ! NCOLS: c_int: Optional: The number of columns.
-    ! TYPES: GType(): Optional: The types for each column.
+    ! NCOLS: c_int: optional: The number of columns.
+    ! TYPES: GType(): optional: The types for each column.
     ! CHANGED: c_funptr: optional: Callback function for the "changed"
     ! 		signal to the associated selection object.
     ! DATA: c_ptr: optional: Data to be passed to/from the callback.
@@ -1277,32 +1288,45 @@ contains
     if (present(renderers)) &
          & call hl_gtk_list_tree_type_adjust(types_all, renderers)
 
-    if (present(hscroll_policy)) then
-       hscroll = hscroll_policy
-    else
-       hscroll = GTK_POLICY_AUTOMATIC
-    end if
-    if (present(vscroll_policy)) then
-       vscroll = vscroll_policy
-    else
-       vscroll = GTK_POLICY_AUTOMATIC
-    end if
 
     ! Create the storage model
     model = gtk_tree_store_newv(ncols_all, c_loc(types_all))
-
-    ! Create the tree in the scroll box
-    scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
-    call gtk_scrolled_window_set_policy(scroll, hscroll, vscroll)
-
     tree = gtk_tree_view_new_with_model(model)
-    call gtk_container_add(scroll, tree)
-    if (present(height) .and. present(swidth)) then
-       call gtk_widget_set_size_request(scroll,swidth,height)
-    else if (present(height)) then
-       call gtk_widget_set_size_request(scroll,0_c_int,height)
-    else if (present(swidth)) then
-       call gtk_widget_set_size_request(scroll,swidth,0_c_int)
+
+    if (present(scroll)) then
+       if (present(hscroll_policy)) then
+          hscroll = hscroll_policy
+       else
+          hscroll = GTK_POLICY_AUTOMATIC
+       end if
+       if (present(vscroll_policy)) then
+          vscroll = vscroll_policy
+       else
+          vscroll = GTK_POLICY_AUTOMATIC
+       end if
+
+
+       ! Pack the tree in the scroll box
+       scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
+       call gtk_scrolled_window_set_policy(scroll, hscroll, vscroll)
+
+       call gtk_container_add(scroll, tree)
+
+       if (present(height) .and. present(swidth)) then
+          call gtk_widget_set_size_request(scroll,swidth,height)
+       else if (present(height)) then
+          call gtk_widget_set_size_request(scroll,-1_c_int,height)
+       else if (present(swidth)) then
+          call gtk_widget_set_size_request(scroll,swidth,-1_c_int)
+       end if
+    else
+       if (present(height) .and. present(swidth)) then
+          call gtk_widget_set_size_request(tree,swidth,height)
+       else if (present(height)) then
+          call gtk_widget_set_size_request(tree,-1_c_int,height)
+       else if (present(swidth)) then
+          call gtk_widget_set_size_request(tree,swidth,-1_c_int)
+       end if
     end if
 
     ! Set up the columns
