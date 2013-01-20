@@ -230,8 +230,8 @@ contains
        szy = size(2)
     else
        call gtk_widget_set_size_request(plota, -1_c_int, -1_c_int)
-       szx = -1
-       szy = -1
+       szx = 1   ! Negative values give a cairo error
+       szy = 1
     end if
 
     ! Add it to a scrolling window if one is requested
