@@ -75,7 +75,6 @@ contains
     type(c_ptr), intent(in) :: area
     integer, intent(in), dimension(:) :: dat
 
-    type(cairo_user_data_key_t) :: key
     type(c_ptr) :: cr, pixbuf
     character(len=3) :: sdate
 
