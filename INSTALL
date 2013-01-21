@@ -27,7 +27,7 @@ Useful variables that are specific to gtk-fortran are:
          this would for example be useful if you were making a binary
          package of gtk-fortran.
        NO_BUILD_EXAMPLES -- set this to prevent compiling the example
-         programs, also useful for 
+         programs, also mostly useful for packagers.
 
 To interactively control the build, use 'ccmake' in place of 'cmake'
 
