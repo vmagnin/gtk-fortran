@@ -20,7 +20,7 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin, last updated: 8/17/2012
+# Contributed by James Tappin, last updated: 1/21/2013
 
 # set(sources
 #   "plplot_extra.f90")
@@ -42,30 +42,32 @@ install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/plplot_extra.mod"
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-2-fortran)
 
-add_executable(hl_plplot1e "hl_plplot1e.f90")
-add_dependencies(hl_plplot1e plplot_extra_module)
-target_link_libraries(hl_plplot1e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
-add_test(hl_plplot1e ./hl_plplot1e)
+if (NOT NO_BUILD_EXAMPLES) 
+  add_executable(hl_plplot1e "hl_plplot1e.f90")
+  add_dependencies(hl_plplot1e plplot_extra_module)
+  target_link_libraries(hl_plplot1e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
+  add_test(hl_plplot1e ./hl_plplot1e)
 
-add_executable(hl_plplot4e "hl_plplot4e.f90")
-add_dependencies(hl_plplot4e plplot_extra_module)
-target_link_libraries(hl_plplot4e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
-add_test(hl_plplot4e ./hl_plplot4e)
+  add_executable(hl_plplot4e "hl_plplot4e.f90")
+  add_dependencies(hl_plplot4e plplot_extra_module)
+  target_link_libraries(hl_plplot4e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
+  add_test(hl_plplot4e ./hl_plplot4e)
 
-add_executable(hl_plplot8e "hl_plplot8e.f90")
-add_dependencies(hl_plplot8e plplot_extra_module)
-target_link_libraries(hl_plplot8e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
-add_test(hl_plplot8e ./hl_plplot8e)
+  add_executable(hl_plplot8e "hl_plplot8e.f90")
+  add_dependencies(hl_plplot8e plplot_extra_module)
+  target_link_libraries(hl_plplot8e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
+  add_test(hl_plplot8e ./hl_plplot8e)
 
-add_executable(hl_plplot17e "hl_plplot17e.f90")
-add_dependencies(hl_plplot17e plplot_extra_module)
-target_link_libraries(hl_plplot17e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
-add_test(hl_plplot17e ./hl_plplot17e)
+  add_executable(hl_plplot17e "hl_plplot17e.f90")
+  add_dependencies(hl_plplot17e plplot_extra_module)
+  target_link_libraries(hl_plplot17e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
+  add_test(hl_plplot17e ./hl_plplot17e)
 
-add_executable(hl_plplot30e "hl_plplot30e.f90")
-add_dependencies(hl_plplot30e plplot_extra_module)
-target_link_libraries(hl_plplot30e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
-add_test(hl_plplot30e ./hl_plplot30e)
+  add_executable(hl_plplot30e "hl_plplot30e.f90")
+  add_dependencies(hl_plplot30e plplot_extra_module)
+  target_link_libraries(hl_plplot30e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
+  add_test(hl_plplot30e ./hl_plplot30e)
+endif (NOT NO_BUILD_EXAMPLES) 
 
 # If the INSTALL_EXAMPLES variable is set, then copy the examples
 # to ${CMAKE_INSTALL_DATAROOTDIR/gtk-fortran/examples<gtkversion>
