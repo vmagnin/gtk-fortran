@@ -1,0 +1,12 @@
+GTK FORTRAN Example Programs
+============================
+
+This directory contains a number of example programs for the GTK3
+version of gtk-fortran.
+
+Any example may be built on a system with gtk-3-fortran installed with
+the command:
+
+gfortran <name>.f90 -o <name> `pkg-config --cflags --libs gtk-3-fortran`
+
+Examples that use the "high-level" interface have the prefix "hl_". 

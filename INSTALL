@@ -20,16 +20,16 @@ cmake -DCMAKE_INSTALL_DIR=/usr ..
 
 Useful variables that are specific to gtk-fortran are:
        EXCLUDE_PLPLOT -- set this to disable building the plplot
-       integration even if plplot is found
+         integration even if plplot is found
        INSTALL_EXAMPLES -- set this to install the source code of the
-       examples into
-       ${CMAKE_INSTALL_DATAROOTDIR/gtk-fortran/examples<gtkversion>,
-       this would for example be useful if you were making a binary
-       package of gtk-fortran.
+         examples into
+         ${CMAKE_INSTALL_DATAROOTDIR/gtk-fortran/examples<gtkversion>,
+         this would for example be useful if you were making a binary
+         package of gtk-fortran.
+       NO_BUILD_EXAMPLES -- set this to prevent compiling the example
+         programs, also useful for 
 
 To interactively control the build, use 'ccmake' in place of 'cmake'
-
-In place of src/test.sh, use make test
 
 **************************************************************************
 * Following the install path and name changes on 25 Nov 11, it is
@@ -53,7 +53,11 @@ To build with gfortran, version 4.6 or better is needed (in 4.4 &
 4.5 c_funloc doesn't work correctly, at least for Fortran routines with
 the bind(c) attribute).
 
-The build system needs cmake 2.6 or better and doxygen. 
+For g95, the 15 January 2013 snapshot or later is required.
+
+The build system needs cmake 2.8.5 or better.
+
+doxygen and plplot are used if available.
 
 GTK3:
 -----
@@ -62,11 +66,11 @@ For the Gtk3 version, a FindGTK3.cmake module is included in the
 distribution, it is placed in the cmake subdirectory which should be
 added to the module search path by the top-level CMakeLists.txt rules.
 
-N.B. FindGTK3.cmake has only been tested on Debian Sid, it is possible
-that other systems may have different naming conventions (If you have
-problems look for the lines with several asterisks in the comments, as
-these are the places where I think there could be issues [i.e. I was
-guessing until it worked]).
+N.B. FindGTK3.cmake has been tested on Debian Sid, Ubuntu 12.04 and
+Manjaro, it is possible that other systems may have different naming
+conventions (If you have problems look for the lines with several
+asterisks in the comments, as these are the places where I think there
+could be issues [i.e. where I was guessing until it worked]).
 
 Known issues
 ------------
@@ -99,6 +103,9 @@ as simple as:
 If you have made a default install to /usr/local you *may* need to run:
 
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+(Or
+    setenv PKG_CONFIG_PATH /usr/local/lib/pkgconfig
+if you use csh or one of its derivatives)
 
 this will depend on your distribution, Ubuntu looks there by default,
 Pardus and Manjaro don't.
