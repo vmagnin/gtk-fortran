@@ -59,7 +59,6 @@ module plplot_code_ex17
 
   real(kind=plflt) :: y1, y2, y3, y4, ymin, ymax, xlab, ylab
   real(kind=plflt) :: t, tmin, tmax, tjump, dt, noise
-  type(cairo_user_data_key_t) :: key
   type(c_ptr) :: cc
   integer :: colbox, collab, colline(4), styline(4)
   character(len=20) :: legline(4)
