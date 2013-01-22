@@ -314,12 +314,11 @@ program list_rend
        & hl_gtk_cell_toggle, hl_gtk_cell_progress, hl_gtk_cell_pixbuf, &
        & hl_gtk_cell_combo, hl_gtk_cell_radio /)
 
-  ihlist = hl_gtk_listn_new(ihscrollcontain, types=ctypes, &
+  ihlist = hl_gtk_listn_new(types=ctypes, &
        & changed=c_funloc(list_select),&
        & multiple=TRUE, titles=titles, width=widths, &
        & renderers=renderers, editable=editable, &
-       & edited=c_funloc(cell_edited), hscroll_policy=GTK_POLICY_NEVER,&
-       & vscroll_policy=GTK_POLICY_NEVER, toggled=c_funloc(cell_clicked), &
+       & edited=c_funloc(cell_edited), toggled=c_funloc(cell_clicked), &
        & toggled_radio=c_funloc(rcell_clicked), &
        & edited_combo=c_funloc(ccell_edit), &
        & changed_combo=c_funloc(ccell_changed))
@@ -336,8 +335,8 @@ program list_rend
           & data=c_loc(fmt_col(i)))
   end do
   ! Now put <nrows> rows into it
+  call hl_gtk_listn_ins(ihlist, count=nrows)
   do i=1,nrows 
-     call hl_gtk_listn_ins(ihlist)
      write(line,"('List entry number ',I0)") i
      ltr=len_trim(line)+1
      line(ltr:ltr)=c_null_char
@@ -367,7 +366,7 @@ program list_rend
   end do
 
   ! It is the scrollcontainer that is placed into the box.
-  call hl_gtk_box_pack(base, ihscrollcontain)
+  call hl_gtk_box_pack(base, ihlist)
 
   ! Add a note about editable columns
   lbl = gtk_label_new('The "Name", "N" and "Select?" columns are editable'&

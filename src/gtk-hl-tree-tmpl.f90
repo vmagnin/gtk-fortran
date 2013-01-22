@@ -432,29 +432,41 @@ contains
   end function hl_gtk_listn_new
 
   !+
-  subroutine hl_gtk_listn_ins(list, row)
+  subroutine hl_gtk_listn_ins(list, row, count)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in), optional :: row
-
+    integer(kind=c_int), intent(in), optional :: row, count
+    
     ! Insert a row into a tabular list.
     !
     ! LIST: c_ptr: required: The list into which to insert the row.
     ! ROW: c_int: optional: The row BEFORE which to insert the row
     ! 		(append if absent)
+    ! COUNT: c_int: optional: How many rows to add (default 1)
     !-
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter
+    integer(kind=c_int) :: i, n
 
     ! Get the ListStore
     store = gtk_tree_view_get_model(list)
 
-    ! Insert the row
-    if (present(row)) then
-       call gtk_list_store_insert(store, c_loc(iter), row)
+    if (present(count)) then
+       n = count
     else
-       call gtk_list_store_append(store, c_loc(iter))
+       n = 1
+    end if
+
+    ! Insert the row(s)
+    if (present(row)) then
+       do i = 1, n
+          call gtk_list_store_insert(store, c_loc(iter), row)
+       end do
+    else
+       do i = 1, n
+          call gtk_list_store_append(store, c_loc(iter))
+       end do
     end if
   end subroutine hl_gtk_listn_ins
 
@@ -1373,11 +1385,11 @@ contains
   end function hl_gtk_tree_new
 
   !+
-  subroutine hl_gtk_tree_ins(tree, row, absrow)
+  subroutine hl_gtk_tree_ins(tree, row, absrow, count)
 
     type(c_ptr), intent(in) :: tree
     integer(kind=c_int), intent(in), optional, dimension(:) :: row
-    integer(kind=c_int), intent(in), optional :: absrow
+    integer(kind=c_int), intent(in), optional :: absrow, count
 
     ! Insert a row into a tabular tree.
     !
@@ -1388,25 +1400,38 @@ contains
     ! 		top-level row use (/ 4, 1, -1 /).
     ! ABSROW: c_int: optional: The row BEFORE which to insert the new row
     ! 		treating the tree as a flat list.
+    ! COUNT: c_int: optional: How many rows to add (default 1)
     !-
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter1, iter2
     integer(kind=c_int) :: valid
-    integer :: i, ndep
+    integer :: i, ndep, n
+
+    if (present(count)) then
+       n = count
+    else
+       n = 1
+    end if
 
     ! Get the TreeStore
     store = gtk_tree_view_get_model(tree)
 
     ! Insert the row (we don't use the "scanner" here because of the
     ! special case of -1 for append at a level).
+
     if (present(row)) then
        ndep = size(row)
        if (ndep == 1) then
           if (row(1) < 0) then
-             call gtk_tree_store_append(store, c_loc(iter1), C_NULL_PTR)
+             do i = 1, n
+                call gtk_tree_store_append(store, c_loc(iter1), C_NULL_PTR)
+             end do
           else
-             call gtk_tree_store_insert(store, c_loc(iter1), C_NULL_PTR, row(1))
+             do i = 1, n
+                call gtk_tree_store_insert(store, c_loc(iter1), C_NULL_PTR, &
+                     & row(1))
+             end do
           end if
        else
           do i = 1, size(row)-1
@@ -1426,17 +1451,25 @@ contains
           end do
           call clear_gtktreeiter(iter1)
           if (row(ndep) < 0) then
-             call gtk_tree_store_append(store, c_loc(iter1), c_loc(iter2))
+             do i = 1, n
+                call gtk_tree_store_append(store, c_loc(iter1), c_loc(iter2))
+             end do
           else
-             call gtk_tree_store_insert(store, c_loc(iter1), &
-                  & c_loc(iter2), row(ndep))
+             do i = 1, n
+                call gtk_tree_store_insert(store, c_loc(iter1), &
+                     & c_loc(iter2), row(ndep))
+             end do
           end if
        end if
     else if (present(absrow)) then
        if (absrow < 0) then
-          call gtk_tree_store_append(store, c_loc(iter1), C_NULL_PTR)
+          do i = 1, n
+             call gtk_tree_store_append(store, c_loc(iter1), C_NULL_PTR)
+          end do
        else if (absrow == 0) then
-          call gtk_tree_store_prepend(store, c_loc(iter1), C_NULL_PTR)
+          do i = 1, n
+             call gtk_tree_store_prepend(store, c_loc(iter1), C_NULL_PTR)
+          end do
        else
           valid = hl_gtk_tree_abs_iter(tree, iter1, absrow)
           if (valid == FALSE) then
@@ -1444,9 +1477,11 @@ contains
                   & "Row description does not point to an insertable location"
              return
           end if
-          call clear_gtktreeiter(iter2)
-          call gtk_tree_store_insert_before(store, c_loc(iter2), C_NULL_PTR, &
-               & c_loc(iter1))
+          do i = 1, n
+             call clear_gtktreeiter(iter2)
+             call gtk_tree_store_insert_before(store, c_loc(iter2), &
+                  & C_NULL_PTR, c_loc(iter1))
+          end do
        end if
     end if
   end subroutine hl_gtk_tree_ins
