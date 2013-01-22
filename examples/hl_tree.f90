@@ -186,9 +186,9 @@ program tree
 
   ! Add some child rows
   do j = 2, 6, 2
+     call hl_gtk_tree_ins(ihlist, row = (/ j, -1_c_int /), count=5)
      do i = 1, 5
-        call hl_gtk_tree_ins(ihlist, row = (/ j, -1_c_int /))
-        write(line,"('List entry number',I0,':',I0)") j,i
+        write(line,"('List entry number',I0,':',I0)") j+1,i
         ltr=len_trim(line)+1
         line(ltr:ltr)=c_null_char
         call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=0_c_int, &
