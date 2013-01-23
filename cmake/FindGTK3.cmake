@@ -489,8 +489,6 @@ endif()
 
 set(_GTK3_did_we_find_everything true)  # This gets set to GTK3_FOUND
 
-include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
-
 foreach(_GTK3_component ${GTK3_FIND_COMPONENTS})
     string(TOUPPER ${_GTK3_component} _COMPONENT_UPPER)
 
