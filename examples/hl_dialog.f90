@@ -32,7 +32,7 @@ module handlers
 
   implicit none
 
-  type(c_ptr) :: win, box, but, kbut, label
+  type(c_ptr) :: win, box, label
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
@@ -55,7 +55,8 @@ contains
     msg(4) = ""
     msg(5) = "You know that's dangerous"
 
-    resp = hl_gtk_message_dialog_show(msg, GTK_BUTTONS_OK, "ALERT"//c_null_char, &
+    resp = hl_gtk_message_dialog_show(msg, GTK_BUTTONS_OK, &
+         & "ALERT"//c_null_char, &
          & type=GTK_MESSAGE_WARNING, parent=win)
   end subroutine msg_alert
 
@@ -75,11 +76,20 @@ contains
     if (resp == GTK_RESPONSE_YES) call gtk_main_quit()
 
   end subroutine msg_quit
+
+  subroutine msg_about(widget, gdata) bind(c)
+    type(c_ptr), value :: widget, gdata
+
+    call hl_gtk_about_dialog_gtk_fortran(win)
+
+  end subroutine msg_about
 end module handlers
 
 program dialog_demo
   use handlers
   implicit none
+
+  type(c_ptr) :: but
 
   call gtk_init()
   ! Make a window & put a horizontal box in it
@@ -89,12 +99,16 @@ program dialog_demo
   box = hl_gtk_box_new(horizontal=TRUE, spacing=10_c_int)
   call gtk_container_add(win, box)
 
-  ! 2 Buttons one shows a message, the other a confirm exit dialog
+  ! 3 Buttons one shows a message, the next an about dialogue and the
+  ! last a confirm exit dialog
   but = hl_gtk_button_new('Alert'//c_null_char, clicked=c_funloc(msg_alert))
   call hl_gtk_box_pack(box, but)
 
-  kbut = hl_gtk_button_new('Quit'//c_null_char, clicked=c_funloc(msg_quit))
-  call hl_gtk_box_pack(box, kbut)
+  but = hl_gtk_button_new("About"//c_null_char, clicked=c_funloc(msg_about))
+  call hl_gtk_box_pack(box, but)
+
+  but = hl_gtk_button_new('Quit'//c_null_char, clicked=c_funloc(msg_quit))
+  call hl_gtk_box_pack(box, but)
 
   ! Display the window
   call gtk_widget_show_all(Win)
