@@ -425,7 +425,8 @@ contains
          &c_new_line//c_new_line// & 
          &"GTK+ is a free software cross-platform graphical library "//&
          &"available for Linux, Unix, Windows and MacOs X."//C_NULL_CHAR, &
-         & website="https://github.com/jerryd/gtk-fortran/wiki"//C_NULL_CHAR)
+         & website="https://github.com/jerryd/gtk-fortran/wiki"//C_NULL_CHAR,&
+         & parent=parent)
 
   end subroutine hl_gtk_about_dialog_gtk_fortran
 end module gtk_hl_dialog
