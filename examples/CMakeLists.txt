@@ -82,6 +82,10 @@ if (NOT NO_BUILD_EXAMPLES)
   target_link_libraries(hl_cairo1 gtk-fortran_static ${GTK_LIBRARIES})
   add_test(hl_cairo1 ./hl_cairo1)
 
+  add_executable(hl_cairo_viewer "hl_cairo_viewer.f90")
+  target_link_libraries(hl_cairo_viewer gtk-fortran_static ${GTK_LIBRARIES})
+  add_test(hl_cairo_viewer ./hl_cairo_viewer)
+
   add_executable(hl_cairo_clock "hl_cairo_clock.f90")
   target_link_libraries(hl_cairo_clock gtk-fortran_static ${GTK_LIBRARIES})
   add_test(hl_cairo_clock ./hl_cairo_clock)
