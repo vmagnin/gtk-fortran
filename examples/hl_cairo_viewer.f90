@@ -83,15 +83,20 @@ contains
     call gtk_widget_set_sensitive(next, &
          & f_c_logical(current_file < size(file_list)-1))
 
+    errm = ''
     pixbuf = hl_gdk_pixbuf_new(trim(file_list(current_file+1))//c_null_char, &
          & error=errm)
+    if (errm /= "") then
+       write(error_unit, "(2A)") "Failed to open: ", &
+            & trim(file_list(current_file+1))
+       write(error_unit, "(2A)") "        ", trim(errm)
+    else
+       nx = gdk_pixbuf_get_width(pixbuf)
+       ny = gdk_pixbuf_get_height(pixbuf)
 
-    nx = gdk_pixbuf_get_width(pixbuf)
-    ny = gdk_pixbuf_get_height(pixbuf)
-
-    call hl_gtk_drawing_area_resize(view, [nx, ny])
-    call hl_gtk_drawing_area_draw_pixbuf(view, pixbuf)
-
+       call hl_gtk_drawing_area_resize(view, [nx, ny])
+       call hl_gtk_drawing_area_draw_pixbuf(view, pixbuf)
+    end if
   end subroutine show_image
 
   subroutine add_files(widget, gdata)  bind(c)
@@ -132,7 +137,7 @@ contains
 
     if (current_file < 0 .and. size(file_list) > 0) current_file = 0
     call gtk_combo_box_set_active(select, current_file)
-
+    call gtk_widget_set_sensitive(select, f_c_logical(size(file_list)>0))
   end subroutine add_files
 end module v_handlers
 
