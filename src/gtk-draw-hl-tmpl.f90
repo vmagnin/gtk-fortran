@@ -82,8 +82,9 @@ module gtk_draw_hl
 
   use g, only: g_object_get_data, g_object_set_data
 
-!!$GTK< 3.0!  use gdk, only: gdk_cairo_create
-!!$GTK>=3.0!  use gdk, only: gdk_cairo_create, gdk_pixbuf_get_from_surface
+!!$GTK< 3.0!  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+!!$GTK>=3.0!  use gdk, only: gdk_cairo_create, gdk_pixbuf_get_from_surface, &
+!!$GTK>=3.0!     & gdk_cairo_set_source_pixbuf
 
   use gdk_pixbuf, only: gdk_pixbuf_get_pixels, gdk_pixbuf_get_rowstride, &
        & gdk_pixbuf_new
@@ -94,14 +95,16 @@ module gtk_draw_hl
        & gtk_widget_add_events, gtk_widget_get_allocation, &
        & gtk_widget_get_window, gtk_widget_set_can_focus, &
        & gtk_widget_set_size_request, gtk_widget_set_tooltip_text, &
-       & g_signal_connect, TRUE, FALSE, CAIRO_FORMAT_ARGB32, &
+       & g_signal_connect, gtk_widget_queue_draw, &
+       & gtk_events_pending, gtk_main_iteration_do, &
+       & TRUE, FALSE, &
+       & CAIRO_FORMAT_ARGB32, &
        & CAIRO_FORMAT_RGB24, CAIRO_STATUS_SUCCESS, GDK_EXPOSURE_MASK, &
        & GDK_POINTER_MOTION_MASK, &
        & GDK_BUTTON_PRESS_MASK, GDK_BUTTON_RELEASE_MASK, GDK_KEY_PRESS_MASK, &
        & GDK_KEY_RELEASE_MASK, GDK_ENTER_NOTIFY_MASK, GDK_LEAVE_NOTIFY_MASK, &
        & GDK_STRUCTURE_MASK, GDK_SCROLL_MASK, GDK_ALL_EVENTS_MASK, &
        & GTK_POLICY_AUTOMATIC, GDK_COLORSPACE_RGB
-
 
 
   use gtk_sup
@@ -643,6 +646,46 @@ contains
 
   end function hl_gtk_drawing_area_get_gdk_pixbuf
 
+  !+
+  subroutine hl_gtk_drawing_area_draw_pixbuf(area, pixbuf, x, y)
+    type(c_ptr), intent(in) :: area, pixbuf
+    integer(kind=c_int), intent(in), optional :: x, y
+
+    ! Render a GdkPixbuf on a drawing area
+    !
+    ! AREA: c_ptr: required: The drawing area.
+    ! PIXBUF: c_ptr: required: The pixbuf to draw.
+    ! X, Y: c_int: optional: The coordinate of the upper left corner of the
+    ! 		pixbuf on the drawing area (defaults 0).
+    !
+    ! If you are rendering a pixbuf among other operations then just use
+    ! gdk_cairo_set_source_pixbuf directly on the context with which you
+    ! are working.
+    !-
+
+    type(c_ptr) :: cc
+    real(kind=c_double) :: xx, yy
+
+    if (present(x)) then
+       xx = real(x,c_double)
+    else
+       xx = 0._c_double
+    end if
+    if (present(y)) then
+       yy = real(y, c_double)
+    else
+      yy = 0._c_double
+    end if
+
+    cc = hl_gtk_drawing_area_cairo_new(area)
+
+    call gdk_cairo_set_source_pixbuf(cc, pixbuf, xx, yy)
+    call cairo_paint(cc)
+
+    call gtk_widget_queue_draw(area)
+    call hl_gtk_drawing_area_cairo_destroy(cc)
+
+  end subroutine hl_gtk_drawing_area_draw_pixbuf
 
   !+
   function hl_gtk_drawing_area_expose_cb(area, event, data) bind(c) &
@@ -707,7 +750,7 @@ contains
     ! DATA: c_ptr: required: User data for the callback (not used)
     !-
 
-    call hl_gtk_drawing_area_resize(area, copy=.true.)
+    call hl_gtk_drawing_area_resize(area, copy=.true., wait=.false.)
   end subroutine hl_gtk_drawing_area_resize_cb
 
   !+
@@ -775,10 +818,10 @@ contains
   end subroutine hl_gtk_drawing_area_cairo_destroy
 
   !+
-  subroutine hl_gtk_drawing_area_resize(area, size, copy)
+  subroutine hl_gtk_drawing_area_resize(area, size, copy, wait)
     type(c_ptr), intent(in) :: area
     integer(kind=c_int), intent(in), optional, dimension(2) :: size
-    logical, optional, intent(in) :: copy
+    logical, optional, intent(in) :: copy, wait
 
     ! Resize a drawing area and its backing store.
     !
@@ -786,17 +829,26 @@ contains
     ! SIZE: int(2) : optional: The new size, if omitted, then the
     ! 		backing store is resized to match the drawing area (e.g.
     ! 		after resizing the containing window).
+    ! COPY: logical: optional: If present & .true. then copy the old contents.
+    ! WAIT: logical: optional: If present and .false. then do not wait for
+    ! 		all resulting events to complete before returning.
     !-
 
     type(c_ptr) :: cback, cback_old, cr, gdk_w
-    integer(kind=c_int) :: szx, szy, s_type
+    integer(kind=c_int) :: szx, szy, s_type, bv
     type(gtkallocation), target:: alloc
-    logical :: copy_surface
+    logical :: copy_surface, sync
 
     if (present(copy)) then
        copy_surface = copy
     else
        copy_surface = .false.
+    end if
+
+    if (present(wait)) then
+       sync = wait
+    else
+       sync = .true.
     end if
 
     ! If the SIZE keyword is present then resize the window
@@ -837,6 +889,14 @@ contains
        if (cairo_surface_get_reference_count(cback_old) <= 0) exit
        call cairo_surface_destroy(cback_old)
     end do
+
+    if (sync) then
+       do
+          if (.not. c_f_logical(gtk_events_pending())) exit
+          bv = gtk_main_iteration_do(FALSE)
+       end do
+    end if
+
   end subroutine hl_gtk_drawing_area_resize
 
 
