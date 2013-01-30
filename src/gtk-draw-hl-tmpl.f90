@@ -826,6 +826,8 @@ contains
     ! SIZE: int(2) : optional: The new size, if omitted, then the
     ! 		backing store is resized to match the drawing area (e.g.
     ! 		after resizing the containing window).
+    ! COPY: logical: optional: Set to .true. to copy the surface
+    ! 		contents to the new backing store.
     !-
 
     type(c_ptr) :: cback, cback_old, cr, gdk_w
@@ -879,6 +881,25 @@ contains
     end do
   end subroutine hl_gtk_drawing_area_resize
 
+  !+
+  subroutine hl_gtk_drawing_area_get_size(area, width, height)
+    type(c_ptr), intent(in) :: area
+    integer(kind=c_int), intent(out), optional :: width, height
+
+    ! Convenience routine to get the current size of a drawing area
+    !
+    ! AREA: c_ptr: required: The drawing area whose size is needed.
+    ! WIDTH: c_int: optional: The width of the area.
+    ! HEIGHT: c_int: optional: The height of the area
+    !-
+ 
+    type(gtkallocation), target :: alloc
+
+    call gtk_widget_get_allocation(area,c_loc(alloc))
+    if (present(width)) width = alloc%width
+    if (present(height)) height = alloc%height
+
+  end subroutine hl_gtk_drawing_area_get_size
 
   ! *********************************************************************
   ! These routines are obsolete, but are retained for the time being to
