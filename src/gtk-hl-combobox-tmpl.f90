@@ -133,6 +133,8 @@ contains
        end do
     end if
 
+    if (present(active)) call gtk_combo_box_set_active(cbox, active)
+
     if (present(changed)) then
        if (present(data)) then
           call g_signal_connect(cbox, "changed"//C_NULL_CHAR, changed, data)
@@ -141,7 +143,6 @@ contains
        end if
     end if
 
-    if (present(active)) call gtk_combo_box_set_active(cbox, active)
     if (present(sensitive)) call gtk_widget_set_sensitive(cbox, sensitive)
     if (present(tooltip)) call gtk_widget_set_tooltip_text(cbox, tooltip)
   end function hl_gtk_combo_box_new

@@ -233,6 +233,9 @@ contains
        end if
     end if
 
+    if (present(initial_state)) &
+         & call gtk_toggle_button_set_active(but, initial_state)
+
     if (present(toggled)) then
        if (present(data)) then
           call g_signal_connect(but, "toggled"//c_null_char, toggled, data)
@@ -242,9 +245,6 @@ contains
     end if
 
     if (present(tooltip)) call gtk_widget_set_tooltip_text(but, tooltip)
-
-    if (present(initial_state)) &
-         & call gtk_toggle_button_set_active(but, initial_state)
 
     if (present(sensitive)) &
          & call gtk_widget_set_sensitive(but, sensitive)
