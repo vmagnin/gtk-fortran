@@ -149,6 +149,8 @@ contains
     if (present(editable)) &
          & call gtk_editable_set_editable(entry, editable)
 
+    if (present(value)) call gtk_entry_set_text(entry, value)
+
     if (present(activate)) then
        if (present(data)) then
           call g_signal_connect(entry, &
@@ -169,16 +171,16 @@ contains
     end if
     if (present(delete_text)) then
        if (present(data_delete_text)) then
-          call g_signal_connect(entry, "delete-text"//C_NULL_CHAR, delete_text, &
-               & data_delete_text)
+          call g_signal_connect(entry, "delete-text"//C_NULL_CHAR, &
+               & delete_text, data_delete_text)
        else
           call g_signal_connect(entry, "delete-text"//C_NULL_CHAR, delete_text)
        end if
     end if
     if (present(insert_text)) then
        if (present(data_insert_text)) then
-          call g_signal_connect(entry, "insert-text"//C_NULL_CHAR, insert_text, &
-               & data_insert_text)
+          call g_signal_connect(entry, "insert-text"//C_NULL_CHAR, &
+               & insert_text, data_insert_text)
        else
           call g_signal_connect(entry, "insert-text"//C_NULL_CHAR, insert_text)
        end if
@@ -186,7 +188,8 @@ contains
     if (present(focus_out_event)) then
        if (present(data_focus_out)) then
           call g_signal_connect(entry, &
-               & "focus-out-event"//C_NULL_CHAR, focus_out_event, data_focus_out)
+               & "focus-out-event"//C_NULL_CHAR, focus_out_event, &
+               & data_focus_out)
        else
           call g_signal_connect(entry, &
                & "focus-out-event"//C_NULL_CHAR, focus_out_event)
@@ -205,7 +208,6 @@ contains
 
     if (present(tooltip)) call gtk_widget_set_tooltip_text(entry, tooltip)
 
-    if (present(value)) call gtk_entry_set_text(entry, value)
     if (present(sensitive)) &
          & call gtk_widget_set_sensitive(entry, sensitive)
 
