@@ -26,32 +26,36 @@
 
 module cl_handlers
 
-  use cairo, only: cairo_destroy, cairo_line_to, cairo_move_to, cairo_paint, cair&
-       &o_rectangle, cairo_set_line_width, cairo_set_source, cairo_set_source_rgb, cai&
-       &ro_stroke, cairo_set_line_cap, cairo_arc, cairo_new_sub_path, &
-       & cairo_fill, cairo_close_path, cairo_fill_preserve, cairo_rectangle, &
-       & cairo_new_path, cairo_set_source_rgba, cairo_select_font_face, &
-       & cairo_show_text,  cairo_set_font_size
+  !********************************
+  ! Gtk modules for hl_cairo_clock.f90
+  use cairo, only: cairo_arc, cairo_fill, cairo_fill_preserve, cairo_line_to, &
+       & cairo_move_to, cairo_new_path, cairo_paint, cairo_rectangle, &
+       & cairo_select_font_face, cairo_set_font_size, cairo_set_line_cap, &
+       & cairo_set_line_width, cairo_set_source_rgb, cairo_set_source_rgba, &
+       & cairo_show_text, cairo_stroke
 
-  use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
-       &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_queue_draw, gtk_w&
-       &idget_show, gtk_widget_show_all, gtk_window_new, &
-       & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD, &
-       &  TRUE, FALSE, c_null_char, gtk_init, g_signal_connect
+  use g, only: g_timeout_add
 
-  use g, only: g_usleep
+  use gdk, only: gdk_keyval_from_name
+
+  use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
+       & gtk_widget_destroy, gtk_widget_get_allocation, gtk_widget_queue_draw, &
+       & gtk_widget_show_all, gtk_init, TRUE, FALSE, GDK_CONTROL_MASK, &
+       & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, &
+       & CAIRO_FONT_WEIGHT_BOLD
 
   use gtk_hl
   use gtk_draw_hl
+  use gdk_events
 
   use iso_c_binding
 
   implicit none
 
-  integer(kind=c_int) :: height, width
-  integer(kind=c_int) :: run_status = TRUE
-
+  integer(kind=c_int) :: height=250_c_int, width=250_c_int
   real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
+  integer, dimension(8) :: t0 = 0
+  type(c_ptr) :: window
 
 contains
   function delete_cb (widget, event, gdata) result(ret)  bind(c)
@@ -59,22 +63,17 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
-    run_status = FALSE
+    call gtk_main_quit()
+
     ret = FALSE
   end function delete_cb
 
 
-  subroutine pending_events ()
-    integer(kind=c_int) :: boolresult
-    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
-       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
-    end do
-  end subroutine pending_events
+  function show_time(area) bind(c)
+    integer(kind=c_int) :: show_time
+    type(c_ptr), value :: area
 
-  subroutine show_time(area, dat)
-    type(c_ptr), intent(in) :: area
-    integer, intent(in), dimension(:) :: dat
-
+    integer, dimension(8) :: dat
     type(c_ptr) :: cr
     character(len=3) :: sdate
 
@@ -86,6 +85,14 @@ contains
     integer :: i
     real(kind=c_double) :: r0, r1, x0, x1, y0, y1, th, xc, yc, ycs
     real(kind=c_double) :: xb, xt, yb, yt, radius, scale_factor
+
+
+    show_time = TRUE
+
+    call date_and_time(values=dat)
+    if (all(dat(5:7) == t0(5:7))) return
+
+    t0 = dat
 
     cr = hl_gtk_drawing_area_cairo_new(area)
 
@@ -287,13 +294,13 @@ contains
 
     call hl_gtk_drawing_area_cairo_destroy(cr)
     call gtk_widget_queue_draw(area)
-  end subroutine show_time
+  end function show_time
 
   subroutine clock_resize(area, data) bind(c)
     type(c_ptr), value :: area, data
 
     type(gtkallocation), target:: alloc
-    integer, dimension(8) :: t0
+    integer(kind=c_int) :: irv
 
     call gtk_widget_get_allocation(area,c_loc(alloc))
     width = alloc%width
@@ -301,9 +308,29 @@ contains
 
     call hl_gtk_drawing_area_resize(area)
 
-    call date_and_time(values=t0)
-    call show_time(area, t0)
+    t0(:) = 0
+    irv = show_time(area)
+
   end subroutine clock_resize
+
+  function clock_key(widget, event, data) bind(c) result(rv)
+    integer(kind=c_int) :: rv
+    type(c_ptr), value :: widget, event, data
+
+    integer(kind=c_int) :: key_q
+    type(GdkEventKey), pointer :: fevent
+
+    key_q = gdk_keyval_from_name("q"//c_null_char)
+    call c_f_pointer(event, fevent)
+
+    if (fevent%keyval == key_q .and. fevent%state == GDK_CONTROL_MASK) then
+       call gtk_widget_destroy(window)
+       call gtk_main_quit()
+       rv = TRUE
+    else
+       rv = FALSE
+    end if
+  end function clock_key
 end module cl_handlers
 
 program cairo_clock
@@ -311,11 +338,8 @@ program cairo_clock
   use cl_handlers
   implicit none
 
-  type(c_ptr) :: window, drawing
-  integer, dimension(8) :: t0, t1
-
-  height = 250
-  width = 250
+  integer(kind=c_int) :: icont, timeid
+  type(c_ptr) :: drawing
 
   call gtk_init()
 
@@ -323,23 +347,16 @@ program cairo_clock
        & delete_event = c_funloc(delete_cb), wsize=(/width, height/))
 
   drawing = hl_gtk_drawing_area_new(has_alpha = TRUE, &
-       & size_allocate=c_funloc(clock_resize))
+       & size_allocate=c_funloc(clock_resize), &
+       & key_press_event=c_funloc(clock_key))
 
   call gtk_container_add(window, drawing)
   call gtk_widget_show_all (window)
 
-  call date_and_time(values=t0)
-  call show_time(drawing, t0)
+  icont =  show_time(drawing)
 
-  do
-     call pending_events()
-     if (run_status == FALSE) exit
-     call g_usleep(1000_c_long) ! So we don't burn CPU cycles
-     call date_and_time(values=t1)
-     if (t1(7) /= t0(7) .or. t1(6) /= t0(6) .or. t1(5) /= t0(5)) then
-        t0=t1
-        call show_time(drawing, t0)
-     end if
-  end do
+  timeid = g_timeout_add(300_c_int, c_funloc(show_time), drawing)
+  call gtk_main()
+
   print *, "All done"
 end program cairo_clock

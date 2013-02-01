@@ -64,6 +64,11 @@ if (NOT NO_BUILD_EXAMPLES)
   target_link_libraries(hl_plplot17e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
   add_test(hl_plplot17e ./hl_plplot17e)
 
+  add_executable(hl_plplot17e_gto "hl_plplot17e_gto.f90")
+  add_dependencies(hl_plplot17e_gto plplot_extra_module)
+  target_link_libraries(hl_plplot17e_gto gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
+  add_test(hl_plplot17e_gto ./hl_plplot17e_gto)
+
   add_executable(hl_plplot30e "hl_plplot30e.f90")
   add_dependencies(hl_plplot30e plplot_extra_module)
   target_link_libraries(hl_plplot30e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
@@ -79,6 +84,7 @@ if (INSTALL_EXAMPLES)
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot4e.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot8e.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot17e.f90"
+    "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot17e_gto.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot30e.f90"
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples3)
 endif(INSTALL_EXAMPLES)

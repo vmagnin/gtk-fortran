@@ -27,21 +27,20 @@
 
 module common_ex17
   use iso_c_binding
-  use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area_new, &
-       & gtk_events_pending, gtk_main, gtk_main_iteration, &
-       & gtk_main_iteration_do,&
-       & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init, &
-       & gtk_widget_queue_draw
-  use g, only: g_object_get_data, g_usleep
-
   use gtk_draw_hl
+
+  !********************************
+  ! Gtk modules for hl_plplot17e.f90
+  use g, only: g_timeout_add
+
+  use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
+       & gtk_widget_queue_draw, gtk_widget_show_all, gtk_init, &
+       & gtk_events_pending, TRUE, FALSE
 
   use plplot_extra
 
   implicit none
 
-  integer(kind=c_int) :: height, width
-  integer(kind=c_int) :: run_status = TRUE
   type(c_ptr) :: window
 
 end module common_ex17
@@ -71,7 +70,7 @@ contains
 
     character(len=80) :: errmsg
     character(len=20) :: geometry
-
+    integer(kind=c_int) :: height, width
 
     ! Define colour map 0 to match the "GRAFFER" colour table in
     ! place of the PLPLOT default.
@@ -97,6 +96,7 @@ contains
     call plsetopt("drvopt", "set_background=1")  
 
     ! The "extcairo" device doesn't read the size from the context.
+    call hl_gtk_drawing_area_get_size(area, width=width, height=height)
     write(geometry, "(I0,'x',I0)") width, height
     call plsetopt("geometry",  geometry)
 
@@ -191,11 +191,11 @@ contains
 
   end subroutine x17f95
 
-  subroutine add_point(area)
-    type(c_ptr), intent(in) :: area
+  function add_point(area) bind(c)
+    integer(kind=c_int) :: add_point
+    type(c_ptr), value :: area
 
     n=n+1
-!    if (n > nsteps) return
 
     t = dble(n) * dt
     noise = plrandd() - 0.5_plflt
@@ -203,6 +203,8 @@ contains
     y2 = sin(t*PI/18._plflt)
     y3 = y2 * noise
     y4 = y2 + noise/3._plflt
+
+    if (c_f_logical(gtk_events_pending())) return
 
     !        There is no need for all pens to have the same number of
     !        points or being equally time spaced.
@@ -220,7 +222,9 @@ contains
        call plstripa(id1, 3, t, y4)
     end if
     call gtk_widget_queue_draw(area)
-  end subroutine add_point
+
+    add_point = TRUE
+  end function add_point
 
   subroutine close_strip
 
@@ -251,7 +255,7 @@ contains
     type(c_ptr), value :: widget, event, gdata
 
     call close_strip()
-    run_status = FALSE
+    call gtk_main_quit()
     ret = FALSE
   end function delete_cb
 
@@ -259,16 +263,9 @@ contains
     type(c_ptr), value :: widget, gdata
 
     call close_strip()
-    run_status = FALSE
+    call gtk_main_quit()
+
   end subroutine quit_cb
-
-  subroutine pending_events ()
-    integer(kind=c_int) :: boolresult
-    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
-       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
-    end do
-  end subroutine pending_events
-
 
 end module handlers_ex17
 
@@ -281,18 +278,17 @@ program cairo_plplot_ex17
   implicit none
 
   type(c_ptr) :: drawing, base, qbut
-
-  height = 500
-  width = 1000
+  integer(kind=c_int) :: timeid
 
   call gtk_init()
 
-  window = hl_gtk_window_new("PLplot x17 / gtk-fortran (extcairo)"//c_null_char, &
+  window = hl_gtk_window_new("PLplot x17 / gtk-fortran (extcairo)"//&
+       & " g_timeout version"//c_null_char, &
        & delete_event = c_funloc(delete_cb))
   base = hl_gtk_box_new()
   call gtk_container_add(window, base)
 
-  drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
+  drawing = hl_gtk_drawing_area_new(size=(/1000_c_int, 500_c_int/), &
        & has_alpha = FALSE)
 
   call hl_gtk_box_pack(base, drawing)
@@ -304,17 +300,8 @@ program cairo_plplot_ex17
 
   call x17f95(drawing)
 
-  ! Note that here rather than using gtk_main we look for events ourselves
-  ! this makes it easy to add a point every 1/10s.
-  ! An alternative would be to use g_timeout_add to control the updates
-  ! (hl_plplot17e_gto.f90).
-
-  do
-     call pending_events()
-     if (run_status == FALSE) exit
-     call g_usleep(100000_c_long) ! So we don't burn CPU cycles
-     call add_point(drawing)
-  end do
+  timeid = g_timeout_add(100_c_int, c_funloc(add_point), drawing)
+  call gtk_main()
 
   print *, "All done"
 end program cairo_plplot_ex17
