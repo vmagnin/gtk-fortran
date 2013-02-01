@@ -269,7 +269,7 @@ contains
     type(c_ptr), intent(in) :: my_drawing_area
     integer(kind=c_int), intent(in) :: itermax
 
-    integer(kind=c_int)    :: i, j, k, p
+    integer(kind=c_int)    :: i, j, k
     real(kind=c_double)    :: x, y ! coordinates in the complex plane
     complex(kind=c_double) :: c, z
     integer(kind=c_int8_t) :: red, green, blue     ! rgb color
