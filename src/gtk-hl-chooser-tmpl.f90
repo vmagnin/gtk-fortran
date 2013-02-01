@@ -309,8 +309,6 @@ contains
     type(c_ptr) :: content, junk, gfilter
     integer(kind=c_int) :: icreate, idir, action, lval
     integer(kind=c_int) :: i, idx0, idx1
-    integer(kind=c_int) :: nsel, resp
-    type(c_ptr) :: strptr
     type(c_ptr) :: fbox, fapply
 
     ! Create a modal dialogue

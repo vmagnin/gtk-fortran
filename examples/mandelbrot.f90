@@ -62,7 +62,7 @@ program mandelbrot
   use iso_c_binding, only: c_ptr, c_null_char, c_null_ptr, c_funloc
   use handlers
   implicit none
-  type(c_ptr) :: my_window, my_button, my_gdk_image, my_gtk_image, style, gc, white_gc
+  type(c_ptr) :: my_window, my_gdk_image, my_gtk_image
   
   call gtk_init ()
   
@@ -112,8 +112,6 @@ subroutine Mandelbrot_set(the_gdk_image, the_gtk_image, width, height, xmin, xma
   real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
   complex(8) :: c, z   
   real(8)    :: scx, scy             ! scales
-  real(8)    :: t0, t1, st0, st1     ! times for benchmarking
-  real(8)    :: system_time          ! Function    
   integer(1) :: red, green, blue     ! rgb color
     
   scx = ((xmax-xmin)/width)   ! x scale

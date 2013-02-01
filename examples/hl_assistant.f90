@@ -122,7 +122,7 @@ program hl_assistant
   use as_handlers
   implicit none
 
-  type(c_ptr) :: page, junk, jb, algn, ebox, pbar
+  type(c_ptr) :: junk, jb, algn, ebox, pbar
 
   call gtk_init()
 

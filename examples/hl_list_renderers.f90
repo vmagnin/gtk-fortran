@@ -54,7 +54,6 @@ contains
   subroutine list_select(list, gdata) bind(c)
     type(c_ptr), value :: list, gdata
 
-    integer, pointer :: fdata
     integer(kind=c_int) :: nsel
     integer(kind=c_int), dimension(:), allocatable :: selections
     real(kind=c_double) :: x, x3
@@ -169,7 +168,6 @@ contains
     character(len=200) :: fpath
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
-    integer :: ios
     type(c_ptr) :: pcol, list
     logical :: state
 
@@ -207,7 +205,6 @@ contains
     character(len=200) :: fpath
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
-    integer :: ios
     integer(kind=c_int) :: i
     type(c_ptr) :: pcol, list
     logical :: state
@@ -274,7 +271,6 @@ program list_rend
   integer, parameter :: ncols = 11, nrows=10
   character(len=35) :: line
   integer(kind=c_int) :: i, ltr
-  integer, target :: iappend=0, idel=0
   integer(kind=type_kind), dimension(ncols) :: ctypes
   character(len=20), dimension(ncols) :: titles, renderers
   integer(kind=c_int), dimension(ncols) :: editable

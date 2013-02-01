@@ -190,9 +190,6 @@ program notebook_example
   character(kind=c_char,len=12) :: istr
   integer(c_int) :: nb
 
-  character(kind=c_char), dimension(:), pointer :: textptr
-  character(len=512) :: my_string
-
   ! GTK initialisation      
   call gtk_init ()
   

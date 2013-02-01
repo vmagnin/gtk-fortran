@@ -301,7 +301,7 @@ contains
     integer(kind=c_int) :: ncols_all, i, hscroll, vscroll
     integer(kind=type_kind), dimension(:), allocatable, target :: types_all
 
-    type(c_ptr) :: model, renderer, column, select
+    type(c_ptr) :: model, select
 
     ! Warn if the obsolete COLNOS argument is present
     if (present(colnos)) write(error_unit, *) "hl_gtk_listn_new: "//&
@@ -1253,8 +1253,6 @@ contains
     integer(kind=type_kind), dimension(:), allocatable, target :: types_all
 
     type(c_ptr) :: model, select
-    type(gvalue), target :: isedit
-    type(c_ptr) :: pisedit
 
     ! Warn if the obsolete COLNOS argument is present
     if (present(colnos)) write(error_unit, *) "hl_gtk_tree_new: "//&
@@ -1751,14 +1749,6 @@ contains
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
 
-    character(len=120) :: sconv
-    integer(kind=c_int) :: iconv
-    integer(kind=c_long) :: lconv
-    integer(kind=c_int64_t) :: l64conv
-    real(kind=c_float) :: fconv
-    real(kind=c_double) :: dconv
-    integer :: ios
-
     ! Get tree store
     store = gtk_tree_view_get_model(tree)
 
@@ -1835,7 +1825,7 @@ contains
     !-
 
     integer(kind=type_kind) :: ctype
-    type(c_ptr) :: store, val, cstr
+    type(c_ptr) :: store, val
     integer(kind=c_int) :: valid, icol
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
@@ -1944,7 +1934,7 @@ contains
     !-
 
     type(c_ptr) :: store, pstring, col, rlist, renderer, pmodel, model
-    type(gvalue), target :: stringv, modelv
+    type(gvalue), target :: modelv
     type(gtktreeiter), target :: viter, citer
     integer(kind=c_int) :: valid
 
@@ -1977,8 +1967,8 @@ contains
     valid = gtk_tree_model_iter_nth_child(model, c_loc(citer), &
          & c_null_ptr, selection)
     if (c_f_logical(valid)) then
-       pstring = g_value_init(pstring, G_TYPE_STRING)
        call g_value_unset(pstring)
+       pstring = g_value_init(pstring, G_TYPE_STRING)
        call gtk_tree_model_get_value(model, c_loc(citer), 0_c_int, pstring)
        call gtk_list_store_set_value(store, c_loc(viter), colno, pstring)
     end if
@@ -2008,7 +1998,6 @@ contains
     character(len=200) :: fpath, ftext
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
-    integer :: ios
     type(c_ptr) :: pcol, list
 
     call convert_c_string(path, fpath)
@@ -2040,7 +2029,6 @@ contains
     character(len=200) :: fpath
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
-    integer :: ios
     type(c_ptr) :: pcol, list
     logical :: state
 
@@ -2075,7 +2063,6 @@ contains
     character(len=200) :: fpath
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
-    integer :: ios
     integer(kind=c_int) :: i
     type(c_ptr) :: pcol, list
     logical :: state
@@ -2122,7 +2109,7 @@ contains
     character(len=200) :: fpath, ftext
     integer(kind=c_int), allocatable, dimension(:) :: irow
     integer(kind=c_int), pointer :: icol
-    integer :: ios, i, n
+    integer :: i, n
     type(c_ptr) :: tree, pcol
 
     call convert_c_string(path, fpath)
@@ -2166,7 +2153,7 @@ contains
     character(len=200) :: fpath
     integer(kind=c_int), allocatable, dimension(:) :: irow
     integer(kind=c_int), pointer :: icol
-    integer :: ios, i, n
+    integer :: i, n
     type(c_ptr) :: pcol, tree
     logical :: state
 
@@ -2212,11 +2199,11 @@ contains
     character(len=200) :: fpath
     integer(kind=c_int), allocatable, dimension(:) :: irow, jrow
     integer(kind=c_int), pointer :: icol
-    integer :: ios, i, n
+    integer :: i, n
     type(c_ptr) :: pcol, tree, ipath, tree_model
     logical :: state
     type(gtktreeiter), target :: iter, piter
-    integer(kind=c_int) :: valid, nchild
+    integer(kind=c_int) :: valid
 
     call convert_c_string(path, fpath)
     n = 0
@@ -3398,12 +3385,11 @@ contains
 
     type(c_ptr) :: col, rlist, renderer
     type(gvalue), target :: modelv, stringv, entryv
-    type(c_ptr) :: pmodel, model, pstring, pentry, vselection
+    type(c_ptr) :: pmodel, model, pstring, pentry
     logical :: iappend
     integer(kind=c_int) :: nvals, i, valid
     type(gtktreeiter), target :: iter
-    type(c_ptr) :: ctext
-    character(len=200) :: ftext
+
     if (present(append)) then
        iappend = c_f_logical(append)
     else

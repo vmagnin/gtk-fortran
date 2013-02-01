@@ -36,7 +36,10 @@ set(CMAKE_INSTALL_LIBDIR lib)
 
 # Uncomment this to debug or use "cmake -D CMAKE_BUILD_TYPE=debug .."
 # set(CMAKE_BUILD_TYPE debug)
-# set(CMAKE_BUILD_TYPE release)
+if (NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE release)
+endif()
+message(STATUS "Build type is: ${CMAKE_BUILD_TYPE}")
 
 set(CMAKE_Fortran_FLAGS_DEBUG
 "-g -pthread -Wall -Wtabs -fcheck-array-temporaries -fbacktrace -fbounds-check -ffpe-trap=invalid,zero,overflow -Wno-unused-dummy-argument")

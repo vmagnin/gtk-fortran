@@ -548,9 +548,12 @@ contains
     ! 		(defaults, from the origin to the top right of the surface).
     !-
 
-    type(c_ptr) :: surface, data, pdata
-    integer(kind=c_int) :: nx, ny, rs, rsp, fmt, has_alpha, lpix
+    type(c_ptr) :: surface
+    integer(kind=c_int) :: nx, ny, rs, fmt, lpix
     integer(kind=c_int) :: xorig, yorig, xrange, yrange
+
+!!$GTK< 3.0!    type(c_ptr) :: data, pdata
+!!$GTK< 3.0!    integer(kind=c_int) :: has_alpha, rsp
 !!$GTK< 3.0!    integer :: lppix, nbp
 !!$GTK< 3.0!    character(kind=c_char, len=1), dimension(:), pointer :: chdata, swdata
 !!$GTK< 3.0!    integer :: i,j,n,m
@@ -718,6 +721,8 @@ contains
 
     type(c_ptr) :: cr, isurface
 
+    rv = FALSE
+
     isurface = g_object_get_data(area, "backing-surface")
     if (.not. c_associated(isurface)) then
        write(error_unit,*) &
@@ -732,7 +737,6 @@ contains
     call cairo_set_source_surface(cr, isurface, 0._c_double, 0._c_double) 
     call cairo_paint(cr)
     call cairo_destroy(cr)
-    rv = FALSE
   end function hl_gtk_drawing_area_expose_cb
 
   !+
@@ -764,7 +768,7 @@ contains
     ! DATA: c_ptr: required: User data for the callback (not used)
     !-
 
-    call hl_gtk_drawing_area_resize(area, copy=.true., wait=.false.)
+    call hl_gtk_drawing_area_resize(area, copy=.true.)
   end subroutine hl_gtk_drawing_area_resize_cb
 
   !+
@@ -782,9 +786,6 @@ contains
     !-
 
     type(c_ptr) :: isurface
-    integer(kind=c_int) :: width, height, n_channels
-    type(c_ptr) :: surface
-    integer(kind=c_int) :: ok, cairo_type
 
     isurface = g_object_get_data(area, "backing-surface")
     if (.not. c_associated(isurface)) then
@@ -816,7 +817,6 @@ contains
     ! use gtk_widget_queue_draw to do that.
     !-
 
-    integer(kind=c_int) :: width, height
     type(c_ptr) :: isurface
 
     if (present(destroy_surface)) then
@@ -832,10 +832,10 @@ contains
   end subroutine hl_gtk_drawing_area_cairo_destroy
 
   !+
-  subroutine hl_gtk_drawing_area_resize(area, size, copy, wait)
+  subroutine hl_gtk_drawing_area_resize(area, size, copy)
     type(c_ptr), intent(in) :: area
     integer(kind=c_int), intent(in), optional, dimension(2) :: size
-    logical, optional, intent(in) :: copy, wait
+    logical, optional, intent(in) :: copy
 
     ! Resize a drawing area and its backing store.
     !
@@ -845,25 +845,17 @@ contains
     ! 		after resizing the containing window).
     ! COPY: logical: optional: Set to .true. to copy the surface
     ! 		contents to the new backing store.
-    ! WAIT: logical: optional: If present and .false. then do not wait for
-    ! 		all resulting events to complete before returning.
     !-
 
     type(c_ptr) :: cback, cback_old, cr, gdk_w
-    integer(kind=c_int) :: szx, szy, s_type, bv
+    integer(kind=c_int) :: szx, szy, s_type
     type(gtkallocation), target:: alloc
-    logical :: copy_surface, sync
+    logical :: copy_surface
 
     if (present(copy)) then
        copy_surface = copy
     else
        copy_surface = .false.
-    end if
-
-    if (present(wait)) then
-       sync = wait
-    else
-       sync = .true.
     end if
 
     ! If the SIZE keyword is present then resize the window
@@ -904,13 +896,6 @@ contains
        if (cairo_surface_get_reference_count(cback_old) <= 0) exit
        call cairo_surface_destroy(cback_old)
     end do
-
-    if (sync) then
-       do
-          if (.not. c_f_logical(gtk_events_pending())) exit
-          bv = gtk_main_iteration_do(FALSE)
-       end do
-    end if
 
   end subroutine hl_gtk_drawing_area_resize
 

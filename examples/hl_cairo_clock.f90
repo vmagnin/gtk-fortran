@@ -75,7 +75,7 @@ contains
     type(c_ptr), intent(in) :: area
     integer, intent(in), dimension(:) :: dat
 
-    type(c_ptr) :: cr, pixbuf
+    type(c_ptr) :: cr
     character(len=3) :: sdate
 
     character(len=4), parameter, dimension(12) :: mnames = &

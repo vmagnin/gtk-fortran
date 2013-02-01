@@ -78,7 +78,6 @@ program radio
   integer :: i
   integer(kind=c_int), dimension(6), target :: isel=[ (i-1,i=1,6) ]
   character(len=10) :: label
-  logical :: changed
 
   ! Initialize GTK+
   call gtk_init()

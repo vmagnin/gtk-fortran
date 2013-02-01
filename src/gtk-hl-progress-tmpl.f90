@@ -83,7 +83,7 @@ contains
     ! 		pulsing the bar
     !-
 
-    integer(kind=c_int) :: orientation
+!!$GTK< 3.0!    integer(kind=c_int) :: orientation
 
     bar = gtk_progress_bar_new()
 

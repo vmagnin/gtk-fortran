@@ -100,7 +100,6 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, event, gdata
     type(c_ptr) :: my_cairo_context
-    integer(c_int) :: cstatus
     
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0) 
@@ -278,9 +277,8 @@ program julia
   type(c_ptr) :: my_window, table, button1, button2, button3, box1
   type(c_ptr) :: label1, label2, label3, label4
   type(c_ptr) :: toggle1, expander, notebook, notebookLabel1, notebookLabel2
-  type(c_ptr) :: handle1, linkButton
+  type(c_ptr) :: linkButton
   integer(c_int) :: message_id, firstTab, secondTab
-  integer :: i
   
   call gtk_init ()
   

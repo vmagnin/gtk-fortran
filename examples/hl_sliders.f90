@@ -59,7 +59,7 @@ contains
 
     integer(kind=c_int) :: ival
 
-    ival = hl_gtk_slider_get_value(widget)
+    ival = nint(hl_gtk_slider_get_value(widget), c_int)
     print *, 'INT slider moved to', ival
     call hl_gtk_spin_button_set_value(ispin, ival)
   end subroutine slider2
@@ -82,7 +82,7 @@ contains
 
     integer(kind=c_int) :: ival
 
-    ival = hl_gtk_spin_button_get_value(widget)
+    ival = nint(hl_gtk_spin_button_get_value(widget), c_int)
     print *, 'INT spinner moved to', ival
     call hl_gtk_slider_set_value(islid, ival)
   end subroutine spinner2

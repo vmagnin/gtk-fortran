@@ -84,6 +84,7 @@ contains
     integer(kind=c_int) :: xp1, yp1, xo, yo, xs, ys, ipick
     character(len=120), dimension(:), allocatable :: files
 
+    rv = FALSE
     if (c_associated(event)) then
        call c_f_pointer(event,bevent)
     else
@@ -135,7 +136,6 @@ contains
        end if
     end if
     print *
-    rv = FALSE
   end function button_event_h
 
   function motion_event_h(widget, event, gdata) bind(c) result(rv)
@@ -203,7 +203,6 @@ contains
 
     type(gdkeventkey), pointer :: bevent
     integer(kind=c_int) :: key_q
-    type(c_ptr) :: keystr
     character(len=20) :: keyname
 
     key_q = gdk_keyval_from_name("q"//c_null_char)
@@ -225,7 +224,7 @@ contains
 
     real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
 
-    type(c_ptr) :: my_cairo_context, pixbuf
+    type(c_ptr) :: my_cairo_context
     integer :: cstatus
     integer :: t
 
