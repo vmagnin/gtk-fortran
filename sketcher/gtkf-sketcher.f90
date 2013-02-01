@@ -316,9 +316,6 @@ contains
     character(len=120), dimension(:), allocatable :: chfile
     character(len=30), dimension(2) :: filters
     character(len=30), dimension(2) :: filtnames
-    character(len=200) :: inln
-    integer :: ios
-    integer :: idxs
 
     integer(c_int) :: guint, i
     type(c_ptr) :: error = c_null_ptr
@@ -328,7 +325,8 @@ contains
     type(c_ptr) :: val
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
-    integer(kind=type_kind) :: ctype
+
+    ret = FALSE
 
     filters(1) = "*.glade"
     filtnames(1) = "Glade3 file"
@@ -387,8 +385,6 @@ contains
     
     file_loaded=.true.
     
-    ret = FALSE
-
   end function file_open
 
   subroutine combobox_get_active_string_value(combobox,column,text)
@@ -415,7 +411,8 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     
-    character(len=256,kind=c_char)::subdir, license_file, line, test, handlerfile, appwindow, additional_modules
+    character(len=256,kind=c_char)::subdir, license_file, line, &
+         & handlerfile, appwindow, additional_modules
     integer::status_read
     integer(kind=c_int)::i,j
     logical::already_used, lexist
@@ -425,6 +422,7 @@ contains
     if (.not.file_loaded) then
       status_read=hl_gtk_message_dialog_show((/"Please load some Glade3 UI file first!"/), GTK_BUTTONS_OK, &
         title="No Glade3 file loaded yet")
+      ret = FALSE
       return
     else
       call chdir(working_dir)

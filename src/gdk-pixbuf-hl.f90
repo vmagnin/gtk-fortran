@@ -237,7 +237,6 @@ contains
     !-
 
     integer(kind=c_int), dimension(2) :: sz
-    integer(kind=c_int) :: alpha
 
     sz = shape(data)
 
@@ -301,7 +300,6 @@ contains
     !-
 
     integer(kind=c_int), dimension(2) :: sz
-    integer(kind=c_int) :: alpha
 
     sz = shape(data)
 
@@ -537,7 +535,7 @@ contains
     ! smaller input array or array slice than the pixbuf size.
     !-
 
-    integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop, lput
+    integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop
     integer(kind=c_int) :: rowstr, nrows, ncols, nchans
     integer :: lpix
     type(c_ptr), target :: cpixels
@@ -738,7 +736,7 @@ contains
     ! smaller input array or array slice than the pixbuf size.
     !-
 
-    integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop, lput
+    integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop
     integer(kind=c_int) :: rowstr, nrows, ncols, nchans
     integer :: lpix
     type(c_ptr), target :: cpixels

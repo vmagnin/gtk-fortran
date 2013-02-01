@@ -53,7 +53,6 @@ contains
   subroutine list_select(list, gdata) bind(c)
     type(c_ptr), value :: list, gdata
 
-    integer, pointer :: fdata
     integer(kind=c_int) :: nsel
     integer(kind=c_int), dimension(:), allocatable :: selections
     integer(kind=c_int) :: n, n3
@@ -170,7 +169,6 @@ program list_n
 
   character(len=35) :: line
   integer(kind=c_int) :: i, ltr
-  integer, target :: iappend=0, idel=0
   integer(kind=type_kind), dimension(8) :: ctypes
   character(len=20), dimension(8) :: titles
   integer(kind=c_int), dimension(8) :: sortable, editable

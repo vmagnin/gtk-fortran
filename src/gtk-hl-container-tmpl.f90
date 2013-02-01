@@ -426,7 +426,7 @@ contains
 !!$GTK< 3.0!    integer(kind=c_int) :: ixpad, iypad
 !!$GTK< 3.0!    integer(kind=c_int) :: ixopt, iyopt
 !!$GTK>=3.0!    integer(kind=c_int) :: ixsz, iysz
-    integer(kind=c_int) :: ixexp, iyexp, ixfill, iyfill
+!!$GTK>=3.0!    integer(kind=c_int) :: ixexp, iyexp, ixfill, iyfill
 
     if (present(xspan)) then
 !!$GTK< 3.0!       ixtop = ix + xspan

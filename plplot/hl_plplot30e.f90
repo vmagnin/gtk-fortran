@@ -61,7 +61,6 @@ contains
 
     type(c_ptr) :: cc
 
-    character(len=80) :: version
     character(len=20) :: geometry
 
     integer, dimension(4) ::  red, green, blue

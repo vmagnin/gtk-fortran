@@ -210,7 +210,7 @@ contains
 
     integer(kind=c_int) :: istear
     logical :: markup
-    type(c_ptr) :: label_w, junk
+    type(c_ptr) :: label_w
 
     if (present(tearoff)) then
        istear = tearoff

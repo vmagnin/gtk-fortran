@@ -94,7 +94,7 @@ contains
     implicit none
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
-    type(c_ptr) :: my_cairo_surface, my_cairo_context, my_pixbuf
+    type(c_ptr) :: my_cairo_context, my_pixbuf
     character(kind=c_char), dimension(:), pointer :: pixel
     integer :: j
     integer(kind=c_int) :: i, nch, rowstride, width, height
@@ -276,7 +276,6 @@ program gtkFortran
   use handlers
   use my_widgets
   implicit none
-  integer(1) :: i
   
   call gtk_init ()
 

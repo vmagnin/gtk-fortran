@@ -68,9 +68,8 @@ program progress
 
   implicit none
 
-  integer :: t0, t1, i
+  integer :: i
   integer(kind=c_int) :: istep, itmax
-  real(kind=c_double) :: bval
 
   ! Initialize gtk & create a window for the heirarchy
   call gtk_init()

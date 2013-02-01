@@ -77,7 +77,6 @@ contains
   end subroutine list_select
 
   subroutine text_cr(widget, gdata) bind(c)
-    integer(kind=c_int) :: res
     type(c_ptr), value :: widget, gdata
 
     integer, pointer :: fdata

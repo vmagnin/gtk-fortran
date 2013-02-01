@@ -168,8 +168,7 @@ contains
     character(len=120), dimension(:), allocatable :: chfile
     character(len=20), dimension(2) :: filters
     character(len=30), dimension(2) :: filtnames
-    character(len=200) :: inln
-    integer :: ios, i
+    integer :: i
     character(len=200), dimension(:), allocatable :: text
     integer :: idxs
 
