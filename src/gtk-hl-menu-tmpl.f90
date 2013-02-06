@@ -107,15 +107,15 @@ contains
   end function hl_gtk_menu_new
 
   !+
-  function hl_gtk_menu_submenu_new(menu, label, tooltip, pos, is_markup) &
-       & result(submenu)
+  function hl_gtk_menu_submenu_new(menu, label, tooltip, pos, is_markup, &
+       & sensitive) result(submenu)
 
     type(c_ptr) :: submenu
     type(c_ptr) :: menu
     character(kind=c_char), dimension(*), intent(in) :: label
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
     integer(kind=c_int), intent(in), optional :: pos
-    integer(kind=c_int), intent(in), optional :: is_markup
+    integer(kind=c_int), intent(in), optional :: is_markup, sensitive
 
     ! Make a submenu node
     !
@@ -126,6 +126,8 @@ contains
     ! 		(omit to append)
     ! IS_MARKUP: boolean: optional: Set this to TRUE if the label contains
     ! 		Pango markup.
+    ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
+    ! 		insensitive state.
     !-
 
     type(c_ptr) :: item, label_w
@@ -158,6 +160,7 @@ contains
        call gtk_menu_shell_append(menu, item)
     end if
 
+    if (present(sensitive)) call gtk_widget_set_sensitive(item, sensitive)
     if (present(tooltip)) call gtk_widget_set_tooltip_text(item, tooltip)
 
   end function hl_gtk_menu_submenu_new
