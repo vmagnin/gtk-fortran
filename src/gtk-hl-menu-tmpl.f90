@@ -55,7 +55,7 @@ module gtk_hl_menu
        & gtk_menu_item_new_with_label, gtk_menu_item_set_submenu,&
        & gtk_menu_new, gtk_menu_shell_append, gtk_menu_shell_insert,&
        & gtk_radio_menu_item_get_group, gtk_radio_menu_item_new,&
-       & gtk_radio_menu_item_new_with_label,&
+       & gtk_radio_menu_item_new_with_label, gtk_check_menu_item_get_active, &
        & gtk_separator_menu_item_new, gtk_tearoff_menu_item_new,&
        & gtk_widget_add_accelerator, gtk_widget_set_sensitive,&
        & gtk_label_new, gtk_label_set_markup, gtk_container_add, &
@@ -454,6 +454,35 @@ contains
     call gtk_check_menu_item_set_active(datan, TRUE)
 
   end subroutine hl_gtk_radio_menu_group_set_select
+
+  !+
+  function hl_gtk_radio_menu_group_get_select(group) result(index)
+
+    integer(kind=c_int) :: index
+    type(c_ptr) :: group
+
+    ! Find the selected button in a radio group in a menu.
+    !
+    ! GROUP: c_ptr: required: The group of the last button added to
+    ! 		the radio menu
+    !-
+
+    integer(kind=c_int) :: nbuts, i
+    type(c_ptr) :: but
+
+    nbuts = g_slist_length(group)
+    index=-1
+
+    do i = 1, nbuts
+       but = g_slist_nth_data(group, nbuts-i)
+       if (.not. c_associated(but)) exit
+
+       if (gtk_check_menu_item_get_active(but)==TRUE) then
+          index = i-1
+          return
+       end if
+    end do
+  end function hl_gtk_radio_menu_group_get_select
 
   !+
   subroutine hl_gtk_menu_item_set_label_markup(item, label)
