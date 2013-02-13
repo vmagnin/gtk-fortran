@@ -115,8 +115,17 @@ add_custom_command(
 
 add_custom_target(manpage ALL DEPENDS gtk-3-fortran-modscan.1)
 
-install(TARGETS gtk-fortran_static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(TARGETS gtk-fortran_shared LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+if (CMAKE_HOST_WIN32)
+  install(TARGETS gtk-fortran_static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  install(TARGETS gtk-fortran_shared LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR})
+else()
+  install(TARGETS gtk-fortran_static ARCHIVE DESTINATION 
+    ${CMAKE_INSTALL_LIBDIR})
+  install(TARGETS gtk-fortran_shared LIBRARY DESTINATION 
+    ${CMAKE_INSTALL_LIBDIR})
+endif()
 
 install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/atk.mod"
