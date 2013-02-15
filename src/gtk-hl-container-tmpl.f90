@@ -82,7 +82,7 @@ module gtk_hl_container
        & gtk_window_set_keep_below, gtk_window_set_resizable,&
        & gtk_window_set_title, gtk_window_set_transient_for, &
        & gtk_window_set_icon_name, gtk_window_set_icon_from_file, &
-       & gtk_window_set_icon, &
+       & gtk_window_set_icon, gtk_window_set_modal, &
 !!$GTK< 3.0!       & gtk_notebook_set_group, &
 !!$GTK>=3.0!       & gtk_notebook_set_group_name, &
        & gtk_scrolled_window_new, gtk_scrolled_window_set_policy, &
@@ -100,7 +100,7 @@ contains
   function hl_gtk_window_new(title, destroy, delete_event, data_destroy, &
        & data_delete_event, border, wsize, sensitive, resizable, decorated, &
        & deletable, above, below, parent, accel_group, icon, icon_file,&
-       & icon_name) result(win)
+       & icon_name, modal) result(win)
 
     type(c_ptr) :: win
     character(kind=c_char), dimension(*), intent(in), optional :: title
@@ -115,6 +115,7 @@ contains
     type(c_ptr), intent(in), optional :: icon
     character(kind=c_char), dimension(*), intent(in), optional :: icon_name, &
          & icon_file
+    integer(kind=c_int), intent(in), optional :: modal
 
     ! Higher-level interface to make a gtk_window
     !
@@ -144,6 +145,8 @@ contains
     ! 		the window.
     ! ICON_NAME: String : optional : The name of a standard icon to use for
     ! 		the window.
+    ! MODAL: boolean: optional: Set to true to make the window modal (only
+    ! 		meaningful if PARENT is also set).
     !
     ! Only one way of setting the icon should be given, if more than one
     ! is specified the priority is ICON, ICON_FILE, ICON_NAME.
@@ -190,7 +193,10 @@ contains
     if (present(below)) &
          & call gtk_window_set_keep_below(win, below)
 
-    if (present(parent)) call gtk_window_set_transient_for(win, parent)
+    if (present(parent)) then
+       call gtk_window_set_transient_for(win, parent)
+       if (present(modal)) call gtk_window_set_modal(win, modal)
+    end if
 
     if (present(icon)) then
        call gtk_window_set_icon(win, icon)
