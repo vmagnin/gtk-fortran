@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification:  19.05.2012 (Python 2.7.3, Linux Ubuntu 12.04)
+# Last modification:  16 feb. 2013 (Python 2.7.3, Linux Ubuntu 12.10)
 
 """ This program generates the *-auto.f90 files
     from the C header files of GTK+ in Linux.
@@ -392,7 +392,14 @@ for library_path in PATH_DICT.keys():
             # Remove C structures
             #whole_file = re.sub("(?ms)^static.*}$", "", whole_file)
             
-            whole_file = re.sub("(?ms){.*?}[ \w]*;", "", whole_file)
+            # Remove two levels of { } structures:
+            whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
+            whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
+            # Remove structures like: { } a_name;
+            whole_file = re.sub("(?ms){[^{]*?}[ \w]*?;", "", whole_file)
+            # Remove "available_in" and "deprecated" directives:
+            whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$", "", whole_file)
+            
             whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
             whole_file = re.sub("(?m)^(typedef|union|struct).*$", "", whole_file)
             whole_file = re.sub("(?m)^.*(G_BEGIN_DECLS|CAIRO_BEGIN_DECLS) *$", "", whole_file)
