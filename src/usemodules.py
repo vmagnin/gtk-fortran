@@ -64,8 +64,8 @@ output_file.write(header)
 used_functions = []
 total = 0
 
-s.sep  # add directory separator
-=======
+os.sep  # add directory separator
+
 # The script will work on all Fortran files in this directory and its subdirectories:
 path = sys.argv[1]    # for example "../examples/"
 if not path.endswith(os.sep):
