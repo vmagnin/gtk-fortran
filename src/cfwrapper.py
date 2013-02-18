@@ -369,6 +369,7 @@ for library_path in PATH_DICT.keys():
                 continue    # Go to next file
 
             whole_file = open(directory[0] + "/" + c_file_name, 'rU').read()
+            whole_file_original = whole_file   #**** WIN32 *****
             nb_files += 1            
             # **************************************
             # Preprocessing and cleaning of the file
@@ -467,7 +468,8 @@ for library_path in PATH_DICT.keys():
                         write_error(ERRORS_FILE, directory[0], c_file_name, 
                             "Unknown data type:    " + type_returned.group(1), prototype, True)
                         type_errors_list.append(type_returned.group(1))
-                    
+                
+                # f_name is the name of the function in gtk-fortran:
                 function_name = RGX_FUNCTION_NAME.search(prototype)
                 try:
                     f_name = function_name.group(1)
@@ -551,6 +553,13 @@ for library_path in PATH_DICT.keys():
                         interface += 1*TAB + returned_type + " :: " + f_name + "\n"
                     interface += declarations
                     interface += 0*TAB + f_the_end + "\n\n" 
+                    
+                    #*** WIN32 ***
+                    # Deals with the Win32 _utf8 functions:
+                    if whole_file_original.find("#define "+f_name+" "+f_name+"_utf8") != -1:
+                        interface_utf8 = re.sub(f_name, f_name+"_utf8", interface)
+                        print interface_utf8
+                    #*** WIN32 ***
                     
                     f_file.write(interface)
                     index.append([module_name, f_name, F_FILE_NAME, directory[0]+"/"+c_file_name, prototype])
