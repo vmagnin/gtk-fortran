@@ -25,9 +25,9 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification:  16 feb. 2013 (Python 2.7.3, Linux Ubuntu 12.10)
+# Last modification:  19 feb. 2013 (Python 2.7.3, Linux Ubuntu 12.10)
 
-""" This program generates the *-auto.f90 files
+""" This python 2 program generates the *-auto.f90 files
     from the C header files of GTK+ in Linux.
     Command line:         python cfwrapper.py
     """
@@ -300,6 +300,15 @@ PATH_DICT = { "/usr/include/gtk-3.0/unix-print":"unix-print-auto.f90",
               "/usr/include/gdk-pixbuf-2.0":"gdk-pixbuf-auto.f90",
               "/usr/include/gtk-3.0/gtk":"gtk-auto.f90",}
 
+# To use with GTK+ 2, comment previous lines and uncomment following lines:
+#PATH_DICT = { "/usr/include/gtk-2.0/gtk":"gtk-auto.f90",
+              #"/usr/include/gtk-2.0/gdk":"gdk-auto.f90",
+              #"/usr/include/cairo":"cairo-auto.f90",
+              #"/usr/include/pango-1.0":"pango-auto.f90",
+              #"/usr/include/glib-2.0":"glib-auto.f90",
+              #"/usr/include/gdk-pixbuf-2.0":"gdk-pixbuf-auto.f90",
+              #"/usr/include/atk-1.0":"atk-auto.f90",}
+              
 #*************************************************************************
 # Pass 1: to find all enum types, all pointers to functions (funptr)
 # and add derived GTK+ types
