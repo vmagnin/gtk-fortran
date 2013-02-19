@@ -54,6 +54,16 @@ set(sources
 	"pango-auto.f90"
 	"gdkevents-auto3.f90")
 
+if (CMAKE_HOST_WIN32)
+  set(sources
+    ${sources}
+    "mswindowsonly-auto.f90")
+else()
+  set(sources
+    ${sources}
+    "unixonly-auto.f90")
+endif()
+
 include_directories("/usr/include")
 include_directories(${GTK_INCLUDES})
 include_directories("/usr/local/include")
@@ -154,7 +164,7 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
-
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_os_dependent.mod"
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-3-fortran)
 install(PROGRAMS
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan"

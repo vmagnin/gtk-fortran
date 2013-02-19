@@ -291,14 +291,14 @@ nb_files = 0
 type_errors_list = []
 
 # Libraries to parse and resulting Fortran files (must have a -auto.f90 termination): 
-PATH_DICT = { "/usr/include/gtk-3.0/gtk":"gtk-auto.f90",
-              "/usr/include/gtk-3.0/gdk":"gdk-auto.f90",
-              "/usr/include/gtk-3.0/unix-print":"unix-print-auto.f90",
+PATH_DICT = { "/usr/include/gtk-3.0/unix-print":"unix-print-auto.f90",
               "/usr/include/cairo":"cairo-auto.f90",
               "/usr/include/pango-1.0":"pango-auto.f90",
               "/usr/include/glib-2.0":"glib-auto.f90",
+              "/usr/include/atk-1.0":"atk-auto.f90",
+              "/usr/include/gtk-3.0/gdk":"gdk-auto.f90",
               "/usr/include/gdk-pixbuf-2.0":"gdk-pixbuf-auto.f90",
-              "/usr/include/atk-1.0":"atk-auto.f90",}
+              "/usr/include/gtk-3.0/gtk":"gtk-auto.f90",}
 
 #*************************************************************************
 # Pass 1 : to find all enum types, all pointers to functions (funptr)
@@ -345,10 +345,10 @@ enums_file.write(file_header)
 
 # Files for platform specific functions:
 unix_only_file = open("unixonly-auto.f90", "w")
-unix_only_file.write(file_header+"\nmodule " + "unixonly" + 
+unix_only_file.write(file_header+"\nmodule " + "gtk_os_dependent" + 
                         "\nimplicit none\ninterface\n\n")
 mswindows_only_file = open("mswindowsonly-auto.f90", "w")
-mswindows_only_file.write(file_header+"\nmodule " + "mswindowsonly" + 
+mswindows_only_file.write(file_header+"\nmodule " + "gtk_os_dependent" + 
                         "\nimplicit none\ninterface\n\n")
 
 index = []
@@ -565,8 +565,8 @@ for library_path in PATH_DICT.keys():
                     # Deals with the Win32 _utf8 functions: the normal form and the Windows form are dispatched in two platform depedent files 
                     if whole_file_original.find("#define "+f_name+" "+f_name+"_utf8") != -1:                       
                         unix_only_file.write(interface)
-                        index.append([module_name, f_name, "unixonly-auto.f90", directory[0]+"/"+c_file_name, prototype])
-                        nb_generated_interfaces += 1
+                        index.append(["gtk_os_dependent", f_name, "unixonly-auto.f90/mswinwdowsonly-auto.f90", directory[0]+"/"+c_file_name, prototype])
+                        nb_generated_interfaces += 2
                         
                         # We are obliged to rewrite the whole interface because of multiline():
                         interface_utf8 = 0*TAB + "! " + prototype + "\n"
@@ -579,8 +579,8 @@ for library_path in PATH_DICT.keys():
                         interface_utf8 += 0*TAB + f_the_end + "\n\n" 
 
                         mswindows_only_file.write(interface_utf8)
-                        index.append([module_name, f_name+"_utf8", "mswindowsonly-auto.f90", directory[0]+"/"+c_file_name, prototype])
-                        nb_generated_interfaces += 1
+                        # index.append([module_name, f_name+"_utf8", "mswindowsonly-auto.f90", directory[0]+"/"+c_file_name, prototype])
+                        # nb_generated_interfaces += 1
                     else: # Non platform specific functions
                         f_file.write(interface)
                         index.append([module_name, f_name, F_FILE_NAME, directory[0]+"/"+c_file_name, prototype])
@@ -601,9 +601,9 @@ index_file.writerows(index)
 # Close global files:
 ERRORS_FILE.close()
 enums_file.close()
-unix_only_file.write("end interface\nend module "+"unixonly"+"\n")
+unix_only_file.write("end interface\nend module "+"gtk_os_dependent"+"\n")
 unix_only_file.close()
-mswindows_only_file.write("end interface\nend module "+"mswindowsonly"+"\n")
+mswindows_only_file.write("end interface\nend module "+"gtk_os_dependent"+"\n")
 mswindows_only_file.close()
 
 # Print remaining error types:

@@ -34,19 +34,21 @@ module gdk_pixbuf_hl
   ! unsigned.
   !/
 
-  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_has_alpha, &
-       & gdk_pixbuf_get_bits_per_sample, gdk_pixbuf_get_width, &
-       & gdk_pixbuf_get_height, gdk_pixbuf_get_rowstride, gdk_pixbuf_new, &
-       & gdk_pixbuf_new_from_file, gdk_pixbuf_new_from_file_at_scale, &
-       & gdk_pixbuf_get_pixels, gdk_pixbuf_get_formats, &
-       & gdk_pixbuf_format_get_name, gdk_pixbuf_format_get_description, &
-       & gdk_pixbuf_format_get_license, gdk_pixbuf_format_is_writable, &
-       & gdk_pixbuf_format_is_scalable, gdk_pixbuf_format_get_mime_types, &
-       & gdk_pixbuf_format_get_extensions, gdk_pixbuf_savev
+  use g, only: g_slist_free, g_slist_length, g_slist_nth_data
 
-  use g, only: g_slist_length, g_slist_nth_data, g_slist_free  
+  use gdk_pixbuf, only: gdk_pixbuf_format_get_description, &
+       & gdk_pixbuf_format_get_extensions, gdk_pixbuf_format_get_license, &
+       & gdk_pixbuf_format_get_mime_types, gdk_pixbuf_format_get_name, &
+       & gdk_pixbuf_format_is_scalable, gdk_pixbuf_format_is_writable, &
+       & gdk_pixbuf_get_bits_per_sample, gdk_pixbuf_get_formats, &
+       & gdk_pixbuf_get_has_alpha, gdk_pixbuf_get_height, &
+       & gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
+       & gdk_pixbuf_get_rowstride, gdk_pixbuf_get_width, gdk_pixbuf_new
 
-  use gtk, only: FALSE, TRUE, GDK_COLORSPACE_RGB
+  use gtk, only: TRUE, FALSE, GDK_COLORSPACE_RGB
+
+  use gtk_os_dependent, only: gdk_pixbuf_new_from_file, &
+       & gdk_pixbuf_new_from_file_at_scale, gdk_pixbuf_savev
 
   use gtk_sup
 
