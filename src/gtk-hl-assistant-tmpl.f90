@@ -54,10 +54,12 @@ module gtk_hl_assistant
        & gtk_assistant_set_page_complete, gtk_assistant_set_page_title, &
        & gtk_assistant_set_page_type, gtk_container_set_border_width, &
        & gtk_widget_destroy, gtk_window_set_default_size, gtk_window_set_icon, &
-       & gtk_window_set_icon_from_file, gtk_window_set_icon_name, &
+       & gtk_window_set_icon_name, &
        & gtk_window_set_title, gtk_window_set_transient_for, g_signal_connect, &
        & TRUE, FALSE, GTK_ASSISTANT_PAGE_INTRO, GTK_ASSISTANT_PAGE_CONFIRM, &
        & GTK_ASSISTANT_PAGE_SUMMARY
+
+  use gtk_os_dependent, only: gtk_window_set_icon_from_file
 
   implicit none
 

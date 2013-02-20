@@ -51,8 +51,17 @@ set(sources
 	"gtk-sup.f90"
 	"gdk-pixbuf-hl.f90"
 	"pango-auto.f90"
-	"gdk-pixbuf-hl.f90"
 	"gdkevents-auto2.f90")
+
+if (CMAKE_HOST_WIN32)
+  set(sources
+    ${sources}
+    "mswindowsonly-auto.f90")
+else()
+  set(sources
+    ${sources}
+    "unixonly-auto.f90")
+endif()
 
 include_directories("/usr/include")
 include_directories(${GTK_INCLUDES})
@@ -151,9 +160,9 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_draw_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf_hl.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
+	"${CMAKE_CURRENT_BINARY_DIR}/gtk_os_dependent.mod"
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-2-fortran)
 
 install(PROGRAMS

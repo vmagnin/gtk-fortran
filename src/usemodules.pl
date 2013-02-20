@@ -141,14 +141,14 @@ foreach $sfile (sort @sources) {
 	# or end of the program.
 	
 	for ($i = 0; $i <= $#functions; $i++) { 
-	    if ($code =~ /[^\w\.]($functions[$i])[^\w\.]/a) {
+	    if ($code =~ /[^\w\.]($functions[$i])[^\w\.]/) {
 		$used[$i] = 1;
 		$count ++;
 	    }
 	}
 	if ($module eq 'gtk') {
 	    for ($i = 0; $i <= $#enumerators; $i++) {
-		if ($code =~ /[^\w\.]($enumerators[$i])[^\w\.]/a) {
+		if ($code =~ /[^\w\.]($enumerators[$i])[^\w\.]/) {
 		    $eused[$i] = 1;
 		    $ecount ++;
 		}

@@ -29,11 +29,12 @@
 module handlers
   use gtk, only: gtk_action_group_add_action, gtk_action_group_get_action, gtk_ac&
   &tion_group_new, gtk_action_new, gtk_box_pack_start, gtk_container_add, gtk_mai&
-  &n, gtk_main_quit, gtk_ui_manager_add_ui, gtk_ui_manager_add_ui_from_file, gtk_&
+  &n, gtk_main_quit, gtk_ui_manager_add_ui, gtk_&
   &ui_manager_add_ui_from_string, gtk_ui_manager_get_widget, gtk_ui_manager_inser&
   &t_action_group, gtk_ui_manager_new, gtk_vbox_new, gtk_widget_set_size_request,&
   & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_title,&
   &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char, GTK_WINDOW_TOPLEVEL
+  use gtk_os_dependent, only: gtk_ui_manager_add_ui_from_file
   implicit none
 
 contains
