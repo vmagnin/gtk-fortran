@@ -25,11 +25,11 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification:  19 feb. 2013 (Python 2.7.3, Linux Ubuntu 12.10)
+# Last modification:  21 feb. 2013 (Python 3.2.3, Linux Ubuntu 12.10)
 
-""" This python 2 program generates the *-auto.f90 files
+""" This python 3 program generates the *-auto.f90 files
     from the C header files of GTK+ in Linux.
-    Command line:         python cfwrapper.py
+    Command line:         python3 cfwrapper.py
     """
 
 import re        # Regular expression library
@@ -638,12 +638,12 @@ TYPE_ERRORS_FILE.close()
 # Some statistics:
 print()
 print("=== Statistics ===")
-print(("nb_files scanned = " + str(nb_files)))
-print(("nb_generated_interfaces = " + str(nb_generated_interfaces)))
-print(("nb_type_errors = " + str(nb_type_errors)))
-print(("nb_errors (others) = " + str(nb_errors)))
-print(("nb_lines treated = " + str(nb_lines)))
-print(("nb_variadic functions = " + str(nb_variadic))) 
+print("nb_files scanned = " + str(nb_files))
+print("nb_generated_interfaces = " + str(nb_generated_interfaces))
+print("nb_type_errors = " + str(nb_type_errors))
+print("nb_errors (others) = " + str(nb_errors))
+print("nb_lines treated = " + str(nb_lines))
+print("nb_variadic functions = " + str(nb_variadic))
 print()
 #print(used_types)
 
