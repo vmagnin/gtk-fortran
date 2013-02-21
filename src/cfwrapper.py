@@ -192,6 +192,9 @@ def translate_enums(errorsfile, enum_list):
 # **********************************************
 # Main program
 # **********************************************
+
+t0 = time.time()     # To calculate computing time
+
 # One word types:
 TYPES_DICT = { 
     "int":("integer(c_int)","c_int"), 
@@ -634,15 +637,17 @@ TYPE_ERRORS_FILE.close()
 
 # Some statistics:
 print
-print("=== Statistics ===")
-print("nb_files scanned = " + str(nb_files))
-print("nb_generated_interfaces = " + str(nb_generated_interfaces))
-print("nb_type_errors = " + str(nb_type_errors))
-print("nb_errors (others) = " + str(nb_errors))
-print("nb_lines treated = " + str(nb_lines))
-print("nb_variadic functions = " + str(nb_variadic)) 
+print "=== Statistics ==="
+print "nb_files scanned = " + str(nb_files)
+print "nb_generated_interfaces = " + str(nb_generated_interfaces)
+print "nb_type_errors = " + str(nb_type_errors)
+print "nb_errors (others) = " + str(nb_errors)
+print "nb_lines treated = " + str(nb_lines)
+print "nb_variadic functions = " + str(nb_variadic) 
 print
-#print(used_types)
+#print used_types
+
+print "Computing time: ", time.time()-t0, " s"
 
 # Test: do the interfaces and the examples compile with gfortran ?
 #print("=== Trying now to compile the interface and examples... ===")
