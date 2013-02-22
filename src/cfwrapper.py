@@ -40,6 +40,7 @@ import csv      # To write .csv files
 import sys      # To use command line arguments
 from collections import OrderedDict
 
+
 def iso_c_binding(declaration, returned):
     """ Returns the Fortran type corresponding to a C type in the 
         ISO_C_BINDING module (limited to C types used in GTK+),
@@ -133,63 +134,65 @@ def set_bit_field(match):
 
 def translate_enums(errorsfile, enum_list):
     """Receive a C enum and returns a Fortran enum"""
+    global nb_enumerators
     f_enum = ""
     BIT_FIELDS = re.compile("1 *<< *(\d+)")
-    if enum_list != []:
-        for each in enum_list:
-            enum = each[0]
-            name = each[1]
+    
+    for each in enum_list:
+        enum = each[0]
+        name = each[1]
+        
+        # TODO: comment
+        if name in ["GSocketFamily", "GSocketMsgFlags", "GdkPixdataType"]:
+            return ""
             
-            # TODO: comment
-            if name in ["GSocketFamily", "GSocketMsgFlags", "GdkPixdataType"]:
-                return ""
-                
-            parameters = re.findall("(?ms){(.*)}", enum)
-            
-            # Remove lines beginning by #:
-            parameters[0] = re.sub("(?m)^#.*$", "", parameters[0])
-            # Remove TABs and overnumerous spaces:
-            parameters[0] = parameters[0].replace("\t", " ")
-            parameters[0] = re.sub("[ ]{2,}", " ", parameters[0])
-            # Delete characters (   ) and , if they are not between quotes:
-            parameters[0] = re.sub("(?<!')(\()(?!')", "", parameters[0])
-            parameters[0] = re.sub("(?<!')(\))(?!')", "", parameters[0])
-            parameters[0] = re.sub("(?<!')(,)(?!')", "", parameters[0])
-            parameters[0] = re.sub("(?m),$", "", parameters[0])
-            
-            # Is it a char ?
-            parameters[0] = re.sub("('.?')", "iachar(\\1)", parameters[0])
-            # Is it in hexadecimal ?
-            parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "INT(z'\\1')", 
-                                   parameters[0])
-            # Is it a bit field ?
-            parameters[0] = BIT_FIELDS.sub(set_bit_field, parameters[0])
+        parameters = re.findall("(?ms){(.*)}", enum)
+        
+        # Remove lines beginning by #:
+        parameters[0] = re.sub("(?m)^#.*$", "", parameters[0])
+        # Remove TABs and overnumerous spaces:
+        parameters[0] = parameters[0].replace("\t", " ")
+        parameters[0] = re.sub("[ ]{2,}", " ", parameters[0])
+        # Delete characters (   ) and , if they are not between quotes:
+        parameters[0] = re.sub("(?<!')(\()(?!')", "", parameters[0])
+        parameters[0] = re.sub("(?<!')(\))(?!')", "", parameters[0])
+        parameters[0] = re.sub("(?<!')(,)(?!')", "", parameters[0])
+        parameters[0] = re.sub("(?m),$", "", parameters[0])
+        
+        # Is it a char ?
+        parameters[0] = re.sub("('.?')", "iachar(\\1)", parameters[0])
+        # Is it in hexadecimal ?
+        parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "INT(z'\\1')", 
+                               parameters[0])
+        # Is it a bit field ?
+        parameters[0] = BIT_FIELDS.sub(set_bit_field, parameters[0])
 
-            # complement
-            parameters[0] = re.sub("~(\w+)", "not(\\1)", parameters[0])
-            # logical or
-            parameters[0] = re.sub("([\w\(\)]+)\s*\|\s*([\w\(\), \d]+)", 
-                                   "ior(\\1 , \\2)", parameters[0])
+        # complement
+        parameters[0] = re.sub("~(\w+)", "not(\\1)", parameters[0])
+        # logical or
+        parameters[0] = re.sub("([\w\(\)]+)\s*\|\s*([\w\(\), \d]+)", 
+                               "ior(\\1 , \\2)", parameters[0])
 
-            # Renamed flags (have the same name as a GTK+ function):
-            parameters[0] = re.sub("(?m)^\s*ATK_HYPERLINK_IS_INLINE", "ATK_HYPERLINK_IS_INLINE_F", parameters[0])
-            parameters[0] = re.sub("(?m)^\s*GDK_PROPERTY_DELETE", 
-                                   "GDK_PROPERTY_DELETE_F", parameters[0])
-            parameters[0] = re.sub("(?m)^\s*GDK_DRAG_STATUS", "GDK_DRAG_STATUS_F", parameters[0])
-            parameters[0] = re.sub("(?m)^\s*GDK_DRAG_MOTION", "GDK_DRAG_MOTION_F", parameters[0])
-            
-            # Integer size problem:
-            parameters[0] = re.sub("(?m)^\s*G_PARAM_DEPRECATED.*$", 
-                                   "", parameters[0])
+        # Renamed flags (have the same name as a GTK+ function):
+        parameters[0] = re.sub("(?m)^\s*ATK_HYPERLINK_IS_INLINE", "ATK_HYPERLINK_IS_INLINE_F", parameters[0])
+        parameters[0] = re.sub("(?m)^\s*GDK_PROPERTY_DELETE", 
+                               "GDK_PROPERTY_DELETE_F", parameters[0])
+        parameters[0] = re.sub("(?m)^\s*GDK_DRAG_STATUS", "GDK_DRAG_STATUS_F", parameters[0])
+        parameters[0] = re.sub("(?m)^\s*GDK_DRAG_MOTION", "GDK_DRAG_MOTION_F", parameters[0])
+        
+        # Integer size problem:
+        parameters[0] = re.sub("(?m)^\s*G_PARAM_DEPRECATED.*$", 
+                               "", parameters[0])
 
-            parameters[0] = re.sub("(?m)^\s*(\w+)", "    enumerator :: \\1", 
-                                   parameters[0])
+        parameters[0] = re.sub("(?m)^\s*(\w+)", "    enumerator :: \\1", 
+                               parameters[0])
 
-            # Resulting Fortran enumerator:
-            f_enum += "enum, bind(c)    !" + name + "\n"
-            f_enum += parameters[0]
-            f_enum += "end enum\n \n"
-            
+        # Resulting Fortran enumerator:
+        f_enum += "enum, bind(c)    !" + name + "\n"
+        f_enum += parameters[0]
+        f_enum += "end enum\n \n"
+        nb_enumerators += 1
+
     # Remove empty lines:
     f_enum = re.sub("(?m)^ *\n$", "", f_enum)
     
@@ -309,6 +312,7 @@ nb_errors = 0
 nb_type_errors = 0
 nb_variadic = 0
 nb_files = 0
+nb_enumerators = 0
 type_errors_list = []
 
 # Libraries paths and resulting Fortran files *-auto.f90.
@@ -341,13 +345,8 @@ gtk_enums = []
 gtk_funptr = []
 gtk_types = []
 
-# TODO: python2 dictionnaries are not ordered. That's why we use here the sorted()
-# function which gives an order that is happily suitable. But if the directory names
-# change, this order could become unsuitable (some enumerators must be defined 
-# before others). 
 for library_path in PATH_DICT:
-    tree = os.walk(library_path)    # A generator
-    for directory in tree:
+    for directory in os.walk(library_path):
         for c_file_name in directory[2]:
             whole_file = open(directory[0] + "/" + c_file_name, 'rU').read()
             enum_types = re.findall("(?ms)^typedef enum.*?}\s?(\w+);", whole_file)
@@ -387,12 +386,11 @@ enums_file = open("gtkenums-auto.f90", "w")
 enums_file.write(file_header)
 
 # Files for platform specific functions:
+head = "\nmodule " + "gtk_os_dependent" + "\nimplicit none\ninterface\n\n"
 unix_only_file = open("unixonly-auto.f90", "w")
-unix_only_file.write(file_header+"\nmodule " + "gtk_os_dependent" + 
-                     "\nimplicit none\ninterface\n\n")
+unix_only_file.write(file_header + head)
 mswindows_only_file = open("mswindowsonly-auto.f90", "w")
-mswindows_only_file.write(file_header+"\nmodule " + "gtk_os_dependent" + 
-                          "\nimplicit none\ninterface\n\n")
+mswindows_only_file.write(file_header + head)
 
 index = []
 opened_files = []
@@ -401,9 +399,9 @@ used_types = []
 for library_path in PATH_DICT:
     print(library_path)
     
-    tree = os.walk(library_path)    # A generator
-
     F_FILE_NAME = PATH_DICT[library_path]   # Fortran *-auto.f90 file
+    
+    # Create the *-auto.f90 file with its module declaration:
     if not (F_FILE_NAME in opened_files):
         f_file = open(F_FILE_NAME, "w")
         opened_files.append(F_FILE_NAME)
@@ -420,7 +418,8 @@ for library_path in PATH_DICT:
             f_file.write(file_header+"\nmodule " + module_name + 
                         "\nimplicit none\ninterface\n\n")
 
-    for directory in tree:
+    # Each header file in each subdirectory of the library is analyzed:
+    for directory in os.walk(library_path):
         for c_file_name in directory[2]:
             # Those files cause problems so we exclude them:
             if c_file_name in ["gstdio.h", "giochannel.h"]:
@@ -438,10 +437,11 @@ for library_path in PATH_DICT:
             # Remove C commentaries:
             whole_file = re.sub("(?s)/\*.*?\*/", "", whole_file)
             
+            # Translating C enumerators to Fortran enumerators:
             enum_types = re.findall("(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
             enums_file.write(translate_enums(ERRORS_FILE, enum_types))
-            
-            # removing multilines typedef:
+
+            # Removing multilines typedef:
             whole_file = re.sub("(?m)^typedef([^;]*?\n)+?[^;]*?;$", 
                                 "", whole_file)
             # Remove C directives (multilines then monoline):
@@ -518,13 +518,13 @@ for library_path in PATH_DICT:
                 # Will it be a Fortran function or a subroutine ?
                 if (function_type.find("void") != -1) and (function_type.find("*") == -1):
                     f_procedure = "subroutine "
-                    f_the_end = "end subroutine"
-                    isfunction = False
-                    f_use = ""
+                    f_the_end   = "end subroutine"
+                    isfunction  = False
+                    f_use       = ""
                 else:
                     f_procedure = "function "
-                    f_the_end = "end function"
-                    isfunction = True
+                    f_the_end   = "end function"
+                    isfunction  = True
                     returned_type, iso_c = iso_c_binding(type_returned.group(1), True)
                     f_use = iso_c
                     if returned_type.find("?") != -1:
@@ -683,6 +683,8 @@ print("nb_type_errors =", nb_type_errors)
 print("nb_errors (others) =", nb_errors)
 print("nb_lines treated =", nb_lines)
 print("nb_variadic functions =", nb_variadic)
+print("nb_enumerators =", nb_enumerators)
+print("Number of types =", len(TYPES_DICT)+len(TYPES2_DICT))
 print()
 #print(used_types)
 
