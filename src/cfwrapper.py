@@ -26,10 +26,9 @@
 #
 # Contributed by Vincent Magnin, 01.28.2011
 # Last modification:  22 feb. 2013 (Python 3.2.3, Linux Ubuntu 12.10)
-# Pylint score: 7.54/10
+# Pylint score: 7.60/10
 
-""" This Python 3 program generates the *-auto.f90 files
-    from the C header files of glib and GTK+ in Linux.
+""" Generates the *-auto.f90 files from the C header files of glib and GTK+.
     Command line:         python3 cfwrapper.py gtk3
     or                    python3 cfwrapper.py gtk2
     """
@@ -39,6 +38,7 @@ import os
 import time
 import csv      # To write .csv files
 import sys      # To use command line arguments
+from collections import OrderedDict
 
 def iso_c_binding(declaration, returned):
     """ Returns the Fortran type corresponding to a C type in the 
@@ -88,11 +88,11 @@ def iso_c_binding(declaration, returned):
 
     # Other cases:
     if len(declaration.split()) >= 3:   # Two words type
-        for each in list(TYPES2_DICT.keys()):
+        for each in TYPES2_DICT:
             if set(each.split()).issubset(set(declaration.split())):
                 return TYPES2_DICT[each][0] + array, TYPES2_DICT[each][1]
     else:  # It is a one word type
-        for each in list(TYPES_DICT.keys()):
+        for each in TYPES_DICT:
             if each in c_type.split():
                 return TYPES_DICT[each][0] + array, TYPES_DICT[each][1]
 
@@ -311,27 +311,28 @@ nb_variadic = 0
 nb_files = 0
 type_errors_list = []
 
-# Libraries paths and resulting Fortran files (must have a -auto.f90 termination): 
+# Libraries paths and resulting Fortran files *-auto.f90.
+# Do not change the order of the dictionary keys:
+PATH_DICT = OrderedDict([
+                  ("/usr/include/atk-1.0", "atk-auto.f90"),
+                  ("/usr/include/cairo", "cairo-auto.f90"),
+                  ("/usr/include/gdk-pixbuf-2.0", "gdk-pixbuf-auto.f90"),
+                  ("/usr/include/glib-2.0", "glib-auto.f90")])
+                  
 if gtk_version == "gtk3":
-    PATH_DICT = { "/usr/include/gtk-3.0/unix-print":"unix-print-auto.f90",
-                  "/usr/include/cairo":"cairo-auto.f90",
-                  "/usr/include/pango-1.0":"pango-auto.f90",
-                  "/usr/include/glib-2.0":"glib-auto.f90",
-                  "/usr/include/atk-1.0":"atk-auto.f90",
-                  "/usr/include/gtk-3.0/gdk":"gdk-auto.f90",
-                  "/usr/include/gdk-pixbuf-2.0":"gdk-pixbuf-auto.f90",
-                  "/usr/include/gtk-3.0/gtk":"gtk-auto.f90",}
+    PATH_DICT.update([
+                  ("/usr/include/gtk-3.0/gdk", "gdk-auto.f90"),
+                  ("/usr/include/gtk-3.0/gtk", "gtk-auto.f90"),
+                  ("/usr/include/gtk-3.0/unix-print", "unix-print-auto.f90")])
 else:
-    PATH_DICT = { "/usr/include/gtk-2.0/gtk":"gtk-auto.f90",
-                  "/usr/include/gtk-2.0/gdk":"gdk-auto.f90",
-                  "/usr/include/cairo":"cairo-auto.f90",
-                  "/usr/include/pango-1.0":"pango-auto.f90",
-                  "/usr/include/glib-2.0":"glib-auto.f90",
-                  "/usr/include/gdk-pixbuf-2.0":"gdk-pixbuf-auto.f90",
-                  "/usr/include/atk-1.0":"atk-auto.f90",}
+    PATH_DICT.update([
+                  ("/usr/include/gtk-2.0/gdk", "gdk-auto.f90"),
+                  ("/usr/include/gtk-2.0/gtk", "gtk-auto.f90")])
+
+PATH_DICT.update([("/usr/include/pango-1.0", "pango-auto.f90")])
 
 #*************************************************************************
-# Pass 1: cann all header files to find all enum types, all pointers to 
+# Pass 1: scan all header files to find all enum types, all pointers to 
 # functions (funptr) and add derived GTK+ types
 #*************************************************************************
 print("Pass 1: looking for enumerators, funptr and derived types...")
@@ -344,7 +345,7 @@ gtk_types = []
 # function which gives an order that is happily suitable. But if the directory names
 # change, this order could become unsuitable (some enumerators must be defined 
 # before others). 
-for library_path in sorted(PATH_DICT.keys()):
+for library_path in PATH_DICT:
     tree = os.walk(library_path)    # A generator
     for directory in tree:
         for c_file_name in directory[2]:
@@ -358,8 +359,8 @@ for library_path in sorted(PATH_DICT.keys()):
 
 # Add derived types:
 for each in gtk_types:
-    if each[1] not in list(TYPES_DICT.keys()):
-        if each[0] in list(TYPES_DICT.keys()):
+    if each[1] not in TYPES_DICT:
+        if each[0] in TYPES_DICT:
             TYPES_DICT[each[1]] = TYPES_DICT[each[0]]
         elif each[0] in gtk_funptr:
             TYPES_DICT[each[1]] = ("type(c_funptr)", "c_funptr")
@@ -397,7 +398,7 @@ index = []
 opened_files = []
 used_types = []
 
-for library_path in sorted(PATH_DICT.keys()):
+for library_path in PATH_DICT:
     print(library_path)
     
     tree = os.walk(library_path)    # A generator
