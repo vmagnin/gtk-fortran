@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2011
@@ -26,17 +26,19 @@
 #
 # Contributed by Vincent Magnin, 01.28.2011
 # Last modification:  22 feb. 2013 (Python 3.2.3, Linux Ubuntu 12.10)
-# Pylint score: 7.47/10
+# Pylint score: 7.54/10
 
-""" This python 3 program generates the *-auto.f90 files
-    from the C header files of GTK+ in Linux.
-    Command line:         python3 cfwrapper.py
+""" This Python 3 program generates the *-auto.f90 files
+    from the C header files of glib and GTK+ in Linux.
+    Command line:         python3 cfwrapper.py gtk3
+    or                    python3 cfwrapper.py gtk2
     """
 
 import re       # Regular expression library
 import os
 import time
 import csv      # To write .csv files
+import sys      # To use command line arguments
 
 def iso_c_binding(declaration, returned):
     """ Returns the Fortran type corresponding to a C type in the 
@@ -200,6 +202,15 @@ def translate_enums(errorsfile, enum_list):
 
 t0 = time.time()     # To calculate computing time
 
+if len(sys.argv)-1 == 0:
+    print("Error. An argument is needed: gtk2 or gtk3")
+    exit()
+else:
+    gtk_version = sys.argv[1]
+    if not gtk_version in ("gtk2", "gtk3"):
+        print("Error. The argument must be gtk2 or gtk3")
+        exit()
+
 # -------------------------------------------------------------------------
 # These dictionaries give the Fortran type and its KIND for each GTK+ type:
 # -------------------------------------------------------------------------
@@ -300,26 +311,25 @@ nb_variadic = 0
 nb_files = 0
 type_errors_list = []
 
-# TODO: use command line argument
 # Libraries paths and resulting Fortran files (must have a -auto.f90 termination): 
-PATH_DICT = { "/usr/include/gtk-3.0/unix-print":"unix-print-auto.f90",
-              "/usr/include/cairo":"cairo-auto.f90",
-              "/usr/include/pango-1.0":"pango-auto.f90",
-              "/usr/include/glib-2.0":"glib-auto.f90",
-              "/usr/include/atk-1.0":"atk-auto.f90",
-              "/usr/include/gtk-3.0/gdk":"gdk-auto.f90",
-              "/usr/include/gdk-pixbuf-2.0":"gdk-pixbuf-auto.f90",
-              "/usr/include/gtk-3.0/gtk":"gtk-auto.f90",}
+if gtk_version == "gtk3":
+    PATH_DICT = { "/usr/include/gtk-3.0/unix-print":"unix-print-auto.f90",
+                  "/usr/include/cairo":"cairo-auto.f90",
+                  "/usr/include/pango-1.0":"pango-auto.f90",
+                  "/usr/include/glib-2.0":"glib-auto.f90",
+                  "/usr/include/atk-1.0":"atk-auto.f90",
+                  "/usr/include/gtk-3.0/gdk":"gdk-auto.f90",
+                  "/usr/include/gdk-pixbuf-2.0":"gdk-pixbuf-auto.f90",
+                  "/usr/include/gtk-3.0/gtk":"gtk-auto.f90",}
+else:
+    PATH_DICT = { "/usr/include/gtk-2.0/gtk":"gtk-auto.f90",
+                  "/usr/include/gtk-2.0/gdk":"gdk-auto.f90",
+                  "/usr/include/cairo":"cairo-auto.f90",
+                  "/usr/include/pango-1.0":"pango-auto.f90",
+                  "/usr/include/glib-2.0":"glib-auto.f90",
+                  "/usr/include/gdk-pixbuf-2.0":"gdk-pixbuf-auto.f90",
+                  "/usr/include/atk-1.0":"atk-auto.f90",}
 
-# To use with GTK+ 2, comment previous lines and uncomment following lines:
-#PATH_DICT = { "/usr/include/gtk-2.0/gtk":"gtk-auto.f90",
-              #"/usr/include/gtk-2.0/gdk":"gdk-auto.f90",
-              #"/usr/include/cairo":"cairo-auto.f90",
-              #"/usr/include/pango-1.0":"pango-auto.f90",
-              #"/usr/include/glib-2.0":"glib-auto.f90",
-              #"/usr/include/gdk-pixbuf-2.0":"gdk-pixbuf-auto.f90",
-              #"/usr/include/atk-1.0":"atk-auto.f90",}
-              
 #*************************************************************************
 # Pass 1: cann all header files to find all enum types, all pointers to 
 # functions (funptr) and add derived GTK+ types
