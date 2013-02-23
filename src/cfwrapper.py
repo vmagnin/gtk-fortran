@@ -38,6 +38,7 @@ import os
 import time
 import csv      # To write .csv files
 import sys      # To use command line arguments
+import platform  # To obtain platform informations
 from collections import OrderedDict
 
 
@@ -202,9 +203,7 @@ def translate_enums(errorsfile, enum_list):
 # **********************************************
 # Main program
 # **********************************************
-
-print(os.uname())
-print("Python", sys.version)
+print()
 print("Current directory:", os.getcwd())
 print()
 
@@ -676,17 +675,20 @@ mswindows_only_file.write(TAIL)
 mswindows_only_file.close()
 
 print()
-print("=== Statistics - " + time.strftime("%a, %d %b %Y %H:%M:%S +0000", 
-      time.gmtime()) + " ===")
-print("nb_files scanned =", nb_files)
-print("nb_generated_interfaces =", nb_generated_interfaces)
-print("nb_type_errors =", nb_type_errors)
-print("nb_errors (others) =", nb_errors)
-print("nb_lines treated =", nb_lines)
-print("nb_variadic functions =", nb_variadic)
-print("nb_enumerators =", nb_enumerators)
-print("Number of types =", len(TYPES_DICT) + len(TYPES2_DICT))
+print("=== Statistics (ready to paste in the Status wiki page) ===")
+print()
+print("##GTK+ " + GTK_VERSION[3] + ".?.?, GLib ?.?.?, " + " ".join(platform.linux_distribution()) 
+      + " " + platform.machine() + ", Python " + platform.python_version() + "\n")
+print(os.getlogin() + ", " + time.strftime("%a, %d %b %Y %H:%M:%S +0000", 
+      time.gmtime()) + "\n")
+print("* nb_files scanned =", nb_files)
+print("* nb_generated_interfaces =", nb_generated_interfaces)
+print("* nb_type_errors =", nb_type_errors)
+print("* nb_errors (others) =", nb_errors)
+print("* nb_lines treated =", nb_lines)
+print("* nb_variadic functions =", nb_variadic)
+print("* nb_enumerators =", nb_enumerators)
+print("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT))
+print("* Computing time: {0:.2f} s".format(time.time()-T0))
 print()
 #print(used_types)
-
-print("Computing time: {0:.2f} s".format(time.time()-T0))
