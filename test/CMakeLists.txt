@@ -22,13 +22,20 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by James Tappin: 8/7/2012
+# Last modifications: Jens Hunger: 03/05/2013
 
-
-add_custom_command(
-  OUTPUT run_all
-  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/run_all.pl ${CMAKE_CURRENT_BINARY_DIR}/run_all
-  COMMAND chmod a+x ${CMAKE_CURRENT_BINARY_DIR}/run_all
-  DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/run_all.pl
-  )
-
+if (CMAKE_HOST_WIN32)
+  add_custom_command(
+    OUTPUT run_all
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/run_all.pl ${CMAKE_CURRENT_BINARY_DIR}/run_all
+    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/run_all.pl
+    )
+else()
+  add_custom_command(
+    OUTPUT run_all
+    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/run_all.pl ${CMAKE_CURRENT_BINARY_DIR}/run_all
+    COMMAND chmod a+x ${CMAKE_CURRENT_BINARY_DIR}/run_all
+    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/run_all.pl
+    )
+endif()
 add_custom_target(tester ALL DEPENDS "run_all")

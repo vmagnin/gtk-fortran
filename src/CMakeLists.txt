@@ -21,7 +21,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin: 08.17.2012
+# Last modifications: Jens Hunger: 03/05/2013
 
 # CMAKE build file for GtkFortran
 
@@ -94,32 +94,50 @@ add_custom_command(
 add_custom_target(pkgconfig ALL DEPENDS "gtk-2-fortran.pc")
 
 # The USE generator system.
-add_custom_command(
-  OUTPUT gtk-2-fortran-modscan
-  COMMAND sed -e s+@PREFIX@+${CMAKE_INSTALL_PREFIX}+ -e s/@GTK@/2/ -e s+@SHARE@+${CMAKE_INSTALL_DATAROOTDIR}+ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
-  COMMAND chmod a+x ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl
-)
-add_custom_command(
-  OUTPUT gtk-2-fortran-index.csv
-  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-index.csv
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv
-)
-add_custom_command(
-  OUTPUT gtk-2-enumerators.lis
-  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-enumerators.lis
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
-)
+if (CMAKE_HOST_WIN32)
+  add_custom_command(
+    OUTPUT gtk-2-fortran-modscan
+    COMMAND sed -e s+@PREFIX@+${CMAKE_INSTALL_PREFIX}+ -e s/@GTK@/2/ -e s+@SHARE@+${CMAKE_INSTALL_DATAROOTDIR}+ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl
+  )
+  add_custom_command(
+    OUTPUT gtk-2-fortran-index.csv
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-index.csv
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv
+  )
+  add_custom_command(
+    OUTPUT gtk-2-enumerators.lis
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-enumerators.lis
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
+  )
+else()
+  add_custom_command(
+    OUTPUT gtk-2-fortran-modscan
+    COMMAND sed -e s+@PREFIX@+${CMAKE_INSTALL_PREFIX}+ -e s/@GTK@/2/ -e s+@SHARE@+${CMAKE_INSTALL_DATAROOTDIR}+ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
+    COMMAND chmod a+x ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl
+  )
+  add_custom_command(
+    OUTPUT gtk-2-fortran-index.csv
+    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-index.csv
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv
+  )
+  add_custom_command(
+    OUTPUT gtk-2-enumerators.lis
+    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-enumerators.lis
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
+  )
+endif()
 
 add_custom_target(usemodules ALL DEPENDS gtk-2-fortran-modscan
   gtk-2-fortran-index.csv gtk-2-enumerators.lis)
 
 # Man page(s)
-add_custom_command(
-  OUTPUT gtk-2-fortran-modscan.1
-  COMMAND sed -e s/@GTK@/2/  ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan.1
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man
-)
+  add_custom_command(
+    OUTPUT gtk-2-fortran-modscan.1
+    COMMAND sed -e s/@GTK@/2/  ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan.1
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man
+  )
 
 add_custom_target(manpage ALL DEPENDS gtk-2-fortran-modscan.1)
 
