@@ -22,6 +22,8 @@ REM this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 REM If not, see <http://www.gnu.org/licenses/>.
 REM
 REM Contributed by Jens Hunger: 03/05/2013
+REM Last modifications: Jens Hunger: 03/06/2013
+
 
 REM WIN32 build file for GtkFortran
 
@@ -31,7 +33,8 @@ if defined FOUND (
   ECHO found: %FOUND%
 ) ELSE (
   ECHO not found
-  ECHO Please download and install wget from http://gnuwin32.sourceFORge.net/packages/wget.htm
+  ECHO Please download and install wget from http://gnuwin32.sourceforge.net/packages/wget.htm
+  EXIT
 )
 
 ECHO.|set /p =Checking for GFortran ... 
@@ -44,7 +47,7 @@ IF defined FOUND (
   wget http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/mingw-get-inst-20120426/mingw-get-inst-20120426.exe/download
   ECHO Installing MinGW
   FOR /f "tokens=*" %%G IN ('DIR /b mingw-get-inst*.exe') DO %%G
-  RM mingw-get-inst*
+  DEL mingw-get-inst*
 )
 
 ECHO.|set /p =Checking for CMake ... 
@@ -57,13 +60,13 @@ IF defined FOUND (
   wget http://www.cmake.org/files/v2.8/cmake-2.8.10.2-win32-x86.exe
   ECHO Installing CMake
   cmake-2.8.10.2-win32-x86.exe
-  RM cmake-2.8.10.2-win32-x86.exe
+  DEL cmake-2.8.10.2-win32-x86.exe
 )
 
 ECHO.|set /p =Checking for GTK ... 
 FOR %%X IN (gtk+-2.0.pc) DO (SET FOUND=%%~$PKG_CONFIG_PATH:X)
 IF defined FOUND (
-  echo found: %FOUND%
+  ECHO found: %FOUND%
 ) ELSE (
   ECHO not found
   ECHO.|set /p =Checking for unzip ... 
@@ -76,17 +79,17 @@ IF defined FOUND (
     wget http://sourceforge.net/projects/gnuwin32/files/unzip/5.51-1/unzip-5.51-1.exe/download
     ECHO Installing unzip
     unzip-5.51-1.exe
-    RM unzip-5.51-1.exe
-    SET PATH=%PATH%;C:\Program Files\GnuWin32\bin
+    DEL unzip-5.51-1.exe
+    SET PATH=C:\Program Files\GnuWin32\bin;%PATH%
   )
   ECHO Downloading GTK+ for Windows from http://ftp.gnome.org
   wget http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.24/gtk+-bundle_2.24.10-20120208_win32.zip
   ECHO Installing GTK
   MKDIR c:\gtk
-  MV gtk+-bundle_2.24.10-20120208_win32.zip c:\gtk
+  MOVE gtk+-bundle_2.24.10-20120208_win32.zip c:\gtk
   unzip c:\gtk\gtk+-bundle_2.24.10-20120208_win32.zip
-  RM c:\gtk\gtk+-bundle_2.24.10-20120208_win32.zip
-  SET PATH=%PATH%;c:\gtk
+  DEL c:\gtk\gtk+-bundle_2.24.10-20120208_win32.zip
+  SET PATH=c:\gtk;%PATH%
   SET PKG_CONFIG_PATH=%PKG_CONFIG_PATH%;C:\gtk\lib\pkgconfig
 )
 
@@ -100,8 +103,8 @@ IF defined FOUND (
   wget http://sourceforge.net/projects/gnuwin32/files//sed/4.2.1/sed-4.2.1-setup.exe/download
   ECHO Installing sed
   sed-4.2.1-setup.exe
-  RM sed-4.2.1-setup.exe
-  SET PATH=%PATH%;C:\Program Files\GnuWin32\bin
+  DEL sed-4.2.1-setup.exe
+  SET PATH=C:\Program Files\GnuWin32\bin;%PATH%
 )
 
 MKDIR build
