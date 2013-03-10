@@ -82,6 +82,7 @@ module gtk_hl_container
        & gtk_window_set_keep_below, gtk_window_set_resizable,&
        & gtk_window_set_title, gtk_window_set_transient_for, &
        & gtk_window_set_icon_name, &
+!!$GTK>=3.0!       & gtk_window_set_icon_from_file, &
        & gtk_window_set_icon, gtk_window_set_modal, &
 !!$GTK< 3.0!       & gtk_notebook_set_group, &
 !!$GTK>=3.0!       & gtk_notebook_set_group_name, &
@@ -94,7 +95,7 @@ module gtk_hl_container
        & TRUE, FALSE, g_signal_connect, &
        & GTK_POLICY_AUTOMATIC
 
-    use gtk_os_dependent, only: gtk_window_set_icon_from_file
+!!$GTK< 3.0!    use gtk_os_dependent, only: gtk_window_set_icon_from_file
 
   implicit none
 
