@@ -65,14 +65,14 @@ module gtk_hl_chooser
        & gtk_dialog_get_content_area, gtk_dialog_new, gtk_dialog_run, &
        & gtk_entry_set_text, gtk_file_chooser_add_filter, &
        & gtk_file_chooser_button_new, gtk_file_chooser_button_set_width_chars, &
-       & gtk_file_chooser_get_current_folder, gtk_file_chooser_get_filenames, &
+!!$GTK>=3.0!       & gtk_file_chooser_get_current_folder, gtk_file_chooser_get_filenames, &
        & gtk_file_chooser_get_local_only, gtk_file_chooser_get_uris, &
-       & gtk_file_chooser_select_filename, &
-       & gtk_file_chooser_set_current_folder, &
+!!$GTK>=3.0!       & gtk_file_chooser_select_filename, &
+!!$GTK>=3.0!       & gtk_file_chooser_set_current_folder, &
        & gtk_file_chooser_set_current_name, &
        & gtk_file_chooser_set_do_overwrite_confirmation, &
-       & gtk_file_chooser_set_extra_widget, gtk_file_chooser_set_filename, &
-       & gtk_file_chooser_set_local_only, &
+       & gtk_file_chooser_set_extra_widget, gtk_file_chooser_set_local_only, &
+!!$GTK>=3.0!       & gtk_file_chooser_set_filename, &
        & gtk_file_chooser_set_select_multiple, &
        & gtk_file_chooser_set_show_hidden, gtk_file_chooser_widget_new, &
        & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
@@ -87,7 +87,11 @@ module gtk_hl_chooser
        & GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, &
        & GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER
 
-  ! Building the chooser uses a number of other high-level inderfaces.
+!!$GTK< 3.0!  use gtk_os_dependent, only: gtk_file_chooser_get_current_folder, &
+!!$GTK< 3.0!       & gtk_file_chooser_get_filenames, gtk_file_chooser_select_filename, &
+!!$GTK< 3.0!       & gtk_file_chooser_set_current_folder, gtk_file_chooser_set_filename
+
+  ! Building the chooser uses a number of other high-level interfaces.
 
   use gtk_hl_container
   use gtk_hl_entry
@@ -561,9 +565,9 @@ contains
     integer(kind=c_int) :: i, nsel, resp
 
     dialog =  hl_gtk_file_chooser_new(chooser_info, cdir, directory, create, &
-       & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
-       & initial_dir, current, initial_file, filter, filter_name, parent, &
-       & all, wsize, edit_filters)
+         & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
+         & initial_dir, current, initial_file, filter, filter_name, parent, &
+         & all, wsize, edit_filters)
 
     call gtk_widget_show_all (dialog)
     resp = gtk_dialog_run(dialog)
