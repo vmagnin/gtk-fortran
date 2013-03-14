@@ -32,7 +32,7 @@ if defined FOUND (
 ) ELSE (
   ECHO not found
   ECHO Please download and install wget from http://gnuwin32.sourceforge.net/packages/wget.htm
-  EXIT
+  GOTO:EOF
 )
 
 ECHO.|set /p =Checking for GFortran ... 
@@ -90,20 +90,48 @@ IF defined FOUND (
   SET PATH=C:\Program Files\GnuWin32\bin;%PATH%
 )
 
+ECHO.|set /p =Checking for PLplot ... 
+FOR %%X IN (plplotd.pc) DO (SET FOUND=%%~$PKG_CONFIG_PATH:X)
+IF defined FOUND (
+  ECHO found: %FOUND%
+) ELSE (
+  ECHO not found
+  ECHO Did you add PLplot to PATH and PKG_CONFIG_PATH?
+  ECHO Deep search for PLplot - this may last some time ...
+  SET CDIR=%CD%
+  CHDIR C:\
+  DIR libplplotd.dll /B /P /S > TMP.dat
+  for /f "Tokens=*" %%i in ('find /I "bin" TMP.dat') do @set T=%%i
+  SET plpath=%T:\libplplotd.dll=%
+  SET PATH=%plpath%;%PATH%
+  SET plpathc=%plpath:\bin=%
+  SET PKG_CONFIG_PATH=%plpathc%\lib\pkgconfig;%PKG_CONFIG_PATH%
+  DEL TMP.dat
+  CHDIR /d %CDIR%
+)
+
 MKDIR build
 CD build
-pkg-config --cflags-only-I gtk+-3.0 > TMP.dat         
-SET /p CMAKE_INCLUDE_PATH= < TMP.dat
-pkg-config --libs-only-L gtk+-3.0 > TMP.dat         
-SET /p CMAKE_LIBRARY_PATH= < TMP.dat
+
 pkg-config --cflags-only-I glib-2.0 > TMP.dat         
 SET /p GLIBCONFIG_INCLUDE_DIR= < TMP.dat
+pkg-config --cflags-only-I plplotd-f95 > TMP.dat         
+SET /p PLPLOT_INCLUDE_DIR= < TMP.dat
+pkg-config --libs-only-L plplotd > TMP.dat         
+SET /p PLPLOT_MODULE_DIR= < TMP.dat
 DEL TMP.dat
-SET CMAKE_INCLUDE_PATH=%CMAKE_INCLUDE_PATH: -I=;%
-SET CMAKE_INCLUDE_PATH=%CMAKE_INCLUDE_PATH:-I=%
-SET CMAKE_LIBRARY_PATH=%CMAKE_LIBRARY_PATH: -L=;%
-SET CMAKE_LIBRARY_PATH=%CMAKE_LIBRARY_PATH:-L=%
+
 SET GLIBCONFIG_INCLUDE_DIR=%GLIBCONFIG_INCLUDE_DIR: -I=;%
 SET GLIBCONFIG_INCLUDE_DIR=%GLIBCONFIG_INCLUDE_DIR:-I=%
-cmake -DCMAKE_INCLUDE_PATH=%CMAKE_INCLUDE_PATH% -DCMAKE_LIBRARY_PATH=%CMAKE_LIBRARY_PATH% -DGTK3_GLIBCONFIG_INCLUDE_DIR=%GLIBCONFIG_INCLUDE_DIR% -G "MinGW Makefiles" ..
+SET PLPLOT_INCLUDE_DIR=%PLPLOT_INCLUDE_DIR: -I=;%
+SET PLPLOT_INCLUDE_DIR=%PLPLOT_INCLUDE_DIR:-I=%
+SET PLPLOT_MODULE_DIR=%PLPLOT_MODULE_DIR:-L=%
+SET PLPLOT_MODULE_DIR=%PLPLOT_MODULE_DIR: =%
+SET PLPLOT_LIBRARY=%PLPLOT_MODULE_DIR%/libplplotd.dll.a;%PLPLOT_MODULE_DIR%/libcsirocsa.dll.a;%PLPLOT_MODULE_DIR%/libqsastime.dll.a
+SET PLPLOTF95_LIBRARY=%PLPLOT_MODULE_DIR%/libplplotf95optsd.a;%PLPLOT_MODULE_DIR%/libplplotf95d.dll.a
+SET PLPLOTF95C_LIBRARY=%PLPLOT_MODULE_DIR%/libplplotf95cd.dll.a
+SET PLPLOT_MODULE_DIR=%PLPLOT_MODULE_DIR%/fortran/modules/plplot
+
+cmake -DGTK3_GLIBCONFIG_INCLUDE_DIR=%GLIBCONFIG_INCLUDE_DIR% -DPLPLOT_INCLUDE_DIR=%PLPLOT_INCLUDE_DIR% -DPLPLOT_LIBRARY=%PLPLOT_LIBRARY% -DPLPLOTF95_LIBRARY=%PLPLOTF95_LIBRARY% -DPLPLOTF95C_LIBRARY=%PLPLOTF95C_LIBRARY% -DPLPLOT_MODULE_DIR=%PLPLOT_MODULE_DIR% -G "MinGW Makefiles" ..
+
 mingw32-make
