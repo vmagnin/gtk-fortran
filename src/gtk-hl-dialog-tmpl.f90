@@ -100,7 +100,10 @@ contains
     ! MESSAGE: string(n): required: The message to display. Since this is
     ! 		a string array, the C_NULL_CHAR terminations are provided
     ! 		internally
-    ! BUTTON_SET: integer: required: The set of buttons to display
+    ! BUTTON_SET: integer: required: The set of buttons to display, if
+    ! 		you need a set not in the GtkButtonsType enumerator, use
+    ! 		GTK_BUTTONS_NONE and then add buttons with
+    ! 		gtk_dialog_add_button to add buttons.
     ! TITLE: string: optional: Title for the window.
     ! TYPE: c_int: optional: Message type (a GTK_MESSAGE_ value)
     ! PARENT: c_ptr: optional: An optional parent for the dialogue.
@@ -214,7 +217,8 @@ contains
     ! MESSAGE: string(n): required: The message to display. Since this is
     ! 		a string array, the C_NULL_CHAR terminations are provided
     ! 		internally
-    ! BUTTON_SET: integer: required: The set of buttons to display
+    ! BUTTON_SET: integer: required: The set of buttons to display (see
+    ! 		hl_gtk_message_dialog_new for details).
     ! TITLE: string: optional: Title for the window.
     ! TYPE: c_int: optional: Message type (a GTK_MESSAGE_ value)
     ! PARENT: c_ptr: optional: An optional parent for the dialogue.
