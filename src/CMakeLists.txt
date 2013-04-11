@@ -54,10 +54,7 @@ set(sources
 	"gdk-pixbuf-hl.f90"
 	"gdkevents-auto2.f90")
 
-include_directories("/usr/include")
 include_directories(${GTK_INCLUDES})
-include_directories("/usr/local/include")
-include_directories("/usr/local/include/gtk-2-fortran")
 
 add_library(gtk-fortran_static STATIC ${sources})
 add_library(gtk-fortran_shared SHARED ${sources})
@@ -77,48 +74,45 @@ SOVERSION "0.1")
 
 # Does pkg-config have an equivalent in Windows? If so, then please
 # add a suitable generator and installation.
-add_custom_command(
-  OUTPUT gtk-2-fortran.pc
-  COMMAND sed -e s+@prefix@+${CMAKE_INSTALL_PREFIX}+ -e s/@version@/${CPACK_PACKAGE_VERSION}/ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-2-fortran.pc.in > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran.pc
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-2-fortran.pc.in
-  )
-add_custom_target(pkgconfig ALL DEPENDS "gtk-2-fortran.pc")
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-2-fortran.pc.in GTK2PCIN)
+string(REPLACE "@prefix@" "${CMAKE_INSTALL_PREFIX}" GTK2PCOUT1 "${GTK2PCIN}")
+string(REPLACE "@version@" "${CPACK_PACKAGE_VERSION}" GTK2PCOUT2 "${GTK2PCOUT1}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran.pc "${GTK2PCOUT2}")
+add_custom_target(pkgconfig ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran.pc)
 
 # The USE generator system.
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl USERMODULE_IN)
+string(REPLACE "@PREFIX@" "${CMAKE_INSTALL_PREFIX}" USERMODULE_OUT1 "${USERMODULE_IN}")
+string(REPLACE "@SHARE@" "${CMAKE_INSTALL_DATAROOTDIR}" USERMODULE_OUT2 "${USERMODULE_OUT1}")
+string(REPLACE "@GTK@" "2" USERMODULE_OUT3 "${USERMODULE_OUT2}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan "${USERMODULE_OUT3}")
+
 add_custom_command(
-  OUTPUT gtk-2-fortran-modscan
-  COMMAND sed -e s+@PREFIX@+${CMAKE_INSTALL_PREFIX}+ -e s/@GTK@/2/ -e s+@SHARE@+${CMAKE_INSTALL_DATAROOTDIR}+ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
-  COMMAND chmod a+x ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl
-)
-add_custom_command(
-  OUTPUT gtk-2-fortran-index.csv
-  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-index.csv
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-index.csv
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-index.csv
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv
 )
 add_custom_command(
-  OUTPUT gtk-2-enumerators.lis
-  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-enumerators.lis
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-enumerators.lis
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-enumerators.lis
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
 )
 
-add_custom_target(usemodules ALL DEPENDS gtk-2-fortran-modscan
-  gtk-2-fortran-index.csv gtk-2-enumerators.lis)
+add_custom_target(usemodules ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan
+  ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-enumerators.lis)
 
 # Man page(s)
-add_custom_command(
-  OUTPUT gtk-2-fortran-modscan.1
-  COMMAND sed -e s/@GTK@/2/  ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man > ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan.1
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man
-)
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man MODSCAN_IN)
+string(REPLACE "@GTK@" "2" MODSCAN_OUT "${MODSCAN_IN}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan.1 "${MODSCAN_OUT}")
 
-add_custom_target(manpage ALL DEPENDS gtk-2-fortran-modscan.1)
+add_custom_target(manpage ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan.1)
 
 if (CMAKE_HOST_WIN32)
   install(TARGETS gtk-fortran_static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR})
-  install(TARGETS gtk-fortran_shared LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  install(TARGETS gtk-fortran_shared LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 else()
   install(TARGETS gtk-fortran_static ARCHIVE DESTINATION 
     ${CMAKE_INSTALL_LIBDIR})
@@ -159,6 +153,7 @@ install(FILES
 install(PROGRAMS
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-modscan"
   DESTINATION ${CMAKE_INSTALL_BINDIR}
+  PERMISSIONS WORLD_EXECUTE
 )
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-2-fortran-index.csv"
