@@ -25,7 +25,6 @@
 # set(sources
 #   "plplot_extra.f90")
 
-include_directories("/usr/include")
 #include_directories(${PLPLOT_INCLUDES})
 include_directories("${CMAKE_BINARY_DIR}/plplot")
 include_directories("${CMAKE_BINARY_DIR}/src")

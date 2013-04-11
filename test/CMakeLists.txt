@@ -25,10 +25,8 @@
 
 
 add_custom_command(
-  OUTPUT run_all
-  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/run_all.pl ${CMAKE_CURRENT_BINARY_DIR}/run_all
-  COMMAND chmod a+x ${CMAKE_CURRENT_BINARY_DIR}/run_all
-  DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/run_all.pl
-  )
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/run_all
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/run_all.pl ${CMAKE_CURRENT_BINARY_DIR}/run_all
+)
 
-add_custom_target(tester ALL DEPENDS "run_all")
+add_custom_target(tester ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/run_all)

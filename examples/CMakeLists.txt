@@ -26,8 +26,6 @@
 
 # CMAKE build file for GtkFortran
 
-include_directories("/usr/include")
-include_directories("/usr/local/include")
 include_directories("${CMAKE_BINARY_DIR}/src")
 include_directories(${GTK_INCLUDES})
 
@@ -57,7 +55,7 @@ if (NOT NO_BUILD_EXAMPLES)
   if (UNIX)
     add_custom_command(
       OUTPUT gtkbuilder.glade
-      COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder.glade
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder.glade
       DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade
       )
   endif()
