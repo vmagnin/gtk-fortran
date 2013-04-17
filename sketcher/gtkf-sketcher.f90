@@ -702,8 +702,8 @@ contains
                 exit
               endif
             enddo
-            write(50,'(A)')"  "//f_string(1:len_trim(f_string))//" = gtk_builder_get_object (builder, """//&
-              f_string_ori(1:len_trim(f_string_ori))//"""//c_null_char)"
+            write(50,'(A)')"  "//f_string(1:len_trim(f_string))//"&"
+            write(50,'(A)')"    = gtk_builder_get_object (builder, """//f_string_ori(1:len_trim(f_string_ori))//"""//c_null_char)"
           endif
         enddo
       else
