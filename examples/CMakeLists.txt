@@ -22,7 +22,7 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications, James Tappin: 01/21/2013
+# Last modifications: Jens Hunger: 03/05/2013
 
 # CMAKE build file for GtkFortran
 
@@ -52,12 +52,17 @@ if (NOT NO_BUILD_EXAMPLES)
   target_link_libraries(gtkhello2 gtk-fortran_static ${GTK_LIBRARIES})
   add_test(gtkhello2 ./gtkhello2)
 
-  # This command is for Unix/Linux, please add a windows equivalent in an
-  # Else section
   if (UNIX)
     add_custom_command(
       OUTPUT gtkbuilder.glade
       COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder.glade
+      DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade
+      )
+  endif()
+  if (CMAKE_HOST_WIN32)
+    add_custom_command(
+      OUTPUT gtkbuilder.glade
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder.glade
       DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade
       )
   endif()

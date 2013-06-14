@@ -48,7 +48,7 @@ module handlers
   & gtk_about_dialog_set_website, gtk_button_new, gtk_button_new_with_label, &
   & gtk_container_add, gtk_container_set_border_width, gtk_dialog_run, gtk_drawing_area_new,&
   & gtk_entry_get_text, gtk_entry_new, gtk_file_chooser_button_new, &
-  & gtk_file_chooser_get_file, gtk_file_chooser_get_filename, gtk_label_new, gtk_main, &
+  & gtk_file_chooser_get_file, gtk_label_new, gtk_main, &
   & gtk_main_quit, gtk_progress_bar_new, gtk_progress_bar_pulse, &
   & gtk_progress_bar_set_fraction, gtk_progress_bar_set_text, gtk_scrolled_window_new,&
   & gtk_table_attach, gtk_table_attach_defaults, gtk_table_new, gtk_text_buffer_set_text,&
@@ -63,6 +63,8 @@ module handlers
   use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
   use gdk_pixbuf, only: gdk_pixbuf_get_has_alpha, gdk_pixbuf_get_n_channels, &
   & gdk_pixbuf_get_pixels, gdk_pixbuf_get_rowstride, gdk_pixbuf_new
+
+  use gtk_os_dependent, only: gtk_file_chooser_get_filename
   use my_widgets
   implicit none
   
