@@ -245,6 +245,7 @@ contains
 
   function delete_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
+    !GCC$ ATTRIBUTES DLLEXPORT :: delete_event
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 	call destroy (widget, gdata)
@@ -253,6 +254,7 @@ contains
 
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    !GCC$ ATTRIBUTES DLLEXPORT :: destroy
     type(c_ptr), value :: widget, gdata
     logical::lopened
     if (allocated(connections)) deallocate(connections)
@@ -263,6 +265,7 @@ contains
 
   subroutine create_subdir_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    !GCC$ ATTRIBUTES DLLEXPORT :: create_subdir_toggled
     type(c_ptr), value :: widget, gdata
     create_subdir=fbool(gtk_toggle_button_get_active(create_subdir_button))
     write(*,*)"subdir creation = ",create_subdir
@@ -270,6 +273,7 @@ contains
 
   subroutine create_handlerfiles_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    !GCC$ ATTRIBUTES DLLEXPORT :: create_handlerfiles_toggled
     type(c_ptr), value :: widget, gdata
     create_handlerfiles=fbool(gtk_toggle_button_get_active(create_handlerfiles_button))
     write(*,*)"handlerfiles creation = ",create_handlerfiles
@@ -277,6 +281,7 @@ contains
 
   subroutine overwrite_handlerfiles_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    !GCC$ ATTRIBUTES DLLEXPORT :: overwrite_handlerfiles_toggled
     type(c_ptr), value :: widget, gdata
     overwrite_handlerfiles=fbool(gtk_toggle_button_get_active(overwrite_handlerfiles_button))
     write(*,*)"handlerfiles overwrite = ",overwrite_handlerfiles
@@ -284,6 +289,7 @@ contains
 
   subroutine widget_symbols_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    !GCC$ ATTRIBUTES DLLEXPORT :: widget_symbols_toggled
     type(c_ptr), value :: widget, gdata
     widget_symbols=fbool(gtk_toggle_button_get_active(widget_symbols_button))
     write(*,*)"symbols for all widgets = ",widget_symbols
@@ -291,6 +297,7 @@ contains
 
   subroutine update_used_functions_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    !GCC$ ATTRIBUTES DLLEXPORT :: update_used_functions_toggled
     type(c_ptr), value :: widget, gdata
     update_used_functions=fbool(gtk_toggle_button_get_active(update_used_functions_button))
     write(*,*)"update used functions = ",update_used_functions
@@ -298,6 +305,7 @@ contains
 
   subroutine use_hl_gtk_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    !GCC$ ATTRIBUTES DLLEXPORT :: use_hl_gtk_toggled
     type(c_ptr), value :: widget, gdata
     use_hl_gtk=fbool(gtk_toggle_button_get_active(use_hl_gtk_button))
     write(*,*)"use high level interface = ",use_hl_gtk
@@ -305,6 +313,7 @@ contains
 
   subroutine include_files_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    !GCC$ ATTRIBUTES DLLEXPORT :: include_files_toggled
     type(c_ptr), value :: widget, gdata
     include_files=fbool(gtk_toggle_button_get_active(include_files_button))
     write(*,*)"generate include files = ",include_files
@@ -312,6 +321,7 @@ contains
 
   subroutine widgetshandlers_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    !GCC$ ATTRIBUTES DLLEXPORT :: widgetshandlers_toggled
     type(c_ptr), value :: widget, gdata
     widgetshandlers=fbool(gtk_toggle_button_get_active(widgetshandlers_button))
     write(*,*)"generate separate files for widgets and handlers = ",widgetshandlers
@@ -319,6 +329,7 @@ contains
 
   function file_open (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
+    !GCC$ ATTRIBUTES DLLEXPORT :: file_open
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     
@@ -418,6 +429,7 @@ contains
   
   function write_files (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
+    !GCC$ ATTRIBUTES DLLEXPORT :: write_files
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     
@@ -627,12 +639,14 @@ contains
             write(hunit,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
               " (widget, event, gdata) result(ret) bind(c)"
             write(hunit,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
+            write(hunit,'(A)')"    !GCC$ ATTRIBUTES DLLEXPORT :: "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))
             write(hunit,'(A)')"    integer(c_int)     :: ret"
             write(hunit,'(A)')"    type(c_ptr), value :: widget, event, gdata"
           else
             write(hunit,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
               " (widget, gdata) result(ret) bind(c)"
             write(hunit,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
+            write(hunit,'(A)')"    !GCC$ ATTRIBUTES DLLEXPORT :: "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))
             write(hunit,'(A)')"    integer(c_int)     :: ret"
             write(hunit,'(A)')"    type(c_ptr), value :: widget, gdata"
           endif
@@ -741,6 +755,7 @@ contains
 
   subroutine save_default_options (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
+    !GCC$ ATTRIBUTES DLLEXPORT :: save_default_options
     type(c_ptr), value :: widget, gdata
     character(len=20)::defaultsfile="default.options"
    
@@ -767,6 +782,7 @@ contains
   
   subroutine default_options (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
+    !GCC$ ATTRIBUTES DLLEXPORT :: default_options
     type(c_ptr), value :: widget, gdata
    
     filename="example.glade"
