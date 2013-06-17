@@ -639,14 +639,16 @@ contains
             write(hunit,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
               " (widget, event, gdata) result(ret) bind(c)"
             write(hunit,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
-            write(hunit,'(A)')"    !GCC$ ATTRIBUTES DLLEXPORT :: "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))
+            write(hunit,'(A)')"    !GCC$ ATTRIBUTES DLLEXPORT :: "//&
+              connections(i)%handler_name(1:len_trim(connections(i)%handler_name))
             write(hunit,'(A)')"    integer(c_int)     :: ret"
             write(hunit,'(A)')"    type(c_ptr), value :: widget, event, gdata"
           else
             write(hunit,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
               " (widget, gdata) result(ret) bind(c)"
             write(hunit,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
-            write(hunit,'(A)')"    !GCC$ ATTRIBUTES DLLEXPORT :: "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))
+            write(hunit,'(A)')"    !GCC$ ATTRIBUTES DLLEXPORT :: "//&
+              connections(i)%handler_name(1:len_trim(connections(i)%handler_name))
             write(hunit,'(A)')"    integer(c_int)     :: ret"
             write(hunit,'(A)')"    type(c_ptr), value :: widget, gdata"
           endif
