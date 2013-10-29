@@ -269,7 +269,6 @@ contains
     ! Return the current page of an assistant.
     !
     ! ASSTNT: c_ptr: required: The assistant to query
-    ! PAGENO: int: optional: The page number of the current page.
     !
     ! The returns the widget of the current page. To get the page
     ! number only just use gtk_assistant_get_current_page,
@@ -320,12 +319,6 @@ contains
   !+
   subroutine hl_gtk_assistant_destroy(widget, data) bind(c)
     type(c_ptr), value :: widget, data
-
-    ! Default callback for the destroy signal, also for cancel and close.
-    !
-    ! WIDGET: c_ptr: required: The widget to destroy
-    ! DATA: c_ptr: required: Data passed to the callback, not used.
-    !-
 
     call gtk_widget_destroy(widget)
   end subroutine hl_gtk_assistant_destroy

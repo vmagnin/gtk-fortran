@@ -128,11 +128,10 @@ contains
 
     real(kind=plflt)  legend_width, legend_height
     integer           opt_array(2), text_colors(2), line_colors(2), &
-         line_styles(2), line_widths(2), symbol_colors(2), &
-         symbol_numbers(2)
-    real(kind=plflt)  symbol_scales(2), box_scales(0)
+         line_styles(2), symbol_colors(2), symbol_numbers(2)
+    real(kind=plflt)  symbol_scales(2), box_scales(0), line_widths(2)
     integer           box_colors(0), box_patterns(0)
-    integer           box_line_widths(0)
+    real(kind=plflt)  box_line_widths(0)
     character(len=20) text(2)
     character(len=1)  symbols(2)
 
@@ -191,7 +190,8 @@ contains
     text(1)        = 'Amplitude'
     line_colors(1) = 2
     line_styles(1) = 1
-    line_widths(1) = 1
+!    line_widths(1) = 1
+    line_widths(1) = 1.0_plflt
     !     note from the above opt_array the first symbol (and box) indices
     !     do not have to be specified
 
@@ -201,7 +201,8 @@ contains
     text(2)           = 'Phase shift'
     line_colors(2)    = 3
     line_styles(2)    = 1
-    line_widths(2)    = 1
+!    line_widths(2)    = 1
+    line_widths(2)    = 1.0_plflt
     symbol_colors(2)  = 3
     symbol_scales(2)  = 1.0
     symbol_numbers(2) = 4

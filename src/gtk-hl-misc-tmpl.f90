@@ -87,7 +87,7 @@ contains
 
     ! A Version-independent separator.
     !
-    ! VERTICAL: boolean : optional : Set to TRUE to make
+    ! HORIZONTAL: boolean : optional : Set to TRUE to make
     ! 		a vertical separator.
     !-
 
