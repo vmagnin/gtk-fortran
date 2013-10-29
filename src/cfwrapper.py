@@ -144,7 +144,8 @@ def translate_enums(errorsfile, enum_list):
         name = each[1]
         
         # TODO: comment
-        if name in ["GSocketFamily", "GSocketMsgFlags", "GdkPixdataType"]:
+        if name in ["GSocketFamily", "GSocketMsgFlags", "GdkPixdataType",
+                    "GIOCondition"]:
             return ""
             
         parameters = re.findall("(?ms){(.*)}", enum)
@@ -349,7 +350,8 @@ gtk_types = []
 for library_path in PATH_DICT:
     for directory in os.walk(library_path):
         for c_file_name in directory[2]:
-            whole_file = open(directory[0] + "/" + c_file_name, 'rU').read()
+            whole_file = open(directory[0] + "/" + c_file_name, 'rU', 
+                              errors='replace').read()
             enum_types = re.findall("(?ms)^typedef enum.*?}\s?(\w+);", whole_file)
             gtk_enums += enum_types
             funptr = re.findall("(?m)^typedef[ \t]*(?:const)?[ \t]*\w+[ \t]*\*?\s*\(\* ?([\w]*?)\)", whole_file)
@@ -425,7 +427,8 @@ for library_path in PATH_DICT:
             if c_file_name in ["gstdio.h", "giochannel.h"]:
                 continue    # Go to next file
 
-            whole_file_original = open(directory[0] + "/" + c_file_name, 'rU').read()
+            whole_file_original = open(directory[0] + "/" + c_file_name, 'rU', 
+                                       errors='replace').read()
             whole_file = whole_file_original
             nb_files += 1
             

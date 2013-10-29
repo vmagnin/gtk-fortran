@@ -755,7 +755,7 @@ contains
     !
     ! WIN: c_ptr: required: The scrolled window.
     ! CHILD: c_ptr: required: The widget to insert.
-    ! VIEWPORT: boolean: optional: Set this to TRUE if the child widget
+    ! VIEWPORT: c_int: optional: Set this to true if the child widget
     ! 		requires a viewport between it and the scrolled window.
     ! 		Unfortunately I can't see a way to determine automatically
     ! 		whether this is needed.

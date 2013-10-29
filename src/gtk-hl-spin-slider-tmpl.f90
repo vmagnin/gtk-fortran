@@ -261,7 +261,7 @@ contains
     !
     ! This is usually accessed via the generic interface
     ! hl_gtk_slider_set_value. Note that since GTK implements all sliders
-    ! as doubles, either type of value may be used to set any slider.
+    ! a doubles, either type of value may be used to set any slider.
     !-
 
     call gtk_range_set_value(slider, val)
@@ -280,7 +280,7 @@ contains
     !
     ! This is usually accessed via the generic interface
     ! hl_gtk_slider_set_value. Note that since GTK implements all sliders
-    ! as doubles, either type of value may be used to set any slider.
+    ! a doubles, either type of value may be used to set any slider.
     !-
 
     call gtk_range_set_value(slider, real(val, c_double))

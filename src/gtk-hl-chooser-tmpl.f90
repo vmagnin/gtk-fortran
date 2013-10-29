@@ -306,7 +306,7 @@ contains
     ! PARENT: c_ptr: optional: Parent window for the dialogue.
     ! ALL: boolean: optional: Set to TRUE to add an all-files filter pattern
     ! WSIZE: c_int(2): optional: Set the size for the dialog.
-    ! EDIT_FILTERS: boolean: optional: Set to TRUE to provide an entry window
+    ! EDIT_FILTERS: boolean: optional: Set to TRUE to proves an entry window
     ! 		to add extra filters.
     !-
 
