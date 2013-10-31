@@ -30,6 +30,8 @@
 cmake_minimum_required(VERSION 2.8.5)
 project(gtk-fortran C Fortran)
 
+include(CheckCSourceCompiles)
+
 # Note that we override the lib directory here because most
 # 64-bit systems don't actually work if we use the default.
 include(GNUInstallDirs)
@@ -108,6 +110,16 @@ if (NOT EXCLUDE_PLPLOT)
     set(LIBRARIES ${LIBRARIES} ${PLPLOT_LIBRARIES})
     include_directories(${PLPLOT_INCLUDE_DIR})
     include_directories(${PLPLOT_MODULE_DIR})
+    set(CMAKE_REQUIRED_LIBRARIES "${PLPLOT_LIBRARIES}")
+    set(CMAKE_REQUIRED_INCLUDES "${PLPLOT_INCLUDE_DIR}")
+    check_c_source_compiles("
+#include <plplot/plplot.h> 
+int main(int argc, void *argv[])
+{
+  PLFLT w = 0.5;
+  plinit();
+  plwidth(w);
+}" NEW_PLPLOT)
   else(PLPLOT_FOUND)
     message(STATUS "PLPLOT not found: PLPLOT integration and examples will not be built")
   endif(PLPLOT_FOUND)
