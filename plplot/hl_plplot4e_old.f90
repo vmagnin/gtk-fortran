@@ -133,9 +133,9 @@ contains
     ! For plplot 5.9.9 or lower the next declarations should be integers
     ! For 5.9.10 or higher they should be reals
     real(kind=plflt) :: symbol_scales(2), box_scales(0)
-!    integer :: line_widths(2), box_line_widths(0)
+    integer :: line_widths(2), box_line_widths(0)
 
-    real(kind=plflt) :: line_widths(2), box_line_widths(0)
+!    real(kind=plflt) :: line_widths(2), box_line_widths(0)
     integer          :: box_colors(0), box_patterns(0)
     character(len=20):: text(2)
     character(len=1) :: symbols(2)
@@ -197,8 +197,8 @@ contains
     line_styles(1) = 1
     ! For plplot 5.9.9 or lower comment out the real assignment,
     ! for 5.9.10 or higher, comment out the integer assignment.
-!    line_widths(1) = 1
-    line_widths(1) = 1.0_plflt
+    line_widths(1) = 1
+!    line_widths(1) = 1.0_plflt
     !     note from the above opt_array the first symbol (and box) indices
     !     do not have to be specified
 
@@ -210,8 +210,8 @@ contains
     line_styles(2)    = 1
     ! For plplot 5.9.9 or lower comment out the real assignment,
     ! for 5.9.10 or higher, comment out the integer assignment.
-!    line_widths(2)    = 1
-    line_widths(2)    = 1.0_plflt
+    line_widths(2)    = 1
+!    line_widths(2)    = 1.0_plflt
     symbol_colors(2)  = 3
     symbol_scales(2)  = 1.0
     symbol_numbers(2) = 4

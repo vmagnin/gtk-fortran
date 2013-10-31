@@ -211,11 +211,11 @@ contains
     ! For plplot 5.9.10 or higher comment out the plwid calls.
 
     call plcol0(3)
-!    call plwid(2)
-    call plwidth(2.0_plflt)
+    call plwid(2)
+!    call plwidth(2.0_plflt)
     call plline( x, y )
-!    call plwid(1)
-    call plwidth(1.0_plflt)
+    call plwid(1)
+!    call plwidth(1.0_plflt)
 
   end subroutine plot2
 
