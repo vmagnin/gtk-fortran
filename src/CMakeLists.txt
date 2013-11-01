@@ -66,7 +66,6 @@ endif()
 include_directories("/usr/include")
 include_directories(${GTK_INCLUDES})
 include_directories("/usr/local/include")
-include_directories("/usr/local/include/gtk-2-fortran")
 
 add_library(gtk-fortran_static STATIC ${sources})
 add_library(gtk-fortran_shared SHARED ${sources})
