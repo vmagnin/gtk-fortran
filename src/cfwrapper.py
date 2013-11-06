@@ -143,10 +143,11 @@ def translate_enums(errorsfile, enum_list):
         enum = each[0]
         name = each[1]
         
-        # TODO: comment
+        # These enums are excluded for some problems...
+        # For example GDBusInterfaceSkeletonFlags contains an item with a too long name
         if name in ["GSocketFamily", "GSocketMsgFlags", "GdkPixdataType",
-                    "GIOCondition"]:
-            return ""
+                    "GIOCondition", "GDBusInterfaceSkeletonFlags"]:
+            continue    # Go to next enum
             
         parameters = re.findall("(?ms){(.*)}", enum)
         
