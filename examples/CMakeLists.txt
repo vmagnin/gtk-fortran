@@ -185,6 +185,10 @@ if (NOT NO_BUILD_EXAMPLES)
   target_link_libraries(notebooks gtk-fortran_static ${GTK_LIBRARIES})
   add_test(notebooks ./notebooks)
 
+  add_executable(gio_demo "gio_demo.f90")
+  target_link_libraries(gio_demo gtk-fortran_static ${GTK_LIBRARIES})
+  add_test(gio_demo ./gio_demo)
+
   add_executable(tests "tests.f90")
   target_link_libraries(tests gtk-fortran_static ${GTK_LIBRARIES})
   add_test(tests ./tests)
@@ -228,6 +232,7 @@ if (INSTALL_EXAMPLES)
     "${CMAKE_CURRENT_SOURCE_DIR}/mandelbrot_pixbuf_zoom.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/menu.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/notebooks.f90"
+    "${CMAKE_CURRENT_SOURCE_DIR}/gio_demo.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/tests.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/README"
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples3)
