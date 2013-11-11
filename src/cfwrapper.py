@@ -42,6 +42,49 @@ import platform  # To obtain platform informations
 from collections import OrderedDict
 
 
+def lib_version(lib_name):
+    # Debian/Ubuntu command line:
+    version = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+    if version == "":       # package not found
+        # Uncomment the following line and change the command line for your Linux distribution: 
+        # version = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+        pass     # no operation instruction to avoid an empty if statement       
+    
+    try:
+        version = re.search("(\d{1,2}\.\d{1,2}\.\d{1,2})", version).group(1)
+    except AttributeError:
+        version = "?.?.?"
+        
+    return version
+
+
+def gtk3_version():
+    version = lib_version("libgtk-3-0")     # Package name in Ubuntu 
+    if version == "?.?.?":                  # package not found
+        # Uncomment the following line and change the package name for your Linux distribution: 
+        # version = lib_version("libgtk-3-0")
+        pass     # no operation instruction to avoid an empty if statement
+    return version
+
+
+def gtk2_version():
+    version = lib_version("libgtk2.0-0")     # Package name in Ubuntu 
+    if version == "?.?.?":                   # package not found
+        # Uncomment the following line and change the package name for your Linux distribution: 
+        # version = lib_version("libgtk2.0-0")
+        pass     # no operation instruction to avoid an empty if statement
+    return version
+
+
+def glib_version():
+    version = lib_version("libglib2.0-0")    # Package name in Ubuntu 
+    if version == "?.?.?":                   # package not found
+        # Uncomment the following line and change the package name for your Linux distribution: 
+        # version = lib_version("libgtk2.0-0")
+        pass     # no operation instruction to avoid an empty if statement
+    return version
+
+
 def iso_c_binding(declaration, returned):
     """ Returns the Fortran type corresponding to a C type in the 
         ISO_C_BINDING module (limited to C types used in GTK+),
@@ -683,7 +726,11 @@ mswindows_only_file.close()
 print()
 print("=== Statistics (ready to paste in the Status wiki page) ===")
 print()
-print("##GTK+ " + GTK_VERSION[3] + ".?.?, GLib ?.?.?, " + " ".join(platform.linux_distribution()) 
+if GTK_VERSION == "gtk3":
+    version = gtk3_version()
+else:
+    version = gtk2_version()   
+print("##GTK+ " + version + ", GLib "+glib_version()+", " + " ".join(platform.linux_distribution()) 
       + " " + platform.machine() + ", Python " + platform.python_version() + "\n")
 print(os.getlogin() + ", " + time.strftime("%a, %d %b %Y %H:%M:%S +0000", 
       time.gmtime()) + "\n")
