@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification:  22 feb. 2013 (Python 3.2.3, Linux Ubuntu 12.10)
+# Last modification:  11th nov. 2013 (Python 3.3.2, Linux Ubuntu 13.10)
 # Pylint score: 7.79/10
 
 """ Generates the *-auto.f90 files from the C header files of glib and GTK+.
@@ -316,6 +316,7 @@ nb_type_errors = 0
 nb_variadic = 0
 nb_files = 0
 nb_enumerators = 0
+nb_win32_utf8 = 0
 type_errors_list = []
 
 # Libraries paths and resulting Fortran files *-auto.f90.
@@ -628,11 +629,12 @@ for library_path in PATH_DICT:
                     interface += declarations
                     interface += 0*TAB + f_the_end + "\n\n" 
                     
-                    # Deals with the Win32 _utf8 functions: the normal form and the Windows form are dispatched in two platform depedent files, although the module name is always "gtk_os_depedent"
-                    if whole_file_original.find("#define "+f_name+" "+f_name+"_utf8") != -1:                       
+                    # Deals with the Win32 _utf8 functions: the normal form and the Windows form are dispatched in two platform dependent files, although the module name is always "gtk_os_dependent":
+                    if re.search("(?m)^#define\s+"+f_name+"\s+"+f_name+"_utf8\s*$", whole_file_original) :                    
                         unix_only_file.write(interface)
                         index.append(["gtk_os_dependent", f_name, "unixonly-auto.f90/mswinwdowsonly-auto.f90", directory[0]+"/"+c_file_name, prototype])
                         nb_generated_interfaces += 2
+                        nb_win32_utf8 += 1
                         
                         # We are obliged to rewrite the whole interface because of multiline():
                         interface_utf8 = 0*TAB + "! " + prototype + "\n"
@@ -692,6 +694,7 @@ print("* nb_errors (others) =", nb_errors)
 print("* nb_lines treated =", nb_lines)
 print("* nb_variadic functions =", nb_variadic)
 print("* nb_enumerators =", nb_enumerators)
+print("* nb_win32_utf8 =", nb_win32_utf8)
 print("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT))
 print("* Computing time: {0:.2f} s".format(time.time()-T0))
 print()
