@@ -42,9 +42,21 @@ import platform  # To obtain platform informations
 from collections import OrderedDict
 
 
-def lib_version(lib_name):
-    # Debian/Ubuntu command line:
-    version = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+def lib_version(lib_name, psys):
+    if psys == "deb":
+        # Debian/Ubuntu command line:
+        version = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+    elif psys == "pacman":
+        # Arch/Manjaro command line
+        version = os.popen("pacman -Qi "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+    elif psys == "rpm":
+        # Mageia (& Fedora?) command line
+        version = os.popen("rpm -qi "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+    else:
+        print ("Unknown package system: (", psys,"): ", lib_name)
+        version = ""
+
+
     if version == "":       # package not found
         # Uncomment the following line and change the command line for your Linux distribution: 
         # version = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
@@ -59,29 +71,43 @@ def lib_version(lib_name):
 
 
 def gtk3_version():
-    version = lib_version("libgtk-3-0")     # Package name in Ubuntu 
+    version = lib_version("libgtk-3-0", "deb")   # Package name in Ubuntu 
     if version == "?.?.?":                  # package not found
-        # Uncomment the following line and change the package name for your Linux distribution: 
-        # version = lib_version("libgtk-3-0")
-        pass     # no operation instruction to avoid an empty if statement
+        version = lib_version("gtk3", "pacman")      # Package name in Arch/Manjaro
+        if version == "?.?.?":                  # package not found
+            version = lib_version("gtk+3.0", "rpm")      # Package name in Mageia
+
+            if version == "?.?.?":                  # package not found
+            # Uncomment the following line and change the package name for your Linux distribution: 
+            # version = lib_version("libgtk-3-0")
+                pass     # no operation instruction to avoid an empty if statement
+            
     return version
 
 
 def gtk2_version():
-    version = lib_version("libgtk2.0-0")     # Package name in Ubuntu 
+    version = lib_version("libgtk2.0-0", "deb")   # Package name in Ubuntu 
     if version == "?.?.?":                   # package not found
-        # Uncomment the following line and change the package name for your Linux distribution: 
-        # version = lib_version("libgtk2.0-0")
-        pass     # no operation instruction to avoid an empty if statement
+        version = lib_version("gtk2", "pacman")       # Package name in Arch/Manjaro
+        if version == "?.?.?":                   # package not found
+            version = lib_version("gtk+2.0", "rpm")       # Package name in Mageia
+            if version == "?.?.?":                   # package not found
+                # Uncomment the following line and change the package name for your Linux distribution: 
+                # version = lib_version("libgtk2.0-0")
+                pass     # no operation instruction to avoid an empty if statement
     return version
 
 
 def glib_version():
-    version = lib_version("libglib2.0-0")    # Package name in Ubuntu 
+    version = lib_version("libglib2.0-0", "deb")  # Package name in Ubuntu 
     if version == "?.?.?":                   # package not found
-        # Uncomment the following line and change the package name for your Linux distribution: 
-        # version = lib_version("libgtk2.0-0")
-        pass     # no operation instruction to avoid an empty if statement
+        version = lib_version("glib2", "pacman")      # Package name in Arch/Manjaro
+        if version == "?.?.?":                   # package not found
+            version = lib_version("libglib2.0_0", "rpm")  # Package name in Mageia
+            if version == "?.?.?":                   # package not found
+                # Uncomment the following line and change the package name for your Linux distribution: 
+                # version = lib_version("libgtk2.0-0")
+                pass     # no operation instruction to avoid an empty if statement
     return version
 
 
