@@ -192,7 +192,7 @@ if (NOT NO_BUILD_EXAMPLES)
   target_link_libraries(notebooks gtk-fortran_static ${GTK_LIBRARIES})
   add_test(notebooks ./notebooks)
 
-  if (CMAKE_VERSION VERSION_GREATER 2.8.10)
+  if (NOT CMAKE_VERSION VERSION_LESS 2.8.11)
     add_executable(gio_demo "gio_demo.f90")
     target_link_libraries(gio_demo gtk-fortran_static ${GTK_LIBRARIES})
     add_test(gio_demo ./gio_demo)
