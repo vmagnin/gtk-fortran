@@ -29,6 +29,11 @@
 cmake_minimum_required(VERSION 2.8.5)
 project(gtk-fortran C Fortran)
 
+# CMAKE versions up to and including 2.8.10 fail to add the GIO libs for GTK2
+if (CMAKE_VERSION VERSION_LESS 2.8.11)
+  message(STATUS "CMAKE Version before 2.8.11 -- GIO example will not be built")
+endif()
+
 include(CheckCSourceCompiles)
 
 # Note that we override the lib directory here because most
