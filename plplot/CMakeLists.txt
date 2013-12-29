@@ -20,7 +20,7 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin, last updated: 1/21/2013
+# Contributed by James Tappin, last updated: 12/29/2013
 
 # set(sources
 #   "plplot_extra.f90")
@@ -32,11 +32,19 @@ include_directories("${CMAKE_BINARY_DIR}/src")
 include_directories(${GTK_INCLUDES})
 #include_directories(${PLPLOT_MODULE_DIR})
 
-add_custom_command(
-  OUTPUT plplot_extra.mod
-  COMMAND ${CMAKE_Fortran_COMPILER} -c ${CMAKE_CURRENT_SOURCE_DIR}/plplot_extra.f90
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/plplot_extra.f90)
-add_custom_target(plplot_extra_module ALL DEPENDS plplot_extra.mod)
+if(NEW_PLPLOT_DEFS)
+  add_custom_command(
+    OUTPUT plplot_extra.mod
+    COMMAND ${CMAKE_Fortran_COMPILER} -c ${CMAKE_CURRENT_SOURCE_DIR}/plplot_extra_ndef.f90
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/plplot_extra_ndef.f90)
+  add_custom_target(plplot_extra_module ALL DEPENDS plplot_extra.mod)
+else()
+  add_custom_command(
+    OUTPUT plplot_extra.mod
+    COMMAND ${CMAKE_Fortran_COMPILER} -c ${CMAKE_CURRENT_SOURCE_DIR}/plplot_extra.f90
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/plplot_extra.f90)
+  add_custom_target(plplot_extra_module ALL DEPENDS plplot_extra.mod)
+endif()
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/plplot_extra.mod"

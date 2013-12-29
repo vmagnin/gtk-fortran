@@ -27,7 +27,7 @@
 # CMAKE build file for GtkFortran
 
 cmake_minimum_required(VERSION 2.8.5)
-project(gtk-fortran C Fortran)
+project(gtk-fortran Fortran)
 
 # CMAKE versions up to and including 2.8.10 fail to add the GIO libs for GTK2
 if (CMAKE_VERSION VERSION_LESS 2.8.11)
@@ -63,6 +63,7 @@ set(CPACK_SOURCE_GENERATOR "STGZ;TGZ")
 include(CPack)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+include(CheckFortranSourceCompiles)
 
 # uninstall target
 configure_file(
@@ -114,19 +115,29 @@ if (NOT EXCLUDE_PLPLOT)
   set(HAVE_LIBPLPLOTF95D ${PLPLOT_FOUND})
   if(PLPLOT_FOUND)
     set(LIBRARIES ${LIBRARIES} ${PLPLOT_LIBRARIES})
+
     include_directories(${PLPLOT_INCLUDE_DIR})
     include_directories(${PLPLOT_MODULE_DIR})
     set(CMAKE_REQUIRED_LIBRARIES "${PLPLOT_LIBRARIES}")
-    set(CMAKE_REQUIRED_INCLUDES "${PLPLOT_INCLUDE_DIR}")
-    check_c_source_compiles("
-#include <plplot/plplot.h> 
-int main(int argc, void *argv[])
-{
-  PLFLT w = 0.5;
-  plinit();
-  plwidth(w);
-}" NEW_PLPLOT)
-  else(PLPLOT_FOUND)
+    set(CMAKE_REQUIRED_INCLUDES "${PLPLOT_INCLUDE_DIR}; ${PLPLOT_MODULE_DIR}")
+   check_fortran_source_compiles("
+ program tw
+ use plplot
+ implicit none
+
+ real(kind=plflt) :: w = 0.5_plflt
+ call plinit()
+ call plwidth(w)
+ end program tw" NEW_PLPLOT)
+    check_fortran_source_compiles("
+ program tdef
+ use plplot
+ implicit none
+
+ integer :: i = PLESC_DEVINIT
+ end program tdef" NEW_PLPLOT_DEFS)
+
+else(PLPLOT_FOUND)
     message(STATUS "PLPLOT not found: PLPLOT integration and examples will not be built")
   endif(PLPLOT_FOUND)
 else(NOT EXCLUDE_PLPLOT)
