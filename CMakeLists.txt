@@ -49,10 +49,21 @@ message(STATUS "Build type is: ${CMAKE_BUILD_TYPE}")
 
 # Removed -ffpe-trap=invalid,zero,overflow as it gives a lot of crashes deep
 # in the call stack in Gtk3
-set(CMAKE_Fortran_FLAGS_DEBUG
-"-g -pthread -Wall -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
-set(CMAKE_Fortran_FLAGS_RELEASE
-"-pthread -O3 -mtune=native -march=native")
+# FFLAGS depend on the compiler
+get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
+
+if (Fortran_COMPILER_NAME MATCHES "ifort.*" AND CMAKE_HOST_WIN32)
+  set(CMAKE_Fortran_FLAGS_DEBUG
+  "/Od /debug /warn:all /check:all /standard-semantics /traceback /stand")
+  set(CMAKE_Fortran_FLAGS_RELEASE
+  "/warn:all /check:none /standard-semantics /traceback /stand")
+else()
+  # gfortran
+  set(CMAKE_Fortran_FLAGS_DEBUG
+  "-g -pthread -Wall -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
+  set(CMAKE_Fortran_FLAGS_RELEASE
+  "-pthread -O3 -mtune=native -march=native")
+endif()
 
 set(CPACK_PACKAGE_VERSION "0.1.0")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk3-fortran")
