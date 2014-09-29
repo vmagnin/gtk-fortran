@@ -144,6 +144,7 @@ contains
   ! GtkComboBox signal:
   function firstCombo (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int, c_double, c_f_pointer
+    use gtk_sup, only: c_f_string_copy
     use global_widgets
     implicit none
     integer(c_int)    :: ret
@@ -153,8 +154,7 @@ contains
     character(len=512) :: my_string
     character(kind=c_char), dimension(:), pointer :: textptr
 
-    call C_F_POINTER(gtk_combo_box_text_get_active_text(combo1), textptr, (/0/))
-    call convert_c_string(textptr, my_string)
+    call c_f_string_copy( gtk_combo_box_text_get_active_text(combo1), my_string)
     read(my_string, *) choice
     
     select case (choice)
@@ -251,23 +251,6 @@ contains
     
     ret = FALSE
   end function firstToggle
-  
-  ! This is not a handler:
-  subroutine convert_c_string(textptr, f_string)
-    use iso_c_binding, only: c_char
-    implicit none
-    character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
-    character(len=*), intent(out) :: f_string
-    integer :: i
-          
-    f_string=""
-    i=1
-    do while(textptr(i) .NE. char(0))
-      f_string(i:i)=textptr(i)
-      i=i+1
-    end do
-  end subroutine convert_c_string
-
 end module handlers
 
 
@@ -275,6 +258,7 @@ program julia
   use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
   use handlers
   use global_widgets
+  use gtk_sup, only: c_f_string_copy
   implicit none
   
   type(c_ptr) :: my_window, table, button1, button2, button3, box1
@@ -389,8 +373,9 @@ program julia
   pixwidth  = 500
   pixheight = 500
   my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, pixwidth, pixheight)    
-  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
+  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel,  &
+      (/ pixwidth * pixheight * nch /) )
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
   ! We use char() because we need unsigned integers.
   ! This pixbuffer has no Alpha channel (15% faster), only RGB.

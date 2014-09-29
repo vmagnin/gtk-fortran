@@ -112,8 +112,9 @@ program mandelbrot
   
   ! We create a pixbuffer to store the pixels of the image:
   my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
-  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
+  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel,  &
+      (/ width*height*nch /))
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
   
   ! We use char() because we need unsigned integers.

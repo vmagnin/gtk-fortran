@@ -157,9 +157,11 @@ program mandelbrot
   call gtk_widget_show (my_window)
       
   my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, &
-       & width/2_c_int, height/2_c_int)    
-  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
+       & width/2_c_int, height/2_c_int)
+  ! array size based on indexing of pixel.
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
+  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel,  &
+      (/ (width/2*height/2)*nch /) )
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
     
   do i=1, (width/2*height/2)*nch, nch

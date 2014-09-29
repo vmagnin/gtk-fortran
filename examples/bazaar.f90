@@ -124,10 +124,13 @@ contains
     !*************
     width = 200
     height = 100
-    my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)    
-    call C_F_POINTER(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
-
+    my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
+    ! (/ 0 /) can't be right... based on indexing below assume the buffer 
+    ! is the size given in the following.
+    call C_F_POINTER( gdk_pixbuf_get_pixels(my_pixbuf), pixel,  &
+        (/ width*height*nch /) )
+
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
     print *, rowstride, nch, gdk_pixbuf_get_has_alpha(my_pixbuf)
     
@@ -173,14 +176,13 @@ contains
   ! GtkObject signal:
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    use gtk_sup, only: c_f_string_copy
     type(c_ptr), value :: widget, gdata
-    character(kind=c_char), dimension(:), pointer :: textptr
     character(len=512) :: my_string
 
     print *, "my destroy"
     
-    call C_F_POINTER(gtk_entry_get_text(entry1), textptr, (/0/))
-    call convert_c_string(textptr, my_string)
+    call c_f_string_copy(gtk_entry_get_text(entry1), my_string)
     print *, "Entry box:", TRIM(my_string)
     
     call gtk_main_quit()
@@ -239,6 +241,7 @@ contains
 
   ! GtkFileChooser signal:
   function file_changed (widget, gdata ) result(ret)  bind(c)
+    use gtk_sup, only: c_f_string_copy
     use iso_c_binding, only: c_ptr, c_char
     integer(c_int)    :: ret
     character(kind=c_char), dimension(:), pointer :: textptr
@@ -246,8 +249,7 @@ contains
     character(len=512) :: my_string
     
     print *, "Selected File has changed:"
-    call C_F_POINTER(gtk_file_chooser_get_filename (widget), textptr, (/0/))
-    call convert_c_string(textptr, my_string)
+    call c_f_string_copy(gtk_file_chooser_get_filename(widget), my_string)
     print *, TRIM(my_string)
     
     ret = FALSE
