@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification:  11th nov. 2013 (Python 3.3.2, Linux Ubuntu 13.10)
+# Last modification:  18th April 2015 (Python 3.4.3, Linux Ubuntu 15.04)
 # Pylint score: 7.79/10
 
 """ Generates the *-auto.f90 files from the C header files of glib and GTK+.
@@ -236,6 +236,8 @@ def translate_enums(errorsfile, enum_list):
         parameters[0] = re.sub("(?<!')(\))(?!')", "", parameters[0])
         parameters[0] = re.sub("(?<!')(,)(?!')", "", parameters[0])
         parameters[0] = re.sub("(?m),$", "", parameters[0])
+        # Remove the u for unsigned numbers (rare)
+        parameters[0] = re.sub("1u[ ]<<", "1 <<", parameters[0])
         
         # Is it a char ?
         parameters[0] = re.sub("('.?')", "iachar(\\1)", parameters[0])
