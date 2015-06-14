@@ -13,7 +13,7 @@
 #
 
 find_package(PkgConfig)
-pkg_check_modules(PLPLOTF95 QUIET plplotd-f95)
+pkg_search_module(PLPLOTF95 QUIET plplotd-f95 plplot-f95)
 
 find_library(PLPLOT_LIBRARY NAMES plplotd plplot)
 find_library(PLPLOTF95_LIBRARY NAMES plplotf95d plplotf95)
