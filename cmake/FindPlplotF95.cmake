@@ -15,7 +15,7 @@
 find_package(PkgConfig)
 pkg_check_modules(PLPLOTF95 QUIET plplotd-f95)
 
-find_library(PLPLOT_LIBRARY NAMES plplotd)
+find_library(PLPLOT_LIBRARY NAMES plplotd plplot)
 find_library(PLPLOTF95_LIBRARY NAMES plplotf95d plplotf95)
 find_library(PLPLOTF95C_LIBRARY NAMES plplotf95cd plplotf95c)
 set(PLPLOT_LIBRARIES ${PLPLOT_LIBRARY} ${PLPLOTF95_LIBRARY} ${PLPLOTF95C_LIBRARY})
