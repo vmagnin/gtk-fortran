@@ -4,6 +4,7 @@
 #
 #  Modified to find Fortran rather than C++ libraries:
 #		July 2012: James Tappin
+#  Support Plplot 5.11 libraries: Jun 2015; JT
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -12,11 +13,11 @@
 #
 
 find_package(PkgConfig)
-pkg_check_modules(PLPLOTF95 QUIET plplotd-f95)
+pkg_search_module(PLPLOTF95 QUIET plplotd-f95 plplot-f95)
 
-find_library(PLPLOT_LIBRARY NAMES plplotd)
-find_library(PLPLOTF95_LIBRARY NAMES plplotf95d)
-find_library(PLPLOTF95C_LIBRARY NAMES plplotf95cd)
+find_library(PLPLOT_LIBRARY NAMES plplotd plplot)
+find_library(PLPLOTF95_LIBRARY NAMES plplotf95d plplotf95)
+find_library(PLPLOTF95C_LIBRARY NAMES plplotf95cd plplotf95c)
 set(PLPLOT_LIBRARIES ${PLPLOT_LIBRARY} ${PLPLOTF95_LIBRARY} ${PLPLOTF95C_LIBRARY})
 find_path(PLPLOT_INCLUDE_DIR NAMES plplot/plplot.h)
 find_path(PLPLOT_MODULE_DIR NAMES plplot.mod PATHS ${PLPLOTF95_INCLUDE_DIRS}) 
