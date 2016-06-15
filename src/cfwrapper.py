@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification:  18th April 2015 (Python 3.4.3, Linux Ubuntu 15.04)
-# Pylint score: 7.79/10
+# Last modification: 06-14-2016 (Python 3.5.1, Linux Ubuntu 16.04)
+# pylint3 score: 2.19/10
 
 """ Generates the *-auto.f90 files from the C header files of glib and GTK+.
     Command line:         python3 cfwrapper.py gtk3
@@ -555,6 +555,13 @@ for library_path in PATH_DICT:
                                 , "", whole_file)   # extern
             # Remove empty lines:
             whole_file = re.sub("(?m)^\n$", "", whole_file)
+            
+            # These three functions names are the only ones between parentheses,
+            # so we remove parentheses:
+            if c_file_name == "gutils.h":
+                whole_file = whole_file.replace("(g_bit_nth_lsf)", "g_bit_nth_lsf")
+                whole_file = whole_file.replace("(g_bit_nth_msf)", "g_bit_nth_msf")
+                whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
 
             # Now each line will be treated separately:
             lines_list = whole_file.splitlines(True)
