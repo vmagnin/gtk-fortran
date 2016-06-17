@@ -26,7 +26,7 @@
 #
 # Contributed by Vincent Magnin, 01.28.2011
 # Last modification: 06-16-2016 (Python 3.5.1, Linux Ubuntu 16.04)
-# pylint3 score: 6.74/10
+# pylint3 score: 8.37/10
 
 """ Generates the *-auto.f90 files from the C header files of glib and GTK+.
     Command line:         python3 cfwrapper.py gtk3
@@ -63,7 +63,7 @@ def lib_version(lib_name, psys):
         pass     # no operation instruction to avoid an empty if statement
 
     try:
-        version = re.search("(\d{1,2}\.\d{1,2}\.\d{1,2})", version).group(1)
+        version = re.search(r"(\d{1,2}\.\d{1,2}\.\d{1,2})", version).group(1)
     except AttributeError:
         version = "?.?.?"
 
@@ -215,7 +215,7 @@ def translate_enums(errorsfile, enum_list):
     """Receive a C enum and returns a Fortran enum"""
     global nb_enumerators
     f_enum = ""
-    BIT_FIELDS = re.compile("1 *<< *(\d+)")
+    BIT_FIELDS = re.compile(r"1 *<< *(\d+)")
 
     for each in enum_list:
         enum = each[0]
@@ -235,8 +235,8 @@ def translate_enums(errorsfile, enum_list):
         parameters[0] = parameters[0].replace("\t", " ")
         parameters[0] = re.sub("[ ]{2,}", " ", parameters[0])
         # Delete characters (   ) and , if they are not between quotes:
-        parameters[0] = re.sub("(?<!')(\()(?!')", "", parameters[0])
-        parameters[0] = re.sub("(?<!')(\))(?!')", "", parameters[0])
+        parameters[0] = re.sub(r"(?<!')(\()(?!')", "", parameters[0])
+        parameters[0] = re.sub(r"(?<!')(\))(?!')", "", parameters[0])
         parameters[0] = re.sub("(?<!')(,)(?!')", "", parameters[0])
         parameters[0] = re.sub("(?m),$", "", parameters[0])
         # Remove the u for unsigned numbers (rare)
@@ -251,24 +251,24 @@ def translate_enums(errorsfile, enum_list):
         parameters[0] = BIT_FIELDS.sub(set_bit_field, parameters[0])
 
         # complement
-        parameters[0] = re.sub("~(\w+)", "not(\\1)", parameters[0])
+        parameters[0] = re.sub(r"~(\w+)", "not(\\1)", parameters[0])
         # logical or
-        parameters[0] = re.sub("([\w\(\)]+)\s*\|\s*([\w\(\), \d]+)",
+        parameters[0] = re.sub(r"([\w\(\)]+)\s*\|\s*([\w\(\), \d]+)",
                                "ior(\\1 , \\2)", parameters[0])
 
         # Renamed flags (have the same name as a GTK+ function):
-        parameters[0] = re.sub("(?m)^\s*ATK_HYPERLINK_IS_INLINE",
+        parameters[0] = re.sub(r"(?m)^\s*ATK_HYPERLINK_IS_INLINE",
                                "ATK_HYPERLINK_IS_INLINE_F", parameters[0])
-        parameters[0] = re.sub("(?m)^\s*GDK_PROPERTY_DELETE",
+        parameters[0] = re.sub(r"(?m)^\s*GDK_PROPERTY_DELETE",
                                "GDK_PROPERTY_DELETE_F", parameters[0])
-        parameters[0] = re.sub("(?m)^\s*GDK_DRAG_STATUS", "GDK_DRAG_STATUS_F", parameters[0])
-        parameters[0] = re.sub("(?m)^\s*GDK_DRAG_MOTION", "GDK_DRAG_MOTION_F", parameters[0])
+        parameters[0] = re.sub(r"(?m)^\s*GDK_DRAG_STATUS", "GDK_DRAG_STATUS_F", parameters[0])
+        parameters[0] = re.sub(r"(?m)^\s*GDK_DRAG_MOTION", "GDK_DRAG_MOTION_F", parameters[0])
 
         # Integer size problem:
-        parameters[0] = re.sub("(?m)^\s*G_PARAM_DEPRECATED.*$",
+        parameters[0] = re.sub(r"(?m)^\s*G_PARAM_DEPRECATED.*$",
                                "", parameters[0])
 
-        parameters[0] = re.sub("(?m)^\s*(\w+)", "    enumerator :: \\1",
+        parameters[0] = re.sub(r"(?m)^\s*(\w+)", "    enumerator :: \\1",
                                parameters[0])
 
         # Resulting Fortran enumerator:
@@ -278,7 +278,7 @@ def translate_enums(errorsfile, enum_list):
         nb_enumerators += 1
 
     # Remove empty lines:
-    f_enum = re.sub("(?m)^ *\n$", "", f_enum)
+    f_enum = re.sub(r"(?m)^ *\n$", "", f_enum)
 
     return f_enum
 
@@ -373,15 +373,15 @@ TYPES2_DICT = {
 #---------------------------------------------------------------------------
 # Regular expressions used to identify the different parts of a C prototype:
 #---------------------------------------------------------------------------
-RGX_RETURNED_TYPE = re.compile("^ *([_0-9a-zA-Z ]+ *\**)")
-RGX_FUNCTION_NAME = re.compile("([0-9a-zA-Z_]+) *\(")
-RGX_ARGUMENTS = re.compile("\(([0-9a-zA-Z_ ,\*\[\]]*)\).*;$")
-RGX_ARGS = re.compile(" *([0-9a-zA-Z_ \*\[\]]+),?")
-RGX_VAR_TYPE = re.compile(" *([_0-9a-zA-Z]+)[ |\*]")
-RGX_TYPE = re.compile("^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?")
-RGX_VAR_NAME = re.compile("[ |\*]([_0-9a-zA-Z]+)(?:\[\])?$")
+RGX_RETURNED_TYPE = re.compile(r"^ *([_0-9a-zA-Z ]+ *\**)")
+RGX_FUNCTION_NAME = re.compile(r"([0-9a-zA-Z_]+) *\(")
+RGX_ARGUMENTS = re.compile(r"\(([0-9a-zA-Z_ ,\*\[\]]*)\).*;$")
+RGX_ARGS = re.compile(r" *([0-9a-zA-Z_ \*\[\]]+),?")
+RGX_VAR_TYPE = re.compile(r" *([_0-9a-zA-Z]+)[ |\*]")
+RGX_TYPE = re.compile(r"^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?")
+RGX_VAR_NAME = re.compile(r"[ |\*]([_0-9a-zA-Z]+)(?:\[\])?$")
 # Function name beginning by an underscore:
-RGX_UNDERSCORE = re.compile("^_\w+$")
+RGX_UNDERSCORE = re.compile(r"^_\w+$")
 
 # Errors will be written in that file:
 ERRORS_FILE = open("cfwrapper-errors.txt", "w")
@@ -435,12 +435,12 @@ for library_path in PATH_DICT:
         for c_file_name in directory[2]:
             whole_file = open(directory[0] + "/" + c_file_name, 'rU',
                               errors='replace').read()
-            enum_types = re.findall("(?ms)^typedef enum.*?}\s?(\w+);", whole_file)
+            enum_types = re.findall(r"(?ms)^typedef enum.*?}\s?(\w+);", whole_file)
             gtk_enums += enum_types
-            funptr = re.findall("(?m)^typedef[ \t]*(?:const)?[ \t]*\w+[ \t]*\*?\s*\(\* ?([\w]*?)\)",
+            funptr = re.findall(r"(?m)^typedef[ \t]*(?:const)?[ \t]*\w+[ \t]*\*?\s*\(\* ?([\w]*?)\)",
                                 whole_file)
             gtk_funptr += funptr
-            types = re.findall("(?m)^typedef *?(?:const)? *?(\w+) *\*? *([\w]+);",
+            types = re.findall(r"(?m)^typedef *?(?:const)? *?(\w+) *\*? *([\w]+);",
                                whole_file)
             gtk_types += types
 
@@ -494,7 +494,7 @@ for library_path in PATH_DICT:
         opened_files.append(F_FILE_NAME)
 
         # The module name is derived from the Fortran file name:
-        module_name = re.search("^(.+)-auto\.f90", F_FILE_NAME).group(1)
+        module_name = re.search(r"^(.+)-auto\.f90", F_FILE_NAME).group(1)
         module_name = module_name.replace("-", "_")
 
         # The gtk-auto.f90 file is a special case (included in gtk.f90)
@@ -523,14 +523,14 @@ for library_path in PATH_DICT:
             # ----------------------------------------------------------------
 
             # Remove C commentaries:
-            whole_file = re.sub("(?s)/\*.*?\*/", "", whole_file)
+            whole_file = re.sub(r"(?s)/\*.*?\*/", "", whole_file)
 
             # Translating C enumerators to Fortran enumerators:
-            enum_types = re.findall("(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
+            enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
             enums_file.write(translate_enums(ERRORS_FILE, enum_types))
 
             # Removing multilines typedef:
-            whole_file = re.sub("(?m)^typedef([^;]*?\n)+?[^;]*?;$",
+            whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
                                 "", whole_file)
             # Remove C directives (multilines then monoline):
             # Note that in a python regular expression \\\\=\\=\
@@ -543,7 +543,7 @@ for library_path in PATH_DICT:
             whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
             whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
             # Remove structures like: { } a_name;
-            whole_file = re.sub("(?ms){[^{]*?}[ \w]*?;", "", whole_file)
+            whole_file = re.sub(r"(?ms){[^{]*?}[ \w]*?;", "", whole_file)
             # Remove "available_in" and "deprecated" directives:
             whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
                                 "", whole_file)
@@ -555,12 +555,12 @@ for library_path in PATH_DICT:
             whole_file = re.sub("(?m)^.*(G_BEGIN_DECLS|CAIRO_BEGIN_DECLS) *$", "", whole_file)
             whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$",
                                 "", whole_file)
-            whole_file = re.sub("(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
+            whole_file = re.sub(r"(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
             whole_file = re.sub("(?m)^.*(cairo_public|extern) ", "", whole_file)
             whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC)"
                                 , "", whole_file)   # extern
             # Remove empty lines:
-            whole_file = re.sub("(?m)^\n$", "", whole_file)
+            whole_file = re.sub(r"(?m)^\n$", "", whole_file)
 
             # These three functions names are the only ones between parentheses,
             # so we remove parentheses:
@@ -678,7 +678,7 @@ for library_path in PATH_DICT:
                                 f_use = iso_c
                             else:
                                 # each iso_c must appear only once:
-                                RGX_ISO_C = re.compile("("+iso_c+")"+"([^\w]|$)")
+                                RGX_ISO_C = re.compile("("+iso_c+")"+r"([^\w]|$)")
                                 if RGX_ISO_C.search(f_use) == None:
                                     f_use += ", " + iso_c
                         elif f_type.find("?") != -1:
@@ -720,7 +720,7 @@ for library_path in PATH_DICT:
                     interface += 0*TAB + f_the_end + "\n\n"
 
                     # Deals with the Win32 _utf8 functions: the normal form and the Windows form are dispatched in two platform dependent files, although the module name is always "gtk_os_dependent":
-                    if re.search("(?m)^#define\s+"+f_name+"\s+"+f_name+"_utf8\s*$", whole_file_original):
+                    if re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$", whole_file_original):
                         unix_only_file.write(interface)
                         index.append(["gtk_os_dependent", f_name, "unixonly-auto.f90/mswinwdowsonly-auto.f90", directory[0]+"/"+c_file_name, prototype])
                         nb_generated_interfaces += 2
