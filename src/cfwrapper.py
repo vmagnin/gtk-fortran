@@ -642,9 +642,9 @@ for library_path in PATH_DICT:
                 if RGX_UNDERSCORE.match(f_name) != None:
                     continue    # Next prototype
 
-                # gtk_init() is already defined in gtk.f90. The other functions
-                # were excluded because they caused some problems:
-                if f_name in ["gtk_init", "g_bit_nth_lsf", "g_once_init_enter", "g_trash_stack_push"]:
+                # gtk_init() is already defined in gtk.f90. Other functions
+                # can be excluded in case of problem:
+                if f_name in ["gtk_init"]:
                     continue    # Next prototype
 
                 arguments = RGX_ARGUMENTS.search(prototype)
