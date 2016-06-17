@@ -39,6 +39,7 @@ import time
 import csv      # To write .csv files
 import sys      # To use command line arguments
 import platform  # To obtain platform informations
+import subprocess
 from collections import OrderedDict
 
 
@@ -489,7 +490,7 @@ for library_path in PATH_DICT:
     print(library_path + "\t => \t" + F_FILE_NAME)
 
     # Create the *-auto.f90 file with its module declaration:
-    if not F_FILE_NAME in opened_files:
+    if F_FILE_NAME not in opened_files:
         f_file = open(F_FILE_NAME, "w")
         opened_files.append(F_FILE_NAME)
 
@@ -679,7 +680,7 @@ for library_path in PATH_DICT:
                             else:
                                 # each iso_c must appear only once:
                                 RGX_ISO_C = re.compile("("+iso_c+")"+r"([^\w]|$)")
-                                if RGX_ISO_C.search(f_use) == None:
+                                if RGX_ISO_C.search(f_use) is None:
                                     f_use += ", " + iso_c
                         elif f_type.find("?") != -1:
                             error_flag = True
@@ -709,7 +710,7 @@ for library_path in PATH_DICT:
                             args_list += ", " + var_name
 
                 # Write the Fortran interface in the .f90 file:
-                if error_flag == False:
+                if error_flag is False:
                     interface = 0*TAB + "! " + prototype + "\n"
                     first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
                     interface += multiline(first_line, 80) + " \n"
@@ -719,14 +720,16 @@ for library_path in PATH_DICT:
                     interface += declarations
                     interface += 0*TAB + f_the_end + "\n\n"
 
-                    # Deals with the Win32 _utf8 functions: the normal form and the Windows form are dispatched in two platform dependent files, although the module name is always "gtk_os_dependent":
+                    # Deals with the Win32 _utf8 functions: the normal form and the Windows
+                    # form are dispatched in two platform dependent files, although the module
+                    # name is always "gtk_os_dependent":
                     if re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$", whole_file_original):
                         unix_only_file.write(interface)
                         index.append(["gtk_os_dependent", f_name, "unixonly-auto.f90/mswinwdowsonly-auto.f90", directory[0]+"/"+c_file_name, prototype])
                         nb_generated_interfaces += 2
                         nb_win32_utf8 += 1
 
-                        # We are obliged to rewrite the whole interface because of multiline():
+                        # Obliged to rewrite the whole interface because of multiline():
                         interface_utf8 = 0*TAB + "! " + prototype + "\n"
                         first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
                         interface_utf8 += multiline(first_line, 80) + " \n"
@@ -777,10 +780,11 @@ if GTK_VERSION == "gtk3":
     version = gtk3_version()
 else:
     version = gtk2_version()
-print("##GTK+ " + version + ", GLib "+glib_version()+", " + " ".join(platform.linux_distribution())
-      + " " + platform.machine() + ", Python " + platform.python_version() + "\n")
-print(os.getlogin() + ", " + time.strftime("%a, %d %b %Y %H:%M:%S +0000",
-                                           time.gmtime()) + "\n")
+print("##GTK+ " + version + ", GLib "+glib_version()+", " 
+      + " " + subprocess.getoutput("lsb_release -ds")
+      + " " + platform.machine() + ", Python " + platform.python_version())
+print(os.getlogin() + ", " 
+      + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()))
 print("* nb_files scanned =", nb_files)
 print("* nb_generated_interfaces =", nb_generated_interfaces)
 print("* nb_type_errors =", nb_type_errors)
