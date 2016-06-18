@@ -39,7 +39,8 @@ import time
 import csv          # To write .csv files
 import sys          # To use command line arguments
 import platform     # To obtain platform informations
-import subprocess
+import subprocess   # To launch a shell command
+import argparse     # To parse command line
 from collections import OrderedDict
 
 
@@ -245,15 +246,14 @@ def translate_enums(enum_list):
 # **********************************************
 # Main program
 # **********************************************
-# First verify that the GTK+ major version is passed in argument, else exit:
-if len(sys.argv)-1 == 0:
-    print("Error. An argument is needed: gtk2 or gtk3")
-    exit()
-else:
-    GTK_VERSION = sys.argv[1]
-    if GTK_VERSION not in ("gtk2", "gtk3"):
-        print("Error. The argument must be gtk2 or gtk3")
-        exit()
+# Definition of command line options:
+PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files", 
+                                  epilog="GPLv3 license, https://github.com/jerryd/gtk-fortran")
+PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3],
+                     metavar="2|3", nargs=1, required=True,
+                     help="GTK+ major version")
+ARGS = PARSARG.parse_args()
+GTK_VERSION = "gtk" + str(ARGS.gtk[0])
 
 # -------------------------------------------------------------------------
 # These dictionaries give the Fortran type and its KIND for each GTK+ type:
