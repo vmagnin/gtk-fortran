@@ -71,60 +71,16 @@ def lib_version(lib_name, psys):
     return libversion
 
 
-def gtk3_version():
-    """Search and return the version of the gtk3 library on your system, trying
-    several packaging systems, or returns ?.?.? if not found
+def library_version(tuple_packages):
+    """Search and return the version of the library on your system, trying
+    several packaging systems, or returns ?.?.? if not found. Each item in
+    tuple_packages is a tuple (package name, packaging system).
     """
-    libver = lib_version("libgtk-3-0", "deb")           # Package name in Ubuntu
-    if libver == "?.?.?":                               # package not found
-        libver = lib_version("gtk3", "pacman")          # Package name in Arch/Manjaro
-        if libver == "?.?.?":                           # package not found
-            libver = lib_version("gtk3", "rpm")         # Package name in Fedora
-            if libver == "?.?.?":                       # package not found
-                libver = lib_version("gtk+3.0", "rpm")  # Package name in Mageia
-                if libver == "?.?.?":                   # package not found
-                    # Uncomment the following line and change the package name
-                    # and packaging system for your Linux distribution:
-                    # libver = lib_version("libgtk-3-0", "deb")
-                    pass  # no operation instruction to avoid an empty if statement
-    return libver
-
-
-def gtk2_version():
-    """Search and return the version of the gtk2 library on your system, trying
-    several packaging systems, or returns ?.?.? if not found
-    """
-    libver = lib_version("libgtk2.0-0", "deb")         # Package name in Ubuntu
-    if libver == "?.?.?":                              # package not found
-        libver = lib_version("gtk2", "pacman")         # Package name in Arch/Manjaro
-        if libver == "?.?.?":                          # package not found
-            libver = lib_version("gtk2", "rpm")        # Package name in Fedora
-            if libver == "?.?.?":                      # package not found
-                libver = lib_version("gtk+2.0", "rpm") # Package name in Mageia
-                if libver == "?.?.?":                  # package not found
-                    # Uncomment the following line and change the package name
-                    # and packaging system for your Linux distribution:
-                    # libver = lib_version("libgtk2.0-0", "deb")
-                    pass     # no operation instruction to avoid an empty if statement
-    return libver
-
-
-def glib_version():
-    """Search and return the version of the GLib library on your system, trying
-    several packaging systems, or returns ?.?.? if not found
-    """
-    libver = lib_version("libglib2.0-0", "deb")              # Package name in Ubuntu
-    if libver == "?.?.?":                                    # package not found
-        libver = lib_version("glib2", "pacman")              # Package name in Arch/Manjaro
-        if libver == "?.?.?":                                # package not found
-            libver = lib_version("glib2", "rpm")             # Package name in Fedora
-            if libver == "?.?.?":                            # package not found
-                libver = lib_version("libglib2.0_0", "rpm")  # Package name in Mageia
-                if libver == "?.?.?":                        # package not found
-                    # Uncomment the following line and change the package name
-                    # and packaging system for your Linux distribution:
-                    # libver = lib_version("libgtk2.0-0", "deb")
-                    pass     # no operation instruction to avoid an empty if statement
+    for item in tuple_packages:
+        libver = lib_version(item[0], item[1])
+        if libver != "?.?.?":
+            break
+            
     return libver
 
 
@@ -772,12 +728,21 @@ unix_only_file.close()
 mswindows_only_file.write(TAIL)
 mswindows_only_file.close()
 
+# Packages in Ubuntu, Arch/Manjaro, Fedora, Mageia (you can add the names in
+# you distribution and add the command in the function lib_version()):
+PACK_GTK3 = (("libgtk-3-0", "deb"), ("gtk3", "pacman"),
+             ("gtk3", "rpm"), ("gtk+3.0", "rpm"))
+PACK_GTK2 = (("libgtk2.0-0", "deb"), ("gtk2", "pacman"),
+             ("gtk2", "rpm"), ("gtk+2.0", "rpm"))
+PACK_GLIB = (("libglib2.0-0", "deb"), ("glib2", "pacman"),
+             ("glib2", "rpm"), ("libglib2.0_0", "rpm"))
+
 print("\n=== Statistics (ready to paste in the Status wiki page) ===\n")
 if GTK_VERSION == "gtk3":
-    VERSION = gtk3_version()
+    VERSION = library_version(PACK_GTK3)
 else:
-    VERSION = gtk2_version()
-print("##GTK+ " + VERSION + ", GLib "+glib_version()+", "
+    VERSION = library_version(PACK_GTK2)
+print("##GTK+ " + VERSION + ", GLib "+ library_version(PACK_GLIB) + ", "
       + " " + subprocess.getoutput("lsb_release -ds")
       + " " + platform.machine() + ", Python " + platform.python_version())
 print(os.getlogin() + ", "
