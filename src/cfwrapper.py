@@ -25,111 +25,114 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 06-16-2016 (Python 3.5.1, Linux Ubuntu 16.04)
-# pylint3 score: 8.37/10
+# Last modification: 06-18-2016 (Python 3.5.1, Linux Ubuntu 16.04)
+# pylint3 score: 9.14/10
 
-""" Generates the *-auto.f90 files from the C header files of glib and GTK+.
+""" Generates the *-auto.f90 files from the C header files of GLlib and GTK+.
     Command line:         python3 cfwrapper.py gtk3
     or                    python3 cfwrapper.py gtk2
-    """
+"""
 
-import re       # Regular expression library
+import re           # Regular expression library
 import os
 import time
-import csv      # To write .csv files
-import sys      # To use command line arguments
-import platform  # To obtain platform informations
+import csv          # To write .csv files
+import sys          # To use command line arguments
+import platform     # To obtain platform informations
 import subprocess
 from collections import OrderedDict
 
 
 def lib_version(lib_name, psys):
-    if psys == "deb":
-        # Debian/Ubuntu command line:
-        version = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
-    elif psys == "pacman":
-        # Arch/Manjaro command line
-        version = os.popen("pacman -Qi "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
-    elif psys == "rpm":
-        # Mageia (& Fedora?) command line
-        version = os.popen("rpm -qi "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+    """ Receive the name of a library package and the packaging system, and
+    returns the version of the library if found, else returns ?.?.?
+    """
+    if psys == "deb":        # Debian/Ubuntu command line:
+        libversion = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+    elif psys == "pacman":   # Arch/Manjaro command line
+        libversion = os.popen("pacman -Qi "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+    elif psys == "rpm":      # Mageia (& Fedora?) command line
+        libversion = os.popen("rpm -qi "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
     else:
         print("Unknown package system: (", psys, "): ", lib_name)
-        version = ""
+        libversion = ""
 
-
-    if version == "":       # package not found
-        # Uncomment the following line and change the command line for your Linux distribution:
-        # version = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+    if libversion == "":       # package not found
+        # Uncomment the following line and change the command line for the
+        # packaging system of your Linux distribution:
+        # libversion = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
         pass     # no operation instruction to avoid an empty if statement
 
     try:
-        version = re.search(r"(\d{1,2}\.\d{1,2}\.\d{1,2})", version).group(1)
+        libversion = re.search(r"(\d{1,2}\.\d{1,2}\.\d{1,2})", libversion).group(1)
     except AttributeError:
-        version = "?.?.?"
+        libversion = "?.?.?"
 
-    return version
+    return libversion
 
 
 def gtk3_version():
-    version = lib_version("libgtk-3-0", "deb")   # Package name in Ubuntu
-    if version == "?.?.?":                  # package not found
-        version = lib_version("gtk3", "pacman")      # Package name in Arch/Manjaro
-        if version == "?.?.?":                  # package not found
-            version = lib_version("gtk3", "rpm")      # Package name in Fedora
-            if version == "?.?.?":                  # package not found
-                version = lib_version("gtk+3.0", "rpm")      # Package name in Mageia
-
-                if version == "?.?.?":                  # package not found
+    """Search and return the version of the gtk3 library on your system, trying
+    several packaging systems, or returns ?.?.? if not found
+    """
+    libver = lib_version("libgtk-3-0", "deb")           # Package name in Ubuntu
+    if libver == "?.?.?":                               # package not found
+        libver = lib_version("gtk3", "pacman")          # Package name in Arch/Manjaro
+        if libver == "?.?.?":                           # package not found
+            libver = lib_version("gtk3", "rpm")         # Package name in Fedora
+            if libver == "?.?.?":                       # package not found
+                libver = lib_version("gtk+3.0", "rpm")  # Package name in Mageia
+                if libver == "?.?.?":                   # package not found
                     # Uncomment the following line and change the package name
-                    # for your Linux distribution:
-                    # version = lib_version("libgtk-3-0")
-                    pass     # no operation instruction to avoid an empty if statement
-
-    return version
+                    # and packaging system for your Linux distribution:
+                    # libver = lib_version("libgtk-3-0", "deb")
+                    pass  # no operation instruction to avoid an empty if statement
+    return libver
 
 
 def gtk2_version():
-    version = lib_version("libgtk2.0-0", "deb")   # Package name in Ubuntu
-    if version == "?.?.?":                   # package not found
-        version = lib_version("gtk2", "pacman")       # Package name in Arch/Manjaro
-        if version == "?.?.?":                   # package not found
-            version = lib_version("gtk2", "rpm")       # Package name in Fedora
-            if version == "?.?.?":                   # package not found
-                version = lib_version("gtk+2.0", "rpm")       # Package name in Mageia
-                if version == "?.?.?":                   # package not found
+    """Search and return the version of the gtk2 library on your system, trying
+    several packaging systems, or returns ?.?.? if not found
+    """
+    libver = lib_version("libgtk2.0-0", "deb")         # Package name in Ubuntu
+    if libver == "?.?.?":                              # package not found
+        libver = lib_version("gtk2", "pacman")         # Package name in Arch/Manjaro
+        if libver == "?.?.?":                          # package not found
+            libver = lib_version("gtk2", "rpm")        # Package name in Fedora
+            if libver == "?.?.?":                      # package not found
+                libver = lib_version("gtk+2.0", "rpm") # Package name in Mageia
+                if libver == "?.?.?":                  # package not found
                     # Uncomment the following line and change the package name
-                    # for your Linux distribution:
-                    # version = lib_version("libgtk2.0-0")
+                    # and packaging system for your Linux distribution:
+                    # libver = lib_version("libgtk2.0-0", "deb")
                     pass     # no operation instruction to avoid an empty if statement
-    return version
+    return libver
 
 
 def glib_version():
-    version = lib_version("libglib2.0-0", "deb")  # Package name in Ubuntu
-    if version == "?.?.?":                   # package not found
-        version = lib_version("glib2", "pacman")      # Package name in Arch/Manjaro
-        if version == "?.?.?":                   # package not found
-            version = lib_version("glib2", "rpm")      # Package name in Fedora
-            if version == "?.?.?":                   # package not found
-                version = lib_version("libglib2.0_0", "rpm")  # Package name in Mageia
-                if version == "?.?.?":                   # package not found
+    """Search and return the version of the GLib library on your system, trying
+    several packaging systems, or returns ?.?.? if not found
+    """
+    libver = lib_version("libglib2.0-0", "deb")              # Package name in Ubuntu
+    if libver == "?.?.?":                                    # package not found
+        libver = lib_version("glib2", "pacman")              # Package name in Arch/Manjaro
+        if libver == "?.?.?":                                # package not found
+            libver = lib_version("glib2", "rpm")             # Package name in Fedora
+            if libver == "?.?.?":                            # package not found
+                libver = lib_version("libglib2.0_0", "rpm")  # Package name in Mageia
+                if libver == "?.?.?":                        # package not found
                     # Uncomment the following line and change the package name
-                    # for your Linux distribution:
-                    # version = lib_version("libgtk2.0-0")
+                    # and packaging system for your Linux distribution:
+                    # libver = lib_version("libgtk2.0-0", "deb")
                     pass     # no operation instruction to avoid an empty if statement
-    return version
+    return libver
 
 
 def iso_c_binding(declaration, returned):
     """ Returns the Fortran type corresponding to a C type in the
         ISO_C_BINDING module (limited to C types used in GTK+),
-        and the KIND type """
-    global gtk_enums
-    global gtk_funptr
-    global RGX_TYPE
-    global TYPES_DICT
-
+        and the KIND type
+    """
     try:
         c_type = RGX_TYPE.search(declaration).group(1)
     except AttributeError:
@@ -142,13 +145,13 @@ def iso_c_binding(declaration, returned):
         array = ""
 
     # Is it a "typedef enum" ?
-    for each in gtk_enums:
-        if c_type.find(each) != -1:
+    for item in gtk_enums:
+        if c_type.find(item) != -1:
             return "integer(c_int)", "c_int"
 
     # Is it a pointer toward a function ?
-    for each in gtk_funptr:
-        if c_type.find(each) != -1:
+    for item in gtk_funptr:
+        if c_type.find(item) != -1:
             return "type(c_funptr)", "c_funptr"
 
     #typedef void* gpointer;
@@ -169,13 +172,13 @@ def iso_c_binding(declaration, returned):
 
     # Other cases:
     if len(declaration.split()) >= 3:   # Two words type
-        for each in TYPES2_DICT:
-            if set(each.split()).issubset(set(declaration.split())):
-                return TYPES2_DICT[each][0] + array, TYPES2_DICT[each][1]
+        for item in TYPES2_DICT:
+            if set(item.split()).issubset(set(declaration.split())):
+                return TYPES2_DICT[item][0] + array, TYPES2_DICT[item][1]
     else:  # It is a one word type
-        for each in TYPES_DICT:
-            if each in c_type.split():
-                return TYPES_DICT[each][0] + array, TYPES_DICT[each][1]
+        for item in TYPES_DICT:
+            if item in c_type.split():
+                return TYPES_DICT[item][0] + array, TYPES_DICT[item][1]
 
     # It is finally an unknown type:
     return "?", "?"
@@ -208,19 +211,18 @@ def multiline(line, maxlength):
 
 def set_bit_field(match):
     """ Returns the Fortran bitfield from a C enum flag"""
-    b = int(match.group(1))
-    return "ISHFTC(1, " + str(b) + ")"
+    return "ISHFTC(1, " + str(int(match.group(1))) + ")"
 
 
-def translate_enums(errorsfile, enum_list):
+def translate_enums(enum_list):
     """Receive a C enum and returns a Fortran enum"""
     global nb_enumerators
     f_enum = ""
-    BIT_FIELDS = re.compile(r"1 *<< *(\d+)")
+    bit_fields = re.compile(r"1 *<< *(\d+)")
 
-    for each in enum_list:
-        enum = each[0]
-        name = each[1]
+    for item in enum_list:
+        enum = item[0]
+        name = item[1]
 
         # These enums are excluded for some problems...
         # For example GDBusInterfaceSkeletonFlags contains an item with a too long name
@@ -249,7 +251,7 @@ def translate_enums(errorsfile, enum_list):
         parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "INT(z'\\1')",
                                parameters[0])
         # Is it a bit field ?
-        parameters[0] = BIT_FIELDS.sub(set_bit_field, parameters[0])
+        parameters[0] = bit_fields.sub(set_bit_field, parameters[0])
 
         # complement
         parameters[0] = re.sub(r"~(\w+)", "not(\\1)", parameters[0])
@@ -287,18 +289,13 @@ def translate_enums(errorsfile, enum_list):
 # **********************************************
 # Main program
 # **********************************************
-print()
-print("Current directory:", os.getcwd())
-print()
-
-T0 = time.time()     # To calculate computing time
-
+# First verify that the GTK+ major version is passed in argument, else exit:
 if len(sys.argv)-1 == 0:
     print("Error. An argument is needed: gtk2 or gtk3")
     exit()
 else:
     GTK_VERSION = sys.argv[1]
-    if not GTK_VERSION in ("gtk2", "gtk3"):
+    if GTK_VERSION not in ("gtk2", "gtk3"):
         print("Error. The argument must be gtk2 or gtk3")
         exit()
 
@@ -431,6 +428,7 @@ gtk_enums = []
 gtk_funptr = []
 gtk_types = []
 
+T0 = time.time()     # To calculate computing time
 for library_path in PATH_DICT:
     for directory in os.walk(library_path):
         for c_file_name in directory[2]:
@@ -469,8 +467,7 @@ FILE_HEADER = """! Automatically generated by cfwrapper.py on """ + time.asctime
 ! GNU General Public License version 3
 """
 
-# All enums are written in this file.
-# TODO: split enums in their respective files ?
+# All enums are written in this file:
 enums_file = open("gtkenums-auto.f90", "w")
 enums_file.write(FILE_HEADER)
 
@@ -528,7 +525,7 @@ for library_path in PATH_DICT:
 
             # Translating C enumerators to Fortran enumerators:
             enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
-            enums_file.write(translate_enums(ERRORS_FILE, enum_types))
+            enums_file.write(translate_enums(enum_types))
 
             # Removing multilines typedef:
             whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
@@ -548,7 +545,6 @@ for library_path in PATH_DICT:
             # Remove "available_in" and "deprecated" directives:
             whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
                                 "", whole_file)
-
             # Remove different kind of declarations:
             whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
             whole_file = re.sub("(?m)^(typedef|union|struct).*$",
@@ -723,9 +719,12 @@ for library_path in PATH_DICT:
                     # Deals with the Win32 _utf8 functions: the normal form and the Windows
                     # form are dispatched in two platform dependent files, although the module
                     # name is always "gtk_os_dependent":
-                    if re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$", whole_file_original):
+                    if re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$",
+                                 whole_file_original):
                         unix_only_file.write(interface)
-                        index.append(["gtk_os_dependent", f_name, "unixonly-auto.f90/mswinwdowsonly-auto.f90", directory[0]+"/"+c_file_name, prototype])
+                        index.append(["gtk_os_dependent", f_name,
+                                      "unixonly-auto.f90/mswinwdowsonly-auto.f90",
+                                      directory[0]+"/"+c_file_name, prototype])
                         nb_generated_interfaces += 2
                         nb_win32_utf8 += 1
 
@@ -773,17 +772,15 @@ unix_only_file.close()
 mswindows_only_file.write(TAIL)
 mswindows_only_file.close()
 
-print()
-print("=== Statistics (ready to paste in the Status wiki page) ===")
-print()
+print("\n=== Statistics (ready to paste in the Status wiki page) ===\n")
 if GTK_VERSION == "gtk3":
-    version = gtk3_version()
+    VERSION = gtk3_version()
 else:
-    version = gtk2_version()
-print("##GTK+ " + version + ", GLib "+glib_version()+", " 
+    VERSION = gtk2_version()
+print("##GTK+ " + VERSION + ", GLib "+glib_version()+", "
       + " " + subprocess.getoutput("lsb_release -ds")
       + " " + platform.machine() + ", Python " + platform.python_version())
-print(os.getlogin() + ", " 
+print(os.getlogin() + ", "
       + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()))
 print("* nb_files scanned =", nb_files)
 print("* nb_generated_interfaces =", nb_generated_interfaces)
