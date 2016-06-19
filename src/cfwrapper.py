@@ -439,7 +439,7 @@ errors_list = []
 
 for library_path in PATH_DICT:
     F_FILE_NAME = PATH_DICT[library_path]   # Fortran *-auto.f90 file
-    print(library_path + "\t => \t" + F_FILE_NAME)
+    print(library_path + "\t => \t" + F_FILE_NAME, end="\t")
 
     # Create the *-auto.f90 file with its module declaration:
     if F_FILE_NAME not in opened_files:
@@ -709,6 +709,7 @@ for library_path in PATH_DICT:
     if module_name != "gtk":
         f_file.write("end interface\nend module "+module_name+"\n")
         f_file.close()
+    print(os.stat(F_FILE_NAME).st_size, " bytes")
 
 # **********************************
 # End of the header files processing
