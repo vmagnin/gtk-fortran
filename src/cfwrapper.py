@@ -666,42 +666,31 @@ for library_path in PATH_DICT:
 
                 # Write the Fortran interface in the .f90 file:
                 if error_flag is False:
-                    interface = 0*TAB + "!" + prototype + "\n"
+                    interface1 = 0*TAB + "!" + prototype + "\n"
                     first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
-                    interface += multiline(first_line, 80) + "\n"
-                    interface += 1*TAB + "use iso_c_binding, only: " + f_use + "\n"
+                    interface2 = multiline(first_line, 80) + "\n"
+                    interface3 = 1*TAB + "use iso_c_binding, only: " + f_use + "\n"
                     if isfunction:
-                        interface += 1*TAB + returned_type + " :: " + f_name + "\n"
-                    interface += declarations
-                    interface += 0*TAB + f_the_end + "\n\n"
+                        interface3 += 1*TAB + returned_type + " :: " + f_name + "\n"
+                    interface3 += declarations
+                    interface3 += 0*TAB + f_the_end + "\n\n"
 
-                    # Deals with the Win32 _utf8 functions: the normal
-                    # form and the Windows form are dispatched in two
-                    # platform dependent files, although the module
-                    # name is always "gtk_os_dependent":
+                    # Deals with the Win32 _utf8 functions: the normal form and
+                    # the Windows form are dispatched in two platform dependent
+                    # files, although the module name is always "gtk_os_dependent":
                     if re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$",
                                  whole_file_original):
-                        unix_only_file.write(interface)
+                        unix_only_file.write(interface1+interface2+interface3)
                         index.append(["gtk_os_dependent", f_name,
                                       "unixonly-auto.f90/mswinwdowsonly-auto.f90",
                                       directory[0]+"/"+c_file_name, prototype])
-                        nb_generated_interfaces += 2
-                        nb_win32_utf8 += 1
-
-                        # Obliged to rewrite the whole interface
-                        # because of multiline():
-                        interface_utf8 = 0*TAB + "!" + prototype + "\n"
                         first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
-                        interface_utf8 += multiline(first_line, 80) + "\n"
-                        interface_utf8 += 1*TAB + "use iso_c_binding, only: " + f_use + "\n"
-                        if isfunction:
-                            interface_utf8 += 1*TAB + returned_type + " :: " + f_name + "\n"
-                        interface_utf8 += declarations
-                        interface_utf8 += 0*TAB + f_the_end + "\n\n"
-
-                        mswindows_only_file.write(interface_utf8)
+                        interface2_utf8 = multiline(first_line, 80) + "\n"
+                        mswindows_only_file.write(interface1+interface2_utf8+interface3)
+                        nb_generated_interfaces += 2                       
+                        nb_win32_utf8 += 1
                     else: # Non platform specific functions
-                        f_file.write(interface)
+                        f_file.write(interface1+interface2+interface3)
                         index.append([module_name, f_name, F_FILE_NAME,
                                       directory[0]+"/"+c_file_name, prototype])
                         nb_generated_interfaces += 1
