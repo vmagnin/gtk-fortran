@@ -25,19 +25,17 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 06-18-2016 (Python 3.5.1, Linux Ubuntu 16.04)
-# pylint3 score: 9.14/10
+# Last modification: 06-19-2016 (Python 3.5.1, Linux Ubuntu 16.04)
+# pylint3 score: 9.00/10
 
 """ Generates the *-auto.f90 files from the C header files of GLlib and GTK+.
-    Command line:         python3 cfwrapper.py gtk3
-    or                    python3 cfwrapper.py gtk2
+For help, type: ./cfwrapper.py -h
 """
 
 import re           # Regular expression library
 import os
 import time
 import csv          # To write .csv files
-import sys          # To use command line arguments
 import platform     # To obtain platform informations
 import subprocess   # To launch a shell command
 import argparse     # To parse command line
@@ -88,7 +86,7 @@ def library_version(tuple_packages):
         libver = lib_version(item[0], item[1])
         if libver != "?.?.?":
             break
-            
+
     return libver
 
 
@@ -153,9 +151,9 @@ def write_error(direc, filename, message, proto, type_error):
     global nb_errors
     global nb_type_errors
     global errors_list
-    
-    errors_list.append([direc + "/" + filename, message, proto]) 
-    
+
+    errors_list.append([direc + "/" + filename, message, proto])
+
     if type_error:
         nb_type_errors += 1
     else:
@@ -253,7 +251,7 @@ def translate_enums(enum_list):
 # Main program
 # **********************************************
 # Definition of command line options:
-PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files", 
+PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files",
                                   epilog="GPLv3 license, https://github.com/jerryd/gtk-fortran")
 PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3],
                      metavar="2|3", nargs=1, required=True,
@@ -359,14 +357,13 @@ nb_enumerators = 0
 nb_win32_utf8 = 0
 type_errors_list = []
 
-# Libraries paths and resulting Fortran files *-auto.f90.
+# Define libraries paths and corresponding *-auto.f90 files.
 # Do not change the order of the dictionary keys:
 PATH_DICT = OrderedDict([
     ("/usr/include/atk-1.0", "atk-auto.f90"),
     ("/usr/include/cairo", "cairo-auto.f90"),
     ("/usr/include/gdk-pixbuf-2.0", "gdk-pixbuf-auto.f90"),
     ("/usr/include/glib-2.0", "glib-auto.f90")])
-
 if GTK_VERSION == "gtk3":
     PATH_DICT.update([
         ("/usr/include/gtk-3.0/gdk", "gdk-auto.f90"),
@@ -376,7 +373,6 @@ else:
     PATH_DICT.update([
         ("/usr/include/gtk-2.0/gdk", "gdk-auto.f90"),
         ("/usr/include/gtk-2.0/gtk", "gtk-auto.f90")])
-
 PATH_DICT.update([("/usr/include/pango-1.0", "pango-auto.f90")])
 
 #*************************************************************************
@@ -476,10 +472,10 @@ for library_path in PATH_DICT:
             whole_file = whole_file_original
             nb_files += 1
 
-            # ----------------------------------------------------------------
-            # Preprocessing and cleaning of the header file. 
+            # -----------------------------------------------------
+            # Preprocessing and cleaning of the header file.
             # Do not change the order of the regular expressions !
-            # ----------------------------------------------------------------
+            # -----------------------------------------------------
 
             # Remove C commentaries:
             whole_file = re.sub(r"(?s)/\*.*?\*/", "", whole_file)
@@ -535,7 +531,7 @@ for library_path in PATH_DICT:
                 corrected_lines_list.append(lines_list[0])
             except IndexError:
                 write_error(directory[0], c_file_name,
-                            "No function to implement in this file", 
+                            "No function to implement in this file",
                             "", False)
                 continue    # Go to next file
 
@@ -670,16 +666,16 @@ for library_path in PATH_DICT:
 
                 # Write the Fortran interface in the .f90 file:
                 if error_flag is False:
-                    interface = 0*TAB + "! " + prototype + "\n"
+                    interface = 0*TAB + "!" + prototype + "\n"
                     first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
-                    interface += multiline(first_line, 80) + " \n"
+                    interface += multiline(first_line, 80) + "\n"
                     interface += 1*TAB + "use iso_c_binding, only: " + f_use + "\n"
                     if isfunction:
                         interface += 1*TAB + returned_type + " :: " + f_name + "\n"
                     interface += declarations
                     interface += 0*TAB + f_the_end + "\n\n"
 
-                    # Deals with the Win32 _utf8 functions: the normal 
+                    # Deals with the Win32 _utf8 functions: the normal
                     # form and the Windows form are dispatched in two
                     # platform dependent files, although the module
                     # name is always "gtk_os_dependent":
@@ -692,11 +688,11 @@ for library_path in PATH_DICT:
                         nb_generated_interfaces += 2
                         nb_win32_utf8 += 1
 
-                        # Obliged to rewrite the whole interface 
+                        # Obliged to rewrite the whole interface
                         # because of multiline():
-                        interface_utf8 = 0*TAB + "! " + prototype + "\n"
+                        interface_utf8 = 0*TAB + "!" + prototype + "\n"
                         first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
-                        interface_utf8 += multiline(first_line, 80) + " \n"
+                        interface_utf8 += multiline(first_line, 80) + "\n"
                         interface_utf8 += 1*TAB + "use iso_c_binding, only: " + f_use + "\n"
                         if isfunction:
                             interface_utf8 += 1*TAB + returned_type + " :: " + f_name + "\n"
@@ -721,12 +717,10 @@ for library_path in PATH_DICT:
 index.sort()
 index_file = csv.writer(open("gtk-fortran-index.csv", "w"), delimiter=";")
 index_file.writerows(index)
-
 # Write errors in a CSV file:
 errors_list.sort()
-index_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
-index_file.writerows(errors_list)
-
+errors_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
+errors_file.writerows(errors_list)
 # Save remaining error types:
 type_errors_list.sort()
 TYPE_ERRORS_FILE = open("cfwrapper-type_errors.txt", "w")
@@ -772,7 +766,7 @@ print("* nb_win32_utf8 =", nb_win32_utf8)
 print("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT))
 print("* Computing time: {0:.2f} s".format(time.time()-T0))
 print()
-#print(used_types)
+print(used_types)
 
 if ARGS.build:
     # Build the gtk-fortran project using CMake:
