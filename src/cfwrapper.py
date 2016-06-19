@@ -48,12 +48,19 @@ def lib_version(lib_name, psys):
     """ Receive the name of a library package and the packaging system, and
     returns the version of the library if found, else returns ?.?.?
     """
+    common = " 2>/dev/null | grep Version"
     if psys == "deb":        # Debian/Ubuntu command line:
-        libversion = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+        libversion = os.popen("dpkg -p " + lib_name
+                              + common, mode='r').read()
+        if libversion == "": # try APT instead of dpkg:
+            libversion = os.popen("apt-cache show " + lib_name
+                                  + common, mode='r').read()
     elif psys == "pacman":   # Arch/Manjaro command line
-        libversion = os.popen("pacman -Qi "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+        libversion = os.popen("pacman -Qi " + lib_name
+                              + common, mode='r').read()
     elif psys == "rpm":      # Mageia (& Fedora?) command line
-        libversion = os.popen("rpm -qi "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+        libversion = os.popen("rpm -qi " + lib_name
+                              + common, mode='r').read()
     else:
         print("Unknown package system: (", psys, "): ", lib_name)
         libversion = ""
@@ -61,7 +68,7 @@ def lib_version(lib_name, psys):
     if libversion == "":       # package not found
         # Uncomment the following line and change the command line for the
         # packaging system of your Linux distribution:
-        # libversion = os.popen("dpkg -p "+lib_name+" 2>/dev/null | grep Version", mode='r').read()
+        # libversion = os.popen("dpkg -p "+lib_name+common, mode='r').read()
         pass     # no operation instruction to avoid an empty if statement
 
     try:
@@ -252,6 +259,8 @@ PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files",
 PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3],
                      metavar="2|3", nargs=1, required=True,
                      help="GTK+ major version")
+PARSARG.add_argument("-b", "--build", action="store_true",
+                     help="Build gtk-fortran libraries and examples")
 ARGS = PARSARG.parse_args()
 GTK_VERSION = "gtk" + str(ARGS.gtk[0])
 
@@ -759,3 +768,7 @@ print("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT))
 print("* Computing time: {0:.2f} s".format(time.time()-T0))
 print()
 #print(used_types)
+
+if ARGS.build:
+    # Build the gtk-fortran project using CMake:
+    subprocess.call(["./build.sh"])
