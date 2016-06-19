@@ -395,14 +395,11 @@ for library_path in PATH_DICT:
         for c_file_name in directory[2]:
             whole_file = open(directory[0] + "/" + c_file_name, 'rU',
                               errors='replace').read()
-            enum_types = re.findall(r"(?ms)^typedef enum.*?}\s?(\w+);", whole_file)
-            gtk_enums += enum_types
-            funptr = re.findall(r"(?m)^typedef[ \t]*(?:const)?[ \t]*\w+[ \t]*\*?\s*\(\* ?([\w]*?)\)",
-                                whole_file)
-            gtk_funptr += funptr
-            types = re.findall(r"(?m)^typedef *?(?:const)? *?(\w+) *\*? *([\w]+);",
-                               whole_file)
-            gtk_types += types
+            gtk_enums += re.findall(r"(?ms)^typedef enum.*?}\s?(\w+);", whole_file)
+            gtk_funptr += re.findall(r"(?m)^typedef[ \t]*(?:const)?[ \t]*\w+[ \t]*\*?\s*\(\* ?([\w]*?)\)",
+                                     whole_file)
+            gtk_types += re.findall(r"(?m)^typedef *?(?:const)? *?(\w+) *\*? *([\w]+);",
+                                    whole_file)
 
 # Add derived types:
 for each in gtk_types:
@@ -472,14 +469,16 @@ for library_path in PATH_DICT:
             if c_file_name in ["gstdio.h", "giochannel.h"]:
                 continue    # Go to next file
 
-            whole_file_original = open(directory[0] + "/" + c_file_name, 'rU',
+            whole_file_original = open(directory[0] + "/"
+                                       + c_file_name, 'rU',
                                        errors='replace').read()
+            # The original will be used for WIN32 functions
             whole_file = whole_file_original
             nb_files += 1
 
             # ----------------------------------------------------------------
-            # Preprocessing and cleaning of the header file. Do not change the
-            # order of the regex !
+            # Preprocessing and cleaning of the header file. 
+            # Do not change the order of the regular expressions !
             # ----------------------------------------------------------------
 
             # Remove C commentaries:
@@ -493,7 +492,8 @@ for library_path in PATH_DICT:
             whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
                                 "", whole_file)
             # Remove C directives (multilines then monoline):
-            # Note that in a python regular expression \\\\=\\=\
+            # Note that in a python regular expression \\\\=\\=\ if raw
+            # strings not used
             whole_file = re.sub("(?m)^#(.*[\\\\][\\n])+.*?$", "", whole_file)
             whole_file = re.sub("(?m)^#.*$", "", whole_file)
             # Remove TABs and overnumerous spaces:
@@ -522,13 +522,13 @@ for library_path in PATH_DICT:
             whole_file = re.sub(r"(?m)^\n$", "", whole_file)
 
             # These three functions names are the only ones between parentheses,
-            # so we remove parentheses:
+            # so we remove parentheses (>=GLib 2.48.O):
             if c_file_name == "gutils.h":
                 whole_file = whole_file.replace("(g_bit_nth_lsf)", "g_bit_nth_lsf")
                 whole_file = whole_file.replace("(g_bit_nth_msf)", "g_bit_nth_msf")
                 whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
 
-            # Now each line will be treated separately:
+            # From now each line will be treated separately:
             lines_list = whole_file.splitlines(True)
             corrected_lines_list = []
             try:
@@ -655,7 +655,7 @@ for library_path in PATH_DICT:
                                         "Variable name not found", prototype, False)
                             continue    # Next argument
 
-                        # Array with unknown dimension are passed by adress,
+                        # Arrays with unknown dimension are passed by adress,
                         # the others by value:
                         if f_type.find("(*)") != -1:
                             passvar = ""
@@ -679,8 +679,9 @@ for library_path in PATH_DICT:
                     interface += declarations
                     interface += 0*TAB + f_the_end + "\n\n"
 
-                    # Deals with the Win32 _utf8 functions: the normal form and the Windows
-                    # form are dispatched in two platform dependent files, although the module
+                    # Deals with the Win32 _utf8 functions: the normal 
+                    # form and the Windows form are dispatched in two
+                    # platform dependent files, although the module
                     # name is always "gtk_os_dependent":
                     if re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$",
                                  whole_file_original):
@@ -691,7 +692,8 @@ for library_path in PATH_DICT:
                         nb_generated_interfaces += 2
                         nb_win32_utf8 += 1
 
-                        # Obliged to rewrite the whole interface because of multiline():
+                        # Obliged to rewrite the whole interface 
+                        # because of multiline():
                         interface_utf8 = 0*TAB + "! " + prototype + "\n"
                         first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
                         interface_utf8 += multiline(first_line, 80) + " \n"
