@@ -148,15 +148,14 @@ def iso_c_binding(declaration, returned):
     return "?", "?"
 
 
-def write_error(errorsfile, direc, filename, message, proto, type_error):
-    """ Write errors in the file cfwrapper-errors.txt and increments
-    the counters """
+def write_error(direc, filename, message, proto, type_error):
+    """ Write errors in a list and increments the counters """
     global nb_errors
     global nb_type_errors
-
-    errorsfile.write(direc + "/" + filename + "\n")
-    errorsfile.write(message + "\n")
-    errorsfile.write(proto + "\n\n")
+    global errors_list
+    
+    errors_list.append([direc + "/" + filename, message, proto]) 
+    
     if type_error:
         nb_type_errors += 1
     else:
@@ -346,9 +345,6 @@ RGX_VAR_NAME = re.compile(r"[ |\*]([_0-9a-zA-Z]+)(?:\[\])?$")
 # Function name beginning by an underscore:
 RGX_UNDERSCORE = re.compile(r"^_\w+$")
 
-# Errors will be written in that file:
-ERRORS_FILE = open("cfwrapper-errors.txt", "w")
-
 # A tabulation:
 TAB = "  "
 
@@ -446,6 +442,7 @@ mswindows_only_file.write(FILE_HEADER + HEAD)
 index = []
 opened_files = []
 used_types = []
+errors_list = []
 
 for library_path in PATH_DICT:
     F_FILE_NAME = PATH_DICT[library_path]   # Fortran *-auto.f90 file
@@ -537,8 +534,9 @@ for library_path in PATH_DICT:
             try:
                 corrected_lines_list.append(lines_list[0])
             except IndexError:
-                write_error(ERRORS_FILE, directory[0], c_file_name,
-                            "No function to implement in this file", "", False)
+                write_error(directory[0], c_file_name,
+                            "No function to implement in this file", 
+                            "", False)
                 continue    # Go to next file
 
             #------------------------------------
@@ -568,7 +566,7 @@ for library_path in PATH_DICT:
                 try:
                     function_type = type_returned.group(1)
                 except AttributeError:
-                    write_error(ERRORS_FILE, directory[0], c_file_name,
+                    write_error(directory[0], c_file_name,
                                 "Returned type not found", prototype, False)
                     continue    # Next prototype
 
@@ -586,7 +584,7 @@ for library_path in PATH_DICT:
                     f_use = iso_c
                     if returned_type.find("?") != -1:
                         error_flag = True
-                        write_error(ERRORS_FILE, directory[0], c_file_name,
+                        write_error(directory[0], c_file_name,
                                     "Unknown data type:    " + type_returned.group(1),
                                     prototype, True)
                         type_errors_list.append(type_returned.group(1))
@@ -596,7 +594,7 @@ for library_path in PATH_DICT:
                 try:
                     f_name = function_name.group(1)
                 except AttributeError:
-                    write_error(ERRORS_FILE, directory[0], c_file_name,
+                    write_error(directory[0], c_file_name,
                                 "Function name not found", prototype, False)
                     continue    # Next prototype
 
@@ -613,7 +611,7 @@ for library_path in PATH_DICT:
                 try:
                     args = RGX_ARGS.findall(arguments.group(1))
                 except AttributeError:
-                    write_error(ERRORS_FILE, directory[0], c_file_name,
+                    write_error(directory[0], c_file_name,
                                 "Arguments not found", prototype, False)
                     if prototype.find("...") != -1:
                         nb_variadic += 1    # Optional arguments are not managed !
@@ -627,7 +625,7 @@ for library_path in PATH_DICT:
                         try:
                             var_type = RGX_VAR_TYPE.search(arg).group(1)
                         except AttributeError:
-                            write_error(ERRORS_FILE, directory[0], c_file_name,
+                            write_error(directory[0], c_file_name,
                                         "Variable type not found", prototype, True)
                             continue    # Next argument
 
@@ -645,7 +643,7 @@ for library_path in PATH_DICT:
                                     f_use += ", " + iso_c
                         elif f_type.find("?") != -1:
                             error_flag = True
-                            write_error(ERRORS_FILE, directory[0], c_file_name,
+                            write_error(directory[0], c_file_name,
                                         "Unknown data type:    " + arg,
                                         prototype, True)
                             type_errors_list.append(arg)
@@ -653,7 +651,7 @@ for library_path in PATH_DICT:
                         try:
                             var_name = RGX_VAR_NAME.search(arg).group(1)
                         except AttributeError:
-                            write_error(ERRORS_FILE, directory[0], c_file_name,
+                            write_error(directory[0], c_file_name,
                                         "Variable name not found", prototype, False)
                             continue    # Next argument
 
@@ -717,9 +715,15 @@ for library_path in PATH_DICT:
 # **********************************
 # End of the header files processing
 # **********************************
+# Write list of GTK+ functions in a CSV file:
 index.sort()
 index_file = csv.writer(open("gtk-fortran-index.csv", "w"), delimiter=";")
 index_file.writerows(index)
+
+# Write errors in a CSV file:
+errors_list.sort()
+index_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
+index_file.writerows(errors_list)
 
 # Save remaining error types:
 type_errors_list.sort()
@@ -729,7 +733,6 @@ for a_type in type_errors_list:
 
 # Close global files:
 TYPE_ERRORS_FILE.close()
-ERRORS_FILE.close()
 enums_file.close()
 TAIL = "end interface\nend module "+"gtk_os_dependent"+"\n"
 unix_only_file.write(TAIL)
