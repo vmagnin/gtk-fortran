@@ -26,7 +26,7 @@
 #
 # Contributed by Vincent Magnin, 01.28.2011
 # Last modification: 06-20-2016 (Python 3.5.1, Linux Ubuntu 16.04)
-# pylint3 score: 9.04/10
+# pylint3 score: 9.07/10
 
 """ Generates the *-auto.f90 files from the C header files of GLlib and GTK+.
 For help, type: ./cfwrapper.py -h
@@ -100,23 +100,58 @@ def hash_gtk_fortran():
     files_list.extend(["gtkenums-auto.f90", "unixonly-auto.f90", "mswindowsonly-auto.f90"])
     for file_name in files_list:
         with open(file_name, 'rb') as auto_file:
-            WHOLE = auto_file.read()
-            hasher.update(WHOLE)
-    NEW_HASH = hasher.hexdigest()
+            whole = auto_file.read()
+            hasher.update(whole)
+    new_hash = hasher.hexdigest()
     # Read previous hash:
     try:
-        with open("gtk-fortran-hash.pkl", 'rb') as HASH_FILE:
-            PREVIOUS_HASH = pickle.load(HASH_FILE)
+        with open("gtk-fortran-hash.pkl", 'rb') as hash_file:
+            previous_hash = pickle.load(hash_file)
     except FileNotFoundError:
-        PREVIOUS_HASH = ""
+        previous_hash = ""
     # Then save the new hash in a file:
-    with open("gtk-fortran-hash.pkl", 'wb') as HASH_FILE:
-        pickle.dump(NEW_HASH, HASH_FILE)
+    with open("gtk-fortran-hash.pkl", 'wb') as hash_file:
+        pickle.dump(new_hash, hash_file)
     # Print new hash and compare with previous hash:
-    print("\nSHA1: ", NEW_HASH)        
-    if NEW_HASH != PREVIOUS_HASH:
-        print(">>>>>> SHA 1 HAS BEEN MODIFIED ! It was ", PREVIOUS_HASH, " <<<<<<")
+    print("\nSHA1: ", new_hash)
+    if new_hash != previous_hash:
+        print(">>>>>> SHA 1 HAS BEEN MODIFIED ! It was ", previous_hash, " <<<<<<")
         print()
+
+
+def print_statistics():
+    """Print various statistics about the generation of gtk-fortran
+    """
+    print("\n=== Statistics (ready to paste in the Status wiki page) ===\n")
+    # Packages in Ubuntu, Arch/Manjaro, Fedora, Mageia (you can add the names in
+    # you distribution and add the command in the function lib_version()):
+    pack_gtk3 = (("libgtk-3-0", "deb"), ("gtk3", "pacman"),
+                 ("gtk3", "rpm"), ("gtk+3.0", "rpm"))
+    pack_gtk2 = (("libgtk2.0-0", "deb"), ("gtk2", "pacman"),
+                 ("gtk2", "rpm"), ("gtk+2.0", "rpm"))
+    pack_glib = (("libglib2.0-0", "deb"), ("glib2", "pacman"),
+                 ("glib2", "rpm"), ("libglib2.0_0", "rpm"))
+    if GTK_VERSION == "gtk3":
+        version = library_version(pack_gtk3)
+    else:
+        version = library_version(pack_gtk2)
+    print("##GTK+ " + version + ", GLib "+ library_version(pack_glib) + ", "
+          + " " + subprocess.getoutput("lsb_release -ds")
+          + " " + platform.machine() + ", Python " + platform.python_version())
+    print(os.getlogin() + ", "
+          + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()))
+    print("* nb_files scanned =", nb_files)
+    print("* nb_generated_interfaces =", nb_generated_interfaces)
+    print("* nb_type_errors =", nb_type_errors)
+    print("* nb_errors (others) =", nb_errors)
+    print("* nb_lines treated =", nb_lines)
+    print("* nb_variadic functions =", nb_variadic)
+    print("* nb_enumerators =", nb_enumerators)
+    print("* nb_win32_utf8 =", nb_win32_utf8)
+    print("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT))
+    print("* Computing time: {0:.2f} s".format(time.time()-T0))
+    print()
+    print(used_types)
 
 
 def iso_c_binding(declaration, returned):
@@ -724,10 +759,9 @@ for library_path in PATH_DICT:
         f_file.write("end interface\nend module "+module_name+"\n")
         f_file.close()
     print(os.stat(F_FILE_NAME).st_size, " bytes")
-
-# **********************************
+# ***********************************
 # End of the header files processing
-# **********************************
+# ***********************************
 # Write list of GTK+ functions in a CSV file:
 index.sort()
 index_file = csv.writer(open("gtk-fortran-index.csv", "w"), delimiter=";")
@@ -743,47 +777,16 @@ for a_type in type_errors_list:
     TYPE_ERRORS_FILE.write(a_type+"\n")
 
 # Close global files:
-TYPE_ERRORS_FILE.close()
-enums_file.close()
 TAIL = "end interface\nend module "+"gtk_os_dependent"+"\n"
 unix_only_file.write(TAIL)
 unix_only_file.close()
 mswindows_only_file.write(TAIL)
 mswindows_only_file.close()
+TYPE_ERRORS_FILE.close()
+enums_file.close()
 
-# Packages in Ubuntu, Arch/Manjaro, Fedora, Mageia (you can add the names in
-# you distribution and add the command in the function lib_version()):
-PACK_GTK3 = (("libgtk-3-0", "deb"), ("gtk3", "pacman"),
-             ("gtk3", "rpm"), ("gtk+3.0", "rpm"))
-PACK_GTK2 = (("libgtk2.0-0", "deb"), ("gtk2", "pacman"),
-             ("gtk2", "rpm"), ("gtk+2.0", "rpm"))
-PACK_GLIB = (("libglib2.0-0", "deb"), ("glib2", "pacman"),
-             ("glib2", "rpm"), ("libglib2.0_0", "rpm"))
-
-print("\n=== Statistics (ready to paste in the Status wiki page) ===\n")
-if GTK_VERSION == "gtk3":
-    VERSION = library_version(PACK_GTK3)
-else:
-    VERSION = library_version(PACK_GTK2)
-print("##GTK+ " + VERSION + ", GLib "+ library_version(PACK_GLIB) + ", "
-      + " " + subprocess.getoutput("lsb_release -ds")
-      + " " + platform.machine() + ", Python " + platform.python_version())
-print(os.getlogin() + ", "
-      + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()))
-print("* nb_files scanned =", nb_files)
-print("* nb_generated_interfaces =", nb_generated_interfaces)
-print("* nb_type_errors =", nb_type_errors)
-print("* nb_errors (others) =", nb_errors)
-print("* nb_lines treated =", nb_lines)
-print("* nb_variadic functions =", nb_variadic)
-print("* nb_enumerators =", nb_enumerators)
-print("* nb_win32_utf8 =", nb_win32_utf8)
-print("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT))
-print("* Computing time: {0:.2f} s".format(time.time()-T0))
-print()
-print(used_types)
-
-# Print the SHA1 of all *-auto.f90 files:
+print_statistics()
+# Print the SHA1 of all *-auto.f90 files and look for modification:
 hash_gtk_fortran()
 
 if ARGS.build:
