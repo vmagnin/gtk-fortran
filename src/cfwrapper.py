@@ -230,7 +230,7 @@ def multiline(line, maxlength):
     while len(line) > maxlength-1:
         result += line[0:maxlength-1] + "&\n"
         line = "&"+ line[maxlength-1:]
-    result += line
+    result += line.rstrip()
     return result
 
 
@@ -292,7 +292,7 @@ def translate_enums(enum_list):
 
         # Resulting Fortran enumerator:
         f_enum += "enum, bind(c)    !" + name + "\n"
-        f_enum += re.sub(r"(?m)^\s*(\w+)", "  enumerator :: \\1", parameters[0])
+        f_enum += re.sub(r"(?m)^\s*(\w+)", 1*TAB + "enumerator :: \\1", parameters[0])
         f_enum += "end enum\n\n"
         nb_enumerators += 1
 
@@ -496,27 +496,28 @@ used_types = []
 errors_list = []
 
 for library_path in PATH_DICT:
-    F_FILE_NAME = PATH_DICT[library_path]   # Fortran *-auto.f90 file
-    print(library_path + "\t => \t" + F_FILE_NAME, end="\t")
+    # Name of the *-auto.f90 file:
+    f_file_name = PATH_DICT[library_path]
+    print(library_path + "\t => \t" + f_file_name, end="\t")
 
     # Create the *-auto.f90 file with its module declaration:
-    if F_FILE_NAME not in opened_files:
-        f_file = open(F_FILE_NAME, "w")
-        opened_files.append(F_FILE_NAME)
+    if f_file_name not in opened_files:
+        f_file = open(f_file_name, "w")
+        opened_files.append(f_file_name)
 
         # The module name is derived from the Fortran file name:
-        module_name = re.search(r"^(.+)-auto\.f90", F_FILE_NAME).group(1)
+        module_name = re.search(r"^(.+)-auto\.f90", f_file_name).group(1)
         module_name = module_name.replace("-", "_")
 
         # The gtk-auto.f90 file is a special case (included in gtk.f90)
         if module_name != "gtk":
             if module_name == "glib":
                 module_name = "g"
-
+            # Write the beginning of the .f90 file:
             f_file.write(FILE_HEADER+"\nmodule " + module_name +
                          "\nimplicit none\ninterface\n\n")
 
-    # Each header file in each subdirectory of the library is analyzed:
+    # Analyze each C header file in each subdirectory of the library:
     for directory in os.walk(library_path):
         for c_file_name in directory[2]:
             # Those files cause problems so we exclude them:
@@ -534,14 +535,12 @@ for library_path in PATH_DICT:
             # Preprocessing and cleaning of the header file.
             # Do not change the order of the regular expressions !
             # -----------------------------------------------------
-
             # Remove C commentaries:
             whole_file = re.sub(r"(?s)/\*.*?\*/", "", whole_file)
-
-            # Translating C enumerators to Fortran enumerators:
+            # Gather and translate C enumerators to Fortran enumerators,
+            # and write them to gtkenums-auto.f90:
             enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
             enums_file.write(translate_enums(enum_types))
-
             # Removing multilines typedef:
             whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
                                 "", whole_file)
@@ -589,8 +588,7 @@ for library_path in PATH_DICT:
                 corrected_lines_list.append(lines_list[0])
             except IndexError:
                 write_error(directory[0], c_file_name,
-                            "No function to implement in this file",
-                            "", False)
+                            "No function to implement in this file", "", False)
                 continue    # Go to next file
 
             #------------------------------------
@@ -749,14 +747,14 @@ for library_path in PATH_DICT:
                         nb_win32_utf8 += 1
                     else: # Non platform specific functions
                         f_file.write(interface1+interface2+interface3)
-                        index.append([module_name, f_name, F_FILE_NAME,
+                        index.append([module_name, f_name, f_file_name,
                                       directory[0]+"/"+c_file_name, prototype])
                         nb_generated_interfaces += 1
 
     if module_name != "gtk":
         f_file.write("end interface\nend module "+module_name+"\n")
         f_file.close()
-    print(os.stat(F_FILE_NAME).st_size, " bytes")
+    print(os.stat(f_file_name).st_size, " bytes")
 # ***********************************
 # End of the header files processing
 # ***********************************
