@@ -509,7 +509,8 @@ for library_path in PATH_DICT:
         module_name = re.search(r"^(.+)-auto\.f90", f_file_name).group(1)
         module_name = module_name.replace("-", "_")
 
-        # The gtk-auto.f90 file is a special case (included in gtk.f90)
+        # The gtk-auto.f90 file is a special case: it will be included in
+        # the already existing gtk.f90 by an include statement.
         if module_name != "gtk":
             if module_name == "glib":
                 module_name = "g"
@@ -545,9 +546,7 @@ for library_path in PATH_DICT:
             whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
                                 "", whole_file)
             # Remove C directives (multilines then monoline):
-            # Note that in a python regular expression \\\\=\\=\ if raw
-            # strings not used
-            whole_file = re.sub("(?m)^#(.*[\\\\][\\n])+.*?$", "", whole_file)
+            whole_file = re.sub(r"(?m)^#(.*[\\][\n])+.*?$", "", whole_file)
             whole_file = re.sub("(?m)^#.*$", "", whole_file)
             # Remove TABs and overnumerous spaces:
             whole_file = whole_file.replace("\t", " ")
@@ -581,37 +580,38 @@ for library_path in PATH_DICT:
                 whole_file = whole_file.replace("(g_bit_nth_msf)", "g_bit_nth_msf")
                 whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
 
+            #------------------------------------
+            # Preprocessing of each C prototype:
+            #------------------------------------
             # From now each line will be treated separately:
             lines_list = whole_file.splitlines(True)
-            corrected_lines_list = []
+            preprocessed_list = []
+            # Is there any function in this list ?
             try:
-                corrected_lines_list.append(lines_list[0])
+                preprocessed_list.append(lines_list[0])
             except IndexError:
                 write_error(directory[0], c_file_name,
                             "No function to implement in this file", "", False)
                 continue    # Go to next file
 
-            #------------------------------------
-            # Preprocessing of each C prototype:
-            #------------------------------------
             i = 0
             for prototype in lines_list:
                 nb_lines += 1
                 # remove leading and trailing spaces:
                 prototype2 = str.strip(prototype)
 
-                if ";" not in corrected_lines_list[i]:
+                if ";" not in preprocessed_list[i]:
                     # Remove line feeds inside a prototype:
-                    corrected_lines_list[i] = corrected_lines_list[i].replace("\n", "")
-                    corrected_lines_list[i] += " "+prototype2
+                    preprocessed_list[i] = preprocessed_list[i].replace("\n", "")
+                    preprocessed_list[i] += " "+prototype2
                 else:
-                    corrected_lines_list.append(prototype2)
+                    preprocessed_list.append(prototype2)
                     i = i + 1
 
             #------------------------------------
             # Each prototype is now analyzed:
             #------------------------------------
-            for prototype in corrected_lines_list:
+            for prototype in preprocessed_list:
                 error_flag = False
 
                 type_returned = RGX_RETURNED_TYPE.search(prototype)
@@ -632,16 +632,16 @@ for library_path in PATH_DICT:
                     f_procedure = "function "
                     f_the_end = "end function"
                     isfunction = True
-                    returned_type, iso_c = iso_c_binding(type_returned.group(1), True)
+                    returned_type, iso_c = iso_c_binding(function_type, True)
                     f_use = iso_c
-                    if "?" in returned_type:
+                    if "?" in returned_type:    # Function type not found
                         error_flag = True
-                        write_error(directory[0], c_file_name,
-                                    "Unknown data type:    " + type_returned.group(1),
-                                    prototype, True)
-                        type_errors_list.append(type_returned.group(1))
+                        write_error(directory[0], c_file_name, "Unknown type:  "
+                                    + function_type, prototype, True)
+                        type_errors_list.append(function_type)
+                        continue
 
-                # f_name is the name of the function in gtk-fortran:
+                # f_name will contain the name of the function in gtk-fortran:
                 function_name = RGX_FUNCTION_NAME.search(prototype)
                 try:
                     f_name = function_name.group(1)
@@ -650,75 +650,90 @@ for library_path in PATH_DICT:
                                 "Function name not found", prototype, False)
                     continue    # Next prototype
 
-                # Functions beginning by an underscore will be excluded:
-                if RGX_UNDERSCORE.match(f_name) != None:
-                    continue    # Next prototype
-
                 # gtk_init() is already defined in gtk.f90. Other functions
-                # can be excluded in case of problem:
+                # can be excluded here in case of problem:
                 if f_name in ["gtk_init"]:
                     continue    # Next prototype
 
+                # Functions beginning by an underscore will be excluded:
+                if RGX_UNDERSCORE.match(f_name) != None:
+                    write_error(directory[0], c_file_name,
+                                "Function name beginning by underscore", prototype, False)
+                    continue    # Next prototype
+
+                # Searching the function arguments:
                 arguments = RGX_ARGUMENTS.search(prototype)
                 try:
                     args = RGX_ARGS.findall(arguments.group(1))
                 except AttributeError:
-                    write_error(directory[0], c_file_name,
-                                "Arguments not found", prototype, False)
-                    if "..." in prototype:
-                        nb_variadic += 1    # Optional arguments are not managed !
+                    if "..." in prototype: # Optional arguments not managed
+                        nb_variadic += 1
+                        write_error(directory[0], c_file_name,
+                                    "Variadic function", prototype, False)
+                    else:
+                        write_error(directory[0], c_file_name,
+                                    "Problem determining the arguments", prototype, False)
                     continue    # Next prototype
 
                 # Each argument of the function is analyzed:
                 declarations = ""
                 args_list = ""
                 for arg in args:
-                    if arg != "void":
-                        try:
-                            var_type = RGX_VAR_TYPE.search(arg).group(1)
-                        except AttributeError:
-                            write_error(directory[0], c_file_name,
-                                        "Variable type not found", prototype, True)
-                            continue    # Next argument
+                    if arg == "void":
+                        continue
 
-                        f_type, iso_c = iso_c_binding(arg, False)
-                        if iso_c not in used_types:
-                            used_types.append(iso_c)
+                    # Search the type of the argument:
+                    try:
+                        var_type = RGX_VAR_TYPE.search(arg).group(1)
+                    except AttributeError:
+                        write_error(directory[0], c_file_name,
+                                    "Variable type not found", prototype, True)
+                        continue    # Next argument
 
-                        if "c_" in f_type:
-                            if f_use == "":
-                                f_use = iso_c
-                            else:
-                                # each iso_c must appear only once:
-                                RGX_ISO_C = re.compile("("+iso_c+")"+r"([^\w]|$)")
-                                if RGX_ISO_C.search(f_use) is None:
-                                    f_use += ", " + iso_c
-                        elif "?" in f_type:
-                            error_flag = True
-                            write_error(directory[0], c_file_name,
-                                        "Unknown data type:    " + arg,
-                                        prototype, True)
-                            type_errors_list.append(arg)
+                    # Corresponding Fortran type:
+                    f_type, iso_c = iso_c_binding(arg, False)
+                    if iso_c not in used_types:
+                        used_types.append(iso_c)
 
-                        try:
-                            var_name = RGX_VAR_NAME.search(arg).group(1)
-                        except AttributeError:
-                            write_error(directory[0], c_file_name,
-                                        "Variable name not found", prototype, False)
-                            continue    # Next argument
-
-                        # Arrays with unknown dimension are passed by adress,
-                        # the others by value:
-                        if "(*)" in f_type:
-                            passvar = ""
+                    if "c_" in f_type:
+                        # Determine iso_c type to use:
+                        if f_use == "":
+                            f_use = iso_c
                         else:
-                            passvar = ", value"
+                            # Verify that each iso_c appear only once:
+                            RGX_ISO_C = re.compile("("+iso_c+")"+r"([^\w]|$)")
+                            if RGX_ISO_C.search(f_use) is None:
+                                f_use += ", " + iso_c
+                    elif "?" in f_type:     # Type not found
+                        error_flag = True
+                        write_error(directory[0], c_file_name,
+                                    "Unknown data type:  " + arg,
+                                    prototype, True)
+                        type_errors_list.append(arg)
 
-                        declarations += 1*TAB + f_type + passvar + " :: " + var_name + "\n"
-                        if args_list == "":
-                            args_list = var_name
-                        else:
-                            args_list += ", " + var_name
+                    # Search the variable name:
+                    try:
+                        var_name = RGX_VAR_NAME.search(arg).group(1)
+                    except AttributeError:
+                        write_error(directory[0], c_file_name,
+                                    "Variable name not found", prototype, False)
+                        continue    # Next argument
+
+                    # Arrays with unknown dimension are passed by adress,
+                    # the others by value:
+                    if "(*)" in f_type:
+                        passvar = ""
+                    else:
+                        passvar = ", value"
+
+                    # Add this variable:
+                    if args_list == "":
+                        args_list = var_name
+                    else:
+                        args_list += ", " + var_name
+
+                    declarations += 1*TAB + f_type + passvar + " :: " + var_name + "\n"
+
 
                 # Write the Fortran interface in the .f90 file:
                 if error_flag is False:
@@ -751,7 +766,7 @@ for library_path in PATH_DICT:
                                       directory[0]+"/"+c_file_name, prototype])
                         nb_generated_interfaces += 1
 
-    if module_name != "gtk":
+    if module_name != "gtk":    # This module is included in gtk.f90
         f_file.write("end interface\nend module "+module_name+"\n")
         f_file.close()
     print(os.stat(f_file_name).st_size, " bytes")
