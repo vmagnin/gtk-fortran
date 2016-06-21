@@ -165,31 +165,31 @@ def iso_c_binding(declaration, returned):
         return "?", "?"    # error
 
     # Is it an array ?
-    if declaration.find("[") != -1:
+    if "[" in declaration:
         array = ", dimension(*)"
     else:
         array = ""
 
     # Is it a "typedef enum" ?
     for item in gtk_enums:
-        if c_type.find(item) != -1:
+        if item in c_type:
             return "integer(c_int)", "c_int"
 
     # Is it a pointer toward a function ?
     for item in gtk_funptr:
-        if c_type.find(item) != -1:
+        if item in c_type:
             return "type(c_funptr)", "c_funptr"
 
     #typedef void* gpointer;
-    if c_type.find("gpointer") != -1 or c_type.find("gconstpointer") != -1:
+    if ("gpointer" in c_type) or ("gconstpointer" in c_type):
         return "type(c_ptr)", "c_ptr"
 
     # Is it a pointer ?
-    if declaration.find("*") != -1:
+    if "*" in declaration:
         # Is it a string (char or gchar array) ?
         # TODO: what about "unsigned char"   "guchar" gunichar ?
-        if ((c_type.find("char") != -1) or (c_type.find("char*") != -1)) and (not returned):
-            if declaration.find("**") != -1:
+        if (("char" in c_type) or ("char*" in c_type)) and (not returned):
+            if "**" in declaration:
                 return "type(c_ptr), dimension(*)", "c_ptr"
             else:
                 return "character(kind=c_char), dimension(*)", "c_char"
@@ -600,7 +600,7 @@ for library_path in PATH_DICT:
                 # remove leading and trailing spaces:
                 prototype2 = str.strip(prototype)
 
-                if corrected_lines_list[i].find(";") == -1:
+                if ";" not in corrected_lines_list[i]:
                     # Remove line feeds inside a prototype:
                     corrected_lines_list[i] = corrected_lines_list[i].replace("\n", "")
                     corrected_lines_list[i] += " "+prototype2
@@ -623,7 +623,7 @@ for library_path in PATH_DICT:
                     continue    # Next prototype
 
                 # Will it be a Fortran function or a subroutine ?
-                if (function_type.find("void") != -1) and (function_type.find("*") == -1):
+                if ("void" in function_type) and ("*" not in function_type):
                     f_procedure = "subroutine "
                     f_the_end = "end subroutine"
                     isfunction = False
@@ -634,7 +634,7 @@ for library_path in PATH_DICT:
                     isfunction = True
                     returned_type, iso_c = iso_c_binding(type_returned.group(1), True)
                     f_use = iso_c
-                    if returned_type.find("?") != -1:
+                    if "?" in returned_type:
                         error_flag = True
                         write_error(directory[0], c_file_name,
                                     "Unknown data type:    " + type_returned.group(1),
@@ -665,7 +665,7 @@ for library_path in PATH_DICT:
                 except AttributeError:
                     write_error(directory[0], c_file_name,
                                 "Arguments not found", prototype, False)
-                    if prototype.find("...") != -1:
+                    if "..." in prototype:
                         nb_variadic += 1    # Optional arguments are not managed !
                     continue    # Next prototype
 
@@ -685,7 +685,7 @@ for library_path in PATH_DICT:
                         if iso_c not in used_types:
                             used_types.append(iso_c)
 
-                        if f_type.find("c_") != -1:
+                        if "c_" in f_type:
                             if f_use == "":
                                 f_use = iso_c
                             else:
@@ -693,7 +693,7 @@ for library_path in PATH_DICT:
                                 RGX_ISO_C = re.compile("("+iso_c+")"+r"([^\w]|$)")
                                 if RGX_ISO_C.search(f_use) is None:
                                     f_use += ", " + iso_c
-                        elif f_type.find("?") != -1:
+                        elif "?" in f_type:
                             error_flag = True
                             write_error(directory[0], c_file_name,
                                         "Unknown data type:    " + arg,
@@ -709,7 +709,7 @@ for library_path in PATH_DICT:
 
                         # Arrays with unknown dimension are passed by adress,
                         # the others by value:
-                        if f_type.find("(*)") != -1:
+                        if "(*)" in f_type:
                             passvar = ""
                         else:
                             passvar = ", value"
