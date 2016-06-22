@@ -498,7 +498,8 @@ errors_list = []
 for library_path in PATH_DICT:
     # Name of the *-auto.f90 file:
     f_file_name = PATH_DICT[library_path]
-    print(library_path + "\t => \t" + f_file_name, end="\t")
+
+    print('{:<32}{}{:<20}'.format(library_path, " =>  ", f_file_name), end="")
 
     # Create the *-auto.f90 file with its module declaration:
     if f_file_name not in opened_files:
@@ -769,7 +770,7 @@ for library_path in PATH_DICT:
     if module_name != "gtk":    # This module is included in gtk.f90
         f_file.write("end interface\nend module "+module_name+"\n")
         f_file.close()
-    print(os.stat(f_file_name).st_size, " bytes")
+    print('{:>10}{}'.format(os.stat(f_file_name).st_size, " bytes"))
 # ***********************************
 # End of the header files processing
 # ***********************************
