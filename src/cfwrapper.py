@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 06-20-2016 (Python 3.5.1, Linux Ubuntu 16.04)
-# pylint3 score: 9.07/10
+# Last modification: 06-22-2016 (Python 3.5.1, Linux Ubuntu 16.04)
+# pylint3 score: 8.67/10
 
 """ Generates the *-auto.f90 files from the C header files of GLlib and GTK+.
 For help, type: ./cfwrapper.py -h
@@ -354,7 +354,161 @@ def clean_header_file():
         whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
 
 
-def write_fortran_interface():
+def preprocess_prototypes():
+    """Clean the list of prototypes before analysis"""
+    global nb_lines
+    global preprocessed_list
+
+    i = 0
+    for prototype in lines_list:
+        nb_lines += 1
+        # remove leading and trailing spaces:
+        prototype2 = str.strip(prototype)
+
+        if ";" not in preprocessed_list[i]:
+            # Remove line feeds inside a prototype:
+            preprocessed_list[i] = preprocessed_list[i].replace("\n", "")
+            preprocessed_list[i] += " "+prototype2
+        else:
+            preprocessed_list.append(prototype2)
+            i += 1
+
+
+def analyze_prototypes():
+    """Each prototype is now analyzed"""
+    global nb_variadic
+
+    for proto in preprocessed_list:
+        error_flag = False
+
+        type_returned = RGX_RETURNED_TYPE.search(proto)
+        try:
+            function_type = type_returned.group(1)
+        except AttributeError:
+            write_error(directory[0], c_file_name,
+                        "Returned type not found", proto, False)
+            continue    # Next prototype
+
+        # Will it be a Fortran function or a subroutine ?
+        if ("void" in function_type) and ("*" not in function_type):
+            f_procedure = "subroutine "
+            f_the_end = "end subroutine"
+            isfunction = False
+            f_use = ""
+            returned_type = ""
+        else:
+            f_procedure = "function "
+            f_the_end = "end function"
+            isfunction = True
+            returned_type, iso_c = iso_c_binding(function_type, True)
+            f_use = iso_c
+            if "?" in returned_type:    # Function type not found
+                error_flag = True
+                write_error(directory[0], c_file_name, "Unknown type:  "
+                            + function_type, proto, True)
+                type_errors_list.append(function_type)
+                continue
+
+        # f_name will contain the name of the function in gtk-fortran:
+        function_name = RGX_FUNCTION_NAME.search(proto)
+        try:
+            f_name = function_name.group(1)
+        except AttributeError:
+            write_error(directory[0], c_file_name,
+                        "Function name not found", proto, False)
+            continue    # Next prototype
+
+        # gtk_init() is already defined in gtk.f90. Other functions
+        # can be excluded here in case of problem:
+        if f_name in ["gtk_init"]:
+            continue    # Next prototype
+
+        # Functions beginning by an underscore will be excluded:
+        if RGX_UNDERSCORE.match(f_name) != None:
+            write_error(directory[0], c_file_name,
+                        "Function name beginning by underscore", proto, False)
+            continue    # Next prototype
+
+        # Searching the function arguments:
+        arguments = RGX_ARGUMENTS.search(proto)
+        try:
+            args = RGX_ARGS.findall(arguments.group(1))
+        except AttributeError:
+            if "..." in proto: # Optional arguments not managed
+                nb_variadic += 1
+                write_error(directory[0], c_file_name,
+                            "Variadic function", proto, False)
+            else:
+                write_error(directory[0], c_file_name,
+                            "Problem determining the arguments", proto, False)
+            continue    # Next prototype
+
+        # Each argument of the function is analyzed:
+        declarations = ""
+        args_list = ""
+        for arg in args:
+            if arg == "void":
+                continue
+
+            # Can we find the type of the argument ? The var_type variable is
+            # not used elsewhere, but this test is compulsory. Do not remove.
+            try:
+                var_type = RGX_VAR_TYPE.search(arg).group(1)
+            except AttributeError:
+                write_error(directory[0], c_file_name,
+                            "Variable type not found", proto, True)
+                continue    # Next argument
+
+            # Corresponding Fortran type of the argument:
+            f_type, iso_c = iso_c_binding(arg, False)
+            if iso_c not in used_types:
+                used_types.append(iso_c)
+
+            if "c_" in f_type:
+                # Determine iso_c type to use:
+                if f_use == "":
+                    f_use = iso_c
+                else:
+                    # Verify that each iso_c appear only once:
+                    RGX_ISO_C = re.compile("("+iso_c+")"+r"([^\w]|$)")
+                    if RGX_ISO_C.search(f_use) is None:
+                        f_use += ", " + iso_c
+            elif "?" in f_type:     # Type not found
+                error_flag = True
+                write_error(directory[0], c_file_name,
+                            "Unknown data type:  " + arg,
+                            proto, True)
+                type_errors_list.append(arg)
+
+            # Search the variable name:
+            try:
+                var_name = RGX_VAR_NAME.search(arg).group(1)
+            except AttributeError:
+                write_error(directory[0], c_file_name,
+                            "Variable name not found", proto, False)
+                continue    # Next argument
+
+            # Arrays with unknown dimension are passed by adress,
+            # the others by value:
+            if "(*)" in f_type:
+                passvar = ""
+            else:
+                passvar = ", value"
+
+            # Add this variable:
+            if args_list == "":
+                args_list = var_name
+            else:
+                args_list += ", " + var_name
+
+            declarations += 1*TAB + f_type + passvar + " :: " + var_name + "\n"
+
+        # Write the Fortran interface in the .f90 file:
+        if not error_flag:
+            write_fortran_interface(proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end)
+
+
+def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end):
     """Write the Fortran interface of a function in the *-auto.f90 file"""
     global index
     global nb_generated_interfaces
@@ -557,17 +711,13 @@ gtk_funptr.sort()
 # Pass 2: Scan of all header files in the directories and subdirectories to
 # generate interfaces
 #**************************************************************************
-print("Pass 2: looking for C functions...")
-
 FILE_HEADER = """! Automatically generated by cfwrapper.py, do not modify !
 ! This file is part of the gtk-fortran library, distributed under
 ! GNU General Public License version 3.
 """
-
 # All enums are written in this file:
 enums_file = open("gtkenums-auto.f90", "w")
 enums_file.write(FILE_HEADER+"\n")
-
 # Files for platform specific functions:
 HEAD = "\nmodule " + "gtk_os_dependent" + "\nimplicit none\ninterface\n\n"
 unix_only_file = open("unixonly-auto.f90", "w")
@@ -580,23 +730,21 @@ opened_files = []
 used_types = []
 errors_list = []
 
+print("Pass 2: looking for C functions...")
 for library_path in PATH_DICT:
     # Name of the *-auto.f90 file:
     f_file_name = PATH_DICT[library_path]
-
     print('{:<32}{}{:<20}'.format(library_path, " =>  ", f_file_name), end="")
 
     # Create the *-auto.f90 file with its module declaration:
     if f_file_name not in opened_files:
         f_file = open(f_file_name, "w")
         opened_files.append(f_file_name)
-
         # The module name is derived from the Fortran file name:
         module_name = re.search(r"^(.+)-auto\.f90", f_file_name).group(1)
         module_name = module_name.replace("-", "_")
-
-        # The gtk-auto.f90 file is a special case: it will be included in
-        # the already existing gtk.f90 by an include statement.
+        # The gtk-auto.f90 file is a special case, it will be included in
+        # the already existing gtk.f90 by an include statement:
         if module_name != "gtk":
             if module_name == "glib":
                 module_name = "g"
@@ -604,187 +752,41 @@ for library_path in PATH_DICT:
             f_file.write(FILE_HEADER+"\nmodule " + module_name +
                          "\nimplicit none\ninterface\n\n")
 
-    # Analyze each C header file in each subdirectory of the library:
+    # Analyze each C header file in each subdirectory of that library:
     for directory in os.walk(library_path):
         for c_file_name in directory[2]:
             # Those files cause problems so we exclude them:
             if c_file_name in ["gstdio.h", "giochannel.h"]:
                 continue    # Go to next file
 
-            whole_file_original = open(directory[0] + "/"
-                                       + c_file_name, 'rU',
+            nb_files += 1
+            whole_file_original = open(directory[0] + "/" + c_file_name, 'rU',
                                        errors='replace').read()
             # The original will be used for WIN32 functions
             whole_file = whole_file_original
-            nb_files += 1
 
             clean_header_file()
-
-            #------------------------------------
-            # Preprocessing of each C prototype:
-            #------------------------------------
             # From now each line will be treated separately:
             lines_list = whole_file.splitlines(True)
             preprocessed_list = []
-            # Is there any function in this list ?
+            # Is there any function in lines_list ?
             try:
                 preprocessed_list.append(lines_list[0])
             except IndexError:
                 write_error(directory[0], c_file_name,
                             "No function to implement in this file", "", False)
                 continue    # Go to next file
+            # If true, we process these functions:
+            preprocess_prototypes()
+            analyze_prototypes()
 
-            i = 0
-            for prototype in lines_list:
-                nb_lines += 1
-                # remove leading and trailing spaces:
-                prototype2 = str.strip(prototype)
-
-                if ";" not in preprocessed_list[i]:
-                    # Remove line feeds inside a prototype:
-                    preprocessed_list[i] = preprocessed_list[i].replace("\n", "")
-                    preprocessed_list[i] += " "+prototype2
-                else:
-                    preprocessed_list.append(prototype2)
-                    i = i + 1
-
-            #------------------------------------
-            # Each prototype is now analyzed:
-            #------------------------------------
-            for prototype in preprocessed_list:
-                error_flag = False
-
-                type_returned = RGX_RETURNED_TYPE.search(prototype)
-                try:
-                    function_type = type_returned.group(1)
-                except AttributeError:
-                    write_error(directory[0], c_file_name,
-                                "Returned type not found", prototype, False)
-                    continue    # Next prototype
-
-                # Will it be a Fortran function or a subroutine ?
-                if ("void" in function_type) and ("*" not in function_type):
-                    f_procedure = "subroutine "
-                    f_the_end = "end subroutine"
-                    isfunction = False
-                    f_use = ""
-                else:
-                    f_procedure = "function "
-                    f_the_end = "end function"
-                    isfunction = True
-                    returned_type, iso_c = iso_c_binding(function_type, True)
-                    f_use = iso_c
-                    if "?" in returned_type:    # Function type not found
-                        error_flag = True
-                        write_error(directory[0], c_file_name, "Unknown type:  "
-                                    + function_type, prototype, True)
-                        type_errors_list.append(function_type)
-                        continue
-
-                # f_name will contain the name of the function in gtk-fortran:
-                function_name = RGX_FUNCTION_NAME.search(prototype)
-                try:
-                    f_name = function_name.group(1)
-                except AttributeError:
-                    write_error(directory[0], c_file_name,
-                                "Function name not found", prototype, False)
-                    continue    # Next prototype
-
-                # gtk_init() is already defined in gtk.f90. Other functions
-                # can be excluded here in case of problem:
-                if f_name in ["gtk_init"]:
-                    continue    # Next prototype
-
-                # Functions beginning by an underscore will be excluded:
-                if RGX_UNDERSCORE.match(f_name) != None:
-                    write_error(directory[0], c_file_name,
-                                "Function name beginning by underscore", prototype, False)
-                    continue    # Next prototype
-
-                # Searching the function arguments:
-                arguments = RGX_ARGUMENTS.search(prototype)
-                try:
-                    args = RGX_ARGS.findall(arguments.group(1))
-                except AttributeError:
-                    if "..." in prototype: # Optional arguments not managed
-                        nb_variadic += 1
-                        write_error(directory[0], c_file_name,
-                                    "Variadic function", prototype, False)
-                    else:
-                        write_error(directory[0], c_file_name,
-                                    "Problem determining the arguments", prototype, False)
-                    continue    # Next prototype
-
-                # Each argument of the function is analyzed:
-                declarations = ""
-                args_list = ""
-                for arg in args:
-                    if arg == "void":
-                        continue
-
-                    # Search the type of the argument:
-                    try:
-                        var_type = RGX_VAR_TYPE.search(arg).group(1)
-                    except AttributeError:
-                        write_error(directory[0], c_file_name,
-                                    "Variable type not found", prototype, True)
-                        continue    # Next argument
-
-                    # Corresponding Fortran type:
-                    f_type, iso_c = iso_c_binding(arg, False)
-                    if iso_c not in used_types:
-                        used_types.append(iso_c)
-
-                    if "c_" in f_type:
-                        # Determine iso_c type to use:
-                        if f_use == "":
-                            f_use = iso_c
-                        else:
-                            # Verify that each iso_c appear only once:
-                            RGX_ISO_C = re.compile("("+iso_c+")"+r"([^\w]|$)")
-                            if RGX_ISO_C.search(f_use) is None:
-                                f_use += ", " + iso_c
-                    elif "?" in f_type:     # Type not found
-                        error_flag = True
-                        write_error(directory[0], c_file_name,
-                                    "Unknown data type:  " + arg,
-                                    prototype, True)
-                        type_errors_list.append(arg)
-
-                    # Search the variable name:
-                    try:
-                        var_name = RGX_VAR_NAME.search(arg).group(1)
-                    except AttributeError:
-                        write_error(directory[0], c_file_name,
-                                    "Variable name not found", prototype, False)
-                        continue    # Next argument
-
-                    # Arrays with unknown dimension are passed by adress,
-                    # the others by value:
-                    if "(*)" in f_type:
-                        passvar = ""
-                    else:
-                        passvar = ", value"
-
-                    # Add this variable:
-                    if args_list == "":
-                        args_list = var_name
-                    else:
-                        args_list += ", " + var_name
-
-                    declarations += 1*TAB + f_type + passvar + " :: " + var_name + "\n"
-
-                # Write the Fortran interface in the .f90 file:
-                if not error_flag:
-                    write_fortran_interface()
-
-    if module_name != "gtk":    # This module is included in gtk.f90
+    # Close that *-auto.f90 file:
+    if module_name != "gtk":    # gtk module is included in gtk.f90
         f_file.write("end interface\nend module "+module_name+"\n")
         f_file.close()
     print('{:>10}{}'.format(os.stat(f_file_name).st_size, " bytes"))
-# ***********************************
-# End of the header files processing
-# ***********************************
+    # Next *-auto.f90 file
+
 # Write list of GTK+ functions in a CSV file:
 index.sort()
 index_file = csv.writer(open("gtk-fortran-index.csv", "w"), delimiter=";")
@@ -809,6 +811,7 @@ TYPE_ERRORS_FILE.close()
 enums_file.close()
 
 print_statistics()
+
 # Print the SHA1 of all *-auto.f90 files and look for modification:
 hash_gtk_fortran()
 
