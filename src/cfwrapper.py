@@ -381,6 +381,13 @@ def analyze_prototypes():
     for proto in preprocessed_list:
         error_flag = False
 
+        # Do not treat variadic functions:
+        if "..." in proto:
+            nb_variadic += 1
+            write_error(directory[0], c_file_name,
+                        "Variadic function", proto, False)
+            continue    # Next prototype
+
         type_returned = RGX_RETURNED_TYPE.search(proto)
         try:
             function_type = type_returned.group(1)
@@ -434,13 +441,8 @@ def analyze_prototypes():
         try:
             args = RGX_ARGS.findall(arguments.group(1))
         except AttributeError:
-            if "..." in proto: # Optional arguments not managed
-                nb_variadic += 1
-                write_error(directory[0], c_file_name,
-                            "Variadic function", proto, False)
-            else:
-                write_error(directory[0], c_file_name,
-                            "Problem determining the arguments", proto, False)
+            write_error(directory[0], c_file_name,
+                        "Problem determining the arguments", proto, False)
             continue    # Next prototype
 
         # Each argument of the function is analyzed:
