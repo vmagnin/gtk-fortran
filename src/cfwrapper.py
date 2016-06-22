@@ -305,6 +305,55 @@ def translate_enums(enum_list):
     return f_enum
 
 
+def clean_header_file():
+    """Preprocessing and cleaning of the header file.
+       Do not change the order of the regular expressions !"""
+    global whole_file
+
+    # Remove C commentaries:
+    whole_file = re.sub(r"(?s)/\*.*?\*/", "", whole_file)
+    # Gather and translate C enumerators to Fortran enumerators,
+    # and write them to gtkenums-auto.f90:
+    enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
+    enums_file.write(translate_enums(enum_types))
+    # Removing multilines typedef:
+    whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
+                        "", whole_file)
+    # Remove C directives (multilines then monoline):
+    whole_file = re.sub(r"(?m)^#(.*[\\][\n])+.*?$", "", whole_file)
+    whole_file = re.sub("(?m)^#.*$", "", whole_file)
+    # Remove TABs and overnumerous spaces:
+    whole_file = whole_file.replace("\t", " ")
+    whole_file = re.sub("[ ]{2,}", " ", whole_file)
+    # Remove two levels of { } structures:
+    whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
+    whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
+    # Remove structures like: { } a_name;
+    whole_file = re.sub(r"(?ms){[^{]*?}[ \w]*?;", "", whole_file)
+    # Remove "available_in" and "deprecated" directives:
+    whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
+                        "", whole_file)
+    # Remove different kind of declarations:
+    whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
+    whole_file = re.sub("(?m)^(typedef|union|struct).*$",
+                        "", whole_file)
+    whole_file = re.sub("(?m)^.*(G_BEGIN_DECLS|CAIRO_BEGIN_DECLS) *$", "", whole_file)
+    whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$",
+                        "", whole_file)
+    whole_file = re.sub(r"(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
+    whole_file = re.sub("(?m)^.*(cairo_public|extern) ", "", whole_file)
+    whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC)"
+                        , "", whole_file)   # extern
+    # Remove empty lines:
+    whole_file = re.sub(r"(?m)^\n$", "", whole_file)
+    # These three functions names are the only ones between parentheses,
+    # so we remove parentheses (>=GLib 2.48.O):
+    if c_file_name == "gutils.h":
+        whole_file = whole_file.replace("(g_bit_nth_lsf)", "g_bit_nth_lsf")
+        whole_file = whole_file.replace("(g_bit_nth_msf)", "g_bit_nth_msf")
+        whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
+
+
 # ****************************************************************************
 # *****************************  MAIN PROGRAM  *******************************
 # ****************************************************************************
@@ -533,53 +582,7 @@ for library_path in PATH_DICT:
             whole_file = whole_file_original
             nb_files += 1
 
-            # -----------------------------------------------------
-            # Preprocessing and cleaning of the header file.
-            # Do not change the order of the regular expressions !
-            # -----------------------------------------------------
-            # Remove C commentaries:
-            whole_file = re.sub(r"(?s)/\*.*?\*/", "", whole_file)
-            # Gather and translate C enumerators to Fortran enumerators,
-            # and write them to gtkenums-auto.f90:
-            enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
-            enums_file.write(translate_enums(enum_types))
-            # Removing multilines typedef:
-            whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
-                                "", whole_file)
-            # Remove C directives (multilines then monoline):
-            whole_file = re.sub(r"(?m)^#(.*[\\][\n])+.*?$", "", whole_file)
-            whole_file = re.sub("(?m)^#.*$", "", whole_file)
-            # Remove TABs and overnumerous spaces:
-            whole_file = whole_file.replace("\t", " ")
-            whole_file = re.sub("[ ]{2,}", " ", whole_file)
-            # Remove two levels of { } structures:
-            whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
-            whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
-            # Remove structures like: { } a_name;
-            whole_file = re.sub(r"(?ms){[^{]*?}[ \w]*?;", "", whole_file)
-            # Remove "available_in" and "deprecated" directives:
-            whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
-                                "", whole_file)
-            # Remove different kind of declarations:
-            whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
-            whole_file = re.sub("(?m)^(typedef|union|struct).*$",
-                                "", whole_file)
-            whole_file = re.sub("(?m)^.*(G_BEGIN_DECLS|CAIRO_BEGIN_DECLS) *$", "", whole_file)
-            whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$",
-                                "", whole_file)
-            whole_file = re.sub(r"(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
-            whole_file = re.sub("(?m)^.*(cairo_public|extern) ", "", whole_file)
-            whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC)"
-                                , "", whole_file)   # extern
-            # Remove empty lines:
-            whole_file = re.sub(r"(?m)^\n$", "", whole_file)
-
-            # These three functions names are the only ones between parentheses,
-            # so we remove parentheses (>=GLib 2.48.O):
-            if c_file_name == "gutils.h":
-                whole_file = whole_file.replace("(g_bit_nth_lsf)", "g_bit_nth_lsf")
-                whole_file = whole_file.replace("(g_bit_nth_msf)", "g_bit_nth_msf")
-                whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
+            clean_header_file()
 
             #------------------------------------
             # Preprocessing of each C prototype:
