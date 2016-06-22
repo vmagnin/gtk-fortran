@@ -354,6 +354,42 @@ def clean_header_file():
         whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
 
 
+def write_fortran_interface():
+    """Write the Fortran interface of a function in the *-auto.f90 file"""
+    global index
+    global nb_generated_interfaces
+    global nb_win32_utf8
+
+    interface1 = 0*TAB + "!" + prototype + "\n"
+    first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
+    interface2 = multiline(first_line, 80) + "\n"
+    interface3 = 1*TAB + "use iso_c_binding, only: " + f_use + "\n"
+    if isfunction:
+        interface3 += 1*TAB + returned_type + " :: " + f_name + "\n"
+    interface3 += declarations
+    interface3 += 0*TAB + f_the_end + "\n\n"
+
+    # Deals with the Win32 _utf8 functions: the normal form and
+    # the Windows form are dispatched in two platform dependent
+    # files, although the module name is always "gtk_os_dependent":
+    if re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$",
+                 whole_file_original):
+        unix_only_file.write(interface1+interface2+interface3)
+        index.append(["gtk_os_dependent", f_name,
+                      "unixonly-auto.f90/mswindowsonly-auto.f90",
+                      directory[0]+"/"+c_file_name, prototype])
+        first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
+        interface2_utf8 = multiline(first_line, 80) + "\n"
+        mswindows_only_file.write(interface1+interface2_utf8+interface3)
+        nb_generated_interfaces += 2
+        nb_win32_utf8 += 1
+    else: # Non platform specific functions
+        f_file.write(interface1+interface2+interface3)
+        index.append([module_name, f_name, f_file_name,
+                      directory[0]+"/"+c_file_name, prototype])
+        nb_generated_interfaces += 1
+
+
 # ****************************************************************************
 # *****************************  MAIN PROGRAM  *******************************
 # ****************************************************************************
@@ -738,37 +774,9 @@ for library_path in PATH_DICT:
 
                     declarations += 1*TAB + f_type + passvar + " :: " + var_name + "\n"
 
-
                 # Write the Fortran interface in the .f90 file:
-                if error_flag is False:
-                    interface1 = 0*TAB + "!" + prototype + "\n"
-                    first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
-                    interface2 = multiline(first_line, 80) + "\n"
-                    interface3 = 1*TAB + "use iso_c_binding, only: " + f_use + "\n"
-                    if isfunction:
-                        interface3 += 1*TAB + returned_type + " :: " + f_name + "\n"
-                    interface3 += declarations
-                    interface3 += 0*TAB + f_the_end + "\n\n"
-
-                    # Deals with the Win32 _utf8 functions: the normal form and
-                    # the Windows form are dispatched in two platform dependent
-                    # files, although the module name is always "gtk_os_dependent":
-                    if re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$",
-                                 whole_file_original):
-                        unix_only_file.write(interface1+interface2+interface3)
-                        index.append(["gtk_os_dependent", f_name,
-                                      "unixonly-auto.f90/mswindowsonly-auto.f90",
-                                      directory[0]+"/"+c_file_name, prototype])
-                        first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
-                        interface2_utf8 = multiline(first_line, 80) + "\n"
-                        mswindows_only_file.write(interface1+interface2_utf8+interface3)
-                        nb_generated_interfaces += 2
-                        nb_win32_utf8 += 1
-                    else: # Non platform specific functions
-                        f_file.write(interface1+interface2+interface3)
-                        index.append([module_name, f_name, f_file_name,
-                                      directory[0]+"/"+c_file_name, prototype])
-                        nb_generated_interfaces += 1
+                if not error_flag:
+                    write_fortran_interface()
 
     if module_name != "gtk":    # This module is included in gtk.f90
         f_file.write("end interface\nend module "+module_name+"\n")
