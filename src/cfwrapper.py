@@ -342,7 +342,7 @@ def clean_header_file():
                         "", whole_file)
     whole_file = re.sub(r"(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
     whole_file = re.sub("(?m)^.*(cairo_public|extern) ", "", whole_file)
-    whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC)"
+    whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC|G_GNUC_WARN_UNUSED_RESULT)"
                         , "", whole_file)   # extern
     # Remove empty lines:
     whole_file = re.sub(r"(?m)^\n$", "", whole_file)
