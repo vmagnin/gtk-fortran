@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 06-22-2016 (Python 3.5.1, Linux Ubuntu 16.04)
-# pylint3 score: 8.67/10
+# Last modification: 06-23-2016 (Python 3.5.1, Linux Ubuntu 16.04)
+# pylint3 score: 8.68/10
 
 """ Generates the *-auto.f90 files from the C header files of GLlib and GTK+.
 For help, type: ./cfwrapper.py -h
@@ -140,15 +140,15 @@ def print_statistics():
           + " " + platform.machine() + ", Python " + platform.python_version())
     print(os.getlogin() + ", "
           + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()))
-    print("* nb_files scanned =", nb_files)
-    print("* nb_generated_interfaces =", nb_generated_interfaces)
-    print("* nb_type_errors =", nb_type_errors)
-    print("* nb_errors (others) =", nb_errors)
-    print("* nb_lines treated =", nb_lines)
-    print("* nb_variadic functions =", nb_variadic)
-    print("* nb_enumerators =", nb_enumerators)
-    print("* nb_win32_utf8 =", nb_win32_utf8)
-    print("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT))
+    print('{:<30}{:>6}'.format("* nb_files scanned =", nb_files))
+    print('{:<30}{:>6}'.format("* nb_generated_interfaces =", nb_generated_interfaces))
+    print('{:<30}{:>6}'.format("* nb_type_errors =", nb_type_errors))
+    print('{:<30}{:>6}'.format("* nb_errors (others) =", nb_errors))
+    print('{:<30}{:>6}'.format("* nb_lines treated =", nb_lines))
+    print('{:<30}{:>6}'.format("* nb_variadic functions =", nb_variadic))
+    print('{:<30}{:>6}'.format("* nb_enumerators =", nb_enumerators))
+    print('{:<30}{:>6}'.format("* nb_win32_utf8 =", nb_win32_utf8))
+    print('{:<30}{:>6}'.format("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT)))
     print("* Computing time: {0:.2f} s".format(time.time()-T0))
     print()
     print(used_types)
@@ -163,12 +163,6 @@ def iso_c_binding(declaration, returned):
         c_type = RGX_TYPE.search(declaration).group(1)
     except AttributeError:
         return "?", "?"    # error
-
-    # Is it an array ?
-    if "[" in declaration:
-        array = ", dimension(*)"
-    else:
-        array = ""
 
     # Is it a "typedef enum" ?
     for item in gtk_enums:
@@ -187,14 +181,19 @@ def iso_c_binding(declaration, returned):
     # Is it a pointer ?
     if "*" in declaration:
         # Is it a string (char or gchar array) ?
-        # TODO: what about "unsigned char"   "guchar" gunichar ?
-        if (("char" in c_type) or ("char*" in c_type)) and (not returned):
+        if ("char" in c_type) and (not returned):
             if "**" in declaration:
                 return "type(c_ptr), dimension(*)", "c_ptr"
             else:
                 return "character(kind=c_char), dimension(*)", "c_char"
         else:
             return "type(c_ptr)", "c_ptr"
+
+    # Is it an array ?
+    if "[" in declaration:
+        array = ", dimension(*)"
+    else:
+        array = ""
 
     # Other cases:
     if len(declaration.split()) >= 3:   # Two words type
@@ -271,17 +270,17 @@ def translate_enums(enum_list):
         parameters[0] = re.sub("1u[ ]<<", "1 <<", parameters[0])
         # ********** Refactoring **********
         # Is it a char ?
-        parameters[0] = re.sub("('.?')", "iachar(\\1)", parameters[0])
+        parameters[0] = re.sub("('.?')", r"iachar(\1)", parameters[0])
         # Is it in hexadecimal ?
-        parameters[0] = re.sub("0x([0-9A-Fa-f]+)", "INT(z'\\1')",
+        parameters[0] = re.sub("0x([0-9A-Fa-f]+)", r"INT(z'\1')",
                                parameters[0])
         # Is it a bit field ?
         parameters[0] = bit_fields.sub(set_bit_field, parameters[0])
         # complement
-        parameters[0] = re.sub(r"~(\w+)", "not(\\1)", parameters[0])
+        parameters[0] = re.sub(r"~(\w+)", r"not(\1)", parameters[0])
         # logical or
         parameters[0] = re.sub(r"([\w\(\)]+)\s*\|\s*([\w\(\), \d]+)",
-                               "ior(\\1 , \\2)", parameters[0])
+                               r"ior(\1 , \2)", parameters[0])
         # Renamed flags (have the same name as a GTK+ function):
         for flag in ["ATK_HYPERLINK_IS_INLINE", "GDK_PROPERTY_DELETE",
                      "GDK_DRAG_STATUS", "GDK_DRAG_MOTION"]:
@@ -292,7 +291,7 @@ def translate_enums(enum_list):
 
         # Resulting Fortran enumerator:
         f_enum += "enum, bind(c)    !" + name + "\n"
-        f_enum += re.sub(r"(?m)^\s*(\w+)", 1*TAB + "enumerator :: \\1", parameters[0])
+        f_enum += re.sub(r"(?m)^\s*(\w+)", 1*TAB + r"enumerator :: \1", parameters[0])
         f_enum += "end enum\n\n"
         nb_enumerators += 1
 
@@ -482,8 +481,7 @@ def analyze_prototypes():
                         f_use += ", " + iso_c
             elif "?" in f_type:     # Type not found
                 error_flag = True
-                write_error(directory[0], c_file_name,
-                            "Unknown type:  " + arg,
+                write_error(directory[0], c_file_name, "Unknown type:  " + arg,
                             proto, True)
 
             # Search the variable name:
@@ -494,8 +492,7 @@ def analyze_prototypes():
                             "Variable name not found", proto, False)
                 continue    # Next argument
 
-            # Arrays with unknown dimension are passed by adress,
-            # the others by value:
+            # Unknown dimension arrays are passed by address, others by value:
             if "(*)" in f_type:
                 passvar = ""
             else:
@@ -637,15 +634,22 @@ TYPES2_DICT = {
 #---------------------------------------------------------------------------
 # Regular expressions used to identify the different parts of a C prototype:
 #---------------------------------------------------------------------------
+# Type of a function:
 RGX_RETURNED_TYPE = re.compile(r"^ *([_0-9a-zA-Z ]+ *\**)")
+# Name of the function/subroutine:
 RGX_FUNCTION_NAME = re.compile(r"([0-9a-zA-Z_]+) *\(")
+# All the arguments of the function:
 RGX_ARGUMENTS = re.compile(r"\(([0-9a-zA-Z_ ,\*\[\]]*)\).*;$")
+# To list each argument:
 RGX_ARGS = re.compile(r" *([0-9a-zA-Z_ \*\[\]]+),?")
+# To find the type of an argument:
 RGX_VAR_TYPE = re.compile(r" *([_0-9a-zA-Z]+)[ |\*]")
-RGX_TYPE = re.compile(r"^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?")
+# To find the name of an argument:
 RGX_VAR_NAME = re.compile(r"[ |\*]([_0-9a-zA-Z]+)(?:\[\])?$")
 # Function name beginning by an underscore:
 RGX_UNDERSCORE = re.compile(r"^_\w+$")
+# Used in iso_c_binding() to identify a C type:
+RGX_TYPE = re.compile(r"^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?")
 
 # Define the tabulation in the *-auto.f90 files:
 TAB = "  "
@@ -793,6 +797,14 @@ for library_path in PATH_DICT:
     print('{:>10}{}'.format(os.stat(f_file_name).st_size, " bytes"))
     # Next *-auto.f90 file
 
+
+# Close global files:
+enums_file.close()
+TAIL = "end interface\nend module "+"gtk_os_dependent"+"\n"
+unix_only_file.write(TAIL)
+unix_only_file.close()
+mswindows_only_file.write(TAIL)
+mswindows_only_file.close()
 # Write list of GTK+ functions in a CSV file:
 index.sort()
 index_file = csv.writer(open("gtk-fortran-index.csv", "w"), delimiter=";")
@@ -801,14 +813,6 @@ index_file.writerows(index)
 errors_list.sort()
 errors_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
 errors_file.writerows(errors_list)
-
-# Close global files:
-TAIL = "end interface\nend module "+"gtk_os_dependent"+"\n"
-unix_only_file.write(TAIL)
-unix_only_file.close()
-mswindows_only_file.write(TAIL)
-mswindows_only_file.close()
-enums_file.close()
 
 print_statistics()
 
