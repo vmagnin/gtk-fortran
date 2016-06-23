@@ -419,7 +419,6 @@ def analyze_prototypes():
                 error_flag = True
                 write_error(directory[0], c_file_name, "Unknown type:  "
                             + function_type, proto, True)
-                type_errors_list.append(function_type)
                 continue
 
         # f_name will contain the name of the function in gtk-fortran:
@@ -486,7 +485,6 @@ def analyze_prototypes():
                 write_error(directory[0], c_file_name,
                             "Unknown type:  " + arg,
                             proto, True)
-                type_errors_list.append(arg)
 
             # Search the variable name:
             try:
@@ -593,6 +591,7 @@ TYPES_DICT = {
     "time_t":("integer(c_long)", "c_long"),  #typedef __time_t time_t;
     "short":("integer(c_short)", "c_short"),
     "boolean":("logical(c_bool)", "c_bool"),
+    "char":("character(kind=c_char)", "c_char"),
     # For gchar & guchar, see https://github.com/jerryd/gtk-fortran/issues/41#issuecomment-7337877
     "gchar":("integer(kind=c_int8_t)", "c_int8_t"),   #("character(kind=c_char)", "c_char"),
     "guchar":("integer(kind=c_int8_t)", "c_int8_t"),  #("character(kind=c_char)", "c_char"),
@@ -660,7 +659,6 @@ nb_variadic = 0
 nb_files = 0
 nb_enumerators = 0
 nb_win32_utf8 = 0
-type_errors_list = []
 
 # Define libraries paths and corresponding *-auto.f90 files.
 # Do not change the order of the dictionary keys:
@@ -803,11 +801,6 @@ index_file.writerows(index)
 errors_list.sort()
 errors_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
 errors_file.writerows(errors_list)
-# Save remaining error types:
-type_errors_list.sort()
-TYPE_ERRORS_FILE = open("cfwrapper-type_errors.txt", "w")
-for a_type in type_errors_list:
-    TYPE_ERRORS_FILE.write(a_type+"\n")
 
 # Close global files:
 TAIL = "end interface\nend module "+"gtk_os_dependent"+"\n"
@@ -815,7 +808,6 @@ unix_only_file.write(TAIL)
 unix_only_file.close()
 mswindows_only_file.write(TAIL)
 mswindows_only_file.close()
-TYPE_ERRORS_FILE.close()
 enums_file.close()
 
 print_statistics()
