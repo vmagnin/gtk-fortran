@@ -395,6 +395,10 @@ def analyze_prototypes():
             write_error(directory[0], c_file_name,
                         "Returned type not found", proto, False)
             continue    # Next prototype
+        if function_type == " ":
+            write_error(directory[0], c_file_name,
+                        "Returned type not found", proto, False)
+            continue    # Next prototype
 
         # Will it be a Fortran function or a subroutine ?
         if ("void" in function_type) and ("*" not in function_type):
@@ -478,7 +482,7 @@ def analyze_prototypes():
             elif "?" in f_type:     # Type not found
                 error_flag = True
                 write_error(directory[0], c_file_name,
-                            "Unknown data type:  " + arg,
+                            "Unknown type:  " + arg,
                             proto, True)
                 type_errors_list.append(arg)
 
