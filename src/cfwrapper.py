@@ -333,6 +333,8 @@ def clean_header_file():
     # Remove "available_in" and "deprecated" directives:
     whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
                         "", whole_file)
+    # Remove extern C statement:
+    whole_file = re.sub("(?m)^(extern).*$", "", whole_file)
     # Remove different kind of declarations:
     whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
     whole_file = re.sub("(?m)^(typedef|union|struct).*$",
@@ -341,7 +343,7 @@ def clean_header_file():
     whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$",
                         "", whole_file)
     whole_file = re.sub(r"(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
-    whole_file = re.sub("(?m)^.*(cairo_public|extern) ", "", whole_file)
+    whole_file = re.sub("(?m)^.*(cairo_public) ", "", whole_file)
     whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC|G_GNUC_WARN_UNUSED_RESULT)"
                         , "", whole_file)   # extern
     # Remove empty lines:
