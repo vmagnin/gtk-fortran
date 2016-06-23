@@ -524,25 +524,25 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
         interface3 += 1*TAB + returned_type + " :: " + f_name + "\n"
     interface3 += declarations
     interface3 += 0*TAB + f_the_end + "\n\n"
+    interface = interface1+interface2+interface3
 
-    # Deals with the Win32 _utf8 functions: the normal form and
-    # the Windows form are dispatched in two platform dependent
-    # files, although the module name is always "gtk_os_dependent":
+    # For Win32 _utf8 functions, the normal form and the Windows form are
+    # dispatched in two platform dependent files, with the same module name:
     if re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$",
                  whole_file_original):
-        unix_only_file.write(interface1+interface2+interface3)
+        unix_only_file.write(interface)
         index.append(["gtk_os_dependent", f_name,
                       "unixonly-auto.f90/mswindowsonly-auto.f90",
-                      directory[0]+"/"+c_file_name, prototype])
+                      directory[0]+"/"+c_file_name, prototype, first_line])
         first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
         interface2_utf8 = multiline(first_line, 80) + "\n"
         mswindows_only_file.write(interface1+interface2_utf8+interface3)
         nb_generated_interfaces += 2
         nb_win32_utf8 += 1
     else: # Non platform specific functions
-        f_file.write(interface1+interface2+interface3)
+        f_file.write(interface)
         index.append([module_name, f_name, f_file_name,
-                      directory[0]+"/"+c_file_name, prototype])
+                      directory[0]+"/"+c_file_name, prototype, first_line])
         nb_generated_interfaces += 1
 
 
