@@ -113,7 +113,7 @@ def hash_gtk_fortran():
     with open("gtk-fortran-hash.pkl", 'wb') as hash_file:
         pickle.dump(new_hash, hash_file)
     # Print new hash and compare with previous hash:
-    print("\nSHA1: ", new_hash)
+    print("* SHA1: ", new_hash)
     if new_hash != previous_hash:
         print(">>>>>> SHA 1 HAS BEEN MODIFIED ! It was ", previous_hash, " <<<<<<")
         print()
@@ -150,8 +150,6 @@ def print_statistics():
     print('{:<30}{:>6}'.format("* nb_win32_utf8 =", nb_win32_utf8))
     print('{:<30}{:>6}'.format("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT)))
     print("* Computing time: {0:.2f} s".format(time.time()-T0))
-    print()
-    print(used_types)
 
 
 def iso_c_binding(declaration, returned):
@@ -817,8 +815,8 @@ errors_file.writerows(errors_list)
 print_statistics()
 # Print the SHA1 of all *-auto.f90 files and look for modification:
 hash_gtk_fortran()
-
-
+print("\n", used_types)
+    
 if ARGS.build:
     # Extracts the structure definitions for Gdk events
     # and generate gdkevents_auto?.f90:
