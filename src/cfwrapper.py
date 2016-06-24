@@ -815,10 +815,14 @@ errors_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
 errors_file.writerows(errors_list)
 
 print_statistics()
-
 # Print the SHA1 of all *-auto.f90 files and look for modification:
 hash_gtk_fortran()
 
+
 if ARGS.build:
+    # Extracts the structure definitions for Gdk events
+    # and generate gdkevents_auto?.f90:
+    if GTK_VERSION != "gtk2":
+        subprocess.call(["./extract_events.pl"])
     # Build the gtk-fortran project using CMake:
     subprocess.call(["./build.sh"])
