@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 06-23-2016 (Python 3.5.1, Linux Ubuntu 16.04)
-# pylint3 score: 8.68/10
+# Last modification: 06-25-2016 (Python 3.5.1, Linux Ubuntu 16.04)
+# pylint3 score: 8.69/10
 
 """ Generates the *-auto.f90 files from the C header files of GLlib and GTK+.
 For help, type: ./cfwrapper.py -h
@@ -48,19 +48,16 @@ def lib_version(lib_name, psys):
     """ Receive the name of a library package and the packaging system, and
     returns the version of the library if found, else returns ?.?.?
     """
-    common = " 2>/dev/null | grep Version"
+    common = lib_name + " 2>/dev/null | grep Version"
     if psys == "deb":        # Debian/Ubuntu command line:
-        libversion = os.popen("dpkg -p " + lib_name
-                              + common, mode='r').read()
-        if libversion == "": # try APT instead of dpkg:
-            libversion = os.popen("apt-cache show " + lib_name
-                                  + common, mode='r').read()
+        # Try first APT:
+        libversion = os.popen("apt-cache show " + common, mode='r').read()
+        if libversion == "": # then dpkg:
+            libversion = os.popen("dpkg -p " + common, mode='r').read()
     elif psys == "pacman":   # Arch/Manjaro command line
-        libversion = os.popen("pacman -Qi " + lib_name
-                              + common, mode='r').read()
+        libversion = os.popen("pacman -Qi " + common, mode='r').read()
     elif psys == "rpm":      # Mageia (& Fedora?) command line
-        libversion = os.popen("rpm -qi " + lib_name
-                              + common, mode='r').read()
+        libversion = os.popen("rpm -qi " + common, mode='r').read()
     else:
         print("Unknown package system: (", psys, "): ", lib_name)
         libversion = ""
@@ -68,7 +65,7 @@ def lib_version(lib_name, psys):
     if libversion == "":       # package not found
         # Uncomment the following line and change the command line for the
         # packaging system of your Linux distribution:
-        # libversion = os.popen("dpkg -p "+lib_name+common, mode='r').read()
+        # libversion = os.popen("dpkg -p " + common, mode='r').read()
         pass     # no operation instruction to avoid an empty if statement
 
     try:
@@ -816,7 +813,7 @@ print_statistics()
 # Print the SHA1 of all *-auto.f90 files and look for modification:
 hash_gtk_fortran()
 print("\n", used_types)
-    
+
 if ARGS.build:
     # Extracts the structure definitions for Gdk events
     # and generate gdkevents_auto?.f90:
