@@ -20,7 +20,7 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin, last updated: 12/29/2013
+# Contributed by James Tappin, last updated by vmagnin: 06/29/2016
 
 # set(sources
 #   "plplot_extra.f90")
@@ -73,25 +73,13 @@ if (NOT NO_BUILD_EXAMPLES)
     add_test(hl_plplot4e ./hl_plplot4e)
   endif (NEW_PLPLOT)
 
-  add_executable(hl_plplot8e "hl_plplot8e.f90")
-  add_dependencies(hl_plplot8e plplot_extra_module)
-  target_link_libraries(hl_plplot8e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
-  add_test(hl_plplot8e ./hl_plplot8e)
+  foreach(example hl_plplot8e hl_plplot17e hl_plplot17e_gto hl_plplot30e)
+    add_executable(${example} "${example}.f90")
+    add_dependencies(${example} plplot_extra_module)
+    target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
+    add_test(${example} ./${example})
+  endforeach(example)
 
-  add_executable(hl_plplot17e "hl_plplot17e.f90")
-  add_dependencies(hl_plplot17e plplot_extra_module)
-  target_link_libraries(hl_plplot17e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
-  add_test(hl_plplot17e ./hl_plplot17e)
-
-  add_executable(hl_plplot17e_gto "hl_plplot17e_gto.f90")
-  add_dependencies(hl_plplot17e_gto plplot_extra_module)
-  target_link_libraries(hl_plplot17e_gto gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
-  add_test(hl_plplot17e_gto ./hl_plplot17e_gto)
-
-  add_executable(hl_plplot30e "hl_plplot30e.f90")
-  add_dependencies(hl_plplot30e plplot_extra_module)
-  target_link_libraries(hl_plplot30e gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
-  add_test(hl_plplot30e ./hl_plplot30e)
 endif (NOT NO_BUILD_EXAMPLES) 
 
 # If the INSTALL_EXAMPLES variable is set, then copy the examples
