@@ -225,6 +225,8 @@ module handlers
 
   implicit none
 
+  private :: fdate
+
 contains
 
   subroutine copy_file(source,destination)
@@ -798,9 +800,22 @@ contains
     call gtk_toggle_button_set_active (use_hl_gtk_button, gbool(use_hl_gtk))
     call gtk_toggle_button_set_active (include_files_button, gbool(include_files))
     call gtk_toggle_button_set_active (widgetshandlers_button, gbool(widgetshandlers))
-     
-  end subroutine default_options  
-  
+
+  end subroutine default_options
+
+  ! Contributed by IanH0073 (issue #81)
+  function fdate()
+    character(29) :: fdate
+    character(8) :: date
+    character(10) :: time
+    character(5) :: zone
+
+    call date_and_time(date, time, zone)
+    fdate = date(1:4) // '-' // date(5:6) // '-' // date(7:8)  &
+            // 'T' // time(1:2) // ':' // time(3:4) // ':' // time(5:10)  &
+            // zone(1:3) // ':' // zone(4:5)
+  end function fdate
+
 end module handlers
 
 program gtkfsketcher
