@@ -22,9 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-
-# Last modifications: James Tappin 8/17/2012.
-
+# Last modifications: James Tappin 8/17/2012, vmagnin 07/02/2016
 # CMAKE build file for GtkFortran
 
 cmake_minimum_required(VERSION 2.8.5)
@@ -45,14 +43,38 @@ set(CMAKE_INSTALL_LIBDIR lib)
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE release)
 endif()
-message(STATUS "Build type is: ${CMAKE_BUILD_TYPE}")
 
-# Removed -ffpe-trap=invalid,zero,overflow as it gives a lot of crashes deep
-# in the call stack in Gtk3
-set(CMAKE_Fortran_FLAGS_DEBUG
-"-g -pthread -Wall -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
-set(CMAKE_Fortran_FLAGS_RELEASE
-"-pthread -O3 -mtune=native -march=native")
+# Setting compilation flags for various compilers and build types:
+if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
+    # gfortran compiler:
+    # Removed -ffpe-trap=invalid,zero,overflow as it gives a lot of crashes deep
+    # in the call stack in Gtk3
+    set(CMAKE_Fortran_FLAGS_DEBUG
+        "-g -pthread -Wall -pedantic -std=f2008 -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
+    set(CMAKE_Fortran_FLAGS_RELEASE
+        "-pthread -O3 -mtune=native -march=native")
+elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
+    # ifort compiler:
+    set(CMAKE_Fortran_FLAGS_DEBUG
+        "-g")
+    set(CMAKE_Fortran_FLAGS_RELEASE
+        "-O3 -mtune=native -march=native")
+    # You can add here elseif() for other specific compilers...
+else()
+    # Other compilers :
+    set(CMAKE_Fortran_FLAGS_DEBUG "-g")
+    set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
+endif()
+
+# Print compiler CMake ID, version and path:
+message(STATUS "Compiler: ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION} ${CMAKE_Fortran_COMPILER}")
+message(STATUS "Build type is: ${CMAKE_BUILD_TYPE}")
+# Print compilation flags :
+if (${CMAKE_BUILD_TYPE} STREQUAL "release")
+    message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS_RELEASE}")
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "debug")
+    message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS_DEBUG}")
+endif()
 
 set(CPACK_PACKAGE_VERSION "0.1.0")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk3-fortran")
@@ -63,7 +85,7 @@ include(CPack)
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(CheckFortranSourceCompiles)
 
-# uninstall target
+# Uninstall target
 configure_file(
 	"${PROJECT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
 	"${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
@@ -97,6 +119,7 @@ set(GTK_LIBRARIES
 configure_file("${PROJECT_SOURCE_DIR}/Doxyfile"
 	"${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE)
 
+# Doxygen
 find_package(Doxygen)
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
 "latex" "html") 
@@ -107,7 +130,7 @@ documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 add_custom_target(doc)
 add_dependencies(doc doxygen)
 
-# 
+# PLplot
 if (NOT EXCLUDE_PLPLOT)
   find_package(PlplotF95 QUIET)
   set(HAVE_LIBPLPLOTF95D ${PLPLOT_FOUND})
@@ -133,7 +156,6 @@ if (NOT EXCLUDE_PLPLOT)
 
  integer :: i = PLESC_DEVINIT
  end program tdef" NEW_PLPLOT_DEFS)
-
 else(PLPLOT_FOUND)
     message(STATUS "PLPLOT not found: PLPLOT integration and examples will not be built")
   endif(PLPLOT_FOUND)
@@ -141,6 +163,7 @@ else(NOT EXCLUDE_PLPLOT)
   message(STATUS "PLPLOT Excluded as command option")
 endif(NOT EXCLUDE_PLPLOT)
 
+# Subdirectories with CMakeLists.txt files:
 add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(examples)
