@@ -21,7 +21,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by James Tappin 05/20/2011
-# Last modifications: Jens Hunger: 03/07/2013
+# Last modifications: Jens Hunger: 03/07/2013, vmagnin 07/02/2016
 
 # CMAKE build file for GtkFortran
 
@@ -34,66 +34,38 @@ add_executable(gtkf-sketcher "gtkf-sketcher.f90")
 target_link_libraries(gtkf-sketcher gtk-fortran_static ${GTK_LIBRARIES})
 # No test as the glade stuff is too sensitive to location
 
-if (UNIX)
-  add_custom_command(
-     OUTPUT gtkf-sketcher.glade
-     COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtkf-sketcher.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkf-sketcher.glade
-     DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkf-sketcher.glade
-     )
-   add_custom_command(
-     OUTPUT example.glade
-     COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/example.glade ${CMAKE_CURRENT_BINARY_DIR}/example.glade
-     DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/example.glade
-     )
-   add_custom_command(
-     OUTPUT default.options
-     COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/default.options ${CMAKE_CURRENT_BINARY_DIR}/default.options
-     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/default.options
-     )
-   add_custom_command(
-     OUTPUT data
-     COMMAND mkdir ${CMAKE_CURRENT_BINARY_DIR}/data
-     )
-   add_custom_command(
-     OUTPUT data/apache2.0.lic  data/gnu-gpl-v2.lic     data/gnu-lgpl-v2.lic
-     data/bsd.lic        data/gnu-gpl-v3.lic     data/zlib.lic
-     data/freeware.lic   data/gnu-lgpl-v2.1.lic
-     COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/data/*.lic ${CMAKE_CURRENT_BINARY_DIR}/data 
-     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/data/*.lic
-     )
-endif()
-if (CMAKE_HOST_WIN32)
-  add_custom_command(
-     OUTPUT gtkf-sketcher.glade
-     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtkf-sketcher.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkf-sketcher.glade
-     DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkf-sketcher.glade
-     )
-   add_custom_command(
-     OUTPUT example.glade
-     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/example.glade ${CMAKE_CURRENT_BINARY_DIR}/example.glade
-     DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/example.glade
-     )
-   add_custom_command(
-     OUTPUT default.options
-     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/default.options ${CMAKE_CURRENT_BINARY_DIR}/default.options
-     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/default.options
-     )
-   add_custom_command(
-     OUTPUT data
-     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/data
-     )
-   add_custom_command(
-     OUTPUT data/apache2.0.lic  data/gnu-gpl-v2.lic     data/gnu-lgpl-v2.lic
-     data/bsd.lic        data/gnu-gpl-v3.lic     data/zlib.lic
-     data/freeware.lic   data/gnu-lgpl-v2.1.lic
-     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data 
-     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/data/*.lic
-     )
-endif()
+# Copy files using cross-platform cmake -E copy:
+add_custom_command(
+    OUTPUT gtkf-sketcher.glade
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtkf-sketcher.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkf-sketcher.glade
+    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkf-sketcher.glade
+    )
+add_custom_command(
+    OUTPUT example.glade
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/example.glade ${CMAKE_CURRENT_BINARY_DIR}/example.glade
+    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/example.glade
+    )
+add_custom_command(
+    OUTPUT default.options
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/default.options ${CMAKE_CURRENT_BINARY_DIR}/default.options
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/default.options
+    )
+add_custom_command(
+    OUTPUT data
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/data
+    )
+add_custom_command(
+    OUTPUT data/apache2.0.lic  data/gnu-gpl-v2.lic     data/gnu-lgpl-v2.lic
+    data/bsd.lic        data/gnu-gpl-v3.lic     data/zlib.lic
+    data/freeware.lic   data/gnu-lgpl-v2.1.lic
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/data/*.lic
+    )
 
- add_custom_target(sketcher-glade ALL DEPENDS "gtkf-sketcher.glade")
- add_custom_target(example-glade ALL DEPENDS "example.glade")
- add_custom_target(default-options ALL DEPENDS "default.options")
- add_custom_target(licenses ALL DEPENDS data data/apache2.0.lic  data/gnu-gpl-v2.lic     data/gnu-lgpl-v2.lic
-   data/bsd.lic        data/gnu-gpl-v3.lic     data/zlib.lic
-   data/freeware.lic   data/gnu-lgpl-v2.1.lic)
+add_custom_target(sketcher-glade  ALL DEPENDS "gtkf-sketcher.glade")
+add_custom_target(example-glade   ALL DEPENDS "example.glade")
+add_custom_target(default-options ALL DEPENDS "default.options")
+add_custom_target(licenses ALL
+    DEPENDS data data/apache2.0.lic  data/gnu-gpl-v2.lic  data/gnu-lgpl-v2.lic
+    data/bsd.lic        data/gnu-gpl-v3.lic     data/zlib.lic
+    data/freeware.lic   data/gnu-lgpl-v2.1.lic)
