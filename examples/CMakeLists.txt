@@ -22,7 +22,7 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 06/29/2016
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 07/02/2016
 
 # CMAKE build file for GtkFortran
 
@@ -33,21 +33,13 @@ include_directories(${GTK_INCLUDES})
 
 if (NOT NO_BUILD_EXAMPLES)
   # Build the two gtkbuilders examples:
-  if (UNIX)
-    add_custom_command(
-      OUTPUT gtkbuilder.glade
-      COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder.glade
-      DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade
-      )
-  endif()
-  if (CMAKE_HOST_WIN32)
-    add_custom_command(
-      OUTPUT gtkbuilder.glade
-      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder.glade
-      DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade
-      )
-  endif()
+  add_custom_command(
+    OUTPUT gtkbuilder.glade
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder.glade
+    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade
+  )
   add_custom_target(glade ALL DEPENDS "gtkbuilder.glade")
+
   add_executable(gtkbuilder "gtkbuilder.f90")
   target_link_libraries(gtkbuilder gtk-fortran_static ${GTK_LIBRARIES})
   # This test is excluded because the directories don't match up.
