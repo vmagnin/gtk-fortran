@@ -26,8 +26,8 @@
 
 # CMAKE build file for GtkFortran
 
-include_directories("/usr/include")
-include_directories("/usr/local/include")
+#include_directories("/usr/include")
+#include_directories("/usr/local/include")
 include_directories("${CMAKE_BINARY_DIR}/src")
 include_directories(${GTK_INCLUDES})
 
