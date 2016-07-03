@@ -21,7 +21,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 03/07/2016
+# Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 03/07/2016 (vmagnin)
 
 # CMAKE build file for GtkFortran
 
@@ -116,14 +116,12 @@ add_custom_target(usemodules ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortr
   ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis)
 
 # Man page(s)
-add_custom_command(
-  OUTPUT gtk-3-fortran-modscan.1
-  COMMAND sed -e s/@GTK@/3/  ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man > ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan.1
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man
-)
-
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man MODSCAN_IN)
+string(REPLACE "@GTK@" "3" MODSCAN_OUT "${MODSCAN_IN}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan.1 "${MODSCAN_OUT}")
 add_custom_target(manpage ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan.1)
 
+# TODO: comment
 if (CMAKE_HOST_WIN32)
   install(TARGETS gtk-fortran_static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -164,25 +162,23 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_os_dependent.mod"
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-3-fortran)
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-3-fortran
+)
 
 install(PROGRAMS
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan"
   DESTINATION ${CMAKE_INSTALL_BINDIR}
   PERMISSIONS WORLD_EXECUTE
 )
-
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv"
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis"
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran
 )
-
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )
-
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan.1"
   DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
