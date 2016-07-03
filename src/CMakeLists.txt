@@ -185,6 +185,7 @@ install(FILES
 install(PROGRAMS
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan"
   DESTINATION ${CMAKE_INSTALL_BINDIR}
+  PERMISSIONS WORLD_EXECUTE
 )
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv"
