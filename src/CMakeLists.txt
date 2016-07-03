@@ -21,7 +21,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: Jens Hunger: 03/06/2013
+# Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 03/07/2016
 
 # CMAKE build file for GtkFortran
 
@@ -100,16 +100,6 @@ if (CMAKE_HOST_WIN32)
     COMMAND sed -e s+@PREFIX@+${CMAKE_INSTALL_PREFIX}+ -e s/@GTK@/3/ -e s+@SHARE@+${CMAKE_INSTALL_DATAROOTDIR}+ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl > ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl
   )
-  add_custom_command(
-    OUTPUT gtk-3-fortran-index.csv
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv
-  )
-  add_custom_command(
-    OUTPUT gtk-3-enumerators.lis
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
-  )
 else()
   add_custom_command(
     OUTPUT gtk-3-fortran-modscan
@@ -117,20 +107,21 @@ else()
     COMMAND chmod a+x ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl
   )
-  add_custom_command(
+endif()
+
+add_custom_command(
     OUTPUT gtk-3-fortran-index.csv
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv
-  )
-  add_custom_command(
+)
+add_custom_command(
     OUTPUT gtk-3-enumerators.lis
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
-  )
-endif()
+)
 
-add_custom_target(usemodules ALL DEPENDS gtk-3-fortran-modscan
-  gtk-3-fortran-index.csv gtk-3-enumerators.lis)
+add_custom_target(usemodules ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan
+  ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis)
 
 # Man page(s)
 add_custom_command(
@@ -139,13 +130,13 @@ add_custom_command(
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man
 )
 
-add_custom_target(manpage ALL DEPENDS gtk-3-fortran-modscan.1)
+add_custom_target(manpage ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan.1)
 
 if (CMAKE_HOST_WIN32)
   install(TARGETS gtk-fortran_static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR})
-  install(TARGETS gtk-fortran_shared LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  install(TARGETS gtk-fortran_shared LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 else()
   install(TARGETS gtk-fortran_static ARCHIVE DESTINATION 
     ${CMAKE_INSTALL_LIBDIR})
@@ -182,11 +173,13 @@ install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
 	"${CMAKE_CURRENT_BINARY_DIR}/gtk_os_dependent.mod"
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-3-fortran)
+
 install(PROGRAMS
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan"
   DESTINATION ${CMAKE_INSTALL_BINDIR}
   PERMISSIONS WORLD_EXECUTE
 )
+
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv"
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis"
@@ -196,9 +189,9 @@ install(FILES
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
-  )
+)
 
 install(FILES
-   "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan.1"
-   DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
+  "${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan.1"
+  DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
 )
