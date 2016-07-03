@@ -63,9 +63,9 @@ else()
     "unixonly-auto.f90")
 endif()
 
-include_directories("/usr/include")
+#include_directories("/usr/include")
 include_directories(${GTK_INCLUDES})
-include_directories("/usr/local/include")
+#include_directories("/usr/local/include")
 
 add_library(gtk-fortran_static STATIC ${sources})
 add_library(gtk-fortran_shared SHARED ${sources})
@@ -119,12 +119,12 @@ else()
   )
   add_custom_command(
     OUTPUT gtk-3-fortran-index.csv
-    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv
   )
   add_custom_command(
     OUTPUT gtk-3-enumerators.lis
-    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
   )
 endif()
