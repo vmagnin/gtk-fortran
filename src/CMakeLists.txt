@@ -85,28 +85,23 @@ SOVERSION "0.1")
 
 # Does pkg-config have an equivalent in Windows? If so, then please
 # add a suitable generator and installation.
+
+# Copy gtk-3-fortran.pc.in and replace strings @prefix@ and @version@ by their values:
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-3-fortran.pc.in GTK3PCIN)
 string(REPLACE "@prefix@" "${CMAKE_INSTALL_PREFIX}" GTK3PCOUT1 "${GTK3PCIN}")
 string(REPLACE "@version@" "${CPACK_PACKAGE_VERSION}" GTK3PCOUT2 "${GTK3PCOUT1}")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc "${GTK3PCOUT2}")
 add_custom_target(pkgconfig ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc)
 
-# The USE generator system.
-if (CMAKE_HOST_WIN32)
-  add_custom_command(
-    OUTPUT gtk-3-fortran-modscan
-    COMMAND sed -e s+@PREFIX@+${CMAKE_INSTALL_PREFIX}+ -e s/@GTK@/3/ -e s+@SHARE@+${CMAKE_INSTALL_DATAROOTDIR}+ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl > ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl
-  )
-else()
-  add_custom_command(
-    OUTPUT gtk-3-fortran-modscan
-    COMMAND sed -e s+@PREFIX@+${CMAKE_INSTALL_PREFIX}+ -e s/@GTK@/3/ -e s+@SHARE@+${CMAKE_INSTALL_DATAROOTDIR}+ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl > ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan
-    COMMAND chmod a+x ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl
-  )
-endif()
+# The USE generator system. Copy usemodules.pl and replace strings @PREFIX@, @SHARE@ 
+# and @GTK@ by their values:
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl USERMODULE_IN)
+string(REPLACE "@PREFIX@" "${CMAKE_INSTALL_PREFIX}" USERMODULE_OUT1 "${USERMODULE_IN}")
+string(REPLACE "@SHARE@" "${CMAKE_INSTALL_DATAROOTDIR}" USERMODULE_OUT2 "${USERMODULE_OUT1}")
+string(REPLACE "@GTK@" "3" USERMODULE_OUT3 "${USERMODULE_OUT2}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan "${USERMODULE_OUT3}")
 
+# Copy those files:
 add_custom_command(
     OUTPUT gtk-3-fortran-index.csv
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv
@@ -117,7 +112,6 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
 )
-
 add_custom_target(usemodules ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan
   ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis)
 
