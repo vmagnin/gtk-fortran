@@ -85,13 +85,11 @@ SOVERSION "0.1")
 
 # Does pkg-config have an equivalent in Windows? If so, then please
 # add a suitable generator and installation.
-add_custom_command(
-  OUTPUT gtk-3-fortran.pc
-  COMMAND sed -e s+@prefix@+${CMAKE_INSTALL_PREFIX}+ -e s/@version@/${CPACK_PACKAGE_VERSION}/ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-3-fortran.pc.in > ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-3-fortran.pc.in
-  )
-add_custom_target(pkgconfig ALL DEPENDS "gtk-3-fortran.pc")
-
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-3-fortran.pc.in GTK3PCIN)
+string(REPLACE "@prefix@" "${CMAKE_INSTALL_PREFIX}" GTK3PCOUT1 "${GTK3PCIN}")
+string(REPLACE "@version@" "${CPACK_PACKAGE_VERSION}" GTK3PCOUT2 "${GTK3PCOUT1}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc "${GTK3PCOUT2}")
+add_custom_target(pkgconfig ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran.pc)
 
 # The USE generator system.
 if (CMAKE_HOST_WIN32)
