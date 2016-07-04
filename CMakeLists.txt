@@ -22,12 +22,11 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-
-# Last modifications: James Tappin 8/17/2012.
-
+# Last modifications: James Tappin 8/17/2012, vmagnin 07/04/2016
 # CMAKE build file for GtkFortran
 
 cmake_minimum_required(VERSION 2.8.5)
+
 project(gtk-fortran Fortran)
 
 # CMAKE versions up to and including 2.8.10 fail to add the GIO libs for GTK2
@@ -45,15 +44,40 @@ set(CMAKE_INSTALL_LIBDIR lib)
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE release)
 endif()
+
+# Setting compilation flags for various compilers and build types:
+if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
+    # gfortran compiler:
+    # Removed -ffpe-trap=invalid,zero,overflow as it gives a lot of crashes deep
+    # in the call stack in Gtk3
+    set(CMAKE_Fortran_FLAGS_DEBUG
+        "-g -pthread -Wall -pedantic -std=f2008 -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
+    set(CMAKE_Fortran_FLAGS_RELEASE
+        "-pthread -O3 -mtune=native -march=native")
+elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
+    # ifort compiler:
+    set(CMAKE_Fortran_FLAGS_DEBUG
+        "-g -warn all")
+    set(CMAKE_Fortran_FLAGS_RELEASE
+        "-O3 -mtune=native -march=native")
+# You can add here elseif() for other specific compilers...
+else()
+    # Other compilers:
+    set(CMAKE_Fortran_FLAGS_DEBUG "-g")
+    set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
+endif()
+
+# Print compiler CMake ID, version and path:
+message(STATUS "Compiler: ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION} ${CMAKE_Fortran_COMPILER}")
 message(STATUS "Build type is: ${CMAKE_BUILD_TYPE}")
+# Print compilation flags :
+if (${CMAKE_BUILD_TYPE} STREQUAL "release")
+    message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS_RELEASE}")
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "debug")
+    message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS_DEBUG}")
+endif()
 
-# Removed -ffpe-trap=invalid,zero,overflow as it gives a lot of crashes deep
-# in the call stack in Gtk3
-set(CMAKE_Fortran_FLAGS_DEBUG
-"-g -pthread -Wall -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
-set(CMAKE_Fortran_FLAGS_RELEASE
-"-pthread -O3 -mtune=native -march=native")
-
+# Package generation:
 set(CPACK_PACKAGE_VERSION "0.1.0")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk3-fortran")
 set(CPACK_GENERATOR "STGZ;TGZ")
@@ -63,51 +87,53 @@ include(CPack)
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(CheckFortranSourceCompiles)
 
-# uninstall target
+# Uninstall target
 configure_file(
-	"${PROJECT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
-	"${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-	IMMEDIATE @ONLY)
+    "${PROJECT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY)
 add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P
 ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 
+# Examples can be tested via make test:
 enable_testing()
 
+# GTK+ libraries:
 find_package(GTK3 COMPONENTS gtk)
 set(GTK_INCLUDES
-	${GTK3_ATK_INCLUDE_DIR}
-	${GTK3_CAIRO_INCLUDE_DIR}
-	${GTK3_GDK_INCLUDE_DIR}
-	${GTK3_GDK_PIXBUF_INCLUDE_DIR}
-	${GTK3_GLIB_INCLUDE_DIR}
-	${GTK3_GOBJECT_INCLUDE_DIR}
-	${GTK3_GTK_INCLUDE_DIR}
-	${GTK3_PANGO_INCLUDE_DIR} CACHE STRING "" FORCE)
+    ${GTK3_ATK_INCLUDE_DIR}
+    ${GTK3_CAIRO_INCLUDE_DIR}
+    ${GTK3_GDK_INCLUDE_DIR}
+    ${GTK3_GDK_PIXBUF_INCLUDE_DIR}
+    ${GTK3_GLIB_INCLUDE_DIR}
+    ${GTK3_GOBJECT_INCLUDE_DIR}
+    ${GTK3_GTK_INCLUDE_DIR}
+    ${GTK3_PANGO_INCLUDE_DIR} CACHE STRING "" FORCE)
 set(GTK_LIBRARIES
-	${GTK3_ATK_LIBRARY}
-	${GTK3_CAIRO_LIBRARY}
-	${GTK3_GDK_LIBRARY}
-	${GTK3_GDK_PIXBUF_LIBRARY}
-	${GTK3_GLIB_LIBRARY}
-	${GTK3_GIO_LIBRARY}
-	${GTK3_GOBJECT_LIBRARY}
-	${GTK3_GTK_LIBRARY}
-	${GTK3_PANGO_LIBRARY} CACHE STRING "" FORCE)
+    ${GTK3_ATK_LIBRARY}
+    ${GTK3_CAIRO_LIBRARY}
+    ${GTK3_GDK_LIBRARY}
+    ${GTK3_GDK_PIXBUF_LIBRARY}
+    ${GTK3_GLIB_LIBRARY}
+    ${GTK3_GIO_LIBRARY}
+    ${GTK3_GOBJECT_LIBRARY}
+    ${GTK3_GTK_LIBRARY}
+    ${GTK3_PANGO_LIBRARY} CACHE STRING "" FORCE)
 
+# Doxygen documentation generation:
 configure_file("${PROJECT_SOURCE_DIR}/Doxyfile"
-	"${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE)
-
+    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE)
 find_package(Doxygen)
-set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
-"latex" "html") 
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "latex" "html") 
 add_custom_target(doxygen
-	COMMAND ${DOXYGEN_EXECUTABLE}
-"${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" COMMENT "Writing
-documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    COMMAND ${DOXYGEN_EXECUTABLE}
+    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" 
+    COMMENT "Writing documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
 add_custom_target(doc)
 add_dependencies(doc doxygen)
 
-# 
+# PLplot
 if (NOT EXCLUDE_PLPLOT)
   find_package(PlplotF95 QUIET)
   set(HAVE_LIBPLPLOTF95D ${PLPLOT_FOUND})
@@ -117,7 +143,7 @@ if (NOT EXCLUDE_PLPLOT)
     include_directories(${PLPLOT_MODULE_DIR})
     set(CMAKE_REQUIRED_LIBRARIES "${PLPLOT_LIBRARIES}")
     set(CMAKE_REQUIRED_INCLUDES "${PLPLOT_INCLUDE_DIR}; ${PLPLOT_MODULE_DIR}")
-   check_fortran_source_compiles("
+    check_fortran_source_compiles("
  program tw
  use plplot
  implicit none
@@ -125,22 +151,24 @@ if (NOT EXCLUDE_PLPLOT)
  real(kind=plflt) :: w = 0.5_plflt
  call plinit()
  call plwidth(w)
- end program tw" NEW_PLPLOT)
+ end program tw" NEW_PLPLOT
+    )
     check_fortran_source_compiles("
  program tdef
  use plplot
  implicit none
 
  integer :: i = PLESC_DEVINIT
- end program tdef" NEW_PLPLOT_DEFS)
-
-else(PLPLOT_FOUND)
+ end program tdef" NEW_PLPLOT_DEFS
+    )
+  else(PLPLOT_FOUND)
     message(STATUS "PLPLOT not found: PLPLOT integration and examples will not be built")
   endif(PLPLOT_FOUND)
 else(NOT EXCLUDE_PLPLOT)
   message(STATUS "PLPLOT Excluded as command option")
 endif(NOT EXCLUDE_PLPLOT)
 
+# Subdirectories with CMakeLists.txt files:
 add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(examples)

@@ -59,7 +59,7 @@ module widgets
   logical::use_hl_gtk=.true.
   logical::include_files=.true.
   logical::widgetshandlers=.false.
-   
+
 end module
 
 module strings
@@ -84,7 +84,7 @@ contains
     end do
     if (i<len(F_string)) F_string(i:) = ' '
    end subroutine C_F_string_chars
-   
+
 ! Copy a C string, passed by pointer, to a Fortran string.
 ! If the C pointer is NULL, the Fortran string is blanked.
 ! C_string must be NUL terminated, or at least as long as F_string.
@@ -111,18 +111,18 @@ contains
   function gbool_equal_fbool(gbool,fbool) result(ret)
     integer(c_int), intent(in) :: gbool
     logical, intent(in) :: fbool
-    logical :: ret    
+    logical :: ret
     if (((gbool.eq.true).and.(fbool)).or.((gbool.eq.false).and.(.not.fbool))) then
       ret=.true.
     else
       ret=.false.
     endif
-    write(*,*),gbool,fbool,ret
+    write(*,*) gbool,fbool,ret
   end function gbool_equal_fbool
-  
+
   function gbool(fbool) result(ret)
     logical, intent(in) :: fbool
-    integer(c_int) :: ret    
+    integer(c_int) :: ret
     if (fbool) then
       ret=true
     else
@@ -132,7 +132,7 @@ contains
 
   function fbool(gbool) result(ret)
     integer(c_int), intent(in) :: gbool
-    logical :: ret    
+    logical :: ret
     if (gbool.eq.true) then
       ret=.true.
     else
@@ -157,7 +157,7 @@ module connect
   use g, only: g_object_unref, g_slist_length, g_slist_nth_data, g_object_get_property,&
   g_object_get_valist, g_value_get_string, g_mkdir_with_parents, g_value_init, g_value_set_string, g_value_unset
   use gtk_hl, only: hl_gtk_file_chooser_show, gtktreeiter, gvalue, hl_gtk_message_dialog_show, type_kind, G_TYPE_STRING
-  
+
   implicit none
 
   type signal_connection
@@ -165,13 +165,13 @@ module connect
     character(len=64)::signal_name
     character(len=64)::handler_name
   end type signal_connection
-      
+
   integer::n_connections
   type(signal_connection), dimension(:), allocatable::connections
-  type(c_ptr) :: gslist !list containing the widgets 
-  
+  type(c_ptr) :: gslist !list containing the widgets
+
   contains
-   
+
   subroutine count_connections (builder, object, signal_name, handler_name, connect_object, flags, user_data) bind(c)
     use iso_c_binding, only: c_ptr, c_char, c_int
     type(c_ptr), value                     :: builder        !a GtkBuilder
@@ -180,8 +180,8 @@ module connect
     character(kind=c_char), dimension(*)   :: handler_name   !name of the handler
     type(c_ptr), value                     :: connect_object !a GObject, if non-NULL, use g_signal_connect_object()
     integer(c_int), value                  :: flags          !GConnectFlags to use
-    type(c_ptr), value                     :: user_data      !user data 
-     
+    type(c_ptr), value                     :: user_data      !user data
+
     n_connections=n_connections+1
   end subroutine count_connections
 
@@ -193,13 +193,13 @@ module connect
     character(kind=c_char), dimension(*)   :: handler_name   !name of the handler
     type(c_ptr), value                     :: connect_object !a GObject, if non-NULL, use g_signal_connect_object()
     integer(c_int), value                  :: flags          !GConnectFlags to use
-    type(c_ptr), value                     :: user_data      !user data 
-      
+    type(c_ptr), value                     :: user_data      !user data
+
     character(len=64)                      :: sname
     character(len=64)                      :: hname
     type(c_ptr)                            :: object_name_ptr
     character(len=64)                      :: oname
-  
+
     call C_F_string_chars(signal_name, sname)
     call C_F_string_chars(handler_name, hname)
     object_name_ptr=gtk_buildable_get_name (object)
@@ -216,7 +216,7 @@ module connect
     connections(n_connections)%handler_name=hname
 
   end subroutine get_connections
-   
+
 end module connect
 
 module handlers
@@ -224,6 +224,8 @@ module handlers
   use connect
 
   implicit none
+
+  private :: fdate
 
 contains
 
@@ -332,7 +334,7 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: file_open
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-    
+
     integer(kind=c_int) :: isel
     character(len=120), dimension(:), allocatable :: chfile
     character(len=30), dimension(2) :: filters
@@ -361,13 +363,13 @@ contains
 
     filename = chfile(1)
     deallocate(chfile)
-    
+
     files_written=.false.
-    
+
     val = c_loc(value)
     val = g_value_init(val, G_TYPE_STRING)
     call gtk_list_store_clear(toplevel_widgets)
-    
+
     b = gtk_builder_new ()
     fileinfo=filename(1:len_trim(filename))
     guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
@@ -385,34 +387,34 @@ contains
       endif
       fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     enddo
-    
+
     n_connections=0
-    call gtk_builder_connect_signals_full (b, c_funloc(count_connections), c_null_ptr)  
+    call gtk_builder_connect_signals_full (b, c_funloc(count_connections), c_null_ptr)
     write(f_string,*) n_connections," signal connections found"
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     call g_object_unref (b)
-    
+
     if (allocated(connections)) deallocate(connections)
     allocate(connections(n_connections))
     n_connections=0
     b = gtk_builder_new ()
     guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
-    call gtk_builder_connect_signals_full (b, c_funloc(get_connections), c_null_ptr)  
+    call gtk_builder_connect_signals_full (b, c_funloc(get_connections), c_null_ptr)
     call g_object_unref (b)
     call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//c_null_char, -1_c_int)
 
     call gtk_combo_box_set_active(appwindow_selector,0_c_int)
     call g_value_unset(val)
-    
+
     file_loaded=.true.
-    
+
   end function file_open
 
   subroutine combobox_get_active_string_value(combobox,column,text)
     type(c_ptr)       :: combobox
     integer(c_int)    :: column
     character(len=256,kind=c_char)::text
- 
+
     type(c_ptr):: model, val, textptr
     type(gtktreeiter), target :: iter
     integer(kind=c_int) :: valid
@@ -426,13 +428,13 @@ contains
     call C_F_string_ptr(textptr, text)
 
   end subroutine combobox_get_active_string_value
-  
+
   function write_files (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: write_files
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-    
+
     character(len=256,kind=c_char)::subdir, license_file, line, &
          & handlerfile, appwindow, additional_modules
     integer::status_read, wunit, hunit
@@ -440,7 +442,7 @@ contains
     logical::already_used, lexist
     type(c_ptr) :: gpointer,object_name_ptr
     character(len=128) :: f_string, f_string_ori
-    
+
     if (.not.file_loaded) then
       status_read=hl_gtk_message_dialog_show((/"Please load some Glade3 UI file first!"/), GTK_BUTTONS_OK, &
         title="No Glade3 file loaded yet")
@@ -508,7 +510,7 @@ contains
         write(50,'(A)')"! "//line(1:len_trim(line))
       enddo
       close(60)
-    
+
       write(50,'(A)')"!"
       write(50,'(A)')"!"
       write(50,'(A)')"! Compile with:"
@@ -581,11 +583,11 @@ contains
         close (40)
         call chdir(working_dir)
       endif
-      
+
       if (use_hl_gtk) then
         write(hunit,'(A)')"  use gtk_hl"
       endif
-  
+
       if (include_files) then
         inquire(file=subdir(1:len_trim(subdir))//"_used_modules.inc",exist=lexist)
         if ((.not.lexist).or.(overwrite_handlerfiles)) then
@@ -598,7 +600,7 @@ contains
         endif
         write(hunit,'(A)')"  include """//subdir(1:len_trim(subdir))//"_used_modules.inc"""
       endif
-        
+
       write(hunit,'(A)')"  use widgets"
       write(hunit,'(A)')"  implicit none"
       write(hunit,'(A)')""
@@ -733,11 +735,11 @@ contains
       write(50,'(A)')"  ! that matches the handler name specified in Glade3"
       write(50,'(A)')"  call gtk_builder_connect_signals (builder, c_null_ptr)"
       write(50,'(A)')""
-      write(50,'(A)')"  ! free all memory used by XML stuff"     
+      write(50,'(A)')"  ! free all memory used by XML stuff"
       write(50,'(A)')"  call g_object_unref (builder)"
       write(50,'(A)')""
       write(50,'(A)')"  ! show the application window"
-      write(50,'(A)')"  call gtk_widget_show ("//appwindow(1:len_trim(appwindow))//")"      
+      write(50,'(A)')"  call gtk_widget_show ("//appwindow(1:len_trim(appwindow))//")"
       write(50,'(A)')""
       write(50,'(A)')"  ! enter the GTK+ main loop"
       write(50,'(A)')"  call gtk_main ()"
@@ -751,7 +753,7 @@ contains
 
       files_written=.true.
     endif
-    
+
     ret = FALSE
   end function write_files
 
@@ -760,33 +762,33 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: save_default_options
     type(c_ptr), value :: widget, gdata
     character(len=20)::defaultsfile="default.options"
-   
+
     open(111,file=base_dir(1:len_trim(base_dir))//"/"//defaultsfile, action='write')
     write(111,'(8L1)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols,update_used_functions,&
       use_hl_gtk,include_files,widgetshandlers
     write(111,'(I2)')gtk_combo_box_get_active(license_selector)
     close(111)
- 
-  end subroutine save_default_options  
+
+  end subroutine save_default_options
 
   subroutine load_default_options
     character(len=20)::defaultsfile="default.options"
     integer(c_int) ::license_no
-   
+
     open(111,file=base_dir(1:len_trim(base_dir))//"/"//defaultsfile, action='read')
     read(111,'(8L1)')create_subdir,create_handlerfiles,overwrite_handlerfiles,widget_symbols,update_used_functions,&
       use_hl_gtk,include_files,widgetshandlers
     read(111,'(I2)')license_no
     call gtk_combo_box_set_active(license_selector,license_no)
     close(111)
- 
-  end subroutine load_default_options  
-  
+
+  end subroutine load_default_options
+
   subroutine default_options (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: default_options
     type(c_ptr), value :: widget, gdata
-   
+
     filename="example.glade"
     call getcwd(working_dir)
     call load_default_options
@@ -798,15 +800,28 @@ contains
     call gtk_toggle_button_set_active (use_hl_gtk_button, gbool(use_hl_gtk))
     call gtk_toggle_button_set_active (include_files_button, gbool(include_files))
     call gtk_toggle_button_set_active (widgetshandlers_button, gbool(widgetshandlers))
-     
-  end subroutine default_options  
-  
+
+  end subroutine default_options
+
+  ! Contributed by IanH0073 (issue #81)
+  function fdate()
+    character(29) :: fdate
+    character(8) :: date
+    character(10) :: time
+    character(5) :: zone
+
+    call date_and_time(date, time, zone)
+    fdate = date(1:4) // '-' // date(5:6) // '-' // date(7:8)  &
+            // 'T' // time(1:2) // ':' // time(3:4) // ':' // time(5:10)  &
+            // zone(1:3) // ':' // zone(4:5)
+  end function fdate
+
 end module handlers
 
 program gtkfsketcher
-  
+
   use handlers
-  
+
   implicit none
 
   integer(c_int) :: guint
@@ -821,7 +836,7 @@ program gtkfsketcher
 
   ! create a new GtkBuilder object
   builder = gtk_builder_new ()
-  
+
   ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
   guint = gtk_builder_add_from_file (builder, "gtkf-sketcher.glade"//c_null_char, error)
 
@@ -830,7 +845,7 @@ program gtkfsketcher
 
   ! get a pointer to the file info text field buffer
   textbuffer = gtk_builder_get_object (builder, "fileinfo_buffer"//c_null_char)
-  
+
   ! get a pointer to the selection combo boxes
   license_selector = gtk_builder_get_object (builder, "license"//c_null_char)
   appwindow_selector = gtk_builder_get_object (builder, "appwindow"//c_null_char)
@@ -848,18 +863,18 @@ program gtkfsketcher
 
   ! get default options
   call default_options (builder, error)
- 
-  ! use GModule to look at the applications symbol table to find the function name 
-  ! that matches the handler name we specified in Glade3
-  call gtk_builder_connect_signals (builder, c_null_ptr)  
 
-  ! free all memory used by XML stuff      
+  ! use GModule to look at the applications symbol table to find the function name
+  ! that matches the handler name we specified in Glade3
+  call gtk_builder_connect_signals (builder, c_null_ptr)
+
+  ! free all memory used by XML stuff
   call g_object_unref (builder)
-  
-  ! Show the Application Window      
-  call gtk_widget_show (window)       
-  
+
+  ! Show the Application Window
+  call gtk_widget_show (window)
+
   ! Enter the GTK+ Main Loop
   call gtk_main ()
-        
+
 end program gtkfsketcher
