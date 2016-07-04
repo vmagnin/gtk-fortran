@@ -20,12 +20,12 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin, last updated by vmagnin: 07/03/2016
+# Contributed by James Tappin, last updated by vmagnin: 07/04/2016
 
 # set(sources
 #   "plplot_extra.f90")
 
-include_directories("/usr/include")
+#include_directories("/usr/include")
 #include_directories(${PLPLOT_INCLUDES})
 include_directories("${CMAKE_BINARY_DIR}/plplot")
 include_directories("${CMAKE_BINARY_DIR}/src")
@@ -42,14 +42,15 @@ endif()
 add_custom_command(
   OUTPUT plplot_extra.mod
   COMMAND ${CMAKE_Fortran_COMPILER} -c ${CMAKE_CURRENT_SOURCE_DIR}/${extra_file}
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${extra_file})
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${extra_file}
+)
 add_custom_target(plplot_extra_module ALL DEPENDS plplot_extra.mod)
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/plplot_extra.mod"
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-3-fortran)
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-3-fortran
+)
 
-  
 if (NOT NO_BUILD_EXAMPLES) 
   # TODO: comment
   if (NEW_PLPLOT)
@@ -67,7 +68,7 @@ if (NOT NO_BUILD_EXAMPLES)
     target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
     add_test(${example} ./${example})
   endforeach(example)
-endif (NOT NO_BUILD_EXAMPLES) 
+endif (NOT NO_BUILD_EXAMPLES)
 
 # If the INSTALL_EXAMPLES variable is set, then copy the examples
 # to ${CMAKE_INSTALL_DATAROOTDIR/gtk-fortran/examples<gtkversion>
@@ -80,5 +81,6 @@ if (INSTALL_EXAMPLES)
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot17e.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot17e_gto.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot30e.f90"
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples3)
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples3
+  )
 endif(INSTALL_EXAMPLES)

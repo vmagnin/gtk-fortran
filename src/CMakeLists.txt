@@ -21,37 +21,38 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 03/07/2016 (vmagnin)
+# Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016 (vmagnin)
 
 # CMAKE build file for GtkFortran
 
 set(sources
-	"atk-auto.f90"
-	"cairo-auto.f90"
-	"gdk-auto.f90"
-	"gdk-pixbuf-auto.f90"
-	"glib-auto.f90"
-	"gtk.f90"
-	"gtk-hl.f90"
-	"gtk-hl-container.f90"
-	"gtk-hl-button.f90"
-	"gtk-hl-entry.f90"
-	"gtk-hl-tree.f90"
-	"gtk-hl-menu.f90"
-	"gtk-hl-combobox.f90"
-	"gtk-hl-spin-slider.f90"
-	"gtk-hl-chooser.f90"
-	"gtk-hl-dialog.f90"
-	"gtk-hl-progress.f90"
-	"gtk-hl-accelerator.f90"
-	"gtk-hl-infobar.f90"
-	"gtk-hl-assistant.f90"
-	"gtk-hl-misc.f90"
-	"gtk-draw-hl.f90"
-	"gtk-sup.f90"
-	"gdk-pixbuf-hl.f90"
-	"pango-auto.f90"
-	"gdkevents-auto3.f90")
+    "atk-auto.f90"
+    "cairo-auto.f90"
+    "gdk-auto.f90"
+    "gdk-pixbuf-auto.f90"
+    "glib-auto.f90"
+    "gtk.f90"
+    "gtk-hl.f90"
+    "gtk-hl-container.f90"
+    "gtk-hl-button.f90"
+    "gtk-hl-entry.f90"
+    "gtk-hl-tree.f90"
+    "gtk-hl-menu.f90"
+    "gtk-hl-combobox.f90"
+    "gtk-hl-spin-slider.f90"
+    "gtk-hl-chooser.f90"
+    "gtk-hl-dialog.f90"
+    "gtk-hl-progress.f90"
+    "gtk-hl-accelerator.f90"
+    "gtk-hl-infobar.f90"
+    "gtk-hl-assistant.f90"
+    "gtk-hl-misc.f90"
+    "gtk-draw-hl.f90"
+    "gtk-sup.f90"
+    "gdk-pixbuf-hl.f90"
+    "pango-auto.f90"
+    "gdkevents-auto3.f90"
+)
 
 if (CMAKE_HOST_WIN32)
   set(sources
@@ -113,7 +114,8 @@ add_custom_command(
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
 )
 add_custom_target(usemodules ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-modscan
-  ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis)
+  ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-3-enumerators.lis
+)
 
 # Man page(s)
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man MODSCAN_IN)
@@ -135,34 +137,34 @@ else()
 endif()
 
 install(FILES
-	"${CMAKE_CURRENT_BINARY_DIR}/atk.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/cairo.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gdk.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/g.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_container.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_button.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_entry.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_tree.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_menu.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_combobox.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_spin_slider.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_chooser.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_dialog.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_progress.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_accelerator.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_infobar.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_assistant.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_misc.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_draw_hl.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf_hl.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
-	"${CMAKE_CURRENT_BINARY_DIR}/gtk_os_dependent.mod"
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-3-fortran
+    "${CMAKE_CURRENT_BINARY_DIR}/atk.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/cairo.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gdk.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/g.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_container.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_button.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_entry.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_tree.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_menu.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_combobox.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_spin_slider.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_chooser.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_dialog.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_progress.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_accelerator.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_infobar.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_assistant.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_misc.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_draw_hl.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf_hl.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
+    "${CMAKE_CURRENT_BINARY_DIR}/gtk_os_dependent.mod"
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-3-fortran
 )
 
 install(PROGRAMS

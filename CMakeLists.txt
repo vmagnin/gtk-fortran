@@ -26,6 +26,7 @@
 # CMAKE build file for GtkFortran
 
 cmake_minimum_required(VERSION 2.8.5)
+
 project(gtk-fortran Fortran)
 
 # CMAKE versions up to and including 2.8.10 fail to add the GIO libs for GTK2
@@ -76,6 +77,7 @@ elseif(${CMAKE_BUILD_TYPE} STREQUAL "debug")
     message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS_DEBUG}")
 endif()
 
+# Package generation:
 set(CPACK_PACKAGE_VERSION "0.1.0")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk3-fortran")
 set(CPACK_GENERATOR "STGZ;TGZ")
@@ -87,46 +89,47 @@ include(CheckFortranSourceCompiles)
 
 # Uninstall target
 configure_file(
-	"${PROJECT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
-	"${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-	IMMEDIATE @ONLY)
+    "${PROJECT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY)
 add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P
 ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 
+# Examples can be tested via make test:
 enable_testing()
 
+# GTK+ libraries:
 find_package(GTK3 COMPONENTS gtk)
 set(GTK_INCLUDES
-	${GTK3_ATK_INCLUDE_DIR}
-	${GTK3_CAIRO_INCLUDE_DIR}
-	${GTK3_GDK_INCLUDE_DIR}
-	${GTK3_GDK_PIXBUF_INCLUDE_DIR}
-	${GTK3_GLIB_INCLUDE_DIR}
-	${GTK3_GOBJECT_INCLUDE_DIR}
-	${GTK3_GTK_INCLUDE_DIR}
-	${GTK3_PANGO_INCLUDE_DIR} CACHE STRING "" FORCE)
+    ${GTK3_ATK_INCLUDE_DIR}
+    ${GTK3_CAIRO_INCLUDE_DIR}
+    ${GTK3_GDK_INCLUDE_DIR}
+    ${GTK3_GDK_PIXBUF_INCLUDE_DIR}
+    ${GTK3_GLIB_INCLUDE_DIR}
+    ${GTK3_GOBJECT_INCLUDE_DIR}
+    ${GTK3_GTK_INCLUDE_DIR}
+    ${GTK3_PANGO_INCLUDE_DIR} CACHE STRING "" FORCE)
 set(GTK_LIBRARIES
-	${GTK3_ATK_LIBRARY}
-	${GTK3_CAIRO_LIBRARY}
-	${GTK3_GDK_LIBRARY}
-	${GTK3_GDK_PIXBUF_LIBRARY}
-	${GTK3_GLIB_LIBRARY}
-	${GTK3_GIO_LIBRARY}
-	${GTK3_GOBJECT_LIBRARY}
-	${GTK3_GTK_LIBRARY}
-	${GTK3_PANGO_LIBRARY} CACHE STRING "" FORCE)
+    ${GTK3_ATK_LIBRARY}
+    ${GTK3_CAIRO_LIBRARY}
+    ${GTK3_GDK_LIBRARY}
+    ${GTK3_GDK_PIXBUF_LIBRARY}
+    ${GTK3_GLIB_LIBRARY}
+    ${GTK3_GIO_LIBRARY}
+    ${GTK3_GOBJECT_LIBRARY}
+    ${GTK3_GTK_LIBRARY}
+    ${GTK3_PANGO_LIBRARY} CACHE STRING "" FORCE)
 
+# Doxygen documentation generation:
 configure_file("${PROJECT_SOURCE_DIR}/Doxyfile"
-	"${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE)
-
-# Doxygen
+    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE)
 find_package(Doxygen)
-set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
-"latex" "html") 
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "latex" "html") 
 add_custom_target(doxygen
-	COMMAND ${DOXYGEN_EXECUTABLE}
-"${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" COMMENT "Writing
-documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    COMMAND ${DOXYGEN_EXECUTABLE}
+    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" 
+    COMMENT "Writing documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
 add_custom_target(doc)
 add_dependencies(doc doxygen)
 
@@ -140,7 +143,7 @@ if (NOT EXCLUDE_PLPLOT)
     include_directories(${PLPLOT_MODULE_DIR})
     set(CMAKE_REQUIRED_LIBRARIES "${PLPLOT_LIBRARIES}")
     set(CMAKE_REQUIRED_INCLUDES "${PLPLOT_INCLUDE_DIR}; ${PLPLOT_MODULE_DIR}")
-   check_fortran_source_compiles("
+    check_fortran_source_compiles("
  program tw
  use plplot
  implicit none
@@ -148,15 +151,17 @@ if (NOT EXCLUDE_PLPLOT)
  real(kind=plflt) :: w = 0.5_plflt
  call plinit()
  call plwidth(w)
- end program tw" NEW_PLPLOT)
+ end program tw" NEW_PLPLOT
+    )
     check_fortran_source_compiles("
  program tdef
  use plplot
  implicit none
 
  integer :: i = PLESC_DEVINIT
- end program tdef" NEW_PLPLOT_DEFS)
-else(PLPLOT_FOUND)
+ end program tdef" NEW_PLPLOT_DEFS
+    )
+  else(PLPLOT_FOUND)
     message(STATUS "PLPLOT not found: PLPLOT integration and examples will not be built")
   endif(PLPLOT_FOUND)
 else(NOT EXCLUDE_PLPLOT)
