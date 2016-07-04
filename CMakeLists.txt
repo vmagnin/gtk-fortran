@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/17/2012, vmagnin 07/02/2016
+# Last modifications: James Tappin 8/17/2012, vmagnin 07/04/2016
 # CMAKE build file for GtkFortran
 
 cmake_minimum_required(VERSION 2.8.5)
@@ -56,12 +56,12 @@ if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
 elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
     # ifort compiler:
     set(CMAKE_Fortran_FLAGS_DEBUG
-        "-g")
+        "-g -warn all")
     set(CMAKE_Fortran_FLAGS_RELEASE
         "-O3 -mtune=native -march=native")
-    # You can add here elseif() for other specific compilers...
+# You can add here elseif() for other specific compilers...
 else()
-    # Other compilers :
+    # Other compilers:
     set(CMAKE_Fortran_FLAGS_DEBUG "-g")
     set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
 endif()
