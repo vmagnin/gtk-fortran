@@ -29,6 +29,10 @@ cmake_minimum_required(VERSION 2.8.5)
 
 project(gtk-fortran Fortran)
 
+# Major version of GTK+ for the current branch:
+#set(GTKv 2)
+set(GTKv 3)
+
 # CMAKE versions up to and including 2.8.10 fail to add the GIO libs for GTK2
 if (CMAKE_VERSION VERSION_LESS 2.8.11)
   message(STATUS "CMAKE Version before 2.8.11 -- GIO example will not be built")
@@ -79,7 +83,7 @@ endif()
 
 # Package generation:
 set(CPACK_PACKAGE_VERSION "0.1.0")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk3-fortran")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk${GTKv}-fortran")
 set(CPACK_GENERATOR "STGZ;TGZ")
 set(CPACK_SOURCE_GENERATOR "STGZ;TGZ")
 include(CPack)
@@ -99,26 +103,26 @@ ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 enable_testing()
 
 # GTK+ libraries:
-find_package(GTK3 COMPONENTS gtk)
+find_package(GTK${GTKv} COMPONENTS gtk)
 set(GTK_INCLUDES
-    ${GTK3_ATK_INCLUDE_DIR}
-    ${GTK3_CAIRO_INCLUDE_DIR}
-    ${GTK3_GDK_INCLUDE_DIR}
-    ${GTK3_GDK_PIXBUF_INCLUDE_DIR}
-    ${GTK3_GLIB_INCLUDE_DIR}
-    ${GTK3_GOBJECT_INCLUDE_DIR}
-    ${GTK3_GTK_INCLUDE_DIR}
-    ${GTK3_PANGO_INCLUDE_DIR} CACHE STRING "" FORCE)
+    ${GTK${GTKv}_ATK_INCLUDE_DIR}
+    ${GTK${GTKv}_CAIRO_INCLUDE_DIR}
+    ${GTK${GTKv}_GDK_INCLUDE_DIR}
+    ${GTK${GTKv}_GDK_PIXBUF_INCLUDE_DIR}
+    ${GTK${GTKv}_GLIB_INCLUDE_DIR}
+    ${GTK${GTKv}_GOBJECT_INCLUDE_DIR}
+    ${GTK${GTKv}_GTK_INCLUDE_DIR}
+    ${GTK${GTKv}_PANGO_INCLUDE_DIR} CACHE STRING "" FORCE)
 set(GTK_LIBRARIES
-    ${GTK3_ATK_LIBRARY}
-    ${GTK3_CAIRO_LIBRARY}
-    ${GTK3_GDK_LIBRARY}
-    ${GTK3_GDK_PIXBUF_LIBRARY}
-    ${GTK3_GLIB_LIBRARY}
-    ${GTK3_GIO_LIBRARY}
-    ${GTK3_GOBJECT_LIBRARY}
-    ${GTK3_GTK_LIBRARY}
-    ${GTK3_PANGO_LIBRARY} CACHE STRING "" FORCE)
+    ${GTK${GTKv}_ATK_LIBRARY}
+    ${GTK${GTKv}_CAIRO_LIBRARY}
+    ${GTK${GTKv}_GDK_LIBRARY}
+    ${GTK${GTKv}_GDK_PIXBUF_LIBRARY}
+    ${GTK${GTKv}_GLIB_LIBRARY}
+    ${GTK${GTKv}_GIO_LIBRARY}
+    ${GTK${GTKv}_GOBJECT_LIBRARY}
+    ${GTK${GTKv}_GTK_LIBRARY}
+    ${GTK${GTKv}_PANGO_LIBRARY} CACHE STRING "" FORCE)
 
 # Doxygen documentation generation:
 configure_file("${PROJECT_SOURCE_DIR}/Doxyfile"

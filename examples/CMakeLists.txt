@@ -22,7 +22,7 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 07/04/2016
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 07/16/2016
 
 # CMAKE build file for GtkFortran
 
@@ -30,6 +30,9 @@
 #include_directories("/usr/local/include")
 include_directories("${CMAKE_BINARY_DIR}/src")
 include_directories(${GTK_INCLUDES})
+
+# To test access to GTKv variable:
+message(STATUS "GTK+ ${GTKv}")
 
 if (NOT NO_BUILD_EXAMPLES)
   # Build the two gtkbuilders examples:
@@ -103,6 +106,6 @@ if (INSTALL_EXAMPLES)
     "${CMAKE_CURRENT_SOURCE_DIR}/gio_demo.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/tests.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/README"
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples3
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples${GTKv}
   )
 endif(INSTALL_EXAMPLES)
