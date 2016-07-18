@@ -20,7 +20,7 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin, last updated by vmagnin: 07/04/2016
+# Contributed by James Tappin, last updated by vmagnin: 07/18/2016
 
 # set(sources
 #   "plplot_extra.f90")
@@ -48,15 +48,17 @@ add_custom_target(plplot_extra_module ALL DEPENDS plplot_extra.mod)
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/plplot_extra.mod"
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-3-fortran
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-${GTKv}-fortran
 )
 
 if (NOT NO_BUILD_EXAMPLES) 
   # TODO: comment
   if (NEW_PLPLOT)
+    message(STATUS "New PLPLOT")
     set (example_1e hl_plplot1e)
     set (example_4e hl_plplot4e)
   else (NEW_PLPLOT)
+    message(STATUS "Old PLPLOT")
     set (example_1e hl_plplot1e_old)
     set (example_4e hl_plplot4e_old)
   endif (NEW_PLPLOT)
@@ -81,6 +83,6 @@ if (INSTALL_EXAMPLES)
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot17e.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot17e_gto.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot30e.f90"
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples3
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples${GTKv}
   )
 endif(INSTALL_EXAMPLES)
