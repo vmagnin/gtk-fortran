@@ -22,8 +22,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/17/2012, vmagnin 07/04/2016
-# CMAKE build file for GtkFortran
+# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016
+# CMAKE build file for gtk-fortran
 
 cmake_minimum_required(VERSION 2.8.5)
 
@@ -176,7 +176,9 @@ endif(NOT EXCLUDE_PLPLOT)
 add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(examples)
-add_subdirectory(sketcher)
+if(${GTKv} GREATER 2)
+    add_subdirectory(sketcher)
+endif()
 if(PLPLOT_FOUND AND NOT EXCLUDE_PLPLOT)
   add_subdirectory(plplot)
 endif(PLPLOT_FOUND AND NOT EXCLUDE_PLPLOT)

@@ -20,7 +20,7 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin, last updated by vmagnin: 07/17/2016
+# Contributed by James Tappin, last updated by vmagnin: 07/18/2016
 
 # set(sources
 #   "plplot_extra.f90")
@@ -54,9 +54,11 @@ install(FILES
 if (NOT NO_BUILD_EXAMPLES) 
   # TODO: comment
   if (NEW_PLPLOT)
+    message(STATUS "New PLPLOT")
     set (example_1e hl_plplot1e)
     set (example_4e hl_plplot4e)
   else (NEW_PLPLOT)
+    message(STATUS "Old PLPLOT")
     set (example_1e hl_plplot1e_old)
     set (example_4e hl_plplot4e_old)
   endif (NEW_PLPLOT)
