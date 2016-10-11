@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 06-25-2016 (Python 3.5.1, Linux Ubuntu 16.04)
+# Last modification: 10-11-2016 (Python 3.5.2, Linux Ubuntu 16.10)
 # pylint3 score: 8.69/10
 
 """ Generates the *-auto.f90 files from the C header files of GLlib and GTK+.
@@ -286,7 +286,9 @@ def translate_enums(enum_list):
 
         # Resulting Fortran enumerator:
         f_enum += "enum, bind(c)    !" + name + "\n"
-        f_enum += re.sub(r"(?m)^\s*(\w+)", 1*TAB + r"enumerator :: \1", parameters[0])
+        enumerators = re.sub(r"(?m)^\s*(\w+)", 1*TAB + r"enumerator :: \1", parameters[0])
+        for line in enumerators.splitlines():
+            f_enum += multiline(line, 80) + "\n"
         f_enum += "end enum\n\n"
         nb_enumerators += 1
 
