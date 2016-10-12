@@ -14,6 +14,10 @@ Unix/Linux system:
     make
     sudo make install
 
+If the building of some examples causes an error, you can ignore them with
+the -i option:
+    make -i
+
 cmake variables are set by using -D<variable>=<value>
 for example to change the default install directory from /usr/local to /usr:
 cmake -DCMAKE_INSTALL_DIR=/usr ..

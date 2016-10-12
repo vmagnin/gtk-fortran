@@ -117,7 +117,7 @@ contains
     
     integer(c_int)    :: ret, message_id
     type(c_ptr), value :: widget, gdata
-    double complex :: c
+    complex(kind(1d0)) :: c
     integer :: iterations
     
     c = gtk_spin_button_get_value (spinButton1) + &
@@ -410,7 +410,7 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
 
   integer    :: i, j, k, p, itermax
   double precision :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-  double complex :: c, z   
+  complex(kind(1d0)) :: c, z   
   double precision :: scx, scy       ! scales
   integer(1) :: red, green, blue     ! rgb color
   double precision :: system_time, t0, t1
