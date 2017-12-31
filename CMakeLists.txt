@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016
+# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, Jens Hunger 12/31/2017
 # CMAKE build file for gtk-fortran
 
 cmake_minimum_required(VERSION 2.8.5)
@@ -57,7 +57,7 @@ if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
     set(CMAKE_Fortran_FLAGS_DEBUG
         "-g -pthread -Wall -pedantic -std=f2008 -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
     set(CMAKE_Fortran_FLAGS_RELEASE
-        "-pthread -O3 -mtune=native -march=native")
+        "-pthread -O3 -mtune=native -march=native -rdynamic")
 elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
     # ifort compiler:
     set(CMAKE_Fortran_FLAGS_DEBUG
