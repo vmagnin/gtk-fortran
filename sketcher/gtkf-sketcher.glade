@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <requires lib="gtk+" version="3.20"/>
   <object class="GtkTextBuffer" id="fileinfo_buffer">
     <property name="text" translatable="yes">No Glade3 file loaded yet.</property>
   </object>
@@ -46,20 +47,26 @@
       </row>
     </data>
   </object>
+  <object class="GtkTreeStore" id="licenses_treestore">
+    <columns>
+      <!-- column-name license_name -->
+      <column type="gchararray"/>
+      <!-- column-name license_file -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkListStore" id="toplevel_widgets">
     <columns>
       <!-- column-name widget -->
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkWindow" id="window">
+  <object class="GtkApplicationWindow" id="window">
     <property name="can_focus">False</property>
-    <property name="border_width">10</property>
     <property name="title" translatable="yes">GTK+ Fortran Code Sketcher</property>
-    <property name="default_width">400</property>
-    <property name="default_height">300</property>
-    <signal name="destroy-event" handler="destroy" swapped="no"/>
+    <property name="icon_name">text-x-script</property>
     <signal name="delete-event" handler="delete_event" swapped="no"/>
+    <signal name="destroy" handler="destroy" swapped="no"/>
     <child>
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>
@@ -71,19 +78,16 @@
             <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuItem" id="menu_file">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_File</property>
-                <property name="use_underline">True</property>
+                <property name="label" translatable="yes">File</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem2">
+                      <object class="GtkImageMenuItem" id="file_open">
                         <property name="label">gtk-open</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -94,7 +98,6 @@
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem4">
                         <property name="label">gtk-save-as</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -103,7 +106,6 @@
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                       </object>
@@ -111,7 +113,6 @@
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem5">
                         <property name="label">gtk-quit</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -125,11 +126,9 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="menu_edit">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Edit</property>
-                <property name="use_underline">True</property>
+                <property name="label" translatable="yes">Edit</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu2">
                     <property name="visible">True</property>
@@ -137,7 +136,6 @@
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem6">
                         <property name="label">gtk-cut</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -147,7 +145,6 @@
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem7">
                         <property name="label">gtk-copy</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -157,7 +154,6 @@
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem8">
                         <property name="label">gtk-paste</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -167,7 +163,6 @@
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem9">
                         <property name="label">gtk-delete</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -180,23 +175,21 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="menu_help">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Help</property>
-                <property name="use_underline">True</property>
+                <property name="label" translatable="yes">Help</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem10">
+                      <object class="GtkImageMenuItem" id="help_about">
                         <property name="label">gtk-about</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="show_about_dialog" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -265,12 +258,9 @@
                 <child>
                   <object class="GtkCheckButton" id="create_subdir">
                     <property name="label" translatable="yes">Create subdirectory</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="xalign">0</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="create_subdir_toggled" swapped="no"/>
@@ -284,12 +274,9 @@
                 <child>
                   <object class="GtkCheckButton" id="create_handlerfiles">
                     <property name="label" translatable="yes">Create file for each handler function</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="xalign">0</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="create_handlerfiles_toggled" swapped="no"/>
@@ -303,12 +290,9 @@
                 <child>
                   <object class="GtkCheckButton" id="overwrite_handlerfiles">
                     <property name="label" translatable="yes">Overwrite existing handler files</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="overwrite_handlerfiles_toggled" swapped="no"/>
                   </object>
@@ -321,12 +305,9 @@
                 <child>
                   <object class="GtkCheckButton" id="update_used_functions">
                     <property name="label" translatable="yes">Update used GTK functions in USE statements</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="xalign">0</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="update_used_functions_toggled" swapped="no"/>
@@ -340,12 +321,9 @@
                 <child>
                   <object class="GtkCheckButton" id="use_hl_gtk">
                     <property name="label" translatable="yes">Insert USE statement for GTK Fortran high level interface</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="use_hl_gtk_toggled" swapped="no"/>
                   </object>
@@ -358,12 +336,9 @@
                 <child>
                   <object class="GtkCheckButton" id="include_files">
                     <property name="label" translatable="yes">Generate include files for additionally used modules and global variables</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="xalign">0</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="include_files_toggled" swapped="no"/>
@@ -377,13 +352,9 @@
                 <child>
                   <object class="GtkCheckButton" id="widget_symbols">
                     <property name="label" translatable="yes">Create Fortran symbols for all widgets</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0.40999999642372131</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="widget_symbols_toggled" swapped="no"/>
                   </object>
@@ -396,12 +367,9 @@
                 <child>
                   <object class="GtkCheckButton" id="widgetshandlers">
                     <property name="label" translatable="yes">Generate separate files for widgets and handlers</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="widgetshandlers_toggled" swapped="no"/>
                   </object>
@@ -412,7 +380,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="hbox2">
+                  <object class="GtkBox" id="hbox2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -437,7 +405,7 @@
                         <property name="entry_text_column">0</property>
                         <property name="id_column">0</property>
                         <child internal-child="entry">
-                          <object class="GtkEntry" id="combobox-entry3">
+                          <object class="GtkEntry">
                             <property name="can_focus">False</property>
                           </object>
                         </child>
@@ -456,7 +424,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="hbox1">
+                  <object class="GtkBox" id="hbox1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -477,14 +445,13 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="model">licenses</property>
-                        <property name="active">4</property>
                         <property name="has_entry">True</property>
                         <property name="entry_text_column">0</property>
                         <property name="id_column">0</property>
+                        <property name="active_id">GNU General Public License v3</property>
                         <child internal-child="entry">
-                          <object class="GtkEntry" id="combobox-entry">
+                          <object class="GtkEntry">
                             <property name="can_focus">False</property>
-                            <property name="editable">False</property>
                           </object>
                         </child>
                       </object>
@@ -505,16 +472,13 @@
                   <object class="GtkButtonBox" id="buttonbox1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="homogeneous">True</property>
                     <property name="layout_style">spread</property>
                     <child>
                       <object class="GtkButton" id="load_defaults">
                         <property name="label" translatable="yes">Load defaults</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="default_options" swapped="no"/>
                       </object>
                       <packing>
@@ -529,11 +493,9 @@
                     <child>
                       <object class="GtkButton" id="save_as_defaults">
                         <property name="label" translatable="yes">Save as defaults</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="save_default_options" swapped="no"/>
                       </object>
                       <packing>
@@ -573,11 +535,9 @@
                 <child>
                   <object class="GtkButton" id="button_write">
                     <property name="label" translatable="yes">Write Files</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="write_files" swapped="no"/>
                   </object>
                   <packing>
@@ -624,10 +584,43 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
+    </child>
+  </object>
+  <object class="GtkAboutDialog" id="about">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="transient_for">window</property>
+    <property name="program_name">gtkf-sketcher</property>
+    <property name="comments" translatable="yes">GTK+ Fortran Code Sketcher</property>
+    <property name="logo_icon_name">text-x-script</property>
+    <property name="license_type">gpl-3-0</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+    <child>
+      <placeholder/>
     </child>
   </object>
 </interface>

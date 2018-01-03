@@ -43,6 +43,7 @@ module widgets
   type(c_ptr) :: use_hl_gtk_button
   type(c_ptr) :: include_files_button
   type(c_ptr) :: widgetshandlers_button
+  type(c_ptr) :: about_dialog
 
   character(len=256,kind=c_char)::filename
   character(len=256,kind=c_char)::working_dir, base_dir
@@ -153,7 +154,8 @@ module connect
   gtk_combo_box_get_active, gtk_combo_box_set_active, gtk_combo_box_get_model, gtk_combo_box_get_active_iter,&
   gtk_tree_model_get_value, gtk_tree_model_iter_nth_child,&
   gtk_toggle_button_get_active, gtk_toggle_button_set_active,GTK_BUTTONS_OK,&
-  gtk_widget_is_toplevel, gtk_list_store_append, gtk_list_store_set_value, gtk_list_store_clear
+  gtk_widget_is_toplevel, gtk_list_store_append, gtk_list_store_set_value, gtk_list_store_clear,&
+  gtk_dialog_run, gtk_widget_hide
   use g, only: g_object_unref, g_slist_length, g_slist_nth_data, g_object_get_property,&
   g_object_get_valist, g_value_get_string, g_mkdir_with_parents, g_value_init, g_value_set_string, g_value_unset
   use gtk_hl, only: hl_gtk_file_chooser_show, gtktreeiter, gvalue, hl_gtk_message_dialog_show, type_kind, G_TYPE_STRING
@@ -565,7 +567,9 @@ contains
       write(hunit,'(A)')"  &FALSE, c_null_char, c_null_ptr, gtk_init"
       write(hunit,'(A)')"  use g, only: g_object_unref"
       if (update_used_functions) then
-        call chdir(base_dir(1:len_trim(base_dir))//"/../src")
+        call chdir(base_dir(1:len_trim(base_dir))//"/../../src")
+        write(*,*)working_dir
+        call system("ls -la ")
         call system("./usemodules.py "//working_dir)
         open (40, file="usemodules.txt", action='read')
         do
@@ -789,7 +793,6 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: default_options
     type(c_ptr), value :: widget, gdata
 
-    filename="example.glade"
     call getcwd(working_dir)
     call load_default_options
     call gtk_toggle_button_set_active (create_subdir_button, gbool(create_subdir))
@@ -803,6 +806,17 @@ contains
 
   end subroutine default_options
 
+  subroutine show_about_dialog (widget, gdata) bind(c)
+    use iso_c_binding, only: c_ptr
+    !GCC$ ATTRIBUTES DLLEXPORT :: show_about_dialog
+    type(c_ptr), value :: widget, gdata
+    integer(c_int) :: dialog
+    
+    dialog = gtk_dialog_run (about_dialog)
+    call gtk_widget_hide (about_dialog)
+    
+  end subroutine show_about_dialog
+  
   ! Contributed by IanH0073 (issue #81)
   function fdate()
     character(29) :: fdate
@@ -860,6 +874,9 @@ program gtkfsketcher
   use_hl_gtk_button = gtk_builder_get_object (builder, "use_hl_gtk"//c_null_char)
   include_files_button = gtk_builder_get_object (builder, "include_files"//c_null_char)
   widgetshandlers_button = gtk_builder_get_object (builder, "widgetshandlers"//c_null_char)
+
+  ! get pointers to the about dialog
+  about_dialog = gtk_builder_get_object (builder, "about"//c_null_char)
 
   ! get default options
   call default_options (builder, error)
