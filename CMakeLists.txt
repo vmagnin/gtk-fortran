@@ -57,7 +57,9 @@ if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
     set(CMAKE_Fortran_FLAGS_DEBUG
         "-g -pthread -Wall -pedantic -std=f2008 -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
     set(CMAKE_Fortran_FLAGS_RELEASE
-        "-pthread -O3 -mtune=native -march=native -rdynamic")
+        "-pthread -O3 -mtune=native -march=native")
+    set(CMAKE_EXE_LINKER_FLAGS
+        "-rdynamic")        
 elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
     # ifort compiler:
     set(CMAKE_Fortran_FLAGS_DEBUG
