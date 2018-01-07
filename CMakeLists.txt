@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, Jens Hunger 12/31/2017
+# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, Jens Hunger 01/07/2018
 # CMAKE build file for gtk-fortran
 
 cmake_minimum_required(VERSION 2.8.5)
@@ -58,8 +58,10 @@ if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
         "-g -pthread -Wall -pedantic -std=f2008 -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
     set(CMAKE_Fortran_FLAGS_RELEASE
         "-pthread -O3 -mtune=native -march=native")
-    set(CMAKE_EXE_LINKER_FLAGS
-        "-rdynamic")        
+    if (UNIX)
+      set(CMAKE_EXE_LINKER_FLAGS
+          "-rdynamic")        
+    endif()
 elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
     # ifort compiler:
     set(CMAKE_Fortran_FLAGS_DEBUG
@@ -105,26 +107,39 @@ ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 enable_testing()
 
 # GTK+ libraries:
-find_package(GTK${GTKv} COMPONENTS gtk)
-set(GTK_INCLUDES
-    ${GTK${GTKv}_ATK_INCLUDE_DIR}
-    ${GTK${GTKv}_CAIRO_INCLUDE_DIR}
-    ${GTK${GTKv}_GDK_INCLUDE_DIR}
-    ${GTK${GTKv}_GDK_PIXBUF_INCLUDE_DIR}
-    ${GTK${GTKv}_GLIB_INCLUDE_DIR}
-    ${GTK${GTKv}_GOBJECT_INCLUDE_DIR}
-    ${GTK${GTKv}_GTK_INCLUDE_DIR}
-    ${GTK${GTKv}_PANGO_INCLUDE_DIR} CACHE STRING "" FORCE)
-set(GTK_LIBRARIES
-    ${GTK${GTKv}_ATK_LIBRARY}
-    ${GTK${GTKv}_CAIRO_LIBRARY}
-    ${GTK${GTKv}_GDK_LIBRARY}
-    ${GTK${GTKv}_GDK_PIXBUF_LIBRARY}
-    ${GTK${GTKv}_GLIB_LIBRARY}
-    ${GTK${GTKv}_GIO_LIBRARY}
-    ${GTK${GTKv}_GOBJECT_LIBRARY}
-    ${GTK${GTKv}_GTK_LIBRARY}
-    ${GTK${GTKv}_PANGO_LIBRARY} CACHE STRING "" FORCE)
+if (WIN32)
+  # use PkgConfig
+  FIND_PACKAGE(PkgConfig REQUIRED)
+  PKG_CHECK_MODULES(GTK REQUIRED gtk+-3.0)
+  # Setup CMake to use GTK+, tell the compiler where to look for headers
+  # and to the linker where to look for libraries
+  INCLUDE_DIRECTORIES(${GTK_INCLUDE_DIRS})
+  LINK_DIRECTORIES(${GTK_LIBRARY_DIRS})
+  # Add other flags to the compiler
+  ADD_DEFINITIONS(${GTK_CFLAGS_OTHER})
+endif()
+if (UNIX)
+  find_package(GTK${GTKv} COMPONENTS gtk)
+  set(GTK_INCLUDES
+      ${GTK${GTKv}_ATK_INCLUDE_DIR}
+      ${GTK${GTKv}_CAIRO_INCLUDE_DIR}
+      ${GTK${GTKv}_GDK_INCLUDE_DIR}
+      ${GTK${GTKv}_GDK_PIXBUF_INCLUDE_DIR}
+      ${GTK${GTKv}_GLIB_INCLUDE_DIR}
+      ${GTK${GTKv}_GOBJECT_INCLUDE_DIR}
+      ${GTK${GTKv}_GTK_INCLUDE_DIR}
+      ${GTK${GTKv}_PANGO_INCLUDE_DIR} CACHE STRING "" FORCE)
+  set(GTK_LIBRARIES
+      ${GTK${GTKv}_ATK_LIBRARY}
+      ${GTK${GTKv}_CAIRO_LIBRARY}
+      ${GTK${GTKv}_GDK_LIBRARY}
+      ${GTK${GTKv}_GDK_PIXBUF_LIBRARY}
+      ${GTK${GTKv}_GLIB_LIBRARY}
+      ${GTK${GTKv}_GIO_LIBRARY}
+      ${GTK${GTKv}_GOBJECT_LIBRARY}
+      ${GTK${GTKv}_GTK_LIBRARY}
+      ${GTK${GTKv}_PANGO_LIBRARY} CACHE STRING "" FORCE)
+endif()
 
 # Doxygen documentation generation:
 configure_file("${PROJECT_SOURCE_DIR}/Doxyfile"
@@ -141,7 +156,22 @@ add_dependencies(doc doxygen)
 
 # PLplot
 if (NOT EXCLUDE_PLPLOT)
-  find_package(PlplotF95 QUIET)
+  if (WIN32)
+    # use PkgConfig
+    FIND_PACKAGE(PkgConfig REQUIRED)
+    PKG_CHECK_MODULES(PLPLOT-FORTRAN REQUIRED plplot-fortran)
+    # Setup CMake to use PLplot, tell the compiler where to look for headers
+    # and to the linker where to look for libraries
+    INCLUDE_DIRECTORIES(${PLPLOT-FORTRAN_INCLUDE_DIRS})
+    LINK_DIRECTORIES(${PLPLOT-FORTRAN_LIBRARY_DIRS})
+    # Add other flags to the compiler
+    ADD_DEFINITIONS(${PLPLOT-FORTRAN_CFLAGS_OTHER})
+    SET (PLPLOT_MODULE_DIR "${PLPLOT-FORTRAN_LIBRARY_DIRS}")
+    set(PLPLOT_FOUND ${PLPLOT-FORTRAN_FOUND})
+  endif()
+  if (UNIX)
+    find_package(PlplotF95 QUIET)
+  endif ()
   set(HAVE_LIBPLPLOTF95D ${PLPLOT_FOUND})
   if(PLPLOT_FOUND)
     set(LIBRARIES ${LIBRARIES} ${PLPLOT_LIBRARIES})
