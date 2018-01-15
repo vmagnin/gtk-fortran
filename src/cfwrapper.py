@@ -246,7 +246,7 @@ def translate_enums(enum_list):
         # GDBusInterfaceSkeletonFlags contains an item with a too long name :
         if name in ["GSocketFamily", "GSocketMsgFlags", "GdkPixdataType",
                     "GIOCondition", "GDBusInterfaceSkeletonFlags",
-                    "GdkSeatCapabilities"]:
+                    "GdkSeatCapabilities", "GdkAxisFlags"]:
             continue    # Go to next enum
 
         parameters = re.findall("(?ms){(.*)}", enum)
