@@ -539,7 +539,6 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
         # PROBABLY OTHER FUNCTIONS ARE IN THE SAME CASE.
         # IN THE FUTURE, gdk-pixbuf-hl.f90 COULD BE INSTEAD MODIFIED.
         if "_utf8" not in f_name:
-            print(f_name)
             unix_only_file.write(interface)
             index.append(["gtk_os_dependent", f_name,
                         "unixonly-auto.f90/mswindowsonly-auto.f90",
