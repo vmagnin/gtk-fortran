@@ -6,6 +6,663 @@ module cairo
 implicit none
 interface
 
+!  cairo_device_t * cairo_script_create (const char *filename);
+function cairo_script_create(filename) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: cairo_script_create
+  character(kind=c_char), dimension(*) :: filename
+end function
+
+! cairo_device_t * cairo_script_create_for_stream (cairo_write_func_t write_func, void *closure);
+function cairo_script_create_for_stream(write_func, closure) bind(c)
+  use iso_c_binding, only: c_ptr, c_funptr
+  type(c_ptr) :: cairo_script_create_for_stream
+  type(c_funptr), value :: write_func
+  type(c_ptr), value :: closure
+end function
+
+! void cairo_script_write_comment (cairo_device_t *script, const char *comment, int len);
+subroutine cairo_script_write_comment(script, comment, len) bind(c)
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr), value :: script
+  character(kind=c_char), dimension(*) :: comment
+  integer(c_int), value :: len
+end subroutine
+
+! void cairo_script_set_mode (cairo_device_t *script, cairo_script_mode_t mode);
+subroutine cairo_script_set_mode(script, mode) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: script
+  integer(c_int), value :: mode
+end subroutine
+
+! cairo_script_mode_t cairo_script_get_mode (cairo_device_t *script);
+function cairo_script_get_mode(script) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_script_get_mode
+  type(c_ptr), value :: script
+end function
+
+! cairo_surface_t * cairo_script_surface_create (cairo_device_t *script, cairo_content_t content, double width, double height);
+function cairo_script_surface_create(script, content, width, height) bind(c)
+  use iso_c_binding, only: c_ptr, c_int, c_double
+  type(c_ptr) :: cairo_script_surface_create
+  type(c_ptr), value :: script
+  integer(c_int), value :: content
+  real(c_double), value :: width
+  real(c_double), value :: height
+end function
+
+! cairo_surface_t * cairo_script_surface_create_for_target (cairo_device_t *script, cairo_surface_t *target);
+function cairo_script_surface_create_for_target(script, target) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: cairo_script_surface_create_for_target
+  type(c_ptr), value :: script
+  type(c_ptr), value :: target
+end function
+
+! cairo_status_t cairo_script_from_recording_surface (cairo_device_t *script, cairo_surface_t *recording_surface);
+function cairo_script_from_recording_surface(script, recording_surface) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_script_from_recording_surface
+  type(c_ptr), value :: script
+  type(c_ptr), value :: recording_surface
+end function
+
+!  cairo_surface_t * cairo_svg_surface_create (const char *filename, double width_in_points, double height_in_points);
+function cairo_svg_surface_create(filename, width_in_points, height_in_points) &
+&bind(c)
+  use iso_c_binding, only: c_ptr, c_char, c_double
+  type(c_ptr) :: cairo_svg_surface_create
+  character(kind=c_char), dimension(*) :: filename
+  real(c_double), value :: width_in_points
+  real(c_double), value :: height_in_points
+end function
+
+! cairo_surface_t * cairo_svg_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
+function cairo_svg_surface_create_for_stream(write_func, closure, width_in_poin&
+&ts, height_in_points) bind(c)
+  use iso_c_binding, only: c_ptr, c_funptr, c_double
+  type(c_ptr) :: cairo_svg_surface_create_for_stream
+  type(c_funptr), value :: write_func
+  type(c_ptr), value :: closure
+  real(c_double), value :: width_in_points
+  real(c_double), value :: height_in_points
+end function
+
+! void cairo_svg_surface_restrict_to_version (cairo_surface_t *surface, cairo_svg_version_t version);
+subroutine cairo_svg_surface_restrict_to_version(surface, version) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: surface
+  integer(c_int), value :: version
+end subroutine
+
+! void cairo_svg_get_versions (cairo_svg_version_t const **versions, int *num_versions);
+subroutine cairo_svg_get_versions(versions, num_versions) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int), value :: versions
+  type(c_ptr), value :: num_versions
+end subroutine
+
+! const char * cairo_svg_version_to_string (cairo_svg_version_t version);
+function cairo_svg_version_to_string(version) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: cairo_svg_version_to_string
+  integer(c_int), value :: version
+end function
+
+!  cairo_font_face_t * cairo_ft_font_face_create_for_ft_face (FT_Face face, int load_flags);
+function cairo_ft_font_face_create_for_ft_face(face, load_flags) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: cairo_ft_font_face_create_for_ft_face
+  type(c_ptr), value :: face
+  integer(c_int), value :: load_flags
+end function
+
+! void cairo_ft_font_face_set_synthesize (cairo_font_face_t *font_face, unsigned int synth_flags);
+subroutine cairo_ft_font_face_set_synthesize(font_face, synth_flags) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: font_face
+  integer(c_int), value :: synth_flags
+end subroutine
+
+! void cairo_ft_font_face_unset_synthesize (cairo_font_face_t *font_face, unsigned int synth_flags);
+subroutine cairo_ft_font_face_unset_synthesize(font_face, synth_flags) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: font_face
+  integer(c_int), value :: synth_flags
+end subroutine
+
+! unsigned int cairo_ft_font_face_get_synthesize (cairo_font_face_t *font_face);
+function cairo_ft_font_face_get_synthesize(font_face) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_ft_font_face_get_synthesize
+  type(c_ptr), value :: font_face
+end function
+
+! FT_Face cairo_ft_scaled_font_lock_face (cairo_scaled_font_t *scaled_font);
+function cairo_ft_scaled_font_lock_face(scaled_font) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: cairo_ft_scaled_font_lock_face
+  type(c_ptr), value :: scaled_font
+end function
+
+! void cairo_ft_scaled_font_unlock_face (cairo_scaled_font_t *scaled_font);
+subroutine cairo_ft_scaled_font_unlock_face(scaled_font) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: scaled_font
+end subroutine
+
+! cairo_font_face_t * cairo_ft_font_face_create_for_pattern (FcPattern *pattern);
+function cairo_ft_font_face_create_for_pattern(pattern) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: cairo_ft_font_face_create_for_pattern
+  type(c_ptr), value :: pattern
+end function
+
+! void cairo_ft_font_options_substitute (const cairo_font_options_t *options, FcPattern *pattern);
+subroutine cairo_ft_font_options_substitute(options, pattern) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: options
+  type(c_ptr), value :: pattern
+end subroutine
+
+!  GType cairo_gobject_context_get_type (void);
+function cairo_gobject_context_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_context_get_type
+end function
+
+! GType cairo_gobject_device_get_type (void);
+function cairo_gobject_device_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_device_get_type
+end function
+
+! GType cairo_gobject_matrix_get_type (void);
+function cairo_gobject_matrix_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_matrix_get_type
+end function
+
+! GType cairo_gobject_pattern_get_type (void);
+function cairo_gobject_pattern_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_pattern_get_type
+end function
+
+! GType cairo_gobject_surface_get_type (void);
+function cairo_gobject_surface_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_surface_get_type
+end function
+
+! GType cairo_gobject_rectangle_get_type (void);
+function cairo_gobject_rectangle_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_rectangle_get_type
+end function
+
+! GType cairo_gobject_scaled_font_get_type (void);
+function cairo_gobject_scaled_font_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_scaled_font_get_type
+end function
+
+! GType cairo_gobject_font_face_get_type (void);
+function cairo_gobject_font_face_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_font_face_get_type
+end function
+
+! GType cairo_gobject_font_options_get_type (void);
+function cairo_gobject_font_options_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_font_options_get_type
+end function
+
+! GType cairo_gobject_rectangle_int_get_type (void);
+function cairo_gobject_rectangle_int_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_rectangle_int_get_type
+end function
+
+! GType cairo_gobject_region_get_type (void);
+function cairo_gobject_region_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_region_get_type
+end function
+
+! GType cairo_gobject_status_get_type (void);
+function cairo_gobject_status_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_status_get_type
+end function
+
+! GType cairo_gobject_content_get_type (void);
+function cairo_gobject_content_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_content_get_type
+end function
+
+! GType cairo_gobject_operator_get_type (void);
+function cairo_gobject_operator_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_operator_get_type
+end function
+
+! GType cairo_gobject_antialias_get_type (void);
+function cairo_gobject_antialias_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_antialias_get_type
+end function
+
+! GType cairo_gobject_fill_rule_get_type (void);
+function cairo_gobject_fill_rule_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_fill_rule_get_type
+end function
+
+! GType cairo_gobject_line_cap_get_type (void);
+function cairo_gobject_line_cap_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_line_cap_get_type
+end function
+
+! GType cairo_gobject_line_join_get_type (void);
+function cairo_gobject_line_join_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_line_join_get_type
+end function
+
+! GType cairo_gobject_text_cluster_flags_get_type (void);
+function cairo_gobject_text_cluster_flags_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_text_cluster_flags_get_type
+end function
+
+! GType cairo_gobject_font_slant_get_type (void);
+function cairo_gobject_font_slant_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_font_slant_get_type
+end function
+
+! GType cairo_gobject_font_weight_get_type (void);
+function cairo_gobject_font_weight_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_font_weight_get_type
+end function
+
+! GType cairo_gobject_subpixel_order_get_type (void);
+function cairo_gobject_subpixel_order_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_subpixel_order_get_type
+end function
+
+! GType cairo_gobject_hint_style_get_type (void);
+function cairo_gobject_hint_style_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_hint_style_get_type
+end function
+
+! GType cairo_gobject_hint_metrics_get_type (void);
+function cairo_gobject_hint_metrics_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_hint_metrics_get_type
+end function
+
+! GType cairo_gobject_font_type_get_type (void);
+function cairo_gobject_font_type_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_font_type_get_type
+end function
+
+! GType cairo_gobject_path_data_type_get_type (void);
+function cairo_gobject_path_data_type_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_path_data_type_get_type
+end function
+
+! GType cairo_gobject_device_type_get_type (void);
+function cairo_gobject_device_type_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_device_type_get_type
+end function
+
+! GType cairo_gobject_surface_type_get_type (void);
+function cairo_gobject_surface_type_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_surface_type_get_type
+end function
+
+! GType cairo_gobject_format_get_type (void);
+function cairo_gobject_format_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_format_get_type
+end function
+
+! GType cairo_gobject_pattern_type_get_type (void);
+function cairo_gobject_pattern_type_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_pattern_type_get_type
+end function
+
+! GType cairo_gobject_extend_get_type (void);
+function cairo_gobject_extend_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_extend_get_type
+end function
+
+! GType cairo_gobject_filter_get_type (void);
+function cairo_gobject_filter_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_filter_get_type
+end function
+
+! GType cairo_gobject_region_overlap_get_type (void);
+function cairo_gobject_region_overlap_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: cairo_gobject_region_overlap_get_type
+end function
+
+!  cairo_surface_t * cairo_tee_surface_create (cairo_surface_t *master);
+function cairo_tee_surface_create(master) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: cairo_tee_surface_create
+  type(c_ptr), value :: master
+end function
+
+! void cairo_tee_surface_add (cairo_surface_t *surface, cairo_surface_t *target);
+subroutine cairo_tee_surface_add(surface, target) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: surface
+  type(c_ptr), value :: target
+end subroutine
+
+! void cairo_tee_surface_remove (cairo_surface_t *surface, cairo_surface_t *target);
+subroutine cairo_tee_surface_remove(surface, target) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: surface
+  type(c_ptr), value :: target
+end subroutine
+
+! cairo_surface_t * cairo_tee_surface_index (cairo_surface_t *surface, unsigned int index);
+function cairo_tee_surface_index(surface, index) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: cairo_tee_surface_index
+  type(c_ptr), value :: surface
+  integer(c_int), value :: index
+end function
+
+!  cairo_surface_t * cairo_pdf_surface_create (const char *filename, double width_in_points, double height_in_points);
+function cairo_pdf_surface_create(filename, width_in_points, height_in_points) &
+&bind(c)
+  use iso_c_binding, only: c_ptr, c_char, c_double
+  type(c_ptr) :: cairo_pdf_surface_create
+  character(kind=c_char), dimension(*) :: filename
+  real(c_double), value :: width_in_points
+  real(c_double), value :: height_in_points
+end function
+
+! cairo_surface_t * cairo_pdf_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
+function cairo_pdf_surface_create_for_stream(write_func, closure, width_in_poin&
+&ts, height_in_points) bind(c)
+  use iso_c_binding, only: c_ptr, c_funptr, c_double
+  type(c_ptr) :: cairo_pdf_surface_create_for_stream
+  type(c_funptr), value :: write_func
+  type(c_ptr), value :: closure
+  real(c_double), value :: width_in_points
+  real(c_double), value :: height_in_points
+end function
+
+! void cairo_pdf_surface_restrict_to_version (cairo_surface_t *surface, cairo_pdf_version_t version);
+subroutine cairo_pdf_surface_restrict_to_version(surface, version) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: surface
+  integer(c_int), value :: version
+end subroutine
+
+! void cairo_pdf_get_versions (cairo_pdf_version_t const **versions, int *num_versions);
+subroutine cairo_pdf_get_versions(versions, num_versions) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int), value :: versions
+  type(c_ptr), value :: num_versions
+end subroutine
+
+! const char * cairo_pdf_version_to_string (cairo_pdf_version_t version);
+function cairo_pdf_version_to_string(version) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: cairo_pdf_version_to_string
+  integer(c_int), value :: version
+end function
+
+! void cairo_pdf_surface_set_size (cairo_surface_t *surface, double width_in_points, double height_in_points);
+subroutine cairo_pdf_surface_set_size(surface, width_in_points, height_in_point&
+&s) bind(c)
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: surface
+  real(c_double), value :: width_in_points
+  real(c_double), value :: height_in_points
+end subroutine
+
+!  cairo_surface_t * cairo_xlib_surface_create_with_xrender_format (Display *dpy, Drawable drawable, Screen *screen, XRenderPictFormat *format, int width, int height);
+function cairo_xlib_surface_create_with_xrender_format(dpy, drawable, screen, f&
+&ormat, width, height) bind(c)
+  use iso_c_binding, only: c_ptr, c_long, c_int
+  type(c_ptr) :: cairo_xlib_surface_create_with_xrender_format
+  type(c_ptr), value :: dpy
+  integer(c_long), value :: drawable
+  type(c_ptr), value :: screen
+  type(c_ptr), value :: format
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end function
+
+! XRenderPictFormat * cairo_xlib_surface_get_xrender_format (cairo_surface_t *surface);
+function cairo_xlib_surface_get_xrender_format(surface) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: cairo_xlib_surface_get_xrender_format
+  type(c_ptr), value :: surface
+end function
+
+!  cairo_surface_t * cairo_xlib_surface_create (Display *dpy, Drawable drawable, Visual *visual, int width, int height);
+function cairo_xlib_surface_create(dpy, drawable, visual, width, height) bind(c&
+&)
+  use iso_c_binding, only: c_ptr, c_long, c_int
+  type(c_ptr) :: cairo_xlib_surface_create
+  type(c_ptr), value :: dpy
+  integer(c_long), value :: drawable
+  type(c_ptr), value :: visual
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end function
+
+! cairo_surface_t * cairo_xlib_surface_create_for_bitmap (Display *dpy, Pixmap bitmap, Screen *screen, int width, int height);
+function cairo_xlib_surface_create_for_bitmap(dpy, bitmap, screen, width, heigh&
+&t) bind(c)
+  use iso_c_binding, only: c_ptr, c_long, c_int
+  type(c_ptr) :: cairo_xlib_surface_create_for_bitmap
+  type(c_ptr), value :: dpy
+  integer(c_long), value :: bitmap
+  type(c_ptr), value :: screen
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end function
+
+! void cairo_xlib_surface_set_size (cairo_surface_t *surface, int width, int height);
+subroutine cairo_xlib_surface_set_size(surface, width, height) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: surface
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end subroutine
+
+! void cairo_xlib_surface_set_drawable (cairo_surface_t *surface, Drawable drawable, int width, int height);
+subroutine cairo_xlib_surface_set_drawable(surface, drawable, width, height) bi&
+&nd(c)
+  use iso_c_binding, only: c_ptr, c_long, c_int
+  type(c_ptr), value :: surface
+  integer(c_long), value :: drawable
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end subroutine
+
+! Display * cairo_xlib_surface_get_display (cairo_surface_t *surface);
+function cairo_xlib_surface_get_display(surface) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: cairo_xlib_surface_get_display
+  type(c_ptr), value :: surface
+end function
+
+! Drawable cairo_xlib_surface_get_drawable (cairo_surface_t *surface);
+function cairo_xlib_surface_get_drawable(surface) bind(c)
+  use iso_c_binding, only: c_long, c_ptr
+  integer(c_long) :: cairo_xlib_surface_get_drawable
+  type(c_ptr), value :: surface
+end function
+
+! Screen * cairo_xlib_surface_get_screen (cairo_surface_t *surface);
+function cairo_xlib_surface_get_screen(surface) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: cairo_xlib_surface_get_screen
+  type(c_ptr), value :: surface
+end function
+
+! Visual * cairo_xlib_surface_get_visual (cairo_surface_t *surface);
+function cairo_xlib_surface_get_visual(surface) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: cairo_xlib_surface_get_visual
+  type(c_ptr), value :: surface
+end function
+
+! int cairo_xlib_surface_get_depth (cairo_surface_t *surface);
+function cairo_xlib_surface_get_depth(surface) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_xlib_surface_get_depth
+  type(c_ptr), value :: surface
+end function
+
+! int cairo_xlib_surface_get_width (cairo_surface_t *surface);
+function cairo_xlib_surface_get_width(surface) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_xlib_surface_get_width
+  type(c_ptr), value :: surface
+end function
+
+! int cairo_xlib_surface_get_height (cairo_surface_t *surface);
+function cairo_xlib_surface_get_height(surface) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_xlib_surface_get_height
+  type(c_ptr), value :: surface
+end function
+
+! void cairo_xlib_device_debug_cap_xrender_version (cairo_device_t *device, int major_version, int minor_version);
+subroutine cairo_xlib_device_debug_cap_xrender_version(device, major_version, m&
+&inor_version) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: device
+  integer(c_int), value :: major_version
+  integer(c_int), value :: minor_version
+end subroutine
+
+! void cairo_xlib_device_debug_set_precision (cairo_device_t *device, int precision);
+subroutine cairo_xlib_device_debug_set_precision(device, precision) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: device
+  integer(c_int), value :: precision
+end subroutine
+
+! int cairo_xlib_device_debug_get_precision (cairo_device_t *device);
+function cairo_xlib_device_debug_get_precision(device) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_xlib_device_debug_get_precision
+  type(c_ptr), value :: device
+end function
+
+!  cairo_surface_t * cairo_ps_surface_create (const char *filename, double width_in_points, double height_in_points);
+function cairo_ps_surface_create(filename, width_in_points, height_in_points) b&
+&ind(c)
+  use iso_c_binding, only: c_ptr, c_char, c_double
+  type(c_ptr) :: cairo_ps_surface_create
+  character(kind=c_char), dimension(*) :: filename
+  real(c_double), value :: width_in_points
+  real(c_double), value :: height_in_points
+end function
+
+! cairo_surface_t * cairo_ps_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
+function cairo_ps_surface_create_for_stream(write_func, closure, width_in_point&
+&s, height_in_points) bind(c)
+  use iso_c_binding, only: c_ptr, c_funptr, c_double
+  type(c_ptr) :: cairo_ps_surface_create_for_stream
+  type(c_funptr), value :: write_func
+  type(c_ptr), value :: closure
+  real(c_double), value :: width_in_points
+  real(c_double), value :: height_in_points
+end function
+
+! void cairo_ps_surface_restrict_to_level (cairo_surface_t *surface, cairo_ps_level_t level);
+subroutine cairo_ps_surface_restrict_to_level(surface, level) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: surface
+  integer(c_int), value :: level
+end subroutine
+
+! void cairo_ps_get_levels (cairo_ps_level_t const **levels, int *num_levels);
+subroutine cairo_ps_get_levels(levels, num_levels) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int), value :: levels
+  type(c_ptr), value :: num_levels
+end subroutine
+
+! const char * cairo_ps_level_to_string (cairo_ps_level_t level);
+function cairo_ps_level_to_string(level) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: cairo_ps_level_to_string
+  integer(c_int), value :: level
+end function
+
+! void cairo_ps_surface_set_eps (cairo_surface_t *surface, cairo_bool_t eps);
+subroutine cairo_ps_surface_set_eps(surface, eps) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: surface
+  integer(c_int), value :: eps
+end subroutine
+
+! cairo_bool_t cairo_ps_surface_get_eps (cairo_surface_t *surface);
+function cairo_ps_surface_get_eps(surface) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_ps_surface_get_eps
+  type(c_ptr), value :: surface
+end function
+
+! void cairo_ps_surface_set_size (cairo_surface_t *surface, double width_in_points, double height_in_points);
+subroutine cairo_ps_surface_set_size(surface, width_in_points, height_in_points&
+&) bind(c)
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: surface
+  real(c_double), value :: width_in_points
+  real(c_double), value :: height_in_points
+end subroutine
+
+! void cairo_ps_surface_dsc_comment (cairo_surface_t *surface, const char *comment);
+subroutine cairo_ps_surface_dsc_comment(surface, comment) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: surface
+  character(kind=c_char), dimension(*) :: comment
+end subroutine
+
+! void cairo_ps_surface_dsc_begin_setup (cairo_surface_t *surface);
+subroutine cairo_ps_surface_dsc_begin_setup(surface) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: surface
+end subroutine
+
+! void cairo_ps_surface_dsc_begin_page_setup (cairo_surface_t *surface);
+subroutine cairo_ps_surface_dsc_begin_page_setup(surface) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: surface
+end subroutine
+
 !  int cairo_version (void);
 function cairo_version() bind(c)
   use iso_c_binding, only: c_int
@@ -2568,541 +3225,6 @@ subroutine cairo_debug_reset_static_data() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
-!  cairo_font_face_t * cairo_ft_font_face_create_for_ft_face (FT_Face face, int load_flags);
-function cairo_ft_font_face_create_for_ft_face(face, load_flags) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: cairo_ft_font_face_create_for_ft_face
-  type(c_ptr), value :: face
-  integer(c_int), value :: load_flags
-end function
-
-! void cairo_ft_font_face_set_synthesize (cairo_font_face_t *font_face, unsigned int synth_flags);
-subroutine cairo_ft_font_face_set_synthesize(font_face, synth_flags) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: font_face
-  integer(c_int), value :: synth_flags
-end subroutine
-
-! void cairo_ft_font_face_unset_synthesize (cairo_font_face_t *font_face, unsigned int synth_flags);
-subroutine cairo_ft_font_face_unset_synthesize(font_face, synth_flags) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: font_face
-  integer(c_int), value :: synth_flags
-end subroutine
-
-! unsigned int cairo_ft_font_face_get_synthesize (cairo_font_face_t *font_face);
-function cairo_ft_font_face_get_synthesize(font_face) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_ft_font_face_get_synthesize
-  type(c_ptr), value :: font_face
-end function
-
-! FT_Face cairo_ft_scaled_font_lock_face (cairo_scaled_font_t *scaled_font);
-function cairo_ft_scaled_font_lock_face(scaled_font) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: cairo_ft_scaled_font_lock_face
-  type(c_ptr), value :: scaled_font
-end function
-
-! void cairo_ft_scaled_font_unlock_face (cairo_scaled_font_t *scaled_font);
-subroutine cairo_ft_scaled_font_unlock_face(scaled_font) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: scaled_font
-end subroutine
-
-! cairo_font_face_t * cairo_ft_font_face_create_for_pattern (FcPattern *pattern);
-function cairo_ft_font_face_create_for_pattern(pattern) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: cairo_ft_font_face_create_for_pattern
-  type(c_ptr), value :: pattern
-end function
-
-! void cairo_ft_font_options_substitute (const cairo_font_options_t *options, FcPattern *pattern);
-subroutine cairo_ft_font_options_substitute(options, pattern) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: options
-  type(c_ptr), value :: pattern
-end subroutine
-
-!  cairo_surface_t * cairo_xlib_surface_create (Display *dpy, Drawable drawable, Visual *visual, int width, int height);
-function cairo_xlib_surface_create(dpy, drawable, visual, width, height) bind(c&
-&)
-  use iso_c_binding, only: c_ptr, c_long, c_int
-  type(c_ptr) :: cairo_xlib_surface_create
-  type(c_ptr), value :: dpy
-  integer(c_long), value :: drawable
-  type(c_ptr), value :: visual
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end function
-
-! cairo_surface_t * cairo_xlib_surface_create_for_bitmap (Display *dpy, Pixmap bitmap, Screen *screen, int width, int height);
-function cairo_xlib_surface_create_for_bitmap(dpy, bitmap, screen, width, heigh&
-&t) bind(c)
-  use iso_c_binding, only: c_ptr, c_long, c_int
-  type(c_ptr) :: cairo_xlib_surface_create_for_bitmap
-  type(c_ptr), value :: dpy
-  integer(c_long), value :: bitmap
-  type(c_ptr), value :: screen
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end function
-
-! void cairo_xlib_surface_set_size (cairo_surface_t *surface, int width, int height);
-subroutine cairo_xlib_surface_set_size(surface, width, height) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: surface
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! void cairo_xlib_surface_set_drawable (cairo_surface_t *surface, Drawable drawable, int width, int height);
-subroutine cairo_xlib_surface_set_drawable(surface, drawable, width, height) bi&
-&nd(c)
-  use iso_c_binding, only: c_ptr, c_long, c_int
-  type(c_ptr), value :: surface
-  integer(c_long), value :: drawable
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end subroutine
-
-! Display * cairo_xlib_surface_get_display (cairo_surface_t *surface);
-function cairo_xlib_surface_get_display(surface) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: cairo_xlib_surface_get_display
-  type(c_ptr), value :: surface
-end function
-
-! Drawable cairo_xlib_surface_get_drawable (cairo_surface_t *surface);
-function cairo_xlib_surface_get_drawable(surface) bind(c)
-  use iso_c_binding, only: c_long, c_ptr
-  integer(c_long) :: cairo_xlib_surface_get_drawable
-  type(c_ptr), value :: surface
-end function
-
-! Screen * cairo_xlib_surface_get_screen (cairo_surface_t *surface);
-function cairo_xlib_surface_get_screen(surface) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: cairo_xlib_surface_get_screen
-  type(c_ptr), value :: surface
-end function
-
-! Visual * cairo_xlib_surface_get_visual (cairo_surface_t *surface);
-function cairo_xlib_surface_get_visual(surface) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: cairo_xlib_surface_get_visual
-  type(c_ptr), value :: surface
-end function
-
-! int cairo_xlib_surface_get_depth (cairo_surface_t *surface);
-function cairo_xlib_surface_get_depth(surface) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_xlib_surface_get_depth
-  type(c_ptr), value :: surface
-end function
-
-! int cairo_xlib_surface_get_width (cairo_surface_t *surface);
-function cairo_xlib_surface_get_width(surface) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_xlib_surface_get_width
-  type(c_ptr), value :: surface
-end function
-
-! int cairo_xlib_surface_get_height (cairo_surface_t *surface);
-function cairo_xlib_surface_get_height(surface) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_xlib_surface_get_height
-  type(c_ptr), value :: surface
-end function
-
-! void cairo_xlib_device_debug_cap_xrender_version (cairo_device_t *device, int major_version, int minor_version);
-subroutine cairo_xlib_device_debug_cap_xrender_version(device, major_version, m&
-&inor_version) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: device
-  integer(c_int), value :: major_version
-  integer(c_int), value :: minor_version
-end subroutine
-
-! void cairo_xlib_device_debug_set_precision (cairo_device_t *device, int precision);
-subroutine cairo_xlib_device_debug_set_precision(device, precision) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: device
-  integer(c_int), value :: precision
-end subroutine
-
-! int cairo_xlib_device_debug_get_precision (cairo_device_t *device);
-function cairo_xlib_device_debug_get_precision(device) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_xlib_device_debug_get_precision
-  type(c_ptr), value :: device
-end function
-
-!  cairo_surface_t * cairo_pdf_surface_create (const char *filename, double width_in_points, double height_in_points);
-function cairo_pdf_surface_create(filename, width_in_points, height_in_points) &
-&bind(c)
-  use iso_c_binding, only: c_ptr, c_char, c_double
-  type(c_ptr) :: cairo_pdf_surface_create
-  character(kind=c_char), dimension(*) :: filename
-  real(c_double), value :: width_in_points
-  real(c_double), value :: height_in_points
-end function
-
-! cairo_surface_t * cairo_pdf_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
-function cairo_pdf_surface_create_for_stream(write_func, closure, width_in_poin&
-&ts, height_in_points) bind(c)
-  use iso_c_binding, only: c_ptr, c_funptr, c_double
-  type(c_ptr) :: cairo_pdf_surface_create_for_stream
-  type(c_funptr), value :: write_func
-  type(c_ptr), value :: closure
-  real(c_double), value :: width_in_points
-  real(c_double), value :: height_in_points
-end function
-
-! void cairo_pdf_surface_restrict_to_version (cairo_surface_t *surface, cairo_pdf_version_t version);
-subroutine cairo_pdf_surface_restrict_to_version(surface, version) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: surface
-  integer(c_int), value :: version
-end subroutine
-
-! void cairo_pdf_get_versions (cairo_pdf_version_t const **versions, int *num_versions);
-subroutine cairo_pdf_get_versions(versions, num_versions) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int), value :: versions
-  type(c_ptr), value :: num_versions
-end subroutine
-
-! const char * cairo_pdf_version_to_string (cairo_pdf_version_t version);
-function cairo_pdf_version_to_string(version) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: cairo_pdf_version_to_string
-  integer(c_int), value :: version
-end function
-
-! void cairo_pdf_surface_set_size (cairo_surface_t *surface, double width_in_points, double height_in_points);
-subroutine cairo_pdf_surface_set_size(surface, width_in_points, height_in_point&
-&s) bind(c)
-  use iso_c_binding, only: c_ptr, c_double
-  type(c_ptr), value :: surface
-  real(c_double), value :: width_in_points
-  real(c_double), value :: height_in_points
-end subroutine
-
-!  cairo_surface_t * cairo_xlib_surface_create_with_xrender_format (Display *dpy, Drawable drawable, Screen *screen, XRenderPictFormat *format, int width, int height);
-function cairo_xlib_surface_create_with_xrender_format(dpy, drawable, screen, f&
-&ormat, width, height) bind(c)
-  use iso_c_binding, only: c_ptr, c_long, c_int
-  type(c_ptr) :: cairo_xlib_surface_create_with_xrender_format
-  type(c_ptr), value :: dpy
-  integer(c_long), value :: drawable
-  type(c_ptr), value :: screen
-  type(c_ptr), value :: format
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end function
-
-! XRenderPictFormat * cairo_xlib_surface_get_xrender_format (cairo_surface_t *surface);
-function cairo_xlib_surface_get_xrender_format(surface) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: cairo_xlib_surface_get_xrender_format
-  type(c_ptr), value :: surface
-end function
-
-!  cairo_surface_t * cairo_svg_surface_create (const char *filename, double width_in_points, double height_in_points);
-function cairo_svg_surface_create(filename, width_in_points, height_in_points) &
-&bind(c)
-  use iso_c_binding, only: c_ptr, c_char, c_double
-  type(c_ptr) :: cairo_svg_surface_create
-  character(kind=c_char), dimension(*) :: filename
-  real(c_double), value :: width_in_points
-  real(c_double), value :: height_in_points
-end function
-
-! cairo_surface_t * cairo_svg_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
-function cairo_svg_surface_create_for_stream(write_func, closure, width_in_poin&
-&ts, height_in_points) bind(c)
-  use iso_c_binding, only: c_ptr, c_funptr, c_double
-  type(c_ptr) :: cairo_svg_surface_create_for_stream
-  type(c_funptr), value :: write_func
-  type(c_ptr), value :: closure
-  real(c_double), value :: width_in_points
-  real(c_double), value :: height_in_points
-end function
-
-! void cairo_svg_surface_restrict_to_version (cairo_surface_t *surface, cairo_svg_version_t version);
-subroutine cairo_svg_surface_restrict_to_version(surface, version) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: surface
-  integer(c_int), value :: version
-end subroutine
-
-! void cairo_svg_get_versions (cairo_svg_version_t const **versions, int *num_versions);
-subroutine cairo_svg_get_versions(versions, num_versions) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int), value :: versions
-  type(c_ptr), value :: num_versions
-end subroutine
-
-! const char * cairo_svg_version_to_string (cairo_svg_version_t version);
-function cairo_svg_version_to_string(version) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: cairo_svg_version_to_string
-  integer(c_int), value :: version
-end function
-
-!  cairo_surface_t * cairo_tee_surface_create (cairo_surface_t *master);
-function cairo_tee_surface_create(master) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: cairo_tee_surface_create
-  type(c_ptr), value :: master
-end function
-
-! void cairo_tee_surface_add (cairo_surface_t *surface, cairo_surface_t *target);
-subroutine cairo_tee_surface_add(surface, target) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: surface
-  type(c_ptr), value :: target
-end subroutine
-
-! void cairo_tee_surface_remove (cairo_surface_t *surface, cairo_surface_t *target);
-subroutine cairo_tee_surface_remove(surface, target) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: surface
-  type(c_ptr), value :: target
-end subroutine
-
-! cairo_surface_t * cairo_tee_surface_index (cairo_surface_t *surface, unsigned int index);
-function cairo_tee_surface_index(surface, index) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: cairo_tee_surface_index
-  type(c_ptr), value :: surface
-  integer(c_int), value :: index
-end function
-
-!  cairo_device_t * cairo_script_create (const char *filename);
-function cairo_script_create(filename) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: cairo_script_create
-  character(kind=c_char), dimension(*) :: filename
-end function
-
-! cairo_device_t * cairo_script_create_for_stream (cairo_write_func_t write_func, void *closure);
-function cairo_script_create_for_stream(write_func, closure) bind(c)
-  use iso_c_binding, only: c_ptr, c_funptr
-  type(c_ptr) :: cairo_script_create_for_stream
-  type(c_funptr), value :: write_func
-  type(c_ptr), value :: closure
-end function
-
-! void cairo_script_write_comment (cairo_device_t *script, const char *comment, int len);
-subroutine cairo_script_write_comment(script, comment, len) bind(c)
-  use iso_c_binding, only: c_ptr, c_char, c_int
-  type(c_ptr), value :: script
-  character(kind=c_char), dimension(*) :: comment
-  integer(c_int), value :: len
-end subroutine
-
-! void cairo_script_set_mode (cairo_device_t *script, cairo_script_mode_t mode);
-subroutine cairo_script_set_mode(script, mode) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: script
-  integer(c_int), value :: mode
-end subroutine
-
-! cairo_script_mode_t cairo_script_get_mode (cairo_device_t *script);
-function cairo_script_get_mode(script) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_script_get_mode
-  type(c_ptr), value :: script
-end function
-
-! cairo_surface_t * cairo_script_surface_create (cairo_device_t *script, cairo_content_t content, double width, double height);
-function cairo_script_surface_create(script, content, width, height) bind(c)
-  use iso_c_binding, only: c_ptr, c_int, c_double
-  type(c_ptr) :: cairo_script_surface_create
-  type(c_ptr), value :: script
-  integer(c_int), value :: content
-  real(c_double), value :: width
-  real(c_double), value :: height
-end function
-
-! cairo_surface_t * cairo_script_surface_create_for_target (cairo_device_t *script, cairo_surface_t *target);
-function cairo_script_surface_create_for_target(script, target) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: cairo_script_surface_create_for_target
-  type(c_ptr), value :: script
-  type(c_ptr), value :: target
-end function
-
-! cairo_status_t cairo_script_from_recording_surface (cairo_device_t *script, cairo_surface_t *recording_surface);
-function cairo_script_from_recording_surface(script, recording_surface) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_script_from_recording_surface
-  type(c_ptr), value :: script
-  type(c_ptr), value :: recording_surface
-end function
-
-! cairo_script_interpreter_t * cairo_script_interpreter_create (void);
-function cairo_script_interpreter_create() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: cairo_script_interpreter_create
-end function
-
-! void cairo_script_interpreter_install_hooks (cairo_script_interpreter_t *ctx, const cairo_script_interpreter_hooks_t *hooks);
-subroutine cairo_script_interpreter_install_hooks(ctx, hooks) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: ctx
-  type(c_ptr), value :: hooks
-end subroutine
-
-! cairo_status_t cairo_script_interpreter_run (cairo_script_interpreter_t *ctx, const char *filename);
-function cairo_script_interpreter_run(ctx, filename) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: cairo_script_interpreter_run
-  type(c_ptr), value :: ctx
-  character(kind=c_char), dimension(*) :: filename
-end function
-
-! cairo_status_t cairo_script_interpreter_feed_stream (cairo_script_interpreter_t *ctx, FILE *stream);
-function cairo_script_interpreter_feed_stream(ctx, stream) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_script_interpreter_feed_stream
-  type(c_ptr), value :: ctx
-  type(c_ptr), value :: stream
-end function
-
-! cairo_status_t cairo_script_interpreter_feed_string (cairo_script_interpreter_t *ctx, const char *line, int len);
-function cairo_script_interpreter_feed_string(ctx, line, len) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: cairo_script_interpreter_feed_string
-  type(c_ptr), value :: ctx
-  character(kind=c_char), dimension(*) :: line
-  integer(c_int), value :: len
-end function
-
-! unsigned int cairo_script_interpreter_get_line_number (cairo_script_interpreter_t *ctx);
-function cairo_script_interpreter_get_line_number(ctx) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_script_interpreter_get_line_number
-  type(c_ptr), value :: ctx
-end function
-
-! cairo_script_interpreter_t * cairo_script_interpreter_reference (cairo_script_interpreter_t *ctx);
-function cairo_script_interpreter_reference(ctx) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: cairo_script_interpreter_reference
-  type(c_ptr), value :: ctx
-end function
-
-! cairo_status_t cairo_script_interpreter_finish (cairo_script_interpreter_t *ctx);
-function cairo_script_interpreter_finish(ctx) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_script_interpreter_finish
-  type(c_ptr), value :: ctx
-end function
-
-! cairo_status_t cairo_script_interpreter_destroy (cairo_script_interpreter_t *ctx);
-function cairo_script_interpreter_destroy(ctx) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_script_interpreter_destroy
-  type(c_ptr), value :: ctx
-end function
-
-! cairo_status_t cairo_script_interpreter_translate_stream (FILE *stream, cairo_write_func_t write_func, void *closure);
-function cairo_script_interpreter_translate_stream(stream, write_func, closure)&
-& bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_funptr
-  integer(c_int) :: cairo_script_interpreter_translate_stream
-  type(c_ptr), value :: stream
-  type(c_funptr), value :: write_func
-  type(c_ptr), value :: closure
-end function
-
-!  cairo_surface_t * cairo_ps_surface_create (const char *filename, double width_in_points, double height_in_points);
-function cairo_ps_surface_create(filename, width_in_points, height_in_points) b&
-&ind(c)
-  use iso_c_binding, only: c_ptr, c_char, c_double
-  type(c_ptr) :: cairo_ps_surface_create
-  character(kind=c_char), dimension(*) :: filename
-  real(c_double), value :: width_in_points
-  real(c_double), value :: height_in_points
-end function
-
-! cairo_surface_t * cairo_ps_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
-function cairo_ps_surface_create_for_stream(write_func, closure, width_in_point&
-&s, height_in_points) bind(c)
-  use iso_c_binding, only: c_ptr, c_funptr, c_double
-  type(c_ptr) :: cairo_ps_surface_create_for_stream
-  type(c_funptr), value :: write_func
-  type(c_ptr), value :: closure
-  real(c_double), value :: width_in_points
-  real(c_double), value :: height_in_points
-end function
-
-! void cairo_ps_surface_restrict_to_level (cairo_surface_t *surface, cairo_ps_level_t level);
-subroutine cairo_ps_surface_restrict_to_level(surface, level) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: surface
-  integer(c_int), value :: level
-end subroutine
-
-! void cairo_ps_get_levels (cairo_ps_level_t const **levels, int *num_levels);
-subroutine cairo_ps_get_levels(levels, num_levels) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int), value :: levels
-  type(c_ptr), value :: num_levels
-end subroutine
-
-! const char * cairo_ps_level_to_string (cairo_ps_level_t level);
-function cairo_ps_level_to_string(level) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: cairo_ps_level_to_string
-  integer(c_int), value :: level
-end function
-
-! void cairo_ps_surface_set_eps (cairo_surface_t *surface, cairo_bool_t eps);
-subroutine cairo_ps_surface_set_eps(surface, eps) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: surface
-  integer(c_int), value :: eps
-end subroutine
-
-! cairo_bool_t cairo_ps_surface_get_eps (cairo_surface_t *surface);
-function cairo_ps_surface_get_eps(surface) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: cairo_ps_surface_get_eps
-  type(c_ptr), value :: surface
-end function
-
-! void cairo_ps_surface_set_size (cairo_surface_t *surface, double width_in_points, double height_in_points);
-subroutine cairo_ps_surface_set_size(surface, width_in_points, height_in_points&
-&) bind(c)
-  use iso_c_binding, only: c_ptr, c_double
-  type(c_ptr), value :: surface
-  real(c_double), value :: width_in_points
-  real(c_double), value :: height_in_points
-end subroutine
-
-! void cairo_ps_surface_dsc_comment (cairo_surface_t *surface, const char *comment);
-subroutine cairo_ps_surface_dsc_comment(surface, comment) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: surface
-  character(kind=c_char), dimension(*) :: comment
-end subroutine
-
-! void cairo_ps_surface_dsc_begin_setup (cairo_surface_t *surface);
-subroutine cairo_ps_surface_dsc_begin_setup(surface) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: surface
-end subroutine
-
-! void cairo_ps_surface_dsc_begin_page_setup (cairo_surface_t *surface);
-subroutine cairo_ps_surface_dsc_begin_page_setup(surface) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: surface
-end subroutine
-
 !  cairo_surface_t * cairo_xcb_surface_create (xcb_connection_t *connection, xcb_drawable_t drawable, xcb_visualtype_t *visual, int width, int height);
 function cairo_xcb_surface_create(connection, drawable, visual, width, height) &
 &bind(c)
@@ -3197,202 +3319,80 @@ function cairo_xcb_device_debug_get_precision(device) bind(c)
   type(c_ptr), value :: device
 end function
 
-!  GType cairo_gobject_context_get_type (void);
-function cairo_gobject_context_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_context_get_type
+! cairo_script_interpreter_t * cairo_script_interpreter_create (void);
+function cairo_script_interpreter_create() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: cairo_script_interpreter_create
 end function
 
-! GType cairo_gobject_device_get_type (void);
-function cairo_gobject_device_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_device_get_type
+! void cairo_script_interpreter_install_hooks (cairo_script_interpreter_t *ctx, const cairo_script_interpreter_hooks_t *hooks);
+subroutine cairo_script_interpreter_install_hooks(ctx, hooks) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: ctx
+  type(c_ptr), value :: hooks
+end subroutine
+
+! cairo_status_t cairo_script_interpreter_run (cairo_script_interpreter_t *ctx, const char *filename);
+function cairo_script_interpreter_run(ctx, filename) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: cairo_script_interpreter_run
+  type(c_ptr), value :: ctx
+  character(kind=c_char), dimension(*) :: filename
 end function
 
-! GType cairo_gobject_matrix_get_type (void);
-function cairo_gobject_matrix_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_matrix_get_type
+! cairo_status_t cairo_script_interpreter_feed_stream (cairo_script_interpreter_t *ctx, FILE *stream);
+function cairo_script_interpreter_feed_stream(ctx, stream) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_script_interpreter_feed_stream
+  type(c_ptr), value :: ctx
+  type(c_ptr), value :: stream
 end function
 
-! GType cairo_gobject_pattern_get_type (void);
-function cairo_gobject_pattern_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_pattern_get_type
+! cairo_status_t cairo_script_interpreter_feed_string (cairo_script_interpreter_t *ctx, const char *line, int len);
+function cairo_script_interpreter_feed_string(ctx, line, len) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: cairo_script_interpreter_feed_string
+  type(c_ptr), value :: ctx
+  character(kind=c_char), dimension(*) :: line
+  integer(c_int), value :: len
 end function
 
-! GType cairo_gobject_surface_get_type (void);
-function cairo_gobject_surface_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_surface_get_type
+! unsigned int cairo_script_interpreter_get_line_number (cairo_script_interpreter_t *ctx);
+function cairo_script_interpreter_get_line_number(ctx) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_script_interpreter_get_line_number
+  type(c_ptr), value :: ctx
 end function
 
-! GType cairo_gobject_rectangle_get_type (void);
-function cairo_gobject_rectangle_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_rectangle_get_type
+! cairo_script_interpreter_t * cairo_script_interpreter_reference (cairo_script_interpreter_t *ctx);
+function cairo_script_interpreter_reference(ctx) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: cairo_script_interpreter_reference
+  type(c_ptr), value :: ctx
 end function
 
-! GType cairo_gobject_scaled_font_get_type (void);
-function cairo_gobject_scaled_font_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_scaled_font_get_type
+! cairo_status_t cairo_script_interpreter_finish (cairo_script_interpreter_t *ctx);
+function cairo_script_interpreter_finish(ctx) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_script_interpreter_finish
+  type(c_ptr), value :: ctx
 end function
 
-! GType cairo_gobject_font_face_get_type (void);
-function cairo_gobject_font_face_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_font_face_get_type
+! cairo_status_t cairo_script_interpreter_destroy (cairo_script_interpreter_t *ctx);
+function cairo_script_interpreter_destroy(ctx) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: cairo_script_interpreter_destroy
+  type(c_ptr), value :: ctx
 end function
 
-! GType cairo_gobject_font_options_get_type (void);
-function cairo_gobject_font_options_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_font_options_get_type
-end function
-
-! GType cairo_gobject_rectangle_int_get_type (void);
-function cairo_gobject_rectangle_int_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_rectangle_int_get_type
-end function
-
-! GType cairo_gobject_region_get_type (void);
-function cairo_gobject_region_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_region_get_type
-end function
-
-! GType cairo_gobject_status_get_type (void);
-function cairo_gobject_status_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_status_get_type
-end function
-
-! GType cairo_gobject_content_get_type (void);
-function cairo_gobject_content_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_content_get_type
-end function
-
-! GType cairo_gobject_operator_get_type (void);
-function cairo_gobject_operator_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_operator_get_type
-end function
-
-! GType cairo_gobject_antialias_get_type (void);
-function cairo_gobject_antialias_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_antialias_get_type
-end function
-
-! GType cairo_gobject_fill_rule_get_type (void);
-function cairo_gobject_fill_rule_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_fill_rule_get_type
-end function
-
-! GType cairo_gobject_line_cap_get_type (void);
-function cairo_gobject_line_cap_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_line_cap_get_type
-end function
-
-! GType cairo_gobject_line_join_get_type (void);
-function cairo_gobject_line_join_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_line_join_get_type
-end function
-
-! GType cairo_gobject_text_cluster_flags_get_type (void);
-function cairo_gobject_text_cluster_flags_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_text_cluster_flags_get_type
-end function
-
-! GType cairo_gobject_font_slant_get_type (void);
-function cairo_gobject_font_slant_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_font_slant_get_type
-end function
-
-! GType cairo_gobject_font_weight_get_type (void);
-function cairo_gobject_font_weight_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_font_weight_get_type
-end function
-
-! GType cairo_gobject_subpixel_order_get_type (void);
-function cairo_gobject_subpixel_order_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_subpixel_order_get_type
-end function
-
-! GType cairo_gobject_hint_style_get_type (void);
-function cairo_gobject_hint_style_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_hint_style_get_type
-end function
-
-! GType cairo_gobject_hint_metrics_get_type (void);
-function cairo_gobject_hint_metrics_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_hint_metrics_get_type
-end function
-
-! GType cairo_gobject_font_type_get_type (void);
-function cairo_gobject_font_type_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_font_type_get_type
-end function
-
-! GType cairo_gobject_path_data_type_get_type (void);
-function cairo_gobject_path_data_type_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_path_data_type_get_type
-end function
-
-! GType cairo_gobject_device_type_get_type (void);
-function cairo_gobject_device_type_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_device_type_get_type
-end function
-
-! GType cairo_gobject_surface_type_get_type (void);
-function cairo_gobject_surface_type_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_surface_type_get_type
-end function
-
-! GType cairo_gobject_format_get_type (void);
-function cairo_gobject_format_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_format_get_type
-end function
-
-! GType cairo_gobject_pattern_type_get_type (void);
-function cairo_gobject_pattern_type_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_pattern_type_get_type
-end function
-
-! GType cairo_gobject_extend_get_type (void);
-function cairo_gobject_extend_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_extend_get_type
-end function
-
-! GType cairo_gobject_filter_get_type (void);
-function cairo_gobject_filter_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_filter_get_type
-end function
-
-! GType cairo_gobject_region_overlap_get_type (void);
-function cairo_gobject_region_overlap_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: cairo_gobject_region_overlap_get_type
+! cairo_status_t cairo_script_interpreter_translate_stream (FILE *stream, cairo_write_func_t write_func, void *closure);
+function cairo_script_interpreter_translate_stream(stream, write_func, closure)&
+& bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: cairo_script_interpreter_translate_stream
+  type(c_ptr), value :: stream
+  type(c_funptr), value :: write_func
+  type(c_ptr), value :: closure
 end function
 
 end interface

@@ -6,71 +6,241 @@ module atk
 implicit none
 interface
 
-!  GType atk_streamable_content_get_type (void);
-function atk_streamable_content_get_type() bind(c)
+!  GType atk_table_get_type (void);
+function atk_table_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_streamable_content_get_type
+  integer(c_size_t) :: atk_table_get_type
 end function
 
-! gint atk_streamable_content_get_n_mime_types (AtkStreamableContent *streamable);
-function atk_streamable_content_get_n_mime_types(streamable) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_streamable_content_get_n_mime_types
-  type(c_ptr), value :: streamable
-end function
-
-! const gchar* atk_streamable_content_get_mime_type (AtkStreamableContent *streamable, gint i);
-function atk_streamable_content_get_mime_type(streamable, i) bind(c)
+! AtkObject* atk_table_ref_at (AtkTable *table, gint row, gint column);
+function atk_table_ref_at(table, row, column) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_streamable_content_get_mime_type
-  type(c_ptr), value :: streamable
-  integer(c_int), value :: i
+  type(c_ptr) :: atk_table_ref_at
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+  integer(c_int), value :: column
 end function
 
-! GIOChannel* atk_streamable_content_get_stream (AtkStreamableContent *streamable, const gchar *mime_type);
-function atk_streamable_content_get_stream(streamable, mime_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: atk_streamable_content_get_stream
-  type(c_ptr), value :: streamable
-  character(kind=c_char), dimension(*) :: mime_type
+! gint atk_table_get_index_at (AtkTable *table, gint row, gint column);
+function atk_table_get_index_at(table, row, column) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_get_index_at
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+  integer(c_int), value :: column
 end function
 
-! const gchar* atk_streamable_content_get_uri (AtkStreamableContent *streamable, const gchar *mime_type);
-function atk_streamable_content_get_uri(streamable, mime_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: atk_streamable_content_get_uri
-  type(c_ptr), value :: streamable
-  character(kind=c_char), dimension(*) :: mime_type
+! gint atk_table_get_column_at_index (AtkTable *table, gint index_);
+function atk_table_get_column_at_index(table, index_) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_get_column_at_index
+  type(c_ptr), value :: table
+  integer(c_int), value :: index_
 end function
 
-! GType atk_misc_get_type (void);
-function atk_misc_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_misc_get_type
+! gint atk_table_get_row_at_index (AtkTable *table, gint index_);
+function atk_table_get_row_at_index(table, index_) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_get_row_at_index
+  type(c_ptr), value :: table
+  integer(c_int), value :: index_
 end function
 
-! void atk_misc_threads_enter (AtkMisc *misc);
-subroutine atk_misc_threads_enter(misc) bind(c)
+! gint atk_table_get_n_columns (AtkTable *table);
+function atk_table_get_n_columns(table) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_get_n_columns
+  type(c_ptr), value :: table
+end function
+
+! gint atk_table_get_n_rows (AtkTable *table);
+function atk_table_get_n_rows(table) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_get_n_rows
+  type(c_ptr), value :: table
+end function
+
+! gint atk_table_get_column_extent_at (AtkTable *table, gint row, gint column);
+function atk_table_get_column_extent_at(table, row, column) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_get_column_extent_at
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+  integer(c_int), value :: column
+end function
+
+! gint atk_table_get_row_extent_at (AtkTable *table, gint row, gint column);
+function atk_table_get_row_extent_at(table, row, column) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_get_row_extent_at
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+  integer(c_int), value :: column
+end function
+
+! AtkObject* atk_table_get_caption (AtkTable *table);
+function atk_table_get_caption(table) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: misc
+  type(c_ptr) :: atk_table_get_caption
+  type(c_ptr), value :: table
+end function
+
+! const gchar* atk_table_get_column_description (AtkTable *table, gint column);
+function atk_table_get_column_description(table, column) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_table_get_column_description
+  type(c_ptr), value :: table
+  integer(c_int), value :: column
+end function
+
+! AtkObject* atk_table_get_column_header (AtkTable *table, gint column);
+function atk_table_get_column_header(table, column) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_table_get_column_header
+  type(c_ptr), value :: table
+  integer(c_int), value :: column
+end function
+
+! const gchar* atk_table_get_row_description (AtkTable *table, gint row);
+function atk_table_get_row_description(table, row) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_table_get_row_description
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+end function
+
+! AtkObject* atk_table_get_row_header (AtkTable *table, gint row);
+function atk_table_get_row_header(table, row) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_table_get_row_header
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+end function
+
+! AtkObject* atk_table_get_summary (AtkTable *table);
+function atk_table_get_summary(table) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_table_get_summary
+  type(c_ptr), value :: table
+end function
+
+! void atk_table_set_caption (AtkTable *table, AtkObject *caption);
+subroutine atk_table_set_caption(table, caption) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: table
+  type(c_ptr), value :: caption
 end subroutine
 
-! void atk_misc_threads_leave (AtkMisc *misc);
-subroutine atk_misc_threads_leave(misc) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: misc
+! void atk_table_set_column_description (AtkTable *table, gint column, const gchar *description);
+subroutine atk_table_set_column_description(table, column, description) bind(c)
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: table
+  integer(c_int), value :: column
+  character(kind=c_char), dimension(*) :: description
 end subroutine
 
-! const AtkMisc *atk_misc_get_instance (void);
-function atk_misc_get_instance() bind(c)
+! void atk_table_set_column_header (AtkTable *table, gint column, AtkObject *header);
+subroutine atk_table_set_column_header(table, column, header) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: table
+  integer(c_int), value :: column
+  type(c_ptr), value :: header
+end subroutine
+
+! void atk_table_set_row_description (AtkTable *table, gint row, const gchar *description);
+subroutine atk_table_set_row_description(table, row, description) bind(c)
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+  character(kind=c_char), dimension(*) :: description
+end subroutine
+
+! void atk_table_set_row_header (AtkTable *table, gint row, AtkObject *header);
+subroutine atk_table_set_row_header(table, row, header) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+  type(c_ptr), value :: header
+end subroutine
+
+! void atk_table_set_summary (AtkTable *table, AtkObject *accessible);
+subroutine atk_table_set_summary(table, accessible) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_misc_get_instance
+  type(c_ptr), value :: table
+  type(c_ptr), value :: accessible
+end subroutine
+
+! gint atk_table_get_selected_columns (AtkTable *table, gint **selected);
+function atk_table_get_selected_columns(table, selected) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_get_selected_columns
+  type(c_ptr), value :: table
+  type(c_ptr), value :: selected
 end function
 
-!  GType atk_window_get_type (void);
-function atk_window_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_window_get_type
+! gint atk_table_get_selected_rows (AtkTable *table, gint **selected);
+function atk_table_get_selected_rows(table, selected) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_get_selected_rows
+  type(c_ptr), value :: table
+  type(c_ptr), value :: selected
+end function
+
+! gboolean atk_table_is_column_selected (AtkTable *table, gint column);
+function atk_table_is_column_selected(table, column) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_is_column_selected
+  type(c_ptr), value :: table
+  integer(c_int), value :: column
+end function
+
+! gboolean atk_table_is_row_selected (AtkTable *table, gint row);
+function atk_table_is_row_selected(table, row) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_is_row_selected
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+end function
+
+! gboolean atk_table_is_selected (AtkTable *table, gint row, gint column);
+function atk_table_is_selected(table, row, column) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_is_selected
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+  integer(c_int), value :: column
+end function
+
+! gboolean atk_table_add_row_selection (AtkTable *table, gint row);
+function atk_table_add_row_selection(table, row) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_add_row_selection
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+end function
+
+! gboolean atk_table_remove_row_selection (AtkTable *table, gint row);
+function atk_table_remove_row_selection(table, row) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_remove_row_selection
+  type(c_ptr), value :: table
+  integer(c_int), value :: row
+end function
+
+! gboolean atk_table_add_column_selection (AtkTable *table, gint column);
+function atk_table_add_column_selection(table, column) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_add_column_selection
+  type(c_ptr), value :: table
+  integer(c_int), value :: column
+end function
+
+! gboolean atk_table_remove_column_selection (AtkTable *table, gint column);
+function atk_table_remove_column_selection(table, column) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_remove_column_selection
+  type(c_ptr), value :: table
+  integer(c_int), value :: column
 end function
 
 !    GType atk_hyperlink_get_type (void);
@@ -137,263 +307,301 @@ function atk_hyperlink_is_selected_link(link_) bind(c)
   type(c_ptr), value :: link_
 end function
 
-!  GType atk_state_set_get_type (void);
-function atk_state_set_get_type() bind(c)
+!  GType atk_table_cell_get_type (void);
+function atk_table_cell_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_state_set_get_type
+  integer(c_size_t) :: atk_table_cell_get_type
 end function
 
-! AtkStateSet* atk_state_set_new (void);
-function atk_state_set_new() bind(c)
+! gint atk_table_cell_get_column_span (AtkTableCell *cell);
+function atk_table_cell_get_column_span(cell) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_cell_get_column_span
+  type(c_ptr), value :: cell
+end function
+
+! GPtrArray * atk_table_cell_get_column_header_cells (AtkTableCell *cell);
+function atk_table_cell_get_column_header_cells(cell) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_state_set_new
+  type(c_ptr) :: atk_table_cell_get_column_header_cells
+  type(c_ptr), value :: cell
 end function
 
-! gboolean atk_state_set_is_empty (AtkStateSet *set);
-function atk_state_set_is_empty(set) bind(c)
+! gboolean atk_table_cell_get_position (AtkTableCell *cell, gint *row, gint *column);
+function atk_table_cell_get_position(cell, row, column) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_state_set_is_empty
-  type(c_ptr), value :: set
+  integer(c_int) :: atk_table_cell_get_position
+  type(c_ptr), value :: cell
+  type(c_ptr), value :: row
+  type(c_ptr), value :: column
 end function
 
-! gboolean atk_state_set_add_state (AtkStateSet *set, AtkStateType type);
-function atk_state_set_add_state(set, type) bind(c)
+! gint atk_table_cell_get_row_span (AtkTableCell *cell);
+function atk_table_cell_get_row_span(cell) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_state_set_add_state
-  type(c_ptr), value :: set
-  integer(c_int), value :: type
+  integer(c_int) :: atk_table_cell_get_row_span
+  type(c_ptr), value :: cell
 end function
 
-! void atk_state_set_add_states (AtkStateSet *set, AtkStateType *types, gint n_types);
-subroutine atk_state_set_add_states(set, types, n_types) bind(c)
+! GPtrArray * atk_table_cell_get_row_header_cells (AtkTableCell *cell);
+function atk_table_cell_get_row_header_cells(cell) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_table_cell_get_row_header_cells
+  type(c_ptr), value :: cell
+end function
+
+! gboolean atk_table_cell_get_row_column_span (AtkTableCell *cell, gint *row, gint *column, gint *row_span, gint *column_span);
+function atk_table_cell_get_row_column_span(cell, row, column, row_span, column&
+&_span) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_table_cell_get_row_column_span
+  type(c_ptr), value :: cell
+  type(c_ptr), value :: row
+  type(c_ptr), value :: column
+  type(c_ptr), value :: row_span
+  type(c_ptr), value :: column_span
+end function
+
+! AtkObject * atk_table_cell_get_table (AtkTableCell *cell);
+function atk_table_cell_get_table(cell) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_table_cell_get_table
+  type(c_ptr), value :: cell
+end function
+
+!  GType atk_action_get_type (void);
+function atk_action_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_action_get_type
+end function
+
+! gboolean atk_action_do_action (AtkAction *action, gint i);
+function atk_action_do_action(action, i) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_action_do_action
+  type(c_ptr), value :: action
+  integer(c_int), value :: i
+end function
+
+! gint atk_action_get_n_actions (AtkAction *action);
+function atk_action_get_n_actions(action) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_action_get_n_actions
+  type(c_ptr), value :: action
+end function
+
+! const gchar* atk_action_get_description (AtkAction *action, gint i);
+function atk_action_get_description(action, i) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: set
-  integer(c_int), value :: types
-  integer(c_int), value :: n_types
-end subroutine
-
-! void atk_state_set_clear_states (AtkStateSet *set);
-subroutine atk_state_set_clear_states(set) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: set
-end subroutine
-
-! gboolean atk_state_set_contains_state (AtkStateSet *set, AtkStateType type);
-function atk_state_set_contains_state(set, type) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_state_set_contains_state
-  type(c_ptr), value :: set
-  integer(c_int), value :: type
+  type(c_ptr) :: atk_action_get_description
+  type(c_ptr), value :: action
+  integer(c_int), value :: i
 end function
 
-! gboolean atk_state_set_contains_states (AtkStateSet *set, AtkStateType *types, gint n_types);
-function atk_state_set_contains_states(set, types, n_types) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_state_set_contains_states
-  type(c_ptr), value :: set
-  integer(c_int), value :: types
-  integer(c_int), value :: n_types
+! const gchar* atk_action_get_name (AtkAction *action, gint i);
+function atk_action_get_name(action, i) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_action_get_name
+  type(c_ptr), value :: action
+  integer(c_int), value :: i
 end function
 
-! gboolean atk_state_set_remove_state (AtkStateSet *set, AtkStateType type);
-function atk_state_set_remove_state(set, type) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_state_set_remove_state
-  type(c_ptr), value :: set
-  integer(c_int), value :: type
+! const gchar* atk_action_get_keybinding (AtkAction *action, gint i);
+function atk_action_get_keybinding(action, i) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_action_get_keybinding
+  type(c_ptr), value :: action
+  integer(c_int), value :: i
 end function
 
-! AtkStateSet* atk_state_set_and_sets (AtkStateSet *set, AtkStateSet *compare_set);
-function atk_state_set_and_sets(set, compare_set) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_state_set_and_sets
-  type(c_ptr), value :: set
-  type(c_ptr), value :: compare_set
+! gboolean atk_action_set_description (AtkAction *action, gint i, const gchar *desc);
+function atk_action_set_description(action, i, desc) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: atk_action_set_description
+  type(c_ptr), value :: action
+  integer(c_int), value :: i
+  character(kind=c_char), dimension(*) :: desc
 end function
 
-! AtkStateSet* atk_state_set_or_sets (AtkStateSet *set, AtkStateSet *compare_set);
-function atk_state_set_or_sets(set, compare_set) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_state_set_or_sets
-  type(c_ptr), value :: set
-  type(c_ptr), value :: compare_set
+! const gchar* atk_action_get_localized_name (AtkAction *action, gint i);
+function atk_action_get_localized_name(action, i) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_action_get_localized_name
+  type(c_ptr), value :: action
+  integer(c_int), value :: i
 end function
 
-! AtkStateSet* atk_state_set_xor_sets (AtkStateSet *set, AtkStateSet *compare_set);
-function atk_state_set_xor_sets(set, compare_set) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_state_set_xor_sets
-  type(c_ptr), value :: set
-  type(c_ptr), value :: compare_set
-end function
-
-!  GType atk_gobject_accessible_get_type (void);
-function atk_gobject_accessible_get_type() bind(c)
+!  GType atk_object_factory_get_type(void);
+function atk_object_factory_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_gobject_accessible_get_type
+  integer(c_size_t) :: atk_object_factory_get_type
 end function
 
-! AtkObject *atk_gobject_accessible_for_object (GObject *obj);
-function atk_gobject_accessible_for_object(obj) bind(c)
+! AtkObject* atk_object_factory_create_accessible (AtkObjectFactory *factory, GObject *obj);
+function atk_object_factory_create_accessible(factory, obj) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_gobject_accessible_for_object
+  type(c_ptr) :: atk_object_factory_create_accessible
+  type(c_ptr), value :: factory
   type(c_ptr), value :: obj
 end function
 
-! GObject *atk_gobject_accessible_get_object (AtkGObjectAccessible *obj);
-function atk_gobject_accessible_get_object(obj) bind(c)
+! void atk_object_factory_invalidate (AtkObjectFactory *factory);
+subroutine atk_object_factory_invalidate(factory) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_gobject_accessible_get_object
+  type(c_ptr), value :: factory
+end subroutine
+
+! GType atk_object_factory_get_accessible_type (AtkObjectFactory *factory);
+function atk_object_factory_get_accessible_type(factory) bind(c)
+  use iso_c_binding, only: c_size_t, c_ptr
+  integer(c_size_t) :: atk_object_factory_get_accessible_type
+  type(c_ptr), value :: factory
+end function
+
+!  GType atk_hyperlink_impl_get_type (void);
+function atk_hyperlink_impl_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_hyperlink_impl_get_type
+end function
+
+! AtkHyperlink *atk_hyperlink_impl_get_hyperlink (AtkHyperlinkImpl *impl);
+function atk_hyperlink_impl_get_hyperlink(impl) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_hyperlink_impl_get_hyperlink
+  type(c_ptr), value :: impl
+end function
+
+!  GType atk_no_op_object_get_type (void);
+function atk_no_op_object_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_no_op_object_get_type
+end function
+
+! AtkObject *atk_no_op_object_new (GObject *obj);
+function atk_no_op_object_new(obj) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_no_op_object_new
   type(c_ptr), value :: obj
 end function
 
-!  GType atk_rectangle_get_type (void);
-function atk_rectangle_get_type() bind(c)
+!  GType atk_socket_get_type (void);
+function atk_socket_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_rectangle_get_type
+  integer(c_size_t) :: atk_socket_get_type
 end function
 
-! GType atk_component_get_type (void);
-function atk_component_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_component_get_type
-end function
-
-! guint atk_component_add_focus_handler (AtkComponent *component, AtkFocusHandler handler);
-function atk_component_add_focus_handler(component, handler) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_funptr
-  integer(c_int) :: atk_component_add_focus_handler
-  type(c_ptr), value :: component
-  type(c_funptr), value :: handler
-end function
-
-! gboolean atk_component_contains (AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
-function atk_component_contains(component, x, y, coord_type) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_component_contains
-  type(c_ptr), value :: component
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: coord_type
-end function
-
-! AtkObject* atk_component_ref_accessible_at_point(AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
-function atk_component_ref_accessible_at_point(component, x, y, coord_type) bin&
-&d(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_component_ref_accessible_at_point
-  type(c_ptr), value :: component
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: coord_type
-end function
-
-! void atk_component_get_extents (AtkComponent *component, gint *x, gint *y, gint *width, gint *height, AtkCoordType coord_type);
-subroutine atk_component_get_extents(component, x, y, width, height, coord_type&
-&) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: component
-  type(c_ptr), value :: x
-  type(c_ptr), value :: y
-  type(c_ptr), value :: width
-  type(c_ptr), value :: height
-  integer(c_int), value :: coord_type
-end subroutine
-
-! void atk_component_get_position (AtkComponent *component, gint *x, gint *y, AtkCoordType coord_type);
-subroutine atk_component_get_position(component, x, y, coord_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: component
-  type(c_ptr), value :: x
-  type(c_ptr), value :: y
-  integer(c_int), value :: coord_type
-end subroutine
-
-! void atk_component_get_size (AtkComponent *component, gint *width, gint *height);
-subroutine atk_component_get_size(component, width, height) bind(c)
+! AtkObject* atk_socket_new (void);
+function atk_socket_new() bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: component
-  type(c_ptr), value :: width
-  type(c_ptr), value :: height
+  type(c_ptr) :: atk_socket_new
+end function
+
+! void atk_socket_embed (AtkSocket* obj, gchar* plug_id);
+subroutine atk_socket_embed(obj, plug_id) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: obj
+  character(kind=c_char), dimension(*) :: plug_id
 end subroutine
 
-! AtkLayer atk_component_get_layer (AtkComponent *component);
-function atk_component_get_layer(component) bind(c)
+! gboolean atk_socket_is_occupied (AtkSocket* obj);
+function atk_socket_is_occupied(obj) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_component_get_layer
-  type(c_ptr), value :: component
+  integer(c_int) :: atk_socket_is_occupied
+  type(c_ptr), value :: obj
 end function
 
-! gint atk_component_get_mdi_zorder (AtkComponent *component);
-function atk_component_get_mdi_zorder(component) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_component_get_mdi_zorder
-  type(c_ptr), value :: component
-end function
-
-! gboolean atk_component_grab_focus (AtkComponent *component);
-function atk_component_grab_focus(component) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_component_grab_focus
-  type(c_ptr), value :: component
-end function
-
-! void atk_component_remove_focus_handler (AtkComponent *component, guint handler_id);
-subroutine atk_component_remove_focus_handler(component, handler_id) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: component
-  integer(c_int), value :: handler_id
-end subroutine
-
-! gboolean atk_component_set_extents (AtkComponent *component, gint x, gint y, gint width, gint height, AtkCoordType coord_type);
-function atk_component_set_extents(component, x, y, width, height, coord_type) &
-&bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_component_set_extents
-  type(c_ptr), value :: component
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-  integer(c_int), value :: coord_type
-end function
-
-! gboolean atk_component_set_position (AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
-function atk_component_set_position(component, x, y, coord_type) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_component_set_position
-  type(c_ptr), value :: component
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-  integer(c_int), value :: coord_type
-end function
-
-! gboolean atk_component_set_size (AtkComponent *component, gint width, gint height);
-function atk_component_set_size(component, width, height) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_component_set_size
-  type(c_ptr), value :: component
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end function
-
-! gdouble atk_component_get_alpha (AtkComponent *component);
-function atk_component_get_alpha(component) bind(c)
-  use iso_c_binding, only: c_double, c_ptr
-  real(c_double) :: atk_component_get_alpha
-  type(c_ptr), value :: component
-end function
-
-!  GType atk_no_op_object_factory_get_type(void);
-function atk_no_op_object_factory_get_type() bind(c)
+!  GType atk_hypertext_get_type (void);
+function atk_hypertext_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_no_op_object_factory_get_type
+  integer(c_size_t) :: atk_hypertext_get_type
 end function
 
-! AtkObjectFactory *atk_no_op_object_factory_new(void);
-function atk_no_op_object_factory_new() bind(c)
+! AtkHyperlink* atk_hypertext_get_link (AtkHypertext *hypertext, gint link_index);
+function atk_hypertext_get_link(hypertext, link_index) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_hypertext_get_link
+  type(c_ptr), value :: hypertext
+  integer(c_int), value :: link_index
+end function
+
+! gint atk_hypertext_get_n_links (AtkHypertext *hypertext);
+function atk_hypertext_get_n_links(hypertext) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_hypertext_get_n_links
+  type(c_ptr), value :: hypertext
+end function
+
+! gint atk_hypertext_get_link_index (AtkHypertext *hypertext, gint char_index);
+function atk_hypertext_get_link_index(hypertext, char_index) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_hypertext_get_link_index
+  type(c_ptr), value :: hypertext
+  integer(c_int), value :: char_index
+end function
+
+!  GType atk_relation_get_type (void);
+function atk_relation_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_relation_get_type
+end function
+
+! AtkRelationType atk_relation_type_register (const gchar *name);
+function atk_relation_type_register(name) bind(c)
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: atk_relation_type_register
+  character(kind=c_char), dimension(*) :: name
+end function
+
+! const gchar* atk_relation_type_get_name (AtkRelationType type);
+function atk_relation_type_get_name(type) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_relation_type_get_name
+  integer(c_int), value :: type
+end function
+
+! AtkRelationType atk_relation_type_for_name (const gchar *name);
+function atk_relation_type_for_name(name) bind(c)
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: atk_relation_type_for_name
+  character(kind=c_char), dimension(*) :: name
+end function
+
+! AtkRelation* atk_relation_new (AtkObject **targets, gint n_targets, AtkRelationType relationship);
+function atk_relation_new(targets, n_targets, relationship) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_relation_new
+  type(c_ptr), value :: targets
+  integer(c_int), value :: n_targets
+  integer(c_int), value :: relationship
+end function
+
+! AtkRelationType atk_relation_get_relation_type (AtkRelation *relation);
+function atk_relation_get_relation_type(relation) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_relation_get_relation_type
+  type(c_ptr), value :: relation
+end function
+
+! GPtrArray* atk_relation_get_target (AtkRelation *relation);
+function atk_relation_get_target(relation) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_no_op_object_factory_new
+  type(c_ptr) :: atk_relation_get_target
+  type(c_ptr), value :: relation
+end function
+
+! void atk_relation_add_target (AtkRelation *relation, AtkObject *target);
+subroutine atk_relation_add_target(relation, target) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: relation
+  type(c_ptr), value :: target
+end subroutine
+
+! gboolean atk_relation_remove_target (AtkRelation *relation, AtkObject *target);
+function atk_relation_remove_target(relation, target) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_relation_remove_target
+  type(c_ptr), value :: relation
+  type(c_ptr), value :: target
 end function
 
 !  GType atk_range_get_type (void);
@@ -443,6 +651,599 @@ function atk_range_new(lower_limit, upper_limit, description) bind(c)
   real(c_double), value :: lower_limit
   real(c_double), value :: upper_limit
   character(kind=c_char), dimension(*) :: description
+end function
+
+!  GType atk_image_get_type (void);
+function atk_image_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_image_get_type
+end function
+
+! const gchar* atk_image_get_image_description (AtkImage *image);
+function atk_image_get_image_description(image) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_image_get_image_description
+  type(c_ptr), value :: image
+end function
+
+! void atk_image_get_image_size (AtkImage *image, gint *width, gint *height);
+subroutine atk_image_get_image_size(image, width, height) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: image
+  type(c_ptr), value :: width
+  type(c_ptr), value :: height
+end subroutine
+
+! gboolean atk_image_set_image_description (AtkImage *image, const gchar *description);
+function atk_image_set_image_description(image, description) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: atk_image_set_image_description
+  type(c_ptr), value :: image
+  character(kind=c_char), dimension(*) :: description
+end function
+
+! void atk_image_get_image_position (AtkImage *image, gint *x, gint *y, AtkCoordType coord_type);
+subroutine atk_image_get_image_position(image, x, y, coord_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: image
+  type(c_ptr), value :: x
+  type(c_ptr), value :: y
+  integer(c_int), value :: coord_type
+end subroutine
+
+! const gchar* atk_image_get_image_locale (AtkImage *image);
+function atk_image_get_image_locale(image) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_image_get_image_locale
+  type(c_ptr), value :: image
+end function
+
+!  GType atk_object_get_type (void);
+function atk_object_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_object_get_type
+end function
+
+! GType atk_implementor_get_type (void);
+function atk_implementor_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_implementor_get_type
+end function
+
+! AtkObject* atk_implementor_ref_accessible (AtkImplementor *implementor);
+function atk_implementor_ref_accessible(implementor) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_implementor_ref_accessible
+  type(c_ptr), value :: implementor
+end function
+
+! const gchar* atk_object_get_name (AtkObject *accessible);
+function atk_object_get_name(accessible) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_object_get_name
+  type(c_ptr), value :: accessible
+end function
+
+! const gchar* atk_object_get_description (AtkObject *accessible);
+function atk_object_get_description(accessible) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_object_get_description
+  type(c_ptr), value :: accessible
+end function
+
+! AtkObject* atk_object_get_parent (AtkObject *accessible);
+function atk_object_get_parent(accessible) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_object_get_parent
+  type(c_ptr), value :: accessible
+end function
+
+! AtkObject* atk_object_peek_parent (AtkObject *accessible);
+function atk_object_peek_parent(accessible) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_object_peek_parent
+  type(c_ptr), value :: accessible
+end function
+
+! gint atk_object_get_n_accessible_children (AtkObject *accessible);
+function atk_object_get_n_accessible_children(accessible) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_object_get_n_accessible_children
+  type(c_ptr), value :: accessible
+end function
+
+! AtkObject* atk_object_ref_accessible_child (AtkObject *accessible, gint i);
+function atk_object_ref_accessible_child(accessible, i) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_object_ref_accessible_child
+  type(c_ptr), value :: accessible
+  integer(c_int), value :: i
+end function
+
+! AtkRelationSet* atk_object_ref_relation_set (AtkObject *accessible);
+function atk_object_ref_relation_set(accessible) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_object_ref_relation_set
+  type(c_ptr), value :: accessible
+end function
+
+! AtkRole atk_object_get_role (AtkObject *accessible);
+function atk_object_get_role(accessible) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_object_get_role
+  type(c_ptr), value :: accessible
+end function
+
+! AtkLayer atk_object_get_layer (AtkObject *accessible);
+function atk_object_get_layer(accessible) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_object_get_layer
+  type(c_ptr), value :: accessible
+end function
+
+! gint atk_object_get_mdi_zorder (AtkObject *accessible);
+function atk_object_get_mdi_zorder(accessible) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_object_get_mdi_zorder
+  type(c_ptr), value :: accessible
+end function
+
+! AtkAttributeSet* atk_object_get_attributes (AtkObject *accessible);
+function atk_object_get_attributes(accessible) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_object_get_attributes
+  type(c_ptr), value :: accessible
+end function
+
+! AtkStateSet* atk_object_ref_state_set (AtkObject *accessible);
+function atk_object_ref_state_set(accessible) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_object_ref_state_set
+  type(c_ptr), value :: accessible
+end function
+
+! gint atk_object_get_index_in_parent (AtkObject *accessible);
+function atk_object_get_index_in_parent(accessible) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_object_get_index_in_parent
+  type(c_ptr), value :: accessible
+end function
+
+! void atk_object_set_name (AtkObject *accessible, const gchar *name);
+subroutine atk_object_set_name(accessible, name) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: accessible
+  character(kind=c_char), dimension(*) :: name
+end subroutine
+
+! void atk_object_set_description (AtkObject *accessible, const gchar *description);
+subroutine atk_object_set_description(accessible, description) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: accessible
+  character(kind=c_char), dimension(*) :: description
+end subroutine
+
+! void atk_object_set_parent (AtkObject *accessible, AtkObject *parent);
+subroutine atk_object_set_parent(accessible, parent) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: accessible
+  type(c_ptr), value :: parent
+end subroutine
+
+! void atk_object_set_role (AtkObject *accessible, AtkRole role);
+subroutine atk_object_set_role(accessible, role) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: accessible
+  integer(c_int), value :: role
+end subroutine
+
+! guint atk_object_connect_property_change_handler (AtkObject *accessible, AtkPropertyChangeHandler *handler);
+function atk_object_connect_property_change_handler(accessible, handler) bind(c&
+&)
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: atk_object_connect_property_change_handler
+  type(c_ptr), value :: accessible
+  type(c_funptr), value :: handler
+end function
+
+! void atk_object_remove_property_change_handler (AtkObject *accessible, guint handler_id);
+subroutine atk_object_remove_property_change_handler(accessible, handler_id) bi&
+&nd(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: accessible
+  integer(c_int), value :: handler_id
+end subroutine
+
+! void atk_object_notify_state_change (AtkObject *accessible, AtkState state, gboolean value);
+subroutine atk_object_notify_state_change(accessible, state, value) bind(c)
+  use iso_c_binding, only: c_ptr, c_int64_t, c_int
+  type(c_ptr), value :: accessible
+  integer(c_int64_t), value :: state
+  integer(c_int), value :: value
+end subroutine
+
+! void atk_object_initialize (AtkObject *accessible, gpointer data);
+subroutine atk_object_initialize(accessible, data) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: accessible
+  type(c_ptr), value :: data
+end subroutine
+
+! const gchar* atk_role_get_name (AtkRole role);
+function atk_role_get_name(role) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_role_get_name
+  integer(c_int), value :: role
+end function
+
+! AtkRole atk_role_for_name (const gchar *name);
+function atk_role_for_name(name) bind(c)
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: atk_role_for_name
+  character(kind=c_char), dimension(*) :: name
+end function
+
+! gboolean atk_object_add_relationship (AtkObject *object, AtkRelationType relationship, AtkObject *target);
+function atk_object_add_relationship(object, relationship, target) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_object_add_relationship
+  type(c_ptr), value :: object
+  integer(c_int), value :: relationship
+  type(c_ptr), value :: target
+end function
+
+! gboolean atk_object_remove_relationship (AtkObject *object, AtkRelationType relationship, AtkObject *target);
+function atk_object_remove_relationship(object, relationship, target) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_object_remove_relationship
+  type(c_ptr), value :: object
+  integer(c_int), value :: relationship
+  type(c_ptr), value :: target
+end function
+
+! const gchar* atk_role_get_localized_name (AtkRole role);
+function atk_role_get_localized_name(role) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_role_get_localized_name
+  integer(c_int), value :: role
+end function
+
+! AtkRole atk_role_register (const gchar *name);
+function atk_role_register(name) bind(c)
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: atk_role_register
+  character(kind=c_char), dimension(*) :: name
+end function
+
+! const gchar* atk_object_get_object_locale (AtkObject *accessible);
+function atk_object_get_object_locale(accessible) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_object_get_object_locale
+  type(c_ptr), value :: accessible
+end function
+
+!  guint atk_get_major_version (void) G_GNUC_CONST;
+function atk_get_major_version() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: atk_get_major_version
+end function
+
+! guint atk_get_minor_version (void) G_GNUC_CONST;
+function atk_get_minor_version() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: atk_get_minor_version
+end function
+
+! guint atk_get_micro_version (void) G_GNUC_CONST;
+function atk_get_micro_version() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: atk_get_micro_version
+end function
+
+! guint atk_get_binary_age (void) G_GNUC_CONST;
+function atk_get_binary_age() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: atk_get_binary_age
+end function
+
+! guint atk_get_interface_age (void) G_GNUC_CONST;
+function atk_get_interface_age() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: atk_get_interface_age
+end function
+
+! GType atk_misc_get_type (void);
+function atk_misc_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_misc_get_type
+end function
+
+! void atk_misc_threads_enter (AtkMisc *misc);
+subroutine atk_misc_threads_enter(misc) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: misc
+end subroutine
+
+! void atk_misc_threads_leave (AtkMisc *misc);
+subroutine atk_misc_threads_leave(misc) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: misc
+end subroutine
+
+! const AtkMisc *atk_misc_get_instance (void);
+function atk_misc_get_instance() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_misc_get_instance
+end function
+
+!  GType atk_selection_get_type (void);
+function atk_selection_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_selection_get_type
+end function
+
+! gboolean atk_selection_add_selection (AtkSelection *selection, gint i);
+function atk_selection_add_selection(selection, i) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_add_selection
+  type(c_ptr), value :: selection
+  integer(c_int), value :: i
+end function
+
+! gboolean atk_selection_clear_selection (AtkSelection *selection);
+function atk_selection_clear_selection(selection) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_clear_selection
+  type(c_ptr), value :: selection
+end function
+
+! AtkObject* atk_selection_ref_selection (AtkSelection *selection, gint i);
+function atk_selection_ref_selection(selection, i) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_selection_ref_selection
+  type(c_ptr), value :: selection
+  integer(c_int), value :: i
+end function
+
+! gint atk_selection_get_selection_count (AtkSelection *selection);
+function atk_selection_get_selection_count(selection) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_get_selection_count
+  type(c_ptr), value :: selection
+end function
+
+! gboolean atk_selection_is_child_selected (AtkSelection *selection, gint i);
+function atk_selection_is_child_selected(selection, i) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_is_child_selected
+  type(c_ptr), value :: selection
+  integer(c_int), value :: i
+end function
+
+! gboolean atk_selection_remove_selection (AtkSelection *selection, gint i);
+function atk_selection_remove_selection(selection, i) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_remove_selection
+  type(c_ptr), value :: selection
+  integer(c_int), value :: i
+end function
+
+! gboolean atk_selection_select_all_selection (AtkSelection *selection);
+function atk_selection_select_all_selection(selection) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_selection_select_all_selection
+  type(c_ptr), value :: selection
+end function
+
+!  GType atk_util_get_type (void);
+function atk_util_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_util_get_type
+end function
+
+! guint atk_add_focus_tracker (AtkEventListener focus_tracker);
+function atk_add_focus_tracker(focus_tracker) bind(c)
+  use iso_c_binding, only: c_int, c_funptr
+  integer(c_int) :: atk_add_focus_tracker
+  type(c_funptr), value :: focus_tracker
+end function
+
+! void atk_remove_focus_tracker (guint tracker_id);
+subroutine atk_remove_focus_tracker(tracker_id) bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: tracker_id
+end subroutine
+
+! void atk_focus_tracker_init (AtkEventListenerInit init);
+subroutine atk_focus_tracker_init(init) bind(c)
+  use iso_c_binding, only: c_funptr
+  type(c_funptr), value :: init
+end subroutine
+
+! void atk_focus_tracker_notify (AtkObject *object);
+subroutine atk_focus_tracker_notify(object) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: object
+end subroutine
+
+! guint atk_add_global_event_listener (GSignalEmissionHook listener, const gchar *event_type);
+function atk_add_global_event_listener(listener, event_type) bind(c)
+  use iso_c_binding, only: c_int, c_funptr, c_char
+  integer(c_int) :: atk_add_global_event_listener
+  type(c_funptr), value :: listener
+  character(kind=c_char), dimension(*) :: event_type
+end function
+
+! void atk_remove_global_event_listener (guint listener_id);
+subroutine atk_remove_global_event_listener(listener_id) bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: listener_id
+end subroutine
+
+! guint atk_add_key_event_listener (AtkKeySnoopFunc listener, gpointer data);
+function atk_add_key_event_listener(listener, data) bind(c)
+  use iso_c_binding, only: c_int, c_funptr, c_ptr
+  integer(c_int) :: atk_add_key_event_listener
+  type(c_funptr), value :: listener
+  type(c_ptr), value :: data
+end function
+
+! void atk_remove_key_event_listener (guint listener_id);
+subroutine atk_remove_key_event_listener(listener_id) bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: listener_id
+end subroutine
+
+! AtkObject* atk_get_root(void);
+function atk_get_root() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_get_root
+end function
+
+! AtkObject* atk_get_focus_object (void);
+function atk_get_focus_object() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_get_focus_object
+end function
+
+! const gchar *atk_get_toolkit_name (void);
+function atk_get_toolkit_name() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_get_toolkit_name
+end function
+
+! const gchar *atk_get_toolkit_version (void);
+function atk_get_toolkit_version() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_get_toolkit_version
+end function
+
+! const gchar *atk_get_version (void);
+function atk_get_version() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_get_version
+end function
+
+!  GType atk_value_get_type (void);
+function atk_value_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_value_get_type
+end function
+
+! void atk_value_get_current_value (AtkValue *obj, GValue *value);
+subroutine atk_value_get_current_value(obj, value) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: obj
+  type(c_ptr), value :: value
+end subroutine
+
+! void atk_value_get_maximum_value (AtkValue *obj, GValue *value);
+subroutine atk_value_get_maximum_value(obj, value) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: obj
+  type(c_ptr), value :: value
+end subroutine
+
+! void atk_value_get_minimum_value (AtkValue *obj, GValue *value);
+subroutine atk_value_get_minimum_value(obj, value) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: obj
+  type(c_ptr), value :: value
+end subroutine
+
+! gboolean atk_value_set_current_value (AtkValue *obj, const GValue *value);
+function atk_value_set_current_value(obj, value) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_value_set_current_value
+  type(c_ptr), value :: obj
+  type(c_ptr), value :: value
+end function
+
+! void atk_value_get_minimum_increment (AtkValue *obj, GValue *value);
+subroutine atk_value_get_minimum_increment(obj, value) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: obj
+  type(c_ptr), value :: value
+end subroutine
+
+! void atk_value_get_value_and_text (AtkValue *obj, gdouble *value, gchar **text);
+subroutine atk_value_get_value_and_text(obj, value, text) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: obj
+  type(c_ptr), value :: value
+  type(c_ptr), dimension(*) :: text
+end subroutine
+
+! AtkRange* atk_value_get_range (AtkValue *obj);
+function atk_value_get_range(obj) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_value_get_range
+  type(c_ptr), value :: obj
+end function
+
+! gdouble atk_value_get_increment (AtkValue *obj);
+function atk_value_get_increment(obj) bind(c)
+  use iso_c_binding, only: c_double, c_ptr
+  real(c_double) :: atk_value_get_increment
+  type(c_ptr), value :: obj
+end function
+
+! GSList* atk_value_get_sub_ranges (AtkValue *obj);
+function atk_value_get_sub_ranges(obj) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_value_get_sub_ranges
+  type(c_ptr), value :: obj
+end function
+
+! const gchar* atk_value_type_get_name (AtkValueType value_type);
+function atk_value_type_get_name(value_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_value_type_get_name
+  integer(c_int), value :: value_type
+end function
+
+! const gchar* atk_value_type_get_localized_name (AtkValueType value_type);
+function atk_value_type_get_localized_name(value_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_value_type_get_localized_name
+  integer(c_int), value :: value_type
+end function
+
+!  GType atk_streamable_content_get_type (void);
+function atk_streamable_content_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_streamable_content_get_type
+end function
+
+! gint atk_streamable_content_get_n_mime_types (AtkStreamableContent *streamable);
+function atk_streamable_content_get_n_mime_types(streamable) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_streamable_content_get_n_mime_types
+  type(c_ptr), value :: streamable
+end function
+
+! const gchar* atk_streamable_content_get_mime_type (AtkStreamableContent *streamable, gint i);
+function atk_streamable_content_get_mime_type(streamable, i) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_streamable_content_get_mime_type
+  type(c_ptr), value :: streamable
+  integer(c_int), value :: i
+end function
+
+! GIOChannel* atk_streamable_content_get_stream (AtkStreamableContent *streamable, const gchar *mime_type);
+function atk_streamable_content_get_stream(streamable, mime_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: atk_streamable_content_get_stream
+  type(c_ptr), value :: streamable
+  character(kind=c_char), dimension(*) :: mime_type
+end function
+
+! const gchar* atk_streamable_content_get_uri (AtkStreamableContent *streamable, const gchar *mime_type);
+function atk_streamable_content_get_uri(streamable, mime_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: atk_streamable_content_get_uri
+  type(c_ptr), value :: streamable
+  character(kind=c_char), dimension(*) :: mime_type
 end function
 
 !  AtkTextAttribute atk_text_attribute_register (const gchar *name);
@@ -695,108 +1496,114 @@ function atk_text_attribute_get_value(attr, index_) bind(c)
   integer(c_int), value :: index_
 end function
 
-!  GType atk_socket_get_type (void);
-function atk_socket_get_type() bind(c)
+!  GType atk_gobject_accessible_get_type (void);
+function atk_gobject_accessible_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_socket_get_type
+  integer(c_size_t) :: atk_gobject_accessible_get_type
 end function
 
-! AtkObject* atk_socket_new (void);
-function atk_socket_new() bind(c)
+! AtkObject *atk_gobject_accessible_for_object (GObject *obj);
+function atk_gobject_accessible_for_object(obj) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_socket_new
+  type(c_ptr) :: atk_gobject_accessible_for_object
+  type(c_ptr), value :: obj
 end function
 
-! void atk_socket_embed (AtkSocket* obj, gchar* plug_id);
-subroutine atk_socket_embed(obj, plug_id) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
+! GObject *atk_gobject_accessible_get_object (AtkGObjectAccessible *obj);
+function atk_gobject_accessible_get_object(obj) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_gobject_accessible_get_object
   type(c_ptr), value :: obj
-  character(kind=c_char), dimension(*) :: plug_id
-end subroutine
+end function
 
-! gboolean atk_socket_is_occupied (AtkSocket* obj);
-function atk_socket_is_occupied(obj) bind(c)
+!  GType atk_state_set_get_type (void);
+function atk_state_set_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_state_set_get_type
+end function
+
+! AtkStateSet* atk_state_set_new (void);
+function atk_state_set_new() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_state_set_new
+end function
+
+! gboolean atk_state_set_is_empty (AtkStateSet *set);
+function atk_state_set_is_empty(set) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_socket_is_occupied
-  type(c_ptr), value :: obj
+  integer(c_int) :: atk_state_set_is_empty
+  type(c_ptr), value :: set
 end function
 
-!  GType atk_no_op_object_get_type (void);
-function atk_no_op_object_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_no_op_object_get_type
-end function
-
-! AtkObject *atk_no_op_object_new (GObject *obj);
-function atk_no_op_object_new(obj) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_no_op_object_new
-  type(c_ptr), value :: obj
-end function
-
-!  GType atk_relation_get_type (void);
-function atk_relation_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_relation_get_type
-end function
-
-! AtkRelationType atk_relation_type_register (const gchar *name);
-function atk_relation_type_register(name) bind(c)
-  use iso_c_binding, only: c_int, c_char
-  integer(c_int) :: atk_relation_type_register
-  character(kind=c_char), dimension(*) :: name
-end function
-
-! const gchar* atk_relation_type_get_name (AtkRelationType type);
-function atk_relation_type_get_name(type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_relation_type_get_name
+! gboolean atk_state_set_add_state (AtkStateSet *set, AtkStateType type);
+function atk_state_set_add_state(set, type) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_state_set_add_state
+  type(c_ptr), value :: set
   integer(c_int), value :: type
 end function
 
-! AtkRelationType atk_relation_type_for_name (const gchar *name);
-function atk_relation_type_for_name(name) bind(c)
-  use iso_c_binding, only: c_int, c_char
-  integer(c_int) :: atk_relation_type_for_name
-  character(kind=c_char), dimension(*) :: name
-end function
-
-! AtkRelation* atk_relation_new (AtkObject **targets, gint n_targets, AtkRelationType relationship);
-function atk_relation_new(targets, n_targets, relationship) bind(c)
+! void atk_state_set_add_states (AtkStateSet *set, AtkStateType *types, gint n_types);
+subroutine atk_state_set_add_states(set, types, n_types) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_relation_new
-  type(c_ptr), value :: targets
-  integer(c_int), value :: n_targets
-  integer(c_int), value :: relationship
-end function
-
-! AtkRelationType atk_relation_get_relation_type (AtkRelation *relation);
-function atk_relation_get_relation_type(relation) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_relation_get_relation_type
-  type(c_ptr), value :: relation
-end function
-
-! GPtrArray* atk_relation_get_target (AtkRelation *relation);
-function atk_relation_get_target(relation) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_relation_get_target
-  type(c_ptr), value :: relation
-end function
-
-! void atk_relation_add_target (AtkRelation *relation, AtkObject *target);
-subroutine atk_relation_add_target(relation, target) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: relation
-  type(c_ptr), value :: target
+  type(c_ptr), value :: set
+  integer(c_int), value :: types
+  integer(c_int), value :: n_types
 end subroutine
 
-! gboolean atk_relation_remove_target (AtkRelation *relation, AtkObject *target);
-function atk_relation_remove_target(relation, target) bind(c)
+! void atk_state_set_clear_states (AtkStateSet *set);
+subroutine atk_state_set_clear_states(set) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: set
+end subroutine
+
+! gboolean atk_state_set_contains_state (AtkStateSet *set, AtkStateType type);
+function atk_state_set_contains_state(set, type) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_relation_remove_target
-  type(c_ptr), value :: relation
-  type(c_ptr), value :: target
+  integer(c_int) :: atk_state_set_contains_state
+  type(c_ptr), value :: set
+  integer(c_int), value :: type
+end function
+
+! gboolean atk_state_set_contains_states (AtkStateSet *set, AtkStateType *types, gint n_types);
+function atk_state_set_contains_states(set, types, n_types) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_state_set_contains_states
+  type(c_ptr), value :: set
+  integer(c_int), value :: types
+  integer(c_int), value :: n_types
+end function
+
+! gboolean atk_state_set_remove_state (AtkStateSet *set, AtkStateType type);
+function atk_state_set_remove_state(set, type) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_state_set_remove_state
+  type(c_ptr), value :: set
+  integer(c_int), value :: type
+end function
+
+! AtkStateSet* atk_state_set_and_sets (AtkStateSet *set, AtkStateSet *compare_set);
+function atk_state_set_and_sets(set, compare_set) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_state_set_and_sets
+  type(c_ptr), value :: set
+  type(c_ptr), value :: compare_set
+end function
+
+! AtkStateSet* atk_state_set_or_sets (AtkStateSet *set, AtkStateSet *compare_set);
+function atk_state_set_or_sets(set, compare_set) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_state_set_or_sets
+  type(c_ptr), value :: set
+  type(c_ptr), value :: compare_set
+end function
+
+! AtkStateSet* atk_state_set_xor_sets (AtkStateSet *set, AtkStateSet *compare_set);
+function atk_state_set_xor_sets(set, compare_set) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_state_set_xor_sets
+  type(c_ptr), value :: set
+  type(c_ptr), value :: compare_set
 end function
 
 !  AtkStateType atk_state_type_register (const gchar *name);
@@ -818,6 +1625,155 @@ function atk_state_type_for_name(name) bind(c)
   use iso_c_binding, only: c_int, c_char
   integer(c_int) :: atk_state_type_for_name
   character(kind=c_char), dimension(*) :: name
+end function
+
+!  GType atk_no_op_object_factory_get_type(void);
+function atk_no_op_object_factory_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_no_op_object_factory_get_type
+end function
+
+! AtkObjectFactory *atk_no_op_object_factory_new(void);
+function atk_no_op_object_factory_new() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: atk_no_op_object_factory_new
+end function
+
+!  GType atk_rectangle_get_type (void);
+function atk_rectangle_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_rectangle_get_type
+end function
+
+! GType atk_component_get_type (void);
+function atk_component_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: atk_component_get_type
+end function
+
+! guint atk_component_add_focus_handler (AtkComponent *component, AtkFocusHandler handler);
+function atk_component_add_focus_handler(component, handler) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: atk_component_add_focus_handler
+  type(c_ptr), value :: component
+  type(c_funptr), value :: handler
+end function
+
+! gboolean atk_component_contains (AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
+function atk_component_contains(component, x, y, coord_type) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_contains
+  type(c_ptr), value :: component
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  integer(c_int), value :: coord_type
+end function
+
+! AtkObject* atk_component_ref_accessible_at_point(AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
+function atk_component_ref_accessible_at_point(component, x, y, coord_type) bin&
+&d(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: atk_component_ref_accessible_at_point
+  type(c_ptr), value :: component
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  integer(c_int), value :: coord_type
+end function
+
+! void atk_component_get_extents (AtkComponent *component, gint *x, gint *y, gint *width, gint *height, AtkCoordType coord_type);
+subroutine atk_component_get_extents(component, x, y, width, height, coord_type&
+&) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: component
+  type(c_ptr), value :: x
+  type(c_ptr), value :: y
+  type(c_ptr), value :: width
+  type(c_ptr), value :: height
+  integer(c_int), value :: coord_type
+end subroutine
+
+! void atk_component_get_position (AtkComponent *component, gint *x, gint *y, AtkCoordType coord_type);
+subroutine atk_component_get_position(component, x, y, coord_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: component
+  type(c_ptr), value :: x
+  type(c_ptr), value :: y
+  integer(c_int), value :: coord_type
+end subroutine
+
+! void atk_component_get_size (AtkComponent *component, gint *width, gint *height);
+subroutine atk_component_get_size(component, width, height) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: component
+  type(c_ptr), value :: width
+  type(c_ptr), value :: height
+end subroutine
+
+! AtkLayer atk_component_get_layer (AtkComponent *component);
+function atk_component_get_layer(component) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_get_layer
+  type(c_ptr), value :: component
+end function
+
+! gint atk_component_get_mdi_zorder (AtkComponent *component);
+function atk_component_get_mdi_zorder(component) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_get_mdi_zorder
+  type(c_ptr), value :: component
+end function
+
+! gboolean atk_component_grab_focus (AtkComponent *component);
+function atk_component_grab_focus(component) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_grab_focus
+  type(c_ptr), value :: component
+end function
+
+! void atk_component_remove_focus_handler (AtkComponent *component, guint handler_id);
+subroutine atk_component_remove_focus_handler(component, handler_id) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: component
+  integer(c_int), value :: handler_id
+end subroutine
+
+! gboolean atk_component_set_extents (AtkComponent *component, gint x, gint y, gint width, gint height, AtkCoordType coord_type);
+function atk_component_set_extents(component, x, y, width, height, coord_type) &
+&bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_set_extents
+  type(c_ptr), value :: component
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+  integer(c_int), value :: coord_type
+end function
+
+! gboolean atk_component_set_position (AtkComponent *component, gint x, gint y, AtkCoordType coord_type);
+function atk_component_set_position(component, x, y, coord_type) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_set_position
+  type(c_ptr), value :: component
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+  integer(c_int), value :: coord_type
+end function
+
+! gboolean atk_component_set_size (AtkComponent *component, gint width, gint height);
+function atk_component_set_size(component, width, height) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: atk_component_set_size
+  type(c_ptr), value :: component
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end function
+
+! gdouble atk_component_get_alpha (AtkComponent *component);
+function atk_component_get_alpha(component) bind(c)
+  use iso_c_binding, only: c_double, c_ptr
+  real(c_double) :: atk_component_get_alpha
+  type(c_ptr), value :: component
 end function
 
 !  GType atk_hyperlink_state_flags_get_type (void);
@@ -892,97 +1848,6 @@ function atk_value_type_get_type() bind(c)
   integer(c_size_t) :: atk_value_type_get_type
 end function
 
-!  GType atk_hypertext_get_type (void);
-function atk_hypertext_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_hypertext_get_type
-end function
-
-! AtkHyperlink* atk_hypertext_get_link (AtkHypertext *hypertext, gint link_index);
-function atk_hypertext_get_link(hypertext, link_index) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_hypertext_get_link
-  type(c_ptr), value :: hypertext
-  integer(c_int), value :: link_index
-end function
-
-! gint atk_hypertext_get_n_links (AtkHypertext *hypertext);
-function atk_hypertext_get_n_links(hypertext) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_hypertext_get_n_links
-  type(c_ptr), value :: hypertext
-end function
-
-! gint atk_hypertext_get_link_index (AtkHypertext *hypertext, gint char_index);
-function atk_hypertext_get_link_index(hypertext, char_index) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_hypertext_get_link_index
-  type(c_ptr), value :: hypertext
-  integer(c_int), value :: char_index
-end function
-
-!  GType atk_action_get_type (void);
-function atk_action_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_action_get_type
-end function
-
-! gboolean atk_action_do_action (AtkAction *action, gint i);
-function atk_action_do_action(action, i) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_action_do_action
-  type(c_ptr), value :: action
-  integer(c_int), value :: i
-end function
-
-! gint atk_action_get_n_actions (AtkAction *action);
-function atk_action_get_n_actions(action) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_action_get_n_actions
-  type(c_ptr), value :: action
-end function
-
-! const gchar* atk_action_get_description (AtkAction *action, gint i);
-function atk_action_get_description(action, i) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_action_get_description
-  type(c_ptr), value :: action
-  integer(c_int), value :: i
-end function
-
-! const gchar* atk_action_get_name (AtkAction *action, gint i);
-function atk_action_get_name(action, i) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_action_get_name
-  type(c_ptr), value :: action
-  integer(c_int), value :: i
-end function
-
-! const gchar* atk_action_get_keybinding (AtkAction *action, gint i);
-function atk_action_get_keybinding(action, i) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_action_get_keybinding
-  type(c_ptr), value :: action
-  integer(c_int), value :: i
-end function
-
-! gboolean atk_action_set_description (AtkAction *action, gint i, const gchar *desc);
-function atk_action_set_description(action, i, desc) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: atk_action_set_description
-  type(c_ptr), value :: action
-  integer(c_int), value :: i
-  character(kind=c_char), dimension(*) :: desc
-end function
-
-! const gchar* atk_action_get_localized_name (AtkAction *action, gint i);
-function atk_action_get_localized_name(action, i) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_action_get_localized_name
-  type(c_ptr), value :: action
-  integer(c_int), value :: i
-end function
-
 !  GType atk_document_get_type (void);
 function atk_document_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -1049,228 +1914,40 @@ function atk_document_get_page_count(document) bind(c)
   type(c_ptr), value :: document
 end function
 
-!  GType atk_object_get_type (void);
-function atk_object_get_type() bind(c)
+!  GType atk_registry_get_type (void);
+function atk_registry_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_object_get_type
+  integer(c_size_t) :: atk_registry_get_type
 end function
 
-! GType atk_implementor_get_type (void);
-function atk_implementor_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_implementor_get_type
-end function
-
-! AtkObject* atk_implementor_ref_accessible (AtkImplementor *implementor);
-function atk_implementor_ref_accessible(implementor) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_implementor_ref_accessible
-  type(c_ptr), value :: implementor
-end function
-
-! const gchar* atk_object_get_name (AtkObject *accessible);
-function atk_object_get_name(accessible) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_object_get_name
-  type(c_ptr), value :: accessible
-end function
-
-! const gchar* atk_object_get_description (AtkObject *accessible);
-function atk_object_get_description(accessible) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_object_get_description
-  type(c_ptr), value :: accessible
-end function
-
-! AtkObject* atk_object_get_parent (AtkObject *accessible);
-function atk_object_get_parent(accessible) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_object_get_parent
-  type(c_ptr), value :: accessible
-end function
-
-! AtkObject* atk_object_peek_parent (AtkObject *accessible);
-function atk_object_peek_parent(accessible) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_object_peek_parent
-  type(c_ptr), value :: accessible
-end function
-
-! gint atk_object_get_n_accessible_children (AtkObject *accessible);
-function atk_object_get_n_accessible_children(accessible) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_object_get_n_accessible_children
-  type(c_ptr), value :: accessible
-end function
-
-! AtkObject* atk_object_ref_accessible_child (AtkObject *accessible, gint i);
-function atk_object_ref_accessible_child(accessible, i) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_object_ref_accessible_child
-  type(c_ptr), value :: accessible
-  integer(c_int), value :: i
-end function
-
-! AtkRelationSet* atk_object_ref_relation_set (AtkObject *accessible);
-function atk_object_ref_relation_set(accessible) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_object_ref_relation_set
-  type(c_ptr), value :: accessible
-end function
-
-! AtkRole atk_object_get_role (AtkObject *accessible);
-function atk_object_get_role(accessible) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_object_get_role
-  type(c_ptr), value :: accessible
-end function
-
-! AtkLayer atk_object_get_layer (AtkObject *accessible);
-function atk_object_get_layer(accessible) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_object_get_layer
-  type(c_ptr), value :: accessible
-end function
-
-! gint atk_object_get_mdi_zorder (AtkObject *accessible);
-function atk_object_get_mdi_zorder(accessible) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_object_get_mdi_zorder
-  type(c_ptr), value :: accessible
-end function
-
-! AtkAttributeSet* atk_object_get_attributes (AtkObject *accessible);
-function atk_object_get_attributes(accessible) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_object_get_attributes
-  type(c_ptr), value :: accessible
-end function
-
-! AtkStateSet* atk_object_ref_state_set (AtkObject *accessible);
-function atk_object_ref_state_set(accessible) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_object_ref_state_set
-  type(c_ptr), value :: accessible
-end function
-
-! gint atk_object_get_index_in_parent (AtkObject *accessible);
-function atk_object_get_index_in_parent(accessible) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_object_get_index_in_parent
-  type(c_ptr), value :: accessible
-end function
-
-! void atk_object_set_name (AtkObject *accessible, const gchar *name);
-subroutine atk_object_set_name(accessible, name) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: accessible
-  character(kind=c_char), dimension(*) :: name
+! void atk_registry_set_factory_type (AtkRegistry *registry, GType type, GType factory_type);
+subroutine atk_registry_set_factory_type(registry, type, factory_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr), value :: registry
+  integer(c_size_t), value :: type
+  integer(c_size_t), value :: factory_type
 end subroutine
 
-! void atk_object_set_description (AtkObject *accessible, const gchar *description);
-subroutine atk_object_set_description(accessible, description) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: accessible
-  character(kind=c_char), dimension(*) :: description
-end subroutine
+! GType atk_registry_get_factory_type (AtkRegistry *registry, GType type);
+function atk_registry_get_factory_type(registry, type) bind(c)
+  use iso_c_binding, only: c_size_t, c_ptr
+  integer(c_size_t) :: atk_registry_get_factory_type
+  type(c_ptr), value :: registry
+  integer(c_size_t), value :: type
+end function
 
-! void atk_object_set_parent (AtkObject *accessible, AtkObject *parent);
-subroutine atk_object_set_parent(accessible, parent) bind(c)
+! AtkObjectFactory* atk_registry_get_factory (AtkRegistry *registry, GType type);
+function atk_registry_get_factory(registry, type) bind(c)
+  use iso_c_binding, only: c_ptr, c_size_t
+  type(c_ptr) :: atk_registry_get_factory
+  type(c_ptr), value :: registry
+  integer(c_size_t), value :: type
+end function
+
+! AtkRegistry* atk_get_default_registry (void);
+function atk_get_default_registry() bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: accessible
-  type(c_ptr), value :: parent
-end subroutine
-
-! void atk_object_set_role (AtkObject *accessible, AtkRole role);
-subroutine atk_object_set_role(accessible, role) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: accessible
-  integer(c_int), value :: role
-end subroutine
-
-! guint atk_object_connect_property_change_handler (AtkObject *accessible, AtkPropertyChangeHandler *handler);
-function atk_object_connect_property_change_handler(accessible, handler) bind(c&
-&)
-  use iso_c_binding, only: c_int, c_ptr, c_funptr
-  integer(c_int) :: atk_object_connect_property_change_handler
-  type(c_ptr), value :: accessible
-  type(c_funptr), value :: handler
-end function
-
-! void atk_object_remove_property_change_handler (AtkObject *accessible, guint handler_id);
-subroutine atk_object_remove_property_change_handler(accessible, handler_id) bi&
-&nd(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: accessible
-  integer(c_int), value :: handler_id
-end subroutine
-
-! void atk_object_notify_state_change (AtkObject *accessible, AtkState state, gboolean value);
-subroutine atk_object_notify_state_change(accessible, state, value) bind(c)
-  use iso_c_binding, only: c_ptr, c_int64_t, c_int
-  type(c_ptr), value :: accessible
-  integer(c_int64_t), value :: state
-  integer(c_int), value :: value
-end subroutine
-
-! void atk_object_initialize (AtkObject *accessible, gpointer data);
-subroutine atk_object_initialize(accessible, data) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: accessible
-  type(c_ptr), value :: data
-end subroutine
-
-! const gchar* atk_role_get_name (AtkRole role);
-function atk_role_get_name(role) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_role_get_name
-  integer(c_int), value :: role
-end function
-
-! AtkRole atk_role_for_name (const gchar *name);
-function atk_role_for_name(name) bind(c)
-  use iso_c_binding, only: c_int, c_char
-  integer(c_int) :: atk_role_for_name
-  character(kind=c_char), dimension(*) :: name
-end function
-
-! gboolean atk_object_add_relationship (AtkObject *object, AtkRelationType relationship, AtkObject *target);
-function atk_object_add_relationship(object, relationship, target) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_object_add_relationship
-  type(c_ptr), value :: object
-  integer(c_int), value :: relationship
-  type(c_ptr), value :: target
-end function
-
-! gboolean atk_object_remove_relationship (AtkObject *object, AtkRelationType relationship, AtkObject *target);
-function atk_object_remove_relationship(object, relationship, target) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_object_remove_relationship
-  type(c_ptr), value :: object
-  integer(c_int), value :: relationship
-  type(c_ptr), value :: target
-end function
-
-! const gchar* atk_role_get_localized_name (AtkRole role);
-function atk_role_get_localized_name(role) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_role_get_localized_name
-  integer(c_int), value :: role
-end function
-
-! AtkRole atk_role_register (const gchar *name);
-function atk_role_register(name) bind(c)
-  use iso_c_binding, only: c_int, c_char
-  integer(c_int) :: atk_role_register
-  character(kind=c_char), dimension(*) :: name
-end function
-
-! const gchar* atk_object_get_object_locale (AtkObject *accessible);
-function atk_object_get_object_locale(accessible) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_object_get_object_locale
-  type(c_ptr), value :: accessible
+  type(c_ptr) :: atk_get_default_registry
 end function
 
 !  GType atk_relation_set_get_type (void);
@@ -1348,81 +2025,6 @@ subroutine atk_relation_set_add_relation_by_type(set, relationship, target) bin&
   type(c_ptr), value :: target
 end subroutine
 
-!  GType atk_table_cell_get_type (void);
-function atk_table_cell_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_table_cell_get_type
-end function
-
-! gint atk_table_cell_get_column_span (AtkTableCell *cell);
-function atk_table_cell_get_column_span(cell) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_cell_get_column_span
-  type(c_ptr), value :: cell
-end function
-
-! GPtrArray * atk_table_cell_get_column_header_cells (AtkTableCell *cell);
-function atk_table_cell_get_column_header_cells(cell) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_table_cell_get_column_header_cells
-  type(c_ptr), value :: cell
-end function
-
-! gboolean atk_table_cell_get_position (AtkTableCell *cell, gint *row, gint *column);
-function atk_table_cell_get_position(cell, row, column) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_cell_get_position
-  type(c_ptr), value :: cell
-  type(c_ptr), value :: row
-  type(c_ptr), value :: column
-end function
-
-! gint atk_table_cell_get_row_span (AtkTableCell *cell);
-function atk_table_cell_get_row_span(cell) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_cell_get_row_span
-  type(c_ptr), value :: cell
-end function
-
-! GPtrArray * atk_table_cell_get_row_header_cells (AtkTableCell *cell);
-function atk_table_cell_get_row_header_cells(cell) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_table_cell_get_row_header_cells
-  type(c_ptr), value :: cell
-end function
-
-! gboolean atk_table_cell_get_row_column_span (AtkTableCell *cell, gint *row, gint *column, gint *row_span, gint *column_span);
-function atk_table_cell_get_row_column_span(cell, row, column, row_span, column&
-&_span) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_cell_get_row_column_span
-  type(c_ptr), value :: cell
-  type(c_ptr), value :: row
-  type(c_ptr), value :: column
-  type(c_ptr), value :: row_span
-  type(c_ptr), value :: column_span
-end function
-
-! AtkObject * atk_table_cell_get_table (AtkTableCell *cell);
-function atk_table_cell_get_table(cell) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_table_cell_get_table
-  type(c_ptr), value :: cell
-end function
-
-!  GType atk_hyperlink_impl_get_type (void);
-function atk_hyperlink_impl_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_hyperlink_impl_get_type
-end function
-
-! AtkHyperlink *atk_hyperlink_impl_get_hyperlink (AtkHyperlinkImpl *impl);
-function atk_hyperlink_impl_get_hyperlink(impl) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_hyperlink_impl_get_hyperlink
-  type(c_ptr), value :: impl
-end function
-
 !  GType atk_editable_text_get_type (void);
 function atk_editable_text_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -1488,91 +2090,6 @@ subroutine atk_editable_text_paste_text(text, position) bind(c)
   integer(c_int), value :: position
 end subroutine
 
-!  GType atk_value_get_type (void);
-function atk_value_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_value_get_type
-end function
-
-! void atk_value_get_current_value (AtkValue *obj, GValue *value);
-subroutine atk_value_get_current_value(obj, value) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: obj
-  type(c_ptr), value :: value
-end subroutine
-
-! void atk_value_get_maximum_value (AtkValue *obj, GValue *value);
-subroutine atk_value_get_maximum_value(obj, value) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: obj
-  type(c_ptr), value :: value
-end subroutine
-
-! void atk_value_get_minimum_value (AtkValue *obj, GValue *value);
-subroutine atk_value_get_minimum_value(obj, value) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: obj
-  type(c_ptr), value :: value
-end subroutine
-
-! gboolean atk_value_set_current_value (AtkValue *obj, const GValue *value);
-function atk_value_set_current_value(obj, value) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_value_set_current_value
-  type(c_ptr), value :: obj
-  type(c_ptr), value :: value
-end function
-
-! void atk_value_get_minimum_increment (AtkValue *obj, GValue *value);
-subroutine atk_value_get_minimum_increment(obj, value) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: obj
-  type(c_ptr), value :: value
-end subroutine
-
-! void atk_value_get_value_and_text (AtkValue *obj, gdouble *value, gchar **text);
-subroutine atk_value_get_value_and_text(obj, value, text) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: obj
-  type(c_ptr), value :: value
-  type(c_ptr), dimension(*) :: text
-end subroutine
-
-! AtkRange* atk_value_get_range (AtkValue *obj);
-function atk_value_get_range(obj) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_value_get_range
-  type(c_ptr), value :: obj
-end function
-
-! gdouble atk_value_get_increment (AtkValue *obj);
-function atk_value_get_increment(obj) bind(c)
-  use iso_c_binding, only: c_double, c_ptr
-  real(c_double) :: atk_value_get_increment
-  type(c_ptr), value :: obj
-end function
-
-! GSList* atk_value_get_sub_ranges (AtkValue *obj);
-function atk_value_get_sub_ranges(obj) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_value_get_sub_ranges
-  type(c_ptr), value :: obj
-end function
-
-! const gchar* atk_value_type_get_name (AtkValueType value_type);
-function atk_value_type_get_name(value_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_value_type_get_name
-  integer(c_int), value :: value_type
-end function
-
-! const gchar* atk_value_type_get_localized_name (AtkValueType value_type);
-function atk_value_type_get_localized_name(value_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_value_type_get_localized_name
-  integer(c_int), value :: value_type
-end function
-
 !  GType atk_plug_get_type (void);
 function atk_plug_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -1592,527 +2109,10 @@ function atk_plug_get_id(plug) bind(c)
   type(c_ptr), value :: plug
 end function
 
-!  GType atk_table_get_type (void);
-function atk_table_get_type() bind(c)
+!  GType atk_window_get_type (void);
+function atk_window_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_table_get_type
-end function
-
-! AtkObject* atk_table_ref_at (AtkTable *table, gint row, gint column);
-function atk_table_ref_at(table, row, column) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_table_ref_at
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-end function
-
-! gint atk_table_get_index_at (AtkTable *table, gint row, gint column);
-function atk_table_get_index_at(table, row, column) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_get_index_at
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-end function
-
-! gint atk_table_get_column_at_index (AtkTable *table, gint index_);
-function atk_table_get_column_at_index(table, index_) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_get_column_at_index
-  type(c_ptr), value :: table
-  integer(c_int), value :: index_
-end function
-
-! gint atk_table_get_row_at_index (AtkTable *table, gint index_);
-function atk_table_get_row_at_index(table, index_) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_get_row_at_index
-  type(c_ptr), value :: table
-  integer(c_int), value :: index_
-end function
-
-! gint atk_table_get_n_columns (AtkTable *table);
-function atk_table_get_n_columns(table) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_get_n_columns
-  type(c_ptr), value :: table
-end function
-
-! gint atk_table_get_n_rows (AtkTable *table);
-function atk_table_get_n_rows(table) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_get_n_rows
-  type(c_ptr), value :: table
-end function
-
-! gint atk_table_get_column_extent_at (AtkTable *table, gint row, gint column);
-function atk_table_get_column_extent_at(table, row, column) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_get_column_extent_at
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-end function
-
-! gint atk_table_get_row_extent_at (AtkTable *table, gint row, gint column);
-function atk_table_get_row_extent_at(table, row, column) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_get_row_extent_at
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-end function
-
-! AtkObject* atk_table_get_caption (AtkTable *table);
-function atk_table_get_caption(table) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_table_get_caption
-  type(c_ptr), value :: table
-end function
-
-! const gchar* atk_table_get_column_description (AtkTable *table, gint column);
-function atk_table_get_column_description(table, column) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_table_get_column_description
-  type(c_ptr), value :: table
-  integer(c_int), value :: column
-end function
-
-! AtkObject* atk_table_get_column_header (AtkTable *table, gint column);
-function atk_table_get_column_header(table, column) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_table_get_column_header
-  type(c_ptr), value :: table
-  integer(c_int), value :: column
-end function
-
-! const gchar* atk_table_get_row_description (AtkTable *table, gint row);
-function atk_table_get_row_description(table, row) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_table_get_row_description
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-end function
-
-! AtkObject* atk_table_get_row_header (AtkTable *table, gint row);
-function atk_table_get_row_header(table, row) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_table_get_row_header
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-end function
-
-! AtkObject* atk_table_get_summary (AtkTable *table);
-function atk_table_get_summary(table) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_table_get_summary
-  type(c_ptr), value :: table
-end function
-
-! void atk_table_set_caption (AtkTable *table, AtkObject *caption);
-subroutine atk_table_set_caption(table, caption) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: table
-  type(c_ptr), value :: caption
-end subroutine
-
-! void atk_table_set_column_description (AtkTable *table, gint column, const gchar *description);
-subroutine atk_table_set_column_description(table, column, description) bind(c)
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: table
-  integer(c_int), value :: column
-  character(kind=c_char), dimension(*) :: description
-end subroutine
-
-! void atk_table_set_column_header (AtkTable *table, gint column, AtkObject *header);
-subroutine atk_table_set_column_header(table, column, header) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: table
-  integer(c_int), value :: column
-  type(c_ptr), value :: header
-end subroutine
-
-! void atk_table_set_row_description (AtkTable *table, gint row, const gchar *description);
-subroutine atk_table_set_row_description(table, row, description) bind(c)
-  use iso_c_binding, only: c_ptr, c_int, c_char
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-  character(kind=c_char), dimension(*) :: description
-end subroutine
-
-! void atk_table_set_row_header (AtkTable *table, gint row, AtkObject *header);
-subroutine atk_table_set_row_header(table, row, header) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-  type(c_ptr), value :: header
-end subroutine
-
-! void atk_table_set_summary (AtkTable *table, AtkObject *accessible);
-subroutine atk_table_set_summary(table, accessible) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: table
-  type(c_ptr), value :: accessible
-end subroutine
-
-! gint atk_table_get_selected_columns (AtkTable *table, gint **selected);
-function atk_table_get_selected_columns(table, selected) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_get_selected_columns
-  type(c_ptr), value :: table
-  type(c_ptr), value :: selected
-end function
-
-! gint atk_table_get_selected_rows (AtkTable *table, gint **selected);
-function atk_table_get_selected_rows(table, selected) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_get_selected_rows
-  type(c_ptr), value :: table
-  type(c_ptr), value :: selected
-end function
-
-! gboolean atk_table_is_column_selected (AtkTable *table, gint column);
-function atk_table_is_column_selected(table, column) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_is_column_selected
-  type(c_ptr), value :: table
-  integer(c_int), value :: column
-end function
-
-! gboolean atk_table_is_row_selected (AtkTable *table, gint row);
-function atk_table_is_row_selected(table, row) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_is_row_selected
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-end function
-
-! gboolean atk_table_is_selected (AtkTable *table, gint row, gint column);
-function atk_table_is_selected(table, row, column) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_is_selected
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-  integer(c_int), value :: column
-end function
-
-! gboolean atk_table_add_row_selection (AtkTable *table, gint row);
-function atk_table_add_row_selection(table, row) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_add_row_selection
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-end function
-
-! gboolean atk_table_remove_row_selection (AtkTable *table, gint row);
-function atk_table_remove_row_selection(table, row) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_remove_row_selection
-  type(c_ptr), value :: table
-  integer(c_int), value :: row
-end function
-
-! gboolean atk_table_add_column_selection (AtkTable *table, gint column);
-function atk_table_add_column_selection(table, column) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_add_column_selection
-  type(c_ptr), value :: table
-  integer(c_int), value :: column
-end function
-
-! gboolean atk_table_remove_column_selection (AtkTable *table, gint column);
-function atk_table_remove_column_selection(table, column) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_table_remove_column_selection
-  type(c_ptr), value :: table
-  integer(c_int), value :: column
-end function
-
-!  GType atk_image_get_type (void);
-function atk_image_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_image_get_type
-end function
-
-! const gchar* atk_image_get_image_description (AtkImage *image);
-function atk_image_get_image_description(image) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_image_get_image_description
-  type(c_ptr), value :: image
-end function
-
-! void atk_image_get_image_size (AtkImage *image, gint *width, gint *height);
-subroutine atk_image_get_image_size(image, width, height) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: image
-  type(c_ptr), value :: width
-  type(c_ptr), value :: height
-end subroutine
-
-! gboolean atk_image_set_image_description (AtkImage *image, const gchar *description);
-function atk_image_set_image_description(image, description) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: atk_image_set_image_description
-  type(c_ptr), value :: image
-  character(kind=c_char), dimension(*) :: description
-end function
-
-! void atk_image_get_image_position (AtkImage *image, gint *x, gint *y, AtkCoordType coord_type);
-subroutine atk_image_get_image_position(image, x, y, coord_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: image
-  type(c_ptr), value :: x
-  type(c_ptr), value :: y
-  integer(c_int), value :: coord_type
-end subroutine
-
-! const gchar* atk_image_get_image_locale (AtkImage *image);
-function atk_image_get_image_locale(image) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_image_get_image_locale
-  type(c_ptr), value :: image
-end function
-
-!  GType atk_selection_get_type (void);
-function atk_selection_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_selection_get_type
-end function
-
-! gboolean atk_selection_add_selection (AtkSelection *selection, gint i);
-function atk_selection_add_selection(selection, i) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_selection_add_selection
-  type(c_ptr), value :: selection
-  integer(c_int), value :: i
-end function
-
-! gboolean atk_selection_clear_selection (AtkSelection *selection);
-function atk_selection_clear_selection(selection) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_selection_clear_selection
-  type(c_ptr), value :: selection
-end function
-
-! AtkObject* atk_selection_ref_selection (AtkSelection *selection, gint i);
-function atk_selection_ref_selection(selection, i) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: atk_selection_ref_selection
-  type(c_ptr), value :: selection
-  integer(c_int), value :: i
-end function
-
-! gint atk_selection_get_selection_count (AtkSelection *selection);
-function atk_selection_get_selection_count(selection) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_selection_get_selection_count
-  type(c_ptr), value :: selection
-end function
-
-! gboolean atk_selection_is_child_selected (AtkSelection *selection, gint i);
-function atk_selection_is_child_selected(selection, i) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_selection_is_child_selected
-  type(c_ptr), value :: selection
-  integer(c_int), value :: i
-end function
-
-! gboolean atk_selection_remove_selection (AtkSelection *selection, gint i);
-function atk_selection_remove_selection(selection, i) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_selection_remove_selection
-  type(c_ptr), value :: selection
-  integer(c_int), value :: i
-end function
-
-! gboolean atk_selection_select_all_selection (AtkSelection *selection);
-function atk_selection_select_all_selection(selection) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: atk_selection_select_all_selection
-  type(c_ptr), value :: selection
-end function
-
-!  GType atk_registry_get_type (void);
-function atk_registry_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_registry_get_type
-end function
-
-! void atk_registry_set_factory_type (AtkRegistry *registry, GType type, GType factory_type);
-subroutine atk_registry_set_factory_type(registry, type, factory_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_size_t
-  type(c_ptr), value :: registry
-  integer(c_size_t), value :: type
-  integer(c_size_t), value :: factory_type
-end subroutine
-
-! GType atk_registry_get_factory_type (AtkRegistry *registry, GType type);
-function atk_registry_get_factory_type(registry, type) bind(c)
-  use iso_c_binding, only: c_size_t, c_ptr
-  integer(c_size_t) :: atk_registry_get_factory_type
-  type(c_ptr), value :: registry
-  integer(c_size_t), value :: type
-end function
-
-! AtkObjectFactory* atk_registry_get_factory (AtkRegistry *registry, GType type);
-function atk_registry_get_factory(registry, type) bind(c)
-  use iso_c_binding, only: c_ptr, c_size_t
-  type(c_ptr) :: atk_registry_get_factory
-  type(c_ptr), value :: registry
-  integer(c_size_t), value :: type
-end function
-
-! AtkRegistry* atk_get_default_registry (void);
-function atk_get_default_registry() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_get_default_registry
-end function
-
-!  GType atk_object_factory_get_type(void);
-function atk_object_factory_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_object_factory_get_type
-end function
-
-! AtkObject* atk_object_factory_create_accessible (AtkObjectFactory *factory, GObject *obj);
-function atk_object_factory_create_accessible(factory, obj) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_object_factory_create_accessible
-  type(c_ptr), value :: factory
-  type(c_ptr), value :: obj
-end function
-
-! void atk_object_factory_invalidate (AtkObjectFactory *factory);
-subroutine atk_object_factory_invalidate(factory) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: factory
-end subroutine
-
-! GType atk_object_factory_get_accessible_type (AtkObjectFactory *factory);
-function atk_object_factory_get_accessible_type(factory) bind(c)
-  use iso_c_binding, only: c_size_t, c_ptr
-  integer(c_size_t) :: atk_object_factory_get_accessible_type
-  type(c_ptr), value :: factory
-end function
-
-!  guint atk_get_major_version (void) G_GNUC_CONST;
-function atk_get_major_version() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: atk_get_major_version
-end function
-
-! guint atk_get_minor_version (void) G_GNUC_CONST;
-function atk_get_minor_version() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: atk_get_minor_version
-end function
-
-! guint atk_get_micro_version (void) G_GNUC_CONST;
-function atk_get_micro_version() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: atk_get_micro_version
-end function
-
-! guint atk_get_binary_age (void) G_GNUC_CONST;
-function atk_get_binary_age() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: atk_get_binary_age
-end function
-
-! guint atk_get_interface_age (void) G_GNUC_CONST;
-function atk_get_interface_age() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: atk_get_interface_age
-end function
-
-!  GType atk_util_get_type (void);
-function atk_util_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: atk_util_get_type
-end function
-
-! guint atk_add_focus_tracker (AtkEventListener focus_tracker);
-function atk_add_focus_tracker(focus_tracker) bind(c)
-  use iso_c_binding, only: c_int, c_funptr
-  integer(c_int) :: atk_add_focus_tracker
-  type(c_funptr), value :: focus_tracker
-end function
-
-! void atk_remove_focus_tracker (guint tracker_id);
-subroutine atk_remove_focus_tracker(tracker_id) bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: tracker_id
-end subroutine
-
-! void atk_focus_tracker_init (AtkEventListenerInit init);
-subroutine atk_focus_tracker_init(init) bind(c)
-  use iso_c_binding, only: c_funptr
-  type(c_funptr), value :: init
-end subroutine
-
-! void atk_focus_tracker_notify (AtkObject *object);
-subroutine atk_focus_tracker_notify(object) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: object
-end subroutine
-
-! guint atk_add_global_event_listener (GSignalEmissionHook listener, const gchar *event_type);
-function atk_add_global_event_listener(listener, event_type) bind(c)
-  use iso_c_binding, only: c_int, c_funptr, c_char
-  integer(c_int) :: atk_add_global_event_listener
-  type(c_funptr), value :: listener
-  character(kind=c_char), dimension(*) :: event_type
-end function
-
-! void atk_remove_global_event_listener (guint listener_id);
-subroutine atk_remove_global_event_listener(listener_id) bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: listener_id
-end subroutine
-
-! guint atk_add_key_event_listener (AtkKeySnoopFunc listener, gpointer data);
-function atk_add_key_event_listener(listener, data) bind(c)
-  use iso_c_binding, only: c_int, c_funptr, c_ptr
-  integer(c_int) :: atk_add_key_event_listener
-  type(c_funptr), value :: listener
-  type(c_ptr), value :: data
-end function
-
-! void atk_remove_key_event_listener (guint listener_id);
-subroutine atk_remove_key_event_listener(listener_id) bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: listener_id
-end subroutine
-
-! AtkObject* atk_get_root(void);
-function atk_get_root() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_get_root
-end function
-
-! AtkObject* atk_get_focus_object (void);
-function atk_get_focus_object() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_get_focus_object
-end function
-
-! const gchar *atk_get_toolkit_name (void);
-function atk_get_toolkit_name() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_get_toolkit_name
-end function
-
-! const gchar *atk_get_toolkit_version (void);
-function atk_get_toolkit_version() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_get_toolkit_version
-end function
-
-! const gchar *atk_get_version (void);
-function atk_get_version() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: atk_get_version
+  integer(c_size_t) :: atk_window_get_type
 end function
 
 end interface
