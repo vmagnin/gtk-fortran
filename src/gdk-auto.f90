@@ -6,209 +6,6 @@ module gdk
 implicit none
 interface
 
-!  void gdk_parse_args (gint *argc, gchar ***argv);
-subroutine gdk_parse_args(argc, argv) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: argc
-  type(c_ptr), dimension(*) :: argv
-end subroutine
-
-! void gdk_init (gint *argc, gchar ***argv);
-subroutine gdk_init(argc, argv) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: argc
-  type(c_ptr), dimension(*) :: argv
-end subroutine
-
-! gboolean gdk_init_check (gint *argc, gchar ***argv);
-function gdk_init_check(argc, argv) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_init_check
-  type(c_ptr), value :: argc
-  type(c_ptr), dimension(*) :: argv
-end function
-
-! void gdk_add_option_entries_libgtk_only (GOptionGroup *group);
-subroutine gdk_add_option_entries_libgtk_only(group) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: group
-end subroutine
-
-! void gdk_pre_parse_libgtk_only (void);
-subroutine gdk_pre_parse_libgtk_only() bind(c)
-  use iso_c_binding, only: 
-end subroutine
-
-! const gchar * gdk_get_program_class (void);
-function gdk_get_program_class() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_get_program_class
-end function
-
-! void gdk_set_program_class (const gchar *program_class);
-subroutine gdk_set_program_class(program_class) bind(c)
-  use iso_c_binding, only: c_char
-  character(kind=c_char), dimension(*) :: program_class
-end subroutine
-
-! void gdk_notify_startup_complete (void);
-subroutine gdk_notify_startup_complete() bind(c)
-  use iso_c_binding, only: 
-end subroutine
-
-! void gdk_notify_startup_complete_with_id (const gchar* startup_id);
-subroutine gdk_notify_startup_complete_with_id(startup_id) bind(c)
-  use iso_c_binding, only: c_char
-  character(kind=c_char), dimension(*) :: startup_id
-end subroutine
-
-! void gdk_error_trap_push (void);
-subroutine gdk_error_trap_push() bind(c)
-  use iso_c_binding, only: 
-end subroutine
-
-! gint gdk_error_trap_pop (void);
-function gdk_error_trap_pop() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_error_trap_pop
-end function
-
-! void gdk_error_trap_pop_ignored (void);
-subroutine gdk_error_trap_pop_ignored() bind(c)
-  use iso_c_binding, only: 
-end subroutine
-
-! const gchar * gdk_get_display_arg_name (void);
-function gdk_get_display_arg_name() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_get_display_arg_name
-end function
-
-! gchar* gdk_get_display (void);
-function gdk_get_display() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_get_display
-end function
-
-! GdkGrabStatus gdk_pointer_grab (GdkWindow *window, gboolean owner_events, GdkEventMask event_mask, GdkWindow *confine_to, GdkCursor *cursor, guint32 time_);
-function gdk_pointer_grab(window, owner_events, event_mask, confine_to, cursor,&
-& time_) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_int32_t
-  integer(c_int) :: gdk_pointer_grab
-  type(c_ptr), value :: window
-  integer(c_int), value :: owner_events
-  integer(c_int), value :: event_mask
-  type(c_ptr), value :: confine_to
-  type(c_ptr), value :: cursor
-  integer(c_int32_t), value :: time_
-end function
-
-! GdkGrabStatus gdk_keyboard_grab (GdkWindow *window, gboolean owner_events, guint32 time_);
-function gdk_keyboard_grab(window, owner_events, time_) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_int32_t
-  integer(c_int) :: gdk_keyboard_grab
-  type(c_ptr), value :: window
-  integer(c_int), value :: owner_events
-  integer(c_int32_t), value :: time_
-end function
-
-! void gdk_pointer_ungrab (guint32 time_);
-subroutine gdk_pointer_ungrab(time_) bind(c)
-  use iso_c_binding, only: c_int32_t
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! void gdk_keyboard_ungrab (guint32 time_);
-subroutine gdk_keyboard_ungrab(time_) bind(c)
-  use iso_c_binding, only: c_int32_t
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! gboolean gdk_pointer_is_grabbed (void);
-function gdk_pointer_is_grabbed() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_pointer_is_grabbed
-end function
-
-! gint gdk_screen_width (void) G_GNUC_CONST;
-function gdk_screen_width() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_screen_width
-end function
-
-! gint gdk_screen_height (void) G_GNUC_CONST;
-function gdk_screen_height() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_screen_height
-end function
-
-! gint gdk_screen_width_mm (void) G_GNUC_CONST;
-function gdk_screen_width_mm() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_screen_width_mm
-end function
-
-! gint gdk_screen_height_mm (void) G_GNUC_CONST;
-function gdk_screen_height_mm() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_screen_height_mm
-end function
-
-! void gdk_set_double_click_time (guint msec);
-subroutine gdk_set_double_click_time(msec) bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: msec
-end subroutine
-
-! void gdk_beep (void);
-subroutine gdk_beep() bind(c)
-  use iso_c_binding, only: 
-end subroutine
-
-! void gdk_flush (void);
-subroutine gdk_flush() bind(c)
-  use iso_c_binding, only: 
-end subroutine
-
-! void gdk_disable_multidevice (void);
-subroutine gdk_disable_multidevice() bind(c)
-  use iso_c_binding, only: 
-end subroutine
-
-! void gdk_set_allowed_backends (const gchar *backends);
-subroutine gdk_set_allowed_backends(backends) bind(c)
-  use iso_c_binding, only: c_char
-  character(kind=c_char), dimension(*) :: backends
-end subroutine
-
-!  GType gdk_device_manager_get_type (void) G_GNUC_CONST;
-function gdk_device_manager_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_device_manager_get_type
-end function
-
-! GdkDisplay * gdk_device_manager_get_display (GdkDeviceManager *device_manager);
-function gdk_device_manager_get_display(device_manager) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_manager_get_display
-  type(c_ptr), value :: device_manager
-end function
-
-! GList * gdk_device_manager_list_devices (GdkDeviceManager *device_manager, GdkDeviceType type);
-function gdk_device_manager_list_devices(device_manager, type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_device_manager_list_devices
-  type(c_ptr), value :: device_manager
-  integer(c_int), value :: type
-end function
-
-! GdkDevice * gdk_device_manager_get_client_pointer (GdkDeviceManager *device_manager);
-function gdk_device_manager_get_client_pointer(device_manager) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_manager_get_client_pointer
-  type(c_ptr), value :: device_manager
-end function
-
 !  void gdk_test_render_sync (GdkWindow *window);
 subroutine gdk_test_render_sync(window) bind(c)
   use iso_c_binding, only: c_ptr
@@ -239,6 +36,331 @@ function gdk_test_simulate_button(window, x, y, button, modifiers, button_press&
   integer(c_int), value :: button
   integer(c_int), value :: modifiers
   integer(c_int), value :: button_pressrelease
+end function
+
+!  GQuark gdk_gl_error_quark (void);
+function gdk_gl_error_quark() bind(c)
+  use iso_c_binding, only: c_int32_t
+  integer(c_int32_t) :: gdk_gl_error_quark
+end function
+
+! GType gdk_gl_context_get_type (void) G_GNUC_CONST;
+function gdk_gl_context_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_gl_context_get_type
+end function
+
+! GdkDisplay * gdk_gl_context_get_display (GdkGLContext *context);
+function gdk_gl_context_get_display(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_gl_context_get_display
+  type(c_ptr), value :: context
+end function
+
+! GdkWindow * gdk_gl_context_get_window (GdkGLContext *context);
+function gdk_gl_context_get_window(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_gl_context_get_window
+  type(c_ptr), value :: context
+end function
+
+! GdkGLContext * gdk_gl_context_get_shared_context (GdkGLContext *context);
+function gdk_gl_context_get_shared_context(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_gl_context_get_shared_context
+  type(c_ptr), value :: context
+end function
+
+! void gdk_gl_context_get_version (GdkGLContext *context, int *major, int *minor);
+subroutine gdk_gl_context_get_version(context, major, minor) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: major
+  type(c_ptr), value :: minor
+end subroutine
+
+! gboolean gdk_gl_context_is_legacy (GdkGLContext *context);
+function gdk_gl_context_is_legacy(context) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_gl_context_is_legacy
+  type(c_ptr), value :: context
+end function
+
+! void gdk_gl_context_set_required_version (GdkGLContext *context, int major, int minor);
+subroutine gdk_gl_context_set_required_version(context, major, minor) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: major
+  integer(c_int), value :: minor
+end subroutine
+
+! void gdk_gl_context_get_required_version (GdkGLContext *context, int *major, int *minor);
+subroutine gdk_gl_context_get_required_version(context, major, minor) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: major
+  type(c_ptr), value :: minor
+end subroutine
+
+! void gdk_gl_context_set_debug_enabled (GdkGLContext *context, gboolean enabled);
+subroutine gdk_gl_context_set_debug_enabled(context, enabled) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: enabled
+end subroutine
+
+! gboolean gdk_gl_context_get_debug_enabled (GdkGLContext *context);
+function gdk_gl_context_get_debug_enabled(context) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_gl_context_get_debug_enabled
+  type(c_ptr), value :: context
+end function
+
+! void gdk_gl_context_set_forward_compatible (GdkGLContext *context, gboolean compatible);
+subroutine gdk_gl_context_set_forward_compatible(context, compatible) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: compatible
+end subroutine
+
+! gboolean gdk_gl_context_get_forward_compatible (GdkGLContext *context);
+function gdk_gl_context_get_forward_compatible(context) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_gl_context_get_forward_compatible
+  type(c_ptr), value :: context
+end function
+
+! void gdk_gl_context_set_use_es (GdkGLContext *context, int use_es);
+subroutine gdk_gl_context_set_use_es(context, use_es) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: use_es
+end subroutine
+
+! gboolean gdk_gl_context_get_use_es (GdkGLContext *context);
+function gdk_gl_context_get_use_es(context) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_gl_context_get_use_es
+  type(c_ptr), value :: context
+end function
+
+! gboolean gdk_gl_context_realize (GdkGLContext *context, GError **error);
+function gdk_gl_context_realize(context, error) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_gl_context_realize
+  type(c_ptr), value :: context
+  type(c_ptr), value :: error
+end function
+
+! void gdk_gl_context_make_current (GdkGLContext *context);
+subroutine gdk_gl_context_make_current(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+end subroutine
+
+! GdkGLContext * gdk_gl_context_get_current (void);
+function gdk_gl_context_get_current() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_gl_context_get_current
+end function
+
+! void gdk_gl_context_clear_current (void);
+subroutine gdk_gl_context_clear_current() bind(c)
+  use iso_c_binding, only: 
+end subroutine
+
+!  GType gdk_keymap_get_type (void) G_GNUC_CONST;
+function gdk_keymap_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_keymap_get_type
+end function
+
+! GdkKeymap* gdk_keymap_get_default (void);
+function gdk_keymap_get_default() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_keymap_get_default
+end function
+
+! GdkKeymap* gdk_keymap_get_for_display (GdkDisplay *display);
+function gdk_keymap_get_for_display(display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_keymap_get_for_display
+  type(c_ptr), value :: display
+end function
+
+! guint gdk_keymap_lookup_key (GdkKeymap *keymap, const GdkKeymapKey *key);
+function gdk_keymap_lookup_key(keymap, key) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_lookup_key
+  type(c_ptr), value :: keymap
+  type(c_ptr), value :: key
+end function
+
+! gboolean gdk_keymap_translate_keyboard_state (GdkKeymap *keymap, guint hardware_keycode, GdkModifierType state, gint group, guint *keyval, gint *effective_group, gint *level, GdkModifierType *consumed_modifiers);
+function gdk_keymap_translate_keyboard_state(keymap, hardware_keycode, state, g&
+&roup, keyval, effective_group, level, consumed_modifiers) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_translate_keyboard_state
+  type(c_ptr), value :: keymap
+  integer(c_int), value :: hardware_keycode
+  integer(c_int), value :: state
+  integer(c_int), value :: group
+  type(c_ptr), value :: keyval
+  type(c_ptr), value :: effective_group
+  type(c_ptr), value :: level
+  integer(c_int), value :: consumed_modifiers
+end function
+
+! gboolean gdk_keymap_get_entries_for_keyval (GdkKeymap *keymap, guint keyval, GdkKeymapKey **keys, gint *n_keys);
+function gdk_keymap_get_entries_for_keyval(keymap, keyval, keys, n_keys) bind(c&
+&)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_entries_for_keyval
+  type(c_ptr), value :: keymap
+  integer(c_int), value :: keyval
+  type(c_ptr), value :: keys
+  type(c_ptr), value :: n_keys
+end function
+
+! gboolean gdk_keymap_get_entries_for_keycode (GdkKeymap *keymap, guint hardware_keycode, GdkKeymapKey **keys, guint **keyvals, gint *n_entries);
+function gdk_keymap_get_entries_for_keycode(keymap, hardware_keycode, keys, key&
+&vals, n_entries) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_entries_for_keycode
+  type(c_ptr), value :: keymap
+  integer(c_int), value :: hardware_keycode
+  type(c_ptr), value :: keys
+  type(c_ptr), value :: keyvals
+  type(c_ptr), value :: n_entries
+end function
+
+! PangoDirection gdk_keymap_get_direction (GdkKeymap *keymap);
+function gdk_keymap_get_direction(keymap) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_direction
+  type(c_ptr), value :: keymap
+end function
+
+! gboolean gdk_keymap_have_bidi_layouts (GdkKeymap *keymap);
+function gdk_keymap_have_bidi_layouts(keymap) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_have_bidi_layouts
+  type(c_ptr), value :: keymap
+end function
+
+! gboolean gdk_keymap_get_caps_lock_state (GdkKeymap *keymap);
+function gdk_keymap_get_caps_lock_state(keymap) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_caps_lock_state
+  type(c_ptr), value :: keymap
+end function
+
+! gboolean gdk_keymap_get_num_lock_state (GdkKeymap *keymap);
+function gdk_keymap_get_num_lock_state(keymap) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_num_lock_state
+  type(c_ptr), value :: keymap
+end function
+
+! gboolean gdk_keymap_get_scroll_lock_state (GdkKeymap *keymap);
+function gdk_keymap_get_scroll_lock_state(keymap) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_scroll_lock_state
+  type(c_ptr), value :: keymap
+end function
+
+! guint gdk_keymap_get_modifier_state (GdkKeymap *keymap);
+function gdk_keymap_get_modifier_state(keymap) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_modifier_state
+  type(c_ptr), value :: keymap
+end function
+
+! void gdk_keymap_add_virtual_modifiers (GdkKeymap *keymap, GdkModifierType *state);
+subroutine gdk_keymap_add_virtual_modifiers(keymap, state) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: keymap
+  integer(c_int), value :: state
+end subroutine
+
+! gboolean gdk_keymap_map_virtual_modifiers (GdkKeymap *keymap, GdkModifierType *state);
+function gdk_keymap_map_virtual_modifiers(keymap, state) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_map_virtual_modifiers
+  type(c_ptr), value :: keymap
+  integer(c_int), value :: state
+end function
+
+! GdkModifierType gdk_keymap_get_modifier_mask (GdkKeymap *keymap, GdkModifierIntent intent);
+function gdk_keymap_get_modifier_mask(keymap, intent) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_keymap_get_modifier_mask
+  type(c_ptr), value :: keymap
+  integer(c_int), value :: intent
+end function
+
+! gchar* gdk_keyval_name (guint keyval) G_GNUC_CONST;
+function gdk_keyval_name(keyval) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_keyval_name
+  integer(c_int), value :: keyval
+end function
+
+! guint gdk_keyval_from_name (const gchar *keyval_name);
+function gdk_keyval_from_name(keyval_name) bind(c)
+  use iso_c_binding, only: c_int, c_char
+  integer(c_int) :: gdk_keyval_from_name
+  character(kind=c_char), dimension(*) :: keyval_name
+end function
+
+! void gdk_keyval_convert_case (guint symbol, guint *lower, guint *upper);
+subroutine gdk_keyval_convert_case(symbol, lower, upper) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int), value :: symbol
+  type(c_ptr), value :: lower
+  type(c_ptr), value :: upper
+end subroutine
+
+! guint gdk_keyval_to_upper (guint keyval) G_GNUC_CONST;
+function gdk_keyval_to_upper(keyval) bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_keyval_to_upper
+  integer(c_int), value :: keyval
+end function
+
+! guint gdk_keyval_to_lower (guint keyval) G_GNUC_CONST;
+function gdk_keyval_to_lower(keyval) bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_keyval_to_lower
+  integer(c_int), value :: keyval
+end function
+
+! gboolean gdk_keyval_is_upper (guint keyval) G_GNUC_CONST;
+function gdk_keyval_is_upper(keyval) bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_keyval_is_upper
+  integer(c_int), value :: keyval
+end function
+
+! gboolean gdk_keyval_is_lower (guint keyval) G_GNUC_CONST;
+function gdk_keyval_is_lower(keyval) bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_keyval_is_lower
+  integer(c_int), value :: keyval
+end function
+
+! guint32 gdk_keyval_to_unicode (guint keyval) G_GNUC_CONST;
+function gdk_keyval_to_unicode(keyval) bind(c)
+  use iso_c_binding, only: c_int32_t, c_int
+  integer(c_int32_t) :: gdk_keyval_to_unicode
+  integer(c_int), value :: keyval
+end function
+
+! guint gdk_unicode_to_keyval (guint32 wc) G_GNUC_CONST;
+function gdk_unicode_to_keyval(wc) bind(c)
+  use iso_c_binding, only: c_int, c_int32_t
+  integer(c_int) :: gdk_unicode_to_keyval
+  integer(c_int32_t), value :: wc
 end function
 
 !  GType gdk_window_get_type (void) G_GNUC_CONST;
@@ -698,6 +820,21 @@ end subroutine
 subroutine gdk_window_end_paint(window) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: window
+end subroutine
+
+! GdkDrawingContext *gdk_window_begin_draw_frame (GdkWindow *window, const cairo_region_t *region);
+function gdk_window_begin_draw_frame(window, region) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_window_begin_draw_frame
+  type(c_ptr), value :: window
+  type(c_ptr), value :: region
+end function
+
+! void gdk_window_end_draw_frame (GdkWindow *window, GdkDrawingContext *context);
+subroutine gdk_window_end_draw_frame(window, context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: window
+  type(c_ptr), value :: context
 end subroutine
 
 ! void gdk_window_flush (GdkWindow *window);
@@ -1458,950 +1595,180 @@ function gdk_window_create_gl_context(window, error) bind(c)
   type(c_ptr), value :: error
 end function
 
-!  GType gdk_device_get_type (void) G_GNUC_CONST;
-function gdk_device_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_device_get_type
-end function
-
-! const gchar * gdk_device_get_name (GdkDevice *device);
-function gdk_device_get_name(device) bind(c)
+!  void gdk_parse_args (gint *argc, gchar ***argv);
+subroutine gdk_parse_args(argc, argv) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_get_name
-  type(c_ptr), value :: device
-end function
-
-! gboolean gdk_device_get_has_cursor (GdkDevice *device);
-function gdk_device_get_has_cursor(device) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_get_has_cursor
-  type(c_ptr), value :: device
-end function
-
-! GdkInputSource gdk_device_get_source (GdkDevice *device);
-function gdk_device_get_source(device) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_get_source
-  type(c_ptr), value :: device
-end function
-
-! GdkInputMode gdk_device_get_mode (GdkDevice *device);
-function gdk_device_get_mode(device) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_get_mode
-  type(c_ptr), value :: device
-end function
-
-! gboolean gdk_device_set_mode (GdkDevice *device, GdkInputMode mode);
-function gdk_device_set_mode(device, mode) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_set_mode
-  type(c_ptr), value :: device
-  integer(c_int), value :: mode
-end function
-
-! gint gdk_device_get_n_keys (GdkDevice *device);
-function gdk_device_get_n_keys(device) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_get_n_keys
-  type(c_ptr), value :: device
-end function
-
-! gboolean gdk_device_get_key (GdkDevice *device, guint index_, guint *keyval, GdkModifierType *modifiers);
-function gdk_device_get_key(device, index_, keyval, modifiers) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_get_key
-  type(c_ptr), value :: device
-  integer(c_int), value :: index_
-  type(c_ptr), value :: keyval
-  integer(c_int), value :: modifiers
-end function
-
-! void gdk_device_set_key (GdkDevice *device, guint index_, guint keyval, GdkModifierType modifiers);
-subroutine gdk_device_set_key(device, index_, keyval, modifiers) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: device
-  integer(c_int), value :: index_
-  integer(c_int), value :: keyval
-  integer(c_int), value :: modifiers
+  type(c_ptr), value :: argc
+  type(c_ptr), dimension(*) :: argv
 end subroutine
 
-! GdkAxisUse gdk_device_get_axis_use (GdkDevice *device, guint index_);
-function gdk_device_get_axis_use(device, index_) bind(c)
+! void gdk_init (gint *argc, gchar ***argv);
+subroutine gdk_init(argc, argv) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: argc
+  type(c_ptr), dimension(*) :: argv
+end subroutine
+
+! gboolean gdk_init_check (gint *argc, gchar ***argv);
+function gdk_init_check(argc, argv) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_get_axis_use
-  type(c_ptr), value :: device
-  integer(c_int), value :: index_
+  integer(c_int) :: gdk_init_check
+  type(c_ptr), value :: argc
+  type(c_ptr), dimension(*) :: argv
 end function
 
-! void gdk_device_set_axis_use (GdkDevice *device, guint index_, GdkAxisUse use);
-subroutine gdk_device_set_axis_use(device, index_, use) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: device
-  integer(c_int), value :: index_
-  integer(c_int), value :: use
+! void gdk_add_option_entries_libgtk_only (GOptionGroup *group);
+subroutine gdk_add_option_entries_libgtk_only(group) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: group
 end subroutine
 
-! void gdk_device_get_state (GdkDevice *device, GdkWindow *window, gdouble *axes, GdkModifierType *mask);
-subroutine gdk_device_get_state(device, window, axes, mask) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: device
-  type(c_ptr), value :: window
-  type(c_ptr), value :: axes
-  integer(c_int), value :: mask
-end subroutine
-
-! void gdk_device_get_position (GdkDevice *device, GdkScreen **screen, gint *x, gint *y);
-subroutine gdk_device_get_position(device, screen, x, y) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: device
-  type(c_ptr), value :: screen
-  type(c_ptr), value :: x
-  type(c_ptr), value :: y
-end subroutine
-
-! GdkWindow * gdk_device_get_window_at_position (GdkDevice *device, gint *win_x, gint *win_y);
-function gdk_device_get_window_at_position(device, win_x, win_y) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_get_window_at_position
-  type(c_ptr), value :: device
-  type(c_ptr), value :: win_x
-  type(c_ptr), value :: win_y
-end function
-
-! void gdk_device_get_position_double (GdkDevice *device, GdkScreen **screen, gdouble *x, gdouble *y);
-subroutine gdk_device_get_position_double(device, screen, x, y) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: device
-  type(c_ptr), value :: screen
-  type(c_ptr), value :: x
-  type(c_ptr), value :: y
-end subroutine
-
-! GdkWindow * gdk_device_get_window_at_position_double (GdkDevice *device, gdouble *win_x, gdouble *win_y);
-function gdk_device_get_window_at_position_double(device, win_x, win_y) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_get_window_at_position_double
-  type(c_ptr), value :: device
-  type(c_ptr), value :: win_x
-  type(c_ptr), value :: win_y
-end function
-
-! gboolean gdk_device_get_history (GdkDevice *device, GdkWindow *window, guint32 start, guint32 stop, GdkTimeCoord ***events, gint *n_events);
-function gdk_device_get_history(device, window, start, stop, events, n_events) &
-&bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_int32_t
-  integer(c_int) :: gdk_device_get_history
-  type(c_ptr), value :: device
-  type(c_ptr), value :: window
-  integer(c_int32_t), value :: start
-  integer(c_int32_t), value :: stop
-  type(c_ptr), value :: events
-  type(c_ptr), value :: n_events
-end function
-
-! void gdk_device_free_history (GdkTimeCoord **events, gint n_events);
-subroutine gdk_device_free_history(events, n_events) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: events
-  integer(c_int), value :: n_events
-end subroutine
-
-! gint gdk_device_get_n_axes (GdkDevice *device);
-function gdk_device_get_n_axes(device) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_get_n_axes
-  type(c_ptr), value :: device
-end function
-
-! GList * gdk_device_list_axes (GdkDevice *device);
-function gdk_device_list_axes(device) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_list_axes
-  type(c_ptr), value :: device
-end function
-
-! gboolean gdk_device_get_axis_value (GdkDevice *device, gdouble *axes, GdkAtom axis_label, gdouble *value);
-function gdk_device_get_axis_value(device, axes, axis_label, value) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_get_axis_value
-  type(c_ptr), value :: device
-  type(c_ptr), value :: axes
-  type(c_ptr), value :: axis_label
-  type(c_ptr), value :: value
-end function
-
-! gboolean gdk_device_get_axis (GdkDevice *device, gdouble *axes, GdkAxisUse use, gdouble *value);
-function gdk_device_get_axis(device, axes, use, value) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_get_axis
-  type(c_ptr), value :: device
-  type(c_ptr), value :: axes
-  integer(c_int), value :: use
-  type(c_ptr), value :: value
-end function
-
-! GdkDisplay * gdk_device_get_display (GdkDevice *device);
-function gdk_device_get_display(device) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_get_display
-  type(c_ptr), value :: device
-end function
-
-! GdkDevice * gdk_device_get_associated_device (GdkDevice *device);
-function gdk_device_get_associated_device(device) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_get_associated_device
-  type(c_ptr), value :: device
-end function
-
-! GList * gdk_device_list_slave_devices (GdkDevice *device);
-function gdk_device_list_slave_devices(device) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_list_slave_devices
-  type(c_ptr), value :: device
-end function
-
-! GdkDeviceType gdk_device_get_device_type (GdkDevice *device);
-function gdk_device_get_device_type(device) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_get_device_type
-  type(c_ptr), value :: device
-end function
-
-! GdkGrabStatus gdk_device_grab (GdkDevice *device, GdkWindow *window, GdkGrabOwnership grab_ownership, gboolean owner_events, GdkEventMask event_mask, GdkCursor *cursor, guint32 time_);
-function gdk_device_grab(device, window, grab_ownership, owner_events, event_ma&
-&sk, cursor, time_) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_int32_t
-  integer(c_int) :: gdk_device_grab
-  type(c_ptr), value :: device
-  type(c_ptr), value :: window
-  integer(c_int), value :: grab_ownership
-  integer(c_int), value :: owner_events
-  integer(c_int), value :: event_mask
-  type(c_ptr), value :: cursor
-  integer(c_int32_t), value :: time_
-end function
-
-! void gdk_device_ungrab (GdkDevice *device, guint32 time_);
-subroutine gdk_device_ungrab(device, time_) bind(c)
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr), value :: device
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! void gdk_device_warp (GdkDevice *device, GdkScreen *screen, gint x, gint y);
-subroutine gdk_device_warp(device, screen, x, y) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: device
-  type(c_ptr), value :: screen
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-end subroutine
-
-! gboolean gdk_device_grab_info_libgtk_only (GdkDisplay *display, GdkDevice *device, GdkWindow **grab_window, gboolean *owner_events);
-function gdk_device_grab_info_libgtk_only(display, device, grab_window, owner_e&
-&vents) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_device_grab_info_libgtk_only
-  type(c_ptr), value :: display
-  type(c_ptr), value :: device
-  type(c_ptr), value :: grab_window
-  type(c_ptr), value :: owner_events
-end function
-
-! GdkWindow *gdk_device_get_last_event_window (GdkDevice *device);
-function gdk_device_get_last_event_window(device) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_get_last_event_window
-  type(c_ptr), value :: device
-end function
-
-! const gchar *gdk_device_get_vendor_id (GdkDevice *device);
-function gdk_device_get_vendor_id(device) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_get_vendor_id
-  type(c_ptr), value :: device
-end function
-
-! const gchar *gdk_device_get_product_id (GdkDevice *device);
-function gdk_device_get_product_id(device) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_get_product_id
-  type(c_ptr), value :: device
-end function
-
-! GdkSeat *gdk_device_get_seat (GdkDevice *device);
-function gdk_device_get_seat(device) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_device_get_seat
-  type(c_ptr), value :: device
-end function
-
-!  GType gdk_visual_get_type (void) G_GNUC_CONST;
-function gdk_visual_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_visual_get_type
-end function
-
-! gint gdk_visual_get_best_depth (void);
-function gdk_visual_get_best_depth() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_visual_get_best_depth
-end function
-
-! GdkVisualType gdk_visual_get_best_type (void);
-function gdk_visual_get_best_type() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_visual_get_best_type
-end function
-
-! GdkVisual* gdk_visual_get_system (void);
-function gdk_visual_get_system() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_visual_get_system
-end function
-
-! GdkVisual* gdk_visual_get_best (void);
-function gdk_visual_get_best() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_visual_get_best
-end function
-
-! GdkVisual* gdk_visual_get_best_with_depth (gint depth);
-function gdk_visual_get_best_with_depth(depth) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_visual_get_best_with_depth
-  integer(c_int), value :: depth
-end function
-
-! GdkVisual* gdk_visual_get_best_with_type (GdkVisualType visual_type);
-function gdk_visual_get_best_with_type(visual_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_visual_get_best_with_type
-  integer(c_int), value :: visual_type
-end function
-
-! GdkVisual* gdk_visual_get_best_with_both (gint depth, GdkVisualType visual_type);
-function gdk_visual_get_best_with_both(depth, visual_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_visual_get_best_with_both
-  integer(c_int), value :: depth
-  integer(c_int), value :: visual_type
-end function
-
-! void gdk_query_depths (gint **depths, gint *count);
-subroutine gdk_query_depths(depths, count) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: depths
-  type(c_ptr), value :: count
-end subroutine
-
-! void gdk_query_visual_types (GdkVisualType **visual_types, gint *count);
-subroutine gdk_query_visual_types(visual_types, count) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int), value :: visual_types
-  type(c_ptr), value :: count
-end subroutine
-
-! GList* gdk_list_visuals (void);
-function gdk_list_visuals() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_list_visuals
-end function
-
-! GdkScreen *gdk_visual_get_screen (GdkVisual *visual);
-function gdk_visual_get_screen(visual) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_visual_get_screen
-  type(c_ptr), value :: visual
-end function
-
-! GdkVisualType gdk_visual_get_visual_type (GdkVisual *visual);
-function gdk_visual_get_visual_type(visual) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_visual_get_visual_type
-  type(c_ptr), value :: visual
-end function
-
-! gint gdk_visual_get_depth (GdkVisual *visual);
-function gdk_visual_get_depth(visual) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_visual_get_depth
-  type(c_ptr), value :: visual
-end function
-
-! GdkByteOrder gdk_visual_get_byte_order (GdkVisual *visual);
-function gdk_visual_get_byte_order(visual) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_visual_get_byte_order
-  type(c_ptr), value :: visual
-end function
-
-! gint gdk_visual_get_colormap_size (GdkVisual *visual);
-function gdk_visual_get_colormap_size(visual) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_visual_get_colormap_size
-  type(c_ptr), value :: visual
-end function
-
-! gint gdk_visual_get_bits_per_rgb (GdkVisual *visual);
-function gdk_visual_get_bits_per_rgb(visual) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_visual_get_bits_per_rgb
-  type(c_ptr), value :: visual
-end function
-
-! void gdk_visual_get_red_pixel_details (GdkVisual *visual, guint32 *mask, gint *shift, gint *precision);
-subroutine gdk_visual_get_red_pixel_details(visual, mask, shift, precision) bin&
-&d(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: visual
-  type(c_ptr), value :: mask
-  type(c_ptr), value :: shift
-  type(c_ptr), value :: precision
-end subroutine
-
-! void gdk_visual_get_green_pixel_details (GdkVisual *visual, guint32 *mask, gint *shift, gint *precision);
-subroutine gdk_visual_get_green_pixel_details(visual, mask, shift, precision) b&
-&ind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: visual
-  type(c_ptr), value :: mask
-  type(c_ptr), value :: shift
-  type(c_ptr), value :: precision
-end subroutine
-
-! void gdk_visual_get_blue_pixel_details (GdkVisual *visual, guint32 *mask, gint *shift, gint *precision);
-subroutine gdk_visual_get_blue_pixel_details(visual, mask, shift, precision) bi&
-&nd(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: visual
-  type(c_ptr), value :: mask
-  type(c_ptr), value :: shift
-  type(c_ptr), value :: precision
-end subroutine
-
-!  GQuark gdk_gl_error_quark (void);
-function gdk_gl_error_quark() bind(c)
-  use iso_c_binding, only: c_int32_t
-  integer(c_int32_t) :: gdk_gl_error_quark
-end function
-
-! GType gdk_gl_context_get_type (void) G_GNUC_CONST;
-function gdk_gl_context_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_gl_context_get_type
-end function
-
-! GdkDisplay * gdk_gl_context_get_display (GdkGLContext *context);
-function gdk_gl_context_get_display(context) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_gl_context_get_display
-  type(c_ptr), value :: context
-end function
-
-! GdkWindow * gdk_gl_context_get_window (GdkGLContext *context);
-function gdk_gl_context_get_window(context) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_gl_context_get_window
-  type(c_ptr), value :: context
-end function
-
-! GdkGLContext * gdk_gl_context_get_shared_context (GdkGLContext *context);
-function gdk_gl_context_get_shared_context(context) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_gl_context_get_shared_context
-  type(c_ptr), value :: context
-end function
-
-! void gdk_gl_context_get_version (GdkGLContext *context, int *major, int *minor);
-subroutine gdk_gl_context_get_version(context, major, minor) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: context
-  type(c_ptr), value :: major
-  type(c_ptr), value :: minor
-end subroutine
-
-! gboolean gdk_gl_context_is_legacy (GdkGLContext *context);
-function gdk_gl_context_is_legacy(context) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_gl_context_is_legacy
-  type(c_ptr), value :: context
-end function
-
-! void gdk_gl_context_set_required_version (GdkGLContext *context, int major, int minor);
-subroutine gdk_gl_context_set_required_version(context, major, minor) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: context
-  integer(c_int), value :: major
-  integer(c_int), value :: minor
-end subroutine
-
-! void gdk_gl_context_get_required_version (GdkGLContext *context, int *major, int *minor);
-subroutine gdk_gl_context_get_required_version(context, major, minor) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: context
-  type(c_ptr), value :: major
-  type(c_ptr), value :: minor
-end subroutine
-
-! void gdk_gl_context_set_debug_enabled (GdkGLContext *context, gboolean enabled);
-subroutine gdk_gl_context_set_debug_enabled(context, enabled) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: context
-  integer(c_int), value :: enabled
-end subroutine
-
-! gboolean gdk_gl_context_get_debug_enabled (GdkGLContext *context);
-function gdk_gl_context_get_debug_enabled(context) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_gl_context_get_debug_enabled
-  type(c_ptr), value :: context
-end function
-
-! void gdk_gl_context_set_forward_compatible (GdkGLContext *context, gboolean compatible);
-subroutine gdk_gl_context_set_forward_compatible(context, compatible) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: context
-  integer(c_int), value :: compatible
-end subroutine
-
-! gboolean gdk_gl_context_get_forward_compatible (GdkGLContext *context);
-function gdk_gl_context_get_forward_compatible(context) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_gl_context_get_forward_compatible
-  type(c_ptr), value :: context
-end function
-
-! gboolean gdk_gl_context_realize (GdkGLContext *context, GError **error);
-function gdk_gl_context_realize(context, error) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_gl_context_realize
-  type(c_ptr), value :: context
-  type(c_ptr), value :: error
-end function
-
-! void gdk_gl_context_make_current (GdkGLContext *context);
-subroutine gdk_gl_context_make_current(context) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: context
-end subroutine
-
-! GdkGLContext * gdk_gl_context_get_current (void);
-function gdk_gl_context_get_current() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_gl_context_get_current
-end function
-
-! void gdk_gl_context_clear_current (void);
-subroutine gdk_gl_context_clear_current() bind(c)
+! void gdk_pre_parse_libgtk_only (void);
+subroutine gdk_pre_parse_libgtk_only() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
-!  gboolean gdk_selection_owner_set (GdkWindow *owner, GdkAtom selection, guint32 time_, gboolean send_event);
-function gdk_selection_owner_set(owner, selection, time_, send_event) bind(c)
+! const gchar * gdk_get_program_class (void);
+function gdk_get_program_class() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_get_program_class
+end function
+
+! void gdk_set_program_class (const gchar *program_class);
+subroutine gdk_set_program_class(program_class) bind(c)
+  use iso_c_binding, only: c_char
+  character(kind=c_char), dimension(*) :: program_class
+end subroutine
+
+! void gdk_notify_startup_complete (void);
+subroutine gdk_notify_startup_complete() bind(c)
+  use iso_c_binding, only: 
+end subroutine
+
+! void gdk_notify_startup_complete_with_id (const gchar* startup_id);
+subroutine gdk_notify_startup_complete_with_id(startup_id) bind(c)
+  use iso_c_binding, only: c_char
+  character(kind=c_char), dimension(*) :: startup_id
+end subroutine
+
+! void gdk_error_trap_push (void);
+subroutine gdk_error_trap_push() bind(c)
+  use iso_c_binding, only: 
+end subroutine
+
+! gint gdk_error_trap_pop (void);
+function gdk_error_trap_pop() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_error_trap_pop
+end function
+
+! void gdk_error_trap_pop_ignored (void);
+subroutine gdk_error_trap_pop_ignored() bind(c)
+  use iso_c_binding, only: 
+end subroutine
+
+! const gchar * gdk_get_display_arg_name (void);
+function gdk_get_display_arg_name() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_get_display_arg_name
+end function
+
+! gchar* gdk_get_display (void);
+function gdk_get_display() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_get_display
+end function
+
+! GdkGrabStatus gdk_pointer_grab (GdkWindow *window, gboolean owner_events, GdkEventMask event_mask, GdkWindow *confine_to, GdkCursor *cursor, guint32 time_);
+function gdk_pointer_grab(window, owner_events, event_mask, confine_to, cursor,&
+& time_) bind(c)
   use iso_c_binding, only: c_int, c_ptr, c_int32_t
-  integer(c_int) :: gdk_selection_owner_set
-  type(c_ptr), value :: owner
-  type(c_ptr), value :: selection
+  integer(c_int) :: gdk_pointer_grab
+  type(c_ptr), value :: window
+  integer(c_int), value :: owner_events
+  integer(c_int), value :: event_mask
+  type(c_ptr), value :: confine_to
+  type(c_ptr), value :: cursor
   integer(c_int32_t), value :: time_
-  integer(c_int), value :: send_event
 end function
 
-! GdkWindow* gdk_selection_owner_get (GdkAtom selection);
-function gdk_selection_owner_get(selection) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_selection_owner_get
-  type(c_ptr), value :: selection
-end function
-
-! gboolean gdk_selection_owner_set_for_display (GdkDisplay *display, GdkWindow *owner, GdkAtom selection, guint32 time_, gboolean send_event);
-function gdk_selection_owner_set_for_display(display, owner, selection, time_, &
-&send_event) bind(c)
+! GdkGrabStatus gdk_keyboard_grab (GdkWindow *window, gboolean owner_events, guint32 time_);
+function gdk_keyboard_grab(window, owner_events, time_) bind(c)
   use iso_c_binding, only: c_int, c_ptr, c_int32_t
-  integer(c_int) :: gdk_selection_owner_set_for_display
-  type(c_ptr), value :: display
-  type(c_ptr), value :: owner
-  type(c_ptr), value :: selection
-  integer(c_int32_t), value :: time_
-  integer(c_int), value :: send_event
-end function
-
-! GdkWindow *gdk_selection_owner_get_for_display (GdkDisplay *display, GdkAtom selection);
-function gdk_selection_owner_get_for_display(display, selection) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_selection_owner_get_for_display
-  type(c_ptr), value :: display
-  type(c_ptr), value :: selection
-end function
-
-! void gdk_selection_convert (GdkWindow *requestor, GdkAtom selection, GdkAtom target, guint32 time_);
-subroutine gdk_selection_convert(requestor, selection, target, time_) bind(c)
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr), value :: requestor
-  type(c_ptr), value :: selection
-  type(c_ptr), value :: target
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! gint gdk_selection_property_get (GdkWindow *requestor, guchar **data, GdkAtom *prop_type, gint *prop_format);
-function gdk_selection_property_get(requestor, data, prop_type, prop_format) bi&
-&nd(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_selection_property_get
-  type(c_ptr), value :: requestor
-  type(c_ptr), dimension(*) :: data
-  type(c_ptr), value :: prop_type
-  type(c_ptr), value :: prop_format
-end function
-
-! void gdk_selection_send_notify (GdkWindow *requestor, GdkAtom selection, GdkAtom target, GdkAtom property, guint32 time_);
-subroutine gdk_selection_send_notify(requestor, selection, target, property, ti&
-&me_) bind(c)
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr), value :: requestor
-  type(c_ptr), value :: selection
-  type(c_ptr), value :: target
-  type(c_ptr), value :: property
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! void gdk_selection_send_notify_for_display (GdkDisplay *display, GdkWindow *requestor, GdkAtom selection, GdkAtom target, GdkAtom property, guint32 time_);
-subroutine gdk_selection_send_notify_for_display(display, requestor, selection,&
-& target, property, time_) bind(c)
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr), value :: display
-  type(c_ptr), value :: requestor
-  type(c_ptr), value :: selection
-  type(c_ptr), value :: target
-  type(c_ptr), value :: property
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! void gdk_window_destroy_notify (GdkWindow *window);
-subroutine gdk_window_destroy_notify(window) bind(c)
-  use iso_c_binding, only: c_ptr
+  integer(c_int) :: gdk_keyboard_grab
   type(c_ptr), value :: window
+  integer(c_int), value :: owner_events
+  integer(c_int32_t), value :: time_
+end function
+
+! void gdk_pointer_ungrab (guint32 time_);
+subroutine gdk_pointer_ungrab(time_) bind(c)
+  use iso_c_binding, only: c_int32_t
+  integer(c_int32_t), value :: time_
 end subroutine
 
-! void gdk_synthesize_window_state (GdkWindow *window, GdkWindowState unset_flags, GdkWindowState set_flags);
-subroutine gdk_synthesize_window_state(window, unset_flags, set_flags) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: window
-  integer(c_int), value :: unset_flags
-  integer(c_int), value :: set_flags
+! void gdk_keyboard_ungrab (guint32 time_);
+subroutine gdk_keyboard_ungrab(time_) bind(c)
+  use iso_c_binding, only: c_int32_t
+  integer(c_int32_t), value :: time_
 end subroutine
 
-!  GType gdk_frame_clock_get_type (void) G_GNUC_CONST;
-function gdk_frame_clock_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_frame_clock_get_type
+! gboolean gdk_pointer_is_grabbed (void);
+function gdk_pointer_is_grabbed() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_pointer_is_grabbed
 end function
 
-! gint64 gdk_frame_clock_get_frame_time (GdkFrameClock *frame_clock);
-function gdk_frame_clock_get_frame_time(frame_clock) bind(c)
-  use iso_c_binding, only: c_int64_t, c_ptr
-  integer(c_int64_t) :: gdk_frame_clock_get_frame_time
-  type(c_ptr), value :: frame_clock
+! gint gdk_screen_width (void) G_GNUC_CONST;
+function gdk_screen_width() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_screen_width
 end function
 
-! void gdk_frame_clock_request_phase (GdkFrameClock *frame_clock, GdkFrameClockPhase phase);
-subroutine gdk_frame_clock_request_phase(frame_clock, phase) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: frame_clock
-  integer(c_int), value :: phase
+! gint gdk_screen_height (void) G_GNUC_CONST;
+function gdk_screen_height() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_screen_height
+end function
+
+! gint gdk_screen_width_mm (void) G_GNUC_CONST;
+function gdk_screen_width_mm() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_screen_width_mm
+end function
+
+! gint gdk_screen_height_mm (void) G_GNUC_CONST;
+function gdk_screen_height_mm() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_screen_height_mm
+end function
+
+! void gdk_set_double_click_time (guint msec);
+subroutine gdk_set_double_click_time(msec) bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: msec
 end subroutine
 
-! void gdk_frame_clock_begin_updating (GdkFrameClock *frame_clock);
-subroutine gdk_frame_clock_begin_updating(frame_clock) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: frame_clock
+! void gdk_beep (void);
+subroutine gdk_beep() bind(c)
+  use iso_c_binding, only: 
 end subroutine
 
-! void gdk_frame_clock_end_updating (GdkFrameClock *frame_clock);
-subroutine gdk_frame_clock_end_updating(frame_clock) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: frame_clock
+! void gdk_flush (void);
+subroutine gdk_flush() bind(c)
+  use iso_c_binding, only: 
 end subroutine
 
-! gint64 gdk_frame_clock_get_frame_counter (GdkFrameClock *frame_clock);
-function gdk_frame_clock_get_frame_counter(frame_clock) bind(c)
-  use iso_c_binding, only: c_int64_t, c_ptr
-  integer(c_int64_t) :: gdk_frame_clock_get_frame_counter
-  type(c_ptr), value :: frame_clock
-end function
-
-! gint64 gdk_frame_clock_get_history_start (GdkFrameClock *frame_clock);
-function gdk_frame_clock_get_history_start(frame_clock) bind(c)
-  use iso_c_binding, only: c_int64_t, c_ptr
-  integer(c_int64_t) :: gdk_frame_clock_get_history_start
-  type(c_ptr), value :: frame_clock
-end function
-
-! GdkFrameTimings *gdk_frame_clock_get_timings (GdkFrameClock *frame_clock, gint64 frame_counter);
-function gdk_frame_clock_get_timings(frame_clock, frame_counter) bind(c)
-  use iso_c_binding, only: c_ptr, c_int64_t
-  type(c_ptr) :: gdk_frame_clock_get_timings
-  type(c_ptr), value :: frame_clock
-  integer(c_int64_t), value :: frame_counter
-end function
-
-! GdkFrameTimings *gdk_frame_clock_get_current_timings (GdkFrameClock *frame_clock);
-function gdk_frame_clock_get_current_timings(frame_clock) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_frame_clock_get_current_timings
-  type(c_ptr), value :: frame_clock
-end function
-
-! void gdk_frame_clock_get_refresh_info (GdkFrameClock *frame_clock, gint64 base_time, gint64 *refresh_interval_return, gint64 *presentation_time_return);
-subroutine gdk_frame_clock_get_refresh_info(frame_clock, base_time, refresh_int&
-&erval_return, presentation_time_return) bind(c)
-  use iso_c_binding, only: c_ptr, c_int64_t
-  type(c_ptr), value :: frame_clock
-  integer(c_int64_t), value :: base_time
-  type(c_ptr), value :: refresh_interval_return
-  type(c_ptr), value :: presentation_time_return
+! void gdk_disable_multidevice (void);
+subroutine gdk_disable_multidevice() bind(c)
+  use iso_c_binding, only: 
 end subroutine
 
-!  PangoContext *gdk_pango_context_get_for_screen (GdkScreen *screen);
-function gdk_pango_context_get_for_screen(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_pango_context_get_for_screen
-  type(c_ptr), value :: screen
-end function
-
-! PangoContext *gdk_pango_context_get (void);
-function gdk_pango_context_get() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_pango_context_get
-end function
-
-! cairo_region_t *gdk_pango_layout_line_get_clip_region (PangoLayoutLine *line, gint x_origin, gint y_origin, const gint *index_ranges, gint n_ranges);
-function gdk_pango_layout_line_get_clip_region(line, x_origin, y_origin, index_&
-&ranges, n_ranges) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_pango_layout_line_get_clip_region
-  type(c_ptr), value :: line
-  integer(c_int), value :: x_origin
-  integer(c_int), value :: y_origin
-  type(c_ptr), value :: index_ranges
-  integer(c_int), value :: n_ranges
-end function
-
-! cairo_region_t *gdk_pango_layout_get_clip_region (PangoLayout *layout, gint x_origin, gint y_origin, const gint *index_ranges, gint n_ranges);
-function gdk_pango_layout_get_clip_region(layout, x_origin, y_origin, index_ran&
-&ges, n_ranges) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_pango_layout_get_clip_region
-  type(c_ptr), value :: layout
-  integer(c_int), value :: x_origin
-  integer(c_int), value :: y_origin
-  type(c_ptr), value :: index_ranges
-  integer(c_int), value :: n_ranges
-end function
-
-!  GType gdk_frame_timings_get_type (void) G_GNUC_CONST;
-function gdk_frame_timings_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_frame_timings_get_type
-end function
-
-! GdkFrameTimings *gdk_frame_timings_ref (GdkFrameTimings *timings);
-function gdk_frame_timings_ref(timings) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_frame_timings_ref
-  type(c_ptr), value :: timings
-end function
-
-! void gdk_frame_timings_unref (GdkFrameTimings *timings);
-subroutine gdk_frame_timings_unref(timings) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: timings
+! void gdk_set_allowed_backends (const gchar *backends);
+subroutine gdk_set_allowed_backends(backends) bind(c)
+  use iso_c_binding, only: c_char
+  character(kind=c_char), dimension(*) :: backends
 end subroutine
-
-! gint64 gdk_frame_timings_get_frame_counter (GdkFrameTimings *timings);
-function gdk_frame_timings_get_frame_counter(timings) bind(c)
-  use iso_c_binding, only: c_int64_t, c_ptr
-  integer(c_int64_t) :: gdk_frame_timings_get_frame_counter
-  type(c_ptr), value :: timings
-end function
-
-! gboolean gdk_frame_timings_get_complete (GdkFrameTimings *timings);
-function gdk_frame_timings_get_complete(timings) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_frame_timings_get_complete
-  type(c_ptr), value :: timings
-end function
-
-! gint64 gdk_frame_timings_get_frame_time (GdkFrameTimings *timings);
-function gdk_frame_timings_get_frame_time(timings) bind(c)
-  use iso_c_binding, only: c_int64_t, c_ptr
-  integer(c_int64_t) :: gdk_frame_timings_get_frame_time
-  type(c_ptr), value :: timings
-end function
-
-! gint64 gdk_frame_timings_get_presentation_time (GdkFrameTimings *timings);
-function gdk_frame_timings_get_presentation_time(timings) bind(c)
-  use iso_c_binding, only: c_int64_t, c_ptr
-  integer(c_int64_t) :: gdk_frame_timings_get_presentation_time
-  type(c_ptr), value :: timings
-end function
-
-! gint64 gdk_frame_timings_get_refresh_interval (GdkFrameTimings *timings);
-function gdk_frame_timings_get_refresh_interval(timings) bind(c)
-  use iso_c_binding, only: c_int64_t, c_ptr
-  integer(c_int64_t) :: gdk_frame_timings_get_refresh_interval
-  type(c_ptr), value :: timings
-end function
-
-! gint64 gdk_frame_timings_get_predicted_presentation_time (GdkFrameTimings *timings);
-function gdk_frame_timings_get_predicted_presentation_time(timings) bind(c)
-  use iso_c_binding, only: c_int64_t, c_ptr
-  integer(c_int64_t) :: gdk_frame_timings_get_predicted_presentation_time
-  type(c_ptr), value :: timings
-end function
-
-!  GType gdk_cursor_get_type (void) G_GNUC_CONST;
-function gdk_cursor_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_cursor_get_type
-end function
-
-! GdkCursor* gdk_cursor_new_for_display (GdkDisplay *display, GdkCursorType cursor_type);
-function gdk_cursor_new_for_display(display, cursor_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_cursor_new_for_display
-  type(c_ptr), value :: display
-  integer(c_int), value :: cursor_type
-end function
-
-! GdkCursor* gdk_cursor_new (GdkCursorType cursor_type);
-function gdk_cursor_new(cursor_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_cursor_new
-  integer(c_int), value :: cursor_type
-end function
-
-! GdkCursor* gdk_cursor_new_from_pixbuf (GdkDisplay *display, GdkPixbuf *pixbuf, gint x, gint y);
-function gdk_cursor_new_from_pixbuf(display, pixbuf, x, y) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_cursor_new_from_pixbuf
-  type(c_ptr), value :: display
-  type(c_ptr), value :: pixbuf
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-end function
-
-! GdkCursor* gdk_cursor_new_from_surface (GdkDisplay *display, cairo_surface_t *surface, gdouble x, gdouble y);
-function gdk_cursor_new_from_surface(display, surface, x, y) bind(c)
-  use iso_c_binding, only: c_ptr, c_double
-  type(c_ptr) :: gdk_cursor_new_from_surface
-  type(c_ptr), value :: display
-  type(c_ptr), value :: surface
-  real(c_double), value :: x
-  real(c_double), value :: y
-end function
-
-! GdkCursor* gdk_cursor_new_from_name (GdkDisplay *display, const gchar *name);
-function gdk_cursor_new_from_name(display, name) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gdk_cursor_new_from_name
-  type(c_ptr), value :: display
-  character(kind=c_char), dimension(*) :: name
-end function
-
-! GdkDisplay* gdk_cursor_get_display (GdkCursor *cursor);
-function gdk_cursor_get_display(cursor) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_cursor_get_display
-  type(c_ptr), value :: cursor
-end function
-
-! GdkCursor * gdk_cursor_ref (GdkCursor *cursor);
-function gdk_cursor_ref(cursor) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_cursor_ref
-  type(c_ptr), value :: cursor
-end function
-
-! void gdk_cursor_unref (GdkCursor *cursor);
-subroutine gdk_cursor_unref(cursor) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: cursor
-end subroutine
-
-! GdkPixbuf* gdk_cursor_get_image (GdkCursor *cursor);
-function gdk_cursor_get_image(cursor) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_cursor_get_image
-  type(c_ptr), value :: cursor
-end function
-
-! cairo_surface_t *gdk_cursor_get_surface (GdkCursor *cursor, gdouble *x_hot, gdouble *y_hot);
-function gdk_cursor_get_surface(cursor, x_hot, y_hot) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_cursor_get_surface
-  type(c_ptr), value :: cursor
-  type(c_ptr), value :: x_hot
-  type(c_ptr), value :: y_hot
-end function
-
-! GdkCursorType gdk_cursor_get_cursor_type (GdkCursor *cursor);
-function gdk_cursor_get_cursor_type(cursor) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_cursor_get_cursor_type
-  type(c_ptr), value :: cursor
-end function
-
-!  GType gdk_rgba_get_type (void) G_GNUC_CONST;
-function gdk_rgba_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_rgba_get_type
-end function
-
-! GdkRGBA * gdk_rgba_copy (const GdkRGBA *rgba);
-function gdk_rgba_copy(rgba) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_rgba_copy
-  type(c_ptr), value :: rgba
-end function
-
-! void gdk_rgba_free (GdkRGBA *rgba);
-subroutine gdk_rgba_free(rgba) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: rgba
-end subroutine
-
-! guint gdk_rgba_hash (gconstpointer p);
-function gdk_rgba_hash(p) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_rgba_hash
-  type(c_ptr), value :: p
-end function
-
-! gboolean gdk_rgba_equal (gconstpointer p1, gconstpointer p2);
-function gdk_rgba_equal(p1, p2) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_rgba_equal
-  type(c_ptr), value :: p1
-  type(c_ptr), value :: p2
-end function
-
-! gboolean gdk_rgba_parse (GdkRGBA *rgba, const gchar *spec);
-function gdk_rgba_parse(rgba, spec) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gdk_rgba_parse
-  type(c_ptr), value :: rgba
-  character(kind=c_char), dimension(*) :: spec
-end function
-
-! gchar * gdk_rgba_to_string (const GdkRGBA *rgba);
-function gdk_rgba_to_string(rgba) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_rgba_to_string
-  type(c_ptr), value :: rgba
-end function
 
 !  GType gdk_display_get_type (void) G_GNUC_CONST;
 function gdk_display_get_type() bind(c)
@@ -2719,36 +2086,464 @@ function gdk_display_list_seats(display) bind(c)
   type(c_ptr), value :: display
 end function
 
-!  GType gdk_mir_display_get_type (void);
-function gdk_mir_display_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_mir_display_get_type
-end function
-
-! MirConnection *gdk_mir_display_get_mir_connection (GdkDisplay *display);
-function gdk_mir_display_get_mir_connection(display) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_mir_display_get_mir_connection
+! int gdk_display_get_n_monitors (GdkDisplay *display);
+function gdk_display_get_n_monitors(display) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_display_get_n_monitors
   type(c_ptr), value :: display
 end function
 
-! GType gdk_mir_window_get_type (void);
-function gdk_mir_window_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_mir_window_get_type
+! GdkMonitor * gdk_display_get_monitor (GdkDisplay *display, int monitor_num);
+function gdk_display_get_monitor(display, monitor_num) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_display_get_monitor
+  type(c_ptr), value :: display
+  integer(c_int), value :: monitor_num
 end function
 
-! MirSurface *gdk_mir_window_get_mir_surface (GdkWindow *window);
-function gdk_mir_window_get_mir_surface(window) bind(c)
+! GdkMonitor * gdk_display_get_primary_monitor (GdkDisplay *display);
+function gdk_display_get_primary_monitor(display) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_mir_window_get_mir_surface
+  type(c_ptr) :: gdk_display_get_primary_monitor
+  type(c_ptr), value :: display
+end function
+
+! GdkMonitor * gdk_display_get_monitor_at_point (GdkDisplay *display, int x, int y);
+function gdk_display_get_monitor_at_point(display, x, y) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_display_get_monitor_at_point
+  type(c_ptr), value :: display
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+end function
+
+! GdkMonitor * gdk_display_get_monitor_at_window (GdkDisplay *display, GdkWindow *window);
+function gdk_display_get_monitor_at_window(display, window) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_display_get_monitor_at_window
+  type(c_ptr), value :: display
   type(c_ptr), value :: window
 end function
 
-! GType gdk_mir_gl_context_get_type (void) G_GNUC_CONST;
-function gdk_mir_gl_context_get_type() bind(c)
+!  GType gdk_visual_get_type (void) G_GNUC_CONST;
+function gdk_visual_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_mir_gl_context_get_type
+  integer(c_size_t) :: gdk_visual_get_type
+end function
+
+! gint gdk_visual_get_best_depth (void);
+function gdk_visual_get_best_depth() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_visual_get_best_depth
+end function
+
+! GdkVisualType gdk_visual_get_best_type (void);
+function gdk_visual_get_best_type() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_visual_get_best_type
+end function
+
+! GdkVisual* gdk_visual_get_system (void);
+function gdk_visual_get_system() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_visual_get_system
+end function
+
+! GdkVisual* gdk_visual_get_best (void);
+function gdk_visual_get_best() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_visual_get_best
+end function
+
+! GdkVisual* gdk_visual_get_best_with_depth (gint depth);
+function gdk_visual_get_best_with_depth(depth) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_visual_get_best_with_depth
+  integer(c_int), value :: depth
+end function
+
+! GdkVisual* gdk_visual_get_best_with_type (GdkVisualType visual_type);
+function gdk_visual_get_best_with_type(visual_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_visual_get_best_with_type
+  integer(c_int), value :: visual_type
+end function
+
+! GdkVisual* gdk_visual_get_best_with_both (gint depth, GdkVisualType visual_type);
+function gdk_visual_get_best_with_both(depth, visual_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_visual_get_best_with_both
+  integer(c_int), value :: depth
+  integer(c_int), value :: visual_type
+end function
+
+! void gdk_query_depths (gint **depths, gint *count);
+subroutine gdk_query_depths(depths, count) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: depths
+  type(c_ptr), value :: count
+end subroutine
+
+! void gdk_query_visual_types (GdkVisualType **visual_types, gint *count);
+subroutine gdk_query_visual_types(visual_types, count) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int), value :: visual_types
+  type(c_ptr), value :: count
+end subroutine
+
+! GList* gdk_list_visuals (void);
+function gdk_list_visuals() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_list_visuals
+end function
+
+! GdkScreen *gdk_visual_get_screen (GdkVisual *visual);
+function gdk_visual_get_screen(visual) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_visual_get_screen
+  type(c_ptr), value :: visual
+end function
+
+! GdkVisualType gdk_visual_get_visual_type (GdkVisual *visual);
+function gdk_visual_get_visual_type(visual) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_visual_get_visual_type
+  type(c_ptr), value :: visual
+end function
+
+! gint gdk_visual_get_depth (GdkVisual *visual);
+function gdk_visual_get_depth(visual) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_visual_get_depth
+  type(c_ptr), value :: visual
+end function
+
+! GdkByteOrder gdk_visual_get_byte_order (GdkVisual *visual);
+function gdk_visual_get_byte_order(visual) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_visual_get_byte_order
+  type(c_ptr), value :: visual
+end function
+
+! gint gdk_visual_get_colormap_size (GdkVisual *visual);
+function gdk_visual_get_colormap_size(visual) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_visual_get_colormap_size
+  type(c_ptr), value :: visual
+end function
+
+! gint gdk_visual_get_bits_per_rgb (GdkVisual *visual);
+function gdk_visual_get_bits_per_rgb(visual) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_visual_get_bits_per_rgb
+  type(c_ptr), value :: visual
+end function
+
+! void gdk_visual_get_red_pixel_details (GdkVisual *visual, guint32 *mask, gint *shift, gint *precision);
+subroutine gdk_visual_get_red_pixel_details(visual, mask, shift, precision) bin&
+&d(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: visual
+  type(c_ptr), value :: mask
+  type(c_ptr), value :: shift
+  type(c_ptr), value :: precision
+end subroutine
+
+! void gdk_visual_get_green_pixel_details (GdkVisual *visual, guint32 *mask, gint *shift, gint *precision);
+subroutine gdk_visual_get_green_pixel_details(visual, mask, shift, precision) b&
+&ind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: visual
+  type(c_ptr), value :: mask
+  type(c_ptr), value :: shift
+  type(c_ptr), value :: precision
+end subroutine
+
+! void gdk_visual_get_blue_pixel_details (GdkVisual *visual, guint32 *mask, gint *shift, gint *precision);
+subroutine gdk_visual_get_blue_pixel_details(visual, mask, shift, precision) bi&
+&nd(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: visual
+  type(c_ptr), value :: mask
+  type(c_ptr), value :: shift
+  type(c_ptr), value :: precision
+end subroutine
+
+!  PangoContext *gdk_pango_context_get_for_screen (GdkScreen *screen);
+function gdk_pango_context_get_for_screen(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_pango_context_get_for_screen
+  type(c_ptr), value :: screen
+end function
+
+! PangoContext *gdk_pango_context_get_for_display (GdkDisplay *display);
+function gdk_pango_context_get_for_display(display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_pango_context_get_for_display
+  type(c_ptr), value :: display
+end function
+
+! PangoContext *gdk_pango_context_get (void);
+function gdk_pango_context_get() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_pango_context_get
+end function
+
+! cairo_region_t *gdk_pango_layout_line_get_clip_region (PangoLayoutLine *line, gint x_origin, gint y_origin, const gint *index_ranges, gint n_ranges);
+function gdk_pango_layout_line_get_clip_region(line, x_origin, y_origin, index_&
+&ranges, n_ranges) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_pango_layout_line_get_clip_region
+  type(c_ptr), value :: line
+  integer(c_int), value :: x_origin
+  integer(c_int), value :: y_origin
+  type(c_ptr), value :: index_ranges
+  integer(c_int), value :: n_ranges
+end function
+
+! cairo_region_t *gdk_pango_layout_get_clip_region (PangoLayout *layout, gint x_origin, gint y_origin, const gint *index_ranges, gint n_ranges);
+function gdk_pango_layout_get_clip_region(layout, x_origin, y_origin, index_ran&
+&ges, n_ranges) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_pango_layout_get_clip_region
+  type(c_ptr), value :: layout
+  integer(c_int), value :: x_origin
+  integer(c_int), value :: y_origin
+  type(c_ptr), value :: index_ranges
+  integer(c_int), value :: n_ranges
+end function
+
+!  GType gdk_drag_context_get_type (void) G_GNUC_CONST;
+function gdk_drag_context_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_drag_context_get_type
+end function
+
+! void gdk_drag_context_set_device (GdkDragContext *context, GdkDevice *device);
+subroutine gdk_drag_context_set_device(context, device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: device
+end subroutine
+
+! GdkDevice * gdk_drag_context_get_device (GdkDragContext *context);
+function gdk_drag_context_get_device(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drag_context_get_device
+  type(c_ptr), value :: context
+end function
+
+! GList *gdk_drag_context_list_targets (GdkDragContext *context);
+function gdk_drag_context_list_targets(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drag_context_list_targets
+  type(c_ptr), value :: context
+end function
+
+! GdkDragAction gdk_drag_context_get_actions (GdkDragContext *context);
+function gdk_drag_context_get_actions(context) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_drag_context_get_actions
+  type(c_ptr), value :: context
+end function
+
+! GdkDragAction gdk_drag_context_get_suggested_action (GdkDragContext *context);
+function gdk_drag_context_get_suggested_action(context) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_drag_context_get_suggested_action
+  type(c_ptr), value :: context
+end function
+
+! GdkDragAction gdk_drag_context_get_selected_action (GdkDragContext *context);
+function gdk_drag_context_get_selected_action(context) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_drag_context_get_selected_action
+  type(c_ptr), value :: context
+end function
+
+! GdkWindow *gdk_drag_context_get_source_window (GdkDragContext *context);
+function gdk_drag_context_get_source_window(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drag_context_get_source_window
+  type(c_ptr), value :: context
+end function
+
+! GdkWindow *gdk_drag_context_get_dest_window (GdkDragContext *context);
+function gdk_drag_context_get_dest_window(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drag_context_get_dest_window
+  type(c_ptr), value :: context
+end function
+
+! GdkDragProtocol gdk_drag_context_get_protocol (GdkDragContext *context);
+function gdk_drag_context_get_protocol(context) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_drag_context_get_protocol
+  type(c_ptr), value :: context
+end function
+
+! void gdk_drag_status (GdkDragContext *context, GdkDragAction action, guint32 time_);
+subroutine gdk_drag_status(context, action, time_) bind(c)
+  use iso_c_binding, only: c_ptr, c_int, c_int32_t
+  type(c_ptr), value :: context
+  integer(c_int), value :: action
+  integer(c_int32_t), value :: time_
+end subroutine
+
+! void gdk_drop_reply (GdkDragContext *context, gboolean accepted, guint32 time_);
+subroutine gdk_drop_reply(context, accepted, time_) bind(c)
+  use iso_c_binding, only: c_ptr, c_int, c_int32_t
+  type(c_ptr), value :: context
+  integer(c_int), value :: accepted
+  integer(c_int32_t), value :: time_
+end subroutine
+
+! void gdk_drop_finish (GdkDragContext *context, gboolean success, guint32 time_);
+subroutine gdk_drop_finish(context, success, time_) bind(c)
+  use iso_c_binding, only: c_ptr, c_int, c_int32_t
+  type(c_ptr), value :: context
+  integer(c_int), value :: success
+  integer(c_int32_t), value :: time_
+end subroutine
+
+! GdkAtom gdk_drag_get_selection (GdkDragContext *context);
+function gdk_drag_get_selection(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drag_get_selection
+  type(c_ptr), value :: context
+end function
+
+! GdkDragContext * gdk_drag_begin (GdkWindow *window, GList *targets);
+function gdk_drag_begin(window, targets) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drag_begin
+  type(c_ptr), value :: window
+  type(c_ptr), value :: targets
+end function
+
+! GdkDragContext * gdk_drag_begin_for_device (GdkWindow *window, GdkDevice *device, GList *targets);
+function gdk_drag_begin_for_device(window, device, targets) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drag_begin_for_device
+  type(c_ptr), value :: window
+  type(c_ptr), value :: device
+  type(c_ptr), value :: targets
+end function
+
+! GdkDragContext * gdk_drag_begin_from_point (GdkWindow *window, GdkDevice *device, GList *targets, gint x_root, gint y_root);
+function gdk_drag_begin_from_point(window, device, targets, x_root, y_root) bin&
+&d(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_drag_begin_from_point
+  type(c_ptr), value :: window
+  type(c_ptr), value :: device
+  type(c_ptr), value :: targets
+  integer(c_int), value :: x_root
+  integer(c_int), value :: y_root
+end function
+
+! void gdk_drag_find_window_for_screen (GdkDragContext *context, GdkWindow *drag_window, GdkScreen *screen, gint x_root, gint y_root, GdkWindow **dest_window, GdkDragProtocol *protocol);
+subroutine gdk_drag_find_window_for_screen(context, drag_window, screen, x_root&
+&, y_root, dest_window, protocol) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  type(c_ptr), value :: drag_window
+  type(c_ptr), value :: screen
+  integer(c_int), value :: x_root
+  integer(c_int), value :: y_root
+  type(c_ptr), value :: dest_window
+  integer(c_int), value :: protocol
+end subroutine
+
+! gboolean gdk_drag_motion (GdkDragContext *context, GdkWindow *dest_window, GdkDragProtocol protocol, gint x_root, gint y_root, GdkDragAction suggested_action, GdkDragAction possible_actions, guint32 time_);
+function gdk_drag_motion(context, dest_window, protocol, x_root, y_root, sugges&
+&ted_action, possible_actions, time_) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gdk_drag_motion
+  type(c_ptr), value :: context
+  type(c_ptr), value :: dest_window
+  integer(c_int), value :: protocol
+  integer(c_int), value :: x_root
+  integer(c_int), value :: y_root
+  integer(c_int), value :: suggested_action
+  integer(c_int), value :: possible_actions
+  integer(c_int32_t), value :: time_
+end function
+
+! void gdk_drag_drop (GdkDragContext *context, guint32 time_);
+subroutine gdk_drag_drop(context, time_) bind(c)
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr), value :: context
+  integer(c_int32_t), value :: time_
+end subroutine
+
+! void gdk_drag_abort (GdkDragContext *context, guint32 time_);
+subroutine gdk_drag_abort(context, time_) bind(c)
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr), value :: context
+  integer(c_int32_t), value :: time_
+end subroutine
+
+! gboolean gdk_drag_drop_succeeded (GdkDragContext *context);
+function gdk_drag_drop_succeeded(context) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_drag_drop_succeeded
+  type(c_ptr), value :: context
+end function
+
+! void gdk_drag_drop_done (GdkDragContext *context, gboolean success);
+subroutine gdk_drag_drop_done(context, success) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: success
+end subroutine
+
+! GdkWindow *gdk_drag_context_get_drag_window (GdkDragContext *context);
+function gdk_drag_context_get_drag_window(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drag_context_get_drag_window
+  type(c_ptr), value :: context
+end function
+
+! void gdk_drag_context_set_hotspot (GdkDragContext *context, gint hot_x, gint hot_y);
+subroutine gdk_drag_context_set_hotspot(context, hot_x, hot_y) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: context
+  integer(c_int), value :: hot_x
+  integer(c_int), value :: hot_y
+end subroutine
+
+! gboolean gdk_drag_context_manage_dnd (GdkDragContext *context, GdkWindow *ipc_window, GdkDragAction actions);
+function gdk_drag_context_manage_dnd(context, ipc_window, actions) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_drag_context_manage_dnd
+  type(c_ptr), value :: context
+  type(c_ptr), value :: ipc_window
+  integer(c_int), value :: actions
+end function
+
+!  GdkPixbuf *gdk_pixbuf_get_from_window (GdkWindow *window, gint src_x, gint src_y, gint width, gint height);
+function gdk_pixbuf_get_from_window(window, src_x, src_y, width, height) bind(c&
+&)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_pixbuf_get_from_window
+  type(c_ptr), value :: window
+  integer(c_int), value :: src_x
+  integer(c_int), value :: src_y
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end function
+
+! GdkPixbuf *gdk_pixbuf_get_from_surface (cairo_surface_t *surface, gint src_x, gint src_y, gint width, gint height);
+function gdk_pixbuf_get_from_surface(surface, src_x, src_y, width, height) bind&
+&(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_pixbuf_get_from_surface
+  type(c_ptr), value :: surface
+  integer(c_int), value :: src_x
+  integer(c_int), value :: src_y
+  integer(c_int), value :: width
+  integer(c_int), value :: height
 end function
 
 !  cairo_t * gdk_cairo_create (GdkWindow *window);
@@ -2844,495 +2639,320 @@ subroutine gdk_cairo_draw_from_gl(cr, window, source, source_type, buffer_scale&
   integer(c_int), value :: height
 end subroutine
 
-!  GType gdk_keymap_get_type (void) G_GNUC_CONST;
-function gdk_keymap_get_type() bind(c)
+! GdkDrawingContext * gdk_cairo_get_drawing_context (cairo_t *cr);
+function gdk_cairo_get_drawing_context(cr) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_cairo_get_drawing_context
+  type(c_ptr), value :: cr
+end function
+
+!  GType gdk_display_manager_get_type (void) G_GNUC_CONST;
+function gdk_display_manager_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_keymap_get_type
+  integer(c_size_t) :: gdk_display_manager_get_type
 end function
 
-! GdkKeymap* gdk_keymap_get_default (void);
-function gdk_keymap_get_default() bind(c)
+! GdkDisplayManager *gdk_display_manager_get (void);
+function gdk_display_manager_get() bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_keymap_get_default
+  type(c_ptr) :: gdk_display_manager_get
 end function
 
-! GdkKeymap* gdk_keymap_get_for_display (GdkDisplay *display);
-function gdk_keymap_get_for_display(display) bind(c)
+! GdkDisplay * gdk_display_manager_get_default_display (GdkDisplayManager *manager);
+function gdk_display_manager_get_default_display(manager) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_keymap_get_for_display
+  type(c_ptr) :: gdk_display_manager_get_default_display
+  type(c_ptr), value :: manager
+end function
+
+! void gdk_display_manager_set_default_display (GdkDisplayManager *manager, GdkDisplay *display);
+subroutine gdk_display_manager_set_default_display(manager, display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: manager
+  type(c_ptr), value :: display
+end subroutine
+
+! GSList * gdk_display_manager_list_displays (GdkDisplayManager *manager);
+function gdk_display_manager_list_displays(manager) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_display_manager_list_displays
+  type(c_ptr), value :: manager
+end function
+
+! GdkDisplay * gdk_display_manager_open_display (GdkDisplayManager *manager, const gchar *name);
+function gdk_display_manager_open_display(manager, name) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gdk_display_manager_open_display
+  type(c_ptr), value :: manager
+  character(kind=c_char), dimension(*) :: name
+end function
+
+!  GType gdk_device_tool_get_type (void) G_GNUC_CONST;
+function gdk_device_tool_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_device_tool_get_type
+end function
+
+! guint64 gdk_device_tool_get_serial (GdkDeviceTool *tool);
+function gdk_device_tool_get_serial(tool) bind(c)
+  use iso_c_binding, only: c_int64_t, c_ptr
+  integer(c_int64_t) :: gdk_device_tool_get_serial
+  type(c_ptr), value :: tool
+end function
+
+! guint64 gdk_device_tool_get_hardware_id (GdkDeviceTool *tool);
+function gdk_device_tool_get_hardware_id(tool) bind(c)
+  use iso_c_binding, only: c_int64_t, c_ptr
+  integer(c_int64_t) :: gdk_device_tool_get_hardware_id
+  type(c_ptr), value :: tool
+end function
+
+! GdkDeviceToolType gdk_device_tool_get_tool_type (GdkDeviceTool *tool);
+function gdk_device_tool_get_tool_type(tool) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_tool_get_tool_type
+  type(c_ptr), value :: tool
+end function
+
+!  GType gdk_frame_timings_get_type (void) G_GNUC_CONST;
+function gdk_frame_timings_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_frame_timings_get_type
+end function
+
+! GdkFrameTimings *gdk_frame_timings_ref (GdkFrameTimings *timings);
+function gdk_frame_timings_ref(timings) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_frame_timings_ref
+  type(c_ptr), value :: timings
+end function
+
+! void gdk_frame_timings_unref (GdkFrameTimings *timings);
+subroutine gdk_frame_timings_unref(timings) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: timings
+end subroutine
+
+! gint64 gdk_frame_timings_get_frame_counter (GdkFrameTimings *timings);
+function gdk_frame_timings_get_frame_counter(timings) bind(c)
+  use iso_c_binding, only: c_int64_t, c_ptr
+  integer(c_int64_t) :: gdk_frame_timings_get_frame_counter
+  type(c_ptr), value :: timings
+end function
+
+! gboolean gdk_frame_timings_get_complete (GdkFrameTimings *timings);
+function gdk_frame_timings_get_complete(timings) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_frame_timings_get_complete
+  type(c_ptr), value :: timings
+end function
+
+! gint64 gdk_frame_timings_get_frame_time (GdkFrameTimings *timings);
+function gdk_frame_timings_get_frame_time(timings) bind(c)
+  use iso_c_binding, only: c_int64_t, c_ptr
+  integer(c_int64_t) :: gdk_frame_timings_get_frame_time
+  type(c_ptr), value :: timings
+end function
+
+! gint64 gdk_frame_timings_get_presentation_time (GdkFrameTimings *timings);
+function gdk_frame_timings_get_presentation_time(timings) bind(c)
+  use iso_c_binding, only: c_int64_t, c_ptr
+  integer(c_int64_t) :: gdk_frame_timings_get_presentation_time
+  type(c_ptr), value :: timings
+end function
+
+! gint64 gdk_frame_timings_get_refresh_interval (GdkFrameTimings *timings);
+function gdk_frame_timings_get_refresh_interval(timings) bind(c)
+  use iso_c_binding, only: c_int64_t, c_ptr
+  integer(c_int64_t) :: gdk_frame_timings_get_refresh_interval
+  type(c_ptr), value :: timings
+end function
+
+! gint64 gdk_frame_timings_get_predicted_presentation_time (GdkFrameTimings *timings);
+function gdk_frame_timings_get_predicted_presentation_time(timings) bind(c)
+  use iso_c_binding, only: c_int64_t, c_ptr
+  integer(c_int64_t) :: gdk_frame_timings_get_predicted_presentation_time
+  type(c_ptr), value :: timings
+end function
+
+!  GType gdk_mir_display_get_type (void);
+function gdk_mir_display_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_mir_display_get_type
+end function
+
+! MirConnection *gdk_mir_display_get_mir_connection (GdkDisplay *display);
+function gdk_mir_display_get_mir_connection(display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_mir_display_get_mir_connection
   type(c_ptr), value :: display
 end function
 
-! guint gdk_keymap_lookup_key (GdkKeymap *keymap, const GdkKeymapKey *key);
-function gdk_keymap_lookup_key(keymap, key) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_lookup_key
-  type(c_ptr), value :: keymap
-  type(c_ptr), value :: key
-end function
-
-! gboolean gdk_keymap_translate_keyboard_state (GdkKeymap *keymap, guint hardware_keycode, GdkModifierType state, gint group, guint *keyval, gint *effective_group, gint *level, GdkModifierType *consumed_modifiers);
-function gdk_keymap_translate_keyboard_state(keymap, hardware_keycode, state, g&
-&roup, keyval, effective_group, level, consumed_modifiers) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_translate_keyboard_state
-  type(c_ptr), value :: keymap
-  integer(c_int), value :: hardware_keycode
-  integer(c_int), value :: state
-  integer(c_int), value :: group
-  type(c_ptr), value :: keyval
-  type(c_ptr), value :: effective_group
-  type(c_ptr), value :: level
-  integer(c_int), value :: consumed_modifiers
-end function
-
-! gboolean gdk_keymap_get_entries_for_keyval (GdkKeymap *keymap, guint keyval, GdkKeymapKey **keys, gint *n_keys);
-function gdk_keymap_get_entries_for_keyval(keymap, keyval, keys, n_keys) bind(c&
-&)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_get_entries_for_keyval
-  type(c_ptr), value :: keymap
-  integer(c_int), value :: keyval
-  type(c_ptr), value :: keys
-  type(c_ptr), value :: n_keys
-end function
-
-! gboolean gdk_keymap_get_entries_for_keycode (GdkKeymap *keymap, guint hardware_keycode, GdkKeymapKey **keys, guint **keyvals, gint *n_entries);
-function gdk_keymap_get_entries_for_keycode(keymap, hardware_keycode, keys, key&
-&vals, n_entries) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_get_entries_for_keycode
-  type(c_ptr), value :: keymap
-  integer(c_int), value :: hardware_keycode
-  type(c_ptr), value :: keys
-  type(c_ptr), value :: keyvals
-  type(c_ptr), value :: n_entries
-end function
-
-! PangoDirection gdk_keymap_get_direction (GdkKeymap *keymap);
-function gdk_keymap_get_direction(keymap) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_get_direction
-  type(c_ptr), value :: keymap
-end function
-
-! gboolean gdk_keymap_have_bidi_layouts (GdkKeymap *keymap);
-function gdk_keymap_have_bidi_layouts(keymap) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_have_bidi_layouts
-  type(c_ptr), value :: keymap
-end function
-
-! gboolean gdk_keymap_get_caps_lock_state (GdkKeymap *keymap);
-function gdk_keymap_get_caps_lock_state(keymap) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_get_caps_lock_state
-  type(c_ptr), value :: keymap
-end function
-
-! gboolean gdk_keymap_get_num_lock_state (GdkKeymap *keymap);
-function gdk_keymap_get_num_lock_state(keymap) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_get_num_lock_state
-  type(c_ptr), value :: keymap
-end function
-
-! gboolean gdk_keymap_get_scroll_lock_state (GdkKeymap *keymap);
-function gdk_keymap_get_scroll_lock_state(keymap) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_get_scroll_lock_state
-  type(c_ptr), value :: keymap
-end function
-
-! guint gdk_keymap_get_modifier_state (GdkKeymap *keymap);
-function gdk_keymap_get_modifier_state(keymap) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_get_modifier_state
-  type(c_ptr), value :: keymap
-end function
-
-! void gdk_keymap_add_virtual_modifiers (GdkKeymap *keymap, GdkModifierType *state);
-subroutine gdk_keymap_add_virtual_modifiers(keymap, state) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: keymap
-  integer(c_int), value :: state
-end subroutine
-
-! gboolean gdk_keymap_map_virtual_modifiers (GdkKeymap *keymap, GdkModifierType *state);
-function gdk_keymap_map_virtual_modifiers(keymap, state) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_map_virtual_modifiers
-  type(c_ptr), value :: keymap
-  integer(c_int), value :: state
-end function
-
-! GdkModifierType gdk_keymap_get_modifier_mask (GdkKeymap *keymap, GdkModifierIntent intent);
-function gdk_keymap_get_modifier_mask(keymap, intent) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_keymap_get_modifier_mask
-  type(c_ptr), value :: keymap
-  integer(c_int), value :: intent
-end function
-
-! gchar* gdk_keyval_name (guint keyval) G_GNUC_CONST;
-function gdk_keyval_name(keyval) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_keyval_name
-  integer(c_int), value :: keyval
-end function
-
-! guint gdk_keyval_from_name (const gchar *keyval_name);
-function gdk_keyval_from_name(keyval_name) bind(c)
-  use iso_c_binding, only: c_int, c_char
-  integer(c_int) :: gdk_keyval_from_name
-  character(kind=c_char), dimension(*) :: keyval_name
-end function
-
-! void gdk_keyval_convert_case (guint symbol, guint *lower, guint *upper);
-subroutine gdk_keyval_convert_case(symbol, lower, upper) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int), value :: symbol
-  type(c_ptr), value :: lower
-  type(c_ptr), value :: upper
-end subroutine
-
-! guint gdk_keyval_to_upper (guint keyval) G_GNUC_CONST;
-function gdk_keyval_to_upper(keyval) bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_keyval_to_upper
-  integer(c_int), value :: keyval
-end function
-
-! guint gdk_keyval_to_lower (guint keyval) G_GNUC_CONST;
-function gdk_keyval_to_lower(keyval) bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_keyval_to_lower
-  integer(c_int), value :: keyval
-end function
-
-! gboolean gdk_keyval_is_upper (guint keyval) G_GNUC_CONST;
-function gdk_keyval_is_upper(keyval) bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_keyval_is_upper
-  integer(c_int), value :: keyval
-end function
-
-! gboolean gdk_keyval_is_lower (guint keyval) G_GNUC_CONST;
-function gdk_keyval_is_lower(keyval) bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_keyval_is_lower
-  integer(c_int), value :: keyval
-end function
-
-! guint32 gdk_keyval_to_unicode (guint keyval) G_GNUC_CONST;
-function gdk_keyval_to_unicode(keyval) bind(c)
-  use iso_c_binding, only: c_int32_t, c_int
-  integer(c_int32_t) :: gdk_keyval_to_unicode
-  integer(c_int), value :: keyval
-end function
-
-! guint gdk_unicode_to_keyval (guint32 wc) G_GNUC_CONST;
-function gdk_unicode_to_keyval(wc) bind(c)
-  use iso_c_binding, only: c_int, c_int32_t
-  integer(c_int) :: gdk_unicode_to_keyval
-  integer(c_int32_t), value :: wc
-end function
-
-!  GType gdk_screen_get_type (void) G_GNUC_CONST;
-function gdk_screen_get_type() bind(c)
+! GType gdk_mir_window_get_type (void);
+function gdk_mir_window_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_screen_get_type
+  integer(c_size_t) :: gdk_mir_window_get_type
 end function
 
-! GdkVisual * gdk_screen_get_system_visual (GdkScreen *screen);
-function gdk_screen_get_system_visual(screen) bind(c)
+! MirSurface *gdk_mir_window_get_mir_surface (GdkWindow *window);
+function gdk_mir_window_get_mir_surface(window) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_get_system_visual
-  type(c_ptr), value :: screen
-end function
-
-! GdkVisual * gdk_screen_get_rgba_visual (GdkScreen *screen);
-function gdk_screen_get_rgba_visual(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_get_rgba_visual
-  type(c_ptr), value :: screen
-end function
-
-! gboolean gdk_screen_is_composited (GdkScreen *screen);
-function gdk_screen_is_composited(screen) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_is_composited
-  type(c_ptr), value :: screen
-end function
-
-! GdkWindow * gdk_screen_get_root_window (GdkScreen *screen);
-function gdk_screen_get_root_window(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_get_root_window
-  type(c_ptr), value :: screen
-end function
-
-! GdkDisplay * gdk_screen_get_display (GdkScreen *screen);
-function gdk_screen_get_display(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_get_display
-  type(c_ptr), value :: screen
-end function
-
-! gint gdk_screen_get_number (GdkScreen *screen);
-function gdk_screen_get_number(screen) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_number
-  type(c_ptr), value :: screen
-end function
-
-! gint gdk_screen_get_width (GdkScreen *screen);
-function gdk_screen_get_width(screen) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_width
-  type(c_ptr), value :: screen
-end function
-
-! gint gdk_screen_get_height (GdkScreen *screen);
-function gdk_screen_get_height(screen) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_height
-  type(c_ptr), value :: screen
-end function
-
-! gint gdk_screen_get_width_mm (GdkScreen *screen);
-function gdk_screen_get_width_mm(screen) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_width_mm
-  type(c_ptr), value :: screen
-end function
-
-! gint gdk_screen_get_height_mm (GdkScreen *screen);
-function gdk_screen_get_height_mm(screen) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_height_mm
-  type(c_ptr), value :: screen
-end function
-
-! GList * gdk_screen_list_visuals (GdkScreen *screen);
-function gdk_screen_list_visuals(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_list_visuals
-  type(c_ptr), value :: screen
-end function
-
-! GList * gdk_screen_get_toplevel_windows (GdkScreen *screen);
-function gdk_screen_get_toplevel_windows(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_get_toplevel_windows
-  type(c_ptr), value :: screen
-end function
-
-! gchar * gdk_screen_make_display_name (GdkScreen *screen);
-function gdk_screen_make_display_name(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_make_display_name
-  type(c_ptr), value :: screen
-end function
-
-! gint gdk_screen_get_n_monitors (GdkScreen *screen);
-function gdk_screen_get_n_monitors(screen) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_n_monitors
-  type(c_ptr), value :: screen
-end function
-
-! gint gdk_screen_get_primary_monitor (GdkScreen *screen);
-function gdk_screen_get_primary_monitor(screen) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_primary_monitor
-  type(c_ptr), value :: screen
-end function
-
-! void gdk_screen_get_monitor_geometry (GdkScreen *screen, gint monitor_num, GdkRectangle *dest);
-subroutine gdk_screen_get_monitor_geometry(screen, monitor_num, dest) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: screen
-  integer(c_int), value :: monitor_num
-  type(c_ptr), value :: dest
-end subroutine
-
-! void gdk_screen_get_monitor_workarea (GdkScreen *screen, gint monitor_num, GdkRectangle *dest);
-subroutine gdk_screen_get_monitor_workarea(screen, monitor_num, dest) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: screen
-  integer(c_int), value :: monitor_num
-  type(c_ptr), value :: dest
-end subroutine
-
-! gint gdk_screen_get_monitor_at_point (GdkScreen *screen, gint x, gint y);
-function gdk_screen_get_monitor_at_point(screen, x, y) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_monitor_at_point
-  type(c_ptr), value :: screen
-  integer(c_int), value :: x
-  integer(c_int), value :: y
-end function
-
-! gint gdk_screen_get_monitor_at_window (GdkScreen *screen, GdkWindow *window);
-function gdk_screen_get_monitor_at_window(screen, window) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_monitor_at_window
-  type(c_ptr), value :: screen
+  type(c_ptr) :: gdk_mir_window_get_mir_surface
   type(c_ptr), value :: window
 end function
 
-! gint gdk_screen_get_monitor_width_mm (GdkScreen *screen, gint monitor_num);
-function gdk_screen_get_monitor_width_mm(screen, monitor_num) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_monitor_width_mm
-  type(c_ptr), value :: screen
-  integer(c_int), value :: monitor_num
-end function
-
-! gint gdk_screen_get_monitor_height_mm (GdkScreen *screen, gint monitor_num);
-function gdk_screen_get_monitor_height_mm(screen, monitor_num) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_monitor_height_mm
-  type(c_ptr), value :: screen
-  integer(c_int), value :: monitor_num
-end function
-
-! gchar * gdk_screen_get_monitor_plug_name (GdkScreen *screen, gint monitor_num);
-function gdk_screen_get_monitor_plug_name(screen, monitor_num) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_screen_get_monitor_plug_name
-  type(c_ptr), value :: screen
-  integer(c_int), value :: monitor_num
-end function
-
-! gint gdk_screen_get_monitor_scale_factor (GdkScreen *screen, gint monitor_num);
-function gdk_screen_get_monitor_scale_factor(screen, monitor_num) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_screen_get_monitor_scale_factor
-  type(c_ptr), value :: screen
-  integer(c_int), value :: monitor_num
-end function
-
-! GdkScreen *gdk_screen_get_default (void);
-function gdk_screen_get_default() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_get_default
-end function
-
-! gboolean gdk_screen_get_setting (GdkScreen *screen, const gchar *name, GValue *value);
-function gdk_screen_get_setting(screen, name, value) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gdk_screen_get_setting
-  type(c_ptr), value :: screen
-  character(kind=c_char), dimension(*) :: name
-  type(c_ptr), value :: value
-end function
-
-! void gdk_screen_set_font_options (GdkScreen *screen, const cairo_font_options_t *options);
-subroutine gdk_screen_set_font_options(screen, options) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: screen
-  type(c_ptr), value :: options
-end subroutine
-
-! const cairo_font_options_t *gdk_screen_get_font_options (GdkScreen *screen);
-function gdk_screen_get_font_options(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_get_font_options
-  type(c_ptr), value :: screen
-end function
-
-! void gdk_screen_set_resolution (GdkScreen *screen, gdouble dpi);
-subroutine gdk_screen_set_resolution(screen, dpi) bind(c)
-  use iso_c_binding, only: c_ptr, c_double
-  type(c_ptr), value :: screen
-  real(c_double), value :: dpi
-end subroutine
-
-! gdouble gdk_screen_get_resolution (GdkScreen *screen);
-function gdk_screen_get_resolution(screen) bind(c)
-  use iso_c_binding, only: c_double, c_ptr
-  real(c_double) :: gdk_screen_get_resolution
-  type(c_ptr), value :: screen
-end function
-
-! GdkWindow *gdk_screen_get_active_window (GdkScreen *screen);
-function gdk_screen_get_active_window(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_get_active_window
-  type(c_ptr), value :: screen
-end function
-
-! GList *gdk_screen_get_window_stack (GdkScreen *screen);
-function gdk_screen_get_window_stack(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_screen_get_window_stack
-  type(c_ptr), value :: screen
-end function
-
-!  GType gdk_seat_get_type (void) G_GNUC_CONST;
-function gdk_seat_get_type() bind(c)
+! GType gdk_mir_gl_context_get_type (void) G_GNUC_CONST;
+function gdk_mir_gl_context_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_seat_get_type
+  integer(c_size_t) :: gdk_mir_gl_context_get_type
 end function
 
-! GdkGrabStatus gdk_seat_grab (GdkSeat *seat, GdkWindow *window, GdkSeatCapabilities capabilities, gboolean owner_events, GdkCursor *cursor, const GdkEvent *event, GdkSeatGrabPrepareFunc prepare_func, gpointer prepare_func_data);
-function gdk_seat_grab(seat, window, capabilities, owner_events, cursor, event,&
-& prepare_func, prepare_func_data) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_funptr
-  integer(c_int) :: gdk_seat_grab
-  type(c_ptr), value :: seat
-  type(c_ptr), value :: window
-  integer(c_int), value :: capabilities
-  integer(c_int), value :: owner_events
-  type(c_ptr), value :: cursor
-  type(c_ptr), value :: event
-  type(c_funptr), value :: prepare_func
-  type(c_ptr), value :: prepare_func_data
+!  GType gdk_device_manager_get_type (void) G_GNUC_CONST;
+function gdk_device_manager_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_device_manager_get_type
 end function
 
-! void gdk_seat_ungrab (GdkSeat *seat);
-subroutine gdk_seat_ungrab(seat) bind(c)
+! GdkDisplay * gdk_device_manager_get_display (GdkDeviceManager *device_manager);
+function gdk_device_manager_get_display(device_manager) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: seat
+  type(c_ptr) :: gdk_device_manager_get_display
+  type(c_ptr), value :: device_manager
+end function
+
+! GList * gdk_device_manager_list_devices (GdkDeviceManager *device_manager, GdkDeviceType type);
+function gdk_device_manager_list_devices(device_manager, type) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_device_manager_list_devices
+  type(c_ptr), value :: device_manager
+  integer(c_int), value :: type
+end function
+
+! GdkDevice * gdk_device_manager_get_client_pointer (GdkDeviceManager *device_manager);
+function gdk_device_manager_get_client_pointer(device_manager) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_manager_get_client_pointer
+  type(c_ptr), value :: device_manager
+end function
+
+! GdkAppLaunchContext *gdk_app_launch_context_new (void);
+function gdk_app_launch_context_new() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_app_launch_context_new
+end function
+
+! void gdk_app_launch_context_set_display (GdkAppLaunchContext *context, GdkDisplay *display);
+subroutine gdk_app_launch_context_set_display(context, display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: display
 end subroutine
 
-! GdkDisplay * gdk_seat_get_display (GdkSeat *seat);
-function gdk_seat_get_display(seat) bind(c)
+! void gdk_app_launch_context_set_screen (GdkAppLaunchContext *context, GdkScreen *screen);
+subroutine gdk_app_launch_context_set_screen(context, screen) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_seat_get_display
-  type(c_ptr), value :: seat
-end function
+  type(c_ptr), value :: context
+  type(c_ptr), value :: screen
+end subroutine
 
-! GdkSeatCapabilities gdk_seat_get_capabilities (GdkSeat *seat);
-function gdk_seat_get_capabilities(seat) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_seat_get_capabilities
-  type(c_ptr), value :: seat
-end function
-
-! GList * gdk_seat_get_slaves (GdkSeat *seat, GdkSeatCapabilities capabilities);
-function gdk_seat_get_slaves(seat, capabilities) bind(c)
+! void gdk_app_launch_context_set_desktop (GdkAppLaunchContext *context, gint desktop);
+subroutine gdk_app_launch_context_set_desktop(context, desktop) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_seat_get_slaves
-  type(c_ptr), value :: seat
-  integer(c_int), value :: capabilities
+  type(c_ptr), value :: context
+  integer(c_int), value :: desktop
+end subroutine
+
+! void gdk_app_launch_context_set_timestamp (GdkAppLaunchContext *context, guint32 timestamp);
+subroutine gdk_app_launch_context_set_timestamp(context, timestamp) bind(c)
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr), value :: context
+  integer(c_int32_t), value :: timestamp
+end subroutine
+
+! void gdk_app_launch_context_set_icon (GdkAppLaunchContext *context, GIcon *icon);
+subroutine gdk_app_launch_context_set_icon(context, icon) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: context
+  type(c_ptr), value :: icon
+end subroutine
+
+! void gdk_app_launch_context_set_icon_name (GdkAppLaunchContext *context, const char *icon_name);
+subroutine gdk_app_launch_context_set_icon_name(context, icon_name) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: icon_name
+end subroutine
+
+!  GType gdk_frame_clock_get_type (void) G_GNUC_CONST;
+function gdk_frame_clock_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_frame_clock_get_type
 end function
 
-! GdkDevice * gdk_seat_get_pointer (GdkSeat *seat);
-function gdk_seat_get_pointer(seat) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_seat_get_pointer
-  type(c_ptr), value :: seat
+! gint64 gdk_frame_clock_get_frame_time (GdkFrameClock *frame_clock);
+function gdk_frame_clock_get_frame_time(frame_clock) bind(c)
+  use iso_c_binding, only: c_int64_t, c_ptr
+  integer(c_int64_t) :: gdk_frame_clock_get_frame_time
+  type(c_ptr), value :: frame_clock
 end function
 
-! GdkDevice * gdk_seat_get_keyboard (GdkSeat *seat);
-function gdk_seat_get_keyboard(seat) bind(c)
+! void gdk_frame_clock_request_phase (GdkFrameClock *frame_clock, GdkFrameClockPhase phase);
+subroutine gdk_frame_clock_request_phase(frame_clock, phase) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: frame_clock
+  integer(c_int), value :: phase
+end subroutine
+
+! void gdk_frame_clock_begin_updating (GdkFrameClock *frame_clock);
+subroutine gdk_frame_clock_begin_updating(frame_clock) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_seat_get_keyboard
-  type(c_ptr), value :: seat
+  type(c_ptr), value :: frame_clock
+end subroutine
+
+! void gdk_frame_clock_end_updating (GdkFrameClock *frame_clock);
+subroutine gdk_frame_clock_end_updating(frame_clock) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: frame_clock
+end subroutine
+
+! gint64 gdk_frame_clock_get_frame_counter (GdkFrameClock *frame_clock);
+function gdk_frame_clock_get_frame_counter(frame_clock) bind(c)
+  use iso_c_binding, only: c_int64_t, c_ptr
+  integer(c_int64_t) :: gdk_frame_clock_get_frame_counter
+  type(c_ptr), value :: frame_clock
 end function
+
+! gint64 gdk_frame_clock_get_history_start (GdkFrameClock *frame_clock);
+function gdk_frame_clock_get_history_start(frame_clock) bind(c)
+  use iso_c_binding, only: c_int64_t, c_ptr
+  integer(c_int64_t) :: gdk_frame_clock_get_history_start
+  type(c_ptr), value :: frame_clock
+end function
+
+! GdkFrameTimings *gdk_frame_clock_get_timings (GdkFrameClock *frame_clock, gint64 frame_counter);
+function gdk_frame_clock_get_timings(frame_clock, frame_counter) bind(c)
+  use iso_c_binding, only: c_ptr, c_int64_t
+  type(c_ptr) :: gdk_frame_clock_get_timings
+  type(c_ptr), value :: frame_clock
+  integer(c_int64_t), value :: frame_counter
+end function
+
+! GdkFrameTimings *gdk_frame_clock_get_current_timings (GdkFrameClock *frame_clock);
+function gdk_frame_clock_get_current_timings(frame_clock) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_frame_clock_get_current_timings
+  type(c_ptr), value :: frame_clock
+end function
+
+! void gdk_frame_clock_get_refresh_info (GdkFrameClock *frame_clock, gint64 base_time, gint64 *refresh_interval_return, gint64 *presentation_time_return);
+subroutine gdk_frame_clock_get_refresh_info(frame_clock, base_time, refresh_int&
+&erval_return, presentation_time_return) bind(c)
+  use iso_c_binding, only: c_ptr, c_int64_t
+  type(c_ptr), value :: frame_clock
+  integer(c_int64_t), value :: base_time
+  type(c_ptr), value :: refresh_interval_return
+  type(c_ptr), value :: presentation_time_return
+end subroutine
 
 !  GType gdk_event_get_type (void) G_GNUC_CONST;
 function gdk_event_get_type() bind(c)
@@ -3627,357 +3247,348 @@ function gdk_setting_get(name, value) bind(c)
   type(c_ptr), value :: value
 end function
 
-!  GType gdk_drag_context_get_type (void) G_GNUC_CONST;
-function gdk_drag_context_get_type() bind(c)
+! GdkDeviceTool *gdk_event_get_device_tool (const GdkEvent *event);
+function gdk_event_get_device_tool(event) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_event_get_device_tool
+  type(c_ptr), value :: event
+end function
+
+! void gdk_event_set_device_tool (GdkEvent *event, GdkDeviceTool *tool);
+subroutine gdk_event_set_device_tool(event, tool) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: event
+  type(c_ptr), value :: tool
+end subroutine
+
+! int gdk_event_get_scancode (GdkEvent *event);
+function gdk_event_get_scancode(event) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_event_get_scancode
+  type(c_ptr), value :: event
+end function
+
+! gboolean gdk_event_get_pointer_emulated (GdkEvent *event);
+function gdk_event_get_pointer_emulated(event) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_event_get_pointer_emulated
+  type(c_ptr), value :: event
+end function
+
+!  GType gdk_screen_get_type (void) G_GNUC_CONST;
+function gdk_screen_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_drag_context_get_type
+  integer(c_size_t) :: gdk_screen_get_type
 end function
 
-! void gdk_drag_context_set_device (GdkDragContext *context, GdkDevice *device);
-subroutine gdk_drag_context_set_device(context, device) bind(c)
+! GdkVisual * gdk_screen_get_system_visual (GdkScreen *screen);
+function gdk_screen_get_system_visual(screen) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: context
-  type(c_ptr), value :: device
-end subroutine
-
-! GdkDevice * gdk_drag_context_get_device (GdkDragContext *context);
-function gdk_drag_context_get_device(context) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_drag_context_get_device
-  type(c_ptr), value :: context
-end function
-
-! GList *gdk_drag_context_list_targets (GdkDragContext *context);
-function gdk_drag_context_list_targets(context) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_drag_context_list_targets
-  type(c_ptr), value :: context
-end function
-
-! GdkDragAction gdk_drag_context_get_actions (GdkDragContext *context);
-function gdk_drag_context_get_actions(context) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_drag_context_get_actions
-  type(c_ptr), value :: context
-end function
-
-! GdkDragAction gdk_drag_context_get_suggested_action (GdkDragContext *context);
-function gdk_drag_context_get_suggested_action(context) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_drag_context_get_suggested_action
-  type(c_ptr), value :: context
-end function
-
-! GdkDragAction gdk_drag_context_get_selected_action (GdkDragContext *context);
-function gdk_drag_context_get_selected_action(context) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_drag_context_get_selected_action
-  type(c_ptr), value :: context
-end function
-
-! GdkWindow *gdk_drag_context_get_source_window (GdkDragContext *context);
-function gdk_drag_context_get_source_window(context) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_drag_context_get_source_window
-  type(c_ptr), value :: context
-end function
-
-! GdkWindow *gdk_drag_context_get_dest_window (GdkDragContext *context);
-function gdk_drag_context_get_dest_window(context) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_drag_context_get_dest_window
-  type(c_ptr), value :: context
-end function
-
-! GdkDragProtocol gdk_drag_context_get_protocol (GdkDragContext *context);
-function gdk_drag_context_get_protocol(context) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_drag_context_get_protocol
-  type(c_ptr), value :: context
-end function
-
-! void gdk_drag_status (GdkDragContext *context, GdkDragAction action, guint32 time_);
-subroutine gdk_drag_status(context, action, time_) bind(c)
-  use iso_c_binding, only: c_ptr, c_int, c_int32_t
-  type(c_ptr), value :: context
-  integer(c_int), value :: action
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! void gdk_drop_reply (GdkDragContext *context, gboolean accepted, guint32 time_);
-subroutine gdk_drop_reply(context, accepted, time_) bind(c)
-  use iso_c_binding, only: c_ptr, c_int, c_int32_t
-  type(c_ptr), value :: context
-  integer(c_int), value :: accepted
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! void gdk_drop_finish (GdkDragContext *context, gboolean success, guint32 time_);
-subroutine gdk_drop_finish(context, success, time_) bind(c)
-  use iso_c_binding, only: c_ptr, c_int, c_int32_t
-  type(c_ptr), value :: context
-  integer(c_int), value :: success
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! GdkAtom gdk_drag_get_selection (GdkDragContext *context);
-function gdk_drag_get_selection(context) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_drag_get_selection
-  type(c_ptr), value :: context
-end function
-
-! GdkDragContext * gdk_drag_begin (GdkWindow *window, GList *targets);
-function gdk_drag_begin(window, targets) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_drag_begin
-  type(c_ptr), value :: window
-  type(c_ptr), value :: targets
-end function
-
-! GdkDragContext * gdk_drag_begin_for_device (GdkWindow *window, GdkDevice *device, GList *targets);
-function gdk_drag_begin_for_device(window, device, targets) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_drag_begin_for_device
-  type(c_ptr), value :: window
-  type(c_ptr), value :: device
-  type(c_ptr), value :: targets
-end function
-
-! GdkDragContext * gdk_drag_begin_from_point (GdkWindow *window, GdkDevice *device, GList *targets, gint x_root, gint y_root);
-function gdk_drag_begin_from_point(window, device, targets, x_root, y_root) bin&
-&d(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_drag_begin_from_point
-  type(c_ptr), value :: window
-  type(c_ptr), value :: device
-  type(c_ptr), value :: targets
-  integer(c_int), value :: x_root
-  integer(c_int), value :: y_root
-end function
-
-! void gdk_drag_find_window_for_screen (GdkDragContext *context, GdkWindow *drag_window, GdkScreen *screen, gint x_root, gint y_root, GdkWindow **dest_window, GdkDragProtocol *protocol);
-subroutine gdk_drag_find_window_for_screen(context, drag_window, screen, x_root&
-&, y_root, dest_window, protocol) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: context
-  type(c_ptr), value :: drag_window
+  type(c_ptr) :: gdk_screen_get_system_visual
   type(c_ptr), value :: screen
-  integer(c_int), value :: x_root
-  integer(c_int), value :: y_root
-  type(c_ptr), value :: dest_window
-  integer(c_int), value :: protocol
-end subroutine
-
-! gboolean gdk_drag_motion (GdkDragContext *context, GdkWindow *dest_window, GdkDragProtocol protocol, gint x_root, gint y_root, GdkDragAction suggested_action, GdkDragAction possible_actions, guint32 time_);
-function gdk_drag_motion(context, dest_window, protocol, x_root, y_root, sugges&
-&ted_action, possible_actions, time_) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_int32_t
-  integer(c_int) :: gdk_drag_motion
-  type(c_ptr), value :: context
-  type(c_ptr), value :: dest_window
-  integer(c_int), value :: protocol
-  integer(c_int), value :: x_root
-  integer(c_int), value :: y_root
-  integer(c_int), value :: suggested_action
-  integer(c_int), value :: possible_actions
-  integer(c_int32_t), value :: time_
 end function
 
-! void gdk_drag_drop (GdkDragContext *context, guint32 time_);
-subroutine gdk_drag_drop(context, time_) bind(c)
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr), value :: context
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! void gdk_drag_abort (GdkDragContext *context, guint32 time_);
-subroutine gdk_drag_abort(context, time_) bind(c)
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr), value :: context
-  integer(c_int32_t), value :: time_
-end subroutine
-
-! gboolean gdk_drag_drop_succeeded (GdkDragContext *context);
-function gdk_drag_drop_succeeded(context) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_drag_drop_succeeded
-  type(c_ptr), value :: context
-end function
-
-! void gdk_drag_drop_done (GdkDragContext *context, gboolean success);
-subroutine gdk_drag_drop_done(context, success) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: context
-  integer(c_int), value :: success
-end subroutine
-
-! GdkWindow *gdk_drag_context_get_drag_window (GdkDragContext *context);
-function gdk_drag_context_get_drag_window(context) bind(c)
+! GdkVisual * gdk_screen_get_rgba_visual (GdkScreen *screen);
+function gdk_screen_get_rgba_visual(screen) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_drag_context_get_drag_window
-  type(c_ptr), value :: context
-end function
-
-! void gdk_drag_context_set_hotspot (GdkDragContext *context, gint hot_x, gint hot_y);
-subroutine gdk_drag_context_set_hotspot(context, hot_x, hot_y) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: context
-  integer(c_int), value :: hot_x
-  integer(c_int), value :: hot_y
-end subroutine
-
-! gboolean gdk_drag_context_manage_dnd (GdkDragContext *context, GdkWindow *ipc_window, GdkDragAction actions);
-function gdk_drag_context_manage_dnd(context, ipc_window, actions) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_drag_context_manage_dnd
-  type(c_ptr), value :: context
-  type(c_ptr), value :: ipc_window
-  integer(c_int), value :: actions
-end function
-
-! GdkAppLaunchContext *gdk_app_launch_context_new (void);
-function gdk_app_launch_context_new() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_app_launch_context_new
-end function
-
-! void gdk_app_launch_context_set_display (GdkAppLaunchContext *context, GdkDisplay *display);
-subroutine gdk_app_launch_context_set_display(context, display) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: context
-  type(c_ptr), value :: display
-end subroutine
-
-! void gdk_app_launch_context_set_screen (GdkAppLaunchContext *context, GdkScreen *screen);
-subroutine gdk_app_launch_context_set_screen(context, screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: context
+  type(c_ptr) :: gdk_screen_get_rgba_visual
   type(c_ptr), value :: screen
-end subroutine
+end function
 
-! void gdk_app_launch_context_set_desktop (GdkAppLaunchContext *context, gint desktop);
-subroutine gdk_app_launch_context_set_desktop(context, desktop) bind(c)
+! gboolean gdk_screen_is_composited (GdkScreen *screen);
+function gdk_screen_is_composited(screen) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_is_composited
+  type(c_ptr), value :: screen
+end function
+
+! GdkWindow * gdk_screen_get_root_window (GdkScreen *screen);
+function gdk_screen_get_root_window(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_screen_get_root_window
+  type(c_ptr), value :: screen
+end function
+
+! GdkDisplay * gdk_screen_get_display (GdkScreen *screen);
+function gdk_screen_get_display(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_screen_get_display
+  type(c_ptr), value :: screen
+end function
+
+! gint gdk_screen_get_number (GdkScreen *screen);
+function gdk_screen_get_number(screen) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_number
+  type(c_ptr), value :: screen
+end function
+
+! gint gdk_screen_get_width (GdkScreen *screen);
+function gdk_screen_get_width(screen) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_width
+  type(c_ptr), value :: screen
+end function
+
+! gint gdk_screen_get_height (GdkScreen *screen);
+function gdk_screen_get_height(screen) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_height
+  type(c_ptr), value :: screen
+end function
+
+! gint gdk_screen_get_width_mm (GdkScreen *screen);
+function gdk_screen_get_width_mm(screen) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_width_mm
+  type(c_ptr), value :: screen
+end function
+
+! gint gdk_screen_get_height_mm (GdkScreen *screen);
+function gdk_screen_get_height_mm(screen) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_height_mm
+  type(c_ptr), value :: screen
+end function
+
+! GList * gdk_screen_list_visuals (GdkScreen *screen);
+function gdk_screen_list_visuals(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_screen_list_visuals
+  type(c_ptr), value :: screen
+end function
+
+! GList * gdk_screen_get_toplevel_windows (GdkScreen *screen);
+function gdk_screen_get_toplevel_windows(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_screen_get_toplevel_windows
+  type(c_ptr), value :: screen
+end function
+
+! gchar * gdk_screen_make_display_name (GdkScreen *screen);
+function gdk_screen_make_display_name(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_screen_make_display_name
+  type(c_ptr), value :: screen
+end function
+
+! gint gdk_screen_get_n_monitors (GdkScreen *screen);
+function gdk_screen_get_n_monitors(screen) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_n_monitors
+  type(c_ptr), value :: screen
+end function
+
+! gint gdk_screen_get_primary_monitor (GdkScreen *screen);
+function gdk_screen_get_primary_monitor(screen) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_primary_monitor
+  type(c_ptr), value :: screen
+end function
+
+! void gdk_screen_get_monitor_geometry (GdkScreen *screen, gint monitor_num, GdkRectangle *dest);
+subroutine gdk_screen_get_monitor_geometry(screen, monitor_num, dest) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: context
-  integer(c_int), value :: desktop
+  type(c_ptr), value :: screen
+  integer(c_int), value :: monitor_num
+  type(c_ptr), value :: dest
 end subroutine
 
-! void gdk_app_launch_context_set_timestamp (GdkAppLaunchContext *context, guint32 timestamp);
-subroutine gdk_app_launch_context_set_timestamp(context, timestamp) bind(c)
-  use iso_c_binding, only: c_ptr, c_int32_t
-  type(c_ptr), value :: context
-  integer(c_int32_t), value :: timestamp
+! void gdk_screen_get_monitor_workarea (GdkScreen *screen, gint monitor_num, GdkRectangle *dest);
+subroutine gdk_screen_get_monitor_workarea(screen, monitor_num, dest) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: screen
+  integer(c_int), value :: monitor_num
+  type(c_ptr), value :: dest
 end subroutine
 
-! void gdk_app_launch_context_set_icon (GdkAppLaunchContext *context, GIcon *icon);
-subroutine gdk_app_launch_context_set_icon(context, icon) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: context
-  type(c_ptr), value :: icon
-end subroutine
-
-! void gdk_app_launch_context_set_icon_name (GdkAppLaunchContext *context, const char *icon_name);
-subroutine gdk_app_launch_context_set_icon_name(context, icon_name) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: context
-  character(kind=c_char), dimension(*) :: icon_name
-end subroutine
-
-!  GType gdk_display_manager_get_type (void) G_GNUC_CONST;
-function gdk_display_manager_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_display_manager_get_type
+! gint gdk_screen_get_monitor_at_point (GdkScreen *screen, gint x, gint y);
+function gdk_screen_get_monitor_at_point(screen, x, y) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_monitor_at_point
+  type(c_ptr), value :: screen
+  integer(c_int), value :: x
+  integer(c_int), value :: y
 end function
 
-! GdkDisplayManager *gdk_display_manager_get (void);
-function gdk_display_manager_get() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_display_manager_get
+! gint gdk_screen_get_monitor_at_window (GdkScreen *screen, GdkWindow *window);
+function gdk_screen_get_monitor_at_window(screen, window) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_monitor_at_window
+  type(c_ptr), value :: screen
+  type(c_ptr), value :: window
 end function
 
-! GdkDisplay * gdk_display_manager_get_default_display (GdkDisplayManager *manager);
-function gdk_display_manager_get_default_display(manager) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_display_manager_get_default_display
-  type(c_ptr), value :: manager
+! gint gdk_screen_get_monitor_width_mm (GdkScreen *screen, gint monitor_num);
+function gdk_screen_get_monitor_width_mm(screen, monitor_num) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_monitor_width_mm
+  type(c_ptr), value :: screen
+  integer(c_int), value :: monitor_num
 end function
 
-! void gdk_display_manager_set_default_display (GdkDisplayManager *manager, GdkDisplay *display);
-subroutine gdk_display_manager_set_default_display(manager, display) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: manager
-  type(c_ptr), value :: display
-end subroutine
-
-! GSList * gdk_display_manager_list_displays (GdkDisplayManager *manager);
-function gdk_display_manager_list_displays(manager) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_display_manager_list_displays
-  type(c_ptr), value :: manager
+! gint gdk_screen_get_monitor_height_mm (GdkScreen *screen, gint monitor_num);
+function gdk_screen_get_monitor_height_mm(screen, monitor_num) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_monitor_height_mm
+  type(c_ptr), value :: screen
+  integer(c_int), value :: monitor_num
 end function
 
-! GdkDisplay * gdk_display_manager_open_display (GdkDisplayManager *manager, const gchar *name);
-function gdk_display_manager_open_display(manager, name) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gdk_display_manager_open_display
-  type(c_ptr), value :: manager
+! gchar * gdk_screen_get_monitor_plug_name (GdkScreen *screen, gint monitor_num);
+function gdk_screen_get_monitor_plug_name(screen, monitor_num) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_screen_get_monitor_plug_name
+  type(c_ptr), value :: screen
+  integer(c_int), value :: monitor_num
+end function
+
+! gint gdk_screen_get_monitor_scale_factor (GdkScreen *screen, gint monitor_num);
+function gdk_screen_get_monitor_scale_factor(screen, monitor_num) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_screen_get_monitor_scale_factor
+  type(c_ptr), value :: screen
+  integer(c_int), value :: monitor_num
+end function
+
+! GdkScreen *gdk_screen_get_default (void);
+function gdk_screen_get_default() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_screen_get_default
+end function
+
+! gboolean gdk_screen_get_setting (GdkScreen *screen, const gchar *name, GValue *value);
+function gdk_screen_get_setting(screen, name, value) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_screen_get_setting
+  type(c_ptr), value :: screen
   character(kind=c_char), dimension(*) :: name
+  type(c_ptr), value :: value
 end function
 
-!  GdkPixbuf *gdk_pixbuf_get_from_window (GdkWindow *window, gint src_x, gint src_y, gint width, gint height);
-function gdk_pixbuf_get_from_window(window, src_x, src_y, width, height) bind(c&
-&)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_pixbuf_get_from_window
-  type(c_ptr), value :: window
-  integer(c_int), value :: src_x
-  integer(c_int), value :: src_y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end function
-
-! GdkPixbuf *gdk_pixbuf_get_from_surface (cairo_surface_t *surface, gint src_x, gint src_y, gint width, gint height);
-function gdk_pixbuf_get_from_surface(surface, src_x, src_y, width, height) bind&
-&(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_pixbuf_get_from_surface
-  type(c_ptr), value :: surface
-  integer(c_int), value :: src_x
-  integer(c_int), value :: src_y
-  integer(c_int), value :: width
-  integer(c_int), value :: height
-end function
-
-!  gboolean gdk_rectangle_intersect (const GdkRectangle *src1, const GdkRectangle *src2, GdkRectangle *dest);
-function gdk_rectangle_intersect(src1, src2, dest) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_rectangle_intersect
-  type(c_ptr), value :: src1
-  type(c_ptr), value :: src2
-  type(c_ptr), value :: dest
-end function
-
-! void gdk_rectangle_union (const GdkRectangle *src1, const GdkRectangle *src2, GdkRectangle *dest);
-subroutine gdk_rectangle_union(src1, src2, dest) bind(c)
+! void gdk_screen_set_font_options (GdkScreen *screen, const cairo_font_options_t *options);
+subroutine gdk_screen_set_font_options(screen, options) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: src1
-  type(c_ptr), value :: src2
-  type(c_ptr), value :: dest
+  type(c_ptr), value :: screen
+  type(c_ptr), value :: options
 end subroutine
 
-! gboolean gdk_rectangle_equal (const GdkRectangle *rect1, const GdkRectangle *rect2);
-function gdk_rectangle_equal(rect1, rect2) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_rectangle_equal
-  type(c_ptr), value :: rect1
-  type(c_ptr), value :: rect2
+! const cairo_font_options_t *gdk_screen_get_font_options (GdkScreen *screen);
+function gdk_screen_get_font_options(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_screen_get_font_options
+  type(c_ptr), value :: screen
 end function
 
-! GType gdk_rectangle_get_type (void) G_GNUC_CONST;
-function gdk_rectangle_get_type() bind(c)
+! void gdk_screen_set_resolution (GdkScreen *screen, gdouble dpi);
+subroutine gdk_screen_set_resolution(screen, dpi) bind(c)
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: screen
+  real(c_double), value :: dpi
+end subroutine
+
+! gdouble gdk_screen_get_resolution (GdkScreen *screen);
+function gdk_screen_get_resolution(screen) bind(c)
+  use iso_c_binding, only: c_double, c_ptr
+  real(c_double) :: gdk_screen_get_resolution
+  type(c_ptr), value :: screen
+end function
+
+! GdkWindow *gdk_screen_get_active_window (GdkScreen *screen);
+function gdk_screen_get_active_window(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_screen_get_active_window
+  type(c_ptr), value :: screen
+end function
+
+! GList *gdk_screen_get_window_stack (GdkScreen *screen);
+function gdk_screen_get_window_stack(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_screen_get_window_stack
+  type(c_ptr), value :: screen
+end function
+
+!  GType gdk_monitor_get_type (void) G_GNUC_CONST;
+function gdk_monitor_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_rectangle_get_type
+  integer(c_size_t) :: gdk_monitor_get_type
+end function
+
+! GdkDisplay * gdk_monitor_get_display (GdkMonitor *monitor);
+function gdk_monitor_get_display(monitor) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_monitor_get_display
+  type(c_ptr), value :: monitor
+end function
+
+! void gdk_monitor_get_geometry (GdkMonitor *monitor, GdkRectangle *geometry);
+subroutine gdk_monitor_get_geometry(monitor, geometry) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: monitor
+  type(c_ptr), value :: geometry
+end subroutine
+
+! void gdk_monitor_get_workarea (GdkMonitor *monitor, GdkRectangle *workarea);
+subroutine gdk_monitor_get_workarea(monitor, workarea) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: monitor
+  type(c_ptr), value :: workarea
+end subroutine
+
+! int gdk_monitor_get_width_mm (GdkMonitor *monitor);
+function gdk_monitor_get_width_mm(monitor) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_monitor_get_width_mm
+  type(c_ptr), value :: monitor
+end function
+
+! int gdk_monitor_get_height_mm (GdkMonitor *monitor);
+function gdk_monitor_get_height_mm(monitor) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_monitor_get_height_mm
+  type(c_ptr), value :: monitor
+end function
+
+! const char * gdk_monitor_get_manufacturer (GdkMonitor *monitor);
+function gdk_monitor_get_manufacturer(monitor) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_monitor_get_manufacturer
+  type(c_ptr), value :: monitor
+end function
+
+! const char * gdk_monitor_get_model (GdkMonitor *monitor);
+function gdk_monitor_get_model(monitor) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_monitor_get_model
+  type(c_ptr), value :: monitor
+end function
+
+! int gdk_monitor_get_scale_factor (GdkMonitor *monitor);
+function gdk_monitor_get_scale_factor(monitor) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_monitor_get_scale_factor
+  type(c_ptr), value :: monitor
+end function
+
+! int gdk_monitor_get_refresh_rate (GdkMonitor *monitor);
+function gdk_monitor_get_refresh_rate(monitor) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_monitor_get_refresh_rate
+  type(c_ptr), value :: monitor
+end function
+
+! GdkSubpixelLayout gdk_monitor_get_subpixel_layout (GdkMonitor *monitor);
+function gdk_monitor_get_subpixel_layout(monitor) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_monitor_get_subpixel_layout
+  type(c_ptr), value :: monitor
+end function
+
+! gboolean gdk_monitor_is_primary (GdkMonitor *monitor);
+function gdk_monitor_is_primary(monitor) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_monitor_is_primary
+  type(c_ptr), value :: monitor
 end function
 
 !  void gdk_threads_init (void);
@@ -4062,6 +3673,645 @@ function gdk_threads_add_timeout_seconds(interval, function, data) bind(c)
   type(c_ptr), value :: data
 end function
 
+! void gdk_window_destroy_notify (GdkWindow *window);
+subroutine gdk_window_destroy_notify(window) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: window
+end subroutine
+
+! void gdk_synthesize_window_state (GdkWindow *window, GdkWindowState unset_flags, GdkWindowState set_flags);
+subroutine gdk_synthesize_window_state(window, unset_flags, set_flags) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: window
+  integer(c_int), value :: unset_flags
+  integer(c_int), value :: set_flags
+end subroutine
+
+!  GType gdk_device_get_type (void) G_GNUC_CONST;
+function gdk_device_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_device_get_type
+end function
+
+! const gchar * gdk_device_get_name (GdkDevice *device);
+function gdk_device_get_name(device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_get_name
+  type(c_ptr), value :: device
+end function
+
+! gboolean gdk_device_get_has_cursor (GdkDevice *device);
+function gdk_device_get_has_cursor(device) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_has_cursor
+  type(c_ptr), value :: device
+end function
+
+! GdkInputSource gdk_device_get_source (GdkDevice *device);
+function gdk_device_get_source(device) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_source
+  type(c_ptr), value :: device
+end function
+
+! GdkInputMode gdk_device_get_mode (GdkDevice *device);
+function gdk_device_get_mode(device) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_mode
+  type(c_ptr), value :: device
+end function
+
+! gboolean gdk_device_set_mode (GdkDevice *device, GdkInputMode mode);
+function gdk_device_set_mode(device, mode) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_set_mode
+  type(c_ptr), value :: device
+  integer(c_int), value :: mode
+end function
+
+! gint gdk_device_get_n_keys (GdkDevice *device);
+function gdk_device_get_n_keys(device) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_n_keys
+  type(c_ptr), value :: device
+end function
+
+! gboolean gdk_device_get_key (GdkDevice *device, guint index_, guint *keyval, GdkModifierType *modifiers);
+function gdk_device_get_key(device, index_, keyval, modifiers) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_key
+  type(c_ptr), value :: device
+  integer(c_int), value :: index_
+  type(c_ptr), value :: keyval
+  integer(c_int), value :: modifiers
+end function
+
+! void gdk_device_set_key (GdkDevice *device, guint index_, guint keyval, GdkModifierType modifiers);
+subroutine gdk_device_set_key(device, index_, keyval, modifiers) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: device
+  integer(c_int), value :: index_
+  integer(c_int), value :: keyval
+  integer(c_int), value :: modifiers
+end subroutine
+
+! GdkAxisUse gdk_device_get_axis_use (GdkDevice *device, guint index_);
+function gdk_device_get_axis_use(device, index_) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_axis_use
+  type(c_ptr), value :: device
+  integer(c_int), value :: index_
+end function
+
+! void gdk_device_set_axis_use (GdkDevice *device, guint index_, GdkAxisUse use);
+subroutine gdk_device_set_axis_use(device, index_, use) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: device
+  integer(c_int), value :: index_
+  integer(c_int), value :: use
+end subroutine
+
+! void gdk_device_get_state (GdkDevice *device, GdkWindow *window, gdouble *axes, GdkModifierType *mask);
+subroutine gdk_device_get_state(device, window, axes, mask) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: device
+  type(c_ptr), value :: window
+  type(c_ptr), value :: axes
+  integer(c_int), value :: mask
+end subroutine
+
+! void gdk_device_get_position (GdkDevice *device, GdkScreen **screen, gint *x, gint *y);
+subroutine gdk_device_get_position(device, screen, x, y) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: device
+  type(c_ptr), value :: screen
+  type(c_ptr), value :: x
+  type(c_ptr), value :: y
+end subroutine
+
+! GdkWindow * gdk_device_get_window_at_position (GdkDevice *device, gint *win_x, gint *win_y);
+function gdk_device_get_window_at_position(device, win_x, win_y) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_get_window_at_position
+  type(c_ptr), value :: device
+  type(c_ptr), value :: win_x
+  type(c_ptr), value :: win_y
+end function
+
+! void gdk_device_get_position_double (GdkDevice *device, GdkScreen **screen, gdouble *x, gdouble *y);
+subroutine gdk_device_get_position_double(device, screen, x, y) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: device
+  type(c_ptr), value :: screen
+  type(c_ptr), value :: x
+  type(c_ptr), value :: y
+end subroutine
+
+! GdkWindow * gdk_device_get_window_at_position_double (GdkDevice *device, gdouble *win_x, gdouble *win_y);
+function gdk_device_get_window_at_position_double(device, win_x, win_y) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_get_window_at_position_double
+  type(c_ptr), value :: device
+  type(c_ptr), value :: win_x
+  type(c_ptr), value :: win_y
+end function
+
+! gboolean gdk_device_get_history (GdkDevice *device, GdkWindow *window, guint32 start, guint32 stop, GdkTimeCoord ***events, gint *n_events);
+function gdk_device_get_history(device, window, start, stop, events, n_events) &
+&bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gdk_device_get_history
+  type(c_ptr), value :: device
+  type(c_ptr), value :: window
+  integer(c_int32_t), value :: start
+  integer(c_int32_t), value :: stop
+  type(c_ptr), value :: events
+  type(c_ptr), value :: n_events
+end function
+
+! void gdk_device_free_history (GdkTimeCoord **events, gint n_events);
+subroutine gdk_device_free_history(events, n_events) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: events
+  integer(c_int), value :: n_events
+end subroutine
+
+! gint gdk_device_get_n_axes (GdkDevice *device);
+function gdk_device_get_n_axes(device) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_n_axes
+  type(c_ptr), value :: device
+end function
+
+! GList * gdk_device_list_axes (GdkDevice *device);
+function gdk_device_list_axes(device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_list_axes
+  type(c_ptr), value :: device
+end function
+
+! gboolean gdk_device_get_axis_value (GdkDevice *device, gdouble *axes, GdkAtom axis_label, gdouble *value);
+function gdk_device_get_axis_value(device, axes, axis_label, value) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_axis_value
+  type(c_ptr), value :: device
+  type(c_ptr), value :: axes
+  type(c_ptr), value :: axis_label
+  type(c_ptr), value :: value
+end function
+
+! gboolean gdk_device_get_axis (GdkDevice *device, gdouble *axes, GdkAxisUse use, gdouble *value);
+function gdk_device_get_axis(device, axes, use, value) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_axis
+  type(c_ptr), value :: device
+  type(c_ptr), value :: axes
+  integer(c_int), value :: use
+  type(c_ptr), value :: value
+end function
+
+! GdkDisplay * gdk_device_get_display (GdkDevice *device);
+function gdk_device_get_display(device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_get_display
+  type(c_ptr), value :: device
+end function
+
+! GdkDevice * gdk_device_get_associated_device (GdkDevice *device);
+function gdk_device_get_associated_device(device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_get_associated_device
+  type(c_ptr), value :: device
+end function
+
+! GList * gdk_device_list_slave_devices (GdkDevice *device);
+function gdk_device_list_slave_devices(device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_list_slave_devices
+  type(c_ptr), value :: device
+end function
+
+! GdkDeviceType gdk_device_get_device_type (GdkDevice *device);
+function gdk_device_get_device_type(device) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_device_type
+  type(c_ptr), value :: device
+end function
+
+! GdkGrabStatus gdk_device_grab (GdkDevice *device, GdkWindow *window, GdkGrabOwnership grab_ownership, gboolean owner_events, GdkEventMask event_mask, GdkCursor *cursor, guint32 time_);
+function gdk_device_grab(device, window, grab_ownership, owner_events, event_ma&
+&sk, cursor, time_) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gdk_device_grab
+  type(c_ptr), value :: device
+  type(c_ptr), value :: window
+  integer(c_int), value :: grab_ownership
+  integer(c_int), value :: owner_events
+  integer(c_int), value :: event_mask
+  type(c_ptr), value :: cursor
+  integer(c_int32_t), value :: time_
+end function
+
+! void gdk_device_ungrab (GdkDevice *device, guint32 time_);
+subroutine gdk_device_ungrab(device, time_) bind(c)
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr), value :: device
+  integer(c_int32_t), value :: time_
+end subroutine
+
+! void gdk_device_warp (GdkDevice *device, GdkScreen *screen, gint x, gint y);
+subroutine gdk_device_warp(device, screen, x, y) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: device
+  type(c_ptr), value :: screen
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+end subroutine
+
+! gboolean gdk_device_grab_info_libgtk_only (GdkDisplay *display, GdkDevice *device, GdkWindow **grab_window, gboolean *owner_events);
+function gdk_device_grab_info_libgtk_only(display, device, grab_window, owner_e&
+&vents) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_grab_info_libgtk_only
+  type(c_ptr), value :: display
+  type(c_ptr), value :: device
+  type(c_ptr), value :: grab_window
+  type(c_ptr), value :: owner_events
+end function
+
+! GdkWindow *gdk_device_get_last_event_window (GdkDevice *device);
+function gdk_device_get_last_event_window(device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_get_last_event_window
+  type(c_ptr), value :: device
+end function
+
+! const gchar *gdk_device_get_vendor_id (GdkDevice *device);
+function gdk_device_get_vendor_id(device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_get_vendor_id
+  type(c_ptr), value :: device
+end function
+
+! const gchar *gdk_device_get_product_id (GdkDevice *device);
+function gdk_device_get_product_id(device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_get_product_id
+  type(c_ptr), value :: device
+end function
+
+! GdkSeat *gdk_device_get_seat (GdkDevice *device);
+function gdk_device_get_seat(device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_device_get_seat
+  type(c_ptr), value :: device
+end function
+
+! GdkAxisFlags gdk_device_get_axes (GdkDevice *device);
+function gdk_device_get_axes(device) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_get_axes
+  type(c_ptr), value :: device
+end function
+
+!  gboolean gdk_rectangle_intersect (const GdkRectangle *src1, const GdkRectangle *src2, GdkRectangle *dest);
+function gdk_rectangle_intersect(src1, src2, dest) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_rectangle_intersect
+  type(c_ptr), value :: src1
+  type(c_ptr), value :: src2
+  type(c_ptr), value :: dest
+end function
+
+! void gdk_rectangle_union (const GdkRectangle *src1, const GdkRectangle *src2, GdkRectangle *dest);
+subroutine gdk_rectangle_union(src1, src2, dest) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: src1
+  type(c_ptr), value :: src2
+  type(c_ptr), value :: dest
+end subroutine
+
+! gboolean gdk_rectangle_equal (const GdkRectangle *rect1, const GdkRectangle *rect2);
+function gdk_rectangle_equal(rect1, rect2) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_rectangle_equal
+  type(c_ptr), value :: rect1
+  type(c_ptr), value :: rect2
+end function
+
+! GType gdk_rectangle_get_type (void) G_GNUC_CONST;
+function gdk_rectangle_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_rectangle_get_type
+end function
+
+!  GType gdk_device_pad_get_type (void) G_GNUC_CONST;
+function gdk_device_pad_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_device_pad_get_type
+end function
+
+! gint gdk_device_pad_get_n_groups (GdkDevicePad *pad);
+function gdk_device_pad_get_n_groups(pad) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_pad_get_n_groups
+  type(c_ptr), value :: pad
+end function
+
+! gint gdk_device_pad_get_group_n_modes (GdkDevicePad *pad, gint group_idx);
+function gdk_device_pad_get_group_n_modes(pad, group_idx) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_pad_get_group_n_modes
+  type(c_ptr), value :: pad
+  integer(c_int), value :: group_idx
+end function
+
+! gint gdk_device_pad_get_n_features (GdkDevicePad *pad, GdkDevicePadFeature feature);
+function gdk_device_pad_get_n_features(pad, feature) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_pad_get_n_features
+  type(c_ptr), value :: pad
+  integer(c_int), value :: feature
+end function
+
+! gint gdk_device_pad_get_feature_group (GdkDevicePad *pad, GdkDevicePadFeature feature, gint feature_idx);
+function gdk_device_pad_get_feature_group(pad, feature, feature_idx) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_device_pad_get_feature_group
+  type(c_ptr), value :: pad
+  integer(c_int), value :: feature
+  integer(c_int), value :: feature_idx
+end function
+
+!  GType gdk_drawing_context_get_type (void) G_GNUC_CONST;
+function gdk_drawing_context_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_drawing_context_get_type
+end function
+
+! GdkWindow * gdk_drawing_context_get_window (GdkDrawingContext *context);
+function gdk_drawing_context_get_window(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drawing_context_get_window
+  type(c_ptr), value :: context
+end function
+
+! cairo_region_t *gdk_drawing_context_get_clip (GdkDrawingContext *context);
+function gdk_drawing_context_get_clip(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drawing_context_get_clip
+  type(c_ptr), value :: context
+end function
+
+! gboolean gdk_drawing_context_is_valid (GdkDrawingContext *context);
+function gdk_drawing_context_is_valid(context) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_drawing_context_is_valid
+  type(c_ptr), value :: context
+end function
+
+! cairo_t * gdk_drawing_context_get_cairo_context (GdkDrawingContext *context);
+function gdk_drawing_context_get_cairo_context(context) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_drawing_context_get_cairo_context
+  type(c_ptr), value :: context
+end function
+
+!  GType gdk_cursor_get_type (void) G_GNUC_CONST;
+function gdk_cursor_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_cursor_get_type
+end function
+
+! GdkCursor* gdk_cursor_new_for_display (GdkDisplay *display, GdkCursorType cursor_type);
+function gdk_cursor_new_for_display(display, cursor_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_cursor_new_for_display
+  type(c_ptr), value :: display
+  integer(c_int), value :: cursor_type
+end function
+
+! GdkCursor* gdk_cursor_new (GdkCursorType cursor_type);
+function gdk_cursor_new(cursor_type) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_cursor_new
+  integer(c_int), value :: cursor_type
+end function
+
+! GdkCursor* gdk_cursor_new_from_pixbuf (GdkDisplay *display, GdkPixbuf *pixbuf, gint x, gint y);
+function gdk_cursor_new_from_pixbuf(display, pixbuf, x, y) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_cursor_new_from_pixbuf
+  type(c_ptr), value :: display
+  type(c_ptr), value :: pixbuf
+  integer(c_int), value :: x
+  integer(c_int), value :: y
+end function
+
+! GdkCursor* gdk_cursor_new_from_surface (GdkDisplay *display, cairo_surface_t *surface, gdouble x, gdouble y);
+function gdk_cursor_new_from_surface(display, surface, x, y) bind(c)
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr) :: gdk_cursor_new_from_surface
+  type(c_ptr), value :: display
+  type(c_ptr), value :: surface
+  real(c_double), value :: x
+  real(c_double), value :: y
+end function
+
+! GdkCursor* gdk_cursor_new_from_name (GdkDisplay *display, const gchar *name);
+function gdk_cursor_new_from_name(display, name) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gdk_cursor_new_from_name
+  type(c_ptr), value :: display
+  character(kind=c_char), dimension(*) :: name
+end function
+
+! GdkDisplay* gdk_cursor_get_display (GdkCursor *cursor);
+function gdk_cursor_get_display(cursor) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_cursor_get_display
+  type(c_ptr), value :: cursor
+end function
+
+! GdkCursor * gdk_cursor_ref (GdkCursor *cursor);
+function gdk_cursor_ref(cursor) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_cursor_ref
+  type(c_ptr), value :: cursor
+end function
+
+! void gdk_cursor_unref (GdkCursor *cursor);
+subroutine gdk_cursor_unref(cursor) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: cursor
+end subroutine
+
+! GdkPixbuf* gdk_cursor_get_image (GdkCursor *cursor);
+function gdk_cursor_get_image(cursor) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_cursor_get_image
+  type(c_ptr), value :: cursor
+end function
+
+! cairo_surface_t *gdk_cursor_get_surface (GdkCursor *cursor, gdouble *x_hot, gdouble *y_hot);
+function gdk_cursor_get_surface(cursor, x_hot, y_hot) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_cursor_get_surface
+  type(c_ptr), value :: cursor
+  type(c_ptr), value :: x_hot
+  type(c_ptr), value :: y_hot
+end function
+
+! GdkCursorType gdk_cursor_get_cursor_type (GdkCursor *cursor);
+function gdk_cursor_get_cursor_type(cursor) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_cursor_get_cursor_type
+  type(c_ptr), value :: cursor
+end function
+
+!  GType gdk_seat_get_type (void) G_GNUC_CONST;
+function gdk_seat_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_seat_get_type
+end function
+
+! GdkGrabStatus gdk_seat_grab (GdkSeat *seat, GdkWindow *window, GdkSeatCapabilities capabilities, gboolean owner_events, GdkCursor *cursor, const GdkEvent *event, GdkSeatGrabPrepareFunc prepare_func, gpointer prepare_func_data);
+function gdk_seat_grab(seat, window, capabilities, owner_events, cursor, event,&
+& prepare_func, prepare_func_data) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: gdk_seat_grab
+  type(c_ptr), value :: seat
+  type(c_ptr), value :: window
+  integer(c_int), value :: capabilities
+  integer(c_int), value :: owner_events
+  type(c_ptr), value :: cursor
+  type(c_ptr), value :: event
+  type(c_funptr), value :: prepare_func
+  type(c_ptr), value :: prepare_func_data
+end function
+
+! void gdk_seat_ungrab (GdkSeat *seat);
+subroutine gdk_seat_ungrab(seat) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: seat
+end subroutine
+
+! GdkDisplay * gdk_seat_get_display (GdkSeat *seat);
+function gdk_seat_get_display(seat) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_seat_get_display
+  type(c_ptr), value :: seat
+end function
+
+! GdkSeatCapabilities gdk_seat_get_capabilities (GdkSeat *seat);
+function gdk_seat_get_capabilities(seat) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_seat_get_capabilities
+  type(c_ptr), value :: seat
+end function
+
+! GList * gdk_seat_get_slaves (GdkSeat *seat, GdkSeatCapabilities capabilities);
+function gdk_seat_get_slaves(seat, capabilities) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_seat_get_slaves
+  type(c_ptr), value :: seat
+  integer(c_int), value :: capabilities
+end function
+
+! GdkDevice * gdk_seat_get_pointer (GdkSeat *seat);
+function gdk_seat_get_pointer(seat) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_seat_get_pointer
+  type(c_ptr), value :: seat
+end function
+
+! GdkDevice * gdk_seat_get_keyboard (GdkSeat *seat);
+function gdk_seat_get_keyboard(seat) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_seat_get_keyboard
+  type(c_ptr), value :: seat
+end function
+
+!  gboolean gdk_selection_owner_set (GdkWindow *owner, GdkAtom selection, guint32 time_, gboolean send_event);
+function gdk_selection_owner_set(owner, selection, time_, send_event) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gdk_selection_owner_set
+  type(c_ptr), value :: owner
+  type(c_ptr), value :: selection
+  integer(c_int32_t), value :: time_
+  integer(c_int), value :: send_event
+end function
+
+! GdkWindow* gdk_selection_owner_get (GdkAtom selection);
+function gdk_selection_owner_get(selection) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_selection_owner_get
+  type(c_ptr), value :: selection
+end function
+
+! gboolean gdk_selection_owner_set_for_display (GdkDisplay *display, GdkWindow *owner, GdkAtom selection, guint32 time_, gboolean send_event);
+function gdk_selection_owner_set_for_display(display, owner, selection, time_, &
+&send_event) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gdk_selection_owner_set_for_display
+  type(c_ptr), value :: display
+  type(c_ptr), value :: owner
+  type(c_ptr), value :: selection
+  integer(c_int32_t), value :: time_
+  integer(c_int), value :: send_event
+end function
+
+! GdkWindow *gdk_selection_owner_get_for_display (GdkDisplay *display, GdkAtom selection);
+function gdk_selection_owner_get_for_display(display, selection) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_selection_owner_get_for_display
+  type(c_ptr), value :: display
+  type(c_ptr), value :: selection
+end function
+
+! void gdk_selection_convert (GdkWindow *requestor, GdkAtom selection, GdkAtom target, guint32 time_);
+subroutine gdk_selection_convert(requestor, selection, target, time_) bind(c)
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr), value :: requestor
+  type(c_ptr), value :: selection
+  type(c_ptr), value :: target
+  integer(c_int32_t), value :: time_
+end subroutine
+
+! gint gdk_selection_property_get (GdkWindow *requestor, guchar **data, GdkAtom *prop_type, gint *prop_format);
+function gdk_selection_property_get(requestor, data, prop_type, prop_format) bi&
+&nd(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_selection_property_get
+  type(c_ptr), value :: requestor
+  type(c_ptr), dimension(*) :: data
+  type(c_ptr), value :: prop_type
+  type(c_ptr), value :: prop_format
+end function
+
+! void gdk_selection_send_notify (GdkWindow *requestor, GdkAtom selection, GdkAtom target, GdkAtom property, guint32 time_);
+subroutine gdk_selection_send_notify(requestor, selection, target, property, ti&
+&me_) bind(c)
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr), value :: requestor
+  type(c_ptr), value :: selection
+  type(c_ptr), value :: target
+  type(c_ptr), value :: property
+  integer(c_int32_t), value :: time_
+end subroutine
+
+! void gdk_selection_send_notify_for_display (GdkDisplay *display, GdkWindow *requestor, GdkAtom selection, GdkAtom target, GdkAtom property, guint32 time_);
+subroutine gdk_selection_send_notify_for_display(display, requestor, selection,&
+& target, property, time_) bind(c)
+  use iso_c_binding, only: c_ptr, c_int32_t
+  type(c_ptr), value :: display
+  type(c_ptr), value :: requestor
+  type(c_ptr), value :: selection
+  type(c_ptr), value :: target
+  type(c_ptr), value :: property
+  integer(c_int32_t), value :: time_
+end subroutine
+
 !  GdkAtom gdk_atom_intern (const gchar *atom_name, gboolean only_if_exists);
 function gdk_atom_intern(atom_name, only_if_exists) bind(c)
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -4141,29 +4391,59 @@ function gdk_utf8_to_string_target(str) bind(c)
   character(kind=c_char), dimension(*) :: str
 end function
 
-!  GType gdk_broadway_visual_get_type (void);
-function gdk_broadway_visual_get_type() bind(c)
+!  GType gdk_rgba_get_type (void) G_GNUC_CONST;
+function gdk_rgba_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_broadway_visual_get_type
+  integer(c_size_t) :: gdk_rgba_get_type
 end function
 
-!  GType gdk_broadway_cursor_get_type (void);
-function gdk_broadway_cursor_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_broadway_cursor_get_type
+! GdkRGBA * gdk_rgba_copy (const GdkRGBA *rgba);
+function gdk_rgba_copy(rgba) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_rgba_copy
+  type(c_ptr), value :: rgba
 end function
 
-!  GType gdk_broadway_window_get_type (void);
-function gdk_broadway_window_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_broadway_window_get_type
+! void gdk_rgba_free (GdkRGBA *rgba);
+subroutine gdk_rgba_free(rgba) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: rgba
+end subroutine
+
+! guint gdk_rgba_hash (gconstpointer p);
+function gdk_rgba_hash(p) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_rgba_hash
+  type(c_ptr), value :: p
 end function
 
-! guint32 gdk_broadway_get_last_seen_time (GdkWindow *window);
-function gdk_broadway_get_last_seen_time(window) bind(c)
-  use iso_c_binding, only: c_int32_t, c_ptr
-  integer(c_int32_t) :: gdk_broadway_get_last_seen_time
-  type(c_ptr), value :: window
+! gboolean gdk_rgba_equal (gconstpointer p1, gconstpointer p2);
+function gdk_rgba_equal(p1, p2) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_rgba_equal
+  type(c_ptr), value :: p1
+  type(c_ptr), value :: p2
+end function
+
+! gboolean gdk_rgba_parse (GdkRGBA *rgba, const gchar *spec);
+function gdk_rgba_parse(rgba, spec) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_rgba_parse
+  type(c_ptr), value :: rgba
+  character(kind=c_char), dimension(*) :: spec
+end function
+
+! gchar * gdk_rgba_to_string (const GdkRGBA *rgba);
+function gdk_rgba_to_string(rgba) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_rgba_to_string
+  type(c_ptr), value :: rgba
+end function
+
+!  GType gdk_broadway_monitor_get_type (void) G_GNUC_CONST;
+function gdk_broadway_monitor_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_broadway_monitor_get_type
 end function
 
 !  GType gdk_broadway_display_get_type (void);
@@ -4184,122 +4464,51 @@ subroutine gdk_broadway_display_hide_keyboard(display) bind(c)
   type(c_ptr), value :: display
 end subroutine
 
-!  GType gdk_wayland_gl_context_get_type (void) G_GNUC_CONST;
-function gdk_wayland_gl_context_get_type() bind(c)
+!  GType gdk_broadway_window_get_type (void);
+function gdk_broadway_window_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_wayland_gl_context_get_type
+  integer(c_size_t) :: gdk_broadway_window_get_type
 end function
 
-!  GType gdk_wayland_window_get_type (void);
-function gdk_wayland_window_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_wayland_window_get_type
-end function
-
-! void gdk_wayland_window_set_use_custom_surface (GdkWindow *window);
-subroutine gdk_wayland_window_set_use_custom_surface(window) bind(c)
-  use iso_c_binding, only: c_ptr
+! guint32 gdk_broadway_get_last_seen_time (GdkWindow *window);
+function gdk_broadway_get_last_seen_time(window) bind(c)
+  use iso_c_binding, only: c_int32_t, c_ptr
+  integer(c_int32_t) :: gdk_broadway_get_last_seen_time
   type(c_ptr), value :: window
-end subroutine
+end function
 
-! void gdk_wayland_window_set_dbus_properties_libgtk_only (GdkWindow *window, const char *application_id, const char *app_menu_path, const char *menubar_path, const char *window_object_path, const char *application_object_path, const char *unique_bus_name);
-subroutine gdk_wayland_window_set_dbus_properties_libgtk_only(window, applicati&
-&on_id, app_menu_path, menubar_path, window_object_path, application_object_pat&
-&h, unique_bus_name) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: window
-  character(kind=c_char), dimension(*) :: application_id
-  character(kind=c_char), dimension(*) :: app_menu_path
-  character(kind=c_char), dimension(*) :: menubar_path
-  character(kind=c_char), dimension(*) :: window_object_path
-  character(kind=c_char), dimension(*) :: application_object_path
-  character(kind=c_char), dimension(*) :: unique_bus_name
-end subroutine
-
-!  void gdk_wayland_selection_add_targets (GdkWindow *window, GdkAtom selection, guint ntargets, GdkAtom *targets);
-subroutine gdk_wayland_selection_add_targets(window, selection, ntargets, targe&
-&ts) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: window
-  type(c_ptr), value :: selection
-  integer(c_int), value :: ntargets
-  type(c_ptr), value :: targets
-end subroutine
-
-! void gdk_wayland_selection_clear_targets (GdkDisplay *display, GdkAtom selection);
-subroutine gdk_wayland_selection_clear_targets(display, selection) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: display
-  type(c_ptr), value :: selection
-end subroutine
-
-!  GType gdk_wayland_display_get_type (void);
-function gdk_wayland_display_get_type() bind(c)
+!  GType gdk_broadway_cursor_get_type (void);
+function gdk_broadway_cursor_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_wayland_display_get_type
+  integer(c_size_t) :: gdk_broadway_cursor_get_type
 end function
 
-! void gdk_wayland_display_set_cursor_theme (GdkDisplay *display, const gchar *theme, gint size);
-subroutine gdk_wayland_display_set_cursor_theme(display, theme, size) bind(c)
-  use iso_c_binding, only: c_ptr, c_char, c_int
-  type(c_ptr), value :: display
-  character(kind=c_char), dimension(*) :: theme
-  integer(c_int), value :: size
-end subroutine
-
-!  GType gdk_wayland_device_get_type (void);
-function gdk_wayland_device_get_type() bind(c)
+!  GType gdk_broadway_visual_get_type (void);
+function gdk_broadway_visual_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_wayland_device_get_type
+  integer(c_size_t) :: gdk_broadway_visual_get_type
 end function
 
-!  GType gdk_color_get_type (void) G_GNUC_CONST;
-function gdk_color_get_type() bind(c)
+!  GType gdk_x11_keymap_get_type (void);
+function gdk_x11_keymap_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_color_get_type
+  integer(c_size_t) :: gdk_x11_keymap_get_type
 end function
 
-! GdkColor *gdk_color_copy (const GdkColor *color);
-function gdk_color_copy(color) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_color_copy
-  type(c_ptr), value :: color
-end function
-
-! void gdk_color_free (GdkColor *color);
-subroutine gdk_color_free(color) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: color
-end subroutine
-
-! guint gdk_color_hash (const GdkColor *color);
-function gdk_color_hash(color) bind(c)
+! gint gdk_x11_keymap_get_group_for_state (GdkKeymap *keymap, guint state);
+function gdk_x11_keymap_get_group_for_state(keymap, state) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_color_hash
-  type(c_ptr), value :: color
+  integer(c_int) :: gdk_x11_keymap_get_group_for_state
+  type(c_ptr), value :: keymap
+  integer(c_int), value :: state
 end function
 
-! gboolean gdk_color_equal (const GdkColor *colora, const GdkColor *colorb);
-function gdk_color_equal(colora, colorb) bind(c)
+! gboolean gdk_x11_keymap_key_is_modifier (GdkKeymap *keymap, guint keycode);
+function gdk_x11_keymap_key_is_modifier(keymap, keycode) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_color_equal
-  type(c_ptr), value :: colora
-  type(c_ptr), value :: colorb
-end function
-
-! gboolean gdk_color_parse (const gchar *spec, GdkColor *color);
-function gdk_color_parse(spec, color) bind(c)
-  use iso_c_binding, only: c_int, c_char, c_ptr
-  integer(c_int) :: gdk_color_parse
-  character(kind=c_char), dimension(*) :: spec
-  type(c_ptr), value :: color
-end function
-
-! gchar * gdk_color_to_string (const GdkColor *color);
-function gdk_color_to_string(color) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_color_to_string
-  type(c_ptr), value :: color
+  integer(c_int) :: gdk_x11_keymap_key_is_modifier
+  type(c_ptr), value :: keymap
+  integer(c_int), value :: keycode
 end function
 
 !  GType gdk_x11_gl_context_get_type (void) G_GNUC_CONST;
@@ -4317,56 +4526,12 @@ function gdk_x11_display_get_glx_version(display, major, minor) bind(c)
   type(c_ptr), value :: minor
 end function
 
-!  gint gdk_x11_display_text_property_to_text_list (GdkDisplay *display, GdkAtom encoding, gint format, const guchar *text, gint length, gchar ***list);
-function gdk_x11_display_text_property_to_text_list(display, encoding, format, &
-&text, length, list) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gdk_x11_display_text_property_to_text_list
-  type(c_ptr), value :: display
-  type(c_ptr), value :: encoding
-  integer(c_int), value :: format
-  character(kind=c_char), dimension(*) :: text
-  integer(c_int), value :: length
-  type(c_ptr), dimension(*) :: list
+!  gint gdk_x11_device_get_id (GdkDevice *device);
+function gdk_x11_device_get_id(device) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_x11_device_get_id
+  type(c_ptr), value :: device
 end function
-
-! void gdk_x11_free_text_list (gchar **list);
-subroutine gdk_x11_free_text_list(list) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), dimension(*) :: list
-end subroutine
-
-! gint gdk_x11_display_string_to_compound_text (GdkDisplay *display, const gchar *str, GdkAtom *encoding, gint *format, guchar **ctext, gint *length);
-function gdk_x11_display_string_to_compound_text(display, str, encoding, format&
-&, ctext, length) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gdk_x11_display_string_to_compound_text
-  type(c_ptr), value :: display
-  character(kind=c_char), dimension(*) :: str
-  type(c_ptr), value :: encoding
-  type(c_ptr), value :: format
-  type(c_ptr), dimension(*) :: ctext
-  type(c_ptr), value :: length
-end function
-
-! gboolean gdk_x11_display_utf8_to_compound_text (GdkDisplay *display, const gchar *str, GdkAtom *encoding, gint *format, guchar **ctext, gint *length);
-function gdk_x11_display_utf8_to_compound_text(display, str, encoding, format, &
-&ctext, length) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gdk_x11_display_utf8_to_compound_text
-  type(c_ptr), value :: display
-  character(kind=c_char), dimension(*) :: str
-  type(c_ptr), value :: encoding
-  type(c_ptr), value :: format
-  type(c_ptr), dimension(*) :: ctext
-  type(c_ptr), value :: length
-end function
-
-! void gdk_x11_free_compound_text (guchar *ctext);
-subroutine gdk_x11_free_compound_text(ctext) bind(c)
-  use iso_c_binding, only: c_char
-  character(kind=c_char), dimension(*) :: ctext
-end subroutine
 
 !  GType gdk_x11_cursor_get_type (void);
 function gdk_x11_cursor_get_type() bind(c)
@@ -4388,16 +4553,210 @@ function gdk_x11_cursor_get_xcursor(cursor) bind(c)
   type(c_ptr), value :: cursor
 end function
 
+!  Atom gdk_x11_atom_to_xatom_for_display (GdkDisplay *display, GdkAtom atom);
+function gdk_x11_atom_to_xatom_for_display(display, atom) bind(c)
+  use iso_c_binding, only: c_long, c_ptr
+  integer(c_long) :: gdk_x11_atom_to_xatom_for_display
+  type(c_ptr), value :: display
+  type(c_ptr), value :: atom
+end function
+
+! GdkAtom gdk_x11_xatom_to_atom_for_display (GdkDisplay *display, Atom xatom);
+function gdk_x11_xatom_to_atom_for_display(display, xatom) bind(c)
+  use iso_c_binding, only: c_ptr, c_long
+  type(c_ptr) :: gdk_x11_xatom_to_atom_for_display
+  type(c_ptr), value :: display
+  integer(c_long), value :: xatom
+end function
+
+! Atom gdk_x11_get_xatom_by_name_for_display (GdkDisplay *display, const gchar *atom_name);
+function gdk_x11_get_xatom_by_name_for_display(display, atom_name) bind(c)
+  use iso_c_binding, only: c_long, c_ptr, c_char
+  integer(c_long) :: gdk_x11_get_xatom_by_name_for_display
+  type(c_ptr), value :: display
+  character(kind=c_char), dimension(*) :: atom_name
+end function
+
+! const gchar * gdk_x11_get_xatom_name_for_display (GdkDisplay *display, Atom xatom);
+function gdk_x11_get_xatom_name_for_display(display, xatom) bind(c)
+  use iso_c_binding, only: c_ptr, c_long
+  type(c_ptr) :: gdk_x11_get_xatom_name_for_display
+  type(c_ptr), value :: display
+  integer(c_long), value :: xatom
+end function
+
+! Atom gdk_x11_atom_to_xatom (GdkAtom atom);
+function gdk_x11_atom_to_xatom(atom) bind(c)
+  use iso_c_binding, only: c_long, c_ptr
+  integer(c_long) :: gdk_x11_atom_to_xatom
+  type(c_ptr), value :: atom
+end function
+
+! GdkAtom gdk_x11_xatom_to_atom (Atom xatom);
+function gdk_x11_xatom_to_atom(xatom) bind(c)
+  use iso_c_binding, only: c_ptr, c_long
+  type(c_ptr) :: gdk_x11_xatom_to_atom
+  integer(c_long), value :: xatom
+end function
+
+! Atom gdk_x11_get_xatom_by_name (const gchar *atom_name);
+function gdk_x11_get_xatom_by_name(atom_name) bind(c)
+  use iso_c_binding, only: c_long, c_char
+  integer(c_long) :: gdk_x11_get_xatom_by_name
+  character(kind=c_char), dimension(*) :: atom_name
+end function
+
+! const gchar * gdk_x11_get_xatom_name (Atom xatom);
+function gdk_x11_get_xatom_name(xatom) bind(c)
+  use iso_c_binding, only: c_ptr, c_long
+  type(c_ptr) :: gdk_x11_get_xatom_name
+  integer(c_long), value :: xatom
+end function
+
+!  GType gdk_x11_device_manager_xi2_get_type (void) G_GNUC_CONST;
+function gdk_x11_device_manager_xi2_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_x11_device_manager_xi2_get_type
+end function
+
+!  GType gdk_x11_device_manager_core_get_type (void) G_GNUC_CONST;
+function gdk_x11_device_manager_core_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_x11_device_manager_core_get_type
+end function
+
 !  GType gdk_x11_app_launch_context_get_type (void);
 function gdk_x11_app_launch_context_get_type() bind(c)
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gdk_x11_app_launch_context_get_type
 end function
 
-!  GType gdk_x11_display_manager_get_type (void);
-function gdk_x11_display_manager_get_type() bind(c)
+!  GType gdk_x11_display_get_type (void);
+function gdk_x11_display_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_x11_display_manager_get_type
+  integer(c_size_t) :: gdk_x11_display_get_type
+end function
+
+! Display *gdk_x11_display_get_xdisplay (GdkDisplay *display);
+function gdk_x11_display_get_xdisplay(display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_x11_display_get_xdisplay
+  type(c_ptr), value :: display
+end function
+
+! guint32 gdk_x11_display_get_user_time (GdkDisplay *display);
+function gdk_x11_display_get_user_time(display) bind(c)
+  use iso_c_binding, only: c_int32_t, c_ptr
+  integer(c_int32_t) :: gdk_x11_display_get_user_time
+  type(c_ptr), value :: display
+end function
+
+! const gchar * gdk_x11_display_get_startup_notification_id (GdkDisplay *display);
+function gdk_x11_display_get_startup_notification_id(display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_x11_display_get_startup_notification_id
+  type(c_ptr), value :: display
+end function
+
+! void gdk_x11_display_set_startup_notification_id (GdkDisplay *display, const gchar *startup_id);
+subroutine gdk_x11_display_set_startup_notification_id(display, startup_id) bin&
+&d(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: display
+  character(kind=c_char), dimension(*) :: startup_id
+end subroutine
+
+! GdkDisplay *gdk_x11_lookup_xdisplay (Display *xdisplay);
+function gdk_x11_lookup_xdisplay(xdisplay) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_x11_lookup_xdisplay
+  type(c_ptr), value :: xdisplay
+end function
+
+! void gdk_x11_display_grab (GdkDisplay *display);
+subroutine gdk_x11_display_grab(display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: display
+end subroutine
+
+! void gdk_x11_display_ungrab (GdkDisplay *display);
+subroutine gdk_x11_display_ungrab(display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: display
+end subroutine
+
+! void gdk_x11_display_set_window_scale (GdkDisplay *display, gint scale);
+subroutine gdk_x11_display_set_window_scale(display, scale) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: display
+  integer(c_int), value :: scale
+end subroutine
+
+! void gdk_x11_display_error_trap_push (GdkDisplay *display);
+subroutine gdk_x11_display_error_trap_push(display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: display
+end subroutine
+
+! gint gdk_x11_display_error_trap_pop (GdkDisplay *display);
+function gdk_x11_display_error_trap_pop(display) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_x11_display_error_trap_pop
+  type(c_ptr), value :: display
+end function
+
+! void gdk_x11_display_error_trap_pop_ignored (GdkDisplay *display);
+subroutine gdk_x11_display_error_trap_pop_ignored(display) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: display
+end subroutine
+
+! void gdk_x11_register_standard_event_type (GdkDisplay *display, gint event_base, gint n_events);
+subroutine gdk_x11_register_standard_event_type(display, event_base, n_events) &
+&bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: display
+  integer(c_int), value :: event_base
+  integer(c_int), value :: n_events
+end subroutine
+
+! void gdk_x11_set_sm_client_id (const gchar *sm_client_id);
+subroutine gdk_x11_set_sm_client_id(sm_client_id) bind(c)
+  use iso_c_binding, only: c_char
+  character(kind=c_char), dimension(*) :: sm_client_id
+end subroutine
+
+!  GType gdk_x11_monitor_get_type (void) G_GNUC_CONST;
+function gdk_x11_monitor_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_x11_monitor_get_type
+end function
+
+! XID gdk_x11_monitor_get_output (GdkMonitor *monitor);
+function gdk_x11_monitor_get_output(monitor) bind(c)
+  use iso_c_binding, only: c_long, c_ptr
+  integer(c_long) :: gdk_x11_monitor_get_output
+  type(c_ptr), value :: monitor
+end function
+
+!  GType gdk_x11_device_xi2_get_type (void) G_GNUC_CONST;
+function gdk_x11_device_xi2_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_x11_device_xi2_get_type
+end function
+
+!  GType gdk_x11_drag_context_get_type (void);
+function gdk_x11_drag_context_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_x11_drag_context_get_type
+end function
+
+!  GdkDevice * gdk_x11_device_manager_lookup (GdkDeviceManager *device_manager, gint device_id);
+function gdk_x11_device_manager_lookup(device_manager, device_id) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gdk_x11_device_manager_lookup
+  type(c_ptr), value :: device_manager
+  integer(c_int), value :: device_id
 end function
 
 !  Window gdk_x11_get_default_root_xwindow (void);
@@ -4422,25 +4781,88 @@ subroutine gdk_x11_ungrab_server() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
-!  gint gdk_x11_device_get_id (GdkDevice *device);
-function gdk_x11_device_get_id(device) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_x11_device_get_id
-  type(c_ptr), value :: device
-end function
-
-!  GdkDevice * gdk_x11_device_manager_lookup (GdkDeviceManager *device_manager, gint device_id);
-function gdk_x11_device_manager_lookup(device_manager, device_id) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gdk_x11_device_manager_lookup
-  type(c_ptr), value :: device_manager
-  integer(c_int), value :: device_id
-end function
-
-!  GType gdk_x11_device_core_get_type (void) G_GNUC_CONST;
-function gdk_x11_device_core_get_type() bind(c)
+!  GType gdk_x11_visual_get_type (void);
+function gdk_x11_visual_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_x11_device_core_get_type
+  integer(c_size_t) :: gdk_x11_visual_get_type
+end function
+
+! Visual * gdk_x11_visual_get_xvisual (GdkVisual *visual);
+function gdk_x11_visual_get_xvisual(visual) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_x11_visual_get_xvisual
+  type(c_ptr), value :: visual
+end function
+
+! GdkVisual* gdk_x11_screen_lookup_visual (GdkScreen *screen, VisualID xvisualid);
+function gdk_x11_screen_lookup_visual(screen, xvisualid) bind(c)
+  use iso_c_binding, only: c_ptr, c_long
+  type(c_ptr) :: gdk_x11_screen_lookup_visual
+  type(c_ptr), value :: screen
+  integer(c_long), value :: xvisualid
+end function
+
+!  GType gdk_x11_screen_get_type (void);
+function gdk_x11_screen_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_x11_screen_get_type
+end function
+
+! Screen * gdk_x11_screen_get_xscreen (GdkScreen *screen);
+function gdk_x11_screen_get_xscreen(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_x11_screen_get_xscreen
+  type(c_ptr), value :: screen
+end function
+
+! int gdk_x11_screen_get_screen_number (GdkScreen *screen);
+function gdk_x11_screen_get_screen_number(screen) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_x11_screen_get_screen_number
+  type(c_ptr), value :: screen
+end function
+
+! const char* gdk_x11_screen_get_window_manager_name (GdkScreen *screen);
+function gdk_x11_screen_get_window_manager_name(screen) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_x11_screen_get_window_manager_name
+  type(c_ptr), value :: screen
+end function
+
+! gint gdk_x11_get_default_screen (void);
+function gdk_x11_get_default_screen() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gdk_x11_get_default_screen
+end function
+
+! gboolean gdk_x11_screen_supports_net_wm_hint (GdkScreen *screen, GdkAtom property);
+function gdk_x11_screen_supports_net_wm_hint(screen, property) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_x11_screen_supports_net_wm_hint
+  type(c_ptr), value :: screen
+  type(c_ptr), value :: property
+end function
+
+! XID gdk_x11_screen_get_monitor_output (GdkScreen *screen, gint monitor_num);
+function gdk_x11_screen_get_monitor_output(screen, monitor_num) bind(c)
+  use iso_c_binding, only: c_long, c_ptr, c_int
+  integer(c_long) :: gdk_x11_screen_get_monitor_output
+  type(c_ptr), value :: screen
+  integer(c_int), value :: monitor_num
+end function
+
+! guint32 gdk_x11_screen_get_number_of_desktops (GdkScreen *screen);
+function gdk_x11_screen_get_number_of_desktops(screen) bind(c)
+  use iso_c_binding, only: c_int32_t, c_ptr
+  integer(c_int32_t) :: gdk_x11_screen_get_number_of_desktops
+  type(c_ptr), value :: screen
+end function
+
+! guint32 gdk_x11_screen_get_current_desktop (GdkScreen *screen);
+function gdk_x11_screen_get_current_desktop(screen) bind(c)
+  use iso_c_binding, only: c_int32_t, c_ptr
+  integer(c_int32_t) :: gdk_x11_screen_get_current_desktop
+  type(c_ptr), value :: screen
 end function
 
 !  GType gdk_x11_window_get_type (void);
@@ -4548,289 +4970,255 @@ function gdk_x11_window_lookup_for_display(display, window) bind(c)
   integer(c_long), value :: window
 end function
 
-!  GType gdk_x11_visual_get_type (void);
-function gdk_x11_visual_get_type() bind(c)
+!  GType gdk_x11_display_manager_get_type (void);
+function gdk_x11_display_manager_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_x11_visual_get_type
+  integer(c_size_t) :: gdk_x11_display_manager_get_type
 end function
 
-! Visual * gdk_x11_visual_get_xvisual (GdkVisual *visual);
-function gdk_x11_visual_get_xvisual(visual) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_x11_visual_get_xvisual
-  type(c_ptr), value :: visual
-end function
-
-! GdkVisual* gdk_x11_screen_lookup_visual (GdkScreen *screen, VisualID xvisualid);
-function gdk_x11_screen_lookup_visual(screen, xvisualid) bind(c)
-  use iso_c_binding, only: c_ptr, c_long
-  type(c_ptr) :: gdk_x11_screen_lookup_visual
-  type(c_ptr), value :: screen
-  integer(c_long), value :: xvisualid
-end function
-
-!  Atom gdk_x11_atom_to_xatom_for_display (GdkDisplay *display, GdkAtom atom);
-function gdk_x11_atom_to_xatom_for_display(display, atom) bind(c)
-  use iso_c_binding, only: c_long, c_ptr
-  integer(c_long) :: gdk_x11_atom_to_xatom_for_display
-  type(c_ptr), value :: display
-  type(c_ptr), value :: atom
-end function
-
-! GdkAtom gdk_x11_xatom_to_atom_for_display (GdkDisplay *display, Atom xatom);
-function gdk_x11_xatom_to_atom_for_display(display, xatom) bind(c)
-  use iso_c_binding, only: c_ptr, c_long
-  type(c_ptr) :: gdk_x11_xatom_to_atom_for_display
-  type(c_ptr), value :: display
-  integer(c_long), value :: xatom
-end function
-
-! Atom gdk_x11_get_xatom_by_name_for_display (GdkDisplay *display, const gchar *atom_name);
-function gdk_x11_get_xatom_by_name_for_display(display, atom_name) bind(c)
-  use iso_c_binding, only: c_long, c_ptr, c_char
-  integer(c_long) :: gdk_x11_get_xatom_by_name_for_display
-  type(c_ptr), value :: display
-  character(kind=c_char), dimension(*) :: atom_name
-end function
-
-! const gchar * gdk_x11_get_xatom_name_for_display (GdkDisplay *display, Atom xatom);
-function gdk_x11_get_xatom_name_for_display(display, xatom) bind(c)
-  use iso_c_binding, only: c_ptr, c_long
-  type(c_ptr) :: gdk_x11_get_xatom_name_for_display
-  type(c_ptr), value :: display
-  integer(c_long), value :: xatom
-end function
-
-! Atom gdk_x11_atom_to_xatom (GdkAtom atom);
-function gdk_x11_atom_to_xatom(atom) bind(c)
-  use iso_c_binding, only: c_long, c_ptr
-  integer(c_long) :: gdk_x11_atom_to_xatom
-  type(c_ptr), value :: atom
-end function
-
-! GdkAtom gdk_x11_xatom_to_atom (Atom xatom);
-function gdk_x11_xatom_to_atom(xatom) bind(c)
-  use iso_c_binding, only: c_ptr, c_long
-  type(c_ptr) :: gdk_x11_xatom_to_atom
-  integer(c_long), value :: xatom
-end function
-
-! Atom gdk_x11_get_xatom_by_name (const gchar *atom_name);
-function gdk_x11_get_xatom_by_name(atom_name) bind(c)
-  use iso_c_binding, only: c_long, c_char
-  integer(c_long) :: gdk_x11_get_xatom_by_name
-  character(kind=c_char), dimension(*) :: atom_name
-end function
-
-! const gchar * gdk_x11_get_xatom_name (Atom xatom);
-function gdk_x11_get_xatom_name(xatom) bind(c)
-  use iso_c_binding, only: c_ptr, c_long
-  type(c_ptr) :: gdk_x11_get_xatom_name
-  integer(c_long), value :: xatom
-end function
-
-!  GType gdk_x11_display_get_type (void);
-function gdk_x11_display_get_type() bind(c)
+!  GType gdk_x11_device_core_get_type (void) G_GNUC_CONST;
+function gdk_x11_device_core_get_type() bind(c)
   use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_x11_display_get_type
+  integer(c_size_t) :: gdk_x11_device_core_get_type
 end function
 
-! Display *gdk_x11_display_get_xdisplay (GdkDisplay *display);
-function gdk_x11_display_get_xdisplay(display) bind(c)
+!  gint gdk_x11_display_text_property_to_text_list (GdkDisplay *display, GdkAtom encoding, gint format, const guchar *text, gint length, gchar ***list);
+function gdk_x11_display_text_property_to_text_list(display, encoding, format, &
+&text, length, list) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_x11_display_text_property_to_text_list
+  type(c_ptr), value :: display
+  type(c_ptr), value :: encoding
+  integer(c_int), value :: format
+  character(kind=c_char), dimension(*) :: text
+  integer(c_int), value :: length
+  type(c_ptr), dimension(*) :: list
+end function
+
+! void gdk_x11_free_text_list (gchar **list);
+subroutine gdk_x11_free_text_list(list) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_x11_display_get_xdisplay
+  type(c_ptr), dimension(*) :: list
+end subroutine
+
+! gint gdk_x11_display_string_to_compound_text (GdkDisplay *display, const gchar *str, GdkAtom *encoding, gint *format, guchar **ctext, gint *length);
+function gdk_x11_display_string_to_compound_text(display, str, encoding, format&
+&, ctext, length) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_x11_display_string_to_compound_text
   type(c_ptr), value :: display
+  character(kind=c_char), dimension(*) :: str
+  type(c_ptr), value :: encoding
+  type(c_ptr), value :: format
+  type(c_ptr), dimension(*) :: ctext
+  type(c_ptr), value :: length
 end function
 
-! guint32 gdk_x11_display_get_user_time (GdkDisplay *display);
-function gdk_x11_display_get_user_time(display) bind(c)
-  use iso_c_binding, only: c_int32_t, c_ptr
-  integer(c_int32_t) :: gdk_x11_display_get_user_time
+! gboolean gdk_x11_display_utf8_to_compound_text (GdkDisplay *display, const gchar *str, GdkAtom *encoding, gint *format, guchar **ctext, gint *length);
+function gdk_x11_display_utf8_to_compound_text(display, str, encoding, format, &
+&ctext, length) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_x11_display_utf8_to_compound_text
   type(c_ptr), value :: display
+  character(kind=c_char), dimension(*) :: str
+  type(c_ptr), value :: encoding
+  type(c_ptr), value :: format
+  type(c_ptr), dimension(*) :: ctext
+  type(c_ptr), value :: length
 end function
 
-! const gchar * gdk_x11_display_get_startup_notification_id (GdkDisplay *display);
-function gdk_x11_display_get_startup_notification_id(display) bind(c)
+! void gdk_x11_free_compound_text (guchar *ctext);
+subroutine gdk_x11_free_compound_text(ctext) bind(c)
+  use iso_c_binding, only: c_char
+  character(kind=c_char), dimension(*) :: ctext
+end subroutine
+
+!  GType gdk_wayland_monitor_get_type (void) G_GNUC_CONST;
+function gdk_wayland_monitor_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_wayland_monitor_get_type
+end function
+
+!  GType gdk_wayland_window_get_type (void);
+function gdk_wayland_window_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_wayland_window_get_type
+end function
+
+! void gdk_wayland_window_set_use_custom_surface (GdkWindow *window);
+subroutine gdk_wayland_window_set_use_custom_surface(window) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_x11_display_get_startup_notification_id
-  type(c_ptr), value :: display
+  type(c_ptr), value :: window
+end subroutine
+
+! void gdk_wayland_window_set_dbus_properties_libgtk_only (GdkWindow *window, const char *application_id, const char *app_menu_path, const char *menubar_path, const char *window_object_path, const char *application_object_path, const char *unique_bus_name);
+subroutine gdk_wayland_window_set_dbus_properties_libgtk_only(window, applicati&
+&on_id, app_menu_path, menubar_path, window_object_path, application_object_pat&
+&h, unique_bus_name) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: window
+  character(kind=c_char), dimension(*) :: application_id
+  character(kind=c_char), dimension(*) :: app_menu_path
+  character(kind=c_char), dimension(*) :: menubar_path
+  character(kind=c_char), dimension(*) :: window_object_path
+  character(kind=c_char), dimension(*) :: application_object_path
+  character(kind=c_char), dimension(*) :: unique_bus_name
+end subroutine
+
+! gboolean gdk_wayland_window_export_handle (GdkWindow *window, GdkWaylandWindowExported callback, gpointer user_data, GDestroyNotify destroy_func);
+function gdk_wayland_window_export_handle(window, callback, user_data, destroy_&
+&func) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_funptr
+  integer(c_int) :: gdk_wayland_window_export_handle
+  type(c_ptr), value :: window
+  type(c_funptr), value :: callback
+  type(c_ptr), value :: user_data
+  type(c_funptr), value :: destroy_func
 end function
 
-! void gdk_x11_display_set_startup_notification_id (GdkDisplay *display, const gchar *startup_id);
-subroutine gdk_x11_display_set_startup_notification_id(display, startup_id) bin&
+! void gdk_wayland_window_unexport_handle (GdkWindow *window);
+subroutine gdk_wayland_window_unexport_handle(window) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: window
+end subroutine
+
+! gboolean gdk_wayland_window_set_transient_for_exported (GdkWindow *window, char *parent_handle_str);
+function gdk_wayland_window_set_transient_for_exported(window, parent_handle_st&
+&r) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gdk_wayland_window_set_transient_for_exported
+  type(c_ptr), value :: window
+  character(kind=c_char), dimension(*) :: parent_handle_str
+end function
+
+! void gdk_wayland_window_announce_csd (GdkWindow *window);
+subroutine gdk_wayland_window_announce_csd(window) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: window
+end subroutine
+
+!  void gdk_wayland_selection_add_targets (GdkWindow *window, GdkAtom selection, guint ntargets, GdkAtom *targets);
+subroutine gdk_wayland_selection_add_targets(window, selection, ntargets, targe&
+&ts) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: window
+  type(c_ptr), value :: selection
+  integer(c_int), value :: ntargets
+  type(c_ptr), value :: targets
+end subroutine
+
+! void gdk_wayland_selection_clear_targets (GdkDisplay *display, GdkAtom selection);
+subroutine gdk_wayland_selection_clear_targets(display, selection) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: display
+  type(c_ptr), value :: selection
+end subroutine
+
+!  GType gdk_wayland_gl_context_get_type (void) G_GNUC_CONST;
+function gdk_wayland_gl_context_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_wayland_gl_context_get_type
+end function
+
+!  GType gdk_wayland_device_get_type (void);
+function gdk_wayland_device_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_wayland_device_get_type
+end function
+
+! const gchar *gdk_wayland_device_get_node_path (GdkDevice *device);
+function gdk_wayland_device_get_node_path(device) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gdk_wayland_device_get_node_path
+  type(c_ptr), value :: device
+end function
+
+! void gdk_wayland_device_pad_set_feedback (GdkDevice *device, GdkDevicePadFeature element, guint idx, const gchar *label);
+subroutine gdk_wayland_device_pad_set_feedback(device, element, idx, label) bin&
 &d(c)
+  use iso_c_binding, only: c_ptr, c_int, c_char
+  type(c_ptr), value :: device
+  integer(c_int), value :: element
+  integer(c_int), value :: idx
+  character(kind=c_char), dimension(*) :: label
+end subroutine
+
+!  GType gdk_wayland_display_get_type (void);
+function gdk_wayland_display_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_wayland_display_get_type
+end function
+
+! void gdk_wayland_display_set_cursor_theme (GdkDisplay *display, const gchar *theme, gint size);
+subroutine gdk_wayland_display_set_cursor_theme(display, theme, size) bind(c)
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr), value :: display
+  character(kind=c_char), dimension(*) :: theme
+  integer(c_int), value :: size
+end subroutine
+
+! void gdk_wayland_display_set_startup_notification_id (GdkDisplay *display, const char *startup_id);
+subroutine gdk_wayland_display_set_startup_notification_id(display, startup_id)&
+& bind(c)
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr), value :: display
   character(kind=c_char), dimension(*) :: startup_id
 end subroutine
 
-! GdkDisplay *gdk_x11_lookup_xdisplay (Display *xdisplay);
-function gdk_x11_lookup_xdisplay(xdisplay) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_x11_lookup_xdisplay
-  type(c_ptr), value :: xdisplay
-end function
-
-! void gdk_x11_display_grab (GdkDisplay *display);
-subroutine gdk_x11_display_grab(display) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: display
-end subroutine
-
-! void gdk_x11_display_ungrab (GdkDisplay *display);
-subroutine gdk_x11_display_ungrab(display) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: display
-end subroutine
-
-! void gdk_x11_display_set_window_scale (GdkDisplay *display, gint scale);
-subroutine gdk_x11_display_set_window_scale(display, scale) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: display
-  integer(c_int), value :: scale
-end subroutine
-
-! void gdk_x11_display_error_trap_push (GdkDisplay *display);
-subroutine gdk_x11_display_error_trap_push(display) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: display
-end subroutine
-
-! gint gdk_x11_display_error_trap_pop (GdkDisplay *display);
-function gdk_x11_display_error_trap_pop(display) bind(c)
+! gboolean gdk_wayland_display_prefers_ssd (GdkDisplay *display);
+function gdk_wayland_display_prefers_ssd(display) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_x11_display_error_trap_pop
+  integer(c_int) :: gdk_wayland_display_prefers_ssd
   type(c_ptr), value :: display
 end function
 
-! void gdk_x11_display_error_trap_pop_ignored (GdkDisplay *display);
-subroutine gdk_x11_display_error_trap_pop_ignored(display) bind(c)
+!  GType gdk_color_get_type (void) G_GNUC_CONST;
+function gdk_color_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gdk_color_get_type
+end function
+
+! GdkColor *gdk_color_copy (const GdkColor *color);
+function gdk_color_copy(color) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: display
+  type(c_ptr) :: gdk_color_copy
+  type(c_ptr), value :: color
+end function
+
+! void gdk_color_free (GdkColor *color);
+subroutine gdk_color_free(color) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: color
 end subroutine
 
-! void gdk_x11_register_standard_event_type (GdkDisplay *display, gint event_base, gint n_events);
-subroutine gdk_x11_register_standard_event_type(display, event_base, n_events) &
-&bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: display
-  integer(c_int), value :: event_base
-  integer(c_int), value :: n_events
-end subroutine
-
-! void gdk_x11_set_sm_client_id (const gchar *sm_client_id);
-subroutine gdk_x11_set_sm_client_id(sm_client_id) bind(c)
-  use iso_c_binding, only: c_char
-  character(kind=c_char), dimension(*) :: sm_client_id
-end subroutine
-
-!  GType gdk_x11_device_xi2_get_type (void) G_GNUC_CONST;
-function gdk_x11_device_xi2_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_x11_device_xi2_get_type
+! guint gdk_color_hash (const GdkColor *color);
+function gdk_color_hash(color) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_color_hash
+  type(c_ptr), value :: color
 end function
 
-!  GType gdk_x11_drag_context_get_type (void);
-function gdk_x11_drag_context_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_x11_drag_context_get_type
+! gboolean gdk_color_equal (const GdkColor *colora, const GdkColor *colorb);
+function gdk_color_equal(colora, colorb) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_color_equal
+  type(c_ptr), value :: colora
+  type(c_ptr), value :: colorb
 end function
 
-!  GType gdk_x11_device_manager_core_get_type (void) G_GNUC_CONST;
-function gdk_x11_device_manager_core_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_x11_device_manager_core_get_type
+! gboolean gdk_color_parse (const gchar *spec, GdkColor *color);
+function gdk_color_parse(spec, color) bind(c)
+  use iso_c_binding, only: c_int, c_char, c_ptr
+  integer(c_int) :: gdk_color_parse
+  character(kind=c_char), dimension(*) :: spec
+  type(c_ptr), value :: color
 end function
 
-!  GType gdk_x11_device_manager_xi2_get_type (void) G_GNUC_CONST;
-function gdk_x11_device_manager_xi2_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_x11_device_manager_xi2_get_type
-end function
-
-!  GType gdk_x11_screen_get_type (void);
-function gdk_x11_screen_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_x11_screen_get_type
-end function
-
-! Screen * gdk_x11_screen_get_xscreen (GdkScreen *screen);
-function gdk_x11_screen_get_xscreen(screen) bind(c)
+! gchar * gdk_color_to_string (const GdkColor *color);
+function gdk_color_to_string(color) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_x11_screen_get_xscreen
-  type(c_ptr), value :: screen
-end function
-
-! int gdk_x11_screen_get_screen_number (GdkScreen *screen);
-function gdk_x11_screen_get_screen_number(screen) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_x11_screen_get_screen_number
-  type(c_ptr), value :: screen
-end function
-
-! const char* gdk_x11_screen_get_window_manager_name (GdkScreen *screen);
-function gdk_x11_screen_get_window_manager_name(screen) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gdk_x11_screen_get_window_manager_name
-  type(c_ptr), value :: screen
-end function
-
-! gint gdk_x11_get_default_screen (void);
-function gdk_x11_get_default_screen() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gdk_x11_get_default_screen
-end function
-
-! gboolean gdk_x11_screen_supports_net_wm_hint (GdkScreen *screen, GdkAtom property);
-function gdk_x11_screen_supports_net_wm_hint(screen, property) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_x11_screen_supports_net_wm_hint
-  type(c_ptr), value :: screen
-  type(c_ptr), value :: property
-end function
-
-! XID gdk_x11_screen_get_monitor_output (GdkScreen *screen, gint monitor_num);
-function gdk_x11_screen_get_monitor_output(screen, monitor_num) bind(c)
-  use iso_c_binding, only: c_long, c_ptr, c_int
-  integer(c_long) :: gdk_x11_screen_get_monitor_output
-  type(c_ptr), value :: screen
-  integer(c_int), value :: monitor_num
-end function
-
-! guint32 gdk_x11_screen_get_number_of_desktops (GdkScreen *screen);
-function gdk_x11_screen_get_number_of_desktops(screen) bind(c)
-  use iso_c_binding, only: c_int32_t, c_ptr
-  integer(c_int32_t) :: gdk_x11_screen_get_number_of_desktops
-  type(c_ptr), value :: screen
-end function
-
-! guint32 gdk_x11_screen_get_current_desktop (GdkScreen *screen);
-function gdk_x11_screen_get_current_desktop(screen) bind(c)
-  use iso_c_binding, only: c_int32_t, c_ptr
-  integer(c_int32_t) :: gdk_x11_screen_get_current_desktop
-  type(c_ptr), value :: screen
-end function
-
-!  GType gdk_x11_keymap_get_type (void);
-function gdk_x11_keymap_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gdk_x11_keymap_get_type
-end function
-
-! gint gdk_x11_keymap_get_group_for_state (GdkKeymap *keymap, guint state);
-function gdk_x11_keymap_get_group_for_state(keymap, state) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_x11_keymap_get_group_for_state
-  type(c_ptr), value :: keymap
-  integer(c_int), value :: state
-end function
-
-! gboolean gdk_x11_keymap_key_is_modifier (GdkKeymap *keymap, guint keycode);
-function gdk_x11_keymap_key_is_modifier(keymap, keycode) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gdk_x11_keymap_key_is_modifier
-  type(c_ptr), value :: keymap
-  integer(c_int), value :: keycode
+  type(c_ptr) :: gdk_color_to_string
+  type(c_ptr), value :: color
 end function
 
 end interface
