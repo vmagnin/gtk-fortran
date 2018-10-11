@@ -22,7 +22,7 @@ affiliations:
   index: 1
 - name: RAL Space, STFC Rutherford Appleton Laboratory, Harwell Campus​, Didcot,Oxfordshire OX11 0QX, United Kingdom
   index: 2
-- name:  Technische Universitat Dresden, Department of Chemistry and Food Chemistry, Dresden, Germany
+- name:  Technische Universität Dresden, Department of Chemistry and Food Chemistry, Dresden, Germany
   index: 3
 - name: Fluor, USA
   index: 4
