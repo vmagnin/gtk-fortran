@@ -15,7 +15,6 @@ authors:
   orcid: 0000-0001-7639-1229
   affiliation: 3
 - name: Jerry DE LISLE
-  orcid: 
   affiliation: 4
 affiliations:
 - name: Univ. Lille, CNRS, Centrale Lille, ISEN, Univ. Valenciennes, UMR 8520 - IEMN, F-59000 Lille, France
