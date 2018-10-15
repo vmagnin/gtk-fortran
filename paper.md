@@ -24,7 +24,7 @@ affiliations:
   index: 2
 - name:  Technische Universität Dresden, Department of Chemistry and Food Chemistry, Dresden, Germany
   index: 3
-- name: Fluor, USA
+- name: GFortran Team, USA
   index: 4
 date: 11 October 2018
 bibliography: paper.bib
