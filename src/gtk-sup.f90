@@ -57,7 +57,7 @@ module gtk_sup
   !-
 
   ! Gtype definitions
-  integer, parameter :: type_kind=c_long
+  integer, parameter :: type_kind=c_size_t
   integer(kind=c_int), parameter :: g_type_fundamental_shift=2
   integer(kind=type_kind), parameter :: G_TYPE_INVALID = &
        & ishft(0_type_kind, g_type_fundamental_shift)
