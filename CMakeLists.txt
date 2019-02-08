@@ -142,17 +142,20 @@ if (UNIX)
 endif()
 
 # Doxygen documentation generation:
-configure_file("${PROJECT_SOURCE_DIR}/Doxyfile"
-    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE)
 find_package(Doxygen)
-set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "latex" "html") 
-add_custom_target(doxygen
-    COMMAND ${DOXYGEN_EXECUTABLE}
-    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" 
-    COMMENT "Writing documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
-add_custom_target(doc)
-add_dependencies(doc doxygen)
+set(HAVE_DOXYGEN ${DOXYGEN_FOUND})
+if(DOXYGEN_FOUND)
+    configure_file("${PROJECT_SOURCE_DIR}/Doxyfile"
+        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE)
+    set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "latex" "html") 
+    add_custom_target(doxygen
+        COMMAND ${DOXYGEN_EXECUTABLE}
+        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" 
+        COMMENT "Writing documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+    add_custom_target(doc)
+    add_dependencies(doc doxygen)
+endif(DOXYGEN_FOUND)
 
 # PLplot
 if (NOT EXCLUDE_PLPLOT)
