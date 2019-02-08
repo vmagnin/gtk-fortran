@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016
+# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, 02/08/2019
 # CMAKE build file for gtk-fortran
 
 cmake_minimum_required(VERSION 2.8.5)
@@ -125,17 +125,20 @@ set(GTK_LIBRARIES
     ${GTK${GTKv}_PANGO_LIBRARY} CACHE STRING "" FORCE)
 
 # Doxygen documentation generation:
-configure_file("${PROJECT_SOURCE_DIR}/Doxyfile"
-    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE)
 find_package(Doxygen)
-set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "latex" "html") 
-add_custom_target(doxygen
-    COMMAND ${DOXYGEN_EXECUTABLE}
-    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" 
-    COMMENT "Writing documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
-add_custom_target(doc)
-add_dependencies(doc doxygen)
+set(HAVE_DOXYGEN ${DOXYGEN_FOUND})
+if(DOXYGEN_FOUND)
+    configure_file("${PROJECT_SOURCE_DIR}/Doxyfile"
+        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE)
+    set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "latex" "html") 
+    add_custom_target(doxygen
+        COMMAND ${DOXYGEN_EXECUTABLE}
+        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" 
+        COMMENT "Writing documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+    add_custom_target(doc)
+    add_dependencies(doc doxygen)
+endif(DOXYGEN_FOUND)
 
 # PLplot
 if (NOT EXCLUDE_PLPLOT)
