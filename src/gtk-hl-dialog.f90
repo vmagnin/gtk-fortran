@@ -416,13 +416,13 @@ contains
          &"The gtk-fortran project aims to offer scientists programming "//&
          &"in Fortran a cross-platform library to build Graphical User "//&
          &"Interfaces (GUI)."//c_new_line// & 
-         &"Gtk-fortran is a partial GTK+ / Fortran binding 100% written "//&
+         &"Gtk-fortran is a partial GTK / Fortran binding 100% written "//&
          &"in Fortran, thanks to the ISO_C_BINDING module for "//&
          &"interoperability between C and Fortran, which is a part of the "//&
          &"Fortran 2003 standard. Gtk-Fortran also provides a number of "//&
          &"'high-level' interfaces to common widgets."//&
          &c_new_line//c_new_line// & 
-         &"GTK+ is a free software cross-platform graphical library "//&
+         &"GTK is a free software cross-platform graphical library "//&
          &"available for Linux, Unix, Windows and MacOs X."//C_NULL_CHAR, &
          & website="https://github.com/jerryd/gtk-fortran/wiki"//C_NULL_CHAR,&
          & parent=parent)

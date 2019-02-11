@@ -132,7 +132,7 @@ def print_statistics():
         version = library_version(pack_gtk3)
     else:
         version = library_version(pack_gtk2)
-    print("##GTK+ " + version + ", GLib "+ library_version(pack_glib) + ", "
+    print("##GTK " + version + ", GLib "+ library_version(pack_glib) + ", "
           + " " + subprocess.getoutput("lsb_release -ds")
           + " " + platform.machine() + ", Python " + platform.python_version())
     print(os.getlogin() + ", "
@@ -575,7 +575,7 @@ PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files",
                                   epilog="GPLv3 license, https://github.com/jerryd/gtk-fortran")
 PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3],
                      metavar="2|3", nargs=1, required=True,
-                     help="GTK+ major version")
+                     help="GTK major version")
 PARSARG.add_argument("-b", "--build", action="store_true",
                      help="Build gtk-fortran libraries and examples")
 ARGS = PARSARG.parse_args()
