@@ -220,9 +220,9 @@ contains
     call gtk_about_dialog_set_comments(dialog, "The gtk-fortran project &
     & aims to offer scientists programming in Fortran a cross-platform library &
     &to build Graphical User Interfaces (GUI)."//c_new_line//" Gtk-fortran&
-    & is a partial GTK+ / Fortran binding 100% written in Fortran, thanks&
+    & is a partial GTK / Fortran binding 100% written in Fortran, thanks&
     & to the ISO_C_BINDING module for interoperability between C and Fortran,&
-    & which is a part of the Fortran 2003 standard."//c_new_line//" GTK+ &
+    & which is a part of the Fortran 2003 standard."//c_new_line//" GTK &
     &is a free software cross-platform graphical library available for &
     &Linux, Unix, Windows and MacOs X."//c_null_char)
     call gtk_about_dialog_set_website(dialog, "https://github.com/jerryd/gtk-fortran/wiki"//c_null_char)
@@ -281,7 +281,7 @@ program gtkFortran
   ! Create the window and set up some signals for it.
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   !call gtk_window_set_default_size(window, 500, 500)
-  call gtk_window_set_title(window, "GTK+ & Fortran are good friends"//c_null_char)
+  call gtk_window_set_title(window, "GTK & Fortran are good friends"//c_null_char)
   call gtk_container_set_border_width (window, 10_c_int)
   call g_signal_connect (window, "delete-event"//c_null_char, c_funloc(delete_event))
   call g_signal_connect (window, "destroy"//c_null_char, c_funloc(destroy))

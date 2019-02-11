@@ -3,7 +3,7 @@ GTK FORTRAN -- High level interfaces
 
 The high level interface for Gtk-Fortran is in the source file
 gtk-hl.f90. This provides a number of higher level interfaces to the
-GTK+ widget system, with the intent of making GUI construction more
+GTK widget system, with the intent of making GUI construction more
 accessible to scientific programmers (the feel should not be too alien
 to anyone who has developed GUIs in IDL).
 
