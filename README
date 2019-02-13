@@ -12,4 +12,6 @@ https://github.com/vmagnin/gtk-fortran/issues
 
 Vincent MAGNIN, James TAPPIN, Jens HUNGER, Jerry DE LISLE, "gtk-fortran: a GTK+ binding to build Graphical User Interfaces in Fortran", Journal of Open Source Software, 4(34), 1109, 12th January 2019, https://doi.org/10.21105/joss.01109
 
-[![DOI](http://joss.theoj.org/papers/10.21105/joss.01109/status.svg)](https://doi.org/10.21105/joss.01109)
+<a style="border-width:0" href="https://doi.org/10.21105/joss.01109">
+  <img src="http://joss.theoj.org/papers/10.21105/joss.01109/status.svg" alt="DOI badge" >
+</a>
