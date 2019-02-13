@@ -8,4 +8,6 @@ https://github.com/vmagnin/gtk-fortran/wiki
 Please post bugs on GitHub:
 https://github.com/vmagnin/gtk-fortran/issues
 
-Vincent MAGNIN, James TAPPIN, Jens HUNGER, and Jerry DE LISLE
+# Citing gtk-fortran
+
+Vincent MAGNIN, James TAPPIN, Jens HUNGER, Jerry DE LISLE, "gtk-fortran: a GTK+ binding to build Graphical User Interfaces in Fortran", Journal of Open Source Software, 4(34), 1109, 12th January 2019, https://doi.org/10.21105/joss.01109
