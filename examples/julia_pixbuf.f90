@@ -243,6 +243,7 @@ contains
            & -1_c_int)
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
+        if (run_status == FALSE) return ! Exit if we had a delete event.
         call g_usleep(500000_c_long)   ! microseconds
         !call sleep(1)   ! Seconds. GNU Fortran extension.
       end do
