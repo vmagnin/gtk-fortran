@@ -20,13 +20,15 @@
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 03-09-2011
+! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 02-15-2019
 ! ****************
 ! Automated tests
 ! ****************
-! gfortran ../src/gtk.f90 tests.f90 `pkg-config --cflags --libs gtk+-2.0`
-! If this program generates errors, please send us the tests_errors.txt file
-! with informations on your system (OS version, GTK+ version, compiler...)
+! This program is testing things about ISO_C_BINDING and the relations
+! between Fortran types and GLib types. If it generates errors, please send us 
+! the tests_errors.txt file with informations on your system 
+! (OS version, GTK+ version, compiler...)
+! gfortran -I../src/ ../src/gtk.f90 tests.f90 `pkg-config --cflags --libs gtk+-2.0` -Wall
 
 module tests
   use gtk, only: gtk_false, gtk_true, TRUE, FALSE, c_null_ptr, c_null_char
@@ -40,13 +42,13 @@ module tests
   & g_variant_new_int32, g_variant_new_int64, g_variant_new_string, g_variant_new&
   &_uint16, g_variant_new_uint32, g_variant_new_uint64, guint64
   use iso_c_binding
-  
+
 contains
   integer function test_iso_c_binding()
     use iso_c_binding
     implicit none
     integer :: errors
-    
+
     errors = 0
     if (C_SIGNED_CHAR < 0) then
       write(1,*) "C_SIGNED_CHAR", C_SIGNED_CHAR
@@ -160,7 +162,7 @@ contains
       write(1,*) "C_CHAR", C_CHAR
       errors = errors + 1
     end if
-    
+
     test_iso_c_binding = errors
   end function test_iso_c_binding
 
@@ -289,17 +291,32 @@ contains
   !  integer(c_int16_t) :: g_variant_get_uint16
   !  type(c_ptr), value :: value
   !end function
-    errors = 0
+
   ! INTEGER(2) ranges from -32768 to 32767
   ! uint16 ranges from 0 to 65535.
-    do a = 0, 32767
+  !***********************************
+  ! We must be careful because the following loop is undefined in the Fortran Standard:
+  ! do a = 0, 32767
+  !                 1
+  ! Warning: DO loop at (1) is undefined as it overflows [-Wundefined-do-loop]
+  ! With some compilers, it will run OK, with others a will become <0 and the
+  ! loop will never end...
+  !***********************************
+    errors = 0
+    do a = 0, 32766
       b = g_variant_get_uint16(g_variant_new_uint16 (a))
       if (a /= b) then
         write(1,*) "ERROR g_variant_get_uint16:", a, b
         errors = errors + 1
       end if
     end do
-    
+    a = 32767
+    b = g_variant_get_uint16(g_variant_new_uint16 (a))
+    if (a /= b) then
+      write(1,*) "ERROR g_variant_get_uint16:", a, b
+      errors = errors + 1
+    end if
+
     do c = 32768, 65535
       a = transfer(c, a)
       b = g_variant_get_uint16(g_variant_new_uint16 (a))
@@ -403,7 +420,7 @@ contains
         errors = errors + 1
       end if
     end do
-    
+
     do c = 2147483648_8, 4294967295_8, +65536
       a = transfer(c, a)
       b = g_variant_get_uint32(g_variant_new_uint32(a))
@@ -500,7 +517,7 @@ contains
       write(1,*) "ERROR gtk_true, gtk_false:", gtk_true(), gtk_false()
       errors = errors + 1
     end if
-    
+
     test_gboolean_in_out = errors
   end function test_gboolean_in_out
 
@@ -530,7 +547,7 @@ program gtk_fortran_test
   use tests
   implicit none
   integer :: errors
-  
+
   open(unit=1, file="tests_errors.txt")
   errors = test_iso_c_binding()
   errors = errors +  test_c_char_in_out()
@@ -543,7 +560,7 @@ program gtk_fortran_test
   errors = errors +  test_uint32_in_out()
   errors = errors +  test_gboolean_in_out()
   close(1)
-  
+
   if (errors == 0) then
     print *, "No error"
   else
