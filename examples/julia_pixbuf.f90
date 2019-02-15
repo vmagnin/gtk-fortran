@@ -23,6 +23,7 @@
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
 ! Last modification: vmagnin 02-15-2016
+! gfortran -I../src ../src/gtk.f90 julia_pixbuf.f90 `pkg-config --cflags --libs gtk+-2.0` -Wall -Wextra -pedantic -std=f2003
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -55,12 +56,12 @@ module handlers
   &gtk_window_set_mnemonics_visible, gtk_combo_box_text_new, &
   &gtk_combo_box_text_append_text, gtk_combo_box_text_get_active_text, &
   &gtk_combo_box_text_insert_text, gtk_spin_button_set_value, gtk_spin_button_update
-  
+
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
   &cairo_surface_write_to_png, cairo_get_target
-  
+
   use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
-  
+
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
 
@@ -237,11 +238,9 @@ contains
            & "In pause (don't try to quit the window)"//C_NEW_LINE//c_null_char, -1_c_int)
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
-        if (run_status == FALSE) return ! Exit if we had a delete event.
+        if (run_status == FALSE) exit ! Exit if we had a delete event.
         call g_usleep(500000_c_long)   ! microseconds
-        !call sleep(1)   ! Seconds. GNU Fortran extension. 
       end do
-      !FIXME: if we try to quit during pause, the application crashes
     else
       call gtk_text_buffer_insert_at_cursor (buffer, &
            & "Not in pause"//C_NEW_LINE//c_null_char, -1_c_int)
