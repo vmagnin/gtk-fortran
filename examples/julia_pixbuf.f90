@@ -23,6 +23,8 @@
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
 ! Last modification: vmagnin 02-15-2016
+! gfortran -I../src ../src/gtk.f90 julia_pixbuf.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003
+
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -66,6 +68,8 @@ module handlers
 
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
+
+  use g, only: g_usleep
 
   use iso_c_binding, only: c_int, c_ptr, c_char
 
