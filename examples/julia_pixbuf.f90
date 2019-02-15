@@ -21,8 +21,13 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
+<<<<<<< HEAD
 ! Contributed by Vincent Magnin and Jerry DeLisle 
 ! Last modification: 04-26-2011
+=======
+! Contributed by Vincent Magnin and Jerry DeLisle
+! Last modification: vmagnin 02-15-2016
+>>>>>>> e25afd6... That old example was not calling gtk_main
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -64,8 +69,11 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
 
+<<<<<<< HEAD
   use g, only: g_usleep
   
+=======
+>>>>>>> e25afd6... That old example was not calling gtk_main
   use iso_c_binding, only: c_int, c_ptr, c_char
 
   implicit none

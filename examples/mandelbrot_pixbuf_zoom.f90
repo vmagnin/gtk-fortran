@@ -21,9 +21,10 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g gtk.f90 mandelbrot_pixbuf.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
+! Last modification: 02-15-2019
+! gfortran -I../src ../src/gtk.f90 ../src/gdkevents-auto2.f90 mandelbrot_pixbuf_zoom.f90 `pkg-config --cflags --libs gtk+-2.0` -Wall -Wextra -pedantic -std=f2003
 
 module handlers
   use gtk, only: gtk_bin_get_child, gtk_container_add, gtk_drawing_area_new, gtk_&
@@ -34,11 +35,12 @@ module handlers
        &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char, GTK_WINDOW_TOPLEVEL, &
        & GDK_SCROLL_UP, GDK_SCROLL_DOWN, gtk_vbox_new, gtk_statusbar_new, &
        & gtk_statusbar_remove_all, gtk_statusbar_push, gtk_box_pack_start, &
-       & GDK_SHIFT_MASK, GDK_CONTROL_MASK, gtk_label_new, gtk_label_set_text
+       & GDK_SHIFT_MASK, GDK_CONTROL_MASK, gtk_label_new, gtk_label_set_text, gtk_main, gtk_main_quit
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
 
   use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+
   use gdk_events, only: gdkeventbutton, gdkeventscroll
 
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
@@ -66,6 +68,7 @@ contains
 
     run_status = FALSE
     ret = FALSE
+    call gtk_main_quit()
   end function delete_event
 
 
@@ -404,12 +407,9 @@ program mandelbrot_zoom
   ! Initialize the even/odd point flag
   need_point = .false.
 
-  ! The window stays opened after the computation:
-  do
-     call pending_events()
-     if (run_status == FALSE) exit
-     call sleep(1) ! So we don't burn CPU cycles
-  end do
+  ! The window stays opened after the computation
+  ! Main loop:
+  call gtk_main()
   print *, "All done"
 
 end program mandelbrot_zoom
