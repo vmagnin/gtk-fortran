@@ -21,9 +21,10 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g gtk.f90 mandelbrot_pixbuf.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
+! Last modification: 02-15-2019
+! gfortran -I../src ../src/gtk.f90 ../src/gdkevents-auto3.f90 mandelbrot_pixbuf_zoom.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003
 
 module handlers
   use gdk_events, only: gdkeventbutton, gdkeventscroll
@@ -44,7 +45,7 @@ module handlers
        & gtk_window_set_title, gtk_init, g_signal_connect, TRUE, FALSE, &
        & GDK_SCROLL_UP, GDK_SCROLL_DOWN, GDK_SHIFT_MASK, GDK_CONTROL_MASK, &
        & GDK_BUTTON_PRESS_MASK, GDK_SCROLL_MASK, GTK_ORIENTATION_VERTICAL, &
-       & GTK_WINDOW_TOPLEVEL, GDK_COLORSPACE_RGB
+       & GTK_WINDOW_TOPLEVEL, GDK_COLORSPACE_RGB, gtk_main, gtk_main_quit
 
   use iso_c_binding
 
@@ -68,6 +69,7 @@ contains
 
     run_status = FALSE
     ret = FALSE
+    call gtk_main_quit()
   end function delete_event
 
 
@@ -412,12 +414,9 @@ program mandelbrot_zoom
   ! Initialize the even/odd point flag
   need_point = .false.
 
-  ! The window stays opened after the computation:
-  do
-     call pending_events()
-     if (run_status == FALSE) exit
-     call sleep(1) ! So we don't burn CPU cycles
-  end do
+  ! The window stays opened after the computation
+  ! Main loop:
+  call gtk_main()
   print *, "All done"
 
 end program mandelbrot_zoom

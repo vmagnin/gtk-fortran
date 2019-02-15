@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modification: vmagnin 07/03/2016
+! Last modification: vmagnin 02-15-2016
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -66,8 +66,6 @@ module handlers
 
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
-
-  use g, only: g_usleep
 
   use iso_c_binding, only: c_int, c_ptr, c_char
 
