@@ -21,33 +21,34 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -I../src ../src/gtk.o cairo-basics.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
+! Last modification: 02-15-2019
+! gfortran -I../src ../src/gtk.f90 cairo-basics.f90 `pkg-config --cflags --libs gtk+-2.0` -Wall -Wextra -pedantic -std=f2003
 
 module handlers
   use iso_c_binding, only: c_int
-  
+
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
   &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
   &idget_show, gtk_window_new, gtk_window_set_default, gtk_window_set_default_siz&
   &e, gtk_window_set_title,&
   &TRUE, FALSE, c_null_char, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
-  &CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
-  
+  &CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, gtk_main, gtk_main_quit
+
   use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, cairo_&
   &get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, cairo_select_fon&
   &t_face, cairo_set_font_size, cairo_set_line_width, cairo_set_source, cairo_set&
   &_source_rgb, cairo_show_text, cairo_stroke, cairo_surface_write_to_png
-  
+
   use gdk, only: gdk_cairo_create
-  
+
   implicit none
 
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
   integer(kind=c_int) :: width, height
-  
+
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
@@ -56,6 +57,7 @@ contains
     type(c_ptr), value :: widget, event, gdata
     run_status = FALSE
     ret = FALSE
+    call gtk_main_quit()
   end function delete_event
 
   subroutine pending_events ()
@@ -73,9 +75,9 @@ contains
     type(c_ptr) :: my_cairo_context
     integer :: cstatus
     integer :: t
-    
+
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
-    
+
     ! Bezier curve:
     call cairo_set_source_rgb(my_cairo_context, 0.9d0, 0.8d0, 0.8d0)
     call cairo_set_line_width(my_cairo_context, 4d0)
@@ -91,7 +93,7 @@ contains
       call cairo_line_to(my_cairo_context, t*1d0, height*1d0)
       call cairo_stroke(my_cairo_context) 
     end do
-  
+
     ! Text:
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 1d0)
     call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, CAIRO_FONT_SLANT_NORMAL, &
@@ -110,10 +112,10 @@ contains
         call cairo_arc(my_cairo_context, 353d0+200d0*cos(t*2d0*pi/50), 350d0+200d0*sin(t*2d0*pi/50), 50d0, 0d0, 2*pi) 
         call cairo_stroke(my_cairo_context) 
     end do
-    
+
     ! Save:
     cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//c_null_char)
-    
+
     call cairo_destroy(my_cairo_context)
     ret = FALSE
   end function expose_event
@@ -126,9 +128,9 @@ program cairo_basics
   implicit none
   type(c_ptr) :: my_window
   type(c_ptr) :: my_drawing_area
-  
+
   call gtk_init ()
-  
+
   ! Properties of the main window :
   width = 700
   height = 700
@@ -136,20 +138,17 @@ program cairo_basics
   call gtk_window_set_default_size(my_window, width, height)
   call gtk_window_set_title(my_window, "Cairo basics demo"//c_null_char)
   call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
-      
+
   my_drawing_area = gtk_drawing_area_new()
   call g_signal_connect (my_drawing_area, "expose-event"//c_null_char, c_funloc(expose_event))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
 
   call gtk_widget_show (my_window)
-        
-  ! The window stays opened after the computation:
-  do
-    call pending_events()
-    if (run_status == FALSE) exit
-    call sleep(1) ! So we don't burn CPU cycles
-  end do
+
+  ! The window stays opened after the computation
+  ! Main loop:
+  call gtk_main()
   print *, "All done"
 
 end program cairo_basics 
