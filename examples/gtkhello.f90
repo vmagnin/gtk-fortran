@@ -31,42 +31,39 @@
 ! Note that events are a special type of signals, coming from the X Window system.
 ! Callback functions must have an event argument.
 module handlers
+
+  use iso_c_binding, only: c_ptr, c_int
   use gtk, only: gtk_main_quit, FALSE
   implicit none
 
 contains
-  ! Will be call if you click on the cross to exit the program, or if you close it from the window menu:
+  ! Signal emitted if a user requests that a toplevel window is closed:
   function delete_event(widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
-    integer(c_int)    :: ret
+    integer(c_int)     :: ret
     type(c_ptr), value :: widget, event, gdata
 
     print *, "My delete_event"
     ret = FALSE
   end function delete_event
 
-  ! "destroy" is a GtkObject signal
+  ! "destroy" is a GtkObject signal emitted when an object is destroyed:
   subroutine destroy(widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
 
     print *, "My destroy"
-    call gtk_main_quit ()
+    call gtk_main_quit()
   end subroutine destroy
 
-  ! "clicked" is a GtkButton signal
-  function hello(widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
-    integer(c_int)    :: ret
+  function hello(widget, gdata) result(ret)  bind(c)
+    integer(c_int)     :: ret
     type(c_ptr), value :: widget, gdata
 
     print *, "So I say Hello GTK World!"
     ret = FALSE
   end function hello
 
-  function button1clicked(widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
-    integer(c_int)    :: ret
+  function button1clicked(widget, gdata) result(ret)  bind(c)
+    integer(c_int)     :: ret
     type(c_ptr), value :: widget, gdata
 
     print *, "Button 1 clicked!"
@@ -90,7 +87,7 @@ program gtkhello
                & gtk_button_new_with_label, gtk_box_pack_start, gtk_button_new_with_mnemonic, &
                & gtk_widget_show, gtk_widget_show_all, gtk_main, &
                & GTK_WINDOW_TOPLEVEL, c_null_char, FALSE, TRUE, &
-               & GTK_ORIENTATION_HORIZONTAL, GTK_ORIENTATION_VERTICAL            
+               & GTK_ORIENTATION_HORIZONTAL, GTK_ORIENTATION_VERTICAL
   use handlers
 
   implicit none
@@ -110,7 +107,7 @@ program gtkhello
 
   ! Don't forget that C strings must end with a null char:
   call gtk_window_set_title(window, "Hello GTK world!"//c_null_char)
-  
+
   ! Let's define two events for that window. The c_funloc() function returns
   ! the C address of the callback function.
   ! When you click on the cross to exit the program or close it from the window menu:
@@ -118,6 +115,8 @@ program gtkhello
   ! Before quitting the GTK main loop:
   call g_signal_connect(window, "destroy"//c_null_char, c_funloc(destroy))
 
+  !******************************************************************
+  ! Widgets in the window:
   !******************************************************************
   ! You need a box where to arrange your buttons, separated by 10 pixels:
   box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10_c_int);
@@ -128,7 +127,8 @@ program gtkhello
   call gtk_container_add(window, box)
   ! It's prettier with a 10 pixels border:
   call gtk_container_set_border_width(window, 10_c_int)
-  
+
+  ! It's easy to create a button:
   button1 = gtk_button_new_with_label("I say hello"//c_null_char)
   ! Let's pack the button in the box. If the booleans were set to TRUE and there
   ! was extra space available, the position and size of that button would be
@@ -136,6 +136,7 @@ program gtkhello
   call gtk_box_pack_start(box, button1, FALSE, FALSE, 0_c_int)
   ! Let's associate two callback functions when that button is clicked:
   call g_signal_connect(button1, "clicked"//c_null_char, c_funloc(button1clicked))
+  ! "clicked" is a GtkButton signal emitted when you click on a button:
   call g_signal_connect(button1, "clicked"//c_null_char, c_funloc(hello))
 
   ! For that button, there is an ALT+g keyboard shortcut:
