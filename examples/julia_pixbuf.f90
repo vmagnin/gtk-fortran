@@ -21,13 +21,8 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-<<<<<<< HEAD
-! Contributed by Vincent Magnin and Jerry DeLisle 
-! Last modification: 04-26-2011
-=======
 ! Contributed by Vincent Magnin and Jerry DeLisle
 ! Last modification: vmagnin 02-15-2016
->>>>>>> e25afd6... That old example was not calling gtk_main
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -69,18 +64,15 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
 
-<<<<<<< HEAD
   use g, only: g_usleep
-  
-=======
->>>>>>> e25afd6... That old example was not calling gtk_main
+
   use iso_c_binding, only: c_int, c_ptr, c_char
 
   implicit none
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
-  
+
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
@@ -108,7 +100,7 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, event, gdata
     type(c_ptr) :: my_cairo_context
-    
+
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0) 
     call cairo_paint(my_cairo_context)    
@@ -122,12 +114,12 @@ contains
     use iso_c_binding, only: c_ptr
     use global_widgets
     implicit none
-    
+
     integer(c_int)    :: ret, message_id
     type(c_ptr), value :: widget, gdata
     complex(kind(1d0)) :: c
     integer :: iterations
-    
+
     c = gtk_spin_button_get_value (spinButton1) + &
         & (0d0, 1d0)*gtk_spin_button_get_value (spinButton2)
     iterations = INT(gtk_spin_button_get_value (spinButton3))
@@ -161,7 +153,7 @@ contains
     call C_F_POINTER(gtk_combo_box_text_get_active_text(combo1), textptr, (/0/))
     call convert_c_string(textptr, my_string)
     read(my_string, *) choice
-    
+
     select case (choice)
     case(1)
       x = +0d0
@@ -185,25 +177,25 @@ contains
       x = +0.39d0
       y = +0.00d0
     end select
-    
+
     call gtk_spin_button_set_value (spinButton1, x)
     call gtk_spin_button_set_value (spinButton2, y)
 
     ret = FALSE
   end function firstCombo
-  
-  
+
+
   ! GtkButton signal:
   function secondbutton (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr
     use global_widgets
     implicit none
-    
+
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     type(c_ptr) :: my_cairo_context
     integer(c_int) :: cstatus, message_id
-    
+
     !my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(my_drawing_area))
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0) 
@@ -236,7 +228,7 @@ contains
     use iso_c_binding, only: c_ptr, c_long
     use global_widgets
     implicit none
-    
+
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
 
@@ -245,6 +237,7 @@ contains
            & "In pause (don't try to quit the window)"//C_NEW_LINE//c_null_char, -1_c_int)
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
+        if (run_status == FALSE) return ! Exit if we had a delete event.
         call g_usleep(500000_c_long)   ! microseconds
         !call sleep(1)   ! Seconds. GNU Fortran extension. 
       end do
@@ -253,10 +246,10 @@ contains
       call gtk_text_buffer_insert_at_cursor (buffer, &
            & "Not in pause"//C_NEW_LINE//c_null_char, -1_c_int)
     end if
-    
+
     ret = FALSE
   end function firstToggle
-  
+
   ! This is not a handler:
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
@@ -264,7 +257,7 @@ contains
     character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
     character(len=*), intent(out) :: f_string
     integer :: i
-          
+
     f_string=""
     i=1
     do while(textptr(i) .NE. char(0))
@@ -281,15 +274,15 @@ program julia
   use handlers
   use global_widgets
   implicit none
-  
+
   type(c_ptr) :: my_window, table, button1, button2, button3, box1
   type(c_ptr) :: label1, label2, label3, label4
   type(c_ptr) :: toggle1, expander, notebook, notebookLabel1, notebookLabel2
   type(c_ptr) :: linkButton
   integer(c_int) :: message_id, firstTab, secondTab
-  
+
   call gtk_init ()
-  
+
   ! Properties of the main window :
   width = 700
   height = 700
@@ -325,13 +318,13 @@ program julia
   call gtk_combo_box_text_append_text(combo1, "6"//c_null_char)
   call gtk_combo_box_text_append_text(combo1, "7"//c_null_char)
   call g_signal_connect (combo1, "changed"//c_null_char, c_funloc(firstCombo))
-  
+
   toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause"//c_null_char)
   call g_signal_connect (toggle1, "toggled"//c_null_char, c_funloc(firstToggle))
-  
+
   linkButton = gtk_link_button_new_with_label ("http://en.wikipedia.org/wiki/Julia_set"//c_null_char,&
                & "More on Julia sets"//c_null_char)
-               
+
   ! A table container will contain buttons and labels:
   table = gtk_table_new (4_c_int, 4_c_int, TRUE)
   call gtk_table_attach_defaults(table, button1, 0_c_int, 1_c_int, 3_c_int, 4_c_int)
@@ -367,7 +360,7 @@ program julia
   firstTab = gtk_notebook_append_page (notebook, my_drawing_area, notebookLabel1)
 
   !handle1 = gtk_handle_box_new()
-  
+
   textView = gtk_text_view_new ()
   buffer = gtk_text_view_get_buffer (textView)
   call gtk_text_buffer_set_text (buffer, "Julia Set"//C_NEW_LINE// &
@@ -377,9 +370,9 @@ program julia
   call gtk_container_add (scrolled_window, textView)
   !call gtk_container_add (handle1, scrolled_window)
   secondTab = gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
-  
+
   call gtk_box_pack_start (box1, notebook, TRUE, TRUE, 0_c_int)
- 
+
   statusBar = gtk_statusbar_new ()
   message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
               & "Julia"//c_null_char), "Waiting..."//c_null_char)
@@ -388,7 +381,7 @@ program julia
   call gtk_container_add (my_window, box1)
   call gtk_window_set_mnemonics_visible (my_window, TRUE)
   call gtk_widget_show_all (my_window)
-  
+
   ! We create a "pixbuffer" to store the pixels of the image:
   pixwidth  = 500
   pixheight = 500
@@ -422,19 +415,19 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
   double precision :: scx, scy       ! scales
   integer(1) :: red, green, blue     ! rgb color
   double precision :: system_time, t0, t1
-  
+
   computing = .true.
   t0=system_time()
 
   scx = ((xmax - xmin) / pixwidth)   ! x scale
   scy = ((ymax - ymin) / pixheight)  ! y scale
-  
+
   do i=0, pixwidth-1
     ! We provoke an expose_event only once in a while to improve performances:
     if (mod(i,10)==0) then
       call gtk_widget_queue_draw(my_drawing_area)
     end if
-    
+
     x = xmin + scx * i
     do j=0, pixheight-1
       y = ymin + scy * j
@@ -444,7 +437,7 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
         z = z*z + c
         k = k + 1
       end do
-      
+
       if (k>itermax) then
         ! Black pixel:
         red   = 0
@@ -456,7 +449,7 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
         green = min(255, k*5)
         blue  = min(255, k*10)
       end if
-      
+
       ! We write in the pixbuffer:
       p = i * nch + j * rowstride + 1
       pixel(p)   = char(red)
@@ -475,7 +468,7 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
   t1=system_time()
   write(string, '("System time = ",F8.3, " s")') t1-t0
   call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE//c_null_char, -1_c_int)
-  
+
 end subroutine Julia_set
 
 !***********************************************************
@@ -484,7 +477,7 @@ end subroutine Julia_set
 real(8) function system_time()   
   implicit none
   integer, dimension(8) :: dt
-  
+
   call date_and_time(values=dt)
   system_time=dt(5)*3600d0+dt(6)*60d0+dt(7)+dt(8)*0.001d0
 end function system_time
