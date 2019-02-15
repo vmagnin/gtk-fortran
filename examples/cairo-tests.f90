@@ -21,8 +21,9 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -I../src ../src/gtk.o cairo-tests.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
+! Last modification: 02-15-2019
+! gfortran -I../src ../src/gtk.f90 cairo-tests.f90 `pkg-config --cflags --libs gtk+-2.0` -Wall -Wextra -pedantic -std=f2003
 
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
@@ -30,19 +31,19 @@ module handlers
   &idget_queue_draw, gtk_widget_show, gtk_window_new, gtk_window_set_default, gtk&
   &_window_set_default_size, gtk_window_set_title, TRUE, FALSE, c_null_ptr, c_null_char, &
   & GTK_WINDOW_TOPLEVEL, GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, &
-  &CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
-  
+  &CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, gtk_main, gtk_main_quit
+
   use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, cairo_&
   &get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, cairo_paint, cai&
   &ro_select_font_face, cairo_set_font_size, cairo_set_line_width, cairo_set_sour&
   &ce, cairo_set_source_rgb, cairo_show_text, cairo_stroke, cairo_surface_write_t&
   &o_png
-  
+
   use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
-  
+
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
-  
+
   use iso_c_binding
 
   implicit none
@@ -50,12 +51,12 @@ module handlers
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
-  
+
   type(c_ptr) :: my_pixbuf
   character(kind=c_char), dimension(:), pointer :: pixel
   integer(kind=c_int) :: nch, rowstride, width, height
   logical :: finished
-  
+
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
@@ -65,6 +66,7 @@ contains
     !print *, "Delete_event"
     run_status = FALSE
     ret = FALSE
+    call gtk_main_quit()
   end function delete_event
 
   subroutine pending_events ()
@@ -80,9 +82,9 @@ contains
     type(c_ptr), value, intent(in) :: widget, event, gdata
     type(c_ptr) :: my_cairo_context
     integer :: cstatus
-    
+
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
-    
+
     call cairo_set_line_width(my_cairo_context, 1d0)
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 1d0)
     call cairo_move_to(my_cairo_context, 100d0, 50d0)  
@@ -116,12 +118,12 @@ contains
     call cairo_new_sub_path(my_cairo_context)
     call cairo_arc(my_cairo_context, 300d0, 300d0, 100d0, 0d0, 3.14159d0) 
     call cairo_stroke(my_cairo_context) 
-    
+
     if (finished) then
       cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//c_null_char)
       print *, cstatus
     end if
-    
+
     call cairo_destroy(my_cairo_context)
     ret = FALSE
   end function expose_event
@@ -135,10 +137,10 @@ program mandelbrot
   type(c_ptr) :: my_window
   type(c_ptr) :: my_drawing_area
   integer :: i
-  
+
   finished = .false.
   call gtk_init ()
-  
+
   ! Properties of the main window :
   width = 700
   height = 700
@@ -147,21 +149,20 @@ program mandelbrot
   call gtk_window_set_default_size(my_window, width, height)
   call gtk_window_set_title(my_window, "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
   call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
-      
+
   my_drawing_area = gtk_drawing_area_new()
   call g_signal_connect (my_drawing_area, "expose-event"//c_null_char, c_funloc(expose_event))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
 
-  
   call gtk_widget_show (my_window)
-      
+
   my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, &
        & width/2_c_int, height/2_c_int)    
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
-    
+
   do i=1, (width/2*height/2)*nch, nch
     pixel(i)=char(0)      ! Red
     pixel(i+1)=char(0)    ! Green
@@ -169,14 +170,11 @@ program mandelbrot
     pixel(i+3)=char(255)  ! Opacity (Alpha channel)
   end do
 
-  call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 100_c_int)
-  
-  ! The window stays opened after the computation:
-  do
-    call pending_events()
-    if (run_status == FALSE) exit
-    call sleep(1) ! So we don't burn CPU cycles
-  end do
+  call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 100_4)
+
+  ! The window stays opened after the computation
+  ! Main loop:
+  call gtk_main()
   print *, "All done"
 
 end program mandelbrot 
@@ -200,18 +198,18 @@ end program mandelbrot
     real(8)    :: scx, scy             ! scales
     integer(1) :: red, green, blue     ! rgb color
     real(8) :: system_time, t0, t1
-    
+
     t0=system_time()
     scx = ((xmax-xmin)/(width/2))   ! x scale
     scy = ((ymax-ymin)/(height/2))  ! y scale
-    
+
     do i=0, width/2
       ! We provoke an expose_event:
       !if (mod(i,10)==0) then
       if (mod(i,1_c_int)==0) then
         call gtk_widget_queue_draw(my_drawing_area)
       end if
-      
+
       x = xmin + scx * i
       do j=0, height/2
         y = ymin + scy * j
@@ -222,7 +220,7 @@ end program mandelbrot
           z = z*z+c
           k = k+1
         end do
-        
+
         if (k>itermax) then
           ! Black pixel:
           red   = 0
@@ -233,7 +231,7 @@ end program mandelbrot
           green = min(255, k*5)
           blue  = min(255, k*10)
         end if
-        
+
         p = i * nch + j * rowstride + 1
         pixel(p)=char(red)
         pixel(p+1)=char(green)
@@ -257,7 +255,7 @@ end program mandelbrot
 real(8) function system_time()   
   implicit none
   integer, dimension(8) :: dt
-  
+
   call date_and_time(values=dt)
   system_time=dt(5)*3600d0+dt(6)*60d0+dt(7)+dt(8)*0.001d0
 end function system_time
