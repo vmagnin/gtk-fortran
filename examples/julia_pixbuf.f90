@@ -59,7 +59,7 @@ module handlers
   &gtk_combo_box_text_insert_text, gtk_spin_button_set_value, gtk_spin_button_update, &
   & GTK_ORIENTATION_VERTICAL, &
   & gtk_grid_set_column_homogeneous, &
-  & gtk_grid_set_row_homogeneous
+  & gtk_grid_set_row_homogeneous, gtk_statusbar_remove_all
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
   &cairo_surface_write_to_png, cairo_get_target
@@ -243,11 +243,9 @@ contains
            & -1_c_int)
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
-        if (run_status == FALSE) return ! Exit if we had a delete event.
+        if (run_status == FALSE) exit ! Exit if we had a delete event.
         call g_usleep(500000_c_long)   ! microseconds
-        !call sleep(1)   ! Seconds. GNU Fortran extension.
       end do
-      !FIXME: if we try to quit during pause, the application crashes
     else
       call gtk_text_buffer_insert_at_cursor (buffer, "Not in pause"//C_NEW_LINE//c_null_char, -1_c_int)
     end if
