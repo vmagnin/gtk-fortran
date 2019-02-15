@@ -21,9 +21,10 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -I../src ../src/gtk.o cairo-basics.f90 `pkg-config --cflags --libs gtk+-3.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling: James Tappin
+! gfortran -I../src ../src/gtk.f90 cairo-basics-click.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003
+! Last modification: 02-15-2019
 
 module handlers
   use iso_c_binding
@@ -42,7 +43,7 @@ module handlers
        & gtk_window_set_default_size, gtk_window_set_title, gtk_init, &
        & g_signal_connect, TRUE, FALSE, GDK_BUTTON_PRESS_MASK, &
        & GDK_SCROLL_MASK, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, &
-       & GTK_WINDOW_TOPLEVEL
+       & GTK_WINDOW_TOPLEVEL, gtk_main, gtk_main_quit
 
   use gdk_events
 
@@ -61,6 +62,7 @@ contains
     type(c_ptr), value :: widget, event, gdata
     run_status = FALSE
     ret = FALSE
+    call gtk_main_quit()
   end function delete_event
 
 
@@ -168,7 +170,7 @@ program cairo_basics_click
   integer(kind=c_int), parameter :: ev_mask = ior(GDK_BUTTON_PRESS_MASK, &
        & GDK_SCROLL_MASK)
   call gtk_init ()
-  
+
   ! Properties of the main window :
   width = 700
   height = 700
@@ -176,7 +178,7 @@ program cairo_basics_click
   call gtk_window_set_default_size(my_window, width, height)
   call gtk_window_set_title(my_window, "Cairo events demo"//c_null_char)
   call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
-      
+
   my_drawing_area = gtk_drawing_area_new()
   my_event_box=gtk_event_box_new()
   call gtk_container_add(my_event_box, my_drawing_area)
@@ -192,13 +194,10 @@ program cairo_basics_click
 !  call gtk_widget_show (my_drawing_area)
 
   call gtk_widget_show_all (my_window)
-        
-  ! The window stays opened after the computation:
-  do
-    call pending_events()
-    if (run_status == FALSE) exit
-    call sleep(1) ! So we don't burn CPU cycles
-  end do
+
+  ! The window stays opened after the computation
+  ! Main loop:
+  call gtk_main()
   print *, "All done"
 
 end program cairo_basics_click
