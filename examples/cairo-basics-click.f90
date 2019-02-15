@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -I../src ../src/gtk.o cairo-basics.f90 `pkg-config --cflags --libs gtk+-3.0`
+! gfortran -I../src ../src/gtk.o cairo-basics.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling: James Tappin
 
