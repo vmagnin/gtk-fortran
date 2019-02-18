@@ -104,8 +104,8 @@ subroutine Mandelbrot_set(the_gdk_image, the_gtk_image, width, height, xmin, xma
   implicit none
 
   type(c_ptr), intent(in)    :: the_gdk_image, the_gtk_image
-  integer(c_int), intent(in) :: width	! pixels
-  integer(c_int), intent(in) :: height	! pixels
+  integer(c_int), intent(in) :: width   ! pixels
+  integer(c_int), intent(in) :: height  ! pixels
   integer(4) :: i, j, k, itermax
   real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
   complex(8) :: c, z   
@@ -122,8 +122,8 @@ subroutine Mandelbrot_set(the_gdk_image, the_gtk_image, width, height, xmin, xma
     x = xmin + scx * i
     do j=0, height-1
       y = ymin + scy * j
-      c = x + y*(0d0,1d0)	! Starting point
-      z = (0d0, 0d0)	        ! z0
+      c = x + y*(0d0,1d0)       ! Starting point
+      z = (0d0, 0d0)            ! z0
       k = 1
       do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4d0)) 
         z = z*z+c
