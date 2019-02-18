@@ -22,12 +22,10 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 07/18/2016
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 02-18-2019
 
 # CMAKE build file for gtk-fortran
 
-#include_directories("/usr/include")
-#include_directories("/usr/local/include")
 include_directories("${CMAKE_BINARY_DIR}/src")
 include_directories(${GTK_INCLUDES})
 
@@ -66,8 +64,8 @@ if (NOT NO_BUILD_EXAMPLES)
   else()
     set(gio_demo_example "")
   endif()
-
-  foreach(example bazaar cairo-tests cairo-basics cairo-basics-click gtkhello2
+  # Then all the others:
+  foreach(example bazaar cairo-tests cairo-basics cairo-basics-click gtkhello gtkhello2
           hl_assistant hl_choosers hl_combo hl_containers hl_dialog hl_list1
           hl_list_n hl_list_renderers hl_menu hl_pbar hl_pbar_p hl_radio
           hl_sliders hl_sliders2 hl_textview hl_tree hl_cairo1 hl_cairo_clock
@@ -89,6 +87,7 @@ if (INSTALL_EXAMPLES)
     "${CMAKE_CURRENT_SOURCE_DIR}/cairo-tests.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/cairo-basics.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/cairo-basics-click.f90"
+    "${CMAKE_CURRENT_SOURCE_DIR}/gtkhello.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/gtkhello2.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.f90"
     "${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder2.f90"
