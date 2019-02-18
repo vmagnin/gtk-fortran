@@ -31,7 +31,7 @@ module handlers
   &t_map, gtk_widget_show, gtk_widget_unmap, gtk_window_new, gtk_window_set_defau&
   &lt, gtk_window_set_default_size, gtk_window_set_title,&
   &FALSE, TRUE, c_null_char, c_null_ptr, GTK_WINDOW_TOPLEVEL, GDK_IMAGE_FASTEST,&
-  &gtk_init, g_signal_connect
+  &gtk_init, g_signal_connect, gtk_main_quit
   use gdk, only: gdk_image_new, gdk_image_put_pixel, gdk_rgb_get_visual
 
   implicit none
@@ -48,6 +48,7 @@ contains
     !print *, "Delete_event"
     run_status = FALSE
     ret = FALSE
+    call gtk_main_quit()
   end function delete_event
 
   subroutine pending_events ()
@@ -84,12 +85,9 @@ program mandelbrot
   call Mandelbrot_set(my_gdk_image, my_gtk_image, 600_c_int, 600_c_int, &
        & -2d0, +1d0, -1.5d0, +1.5d0, 1000_c_int*10_c_int)
 
-  ! The window stays opened after the computation:
-  do
-    call pending_events()
-    if (run_status == FALSE) exit
-    call sleep(1) ! So we don't burn CPU cycles
-  end do
+  ! The window stays opened after the computation
+  ! Main loop:
+  call gtk_main()
   print *, "All done"
 
 contains
