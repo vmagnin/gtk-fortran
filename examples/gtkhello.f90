@@ -122,6 +122,8 @@ program gtkhello
   box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10_c_int);
   ! Perhaps you prefer a vertical organization:
   !box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10_c_int);
+  ! This example can not be built with GTK 2 because gtk_box_nex() appeared
+  ! in GTK3.
 
   ! You need a container where to put the box, it will manage layout:
   call gtk_container_add(window, box)
