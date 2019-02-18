@@ -21,6 +21,8 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 
+! Last modification: vmagnin 02-18-2019
+
 program g_io_demo
 
   ! This is a very basic demo to get started with GIO. It uses Fortran I/O to
@@ -45,7 +47,7 @@ program g_io_demo
   type(gerror), target :: errmsg
   character(len=120) :: errtxt
   integer :: ios, i
-  integer(kind=c_long) :: ncput, nchars
+  integer(kind=c_size_t) :: ncput, nchars
   integer(kind=c_int) :: iok
 
   file = g_file_new_for_path('gio_demo.dat'//c_null_char)
