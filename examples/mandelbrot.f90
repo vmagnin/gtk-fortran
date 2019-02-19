@@ -21,8 +21,9 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g gtk.f90 mandelbrot.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by Jerry DeLisle and Vincent Magnin
+! Last modification: vmagnin, 02-19-2019
+! gfortran -g gtk.f90 mandelbrot.f90 `pkg-config --cflags --libs gtk+-2.0`
 
 module handlers
   use iso_c_binding, only: c_int
@@ -38,7 +39,7 @@ module handlers
 
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
-  
+
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
@@ -64,24 +65,24 @@ program mandelbrot
   use handlers
   implicit none
   type(c_ptr) :: my_window, my_gdk_image, my_gtk_image
-  
+
   call gtk_init ()
-  
+
   ! Properties of the main window :
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_default_size(my_window, 600_c_int, 600_c_int)
   call gtk_window_set_title(my_window, "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
   call g_signal_connect (my_window, "delete-event"//c_null_char, &
        & c_funloc(delete_event))
-    
+
   my_gdk_image = gdk_image_new(GDK_IMAGE_FASTEST, gdk_rgb_get_visual(), &
        & 600_c_int, 600_c_int)
   my_gtk_image = gtk_image_new_from_image(my_gdk_image, c_null_ptr)    
   call gtk_container_add(my_window, my_gtk_image)
   call gtk_widget_show (my_gtk_image)
-  
+
   call gtk_widget_show (my_window)
-      
+
   call Mandelbrot_set(my_gdk_image, my_gtk_image, 600_c_int, 600_c_int, &
        & -2d0, +1d0, -1.5d0, +1.5d0, 1000_c_int*10_c_int)
 
@@ -111,14 +112,14 @@ subroutine Mandelbrot_set(the_gdk_image, the_gtk_image, width, height, xmin, xma
   complex(8) :: c, z   
   real(8)    :: scx, scy             ! scales
   integer(1) :: red, green, blue     ! rgb color
-    
+
   scx = ((xmax-xmin)/width)   ! x scale
   scy = ((ymax-ymin)/height)  ! y scale
-  
+
   do i=0, width-1
     call gtk_widget_unmap (the_gtk_image)
     call gtk_widget_map (the_gtk_image)
-    
+
     x = xmin + scx * i
     do j=0, height-1
       y = ymin + scy * j
@@ -129,15 +130,15 @@ subroutine Mandelbrot_set(the_gdk_image, the_gtk_image, width, height, xmin, xma
         z = z*z+c
         k = k+1
       end do
-      
+
       if (k>itermax) then
         ! Black pixel:
         call gdk_image_put_pixel(the_gdk_image, i, j, &
              & int(0*65536+0*256+0,c_int))
       else
-        red   = min(255, k*2)
-        green = min(255, k*5)
-        blue  = min(255, k*10)
+        red   = int(min(255, k*2),  kind=1)
+        green = int(min(255, k*5),  kind=1)
+        blue  = int(min(255, k*10), kind=1)
         call gdk_image_put_pixel(the_gdk_image, i, j, &
              & int(red*65536+green*256+blue,c_int))
       end if
