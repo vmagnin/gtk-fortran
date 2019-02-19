@@ -22,8 +22,8 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: 02-15-2019
-! gfortran -I../src ../src/gtk.f90 cairo-tests.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003
+! Last modification: 02-19-2019
+! gfortran -I../src ../src/gtk.f90 cairo-tests.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
 
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
@@ -228,9 +228,9 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
         green = 0
         blue  = 0
       else
-        red   = min(255, k*2)
-        green = min(255, k*5)
-        blue  = min(255, k*10)
+        red   = int(min(255, k*2),  KIND=1)
+        green = int(min(255, k*5),  KIND=1)
+        blue  = int(min(255, k*10), KIND=1)
       end if
 
       p = i * nch + j * rowstride + 1

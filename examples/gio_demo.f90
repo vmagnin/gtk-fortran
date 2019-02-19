@@ -21,7 +21,9 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 
-! Last modification: vmagnin 02-18-2019
+! Last modification: vmagnin 02-19-2019
+! gfortran -I../src ../src/gtk.f90 ../src/gtk-sup.f90 gio_demo.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
+
 
 program g_io_demo
 
@@ -46,7 +48,7 @@ program g_io_demo
   type(c_ptr) :: file, stream
   type(gerror), target :: errmsg
   character(len=120) :: errtxt
-  integer :: ios, i
+  integer(kind=4) :: ios, i
   integer(kind=c_size_t) :: ncput, nchars
   integer(kind=c_int) :: iok
 
@@ -68,8 +70,8 @@ program g_io_demo
      if (ios /= 0) exit
 
      nchars = len_trim(str)
-     do i = 1, nchars
-        istr(i) = ichar(str(i:i))
+     do i = 1, int(nchars, kind=4)
+        istr(i) = int(ichar(str(i:i)), kind=c_int8_t)
      end do
      istr(nchars+1) = ichar(c_new_line)
 

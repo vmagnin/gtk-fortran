@@ -22,8 +22,8 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: 02-15-2019
-! gfortran -I../src ../src/gtk.f90 mandelbrot_pixbuf.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003
+! Last modification: 02-19-2019
+! gfortran -I../src ../src/gtk.f90 mandelbrot_pixbuf.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
 
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
