@@ -22,8 +22,10 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modification: vmagnin 02-15-2016
+
+! Last modification: vmagnin 02-19-2016
 ! gfortran -I../src ../src/gtk.f90 julia_pixbuf.f90 `pkg-config --cflags --libs gtk+-2.0` -Wall -Wextra -pedantic -std=f2003
+
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -444,9 +446,9 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
         blue  = 0
       else
         ! User defined palette:
-        red   = min(255, k*2)
-        green = min(255, k*5)
-        blue  = min(255, k*10)
+        red   = int(min(255, k*2),  KIND=1)
+        green = int(min(255, k*5),  KIND=1)
+        blue  = int(min(255, k*10), KIND=1)
       end if
 
       ! We write in the pixbuffer:

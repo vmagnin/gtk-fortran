@@ -23,8 +23,10 @@
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
-! Last modification: 02-15-2019
+
+! Last modification: 02-19-2019
 ! gfortran -I../src ../src/gtk.f90 ../src/gdkevents-auto2.f90 mandelbrot_pixbuf_zoom.f90 `pkg-config --cflags --libs gtk+-2.0` -Wall -Wextra -pedantic -std=f2003
+
 
 module handlers
   use gtk, only: gtk_bin_get_child, gtk_container_add, gtk_drawing_area_new, gtk_&
@@ -298,9 +300,9 @@ contains
              green = 0
              blue  = 0
           else
-             red   = min(255, k*2)
-             green = min(255, k*5)
-             blue  = min(255, k*10)
+             red   = int(min(255, k*2),  KIND=c_int8_t)
+             green = int(min(255, k*5),  KIND=c_int8_t)
+             blue  = int(min(255, k*10), KIND=c_int8_t)
           end if
 
           ! We write in the pixbuffer:
