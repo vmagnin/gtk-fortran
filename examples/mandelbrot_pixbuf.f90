@@ -185,9 +185,9 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
         green = 0
         blue  = 0
       else
-        red   = min(255, k*2)
-        green = min(255, k*5)
-        blue  = min(255, k*10)
+        red   = int(min(255, k*2),  KIND=1)
+        green = int(min(255, k*5),  KIND=1)
+        blue  = int(min(255, k*10), KIND=1)
       end if
 
       ! We write in the pixbuffer:
