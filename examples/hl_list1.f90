@@ -21,8 +21,9 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g gtk.f90 gtk-sup.f90 gtk-hl.f90 hl_list1.f90 `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -g gtk.f90 gtk-sup.f90 gtk-hl.f90 hl_list1.f90 `pkg-config --cflags --libs gtk+-3.0`
 ! Contributed by James Tappin.
+! Last modification: vmagnin 02-20-2019
 
 module l1_handlers
   use gtk_hl
@@ -44,8 +45,8 @@ module l1_handlers
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
+
     print *, "Exit called"
-    call gtk_widget_destroy(ihwin)
     call gtk_main_quit ()
   end subroutine my_destroy
 

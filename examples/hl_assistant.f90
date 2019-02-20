@@ -23,6 +23,7 @@
 !
 ! gfortran -g  hl_assistant.f90 `pkg-config --cflags --libs gtk-2-fortran`
 ! Contributed by James Tappin.
+! Last modification: vmagnin 02-20-2019
 
 ! Based on the C example given in"
 ! https://www.linuxquestions.org/linux/articles/Technical/New_GTK_Widgets_GtkAssistant
@@ -53,7 +54,6 @@ contains
     type(c_ptr), value :: widget, gdata
 
     print *, "Exit called"
-    call gtk_widget_destroy(asstnt)
     call gtk_main_quit ()
   end subroutine destroy_asstnt
 
