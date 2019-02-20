@@ -22,6 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin.
+! Last modification: vmagnin 02-20-2019
 
 module handlers
   use gtk_hl
@@ -36,8 +37,8 @@ module handlers
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
+
     print *, "Exit called"
-    call gtk_widget_destroy(win)
     call gtk_main_quit ()
   end subroutine my_destroy
 

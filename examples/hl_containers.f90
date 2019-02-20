@@ -1,3 +1,5 @@
+! Last modification: vmagnin 02-20-2019
+
 module handlers
   use iso_c_binding
   use gtk_hl
@@ -15,7 +17,6 @@ contains
     type(c_ptr), value :: widget, gdata
 
     print *, "Exit called"
-    call gtk_widget_destroy(win)
     call gtk_main_quit ()
   end subroutine my_destroy
 
