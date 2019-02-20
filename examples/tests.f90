@@ -28,7 +28,7 @@
 ! between Fortran types and GLib types. If it generates errors, please send us 
 ! the tests_errors.txt file with informations on your system 
 ! (OS version, GTK+ version, compiler...)
-! gfortran -I../src/ ../src/gtk.f90 ../src/glib-auto.f90 tests.f90 `pkg-config --cflags --libs gtk+-2.0` -Wall -Wextra -pedantic -std=f2003 -g
+! gfortran -I../src/ ../src/gtk.f90 ../src/glib-auto.f90 tests.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
 
 module tests
   use gtk, only: gtk_false, gtk_true, TRUE, FALSE, c_null_ptr, c_null_char
