@@ -20,7 +20,7 @@
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 02-15-2019
+! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 02-20-2019
 ! ****************
 ! Automated tests
 ! ****************
@@ -28,7 +28,7 @@
 ! between Fortran types and GLib types. If it generates errors, please send us 
 ! the tests_errors.txt file with informations on your system 
 ! (OS version, GTK+ version, compiler...)
-! gfortran -I../src/ ../src/gtk.f90 tests.f90 `pkg-config --cflags --libs gtk+-2.0` -Wall
+! gfortran -I../src/ ../src/gtk.f90 ../src/glib-auto.f90 tests.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
 
 module tests
   use gtk, only: gtk_false, gtk_true, TRUE, FALSE, c_null_ptr, c_null_char
@@ -413,13 +413,26 @@ contains
     errors = 0
   ! INTEGER(4) ranges from -2147483648 to +2147483647
   ! uint32 ranges from 0 to 4294967295
-    do a = 0, 2147483647, +65536
+  !***********************************
+  ! We must be careful because the following loop is undefined in the Fortran Standard:
+  ! do a = 0, 2147483647, +65536
+  !
+  ! With some compilers, it will run OK, with others a will become <0 and the
+  ! loop will never end...
+  !***********************************
+    do a = 0, 2147483647-65536, +65536
       b = g_variant_get_uint32(g_variant_new_uint32(a))
       if (a /= b) then
         write(1,*) "ERROR g_variant_get_uint32:", a, b
         errors = errors + 1
       end if
     end do
+    a = 2147483647
+    b = g_variant_get_uint32(g_variant_new_uint32(a))
+    if (a /= b) then
+      write(1,*) "ERROR g_variant_get_uint32:", a, b
+      errors = errors + 1
+    end if
 
     do c = 2147483648_8, 4294967295_8, +65536
       a = transfer(c, a)
@@ -549,18 +562,31 @@ program gtk_fortran_test
   integer :: errors
 
   open(unit=1, file="tests_errors.txt")
+
+  print *, "test_iso_c_binding()"
   errors = test_iso_c_binding()
+  print *, "test_c_char_in_out()"
   errors = errors +  test_c_char_in_out()
+  print *, "test_guchar_in_out()"
   errors = errors +  test_guchar_in_out()
+  print *, "test_gdouble_in_out()"
   errors = errors +  test_gdouble_in_out()
+  print *, "test_gulong_in()"
   errors = errors +  test_gulong_in()
+  print *, "test_int16_in_out()"
   errors = errors +  test_int16_in_out()
+  print *, "test_uint16_in_out()"
   errors = errors +  test_uint16_in_out()
+  print *, "test_int32_in_out()"
   errors = errors +  test_int32_in_out()
+  print *, "test_uint32_in_out()"
   errors = errors +  test_uint32_in_out()
+  print *, "test_gboolean_in_out()"
   errors = errors +  test_gboolean_in_out()
+
   close(1)
 
+  print *
   if (errors == 0) then
     print *, "No error"
   else
