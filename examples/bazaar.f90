@@ -23,6 +23,7 @@
 
 ! This program is used to test GTK+ widgets
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
+! Last modification: vmagnin 02-20-2019
 ! To compile under Linux:
 ! gfortran -I../src/ ../src/gtk.o ../src/gtk-sup.o ../src/gtk-hl.o bazaar.f90  `pkg-config --cflags --libs gtk+-2.0`
 
@@ -96,10 +97,10 @@ contains
     integer :: j
     integer(kind=c_int) :: i, nch, rowstride, width, height
     integer :: x, y
-    
+
     print *, "my expose_event"
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
-    
+
     call cairo_set_line_width(my_cairo_context, 1d0)
     call cairo_move_to(my_cairo_context, 100d0, 20d0)  
     call cairo_line_to(my_cairo_context, 100.5d0, 20d0)
@@ -121,40 +122,39 @@ contains
     !*************
     width = 200
     height = 100
-    my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, &
-         & width, height)    
-    call C_F_POINTER(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
 
+    my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
     print *, rowstride, nch, gdk_pixbuf_get_has_alpha(my_pixbuf)
-    
+    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/width*height*nch/))
+
     ! pixel is an array with 4 bytes per pixel (RGBA)
     ! We use chars because we need unsigned integers
     !pixel=char(255)   ! All in white and maximum opacity
-    
+
     do i=1, width*height*nch, nch
       pixel(i)=char(0)      ! Red
       pixel(i+1)=char(0)    ! Green
       pixel(i+2)=char(255)  ! Blue
       pixel(i+3)=char(200)  ! Opacity (Alpha channel)
     end do
-    
+
     ! (0,0) is the top left corner
     ! 0<=x<width, 0<=y<height
-    
+
     ! Green sinus:
     do j=0, width-1
       x=j
       y=height/2 + int(50 * sin(j/10d0))
-      
+
       i = x * nch + y * rowstride + 1
       pixel(i)=char(0)
       pixel(i+1)=char(255)
       pixel(i+2)=char(0)
       pixel(i+3)=char(255)
     end do
-    
+
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 20d0, 0d0)
     call cairo_paint(my_cairo_context)
     !************
@@ -176,11 +176,11 @@ contains
     character(len=512) :: my_string
 
     print *, "my destroy"
-    
+
     call C_F_POINTER(gtk_entry_get_text(entry1), textptr, (/0/))
     call convert_c_string(textptr, my_string)
     print *, "Entry box:", TRIM(my_string)
-    
+
     call gtk_main_quit()
   end subroutine destroy
 
@@ -190,7 +190,7 @@ contains
     use iso_c_binding, only: c_ptr
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-    
+
     print *, "Hello World!"
     ret = FALSE
   end function firstbutton
@@ -231,7 +231,7 @@ contains
     response_id =  gtk_dialog_run(dialog)
     print *, "Dialog response ID:", response_id
     call gtk_widget_destroy(dialog)
-    
+
     ret = FALSE
   end function aboutbutton
 
@@ -243,24 +243,24 @@ contains
     character(kind=c_char), dimension(:), pointer :: textptr
     type(c_ptr), value :: widget, gdata
     character(len=512) :: my_string
-    
+
     print *, "Selected File has changed:"
     call C_F_POINTER(gtk_file_chooser_get_filename (widget), textptr, (/0/))
     call convert_c_string(textptr, my_string)
     print *, TRIM(my_string)
-    
+
     ret = FALSE
   end function file_changed
-  
-  
-  ! This is not a handler:
+
+
+  ! Thos is not a handler:
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
     implicit none
     character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
     character(len=*), intent(out) :: f_string
     integer :: i
-          
+
     f_string=""
     i=1
     do while(textptr(i) .NE. char(0))
@@ -312,11 +312,11 @@ program gtkFortran
   label1 = gtk_label_new("My label"//c_null_char)
   call gtk_table_attach_defaults(table, label1, 0_c_int, 1_c_int,  &
        & 1_c_int, 2_c_int)
-  
+
   entry1 = gtk_entry_new()
   call gtk_table_attach_defaults(table, entry1, 1_c_int, 2_c_int, &
        & 1_c_int, 2_c_int)  
-  
+
   progress = gtk_progress_bar_new()
   call gtk_progress_bar_set_fraction (progress, 0.15d0)
   call gtk_progress_bar_set_text (progress, "My progress bar"//c_null_char)
