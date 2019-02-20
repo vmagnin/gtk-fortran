@@ -52,7 +52,7 @@ module handlers
   logical :: boolevent
   type(c_ptr) :: my_pixbuf
   character(kind=c_char), dimension(:), pointer :: pixel
-  integer(kind=c_int) :: nch, rowstride, width, height
+  integer(kind=c_int) :: nch, rowstride, width, height, pwidth, pheight
   logical :: finished
 
 contains
@@ -136,15 +136,15 @@ program mandelbrot
   implicit none
   type(c_ptr) :: my_window
   type(c_ptr) :: my_drawing_area
-  integer :: i
+  integer :: bytes
 
   finished = .false.
+
   call gtk_init ()
 
   ! Properties of the main window :
   width = 700
   height = 700
-
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_default_size(my_window, width, height)
   call gtk_window_set_title(my_window, "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
@@ -158,24 +158,30 @@ program mandelbrot
 
   call gtk_widget_show (my_window)
 
-  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, &
-       & width/2_c_int, height/2_c_int)    
-  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
+  ! Dimensions of the picture:
+  pwidth  = width  / 2_c_int
+  pheight = height / 2_c_int
+  ! "Creates a new GdkPixbuf structure and allocates a buffer for it":
+  ! RGB, alpha channel (TRUE), 8 bits per color sample, width, height
+  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, pwidth, pheight)
+  ! Queries the number of channels of a pixbuf:
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
+  print *, "Number of channels of the pixbuf: ", nch
+  ! "Queries the rowstride of a pixbuf, which is the number of bytes between 
+  ! the start of a row and the start of the next row":
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
+  print *, "Rowstride of the pixbuf: ", rowstride
+  bytes = pwidth*pheight*nch
+  print *, "Size (bytes) of the pixbuf: ", bytes
 
-  do i=1, (width/2*height/2)*nch, nch
-    pixel(i)=char(0)      ! Red
-    pixel(i+1)=char(0)    ! Green
-    pixel(i+2)=char(0)    ! Blue
-    pixel(i+3)=char(255)  ! Opacity (Alpha channel)
-  end do
+  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/bytes/))
 
   call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 100_4)
 
   ! The window stays opened after the computation
   ! Main loop:
   call gtk_main()
+
   print *, "All done"
 
 end program mandelbrot 
@@ -195,16 +201,16 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
   type(c_ptr) :: my_drawing_area
   integer(4) :: i, j, k, p, itermax
   real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-  complex(8) :: c, z   
+  complex(8) :: c, z
   real(8)    :: scx, scy             ! scales
   integer(1) :: red, green, blue     ! rgb color
   real(8) :: system_time, t0, t1
 
-  t0=system_time()
-  scx = ((xmax-xmin)/(width/2))   ! x scale
-  scy = ((ymax-ymin)/(height/2))  ! y scale
+  t0 = system_time()
+  scx = (xmax-xmin) / pwidth   ! x scale
+  scy = (ymax-ymin) / pheight  ! y scale
 
-  do i=0, width/2
+  do i=0, pwidth-1
     ! We provoke an expose_event:
     !if (mod(i,10)==0) then
     if (mod(i,1_c_int)==0) then
@@ -212,7 +218,7 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
     end if
 
     x = xmin + scx * i
-    do j=0, height/2
+    do j=0, pheight-1
       y = ymin + scy * j
       c = x + y*(0d0,1d0)   ! Starting point
       z = (0d0, 0d0)        ! z0
@@ -244,10 +250,13 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
       if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
   end do
+
   finished = .true.
   call gtk_widget_queue_draw(my_drawing_area)
+
   t1=system_time()
   print *, "System time = ", t1-t0
+
 end subroutine mandelbrot_set
 
 !***********************************************************

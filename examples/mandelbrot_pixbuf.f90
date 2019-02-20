@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: 02-19-2019
+! Last modification: 02-20-2019
 ! gfortran -I../src ../src/gtk.f90 mandelbrot_pixbuf.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
 
 module handlers
@@ -92,7 +92,6 @@ program mandelbrot
   implicit none
   type(c_ptr) :: my_window
   type(c_ptr) :: my_drawing_area
-  integer :: i
 
   call gtk_init ()
 
@@ -114,26 +113,25 @@ program mandelbrot
   call gtk_widget_show (my_window)
 
   ! We create a pixbuffer to store the pixels of the image:
+  ! "Creates a new GdkPixbuf structure and allocates a buffer for it":
+  ! RGB, alpha channel (TRUE), 8 bits per color sample, width, height
   my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
-  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/0/))
+  ! Queries the number of channels of a pixbuf:
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
+  print *, "Number of channels of the pixbuf: ", nch
+  ! "Queries the rowstride of a pixbuf, which is the number of bytes between 
+  ! the start of a row and the start of the next row":
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
+  print *, "Rowstride of the pixbuf: ", rowstride
 
-  ! We use char() because we need unsigned integers.
-  ! Our pixbuffer has an Alpha channel but is possible to create a pixbuffer
-  ! with only Red, Green, Blue. 
-  do i=1, width*height*nch, nch
-    pixel(i)=char(0)      ! Red
-    pixel(i+1)=char(0)    ! Green
-    pixel(i+2)=char(0)    ! Blue
-    pixel(i+3)=char(255)  ! Opacity (Alpha channel)
-  end do
+  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/width*height*nch/))
 
   call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 1000_4)
 
   ! The window stays opened after the computation
   ! Main loop:
   call gtk_main()
+
   print *, "All done"
 
 end program mandelbrot 
@@ -190,6 +188,9 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
         blue  = int(min(255, k*10), KIND=1)
       end if
 
+      ! We use char() because we need unsigned integers.
+      ! Our pixbuffer has an Alpha channel but is possible to create a pixbuffer
+      ! with only Red, Green, Blue. 
       ! We write in the pixbuffer:
       p = i * nch + j * rowstride + 1
       pixel(p)=char(red)
