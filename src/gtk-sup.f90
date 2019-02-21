@@ -22,8 +22,8 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by James Tappin
-! Last modification: 06-20-2012
+! Contributed by James Tappin, Ian Harvey (IanH0073)
+! Last modifications: 06-20-2012, vmagnin+IanH0073 02-21-2019
 
 !*
 ! Supplementary material
@@ -372,16 +372,17 @@ module gtk_sup
      module procedure convert_c_string_array
      module procedure convert_c_string_scalar_cptr
      module procedure convert_c_string_array_cptr
-     module procedure convert_c_string_scalar_cptr1
-     module procedure convert_c_string_array_cptr1
   end interface convert_c_string
+
+  public :: c_f_string_copy
+!  public :: c_f_string_copy_alloc
+!  public :: c_f_string_ptr
+
   interface c_f_string
      module procedure convert_c_string_scalar
      module procedure convert_c_string_array
      module procedure convert_c_string_scalar_cptr
      module procedure convert_c_string_array_cptr
-     module procedure convert_c_string_scalar_cptr1
-     module procedure convert_c_string_array_cptr1
   end interface c_f_string
   interface f_c_string
      module procedure convert_f_string_a
@@ -397,6 +398,23 @@ module gtk_sup
      module procedure f_c_logical4
      module procedure f_c_logical1
   end interface f_c_logical
+
+  ! String conversion routines below lazily use the C std library function 
+  ! strlen.  If this is not available for some bizarre reason, then a 
+  ! simple index of the null character will suffice.
+  ! Contributed by Ian Harvey, 2014.
+  interface
+    function strlen(str) bind(c, name='strlen')
+      use, intrinsic :: iso_c_binding, only: c_size_t, c_ptr
+      implicit none
+      type(c_ptr), intent(in), value :: str
+      integer(c_size_t) :: strlen
+    end function strlen
+  end interface
+
+!  private :: strlen
+!  private :: do_association
+
 
 contains
   ! These 2 clear_ routines are only needed of you need to re-initialize
@@ -431,6 +449,84 @@ contains
 
   ! Some string conversion routines
 
+  
+  ! Create a default character deferred length allocatable copy of the 
+  ! value of a c string.
+  ! Contributed by Ian Harvey, 2014.
+  ! This requires a relatively recent gfortran.
+!  subroutine c_f_string_copy_alloc(the_ptr, f_string)
+!    type(c_ptr), intent(in) :: the_ptr
+!    character(:), intent(out), allocatable :: f_string
+!    
+!    character(kind=c_char), pointer :: f_array(:)
+!    integer :: i
+!    
+!    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
+!    allocate(character(size(f_array)) :: f_string)
+!    forall (i = 1:size(f_array)) f_string(i:i) = f_array(i)
+!  end subroutine c_f_string_copy_alloc
+
+  ! Create a default character fixed length copy of the value of a c string.
+  !
+  ! This is probably ok for older gfortran.
+  subroutine c_f_string_copy(the_ptr, f_string, status)
+    type(c_ptr), intent(in) :: the_ptr
+    character(*), intent(out) :: f_string
+    integer, intent(out), optional :: status
+
+    character(kind=c_char), pointer :: f_array(:)
+    integer :: i
+
+    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
+
+    do i = 1, size(f_array)
+      if (i > len(f_string)) then
+        if (present(status)) status = -1
+        return
+      end if
+      f_string(i:i) = f_array(i)
+    end do
+
+    ! i here is size(f_array) + 1.  Define the remainder of fstring.
+    f_string(i:) = ''
+
+    if (present(status)) status = 0
+  end subroutine c_f_string_copy
+
+  ! Associate a pointer with a c string.
+  !
+  ! This requires a Fortran 2003 compiler (a relatively recent gfortran).
+!  subroutine c_f_string_ptr(the_ptr, f_string)
+!    type(c_ptr), intent(in) :: the_ptr
+!    character(:,kind=c_char), intent(out), pointer :: f_string
+!    
+!    character(kind=c_char), pointer :: f_array(:)
+!    
+!    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
+!    ! Here we rely on sequence association.  f_array is an array expression 
+!    ! (one that happens to be an array designator), so it designates an 
+!    ! array element sequence of all the elements of the array.  That array 
+!    ! element sequence is then associated with an array of different length 
+!    ! (but same total number of characters) inside do_association.
+!    call do_association(size(f_array), f_array, f_string)
+!  end subroutine c_f_string_ptr
+
+  ! Worker routine for c_f_string_ptr
+  !
+  ! It is processor dependent whether pointers associated with the actual 
+  ! argument are associated with the dummy argument inside the procedure.  
+  ! It is similarly processor dependent whether pointers associated with a 
+  ! dummy argument remain associated after the procedure exits.  But in 
+  ! F2003, this is the only way.  In F2008 things are a little better.  In 
+  ! F201X they are probably quite ok.
+!  subroutine do_association(l, str, f_string)
+!    integer, intent(in) :: l
+!    character(len=l,kind=c_char), intent(in), target :: str(1)
+!    character(:,kind=c_char), intent(out), pointer :: f_string
+!    f_string => str(1)
+!  end subroutine do_association
+
+
   !+
   subroutine convert_c_string_scalar(textptr, f_string, status)
     character(kind=c_char), dimension(:), intent(in) :: textptr
@@ -446,18 +542,22 @@ contains
     !
     ! Usually called via the convert_c_string generic interface.
     !-
+    ! Contributed by jtappin and Ian Harvey.
 
     integer :: i
 
-    f_string=""
+    do i = 1, size(textptr)
+      if (textptr(i) == c_null_char) exit
+      if (i > len(f_string)) then
+        if (present(status)) status = -1  ! Output string not long enough
+        return
+      end if
+      f_string(i:i)=textptr(i)
+    end do
+
+    f_string(i:) = ''
 
     if (present(status)) status = 0
-    do i = 1, len(f_string)
-       if (i > size(textptr)) return
-       if (textptr(i) == c_null_char) return
-       f_string(i:i)=textptr(i)
-    end do
-    if (present(status)) status = -1  ! Output string not long enough
   end subroutine convert_c_string_scalar
 
   !+
@@ -514,53 +614,50 @@ contains
 
 
   !+
-  subroutine convert_c_string_scalar_cptr(ctext, clen, f_string, status)
+  subroutine convert_c_string_scalar_cptr(ctext, f_string, status)
     type(c_ptr), intent(in) :: ctext
-    integer, intent(in) :: clen
     character(len=*), intent(out) :: f_string
     integer, intent(out), optional :: status
 
     ! Convert a null-terminated c-string to  a fortran string
     !
     ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
-    ! CLEN: int: required: The length of the string (or of the Fortran
-    ! 		string if the C-string is of unknow length,=.
     ! F_STRING: f_string: required: A Scalar Fortran string.
     ! STATUS: integer: optional: Is set to -1 if the Fortran string
     ! 		is too short.
     !
     ! Usually called via the convert_c_string generic interface.
     !-
+    ! Contributed by jtappin and Ian Harvey.
 
     integer :: i
     character(kind=c_char), dimension(:), pointer :: textptr
 
-    call c_f_pointer(ctext, textptr, (/clen/))
+    call c_f_pointer(ctext, textptr, (/ strlen(ctext) /))
 
-    f_string=""
-
-    if (present(status)) status = 0
-    do i = 1, len(f_string)
-       if (i > clen) return
-       if (textptr(i) == c_null_char) return
-       f_string(i:i)=textptr(i)
+    do i = 1, size(textptr)
+      if (i > len(f_string)) then
+        if (present(status)) status = -1  ! Output string not long enough
+        return
+      end if
+      f_string(i:i)=textptr(i)
     end do
-    if (present(status)) status = -1  ! Output string not long enough
+
+    f_string(i:) = ''
+    if (present(status)) status = 0
+
   end subroutine convert_c_string_scalar_cptr
 
 
   !+
-  subroutine convert_c_string_array_cptr(ctext, clen, f_string, status)
+  subroutine convert_c_string_array_cptr(ctext, f_string, status)
     type(c_ptr), intent(in) :: ctext
-    integer, intent(in) :: clen
     character(len=*), intent(out), dimension(:), allocatable :: f_string
     integer, intent(out), optional :: status
 
     ! Convert a null-terminated LF-separated c-string into a fortran
     ! string array
     ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
-    ! CLEN: int: required: The length of the string (or of the Fortran
-    ! 		string if the C-string is of unknown length,=.
     ! F_STRING: f_string(): required: A  Fortran string. array
     ! STATUS: integer: optional: Is set to -1 if the Fortran string
     ! 		is too short for any of the lines.
@@ -571,13 +668,12 @@ contains
     integer :: i, j, ii, count
     character(kind=c_char), dimension(:), pointer :: textptr
 
-    call c_f_pointer(ctext, textptr, (/clen/))
-
+    call c_f_pointer(ctext, textptr, (/ strlen(ctext) /))
+    ! count = COUNT(textptr == c_new_line)
     count = 1
     i = 1
     do
-       if (i > clen) exit
-       if (textptr(i) == c_null_char) exit
+       if (i > size(textptr)) exit
        if (textptr(i) == c_new_line) count = count+1
        i = i+1
     end do
@@ -589,11 +685,9 @@ contains
        f_string(j) = ""
        do i = 1, len(f_string)
           if (ii > size(textptr)) then
-             if (j < count .and. present(status)) status=-1
              return
           end if
 
-          if (textptr(ii) == c_null_char) return
           if (textptr(ii) == c_new_line) then
              ii = ii+1
              exit
@@ -607,94 +701,6 @@ contains
   end subroutine convert_c_string_array_cptr
 
   !+
-  subroutine convert_c_string_scalar_cptr1(ctext, f_string, status)
-    type(c_ptr), intent(in) :: ctext
-    character(len=*), intent(out) :: f_string
-    integer(kind=c_int), intent(out), optional :: status
-
-    ! Convert a null-terminated c-string to  a fortran string
-    !
-    ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
-    ! F_STRING: f_string: required: A Scalar Fortran string.
-    ! STATUS: integer: optional: Is set to -1 if the Fortran string
-    ! 		is too short.
-    !
-    ! Usually called via the convert_c_string generic interface.
-    !-
-
-    integer :: i
-    character(kind=c_char), dimension(:), pointer :: textptr
-
-    integer :: clen
-
-    clen = len(f_string)
-    call c_f_pointer(ctext, textptr, (/ clen /))
-
-    f_string=""
-
-    if (present(status)) status = 0
-    do i = 1, clen
-       if (textptr(i) == c_null_char) return
-       f_string(i:i)=textptr(i)
-    end do
-    if (present(status)) status = -1  ! Output string not long enough
-  end subroutine convert_c_string_scalar_cptr1
-
-
-  !+
-  subroutine convert_c_string_array_cptr1(ctext, f_string, status)
-    type(c_ptr), intent(in) :: ctext
-    character(len=*), intent(out), dimension(:), allocatable :: f_string
-    integer(kind=c_int), intent(out), optional :: status
-
-    ! Convert a null-terminated LF-separated c-string into a fortran
-    ! string array
-    ! 
-    ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
-    ! F_STRING: f_string(): required: A  Fortran string. array
-    ! STATUS: integer: optional: Is set to -1 if the Fortran string
-    ! 		is too short for any of the lines.
-    !
-    ! Usually called via the convert_c_string generic interface.
-    !-
-
-    integer :: i, j, ii, count
-    character(kind=c_char), dimension(:), pointer :: textptr
-
-    call c_f_pointer(ctext, textptr, (/0/))
-
-    count = 1
-    i = 1
-    do
-       if (textptr(i) == c_null_char) exit
-       if (textptr(i) == c_new_line) count = count+1
-       i = i+1
-    end do
-    allocate(f_string(count))
-
-    if (present(status)) status = 0
-    ii = 1
-    do j = 1, count
-       f_string(j) = ""
-       do i = 1, len(f_string)
-          if (ii > size(textptr)) then
-             if (j < count .and. present(status)) status=-1
-             return
-          end if
-
-          if (textptr(ii) == c_null_char) return
-          if (textptr(ii) == c_new_line) then
-             ii = ii+1
-             exit
-          end if
-          f_string(j)(i:i)=textptr(ii)
-          ii = ii+1
-       end do
-       if (i > len(f_string) .and. present(status)) &
-            & status = -1  ! Output string not long enough
-    end do
-  end subroutine convert_c_string_array_cptr1
-
   !+
   subroutine convert_f_string_a(f_string, textptr, length)
     character(len=*), intent(in), dimension(:) :: f_string
