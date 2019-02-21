@@ -23,8 +23,9 @@
 
 ! This program is used to test GTK+ widgets
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
+! Last mmodifications: vmagnin+Ian Harvey, 02-21-2019
 ! To compile under Linux:
-! gfortran -I../src/ ../src/gtk.o ../src/gtk-sup.o ../src/gtk-hl.o bazaar.f90  `pkg-config --cflags --libs gtk+-2.0`
+! gfortran -I../src/ ../src/gtk.o ../src/gtk-sup.o ../src/gtk-hl.o bazaar.f90  `pkg-config --cflags --libs gtk+-3.0`
 
 module my_widgets
   use iso_c_binding
@@ -172,16 +173,15 @@ contains
   ! GtkObject signal:
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
+    use gtk_sup, only: c_f_string_copy
     type(c_ptr), value :: widget, gdata
-    character(kind=c_char), dimension(:), pointer :: textptr
     character(len=512) :: my_string
 
     print *, "my destroy"
-    
-    call C_F_POINTER(gtk_entry_get_text(entry1), textptr, (/0/))
-    call convert_c_string(textptr, my_string)
+
+    call c_f_string_copy(gtk_entry_get_text(entry1), my_string)
     print *, "Entry box:", TRIM(my_string)
-    
+
     call gtk_main_quit()
   end subroutine destroy
 
@@ -231,7 +231,7 @@ contains
     response_id =  gtk_dialog_run(dialog)
     print *, "Dialog response ID:", response_id
     call gtk_widget_destroy(dialog)
-    
+
     ret = FALSE
   end function aboutbutton
 
@@ -239,20 +239,19 @@ contains
   ! GtkFileChooser signal:
   function file_changed (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_char
+    use gtk_sup, only: c_f_string_copy
     integer(c_int)    :: ret
-    character(kind=c_char), dimension(:), pointer :: textptr
     type(c_ptr), value :: widget, gdata
     character(len=512) :: my_string
-    
+
     print *, "Selected File has changed:"
-    call C_F_POINTER(gtk_file_chooser_get_filename (widget), textptr, (/0/))
-    call convert_c_string(textptr, my_string)
+    call c_f_string_copy(gtk_file_chooser_get_filename(widget), my_string)
     print *, TRIM(my_string)
-    
+
     ret = FALSE
   end function file_changed
-  
-  
+
+
   ! This is not a handler:
   subroutine convert_c_string(textptr, f_string)
     use iso_c_binding, only: c_char
