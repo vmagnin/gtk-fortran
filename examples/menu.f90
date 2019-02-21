@@ -21,10 +21,11 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see .
 !
-! gfortran -g gtk.f90 menu.f90 `pkg-config --cflags --libs gtk+-2.0`
-! menu.xml must be copied to the same directory as the simplemenu executable!               
+! gfortran -g gtk.f90 menu.f90 `pkg-config --cflags --libs gtk+-3.0`
+! menu.xml must be copied to the same directory as the simplemenu executable
+!
 ! Contributed by Jens Hunger
-! Last modified: 05-04-2011
+! Last modified: 05-04-2011, vmagnin+Ian Harvey 02-21-2019
 
 module handlers
   use gtk, only: gtk_action_group_add_action, gtk_action_group_get_action, gtk_ac&
@@ -156,6 +157,7 @@ end module handlers
 program simplemenu
   use iso_c_binding
   use handlers
+  use gtk_sup, only: c_f_string_copy
   implicit none
 
   type ui_action
@@ -169,7 +171,6 @@ program simplemenu
   type(c_ptr) :: mainwindow
   type(c_ptr) :: box
   type(c_ptr) :: action_group,menu_manager,error
-  character(kind=c_char), dimension(:), pointer :: textptr
   character(len=512) :: error_string
   integer(c_size_t) :: buffer_length
   integer :: ui,i
@@ -259,8 +260,7 @@ program simplemenu
 
   ! Handle error
   if (c_associated(error)) then
-    call c_f_pointer(error, textptr, (/0/))
-    call convert_c_string(textptr, error_string)
+    call c_f_string_copy(error, error_string)
     print *,"building menus failed: ", error_string
   endif
   

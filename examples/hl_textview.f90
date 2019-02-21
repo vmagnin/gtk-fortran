@@ -1,3 +1,6 @@
+! Contributed jtappin.
+! Last modification: vmagnin+Ian Harvey, 02-21-2019
+
 module handlers
 
   use iso_c_binding
@@ -75,9 +78,9 @@ contains
          & gtk_text_iter_get_offset(s_iter)
 
     ctext = gtk_text_iter_get_text(s_iter, e_iter)
-    call convert_c_string(ctext, int(dlen), ftext)
+    call convert_c_string(ctext, ftext)
 
-    print "(A)", ftext
+    print "(A)", ftext(:)(:dlen)
     deallocate(ftext)
   end subroutine tv_del
 

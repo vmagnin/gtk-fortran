@@ -22,8 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
-
-! Last modification: vmagnin 02-20-2016
+! Last modification: vmagnin 02-20-2016, vmagnin+Ian Harvey 02-21-2019
 ! gfortran -I../src ../src/gtk.f90 julia_pixbuf.f90 `pkg-config --cflags --libs gtk+-2.0` -Wall -Wextra -pedantic -std=f2003
 
 
@@ -144,6 +143,7 @@ contains
   ! GtkComboBox signal:
   function firstCombo (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int, c_double, c_f_pointer
+    use gtk_sup, only: c_f_string_copy
     use global_widgets
     implicit none
     integer(c_int)    :: ret
@@ -151,10 +151,8 @@ contains
     real(c_double) :: x, y
     integer :: choice
     character(len=512) :: my_string
-    character(kind=c_char), dimension(:), pointer :: textptr
 
-    call C_F_POINTER(gtk_combo_box_text_get_active_text(combo1), textptr, (/0/))
-    call convert_c_string(textptr, my_string)
+    call c_f_string_copy( gtk_combo_box_text_get_active_text(combo1), my_string)
     read(my_string, *) choice
 
     select case (choice)
@@ -250,22 +248,6 @@ contains
 
     ret = FALSE
   end function firstToggle
-
-  ! This is not a handler:
-  subroutine convert_c_string(textptr, f_string)
-    use iso_c_binding, only: c_char
-    implicit none
-    character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
-    character(len=*), intent(out) :: f_string
-    integer :: i
-
-    f_string=""
-    i=1
-    do while(textptr(i) .NE. char(0))
-      f_string(i:i)=textptr(i)
-      i=i+1
-    end do
-  end subroutine convert_c_string
 
 end module handlers
 
