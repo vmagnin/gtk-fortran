@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 02-21-2019
+! Last modifications: vmagnin+Ian Harvey 02-21-2019, vmagnin 02-22-2019
 ! gfortran -I../src ../src/gtk.f90 julia_pixbuf.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
 
 
@@ -90,8 +90,10 @@ contains
     call gtk_main_quit()
   end function delete_event
 
-
-  subroutine pending_events ()
+  ! In this example, this function is declared recursive because it can be
+  ! called a second time by the toggle button callback function
+  ! firstToggle (widget, gdata ):
+  recursive subroutine pending_events ()
     do while(IAND(gtk_events_pending(), run_status) /= FALSE)
       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
     end do
@@ -228,7 +230,9 @@ contains
 
 
   ! GtkToggleButton signal:
-  function firstToggle (widget, gdata ) result(ret)  bind(c)
+  ! This function is declared recursive because it will be pressed a first time
+  ! to pause and a second time to end pause (from the "do while" loop):
+  recursive function firstToggle (widget, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_long
     use global_widgets
     implicit none
@@ -238,12 +242,12 @@ contains
 
     if (gtk_toggle_button_get_active(widget) == TRUE) then
       call gtk_text_buffer_insert_at_cursor (buffer, &
-           & "In pause (don't try to quit the window)"//C_NEW_LINE//c_null_char,&
+           & "In pause"//C_NEW_LINE//c_null_char,&
            & -1_c_int)
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
-        if (run_status == FALSE) exit ! Exit if we had a delete event.
-        call g_usleep(500000_c_long)   ! microseconds
+        if (run_status == FALSE) exit ! Exit if we had a delete event
+        call g_usleep(50000_c_long)   ! In microseconds
       end do
     else
       call gtk_text_buffer_insert_at_cursor (buffer, "Not in pause"//C_NEW_LINE//c_null_char, -1_c_int)
@@ -289,7 +293,7 @@ program julia
   label2 = gtk_label_new("imag(c) "//c_null_char)
   spinButton2 = gtk_spin_button_new (gtk_adjustment_new(-0.2321d0, -2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7_c_int)
   label3 = gtk_label_new("iterations"//c_null_char)
-  spinButton3 = gtk_spin_button_new (gtk_adjustment_new(1000d0,1d0,+100000d0,10d0,100d0,0d0),10d0, 0_c_int)
+  spinButton3 = gtk_spin_button_new (gtk_adjustment_new(100000d0,1d0,+1000000d0,10d0,100d0,0d0),10d0, 0_c_int)
 
   label4 = gtk_label_new("Predefined values:"//c_null_char)
   combo1 = gtk_combo_box_text_new()
