@@ -451,12 +451,12 @@ contains
       ret = FALSE
       return
     else
-      call chdir(working_dir)
+      call execute_command_line("cd "//working_dir)
       subdir=filename(index(filename,"/",.true.)+1:index(filename,".",.true.)-1)
       if (create_subdir) then
         if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//c_null_char,488_c_int) .ge. 0) then
           working_dir=working_dir(1:len_trim(working_dir))//"/"//subdir
-          call chdir(working_dir)
+          call execute_command_line("cd "//working_dir)
           call copy_file(filename(1:len_trim(filename)),filename(index(filename,"/",.true.)+1:len_trim(filename)))
         else
           print*,"Unable to create subdirectory "//subdir
@@ -567,10 +567,10 @@ contains
       write(hunit,'(A)')"  &FALSE, c_null_char, c_null_ptr, gtk_init"
       write(hunit,'(A)')"  use g, only: g_object_unref"
       if (update_used_functions) then
-        call chdir(base_dir(1:len_trim(base_dir))//"/../../src")
+        call execute_command_line("cd "//base_dir(1:len_trim(base_dir))//"/../../src")
         write(*,*)working_dir
-        call system("ls -la ")
-        call system("./usemodules.py "//working_dir)
+        call execute_command_line("ls -la ")
+        call execute_command_line("./usemodules.py "//working_dir)
         open (40, file="usemodules.txt", action='read')
         do
           read(40,'(A)',iostat=status_read) line
@@ -585,7 +585,7 @@ contains
           endif
         enddo
         close (40)
-        call chdir(working_dir)
+        call execute_command_line("cd "//working_dir)
       endif
 
       if (use_hl_gtk) then
@@ -793,7 +793,7 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: default_options
     type(c_ptr), value :: widget, gdata
 
-    call getcwd(working_dir)
+    call get_environment_variable("PWD", working_dir)
     call load_default_options
     call gtk_toggle_button_set_active (create_subdir_button, gbool(create_subdir))
     call gtk_toggle_button_set_active (create_handlerfiles_button, gbool(create_handlerfiles))
@@ -811,12 +811,12 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: show_about_dialog
     type(c_ptr), value :: widget, gdata
     integer(c_int) :: dialog
-    
+
     dialog = gtk_dialog_run (about_dialog)
     call gtk_widget_hide (about_dialog)
-    
+
   end subroutine show_about_dialog
-  
+
   ! Contributed by IanH0073 (issue #81)
   function fdate()
     character(29) :: fdate
@@ -842,7 +842,7 @@ program gtkfsketcher
   type(c_ptr) :: error
   error = c_null_ptr
 
-  call getcwd(base_dir)
+  call get_environment_variable("PWD", base_dir)
   open(99, file="gtkf-sketcher.log", action='write')
 
   ! Initialize the GTK+ Library
