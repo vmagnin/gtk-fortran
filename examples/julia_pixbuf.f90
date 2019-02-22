@@ -50,7 +50,7 @@ module handlers
   &gtk_toggle_button_new_with_label, gtk_toggle_button_get_active, gtk_notebook_new,&
   &gtk_notebook_append_page, gtk_text_view_new, gtk_text_view_get_buffer, gtk_text_buffer_set_text,&
   &gtk_scrolled_window_new, C_NEW_LINE, gtk_text_buffer_insert_at_cursor, gtk_statusbar_new,&
-  &gtk_statusbar_push, gtk_statusbar_get_context_id, gtk_handle_box_new,&
+  &gtk_statusbar_push, gtk_statusbar_pop, gtk_statusbar_get_context_id, gtk_handle_box_new,&
   &CAIRO_STATUS_SUCCESS, CAIRO_STATUS_NO_MEMORY, CAIRO_STATUS_SURFACE_TYPE_MISMATCH,&
   &CAIRO_STATUS_WRITE_ERROR, gtk_button_new_with_mnemonic, gtk_link_button_new_with_label,&
   &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic, &
@@ -237,20 +237,26 @@ contains
     use global_widgets
     implicit none
 
-    integer(c_int)    :: ret
+    integer(c_int)    :: ret, message_id
     type(c_ptr), value :: widget, gdata
 
+    ! Button is pressed:
     if (gtk_toggle_button_get_active(widget) == TRUE) then
       call gtk_text_buffer_insert_at_cursor (buffer, &
-           & "In pause"//C_NEW_LINE//c_null_char,&
-           & -1_c_int)
+              & "In pause"//C_NEW_LINE//c_null_char, -1_c_int)
+      message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
+              & "Julia"//c_null_char), "In pause..."//c_null_char)
+      ! Pause loop:
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
         if (run_status == FALSE) exit ! Exit if we had a delete event
         call g_usleep(50000_c_long)   ! In microseconds
       end do
-    else
+    else  ! Button raised:
       call gtk_text_buffer_insert_at_cursor (buffer, "Not in pause"//C_NEW_LINE//c_null_char, -1_c_int)
+      ! Remove the "In pause..." message from the status bar:
+      call gtk_statusbar_pop (statusBar, gtk_statusbar_get_context_id(statusBar, &
+              & "Julia"//c_null_char))
     end if
 
     ret = FALSE
