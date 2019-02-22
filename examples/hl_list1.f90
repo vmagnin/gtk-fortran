@@ -23,7 +23,7 @@
 !
 ! gfortran -g gtk.f90 gtk-sup.f90 gtk-hl.f90 hl_list1.f90 `pkg-config --cflags --libs gtk+-3.0`
 ! Contributed by James Tappin.
-! Last modification: vmagnin 02-20-2019
+! Last modification: vmagnin 02-22-2019
 
 module l1_handlers
   use gtk_hl
@@ -50,7 +50,7 @@ contains
     call gtk_main_quit ()
   end subroutine my_destroy
 
-  subroutine list_select(list, gdata) bind(c)
+  recursive subroutine list_select(list, gdata) bind(c)
     type(c_ptr), value :: list, gdata
 
     integer, pointer :: fdata
