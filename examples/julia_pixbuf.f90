@@ -117,7 +117,9 @@ contains
 
 
   ! GtkButton signal:
-  function firstbutton (widget, gdata ) result(ret)  bind(c)
+  ! In this example, this function is declared recursive because it can be
+  ! called a second time from the Julia_set() subroutine:
+   recursive function firstbutton (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr
     use global_widgets
     implicit none
@@ -127,19 +129,27 @@ contains
     complex(kind(1d0)) :: c
     integer :: iterations
 
-    c = gtk_spin_button_get_value (spinButton1) + &
-        & (0d0, 1d0)*gtk_spin_button_get_value (spinButton2)
-    iterations = INT(gtk_spin_button_get_value (spinButton3))
+    if (.not. computing) then
+      ! Get parameters:
+      c = gtk_spin_button_get_value (spinButton1) + &
+          & (0d0, 1d0)*gtk_spin_button_get_value (spinButton2)
+      iterations = INT(gtk_spin_button_get_value (spinButton3))
 
-    write(string, '("c=",F8.6,"+i*",F8.6,"   ", I6, " iterations")') c, iterations
-    call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE&
-         & //c_null_char, -1_c_int)
+      write(string, '("c=",F8.6,"+i*",F8.6,"   ", I6, " iterations")') c, iterations
+      call gtk_text_buffer_insert_at_cursor (buffer, string//C_NEW_LINE&
+          & //c_null_char, -1_c_int)
 
-    message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
+      message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
               & "Julia"//c_null_char), "Computing..."//c_null_char)
-    call Julia_set(-2d0, +2d0, -2d0, +2d0, c, iterations)
-    message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
+
+      ! Compute the image:
+      call Julia_set(-2d0, +2d0, -2d0, +2d0, c, iterations)
+
+      message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
               & "Julia"//c_null_char), "Finished."//c_null_char)
+    else
+      print *, "Already computing !"
+    end if
 
     ret = FALSE
   end function firstbutton
