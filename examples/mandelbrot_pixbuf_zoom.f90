@@ -182,8 +182,8 @@ contains
     end if
   end subroutine mark_point
 
-
-  subroutine zoom_view(widget, event, gdata)  bind(c)
+  ! Need to be recursive in case the wheel is turned many steps at a time
+  recursive subroutine zoom_view(widget, event, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, event, gdata
 
     type(gdkeventscroll), pointer :: fevent
@@ -192,6 +192,7 @@ contains
     integer(kind=c_int) :: id
 
     if (.not. c_associated(event)) return  ! shouldn't happen
+    if (computing_flag) return             ! One wheel step at a time !
 
     call c_f_pointer(event, fevent)
 
