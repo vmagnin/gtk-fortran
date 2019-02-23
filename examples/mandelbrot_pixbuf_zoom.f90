@@ -23,7 +23,7 @@
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
-! Last modification: vmagnin 02-23-2019
+! Last modifications: vmagnin 02-23-2019
 ! gfortran -I../src ../src/gtk.f90 ../src/gdkevents-auto3.f90 mandelbrot_pixbuf_zoom.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
 
 module handlers
@@ -128,13 +128,15 @@ contains
     else if (need_point) then ! Already have one point
        need_point=.false.
        print *, "Second point"
-       call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x1, y1)
-       mxmin=min(x0,x1)
-       mxmax=max(x0,x1)
-       mymin=min(y0,y1)
-       mymax=max(y0,y1)
 
-       if ((mxmin==mxmax).or.(mymin==mymax)) print *, "double-click"
+       call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x1, y1)
+       ! If it is not a double-click, we zoom:
+       if ((min(x0,x1)/=max(x0,x1)).and.(min(y0,y1)/=max(y0,y1))) then
+         mxmin=min(x0,x1)
+         mxmax=max(x0,x1)
+         mymin=min(y0,y1)
+         mymax=max(y0,y1)
+       end if
 
        select case(fevent%state)
        case(GDK_SHIFT_MASK) ! Second point was shifted: square (bigger)
