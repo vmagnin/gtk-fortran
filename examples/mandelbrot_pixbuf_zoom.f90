@@ -97,9 +97,8 @@ contains
     call cairo_destroy(my_cairo_context)
   end subroutine paint_set
 
-  subroutine mark_point(widget, event, gdata)  bind(c)
+  recursive subroutine mark_point(widget, event, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, event, gdata
-
     type(gdkeventbutton), pointer :: fevent
     real(kind=c_double), save :: x0, y0
     real(kind=c_double) :: x1, y1, xr, yr, dr
@@ -109,24 +108,32 @@ contains
     if (.not. c_associated(event)) return  ! shouldn't happen
 
     call c_f_pointer(event, fevent)
-
     drawing_area = gtk_bin_get_child(widget)
 
     if (fevent%button == 3) then ! Right button reset to full set
+       need_point=.false.
        call set_limits
        call mandelbrot_set(drawing_area, 1000_c_int)
        call paint_set(gtk_widget_get_window(drawing_area))
-       need_point=.false.
        !       call gtk_statusbar_remove_all(status_bar, 0)
        id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Left|Centre mark: region corner, Right: Reset, "//&
             & "Wheel: Zoom in/out"//c_null_char)
+    else if (.not. need_point) then
+       need_point=.true.
+       print *, "First point"
+       call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x0, y0)
+       id = gtk_statusbar_push(status_bar, 0_c_int, &
+            & "Click the opposite corner of the region"//c_null_char)
     else if (need_point) then ! Already have one point
+       need_point=.false.
+       print *, "Second point"
        call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x1, y1)
        mxmin=min(x0,x1)
        mxmax=max(x0,x1)
        mymin=min(y0,y1)
        mymax=max(y0,y1)
+
        select case(fevent%state)
        case(GDK_SHIFT_MASK) ! Second point was shifted: square (bigger)
           xr=mxmax-mxmin
@@ -163,18 +170,13 @@ contains
 
        call mandelbrot_set(drawing_area, 1000_c_int)
        !       call paint_set(gtk_widget_get_window(drawing_area))
-       need_point=.false.
        !       call gtk_statusbar_remove_all(status_bar, 0)
        id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Left|Centre: mark region corner, "//&
-            & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
-    else
-       call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x0, y0)
-       need_point=.true.
-       id = gtk_statusbar_push(status_bar, 0_c_int, &
-            & "Click the opposite corner of the region"//c_null_char)
+            & "Right: Reset, Wheel: Zoom in/out"//c_null_char)    
     end if
   end subroutine mark_point
+
 
   subroutine zoom_view(widget, event, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, event, gdata
