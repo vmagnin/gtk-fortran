@@ -108,7 +108,7 @@ contains
 
     if (.not. c_associated(event)) return  ! shouldn't happen
 
-    if (computed_flag) return
+    if (computing_flag) return
 
     call c_f_pointer(event, fevent)
     drawing_area = gtk_bin_get_child(widget)
@@ -136,6 +136,8 @@ contains
        mxmax=max(x0,x1)
        mymin=min(y0,y1)
        mymax=max(y0,y1)
+
+       if ((mxmin==mxmax).or.(mymin==mymax)) print *, "double-click"
 
        select case(fevent%state)
        case(GDK_SHIFT_MASK) ! Second point was shifted: square (bigger)
@@ -272,7 +274,6 @@ contains
   subroutine mandelbrot_set(my_drawing_area, itermax)
     ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
     ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
-
     type(c_ptr), intent(in) :: my_drawing_area
     integer(kind=c_int), intent(in) :: itermax
     integer(kind=c_int)    :: i, j, k
@@ -282,7 +283,7 @@ contains
     real(kind=c_double)    :: t0, t1
     integer :: it
 
-    computing_flag = TRUE
+    computing_flag = .true.
 
     call system_clock(it)
     t0=real(it, c_double)/1000._c_double
@@ -332,7 +333,7 @@ contains
     t1=real(it, c_double)/1000._c_double
 
     print *, "System time = ", t1-t0
-    computing_flag = FALSE
+    computing_flag = .false.
   end subroutine mandelbrot_set
 
 end module handlers
