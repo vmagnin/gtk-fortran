@@ -23,7 +23,7 @@
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
-! Last modification: 02-19-2019
+! Last modification: vmagnin 02-23-2019
 ! gfortran -I../src ../src/gtk.f90 ../src/gdkevents-auto3.f90 mandelbrot_pixbuf_zoom.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
 
 module handlers
@@ -56,6 +56,7 @@ module handlers
   character(kind=c_char), dimension(:,:,:), pointer :: pixel
   integer(kind=c_int) :: nch, rowstride, width, height
   logical :: need_point
+  logical :: computing_flag
   character(len=120) :: rangestr
 
   real(kind=c_double) :: mxmin, mxmax, mymin, mymax
@@ -106,6 +107,8 @@ contains
     integer(kind=c_int) :: id
 
     if (.not. c_associated(event)) return  ! shouldn't happen
+
+    if (computed_flag) return
 
     call c_f_pointer(event, fevent)
     drawing_area = gtk_bin_get_child(widget)
@@ -272,13 +275,14 @@ contains
 
     type(c_ptr), intent(in) :: my_drawing_area
     integer(kind=c_int), intent(in) :: itermax
-
     integer(kind=c_int)    :: i, j, k
     real(kind=c_double)    :: x, y ! coordinates in the complex plane
     complex(kind=c_double) :: c, z
     integer(kind=c_int8_t) :: red, green, blue     ! rgb color
     real(kind=c_double)    :: t0, t1
     integer :: it
+
+    computing_flag = TRUE
 
     call system_clock(it)
     t0=real(it, c_double)/1000._c_double
@@ -328,6 +332,7 @@ contains
     t1=real(it, c_double)/1000._c_double
 
     print *, "System time = ", t1-t0
+    computing_flag = FALSE
   end subroutine mandelbrot_set
 
 end module handlers
@@ -350,7 +355,6 @@ program mandelbrot_zoom
   width = 700
   height = 700
 
-
   ! Set the initial view
   call set_limits()
 
@@ -359,7 +363,6 @@ program mandelbrot_zoom
        & "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
   call g_signal_connect (my_window, "delete-event"//c_null_char, &
        & c_funloc(delete_event))
-
 
   jb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
   call gtk_container_add(my_window, jb)
