@@ -55,16 +55,14 @@ module handlers
   type(c_ptr) :: my_pixbuf, status_bar, rangeid
   character(kind=c_char), dimension(:,:,:), pointer :: pixel
   integer(kind=c_int) :: nch, rowstride, width, height
-  logical :: need_point
+  logical :: need_point     ! even/odd point flag
   logical :: computing_flag
   character(len=120) :: rangestr
-
   real(kind=c_double) :: mxmin, mxmax, mymin, mymax
 
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
@@ -87,9 +85,9 @@ contains
     call paint_set(gtk_widget_get_window(widget))
   end subroutine expose_event
 
+
   subroutine paint_set(window)
     type(c_ptr), intent(in) :: window
-
     type(c_ptr) :: my_cairo_context
 
     my_cairo_context = gdk_cairo_create (window)
@@ -97,6 +95,7 @@ contains
     call cairo_paint(my_cairo_context)
     call cairo_destroy(my_cairo_context)
   end subroutine paint_set
+
 
   recursive subroutine mark_point(widget, event, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, event, gdata
@@ -107,7 +106,6 @@ contains
     integer(kind=c_int) :: id
 
     if (.not. c_associated(event)) return  ! shouldn't happen
-
     if (computing_flag) return
 
     call c_f_pointer(event, fevent)
@@ -118,7 +116,6 @@ contains
        call set_limits
        call mandelbrot_set(drawing_area, 1000_c_int)
        call paint_set(gtk_widget_get_window(drawing_area))
-       !       call gtk_statusbar_remove_all(status_bar, 0)
        id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Left|Centre mark: region corner, Right: Reset, "//&
             & "Wheel: Zoom in/out"//c_null_char)
@@ -174,8 +171,6 @@ contains
        call gtk_label_set_text(rangeid, trim(rangestr)//c_null_char)
 
        call mandelbrot_set(drawing_area, 1000_c_int)
-       !       call paint_set(gtk_widget_get_window(drawing_area))
-       !       call gtk_statusbar_remove_all(status_bar, 0)
        id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Left|Centre: mark region corner, "//&
             & "Right: Reset, Wheel: Zoom in/out"//c_null_char)    
@@ -185,7 +180,6 @@ contains
   ! Need to be recursive in case the wheel is turned many steps at a time
   recursive subroutine zoom_view(widget, event, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, event, gdata
-
     type(gdkeventscroll), pointer :: fevent
     type(c_ptr) :: drawing_area
     real(kind=c_double) :: xr, yr, x, y
@@ -238,14 +232,13 @@ contains
     drawing_area = gtk_bin_get_child(widget)
 
     call mandelbrot_set(drawing_area, 1000_c_int)
-    !    call paint_set(gtk_widget_get_window(drawing_area))
-    need_point=.false.
-    !    call gtk_statusbar_remove_all(status_bar, 0)
+
     id = gtk_statusbar_push(status_bar, 0_c_int, &
          & "Left|Centre: mark region corner, "//&
          & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
 
   end subroutine zoom_view
+
 
   subroutine set_limits()
     mxmin = -2.0_c_double
@@ -254,10 +247,10 @@ contains
     mymax = 1.5_c_double
   end subroutine set_limits
 
+
   subroutine mand_xy(ix, iy, x, y)
     integer(kind=c_int), intent(in) :: ix, iy
     real(kind=c_double), intent(out) :: x, y
-
     real(kind=c_double) :: scx, scy
 
     scx = (mxmax-mxmin)/real(width, c_double)   ! x scale
@@ -265,7 +258,6 @@ contains
 
     x = mxmin + scx * real(ix, c_double)
     y = mymin + scy * real(iy, c_double)
-
   end subroutine mand_xy
 
   !*********************************************
@@ -317,7 +309,6 @@ contains
           end if
 
           ! We write in the pixbuffer:
-          ! p = i * nch + j * rowstride + 1
           pixel(1,i+1,j+1)=char(red)
           pixel(2,i+1,j+1)=char(green)
           pixel(3,i+1,j+1)=char(blue)
@@ -328,13 +319,15 @@ contains
           if (run_status == FALSE) return ! Exit if we had a delete event.
        end do
     end do
+
     call gtk_widget_queue_draw(my_drawing_area)
 
     call system_clock(it)
     t1=real(it, c_double)/1000._c_double
-
     print *, "System time = ", t1-t0
+
     computing_flag = .false.
+    need_point     = .false.
   end subroutine mandelbrot_set
 
 end module handlers
@@ -349,7 +342,7 @@ program mandelbrot_zoom
   integer :: i, j
   integer(kind=c_int) :: id
   integer(kind=c_int), parameter :: ev_mask = ior(GDK_BUTTON_PRESS_MASK, &
-       & GDK_SCROLL_MASK)
+                                                & GDK_SCROLL_MASK)
 
   call gtk_init ()
 
@@ -412,14 +405,11 @@ program mandelbrot_zoom
         pixel(1,j,i)=char(0)     ! Red
         pixel(2,j,i)=char(0)     ! Green
         pixel(3,j,i)=char(0)     ! Blue
-        pixel(4,j,i)=char(255)  ! Opacity (Alpha channel)
+        pixel(4,j,i)=char(255)   ! Opacity (Alpha channel)
      end do
   end do
 
   call Mandelbrot_set(my_drawing_area, 1000_c_int)
-
-  ! Initialize the even/odd point flag
-  need_point = .false.
 
   ! The window stays opened after the computation
   ! Main loop:
@@ -427,5 +417,3 @@ program mandelbrot_zoom
   print *, "All done"
 
 end program mandelbrot_zoom
-
-
