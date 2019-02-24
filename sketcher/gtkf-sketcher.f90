@@ -463,7 +463,7 @@ contains
 
           print *, "Working dir: ", TRIM(ADJUSTL(working_dir))
           valid = g_chdir(TRIM(ADJUSTL(working_dir))//c_null_char)
-          if (valid /= 0) print *, "1) g_chdir() problem <= ", valid
+          if (valid /= 0) print *, "2) g_chdir() problem <= ", valid
 
           call copy_file(filename(1:len_trim(filename)),filename(index(filename,"/",.true.)+1:len_trim(filename)))
         else
@@ -579,7 +579,7 @@ contains
 
         print *, "cd ", TRIM(ADJUSTL(base_dir(1:len_trim(base_dir))//"/../../src"))
         valid = g_chdir(TRIM(ADJUSTL(base_dir(1:len_trim(base_dir))//"/../../src"))//c_null_char)
-        if (valid /= 0) print *, "1) g_chdir() problem <= ", valid
+        if (valid /= 0) print *, "3) g_chdir() problem <= ", valid
 
         write(*,*)working_dir
         call execute_command_line("ls -la ")
@@ -601,7 +601,7 @@ contains
 
         print *, "Working dir: ", TRIM(ADJUSTL(working_dir))
         valid = g_chdir(TRIM(ADJUSTL(working_dir))//c_null_char)
-        if (valid /= 0) print *, "1) g_chdir() problem <= ", valid
+        if (valid /= 0) print *, "4) g_chdir() problem <= ", valid
       endif
 
       if (use_hl_gtk) then
