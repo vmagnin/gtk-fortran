@@ -233,8 +233,8 @@ module handlers
 contains
 
   subroutine copy_file(source,destination)
-    character(len=100),intent(in) :: source
-    character(len=100),intent(in) :: destination
+    character(*),intent(in) :: source
+    character(*),intent(in) :: destination
     character(len=256,kind=c_char)::line
     integer::status_read
     open(50, file=destination, action='write')
