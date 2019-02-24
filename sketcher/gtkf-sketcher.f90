@@ -452,7 +452,7 @@ contains
       ret = FALSE
       return
     else
-      print *, "Working dir: ", TRIM(ADJUSTL(working_dir))
+      print *, "1) Working dir: ", TRIM(ADJUSTL(working_dir))
       valid = g_chdir(TRIM(ADJUSTL(working_dir))//c_null_char)
       if (valid /= 0) print *, "1) g_chdir() problem <= ", valid
 
@@ -461,7 +461,7 @@ contains
         if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//c_null_char,488_c_int) .ge. 0) then
           working_dir=working_dir(1:len_trim(working_dir))//"/"//subdir
 
-          print *, "Working dir: ", TRIM(ADJUSTL(working_dir))
+          print *, "2) Working dir: ", TRIM(ADJUSTL(working_dir))
           valid = g_chdir(TRIM(ADJUSTL(working_dir))//c_null_char)
           if (valid /= 0) print *, "2) g_chdir() problem <= ", valid
 
@@ -577,13 +577,15 @@ contains
       if (update_used_functions) then
         !call execute_command_line("cd "//base_dir(1:len_trim(base_dir))//"/../../src")
 
-        print *, "cd ", TRIM(ADJUSTL(base_dir(1:len_trim(base_dir))//"/../../src"))
+        print *, "3) g_chdir ", TRIM(ADJUSTL(base_dir(1:len_trim(base_dir))//"/../../src"))
         valid = g_chdir(TRIM(ADJUSTL(base_dir(1:len_trim(base_dir))//"/../../src"))//c_null_char)
         if (valid /= 0) print *, "3) g_chdir() problem <= ", valid
+        ! Let's verify:
+        call execute_command_line("ls -la ")
 
         write(*,*)working_dir
-        call execute_command_line("ls -la ")
-        call execute_command_line("./usemodules.py "//working_dir)
+        call execute_command_line("./usemodules.py '"//TRIM(ADJUSTL(working_dir))//"'")
+
         open (40, file="usemodules.txt", action='read')
         do
           read(40,'(A)',iostat=status_read) line
@@ -599,7 +601,7 @@ contains
         enddo
         close (40)
 
-        print *, "Working dir: ", TRIM(ADJUSTL(working_dir))
+        print *, "4) Working dir: ", TRIM(ADJUSTL(working_dir))
         valid = g_chdir(TRIM(ADJUSTL(working_dir))//c_null_char)
         if (valid /= 0) print *, "4) g_chdir() problem <= ", valid
       endif
@@ -810,6 +812,7 @@ contains
     type(c_ptr), value :: widget, gdata
 
     call get_environment_variable("PWD", working_dir)
+    print *, "PWD: ", TRIM(ADJUSTL(working_dir))
     call load_default_options
     call gtk_toggle_button_set_active (create_subdir_button, gbool(create_subdir))
     call gtk_toggle_button_set_active (create_handlerfiles_button, gbool(create_handlerfiles))
