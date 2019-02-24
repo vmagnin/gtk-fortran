@@ -23,6 +23,7 @@
 ! GTK+ Fortran Code Sketcher using Glade3 UI definitions
 ! gfortran gtkf-sketcher.f90 -o gtkf-sketcher `pkg-config --cflags --libs gtk+-3.0 gtk-3-fortran gmodule-2.0`
 ! Contributed by Jens Hunger
+! Last modifications: vmagnin 02-24-2019
 
 module widgets
   ! declares the used GTK widgets
@@ -66,8 +67,8 @@ end module
 module strings
 
   use widgets
-
   use gtk, only: c_null_char, TRUE, FALSE
+  use gtk_sup, only: g_chdir
 
 contains
 
@@ -436,7 +437,7 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: write_files
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-
+    integer(kind=c_int) :: valid
     character(len=256,kind=c_char)::subdir, license_file, line, &
          & handlerfile, appwindow, additional_modules
     integer::status_read, wunit, hunit
@@ -451,12 +452,19 @@ contains
       ret = FALSE
       return
     else
-      call execute_command_line("cd "//working_dir)
+      print *, "Working dir: ", TRIM(ADJUSTL(working_dir))
+      valid = g_chdir(TRIM(ADJUSTL(working_dir))//c_null_char)
+      if (valid /= 0) print *, "1) g_chdir() problem <= ", valid
+
       subdir=filename(index(filename,"/",.true.)+1:index(filename,".",.true.)-1)
       if (create_subdir) then
         if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//c_null_char,488_c_int) .ge. 0) then
           working_dir=working_dir(1:len_trim(working_dir))//"/"//subdir
-          call execute_command_line("cd "//working_dir)
+
+          print *, "Working dir: ", TRIM(ADJUSTL(working_dir))
+          valid = g_chdir(TRIM(ADJUSTL(working_dir))//c_null_char)
+          if (valid /= 0) print *, "1) g_chdir() problem <= ", valid
+
           call copy_file(filename(1:len_trim(filename)),filename(index(filename,"/",.true.)+1:len_trim(filename)))
         else
           print*,"Unable to create subdirectory "//subdir
@@ -567,7 +575,12 @@ contains
       write(hunit,'(A)')"  &FALSE, c_null_char, c_null_ptr, gtk_init"
       write(hunit,'(A)')"  use g, only: g_object_unref"
       if (update_used_functions) then
-        call execute_command_line("cd "//base_dir(1:len_trim(base_dir))//"/../../src")
+        !call execute_command_line("cd "//base_dir(1:len_trim(base_dir))//"/../../src")
+
+        print *, "cd ", TRIM(ADJUSTL(base_dir(1:len_trim(base_dir))//"/../../src"))
+        valid = g_chdir(TRIM(ADJUSTL(base_dir(1:len_trim(base_dir))//"/../../src"))//c_null_char)
+        if (valid /= 0) print *, "1) g_chdir() problem <= ", valid
+
         write(*,*)working_dir
         call execute_command_line("ls -la ")
         call execute_command_line("./usemodules.py "//working_dir)
@@ -585,7 +598,10 @@ contains
           endif
         enddo
         close (40)
-        call execute_command_line("cd "//working_dir)
+
+        print *, "Working dir: ", TRIM(ADJUSTL(working_dir))
+        valid = g_chdir(TRIM(ADJUSTL(working_dir))//c_null_char)
+        if (valid /= 0) print *, "1) g_chdir() problem <= ", valid
       endif
 
       if (use_hl_gtk) then
