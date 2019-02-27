@@ -21,9 +21,9 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g  hl_list_renderers.90 `pkg-config --cflags --libs gtk-2-fortran`
+! gfortran -g  hl_list_renderers.90 `pkg-config --cflags --libs gtk-3-fortran`
 ! Contributed by James Tappin.
-! Last modification: vmagnin 02-20-2019
+! Last modification: vmagnin 02-27-2019
 
 module ln_handlers
   use gtk_hl
@@ -281,9 +281,12 @@ program list_rend
   integer(kind=c_short), dimension(nrows) :: red, green, blue
   type(c_ptr) :: pixbuf
 
-  red = [0, 255, 255, 0, 0, 0, 255, 255, 85, 170]
-  green = [0, 255, 0, 255, 0, 255, 0, 255, 85, 170]
-  blue = [0, 255, 0, 0, 255, 255, 255, 0, 85, 170]
+  red =   [0_c_short, 255_c_short, 255_c_short,   0_c_short,   0_c_short,&
+          &0_c_short, 255_c_short, 255_c_short, 85_c_short, 170_c_short]
+  green = [0_c_short, 255_c_short,   0_c_short, 255_c_short,   0_c_short,&
+          &255_c_short,   0_c_short, 255_c_short, 85_c_short, 170_c_short]
+  blue =  [0_c_short, 255_c_short,   0_c_short,   0_c_short, 255_c_short,&
+          &255_c_short, 255_c_short,   0_c_short, 85_c_short, 170_c_short]
 
   ! Initialize GTK+
   call gtk_init()
