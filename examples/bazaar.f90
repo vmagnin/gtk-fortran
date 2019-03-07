@@ -256,31 +256,57 @@ contains
     ret = FALSE
   end function file_changed
 
-
-  ! This is not a handler:
-  subroutine convert_c_string(textptr, f_string)
-    use iso_c_binding, only: c_char
-    implicit none
-    character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
-    character(len=*), intent(out) :: f_string
-    integer :: i
-
-    f_string=""
-    i=1
-    do while(textptr(i) .NE. char(0))
-      f_string(i:i)=textptr(i)
-      i=i+1
-    end do
-  end subroutine convert_c_string
 end module handlers
+
+
+module various_functions
+  use iso_c_binding
+  use gtk_sup, only: c_f_string_copy
+  implicit none
+
+  contains
+
+  subroutine some_glib_functions()
+    use g, only: g_get_user_name, g_get_application_name, g_get_host_name, &
+               & g_get_home_dir, g_get_current_dir, g_format_size
+    character(len=512) :: my_string
+
+    call c_f_string_copy(g_get_user_name(), my_string)
+    print *, "Hello ", TRIM(my_string)
+
+    call c_f_string_copy(g_get_host_name(), my_string)
+    print *, "Host name: ", TRIM(my_string)
+
+    call c_f_string_copy(g_get_application_name(), my_string)
+    print *, "Application name: ", TRIM(my_string)
+
+    call c_f_string_copy(g_get_home_dir(), my_string)
+    print *, "Home dir: ", TRIM(my_string)
+
+    call c_f_string_copy(g_get_current_dir(), my_string)
+    print *, "Current dir: ", TRIM(my_string)
+    if (my_string(1:1) == "/") then
+        print *, "UNIX OS"
+    else
+        print *, "Not UNIX OS"
+    endif
+
+    call c_f_string_copy(g_format_size (123456789_c_int64_t), my_string)
+    print *, "g_format_size: ", TRIM(my_string)
+  end subroutine some_glib_functions
+
+end module various_functions
 
 
 program gtkFortran
   use handlers
   use my_widgets
+  use various_functions
   implicit none
 
   call gtk_init ()
+
+  call some_glib_functions()
 
   ! Create the window and set up some signals for it.
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
