@@ -23,7 +23,7 @@
 ! GTK+ Fortran Code Sketcher using Glade3 UI definitions
 ! gfortran gtkf-sketcher.f90 -o gtkf-sketcher `pkg-config --cflags --libs gtk+-3.0 gtk-3-fortran gmodule-2.0`
 ! Contributed by Jens Hunger
-! Last modifications: vmagnin 02-24-2019
+! Last modifications: vmagnin 03-07-2019
 
 module widgets
   ! declares the used GTK widgets
@@ -334,6 +334,7 @@ contains
 
   function file_open (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
+    use gtk_sup, only: is_UNIX_OS
     !GCC$ ATTRIBUTES DLLEXPORT :: file_open
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
@@ -361,18 +362,22 @@ contains
          & title="Select input file"//c_null_char, filter=filters, &
          & filter_name=filtnames, wsize=(/ 600_c_int, 400_c_int /), edit_filters=TRUE, &
          & parent=window)
-    do i = 1, len(working_dir)
-      if( working_dir(i:i)=="\" ) working_dir(i:i)="/"
-    end do
+    if (.not. is_UNIX_OS()) then
+        do i = 1, len(working_dir)
+            if( working_dir(i:i)=="\" ) working_dir(i:i)="/"
+        end do
+    end if
 
     if (isel == FALSE) return   ! No selection made
 
     filename = chfile(1)
     deallocate(chfile)
-    
-    do i = 1, len(filename)
-      if( filename(i:i)=="\" ) filename(i:i)="/"
-    end do
+
+    if (.not. is_UNIX_OS()) then
+        do i = 1, len(filename)
+            if( filename(i:i)=="\" ) filename(i:i)="/"
+        end do
+    end if
 
     files_written=.false.
 
@@ -808,15 +813,19 @@ contains
 
   subroutine default_options (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
+    use gtk_sup, only: is_UNIX_OS
     !GCC$ ATTRIBUTES DLLEXPORT :: default_options
     type(c_ptr), value :: widget, gdata
     integer :: i
 
     call get_environment_variable("PWD", working_dir)
-    do i = 1, len(working_dir)
-      if( working_dir(i:i)=="\" ) working_dir(i:i)="/"
-    end do
+    if (.not. is_UNIX_OS()) then
+        do i = 1, len(working_dir)
+            if( working_dir(i:i)=="\" ) working_dir(i:i)="/"
+        end do
+    end if
     print *, "PWD: ", TRIM(ADJUSTL(working_dir))
+
     call load_default_options
     call gtk_toggle_button_set_active (create_subdir_button, gbool(create_subdir))
     call gtk_toggle_button_set_active (create_handlerfiles_button, gbool(create_handlerfiles))

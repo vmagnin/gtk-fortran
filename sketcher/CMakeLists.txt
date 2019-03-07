@@ -21,12 +21,10 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by James Tappin 05/20/2011
-# Last modifications: Jens Hunger: 03/07/2013, vmagnin 07/04/2016
+# Last modifications: Jens Hunger: 03/07/2013, vmagnin 03-07-2019
 
-# CMAKE build file for GtkFortran
+# CMAKE build file for gtkf-sketcher
 
-#include_directories("/usr/include")
-#include_directories("/usr/local/include")
 include_directories("${CMAKE_BINARY_DIR}/src")
 include_directories(${GTK_INCLUDES})
 
@@ -66,11 +64,19 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../src/usemodules.py ${CMAKE_CURRENT_BINARY_DIR}/example/usemodules.py
     DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/../src/usemodules.py
 )
+add_custom_command(
+    OUTPUT example/gtk-fortran-index.csv
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../src/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/example/gtk-fortran-index.csv
+    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/../src/gtk-fortran-index.csv
+)
+
 
 add_custom_target(sketcher-glade  ALL DEPENDS "gtkf-sketcher.glade")
 add_custom_target(example-glade   ALL DEPENDS "example.glade")
 add_custom_target(default-options ALL DEPENDS "default.options")
-add_custom_target(usemodules-py ALL DEPENDS "example/usemodules.py")
+add_custom_target(usemodules-py   ALL DEPENDS "example/usemodules.py")
+add_custom_target(gtk-fortran-index ALL DEPENDS "example/gtk-fortran-index.csv")
+
 add_custom_target(licenses ALL
     DEPENDS data data/apache2.0.lic  data/gnu-gpl-v2.lic  data/gnu-lgpl-v2.lic
     data/bsd.lic        data/gnu-gpl-v3.lic     data/zlib.lic

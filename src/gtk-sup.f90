@@ -875,6 +875,8 @@ contains
     ! will return .false. because an absolute path can not begin by a /
     !-
 
+    ! If the length of the path is >512, it will be cut but we need only
+    ! the first character of the string:
     call c_f_string_copy(g_get_current_dir(), path)
 
     if (path(1:1) == "/") then
