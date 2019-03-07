@@ -361,11 +361,18 @@ contains
          & title="Select input file"//c_null_char, filter=filters, &
          & filter_name=filtnames, wsize=(/ 600_c_int, 400_c_int /), edit_filters=TRUE, &
          & parent=window)
+    do i = 1, len(working_dir)
+      if( working_dir(i:i)=="\" ) working_dir(i:i)="/"
+    end do
 
     if (isel == FALSE) return   ! No selection made
 
     filename = chfile(1)
     deallocate(chfile)
+    
+    do i = 1, len(filename)
+      if( filename(i:i)=="\" ) filename(i:i)="/"
+    end do
 
     files_written=.false.
 
@@ -575,16 +582,9 @@ contains
       write(hunit,'(A)')"  &FALSE, c_null_char, c_null_ptr, gtk_init"
       write(hunit,'(A)')"  use g, only: g_object_unref"
       if (update_used_functions) then
-        !call execute_command_line("cd "//base_dir(1:len_trim(base_dir))//"/../../src")
-
-        print *, "3) g_chdir ", TRIM(ADJUSTL(base_dir(1:len_trim(base_dir))//"/../../src"))
-        valid = g_chdir(TRIM(ADJUSTL(base_dir(1:len_trim(base_dir))//"/../../src"))//c_null_char)
-        if (valid /= 0) print *, "3) g_chdir() problem <= ", valid
-        ! Let's verify:
-        call execute_command_line("ls -la ")
 
         write(*,*)working_dir
-        call execute_command_line("./usemodules.py '"//TRIM(ADJUSTL(working_dir))//"'")
+        call execute_command_line("python3 usemodules.py '"//TRIM(ADJUSTL(working_dir))//"'")
 
         open (40, file="usemodules.txt", action='read')
         do
@@ -810,8 +810,12 @@ contains
     use iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: default_options
     type(c_ptr), value :: widget, gdata
+    integer :: i
 
     call get_environment_variable("PWD", working_dir)
+    do i = 1, len(working_dir)
+      if( working_dir(i:i)=="\" ) working_dir(i:i)="/"
+    end do
     print *, "PWD: ", TRIM(ADJUSTL(working_dir))
     call load_default_options
     call gtk_toggle_button_set_active (create_subdir_button, gbool(create_subdir))

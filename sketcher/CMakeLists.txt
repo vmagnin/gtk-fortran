@@ -61,10 +61,16 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/data/*.lic
 )
+add_custom_command(
+    OUTPUT example/usemodules.py
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../src/usemodules.py ${CMAKE_CURRENT_BINARY_DIR}/example/usemodules.py
+    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/../src/usemodules.py
+)
 
 add_custom_target(sketcher-glade  ALL DEPENDS "gtkf-sketcher.glade")
 add_custom_target(example-glade   ALL DEPENDS "example.glade")
 add_custom_target(default-options ALL DEPENDS "default.options")
+add_custom_target(usemodules-py ALL DEPENDS "example/usemodules.py")
 add_custom_target(licenses ALL
     DEPENDS data data/apache2.0.lic  data/gnu-gpl-v2.lic  data/gnu-lgpl-v2.lic
     data/bsd.lic        data/gnu-gpl-v3.lic     data/zlib.lic
