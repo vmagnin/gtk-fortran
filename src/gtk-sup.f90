@@ -24,7 +24,7 @@
 !
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: 06-20-2012, vmagnin+IanH0073 02-21-2019
-! vmagnin 02-24-2019
+! vmagnin 03-07-2019
 
 !*
 ! Supplementary material
@@ -862,5 +862,25 @@ contains
        f_c_logical1 = FALSE
     end if
   end function f_c_logical1
+
+  !+
+  function is_UNIX_OS()
+    use g, only: g_get_current_dir
+    logical :: is_UNIX_OS
+    character(len=512) :: path
+
+    ! Returns .true. if the OS is of the UNIX type. On a Windows system, it 
+    ! will return .false. because an absolute path can not begin by a /
+    !-
+
+    call c_f_string_copy(g_get_current_dir(), path)
+
+    if (path(1:1) == "/") then
+        is_UNIX_OS = .true.
+    else
+        is_UNIX_OS = .false.
+    endif
+
+  end function is_UNIX_OS
 
 end module gtk_sup
