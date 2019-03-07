@@ -589,7 +589,7 @@ contains
       if (update_used_functions) then
 
         write(*,*)working_dir
-        call execute_command_line("python3 usemodules.py '"//TRIM(ADJUSTL(working_dir))//"'")
+        call execute_command_line("python3 usemodules.py .")
 
         open (40, file="usemodules.txt", action='read')
         do
