@@ -52,9 +52,14 @@ module gtk_sup
 
   implicit none
 
+  public :: is_UNIX_OS, clear_gtktreeiter, clear_gvalue, c_f_string_copy, &
+          & convert_c_string_scalar, convert_c_string_array, &
+          & convert_c_string_scalar_cptr, convert_c_string_array_cptr, &
+          & convert_f_string_a, convert_f_string_s, c_f_logical, f_c_logical4, &
+          & f_c_logical1
   !+
   ! Gtype
-  ! The various Gtype definitions. 
+  ! The various Gtype definitions.
   !-
 
   ! Gtype definitions
@@ -387,20 +392,18 @@ module gtk_sup
      module procedure convert_c_string_array_cptr
   end interface convert_c_string
 
-  public :: c_f_string_copy
-!  public :: c_f_string_copy_alloc
-!  public :: c_f_string_ptr
-
   interface c_f_string
      module procedure convert_c_string_scalar
      module procedure convert_c_string_array
      module procedure convert_c_string_scalar_cptr
      module procedure convert_c_string_array_cptr
   end interface c_f_string
+
   interface f_c_string
      module procedure convert_f_string_a
      module procedure convert_f_string_s
   end interface f_c_string
+
   interface convert_f_string
      module procedure convert_f_string_a
      module procedure convert_f_string_s
@@ -462,7 +465,6 @@ contains
 
   ! Some string conversion routines
 
-  
   ! Create a default character deferred length allocatable copy of the 
   ! value of a c string.
   ! Contributed by Ian Harvey, 2014.
@@ -470,10 +472,10 @@ contains
 !  subroutine c_f_string_copy_alloc(the_ptr, f_string)
 !    type(c_ptr), intent(in) :: the_ptr
 !    character(:), intent(out), allocatable :: f_string
-!    
+!
 !    character(kind=c_char), pointer :: f_array(:)
 !    integer :: i
-!    
+!
 !    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
 !    allocate(character(size(f_array)) :: f_string)
 !    forall (i = 1:size(f_array)) f_string(i:i) = f_array(i)
@@ -512,9 +514,9 @@ contains
 !  subroutine c_f_string_ptr(the_ptr, f_string)
 !    type(c_ptr), intent(in) :: the_ptr
 !    character(:,kind=c_char), intent(out), pointer :: f_string
-!    
+!
 !    character(kind=c_char), pointer :: f_array(:)
-!    
+!
 !    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
 !    ! Here we rely on sequence association.  f_array is an array expression 
 !    ! (one that happens to be an array designator), so it designates an 
@@ -551,7 +553,7 @@ contains
     ! TEXTPTR: string: required:  The C string to be converted.
     ! F_STRING: f_string: required: A Scalar Fortran string.
     ! STATUS: integer: optional: Is set to -1 if the Fortran string
-    ! 		is too short.
+    !                            is too short.
     !
     ! Usually called via the convert_c_string generic interface.
     !-
@@ -578,14 +580,14 @@ contains
     character(kind=c_char), dimension(:), intent(in) :: textptr
     character(len=*), intent(out), dimension(:), allocatable :: f_string
     integer, intent(out), optional :: status
- 
+
     ! Convert a null-terminated LF-separated c-string into a fortran
     ! string array
     !
     ! TEXTPTR: string: required:  The C string to be converted.
     ! F_STRING: f_string(): required: A Fortran string array.
     ! STATUS: integer: optional: Is set to -1 if the Fortran string
-    ! 		is too short for any line.
+    !                            is too short for any line.
     !
     ! Usually called via the convert_c_string generic interface.
     !-
@@ -637,7 +639,7 @@ contains
     ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
     ! F_STRING: f_string: required: A Scalar Fortran string.
     ! STATUS: integer: optional: Is set to -1 if the Fortran string
-    ! 		is too short.
+    !                            is too short.
     !
     ! Usually called via the convert_c_string generic interface.
     !-
@@ -673,7 +675,7 @@ contains
     ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
     ! F_STRING: f_string(): required: A  Fortran string. array
     ! STATUS: integer: optional: Is set to -1 if the Fortran string
-    ! 		is too short for any of the lines.
+    !                            is too short for any of the lines.
     !
     ! Usually called via the convert_c_string generic interface.
     !-
