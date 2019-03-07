@@ -479,10 +479,11 @@ contains
 
           call copy_file(filename(1:len_trim(filename)),filename(index(filename,"/",.true.)+1:len_trim(filename)))
         else
-          print*,"Unable to create subdirectory "//subdir
+          print *,"Unable to create subdirectory "//subdir
         endif
       endif
 
+      print *, "Generating the .f90 files..."
       call combobox_get_active_string_value(license_selector, 1_c_int, license_file)
       license_file=adjustl(license_file)
 
