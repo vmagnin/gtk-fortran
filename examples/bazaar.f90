@@ -1,7 +1,7 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 
-! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+! This file is part of the gtk-fortran GTK Fortran Interface library.
 
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -21,11 +21,14 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 
-! This program is used to test GTK+ widgets
+! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
-! Last mmodifications: vmagnin+Ian Harvey, 02-21-2019
+! Last modifications: vmagnin+Ian Harvey 02-21-2019, vmagnin 03-07-2019
 ! To compile under Linux:
 ! gfortran -I../src/ ../src/gtk.o ../src/gtk-sup.o ../src/gtk-hl.o bazaar.f90  `pkg-config --cflags --libs gtk+-3.0`
+! If gtk-fortran is installed in the system:
+! gfortran bazaar.f90 $(pkg-config --cflags --libs gtk-3-fortran)
+
 
 module my_widgets
   use iso_c_binding
@@ -63,22 +66,22 @@ module handlers
   use cairo, only: cairo_create, cairo_curve_to, cairo_destroy, cairo_line_to, &
   & cairo_move_to, cairo_paint, cairo_set_line_width, cairo_set_source, &
   & cairo_set_source_rgb, cairo_stroke
-  
+
   use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
-  
+
   use gdk_pixbuf, only: gdk_pixbuf_get_has_alpha, gdk_pixbuf_get_n_channels, &
   & gdk_pixbuf_get_pixels, gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-  
+
   use my_widgets
   implicit none
-  
+
 contains
   !*************************************
   ! User defined event handlers go here
   !*************************************
   ! Note that events are a special type of signals, coming from the
   ! X Window system. Then callback functions must have an event argument.
-  
+
   ! GtkWidget event:
   function delete_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
@@ -105,21 +108,22 @@ contains
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
 
     call cairo_set_line_width(my_cairo_context, 1d0)
-    call cairo_move_to(my_cairo_context, 100d0, 20d0)  
+    call cairo_move_to(my_cairo_context, 100d0, 20d0)
     call cairo_line_to(my_cairo_context, 100.5d0, 20d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     call cairo_set_source_rgb(my_cairo_context, 1d0, 0d0, 0d0)
     call cairo_set_line_width(my_cairo_context, 0.5d0)
-    call cairo_move_to(my_cairo_context, 50d0, 0d0)  
+    call cairo_move_to(my_cairo_context, 50d0, 0d0)
     call cairo_line_to(my_cairo_context, 150d0, 100d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     call cairo_set_source_rgb(my_cairo_context, 1d0, 0d0, 0d0)
     call cairo_set_line_width(my_cairo_context, 3d0)
-    call cairo_move_to(my_cairo_context, 60d0, 0d0)  
+    call cairo_move_to(my_cairo_context, 60d0, 0d0)
     call cairo_curve_to(my_cairo_context, 60d0, 50d0, 135d0, 45d0, 100d0, 50d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
+
     !*************
     ! Pixbuffers :
     !*************
@@ -191,17 +195,18 @@ contains
     use iso_c_binding, only: c_ptr
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-    
+
     print *, "Hello World!"
     ret = FALSE
   end function firstbutton
+
 
   ! GtkButton signal:
   function secondbutton (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-    
+
     call gtk_progress_bar_pulse (progress)
     ret = FALSE
   end function secondbutton
@@ -213,9 +218,9 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     integer(c_int) :: response_id
-    
+
     dialog = gtk_about_dialog_new()
-    call gtk_about_dialog_set_program_name(dialog, "Gtk-fortran"//c_null_char)
+    call gtk_about_dialog_set_program_name(dialog, "gtk-fortran"//c_null_char)
     call gtk_about_dialog_set_license(dialog, "GNU GPL 3"//c_null_char)
     call gtk_about_dialog_set_comments(dialog, "The gtk-fortran project &
     & aims to offer scientists programming in Fortran a cross-platform library &
@@ -224,8 +229,8 @@ contains
     & to the ISO_C_BINDING module for interoperability between C and Fortran,&
     & which is a part of the Fortran 2003 standard."//c_new_line//" GTK &
     &is a free software cross-platform graphical library available for &
-    &Linux, Unix, Windows and MacOs X."//c_null_char)
-    call gtk_about_dialog_set_website(dialog, "https://github.com/jerryd/gtk-fortran/wiki"//c_null_char)
+    &Linux, UNIX, Windows and MacOs."//c_null_char)
+    call gtk_about_dialog_set_website(dialog, "https://github.com/vmagnin/gtk-fortran/wiki"//c_null_char)
     !TODO: to add authors we need a pointer toward null terminated array of strings.
     !call gtk_about_dialog_set_authors(dialog, authors)
     response_id =  gtk_dialog_run(dialog)
@@ -259,7 +264,7 @@ contains
     character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
     character(len=*), intent(out) :: f_string
     integer :: i
-          
+
     f_string=""
     i=1
     do while(textptr(i) .NE. char(0))
@@ -274,7 +279,7 @@ program gtkFortran
   use handlers
   use my_widgets
   implicit none
-  
+
   call gtk_init ()
 
   ! Create the window and set up some signals for it.
@@ -312,7 +317,7 @@ program gtkFortran
 
   entry1 = gtk_entry_new()
   call gtk_grid_attach(table, entry1, 1_c_int, 1_c_int, 1_c_int, 1_c_int)  
-  
+
   progress = gtk_progress_bar_new()
   call gtk_progress_bar_set_fraction (progress, 0.15d0)
   call gtk_progress_bar_set_text (progress, "My progress bar"//c_null_char)
@@ -332,12 +337,14 @@ program gtkFortran
 
   call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
   call gtk_grid_attach(table, my_drawing_area, 0_c_int, 6_c_int, 3_c_int, 6_c_int)  
-  
+
   file_selector = gtk_file_chooser_button_new ("gtk_file_chooser_button_new"//&
        & c_null_char, 0_c_int)
   call gtk_grid_attach(table, file_selector, 0_c_int, 12_c_int, 3_c_int, 1_c_int)  
   call g_signal_connect (file_selector, "selection-changed"//c_null_char, c_funloc(file_changed));
 
   call gtk_widget_show_all (window)
+
   call gtk_main ()
+
 end program gtkFortran
