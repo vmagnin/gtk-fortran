@@ -80,10 +80,13 @@ gtk-fortran_shared PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
 VERSION "0.1")
-set_target_properties(gtk-fortran_static
-gtk-fortran_shared PROPERTIES VERSION "0.1")
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
 SOVERSION "0.1")
+
+set_target_properties(gtk-fortran_static PROPERTIES
+Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules_static/ )
+set_target_properties(gtk-fortran_shared PROPERTIES
+Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules_shared/ )
 
 # Does pkg-config have an equivalent in Windows? If so, then please
 # add a suitable generator and installation.
@@ -137,35 +140,9 @@ else()
     ${CMAKE_INSTALL_LIBDIR})
 endif()
 
-install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/atk.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/cairo.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gdk.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/g.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_container.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_button.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_entry.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_tree.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_menu.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_combobox.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_spin_slider.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_chooser.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_dialog.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_progress.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_accelerator.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_infobar.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_assistant.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_hl_misc.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_draw_hl.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gdk_pixbuf_hl.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_sup.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/pango.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gdk_events.mod"
-    "${CMAKE_CURRENT_BINARY_DIR}/gtk_os_dependent.mod"
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-${GTKv}-fortran
+install(DIRECTORY
+  ${CMAKE_CURRENT_BINARY_DIR}/modules_shared/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-${GTKv}-fortran
 )
 
 install(PROGRAMS

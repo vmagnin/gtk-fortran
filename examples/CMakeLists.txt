@@ -26,7 +26,7 @@
 
 # CMAKE build file for gtk-fortran
 
-include_directories("${CMAKE_BINARY_DIR}/src")
+include_directories("${CMAKE_BINARY_DIR}/src/modules_static")
 include_directories(${GTK_INCLUDES})
 
 if (NOT NO_BUILD_EXAMPLES)
@@ -40,10 +40,12 @@ if (NOT NO_BUILD_EXAMPLES)
 
   add_executable(gtkbuilder "gtkbuilder.f90")
   target_link_libraries(gtkbuilder gtk-fortran_static ${GTK_LIBRARIES})
+  set_target_properties(gtkbuilder PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder_mod/ )
   # This test is excluded because the directories don't match up.
   #add_test(gtkbuilder gtkbuilder)
   add_executable(gtkbuilder2 "gtkbuilder2.f90" "gtkbuilder.glade")
   target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
+  set_target_properties(gtkbuilder2 PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder2_mod/ )
   # This test is excluded because the directories don't match up.
   # add_test(gtkbuilder2 gtkbuilder2)
 
@@ -75,6 +77,7 @@ if (NOT NO_BUILD_EXAMPLES)
           mandelbrot_pixbuf_zoom menu notebooks ${gio_demo_example} tests)
     add_executable(${example} "${example}.f90")
     target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES})
+    set_target_properties(${example} PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${example}_mod/ )
     add_test(${example} ./${example})
   endforeach(example)
 endif(NOT NO_BUILD_EXAMPLES)
