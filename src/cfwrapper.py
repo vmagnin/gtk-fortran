@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 01-15-2018 (Python 3.6.3, Linux Ubuntu 17.10)
-# pylint3 score: 8.69/10
+# Last modification: 03-09-2019 (tested with Python 3.6.7, Ubuntu 18.10)
+# pylint3 score: 8.37/10
 
 """ Generates the *-auto.f90 files from the C header files of GLlib and GTK+.
 For help, type: ./cfwrapper.py -h
@@ -717,7 +717,7 @@ T0 = time.time()     # To calculate computing time
 for library_path in PATH_DICT:
     for directory in os.walk(library_path):
         for c_file_name in directory[2]:
-            whole_file = open(directory[0] + "/" + c_file_name, 'rU',
+            whole_file = open(directory[0] + "/" + c_file_name, 'r',
                               errors='replace').read()
             gtk_enums += re.findall(r"(?ms)^typedef enum.*?}\s?(\w+);", whole_file)
             gtk_funptr += re.findall(r"(?m)^typedef[ \t]*(?:const)?[ \t]*\w+[ \t]*\*?\s*\(\* ?([\w]*?)\)",
@@ -790,7 +790,7 @@ for library_path in PATH_DICT:
                 continue    # Go to next file
 
             nb_files += 1
-            whole_file_original = open(directory[0] + "/" + c_file_name, 'rU',
+            whole_file_original = open(directory[0] + "/" + c_file_name, 'r',
                                        errors='replace').read()
             # The original will be used for WIN32 functions
             whole_file = whole_file_original
