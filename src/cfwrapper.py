@@ -541,20 +541,20 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
         if "_utf8" not in f_name:
             unix_only_file.write(interface)
             index.append(["gtk_os_dependent", f_name,
-                        "unixonly-auto.f90/mswindowsonly-auto.f90",
-                        directory[0]+"/"+c_file_name, prototype, first_line])
+                          "unixonly-auto.f90/mswindowsonly-auto.f90",
+                          directory[0]+"/"+c_file_name, prototype, first_line])
             first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
             interface2_utf8 = multiline(first_line, 80) + "\n"
             mswindows_only_file.write(interface1+interface2_utf8+interface3)
             nb_generated_interfaces += 2
             nb_win32_utf8 += 1
     elif re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$",
-                whole_file_original):
+                   whole_file_original):
         # With GTK+ 3, there is no more functions defined like this (Ubuntu >= 17.10)
         unix_only_file.write(interface)
         index.append(["gtk_os_dependent", f_name,
-                    "unixonly-auto.f90/mswindowsonly-auto.f90",
-                    directory[0]+"/"+c_file_name, prototype, first_line])
+                      "unixonly-auto.f90/mswindowsonly-auto.f90",
+                      directory[0]+"/"+c_file_name, prototype, first_line])
         first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
         interface2_utf8 = multiline(first_line, 80) + "\n"
         mswindows_only_file.write(interface1+interface2_utf8+interface3)
@@ -563,7 +563,7 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
     else: # Non platform specific functions
         f_file.write(interface)
         index.append([module_name, f_name, f_file_name,
-                    directory[0]+"/"+c_file_name, prototype, first_line])
+                      directory[0]+"/"+c_file_name, prototype, first_line])
         nb_generated_interfaces += 1
 
 
