@@ -433,7 +433,7 @@ def analyze_prototypes():
             continue    # Next prototype
 
         # Functions beginning by an underscore will be excluded:
-        if RGX_UNDERSCORE.match(f_name) != None:
+        if RGX_UNDERSCORE.match(f_name) is not None:
             write_error(directory[0], c_file_name,
                         "Function name beginning by underscore", proto, False)
             continue    # Next prototype
