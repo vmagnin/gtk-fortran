@@ -132,7 +132,7 @@ def print_statistics():
         version = library_version(pack_gtk3)
     else:
         version = library_version(pack_gtk2)
-    print("##GTK " + version + ", GLib "+ library_version(pack_glib) + ", "
+    print("## GTK " + version + ", GLib "+ library_version(pack_glib) + ", "
           + " " + subprocess.getoutput("lsb_release -ds")
           + " " + platform.machine() + ", Python " + platform.python_version())
     print(os.getlogin() + ", "
