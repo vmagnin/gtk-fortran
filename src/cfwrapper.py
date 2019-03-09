@@ -4,7 +4,7 @@
 # Copyright (C) 2011
 # Free Software Foundation, Inc.
 #
-# This file is part of the gtk-fortran gtk+ Fortran Interface library.
+# This file is part of the gtk-fortran GTK / Fortran Interface library.
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,9 +26,9 @@
 #
 # Contributed by Vincent Magnin, 01.28.2011
 # Last modification: 03-09-2019 (tested with Python 3.6.7, Ubuntu 18.10)
-# pylint3 score: 8.37/10
+# pylint3 score: 8.53/10
 
-""" Generates the *-auto.f90 files from the C header files of GLlib and GTK+.
+""" Generates the *-auto.f90 files from the C header files of GLlib and GTK.
 For help, type: ./cfwrapper.py -h
 """
 
@@ -151,7 +151,7 @@ def print_statistics():
 
 def iso_c_binding(declaration, returned):
     """ Returns the Fortran type corresponding to a C type in the
-        ISO_C_BINDING module (limited to C types used in GTK+),
+        ISO_C_BINDING module (limited to C types used in GTK),
         and the KIND type
     """
     try:
@@ -277,7 +277,7 @@ def translate_enums(enum_list):
         # logical or
         parameters[0] = re.sub(r"([\w\(\)]+)\s*\|\s*([\w\(\), \d]+)",
                                r"ior(\1 , \2)", parameters[0])
-        # Renamed flags (have the same name as a GTK+ function):
+        # Renamed flags (have the same name as a GTK function):
         for flag in ["ATK_HYPERLINK_IS_INLINE", "GDK_PROPERTY_DELETE",
                      "GDK_DRAG_STATUS", "GDK_DRAG_MOTION"]:
             parameters[0] = re.sub(r"(?m)^\s*"+flag, flag+"_F", parameters[0])
@@ -550,7 +550,7 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
             nb_win32_utf8 += 1
     elif re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$",
                    whole_file_original):
-        # With GTK+ 3, there is no more functions defined like this (Ubuntu >= 17.10)
+        # With GTK 3, there is no more functions defined like this (Ubuntu >= 17.10)
         unix_only_file.write(interface)
         index.append(["gtk_os_dependent", f_name,
                       "unixonly-auto.f90/mswindowsonly-auto.f90",
@@ -582,7 +582,7 @@ ARGS = PARSARG.parse_args()
 GTK_VERSION = "gtk" + str(ARGS.gtk[0])
 
 # -------------------------------------------------------------------------
-# These dictionaries give the Fortran type and its KIND for each GTK+ type:
+# These dictionaries give the Fortran type and its KIND for each GTK type:
 # -------------------------------------------------------------------------
 # One word types:
 TYPES_DICT = {
@@ -704,7 +704,7 @@ PATH_DICT.update([("/usr/include/pango-1.0", "pango-auto.f90")])
 
 #*************************************************************************
 # Pass 1: scan all header files to find all enum types, all pointers to
-# functions (funptr) and add derived GTK+ types
+# functions (funptr) and add derived GTK types
 #*************************************************************************
 print("Pass 1: looking for enumerators, funptr and derived types...")
 
@@ -825,7 +825,7 @@ unix_only_file.write(TAIL)
 unix_only_file.close()
 mswindows_only_file.write(TAIL)
 mswindows_only_file.close()
-# Write list of GTK+ functions in a CSV file:
+# Write list of GTK functions in a CSV file:
 index.sort()
 index_file = csv.writer(open("gtk-fortran-index.csv", "w"), delimiter=";")
 index_file.writerows(index)
