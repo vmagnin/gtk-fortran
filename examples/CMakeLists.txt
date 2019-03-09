@@ -31,12 +31,7 @@ include_directories(${GTK_INCLUDES})
 
 if (NOT NO_BUILD_EXAMPLES)
   # Build the two gtkbuilders examples:
-  add_custom_command(
-    OUTPUT gtkbuilder.glade
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder.glade
-    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade
-  )
-  add_custom_target(glade ALL DEPENDS "gtkbuilder.glade")
+  file(COPY gtkbuilder.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ )
 
   add_executable(gtkbuilder "gtkbuilder.f90")
   target_link_libraries(gtkbuilder gtk-fortran_static ${GTK_LIBRARIES})

@@ -108,16 +108,10 @@ string(REPLACE "@GTK@" "${GTKv}" USERMODULE_OUT3 "${USERMODULE_OUT2}")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-modscan "${USERMODULE_OUT3}")
 
 # Copy those files:
-add_custom_command(
-    OUTPUT gtk-${GTKv}-fortran-index.csv
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-index.csv
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv
-)
-add_custom_command(
-    OUTPUT gtk-${GTKv}-enumerators.lis
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
-)
+file(COPY gtk-fortran-index.csv DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-index.csv )
+file(COPY gtk-enumerators.lis DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis )
 add_custom_target(usemodules ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-modscan
   ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis
 )
