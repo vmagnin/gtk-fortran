@@ -69,8 +69,11 @@ endif()
 include_directories(${GTK_INCLUDES})
 #include_directories("/usr/local/include")
 
-add_library(gtk-fortran_static STATIC ${sources})
-add_library(gtk-fortran_shared SHARED ${sources})
+add_library(gtk-fortran_object OBJECT ${sources})
+set_property(TARGET gtk-fortran_object PROPERTY POSITION_INDEPENDENT_CODE 1)
+
+add_library(gtk-fortran_static STATIC $<TARGET_OBJECTS:gtk-fortran_object>)
+add_library(gtk-fortran_shared SHARED $<TARGET_OBJECTS:gtk-fortran_object>)
 target_link_libraries(gtk-fortran_shared ${GTK_LIBRARIES})
 
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
@@ -83,10 +86,8 @@ VERSION "0.1")
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
 SOVERSION "0.1")
 
-set_target_properties(gtk-fortran_static PROPERTIES
-Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules_static/ )
-set_target_properties(gtk-fortran_shared PROPERTIES
-Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules_shared/ )
+set_target_properties(gtk-fortran_object PROPERTIES
+Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
 
 # Does pkg-config have an equivalent in Windows? If so, then please
 # add a suitable generator and installation.
@@ -141,7 +142,7 @@ else()
 endif()
 
 install(DIRECTORY
-  ${CMAKE_CURRENT_BINARY_DIR}/modules_shared/
+  ${CMAKE_CURRENT_BINARY_DIR}/modules/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-${GTKv}-fortran
 )
 
