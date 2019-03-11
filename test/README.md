@@ -8,14 +8,14 @@ Run all the executables in a directory (other than itself). Or the listed exampl
 
 Usage:
 
-  <path>/run_all   # Run all executables in the same dir as the script
+    <path>/run_all   # Run all executables in the same dir as the script
 
-  <path>/run_all <dir>  # Run all executables in <dir>
+    <path>/run_all <dir>  # Run all executables in <dir>
 
-  <path>/run_all <dir> <exe1> ... # run listed executables in <dir>
+    <path>/run_all <dir> <exe1> ... # run listed executables in <dir>
 
 E.g.:
 
-  ./tests/run_all plplot   # to run all the plplot examples
+    ./tests/run_all plplot   # to run all the plplot examples
 
-  ./tests/run_all examples hl_list_n hl_list_renderers
+    ./tests/run_all examples hl_list_n hl_list_renderers
