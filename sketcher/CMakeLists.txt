@@ -25,60 +25,16 @@
 
 # CMAKE build file for gtkf-sketcher
 
-include_directories("${CMAKE_BINARY_DIR}/src/modules_static")
+include_directories("${CMAKE_BINARY_DIR}/src/modules")
 include_directories(${GTK_INCLUDES})
 
 add_executable(gtkf-sketcher "gtkf-sketcher.f90")
 target_link_libraries(gtkf-sketcher gtk-fortran_static ${GTK_LIBRARIES})
 # No test as the glade stuff is too sensitive to location
 
-# Copy files using cross-platform cmake -E copy:
-add_custom_command(
-    OUTPUT gtkf-sketcher.glade
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtkf-sketcher.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkf-sketcher.glade
-    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkf-sketcher.glade
-)
-add_custom_command(
-    OUTPUT example.glade
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/example.glade ${CMAKE_CURRENT_BINARY_DIR}/example.glade
-    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/example.glade
-)
-add_custom_command(
-    OUTPUT default.options
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/default.options ${CMAKE_CURRENT_BINARY_DIR}/default.options
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/default.options
-)
-add_custom_command(
-    OUTPUT data
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/data
-)
-add_custom_command(
-    OUTPUT data/apache2.0.lic  data/gnu-gpl-v2.lic     data/gnu-lgpl-v2.lic
-    data/bsd.lic        data/gnu-gpl-v3.lic     data/zlib.lic
-    data/freeware.lic   data/gnu-lgpl-v2.1.lic
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/data/*.lic
-)
-add_custom_command(
-    OUTPUT example/usemodules.py
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../src/usemodules.py ${CMAKE_CURRENT_BINARY_DIR}/example/usemodules.py
-    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/../src/usemodules.py
-)
-add_custom_command(
-    OUTPUT example/gtk-fortran-index.csv
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../src/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/example/gtk-fortran-index.csv
-    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/../src/gtk-fortran-index.csv
-)
-
-
-add_custom_target(sketcher-glade  ALL DEPENDS "gtkf-sketcher.glade")
-add_custom_target(example-glade   ALL DEPENDS "example.glade")
-add_custom_target(default-options ALL DEPENDS "default.options")
-add_custom_target(usemodules-py   ALL DEPENDS "example/usemodules.py")
-add_custom_target(gtk-fortran-index ALL DEPENDS "example/gtk-fortran-index.csv")
-
-add_custom_target(licenses ALL
-    DEPENDS data data/apache2.0.lic  data/gnu-gpl-v2.lic  data/gnu-lgpl-v2.lic
-    data/bsd.lic        data/gnu-gpl-v3.lic     data/zlib.lic
-    data/freeware.lic   data/gnu-lgpl-v2.1.lic
-)
+file(COPY gtkf-sketcher.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+file(COPY example.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+file(COPY default.options DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+file(COPY ${CMAKE_SOURCE_DIR}/src/usemodules.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/example/ )
+file(COPY ${CMAKE_SOURCE_DIR}/src/gtk-fortran-index.csv DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/example/ )

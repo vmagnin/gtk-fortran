@@ -69,8 +69,11 @@ endif()
 include_directories(${GTK_INCLUDES})
 #include_directories("/usr/local/include")
 
-add_library(gtk-fortran_static STATIC ${sources})
-add_library(gtk-fortran_shared SHARED ${sources})
+add_library(gtk-fortran_object OBJECT ${sources})
+set_property(TARGET gtk-fortran_object PROPERTY POSITION_INDEPENDENT_CODE 1)
+
+add_library(gtk-fortran_static STATIC $<TARGET_OBJECTS:gtk-fortran_object>)
+add_library(gtk-fortran_shared SHARED $<TARGET_OBJECTS:gtk-fortran_object>)
 target_link_libraries(gtk-fortran_shared ${GTK_LIBRARIES})
 
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
@@ -83,10 +86,8 @@ VERSION "0.1")
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
 SOVERSION "0.1")
 
-set_target_properties(gtk-fortran_static PROPERTIES
-Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules_static/ )
-set_target_properties(gtk-fortran_shared PROPERTIES
-Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules_shared/ )
+set_target_properties(gtk-fortran_object PROPERTIES
+Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
 
 # Does pkg-config have an equivalent in Windows? If so, then please
 # add a suitable generator and installation.
@@ -107,16 +108,10 @@ string(REPLACE "@GTK@" "${GTKv}" USERMODULE_OUT3 "${USERMODULE_OUT2}")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-modscan "${USERMODULE_OUT3}")
 
 # Copy those files:
-add_custom_command(
-    OUTPUT gtk-${GTKv}-fortran-index.csv
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-index.csv
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-index.csv
-)
-add_custom_command(
-    OUTPUT gtk-${GTKv}-enumerators.lis
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/gtk-enumerators.lis
-)
+file(COPY gtk-fortran-index.csv DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-index.csv )
+file(COPY gtk-enumerators.lis DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis )
 add_custom_target(usemodules ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-modscan
   ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis
 )
@@ -127,21 +122,15 @@ string(REPLACE "@GTK@" "${GTKv}" MODSCAN_OUT "${MODSCAN_IN}")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-modscan.1 "${MODSCAN_OUT}")
 add_custom_target(manpage ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-modscan.1)
 
-# TODO: comment
-if (CMAKE_HOST_WIN32)
-  install(TARGETS gtk-fortran_static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR})
-  install(TARGETS gtk-fortran_shared LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-else()
-  install(TARGETS gtk-fortran_static ARCHIVE DESTINATION 
-    ${CMAKE_INSTALL_LIBDIR})
-  install(TARGETS gtk-fortran_shared LIBRARY DESTINATION 
-    ${CMAKE_INSTALL_LIBDIR})
-endif()
+
+install(TARGETS gtk-fortran_static gtk-fortran_shared
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 
 install(DIRECTORY
-  ${CMAKE_CURRENT_BINARY_DIR}/modules_shared/
+  ${CMAKE_CURRENT_BINARY_DIR}/modules/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-${GTKv}-fortran
 )
 

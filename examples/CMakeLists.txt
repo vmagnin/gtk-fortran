@@ -26,17 +26,12 @@
 
 # CMAKE build file for gtk-fortran
 
-include_directories("${CMAKE_BINARY_DIR}/src/modules_static")
+include_directories("${CMAKE_BINARY_DIR}/src/modules")
 include_directories(${GTK_INCLUDES})
 
 if (NOT NO_BUILD_EXAMPLES)
   # Build the two gtkbuilders examples:
-  add_custom_command(
-    OUTPUT gtkbuilder.glade
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder.glade
-    DEPENDS  ${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade
-  )
-  add_custom_target(glade ALL DEPENDS "gtkbuilder.glade")
+  file(COPY gtkbuilder.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ )
 
   add_executable(gtkbuilder "gtkbuilder.f90")
   target_link_libraries(gtkbuilder gtk-fortran_static ${GTK_LIBRARIES})
@@ -86,46 +81,9 @@ endif(NOT NO_BUILD_EXAMPLES)
 # to ${CMAKE_INSTALL_DATAROOTDIR/gtk-fortran/examples<gtkversion>
 # useful (e.g.) for building binary packages.
 if (INSTALL_EXAMPLES)
-  install(FILES
-    "${CMAKE_CURRENT_SOURCE_DIR}/bazaar.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/cairo-tests.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/cairo-basics.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/cairo-basics-click.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/gtkzero.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/gtkhello.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/gtkhello2.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder2.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/gtkbuilder.glade"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_assistant.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_choosers.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_combo.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_containers.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_dialog.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_list1.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_list_n.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_list_renderers.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_menu.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_pbar.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_pbar_p.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_radio.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_sliders.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_sliders2.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_textview.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_tree.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_cairo1.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_cairo_clock.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hl_infobar.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/julia_pixbuf.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/list_demo.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/mandelbrot.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/mandelbrot_pixbuf.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/mandelbrot_pixbuf_zoom.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/menu.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/notebooks.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/gio_demo.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/tests.f90"
-    "${CMAKE_CURRENT_SOURCE_DIR}/README"
+  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples${GTKv}
+    PATTERN "gtkbuilder.glade" EXCLUDE
+    PATTERN "CMakeLists.txt" EXCLUDE
   )
 endif(INSTALL_EXAMPLES)
