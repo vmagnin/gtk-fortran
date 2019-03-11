@@ -1,0 +1,9 @@
+*.out
+*.mod
+*.o
+*~
+*.bak
+*.directory
+cfwrapper-errors.csv
+usemodules.txt
+build/
