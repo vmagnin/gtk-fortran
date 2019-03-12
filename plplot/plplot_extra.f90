@@ -76,7 +76,7 @@ module plplot_extra
   !      Plotting options for 3d plots, see plplot.h for the C definitions
   !      of these options.
 
-  ! As of (at worst) plplot 5.9.9 these definitions are in the standard plplot
+  ! As of (at worst) plplot 5.9.8 these definitions are in the standard plplot
   ! modules. They are left in so that users with an older version (e.g. 5.9.7)
   ! can uncomment them.
 

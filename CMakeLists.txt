@@ -195,6 +195,9 @@ if (NOT EXCLUDE_PLPLOT)
     set(CMAKE_REQUIRED_LIBRARIES "${PLPLOT_LIBRARIES}")
     #set(CMAKE_REQUIRED_INCLUDES "${PLPLOT_INCLUDE_DIR}; ${PLPLOT_MODULE_DIR}")
     set(CMAKE_REQUIRED_INCLUDES "${PLPLOT-FORTRAN_INCLUDE_DIRS}")
+
+# NEW_PLPLOT should be defined for PLplot>=5.9.10
+# -----------------------------------------------
 #  check_fortran_source_compiles("
 #  program tw
 #  use plplot
@@ -205,6 +208,9 @@ if (NOT EXCLUDE_PLPLOT)
 #  call plwidth(w)
 #  end program tw" NEW_PLPLOT
 #     )
+
+# NEW_PLPLOT_DEFS should be defined for PLplot>=5.9.8
+# ---------------------------------------------------
 #     check_fortran_source_compiles("
 #  program tdef
 #  use plplot
@@ -215,6 +221,7 @@ if (NOT EXCLUDE_PLPLOT)
 #     )
 #   else(PLPLOT_FOUND)
 #     message(STATUS "PLPLOT not found: PLPLOT integration and examples will not be built")
+
     set(NEW_PLPLOT 1)
     set(NEW_PLPLOT_DEFS 1)
   endif(PLPLOT_FOUND)

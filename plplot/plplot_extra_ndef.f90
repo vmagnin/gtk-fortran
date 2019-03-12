@@ -31,8 +31,8 @@ module plplot_extra
 
   implicit none
 
-  ! The operation codes for pl_cmd
-  ! In plplot 5.9.11 (and later?) these definitions are in the F95 binding
+  ! The operation codes for pl_cmd were removed because
+  ! in plplot>=5.9.8 these definitions are in the F95 binding
 
   ! Interface for the pl_cmd routine
   interface

@@ -39,7 +39,8 @@ include_directories("${CMAKE_BINARY_DIR}/src/modules")
 include_directories(${GTK_INCLUDES})
 
 #===============================================================================
-# TODO: clean that code which concerns old PLplot versions (~5.9)
+# TODO: clean that code which concerns old PLplot versions.
+# NEW_PLPLOT_DEFS is for PLplot>=5.9.8
 #===============================================================================
 if(NEW_PLPLOT_DEFS)
   set(extra_file "plplot_extra_ndef.f90")
@@ -62,6 +63,7 @@ install(FILES
 if (NOT NO_BUILD_EXAMPLES) 
 #===============================================================================
   # TODO: clean that code which concerns old PLplot versions
+  # NEW_PLPLOT is for PLplot>=5.9.10
 #===============================================================================
 #   if (NEW_PLPLOT)
 #     message(STATUS "New PLPLOT")
