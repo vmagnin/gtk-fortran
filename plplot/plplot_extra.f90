@@ -31,44 +31,47 @@ module plplot_extra
 
   implicit none
 
-  ! The operation codes for pl_cmd
-  integer, parameter :: PLESC_SET_RGB          = 1      ! obsolete
-  integer, parameter :: PLESC_ALLOC_NCOL       = 2      ! obsolete
-  integer, parameter :: PLESC_SET_LPB          = 3      ! obsolete
-  integer, parameter :: PLESC_EXPOSE           = 4      ! handle window expose
-  integer, parameter :: PLESC_RESIZE           = 5      ! handle window resize
-  integer, parameter :: PLESC_REDRAW           = 6      ! handle window redraw
-  integer, parameter :: PLESC_TEXT             = 7      ! switch to text screen
-  integer, parameter :: PLESC_GRAPH            = 8      ! switch to graphics screen
-  integer, parameter :: PLESC_FILL             = 9      ! fill polygon
-  integer, parameter :: PLESC_DI               = 10     ! handle DI command
-  integer, parameter :: PLESC_FLUSH            = 11     ! flush output
-  integer, parameter :: PLESC_EH               = 12     ! handle Window events
-  integer, parameter :: PLESC_GETC             = 13     ! get cursor position
-  integer, parameter :: PLESC_SWIN             = 14     ! set window parameters
-  integer, parameter :: PLESC_DOUBLEBUFFERING  = 15     ! configure double buffering
-  integer, parameter :: PLESC_XORMOD           = 16     ! set xor mode
-  integer, parameter :: PLESC_SET_COMPRESSION  = 17     ! AFR: set compression
-  integer, parameter :: PLESC_CLEAR            = 18     ! RL: clear graphics region
-  integer, parameter :: PLESC_DASH             = 19     ! RL: draw dashed line
-  integer, parameter :: PLESC_HAS_TEXT         = 20     ! driver draws text
-  integer, parameter :: PLESC_IMAGE            = 21     ! handle image
-  integer, parameter :: PLESC_IMAGEOPS         = 22     ! plimage related operations
-  integer, parameter :: PLESC_PL2DEVCOL        = 23     ! convert PLColor to device color
-  integer, parameter :: PLESC_DEV2PLCOL        = 24     ! convert device color to PLColor
-  integer, parameter :: PLESC_SETBGFG          = 25     ! set BG, FG colors
-  integer, parameter :: PLESC_DEVINIT          = 26     ! alternate device initialization
-  integer, parameter :: PLESC_GETBACKEND       = 27     ! get used backend of (wxWidgets) driver
-  integer, parameter :: PLESC_BEGIN_TEXT       = 28     ! get ready to draw a line of text
-  integer, parameter :: PLESC_TEXT_CHAR        = 29     ! render a character of text
-  integer, parameter :: PLESC_CONTROL_CHAR     = 30     ! handle a text control character= super/subscript, etc.)
-  integer, parameter :: PLESC_END_TEXT         = 31     ! finish a drawing a line of text
-  integer, parameter :: PLESC_START_RASTERIZE  = 32     ! start rasterized rendering
-  integer, parameter :: PLESC_END_RASTERIZE    = 33     ! end rasterized rendering
-  integer, parameter :: PLESC_ARC              = 34     ! render an arc
-  integer, parameter :: PLESC_GRADIENT         = 35     ! render a gradient
-  integer, parameter :: PLESC_MODESET          = 36     ! set drawing mode
-  integer, parameter :: PLESC_MODEGET          = 37     ! get drawing mode
+  ! The operation codes for pl_cmd, they are defined in plplot.mod at least
+  ! from plplot 5.12 on, so they outcommented hier (see reamrk in the
+  ! following section.
+
+!!$  integer, parameter :: PLESC_SET_RGB          = 1      ! obsolete
+!!$  integer, parameter :: PLESC_ALLOC_NCOL       = 2      ! obsolete
+!!$  integer, parameter :: PLESC_SET_LPB          = 3      ! obsolete
+!!$  integer, parameter :: PLESC_EXPOSE           = 4      ! handle window expose
+!!$  integer, parameter :: PLESC_RESIZE           = 5      ! handle window resize
+!!$  integer, parameter :: PLESC_REDRAW           = 6      ! handle window redraw
+!!$  integer, parameter :: PLESC_TEXT             = 7      ! switch to text screen
+!!$  integer, parameter :: PLESC_GRAPH            = 8      ! switch to graphics screen
+!!$  integer, parameter :: PLESC_FILL             = 9      ! fill polygon
+!!$  integer, parameter :: PLESC_DI               = 10     ! handle DI command
+!!$  integer, parameter :: PLESC_FLUSH            = 11     ! flush output
+!!$  integer, parameter :: PLESC_EH               = 12     ! handle Window events
+!!$  integer, parameter :: PLESC_GETC             = 13     ! get cursor position
+!!$  integer, parameter :: PLESC_SWIN             = 14     ! set window parameters
+!!$  integer, parameter :: PLESC_DOUBLEBUFFERING  = 15     ! configure double buffering
+!!$  integer, parameter :: PLESC_XORMOD           = 16     ! set xor mode
+!!$  integer, parameter :: PLESC_SET_COMPRESSION  = 17     ! AFR: set compression
+!!$  integer, parameter :: PLESC_CLEAR            = 18     ! RL: clear graphics region
+!!$  integer, parameter :: PLESC_DASH             = 19     ! RL: draw dashed line
+!!$  integer, parameter :: PLESC_HAS_TEXT         = 20     ! driver draws text
+!!$  integer, parameter :: PLESC_IMAGE            = 21     ! handle image
+!!$  integer, parameter :: PLESC_IMAGEOPS         = 22     ! plimage related operations
+!!$  integer, parameter :: PLESC_PL2DEVCOL        = 23     ! convert PLColor to device color
+!!$  integer, parameter :: PLESC_DEV2PLCOL        = 24     ! convert device color to PLColor
+!!$  integer, parameter :: PLESC_SETBGFG          = 25     ! set BG, FG colors
+!!$  integer, parameter :: PLESC_DEVINIT          = 26     ! alternate device initialization
+!!$  integer, parameter :: PLESC_GETBACKEND       = 27     ! get used backend of (wxWidgets) driver
+!!$  integer, parameter :: PLESC_BEGIN_TEXT       = 28     ! get ready to draw a line of text
+!!$  integer, parameter :: PLESC_TEXT_CHAR        = 29     ! render a character of text
+!!$  integer, parameter :: PLESC_CONTROL_CHAR     = 30     ! handle a text control character= super/subscript, etc.)
+!!$  integer, parameter :: PLESC_END_TEXT         = 31     ! finish a drawing a line of text
+!!$  integer, parameter :: PLESC_START_RASTERIZE  = 32     ! start rasterized rendering
+!!$  integer, parameter :: PLESC_END_RASTERIZE    = 33     ! end rasterized rendering
+!!$  integer, parameter :: PLESC_ARC              = 34     ! render an arc
+!!$  integer, parameter :: PLESC_GRADIENT         = 35     ! render a gradient
+!!$  integer, parameter :: PLESC_MODESET          = 36     ! set drawing mode
+!!$  integer, parameter :: PLESC_MODEGET          = 37     ! get drawing mode
 
   !      Plotting options for 3d plots, see plplot.h for the C definitions
   !      of these options.

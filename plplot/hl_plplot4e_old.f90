@@ -175,7 +175,7 @@ contains
     call plmtex('l', 5.0_plflt, 0.5_plflt, 0.5_plflt, 'Amplitude (dB)')
     nlegend = 1
     !      For the gridless case, put phase vs freq on same plot.
-    if(type.eq.0) then
+    if (type.eq.0) then
        call plcol0(1)
        call plwind(-2.0_plflt, 3.0_plflt, -100.0_plflt, 0.0_plflt)
        call plbox(' ', 0.0_plflt, 0, 'cmstv', 30.0_plflt, 3)

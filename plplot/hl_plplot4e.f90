@@ -48,7 +48,7 @@ end module common_ex4
 
 module plplot_code_ex4
   use plplot, PI => PL_PI
-  use iso_c_binding
+  ! use iso_c_binding
   use common_ex4
 
   implicit none
@@ -63,6 +63,10 @@ contains
     integer :: i
     character(len=25) :: geometry
 
+    ! needed for use as functions instead of subroutines
+    integer :: plparseopts_rc
+    integer :: plsetopt_rc
+
     ! Define colour map 0 to match the "GRAFFER" colour table in
     ! place of the PLPLOT default.
     integer, parameter, dimension(16) :: rval = (/255, 0, 255, &
@@ -73,9 +77,12 @@ contains
          & 127, 85, 170/)
 
     !  Process command-line arguments
-    call plparseopts(PL_PARSE_FULL)
-    ! Get a cairo context from the drawing area.
+    ! call plparseopts(PL_PARSE_FULL)
+    plparseopts_rc = plparseopts(PL_PARSE_FULL)
+    if (plparseopts_rc .ne. 0) stop "plparseopts error"
 
+
+    ! Get a cairo context from the drawing area.
     do i=1,2
        cc(i) = hl_gtk_drawing_area_cairo_new(area(i))
        cs(i) = cairo_get_target(cc(i))
@@ -87,18 +94,22 @@ contains
 
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
-    call plsetopt("drvopt", "set_background=1")  
+    ! call plsetopt("drvopt", "set_background=1")
+    plsetopt_rc = plsetopt("drvopt", "set_background=1")
+    if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
 
     write(geometry, "(I0,'x',I0)") cairo_image_surface_get_width(cs(1)), &
          & cairo_image_surface_get_height(cs(1))
-    call plsetopt("geometry",  geometry)
+    ! call plsetopt("geometry",  geometry)
+    plsetopt_rc = plsetopt( 'geometry', geometry)
+    if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! Initialize
 
     call plinit
-    
+
     ! Tell the "extcairo" driver where the context is located. This must be
     ! done AFTER the plstar or plinit call.
 
@@ -122,23 +133,25 @@ contains
   subroutine plot1(type)
     use plplot, PI => PL_PI
     implicit none
+    integer, parameter :: MAX_NLEGEND = 2
+
     real(kind=plflt) :: freql(0:100),ampl(0:100),phase(0:100), freq, f0
     integer          :: i, type
     integer          :: nlegend
 
     real(kind=plflt) :: legend_width, legend_height
-    integer          :: opt_array(2), text_colors(2), line_colors(2), &
-         line_styles(2), symbol_colors(2), symbol_numbers(2)
+    integer          :: opt_array(MAX_NLEGEND), text_colors(MAX_NLEGEND), line_colors(MAX_NLEGEND), &
+         line_styles(MAX_NLEGEND), symbol_colors(MAX_NLEGEND), symbol_numbers(MAX_NLEGEND)
 
     ! For plplot 5.9.9 or lower the next declarations should be integers
     ! For 5.9.10 or higher they should be reals
-    real(kind=plflt) :: symbol_scales(2), box_scales(0)
-!    integer :: line_widths(2), box_line_widths(0)
+    real(kind=plflt) :: symbol_scales(MAX_NLEGEND), box_scales(0)
+!    integer :: line_widths(MAX_NLEGEND), box_line_widths(0)
 
-    real(kind=plflt) :: line_widths(2), box_line_widths(0)
+    real(kind=plflt) :: line_widths(MAX_NLEGEND), box_line_widths(0)
     integer          :: box_colors(0), box_patterns(0)
-    character(len=20):: text(2)
-    character(len=1) :: symbols(2)
+    character(len=20):: text(MAX_NLEGEND)
+    character(len=1) :: symbols(MAX_NLEGEND)
 
     call pladv(0)
     !      Set up data for log plot.
@@ -175,7 +188,7 @@ contains
     call plmtex('l', 5.0_plflt, 0.5_plflt, 0.5_plflt, 'Amplitude (dB)')
     nlegend = 1
     !      For the gridless case, put phase vs freq on same plot.
-    if(type.eq.0) then
+    if (type.eq.0) then
        call plcol0(1)
        call plwind(-2.0_plflt, 3.0_plflt, -100.0_plflt, 0.0_plflt)
        call plbox(' ', 0.0_plflt, 0, 'cmstv', 30.0_plflt, 3)
@@ -226,9 +239,10 @@ contains
          PL_LEGEND_BOUNDING_BOX, 0, &
          0.0_plflt, 0.0_plflt, 0.1_plflt, 15, &
          1, 1, 0, 0, &
-         nlegend, opt_array, &
+         opt_array, &
          1.0_plflt, 1.0_plflt, 2.0_plflt, &
-         1.0_plflt, text_colors, text, &
+         1.0_plflt, &           !
+         text_colors, text, &
          box_colors, box_patterns, box_scales, box_line_widths, &
          line_colors, line_styles, line_widths, &
          symbol_colors, symbol_scales, symbol_numbers, symbols )
