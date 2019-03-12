@@ -267,7 +267,7 @@ module handlers_ex8
   implicit none
 
 contains
-  subroutine quit_cb(widget, gdata) bind(c)
+  recursive subroutine quit_cb(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
     call gtk_widget_destroy(window)
