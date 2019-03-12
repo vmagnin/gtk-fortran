@@ -20,19 +20,27 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin, last updated by vmagnin: 07/18/2016
+# Contributed by James Tappin
+# Last updated: vmagnin 07/18/2016, vmagnin 2019-03-12 (PLplot>5.10)
 
-# set(sources
-#   "plplot_extra.f90")
+#===============================================================================
+# PLplot integration
+# ------------------
+# Since PLplot>=5.10, the PLplot libraries have been renamed (plplot and 
+# plplot-fortran) and the ISO_C_BINDING has been adopted.
+# By now (March 2019), the find_package(plplot) command gives a lot of errors
+# in Debian/Ubuntu distributions because of some renaming in Debian packages.
+# As a temporary workaround, we are using pkg-config.
+# The code will be cleaned later.
+#===============================================================================
 
-#include_directories("/usr/include")
-#include_directories(${PLPLOT_INCLUDES})
 include_directories("${CMAKE_BINARY_DIR}/plplot")
-include_directories("${CMAKE_BINARY_DIR}/src")
+include_directories("${CMAKE_BINARY_DIR}/src/modules")
 include_directories(${GTK_INCLUDES})
-#include_directories(${PLPLOT_MODULE_DIR})
 
-# TODO: comment
+#===============================================================================
+# TODO: clean that code which concerns old PLplot versions (~5.9)
+#===============================================================================
 if(NEW_PLPLOT_DEFS)
   set(extra_file "plplot_extra_ndef.f90")
 else()
@@ -52,22 +60,24 @@ install(FILES
 )
 
 if (NOT NO_BUILD_EXAMPLES) 
-  # TODO: comment
-  if (NEW_PLPLOT)
-    message(STATUS "New PLPLOT")
-    set (example_1e hl_plplot1e)
-    set (example_4e hl_plplot4e)
-  else (NEW_PLPLOT)
-    message(STATUS "Old PLPLOT")
-    set (example_1e hl_plplot1e_old)
-    set (example_4e hl_plplot4e_old)
-  endif (NEW_PLPLOT)
+#===============================================================================
+  # TODO: clean that code which concerns old PLplot versions
+#===============================================================================
+#   if (NEW_PLPLOT)
+#     message(STATUS "New PLPLOT")
+     set (example_1e hl_plplot1e)
+     set (example_4e hl_plplot4e)
+#   else (NEW_PLPLOT)
+#     message(STATUS "Old PLPLOT")
+#     set (example_1e hl_plplot1e_old)
+#     set (example_4e hl_plplot4e_old)
+#   endif (NEW_PLPLOT)
 
   foreach(example hl_plplot8e hl_plplot17e hl_plplot17e_gto hl_plplot30e 
           ${example_1e} ${example_4e})
     add_executable(${example} "${example}.f90")
     add_dependencies(${example} plplot_extra_module)
-    target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT_LIBRARIES})
+    target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT-FORTRAN_LIBRARIES} ${PLPLOT_LIBRARIES})
     add_test(${example} ./${example})
   endforeach(example)
 endif (NOT NO_BUILD_EXAMPLES)

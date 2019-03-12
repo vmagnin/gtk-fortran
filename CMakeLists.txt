@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, Jens Hunger 01/07/2018
+# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, Jens Hunger 01/07/2018, vmagnin 2019-03-12 (PLplot>5.10)
 # CMAKE build file for gtk-fortran
 
 cmake_minimum_required(VERSION 2.8.5)
@@ -157,9 +157,18 @@ if(DOXYGEN_FOUND)
     add_dependencies(doc doxygen)
 endif(DOXYGEN_FOUND)
 
-# PLplot
+#===============================================================================
+# PLplot integration
+# ------------------
+# Since PLplot>=5.10, the PLplot libraries have been renamed (plplot and 
+# plplot-fortran) and the ISO_C_BINDING has been adopted.
+# By now (March 2019), the find_package(plplot) command gives a lot of errors
+# in Debian/Ubuntu distributions because of some renaming in Debian packages.
+# As a temporary workaround, we are using pkg-config.
+# TODO: The code will be cleaned later.
+#===============================================================================
 if (NOT EXCLUDE_PLPLOT)
-  if (WIN32)
+#  if (WIN32)
     # use PkgConfig
     FIND_PACKAGE(PkgConfig REQUIRED)
     PKG_CHECK_MODULES(PLPLOT-FORTRAN REQUIRED plplot-fortran)
@@ -169,39 +178,45 @@ if (NOT EXCLUDE_PLPLOT)
     LINK_DIRECTORIES(${PLPLOT-FORTRAN_LIBRARY_DIRS})
     # Add other flags to the compiler
     ADD_DEFINITIONS(${PLPLOT-FORTRAN_CFLAGS_OTHER})
-    SET (PLPLOT_MODULE_DIR "${PLPLOT-FORTRAN_LIBRARY_DIRS}")
-    set(PLPLOT_FOUND ${PLPLOT-FORTRAN_FOUND})
-  endif()
-  if (UNIX)
-    find_package(PlplotF95 QUIET)
-  endif ()
-  set(HAVE_LIBPLPLOTF95D ${PLPLOT_FOUND})
+#    SET (PLPLOT_MODULE_DIR "${PLPLOT-FORTRAN_LIBRARY_DIRS}")
+#    set(PLPLOT_FOUND ${PLPLOT-FORTRAN_FOUND})
+#  endif()
+#   if (UNIX)
+#     find_package(PlplotF95 QUIET)
+#   endif ()
+  #set(HAVE_LIBPLPLOTF95D ${PLPLOT_FOUND})
+
+  PKG_CHECK_MODULES(PLPLOT REQUIRED plplot)
   if(PLPLOT_FOUND)
     set(LIBRARIES ${LIBRARIES} ${PLPLOT_LIBRARIES})
-    include_directories(${PLPLOT_INCLUDE_DIR})
-    include_directories(${PLPLOT_MODULE_DIR})
+    #include_directories(${PLPLOT_INCLUDE_DIR})
+    include_directories(${PLPLOT_INCLUDE_DIRS})
+    #include_directories(${PLPLOT_MODULE_DIR})
     set(CMAKE_REQUIRED_LIBRARIES "${PLPLOT_LIBRARIES}")
-    set(CMAKE_REQUIRED_INCLUDES "${PLPLOT_INCLUDE_DIR}; ${PLPLOT_MODULE_DIR}")
-    check_fortran_source_compiles("
- program tw
- use plplot
- implicit none
-
- real(kind=plflt) :: w = 0.5_plflt
- call plinit()
- call plwidth(w)
- end program tw" NEW_PLPLOT
-    )
-    check_fortran_source_compiles("
- program tdef
- use plplot
- implicit none
-
- integer :: i = PLESC_DEVINIT
- end program tdef" NEW_PLPLOT_DEFS
-    )
-  else(PLPLOT_FOUND)
-    message(STATUS "PLPLOT not found: PLPLOT integration and examples will not be built")
+    #set(CMAKE_REQUIRED_INCLUDES "${PLPLOT_INCLUDE_DIR}; ${PLPLOT_MODULE_DIR}")
+    set(CMAKE_REQUIRED_INCLUDES "${PLPLOT-FORTRAN_INCLUDE_DIRS}")
+#  check_fortran_source_compiles("
+#  program tw
+#  use plplot
+#  implicit none
+# 
+#  real(kind=plflt) :: w = 0.5_plflt
+#  call plinit()
+#  call plwidth(w)
+#  end program tw" NEW_PLPLOT
+#     )
+#     check_fortran_source_compiles("
+#  program tdef
+#  use plplot
+#  implicit none
+# 
+#  integer :: i = PLESC_DEVINIT
+#  end program tdef" NEW_PLPLOT_DEFS
+#     )
+#   else(PLPLOT_FOUND)
+#     message(STATUS "PLPLOT not found: PLPLOT integration and examples will not be built")
+    set(NEW_PLPLOT 1)
+    set(NEW_PLPLOT_DEFS 1)
   endif(PLPLOT_FOUND)
 else(NOT EXCLUDE_PLPLOT)
   message(STATUS "PLPLOT Excluded as command option")
