@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 # Show libraries and tools versions used in gtk-fortran
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13
