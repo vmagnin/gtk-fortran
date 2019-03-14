@@ -21,17 +21,18 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by James Tappin
-# Last updated: vmagnin 07/18/2016, vmagnin 2019-03-12 (PLplot>5.10)
+# Last updated: vmagnin 2019-03-14 (PLplot>=5.13)
 
 #===============================================================================
-# PLplot integration
-# ------------------
-# Since PLplot>=5.10, the PLplot libraries have been renamed (plplot and 
-# plplot-fortran) and the ISO_C_BINDING has been adopted.
+# PLplot integration (>=5.13 needed)
+# ----------------------------------
+# A lot of changes have occured in PLplot 5.11, 5.12 and 5.13: the libraries 
+# have been renamed (plplot and plplot-fortran) and the ISO_C_BINDING has been 
+# adopted.
 # By now (March 2019), the find_package(plplot) command gives a lot of errors
 # in Debian/Ubuntu distributions because of some renaming in Debian packages.
-# As a temporary workaround, we are using pkg-config.
-# The code will be cleaned later.
+# As a temporary (?) workaround, we are now using pkg-config.
+# If a CMake error occurs, add -D EXCLUDE_PLPLOT=true to your CMake command.
 #===============================================================================
 
 include_directories("${CMAKE_BINARY_DIR}/plplot")
@@ -39,20 +40,16 @@ include_directories("${CMAKE_BINARY_DIR}/src/modules")
 include_directories(${GTK_INCLUDES})
 
 #===============================================================================
-# TODO: clean that code which concerns old PLplot versions.
-# NEW_PLPLOT_DEFS is for PLplot>=5.9.8
+# Plplot extras for accessing the pl_cmd() routine:
 #===============================================================================
-if(NEW_PLPLOT_DEFS)
-  set(extra_file "plplot_extra_ndef.f90")
-else()
-  set(extra_file "plplot_extra.f90")
-endif()
+set(extra_file "plplot_extra_ndef.f90")
 
 add_custom_command(
   OUTPUT plplot_extra.mod
   COMMAND ${CMAKE_Fortran_COMPILER} -c ${CMAKE_CURRENT_SOURCE_DIR}/${extra_file}
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${extra_file}
 )
+
 add_custom_target(plplot_extra_module ALL DEPENDS plplot_extra.mod)
 
 install(FILES
@@ -60,33 +57,25 @@ install(FILES
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-${GTKv}-fortran
 )
 
-if (NOT NO_BUILD_EXAMPLES) 
 #===============================================================================
-  # TODO: clean that code which concerns old PLplot versions
-  # NEW_PLPLOT is for PLplot>=5.9.10
+# Build PLplot examples:
 #===============================================================================
-#   if (NEW_PLPLOT)
-#     message(STATUS "New PLPLOT")
-     set (example_1e hl_plplot1e)
-     set (example_4e hl_plplot4e)
-#   else (NEW_PLPLOT)
-#     message(STATUS "Old PLPLOT")
-#     set (example_1e hl_plplot1e_old)
-#     set (example_4e hl_plplot4e_old)
-#   endif (NEW_PLPLOT)
-
+if (NOT NO_BUILD_EXAMPLES)
   foreach(example hl_plplot8e hl_plplot17e hl_plplot17e_gto hl_plplot30e 
-          ${example_1e} ${example_4e})
+          hl_plplot1e hl_plplot4e)
     add_executable(${example} "${example}.f90")
     add_dependencies(${example} plplot_extra_module)
-    target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES} ${PLPLOT-FORTRAN_LIBRARIES} ${PLPLOT_LIBRARIES})
+    target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES} 
+                          ${PLPLOT-FORTRAN_LIBRARIES} ${PLPLOT_LIBRARIES})
     add_test(${example} ./${example})
   endforeach(example)
 endif (NOT NO_BUILD_EXAMPLES)
 
+#===============================================================================
 # If the INSTALL_EXAMPLES variable is set, then copy the examples
 # to ${CMAKE_INSTALL_DATAROOTDIR/gtk-fortran/examples<gtkversion>
 # useful (e.g.) for building binary packages.
+#===============================================================================
 if (INSTALL_EXAMPLES)
   install(FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/hl_plplot1e.f90"

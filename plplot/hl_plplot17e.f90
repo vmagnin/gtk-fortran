@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran hl_plplot17e.f90 `pkg-config --cflags --libs gtk-fortran plplotd-f95`
+! gfortran hl_plplot17e.f90 `pkg-config --cflags --libs gtk-fortran plplot-fortran plplot`
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 17 by Alan W. Irwin
 
