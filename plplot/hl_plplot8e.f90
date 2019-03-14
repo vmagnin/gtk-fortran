@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran hl_plplot8.f90 `pkg-config --cflags --libs gtk-fortran plplotd-f95`
+! gfortran hl_plplot8.f90 `pkg-config --cflags --libs gtk-fortran plplot-fortran plplot`
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 8 by Alan W. Irwin
 
@@ -54,7 +54,7 @@ end module common_ex8
 module plplot_code_ex8
 
   use plplot, PI => PL_PI
-  use iso_c_binding
+  ! use iso_c_binding
   use common_ex8
 
   implicit none
@@ -72,34 +72,40 @@ contains
 
     character(len=80) :: title
     character(len=20) :: geometry
-    type(c_ptr) :: cc 
+    type(c_ptr) :: cc
+
+    ! needed for use as functions instead of subroutines
+    integer :: plparseopts_rc
+    integer :: plsetopt_rc
 
     integer nlevel
     parameter (nlevel = 10)
     real(kind=plflt) zmin, zmax, step, clevel(nlevel)
-    !      Process command-line arguments
-    call plparseopts(PL_PARSE_FULL)
+    ! Process command-line arguments
+    ! call plparseopts(PL_PARSE_FULL)
+    plparseopts_rc = plparseopts(PL_PARSE_FULL)
+    if (plparseopts_rc .ne. 0) stop "plparseopts error"
 
     write(title, "('#frPLplot Example 8 - Alt=',I3,', Az=',I3)")&
          & nint(alt), nint(az)
 
     do i = 1,xpts
        x(i) = dble(i-1-(xpts/2))/dble (xpts/2)
-       if(rosen.eq.1) x(i) = 1.5_plflt*x(i)
+       if (rosen.eq.1) x(i) = 1.5_plflt*x(i)
     enddo
     do j = 1,ypts
        y(j) = dble(j-1-(ypts/2))/dble (ypts/2)
-       if(rosen.eq.1) y(j) = y(j) + 0.5_plflt
+       if (rosen.eq.1) y(j) = y(j) + 0.5_plflt
     enddo
 
     do i=1,xpts
        xx = x(i)
        do j=1,ypts
           yy = y(j)
-          if(rosen.eq.1) then
+          if (rosen.eq.1) then
              z(i,j) = (1._plflt - xx)**2 + 100._plflt*(yy - xx**2)**2
              !            The log argument may be zero for just the right grid.
-             if(z(i,j).gt.0._plflt) then
+             if (z(i,j).gt.0._plflt) then
                 z(i,j) = log(z(i,j))
              else
                 z(i,j) = -5._plflt
@@ -126,12 +132,15 @@ contains
 
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
-    call plsetopt("drvopt", "set_background=1")  
+    ! call plsetopt("drvopt", "set_background=1")
+    plsetopt_rc = plsetopt("drvopt", "set_background=1")
+    if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
-    call plsetopt("geometry",  geometry)
- 
+    ! call plsetopt("geometry",  geometry)
+    plsetopt_rc = plsetopt( 'geometry', geometry)
+    if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     call plinit
 
@@ -147,7 +156,7 @@ contains
     call plcol0(3)
     call plmtex('t', 1.0_plflt, 0.5_plflt, 0.5_plflt, title)
     call plcol0(1)
-    if(rosen.eq.1) then
+    if (rosen.eq.1) then
        call plw3d(1.0_plflt, 1.0_plflt, 1.0_plflt, -1.5_plflt, &
             1.5_plflt, -0.5_plflt, 1.5_plflt, zmin, zmax, alt,az)
     else
@@ -159,7 +168,7 @@ contains
          'bcdmnstuv','z axis', 0.0_plflt, 0)
     call plcol0(2)
 
-    if(type == 0) then 
+    if (type == 0) then
        call cmap1_init(1)
     else
        call cmap1_init(0)
@@ -258,7 +267,7 @@ module handlers_ex8
   implicit none
 
 contains
-  subroutine quit_cb(widget, gdata) bind(c)
+  recursive subroutine quit_cb(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
     call gtk_widget_destroy(window)

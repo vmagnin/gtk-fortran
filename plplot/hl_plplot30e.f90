@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran hl_plplot30e.f90 `pkg-config --cflags --libs gtk-fortran plplotd-f95`
+! gfortran hl_plplot30e.f90 `pkg-config --cflags --libs gtk-fortran plplot-fortran plplot`
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 30 by Hazen Babcock and Andrew Ross
 
@@ -47,7 +47,7 @@ end module common_ex30
 
 module plplot_code_ex30
   use plplot, PI => PL_PI
-  use iso_c_binding
+  ! use iso_c_binding
   use common_ex30
 
   implicit none
@@ -63,6 +63,10 @@ contains
 
     character(len=20) :: geometry
 
+    ! needed for use as functions instead of subroutines
+    integer :: plparseopts_rc
+    integer :: plsetopt_rc
+
     integer, dimension(4) ::  red, green, blue
     real(kind=plflt), dimension (4) :: alpha, px, py
     real(kind=plflt), dimension (2) :: pos, rcoord, gcoord, bcoord, acoord
@@ -74,10 +78,10 @@ contains
     data alpha / 1.0_plflt, 1.0_plflt, 1.0_plflt, 1.0_plflt /
     data px / 0.1_plflt, 0.5_plflt, 0.5_plflt, 0.1_plflt /
     data py / 0.1_plflt, 0.1_plflt, 0.5_plflt, 0.5_plflt /
-    data pos / 0.0_plflt, 1.0_plflt / 
-    data rcoord / 1.0_plflt, 1.0_plflt / 
-    data gcoord / 0.0_plflt, 0.0_plflt / 
-    data bcoord / 0.0_plflt, 0.0_plflt / 
+    data pos / 0.0_plflt, 1.0_plflt /
+    data rcoord / 1.0_plflt, 1.0_plflt /
+    data gcoord / 0.0_plflt, 0.0_plflt /
+    data bcoord / 0.0_plflt, 0.0_plflt /
     data acoord / 0.0_plflt, 1.0_plflt /
     data rev / .false. , .false. /
 
@@ -86,7 +90,9 @@ contains
     real(kind=plflt) :: a
 
     !  Process command-line arguments
-    call plparseopts(PL_PARSE_FULL)
+    ! call plparseopts(PL_PARSE_FULL)
+    plparseopts_rc = plparseopts(PL_PARSE_FULL)
+    if (plparseopts_rc .ne. 0) stop "plparseopts error"
 
 
     ! Get a cairo context from the drawing area.
@@ -98,22 +104,26 @@ contains
 
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
-    call plsetopt("drvopt", "set_background=1")  
+    ! call plsetopt("drvopt", "set_background=1")
+    plsetopt_rc = plsetopt("drvopt", "set_background=1")
+    if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
-    call plsetopt("geometry",  geometry)
+    ! call plsetopt("geometry",  geometry)
+    plsetopt_rc = plsetopt( 'geometry', geometry)
+    if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     call plscmap0n(4)
 
     call plscmap0a (red, green, blue, alpha)
- 
+
     !  Divide page into 2 plots
     call plstar(2,1)
 
     ! Tell the "extcairo" driver where the context is located.
     call pl_cmd(PLESC_DEVINIT, cc)
-    ! 
+    !
     ! Page 1:
     !
     ! This is a series of red, green and blue rectangles overlaid
@@ -127,11 +137,11 @@ contains
     call plcol0 (0)
     call plbox ("", 1.0_plflt, 0, "", 1.0_plflt, 0)
 
-    ! Draw the boxes 
+    ! Draw the boxes
     do i = 1,9
        icol = mod(i-1,3) + 1
 
-       ! Get a color, change its transparency and 
+       ! Get a color, change its transparency and
        ! set it as the current color.
        call plgcol0a (icol, r, g, b, a)
        call plscol0a (icol, r, g, b, 1.0_plflt - dble(i-1)/9.0_plflt)
@@ -149,11 +159,11 @@ contains
     !
     ! Page 2:
     !
-    ! This is a bunch of boxes colored red, green or blue with a single 
+    ! This is a bunch of boxes colored red, green or blue with a single
     ! large (red) box of linearly varying transparency overlaid. The
     ! overlaid box is completely transparent at the bottom and completely
     ! opaque at the top.
-    ! 
+    !
 
     ! Set up the window
     call pladv(0)

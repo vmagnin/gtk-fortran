@@ -21,12 +21,12 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran hl_plplot17e.f90 `pkg-config --cflags --libs gtk-fortran plplotd-f95`
+! gfortran hl_plplot17e.f90 `pkg-config --cflags --libs gtk-fortran plplot-fortran plplot`
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 17 by Alan W. Irwin
 
 module common_ex17
-  use iso_c_binding
+  ! use iso_c_binding
   use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area_new, &
        & gtk_events_pending, gtk_main, gtk_main_iteration, &
        & gtk_main_iteration_do,&
@@ -48,12 +48,12 @@ end module common_ex17
 
 module plplot_code_ex17
   use plplot, PI => PL_PI
-  use iso_c_binding
+  ! use iso_c_binding
   use common_ex17
 
   implicit none
 
-  integer,  parameter :: nsteps = 1000 
+  integer,  parameter :: nsteps = 1000
   integer, save :: id1, id2, n=0
   logical :: autoy, acc, pl_errcode
 
@@ -72,6 +72,9 @@ contains
     character(len=80) :: errmsg
     character(len=20) :: geometry
 
+    ! needed for use as functions instead of subroutines
+    integer :: plparseopts_rc
+    integer :: plsetopt_rc
 
     ! Define colour map 0 to match the "GRAFFER" colour table in
     ! place of the PLPLOT default.
@@ -83,7 +86,9 @@ contains
          & 127, 85, 170/)
 
     !  Process command-line arguments
-    call plparseopts(PL_PARSE_FULL)
+    ! call plparseopts(PL_PARSE_FULL)
+    plparseopts_rc = plparseopts(PL_PARSE_FULL)
+    if (plparseopts_rc .ne. 0) stop "plparseopts error"
 
     ! Get a cairo context from the drawing area.
     cc = hl_gtk_drawing_area_cairo_new(area)
@@ -94,11 +99,15 @@ contains
 
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
-    call plsetopt("drvopt", "set_background=1")  
+    ! call plsetopt("drvopt", "set_background=1")
+    plsetopt_rc = plsetopt("drvopt", "set_background=1")
+    if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
-    call plsetopt("geometry",  geometry)
+    ! call plsetopt("geometry",  geometry)
+    plsetopt_rc = plsetopt( 'geometry', geometry)
+    if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     !      Specify some reasonable defaults for ymin and ymax
     !      The plot will grow automatically if needed (but not shrink)

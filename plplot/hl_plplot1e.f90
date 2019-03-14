@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran hl_plplot1e.f90 `pkg-config --cflags --libs gtk-fortran plplotd-f95`
+! gfortran hl_plplot1e.f90 `pkg-config --cflags --libs gtk-fortran plplot-fortran plplot`
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 1 by Alan W. Irwin
 
@@ -42,7 +42,7 @@ end module common_ex1
 
 module plplot_code_ex1
   use plplot, PI => PL_PI
-  use iso_c_binding
+  ! use iso_c_binding
   use common_ex1
 
   implicit none
@@ -60,6 +60,10 @@ contains
     character(len=20) :: geometry
     integer :: digmax
 
+    ! needed for use as functions instead of subroutines
+    integer :: plparseopts_rc
+    integer :: plsetopt_rc
+
     ! Define colour map 0 to match the "GRAFFER" colour table in
     ! place of the PLPLOT default.
     integer, parameter, dimension(16) :: rval = (/255, 0, 255, &
@@ -70,7 +74,9 @@ contains
          & 127, 85, 170/)
 
     !  Process command-line arguments
-    call plparseopts(PL_PARSE_FULL)
+    ! call plparseopts(PL_PARSE_FULL)
+    plparseopts_rc = plparseopts(PL_PARSE_FULL)
+    if (plparseopts_rc .ne. 0) stop "plparseopts error"
 
     !  Print plplot version
     call plgver(version)
@@ -86,12 +92,16 @@ contains
 
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
-    call plsetopt("drvopt", "set_background=1")  
+    ! call plsetopt("drvopt", "set_background=1")
+    plsetopt_rc = plsetopt("drvopt", "set_background=1")
+    if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
-    call plsetopt("geometry",  geometry)
- 
+    ! call plsetopt("geometry",  geometry)
+    plsetopt_rc = plsetopt( 'geometry', geometry)
+    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+
     !  Divide page into 2x2 plots
     call plstar(2,2)
 
@@ -139,7 +149,7 @@ contains
 
     real(plflt), dimension(1:60) :: x, y
     real(plflt), dimension(1:6)  :: xs, ys
-    real(plflt) :: xmin, xmax, ymin, ymax 
+    real(plflt) :: xmin, xmax, ymin, ymax
     integer :: i
 
     do i = 1, 60
@@ -241,10 +251,12 @@ contains
     !   Superimpose a dashed line grid, with 1.5 mm marks and spaces. With
     !   only a single mark and space element, we do not need arrays
 
-    call plstyl( 1, 1500, 1500 )
+    call plstyl( (/1500/), (/1500/) )
     call plcol0(2)
     call plbox( 'g', 30.0_plflt, 0, 'g', 0.2_plflt, 0 )
-    call plstyl( 0, 0, 0 )
+    !   remember from the error message:
+    !   plstyl: At least one mark or space must be > 0, aborting operation
+    call plstyl( (/0/), (/1/) )
 
     call plcol0(3)
     call pllab( 'Angle (degrees)', 'sine', '#frPLplot Example 1 - Sine function' )
