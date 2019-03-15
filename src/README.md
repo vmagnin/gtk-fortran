@@ -29,6 +29,7 @@ In the following filenames, the ? character is the GTK version.
 
 ## Various scripts
 
+- show_versions.sh: shows the versions of the main tools and libraries used in gtk-fortran.
 - screenshots.sh: automatically launches each gtk-fortran example and take a PNG screenshot using the scrot command. A suffix is added to the name of the example.
 - build.sh: a short script to build gtk-fortran using CMake from the src/ directory.
 - test.sh: a script to build gtk-fortran without CMake, in a build/byscript directory.

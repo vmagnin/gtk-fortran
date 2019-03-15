@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- A show_versions.sh script that shows the versions of the main tools and libraries used in gtk-fortran. Useful for gtk-fortran developers or for reporting bugs.
 - A README file in each directory, explaining the role of each file.
 - Parallel building (gtk3) using make -j or make --jobs. On some systems, like FreeBSD, the number of jobs must be given: make -j 4 for example. By [@ChinouneMehdi](https://github.com/ChinouneMehdi).
 - A video quickstart guide on the Wiki.
