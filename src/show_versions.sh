@@ -23,18 +23,17 @@ LIB_GTK3="libgtk-3-dev"
 LIB_GLIB="libglib2.0-dev"
 LIB_PLPLOT="libplplot-dev"
 
-if [ $(lsb_release -sd | grep -c Fedora) != 0 ]; then
-#     LIB_GTK2="libgtk2.0-dev"
-#     LIB_GTK3="libgtk-3-dev"
-#     LIB_GLIB="libglib2.0-dev"
-#     LIB_PLPLOT="libplplot-dev"
-    echo
+if [ $(uname -srpo | grep -c MINGW) != 0 ]; then
+    pacman -Q mingw-w64-x86_64-gtk2
+    pacman -Q mingw-w64-x86_64-gtk3	
+    pacman -Q mingw-w64-x86_64-glib2
+    pacman -Q mingw-w64-x86_64-plplot
+else
+    dpkg-query --show $LIB_GTK2
+    dpkg-query --show $LIB_GTK3
+    dpkg-query --show $LIB_GLIB
+    dpkg-query --show $LIB_PLPLOT
 fi
-
-dpkg-query --show $LIB_GTK2
-dpkg-query --show $LIB_GTK3
-dpkg-query --show $LIB_GLIB
-dpkg-query --show $LIB_PLPLOT
 
 echo "=========="
 echo "LANGUAGES:"
