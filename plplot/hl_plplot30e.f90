@@ -70,7 +70,7 @@ contains
     integer, dimension(4) ::  red, green, blue
     real(kind=plflt), dimension (4) :: alpha, px, py
     real(kind=plflt), dimension (2) :: pos, rcoord, gcoord, bcoord, acoord
-    logical, dimension(2) :: rev
+    logical, dimension(1) :: rev
 
     data red   / 127, 255, 0, 0 /
     data green / 127, 0, 255, 0 /
@@ -83,7 +83,7 @@ contains
     data gcoord / 0.0_plflt, 0.0_plflt /
     data bcoord / 0.0_plflt, 0.0_plflt /
     data acoord / 0.0_plflt, 1.0_plflt /
-    data rev / .false. , .false. /
+    data rev / .false. /
 
     integer i, j
     integer icol, r, g, b
