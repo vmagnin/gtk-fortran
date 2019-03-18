@@ -145,11 +145,16 @@ contains
 
     ! For plplot 5.9.9 or lower the next declarations should be integers
     ! For 5.9.10 or higher they should be reals
-    real(kind=plflt) :: symbol_scales(MAX_NLEGEND), box_scales(0)
+!    real(kind=plflt) :: symbol_scales(MAX_NLEGEND), box_scales(0)
 !    integer :: line_widths(MAX_NLEGEND), box_line_widths(0)
+    real(kind=plflt) :: symbol_scales(MAX_NLEGEND), box_scales(MAX_NLEGEND)
 
-    real(kind=plflt) :: line_widths(MAX_NLEGEND), box_line_widths(0)
-    integer          :: box_colors(0), box_patterns(0)
+!    real(kind=plflt) :: line_widths(MAX_NLEGEND), box_line_widths(0)
+!    integer          :: box_colors(0), box_patterns(0)
+
+    real(kind=plflt) :: line_widths(MAX_NLEGEND), box_line_widths(MAX_NLEGEND)
+    integer          :: box_colors(MAX_NLEGEND), box_patterns(MAX_NLEGEND)
+
     character(len=20):: text(MAX_NLEGEND)
     character(len=1) :: symbols(MAX_NLEGEND)
 
