@@ -34,6 +34,11 @@ elif [ $(uname -srpo | grep -c fc) != 0 ]; then
     dnf info --installed gtk3-devel | grep Source
     dnf info --installed glib2 | grep Source
     dnf info --installed plplot-devel | grep Source
+elif [ $(uname -srpo | grep -c FreeBSD) != 0 ]; then
+    pkg info gtk2 | grep gtk2-
+    pkg info gtk3 | grep gtk3-
+    pkg info glib | grep ^glib
+    pkg info plplot | grep plplot-
 else
     dpkg-query --show $LIB_GTK2
     dpkg-query --show $LIB_GTK3
@@ -45,7 +50,12 @@ echo "=========="
 echo "LANGUAGES:"
 echo "=========="
 
-gfortran --version | head -n 1
+if [ $(uname -srpo | grep -c FreeBSD) != 0 ]; then
+    gfortran8 --version | head -n 1
+else
+    gfortran --version | head -n 1
+fi
+
 python3 --version
 perl --version | head -n 2 | tail -n 1
 bash --version | head -n 1
