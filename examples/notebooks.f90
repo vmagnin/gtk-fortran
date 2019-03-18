@@ -228,8 +228,8 @@ program notebook_example
    
   label = gtk_label_new ("Add page"//c_null_char)
   nb = gtk_notebook_insert_page (notebook_1, checkbutton, label, 2_c_int)
-  call gtk_notebook_set_tab_reorderable (notebook_1, label, TRUE)
-  call gtk_notebook_set_tab_detachable (notebook_1, label, TRUE)
+  call gtk_notebook_set_tab_reorderable(notebook_1, checkbutton, TRUE)
+  call gtk_notebook_set_tab_detachable (notebook_1, checkbutton, TRUE)
     
   ! prepend pages to the notebook 
   do i=1,3
