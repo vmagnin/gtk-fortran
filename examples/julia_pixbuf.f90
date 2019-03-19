@@ -64,9 +64,10 @@ module handlers
   &gtk_grid_set_row_homogeneous, gtk_statusbar_remove_all
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
-                  &cairo_surface_write_to_png, cairo_get_target
+                  &cairo_surface_write_to_png, cairo_surface_destroy
 
-  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf, &
+               & gdk_cairo_surface_create_from_pixbuf
 
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                        &gdk_pixbuf_get_rowstride, gdk_pixbuf_new
@@ -236,12 +237,13 @@ contains
     type(c_ptr) :: my_cairo_context
     integer(c_int) :: cstatus, message_id
 
-    ! TODO: how to save only the pixbuf image instead of the whole tab ?
-    my_cairo_context = gdk_cairo_create (gtk_widget_get_window(my_drawing_area))
+    ! The 0 means same scale as the window:
+    my_cairo_context = gdk_cairo_surface_create_from_pixbuf(my_pixbuf, 0, &
+                                       & gtk_widget_get_window(my_drawing_area))
 
     ! Save the picture if the computation is finished:
     if (.not. computing) then
-      cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context),&
+      cstatus = cairo_surface_write_to_png(my_cairo_context,&
                                           &"julia.png"//c_null_char)
 
       if (cstatus == CAIRO_STATUS_SUCCESS) then
@@ -260,7 +262,7 @@ contains
                                       &TRIM(string))
     end if
 
-    call cairo_destroy(my_cairo_context)
+    call cairo_surface_destroy(my_cairo_context)
     ret = FALSE
   end function secondbutton
 
