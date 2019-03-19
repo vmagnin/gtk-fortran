@@ -234,16 +234,16 @@ contains
     implicit none
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
-    type(c_ptr) :: my_cairo_context
+    type(c_ptr) :: my_cairo_surface
     integer(c_int) :: cstatus, message_id
 
     ! The 0 means same scale as the window:
-    my_cairo_context = gdk_cairo_surface_create_from_pixbuf(my_pixbuf, 0, &
+    my_cairo_surface = gdk_cairo_surface_create_from_pixbuf(my_pixbuf, 0, &
                                        & gtk_widget_get_window(my_drawing_area))
 
     ! Save the picture if the computation is finished:
     if (.not. computing) then
-      cstatus = cairo_surface_write_to_png(my_cairo_context,&
+      cstatus = cairo_surface_write_to_png(my_cairo_surface,&
                                           &"julia.png"//c_null_char)
 
       if (cstatus == CAIRO_STATUS_SUCCESS) then
@@ -262,7 +262,7 @@ contains
                                       &TRIM(string))
     end if
 
-    call cairo_surface_destroy(my_cairo_context)
+    call cairo_surface_destroy(my_cairo_surface)
     ret = FALSE
   end function secondbutton
 
