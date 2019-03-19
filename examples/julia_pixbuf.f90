@@ -146,8 +146,13 @@ contains
       ! Compute the image:
       call Julia_set(-2d0, +2d0, -2d0, +2d0, c, iterations)
 
-      message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
-              & "Julia"//c_null_char), "Finished."//c_null_char)
+      ! If Julia_set() was quitted because of a delete_event, we can not use
+      ! the statusBar because it has been destroyed:
+      if (run_status == TRUE) then
+          message_id = gtk_statusbar_push (statusBar, &
+              & gtk_statusbar_get_context_id(statusBar, "Julia"//c_null_char), &
+                                           & "Finished."//c_null_char)
+      end if
     else
       print *, "Already computing !"
     end if
