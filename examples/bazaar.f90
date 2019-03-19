@@ -23,7 +23,7 @@
 
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
-! Last modifications: vmagnin+Ian Harvey 02-21-2019, vmagnin 03-07-2019
+! Last modifications: vmagnin+Ian Harvey 02-21-2019, vmagnin 03-19-2019
 ! To compile under Linux:
 ! gfortran -I../src/ ../src/gtk.o ../src/gtk-sup.o ../src/gtk-hl.o bazaar.f90  `pkg-config --cflags --libs gtk+-3.0`
 ! If gtk-fortran is installed in the system:
@@ -67,7 +67,7 @@ module handlers
   & cairo_move_to, cairo_paint, cairo_set_line_width, cairo_set_source, &
   & cairo_set_source_rgb, cairo_stroke
 
-  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  use gdk, only: gdk_cairo_set_source_pixbuf
 
   use gdk_pixbuf, only: gdk_pixbuf_get_has_alpha, gdk_pixbuf_get_n_channels, &
   & gdk_pixbuf_get_pixels, gdk_pixbuf_get_rowstride, gdk_pixbuf_new
@@ -93,19 +93,18 @@ contains
 
 
   ! GtkWidget event:
-  function expose_event (widget, event, gdata) result(ret)  bind(c)
+  function draw (widget, my_cairo_context, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int, c_char
     implicit none
     integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
-    type(c_ptr) :: my_cairo_context, my_pixbuf
+    type(c_ptr), value :: widget, my_cairo_context, gdata
+    type(c_ptr) :: my_pixbuf
     character(kind=c_char), dimension(:), pointer :: pixel
     integer :: j
     integer(kind=c_int) :: i, nch, rowstride, width, height
     integer :: x, y
 
-    print *, "my expose_event"
-    my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
+    print *, "my draw event"
 
     call cairo_set_line_width(my_cairo_context, 1d0)
     call cairo_move_to(my_cairo_context, 100d0, 20d0)
@@ -167,11 +166,10 @@ contains
     call cairo_set_line_width(my_cairo_context, 4d0)
     call cairo_move_to(my_cairo_context, 0d0, 0d0)
     call cairo_line_to(my_cairo_context, 100d0, 50d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
-    call cairo_destroy(my_cairo_context)
     ret = FALSE
-  end function expose_event
+  end function draw
 
 
   ! GtkObject signal:
@@ -361,7 +359,7 @@ program gtkFortran
 
   my_drawing_area = gtk_drawing_area_new()
 
-  call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
+  call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(draw))
   call gtk_grid_attach(table, my_drawing_area, 0_c_int, 6_c_int, 3_c_int, 6_c_int)  
 
   file_selector = gtk_file_chooser_button_new ("gtk_file_chooser_button_new"//&
