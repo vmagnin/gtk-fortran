@@ -68,7 +68,7 @@ if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
     # Removed -ffpe-trap=invalid,zero,overflow as it gives a lot of crashes deep
     # in the call stack in GTK 3
     set(CMAKE_Fortran_FLAGS_DEBUG
-        "-g -pthread -Wall -pedantic -std=f2008 -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
+        "-g -pthread -Wall -Wextra -pedantic -std=f2008 -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
     set(CMAKE_Fortran_FLAGS_RELEASE
         "-pthread -O3 -mtune=native -march=native")
     if (UNIX)
