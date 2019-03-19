@@ -23,15 +23,14 @@
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
-! Last modifications: vmagnin 02-23-2019
-! gfortran -I../src ../src/gtk.f90 ../src/gdkevents-auto3.f90 mandelbrot_pixbuf_zoom.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
+! Last modifications: vmagnin 2019-03-19
 
 module handlers
   use gdk_events, only: gdkeventbutton, gdkeventscroll
 
   use cairo, only: cairo_destroy, cairo_paint
 
-  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  use gdk, only: gdk_cairo_set_source_pixbuf
 
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
@@ -79,21 +78,20 @@ contains
   end subroutine pending_events
 
 
-  subroutine expose_event (widget, event, gdata)  bind(c)
-    type(c_ptr), value, intent(in) :: widget, event, gdata
+  function draw (widget, my_cairo_context, gdata) result(ret)  bind(c)
+    type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
+    integer(c_int)                 :: ret
 
-    call paint_set(gtk_widget_get_window(widget))
-  end subroutine expose_event
+    call paint_set(my_cairo_context)
+    ret = FALSE
+  end function draw
 
 
-  subroutine paint_set(window)
-    type(c_ptr), intent(in) :: window
-    type(c_ptr) :: my_cairo_context
+  subroutine paint_set(my_cairo_context)
+    type(c_ptr), intent(in) :: my_cairo_context
 
-    my_cairo_context = gdk_cairo_create (window)
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
     call cairo_paint(my_cairo_context)
-    call cairo_destroy(my_cairo_context)
   end subroutine paint_set
 
 
@@ -115,7 +113,6 @@ contains
        need_point=.false.
        call set_limits
        call mandelbrot_set(drawing_area, 1000_c_int)
-       call paint_set(gtk_widget_get_window(drawing_area))
        id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Left|Centre mark: region corner, Right: Reset, "//&
             & "Wheel: Zoom in/out"//c_null_char)
@@ -284,7 +281,7 @@ contains
     t0=real(it, c_double)/1000._c_double
 
     do i=0, width-1
-       ! We provoke an expose_event once in a while to improve performances:
+       ! We provoke a draw event once in a while to improve performances:
        if (mod(i,10_c_int)==0) then
           call gtk_widget_queue_draw(my_drawing_area)
        end if
@@ -371,7 +368,7 @@ program mandelbrot_zoom
        & width, height)
   call gtk_container_add(my_event_box, my_drawing_area)
   call g_signal_connect (my_drawing_area, "draw"//c_null_char, &
-       & c_funloc(expose_event))
+       & c_funloc(draw))
   call g_signal_connect(my_event_box, "button-press-event"//c_null_char, &
        & c_funloc(mark_point))
   call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
