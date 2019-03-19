@@ -63,10 +63,10 @@ module handlers
   &GTK_ORIENTATION_VERTICAL, gtk_grid_set_column_homogeneous, &
   &gtk_grid_set_row_homogeneous, gtk_statusbar_remove_all
 
-  use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source, &
-                  &cairo_surface_write_to_png, cairo_surface_destroy
+  use cairo, only: cairo_paint, cairo_set_source, cairo_surface_write_to_png,&
+                 & cairo_surface_destroy
 
-  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf, &
+  use gdk, only: gdk_cairo_set_source_pixbuf, &
                & gdk_cairo_surface_create_from_pixbuf
 
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
@@ -116,19 +116,18 @@ contains
   end subroutine pending_events
 
 
-  ! Called when the window needs to be redrawn:
-  function draw (widget, event, gdata) result(ret)  bind(c)
+  ! Called each time the window needs to be redrawn:
+  function draw (widget, my_cairo_context, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_int, c_ptr
     use global_widgets
     implicit none
-    integer(c_int)    :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-    type(c_ptr) :: my_cairo_context
+    integer(c_int)                 :: ret
+    type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
 
-    my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
+    ! We redraw the pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
     call cairo_paint(my_cairo_context)
-    call cairo_destroy(my_cairo_context)
+
     ret = FALSE
   end function draw
 
