@@ -236,9 +236,8 @@ contains
     type(c_ptr) :: my_cairo_context
     integer(c_int) :: cstatus, message_id
 
-    ! TODO: how to save only the drawing_area ?
+    ! TODO: how to save only the pixbuf image instead of the whole tab ?
     my_cairo_context = gdk_cairo_create (gtk_widget_get_window(my_drawing_area))
-    call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
 
     ! Save the picture if the computation is finished:
     if (.not. computing) then
