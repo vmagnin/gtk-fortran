@@ -86,8 +86,8 @@ program gtkhello
                & gtk_container_add, gtk_container_set_border_width, &
                & gtk_button_new_with_label, gtk_box_pack_start, gtk_button_new_with_mnemonic, &
                & gtk_widget_show, gtk_widget_show_all, gtk_main, &
-               & GTK_WINDOW_TOPLEVEL, c_null_char, FALSE, TRUE, &
-               & GTK_ORIENTATION_HORIZONTAL, GTK_ORIENTATION_VERTICAL
+               & GTK_WINDOW_TOPLEVEL, c_null_char, FALSE, &
+               & GTK_ORIENTATION_HORIZONTAL
   use handlers
 
   implicit none

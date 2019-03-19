@@ -92,8 +92,7 @@ program gtkFortran
   use gtk, only: gtk_init, gtk_window_new, GTK_WINDOW_TOPLEVEL, gtk_window_set_title, &
       & gtk_container_set_border_width, g_signal_connect, gtk_box_new, gtk_container_add, &
       & gtk_button_new_with_label, gtk_box_pack_start, gtk_widget_show, gtk_main, FALSE, &
-
-      & c_null_char, TRUE, GTK_ORIENTATION_HORIZONTAL
+      & c_null_char, GTK_ORIENTATION_HORIZONTAL
   ! The "only" statement can divide the compilation time by a factor 10 !
   use handlers
   implicit none
