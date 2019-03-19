@@ -117,7 +117,7 @@ contains
 
 
   ! Called when the window needs to be redrawn:
-  function expose_event (widget, event, gdata) result(ret)  bind(c)
+  function draw (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_int, c_ptr
     use global_widgets
     implicit none
@@ -130,7 +130,7 @@ contains
     call cairo_paint(my_cairo_context)
     call cairo_destroy(my_cairo_context)
     ret = FALSE
-  end function expose_event
+  end function draw
 
 
   ! GtkButton signal emitted by the "Compute" button
@@ -394,7 +394,7 @@ program julia
 
   ! The drawing area is contained in the vertical box:
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
+  call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(draw))
 
   ! We define a notebook with two tabs "Graphics" and "Messages":
   notebook = gtk_notebook_new ()
@@ -467,7 +467,7 @@ subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
 
   ! We compute the colour of each pixel (i,j):
   do i=0, pixwidth-1
-    ! We provoke an expose_event only once in a while to improve performances:
+    ! We provoke a draw event only once in a while to improve performances:
     if (mod(i,10) == 0) then
       call gtk_widget_queue_draw(my_drawing_area)
     end if
