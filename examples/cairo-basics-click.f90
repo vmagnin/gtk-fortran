@@ -23,8 +23,7 @@
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling: James Tappin
-! gfortran -I../src ../src/gtk.f90 cairo-basics-click.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003
-! Last modification: 02-15-2019
+! Last modification: vmagnin 2019-03-19
 
 module handlers
   use iso_c_binding
@@ -34,8 +33,6 @@ module handlers
        & cairo_select_font_face, cairo_set_font_size, cairo_set_line_width, &
        & cairo_set_source_rgb, cairo_show_text, cairo_stroke, &
        & cairo_surface_write_to_png
-
-  use gdk, only: gdk_cairo_create
 
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_event_box_new, &
        & gtk_events_pending, gtk_main_iteration_do, gtk_widget_add_events, &
@@ -104,17 +101,14 @@ contains
   end subroutine scroll_event
 
 
-  function expose_event (widget, event, gdata) result(ret)  bind(c)
+  function expose_event (widget, my_cairo_context, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_int, c_ptr
     implicit none
     real(8), parameter :: pi = 3.14159265358979323846d0
     integer(c_int)    :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-    type(c_ptr) :: my_cairo_context
+    type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
     integer :: cstatus
     integer :: t
-
-    my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
 
     ! Bezier curve:
     call cairo_set_source_rgb(my_cairo_context, 0.9d0, 0.8d0, 0.8d0)
@@ -154,7 +148,6 @@ contains
     ! Save:
     cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//c_null_char)
 
-    call cairo_destroy(my_cairo_context)
     ret = FALSE
   end function expose_event
 end module handlers
