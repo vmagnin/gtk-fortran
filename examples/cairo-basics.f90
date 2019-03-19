@@ -22,8 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: 02-15-2019
-! gfortran -I../src ../src/gtk.f90 cairo-basics.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003
+! Last modification: vmagnin 2019-03-19
 
 module handlers
   use iso_c_binding, only: c_int
@@ -39,8 +38,6 @@ module handlers
   &get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, cairo_select_fon&
   &t_face, cairo_set_font_size, cairo_set_line_width, cairo_set_source, cairo_set&
   &_source_rgb, cairo_show_text, cairo_stroke, cairo_surface_write_to_png
-
-  use gdk, only: gdk_cairo_create
 
   implicit none
   integer(c_int) :: run_status = TRUE
@@ -68,22 +65,19 @@ contains
   end subroutine pending_events
 
 
-  function expose_event (widget, event, gdata) result(ret)  bind(c)
+  function expose_event (widget, my_cairo_context, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_int, c_ptr
     implicit none
     real(8), parameter :: pi = 3.14159265358979323846d0
     integer(c_int)    :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-    type(c_ptr) :: my_cairo_context
+    type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
     integer :: cstatus
     integer :: t
-
-    my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
 
     ! Bezier curve:
     call cairo_set_source_rgb(my_cairo_context, 0.9d0, 0.8d0, 0.8d0)
     call cairo_set_line_width(my_cairo_context, 4d0)
-    call cairo_move_to(my_cairo_context, 0d0, 0d0)  
+    call cairo_move_to(my_cairo_context, 0d0, 0d0)
     call cairo_curve_to(my_cairo_context, 600d0, 50d0, 115d0, 545d0, width*1d0, height*1d0)
     call cairo_stroke(my_cairo_context) 
 
@@ -91,7 +85,7 @@ contains
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0.5d0, 0.5d0)
     call cairo_set_line_width(my_cairo_context, 2d0)
     do t = 0, int(height), +20
-      call cairo_move_to(my_cairo_context, 0d0, t*1d0)  
+      call cairo_move_to(my_cairo_context, 0d0, t*1d0)
       call cairo_line_to(my_cairo_context, t*1d0, height*1d0)
       call cairo_stroke(my_cairo_context) 
     end do
@@ -111,14 +105,13 @@ contains
     do t = 1, 50
         call cairo_set_source_rgb(my_cairo_context, t/50d0, 0d0, 0d0)
         call cairo_set_line_width(my_cairo_context, 5d0*t/50d0)
-        call cairo_arc(my_cairo_context, 353d0+200d0*cos(t*2d0*pi/50), 350d0+200d0*sin(t*2d0*pi/50), 50d0, 0d0, 2*pi) 
+        call cairo_arc(my_cairo_context, 353d0+200d0*cos(t*2d0*pi/50), 350d0+200d0*sin(t*2d0*pi/50), 50d0, 0d0, 2*pi)
         call cairo_stroke(my_cairo_context) 
     end do
 
     ! Save:
     cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), "cairo.png"//c_null_char)
 
-    call cairo_destroy(my_cairo_context)
     ret = FALSE
   end function expose_event
 end module handlers
@@ -142,7 +135,7 @@ program cairo_basics
   call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
 
   my_drawing_area = gtk_drawing_area_new()
-  ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
+  ! In GTK 3.0 "expose-event" was replaced by "draw" event:
   call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
