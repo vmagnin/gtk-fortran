@@ -22,8 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: 02-20-2019
-! gfortran -I../src ../src/gtk.f90 mandelbrot_pixbuf.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
+! Last modification: vmagnin 2019-03-19
 
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
@@ -35,7 +34,7 @@ module handlers
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
 
-  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  use gdk, only: gdk_cairo_set_source_pixbuf
 
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
@@ -70,19 +69,20 @@ contains
   end subroutine pending_events
 
 
-  function expose_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
-    implicit none    
-    integer(c_int)    :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-    type(c_ptr) :: my_cairo_context
+  ! Called each time the window needs to be redrawn:
+  function draw (widget, my_cairo_context, gdata) result(ret)  bind(c)
+    use iso_c_binding, only: c_int, c_ptr
+    implicit none
+    integer(c_int)                 :: ret
+    type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
 
-    my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
-    call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0) 
+    ! We redraw the pixbuf:
+    call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
     call cairo_paint(my_cairo_context)
-    call cairo_destroy(my_cairo_context)
+
     ret = FALSE
-  end function expose_event
+  end function draw
+
 end module handlers
 
 
@@ -106,7 +106,7 @@ program mandelbrot
 
   my_drawing_area = gtk_drawing_area_new()
   ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
-  call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
+  call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(draw))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
 
@@ -161,7 +161,7 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
   scy = ((ymax-ymin)/height)  ! y scale
 
   do i=0, width-1
-    ! We provoke an expose_event once in a while to improve performances:
+    ! We provoke a draw event once in a while to improve performances:
     if (mod(i,10_c_int)==0) then
       call gtk_widget_queue_draw(my_drawing_area)
     end if
