@@ -85,6 +85,7 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
+    print *, "delete_event"
     run_status = FALSE
     ret = FALSE
     call gtk_main_quit()
