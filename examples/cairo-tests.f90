@@ -22,8 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: 02-19-2019
-! gfortran -I../src ../src/gtk.f90 cairo-tests.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
+! Last modification: vmagnin 2019-03-19
 
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
@@ -39,7 +38,7 @@ module handlers
   &ce, cairo_set_source_rgb, cairo_show_text, cairo_stroke, cairo_surface_write_t&
   &o_png
 
-  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
+  use gdk, only: gdk_cairo_set_source_pixbuf
 
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
@@ -75,15 +74,12 @@ contains
   end subroutine pending_events
 
 
-  function expose_event (widget, event, gdata) result(ret)  bind(c)
+  function expose_event (widget, my_cairo_context, gdata) result(ret)  bind(c)
     use iso_c_binding
     implicit none
     integer(c_int)    :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-    type(c_ptr) :: my_cairo_context
+    type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
     integer :: cstatus
-
-    my_cairo_context = gdk_cairo_create (gtk_widget_get_window(widget))
 
     call cairo_set_line_width(my_cairo_context, 1d0)
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 1d0)
@@ -124,7 +120,6 @@ contains
       print *, cstatus
     end if
 
-    call cairo_destroy(my_cairo_context)
     ret = FALSE
   end function expose_event
 end module handlers
