@@ -572,7 +572,7 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
 # ****************************************************************************
 # Definition of command line options:
 PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files",
-                                  epilog="GPLv3 license, https://github.com/jerryd/gtk-fortran")
+                                  epilog="GPLv3 license, https://github.com/vmagnin/gtk-fortran")
 PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3],
                      metavar="2|3", nargs=1, required=True,
                      help="GTK major version")
@@ -609,7 +609,7 @@ TYPES_DICT = {
     "short":("integer(c_short)", "c_short"),
     "boolean":("logical(c_bool)", "c_bool"),
     "char":("character(kind=c_char)", "c_char"),
-    # For gchar & guchar, see https://github.com/jerryd/gtk-fortran/issues/41#issuecomment-7337877
+    # For gchar & guchar, see https://github.com/vmagnin/gtk-fortran/issues/41#issuecomment-7337877
     "gchar":("integer(kind=c_int8_t)", "c_int8_t"),   #("character(kind=c_char)", "c_char"),
     "guchar":("integer(kind=c_int8_t)", "c_int8_t"),  #("character(kind=c_char)", "c_char"),
     "double": ("real(c_double)", "c_double"),
