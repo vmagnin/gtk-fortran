@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 03-09-2019 (tested with Python 3.6.7, Ubuntu 18.10)
-# pylint3 score: 8.53/10
+# Last modification: 2019-03-20 (tested with Python 3.6.7, Ubuntu 18.10)
+# pylint3 score: 8.48/10
 
 """ Generates the *-auto.f90 files from the C header files of GLlib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -139,6 +139,7 @@ def print_statistics():
           + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()))
     print('{:<30}{:>6}'.format("* nb_files scanned =", nb_files))
     print('{:<30}{:>6}'.format("* nb_generated_interfaces =", nb_generated_interfaces))
+    print('{:<30}{:>6}'.format("* nb_deprecated_functions =", nb_deprecated_functions))
     print('{:<30}{:>6}'.format("* nb_type_errors =", nb_type_errors))
     print('{:<30}{:>6}'.format("* nb_errors (others) =", nb_errors))
     print('{:<30}{:>6}'.format("* nb_lines treated =", nb_lines))
@@ -375,7 +376,7 @@ def preprocess_prototypes():
 
 def analyze_prototypes():
     """Each prototype is now analyzed"""
-    global nb_variadic
+    global nb_variadic, nb_deprecated_functions
 
     for proto in preprocessed_list:
         error_flag = False
@@ -437,6 +438,21 @@ def analyze_prototypes():
             write_error(directory[0], c_file_name,
                         "Function name beginning by underscore", proto, False)
             continue    # Next prototype
+
+        # What is the status of that function ? (Is the C prototype preceded
+        # on the previous line by a DEPRECATED or AVAILABLE statement ?)
+        status = re.search(r"(?m)^(.*?(DEPRECATED|AVAILABLE).*?)\n.*?"+f_name+r"\W", whole_file_original)
+        if status:
+            function_status = status.group(1)
+            if "DEPRECATED" in function_status:
+                nb_deprecated_functions += 1
+                # The `-d` argument can be useful to adapt gtk-fortran for
+                # major updates. The `make -i` command will then generate errors
+                # when a deprecated function is not found:
+                if ARGS.deprecated:
+                    continue
+        else:
+            function_status = ""
 
         # Searching the function arguments:
         arguments = RGX_ARGUMENTS.search(proto)
@@ -506,16 +522,17 @@ def analyze_prototypes():
 
         # Write the Fortran interface in the .f90 file:
         if not error_flag:
-            write_fortran_interface(proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end)
+            write_fortran_interface(function_status, proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end)
 
 
-def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end):
+def write_fortran_interface(function_status, prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end):
     """Write the Fortran interface of a function in the *-auto.f90 file"""
     global index
     global nb_generated_interfaces
     global nb_win32_utf8
 
-    interface1 = 0*TAB + "!" + prototype + "\n"
+    interface1 = 0*TAB + "! " + function_status + "\n"
+    interface1 += 0*TAB + "!" + prototype + "\n"
     first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
     interface2 = multiline(first_line, 80) + "\n"
     interface3 = 1*TAB + "use iso_c_binding, only: " + f_use + "\n"
@@ -540,7 +557,7 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
         # IN THE FUTURE, gdk-pixbuf-hl.f90 COULD BE INSTEAD MODIFIED.
         if "_utf8" not in f_name:
             unix_only_file.write(interface)
-            index.append(["gtk_os_dependent", f_name,
+            index.append(["gtk_os_dependent", f_name, function_status,
                           "unixonly-auto.f90/mswindowsonly-auto.f90",
                           directory[0]+"/"+c_file_name, prototype, first_line])
             first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
@@ -552,7 +569,7 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
                    whole_file_original):
         # With GTK 3, there is no more functions defined like this (Ubuntu >= 17.10)
         unix_only_file.write(interface)
-        index.append(["gtk_os_dependent", f_name,
+        index.append(["gtk_os_dependent", f_name, function_status,
                       "unixonly-auto.f90/mswindowsonly-auto.f90",
                       directory[0]+"/"+c_file_name, prototype, first_line])
         first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
@@ -562,7 +579,7 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
         nb_win32_utf8 += 1
     else: # Non platform specific functions
         f_file.write(interface)
-        index.append([module_name, f_name, f_file_name,
+        index.append([module_name, f_name, function_status, f_file_name,
                       directory[0]+"/"+c_file_name, prototype, first_line])
         nb_generated_interfaces += 1
 
@@ -578,6 +595,8 @@ PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3],
                      help="GTK major version")
 PARSARG.add_argument("-b", "--build", action="store_true",
                      help="Build gtk-fortran libraries and examples")
+PARSARG.add_argument("-d", "--deprecated", action="store_true",
+                     help="Remove deprecated functions")
 ARGS = PARSARG.parse_args()
 GTK_VERSION = "gtk" + str(ARGS.gtk[0])
 
@@ -677,6 +696,7 @@ TAB = "  "
 # Statistics initialization:
 nb_lines = 0
 nb_generated_interfaces = 0
+nb_deprecated_functions = 0
 nb_errors = 0
 nb_type_errors = 0
 nb_variadic = 0
