@@ -542,10 +542,14 @@ def write_fortran_interface(function_status, prototype, f_procedure, f_name, arg
     interface3 += 0*TAB + f_the_end + "\n\n"
     interface = interface1+interface2+interface3
 
+    # Names for the gtk-fortran-index.csv file:
+    my_module_name = module_name
+    my_f_file_name = f_file_name
+    my_first_line  = first_line
+
     # For Win32 _utf8 functions, the normal form and the Windows form must be
     # dispatched in two platform dependent files, with the same module name.
     # Some _utf8 functions are defined by a #define, and others declared.
-    if ("gdk_pixbuf_new_from_file" in f_name) or ("gdk_pixbuf_savev" in f_name):
         # gdk_pixbuf_new_from_file_utf8
         # gdk_pixbuf_new_from_file_at_size_utf8
         # gdk_pixbuf_new_from_file_at_scale_utf8
@@ -555,33 +559,31 @@ def write_fortran_interface(function_status, prototype, f_procedure, f_name, arg
         # the gdk-pixbuf-hl.f90 uses them.
         # PROBABLY OTHER FUNCTIONS ARE IN THE SAME CASE.
         # IN THE FUTURE, gdk-pixbuf-hl.f90 COULD BE INSTEAD MODIFIED.
-        if "_utf8" not in f_name:
-            unix_only_file.write(interface)
-            index.append(["gtk_os_dependent", f_name, function_status,
-                          "unixonly-auto.f90/mswindowsonly-auto.f90",
-                          directory[0]+"/"+c_file_name, prototype, first_line])
-            first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
-            interface2_utf8 = multiline(first_line, 80) + "\n"
-            mswindows_only_file.write(interface1+interface2_utf8+interface3)
-            nb_generated_interfaces += 2
-            nb_win32_utf8 += 1
-    elif re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$",
-                   whole_file_original):
-        # With GTK 3, there is no more functions defined like this (Ubuntu >= 17.10)
+
+    if ((("gdk_pixbuf_new_from_file" in f_name) or ("gdk_pixbuf_savev" in f_name)) and ("_utf8" not in f_name)) or re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$", whole_file_original):
+        # The re.search() test is for GTK 2.
+        # In recent versions of GTK 3, there is no more functions defined
+        # like this (verified in GTK 3.24.4).
+
         unix_only_file.write(interface)
-        index.append(["gtk_os_dependent", f_name, function_status,
-                      "unixonly-auto.f90/mswindowsonly-auto.f90",
-                      directory[0]+"/"+c_file_name, prototype, first_line])
+
+        my_module_name = "gtk_os_dependent"
+        my_f_file_name = "unixonly-auto.f90/mswindowsonly-auto.f90"
+
         first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
         interface2_utf8 = multiline(first_line, 80) + "\n"
+
         mswindows_only_file.write(interface1+interface2_utf8+interface3)
+
         nb_generated_interfaces += 2
         nb_win32_utf8 += 1
     else: # Non platform specific functions
         f_file.write(interface)
-        index.append([module_name, f_name, function_status, f_file_name,
-                      directory[0]+"/"+c_file_name, prototype, first_line])
         nb_generated_interfaces += 1
+
+    # Adds the function in the gtk-fortran-index.csv file:
+    index.append([my_module_name, f_name, function_status, my_f_file_name,
+                 directory[0]+"/"+c_file_name, prototype, my_first_line])
 
 
 # ****************************************************************************
