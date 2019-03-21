@@ -81,8 +81,8 @@ nb_deprecated = 0
 for directory in os.walk(path):
     # Scan each file in that directory:
     for f_name in directory[2]:
-        # Is it a Fortran file ?
-        if not(f_name.endswith(".f90") or f_name.endswith(".f95") or f_name.endswith(".f03") or f_name.endswith(".f08")):
+        # Is it a Fortran file ? (.f or .f?? extension)
+        if re.search("\.f(?:$|[\d]{2})", f_name) is None:
             continue    # to next file
         # The gtk-fortran *-auto.f90 files are not treated:
         if "-auto" in f_name:
