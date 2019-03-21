@@ -121,7 +121,7 @@ for directory in os.walk(path):
 
                 # Is this function deprecated ?
                 if "DEPRECATED" in function_status:
-                    print(">>> DEPRECATED: "+function_name)
+                    print(">>> " + function_status + ": " + function_name)
                     nb_deprecated += 1
 
         # Writes the USE statements needed for this Fortran file:
@@ -134,7 +134,7 @@ for directory in os.walk(path):
 output_file.close()
 
 print("*********************************************")
-print(">>> ", nb_deprecated, " DEPRECATED statements")
+print(">>> ", nb_deprecated, " DEPRECATED calls")
 print("*********************************************")
 
 # To update the "Tested functions" wiki page:
