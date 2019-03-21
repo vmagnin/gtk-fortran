@@ -27,8 +27,8 @@
 # Contributed by Vincent Magnin, 04.04.2011
 # Last modification: vmagnin 2019-03-21
 
-""" This program helps you generating the USE statements for your gtk-fortran programs. It also
-displays all the GTK functions used in a directory.
+""" This program helps you generating the USE statements for your gtk-fortran 
+programs. It also displays all the GTK functions used in a directory.
 Command line: ./usemodules.py dir_name
 """
 
@@ -69,6 +69,7 @@ output_file.write(HEADER)
 # Initialization:
 used_functions = []
 total = 0
+nb_deprecated = 0
 
 # The script will work on all Fortran files in this directory and its subdirectories:
 path = sys.argv[1]    # for example "../examples/"
@@ -98,8 +99,8 @@ for directory in os.walk(path):
 
             # Scan all functions in that index file:
             for row in reader:
-                module_name = row[0]
-                function_name = row[1]
+                module_name     = row[0]
+                function_name   = row[1]
                 function_status = row[2]
 
                 pattern = function_name + "[^a-zA-Z0-9_]"
@@ -120,6 +121,7 @@ for directory in os.walk(path):
                     # Is this function deprecated ?
                     if "DEPRECATED" in function_status:
                         print(">>> DEPRECATED: "+function_name)
+                        nb_deprecated += 1
 
             # Writes the USE statements needed for this Fortran file:
             output_file.write(f_name+"\n"+"============\n")
@@ -129,6 +131,10 @@ for directory in os.walk(path):
 
 
 output_file.close()
+
+print("*********************************************")
+print(">>> ", nb_deprecated, " DEPRECATED statements")
+print("*********************************************")
 
 # To update the "Tested functions" wiki page:
 used_functions.sort()
