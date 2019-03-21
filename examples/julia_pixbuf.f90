@@ -22,8 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 02-21-2019, vmagnin 2019-03-19
-! gfortran -I../src ../src/gtk.f90 julia_pixbuf.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
+! Last modifications: vmagnin+Ian Harvey 02-21-2019, vmagnin 2019-03-21
 
 
 module global_widgets
@@ -53,7 +52,7 @@ module handlers
   &gtk_text_buffer_set_text, gtk_scrolled_window_new, C_NEW_LINE, &
   &gtk_text_buffer_insert_at_cursor, gtk_statusbar_new,&
   &gtk_statusbar_push, gtk_statusbar_pop, gtk_statusbar_get_context_id,&
-  &gtk_handle_box_new, CAIRO_STATUS_SUCCESS, CAIRO_STATUS_NO_MEMORY,&
+  &CAIRO_STATUS_SUCCESS, CAIRO_STATUS_NO_MEMORY,&
   &CAIRO_STATUS_SURFACE_TYPE_MISMATCH, CAIRO_STATUS_WRITE_ERROR,&
   &gtk_button_new_with_mnemonic, gtk_link_button_new_with_label,&
   &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic, &
