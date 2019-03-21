@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- The cfwrapper.py detects the status of each function (AVAILABLE or DEPRECATED) and writes it in the *-auto.f90 files and in gtk-fortran-index.csv. It will help to remove deprecated functions during the GTK 4 migration. Developers can use the `-d` argument to remove DEPRECATED functions from the library: using `make -i` will then show errors for each deprecated function used in the project.
+- The usemodules.py script prints warnings when deprecated functions are found in Fortran files.
 - A show_versions.sh script that shows the versions of the main tools and libraries used in gtk-fortran. Useful for gtk-fortran developers or for reporting bugs.
 - A README file in each directory, explaining the role of each file.
 - Parallel building (gtk3) using make -j or make --jobs. On some systems, like FreeBSD, the number of jobs must be given: make -j 4 for example. By [@ChinouneMehdi](https://github.com/ChinouneMehdi).

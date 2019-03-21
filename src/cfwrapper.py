@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 03-09-2019 (tested with Python 3.6.7, Ubuntu 18.10)
-# pylint3 score: 8.53/10
+# Last modification: 2019-03-20 (tested with Python 3.6.7, Ubuntu 18.10)
+# pylint3 score: 8.48/10
 
 """ Generates the *-auto.f90 files from the C header files of GLlib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -139,6 +139,7 @@ def print_statistics():
           + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()))
     print('{:<30}{:>6}'.format("* nb_files scanned =", nb_files))
     print('{:<30}{:>6}'.format("* nb_generated_interfaces =", nb_generated_interfaces))
+    print('{:<30}{:>6}'.format("* nb_deprecated_functions =", nb_deprecated_functions))
     print('{:<30}{:>6}'.format("* nb_type_errors =", nb_type_errors))
     print('{:<30}{:>6}'.format("* nb_errors (others) =", nb_errors))
     print('{:<30}{:>6}'.format("* nb_lines treated =", nb_lines))
@@ -375,7 +376,7 @@ def preprocess_prototypes():
 
 def analyze_prototypes():
     """Each prototype is now analyzed"""
-    global nb_variadic
+    global nb_variadic, nb_deprecated_functions
 
     for proto in preprocessed_list:
         error_flag = False
@@ -437,6 +438,21 @@ def analyze_prototypes():
             write_error(directory[0], c_file_name,
                         "Function name beginning by underscore", proto, False)
             continue    # Next prototype
+
+        # What is the status of that function ? (Is the C prototype preceded
+        # on the previous line by a DEPRECATED or AVAILABLE statement ?)
+        status = re.search(r"(?m)^(.*?(DEPRECATED|AVAILABLE).*?)\n.*?"+f_name+r"\W", whole_file_original)
+        if status:
+            function_status = status.group(1)
+            if "DEPRECATED" in function_status:
+                nb_deprecated_functions += 1
+                # The `-d` argument can be useful to adapt gtk-fortran for
+                # major updates. The `make -i` command will then generate errors
+                # when a deprecated function is not found:
+                if ARGS.deprecated:
+                    continue
+        else:
+            function_status = ""
 
         # Searching the function arguments:
         arguments = RGX_ARGUMENTS.search(proto)
@@ -506,16 +522,17 @@ def analyze_prototypes():
 
         # Write the Fortran interface in the .f90 file:
         if not error_flag:
-            write_fortran_interface(proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end)
+            write_fortran_interface(function_status, proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end)
 
 
-def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end):
+def write_fortran_interface(function_status, prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end):
     """Write the Fortran interface of a function in the *-auto.f90 file"""
     global index
     global nb_generated_interfaces
     global nb_win32_utf8
 
-    interface1 = 0*TAB + "!" + prototype + "\n"
+    interface1 = 0*TAB + "! " + function_status + "\n"
+    interface1 += 0*TAB + "!" + prototype + "\n"
     first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
     interface2 = multiline(first_line, 80) + "\n"
     interface3 = 1*TAB + "use iso_c_binding, only: " + f_use + "\n"
@@ -525,10 +542,14 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
     interface3 += 0*TAB + f_the_end + "\n\n"
     interface = interface1+interface2+interface3
 
+    # Names for the gtk-fortran-index.csv file:
+    my_module_name = module_name
+    my_f_file_name = f_file_name
+    my_first_line  = first_line
+
     # For Win32 _utf8 functions, the normal form and the Windows form must be
     # dispatched in two platform dependent files, with the same module name.
     # Some _utf8 functions are defined by a #define, and others declared.
-    if ("gdk_pixbuf_new_from_file" in f_name) or ("gdk_pixbuf_savev" in f_name):
         # gdk_pixbuf_new_from_file_utf8
         # gdk_pixbuf_new_from_file_at_size_utf8
         # gdk_pixbuf_new_from_file_at_scale_utf8
@@ -538,33 +559,31 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
         # the gdk-pixbuf-hl.f90 uses them.
         # PROBABLY OTHER FUNCTIONS ARE IN THE SAME CASE.
         # IN THE FUTURE, gdk-pixbuf-hl.f90 COULD BE INSTEAD MODIFIED.
-        if "_utf8" not in f_name:
-            unix_only_file.write(interface)
-            index.append(["gtk_os_dependent", f_name,
-                          "unixonly-auto.f90/mswindowsonly-auto.f90",
-                          directory[0]+"/"+c_file_name, prototype, first_line])
-            first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
-            interface2_utf8 = multiline(first_line, 80) + "\n"
-            mswindows_only_file.write(interface1+interface2_utf8+interface3)
-            nb_generated_interfaces += 2
-            nb_win32_utf8 += 1
-    elif re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$",
-                   whole_file_original):
-        # With GTK 3, there is no more functions defined like this (Ubuntu >= 17.10)
+
+    if ((("gdk_pixbuf_new_from_file" in f_name) or ("gdk_pixbuf_savev" in f_name)) and ("_utf8" not in f_name)) or re.search(r"(?m)^#define\s+"+f_name+r"\s+"+f_name+r"_utf8\s*$", whole_file_original):
+        # The re.search() test is for GTK 2.
+        # In recent versions of GTK 3, there is no more functions defined
+        # like this (verified in GTK 3.24.4).
+
         unix_only_file.write(interface)
-        index.append(["gtk_os_dependent", f_name,
-                      "unixonly-auto.f90/mswindowsonly-auto.f90",
-                      directory[0]+"/"+c_file_name, prototype, first_line])
+
+        my_module_name = "gtk_os_dependent"
+        my_f_file_name = "unixonly-auto.f90/mswindowsonly-auto.f90"
+
         first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
         interface2_utf8 = multiline(first_line, 80) + "\n"
+
         mswindows_only_file.write(interface1+interface2_utf8+interface3)
+
         nb_generated_interfaces += 2
         nb_win32_utf8 += 1
     else: # Non platform specific functions
         f_file.write(interface)
-        index.append([module_name, f_name, f_file_name,
-                      directory[0]+"/"+c_file_name, prototype, first_line])
         nb_generated_interfaces += 1
+
+    # Adds the function in the gtk-fortran-index.csv file:
+    index.append([my_module_name, f_name, function_status, my_f_file_name,
+                 directory[0]+"/"+c_file_name, prototype, my_first_line])
 
 
 # ****************************************************************************
@@ -572,12 +591,14 @@ def write_fortran_interface(prototype, f_procedure, f_name, args_list, f_use, de
 # ****************************************************************************
 # Definition of command line options:
 PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files",
-                                  epilog="GPLv3 license, https://github.com/jerryd/gtk-fortran")
+                                  epilog="GPLv3 license, https://github.com/vmagnin/gtk-fortran")
 PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3],
                      metavar="2|3", nargs=1, required=True,
                      help="GTK major version")
 PARSARG.add_argument("-b", "--build", action="store_true",
                      help="Build gtk-fortran libraries and examples")
+PARSARG.add_argument("-d", "--deprecated", action="store_true",
+                     help="Remove deprecated functions")
 ARGS = PARSARG.parse_args()
 GTK_VERSION = "gtk" + str(ARGS.gtk[0])
 
@@ -609,7 +630,7 @@ TYPES_DICT = {
     "short":("integer(c_short)", "c_short"),
     "boolean":("logical(c_bool)", "c_bool"),
     "char":("character(kind=c_char)", "c_char"),
-    # For gchar & guchar, see https://github.com/jerryd/gtk-fortran/issues/41#issuecomment-7337877
+    # For gchar & guchar, see https://github.com/vmagnin/gtk-fortran/issues/41#issuecomment-7337877
     "gchar":("integer(kind=c_int8_t)", "c_int8_t"),   #("character(kind=c_char)", "c_char"),
     "guchar":("integer(kind=c_int8_t)", "c_int8_t"),  #("character(kind=c_char)", "c_char"),
     "double": ("real(c_double)", "c_double"),
@@ -677,6 +698,7 @@ TAB = "  "
 # Statistics initialization:
 nb_lines = 0
 nb_generated_interfaces = 0
+nb_deprecated_functions = 0
 nb_errors = 0
 nb_type_errors = 0
 nb_variadic = 0
