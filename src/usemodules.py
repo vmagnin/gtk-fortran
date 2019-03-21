@@ -82,7 +82,7 @@ for directory in os.walk(path):
     # Scan each file in that directory:
     for f_name in directory[2]:
         # Is it a Fortran file ? (.f or .f?? extension)
-        if re.search("\.f(?:$|[\d]{2})", f_name) is None:
+        if re.search("\.f(?:$|[\d]{2}$)", f_name) is None:
             continue    # to next file
         # The gtk-fortran *-auto.f90 files are not treated:
         if "-auto" in f_name:
