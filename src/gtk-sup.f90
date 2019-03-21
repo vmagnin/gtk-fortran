@@ -157,6 +157,8 @@ module gtk_sup
   ! Stock button and icon names extracted from gtk/gtkstock.h
   ! N.B. GTK_STOCK_ADD clashes with the routine gtk_stock_add and is therefore
   ! omitted.
+  ! Note that the whole GTK_STOCK library is deprecated since GTK 3.10 and so
+  ! will be removed in GTK 4.
   !-
 
   character(len=*), parameter :: GTK_STOCK_ABOUT = &
