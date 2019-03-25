@@ -2,7 +2,8 @@
 # Show libraries and tools versions used in gtk-fortran
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13
-# Updated 2019-03-15
+# Updated 2019-03-25
+# Needs: in Fedora, lsb_release is in the package redhat-lsb-core 
 
 echo "======="
 echo "SYSTEM:"
@@ -28,6 +29,11 @@ if [ $(uname -srpo | grep -c MINGW) != 0 ]; then
     pacman -Q mingw-w64-x86_64-gtk3	
     pacman -Q mingw-w64-x86_64-glib2
     pacman -Q mingw-w64-x86_64-plplot
+elif [ $(uname -srpo | grep -c fc) != 0 ]; then
+    dnf info --installed gtk2-devel | grep Source
+    dnf info --installed gtk3-devel | grep Source
+    dnf info --installed glib2 | grep Source
+    dnf info --installed plplot-devel | grep Source
 else
     dpkg-query --show $LIB_GTK2
     dpkg-query --show $LIB_GTK3
