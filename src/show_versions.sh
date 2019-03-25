@@ -44,6 +44,11 @@ elif [ $(uname -srpo | grep -c FreeBSD) != 0 ]; then
     pkg info gtk3 | grep gtk3-
     pkg info glib | grep ^glib
     pkg info plplot | grep plplot-
+elif [ $(lsb_release -sd | grep -c openSUSE) != 0 ]; then
+    zypper info gtk2-devel | grep Source
+    zypper info gtk3-devel | grep Source
+    zypper info glib2-devel | grep Source
+    zypper info plplot-devel | grep Source
 else
     dpkg-query --show $LIB_GTK2
     dpkg-query --show $LIB_GTK3
