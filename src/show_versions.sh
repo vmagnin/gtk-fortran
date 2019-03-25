@@ -29,6 +29,11 @@ if [ $(uname -srpo | grep -c MINGW) != 0 ]; then
     pacman -Q mingw-w64-x86_64-gtk3	
     pacman -Q mingw-w64-x86_64-glib2
     pacman -Q mingw-w64-x86_64-plplot
+elif [ $(uname -srpo | grep -c MANJARO) != 0 ]; then
+    pacman -Q gtk2
+    pacman -Q gtk3
+    pacman -Q glib2
+    pacman -Q plplot
 elif [ $(uname -srpo | grep -c fc) != 0 ]; then
     dnf info --installed gtk2-devel | grep Source
     dnf info --installed gtk3-devel | grep Source
