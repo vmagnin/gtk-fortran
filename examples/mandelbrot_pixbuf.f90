@@ -24,6 +24,7 @@
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Last modification: vmagnin 2019-03-26
 
+
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending,&
   &gtk_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window,&
@@ -70,6 +71,7 @@ contains
     ! Makes the innermost invocation of the main loop return when it regains control:
     call gtk_main_quit()
   end function delete_event
+
 
   ! This function is needed to update the GUI during long computations:
   subroutine pending_events ()
@@ -143,7 +145,6 @@ program mandelbrot
   call gtk_main()
 
   print *, "All done"
-
 end program mandelbrot 
 
 
@@ -217,6 +218,7 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
   t1=system_time()
   print *, "System time = ", t1-t0
 end subroutine mandelbrot_set
+
 
 !***********************************************************
 !  system time since 00:00
