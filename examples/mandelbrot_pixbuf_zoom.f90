@@ -320,10 +320,12 @@ contains
           pixel(3,i+1,j+1)=char(blue)
           pixel(4,i+1,j+1)=char(255)  ! Opacity (alpha channel)
 
-          ! This subrountine processes gtk events as needed during the computation.
-          call pending_events()
-          if (run_status == FALSE) return ! Exit if we had a delete event.
        end do
+       ! **************************************************************************
+       ! You need to manage the GTK events during computation:
+       ! **************************************************************************
+       call pending_events()
+       if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
 
     call gtk_widget_queue_draw(my_drawing_area)
