@@ -138,7 +138,7 @@ program mandelbrot
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/width*height*nch/))
 
   ! Scientific computing:
-  call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 1000_4)
+  call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 10000_4)
 
   ! The window will stay opened after the computation, but we need to verify
   ! that the user has not closed the window during the computation:
@@ -173,7 +173,11 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
   scy = (ymax-ymin) / height  ! y scale
 
   do i=0, width-1
-    ! We provoke a draw event only once in a while to improve performances:
+    ! **************************************************************************
+    ! Needed if you want to display progressively the result during computation.
+    ! We provoke a draw event only once in a while to avoid degrading
+    ! the performances:
+    ! **************************************************************************
     if (mod(i, 10_c_int) == 0) then
       call gtk_widget_queue_draw(my_drawing_area)
     end if
@@ -208,7 +212,9 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
       pixel(p+2) = char(blue)
 
     end do
-     ! This subroutine processes GTK events as needed during the computation:
+    ! **************************************************************************
+    ! You need to manage the GTK events during computation:
+    ! **************************************************************************
     call pending_events()
     if (run_status == FALSE) return ! Exit if we had a delete event.
   end do
