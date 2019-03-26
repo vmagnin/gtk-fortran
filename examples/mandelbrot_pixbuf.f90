@@ -207,10 +207,10 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
       pixel(p+1) = char(green)
       pixel(p+2) = char(blue)
 
-      ! This subroutine processes GTK events as needed during the computation.
-      call pending_events()
-      if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
+     ! This subroutine processes GTK events as needed during the computation:
+    call pending_events()
+    if (run_status == FALSE) return ! Exit if we had a delete event.
   end do
 
   ! Final update of the display:
