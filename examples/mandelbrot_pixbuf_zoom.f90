@@ -284,9 +284,13 @@ contains
     t0=real(it, c_double)/1000._c_double
 
     do i=0, width-1
-       ! We provoke a draw event once in a while to improve performances:
-       if (mod(i,10_c_int)==0) then
-          call gtk_widget_queue_draw(my_drawing_area)
+       ! **************************************************************************
+       ! Needed if you want to display progressively the result during computation.
+       ! We provoke a draw event only once in a while to avoid degrading
+       ! the performances:
+       ! **************************************************************************
+       if (mod(i, 10_c_int) == 0) then
+         call gtk_widget_queue_draw(my_drawing_area)
        end if
 
        do j=0, height-1
