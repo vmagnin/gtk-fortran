@@ -49,7 +49,7 @@ module handlers
   type(c_ptr)    :: my_pixbuf
   character(kind=c_char), dimension(:), pointer :: pixel
   integer(kind=c_int) :: nch, rowstride, width, height
-
+  logical :: computing = .false.
 
 contains
   !*************************************
@@ -69,7 +69,7 @@ contains
     ! Returns FALSE to propagate the event further:
     ret = FALSE
     ! Makes the innermost invocation of the main loop return when it regains control:
-    call gtk_main_quit()
+    if (.not. computing)   call gtk_main_quit()
   end function delete_event
 
 
@@ -140,9 +140,9 @@ program mandelbrot
   ! Scientific computing:
   call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 1000_4)
 
-  ! The window stays opened after the computation
-  ! Main loop:
-  call gtk_main()
+  ! The window will stay opened after the computation, but we need to verify
+  ! that the user has not closed the window during the computation:
+  if (run_status /= FALSE)  call gtk_main()
 
   print *, "All done"
 end program mandelbrot 
@@ -167,6 +167,7 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
   integer(1)  :: red, green, blue     ! rgb color
   real(8)     :: system_time, t0, t1
 
+  computing = .true.
   t0  = system_time()
   scx = (xmax-xmin) / width   ! x scale
   scy = (ymax-ymin) / height  ! y scale
@@ -217,6 +218,8 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
 
   t1=system_time()
   print *, "System time = ", t1-t0
+
+  computing = .false.
 end subroutine mandelbrot_set
 
 
