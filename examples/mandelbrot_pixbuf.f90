@@ -122,8 +122,8 @@ program mandelbrot
 
   ! We create a pixbuffer to store the pixels of the image:
   ! "Creates a new GdkPixbuf structure and allocates a buffer for it":
-  ! RGB, alpha channel (TRUE), 8 bits per color sample, width, height
-  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
+  ! RGB, no alpha channel (FALSE), 8 bits per color sample, width, height
+  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, width, height)
   ! Queries the number of channels of a pixbuf:
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   print *, "Number of channels of the pixbuf: ", nch
@@ -199,15 +199,11 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
         blue  = int(min(255, k*10), KIND=1)
       end if
 
-      ! We use char() because we need unsigned integers.
-      ! Our pixbuffer has an Alpha channel but is possible to create a pixbuffer
-      ! with only Red, Green, Blue. 
-      ! We write in the pixbuffer:
+      ! We write in the pixbuffer, using char() because we need unsigned integers:
       p = i * nch + j * rowstride + 1
       pixel(p)   = char(red)
       pixel(p+1) = char(green)
       pixel(p+2) = char(blue)
-      pixel(p+3) = char(255)  ! Opacity (alpha channel)
 
       ! This subroutine processes GTK events as needed during the computation.
       call pending_events()
