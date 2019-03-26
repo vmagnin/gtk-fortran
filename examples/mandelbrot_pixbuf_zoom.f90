@@ -23,7 +23,7 @@
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
-! Last modifications: vmagnin 2019-03-19
+! Last modifications: vmagnin 2019-03-26
 
 module handlers
   use gdk_events, only: gdkeventbutton, gdkeventscroll
@@ -65,9 +65,12 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
+    ! Some functions and subroutines need to know that it's finished:
     run_status = FALSE
+    ! Returns FALSE to propagate the event further:
     ret = FALSE
-    call gtk_main_quit()
+    ! Makes the innermost invocation of the main loop return when it regains control:
+    if (.not. computing_flag)   call gtk_main_quit()
   end function delete_event
 
 
@@ -410,9 +413,9 @@ program mandelbrot_zoom
 
   call Mandelbrot_set(my_drawing_area, 1000_c_int)
 
-  ! The window stays opened after the computation
-  ! Main loop:
-  call gtk_main()
-  print *, "All done"
+  ! The window will stay opened after the computation, but we need to verify
+  ! that the user has not closed the window during the computation:
+  if (run_status /= FALSE)  call gtk_main()
 
+  print *, "All done"
 end program mandelbrot_zoom
