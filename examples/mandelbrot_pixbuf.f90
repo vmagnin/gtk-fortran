@@ -22,29 +22,29 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2019-03-19
+! Last modification: vmagnin 2019-03-26
 
 module handlers
-  use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
-  &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, gtk_w&
-  &idget_queue_draw, gtk_widget_show, gtk_window_new, gtk_window_set_default, gtk&
-  &_window_set_default_size, gtk_window_set_title, GDK_COLORSPACE_RGB,&
-  &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char,&
-  &GTK_WINDOW_TOPLEVEL, gtk_main_quit
+  use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending,&
+  &gtk_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window,&
+  &gtk_widget_queue_draw, gtk_widget_show, gtk_window_new,&
+  &gtk_window_set_default, gtk_window_set_default_size, gtk_window_set_title,&
+  &GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr,&
+  &c_null_char, GTK_WINDOW_TOPLEVEL, gtk_main_quit
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
 
   use gdk, only: gdk_cairo_set_source_pixbuf
 
-  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
-  &buf_get_rowstride, gdk_pixbuf_new
+  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels,&
+                       &gdk_pixbuf_get_rowstride, gdk_pixbuf_new
 
   use iso_c_binding, only: c_int, c_ptr, c_char
 
   implicit none
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
-  type(c_ptr) :: my_pixbuf
+  type(c_ptr)    :: my_pixbuf
   character(kind=c_char), dimension(:), pointer :: pixel
   integer(kind=c_int) :: nch, rowstride, width, height
 
@@ -96,7 +96,7 @@ program mandelbrot
   call gtk_init ()
 
   ! Properties of the main window :
-  width = 700
+  width  = 700
   height = 700
 
   my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
@@ -105,7 +105,6 @@ program mandelbrot
   call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
 
   my_drawing_area = gtk_drawing_area_new()
-  ! In GTK+ 3.0 "expose-event" was replaced by "draw" event:
   call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(draw))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)
@@ -156,13 +155,13 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
   integer(1) :: red, green, blue     ! rgb color
   real(8) :: system_time, t0, t1
 
-  t0=system_time()
-  scx = ((xmax-xmin)/width)   ! x scale
-  scy = ((ymax-ymin)/height)  ! y scale
+  t0  = system_time()
+  scx = (xmax-xmin) / width   ! x scale
+  scy = (ymax-ymin) / height  ! y scale
 
   do i=0, width-1
     ! We provoke a draw event once in a while to improve performances:
-    if (mod(i,10_c_int)==0) then
+    if (mod(i, 10_c_int) == 0) then
       call gtk_widget_queue_draw(my_drawing_area)
     end if
 
@@ -172,12 +171,12 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
       c = x + y*(0d0,1d0)   ! Starting point
       z = (0d0, 0d0)        ! z0
       k = 1
-      do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4d0)) 
-        z = z*z+c
-        k = k+1
+      do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2) < 4d0)) 
+        z = z*z + c
+        k = k + 1
       end do
 
-      if (k>itermax) then
+      if (k > itermax) then
         ! Black pixel:
         red   = 0
         green = 0
@@ -193,12 +192,12 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
       ! with only Red, Green, Blue. 
       ! We write in the pixbuffer:
       p = i * nch + j * rowstride + 1
-      pixel(p)=char(red)
-      pixel(p+1)=char(green)
-      pixel(p+2)=char(blue)
-      pixel(p+3)=char(255)  ! Opacity (alpha channel)
+      pixel(p)   = char(red)
+      pixel(p+1) = char(green)
+      pixel(p+2) = char(blue)
+      pixel(p+3) = char(255)  ! Opacity (alpha channel)
 
-      ! This subrountine processes gtk events as needed during the computation.
+      ! This subroutine processes GTK events as needed during the computation.
       call pending_events()
       if (run_status == FALSE) return ! Exit if we had a delete event.
     end do
@@ -217,5 +216,5 @@ real(8) function system_time()
   integer, dimension(8) :: dt
 
   call date_and_time(values=dt)
-  system_time=dt(5)*3600d0+dt(6)*60d0+dt(7)+dt(8)*0.001d0
+  system_time = dt(5)*3600d0 + dt(6)*60d0 + dt(7) + dt(8)*0.001d0
 end function system_time
