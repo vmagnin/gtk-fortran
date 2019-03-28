@@ -637,6 +637,7 @@ GTK_VERSION = "gtk" + str(ARGS.gtk[0])
 # One word types:
 TYPES_DICT = {
     "int":("integer(c_int)", "c_int"),
+    "gint":("integer(c_int)", "c_int"),
     "guint":("integer(c_int)", "c_int"),
     "Bool":("integer(c_int)", "c_int"),    #define Bool int    => Xlib.h
     "GPid":("integer(c_int)", "c_int"),
@@ -691,6 +692,7 @@ TYPES_DICT = {
     "Time":("integer(c_long)", "c_long"),
     "KeyCode":("character(kind=c_char)", "c_char"),   #define KeyCode CARD8   => unsigned char
     "KeySym":("integer(c_long)", "c_long"),
+    "GWin32OSType":("integer(c_int)", "c_int")     # enum GWin32OSType
 }
 
 # Two words types:
