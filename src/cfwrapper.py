@@ -375,6 +375,7 @@ def preprocess_prototypes():
 
         preprocessed_list[i] = preprocessed_list[i].strip()
 
+
 def analyze_prototypes():
     """Each prototype is now analyzed"""
     global nb_variadic, nb_deprecated_functions
@@ -836,6 +837,7 @@ for library_path in PATH_DICT:
             if c_file_name in ["gstdio.h"]:
                 # We remove possible duplicated prototypes:
                 preprocessed_list= list(set(preprocessed_list))
+                preprocessed_list.sort()
 
             analyze_prototypes()
 
