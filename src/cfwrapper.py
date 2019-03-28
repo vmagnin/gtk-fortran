@@ -26,9 +26,9 @@
 #
 # Contributed by Vincent Magnin, 01.28.2011
 # Last modification: 2019-03-28 (tested with Python 3.6.7, Ubuntu 18.10)
-# pylint3 score: 8.48/10
+# pylint3 score: 8.41/10
 
-""" Generates the *-auto.f90 files from the C header files of GLlib and GTK.
+""" Generates the *-auto.f90 files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
 """
 
@@ -49,6 +49,7 @@ def lib_version(lib_name, psys):
     returns the version of the library if found, else returns ?.?.?
     """
     common = lib_name + " 2>/dev/null | grep Version"
+
     if psys == "deb":        # Debian/Ubuntu command line:
         # Try first APT:
         libversion = os.popen("apt-cache show " + common, mode='r').read()
@@ -91,14 +92,18 @@ def library_version(tuple_packages):
 
 def hash_gtk_fortran():
     """Compute the SHA1 hash of all *-auto.f90 files to detect modifications
-    in gtk-fortran (useful during development)"""
+    in gtk-fortran (useful during development)
+    """
     hasher = hashlib.sha1()
+
     files_list = list(PATH_DICT.values())
     files_list.extend(["gtkenums-auto.f90", "unixonly-auto.f90", "mswindowsonly-auto.f90"])
+
     for file_name in files_list:
         with open(file_name, 'rb') as auto_file:
             whole = auto_file.read()
             hasher.update(whole)
+
     new_hash = hasher.hexdigest()
     # Read previous hash:
     try:
@@ -109,6 +114,7 @@ def hash_gtk_fortran():
     # Then save the new hash in a file:
     with open("gtk-fortran-hash.pkl", 'wb') as hash_file:
         pickle.dump(new_hash, hash_file)
+
     # Print new hash and compare with previous hash:
     print("* SHA1: ", new_hash)
     if new_hash != previous_hash:
@@ -129,6 +135,7 @@ def gtk_fortran_version():
                  ("gtk2", "rpm"), ("gtk+2.0", "rpm"))
     pack_glib = (("libglib2.0-0", "deb"), ("glib2", "pacman"),
                  ("glib2", "rpm"), ("libglib2.0_0", "rpm"))
+
     if GTK_VERSION == "gtk3":
         version = library_version(pack_gtk3)
     else:
@@ -231,22 +238,27 @@ def write_error(direc, filename, message, proto, type_error):
 
 
 def multiline(line, maxlength):
-    """Split a long line in a multiline, following Fortran syntax."""
+    """Split a long line in a multiline, following Fortran syntax.
+    """
     result = ""
+
     while len(line) > maxlength-1:
         result += line[0:maxlength-1] + "&\n"
         line = "&"+ line[maxlength-1:]
+
     result += line.rstrip()
     return result
 
 
 def set_bit_field(match):
-    """ Returns the Fortran bitfield from a C enum flag"""
+    """ Returns the Fortran bitfield from a C enum flag
+    """
     return "ISHFTC(1, " + str(int(match.group(1))) + ")"
 
 
 def translate_enums(enum_list):
-    """Receive a C enum and returns a Fortran enum"""
+    """Receive a C enum and returns a Fortran enum
+    """
     global nb_enumerators
     bit_fields = re.compile(r"1 *<< *(\d+)")
     f_enum = "! " + c_file_name + "\n"
@@ -316,7 +328,8 @@ def translate_enums(enum_list):
 
 def clean_header_file():
     """Preprocessing and cleaning of the header file.
-       Do not change the order of the regular expressions !"""
+       Do not change the order of the regular expressions !
+    """
     global whole_file
 
     # Remove C commentaries:
@@ -366,7 +379,8 @@ def clean_header_file():
 
 
 def preprocess_prototypes():
-    """Clean the list of prototypes before analysis"""
+    """Clean the list of prototypes before analysis
+    """
     global nb_lines
     global preprocessed_list
 
@@ -388,7 +402,8 @@ def preprocess_prototypes():
 
 
 def analyze_prototypes():
-    """Each prototype is now analyzed"""
+    """Each prototype is now analyzed
+    """
     global nb_variadic, nb_deprecated_functions
 
     for proto in preprocessed_list:
@@ -539,7 +554,8 @@ def analyze_prototypes():
 
 
 def write_fortran_interface(function_status, prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end):
-    """Write the Fortran interface of a function in the *-auto.f90 file"""
+    """Write the Fortran interface of a function in the *-auto.f90 file
+    """
     global index
     global nb_generated_interfaces
     global nb_win32_utf8
@@ -596,7 +612,7 @@ def write_fortran_interface(function_status, prototype, f_procedure, f_name, arg
 
     # Adds the function in the gtk-fortran-index.csv file:
     index.append([my_module_name, f_name, function_status, my_f_file_name,
-                 directory[0]+"/"+c_file_name, prototype, my_first_line])
+                  directory[0]+"/"+c_file_name, prototype, my_first_line])
 
 
 # ****************************************************************************
@@ -848,7 +864,7 @@ for library_path in PATH_DICT:
             preprocess_prototypes()
             if c_file_name in ["gstdio.h"]:
                 # We remove possible duplicated prototypes:
-                preprocessed_list= list(set(preprocessed_list))
+                preprocessed_list = list(set(preprocessed_list))
                 preprocessed_list.sort()
 
             analyze_prototypes()
