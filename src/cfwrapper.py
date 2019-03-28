@@ -363,16 +363,17 @@ def preprocess_prototypes():
     for prototype in lines_list:
         nb_lines += 1
         # remove leading and trailing spaces:
-        prototype2 = str.strip(prototype)
+        prototype2 = prototype.strip()
 
         if ";" not in preprocessed_list[i]:
             # Remove line feeds inside a prototype:
-            preprocessed_list[i] = preprocessed_list[i].replace("\n", "")
+            preprocessed_list[i] = preprocessed_list[i].replace("\n", "").strip()
             preprocessed_list[i] += " "+prototype2
         else:
             preprocessed_list.append(prototype2)
             i += 1
 
+        preprocessed_list[i] = preprocessed_list[i].strip()
 
 def analyze_prototypes():
     """Each prototype is now analyzed"""
@@ -808,7 +809,7 @@ for library_path in PATH_DICT:
     for directory in os.walk(library_path):
         for c_file_name in directory[2]:
             # Those files cause problems so we exclude them:
-            if c_file_name in ["gstdio.h", "giochannel.h"]:
+            if c_file_name in ["giochannel.h"]:
                 continue    # Go to next file
 
             nb_files += 1
@@ -830,6 +831,9 @@ for library_path in PATH_DICT:
                 continue    # Go to next file
             # If true, we process these functions:
             preprocess_prototypes()
+            if c_file_name in ["gstdio.h"]:
+                # We remove possible duplicated prototypes:
+                preprocessed_list= list(set(preprocessed_list))
             analyze_prototypes()
 
     # Close that *-auto.f90 file:
