@@ -68,7 +68,7 @@ module strings
 
   use widgets
   use gtk, only: c_null_char, TRUE, FALSE
-  use gtk_sup, only: g_chdir
+  use g, only: g_chdir
 
 contains
 

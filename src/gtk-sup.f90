@@ -158,7 +158,7 @@ module gtk_sup
   ! N.B. GTK_STOCK_ADD clashes with the routine gtk_stock_add and is therefore
   ! omitted.
   ! Note that the whole GTK_STOCK library is deprecated since GTK 3.10 and so
-  ! will be removed in GTK 4.
+!   ! will be removed in GTK 4.
   !-
 
   character(len=*), parameter :: GTK_STOCK_ABOUT = &
@@ -372,18 +372,6 @@ module gtk_sup
        & "gtk-zoom-in"//c_null_char
   character(len=*), parameter :: GTK_STOCK_ZOOM_OUT = &
        & "gtk-zoom-out"//c_null_char
-
-  ! This function is in stdio.h (GLib). This file is not yet treated by
-  ! the cfwrapper.py script. So we put it in the gtk-sup module, but it may
-  ! be moved in the future in glib-auto.f90.
-  interface
-    ! int g_chdir (const gchar *path);
-    function g_chdir(path) bind(c)
-      use iso_c_binding, only: c_int, c_char
-      integer(kind=c_int)                  :: g_chdir
-      character(kind=c_char), dimension(*) :: path
-    end function
-  end interface
 
 
   ! Interfaces for string conversions
