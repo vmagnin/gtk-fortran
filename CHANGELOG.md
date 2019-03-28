@@ -32,6 +32,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - cmake/FindPlplotF95.cmake: deprecated module to find the PLplot<=5.10 library.
 
 ### Fixed
+- The cfwrapper.py script can now scan the gstdio.h and giochannel.h files, except for the g_io_channel_win32_new_messages() function which can be declared with two different parameters types.
 - Less warnings in Debug mode.
 - Fixed some bugs in examples.
 - The PLplot examples now work under MSYS2.
