@@ -431,7 +431,7 @@ def analyze_prototypes():
 
         # gtk_init() is already defined in gtk.f90. Other functions
         # can be excluded here in case of problem:
-        if f_name in ["gtk_init"]:
+        if f_name in ["gtk_init", "g_io_channel_win32_new_messages"]:
             continue    # Next prototype
 
         # Functions beginning by an underscore will be excluded:
@@ -808,9 +808,9 @@ for library_path in PATH_DICT:
     # Analyze each C header file in each subdirectory of that library:
     for directory in os.walk(library_path):
         for c_file_name in directory[2]:
-            # Those files cause problems so we exclude them:
-            if c_file_name in ["giochannel.h"]:
-                continue    # Go to next file
+            # Problematic files can be excluded here:
+            #if c_file_name in ["this_file.h"]:
+            #    continue    # Go to next file
 
             nb_files += 1
             whole_file_original = open(directory[0] + "/" + c_file_name, 'r',
@@ -819,6 +819,7 @@ for library_path in PATH_DICT:
             whole_file = whole_file_original
 
             clean_header_file()
+
             # From now each line will be treated separately:
             lines_list = whole_file.splitlines(True)
             preprocessed_list = []
@@ -829,11 +830,13 @@ for library_path in PATH_DICT:
                 write_error(directory[0], c_file_name,
                             "No function to implement in this file", "", False)
                 continue    # Go to next file
+
             # If true, we process these functions:
             preprocess_prototypes()
             if c_file_name in ["gstdio.h"]:
                 # We remove possible duplicated prototypes:
                 preprocessed_list= list(set(preprocessed_list))
+
             analyze_prototypes()
 
     # Close that *-auto.f90 file:
