@@ -118,7 +118,7 @@ def hash_gtk_fortran():
     # Print new hash and compare with previous hash:
     print("* SHA1: ", new_hash)
     if new_hash != previous_hash:
-        print(">>>>>> SHA 1 HAS BEEN MODIFIED ! It was ", previous_hash, " <<<<<<")
+        print("\033[31m >>>>>> SHA 1 HAS BEEN MODIFIED ! It was ", previous_hash, " <<<<<< \033[0m")
         print()
 
 
@@ -148,11 +148,11 @@ def gtk_fortran_version():
 def print_statistics():
     """Print various statistics about the generation of gtk-fortran
     """
-    print("\n=== Statistics (ready to paste in the Status wiki page) ===\n")
+    print("\033[1m\n=== Statistics (ready to paste in the Status wiki page) ===\n\033[0m")
 
-    print("## " + gtk_fortran_version() + ", Python " + platform.python_version())
+    print("\033[34m## " + gtk_fortran_version() + ", Python " + platform.python_version())
     print(os.getlogin() + ", "
-          + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()))
+          + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()) + "\033[0m")
 
     print('{:<30}{:>6}'.format("* nb_files scanned =", nb_files))
     print('{:<30}{:>6}'.format("* nb_generated_interfaces =", nb_generated_interfaces))
@@ -762,7 +762,7 @@ PATH_DICT.update([("/usr/include/pango-1.0", "pango-auto.f90")])
 # Pass 1: scan all header files to find all enum types, all pointers to
 # functions (funptr) and add derived GTK types
 #*************************************************************************
-print("Pass 1: looking for enumerators, funptr and derived types...")
+print("\033[1m Pass 1: looking for enumerators, funptr and derived types...\033[0m")
 
 # These lists will be used by the iso_c_binding() function:
 gtk_enums = []
@@ -817,7 +817,7 @@ opened_files = []
 used_types = []
 errors_list = []
 
-print("Pass 2: looking for C functions...")
+print("\033[1m Pass 2: looking for C functions...\033[0m ")
 for library_path in PATH_DICT:
     # Name of the *-auto.f90 file:
     f_file_name = PATH_DICT[library_path]
@@ -901,7 +901,7 @@ errors_file.writerows(errors_list)
 print_statistics()
 # Print the SHA1 of all *-auto.f90 files and look for modification:
 hash_gtk_fortran()
-print("\n", used_types)
+print("\n\033[1m Used types:", used_types, "\033[0m")
 
 if ARGS.build:
     # Extracts the structure definitions for Gdk events
