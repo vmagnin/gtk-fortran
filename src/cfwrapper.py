@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-03-28 (tested with Python 3.6.7, Ubuntu 18.10)
+# Last modification: 2019-03-29 (tested with Python 3.6.7, Ubuntu 18.10)
 # pylint3 score: 8.41/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
@@ -177,6 +177,9 @@ def iso_c_binding(declaration, returned):
         c_type = RGX_TYPE.search(declaration).group(1)
     except AttributeError:
         return "?", "?"    # error
+
+    # Remove "const " statement:
+    declaration = re.sub("^(const )", "", declaration)
 
     # Is it a "typedef enum" ?
     for item in gtk_enums:
