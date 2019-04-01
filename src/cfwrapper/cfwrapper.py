@@ -26,7 +26,7 @@
 #
 # Contributed by Vincent Magnin, 01.28.2011
 # Last modification: 2019-04-01 (tested with Python 3.6.7, Ubuntu 18.10)
-# pylint3 score: 8.41/10
+# pylint3 score: 7.18/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -47,64 +47,7 @@ from lib_versions import gtk_fortran_version
 from stats import print_statistics
 from tools import multiline
 from enums import translate_enums
-
-
-def iso_c_binding(declaration, returned):
-    """ Returns the Fortran type corresponding to a C type in the
-        ISO_C_BINDING module (limited to C types used in GTK),
-        and the KIND type
-    """
-    try:
-        c_type = RGX_TYPE.search(declaration).group(1)
-    except AttributeError:
-        return "?", "?"    # error
-
-    # Remove "const " statement:
-    declaration = re.sub("^(const )", "", declaration)
-
-    # Is it a "typedef enum" ?
-    for item in gtk_enums:
-        if item in c_type:
-            return "integer(c_int)", "c_int"
-
-    # Is it a pointer toward a function ?
-    for item in gtk_funptr:
-        if item in c_type:
-            return "type(c_funptr)", "c_funptr"
-
-    #typedef void* gpointer;
-    if ("gpointer" in c_type) or ("gconstpointer" in c_type):
-        return "type(c_ptr)", "c_ptr"
-
-    # Is it a pointer ?
-    if "*" in declaration:
-        # Is it a string (char or gchar array) ?
-        if ("char" in c_type) and (not returned):
-            if "**" in declaration:
-                return "type(c_ptr), dimension(*)", "c_ptr"
-            else:
-                return "character(kind=c_char), dimension(*)", "c_char"
-        else:
-            return "type(c_ptr)", "c_ptr"
-
-    # Is it an array ?
-    if "[" in declaration:
-        array = ", dimension(*)"
-    else:
-        array = ""
-
-    # Other cases:
-    if len(declaration.split()) >= 3:   # Two words type
-        for item in TYPES2_DICT:
-            if set(item.split()).issubset(set(declaration.split())):
-                return TYPES2_DICT[item][0] + array, TYPES2_DICT[item][1]
-    else:  # It is a one word type
-        for item in TYPES_DICT:
-            if item in c_type.split():
-                return TYPES_DICT[item][0] + array, TYPES_DICT[item][1]
-
-    # It is finally an unknown type:
-    return "?", "?"
+from fortran import iso_c_binding
 
 
 def write_error(direc, filename, message, proto, type_error):
@@ -201,7 +144,7 @@ def preprocess_prototypes():
         preprocessed_list[i] = preprocessed_list[i].strip()
 
 
-def analyze_prototypes():
+def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
     """Each prototype is now analyzed
     """
     global nb_variadic, nb_deprecated_functions
@@ -239,7 +182,7 @@ def analyze_prototypes():
             f_procedure = "function "
             f_the_end = "end function"
             isfunction = True
-            returned_type, iso_c = iso_c_binding(function_type, True)
+            returned_type, iso_c = iso_c_binding(function_type, True, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT)
             f_use = iso_c
             if "?" in returned_type:    # Function type not found
                 error_flag = True
@@ -308,7 +251,7 @@ def analyze_prototypes():
                 continue    # Next argument
 
             # Corresponding Fortran type of the argument:
-            f_type, iso_c = iso_c_binding(arg, False)
+            f_type, iso_c = iso_c_binding(arg, False, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT)
             if iso_c not in used_types:
                 used_types.append(iso_c)
 
@@ -541,8 +484,6 @@ RGX_VAR_TYPE = re.compile(r" *([_0-9a-zA-Z]+)[ |\*]")
 RGX_VAR_NAME = re.compile(r"[ |\*]([_0-9a-zA-Z]+)(?:\[\])?$")
 # Function name beginning by an underscore:
 RGX_UNDERSCORE = re.compile(r"^_\w+$")
-# Used in iso_c_binding() to identify a C type:
-RGX_TYPE = re.compile(r"^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?")
 
 
 # Statistics initialization:
@@ -563,10 +504,11 @@ nb_win32_utf8 = 0
 #*************************************************************************
 print("\033[1m Pass 1: looking for enumerators, funptr and derived types...\033[0m")
 
+gtk_types = []
+
 # These lists will be used by the iso_c_binding() function:
 gtk_enums = []
 gtk_funptr = []
-gtk_types = []
 
 T0 = time.time()     # To calculate computing time
 for library_path in PATH_DICT:
@@ -671,7 +613,7 @@ for library_path in PATH_DICT:
                 preprocessed_list = list(set(preprocessed_list))
                 preprocessed_list.sort()
 
-            analyze_prototypes()
+            analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT)
 
     # Close that *-auto.f90 file:
     if module_name != "gtk":    # gtk module is included in gtk.f90
