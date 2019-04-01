@@ -74,7 +74,7 @@ def hash_gtk_fortran(PATH_DICT):
         print()
 
 
-def print_statistics(T0, GTK_VERSION, PATH_DICT, TYPES_DICT, TYPES2_DICT, nb_lines, nb_generated_interfaces, nb_deprecated_functions, nb_errors,  nb_type_errors, nb_variadic, nb_files, nb_enumerators, nb_win32_utf8, used_types):
+def print_statistics(T0, GTK_VERSION, PATH_DICT, TYPES_DICT, TYPES2_DICT, nb_lines, nb_generated_interfaces, nb_deprecated_functions, nb_variadic, nb_files, nb_enumerators, nb_win32_utf8, used_types, my_errors):
     """Print various statistics about the generation of gtk-fortran
     """
 
@@ -88,8 +88,8 @@ def print_statistics(T0, GTK_VERSION, PATH_DICT, TYPES_DICT, TYPES2_DICT, nb_lin
     print('{:<30}{:>6}'.format("* nb_files scanned =", nb_files))
     print('{:<30}{:>6}'.format("* nb_generated_interfaces =", nb_generated_interfaces))
     print('{:<30}{:>6}'.format("* nb_deprecated_functions =", nb_deprecated_functions))
-    print('{:<30}{:>6}'.format("* nb_type_errors =", nb_type_errors))
-    print('{:<30}{:>6}'.format("* nb_errors (others) =", nb_errors))
+    print('{:<30}{:>6}'.format("* nb_type_errors =", my_errors.nb_type_errors))
+    print('{:<30}{:>6}'.format("* nb_errors (others) =", my_errors.nb_errors))
     print('{:<30}{:>6}'.format("* nb_lines treated =", nb_lines))
     print('{:<30}{:>6}'.format("* nb_variadic functions =", nb_variadic))
     print('{:<30}{:>6}'.format("* nb_enumerators =", nb_enumerators))

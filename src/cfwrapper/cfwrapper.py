@@ -49,20 +49,7 @@ from tools import multiline
 from enums import translate_enums
 from fortran import iso_c_binding
 from cleaning import clean_header_file, preprocess_prototypes
-
-
-def write_error(direc, filename, message, proto, type_error):
-    """ Write errors in a list and increments the counters """
-    global nb_errors
-    global nb_type_errors
-    global errors_list
-
-    errors_list.append([direc + "/" + filename, message, proto])
-
-    if type_error:
-        nb_type_errors += 1
-    else:
-        nb_errors += 1
+from errors import Errors
 
 
 def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
@@ -76,7 +63,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
         # Do not treat variadic functions:
         if "..." in proto:
             nb_variadic += 1
-            write_error(directory[0], c_file_name,
+            my_errors.new_error(directory[0], c_file_name,
                         "Variadic function", proto, False)
             continue    # Next prototype
 
@@ -84,11 +71,11 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
         try:
             function_type = type_returned.group(1)
         except AttributeError:
-            write_error(directory[0], c_file_name,
+            my_errors.new_error(directory[0], c_file_name,
                         "Returned type not found", proto, False)
             continue    # Next prototype
         if function_type == " ":
-            write_error(directory[0], c_file_name,
+            my_errors.new_error(directory[0], c_file_name,
                         "Returned type not found", proto, False)
             continue    # Next prototype
 
@@ -107,7 +94,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
             f_use = iso_c
             if "?" in returned_type:    # Function type not found
                 error_flag = True
-                write_error(directory[0], c_file_name, "Unknown type:  "
+                my_errors.new_error(directory[0], c_file_name, "Unknown type:  "
                             + function_type, proto, True)
                 continue
 
@@ -116,7 +103,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
         try:
             f_name = function_name.group(1)
         except AttributeError:
-            write_error(directory[0], c_file_name,
+            my_errors.new_error(directory[0], c_file_name,
                         "Function name not found", proto, False)
             continue    # Next prototype
 
@@ -127,7 +114,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
 
         # Functions beginning by an underscore will be excluded:
         if RGX_UNDERSCORE.match(f_name) is not None:
-            write_error(directory[0], c_file_name,
+            my_errors.new_error(directory[0], c_file_name,
                         "Function name beginning by underscore", proto, False)
             continue    # Next prototype
 
@@ -151,7 +138,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
         try:
             args = RGX_ARGS.findall(arguments.group(1))
         except AttributeError:
-            write_error(directory[0], c_file_name,
+            my_errors.new_error(directory[0], c_file_name,
                         "Problem determining the arguments", proto, False)
             continue    # Next prototype
 
@@ -167,7 +154,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
             try:
                 var_type = RGX_VAR_TYPE.search(arg).group(1)
             except AttributeError:
-                write_error(directory[0], c_file_name,
+                my_errors.new_error(directory[0], c_file_name,
                             "Variable type not found", proto, True)
                 continue    # Next argument
 
@@ -187,14 +174,14 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
                         f_use += ", " + iso_c
             elif "?" in f_type:     # Type not found
                 error_flag = True
-                write_error(directory[0], c_file_name, "Unknown type:  " + arg,
+                my_errors.new_error(directory[0], c_file_name, "Unknown type:  " + arg,
                             proto, True)
 
             # Search the variable name:
             try:
                 var_name = RGX_VAR_NAME.search(arg).group(1)
             except AttributeError:
-                write_error(directory[0], c_file_name,
+                my_errors.new_error(directory[0], c_file_name,
                             "Variable name not found", proto, False)
                 continue    # Next argument
 
@@ -411,13 +398,13 @@ RGX_UNDERSCORE = re.compile(r"^_\w+$")
 nb_lines = 0
 nb_generated_interfaces = 0
 nb_deprecated_functions = 0
-nb_errors = 0
-nb_type_errors = 0
 nb_variadic = 0
 nb_files = 0
 nb_enumerators = 0
 nb_win32_utf8 = 0
 
+# An instance of the Errors class:
+my_errors = Errors()
 
 #*************************************************************************
 # Pass 1: scan all header files to find all enum types, all pointers to
@@ -476,7 +463,6 @@ mswindows_only_file.write(FILE_HEADER + HEAD)
 
 index = []
 opened_files = []
-errors_list = []
 used_types = []
 
 print("\033[1m Pass 2: looking for C functions...\033[0m ")
@@ -524,7 +510,7 @@ for library_path in PATH_DICT:
             try:
                 preprocessed_list.append(lines_list[0])
             except IndexError:
-                write_error(directory[0], c_file_name,
+                my_errors.new_error(directory[0], c_file_name,
                             "No function to implement in this file", "", False)
                 continue    # Go to next file
 
@@ -560,15 +546,13 @@ index.sort()
 index_file = csv.writer(open(SRC_DIR+"gtk-fortran-index.csv", "w"), delimiter=";")
 index_file.writerows(index)
 # Write errors in a CSV file:
-errors_list.sort()
+my_errors.sort()
 errors_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
-errors_file.writerows(errors_list)
-
+errors_file.writerows(my_errors.errors_list)
 
 print_statistics(T0, GTK_VERSION, PATH_DICT, TYPES_DICT, TYPES2_DICT, nb_lines,
-                 nb_generated_interfaces, nb_deprecated_functions, nb_errors,
-                 nb_type_errors, nb_variadic, nb_files, nb_enumerators,
-                 nb_win32_utf8, used_types)
+                 nb_generated_interfaces, nb_deprecated_functions, nb_variadic, nb_files, nb_enumerators,
+                 nb_win32_utf8, used_types, my_errors)
 
 if ARGS.build:
     # Extracts the structure definitions for Gdk events
