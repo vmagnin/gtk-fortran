@@ -52,7 +52,7 @@ from errors import Errors
 from stats import Statistics
 
 
-def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats):
+def analyze_prototypes(preprocessed_list, whole_file_original, c_dir, c_file_name, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats):
     """Each prototype is now analyzed
     """
 
@@ -62,7 +62,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats)
         # Do not treat variadic functions:
         if "..." in proto:
             my_stats.inc_nb_variadic()
-            my_errors.new_error(directory[0], c_file_name,
+            my_errors.new_error(c_dir, c_file_name,
                         "Variadic function", proto, False)
             continue    # Next prototype
 
@@ -70,11 +70,11 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats)
         try:
             function_type = type_returned.group(1)
         except AttributeError:
-            my_errors.new_error(directory[0], c_file_name,
+            my_errors.new_error(c_dir, c_file_name,
                         "Returned type not found", proto, False)
             continue    # Next prototype
         if function_type == " ":
-            my_errors.new_error(directory[0], c_file_name,
+            my_errors.new_error(c_dir, c_file_name,
                         "Returned type not found", proto, False)
             continue    # Next prototype
 
@@ -93,7 +93,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats)
             f_use = iso_c
             if "?" in returned_type:    # Function type not found
                 error_flag = True
-                my_errors.new_error(directory[0], c_file_name, "Unknown type:  "
+                my_errors.new_error(c_dir, c_file_name, "Unknown type:  "
                             + function_type, proto, True)
                 continue
 
@@ -102,7 +102,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats)
         try:
             f_name = function_name.group(1)
         except AttributeError:
-            my_errors.new_error(directory[0], c_file_name,
+            my_errors.new_error(c_dir, c_file_name,
                         "Function name not found", proto, False)
             continue    # Next prototype
 
@@ -113,7 +113,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats)
 
         # Functions beginning by an underscore will be excluded:
         if RGX_UNDERSCORE.match(f_name) is not None:
-            my_errors.new_error(directory[0], c_file_name,
+            my_errors.new_error(c_dir, c_file_name,
                         "Function name beginning by underscore", proto, False)
             continue    # Next prototype
 
@@ -137,7 +137,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats)
         try:
             args = RGX_ARGS.findall(arguments.group(1))
         except AttributeError:
-            my_errors.new_error(directory[0], c_file_name,
+            my_errors.new_error(c_dir, c_file_name,
                         "Problem determining the arguments", proto, False)
             continue    # Next prototype
 
@@ -153,7 +153,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats)
             try:
                 var_type = RGX_VAR_TYPE.search(arg).group(1)
             except AttributeError:
-                my_errors.new_error(directory[0], c_file_name,
+                my_errors.new_error(c_dir, c_file_name,
                             "Variable type not found", proto, True)
                 continue    # Next argument
 
@@ -173,14 +173,14 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats)
                         f_use += ", " + iso_c
             elif "?" in f_type:     # Type not found
                 error_flag = True
-                my_errors.new_error(directory[0], c_file_name, "Unknown type:  " + arg,
+                my_errors.new_error(c_dir, c_file_name, "Unknown type:  " + arg,
                             proto, True)
 
             # Search the variable name:
             try:
                 var_name = RGX_VAR_NAME.search(arg).group(1)
             except AttributeError:
-                my_errors.new_error(directory[0], c_file_name,
+                my_errors.new_error(c_dir, c_file_name,
                             "Variable name not found", proto, False)
                 continue    # Next argument
 
@@ -200,11 +200,10 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats)
 
         # Write the Fortran interface in the .f90 file:
         if not error_flag:
-            write_fortran_interface(function_status, proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end,
-            my_stats)
+            write_fortran_interface(c_dir, c_file_name, function_status, proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end, my_stats)
 
 
-def write_fortran_interface(function_status, prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end, my_stats):
+def write_fortran_interface(c_dir, c_file_name, function_status, prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end, my_stats):
     """Write the Fortran interface of a function in the *-auto.f90 file
     """
     global index
@@ -261,7 +260,7 @@ def write_fortran_interface(function_status, prototype, f_procedure, f_name, arg
 
     # Adds the function in the gtk-fortran-index.csv file:
     index.append([my_module_name, f_name, function_status, my_f_file_name,
-                  directory[0]+"/"+c_file_name, prototype, my_first_line])
+                  c_dir+"/"+c_file_name, prototype, my_first_line])
 
 
 # ****************************************************************************
@@ -515,8 +514,9 @@ for library_path in PATH_DICT:
                 preprocessed_list = list(set(preprocessed_list))
                 preprocessed_list.sort()
 
-            analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT,
-                               my_stats)
+            analyze_prototypes(preprocessed_list, whole_file_original,
+                               directory[0], c_file_name, gtk_enums, gtk_funptr,
+                               TYPES_DICT, TYPES2_DICT, my_stats)
 
     # Close that *-auto.f90 file:
     if module_name != "gtk":    # gtk module is included in gtk.f90
