@@ -93,3 +93,27 @@ def clean_header_file(c_file_name, whole_file, enums_file):
         whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
 
     return whole_file, nb_enums
+
+
+def preprocess_prototypes(preprocessed_list, lines_list):
+    """Clean the list of prototypes before analysis
+    """
+    nb = 0
+    i = 0
+
+    for prototype in lines_list:
+        nb += 1
+        # remove leading and trailing spaces:
+        prototype2 = prototype.strip()
+
+        if ";" not in preprocessed_list[i]:
+            # Remove line feeds inside a prototype:
+            preprocessed_list[i] = preprocessed_list[i].replace("\n", "").strip()
+            preprocessed_list[i] += " "+prototype2
+        else:
+            preprocessed_list.append(prototype2)
+            i += 1
+
+        preprocessed_list[i] = preprocessed_list[i].strip()
+
+    return preprocessed_list, nb

@@ -48,7 +48,7 @@ from stats import print_statistics
 from tools import multiline
 from enums import translate_enums
 from fortran import iso_c_binding
-from cleaning import clean_header_file
+from cleaning import clean_header_file, preprocess_prototypes
 
 
 def write_error(direc, filename, message, proto, type_error):
@@ -63,29 +63,6 @@ def write_error(direc, filename, message, proto, type_error):
         nb_type_errors += 1
     else:
         nb_errors += 1
-
-
-def preprocess_prototypes():
-    """Clean the list of prototypes before analysis
-    """
-    global nb_lines
-    global preprocessed_list
-
-    i = 0
-    for prototype in lines_list:
-        nb_lines += 1
-        # remove leading and trailing spaces:
-        prototype2 = prototype.strip()
-
-        if ";" not in preprocessed_list[i]:
-            # Remove line feeds inside a prototype:
-            preprocessed_list[i] = preprocessed_list[i].replace("\n", "").strip()
-            preprocessed_list[i] += " "+prototype2
-        else:
-            preprocessed_list.append(prototype2)
-            i += 1
-
-        preprocessed_list[i] = preprocessed_list[i].strip()
 
 
 def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
@@ -552,7 +529,10 @@ for library_path in PATH_DICT:
                 continue    # Go to next file
 
             # If true, we process these functions:
-            preprocess_prototypes()
+            preprocessed_list, nb = preprocess_prototypes(preprocessed_list,
+                                                          lines_list)
+            nb_lines += nb
+
             if c_file_name in ["gstdio.h"]:
                 # We remove possible duplicated prototypes:
                 preprocessed_list = list(set(preprocessed_list))
