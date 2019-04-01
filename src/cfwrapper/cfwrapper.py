@@ -39,68 +39,11 @@ import csv          # To write .csv files
 import platform     # To obtain platform informations
 import subprocess   # To launch a shell command
 import argparse     # To parse command line
-import hashlib      # To dectect modifications in gtk-fortran files
-import pickle       # To save the hash in a persistent way
-from collections import OrderedDict
 
 # Project modules:
+from globals_const import *
 from lib_versions import gtk_fortran_version
-
-
-def hash_gtk_fortran():
-    """Compute the SHA1 hash of all *-auto.f90 files to detect modifications
-    in gtk-fortran (useful during development)
-    """
-    hasher = hashlib.sha1()
-
-    files_list = list(PATH_DICT.values())
-    files_list.extend(["gtkenums-auto.f90", "unixonly-auto.f90", "mswindowsonly-auto.f90"])
-
-    for file_name in files_list:
-        with open(SRC_DIR+file_name, 'rb') as auto_file:
-            whole = auto_file.read()
-            hasher.update(whole)
-
-    new_hash = hasher.hexdigest()
-    # Read previous hash:
-    try:
-        with open("gtk-fortran-hash.pkl", 'rb') as hash_file:
-            previous_hash = pickle.load(hash_file)
-    except FileNotFoundError:
-        previous_hash = ""
-    # Then save the new hash in a file:
-    with open("gtk-fortran-hash.pkl", 'wb') as hash_file:
-        pickle.dump(new_hash, hash_file)
-
-    # Print new hash and compare with previous hash:
-    print("* SHA1: ", new_hash)
-    if new_hash != previous_hash:
-        print("\033[31m >>>>>> SHA 1 HAS BEEN MODIFIED ! It was ", previous_hash, " <<<<<< \033[0m")
-        print()
-
-
-def print_statistics():
-    """Print various statistics about the generation of gtk-fortran
-    """
-    print("\033[1m\n=== Statistics (ready to paste in the Status wiki page) ===\n\033[0m")
-
-    print("\033[34m## " + gtk_fortran_version(GTK_VERSION) + ", Python " 
-          + platform.python_version())
-    print(os.getlogin() + ", "
-          + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()) + "\033[0m")
-
-    print('{:<30}{:>6}'.format("* nb_files scanned =", nb_files))
-    print('{:<30}{:>6}'.format("* nb_generated_interfaces =", nb_generated_interfaces))
-    print('{:<30}{:>6}'.format("* nb_deprecated_functions =", nb_deprecated_functions))
-    print('{:<30}{:>6}'.format("* nb_type_errors =", nb_type_errors))
-    print('{:<30}{:>6}'.format("* nb_errors (others) =", nb_errors))
-    print('{:<30}{:>6}'.format("* nb_lines treated =", nb_lines))
-    print('{:<30}{:>6}'.format("* nb_variadic functions =", nb_variadic))
-    print('{:<30}{:>6}'.format("* nb_enumerators =", nb_enumerators))
-    print('{:<30}{:>6}'.format("* nb_win32_utf8 =", nb_win32_utf8))
-    print('{:<30}{:>6}'.format("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT)))
-
-    print("* Computing time: {0:.2f} s".format(time.time()-T0))
+from stats import print_statistics
 
 
 def iso_c_binding(declaration, returned):
@@ -569,8 +512,29 @@ PARSARG.add_argument("-d", "--deprecated", action="store_true",
 ARGS = PARSARG.parse_args()
 GTK_VERSION = "gtk" + str(ARGS.gtk[0])
 
+
+# Define libraries paths and corresponding *-auto.f90 files.
+# Do not change the order of the dictionary keys:
+PATH_DICT = OrderedDict([
+    ("/usr/include/atk-1.0", "atk-auto.f90"),
+    ("/usr/include/cairo", "cairo-auto.f90"),
+    ("/usr/include/gdk-pixbuf-2.0", "gdk-pixbuf-auto.f90"),
+    ("/usr/include/glib-2.0", "glib-auto.f90")])
+if GTK_VERSION == "gtk3":
+    PATH_DICT.update([
+        ("/usr/include/gtk-3.0/gdk", "gdk-auto.f90"),
+        ("/usr/include/gtk-3.0/gtk", "gtk-auto.f90"),
+        ("/usr/include/gtk-3.0/unix-print", "unix-print-auto.f90")])
+else:
+    PATH_DICT.update([
+        ("/usr/include/gtk-2.0/gdk", "gdk-auto.f90"),
+        ("/usr/include/gtk-2.0/gtk", "gtk-auto.f90")])
+PATH_DICT.update([("/usr/include/pango-1.0", "pango-auto.f90")])
+
+
 # -------------------------------------------------------------------------
-# These dictionaries give the Fortran type and its KIND for each GTK type:
+# These dictionaries give the Fortran type and its KIND for each GTK type.
+# TYPES_DICT will be completed with other types detected by the algorithm.
 # -------------------------------------------------------------------------
 # One word types:
 TYPES_DICT = {
@@ -661,8 +625,6 @@ RGX_UNDERSCORE = re.compile(r"^_\w+$")
 # Used in iso_c_binding() to identify a C type:
 RGX_TYPE = re.compile(r"^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?")
 
-# Define the tabulation in the *-auto.f90 files:
-TAB = "  "
 
 # Statistics initialization:
 nb_lines = 0
@@ -675,26 +637,6 @@ nb_files = 0
 nb_enumerators = 0
 nb_win32_utf8 = 0
 
-# Define libraries paths and corresponding *-auto.f90 files.
-# Do not change the order of the dictionary keys:
-PATH_DICT = OrderedDict([
-    ("/usr/include/atk-1.0", "atk-auto.f90"),
-    ("/usr/include/cairo", "cairo-auto.f90"),
-    ("/usr/include/gdk-pixbuf-2.0", "gdk-pixbuf-auto.f90"),
-    ("/usr/include/glib-2.0", "glib-auto.f90")])
-if GTK_VERSION == "gtk3":
-    PATH_DICT.update([
-        ("/usr/include/gtk-3.0/gdk", "gdk-auto.f90"),
-        ("/usr/include/gtk-3.0/gtk", "gtk-auto.f90"),
-        ("/usr/include/gtk-3.0/unix-print", "unix-print-auto.f90")])
-else:
-    PATH_DICT.update([
-        ("/usr/include/gtk-2.0/gdk", "gdk-auto.f90"),
-        ("/usr/include/gtk-2.0/gtk", "gtk-auto.f90")])
-PATH_DICT.update([("/usr/include/pango-1.0", "pango-auto.f90")])
-
-# Directory src, where the *-auto.f90 files will be written:
-SRC_DIR="../"
 
 #*************************************************************************
 # Pass 1: scan all header files to find all enum types, all pointers to
@@ -752,8 +694,8 @@ mswindows_only_file.write(FILE_HEADER + HEAD)
 
 index = []
 opened_files = []
-used_types = []
 errors_list = []
+used_types = []
 
 print("\033[1m Pass 2: looking for C functions...\033[0m ")
 for library_path in PATH_DICT:
@@ -836,10 +778,11 @@ errors_list.sort()
 errors_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
 errors_file.writerows(errors_list)
 
-print_statistics()
-# Print the SHA1 of all *-auto.f90 files and look for modification:
-hash_gtk_fortran()
-print("\n\033[1m Used types:", used_types, "\033[0m")
+
+print_statistics(T0, GTK_VERSION, PATH_DICT, TYPES_DICT, TYPES2_DICT, nb_lines,
+                 nb_generated_interfaces, nb_deprecated_functions, nb_errors,
+                 nb_type_errors, nb_variadic, nb_files, nb_enumerators,
+                 nb_win32_utf8, used_types)
 
 if ARGS.build:
     # Extracts the structure definitions for Gdk events
