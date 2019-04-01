@@ -4,11 +4,11 @@ In the following filenames, the ? character is the GTK version.
 
 ## gtk-fortran core
 
-- cfwrapper.py: this is the precious heart of gtk-fortran. Developers use it to automatically parse the GTK libraries header files. It generates:
+- cfwrapper/cfwrapper.py: this is the precious heart of gtk-fortran. Developers use it to automatically parse the GTK libraries header files. It generates:
   - *-auto.f90: these files contains the Fortran interfaces to the C functions of the various GTK libraries.
   - gtk-fortran-index.csv: list of all the interfaces generated in the *-auto.f90 files, with the name of the library, the name of the function, its status (deprecated or not), the names of the .f90 file and the .h file, the C prototype of the function and the Fortran definition.
-  - gtk-fortran-hash.pkl: the SHA1 hash of all *-auto.f90 files. Useful for the development of cfwrapper.py to detect modifications in the resulting .f90 files.
-  - cfwrapper-errors.csv: for the developers, a list of problems encountered by the cfwrapper.py script when parsing the .h files. Not pushed in github.
+  - cfwrapper/gtk-fortran-hash.pkl: the SHA1 hash of all *-auto.f90 files. Useful for the development of cfwrapper.py to detect modifications in the resulting .f90 files.
+  - cfwrapper/cfwrapper-errors.csv: for the developers, a list of problems encountered by the cfwrapper.py script when parsing the .h files. Not pushed in github.
 - gtk.f90: it contains the gtk module, which will be used by every GTK program. The g_signal_connect() and gtk_init() subroutines are defined here. The gtkenums-auto.f90 and gtk-auto.f90 files are automatically included.
 - gtk-sup.f90: this module contains some supplementary material useful for writing GTK programs in Fortran.
 - gtk-?-fortran.pc.in: templates used by CMake to generate the gtk-fortran pkg-config files.
