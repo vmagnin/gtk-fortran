@@ -44,25 +44,24 @@ from collections import OrderedDict
 # Project modules:
 from globals_const import *
 from lib_versions import gtk_fortran_version
-from stats import print_statistics
 from tools import multiline
 from enums import translate_enums
 from fortran import iso_c_binding
 from cleaning import clean_header_file, preprocess_prototypes
 from errors import Errors
+from stats import Statistics
 
 
-def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
+def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats):
     """Each prototype is now analyzed
     """
-    global nb_variadic, nb_deprecated_functions
 
     for proto in preprocessed_list:
         error_flag = False
 
         # Do not treat variadic functions:
         if "..." in proto:
-            nb_variadic += 1
+            my_stats.inc_nb_variadic()
             my_errors.new_error(directory[0], c_file_name,
                         "Variadic function", proto, False)
             continue    # Next prototype
@@ -124,7 +123,7 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
         if status:
             function_status = status.group(1)
             if "DEPRECATED" in function_status:
-                nb_deprecated_functions += 1
+                my_stats.inc_nb_deprecated_functions()
                 # The `-d` argument can be useful to adapt gtk-fortran for
                 # major updates. The `make -i` command will then generate errors
                 # when a deprecated function is not found:
@@ -160,8 +159,8 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
 
             # Corresponding Fortran type of the argument:
             f_type, iso_c = iso_c_binding(arg, False, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT)
-            if iso_c not in used_types:
-                used_types.append(iso_c)
+            if iso_c not in my_stats.used_types:
+                my_stats.append_type(iso_c)
 
             if "c_" in f_type:
                 # Determine iso_c type to use:
@@ -201,15 +200,14 @@ def analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
 
         # Write the Fortran interface in the .f90 file:
         if not error_flag:
-            write_fortran_interface(function_status, proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end)
+            write_fortran_interface(function_status, proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end,
+            my_stats)
 
 
-def write_fortran_interface(function_status, prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end):
+def write_fortran_interface(function_status, prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end, my_stats):
     """Write the Fortran interface of a function in the *-auto.f90 file
     """
     global index
-    global nb_generated_interfaces
-    global nb_win32_utf8
 
     interface1 = 0*TAB + "! " + function_status + "\n"
     interface1 += 0*TAB + "!" + prototype + "\n"
@@ -255,11 +253,11 @@ def write_fortran_interface(function_status, prototype, f_procedure, f_name, arg
 
         mswindows_only_file.write(interface1+interface2_utf8+interface3)
 
-        nb_generated_interfaces += 2
-        nb_win32_utf8 += 1
+        my_stats.inc_nb_generated_interfaces(2)
+        my_stats.inc_nb_win32_utf8()
     else: # Non platform specific functions
         f_file.write(interface)
-        nb_generated_interfaces += 1
+        my_stats.inc_nb_generated_interfaces(1)
 
     # Adds the function in the gtk-fortran-index.csv file:
     index.append([my_module_name, f_name, function_status, my_f_file_name,
@@ -394,14 +392,8 @@ RGX_VAR_NAME = re.compile(r"[ |\*]([_0-9a-zA-Z]+)(?:\[\])?$")
 RGX_UNDERSCORE = re.compile(r"^_\w+$")
 
 
-# Statistics initialization:
-nb_lines = 0
-nb_generated_interfaces = 0
-nb_deprecated_functions = 0
-nb_variadic = 0
-nb_files = 0
-nb_enumerators = 0
-nb_win32_utf8 = 0
+# An instance of the Statistics class:
+my_stats = Statistics()
 
 # An instance of the Errors class:
 my_errors = Errors()
@@ -463,7 +455,6 @@ mswindows_only_file.write(FILE_HEADER + HEAD)
 
 index = []
 opened_files = []
-used_types = []
 
 print("\033[1m Pass 2: looking for C functions...\033[0m ")
 for library_path in PATH_DICT:
@@ -494,14 +485,14 @@ for library_path in PATH_DICT:
             #if c_file_name in ["this_file.h"]:
             #    continue    # Go to next file
 
-            nb_files += 1
+            my_stats.inc_nb_files()
             whole_file_original = open(directory[0] + "/" + c_file_name, 'r',
                                        errors='replace').read()
             # The original will be used for WIN32 functions
             whole_file = whole_file_original
 
             whole_file, nb_enums = clean_header_file(c_file_name, whole_file, enums_file)
-            nb_enumerators += nb_enums
+            my_stats.inc_nb_enumerators(nb_enums)
 
             # From now each line will be treated separately:
             lines_list = whole_file.splitlines(True)
@@ -517,14 +508,15 @@ for library_path in PATH_DICT:
             # If true, we process these functions:
             preprocessed_list, nb = preprocess_prototypes(preprocessed_list,
                                                           lines_list)
-            nb_lines += nb
+            my_stats.inc_nb_lines(nb)
 
             if c_file_name in ["gstdio.h"]:
                 # We remove possible duplicated prototypes:
                 preprocessed_list = list(set(preprocessed_list))
                 preprocessed_list.sort()
 
-            analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT)
+            analyze_prototypes(gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT,
+                               my_stats)
 
     # Close that *-auto.f90 file:
     if module_name != "gtk":    # gtk module is included in gtk.f90
@@ -550,9 +542,7 @@ my_errors.sort()
 errors_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
 errors_file.writerows(my_errors.errors_list)
 
-print_statistics(T0, GTK_VERSION, PATH_DICT, TYPES_DICT, TYPES2_DICT, nb_lines,
-                 nb_generated_interfaces, nb_deprecated_functions, nb_variadic, nb_files, nb_enumerators,
-                 nb_win32_utf8, used_types, my_errors)
+my_stats.print(T0, GTK_VERSION, PATH_DICT, TYPES_DICT, TYPES2_DICT, my_errors)
 
 if ARGS.build:
     # Extracts the structure definitions for Gdk events
