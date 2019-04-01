@@ -52,7 +52,7 @@ from errors import Errors
 from stats import Statistics
 
 
-def analyze_prototypes(preprocessed_list, whole_file_original, c_dir, c_file_name, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats):
+def analyze_prototypes(index, module_name, f_file_name, unix_only_file, mswindows_only_file, f_file, preprocessed_list, whole_file_original, c_dir, c_file_name, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats):
     """Each prototype is now analyzed
     """
 
@@ -200,14 +200,12 @@ def analyze_prototypes(preprocessed_list, whole_file_original, c_dir, c_file_nam
 
         # Write the Fortran interface in the .f90 file:
         if not error_flag:
-            write_fortran_interface(c_dir, c_file_name, function_status, proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end, my_stats)
+            write_fortran_interface(index, module_name, f_file_name, unix_only_file, mswindows_only_file, f_file, c_dir, c_file_name, function_status, proto, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end, my_stats)
 
 
-def write_fortran_interface(c_dir, c_file_name, function_status, prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end, my_stats):
+def write_fortran_interface(index, module_name, f_file_name, unix_only_file, mswindows_only_file, f_file, c_dir, c_file_name, function_status, prototype, f_procedure, f_name, args_list, f_use, declarations, isfunction, returned_type, f_the_end, my_stats):
     """Write the Fortran interface of a function in the *-auto.f90 file
     """
-    global index
-
     interface1 = 0*TAB + "! " + function_status + "\n"
     interface1 += 0*TAB + "!" + prototype + "\n"
     first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
@@ -514,7 +512,7 @@ for library_path in PATH_DICT:
                 preprocessed_list = list(set(preprocessed_list))
                 preprocessed_list.sort()
 
-            analyze_prototypes(preprocessed_list, whole_file_original,
+            analyze_prototypes(index, module_name, f_file_name, unix_only_file, mswindows_only_file, f_file, preprocessed_list, whole_file_original,
                                directory[0], c_file_name, gtk_enums, gtk_funptr,
                                TYPES_DICT, TYPES2_DICT, my_stats)
 
