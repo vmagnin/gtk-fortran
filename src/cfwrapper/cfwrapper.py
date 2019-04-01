@@ -39,11 +39,14 @@ import csv          # To write .csv files
 import platform     # To obtain platform informations
 import subprocess   # To launch a shell command
 import argparse     # To parse command line
+from collections import OrderedDict
 
 # Project modules:
 from globals_const import *
 from lib_versions import gtk_fortran_version
 from stats import print_statistics
+from tools import multiline
+from enums import translate_enums
 
 
 def iso_c_binding(declaration, returned):
@@ -118,107 +121,23 @@ def write_error(direc, filename, message, proto, type_error):
         nb_errors += 1
 
 
-def multiline(line, maxlength):
-    """Split a long line in a multiline, following Fortran syntax.
-    """
-    result = ""
-
-    while len(line) > maxlength-1:
-        result += line[0:maxlength-1] + "&\n"
-        line = "&"+ line[maxlength-1:]
-
-    result += line.rstrip()
-    return result
-
-
-def set_bit_field(match):
-    """ Returns the Fortran bitfield from a C enum flag
-    """
-    return "ISHFTC(1, " + str(int(match.group(1))) + ")"
-
-
-def translate_enums(enum_list):
-    """Receive a C enum and returns a Fortran enum
-    """
-    global nb_enumerators
-    bit_fields = re.compile(r"1 *<< *(\d+)")
-    f_enum = "! " + c_file_name + "\n"
-
-    for item in enum_list:
-        enum = item[0]
-        name = item[1]
-        # These enums are excluded for some problems... For example,
-        # GDBusInterfaceSkeletonFlags contains an item with a too long name :
-        if name in ["GSocketFamily", "GSocketMsgFlags", "GdkPixdataType",
-                    "GIOCondition", "GDBusInterfaceSkeletonFlags",
-                    "GdkSeatCapabilities", "GdkAxisFlags"]:
-            continue    # Go to next enum
-
-        parameters = re.findall("(?ms){(.*)}", enum)
-        # ********** Cleaning **********
-        # Remove lines beginning by #:
-        parameters[0] = re.sub("(?m)^#.*$", "", parameters[0])
-        # Remove TABs and overnumerous spaces:
-        parameters[0] = parameters[0].replace("\t", " ")
-        parameters[0] = re.sub("[ ]{2,}", " ", parameters[0])
-        parameters[0] = re.sub("(?m) +$", "", parameters[0])
-        # Delete characters (   ) and , if they are not between quotes:
-        parameters[0] = re.sub(r"(?<!')(\()(?!')", "", parameters[0])
-        parameters[0] = re.sub(r"(?<!')(\))(?!')", "", parameters[0])
-        parameters[0] = re.sub("(?<!')(,)(?!')", "", parameters[0])
-        parameters[0] = re.sub("(?m),$", "", parameters[0])
-        # Remove the u for unsigned numbers (rare)
-        parameters[0] = re.sub("1u[ ]<<", "1 <<", parameters[0])
-        # ********** Refactoring **********
-        # Is it a char ?
-        parameters[0] = re.sub("('.?')", r"iachar(\1)", parameters[0])
-        # Is it in hexadecimal ?
-        parameters[0] = re.sub("0x([0-9A-Fa-f]+)", r"INT(z'\1')",
-                               parameters[0])
-        # Is it a bit field ?
-        parameters[0] = bit_fields.sub(set_bit_field, parameters[0])
-        # complement
-        parameters[0] = re.sub(r"~(\w+)", r"not(\1)", parameters[0])
-        # logical or
-        parameters[0] = re.sub(r"([\w\(\)]+)\s*\|\s*([\w\(\), \d]+)",
-                               r"ior(\1 , \2)", parameters[0])
-        # Renamed flags (have the same name as a GTK function):
-        for flag in ["ATK_HYPERLINK_IS_INLINE", "GDK_PROPERTY_DELETE",
-                     "GDK_DRAG_STATUS", "GDK_DRAG_MOTION"]:
-            parameters[0] = re.sub(r"(?m)^\s*"+flag, flag+"_F", parameters[0])
-        # Integer size problem:
-        parameters[0] = re.sub(r"(?m)^\s*G_PARAM_DEPRECATED.*$",
-                               "", parameters[0])
-
-        # Resulting Fortran enumerator:
-        f_enum += "enum, bind(c)    !" + name + "\n"
-        enumerators = re.sub(r"(?m)^\s*(\w+)", 1*TAB + r"enumerator :: \1", parameters[0])
-        for line in enumerators.splitlines():
-            f_enum += multiline(line, 80) + "\n"
-        f_enum += "end enum\n\n"
-        nb_enumerators += 1
-
-    # Remove empty lines:
-    f_enum = re.sub(r"(?m)^ *\n$", "", f_enum)
-
-    if f_enum != "! " + c_file_name + "\n":
-        f_enum += "\n"
-
-    return f_enum
-
-
 def clean_header_file():
-    """Preprocessing and cleaning of the header file.
+    """Preprocessing and cleaning of the header file. It also gathers the enums.
        Do not change the order of the regular expressions !
     """
     global whole_file
+    global nb_enumerators
 
     # Remove C commentaries:
     whole_file = re.sub(r"(?s)/\*.*?\*/", "", whole_file)
+
     # Gather and translate C enumerators to Fortran enumerators,
     # and write them to gtkenums-auto.f90:
     enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
-    enums_file.write(translate_enums(enum_types))
+    f_enum, nb = translate_enums(c_file_name, enum_types)
+    nb_enumerators += nb
+    enums_file.write(f_enum)
+
     # Removing multilines typedef:
     whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
                         "", whole_file)
