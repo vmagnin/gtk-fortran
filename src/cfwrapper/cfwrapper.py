@@ -48,6 +48,7 @@ from stats import print_statistics
 from tools import multiline
 from enums import translate_enums
 from fortran import iso_c_binding
+from cleaning import clean_header_file
 
 
 def write_error(direc, filename, message, proto, type_error):
@@ -62,63 +63,6 @@ def write_error(direc, filename, message, proto, type_error):
         nb_type_errors += 1
     else:
         nb_errors += 1
-
-
-def clean_header_file():
-    """Preprocessing and cleaning of the header file. It also gathers the enums.
-       Do not change the order of the regular expressions !
-    """
-    global whole_file
-    global nb_enumerators
-
-    # Remove C commentaries:
-    whole_file = re.sub(r"(?s)/\*.*?\*/", "", whole_file)
-
-    # Gather and translate C enumerators to Fortran enumerators,
-    # and write them to gtkenums-auto.f90:
-    enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
-    f_enum, nb = translate_enums(c_file_name, enum_types)
-    nb_enumerators += nb
-    enums_file.write(f_enum)
-
-    # Removing multilines typedef:
-    whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
-                        "", whole_file)
-    # Remove C directives (multilines then monoline):
-    whole_file = re.sub(r"(?m)^#(.*[\\][\n])+.*?$", "", whole_file)
-    whole_file = re.sub("(?m)^#.*$", "", whole_file)
-    # Remove TABs and overnumerous spaces:
-    whole_file = whole_file.replace("\t", " ")
-    whole_file = re.sub("[ ]{2,}", " ", whole_file)
-    # Remove two levels of { } structures:
-    whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
-    whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
-    # Remove structures like: { } a_name;
-    whole_file = re.sub(r"(?ms){[^{]*?}[ \w]*?;", "", whole_file)
-    # Remove "available_in" and "deprecated" directives:
-    whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
-                        "", whole_file)
-    # Remove extern C statement:
-    whole_file = re.sub("(?m)^(extern).*$", "", whole_file)
-    # Remove different kind of declarations:
-    whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
-    whole_file = re.sub("(?m)^(typedef|union|struct).*$",
-                        "", whole_file)
-    whole_file = re.sub("(?m)^.*(G_BEGIN_DECLS|CAIRO_BEGIN_DECLS) *$", "", whole_file)
-    whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$",
-                        "", whole_file)
-    whole_file = re.sub(r"(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
-    whole_file = re.sub("(?m)^.*(cairo_public) ", "", whole_file)
-    whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC|G_GNUC_WARN_UNUSED_RESULT|_GDK_PIXBUF_EXTERN)"
-                        , "", whole_file)   # extern
-    # Remove empty lines:
-    whole_file = re.sub(r"(?m)^\n$", "", whole_file)
-    # These three functions names are the only ones between parentheses,
-    # so we remove parentheses (>=GLib 2.48.O):
-    if c_file_name == "gutils.h":
-        whole_file = whole_file.replace("(g_bit_nth_lsf)", "g_bit_nth_lsf")
-        whole_file = whole_file.replace("(g_bit_nth_msf)", "g_bit_nth_msf")
-        whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
 
 
 def preprocess_prototypes():
@@ -593,7 +537,8 @@ for library_path in PATH_DICT:
             # The original will be used for WIN32 functions
             whole_file = whole_file_original
 
-            clean_header_file()
+            whole_file, nb_enums = clean_header_file(c_file_name, whole_file, enums_file)
+            nb_enumerators += nb_enums
 
             # From now each line will be treated separately:
             lines_list = whole_file.splitlines(True)
