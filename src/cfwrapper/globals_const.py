@@ -33,6 +33,5 @@
 # Define the tabulation in the *-auto.f90 files:
 TAB = "  "
 
-# Directory src, where the *-auto.f90 files will be written:
-SRC_DIR="../"
-
+# Path to directory src/ where the *-auto.f90 files will be written:
+SRC_DIR = "../"
