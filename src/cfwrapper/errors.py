@@ -25,12 +25,12 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-01
+# Last modification: 2019-04-02
 
 """ This module contains the class Errors used in the cfwrapper.
 """
 
-class Errors(object):
+class Errors():
     """This class is used to manage the errors that occurs when scannning the
     C header files.
     """
