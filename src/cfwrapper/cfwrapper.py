@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-01 (tested with Python 3.6.7, Ubuntu 18.10)
-# pylint3 score: 7.18/10
+# Last modification: 2019-04-02 (tested with Python 3.6.7, Ubuntu 18.10)
+# pylint3 score: ?/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -36,25 +36,19 @@ import re           # Regular expression library
 import os
 import time
 import csv          # To write .csv files
-import platform     # To obtain platform informations
 import subprocess   # To launch a shell command
 import argparse     # To parse command line
 from collections import OrderedDict
 
 # Project modules:
-from globals_const import *
+from globals_const import SRC_DIR
 from lib_versions import gtk_fortran_version
-from tools import multiline
-from enums import translate_enums
-from fortran import iso_c_binding
 from cleaning import clean_header_file, preprocess_prototypes
 from errors import Errors
 from stats import Statistics
 from analyze import analyze_prototypes
 
-# ****************************************************************************
-# *****************************  MAIN PROGRAM  *******************************
-# ****************************************************************************
+
 # Definition of command line options:
 PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files",
                                   epilog="GPLv3 license, https://github.com/vmagnin/gtk-fortran")
@@ -97,47 +91,62 @@ TYPES_DICT = {
     "int":("integer(c_int)", "c_int"),
     "gint":("integer(c_int)", "c_int"),
     "guint":("integer(c_int)", "c_int"),
-    "Bool":("integer(c_int)", "c_int"),    #define Bool int    => Xlib.h
+    #define Bool int    => Xlib.h
+    "Bool":("integer(c_int)", "c_int"),
     "GPid":("integer(c_int)", "c_int"),
     "gint64":("integer(c_int64_t)", "c_int64_t"),
     "goffset":("integer(c_int64_t)", "c_int64_t"),
     "guint64":("integer(c_int64_t)", "c_int64_t"),
     "gint32":("integer(c_int32_t)", "c_int32_t"),
     "guint32":("integer(c_int32_t)", "c_int32_t"),
-    "GdkWChar":("integer(c_int32_t)", "c_int32_t"),      #typedef guint32 GdkWChar;
-    "xcb_drawable_t":("integer(c_int32_t)", "c_int32_t"),  #typedef uint32_t xcb_drawable_t;
-    "xcb_pixmap_t":("integer(c_int32_t)", "c_int32_t"),  #typedef uint32_t xcb_pixmap_t;
-    "uid_t":("integer(c_int32_t)", "c_int32_t"),         #typedef __uid_t uid_t;
+    #typedef guint32 GdkWChar;
+    "GdkWChar":("integer(c_int32_t)", "c_int32_t"),
+    #typedef uint32_t xcb_drawable_t;
+    "xcb_drawable_t":("integer(c_int32_t)", "c_int32_t"),
+    #typedef uint32_t xcb_pixmap_t;
+    "xcb_pixmap_t":("integer(c_int32_t)", "c_int32_t"),
+    #typedef __uid_t uid_t;
+    "uid_t":("integer(c_int32_t)", "c_int32_t"),
     "gint16":("integer(c_int16_t)", "c_int16_t"),
     "guint16":("integer(c_int16_t)", "c_int16_t"),
     "gint8": ("integer(c_int8_t)", "c_int8_t"),
     "guint8": ("integer(c_int8_t)", "c_int8_t"),
     "long":("integer(c_long)", "c_long"),
     "gulong":("integer(c_long)", "c_long"),
-    "time_t":("integer(c_long)", "c_long"),  #typedef __time_t time_t;
+    #typedef __time_t time_t;
+    "time_t":("integer(c_long)", "c_long"),
     "short":("integer(c_short)", "c_short"),
     "boolean":("logical(c_bool)", "c_bool"),
     "char":("character(kind=c_char)", "c_char"),
-    # For gchar & guchar, see https://github.com/vmagnin/gtk-fortran/issues/41#issuecomment-7337877
-    "gchar":("integer(kind=c_int8_t)", "c_int8_t"),   #("character(kind=c_char)", "c_char"),
-    "guchar":("integer(kind=c_int8_t)", "c_int8_t"),  #("character(kind=c_char)", "c_char"),
+    # For gchar & guchar,
+    # see https://github.com/vmagnin/gtk-fortran/issues/41#issuecomment-7337877
+    "gchar":("integer(kind=c_int8_t)", "c_int8_t"),
+    "guchar":("integer(kind=c_int8_t)", "c_int8_t"),
     "double": ("real(c_double)", "c_double"),
     "float":("real(c_float)", "c_float"),
-    "gsize":  ("integer(c_size_t)", "c_size_t"),    #typedef unsigned long gsize;   also GType
-    "gssize":  ("integer(c_size_t)", "c_size_t"),   #typedef signed long gssize;
+    #typedef unsigned long gsize;   also GType
+    "gsize":  ("integer(c_size_t)", "c_size_t"),
+    #typedef signed long gssize;
+    "gssize":  ("integer(c_size_t)", "c_size_t"),
     "GType":  ("integer(c_size_t)", "c_size_t"),
     "size_t":  ("integer(c_size_t)", "c_size_t"),
     "va_list":("type(c_ptr)", "c_ptr"),
-    "gpointer":("type(c_ptr)", "c_ptr"), #typedef void* gpointer;
-    "GdkAtom":("type(c_ptr)", "c_ptr"),  #typedef struct _GdkAtom *GdkAtom;
-    "GC":("type(c_ptr)", "c_ptr"),       # GC (Xlib) is it a pointer ?
-    "GIConv":("type(c_ptr)", "c_ptr"),   #typedef struct _GIConv *GIConv;
+    #typedef void* gpointer;
+    "gpointer":("type(c_ptr)", "c_ptr"),
+    #typedef struct _GdkAtom *GdkAtom;
+    "GdkAtom":("type(c_ptr)", "c_ptr"),
+    # GC (Xlib) is it a pointer ?
+    "GC":("type(c_ptr)", "c_ptr"),
+    #typedef struct _GIConv *GIConv;
+    "GIConv":("type(c_ptr)", "c_ptr"),
     "GSignalCMarshaller":("type(c_ptr)", "c_ptr"),
-    "FT_Face":("type(c_ptr)", "c_ptr"),  #typedef struct FT_FaceRec_*  FT_Face;
+    #typedef struct FT_FaceRec_*  FT_Face;
+    "FT_Face":("type(c_ptr)", "c_ptr"),
     # X11 types (See /usr/include/X11/Xmd.h), unsigned int (64 bits archi.)
     # or unsigned long (32 bits architecture):
     "Window":("integer(c_long)", "c_long"),
-    "Drawable":("integer(c_long)", "c_long"),  #define Drawable CARD32
+    #define Drawable CARD32
+    "Drawable":("integer(c_long)", "c_long"),
     "Font":("integer(c_long)", "c_long"),
     "Pixmap":("integer(c_long)", "c_long"),
     "Cursor":("integer(c_long)", "c_long"),
@@ -148,9 +157,11 @@ TYPES_DICT = {
     "XID":("integer(c_long)", "c_long"),
     "VisualID":("integer(c_long)", "c_long"),
     "Time":("integer(c_long)", "c_long"),
-    "KeyCode":("character(kind=c_char)", "c_char"),   #define KeyCode CARD8   => unsigned char
+    #define KeyCode CARD8   => unsigned char
+    "KeyCode":("character(kind=c_char)", "c_char"),
     "KeySym":("integer(c_long)", "c_long"),
-    "GWin32OSType":("integer(c_int)", "c_int")     # enum GWin32OSType
+    # enum GWin32OSType
+    "GWin32OSType":("integer(c_int)", "c_int")
 }
 
 # Two words types:
@@ -215,6 +226,7 @@ FILE_HEADER = """! Do not modify this file automatically generated by cfwrapper.
 # All enums are written in this file:
 enums_file = open(SRC_DIR+"gtkenums-auto.f90", "w")
 enums_file.write(FILE_HEADER+"\n")
+
 # Files for platform specific functions:
 HEAD = "\nmodule " + "gtk_os_dependent" + "\nimplicit none\ninterface\n\n"
 unix_only_file = open(SRC_DIR+"unixonly-auto.f90", "w")
@@ -222,10 +234,13 @@ unix_only_file.write(FILE_HEADER + HEAD)
 mswindows_only_file = open(SRC_DIR+"mswindowsonly-auto.f90", "w")
 mswindows_only_file.write(FILE_HEADER + HEAD)
 
+# Index of all the generated Fortran interfaces:
 index = []
+
 opened_files = []
 
 print("\033[1m Pass 2: looking for C functions...\033[0m ")
+
 for library_path in PATH_DICT:
     # Name of the *-auto.f90 file:
     f_file_name = PATH_DICT[library_path]
@@ -235,9 +250,11 @@ for library_path in PATH_DICT:
     if f_file_name not in opened_files:
         f_file = open(SRC_DIR+f_file_name, "w")
         opened_files.append(f_file_name)
+
         # The module name is derived from the Fortran file name:
         module_name = re.search(r"^(.+)-auto\.f90", f_file_name).group(1)
         module_name = module_name.replace("-", "_")
+
         # The gtk-auto.f90 file is a special case, it will be included in
         # the already existing gtk.f90 by an include statement:
         if module_name != "gtk":
@@ -257,7 +274,7 @@ for library_path in PATH_DICT:
             my_stats.inc_nb_files()
             whole_file_original = open(directory[0] + "/" + c_file_name, 'r',
                                        errors='replace').read()
-            # The original will be used for WIN32 functions
+            # The original file will be used for WIN32 functions
             whole_file = whole_file_original
 
             whole_file, nb_enums = clean_header_file(c_file_name, whole_file, enums_file)
@@ -271,7 +288,8 @@ for library_path in PATH_DICT:
                 preprocessed_list.append(lines_list[0])
             except IndexError:
                 my_errors.new_error(directory[0], c_file_name,
-                            "No function to implement in this file", "", False)
+                                    "No function to implement in this file", "",
+                                    False)
                 continue    # Go to next file
 
             # If true, we process these functions:
@@ -280,14 +298,15 @@ for library_path in PATH_DICT:
             my_stats.inc_nb_lines(nb)
 
             if c_file_name in ["gstdio.h"]:
-                # We remove possible duplicated prototypes:
+                # We remove possible duplicated prototypes in this file:
                 preprocessed_list = list(set(preprocessed_list))
                 preprocessed_list.sort()
 
-            analyze_prototypes(index, module_name, f_file_name, unix_only_file, mswindows_only_file, f_file, preprocessed_list, whole_file_original,
-                               directory[0], c_file_name, gtk_enums, gtk_funptr,
-                               TYPES_DICT, TYPES2_DICT, my_stats,
-                               my_errors, ARGS)
+            analyze_prototypes(index, module_name, f_file_name, unix_only_file,
+                               mswindows_only_file, f_file, preprocessed_list,
+                               whole_file_original, directory[0], c_file_name,
+                               gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT,
+                               my_stats, my_errors, ARGS)
 
     # Close that *-auto.f90 file:
     if module_name != "gtk":    # gtk module is included in gtk.f90
@@ -304,15 +323,18 @@ unix_only_file.write(TAIL)
 unix_only_file.close()
 mswindows_only_file.write(TAIL)
 mswindows_only_file.close()
-# Write list of GTK functions in a CSV file:
+
+# Write the list of all GTK functions in the index CSV file:
 index.sort()
 index_file = csv.writer(open(SRC_DIR+"gtk-fortran-index.csv", "w"), delimiter=";")
 index_file.writerows(index)
+
 # Write errors in a CSV file:
 my_errors.sort()
 errors_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
 errors_file.writerows(my_errors.errors_list)
 
+# Print the final statistics:
 my_stats.print(T0, GTK_VERSION, PATH_DICT, TYPES_DICT, TYPES2_DICT, my_errors)
 
 if ARGS.build:
