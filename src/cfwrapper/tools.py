@@ -31,14 +31,29 @@
 """
 
 
-def multiline(line, maxlength):
-    """Split a long line in a multiline, following Fortran syntax.
+def multiline(line, max_length):
+    """Split a long line in a multiline, following Fortran syntax, and trying to
+       cut it with elegance.
     """
+    max_offset = max_length-1
     result = ""
 
-    while len(line) > maxlength-1:
-        result += line[0:maxlength-1] + "&\n"
-        line = "&"+ line[maxlength-1:]
+    while len(line) > max_offset:
+        # Remember that character max_length is excluded in such slice:
+        string = line[0:max_length]
 
+        cut = max_offset
+        # We try to cut before a space, if reasonably possible:
+        if string[cut] != " ":
+            # Search the last space after the middle of the string:
+            last_space = string.rfind(" ", max_length//2)
+            if last_space != -1:
+                cut = last_space
+
+        result += line[0:cut] + "&\n"
+        line = "&"+ line[cut:]
+
+    # Add last line without trailing spaces:
     result += line.rstrip()
+
     return result
