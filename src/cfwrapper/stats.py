@@ -25,9 +25,9 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-01
+# Last modification: 2019-04-02
 
-""" This module contains functions for printing statistics at the end of the 
+""" This module contains functions for printing statistics at the end of the
 gtk-fortran generation process.
 """
 
@@ -38,7 +38,7 @@ import time
 import os
 
 # Project modules:
-from globals_const import *
+from globals_const import SRC_DIR
 from lib_versions import gtk_fortran_version
 
 
@@ -74,7 +74,7 @@ def hash_gtk_fortran(PATH_DICT):
         print()
 
 
-class Statistics(object):
+class Statistics():
     """This class is used to manage the gtk-fortran statistics.
     """
     def __init__(self):
@@ -117,10 +117,10 @@ class Statistics(object):
 
         print("\033[1m\n=== Statistics (ready to paste in the Status wiki page) ===\n\033[0m")
 
-        print("\033[34m## " + gtk_fortran_version(GTK_VERSION) + ", Python " 
-            + platform.python_version())
+        print("\033[34m## " + gtk_fortran_version(GTK_VERSION) + ", Python "
+              + platform.python_version())
         print(os.getlogin() + ", "
-            + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()) + "\033[0m")
+              + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()) + "\033[0m")
 
         print('{:<30}{:>6}'.format("* nb_files scanned =", self.nb_files))
         print('{:<30}{:>6}'.format("* nb_generated_interfaces =", self.nb_generated_interfaces))
