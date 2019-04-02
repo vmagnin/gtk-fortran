@@ -29,7 +29,6 @@
 
 import os
 import csv
-import sys
 import time
 import re        # Regular expression library
 import argparse  # To parse command line
@@ -68,7 +67,7 @@ def multiline(line, max_length):
 #*************************************
 
 # Definition of command line options:
-PARSARG = argparse.ArgumentParser(description="This program scan all the Fortran files in the given directory and subdirectories to generate a usemodules.txt file with USE statements you can paste in your gtk-fortran programs. It also print warnings if you use deprecated GTK functions, and finally displays all the GTK functions used in a directory.", 
+PARSARG = argparse.ArgumentParser(description="This program scan all the Fortran files in the given directory and subdirectories to generate a usemodules.txt file with USE statements you can paste in your gtk-fortran programs. It also print warnings if you use deprecated GTK functions, and finally displays all the GTK functions used in a directory.",
                                   epilog="GPLv3 license, https://github.com/vmagnin/gtk-fortran")
 PARSARG.add_argument("dir_path", action="store", type=str, nargs=1,
                      help="Path of the directory to scan")
@@ -100,7 +99,7 @@ for directory in os.walk(path):
     # Scan each file in that directory:
     for f_name in directory[2]:
         # Is it a Fortran file ? (.f or .f?? extension)
-        if re.search("\.f(?:$|[\d]{2}$)", f_name) is None:
+        if re.search(r"\.f(?:$|[\d]{2}$)", f_name) is None:
             continue    # to next file
         # The gtk-fortran *-auto.f90 files are not treated:
         if "-auto" in f_name:
@@ -123,7 +122,7 @@ for directory in os.walk(path):
             function_name   = row[1]
             function_status = row[2]
 
-            pattern = function_name + "[^a-zA-Z0-9_]"
+            pattern = function_name + r"[^a-zA-Z0-9_]"
 
             if re.search(pattern, whole_file) is not None:
                 # Is this module found for the first time ?
