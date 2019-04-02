@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-01
+# Last modification: 2019-04-02
 
 """ This module contains functions to determine the versions of the libraries
 and programs used in gkt-fortran.
@@ -34,7 +34,7 @@ and programs used in gkt-fortran.
 import re           # Regular expression library
 
 # Project modules:
-from globals_const import *
+from globals_const import TAB
 from tools import multiline
 
 
@@ -48,13 +48,15 @@ def translate_enums(c_file_name, enum_list):
     """Receive a list of C enums and returns a text variable containing the
     Fortran enums.
     """
-    nb = 0
     bit_fields = re.compile(r"1 *<< *(\d+)")
+
     f_enum = "! " + c_file_name + "\n"
+    nb = 0
 
     for item in enum_list:
         enum = item[0]
         name = item[1]
+
         # These enums are excluded for some problems... For example,
         # GDBusInterfaceSkeletonFlags contains an item with a too long name :
         if name in ["GSocketFamily", "GSocketMsgFlags", "GdkPixdataType",
@@ -63,6 +65,7 @@ def translate_enums(c_file_name, enum_list):
             continue    # Go to next enum
 
         parameters = re.findall("(?ms){(.*)}", enum)
+
         # ********** Cleaning **********
         # Remove lines beginning by #:
         parameters[0] = re.sub("(?m)^#.*$", "", parameters[0])
@@ -90,10 +93,12 @@ def translate_enums(c_file_name, enum_list):
         # logical or
         parameters[0] = re.sub(r"([\w\(\)]+)\s*\|\s*([\w\(\), \d]+)",
                                r"ior(\1 , \2)", parameters[0])
+
         # Renamed flags (have the same name as a GTK function):
         for flag in ["ATK_HYPERLINK_IS_INLINE", "GDK_PROPERTY_DELETE",
                      "GDK_DRAG_STATUS", "GDK_DRAG_MOTION"]:
             parameters[0] = re.sub(r"(?m)^\s*"+flag, flag+"_F", parameters[0])
+
         # Integer size problem:
         parameters[0] = re.sub(r"(?m)^\s*G_PARAM_DEPRECATED.*$",
                                "", parameters[0])
@@ -109,6 +114,7 @@ def translate_enums(c_file_name, enum_list):
     # Remove empty lines:
     f_enum = re.sub(r"(?m)^ *\n$", "", f_enum)
 
+    # If enums has been found:
     if f_enum != "! " + c_file_name + "\n":
         f_enum += "\n"
 
