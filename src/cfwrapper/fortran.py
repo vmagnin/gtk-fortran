@@ -25,29 +25,28 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-01
+# Last modification: 2019-04-02
 
 """ This module contains functions used in the cfwrapper.
 """
 
 import re           # Regular expression library
 
+# Used to identify a C type:
+RGX_TYPE = re.compile(r"^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?")
+
 
 def iso_c_binding(declaration, returned, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
-    """ Returns the Fortran type corresponding to a C type in the
-        ISO_C_BINDING module (limited to C types used in GTK),
-        and the KIND type
+    """ Returns the Fortran type corresponding to a C type in the ISO_C_BINDING
+        module (limited to C types used in GTK), and the KIND type.
     """
-    # Used to identify a C type:
-    RGX_TYPE = re.compile(r"^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?")
-
     try:
         c_type = RGX_TYPE.search(declaration).group(1)
     except AttributeError:
         return "?", "?"    # error
 
     # Remove "const " statement:
-    declaration = re.sub("^(const )", "", declaration)
+    declaration = re.sub(r"^(const )", "", declaration)
 
     # Is it a "typedef enum" ?
     for item in gtk_enums:
@@ -59,7 +58,7 @@ def iso_c_binding(declaration, returned, gtk_enums, gtk_funptr, TYPES_DICT, TYPE
         if item in c_type:
             return "type(c_funptr)", "c_funptr"
 
-    #typedef void* gpointer;
+    # typedef void* gpointer;
     if ("gpointer" in c_type) or ("gconstpointer" in c_type):
         return "type(c_ptr)", "c_ptr"
 
@@ -92,4 +91,3 @@ def iso_c_binding(declaration, returned, gtk_enums, gtk_funptr, TYPES_DICT, TYPE
 
     # It is finally an unknown type:
     return "?", "?"
-
