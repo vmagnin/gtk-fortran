@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-01
+# Last modification: 2019-04-02
 
 """ This module contains functions to determine the versions of the libraries
 and programs used in gkt-fortran.
@@ -84,7 +84,7 @@ def library_version(tuple_packages):
 
 
 def gtk_fortran_version(GTK_VERSION):
-    """Returns a string containing the GTK, GLib and Ubuntu versions used to 
+    """Returns a string containing the GTK, GLib and Ubuntu versions used to
        generate gtk-fortran
     """
 
