@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-02 (tested with Python 3.6.7, Ubuntu 18.10)
-# pylint3 score: ?/10
+# Last modification: 2019-04-03 (tested with Python 3.6.7, Ubuntu 18.10)
+# pylint3 *.py : 8.33/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -39,6 +39,9 @@ import csv          # To write .csv files
 import subprocess   # To launch a shell command
 import argparse     # To parse command line
 from collections import OrderedDict
+import sys
+# To use ../tools.py which contains the multiline() function:
+sys.path.append('../')
 
 # Project modules:
 from globals_const import SRC_DIR

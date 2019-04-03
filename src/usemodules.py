@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 04.04.2011, Python 2.6.6, Linux Ubuntu 10.10
-# Last modification: 06-27-2016 (python 3.5.1, Ubuntu 16.04)
+# Last modification: vmagnin 2019-04-03
 
 """ This program helps you generating the USE statements for your gtk-fortran programs. It also
 displays all the GTK+ functions used in a directory.
@@ -37,16 +37,8 @@ import csv
 import sys
 import time
 import re        # Regular expression library
-
-
-def multiline(ch, maxlength):
-    """Split a long line in a multiline, following Fortran syntax."""
-    result = ""
-    while len(ch) > maxlength-1:
-        result += ch[0:maxlength-1] + "&\n"
-        ch = "&"+ ch[maxlength-1:]
-    result += ch
-    return result
+import argparse  # To parse command line
+from tools import multiline
 
 
 output_file = open("usemodules.txt", "w")
