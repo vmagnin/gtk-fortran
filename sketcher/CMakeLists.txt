@@ -21,7 +21,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by James Tappin 05/20/2011
-# Last modifications: Jens Hunger: 03/07/2013, vmagnin 03-07-2019
+# Last modifications: Jens Hunger: 03/07/2013, vmagnin 2019-04-05
 
 # CMAKE build file for gtkf-sketcher
 
@@ -37,4 +37,5 @@ file(COPY example.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
 file(COPY default.options DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
 file(COPY ${CMAKE_SOURCE_DIR}/src/usemodules.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/example/ )
+file(COPY ${CMAKE_SOURCE_DIR}/src/tools.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/example/ )
 file(COPY ${CMAKE_SOURCE_DIR}/src/gtk-fortran-index.csv DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/example/ )
