@@ -1,6 +1,6 @@
 #!/bin/bash
 # Script to build gtk-fortran using CMake
-# Vincent MAGNIN, 2016-06-19, modified 2019-03-26
+# Vincent MAGNIN, 2016-06-19, modified 2019-04-09
 
 echo "Building gtk-fortran..."
 
@@ -18,5 +18,5 @@ cmake -D CMAKE_BUILD_TYPE=debug ..
 make -j
 
 echo
-echo "TO INSTALL gtk-fortran LIBRARIES ON YOUR SYSTEM, TYPE :"
-echo "cd ../build/ ; sudo make install"
+echo "TO INSTALL gtk-fortran LIBRARIES ON YOUR SYSTEM, type in the build/ directory:"
+echo "  sudo make install"
