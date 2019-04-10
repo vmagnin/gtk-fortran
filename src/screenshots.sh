@@ -5,11 +5,11 @@
 # You need to install scrot
 # GNU GPL 3
 # Contributed by Vincent MAGNIN
-# April 27th 2011, updated 06-14-2016.
+# April 27th 2011, updated 2019-04-10
 
 if [ $# -eq 0 ]; then
   seconds=3
-  suffix="-kubuntu_16_04"
+  suffix="-kubuntu"
 else
   seconds=$2
   suffix=$1
@@ -20,9 +20,9 @@ echo "Sleep time: "$seconds
 echo "Taking screenshots..."
 cd ../build/examples/
 
-for file in * ; do 
+for file in * ; do
   # Is it an executable file ?
-  if [ -x "$file" ]; then
+  if [ -x "$file" ] && [ ! -d "$file" ]; then
     echo $file
     #Launch the program:
     ./$file &
