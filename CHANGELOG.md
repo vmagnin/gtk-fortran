@@ -2,6 +2,10 @@
 All notable changes to the gtk-fortran project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+### Changed
+- CMake>=3.4 required.
+
 ## [gtk-fortran 19.04] - 2019-04-24
 ### Added
 - The `cfwrapper.py` detects the status of each function (AVAILABLE or DEPRECATED) and writes it in the `*-auto.f90` files and in `gtk-fortran-index.csv`. It will help to remove deprecated functions during the GTK 4 migration. Developers can use the `-d` argument to remove DEPRECATED functions from the library: using `make -i` will then show errors for each deprecated function used in the project.
