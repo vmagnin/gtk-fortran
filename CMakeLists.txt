@@ -22,10 +22,10 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, 02/08/2019
+# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, 2019-04-25
 # CMAKE build file for gtk-fortran
 
-cmake_minimum_required(VERSION 2.8.5)
+cmake_minimum_required(VERSION 3.4)
 
 project(gtk-fortran Fortran)
 
