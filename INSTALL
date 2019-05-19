@@ -1,4 +1,4 @@
-Last update: 02-25-2019
+Last update: 05-19-2019
 
 Building & Installing GtkFortran
 ================================
@@ -78,11 +78,6 @@ could be issues [i.e. where I was guessing until it worked]).
 
 Known issues
 ------------
-
-On Gtk3, there is a cmake warning:
-
-    -- Some or all of the gtk libraries were not found. (missing:  GTK3_GDKCONFIG_INCLUDE_DIR) 
-that appears harmless and is probably a failing of the FindGTK3.cmake file.
 
 You can see or post issues on this page:
 https://github.com/vmagnin/gtk-fortran/issues
