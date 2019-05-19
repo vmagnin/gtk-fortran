@@ -474,7 +474,7 @@ foreach(_GTK3_component ${GTK3_FIND_COMPONENTS})
         endif()
 
         _GTK3_FIND_INCLUDE_DIR(GTK3_GDK gdk/gdk.h)
-        _GTK3_FIND_INCLUDE_DIR(GTK3_GDKCONFIG gdkconfig.h)
+        _GTK3_FIND_INCLUDE_DIR(GTK3_GDKCONFIG gdk/gdkconfig.h)
 
         _GTK3_FIND_INCLUDE_DIR(GTK3_CAIRO cairo.h)
         _GTK3_FIND_LIBRARY    (GTK3_CAIRO cairo false false)
