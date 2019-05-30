@@ -3,6 +3,9 @@ All notable changes to the gtk-fortran project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- Experimental `meson.build` files have been added. Meson>=0.50.999 is needed. Commands are `meson buildmeson` and `ninja -C buildmeson`. You can install the library using `sudo ninja -C buildmeson install`, but there is still some problems for installing the `.mod` files (see https://github.com/mesonbuild/meson/issues/5374). 
+
 ### Changed
 - CMake>=3.4 required.
 
