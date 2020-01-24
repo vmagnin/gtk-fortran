@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-01
+# Last modification: 2020-01-24
 
 """ This module contains functions used to clean header files in the cfwrapper.
 """
@@ -46,6 +46,10 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     # Remove C commentaries:
     whole_file = re.sub(r"(?s)/\*.*?\*/", "", whole_file)
 
+    # Remove Deprecated statements (necessary before treating enumerators):
+    whole_file = re.sub("[ ]\w*_DEPRECATED_TYPE_[\w()]*;", ";", whole_file)
+    whole_file = re.sub("[ ]\w*_DEPRECATED_ENUMERATOR_IN_[\w()]*[ ]", " ", whole_file)
+        
     # Gather and translate C enumerators to Fortran enumerators,
     # and write them to gtkenums-auto.f90:
     enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
@@ -70,6 +74,8 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     # Remove "available_in" and "deprecated" directives:
     whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
                         "", whole_file)
+    whole_file = re.sub("G_GNUC_BEGIN_IGNORE_DEPRECATIONS", "", whole_file)
+    whole_file = re.sub("G_GNUC_END_IGNORE_DEPRECATIONS", "", whole_file)
     # Remove extern C statement:
     whole_file = re.sub("(?m)^(extern).*$", "", whole_file)
     # Remove different kind of declarations:
