@@ -1,11 +1,12 @@
 #! /bin/sh
-# Compilation of gtk-fortran and its examples, using GTK+ 3
+# An alternative simple build system, using the directory ../build/byscript 
+# and finally launching one by one the examples for testing.
 # GNU GPL v3
 # Contributed by Vincent MAGNIN
-# April 8th 2011, last updated 06-25-2016
+# 2011-04-08, last updated 2020-01-27
 
 # Allow override of default compiler. For example:
-#  GFC='gfortran-4.8' ./test.sh
+#  GFC='gfortran-4.8' ./alt_build_test.sh
 # (Contributed by A. GRAZIOSI)
 : ${GFC="gfortran"}
 
