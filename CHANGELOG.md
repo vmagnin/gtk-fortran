@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Doxygen dependence. It was introduced at the beginning of the gtk-fortran project but never used.
 - win32_install.bat: this file was last updated in 2013 and may be brokken. You should instead install MSYS2 under Windows and follow the instructions on the wiki.
 - cmake/FindPlplotF95.cmake: deprecated module to find the PLplot library (does not work with PLplot>=5.11 released the 2015-04-12).
+- test.bat: a deprecated script to build gtk-fortran (GTK 2) under Windows.
 
 ### Fixed
 - FindGTK3.cmake: fixed GDKCONFIG issue ("missing: GTK3_GDKCONFIG_INCLUDE_DIR").
