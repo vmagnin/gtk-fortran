@@ -23,7 +23,7 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, 
-# Jens Hunger 01/07/2018, vmagnin 2019-03-14 (PLplot>=5.13), 2019-04-25
+# Jens Hunger 01/07/2018, vmagnin 2019-03-14 (PLplot>=5.13), 2020-01-27 
 # CMAKE build file for gtk-fortran
 
 cmake_minimum_required(VERSION 3.4)
@@ -162,26 +162,6 @@ elseif (UNIX)
         ${GTK${GTKv}_GTK_LIBRARY}
         ${GTK${GTKv}_PANGO_LIBRARY} CACHE STRING "" FORCE)
 endif()
-
-
-#===============================================================================
-# Doxygen documentation generation (optionnal):
-#===============================================================================
-find_package(Doxygen)
-set(HAVE_DOXYGEN ${DOXYGEN_FOUND})
-if(DOXYGEN_FOUND)
-    configure_file("${PROJECT_SOURCE_DIR}/Doxyfile"
-        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" IMMEDIATE)
-    set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "latex" "html") 
-    add_custom_target(doxygen
-        COMMAND ${DOXYGEN_EXECUTABLE}
-        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" 
-        COMMENT "Writing documentation..." WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    )
-    add_custom_target(doc)
-    add_dependencies(doc doxygen)
-endif(DOXYGEN_FOUND)
-
 
 #===============================================================================
 # PLplot integration (>=5.13 needed)

@@ -17,7 +17,6 @@ Please post bugs on GitHub:
 * CHANGELOG.md: list of the releases with main changes.
 * CMakeLists.txt: main CMake instructions to build the project.
 * codemeta.json: metadata about the project.
-* Doxyfile: could be used to generate a Doxygen doc.
 * INSTALL: installation instructions.
 * LICENSE: text of the license.
 * meson.build: main Meson instructions to build the project (experimental feature).
