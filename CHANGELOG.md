@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Gtkextra directory: that directory was not maintained for 9 years, the gtkextra library is not maintained anymore and is based on GTK 2. The gtksheet part was forked (https://github.com/fpaquet/gtksheet), but it is necessary to reduce the amount of work to maintain gtk-fortran. So it was removed from the gtk3 branch.
 - Doxygen dependence. It was introduced at the beginning of the gtk-fortran project but never used.
 - win32_install.bat: this file was last updated in 2013 and may be brokken. You should instead install MSYS2 under Windows and follow the instructions on the wiki.
+- cmake/FindPlplotF95.cmake: deprecated module to find the PLplot library (does not work with PLplot>=5.11 released the 2015-04-12).
 
 ### Fixed
 - FindGTK3.cmake: fixed GDKCONFIG issue ("missing: GTK3_GDKCONFIG_INCLUDE_DIR").
