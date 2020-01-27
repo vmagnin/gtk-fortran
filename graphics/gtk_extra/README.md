@@ -1,9 +1,0 @@
-**WARNING: this directory is old stuff and has not been maintained for a long time, so it is probably brokken.**
-
-
-# How to use GtkExtra with Fortran
-
-1) Download and install GtkExtra 3.0.1 (http://sourceforge.net/projects/gtkextra/files/3.0.1/gtk%2Bextra-3.0.1.tar.gz/download)
-2) Write your Fortran code using GtkExtra widgets (see also example `gtkextra_plot.f90`)
-3) Compile with:
-    gfortran -Wl,--rpath,../../src -I../../src gtkextra-auto.f90 your_filename.f90 -o your_filename -L../../src -lgtk-fortran `pkg-config --cflags --libs gtkextra-3.0`
