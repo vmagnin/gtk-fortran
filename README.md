@@ -21,7 +21,6 @@ Please post bugs on GitHub:
 * LICENSE: text of the license.
 * meson.build: main Meson instructions to build the project (experimental feature).
 * README-high-level: about the High Level part of the gtk-fortran library.
-* win32_install.bat: this file was last updated in 2013 and may be brokken. You should instead install MSYS2 under Windows and follow the instructions on the wiki.
 
 
 # Citing gtk-fortran
