@@ -199,7 +199,6 @@ endif(NOT EXCLUDE_PLPLOT)
 # Add subdirectories to build:
 #===============================================================================
 add_subdirectory(src)
-add_subdirectory(test)
 add_subdirectory(examples)
 
 if(${GTKv} GREATER 2)
