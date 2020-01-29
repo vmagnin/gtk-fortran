@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 12-31-2012
+! Last modifications: 12-31-2012, vmagnin 2020-01-29
 
 !!$T Template file for gtk-hl-dialog.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -65,7 +65,7 @@ module gtk_hl_dialog
 !!$GTK< 3.0!       & gtk_hbox_new, gtk_vbox_new, &
 !!$GTK>=3.0!       & gtk_box_new, gtk_about_dialog_set_license_type, &
        & gtk_dialog_add_button, gtk_dialog_get_content_area, gtk_dialog_new, &
-       & gtk_dialog_run, gtk_image_new_from_stock, gtk_label_new, &
+       & gtk_dialog_run, gtk_image_new_from_icon_name, gtk_label_new, &
        & gtk_label_set_markup, gtk_widget_destroy, gtk_widget_show_all, &
        & gtk_window_set_destroy_with_parent, gtk_window_set_modal, &
        & gtk_window_set_title, gtk_window_set_transient_for, TRUE, &
@@ -137,16 +137,16 @@ contains
        call gtk_box_pack_start(content, hb, TRUE, TRUE, 0_c_int)
        select case (itype)
        case (GTK_MESSAGE_ERROR)
-          junk = gtk_image_new_from_stock(GTK_STOCK_DIALOG_ERROR, &
+          junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_ERROR, &
                & GTK_ICON_SIZE_DIALOG)
        case (GTK_MESSAGE_WARNING)
-          junk = gtk_image_new_from_stock(GTK_STOCK_DIALOG_WARNING, &
+          junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_WARNING, &
                & GTK_ICON_SIZE_DIALOG)
        case (GTK_MESSAGE_INFO)
-          junk = gtk_image_new_from_stock(GTK_STOCK_DIALOG_INFO, &
+          junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_INFO, &
                & GTK_ICON_SIZE_DIALOG)
        case (GTK_MESSAGE_QUESTION)
-          junk = gtk_image_new_from_stock(GTK_STOCK_DIALOG_QUESTION, &
+          junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_QUESTION, &
                & GTK_ICON_SIZE_DIALOG)
        case default
           junk=C_NULL_PTR
