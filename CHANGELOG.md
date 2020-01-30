@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - FindGTK3.cmake: fixed GDKCONFIG issue ("missing: GTK3_GDKCONFIG_INCLUDE_DIR").
+- src/usemodules.py was printing false deprecated functions alerts in the hl files of the src directory.
 
 
 ## [gtk-fortran 19.04] - 2019-04-24
