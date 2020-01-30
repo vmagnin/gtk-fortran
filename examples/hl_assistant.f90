@@ -23,7 +23,7 @@
 !
 ! gfortran -g  hl_assistant.f90 `pkg-config --cflags --libs gtk-2-fortran`
 ! Contributed by James Tappin.
-! Last modification: vmagnin 02-20-2019
+! Last modification: vmagnin 2020-01-30
 
 ! Based on the C example given in"
 ! https://www.linuxquestions.org/linux/articles/Technical/New_GTK_Widgets_GtkAssistant
@@ -37,13 +37,14 @@ module as_handlers
   ! Gtk modules for hl_assistant.f90
   use g, only: g_usleep
 
-  use gtk, only: gtk_alignment_new, gtk_container_add, gtk_entry_get_text, &
+  use gtk, only: gtk_container_add, gtk_entry_get_text, &
        & gtk_events_pending, gtk_label_new, gtk_main, gtk_main_iteration, &
        & gtk_main_quit, gtk_toggle_button_get_active, gtk_widget_destroy, &
        & gtk_widget_set_sensitive, gtk_widget_show_all, gtk_init, TRUE, FALSE, &
        & GTK_ASSISTANT_PAGE_CONTENT, GTK_ASSISTANT_PAGE_INTRO, &
-       & GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_PROGRESS
-
+       & GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_PROGRESS, &
+       & gtk_widget_set_halign, gtk_widget_set_valign, gtk_widget_set_hexpand, gtk_widget_set_vexpand, &
+       & GTK_ALIGN_CENTER
 
   implicit none
 
@@ -122,7 +123,7 @@ program hl_assistant
   use as_handlers
   implicit none
 
-  type(c_ptr) :: junk, jb, algn, ebox, pbar
+  type(c_ptr) :: junk, jb, ebox, pbar
 
   call gtk_init()
 
@@ -140,39 +141,47 @@ program hl_assistant
        & page_title="Introduction"//c_null_char)
 
   ! Name entry
-  algn = gtk_alignment_new(0.5_c_float, 0.5_c_float, 1.0_c_float, 0._c_float)
+  
   jb = hl_gtk_box_new(horizontal=TRUE, spacing=5_c_int)
-  call gtk_container_add(algn, jb)
+  call gtk_widget_set_halign (jb, GTK_ALIGN_FILL)
+  call gtk_widget_set_valign (jb, GTK_ALIGN_CENTER)
+  call gtk_widget_set_hexpand (jb, TRUE)
+  call gtk_widget_set_vexpand (jb, FALSE)
+
   junk = gtk_label_new("Your name:"//c_null_char)
   call hl_gtk_box_pack(jb, junk, expand=FALSE)
 
   ebox = hl_gtk_entry_new(editable=TRUE, activate=c_funloc(name_enter))
   call hl_gtk_box_pack(jb, ebox)
+  
   junk = hl_gtk_button_new("Apply"//c_null_char, clicked=c_funloc(name_enter), &
        & data=ebox)
   call hl_gtk_box_pack(jb, junk, expand=FALSE)
 
-  call hl_gtk_assistant_add_page(asstnt, algn, GTK_ASSISTANT_PAGE_CONTENT)
+  call hl_gtk_assistant_add_page(asstnt, jb, GTK_ASSISTANT_PAGE_CONTENT)
 
   ! Check button
-
+  
   junk = hl_gtk_check_button_new("Click to continue"//c_null_char, &
        &toggled = c_funloc(check_tog))
   call hl_gtk_assistant_add_page(asstnt, junk, GTK_ASSISTANT_PAGE_CONTENT, &
        & page_title="Click the Check Button"//c_null_char)
 
   ! Progress
+  
+  jb = hl_gtk_box_new(horizontal=TRUE)  
+  call gtk_widget_set_halign (jb, GTK_ALIGN_FILL)
+  call gtk_widget_set_valign (jb, GTK_ALIGN_CENTER)
+  call gtk_widget_set_hexpand (jb, TRUE)
+  call gtk_widget_set_vexpand (jb, FALSE)
 
-  algn = gtk_alignment_new(0.5_c_float, 0.5_c_float, 1.0_c_float, 0._c_float)
-  jb = hl_gtk_box_new(horizontal=TRUE)
-  call gtk_container_add(algn, jb)
   pbar = hl_gtk_progress_bar_new()
   call hl_gtk_box_pack(jb, pbar)
 
   junk = hl_gtk_button_new("Click to start"//c_null_char, &
        & clicked=c_funloc(start_pb), data=pbar)
   call hl_gtk_box_pack(jb, junk, expand=false)
-  call hl_gtk_assistant_add_page(asstnt, algn, GTK_ASSISTANT_PAGE_PROGRESS, &
+  call hl_gtk_assistant_add_page(asstnt, jb, GTK_ASSISTANT_PAGE_PROGRESS, &
        & page_title="Applying"//c_null_char)
 
   ! Confirmation page
