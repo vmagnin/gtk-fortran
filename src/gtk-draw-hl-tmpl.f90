@@ -717,7 +717,6 @@ contains
     !
     ! AREA: c_ptr: required: The drawing area
     ! EVENT: c_ptr: required: GTK2 = event structure, GTK3 = a cairo context
-    ! 		Since this differs between versions, we won't use it.
     ! DATA: c_ptr: required: A pointer to user data (not used).
     !-
 
@@ -735,10 +734,11 @@ contains
     ! Note for plplot users, this cairo context is a different one from
     ! the context used by plplot for the actual drawing.
 
-    cr = gdk_cairo_create(gtk_widget_get_window(area))
+!!$GTK< 3.22!    cr = gdk_cairo_create(gtk_widget_get_window(area))
+!!$GTK>=3.22!    cr = event
     call cairo_set_source_surface(cr, isurface, 0._c_double, 0._c_double) 
     call cairo_paint(cr)
-    call cairo_destroy(cr)
+!!$GTK< 3.22!    call cairo_destroy(cr)
   end function hl_gtk_drawing_area_expose_cb
 
   !+
