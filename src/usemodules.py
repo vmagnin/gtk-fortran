@@ -99,7 +99,8 @@ for directory in os.walk(path):
             function_name   = row[1]
             function_status = row[2]
 
-            pattern = function_name + r"[^a-zA-Z0-9_]"
+            # The [^_] is needed to avoid hl_ functions:
+            pattern = r"[^_]" + function_name + r"[^a-zA-Z0-9_]"
 
             if re.search(pattern, whole_file) is not None:
                 # Is this module found for the first time ?
