@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 07-09-2012
+! Last modifications: 07-09-2012, vmagnin 2020-01-30
 
 !!$T Template file for gtk-hl-container.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -69,7 +69,7 @@ module gtk_hl_container
 !!$GTK>=3.0!       & gtk_grid_new, gtk_grid_set_row_homogeneous, &
 !!$GTK>=3.0!       & gtk_grid_set_column_homogeneous, gtk_grid_set_row_spacing, &
 !!$GTK>=3.0!       & gtk_grid_set_column_spacing, gtk_grid_attach, &
-!!$GTK>=3.0!       & gtk_widget_set_margin_left, gtk_widget_set_margin_right, &
+!!$GTK>=3.0!       & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
 !!$GTK>=3.0!       & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom, &
 !!$GTK>=3.0!       & gtk_widget_set_hexpand, gtk_widget_set_vexpand,  &
 !!$GTK>=3.0!       & gtk_widget_set_halign, gtk_widget_set_valign, &
@@ -87,7 +87,8 @@ module gtk_hl_container
 !!$GTK< 3.0!       & gtk_notebook_set_group, &
 !!$GTK>=3.0!       & gtk_notebook_set_group_name, &
        & gtk_scrolled_window_new, gtk_scrolled_window_set_policy, &
-       & gtk_widget_set_size_request, gtk_scrolled_window_add_with_viewport, &
+       & gtk_widget_set_size_request, &
+!!$GTK< 3.8!       & gtk_scrolled_window_add_with_viewport, &
        & gtk_container_add, &
        & GTK_WINDOW_TOPLEVEL, GTK_EXPAND, GTK_FILL, &
 !!$GTK>=3.0!       & GTK_ALIGN_FILL, GTK_ALIGN_CENTER, &
@@ -496,8 +497,8 @@ contains
 
 !!$GTK>=3.0!    call gtk_grid_attach(table, widget, ix, iy, ixsz, iysz)
 !!$GTK>=3.0!    if (present(xpad)) then
-!!$GTK>=3.0!       call gtk_widget_set_margin_left(widget, xpad)
-!!$GTK>=3.0!       call gtk_widget_set_margin_right(widget, xpad)
+!!$GTK>=3.0!       call gtk_widget_set_margin_start(widget, xpad)
+!!$GTK>=3.0!       call gtk_widget_set_margin_end(widget, xpad)
 !!$GTK>=3.0!    end if
 !!$GTK>=3.0!    if (present(ypad)) then
 !!$GTK>=3.0!       call gtk_widget_set_margin_top(widget, ypad)
@@ -763,17 +764,17 @@ contains
 
     logical :: vp
 
-    if (present(viewport)) then
-       vp = c_f_logical(viewport)
-    else
-       vp = .false.
-    end if
+!!$GTK< 3.8!    if (present(viewport)) then
+!!$GTK< 3.8!       vp = c_f_logical(viewport)
+!!$GTK< 3.8!    else
+!!$GTK< 3.8!       vp = .false.
+!!$GTK< 3.8!    end if
 
-    if (vp) then
-       call gtk_scrolled_window_add_with_viewport(win, child)
-    else
+!!$GTK< 3.8!    if (vp) then
+!!$GTK< 3.8!       call gtk_scrolled_window_add_with_viewport(win, child)
+!!$GTK< 3.8!    else
        call gtk_container_add(win, child)
-    end if
+!!$GTK< 3.8!    end if
   end subroutine hl_gtk_scrolled_window_add
 
 end module gtk_hl_container
