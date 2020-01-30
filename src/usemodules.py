@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 04.04.2011
-# Last modification: vmagnin 2019-04-03
+# Last modification: vmagnin 2020-01-30
 
 import os
 import csv
@@ -76,7 +76,10 @@ for directory in os.walk(path):
         # The gtk-fortran *-auto.f90 files are not treated:
         if "-auto" in f_name:
             continue    # to next file
-
+        # The gtk-fortran *-tmpl.f90 files are not treated:
+        if "-tmpl.f90" in f_name:
+            continue    # to next file
+        
         print(f_name)
 
         only_dict = {}
