@@ -23,7 +23,7 @@
 !
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modification: 01-31-2013
+! Last modifications: 01-31-2013, vmagnin 2020-01-30
 
 !!$T Template file for gtk-draw-hl.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -90,7 +90,8 @@ module gtk_draw_hl
        & gdk_pixbuf_new
 
   use gtk, only: gtk_drawing_area_new, &
-       & gtk_scrolled_window_add_with_viewport, &
+!!$GTK< 3.8!       & gtk_scrolled_window_add_with_viewport, &
+!!$GTK>=3.8!       & gtk_container_add, &
        & gtk_scrolled_window_new, gtk_scrolled_window_set_policy, &
        & gtk_widget_add_events, gtk_widget_get_allocation, &
        & gtk_widget_get_window, gtk_widget_set_can_focus, &
@@ -267,7 +268,8 @@ contains
        call gtk_scrolled_window_set_policy(scroll, hpolicy, vpolicy)
        if (present(ssize)) &
             & call gtk_widget_set_size_request(scroll, ssize(1), ssize(2))
-       call gtk_scrolled_window_add_with_viewport (scroll, plota)
+!!$GTK< 3.8!       call gtk_scrolled_window_add_with_viewport (scroll, plota)
+!!$GTK>=3.8!       call gtk_container_add(scroll, plota)
     end if
 
     ! Create the backing surface
