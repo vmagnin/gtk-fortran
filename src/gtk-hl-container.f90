@@ -68,7 +68,7 @@ module gtk_hl_container
        & gtk_grid_new, gtk_grid_set_row_homogeneous, &
        & gtk_grid_set_column_homogeneous, gtk_grid_set_row_spacing, &
        & gtk_grid_set_column_spacing, gtk_grid_attach, &
-       & gtk_widget_set_margin_left, gtk_widget_set_margin_right, &
+       & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
        & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom, &
        & gtk_widget_set_hexpand, gtk_widget_set_vexpand,  &
        & gtk_widget_set_halign, gtk_widget_set_valign, &
@@ -495,8 +495,8 @@ contains
 
     call gtk_grid_attach(table, widget, ix, iy, ixsz, iysz)
     if (present(xpad)) then
-       call gtk_widget_set_margin_left(widget, xpad)
-       call gtk_widget_set_margin_right(widget, xpad)
+       call gtk_widget_set_margin_start(widget, xpad)
+       call gtk_widget_set_margin_end(widget, xpad)
     end if
     if (present(ypad)) then
        call gtk_widget_set_margin_top(widget, ypad)
