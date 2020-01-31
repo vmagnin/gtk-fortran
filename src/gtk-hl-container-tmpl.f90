@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modifications: 07-09-2012, vmagnin 2020-01-30
+! Last modifications: 07-09-2012, vmagnin 2020-01-31
 
 !!$T Template file for gtk-hl-container.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -762,7 +762,7 @@ contains
     ! 		whether this is needed.
     !-
 
-    logical :: vp
+!!$GTK< 3.8!    logical :: vp
 
 !!$GTK< 3.8!    if (present(viewport)) then
 !!$GTK< 3.8!       vp = c_f_logical(viewport)
