@@ -332,8 +332,8 @@ contains
     end if
 
     ! Attach the action buttonsa to the dialogue
-    junk = gtk_dialog_add_button(dialog, GTK_STOCK_OPEN, GTK_RESPONSE_APPLY)
-    junk = gtk_dialog_add_button(dialog, GTK_STOCK_CANCEL, &
+    junk = gtk_dialog_add_button(dialog, "_Open"//C_NULL_CHAR, GTK_RESPONSE_APPLY)
+    junk = gtk_dialog_add_button(dialog, "_Cancel"//C_NULL_CHAR, &
          & GTK_RESPONSE_CANCEL)
 
     ! Decode the action
