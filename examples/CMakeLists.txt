@@ -22,7 +22,7 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 02-27-2019
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2020-01-31
 
 # CMAKE build file for gtk-fortran
 
@@ -69,7 +69,7 @@ if (NOT NO_BUILD_EXAMPLES)
           hl_sliders hl_sliders2 hl_textview hl_tree hl_cairo1 hl_cairo_clock
           hl_cairo_viewer hl_infobar ${julia_pixbuf_example} list_demo
           ${mandelbrot_example} mandelbrot_pixbuf
-          mandelbrot_pixbuf_zoom menu notebooks ${gio_demo_example} tests)
+          mandelbrot_pixbuf_zoom menu menu2 notebooks ${gio_demo_example} tests)
     add_executable(${example} "${example}.f90")
     target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES})
     set_target_properties(${example} PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${example}_mod/ )

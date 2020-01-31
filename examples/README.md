@@ -23,7 +23,8 @@ in the current directory.
 create your graphical user interface.
 - list_demo.f90 demonstrates how to use GtkTreeView for displaying trees and 
 lists.
-- menu.f90 demonstrates how to use GtkActionGroup to create a menu.
+- menu.f90 demonstrates how to use GtkActionGroup to create a menu. But gtk_action_new gtk_ui_manager_new are deprecated since version 3.10 and should not be used in newly-written code.
+- menu2.f90 demonstrates how to create a menu.
 - notebooks.f90 demonstrates how to use GtkNotebook, a tabbed notebook container.
 - hl_* examples uses the "high-level" interface.
 - tests.f90 is testing things about ISO_C_BINDING and the relations between 
