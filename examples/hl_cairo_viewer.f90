@@ -60,7 +60,7 @@ contains
 
   end subroutine delete_v
 
-  subroutine show_image(widget, gdata)  bind(c)
+  recursive subroutine show_image(widget, gdata)  bind(c)
     type(c_ptr), value :: widget, gdata
 
     integer(kind=c_int), pointer :: istep
