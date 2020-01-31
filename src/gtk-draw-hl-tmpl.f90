@@ -23,7 +23,7 @@
 !
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modifications: 01-31-2013, vmagnin 2020-01-30
+! Last modifications: 01-31-2013, vmagnin 2020-01-31
 
 !!$T Template file for gtk-draw-hl.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -83,7 +83,7 @@ module gtk_draw_hl
   use g, only: g_object_get_data, g_object_set_data
 
 !!$GTK< 3.0!  use gdk, only: gdk_cairo_create, gdk_cairo_set_source_pixbuf
-!!$GTK>=3.0!  use gdk, only: gdk_cairo_create, gdk_pixbuf_get_from_surface, &
+!!$GTK>=3.0!  use gdk, only: gdk_pixbuf_get_from_surface, &
 !!$GTK>=3.0!     & gdk_cairo_set_source_pixbuf
 
   use gdk_pixbuf, only: gdk_pixbuf_get_pixels, gdk_pixbuf_get_rowstride, &
