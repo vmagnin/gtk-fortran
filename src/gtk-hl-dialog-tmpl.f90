@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modifications: 12-31-2012, vmagnin 2020-01-29
+! Last modifications: 12-31-2012, vmagnin 2020-01-31
 
 !!$T Template file for gtk-hl-dialog.f90.
 !!$T  Make edits to this file, and keep them identical between the
@@ -174,19 +174,19 @@ contains
     select case (button_set)
     case (GTK_BUTTONS_NONE)
     case (GTK_BUTTONS_OK)
-       junk = gtk_dialog_add_button(dialog, GTK_STOCK_OK, GTK_RESPONSE_OK)
+       junk = gtk_dialog_add_button(dialog, "_OK"//C_NULL_CHAR, GTK_RESPONSE_OK)
     case (GTK_BUTTONS_CLOSE)
-       junk = gtk_dialog_add_button(dialog, GTK_STOCK_CLOSE, &
+       junk = gtk_dialog_add_button(dialog, "_Close"//C_NULL_CHAR, &
             & GTK_RESPONSE_CLOSE)
     case (GTK_BUTTONS_CANCEL)
-       junk = gtk_dialog_add_button(dialog, GTK_STOCK_CANCEL, &
+       junk = gtk_dialog_add_button(dialog, "_Cancel"//C_NULL_CHAR, &
             & GTK_RESPONSE_CANCEL)
     case (GTK_BUTTONS_YES_NO)
-       junk = gtk_dialog_add_button(dialog, GTK_STOCK_YES, GTK_RESPONSE_YES)
-       junk = gtk_dialog_add_button(dialog, GTK_STOCK_NO, GTK_RESPONSE_NO)
+       junk = gtk_dialog_add_button(dialog, "Yes"//C_NULL_CHAR, GTK_RESPONSE_YES)
+       junk = gtk_dialog_add_button(dialog, "No"//C_NULL_CHAR, GTK_RESPONSE_NO)
     case (GTK_BUTTONS_OK_CANCEL)
-       junk = gtk_dialog_add_button(dialog, GTK_STOCK_OK, GTK_RESPONSE_OK)
-       junk = gtk_dialog_add_button(dialog, GTK_STOCK_CANCEL, &
+       junk = gtk_dialog_add_button(dialog, "_OK"//C_NULL_CHAR, GTK_RESPONSE_OK)
+       junk = gtk_dialog_add_button(dialog, "_Cancel"//C_NULL_CHAR, &
             & GTK_RESPONSE_CANCEL)
     case default
        call gtk_widget_destroy(dialog)
