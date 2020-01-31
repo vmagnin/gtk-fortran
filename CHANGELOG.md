@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - cmake/CheckFortranSourceCompiles.cmake: this macro is included in CMake since 3.1 version.
 - test.bat: a deprecated script to build gtk-fortran (GTK 2) under Windows.
 - The test/ directory containing the run_all.pl script. You can use CTest instead (see the wiki).
+- Deprecated functions, to be ready for GTK 4.
 
 ### Fixed
 - FindGTK3.cmake: fixed GDKCONFIG issue ("missing: GTK3_GDKCONFIG_INCLUDE_DIR").
