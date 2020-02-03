@@ -22,10 +22,10 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by vmagnin (first commit: 2019-05-30)
-# Meson >= 0.50.999 is needed (see https://github.com/mesonbuild/meson/pull/4979)
+# Meson >= 0.51 is needed (see https://github.com/mesonbuild/meson/pull/4979)
 # By default, Meson installs projects to the prefix /usr/local/
 
-project('gtk-fortran', ['fortran', 'c'], license: 'GPL3', meson_version: '>=0.50.999')
+project('gtk-fortran', ['fortran', 'c'], license: 'GPL3', meson_version: '>=0.51')
 
 # Set here the GTK version to use (gtk+-3.0, gtk-4.0 ?)
 gtk_dep = dependency('gtk+-3.0')
@@ -55,8 +55,9 @@ supported_arguments = fortran.get_supported_arguments([
   '-Wno-unused-dummy-argument'])
 add_project_arguments(supported_arguments, language: 'fortran')
 
-# Needed for example by gtkf-sketcher:
-add_project_link_arguments('-rdynamic', language: 'fortran')
+# Needed for programs using GTKBuilder (gtkf-sketcher and gtkbuilder2):
+supported_rdynamic = fortran.get_supported_arguments('-rdynamic')
+add_project_link_arguments(supported_rdynamic, language: 'fortran')
 
 # TODO: define arguments for RELEASE
 
