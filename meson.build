@@ -25,7 +25,7 @@
 # Meson >= 0.51 is needed (see https://github.com/mesonbuild/meson/pull/4979)
 # By default, Meson installs projects to the prefix /usr/local/
 
-project('gtk-fortran', ['fortran', 'c'], license: 'GPL3', meson_version: '>=0.51')
+project('gtk-fortran', ['fortran', 'c'], license: 'GPL3', meson_version: '>=0.51', version: 'gtk-3-fortran')
 
 # Set here the GTK version to use (gtk+-3.0, gtk-4.0 ?)
 gtk_dep = dependency('gtk+-3.0')
@@ -40,11 +40,14 @@ message(gtk_V_fortran)
 # Print some informations:
 system = host_machine.system()
 message('Host machine system = '+system)
-message('Build type: '+get_option('buildtype'))
+build_type = get_option('buildtype')
+message('Build type: '+build_type)
 
 fortran = meson.get_compiler('fortran')
-# Compiler arguments added to the DEBUG default ones:
-supported_arguments = fortran.get_supported_arguments([
+
+# Define arguments for different build types (debug is default):
+if build_type == 'debug'
+  supported_arguments = fortran.get_supported_arguments([
   '-pthread',
   '-Wextra',
   '-pedantic',
@@ -53,15 +56,25 @@ supported_arguments = fortran.get_supported_arguments([
   '-fcheck=all',
   '-fbacktrace',
   '-Wno-unused-dummy-argument'])
+elif build_type == 'release'
+  # -w inhibit all warning messages
+  supported_arguments = fortran.get_supported_arguments([
+  '-pthread',
+  '-w'])
+endif
+
 add_project_arguments(supported_arguments, language: 'fortran')
 
 # Needed for programs using GTKBuilder (gtkf-sketcher and gtkbuilder2):
 supported_rdynamic = fortran.get_supported_arguments('-rdynamic')
 add_project_link_arguments(supported_rdynamic, language: 'fortran')
 
-# TODO: define arguments for RELEASE
-
+# Each of these subdirectories contain a meson.build file:
 subdir('src')
 subdir('examples')
 subdir('sketcher') 
 subdir('plplot')
+
+# WARNING:
+warning('*** The gtk-fortran meson build system is EXPERIMENTAL ! ***')
+warning('*** Use CMake for production ! ***')
