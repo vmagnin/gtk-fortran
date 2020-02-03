@@ -27,8 +27,9 @@
 
 project('gtk-fortran', ['fortran', 'c'], license: 'GPL3', meson_version: '>=0.51', version: 'gtk-3-fortran')
 
-# Set here the GTK version to use (gtk+-3.0, gtk-4.0 ?)
+# Set here the GTK version to use:
 gtk_dep = dependency('gtk+-3.0')
+#gtk_dep = dependency('gtk+-4.0')
 
 # Deriving the library name :
 message('GTK '+gtk_dep.version())
