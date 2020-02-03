@@ -23,7 +23,7 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, 
-# Jens Hunger 01/07/2018, vmagnin 2019-03-14 (PLplot>=5.13), 2020-01-28
+# Jens Hunger 01/07/2018, vmagnin 2019-03-14 (PLplot>=5.13), 2020-02-03
 # CMAKE build file for gtk-fortran
 
 cmake_minimum_required(VERSION 3.4)
@@ -113,13 +113,19 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 #===============================================================================
 # Uninstall target:
+# Generic code adapted from
+# https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
 #===============================================================================
-configure_file(
-    "${PROJECT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-    IMMEDIATE @ONLY)
-add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P
-${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+if(NOT TARGET uninstall)
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+        IMMEDIATE @ONLY)
+
+    add_custom_target(uninstall
+        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+endif()
+
 
 #===============================================================================
 # Examples can be tested via make test:

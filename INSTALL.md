@@ -1,4 +1,4 @@
-Last update: 05-20-2019
+Last update: 2020-02-03
 
 Building & Installing GtkFortran
 ================================
@@ -108,6 +108,13 @@ if you use csh or one of its derivatives)
 
 this will depend on your distribution, Ubuntu looks there by default,
 Pardus and Manjaro don't.
+
+Uninstalling GtkFortran
+=======================
+
+    sudo make uninstall
+    
+See https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
 
 More informations
 =================
