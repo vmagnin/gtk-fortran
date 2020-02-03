@@ -1,12 +1,11 @@
 ! Contributed jtappin.
-! Last modification: vmagnin+Ian Harvey, 02-21-2019
+! Last modification: vmagnin+Ian Harvey, 2020-02-03
 
 module handlers
 
   use iso_c_binding
   use gtk_hl
-  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
-       &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, &
+  use gtk, only: gtk_main, gtk_main_quit, &
        & gtk_widget_show, gtk_init, gtk_entry_get_text_length, &
        & gtk_entry_get_text, gtk_text_iter_get_text
   use g, only: g_object_unref
