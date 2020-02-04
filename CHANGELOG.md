@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ### Changed
 - CMake>=3.4 required.
+- The master branch has been renamed gtk2.
 
 ## [gtk-fortran 19.04] - 2019-04-24
 ### Added
@@ -56,7 +57,7 @@ in several modules to ease maintenance.
 - GTK 3.20.9,  GLib 2.50.2
 - GTK 2.24.30, GLib 2.50.2
 - The code of the heart of gtk-fortran, the `cfwrapper.py` script, has been refactored and improved in order to ease maintenance. 
-- CMake files have been unified in master and gtk3 branches.
+- CMake files have been unified in master (gtk2) and gtk3 branches.
 
 ## [gtk-fortran 16.04] - 2016-06-15
 ### Changed

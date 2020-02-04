@@ -1,4 +1,5 @@
-Last update: 05-20-2019
+Last update: 2020-02-04
+=======
 
 Building & Installing GtkFortran
 ================================
@@ -61,9 +62,9 @@ You need a Fortran compiler with the ISO_C_BINDING module, i.e. compliant with
 the Fortran 2003 standard, for example gfortran>=4.6.
 
 gtk-fortran needs GTK>=2.24 and the associated development files.
-For 2.xx use the "master" git banch, for 3.x use "gtk3".
+For 2.xx use the "gtk2" git branch, for 3.x use the "gtk3" branch.
 
-The build system needs CMake 2.8.5 or better.
+The build system needs CMake 3.4 or better.
 
 PLplot is used if available (you need the development files).
 
