@@ -139,8 +139,6 @@ add_definitions(${GTK_CFLAGS_OTHER})
 # If a CMake error occurs, add -D EXCLUDE_PLPLOT=true to your CMake command.
 #===============================================================================
 if (NOT EXCLUDE_PLPLOT)
-    find_package(PkgConfig REQUIRED)
-
     pkg_check_modules(PLPLOT-FORTRAN REQUIRED plplot-fortran)
     pkg_check_modules(PLPLOT REQUIRED plplot)
 
