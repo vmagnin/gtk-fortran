@@ -63,22 +63,10 @@ the Fortran 2003 standard, for example gfortran>=4.6.
 gtk-fortran needs GTK>=2.24 and the associated development files.
 For 2.xx use the "gtk2" git branch, for 3.x use the "gtk3" branch.
 
-The build system needs CMake 3.4 or better.
+The build system needs CMake 3.4 or better and pkg-config.
 
 PLplot is used if available (you need the development files).
 
-GTK3
-----
-
-For the GTK 3 version, a `FindGTK3.cmake` module is included in the
-distribution, it is placed in the cmake subdirectory which should be
-added to the module search path by the top-level `CMakeLists.txt` rules.
-
-N.B. `FindGTK3.cmake` has been tested on Debian Sid, Ubuntu and
-Manjaro, it is possible that other systems may have different naming
-conventions (If you have problems look for the lines with several
-asterisks in the comments, as these are the places where I think there
-could be issues [i.e. where I was guessing until it worked]).
 
 Known issues
 ------------

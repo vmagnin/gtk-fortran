@@ -117,38 +117,15 @@ enable_testing()
 #===============================================================================
 # Find all GTK libraries:
 #===============================================================================
-if (WIN32)
-    # use PkgConfig:
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(GTK REQUIRED ${GTKname})
-    # Setup CMake to use GTK, tell the compiler where to look for headers
-    # and to the linker where to look for libraries:
-    include_directories(${GTK_INCLUDE_DIRS})
-    link_directories(${GTK_LIBRARY_DIRS})
-    # Add other flags to the compiler:
-    add_definitions(${GTK_CFLAGS_OTHER})
-elseif (UNIX)
-    find_package(GTK${GTKv} COMPONENTS gtk)
-    set(GTK_INCLUDES
-        ${GTK${GTKv}_ATK_INCLUDE_DIR}
-        ${GTK${GTKv}_CAIRO_INCLUDE_DIR}
-        ${GTK${GTKv}_GDK_INCLUDE_DIR}
-        ${GTK${GTKv}_GDK_PIXBUF_INCLUDE_DIR}
-        ${GTK${GTKv}_GLIB_INCLUDE_DIR}
-        ${GTK${GTKv}_GOBJECT_INCLUDE_DIR}
-        ${GTK${GTKv}_GTK_INCLUDE_DIR}
-        ${GTK${GTKv}_PANGO_INCLUDE_DIR} CACHE STRING "" FORCE)
-    set(GTK_LIBRARIES
-        ${GTK${GTKv}_ATK_LIBRARY}
-        ${GTK${GTKv}_CAIRO_LIBRARY}
-        ${GTK${GTKv}_GDK_LIBRARY}
-        ${GTK${GTKv}_GDK_PIXBUF_LIBRARY}
-        ${GTK${GTKv}_GLIB_LIBRARY}
-        ${GTK${GTKv}_GIO_LIBRARY}
-        ${GTK${GTKv}_GOBJECT_LIBRARY}
-        ${GTK${GTKv}_GTK_LIBRARY}
-        ${GTK${GTKv}_PANGO_LIBRARY} CACHE STRING "" FORCE)
-endif()
+# Use PkgConfig:
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK REQUIRED ${GTKname})
+# Setup CMake to use GTK, tell the compiler where to look for headers
+# and to the linker where to look for libraries:
+include_directories(${GTK_INCLUDE_DIRS})
+link_directories(${GTK_LIBRARY_DIRS})
+# Add other flags to the compiler:
+add_definitions(${GTK_CFLAGS_OTHER})
 
 #===============================================================================
 # PLplot integration (>=5.13 needed)
