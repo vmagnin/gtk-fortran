@@ -29,10 +29,9 @@
 cmake_minimum_required(VERSION 3.4)
 
 project(gtk-fortran Fortran)
-
 # Major version of GTK for the current branch:
-#set(GTKv 2)
 set(GTKv 3)
+set(GTKname "gtk+-3.0")
 
 # Note that we override the lib directory here because most
 # 64-bit systems don't actually work if we use the default.
@@ -40,35 +39,30 @@ include(GNUInstallDirs)
 set(CMAKE_INSTALL_LIBDIR lib)
 
 #===============================================================================
+# Default build type is release
 # Uncomment this to debug or use "cmake -D CMAKE_BUILD_TYPE=debug .."
+#===============================================================================
 # set(CMAKE_BUILD_TYPE debug)
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE release)
 endif()
-
 
 #===============================================================================
 # Setting compilation flags for various compilers and build types:
 #===============================================================================
 if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
     # gfortran compiler:
-    # Removed -ffpe-trap=invalid,zero,overflow as it gives a lot of crashes deep
-    # in the call stack in GTK 3
     set(CMAKE_Fortran_FLAGS_DEBUG
         "-g -pthread -Wall -Wextra -pedantic -std=f2008 -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
-    set(CMAKE_Fortran_FLAGS_RELEASE
-        "-pthread -O3 -mtune=native -march=native")
+    set(CMAKE_Fortran_FLAGS_RELEASE "-pthread -O3 -mtune=native -march=native")
     if (UNIX)
-      set(CMAKE_EXE_LINKER_FLAGS
-          "-rdynamic")
+        set(CMAKE_EXE_LINKER_FLAGS "-rdynamic")
     endif()
 elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
     # ifort compiler:
-    set(CMAKE_Fortran_FLAGS_DEBUG
-        "-g -warn all")
-    set(CMAKE_Fortran_FLAGS_RELEASE
-        "-O3 -mtune=native -march=native")
-# You can add here other elseif() for other specific compilers...
+    set(CMAKE_Fortran_FLAGS_DEBUG "-g -warn all")
+    set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -mtune=native -march=native")
+# >>> You can add here other elseif() for other specific compilers...
 else()
     # Standard flags for all the other compilers:
     set(CMAKE_Fortran_FLAGS_DEBUG "-g")
@@ -94,7 +88,9 @@ set(CPACK_GENERATOR "STGZ;TGZ")
 set(CPACK_SOURCE_GENERATOR "STGZ;TGZ")
 include(CPack)
 
-
+#===============================================================================
+# "Path for CMake modules to be loaded by the include() or find_package() 
+# commands before checking the default modules that come with CMake"
 #===============================================================================
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
@@ -113,19 +109,18 @@ if(NOT TARGET uninstall)
         COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 endif()
 
-
 #===============================================================================
 # Examples can be tested via make test:
 #===============================================================================
 enable_testing()
 
 #===============================================================================
-# GTK libraries:
+# Find all GTK libraries:
 #===============================================================================
 if (WIN32)
     # use PkgConfig:
     find_package(PkgConfig REQUIRED)
-    pkg_check_modules(GTK REQUIRED gtk+-3.0)
+    pkg_check_modules(GTK REQUIRED ${GTKname})
     # Setup CMake to use GTK, tell the compiler where to look for headers
     # and to the linker where to look for libraries:
     include_directories(${GTK_INCLUDE_DIRS})
@@ -186,7 +181,6 @@ if (NOT EXCLUDE_PLPLOT)
 else(NOT EXCLUDE_PLPLOT)
     message(STATUS "PLPLOT Excluded as command option")
 endif(NOT EXCLUDE_PLPLOT)
-
 
 #===============================================================================
 # Add subdirectories to build:
