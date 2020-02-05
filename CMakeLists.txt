@@ -23,7 +23,7 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, 
-# Jens Hunger 01/07/2018, vmagnin 2019-03-14 (PLplot>=5.13), 2020-02-03
+# Jens Hunger 01/07/2018, vmagnin 2019-03-14 (PLplot>=5.13), 2020-02-05
 # CMAKE build file for gtk-fortran
 
 cmake_minimum_required(VERSION 3.4)
@@ -33,19 +33,6 @@ project(gtk-fortran Fortran)
 # Major version of GTK for the current branch:
 #set(GTKv 2)
 set(GTKv 3)
-
-# CMAKE versions up to and including 2.8.10 fail to add the GIO libs for GTK 2
-if (CMAKE_VERSION VERSION_LESS 2.8.11)
-    message(STATUS "CMAKE Version before   # use PkgConfig
-  FIND_PACKAGE(PkgConfig REQUIRED)
-  PKG_CHECK_MODULES(GTK REQUIRED gtk+-3.0)
-  # Setup CMake to use GTK+, tell the compiler where to look for headers
-  # and to the linker where to look for libraries
-  INCLUDE_DIRECTORIES(${GTK_INCLUDE_DIRS})
-  LINK_DIRECTORIES(${GTK_LIBRARY_DIRS})
-  # Add other flags to the compiler
-  ADD_DEFINITIONS(${GTK_CFLAGS_OTHER})2.8.11 -- GIO example will not be built")
-endif()
 
 # Note that we override the lib directory here because most
 # 64-bit systems don't actually work if we use the default.
