@@ -35,12 +35,17 @@
 cmake_minimum_required(VERSION 3.4)
 
 project(gtk-fortran Fortran)
+
+#===============================================================================
 # Major version of GTK for the current branch:
+#===============================================================================
 set(GTKv 3)
 set(GTKname "gtk+-3.0")
 
-# Note that we override the lib directory here because most
-# 64-bit systems don't actually work if we use the default.
+#===============================================================================
+# We override the default lib directory because on 64-bit systems, lib can also
+# be "lib64" for example.
+#===============================================================================
 include(GNUInstallDirs)
 set(CMAKE_INSTALL_LIBDIR lib)
 
@@ -87,6 +92,7 @@ endif()
 
 #===============================================================================
 # Package generation:
+# TODO: improve that section
 #===============================================================================
 set(CPACK_PACKAGE_VERSION "0.1.0")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk${GTKv}-fortran")

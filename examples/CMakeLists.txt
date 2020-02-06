@@ -19,11 +19,11 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
-#
+#=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
 # Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2020-02-06
-
+#
 # CMAKE build file for gtk-fortran
 
 include_directories("${CMAKE_BINARY_DIR}/src/modules")

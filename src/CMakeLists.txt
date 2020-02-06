@@ -19,13 +19,18 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
-#
+#=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
 #   vmagnin: 2020-02-06
-
+#
 # CMAKE build file for GtkFortran
 
+include_directories(${GTK_INCLUDES})
+
+#=================================================
+# Fortran files composing the gtk-fortran library:
+#=================================================
 set(sources
     "atk-auto.f90"
     "cairo-auto.f90"
@@ -55,18 +60,18 @@ set(sources
     "gdkevents-auto${GTKv}.f90"
 )
 
+#==================================
+# Adding OS specific Fortran files:
+#==================================
 if (CMAKE_HOST_WIN32)
-  set(sources
-    ${sources}
-    "mswindowsonly-auto.f90")
+  set(sources ${sources} "mswindowsonly-auto.f90")
 else()
-  set(sources
-    ${sources}
-    "unixonly-auto.f90")
+  set(sources ${sources} "unixonly-auto.f90")
 endif()
 
-include_directories(${GTK_INCLUDES})
-
+#======================================================
+# Defining the static and shared gtk-fortran libraries:
+#======================================================
 add_library(gtk-fortran_object OBJECT ${sources})
 set_property(TARGET gtk-fortran_object PROPERTY POSITION_INDEPENDENT_CODE 1)
 
@@ -74,10 +79,10 @@ add_library(gtk-fortran_static STATIC $<TARGET_OBJECTS:gtk-fortran_object>)
 add_library(gtk-fortran_shared SHARED $<TARGET_OBJECTS:gtk-fortran_object>)
 target_link_libraries(gtk-fortran_shared ${GTK_LIBRARIES})
 
-set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
-OUTPUT_NAME gtk-${GTKv}-fortran)
-set_target_properties(gtk-fortran_static
-gtk-fortran_shared PROPERTIES CLEAN_DIRECT_OUTPUT 1)
+set_target_properties(gtk-fortran_static gtk-fortran_shared 
+  PROPERTIES OUTPUT_NAME gtk-${GTKv}-fortran)
+set_target_properties(gtk-fortran_static gtk-fortran_shared 
+  PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
 VERSION "0.1")
@@ -87,6 +92,9 @@ SOVERSION "0.1")
 set_target_properties(gtk-fortran_object PROPERTIES
 Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
 
+#==========================
+# Copy some specific files:
+#==========================
 # Copy gtk-${GTKv}-fortran.pc.in and replace strings @prefix@ and @version@ by their values:
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-${GTKv}-fortran.pc.in GTK${GTKv}PCIN)
 string(REPLACE "@prefix@" "${CMAKE_INSTALL_PREFIX}" GTK${GTKv}PCOUT1 "${GTK${GTKv}PCIN}")
@@ -117,7 +125,9 @@ string(REPLACE "@GTK@" "${GTKv}" MODSCAN_OUT "${MODSCAN_IN}")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-modscan.1 "${MODSCAN_OUT}")
 add_custom_target(manpage ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-modscan.1)
 
-
+#==================
+# Files to install:
+#==================
 install(TARGETS gtk-fortran_static gtk-fortran_shared
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

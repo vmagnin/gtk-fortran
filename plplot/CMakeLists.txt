@@ -19,10 +19,9 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
-#
+#===============================================================================
 # Contributed by James Tappin
 # Last updated: vmagnin 2019-03-14 (PLplot>=5.13)
-
 #===============================================================================
 # PLplot integration (>=5.13 needed)
 # ----------------------------------
