@@ -23,7 +23,7 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, 
-# Jens Hunger 01/07/2018, vmagnin 2019-03-14 (PLplot>=5.13), 2020-02-05
+# Jens Hunger 01/07/2018, vmagnin 2019-03-14 (PLplot>=5.13), 2020-02-06
 # CMAKE build file for gtk-fortran
 
 cmake_minimum_required(VERSION 3.4)
@@ -162,10 +162,7 @@ endif(NOT EXCLUDE_PLPLOT)
 #===============================================================================
 add_subdirectory(src)
 add_subdirectory(examples)
-
-if(${GTKv} GREATER 2)
-    add_subdirectory(sketcher)
-endif()
+add_subdirectory(sketcher)
 
 if(PLPLOT_FOUND AND NOT EXCLUDE_PLPLOT)
     add_subdirectory(plplot)

@@ -22,7 +22,7 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2020-01-31
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2020-02-06
 
 # CMAKE build file for gtk-fortran
 
@@ -30,7 +30,9 @@ include_directories("${CMAKE_BINARY_DIR}/src/modules")
 include_directories(${GTK_INCLUDES})
 
 if (NOT NO_BUILD_EXAMPLES)
+  #====================================
   # Build the two gtkbuilders examples:
+  #====================================
   file(COPY gtkbuilder.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ )
 
   add_executable(gtkbuilder "gtkbuilder.f90")
@@ -44,32 +46,16 @@ if (NOT NO_BUILD_EXAMPLES)
   # This test is excluded because the directories don't match up.
   # add_test(gtkbuilder2 gtkbuilder2)
 
+  #==========================
   # Build the other examples:
-  # taking into account specific ones:
-  if (((${GTKv} EQUAL 2) AND (GTK2_MINOR_VERSION GREATER 23)) OR (${GTKv} GREATER 2))
-    set(julia_pixbuf_example julia_pixbuf)
-  else()
-    set(julia_pixbuf_example "")
-  endif()
-  if (${GTKv} EQUAL 2)
-    set(mandelbrot_example mandelbrot)
-  else()
-    set(mandelbrot_example "")
-  endif()
-  if (((${GTKv} EQUAL 2) AND (NOT CMAKE_VERSION VERSION_LESS 2.8.11)) OR (${GTKv} GREATER 2))
-    set(gio_demo_example gio_demo)
-  else()
-    set(gio_demo_example "")
-  endif()
-  # Then all the others:
+  #==========================
   foreach(example bazaar cairo-tests cairo-basics cairo-basics-click
           gtkzero gtkhello gtkhello2
           hl_assistant hl_choosers hl_combo hl_containers hl_dialog hl_list1
           hl_list_n hl_list_renderers hl_menu hl_pbar hl_pbar_p hl_radio
           hl_sliders hl_sliders2 hl_textview hl_tree hl_cairo1 hl_cairo_clock
-          hl_cairo_viewer hl_infobar ${julia_pixbuf_example} list_demo
-          ${mandelbrot_example} mandelbrot_pixbuf
-          mandelbrot_pixbuf_zoom menu menu2 notebooks ${gio_demo_example} tests)
+          hl_cairo_viewer hl_infobar julia_pixbuf list_demo mandelbrot_pixbuf
+          mandelbrot_pixbuf_zoom menu menu2 notebooks gio_demo tests)
     add_executable(${example} "${example}.f90")
     target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES})
     set_target_properties(${example} PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${example}_mod/ )
