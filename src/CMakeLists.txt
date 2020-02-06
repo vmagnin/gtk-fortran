@@ -22,7 +22,7 @@
 #
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 07/17/2016
+#   vmagnin: 2020-02-06
 
 # CMAKE build file for GtkFortran
 
@@ -65,9 +65,7 @@ else()
     "unixonly-auto.f90")
 endif()
 
-#include_directories("/usr/include")
 include_directories(${GTK_INCLUDES})
-#include_directories("/usr/local/include")
 
 add_library(gtk-fortran_object OBJECT ${sources})
 set_property(TARGET gtk-fortran_object PROPERTY POSITION_INDEPENDENT_CODE 1)
@@ -88,9 +86,6 @@ SOVERSION "0.1")
 
 set_target_properties(gtk-fortran_object PROPERTIES
 Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
-
-# Does pkg-config have an equivalent in Windows? If so, then please
-# add a suitable generator and installation.
 
 # Copy gtk-${GTKv}-fortran.pc.in and replace strings @prefix@ and @version@ by their values:
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-${GTKv}-fortran.pc.in GTK${GTKv}PCIN)
