@@ -92,12 +92,15 @@ endif()
 
 #===============================================================================
 # Package generation:
-# TODO: improve that section
 #===============================================================================
-set(CPACK_PACKAGE_VERSION "0.1.0")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "gtk${GTKv}-fortran")
-set(CPACK_GENERATOR "STGZ;TGZ")
-set(CPACK_SOURCE_GENERATOR "STGZ;TGZ")
+set(CPACK_PACKAGE_VERSION_MAJOR ${GTKv})
+set(CPACK_PACKAGE_VERSION_MINOR 0)
+set(CPACK_PACKAGE_VERSION_PATCH 0)
+set(CPACK_PACKAGE_CHECKSUM SHA256)
+set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE")
+set(CPACK_RESOURCE_FILE_README "${PROJECT_SOURCE_DIR}/README.md")
+set(CPACK_GENERATOR "TGZ")
+set(CPACK_SOURCE_GENERATOR "TGZ")
 include(CPack)
 
 #===============================================================================
