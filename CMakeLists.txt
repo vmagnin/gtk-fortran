@@ -20,11 +20,17 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
-#
+#===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/17/2012, vmagnin 07/18/2016, 
-# Jens Hunger 01/07/2018, vmagnin 2019-03-14 (PLplot>=5.13), 2020-02-06
+# Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018, 
+# vmagnin 2020-02-06
+#
 # CMAKE build file for gtk-fortran
+# Options:
+# -D CMAKE_BUILD_TYPE=debug
+# -D EXCLUDE_PLPLOT=true
+# -D NO_BUILD_EXAMPLES=true
+# -D INSTALL_EXAMPLES=true
 
 cmake_minimum_required(VERSION 3.4)
 
