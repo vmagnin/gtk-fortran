@@ -36,11 +36,17 @@ cmake_minimum_required(VERSION 3.4)
 
 project(gtk-fortran Fortran)
 
+set(CMAKE_PROJECT_DESCRIPTION "A partial GTK / Fortran 2003 binding")
+set(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/vmagnin/gtk-fortran/")
+
 #===============================================================================
 # Major version of GTK for the current branch:
 #===============================================================================
 set(GTKv 3)
 set(GTKname "gtk+-3.0")
+set(CMAKE_PROJECT_VERSION_MAJOR ${GTKv})
+set(CMAKE_PROJECT_VERSION_MINOR 0)
+set(CMAKE_PROJECT_VERSION_PATCH 0)
 
 #===============================================================================
 # We override the default lib directory because on 64-bit systems, lib can also
@@ -93,9 +99,6 @@ endif()
 #===============================================================================
 # Package generation:
 #===============================================================================
-set(CPACK_PACKAGE_VERSION_MAJOR ${GTKv})
-set(CPACK_PACKAGE_VERSION_MINOR 0)
-set(CPACK_PACKAGE_VERSION_PATCH 0)
 set(CPACK_PACKAGE_CHECKSUM SHA256)
 set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README "${PROJECT_SOURCE_DIR}/README.md")
