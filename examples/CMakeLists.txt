@@ -27,7 +27,6 @@
 # CMAKE build file for gtk-fortran
 
 include_directories("${CMAKE_BINARY_DIR}/src/modules")
-#include_directories(${GTK_INCLUDES})
 
 if (NOT NO_BUILD_EXAMPLES)
   #====================================
