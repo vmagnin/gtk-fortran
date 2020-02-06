@@ -79,16 +79,13 @@ add_library(gtk-fortran_static STATIC $<TARGET_OBJECTS:gtk-fortran_object>)
 add_library(gtk-fortran_shared SHARED $<TARGET_OBJECTS:gtk-fortran_object>)
 target_link_libraries(gtk-fortran_shared ${GTK_LIBRARIES})
 
-set_target_properties(gtk-fortran_static gtk-fortran_shared 
-  PROPERTIES OUTPUT_NAME gtk-${GTKv}-fortran)
-
-set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
-VERSION "0.1")
-set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
-SOVERSION "0.1")
+set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES 
+  OUTPUT_NAME gtk-${GTKv}-fortran
+  VERSION "0.1"
+  SOVERSION "0.1")
 
 set_target_properties(gtk-fortran_object PROPERTIES
-Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
+  Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
 
 #==========================
 # Copy some specific files:
@@ -114,8 +111,7 @@ file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BI
 file(COPY gtk-enumerators.lis DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
 file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis )
 add_custom_target(usemodules ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-modscan
-  ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis
-)
+  ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis )
 
 # Man page(s)
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran-modscan.man MODSCAN_IN)
@@ -142,15 +138,18 @@ install(PROGRAMS
   DESTINATION ${CMAKE_INSTALL_BINDIR}
   PERMISSIONS WORLD_EXECUTE
 )
+
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-index.csv"
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis"
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran
 )
+
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran.pc"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )
+
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran-modscan.1"
   DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
