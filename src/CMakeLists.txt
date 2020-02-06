@@ -81,8 +81,6 @@ target_link_libraries(gtk-fortran_shared ${GTK_LIBRARIES})
 
 set_target_properties(gtk-fortran_static gtk-fortran_shared 
   PROPERTIES OUTPUT_NAME gtk-${GTKv}-fortran)
-set_target_properties(gtk-fortran_static gtk-fortran_shared 
-  PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
 VERSION "0.1")
