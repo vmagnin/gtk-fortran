@@ -26,7 +26,7 @@
 #
 # CMAKE build file for GtkFortran
 
-include_directories(${GTK_INCLUDES})
+#include_directories(${GTK_INCLUDES})
 
 #=================================================
 # Fortran files composing the gtk-fortran library:

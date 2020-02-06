@@ -26,7 +26,7 @@
 # CMAKE build file for gtkf-sketcher
 
 include_directories("${CMAKE_BINARY_DIR}/src/modules")
-include_directories(${GTK_INCLUDES})
+#include_directories(${GTK_INCLUDES})
 
 add_executable(gtkf-sketcher "gtkf-sketcher.f90")
 target_link_libraries(gtkf-sketcher gtk-fortran_static ${GTK_LIBRARIES})

@@ -36,7 +36,7 @@
 
 include_directories("${CMAKE_BINARY_DIR}/plplot")
 include_directories("${CMAKE_BINARY_DIR}/src/modules")
-include_directories(${GTK_INCLUDES})
+#include_directories(${GTK_INCLUDES})
 
 #===============================================================================
 # Plplot extras for accessing the pl_cmd() routine:
