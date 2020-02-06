@@ -71,7 +71,8 @@ endif()
 # Defining the static and shared gtk-fortran libraries:
 #======================================================
 add_library(gtk-fortran_object OBJECT ${sources})
-set_property(TARGET gtk-fortran_object PROPERTY POSITION_INDEPENDENT_CODE 1)
+# To build position independent shared libraries:
+set_property(TARGET gtk-fortran_object PROPERTY POSITION_INDEPENDENT_CODE TRUE)
 
 add_library(gtk-fortran_static STATIC $<TARGET_OBJECTS:gtk-fortran_object>)
 add_library(gtk-fortran_shared SHARED $<TARGET_OBJECTS:gtk-fortran_object>)
