@@ -23,7 +23,7 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin 05/11/2011.
+# Contributed by James Tappin 05/11/2011, vmagnin 2020-02-06
 
 # Extracts the structure definitions for Gdk events from the gdk 
 # header files.
@@ -31,7 +31,7 @@
 my $gdkvers="3";
 my $gdktypes="/usr/include/gtk-".$gdkvers.".0/gdk/gdktypes.h";
 my $gdkevents="/usr/include/gtk-".$gdkvers.".0/gdk/gdkevents.h";
-my $ftninterface="gdkevents-auto".$gdkvers.".f90";
+my $ftninterface="gdkevents-auto.f90";
 
 # Type conversions.
 # Defaults are pointers "type(c_ptr)", actual objects "integer(kind=c_int)" 

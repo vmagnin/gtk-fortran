@@ -55,7 +55,7 @@ set(sources
     "gtk-sup.f90"
     "gdk-pixbuf-hl.f90"
     "pango-auto.f90"
-    "gdkevents-auto${GTKv}.f90"
+    "gdkevents-auto.f90"
 )
 
 #==================================
