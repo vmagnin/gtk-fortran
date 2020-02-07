@@ -23,13 +23,14 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018, 
-# vmagnin 2020-02-06
+# vmagnin 2020-02-07
 #
 # CMAKE build file for gtk-fortran
 # Options:
 # -D CMAKE_BUILD_TYPE=debug
 # -D EXCLUDE_PLPLOT=true
 # -D NO_BUILD_EXAMPLES=true
+# -D NO_BUILD_HL=true
 # -D INSTALL_EXAMPLES=true
 
 cmake_minimum_required(VERSION 3.4)
@@ -156,7 +157,7 @@ add_definitions(${GTK_CFLAGS_OTHER})
 # As a temporary (?) workaround, we are now using pkg-config.
 # If a CMake error occurs, add -D EXCLUDE_PLPLOT=true to your CMake command.
 #===============================================================================
-if (NOT EXCLUDE_PLPLOT)
+if (NOT EXCLUDE_PLPLOT AND NOT NO_BUILD_HL)
     pkg_check_modules(PLPLOT-FORTRAN REQUIRED plplot-fortran)
     pkg_check_modules(PLPLOT REQUIRED plplot)
 
@@ -171,17 +172,22 @@ if (NOT EXCLUDE_PLPLOT)
     include_directories(${PLPLOT_INCLUDE_DIRS})
     set(CMAKE_REQUIRED_LIBRARIES "${PLPLOT_LIBRARIES}")
     set(CMAKE_REQUIRED_INCLUDES "${PLPLOT-FORTRAN_INCLUDE_DIRS}")
-else(NOT EXCLUDE_PLPLOT)
-    message(STATUS "PLPLOT Excluded as command option")
-endif(NOT EXCLUDE_PLPLOT)
+else(NOT EXCLUDE_PLPLOT AND NOT NO_BUILD_HL)
+    message(STATUS ">>> PLPLOT excluded as command option")
+endif(NOT EXCLUDE_PLPLOT AND NOT NO_BUILD_HL)
 
 #===============================================================================
 # Add subdirectories to build:
 #===============================================================================
 add_subdirectory(src)
 add_subdirectory(examples)
-add_subdirectory(sketcher)
 
-if(PLPLOT_FOUND AND NOT EXCLUDE_PLPLOT)
-    add_subdirectory(plplot)
-endif(PLPLOT_FOUND AND NOT EXCLUDE_PLPLOT)
+if(NOT NO_BUILD_HL)
+    add_subdirectory(sketcher)
+
+    if(PLPLOT_FOUND AND NOT EXCLUDE_PLPLOT)
+        add_subdirectory(plplot)
+    endif(PLPLOT_FOUND AND NOT EXCLUDE_PLPLOT)
+else(NOT NO_BUILD_HL)
+    message(STATUS ">>> High Level API excluded as command option")
+endif(NOT NO_BUILD_HL)

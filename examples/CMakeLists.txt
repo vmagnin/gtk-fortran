@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2020-02-06
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2020-02-07
 #
 # CMAKE build file for gtk-fortran
 
@@ -48,13 +48,22 @@ if (NOT NO_BUILD_EXAMPLES)
   #==========================
   # Build the other examples:
   #==========================
-  foreach(example bazaar cairo-tests cairo-basics cairo-basics-click
-          gtkzero gtkhello gtkhello2
-          hl_assistant hl_choosers hl_combo hl_containers hl_dialog hl_list1
-          hl_list_n hl_list_renderers hl_menu hl_pbar hl_pbar_p hl_radio
-          hl_sliders hl_sliders2 hl_textview hl_tree hl_cairo1 hl_cairo_clock
-          hl_cairo_viewer hl_infobar julia_pixbuf list_demo mandelbrot_pixbuf
-          mandelbrot_pixbuf_zoom menu menu2 notebooks gio_demo tests)
+  set(examples_list bazaar cairo-tests cairo-basics cairo-basics-click
+    gtkzero gtkhello gtkhello2
+    julia_pixbuf list_demo mandelbrot_pixbuf
+    mandelbrot_pixbuf_zoom menu menu2 notebooks gio_demo tests
+  )
+  
+  if(NOT NO_BUILD_HL)
+    set(examples_list ${examples_list} 
+        hl_assistant hl_choosers hl_combo hl_containers hl_dialog hl_list1
+        hl_list_n hl_list_renderers hl_menu hl_pbar hl_pbar_p hl_radio
+        hl_sliders hl_sliders2 hl_textview hl_tree hl_cairo1 hl_cairo_clock
+        hl_cairo_viewer hl_infobar
+    )
+  endif(NOT NO_BUILD_HL)
+    
+  foreach(example ${examples_list})
     add_executable(${example} "${example}.f90")
     target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES})
     set_target_properties(${example} PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${example}_mod/ )

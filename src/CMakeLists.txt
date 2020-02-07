@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2020-02-06
+#   vmagnin: 2020-02-07
 #
 # CMAKE build file for GtkFortran
 
@@ -36,27 +36,32 @@ set(sources
     "gdk-pixbuf-auto.f90"
     "glib-auto.f90"
     "gtk.f90"
-    "gtk-hl.f90"
-    "gtk-hl-container.f90"
-    "gtk-hl-button.f90"
-    "gtk-hl-entry.f90"
-    "gtk-hl-tree.f90"
-    "gtk-hl-menu.f90"
-    "gtk-hl-combobox.f90"
-    "gtk-hl-spin-slider.f90"
-    "gtk-hl-chooser.f90"
-    "gtk-hl-dialog.f90"
-    "gtk-hl-progress.f90"
-    "gtk-hl-accelerator.f90"
-    "gtk-hl-infobar.f90"
-    "gtk-hl-assistant.f90"
-    "gtk-hl-misc.f90"
-    "gtk-draw-hl.f90"
     "gtk-sup.f90"
-    "gdk-pixbuf-hl.f90"
     "pango-auto.f90"
     "gdkevents-auto.f90"
 )
+
+if(NOT NO_BUILD_HL)
+    set(sources ${sources} 
+        "gtk-hl.f90"
+        "gtk-hl-container.f90"
+        "gtk-hl-button.f90"
+        "gtk-hl-entry.f90"
+        "gtk-hl-tree.f90"
+        "gtk-hl-menu.f90"
+        "gtk-hl-combobox.f90"
+        "gtk-hl-spin-slider.f90"
+        "gtk-hl-chooser.f90"
+        "gtk-hl-dialog.f90"
+        "gtk-hl-progress.f90"
+        "gtk-hl-accelerator.f90"
+        "gtk-hl-infobar.f90"
+        "gtk-hl-assistant.f90"
+        "gtk-hl-misc.f90"
+        "gtk-draw-hl.f90"
+        "gdk-pixbuf-hl.f90"
+    )
+endif(NOT NO_BUILD_HL)
 
 #==================================
 # Adding OS specific Fortran files:

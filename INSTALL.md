@@ -1,4 +1,4 @@
-Last update: 2020-02-04
+Last update: 2020-02-07
 
 Building & Installing GtkFortran
 ================================
@@ -29,6 +29,8 @@ Useful variables that are specific to gtk-fortran are:
 
        EXCLUDE_PLPLOT -- set this to disable building the plplot
          integration even if plplot is found
+       NO_BUILD_HL -- set this to disable building the High Level sub-library 
+         (includes PLplot and sketcher)
        INSTALL_EXAMPLES -- set this to install the source code of the
          examples into
          ${CMAKE_INSTALL_DATAROOTDIR/gtk-fortran/examples<gtkversion>,
