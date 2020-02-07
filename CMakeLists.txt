@@ -87,7 +87,8 @@ else()
     set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
 endif()
 
-# Print compiler CMake ID, version and path:
+# Print system, compiler CMake ID, version and path:
+message(STATUS "System: ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_VERSION} ${CMAKE_SYSTEM_PROCESSOR}")
 message(STATUS "Compiler: ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION} ${CMAKE_Fortran_COMPILER}")
 message(STATUS "Build type is: ${CMAKE_BUILD_TYPE}")
 # Print compilation flags :
