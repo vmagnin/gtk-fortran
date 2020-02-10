@@ -24,8 +24,8 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-02
+# Contributed by Vincent Magnin, 2011-01-28
+# Last modification: 2020-02-10
 
 """ This module contains functions to determine the versions of the libraries
 and programs used in gkt-fortran.
@@ -35,6 +35,9 @@ import os
 import re           # Regular expression library
 import platform     # To obtain platform informations
 import subprocess   # To launch a shell command
+import csv          # To write .csv files
+
+from globals_const import TOP_DIR
 
 
 def lib_version(lib_name, psys):
@@ -83,9 +86,10 @@ def library_version(tuple_packages):
     return libver
 
 
-def gtk_fortran_version(GTK_VERSION):
-    """Returns a string containing the GTK, GLib and Ubuntu versions used to
-       generate gtk-fortran
+def list_versions(GTK_VERSION):
+    """Returns a tuple containing the gtk-fortran, GTK, GLib and Ubuntu versions,
+       for example:
+       (3, 3.24.12, 2.62, 19.10)
     """
 
     # Packages in Ubuntu, Arch/Manjaro, Fedora, Mageia (you can add the names in
@@ -98,9 +102,40 @@ def gtk_fortran_version(GTK_VERSION):
                  ("glib2", "rpm"), ("libglib2.0_0", "rpm"))
 
     if GTK_VERSION == "gtk3":
-        version = library_version(pack_gtk3)
-    else:
-        version = library_version(pack_gtk2)
+        version_GTK = library_version(pack_gtk3)
+    elif GTK_VERSION == "gtk2":
+        version_GTK = library_version(pack_gtk2)
 
-    return ("GTK " + version + ", GLib "+ library_version(pack_glib) + ", "
-            + subprocess.getoutput("lsb_release -ds") + " " + platform.machine())
+    gtk_fortran = GTK_VERSION.replace("gtk", "")
+
+    return (gtk_fortran, version_GTK, library_version(pack_glib),
+            subprocess.getoutput("lsb_release -rs"))
+
+
+def gtk_fortran_version(GTK_VERSION):
+    """Returns a string containing the GTK, GLib and Ubuntu versions used to
+       generate gtk-fortran, with the names of the libraries, for example :
+       GTK 3.24.12, GLib 2.62.1, Ubuntu 19.10 x86_64
+    """
+
+    gtk_fortran, version_GTK, version_GLIB, version_Ubuntu = list_versions(GTK_VERSION)
+
+    return ("GTK " + version_GTK + ", GLib "+ version_GLIB
+            + ", Ubuntu " + version_Ubuntu + " " + platform.machine())
+
+
+def create_VERSIONS_file(GTK_VERSION):
+    """Create the VERSIONS file a the top of the project. This file is used by
+       other parts of the build system.
+    """
+
+    gtk_fortran, version_GTK, version_GLIB, version_Ubuntu = list_versions(GTK_VERSION)
+
+    all_versions = []
+    all_versions.append(["gtk-fortran", gtk_fortran])
+    all_versions.append(["GTK", version_GTK])
+    all_versions.append(["GLib", version_GLIB])
+    all_versions.append(["Ubuntu", version_Ubuntu])
+
+    VERSIONS_file = csv.writer(open(TOP_DIR+"VERSIONS", "w"), delimiter=";")
+    VERSIONS_file.writerows(all_versions)

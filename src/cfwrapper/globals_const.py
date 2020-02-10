@@ -24,14 +24,17 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-01
+# Contributed by Vincent Magnin, 2011-01-28
+# Last modification: 2020-02-10
 
 """ This module contains globals constants used in the cfwrapper.
 """
 
 # Define the tabulation in the *-auto.f90 files:
 TAB = "  "
+
+# Path to the top directory of the project:
+TOP_DIR = "../../"
 
 # Path to directory src/ where the *-auto.f90 files will be written:
 SRC_DIR = "../"

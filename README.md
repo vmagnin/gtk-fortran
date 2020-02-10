@@ -21,6 +21,7 @@ Please post bugs on GitHub:
 * LICENSE: text of the license.
 * meson.build: main Meson instructions to build the project (experimental feature).
 * README-high-level: about the High Level part of the gtk-fortran library.
+* VERSIONS: a CSV file with the gtk-fortran, GTK, GLib and Ubuntu versions.
 
 
 # Citing gtk-fortran

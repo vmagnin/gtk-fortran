@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-09 (tested with Python 3.6.7, Ubuntu 18.10)
-# pylint3 *.py : 8.33/10
+# Last modification: 2020-02-10 (tested with Python 3.7.5, Ubuntu 19.10)
+# pylint *.py : 8.05/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -45,7 +45,7 @@ sys.path.append('../')
 
 # Project modules:
 from globals_const import SRC_DIR
-from lib_versions import gtk_fortran_version
+from lib_versions import gtk_fortran_version, create_VERSIONS_file
 from cleaning import clean_header_file, preprocess_prototypes
 from errors import Errors
 from stats import Statistics
@@ -336,6 +336,9 @@ index_file.writerows(index)
 my_errors.sort()
 errors_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
 errors_file.writerows(my_errors.errors_list)
+
+# Write the VERSIONS file in the top directory:
+create_VERSIONS_file(GTK_VERSION)
 
 # Print the final statistics:
 my_stats.print(T0, GTK_VERSION, PATH_DICT, TYPES_DICT, TYPES2_DICT, my_errors)
