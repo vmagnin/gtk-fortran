@@ -23,7 +23,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018, 
-# vmagnin 2020-02-07
+# vmagnin 2020-02-10
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -41,10 +41,18 @@ set(CMAKE_PROJECT_DESCRIPTION "A partial GTK / Fortran 2003 binding")
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/vmagnin/gtk-fortran/")
 
 #===============================================================================
-# Major version of GTK for the current branch:
+# Major version of GTK for the current branch (from VERSIONS file):
 #===============================================================================
-set(GTKv 3)
-set(GTKname "gtk+-3.0")
+file(STRINGS VERSIONS OneLine REGEX "gtk-fortran;(.*)")
+string(REGEX REPLACE "gtk-fortran;" "" GTKv ${OneLine})
+message(STATUS "Building gtk-${GTKv}-fortran")
+
+if (${GTKv} LESS_EQUAL 3)
+    set(GTKname "gtk+-${GTKv}.0")
+else()
+    set(GTKname "gtk${GTKv}")
+endif()
+
 set(CMAKE_PROJECT_VERSION_MAJOR ${GTKv})
 set(CMAKE_PROJECT_VERSION_MINOR 0)
 set(CMAKE_PROJECT_VERSION_PATCH 0)
@@ -77,7 +85,7 @@ if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
         set(CMAKE_EXE_LINKER_FLAGS "-rdynamic")
     endif()
 elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
-    # ifort compiler:
+    # ifort compiler:    set(GTKname "gtk+-${GTKv}.0")
     set(CMAKE_Fortran_FLAGS_DEBUG "-g -warn all")
     set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -mtune=native -march=native")
 # >>> You can add here other elseif() for other specific compilers...
