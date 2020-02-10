@@ -3,12 +3,19 @@
 # and finally launching one by one the examples for testing.
 # GNU GPL v3
 # Contributed by Vincent MAGNIN
-# 2011-04-08, last updated 2020-01-27
+# 2011-04-08, last updated 2020-02-10
 
 # Allow override of default compiler. For example:
 #  GFC='gfortran-4.8' ./alt_build_test.sh
 # (Contributed by A. GRAZIOSI)
 : ${GFC="gfortran"}
+
+# Major version of GTK for the current branch (from VERSIONS file):
+GTKv=$(sed -n -E 's/gtk-fortran;([0-9\.]+)\r$/\1/p' ../VERSIONS)
+echo "Building gtk-"${GTKv}"-fortran"
+
+# Compiler and linker options:
+gtkversion="$(pkg-config --cflags --libs gtk+-"${GTKv}".0)"
 
 # Create (if needed) the build/byscript directory and go there:
 cd ..
@@ -21,8 +28,6 @@ echo ">>> Removing old files..."
 rm *.o
 rm *.mod
 rm *.out
-
-gtkversion="`pkg-config --cflags --libs gtk+-3.0`"
 
 # Needed to compile High-Level examples:
 gtk_hl_obj="gtk-hl-misc.o gtk-hl-accelerator.o gtk-hl-button.o gtk-hl-combobox.o gtk-hl-container.o gtk-hl-entry.o gtk-hl-menu.o gtk-hl-progress.o gtk-hl-spin-slider.o gtk-hl-tree.o  gtk-hl-chooser.o gtk-hl-dialog.o gtk-hl-infobar.o gtk-hl-assistant.o gdk-pixbuf-hl.o"
@@ -46,7 +51,7 @@ for i in ../../examples/*.f90 ; do
 done
 # Other examples:
 "${GFC}" gtk.o ../../examples/gtkbuilder2.f90 -o gtkbuilder2.out $gtkversion `pkg-config --cflags --libs gmodule-2.0`
-"${GFC}" gtk.o gtk-sup.o gtk-hl.o ../../sketcher/gtkf-sketcher.f90 -o gtkf-sketcher.out $gtkversion `pkg-config --cflags --libs gmodule-2.0`
+"${GFC}" gtk.o gtk-sup.o gtk-hl.o ${gtk_hl_obj} ../../sketcher/gtkf-sketcher.f90 $gtkversion `pkg-config --cflags --libs gmodule-2.0` -o gtkf-sketcher.out
 
 # List the executables:
 echo
