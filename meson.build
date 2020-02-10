@@ -25,18 +25,21 @@
 # Meson >= 0.51 is needed (see https://github.com/mesonbuild/meson/pull/4979)
 # By default, Meson installs projects to the prefix /usr/local/
 
-project('gtk-fortran', ['fortran', 'c'], license: 'GPL3', meson_version: '>=0.51', version: 'gtk-3-fortran')
+project('gtk-fortran', ['fortran', 'c'], license: 'GPL3', meson_version: '>=0.51')
+
+# Major version of GTK for the current branch (from VERSIONS file):
+MAJOR_VERSION = run_command('sed', '-n', '-E', 's/gtk-fortran;(.*)/\\1/p', 
+                                 files('VERSIONS'), check:true).stdout().strip()
+# Deriving the library name :
+gtk_V_fortran = 'gtk-' + MAJOR_VERSION + '-fortran'
+message('Building '+gtk_V_fortran)
 
 # Set here the GTK version to use:
-gtk_dep = dependency('gtk+-3.0')
-#gtk_dep = dependency('gtk4')
-
-# Deriving the library name :
-message('GTK '+gtk_dep.version())
-version_split = gtk_dep.version().split('.')
-MAJOR_VERSION = version_split[0]
-gtk_V_fortran = 'gtk-' + MAJOR_VERSION + '-fortran'
-message(gtk_V_fortran)
+if MAJOR_VERSION.to_int() <= 3
+    gtk_dep = dependency('gtk+-'+MAJOR_VERSION+'.0')
+else
+    gtk_dep = dependency('gtk'+MAJOR_VERSION)
+endif
 
 # Print some informations:
 system = host_machine.system()
