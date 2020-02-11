@@ -94,8 +94,8 @@ set_target_properties(gtk-fortran_object PROPERTIES
 #==========================
 # Copy some specific files:
 #==========================
-# Copy gtk-${GTKv}-fortran.pc.in and replace strings @.*@ by their values:
-file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-${GTKv}-fortran.pc.in GTK${GTKv}PCIN)
+# Copy gtk-fortran.pc.in and replace strings @.*@ by their values:
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran.pc.in GTK${GTKv}PCIN)
 string(REPLACE "@gtkfortranname@" "gtk-${GTKv}-fortran" GTK${GTKv}PCOUT1 "${GTK${GTKv}PCIN}")
 string(REPLACE "@prefix@" "${CMAKE_INSTALL_PREFIX}" GTK${GTKv}PCOUT2 "${GTK${GTKv}PCOUT1}")
 string(REPLACE "@version@" "${CPACK_PACKAGE_VERSION}" GTK${GTKv}PCOUT3 "${GTK${GTKv}PCOUT2}")
