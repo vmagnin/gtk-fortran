@@ -23,7 +23,7 @@
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling: James Tappin
-! Last modification: vmagnin 2019-03-19
+! Last modification: vmagnin 2020-02-11
 
 module handlers
   use iso_c_binding
@@ -36,7 +36,7 @@ module handlers
 
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_event_box_new, &
        & gtk_events_pending, gtk_main_iteration_do, gtk_widget_add_events, &
-       & gtk_widget_get_window, gtk_widget_show_all, gtk_window_new, &
+       & gtk_widget_show_all, gtk_window_new, &
        & gtk_window_set_default_size, gtk_window_set_title, gtk_init, &
        & g_signal_connect, TRUE, FALSE, GDK_BUTTON_PRESS_MASK, &
        & GDK_SCROLL_MASK, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, &

@@ -51,7 +51,7 @@ module handlers
   & gtk_main_quit, gtk_progress_bar_new, gtk_progress_bar_pulse, &
   & gtk_progress_bar_set_fraction, gtk_progress_bar_set_text, gtk_scrolled_window_new,&
   & gtk_grid_attach, gtk_grid_new, gtk_text_buffer_set_text,&
-  & gtk_text_view_get_buffer, gtk_text_view_new, gtk_widget_destroy, gtk_widget_get_window,&
+  & gtk_text_view_get_buffer, gtk_text_view_new, gtk_widget_destroy, &
   & gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
   & gtk_window_set_default_size, gtk_window_set_title, &
   & g_signal_connect, gtk_init, FALSE, TRUE, c_null_char, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&

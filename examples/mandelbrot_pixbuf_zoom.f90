@@ -23,7 +23,7 @@
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
-! Last modifications: vmagnin 2019-03-26
+! Last modifications: vmagnin 2020-02-11
 
 module handlers
   use gdk_events, only: gdkeventbutton, gdkeventscroll
@@ -39,7 +39,7 @@ module handlers
        & gtk_container_add, gtk_drawing_area_new, gtk_event_box_new, &
        & gtk_events_pending, gtk_label_new, gtk_label_set_text, &
        & gtk_main_iteration_do, gtk_statusbar_new, gtk_statusbar_push, &
-       & gtk_widget_add_events, gtk_widget_get_window, gtk_widget_queue_draw, &
+       & gtk_widget_add_events, gtk_widget_queue_draw, &
        & gtk_widget_set_size_request, gtk_widget_show_all, gtk_window_new, &
        & gtk_window_set_title, gtk_init, g_signal_connect, TRUE, FALSE, &
        & GDK_SCROLL_UP, GDK_SCROLL_DOWN, GDK_SHIFT_MASK, GDK_CONTROL_MASK, &

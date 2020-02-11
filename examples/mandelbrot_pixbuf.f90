@@ -22,12 +22,12 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2019-03-26
+! Last modification: vmagnin 2020-02-11
 
 
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending,&
-  &gtk_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window,&
+  &gtk_main, gtk_main_iteration, gtk_main_iteration_do, &
   &gtk_widget_queue_draw, gtk_widget_show_all, gtk_window_new,&
   &gtk_window_set_default_size, gtk_window_set_title,&
   &GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr,&
