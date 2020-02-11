@@ -23,8 +23,8 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
-! Last modifications: 06-20-2012, vmagnin+IanH0073 02-21-2019
-! vmagnin 03-07-2019
+! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
+! vmagnin 2020-02-11
 
 !*
 ! Supplementary material

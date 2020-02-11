@@ -3,6 +3,8 @@ All notable changes to the gtk-fortran project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+The main objective of this release is to clean up the code and prepare it for the future GTK 4 branch.
+
 ### Added
 - Experimental `meson.build` files have been added. Meson>=0.50.999 is needed. Commands are `meson buildmeson` and `ninja -C buildmeson`. You can install the library using `sudo ninja -C buildmeson install`, but there is still some problems for installing the `.mod` files (see https://github.com/mesonbuild/meson/issues/5374).
 - examples/menu2.f90: that new example should work in GTK 4 (the menu.f90 example is based on deprecated functions).
@@ -27,6 +29,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - test.bat: a deprecated script to build gtk-fortran (GTK 2) under Windows.
 - The test/ directory containing the run_all.pl script. You can use CTest instead (see the wiki).
 - Deprecated functions, to be ready for GTK 4.
+- gtk-\*hl-\*-tmpl.f90 files: the gtk-\*hl-\*.f90 will be fully managed by git, instead of being generated from these templates.
+- mk_gtk_hl.pl: that script was used to manage GTK 2 & 3 differences in the gtk-\*hl-\*.f90 files.
 
 ### Fixed
 - FindGTK3.cmake: fixed GDKCONFIG issue ("missing: GTK3_GDKCONFIG_INCLUDE_DIR").

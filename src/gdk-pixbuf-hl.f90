@@ -23,7 +23,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 12-13-2012
+! Last modifications: 2012-12-13, 2020-02-11
 
 !*
 ! GDK_PIXBUF_HL

@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modification: 11-21-2011
+! Last modification: 2011-11-21
 
 module gtk_hl
   !*
