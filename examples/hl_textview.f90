@@ -54,14 +54,11 @@ contains
     call convert_c_string(cf_text, f_text)
 
     print "(a)", f_text
-!!$    deallocate(f_text)
 
     call hl_gtk_text_view_get_info(C_NULL_PTR, buffer=widget, nlines=nl, &
          & nchars=nc, ncline=ncl)
     print *, nl, nc
     print *, ncl
-!!$    deallocate(ncl)
-
   end subroutine tv_ins
 
   subroutine tv_del(widget, s_iter, e_iter, gdata) bind(c)
@@ -92,6 +89,7 @@ contains
     call hl_gtk_text_view_insert(zedt, (/ trim(ftext) /))
 
   end subroutine tv_append
+  
   subroutine tv_insert(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 

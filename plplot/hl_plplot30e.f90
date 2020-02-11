@@ -29,7 +29,6 @@ module common_ex30
   use iso_c_binding
   use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area&
        &_new, gtk_events_pending, gtk_main, gtk_main_quit, &
-!!$       &gtk_main_iteration, gtk_main_iteration_do,&
        & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init, &
        & gtk_widget_queue_draw
   use g, only: g_object_get_data, g_usleep
@@ -246,7 +245,6 @@ contains
 
     call gtk_widget_destroy(window)
     call gtk_main_quit ()
-!!$    run_status = FALSE
     ret = FALSE
   end function delete_cb
 
