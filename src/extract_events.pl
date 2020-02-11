@@ -28,7 +28,18 @@
 # Extracts the structure definitions for Gdk events from the gdk 
 # header files.
 
-my $gdkvers="3";
+#use strict ;
+use warnings ;
+use IO::File ;
+
+# Major version of GTK for the current branch (from VERSIONS file):
+my $versions_file = IO::File->new('../VERSIONS', '<') ;
+my @lines = $versions_file->getlines ;
+my @match = grep { /^gtk-fortran;([0-9.]+)/m } @lines ;
+my ($name, $gdkvers) = split /;/, $match[0] ;
+$gdkvers =~ s/\R// ;
+print "Extracting GDK events for gtk-".$gdkvers."-fortran\n" ;
+
 my $gdktypes="/usr/include/gtk-".$gdkvers.".0/gdk/gdktypes.h";
 my $gdkevents="/usr/include/gtk-".$gdkvers.".0/gdk/gdkevents.h";
 my $ftninterface="gdkevents-auto.f90";
