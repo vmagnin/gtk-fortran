@@ -28,7 +28,7 @@
 # Extracts the structure definitions for Gdk events from the gdk 
 # header files.
 
-#use strict ;
+use strict ;
 use warnings ;
 use IO::File ;
 
@@ -81,6 +81,8 @@ my $dpattern = "^ +([a-zA-Z0-9_]+) +(.+);";  # A "direct" type
 my $dppattern = "^ +([a-zA-Z0-9_]+) +\\*(.+);"; # A pointer to something
 my $tname;
 my $now = gmtime;
+my $hfile = "" ;
+my $list = "" ;
 
 rename($ftninterface, "${ftninterface}.old") if ( -f $ftninterface);
 
