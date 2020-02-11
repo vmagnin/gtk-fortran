@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2011-01-28
-# Last modification: 2020-02-10
+# Last modification: 2020-02-11
 
 """ This module contains functions to determine the versions of the libraries
 and programs used in gkt-fortran.
@@ -94,6 +94,8 @@ def list_versions(GTK_VERSION):
 
     # Packages in Ubuntu, Arch/Manjaro, Fedora, Mageia (you can add the names in
     # you distribution and add the command in the function lib_version()):
+    pack_gtk4 = (("libgtk-4-0", "deb"), ("gtk4", "pacman"),
+                 ("gtk4", "rpm"), ("gtk4.0", "rpm"))
     pack_gtk3 = (("libgtk-3-0", "deb"), ("gtk3", "pacman"),
                  ("gtk3", "rpm"), ("gtk+3.0", "rpm"))
     pack_gtk2 = (("libgtk2.0-0", "deb"), ("gtk2", "pacman"),
@@ -101,7 +103,9 @@ def list_versions(GTK_VERSION):
     pack_glib = (("libglib2.0-0", "deb"), ("glib2", "pacman"),
                  ("glib2", "rpm"), ("libglib2.0_0", "rpm"))
 
-    if GTK_VERSION == "gtk3":
+    if GTK_VERSION == "gtk4":
+        version_GTK = library_version(pack_gtk4)
+    elif GTK_VERSION == "gtk3":
         version_GTK = library_version(pack_gtk3)
     elif GTK_VERSION == "gtk2":
         version_GTK = library_version(pack_gtk2)

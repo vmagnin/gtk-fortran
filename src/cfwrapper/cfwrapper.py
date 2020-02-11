@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2020-02-10 (tested with Python 3.7.5, Ubuntu 19.10)
+# Last modification: 2020-02-11 (tested with Python 3.7.5, Ubuntu 19.10)
 # pylint *.py : 8.05/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
@@ -55,8 +55,8 @@ from analyze import analyze_prototypes
 # Definition of command line options:
 PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files",
                                   epilog="GPLv3 license, https://github.com/vmagnin/gtk-fortran")
-PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3],
-                     metavar="2|3", nargs=1, required=True,
+PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3, 4],
+                     metavar="2|3|4", nargs=1, required=True,
                      help="GTK major version")
 PARSARG.add_argument("-b", "--build", action="store_true",
                      help="Build gtk-fortran libraries and examples")
@@ -73,12 +73,18 @@ PATH_DICT = OrderedDict([
     ("/usr/include/cairo", "cairo-auto.f90"),
     ("/usr/include/gdk-pixbuf-2.0", "gdk-pixbuf-auto.f90"),
     ("/usr/include/glib-2.0", "glib-auto.f90")])
-if GTK_VERSION == "gtk3":
+if GTK_VERSION == "gtk4":
+    PATH_DICT.update([
+        ("/usr/include/gtk-4.0/gdk", "gdk-auto.f90"),
+        ("/usr/include/gtk-4.0/gsk", "gsk-auto.f90"),
+        ("/usr/include/gtk-4.0/gtk", "gtk-auto.f90"),
+        ("/usr/include/gtk-4.0/unix-print", "unix-print-auto.f90")])
+elif GTK_VERSION == "gtk3":
     PATH_DICT.update([
         ("/usr/include/gtk-3.0/gdk", "gdk-auto.f90"),
         ("/usr/include/gtk-3.0/gtk", "gtk-auto.f90"),
         ("/usr/include/gtk-3.0/unix-print", "unix-print-auto.f90")])
-else:
+elif GTK_VERSION == "gtk2":
     PATH_DICT.update([
         ("/usr/include/gtk-2.0/gdk", "gdk-auto.f90"),
         ("/usr/include/gtk-2.0/gtk", "gtk-auto.f90")])
