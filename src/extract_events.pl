@@ -23,7 +23,7 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin 05/11/2011, vmagnin 2020-02-06
+# Contributed by James Tappin 05/11/2011, vmagnin 2020-02-11
 
 # Extracts the structure definitions for Gdk events from the gdk 
 # header files.
@@ -91,8 +91,8 @@ print FGDKE "! This file is part of the gtk-fortran GTK+ Fortran Interface libra
 print FGDKE "! GNU General Public License version 3\n\n";
 
 print FGDKE "module gdk_events\n";
-print FDGKE "  ! GDK events and related structures\n";
-print FDGKE "  ! Automatically extracted from gdktypes.h & gdkevents.h\n";
+print FGDKE "  ! GDK events and related structures\n";
+print FGDKE "  ! Automatically extracted from gdktypes.h & gdkevents.h\n";
 print FGDKE "  use iso_c_binding\n\n";
 print FGDKE "  implicit none\n\n";
 
