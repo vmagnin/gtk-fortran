@@ -94,11 +94,13 @@ set_target_properties(gtk-fortran_object PROPERTIES
 #==========================
 # Copy some specific files:
 #==========================
-# Copy gtk-${GTKv}-fortran.pc.in and replace strings @prefix@ and @version@ by their values:
+# Copy gtk-${GTKv}-fortran.pc.in and replace strings @.*@ by their values:
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-${GTKv}-fortran.pc.in GTK${GTKv}PCIN)
-string(REPLACE "@prefix@" "${CMAKE_INSTALL_PREFIX}" GTK${GTKv}PCOUT1 "${GTK${GTKv}PCIN}")
-string(REPLACE "@version@" "${CPACK_PACKAGE_VERSION}" GTK${GTKv}PCOUT2 "${GTK${GTKv}PCOUT1}")
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran.pc "${GTK${GTKv}PCOUT2}")
+string(REPLACE "@gtkfortranname@" "gtk-${GTKv}-fortran" GTK${GTKv}PCOUT1 "${GTK${GTKv}PCIN}")
+string(REPLACE "@prefix@" "${CMAKE_INSTALL_PREFIX}" GTK${GTKv}PCOUT2 "${GTK${GTKv}PCOUT1}")
+string(REPLACE "@version@" "${CPACK_PACKAGE_VERSION}" GTK${GTKv}PCOUT3 "${GTK${GTKv}PCOUT2}")
+string(REPLACE "@gtkname@" "${GTKname}" GTK${GTKv}PCOUT4 "${GTK${GTKv}PCOUT3}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran.pc "${GTK${GTKv}PCOUT4}")
 add_custom_target(pkgconfig ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-fortran.pc)
 
 # The USE generator system. Copy usemodules.pl and replace strings @PREFIX@, @SHARE@ 

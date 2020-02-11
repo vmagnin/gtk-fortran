@@ -2,7 +2,7 @@
 # in gtk-fortran/src and replaces the @.*@ strings by their values.
 
 # Variables:
-libname=gtk-3-fortran
+libname=@gtkfortranname@
 prefix=@prefix@
 exec_prefix=${prefix}
 libdir=@prefix@/lib
@@ -13,6 +13,6 @@ Name: gtk-fortran
 Description: A GTK / Fortran 2003 binding
 URL: https://github.com/vmagnin/gtk-fortran
 Version: @version@
-Requires: gtk+-3.0
+Requires: @gtkname@
 Cflags: -I${includedir}
 Libs: -Xlinker -R${libdir} -l${libname}
