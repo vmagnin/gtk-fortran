@@ -22,36 +22,19 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2020-02-07
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2020-02-11
 #
 # CMAKE build file for gtk-fortran
 
 include_directories("${CMAKE_BINARY_DIR}/src/modules")
 
 if (NOT NO_BUILD_EXAMPLES)
-  #====================================
-  # Build the two gtkbuilders examples:
-  #====================================
-  file(COPY gtkbuilder.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ )
-
-  add_executable(gtkbuilder "gtkbuilder.f90")
-  target_link_libraries(gtkbuilder gtk-fortran_static ${GTK_LIBRARIES})
-  set_target_properties(gtkbuilder PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder_mod/ )
-  # This test is excluded because the directories don't match up.
-  #add_test(gtkbuilder gtkbuilder)
-  add_executable(gtkbuilder2 "gtkbuilder2.f90" "gtkbuilder.glade")
-  target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
-  set_target_properties(gtkbuilder2 PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder2_mod/ )
-  # This test is excluded because the directories don't match up.
-  # add_test(gtkbuilder2 gtkbuilder2)
-
   #==========================
-  # Build the other examples:
+  # Build the main examples:
   #==========================
-  set(examples_list bazaar cairo-tests cairo-basics cairo-basics-click
-    gtkzero gtkhello gtkhello2
-    julia_pixbuf list_demo mandelbrot_pixbuf
-    mandelbrot_pixbuf_zoom menu menu2 notebooks gio_demo tests
+  set(examples_list gtkzero gtkhello gtkhello2 list_demo gio_demo tests menu2 
+    notebooks julia_pixbuf  mandelbrot_pixbuf mandelbrot_pixbuf_zoom 
+    cairo-tests cairo-basics cairo-basics-click bazaar menu
   )
   
   if(NOT NO_BUILD_HL)
@@ -69,6 +52,22 @@ if (NOT NO_BUILD_EXAMPLES)
     set_target_properties(${example} PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${example}_mod/ )
     add_test(${example} ./${example})
   endforeach(example)
+
+  #====================================
+  # Build the two gtkbuilders examples:
+  #====================================
+  file(COPY gtkbuilder.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ )
+
+  add_executable(gtkbuilder "gtkbuilder.f90")
+  target_link_libraries(gtkbuilder gtk-fortran_static ${GTK_LIBRARIES})
+  set_target_properties(gtkbuilder PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder_mod/ )
+  # This test is excluded because the directories don't match up.
+  #add_test(gtkbuilder gtkbuilder)
+  add_executable(gtkbuilder2 "gtkbuilder2.f90" "gtkbuilder.glade")
+  target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
+  set_target_properties(gtkbuilder2 PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder2_mod/ )
+  # This test is excluded because the directories don't match up.
+  # add_test(gtkbuilder2 gtkbuilder2)
 endif(NOT NO_BUILD_EXAMPLES)
 
 # If the INSTALL_EXAMPLES variable is set, then copy the examples
