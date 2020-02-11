@@ -23,7 +23,7 @@
 
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
-! Last modifications: vmagnin+Ian Harvey 02-21-2019, vmagnin 03-19-2019
+! Last modifications: vmagnin+Ian Harvey 2019, 02-21, vmagnin 2020-02-11
 
 module my_widgets
   use iso_c_binding
@@ -52,7 +52,7 @@ module handlers
   & gtk_progress_bar_set_fraction, gtk_progress_bar_set_text, gtk_scrolled_window_new,&
   & gtk_grid_attach, gtk_grid_new, gtk_text_buffer_set_text,&
   & gtk_text_view_get_buffer, gtk_text_view_new, gtk_widget_destroy, gtk_widget_get_window,&
-  & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_default,&
+  & gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
   & gtk_window_set_default_size, gtk_window_set_title, &
   & g_signal_connect, gtk_init, FALSE, TRUE, c_null_char, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&
   & GTK_WINDOW_TOPLEVEL, c_null_ptr, gtk_grid_set_row_homogeneous, &

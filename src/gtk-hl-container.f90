@@ -69,7 +69,7 @@ module gtk_hl_container
        & gtk_box_new, gtk_box_set_homogeneous, &
        & gtk_widget_set_sensitive, gtk_window_add_accel_group,&
        & gtk_window_new, gtk_window_set_decorated,&
-       & gtk_window_set_default, gtk_window_set_default_size,&
+       & gtk_window_set_default_size,&
        & gtk_window_set_deletable, gtk_window_set_keep_above,&
        & gtk_window_set_keep_below, gtk_window_set_resizable,&
        & gtk_window_set_title, gtk_window_set_transient_for, &

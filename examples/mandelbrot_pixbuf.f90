@@ -29,7 +29,7 @@ module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending,&
   &gtk_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window,&
   &gtk_widget_queue_draw, gtk_widget_show_all, gtk_window_new,&
-  &gtk_window_set_default, gtk_window_set_default_size, gtk_window_set_title,&
+  &gtk_window_set_default_size, gtk_window_set_title,&
   &GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr,&
   &c_null_char, GTK_WINDOW_TOPLEVEL, gtk_main_quit
 
