@@ -23,7 +23,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018, 
-# vmagnin 2020-02-10
+# vmagnin 2020-02-11
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -45,7 +45,8 @@ set(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/vmagnin/gtk-fortran/")
 #===============================================================================
 file(STRINGS VERSIONS OneLine REGEX "gtk-fortran;(.*)")
 string(REGEX REPLACE "gtk-fortran;" "" GTKv ${OneLine})
-message(STATUS "Building gtk-${GTKv}-fortran")
+set(gtk_V_fortran "gtk-${GTKv}-fortran")
+message(STATUS "Building ${gtk_V_fortran}")
 
 if (${GTKv} LESS_EQUAL 3)
     set(GTKname "gtk+-${GTKv}.0")

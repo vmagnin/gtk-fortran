@@ -52,7 +52,7 @@ add_custom_target(plplot_extra_module ALL DEPENDS plplot_extra.mod)
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/plplot_extra.mod"
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gtk-${GTKv}-fortran
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${gtk_V_fortran}
 )
 
 #===============================================================================
