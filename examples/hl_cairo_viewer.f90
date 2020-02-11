@@ -21,8 +21,6 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 
-! gfortran hl_cairo_viewer.f90 `pkg-config --cflags --libs gtk-2-fortran`
-
 ! Contributed by James Tappin,
 
 module v_handlers

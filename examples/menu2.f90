@@ -23,7 +23,6 @@
 ! Vincent MAGNIN, 2020-01-31
 ! Last modified: 2020-01-31
 ! This example just creates an empty GTK window with a menu
-! gfortran -I../src ../src/glib-auto.f90 ../src/gtk.f90 menu2.f90 `pkg-config --cflags --libs gtk+-3.0`
 !-------------------------------------------------------------------------------
 
 !*************************************

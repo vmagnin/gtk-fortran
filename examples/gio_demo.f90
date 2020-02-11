@@ -22,8 +22,6 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 
 ! Last modification: vmagnin 02-19-2019
-! gfortran -I../src ../src/gtk.f90 ../src/gtk-sup.f90 gio_demo.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003 -g
-
 
 program g_io_demo
 

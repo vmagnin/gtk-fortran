@@ -21,7 +21,6 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see .
 !
-! gfortran -g gtk.f90 menu.f90 `pkg-config --cflags --libs gtk+-3.0`
 ! menu.xml must be copied to the same directory as the simplemenu executable
 !
 ! Contributed by Jens Hunger

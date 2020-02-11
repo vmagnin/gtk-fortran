@@ -23,7 +23,6 @@
 ! Vincent MAGNIN, 02-27-2019
 ! Last modified: 02-27-2019
 ! This example just creates an empty GTK window.
-! gfortran -I../src ../src/glib-auto.f90 ../src/gtk.f90 gtkzero.f90 `pkg-config --cflags --libs gtk+-3.0`
 !-------------------------------------------------------------------------------
 
 !*************************************

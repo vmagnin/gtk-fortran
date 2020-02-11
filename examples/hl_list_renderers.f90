@@ -21,7 +21,6 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g  hl_list_renderers.90 `pkg-config --cflags --libs gtk-3-fortran`
 ! Contributed by James Tappin.
 ! Last modification: vmagnin 02-27-2019
 

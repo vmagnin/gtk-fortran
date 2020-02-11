@@ -21,7 +21,6 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 
 ! GTK+ Fortran Code Sketcher using Glade3 UI definitions
-! gfortran gtkf-sketcher.f90 -o gtkf-sketcher `pkg-config --cflags --libs gtk+-3.0 gtk-3-fortran gmodule-2.0`
 ! Contributed by Jens Hunger
 ! Last modifications: vmagnin 03-07-2019
 

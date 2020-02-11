@@ -20,7 +20,6 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran gtk.f90 gtkbuilder.f90 -o gtkbuilder `pkg-config --cflags --libs gtk+-2.0`
 ! Jens Hunger, 03-27-2011
 ! Last modified: 04-01-2011
 

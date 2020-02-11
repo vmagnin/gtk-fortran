@@ -22,7 +22,6 @@
 !-------------------------------------------------------------------------------
 ! Vincent MAGNIN et al. (derived from gtkhello2.f90), 02-15-2019
 ! Last modified: 02-15-2019
-! gfortran -I../src ../src/gtk.f90 gtkhello.f90 `pkg-config --cflags --libs gtk+-3.0` -Wall -Wextra -pedantic -std=f2003
 !-------------------------------------------------------------------------------
 
 !*************************************

@@ -21,7 +21,6 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g  hl_assistant.f90 `pkg-config --cflags --libs gtk-2-fortran`
 ! Contributed by James Tappin.
 ! Last modification: vmagnin 2020-01-30
 

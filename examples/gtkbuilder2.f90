@@ -21,7 +21,6 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 
 ! Example using GtkBuilder with gtk_builder_connect_signals from GModule
-! gfortran gtk.f90 gtkbuilder2.f90 -o gtkbuilder2 `pkg-config --cflags --libs gtk+-2.0` `pkg-config --cflags --libs gmodule-2.0`
 ! tested with GTK+ 2.24 and GModule 2.28.3
 ! Jens Hunger, 04-01-2011
 ! Last modified: 04-05-2011

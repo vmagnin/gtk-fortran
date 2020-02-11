@@ -24,11 +24,6 @@
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
 ! Last modifications: vmagnin+Ian Harvey 02-21-2019, vmagnin 03-19-2019
-! To compile under Linux:
-! gfortran -I../src/ ../src/gtk.o ../src/gtk-sup.o ../src/gtk-hl.o bazaar.f90  `pkg-config --cflags --libs gtk+-3.0`
-! If gtk-fortran is installed in the system:
-! gfortran bazaar.f90 $(pkg-config --cflags --libs gtk-3-fortran)
-
 
 module my_widgets
   use iso_c_binding

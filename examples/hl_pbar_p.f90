@@ -21,7 +21,6 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran -g -fopenmp gtk.f90 gtk-sup.f90 gtk-hl.f90 hl_pbar_p.f90 `pkg-config --cflags --libs gtk+-2.0`
 ! Contributed by James Tappin.
 
 module handlers

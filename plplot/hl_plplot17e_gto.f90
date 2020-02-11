@@ -21,8 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! gfortran hl_plplot17e_gto.f90 `pkg-config --cflags --libs gtk-3-fortran plplot plplot-fortran`
-! Contributed by: James Tappin
+!! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 17 by Alan W. Irwin
 ! Last modification: vmagnin, 2019-03-12 (PLplot>=5.11)
 
