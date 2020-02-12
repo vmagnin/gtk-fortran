@@ -28,15 +28,10 @@
 module common_ex17_gto
   use iso_c_binding
   use gtk_draw_hl
-
-  !********************************
-  ! Gtk modules for hl_plplot17e.f90
   use g, only: g_timeout_add
-
   use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
        & gtk_widget_queue_draw, gtk_widget_show_all, gtk_init, &
        & gtk_events_pending, TRUE, FALSE
-
   use plplot_extra
 
   implicit none
@@ -49,7 +44,6 @@ end module common_ex17_gto
 
 module plplot_code_ex17_gto
   use plplot, PI => PL_PI
-  ! use iso_c_binding
   use common_ex17_gto
 
   implicit none
@@ -87,7 +81,6 @@ contains
          & 127, 85, 170/)
 
     !  Process command-line arguments
-    ! call plparseopts(PL_PARSE_FULL)
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
     if (plparseopts_rc .ne. 0) stop "plparseopts error"
 
@@ -100,27 +93,23 @@ contains
 
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
-    ! call plsetopt("drvopt", "set_background=1")
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
     if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     call hl_gtk_drawing_area_get_size(area, width=width, height=height)
     write(geometry, "(I0,'x',I0)") width, height
-    ! call plsetopt("geometry",  geometry)
     plsetopt_rc = plsetopt( 'geometry', geometry)
     if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     !      Specify some reasonable defaults for ymin and ymax
     !      The plot will grow automatically if needed (but not shrink)
-
     ymin = -0.1_plflt
     ymax = 0.1_plflt
 
     !      Specify initial tmin and tmax -- this determines length of window.
     !      Also specify maximum jump in t
     !      This can accomodate adaptive timesteps
-
     tmin = 0._plflt
     tmax = 50._plflt
     !      percentage of plot to jump
@@ -129,7 +118,6 @@ contains
     !      Axes options same as plbox.
     !      Only automatic tick generation and label placement allowed
     !      Eventually I'll make this fancier
-
     colbox = 1
     collab = 1
     !      pens color and line style
@@ -158,7 +146,6 @@ contains
     acc = .false.
 
     !      Initialize plplot
-
     call plinit()
     ! Tell the "extcairo" driver where the context is located.
     call pl_cmd(PLESC_DEVINIT, cc)
@@ -168,7 +155,6 @@ contains
 
     !      Register our error variables with PLplot
     !      From here on, we're handling all errors here
-
     call plstripc(id1, 'bcnst', 'bcnstv', &
          tmin, tmax, tjump, ymin, ymax, &
          xlab, ylab, &
@@ -190,14 +176,12 @@ contains
 
     !      This is to represent a loop over time
     !      Let's try a random walk process
-
     y1 = 0.0_plflt
     y2 = 0.0_plflt
     y3 = 0.0_plflt
     y4 = 0.0_plflt
     dt = 0.1_plflt
 
-!    call plflush()
     call gtk_widget_queue_draw(area)
 
   end subroutine x17f95
@@ -219,7 +203,6 @@ contains
 
     !        There is no need for all pens to have the same number of
     !        points or being equally time spaced.
-
     if ( mod(n,2) .ne. 0 ) then
        call plstripa(id1, 0, t, y1)
     endif
@@ -238,9 +221,7 @@ contains
   end function add_point
 
   subroutine close_strip
-
     !      Destroy strip chart and its memory
-
     call plstripd(id1)
     call plend()
     call hl_gtk_drawing_area_cairo_destroy(cc)
@@ -250,10 +231,8 @@ end module plplot_code_ex17_gto
 module handlers_ex17_gto
 
   use common_ex17_gto
-
   use gtk_hl
   use gtk_draw_hl
-
   use iso_c_binding
   use plplot_code_ex17_gto
 

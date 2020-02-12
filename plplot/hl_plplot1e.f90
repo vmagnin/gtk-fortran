@@ -41,7 +41,6 @@ end module common_ex1
 
 module plplot_code_ex1
   use plplot, PI => PL_PI
-  ! use iso_c_binding
   use common_ex1
 
   implicit none
@@ -52,9 +51,7 @@ contains
   subroutine x01f95(area)
 
     type(c_ptr), intent(in) :: area
-
     type(c_ptr) :: cc
-
     character(len=80) :: version
     character(len=20) :: geometry
     integer :: digmax
@@ -73,7 +70,6 @@ contains
          & 127, 85, 170/)
 
     !  Process command-line arguments
-    ! call plparseopts(PL_PARSE_FULL)
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
     if (plparseopts_rc .ne. 0) stop "plparseopts error"
 
@@ -82,7 +78,6 @@ contains
     write (*,'(a,a)') 'PLplot library version: ', trim(version)
 
     ! Get a cairo context from the drawing area.
-
     cc = hl_gtk_drawing_area_cairo_new(area)
 
     !  Initialize plplot
@@ -91,13 +86,11 @@ contains
 
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
-    ! call plsetopt("drvopt", "set_background=1")
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
     if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
-    ! call plsetopt("geometry",  geometry)
     plsetopt_rc = plsetopt( 'geometry', geometry)
     if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
@@ -111,7 +104,6 @@ contains
 
     !  Set up the data
     !  Original case
-
     xscale = 6._plflt
     yscale = 1._plflt
     xoff = 0._plflt
@@ -121,13 +113,11 @@ contains
     call plot1()
 
     !  Set up the data
-
     xscale = 1._plflt
     yscale = 0.0014_plflt
     yoff = 0.0185_plflt
 
     !  Do a plot
-
     digmax = 5
     call plsyax(digmax,  0)
     call plot1()
@@ -137,7 +127,6 @@ contains
 
     !  Don't forget to call PLEND to finish off, and then delete the
     !  cairo context.
-
     call plend()
     call hl_gtk_drawing_area_cairo_destroy(cc)
 
@@ -177,12 +166,10 @@ contains
     call pllab( '(x)', '(y)', '#frPLplot Example 1 - y=x#u2' )
 
     !   Plot the data points
-
     call plcol0(4)
     call plpoin( xs, ys, 9 )
 
     !   Draw the line through the data
-
     call plcol0(3)
     call plline( x, y )
 
@@ -193,20 +180,17 @@ contains
 
     real(plflt), dimension(1:100) :: x, y
     integer :: i
-
     !
     !   Set up the viewport and window using PLENV. The range in X is
     !   -2.0 to 10.0, and the range in Y is -0.4 to 2.0. The axes are
     !   scaled separately (just = 0), and we draw a box with axes
     !   (axis = 1).
-
     call plcol0(1)
     call plenv(-2.0_plflt, 10.0_plflt, -0.4_plflt, 1.2_plflt, 0, 1 )
     call plcol0(2)
     call pllab( '(x)', 'sin(x)/x', '#frPLplot Example 1 - Sinc Function' )
 
     !   Fill up the arrays
-
     do i = 1, 100
        x(i) = (i-20.0_plflt)/6.0_plflt
        y(i) = 1.0_plflt
@@ -214,23 +198,18 @@ contains
     enddo
 
     !   Draw the line
-
     call plcol0(3)
-!    call plwid(2)
     call plwidth(2.0_plflt)
     call plline( x, y )
-!    call plwid(1)
     call plwidth(1.0_plflt)
 
   end subroutine plot2
 
   !======================================================================
   subroutine plot3()
-
     !
     !   For the final graph we wish to override the default tick intervals,
     !   and so do not use_ PLENV
-
     real(plflt), dimension(1:101) :: x, y
 
     integer i
@@ -238,18 +217,15 @@ contains
 
     !   Use_ standard viewport, and define X range from 0 to 360 degrees,
     !   Y range from -1.2 to 1.2.
-
     call plvsta()
     call plwind( 0.0_plflt, 360.0_plflt, -1.2_plflt, 1.2_plflt )
 
     !   Draw a box with ticks spaced 60 degrees apart in X, and 0.2 in Y.
-
     call plcol0(1)
     call plbox( 'bcnst', 60.0_plflt, 2, 'bcnstv', 0.2_plflt, 2 )
 
     !   Superimpose a dashed line grid, with 1.5 mm marks and spaces. With
     !   only a single mark and space element, we do not need arrays
-
     call plstyl( (/1500/), (/1500/) )
     call plcol0(2)
     call plbox( 'g', 30.0_plflt, 0, 'g', 0.2_plflt, 0 )
@@ -275,16 +251,13 @@ end module plplot_code_ex1
 module handlers_ex1
 
   use common_Ex1
-
   use gtk_hl
   use gtk_draw_hl
-
   use iso_c_binding
 
   implicit none
 
   integer(kind=c_int) :: run_status = TRUE
-
   real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
 
 contains

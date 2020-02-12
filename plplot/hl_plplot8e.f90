@@ -32,7 +32,6 @@ module common_ex8
        & gtk_toggle_button_get_active, gtk_widget_destroy, &
        & gtk_widget_get_allocation, gtk_widget_queue_draw, &
        & gtk_widget_show_all, gtk_init, FALSE, GTK_FILL, GTK_EXPAND
-
   use gtk_hl
   use gtk_draw_hl
   use gdk_pixbuf_hl
@@ -53,7 +52,6 @@ end module common_ex8
 module plplot_code_ex8
 
   use plplot, PI => PL_PI
-  ! use iso_c_binding
   use common_ex8
 
   implicit none
@@ -81,7 +79,6 @@ contains
     parameter (nlevel = 10)
     real(kind=plflt) zmin, zmax, step, clevel(nlevel)
     ! Process command-line arguments
-    ! call plparseopts(PL_PARSE_FULL)
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
     if (plparseopts_rc .ne. 0) stop "plparseopts error"
 
@@ -123,7 +120,6 @@ contains
     enddo
 
     ! Get a cairo context from the drawing area.
-
     cc = hl_gtk_drawing_area_cairo_new(area)
 
     !  Initialize plplot
@@ -131,13 +127,11 @@ contains
 
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
-    ! call plsetopt("drvopt", "set_background=1")
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
     if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
-    ! call plsetopt("geometry",  geometry)
     plsetopt_rc = plsetopt( 'geometry', geometry)
     if (plsetopt_rc .ne. 0) stop "plsetopt error"
 

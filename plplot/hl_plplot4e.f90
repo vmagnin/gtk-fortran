@@ -27,16 +27,12 @@
 module common_ex4
   use iso_c_binding
 
-  !*******
   use cairo, only: cairo_get_target, cairo_image_surface_get_height, &
        & cairo_image_surface_get_width
-
   use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
        & gtk_widget_destroy, gtk_widget_show_all, gtk_init, FALSE
-
   use gtk_draw_hl
   use gtk_hl
-
   use plplot_extra
 
   implicit none
@@ -47,7 +43,6 @@ end module common_ex4
 
 module plplot_code_ex4
   use plplot, PI => PL_PI
-  ! use iso_c_binding
   use common_ex4
 
   implicit none
@@ -55,7 +50,6 @@ module plplot_code_ex4
 contains
 
   subroutine plot_04(area)
-!    integer, intent(in) :: type
     type(c_ptr), intent(in), dimension(2) :: area
 
     type(c_ptr), dimension(2) :: cc, cs
@@ -76,7 +70,6 @@ contains
          & 127, 85, 170/)
 
     !  Process command-line arguments
-    ! call plparseopts(PL_PARSE_FULL)
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
     if (plparseopts_rc .ne. 0) stop "plparseopts error"
 
@@ -93,25 +86,20 @@ contains
 
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
-    ! call plsetopt("drvopt", "set_background=1")
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
     if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
-
     write(geometry, "(I0,'x',I0)") cairo_image_surface_get_width(cs(1)), &
          & cairo_image_surface_get_height(cs(1))
-    ! call plsetopt("geometry",  geometry)
     plsetopt_rc = plsetopt( 'geometry', geometry)
     if (plsetopt_rc .ne. 0) stop "plsetopt error"
 
     ! Initialize
-
     call plinit
 
     ! Tell the "extcairo" driver where the context is located. This must be
     ! done AFTER the plstar or plinit call.
-
     call pl_cmd(PLESC_DEVINIT, cc(1))
 
     call plfont(2)   ! Roman font
