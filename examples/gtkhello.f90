@@ -81,11 +81,12 @@ program gtkhello
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
   use gtk, only: gtk_init, gtk_window_new, gtk_window_set_default_size, gtk_window_set_title, &
-               & g_signal_connect, gtk_box_new, &
-               & gtk_container_add, gtk_container_set_border_width, &
+               & g_signal_connect, gtk_box_new, gtk_container_add, &
                & gtk_button_new_with_label, gtk_button_new_with_mnemonic, &
                & gtk_widget_show, gtk_widget_show_all, gtk_main, &
-               & GTK_WINDOW_TOPLEVEL, c_null_char, GTK_ORIENTATION_HORIZONTAL
+               & GTK_WINDOW_TOPLEVEL, c_null_char, GTK_ORIENTATION_HORIZONTAL,&
+               & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
+               & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
   use handlers
 
   implicit none
@@ -122,12 +123,14 @@ program gtkhello
   !box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10_c_int);
   ! This example can not be built with GTK 2 because gtk_box_nex() appeared
   ! in GTK3.
-
+  ! Set the border width (10 pixels) around the box:
+  call gtk_widget_set_margin_start (box, 10_c_int)
+  call gtk_widget_set_margin_end (box, 10_c_int)
+  call gtk_widget_set_margin_top (box, 10_c_int)
+  call gtk_widget_set_margin_bottom (box, 10_c_int)
   ! You need a container where to put the box, it will manage layout:
   call gtk_container_add(window, box)
-  ! It's prettier with a 10 pixels border:
-  call gtk_container_set_border_width(window, 10_c_int)
-
+  
   ! It's easy to create a button:
   button1 = gtk_button_new_with_label("I say hello"//c_null_char)
   ! Let's pack the button in the box.

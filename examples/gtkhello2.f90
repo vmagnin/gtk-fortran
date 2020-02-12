@@ -89,9 +89,11 @@ end module handlers
 program gtkFortran
   use iso_c_binding, only: c_ptr, c_funloc, c_loc, c_int
   use gtk, only: gtk_init, gtk_window_new, GTK_WINDOW_TOPLEVEL, gtk_window_set_title, &
-      & gtk_container_set_border_width, g_signal_connect, gtk_box_new, gtk_container_add, &
+      & g_signal_connect, gtk_box_new, gtk_container_add, &
       & gtk_button_new_with_label, gtk_widget_show, gtk_main, &
-      & c_null_char, GTK_ORIENTATION_HORIZONTAL
+      & c_null_char, GTK_ORIENTATION_HORIZONTAL, &
+      & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
+      & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
   ! The "only" statement can divide the compilation time by a factor 10 !
   use handlers
   implicit none
@@ -108,7 +110,6 @@ program gtkFortran
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   !call gtk_window_set_default_size(window, 500, 500)
   call gtk_window_set_title(window, "My title"//c_null_char)
-  call gtk_container_set_border_width (window, 10_c_int)
   call g_signal_connect (window, "delete-event"//c_null_char, c_funloc(delete_event))
   call g_signal_connect (window, "destroy"//c_null_char, c_funloc(destroy))
 
@@ -134,6 +135,12 @@ program gtkFortran
   call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(hello))
   call gtk_widget_show (button3)
 
+  ! Set the border width around the container:
+  call gtk_widget_set_margin_start (box1, 10_c_int)
+  call gtk_widget_set_margin_end (box1, 10_c_int)
+  call gtk_widget_set_margin_top (box1, 10_c_int)
+  call gtk_widget_set_margin_bottom (box1, 10_c_int)
+  
   call gtk_widget_show (box1)
   call gtk_widget_show (window)
 
