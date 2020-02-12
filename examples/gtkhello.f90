@@ -20,8 +20,8 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !-------------------------------------------------------------------------------
-! Vincent MAGNIN et al. (derived from gtkhello2.f90), 02-15-2019
-! Last modified: 02-15-2019
+! Vincent MAGNIN et al. (derived from gtkhello2.f90), 2019-02-15
+! Last modified: 2020-02-12
 !-------------------------------------------------------------------------------
 
 !*************************************
@@ -83,10 +83,9 @@ program gtkhello
   use gtk, only: gtk_init, gtk_window_new, gtk_window_set_default_size, gtk_window_set_title, &
                & g_signal_connect, gtk_box_new, &
                & gtk_container_add, gtk_container_set_border_width, &
-               & gtk_button_new_with_label, gtk_box_pack_start, gtk_button_new_with_mnemonic, &
+               & gtk_button_new_with_label, gtk_button_new_with_mnemonic, &
                & gtk_widget_show, gtk_widget_show_all, gtk_main, &
-               & GTK_WINDOW_TOPLEVEL, c_null_char, FALSE, &
-               & GTK_ORIENTATION_HORIZONTAL
+               & GTK_WINDOW_TOPLEVEL, c_null_char, GTK_ORIENTATION_HORIZONTAL
   use handlers
 
   implicit none
@@ -131,10 +130,8 @@ program gtkhello
 
   ! It's easy to create a button:
   button1 = gtk_button_new_with_label("I say hello"//c_null_char)
-  ! Let's pack the button in the box. If the booleans were set to TRUE and there
-  ! was extra space available, the position and size of that button would be
-  ! modified. We finally impose a 0 pixels extra space between the buttons.
-  call gtk_box_pack_start(box, button1, FALSE, FALSE, 0_c_int)
+  ! Let's pack the button in the box.
+  call gtk_container_add(box, button1)
   ! Let's associate two callback functions when that button is clicked:
   call g_signal_connect(button1, "clicked"//c_null_char, c_funloc(button1clicked))
   ! "clicked" is a GtkButton signal emitted when you click on a button:
@@ -143,7 +140,7 @@ program gtkhello
   ! For that button, there is an ALT+g keyboard shortcut:
   button2 = gtk_button_new_with_mnemonic("I don't know why you say _goodbye"//c_null_char)
   ! Let's pack the second button in the box (packing occurs from left to right):
-  call gtk_box_pack_start(box, button2, FALSE, FALSE, 0_c_int)
+  call gtk_container_add(box, button2)
   ! Let's associate one callback function when that button is clicked:
   call g_signal_connect(button2, "clicked"//c_null_char, c_funloc(destroy))
   !******************************************************************
