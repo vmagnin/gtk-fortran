@@ -23,7 +23,7 @@
 
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus 
-! Last modifications: vmagnin+Ian Harvey 2019, 02-21, vmagnin 2020-02-11
+! Last modifications: vmagnin+Ian Harvey 2019, 02-21, vmagnin 2020-02-12
 
 module my_widgets
   use iso_c_binding
@@ -45,7 +45,7 @@ module handlers
   & gtk_about_dialog_set_comments, gtk_about_dialog_set_license, &
   & gtk_about_dialog_set_program_name,&
   & gtk_about_dialog_set_website, gtk_button_new, gtk_button_new_with_label, &
-  & gtk_container_add, gtk_container_set_border_width, gtk_dialog_run, gtk_drawing_area_new,&
+  & gtk_container_add, gtk_dialog_run, gtk_drawing_area_new,&
   & gtk_entry_get_text, gtk_entry_new, gtk_file_chooser_button_new, &
   & gtk_file_chooser_get_file, gtk_file_chooser_get_filename, gtk_label_new, gtk_main, &
   & gtk_main_quit, gtk_progress_bar_new, gtk_progress_bar_pulse, &
@@ -56,8 +56,10 @@ module handlers
   & gtk_window_set_default_size, gtk_window_set_title, &
   & g_signal_connect, gtk_init, FALSE, TRUE, c_null_char, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&
   & GTK_WINDOW_TOPLEVEL, c_null_ptr, gtk_grid_set_row_homogeneous, &
-  & gtk_grid_set_column_homogeneous
-
+  & gtk_grid_set_column_homogeneous, &
+  & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
+  & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
+      
   use cairo, only: cairo_create, cairo_curve_to, cairo_destroy, cairo_line_to, &
   & cairo_move_to, cairo_paint, cairo_set_line_width, cairo_set_source, &
   & cairo_set_source_rgb, cairo_stroke
@@ -305,13 +307,18 @@ program gtkFortran
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   !call gtk_window_set_default_size(window, 500, 500)
   call gtk_window_set_title(window, "GTK & Fortran are good friends"//c_null_char)
-  call gtk_container_set_border_width (window, 10_c_int)
   call g_signal_connect (window, "delete-event"//c_null_char, c_funloc(delete_event))
   call g_signal_connect (window, "destroy"//c_null_char, c_funloc(destroy))
 
   table = gtk_grid_new ()
   call gtk_grid_set_column_homogeneous(table, TRUE)
   call gtk_grid_set_row_homogeneous(table, TRUE)
+! Set the border width around the container:
+  call gtk_widget_set_margin_start (table, 10_c_int)
+  call gtk_widget_set_margin_end (table, 10_c_int)
+  call gtk_widget_set_margin_top (table, 10_c_int)
+  call gtk_widget_set_margin_bottom (table, 10_c_int)  
+  
   call gtk_container_add (window, table)
 
   button1 = gtk_button_new_with_label ("Button1"//c_null_char)
