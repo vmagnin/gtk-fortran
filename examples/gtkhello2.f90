@@ -20,9 +20,9 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Jerry DeLisle , Tobias Burnus, and Vincent Magnin, 01-23-2011
+! Jerry DeLisle , Tobias Burnus, and Vincent Magnin, 2011-01-23
 ! Data passing: James Tappin
-! Last modified: 03-13-2011
+! Last modified: 2020-02-12
 
 module handlers
   use gtk, only: gtk_main_quit, FALSE
@@ -90,7 +90,7 @@ program gtkFortran
   use iso_c_binding, only: c_ptr, c_funloc, c_loc, c_int
   use gtk, only: gtk_init, gtk_window_new, GTK_WINDOW_TOPLEVEL, gtk_window_set_title, &
       & gtk_container_set_border_width, g_signal_connect, gtk_box_new, gtk_container_add, &
-      & gtk_button_new_with_label, gtk_box_pack_start, gtk_widget_show, gtk_main, FALSE, &
+      & gtk_button_new_with_label, gtk_widget_show, gtk_main, &
       & c_null_char, GTK_ORIENTATION_HORIZONTAL
   ! The "only" statement can divide the compilation time by a factor 10 !
   use handlers
@@ -116,20 +116,20 @@ program gtkFortran
   call gtk_container_add (window, box1)
 
   button1 = gtk_button_new_with_label ("Button1"//c_null_char)
-  call gtk_box_pack_start (box1, button1, FALSE, FALSE, 0_c_int)
+  call gtk_container_add (box1, button1)
   call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(button1clicked))
   call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(hello))
   call gtk_widget_show (button1)
 
   ! This is an example of passing data to the callback function:
   button2 = gtk_button_new_with_label ("Button2"//c_null_char)
-  call gtk_box_pack_start (box1, button2, FALSE, FALSE, 0_c_int)
+  call gtk_container_add (box1, button2)
   call g_signal_connect (button2, "clicked"//c_null_char, c_funloc(button2clicked), &
        & c_loc(val))
   call gtk_widget_show (button2)
 
   button3 = gtk_button_new_with_label ("Exit"//c_null_char)
-  call gtk_box_pack_start (box1, button3, FALSE, FALSE, 0_c_int)
+  call gtk_container_add (box1, button3)
   call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(destroy))
   call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(hello))
   call gtk_widget_show (button3)
