@@ -1,6 +1,6 @@
-Last update: 2020-02-07
+Last update: 2020-02-12
 
-Building & Installing GtkFortran
+Building & Installing gtk-fortran
 ================================
 
 The build install system uses `cmake`.
@@ -28,16 +28,16 @@ cmake variables are set by using `-D<variable>=<value>`, for example to change t
 Useful variables that are specific to gtk-fortran are:
 
        EXCLUDE_PLPLOT -- set this to disable building the plplot
-         integration even if plplot is found
+         integration even if PLplot is found.
        NO_BUILD_HL -- set this to disable building the High Level sub-library 
-         (includes PLplot and sketcher)
+         (includes PLplot and sketcher).
+       NO_BUILD_EXAMPLES -- set this to prevent compiling the example
+         programs, also mostly useful for packagers.
        INSTALL_EXAMPLES -- set this to install the source code of the
          examples into
          ${CMAKE_INSTALL_DATAROOTDIR/gtk-fortran/examples<gtkversion>,
          this would for example be useful if you were making a binary
          package of gtk-fortran.
-       NO_BUILD_EXAMPLES -- set this to prevent compiling the example
-         programs, also mostly useful for packagers.
 
 To interactively control the build, use `ccmake` in place of `cmake`
 
@@ -59,15 +59,12 @@ Use MSYS2-MINGW64 and use same commands as under Linux, except:
 Dependencies
 ------------
 
-You need a Fortran compiler with the ISO_C_BINDING module, i.e. compliant with 
-the Fortran 2003 standard, for example gfortran>=4.6.
-
-gtk-fortran needs GTK>=2.24 and the associated development files.
-For 2.xx use the "gtk2" git branch, for 3.x use the "gtk3" branch.
-
-The build system needs CMake 3.4 or better and pkg-config.
-
-PLplot is used if available (you need the development files).
+- A Fortran compiler with the ISO_C_BINDING module, i.e. compliant with 
+the Fortran 2003 standard, for example gfortran.
+- GTK and the associated development files. For 2.xx use the "gtk2"
+  git branch, for 3.x use the "gtk3" branch.
+- CMake >= 3.4 or better and pkg-config.
+- PLplot is used if available (you need the development files).
 
 
 Known issues
@@ -84,7 +81,7 @@ On Linux and Unix systems the build system generates a pkg-config file
 and installs it. So building a single source file application should be
 as simple as:
 
-    gfortran my_app.f90 `pkg-config --cflags --libs gtk-fortran`
+    gfortran my_app.f90 $(pkg-config --cflags --libs gtk-3-fortran)
 
 If you have made a default install to `/usr/local` you *may* need to run:
 
