@@ -32,13 +32,10 @@ module v_handlers
   use gtk_sup
   use gtk_hl
 
-
   !********************************
   ! Gtk modules for hl_cairo_viewer.f90
   use cairo, only: cairo_status, cairo_status_to_string
-
   use gdk_pixbuf, only: gdk_pixbuf_get_height, gdk_pixbuf_get_width
-
   use gtk, only: gtk_combo_box_get_active, gtk_combo_box_set_active, &
        & gtk_container_add, gtk_main, gtk_main_quit, gtk_widget_set_sensitive, &
        & gtk_widget_show_all, gtk_init, TRUE, FALSE
@@ -47,7 +44,6 @@ module v_handlers
 
   character(len=256), dimension(:), allocatable :: file_list
   integer(kind=c_int) :: current_file
-
   type(c_ptr) :: tl_window, view, prev, next, select
 
 contains
@@ -103,7 +99,6 @@ contains
     character(len=256), dimension(:), allocatable :: new_files, tmp
     logical, pointer :: idelete
     integer(kind=c_int) :: ipick, i
-
 
     ipick = hl_gtk_file_chooser_show(new_files, &
          & create=FALSE, multiple=TRUE, filter=["image/*"], &

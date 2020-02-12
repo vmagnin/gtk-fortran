@@ -92,7 +92,6 @@ program combo_demo
   call hl_gtk_box_pack(box, c1)
 
   ! One without
-
   c2 = hl_gtk_combo_box_new(changed=c_funloc(c_change), data=c_loc(d2))
   call hl_gtk_box_pack(box, c2)
 
@@ -106,7 +105,6 @@ program combo_demo
   call hl_gtk_box_pack(box, qbut)
 
   ! Realize & enter event loop
-
   call gtk_widget_show_all(win)
 
   call gtk_main

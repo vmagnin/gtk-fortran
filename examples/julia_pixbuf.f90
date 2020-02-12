@@ -64,15 +64,11 @@ module handlers
 
   use cairo, only: cairo_paint, cairo_set_source, cairo_surface_write_to_png,&
                  & cairo_surface_destroy
-
   use gdk, only: gdk_cairo_set_source_pixbuf, &
                & gdk_cairo_surface_create_from_pixbuf
-
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                        &gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-
   use g, only: g_usleep
-
   use iso_c_binding, only: c_int, c_ptr, c_char
 
   implicit none

@@ -32,16 +32,13 @@ module ln_handlers
        &ggle_button_set_active, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
        & gtk_init, GTK_POLICY_NEVER 
   use g, only: alloca, g_object_set_property
-
   use gdk_pixbuf_hl
 
   implicit none
 
   ! The widgets. (Strictly only those that need to be accessed
   ! by the handlers need to go here).
-
-  type(c_ptr) :: ihwin,ihscrollcontain,ihlist, base, &
-       &  qbut, lbl
+  type(c_ptr) :: ihwin,ihscrollcontain,ihlist, base, qbut, lbl
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
@@ -53,7 +50,6 @@ contains
 
   subroutine list_select(list, gdata) bind(c)
     type(c_ptr), value :: list, gdata
-
     integer(kind=c_int) :: nsel
     integer(kind=c_int), dimension(:), allocatable :: selections
     real(kind=c_double) :: x, x3
@@ -98,7 +94,6 @@ contains
     type(c_ptr), value :: renderer, path, text, gdata
 
     ! Callback for edited cells. 
-
     character(len=200) :: fpath, ftext
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
@@ -149,18 +144,17 @@ contains
     call hl_gtk_listn_set_cell(ihlist, irow, 9_c_int, svalue=trim(ftext))
 
   end subroutine ccell_edit
+
   subroutine ccell_changed(renderer, path, iter, gdata) bind(c)
     type(c_ptr), value :: renderer, path, iter, gdata
 
     ! Basic callback to report what's called
-
     character(len=200) :: fpath
 
     call c_f_string(path, fpath)
     print *, "Combo sent changed signal from ", trim(fpath)
 
   end subroutine ccell_changed
-
   
   subroutine cell_clicked(renderer, path, gdata) bind(c)
     type(c_ptr), value :: renderer, path, gdata
@@ -187,6 +181,7 @@ contains
          & logvalue= .not. state)
 
   end subroutine cell_clicked
+
   subroutine rcell_clicked(renderer, path, gdata) bind(c)
     type(c_ptr), value :: renderer, path, gdata
 
@@ -238,7 +233,6 @@ contains
     ! Formatting routine attached via hl_gtk_listn_set_cell_data_func
     ! Note that the column index is passed via the DATA argument, so
     ! far as I can see the only other way is to use constants.
-
     character(len=20) :: rstring
     real(kind=c_double) :: dval
     type(gvalue), target :: dvalue, svalue
@@ -377,11 +371,9 @@ program list_rend
   call hl_gtk_box_pack(base,qbut)
 
   ! realize the window
-
   call gtk_widget_show_all(ihwin)
 
   ! Event loop
-
   call gtk_main()
 
 end program list_rend

@@ -33,12 +33,10 @@ module ln_handlers
        & gtk_init
   use g, only: alloca, g_object_set_property
 
-
   implicit none
 
   ! The widgets. (Strictly only those that need to be accessed
   ! by the handlers need to go here).
-
   type(c_ptr) :: ihwin,ihscrollcontain,ihlist, base, &
        &  qbut, lbl
 
@@ -52,7 +50,6 @@ contains
 
   subroutine list_select(list, gdata) bind(c)
     type(c_ptr), value :: list, gdata
-
     integer(kind=c_int) :: nsel
     integer(kind=c_int), dimension(:), allocatable :: selections
     integer(kind=c_int) :: n, n3
@@ -99,7 +96,6 @@ contains
     ! Formatting routine attached via hl_gtk_listn_set_cell_data_func
     ! Note that the column index is passed via the DATA argument, so
     ! far as I can see the only other way is to use constants.
-
     character(len=10) :: rstring
     integer(kind=c_int) :: ival
     type(gvalue), target :: ivalue, svalue
@@ -124,7 +120,6 @@ contains
     type(c_ptr), value :: renderer, path, text, gdata
 
     ! Callback for edited cells. 
-
     character(len=200) :: fpath, ftext
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
@@ -247,13 +242,11 @@ program list_n
   call hl_gtk_box_pack(base,qbut)
 
   ! realize the window
-
   print *, "Created"
   call gtk_widget_show_all(ihwin)
   print *, "Realized"
 
   ! Event loop
-
   call gtk_main()
 
 end program list_n

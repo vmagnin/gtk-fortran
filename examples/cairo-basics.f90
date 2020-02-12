@@ -135,7 +135,7 @@ program cairo_basics
   call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
 
   my_drawing_area = gtk_drawing_area_new()
-  ! In GTK 3.0 "expose-event" was replaced by "draw" event:
+  ! In GTK 3 "expose-event" was replaced by "draw" event:
   call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(expose_event))
   call gtk_container_add(my_window, my_drawing_area)
   call gtk_widget_show (my_drawing_area)

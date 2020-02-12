@@ -19,7 +19,6 @@ program list_demo
   use g, only: g_object_unref, g_value_init, g_value_set_static_string, g_value_s&
   &et_uint
 
-
   enum, bind(c)
      enumerator :: COL_NAME = 0
      enumerator :: COL_AGE
@@ -58,11 +57,9 @@ contains
     val = g_value_init(val, G_TYPE_UINT)
 
     ! Create the list store
-
     store = gtk_list_store_newv(NUM_COLS, c_loc(ctypes))
 
     ! Append row 1 and add data
-
     call gtk_list_store_append(store, c_loc(iter))
     call g_value_set_static_string(c_loc(valt), "Heinz El-Mann"//c_null_char)
     call gtk_list_store_set_value(store, c_loc(iter), COL_NAME, &
@@ -95,7 +92,6 @@ contains
     view = gtk_tree_view_new ()
 
     ! --- Column #1 ---
-
     renderer = gtk_cell_renderer_text_new ()
     col = gtk_tree_view_column_new()
     call gtk_tree_view_column_pack_start(col, renderer, FALSE)
@@ -106,7 +102,6 @@ contains
 
 
     ! --- Column #2 ---
-
     col = gtk_tree_view_column_new()
     renderer = gtk_cell_renderer_text_new ()
     call gtk_tree_view_column_pack_start(col, renderer, FALSE)

@@ -130,7 +130,6 @@ program hl_assistant
        & destroy=c_funloc(destroy_asstnt), wsize=[450_c_int, 300_c_int], &
        & close=c_funloc(asstnt_close))
 
-
   ! Intro page
   junk = gtk_label_new("This is an example of a GtkAssistant"//c_new_line// &
        & "by clicking the forward button,"//c_new_line// &
@@ -140,7 +139,6 @@ program hl_assistant
        & page_title="Introduction"//c_null_char)
 
   ! Name entry
-  
   jb = hl_gtk_box_new(horizontal=TRUE, spacing=5_c_int)
   call gtk_widget_set_halign (jb, GTK_ALIGN_FILL)
   call gtk_widget_set_valign (jb, GTK_ALIGN_CENTER)
@@ -160,14 +158,12 @@ program hl_assistant
   call hl_gtk_assistant_add_page(asstnt, jb, GTK_ASSISTANT_PAGE_CONTENT)
 
   ! Check button
-  
   junk = hl_gtk_check_button_new("Click to continue"//c_null_char, &
        &toggled = c_funloc(check_tog))
   call hl_gtk_assistant_add_page(asstnt, junk, GTK_ASSISTANT_PAGE_CONTENT, &
        & page_title="Click the Check Button"//c_null_char)
 
   ! Progress
-  
   jb = hl_gtk_box_new(horizontal=TRUE)  
   call gtk_widget_set_halign (jb, GTK_ALIGN_FILL)
   call gtk_widget_set_valign (jb, GTK_ALIGN_CENTER)
@@ -184,7 +180,6 @@ program hl_assistant
        & page_title="Applying"//c_null_char)
 
   ! Confirmation page
-
   junk = gtk_label_new ("Text has been entered in the label and"//c_new_line// &
        & "the combo box is clicked. If you are done, then"//c_new_line// &
        & "it is time to leave!"//c_null_char)

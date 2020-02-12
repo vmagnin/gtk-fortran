@@ -37,7 +37,6 @@ module l1_handlers
 
   ! The widgets. (Strictly only those that need to be accessed
   ! by the handlers need to go here).
-
   type(c_ptr) :: ihwin,ihscrollcontain,ihlist, base, &
        & newline, qbut, dbut, dabut, jbox, jbox2, abut, swbut
 
@@ -236,11 +235,9 @@ program list1
   call hl_gtk_box_pack(base,qbut)
 
   ! realize the window
-
   call gtk_widget_show_all(ihwin)
 
   ! Event loop
-
   call gtk_main()
 
 end program list1

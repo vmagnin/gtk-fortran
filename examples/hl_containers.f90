@@ -25,20 +25,6 @@ contains
     call c_f_pointer(gdata, fdata)
     print *, "Pressed button ", fdata
   end subroutine bpress
-
-! Commented because does not work with GTK 3 :
-!   subroutine add_row(widget, gdata) bind(c)
-!     type(c_ptr), value :: widget, gdata
-! 
-!     call hl_gtk_table_expand(table, ny=1_c_int)
-!   end subroutine add_row
-!   
-!   subroutine add_col(widget, gdata) bind(c)
-!     type(c_ptr), value :: widget, gdata
-! 
-!     call hl_gtk_table_expand(table, nx=1_c_int)
-!   end subroutine add_col
-
 end module handlers
 
 program containers
@@ -49,7 +35,6 @@ program containers
   implicit none
   integer(kind=c_int) :: ipos
   type(c_ptr) :: junk
-!  type(c_ptr) :: jb
   integer(kind=c_int) :: i
   integer(kind=c_int), dimension(6), target :: bval = (/ (i, i = 1,6) /)
   character(len=15) :: ltext
@@ -90,15 +75,6 @@ program containers
      ipos = hl_gtk_notebook_add_page(nbook, junk, label=trim(ltext)//c_null_char, &
           & reorderable=TRUE)
   end do
-
-  ! Add rows / columns (commented because does not work with GTK 3)
-  ! See https://developer.gnome.org/gtk3/stable/GtkTable.html
-!   jb = hl_gtk_box_new(horizontal=TRUE)
-!   junk = hl_gtk_button_new("Add Row"//c_null_char, clicked=c_funloc(add_row))
-!   call hl_gtk_box_pack(jb, junk)
-!   junk = hl_gtk_button_new("Add col"//c_null_char, clicked=c_funloc(add_col))
-!   call hl_gtk_box_pack(jb, junk)
-!   call hl_gtk_box_pack(base, jb, expand=FALSE)
 
   ! And a quit button
   junk = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))

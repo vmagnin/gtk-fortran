@@ -27,7 +27,6 @@
 module handlers
   use iso_c_binding
 
-
   !********************************
   ! Gtk modules for hl_cairo1.f90
   use cairo, only: cairo_arc, cairo_curve_to, cairo_get_target, &
@@ -35,18 +34,14 @@ module handlers
        & cairo_rectangle, cairo_select_font_face, cairo_set_font_size, &
        & cairo_set_line_width, cairo_set_source_rgb, cairo_show_text, &
        & cairo_stroke, cairo_surface_write_to_png
-
   use gdk, only: gdk_device_get_name, gdk_device_get_source, &
        & gdk_event_get_source_device, gdk_keyval_from_name, gdk_keyval_name
-
   use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
        & gtk_widget_queue_draw, gtk_widget_show_all, gtk_init, TRUE, FALSE, &
        & GDK_BUTTON_PRESS, GDK_2BUTTON_PRESS, GDK_BUTTON_RELEASE, &
        & GDK_KEY_PRESS, GDK_ENTER_NOTIFY, GDK_LEAVE_NOTIFY, GDK_CONTROL_MASK, &
        & GDK_POINTER_MOTION_MASK, GDK_BUTTON_MOTION_MASK, &
        & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
-
-
   use gdk_events
   use gdk_pixbuf_hl
   use gtk_draw_hl
@@ -68,7 +63,7 @@ contains
     use iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
-    !    run_status = FALSE
+
     call gtk_main_quit
     ret = FALSE
   end function delete_h
@@ -335,13 +330,11 @@ program cairo_basics_click
        & event_mask=GDK_BUTTON_MOTION_MASK)
 
   call gtk_container_add(my_window, my_scroll_box)
-!  call gtk_widget_add_events(my_window, themask)
 
   call gtk_widget_show_all (my_window)
   call draw_pattern(my_drawing_area)
 
   ! The window stays opened after the computation:
-
   call gtk_main()
   print *, "All done"
 

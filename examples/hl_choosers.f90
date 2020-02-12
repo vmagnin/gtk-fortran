@@ -27,21 +27,17 @@
 
 module handlers
   use gtk_hl
-
   use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
        &text_view_new, gtk_widget_set_sensitive, gtk_widget_show, gtk_widget_show_all,&
        & gtk_window_new, gtk_init, gtk_file_chooser_get_filename, TRUE, FALSE
-
   use g, only: alloca
 
   implicit none
 
   ! Those widgets that need to be addressed explicitly in the handlers
-
   type(c_ptr) :: window, sbut, sabut, tedit
 
   ! Other variables that need to be shared between handlers
-
   logical, private :: file_is_changed = .FALSE.
   character(len=120), private :: filename=''
 
@@ -135,7 +131,6 @@ contains
     call gtk_window_set_title(window, trim(filename(idxs:))//c_null_char)
 
     ! We manually reset the changed flag as the text box signal handler sets it.
-
     file_is_changed = .FALSE.
     call gtk_widget_set_sensitive(sabut, TRUE)
     call gtk_widget_set_sensitive(sbut, FALSE)
@@ -236,7 +231,6 @@ program choosers_demo
   call gtk_init()
 
   ! Create a window and a column box
-
   window = hl_gtk_window_new("Choosers Demo"//c_null_char, &
        & destroy=c_funloc(my_destroy))
 
@@ -244,7 +238,6 @@ program choosers_demo
   call gtk_container_add(window, base)
 
   ! A row of buttons
-
   jb = hl_gtk_box_new(horizontal=TRUE, homogeneous=TRUE)
   call hl_gtk_box_pack(base, jb)
   junk = hl_gtk_button_new("Open"//c_null_char, clicked=c_funloc(open_file))
@@ -260,7 +253,6 @@ program choosers_demo
   call hl_gtk_box_pack(jb, sabut)
 
   ! A multiline text editor in which to display the file.
-
   tedit = hl_gtk_text_view_new(jb, editable=TRUE, &
        & changed=c_funloc(file_edited), ssize = (/ 750_c_int, 400_c_int /) )
   call hl_gtk_box_pack(base, jb)
@@ -270,7 +262,6 @@ program choosers_demo
   call hl_gtk_box_pack(base, junk)
 
   ! Realise & enter event loop
-
   call gtk_widget_show_all(window)
 
   call gtk_main()

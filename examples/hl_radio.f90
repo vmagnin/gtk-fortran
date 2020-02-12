@@ -113,7 +113,6 @@ program radio
   call gtk_widget_show_all(window)
 
   ! Event loop
-
   call gtk_main
 
 end program radio

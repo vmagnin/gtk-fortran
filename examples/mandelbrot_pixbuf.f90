@@ -34,12 +34,9 @@ module handlers
   &c_null_char, GTK_WINDOW_TOPLEVEL, gtk_main_quit
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
-
   use gdk, only: gdk_cairo_set_source_pixbuf
-
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels,&
                        &gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-
   use iso_c_binding, only: c_int, c_ptr, c_char
 
   implicit none

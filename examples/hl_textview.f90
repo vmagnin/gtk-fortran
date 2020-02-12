@@ -18,8 +18,8 @@ module handlers
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
+    
     print *, "Exit called"
-!    call gtk_widget_destroy(win)
     call gtk_main_quit ()
   end subroutine my_destroy
 
@@ -38,6 +38,7 @@ contains
     deallocate(ncl)
 
   end subroutine tv_change
+
   subroutine tv_ins(widget,iter, text, nins, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     type(c_ptr), value :: iter, text
@@ -160,8 +161,7 @@ program ztext
 
   implicit none
 
-
-  ! Initialize pilib
+  ! Initialize GTK
   call gtk_init()
 
   ! Make a window and a vertical box
@@ -179,7 +179,6 @@ program ztext
   call hl_gtk_box_pack(box, contain)
 
   ! Make a single line text entry, and buttons to append or place at cursor.
-
   entry = hl_gtk_entry_new(60_c_int, editable=TRUE, tooltip = &
        & "Enter text here, then click 'append' or 'insert'"//c_null_char, &
        & changed=c_funloc(entry_text))

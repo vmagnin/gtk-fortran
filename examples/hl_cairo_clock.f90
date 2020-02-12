@@ -32,17 +32,13 @@ module cl_handlers
        & cairo_select_font_face, cairo_set_font_size, cairo_set_line_cap, &
        & cairo_set_line_width, cairo_set_source_rgb, cairo_set_source_rgba, &
        & cairo_show_text, cairo_stroke
-
   use g, only: g_timeout_add
-
   use gdk, only: gdk_keyval_from_name
-
   use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
        & gtk_widget_destroy, gtk_widget_get_allocation, gtk_widget_queue_draw, &
        & gtk_widget_show_all, gtk_init, TRUE, FALSE, GDK_CONTROL_MASK, &
        & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, &
        & CAIRO_FONT_WEIGHT_BOLD
-
   use gtk_hl
   use gtk_draw_hl
   use gdk_events
@@ -84,7 +80,6 @@ contains
     integer :: i
     real(kind=c_double) :: r0, r1, x0, x1, y0, y1, th, xc, yc, ycs
     real(kind=c_double) :: xb, xt, yb, yt, radius, scale_factor
-
 
     show_time = TRUE
 
@@ -199,7 +194,6 @@ contains
        call cairo_stroke(cr)
     end do
 
-
     !  Date
     if (dat(5) >= 12) then
        call cairo_set_source_rgb(cr, 0._c_double, 0._c_double, 0._c_double)
@@ -225,7 +219,6 @@ contains
     call cairo_show_text(cr, sdate)
     call cairo_set_font_size (cr, 9._c_double*scale_factor)
     call cairo_show_text(cr, ' '//mnames(dat(2)))
-
 
     ! Second hand
     ! Trail
@@ -255,7 +248,6 @@ contains
     call cairo_move_to(cr, x0, y0)
     call cairo_line_to(cr, x1, y1)
     call cairo_stroke(cr)
-
 
     ! Hour hand
     call cairo_set_source_rgb(cr, 0.1_c_double, 0.8_c_double, &

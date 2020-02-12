@@ -29,7 +29,6 @@ module handlers
        & gtk_main_iteration, gtk_main_iteration_do, gtk_main_quit, gtk_widget_destroy,&
        & gtk_progress_bar_new, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
        & gtk_init
-
   use g, only: g_usleep
 
   implicit none

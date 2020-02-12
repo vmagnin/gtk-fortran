@@ -171,12 +171,7 @@ contains
     integer :: i
     integer :: errors
     character(kind=c_char) :: c
-  !    !  gchar g_ascii_tolower (gchar c) G_GNUC_CONST;
-  !    function g_ascii_tolower(c) bind(c) 
-  !      use iso_c_binding, only: c_char
-  !      character(kind=c_char) :: g_ascii_tolower
-  !      character(kind=c_char), value :: c
-  !    end function
+
     errors = 0
     do i=0, 64, +1
       c = char(i)

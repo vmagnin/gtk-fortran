@@ -27,14 +27,10 @@
 
 module handlers
   use gdk_events, only: gdkeventbutton, gdkeventscroll
-
   use cairo, only: cairo_destroy, cairo_paint
-
   use gdk, only: gdk_cairo_set_source_pixbuf
-
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-
   use gtk, only: gtk_bin_get_child, gtk_box_new, gtk_box_pack_start, &
        & gtk_container_add, gtk_drawing_area_new, gtk_event_box_new, &
        & gtk_events_pending, gtk_label_new, gtk_label_set_text, &
@@ -45,7 +41,6 @@ module handlers
        & GDK_SCROLL_UP, GDK_SCROLL_DOWN, GDK_SHIFT_MASK, GDK_CONTROL_MASK, &
        & GDK_BUTTON_PRESS_MASK, GDK_SCROLL_MASK, GTK_ORIENTATION_VERTICAL, &
        & GTK_WINDOW_TOPLEVEL, GDK_COLORSPACE_RGB, gtk_main, gtk_main_quit
-
   use iso_c_binding
 
   implicit none

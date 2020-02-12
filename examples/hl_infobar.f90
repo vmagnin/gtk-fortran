@@ -50,6 +50,7 @@ module ib_handers
 end enum
 
 contains
+
 subroutine delete_h(widget, data) bind(c)
  type(c_ptr), value :: widget, data
 

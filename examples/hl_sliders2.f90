@@ -136,7 +136,6 @@ program sliders_2
   call hl_gtk_box_pack(base, spin)
 
   ! Upper and lower bound entry boxes
-
   box = hl_gtk_box_new(horizontal=TRUE)
   call hl_gtk_box_pack(base, box)
 
@@ -155,7 +154,6 @@ program sliders_2
 
   ! Finally make a quit button, put that in the vertical box and put
   ! the vertical box in the window.
-
   qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(base, qbut)
 

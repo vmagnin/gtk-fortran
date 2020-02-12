@@ -136,7 +136,7 @@ program tree
   integer(kind=type_kind), dimension(6) :: ctypes
   character(len=20), dimension(6) :: titles
   integer(kind=c_int), dimension(6) :: sortable, editable
-  ! Initialize GTK+
+  ! Initialize GTK
   call gtk_init()
 
   ! Create a window that will hold the widget system
@@ -226,11 +226,9 @@ program tree
   call hl_gtk_box_pack(base,qbut)
 
   ! realize the window
-
   call gtk_widget_show_all(ihwin)
 
   ! Event loop
-
   call gtk_main()
 
 end program tree
