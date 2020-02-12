@@ -26,9 +26,11 @@
 # Contributed by James Tappin 8/14/2012.
 
 
-# Find the enumerator constants in a fortran source file and write 
+# Find the enumerator constants in gtkenums-auto.f90 and write 
 # them out to a simple list.
 
+use strict ;
+use warnings ;
 use Getopt::Long;
 
 my $infile="gtkenums-auto.f90";
