@@ -80,6 +80,7 @@ endif()
 if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
     # gfortran compiler:
     set(CMAKE_Fortran_FLAGS_DEBUG
+        # Only gtkf-sketcher.f90 needs Fortran 2008 for execute_command_line():
         "-g -pthread -Wall -Wextra -pedantic -std=f2008 -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
     set(CMAKE_Fortran_FLAGS_RELEASE "-pthread -O3 -mtune=native -march=native")
     if (UNIX)
