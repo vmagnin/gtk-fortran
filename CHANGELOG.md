@@ -18,6 +18,7 @@ The main objective of this release is to clean up the code and prepare it for th
 - The master branch has been renamed gtk2.
 - src/gdkevents-auto3.f90: no reason to indicate the GTK version for that file. The "3" was removed.
 - src/gtk-3-fortran.pc.in => src/gtk-fortran.pc.in: improved pkg-config file.
+- README-high-level now using Markdown: README-high-level.md
 
 ### Removed
 - Gtkextra directory: that directory was not maintained for 9 years, the gtkextra library is not maintained anymore and is based on GTK 2. The gtksheet part was forked (https://github.com/fpaquet/gtksheet), but it is necessary to reduce the amount of work to maintain gtk-fortran. So it was removed from the gtk3 branch.
