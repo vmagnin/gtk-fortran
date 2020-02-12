@@ -21,19 +21,15 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by Vincent Magnin, Jerry DeLisle, "jtappin" and Tobias Burnus, 01-23-2011
-! Last modification: 06-26-2016
+! Contributed by Vincent Magnin, Jerry DeLisle, "jtappin" and Tobias Burnus, 2011-01-23
+! Last modification: 2020-02-12
 
 module gtk
-  !use iso_c_binding, only: c_null_char, c_null_ptr, c_null_funptr, c_ptr, c_funptr, c_char, c_int, c_long
   use iso_c_binding
   implicit none
   include "gtkenums-auto.f90"
 
   interface
-    !**************************************************************************
-    ! You can add your own additional interfaces here:
-    !**************************************************************************
     subroutine gtk_init_real(argc,argv) bind(c,name='gtk_init')
       use iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: argc
@@ -47,11 +43,7 @@ module gtk
     !**************************************************************************
   end interface 
 
-  ! Some useful parameters to ease coding:
-!  character(kind=c_char), parameter :: CNULL = c_null_char
-!  type(c_ptr), parameter       :: NULL = c_null_ptr
-!  type(c_funptr), parameter    :: FNULL = c_null_funptr
-  ! In GTK+ gboolean is int:
+  ! In GLib, a gboolean is int:
   integer(c_int), parameter   :: FALSE = 0
   integer(c_int), parameter   :: TRUE = 1
 
@@ -104,7 +96,6 @@ contains
     call gtk_disable_setlocale()
 
     call gtk_init_real (argc, c_loc(argv))
-    !deallocate(argv)
 
     ! carg being local can be deallocated:
     deallocate(carg)
