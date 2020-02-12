@@ -1,18 +1,18 @@
 .TH "GTK-FORTRAN-MODSCAN" "1" "16 August 2012" "Function scanner for gtk-fortran" 
 .SH NAME
-gtk-@GTK@-fortran-modscan \- scan one or more Fortran sources for gtk+
+gtk-@GTK@-fortran-modscan \- scan one or more Fortran sources for GTK
 functions.
 .SH SYNOPSIS
 .B gtk\-@GTK@\-fortran-modscan
 .I [\-\-csv=CSVFILE] [\-\-enum=ENUMFILE] [\-\-out=OUTFILE] [\-\-[no]link] [INFILES]
 
 .SH DESCRIPTION
-gtk\-@GTK@\-fortran-modscan is a utility to find the gtk+ (and related
+gtk\-@GTK@\-fortran-modscan is a utility to find the GTK (and related
 library) functions used in a Fortran program and generate appropriate
 USE statements. Using the generated USE statements rather than the
 entire module(s) can produce a manyfold improvement in compilation
-times, and also any module files that use gtk+ will be many times
-smaller. This version uses the function lists for GTK+-@GTK@ by
+times, and also any module files that use GTK will be many times
+smaller. This version uses the function lists for GTK @GTK@ by
 default.
 
 .SH OPTIONS
