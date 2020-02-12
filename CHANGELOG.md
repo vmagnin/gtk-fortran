@@ -7,7 +7,7 @@ The main objective of this release is to clean up the code and prepare it for th
 
 ### Added
 - Experimental `meson.build` files have been added. Meson>=0.50.999 is needed. Commands are `meson buildmeson` and `ninja -C buildmeson`. You can install the library using `sudo ninja -C buildmeson install`, but there is still some problems for installing the `.mod` files (see https://github.com/mesonbuild/meson/issues/5374).
-- examples/menu2.f90: the menu.f90 example is based on deprecated functions.
+- examples/menu2.f90: that new example should work in GTK 4 (the menu.f90 example is based on deprecated functions).
 - CMake -D NO_BUILD_HL=true option to disable building the High Level sub-library (which includes PLplot and sketcher).
 - VERSIONS: a CSV file with the gtk-fortran, GTK, GLib and Ubuntu versions. Automatically created by the cfwrapper.py script. It will be used by the building system of the project.
 
@@ -33,6 +33,7 @@ The main objective of this release is to clean up the code and prepare it for th
 - mk_gtk_hl.pl: that script was used to manage GTK 2 & 3 differences in the gtk-\*hl-\*.f90 files.
 
 ### Fixed
+- FindGTK3.cmake: fixed GDKCONFIG issue ("missing: GTK3_GDKCONFIG_INCLUDE_DIR").
 - src/usemodules.py was printing false deprecated functions alerts in the hl files of the src directory.
 
 
