@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 02-21-2019, vmagnin 2019-03-21
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-02-13
 
 
 module global_widgets
@@ -44,7 +44,7 @@ module handlers
   &TRUE, FALSE, c_null_ptr, c_null_char, &
   &GDK_COLORSPACE_RGB, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
   &gtk_grid_new, gtk_grid_attach, gtk_container_add, gtk_button_new_with_label,&
-  &gtk_widget_show_all, gtk_box_new, gtk_box_pack_start, gtk_spin_button_new,&
+  &gtk_widget_show_all, gtk_box_new, gtk_spin_button_new,&
   &gtk_adjustment_new, gtk_spin_button_get_value, gtk_label_new, &
   &gtk_expander_new_with_mnemonic, gtk_expander_set_expanded, gtk_main_quit, &
   &gtk_toggle_button_new_with_label, gtk_toggle_button_get_active, gtk_notebook_new,&
@@ -60,8 +60,9 @@ module handlers
   &gtk_combo_box_text_append_text, gtk_combo_box_text_get_active_text, &
   &gtk_combo_box_text_insert_text, gtk_spin_button_set_value, gtk_spin_button_update,&
   &GTK_ORIENTATION_VERTICAL, gtk_grid_set_column_homogeneous, &
-  &gtk_grid_set_row_homogeneous, gtk_statusbar_remove_all
-
+  &gtk_grid_set_row_homogeneous, gtk_statusbar_remove_all, &
+  &gtk_widget_set_vexpand
+  
   use cairo, only: cairo_paint, cairo_set_source, cairo_surface_write_to_png,&
                  & cairo_surface_destroy
   use gdk, only: gdk_cairo_set_source_pixbuf, &
@@ -384,7 +385,7 @@ program julia
 
   ! We create a vertical box container:
   box1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10_c_int);
-  call gtk_box_pack_start (box1, expander, FALSE, FALSE, 0_c_int)
+  call gtk_container_add (box1, expander)
 
   ! The drawing area is contained in the vertical box:
   my_drawing_area = gtk_drawing_area_new()
@@ -392,7 +393,7 @@ program julia
 
   ! We define a notebook with two tabs "Graphics" and "Messages":
   notebook = gtk_notebook_new ()
-
+  call gtk_widget_set_vexpand (notebook, TRUE)
   notebookLabel1 = gtk_label_new_with_mnemonic("_Graphics"//c_null_char)
   firstTab = gtk_notebook_append_page (notebook, my_drawing_area, notebookLabel1)
 
@@ -406,13 +407,14 @@ program julia
   call gtk_container_add (scrolled_window, textView)
   secondTab = gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
 
-  call gtk_box_pack_start (box1, notebook, TRUE, TRUE, 0_c_int)
-
+  call gtk_container_add (box1, notebook)
+  call gtk_widget_set_vexpand (box1, TRUE)
+  
   ! The window status bar can be used to print messages:
   statusBar = gtk_statusbar_new ()
   message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
               & "Julia"//c_null_char), "Waiting..."//c_null_char)
-  call gtk_box_pack_start (box1, statusBar, FALSE, FALSE, 0_c_int)
+  call gtk_container_add (box1, statusBar)
 
   ! Let's finalize the GUI:
   call gtk_container_add (my_window, box1)
