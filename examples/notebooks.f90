@@ -57,8 +57,8 @@ end module
 
 
 module handlers
-  use gtk, only: g_signal_connect, gtk_init, gtk_button_new, gtk_button_new_with_label, gtk_check_button_new, &
-  & gtk_check_button_new_with_label, gtk_container_add, gtk_container_set_border_width, &
+  use gtk, only: g_signal_connect, gtk_init, gtk_button_new, gtk_button_new_with_label, &
+  & gtk_check_button_new, gtk_check_button_new_with_label, gtk_container_add, &
   & gtk_frame_new, gtk_label_new, gtk_main, gtk_main_quit, gtk_notebook_append_page, &
   & gtk_notebook_get_current_page, gtk_notebook_get_n_pages, &
   & gtk_notebook_get_show_border, gtk_notebook_get_show_tabs, gtk_notebook_get_tab_pos, &
@@ -70,8 +70,10 @@ module handlers
   & gtk_grid_new, gtk_widget_queue_draw, gtk_widget_set_size_request, gtk_widget_show, &
   & gtk_widget_show_all, gtk_window_new, gtk_window_set_title, &
   & FALSE, TRUE, c_null_char, GTK_WINDOW_TOPLEVEL, GTK_POS_TOP, &
-  & gtk_notebook_set_group_name, gtk_notebook_get_group_name
-
+  & gtk_notebook_set_group_name, gtk_notebook_get_group_name, &
+  & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
+  & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
+  
   use widgets
 
   implicit none
@@ -191,7 +193,6 @@ program notebook_example
   ! Properties of the main window :
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL)
   call gtk_window_set_title(mainwindow, "Notebook Example"//c_null_char)
-  call gtk_container_set_border_width (mainwindow, 10_c_int)
 
   ! Connect signals to the main window
   call g_signal_connect (mainwindow, "delete-event"//c_null_char, c_funloc(delete_event))
@@ -199,6 +200,11 @@ program notebook_example
 
   ! Container for notebook
   table = gtk_grid_new ()
+  ! Set the border width (10 pixels) around the container:
+  call gtk_widget_set_margin_start (table, 10_c_int)
+  call gtk_widget_set_margin_end (table, 10_c_int)
+  call gtk_widget_set_margin_top (table, 10_c_int)
+  call gtk_widget_set_margin_bottom (table, 10_c_int)
   call gtk_container_add (mainwindow, table)
  
   ! Create a new notebook, place the position of the tabs
@@ -217,7 +223,12 @@ program notebook_example
     write(istr,*)i
 
     frame = gtk_frame_new ("Append Frame "//trim(adjustl(istr))//c_null_char)
-    call gtk_container_set_border_width (frame, 10_c_int)
+      ! Set the border width (10 pixels) around the frame:
+    call gtk_widget_set_margin_start (frame, 10_c_int)
+    call gtk_widget_set_margin_end (frame, 10_c_int)
+    call gtk_widget_set_margin_top (frame, 10_c_int)
+    call gtk_widget_set_margin_bottom (frame, 10_c_int)
+  
     call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
 
     label = gtk_label_new ("Append Frame "//trim(adjustl(istr))//c_null_char)
@@ -243,7 +254,12 @@ program notebook_example
     write(istr,*) i
 
     frame = gtk_frame_new ("Prepend Frame "//trim(adjustl(istr))//c_null_char)
-    call gtk_container_set_border_width (frame, 10_c_int)
+    ! Set the border width (10 pixels) around the frame:
+    call gtk_widget_set_margin_start (frame, 10_c_int)
+    call gtk_widget_set_margin_end (frame, 10_c_int)
+    call gtk_widget_set_margin_top (frame, 10_c_int)
+    call gtk_widget_set_margin_bottom (frame, 10_c_int)
+    
     call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
 
     label = gtk_label_new ("Prepend Frame "//trim(adjustl(istr))//c_null_char)
@@ -297,7 +313,12 @@ program notebook_example
     write(istr,*) i
 
     frame = gtk_frame_new ("Notebook 2 - Frame "//trim(adjustl(istr))//c_null_char)
-    call gtk_container_set_border_width (frame, 10_c_int)
+    ! Set the border width (10 pixels) around the frame:
+    call gtk_widget_set_margin_start (frame, 10_c_int)
+    call gtk_widget_set_margin_end (frame, 10_c_int)
+    call gtk_widget_set_margin_top (frame, 10_c_int)
+    call gtk_widget_set_margin_bottom (frame, 10_c_int)
+    
     call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
 
     label = gtk_label_new ("Notebook 2 - Frame "//trim(adjustl(istr))//c_null_char)
