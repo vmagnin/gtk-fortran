@@ -24,11 +24,11 @@
 ! menu.xml must be copied to the same directory as the simplemenu executable
 !
 ! Contributed by Jens Hunger
-! Last modified: 05-04-2011, vmagnin+Ian Harvey 02-21-2019
+! Last modified: 2011-05-04, vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-02-13
 
 module handlers
   use gtk, only: gtk_action_group_add_action, gtk_action_group_get_action, gtk_ac&
-  &tion_group_new, gtk_action_new, gtk_box_pack_start, gtk_container_add, gtk_mai&
+  &tion_group_new, gtk_action_new, gtk_container_add, gtk_mai&
   &n, gtk_main_quit, gtk_ui_manager_add_ui, gtk_ui_manager_add_ui_from_file, gtk_&
   &ui_manager_add_ui_from_string, gtk_ui_manager_get_widget, gtk_ui_manager_inser&
   &t_action_group, gtk_ui_manager_new, gtk_box_new, gtk_widget_set_size_request,&
@@ -266,7 +266,7 @@ program simplemenu
   ! Container for menu
   box = gtk_box_new (GTK_ORIENTATION_VERTICAL,0_c_int)
   call gtk_container_add (mainwindow, box)
-  call gtk_box_pack_start (box, gtk_ui_manager_get_widget (menu_manager, "/MainMenu"//c_null_char), FALSE, FALSE, 0_c_int)
+  call gtk_container_add (box, gtk_ui_manager_get_widget (menu_manager, "/MainMenu"//c_null_char))
 
   ! Show all
   call gtk_widget_show_all (mainwindow)

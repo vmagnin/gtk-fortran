@@ -23,7 +23,7 @@
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
-! Last modifications: vmagnin 2020-02-11
+! Last modifications: vmagnin 2020-02-13
 
 module handlers
   use gdk_events, only: gdkeventbutton, gdkeventscroll
@@ -31,7 +31,7 @@ module handlers
   use gdk, only: gdk_cairo_set_source_pixbuf
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-  use gtk, only: gtk_bin_get_child, gtk_box_new, gtk_box_pack_start, &
+  use gtk, only: gtk_bin_get_child, gtk_box_new, &
        & gtk_container_add, gtk_drawing_area_new, gtk_event_box_new, &
        & gtk_events_pending, gtk_label_new, gtk_label_set_text, &
        & gtk_main_iteration_do, gtk_statusbar_new, gtk_statusbar_push, &
@@ -377,16 +377,16 @@ program mandelbrot_zoom
        & c_funloc(mark_point))
   call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
        & c_funloc(zoom_view))
-  call gtk_box_pack_start(jb, my_event_box, FALSE, FALSE, 0_c_int)
+  call gtk_container_add(jb, my_event_box)
 
   write(rangestr, &
        & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
        & mxmin,  mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
   rangeid = gtk_label_new(trim(rangestr)//c_null_char)
-  call gtk_box_pack_start(jb, rangeid, FALSE, FALSE, 0_c_int)
+  call gtk_container_add(jb, rangeid)
 
   status_bar = gtk_statusbar_new()
-  call gtk_box_pack_start(jb, status_bar, FALSE, FALSE, 0_c_int)
+  call gtk_container_add(jb, status_bar)
   id = gtk_statusbar_push(status_bar, 0_c_int, &
        & "Left|Centre: mark region corner, "//&
        & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
