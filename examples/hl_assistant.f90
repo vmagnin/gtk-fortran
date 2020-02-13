@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin.
-! Last modification: vmagnin 2020-01-30
+! Last modification: vmagnin 2020-02-13
 
 ! Based on the C example given in"
 ! https://www.linuxquestions.org/linux/articles/Technical/New_GTK_Widgets_GtkAssistant
@@ -43,7 +43,7 @@ module as_handlers
        & GTK_ASSISTANT_PAGE_CONTENT, GTK_ASSISTANT_PAGE_INTRO, &
        & GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_PROGRESS, &
        & gtk_widget_set_halign, gtk_widget_set_valign, gtk_widget_set_hexpand, gtk_widget_set_vexpand, &
-       & GTK_ALIGN_CENTER
+       & GTK_ALIGN_CENTER, GTK_ALIGN_FILL
 
   implicit none
 
