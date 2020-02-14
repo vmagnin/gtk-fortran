@@ -2,8 +2,11 @@
 # Show libraries and tools versions used in gtk-fortran
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13
-# Updated 2019-03-25
+# Updated 2020-02-14
 # Needs: in Fedora, lsb_release is in the package redhat-lsb-core 
+
+# For a safer script:
+set -eu
 
 echo "======="
 echo "SYSTEM:"
@@ -19,10 +22,10 @@ echo "LIBRARIES:"
 echo "=========="
 
 # Default package names:
-LIB_GTK2="libgtk2.0-dev"
-LIB_GTK3="libgtk-3-dev"
-LIB_GLIB="libglib2.0-dev"
-LIB_PLPLOT="libplplot-dev"
+readonly LIB_GTK2="libgtk2.0-dev"
+readonly LIB_GTK3="libgtk-3-dev"
+readonly LIB_GLIB="libglib2.0-dev"
+readonly LIB_PLPLOT="libplplot-dev"
 
 if [ $(uname -srpo | grep -c MINGW) != 0 ]; then
     pacman -Q mingw-w64-x86_64-gtk2
@@ -50,10 +53,10 @@ elif [ $(lsb_release -sd | grep -c openSUSE) != 0 ]; then
     zypper info glib2-devel | grep Source
     zypper info plplot-devel | grep Source
 else
-    dpkg-query --show $LIB_GTK2
-    dpkg-query --show $LIB_GTK3
-    dpkg-query --show $LIB_GLIB
-    dpkg-query --show $LIB_PLPLOT
+    dpkg-query --show ${LIB_GTK2}
+    dpkg-query --show ${LIB_GTK3}
+    dpkg-query --show ${LIB_GLIB}
+    dpkg-query --show ${LIB_PLPLOT}
 fi
 
 echo "=========="
