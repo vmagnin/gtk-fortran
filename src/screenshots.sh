@@ -10,11 +10,11 @@
 set -eu
 
 if [ $# -eq 0 ]; then
-  seconds=3
-  suffix="-kubuntu_"$(lsb_release -rs)
+  readonly seconds=3
+  readonly suffix="-kubuntu_"$(lsb_release -rs)
 else
-  seconds=${2}
-  suffix=${1}
+  readonly seconds=${2}
+  readonly suffix=${1}
 fi
 
 echo "Suffix: "${suffix}
@@ -33,7 +33,7 @@ for directory in ../build/examples/ ../build/plplot ../build/sketcher ; do
             ./${file} &
             sleep ${seconds}
             #remove the double extension (seven characters after a point):
-            picfile=$(echo ${file}|sed 's/\..\{7\}$//')
+            readonly picfile=$(echo ${file}|sed 's/\..\{7\}$//')
             #Take and save a screenshot of the active window with border:
             scrot -ub ../../screenshots/${picfile}${suffix}.png
             #Kill the program before launching next one:
