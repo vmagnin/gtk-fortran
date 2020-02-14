@@ -11,14 +11,14 @@ set -eu
 
 if [ $# -eq 0 ]; then
   readonly seconds=3
-  readonly suffix="-kubuntu_"$(lsb_release -rs)
+  readonly suffix="-kubuntu_$(lsb_release -rs)"
 else
   readonly seconds=${2}
   readonly suffix=${1}
 fi
 
-echo "Suffix: "${suffix}
-echo "Sleep time: "${seconds}
+echo "Suffix: ${suffix}"
+echo "Sleep time: ${seconds}"
 echo "Taking screenshots..."
 
 # Scanning all built examples:
@@ -27,15 +27,15 @@ for directory in ../build/examples/ ../build/plplot ../build/sketcher ; do
     pwd
     for file in * ; do
         # Is it an executable file ?
-        if [ -x "${file}" ] && [ ! -d "${file}" ]; then
-            echo ${file}
+        if [ -x "${file}" ] && [ ! -d "${file}" ] && [ ! "${file}" = "gio_demo" ] && [ ! "${file}" = "tests" ]; then
+            echo "${file}"
             #Launch the program:
-            ./${file} &
-            sleep ${seconds}
+            ./"${file}" &
+            sleep "${seconds}"
             #remove the double extension (seven characters after a point):
-            readonly picfile=$(echo ${file}|sed 's/\..\{7\}$//')
+            picfile=$(echo "${file}"|sed 's/\..\{7\}$//')
             #Take and save a screenshot of the active window with border:
-            scrot -ub ../../screenshots/${picfile}${suffix}.png
+            scrot -ub ../../screenshots/"${picfile}${suffix}".png
             #Kill the program before launching next one:
             kill $!
         fi
