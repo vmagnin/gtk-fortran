@@ -1,19 +1,24 @@
-#!/bin/bash
+#!/bin/sh
 # Script to build gtk-fortran using CMake
-# Vincent MAGNIN, 2016-06-19, modified 2019-04-09
+# Vincent MAGNIN, 2016-06-19, modified 2020-02-14
 
-echo "Building gtk-fortran..."
+# For a safer script:
+set -eu
 
+# Go to the top of the project:
 cd ..
 
-# If the build directory already exists, this command will print an error but
-# the script execution will continue:
-mkdir build
-cd build
+# Does the build directory already exists ?
+if [ ! -d build ]; then
+    mkdir build
+    cd build
+else
+    cd build
+    make clean
+fi
 
-make clean
+echo "Building gtk-fortran"
 cmake -D CMAKE_BUILD_TYPE=debug ..
-
 # Parallel building:
 make -j
 
