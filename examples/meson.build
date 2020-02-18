@@ -29,6 +29,7 @@ examples = {
   'cairo-basics': ['cairo-basics.f90'],
   'cairo-basics-click': ['cairo-basics-click.f90'],    
   'gtkzero': ['gtkzero.f90'],
+  'gtkzero_gapp': ['gtkzero_gapp.f90'],
   'gtkbuilder': ['gtkbuilder.f90'],
   'gtkbuilder2': ['gtkbuilder2.f90'],
   'gtkhello': ['gtkhello.f90'],    

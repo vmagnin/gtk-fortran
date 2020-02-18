@@ -11,6 +11,7 @@ $ gfortran <name>.f90 -o <name> $(pkg-config --cflags --libs gtk-3-fortran)
 Among those examples:
 
 - gtkzero.f90 just opens an empty GTK window.
+- gtkzero_gapp.f90: the same but based on GtkApplication and GApplication. 
 - gtkhello.f90 opens a window with two buttons.
 - gtkhello2.f90 opens a window with three buttons.
 - The *pixbuf*.f90 examples demonstrate pixel drawing (bitmap drawing).

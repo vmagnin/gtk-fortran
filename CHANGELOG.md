@@ -8,6 +8,7 @@ The main objective of this release is to clean up the code and prepare it for th
 ### Added
 - Experimental `meson.build` files have been added. Meson>=0.50.999 is needed. Commands are `meson buildmeson` and `ninja -C buildmeson`. You can install the library using `sudo ninja -C buildmeson install`, but there is still some problems for installing the `.mod` files (see https://github.com/mesonbuild/meson/issues/5374).
 - examples/menu2.f90: the menu.f90 example is based on deprecated functions.
+- examples/gtkzero_gapp.f90: an empty GTK window based on GtkApplication and GApplication. 
 - CMake -D NO_BUILD_HL=true option to disable building the High Level sub-library (which includes PLplot and sketcher).
 - VERSIONS: a CSV file with the gtk-fortran, GTK, GLib and Ubuntu versions. Automatically created by the cfwrapper.py script. It will be used by the building system of the project.
 
