@@ -2,11 +2,12 @@
 # Show libraries and tools versions used in gtk-fortran
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13
-# Updated 2020-02-14
+# Updated 2020-02-18
 # Needs: in Fedora, lsb_release is in the package redhat-lsb-core 
 
-# For a safer script:
-set -eu
+# The shell -e option is not used in this script to avoid exiting each time a
+# command is not installed on a specific system:
+set -u
 
 echo "======="
 echo "SYSTEM:"
