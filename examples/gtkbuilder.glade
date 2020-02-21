@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
 <interface>
-  <requires lib="gtk+" version="2.22"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkWindow" id="window">
     <property name="can_focus">False</property>
     <property name="border_width">10</property>
     <property name="title" translatable="yes">My title</property>
-    <signal name="destroy-event" handler="destroy" swapped="no"/>
     <signal name="delete-event" handler="delete_event" swapped="no"/>
+    <signal name="destroy-event" handler="destroy" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkHBox" id="box1">
         <property name="visible">True</property>
@@ -15,10 +18,10 @@
         <child>
           <object class="GtkButton" id="button1">
             <property name="label" translatable="yes">Button1</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <signal name="clicked" handler="hello" swapped="no"/>
           </object>
           <packing>
@@ -30,10 +33,10 @@
         <child>
           <object class="GtkButton" id="button2">
             <property name="label" translatable="yes">Button2</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <signal name="clicked" handler="button2clicked" swapped="no"/>
           </object>
           <packing>
@@ -45,10 +48,10 @@
         <child>
           <object class="GtkButton" id="button3">
             <property name="label" translatable="yes">Exit</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <signal name="clicked" handler="destroy" swapped="no"/>
           </object>
           <packing>
