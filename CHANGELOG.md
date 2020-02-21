@@ -37,6 +37,7 @@ The main objective of this release is to clean up the code and prepare it for th
 
 ### Fixed
 - src/usemodules.py was printing false deprecated functions alerts in the hl files of the src directory.
+- Updated gtkbuilder.glade to use GTK 3 interface.
 
 
 ## [gtk-fortran 19.04] - 2019-04-24
