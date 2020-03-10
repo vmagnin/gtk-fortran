@@ -25,7 +25,7 @@
 # Meson >= 0.51 is needed (see https://github.com/mesonbuild/meson/pull/4979)
 # By default, Meson installs projects to the prefix /usr/local/
 
-project('gtk-fortran', ['fortran', 'c'], license: 'GPL3', meson_version: '>=0.51')
+project('gtk-fortran', ['fortran', 'c'], license: 'GPL3', meson_version: '>=0.51', default_options: ['fortran_std=f2008'])
 
 # Major version of GTK for the current branch (from VERSIONS file):
 MAJOR_VERSION = run_command('sed', '-n', '-E', 's/gtk-fortran;(.*)/\\1/p', 
@@ -51,11 +51,10 @@ fortran = meson.get_compiler('fortran')
 
 # Define arguments for different build types (debug is default):
 if build_type == 'debug'
+  warning_level = 3
   supported_arguments = fortran.get_supported_arguments([
   '-pthread',
-  '-Wextra',
   '-pedantic',
-  '-std=f2008',
   '-Wtabs',
   '-fcheck=all',
   '-fbacktrace',
