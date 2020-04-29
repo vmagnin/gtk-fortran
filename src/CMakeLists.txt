@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2020-02-11
+#   vmagnin: 2020-04-29
 #
 # CMAKE build file for GtkFortran
 
@@ -100,7 +100,8 @@ string(REPLACE "@gtkfortranname@" "${gtk_V_fortran}" GTK${GTKv}PCOUT1 "${GTK${GT
 string(REPLACE "@prefix@" "${CMAKE_INSTALL_PREFIX}" GTK${GTKv}PCOUT2 "${GTK${GTKv}PCOUT1}")
 string(REPLACE "@version@" "${CPACK_PACKAGE_VERSION}" GTK${GTKv}PCOUT3 "${GTK${GTKv}PCOUT2}")
 string(REPLACE "@gtkname@" "${GTKname}" GTK${GTKv}PCOUT4 "${GTK${GTKv}PCOUT3}")
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}.pc "${GTK${GTKv}PCOUT4}")
+string(REPLACE "@linkerflags@" "${CMAKE_EXE_LINKER_FLAGS}" GTK${GTKv}PCOUT5 "${GTK${GTKv}PCOUT4}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}.pc "${GTK${GTKv}PCOUT5}")
 add_custom_target(pkgconfig ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}.pc)
 
 # The USE generator system. Copy usemodules.pl and replace strings @PREFIX@, @SHARE@ 

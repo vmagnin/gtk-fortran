@@ -14,5 +14,5 @@ Description: A GTK / Fortran 2003 binding
 URL: https://github.com/vmagnin/gtk-fortran
 Version: @version@
 Requires: @gtkname@
-Cflags: -I${includedir}
+Cflags: @linkerflags@ -I${includedir}
 Libs: -Xlinker -R${libdir} -l${libname}
