@@ -28,27 +28,27 @@ readonly LIB_GTK3="libgtk-3-dev"
 readonly LIB_GLIB="libglib2.0-dev"
 readonly LIB_PLPLOT="libplplot-dev"
 
-if [ $(uname -srpo | grep -c MINGW) != 0 ]; then
+if uname -srpo | grep MINGW ; then
     pacman -Q mingw-w64-x86_64-gtk2
     pacman -Q mingw-w64-x86_64-gtk3	
     pacman -Q mingw-w64-x86_64-glib2
     pacman -Q mingw-w64-x86_64-plplot
-elif [ $(uname -srpo | grep -c MANJARO) != 0 ]; then
+elif uname -srpo | grep MANJARO ; then
     pacman -Q gtk2
     pacman -Q gtk3
     pacman -Q glib2
     pacman -Q plplot
-elif [ $(uname -srpo | grep -c fc) != 0 ]; then
+elif uname -srpo | grep fc ; then
     dnf info --installed gtk2-devel | grep Source
     dnf info --installed gtk3-devel | grep Source
     dnf info --installed glib2 | grep Source
     dnf info --installed plplot-devel | grep Source
-elif [ $(uname -srpo | grep -c FreeBSD) != 0 ]; then
+elif uname -srpo | grep FreeBSD ; then
     pkg info gtk2 | grep gtk2-
     pkg info gtk3 | grep gtk3-
     pkg info glib | grep ^glib
     pkg info plplot | grep plplot-
-elif [ $(lsb_release -sd | grep -c openSUSE) != 0 ]; then
+elif lsb_release -sd | grep openSUSE ; then
     zypper info gtk2-devel | grep Source
     zypper info gtk3-devel | grep Source
     zypper info glib2-devel | grep Source
@@ -64,7 +64,7 @@ echo "=========="
 echo "LANGUAGES:"
 echo "=========="
 
-if [ $(uname -srpo | grep -c FreeBSD) != 0 ]; then
+if uname -srpo | grep FreeBSD ; then
     gfortran8 --version | head -n 1
 else
     gfortran --version | head -n 1
