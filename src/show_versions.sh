@@ -2,7 +2,7 @@
 # Show libraries and tools versions used in gtk-fortran
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13
-# Updated 2020-04-29
+# Updated 2020-04-30
 # Needs: in Fedora, lsb_release is in the package redhat-lsb-core 
 
 # The shell -e option is not used in this script to avoid exiting each time a
@@ -38,9 +38,10 @@ elif uname -srpo | grep MANJARO ; then
     pacman -Q gtk3
     pacman -Q glib2
     pacman -Q plplot
-elif uname -srpo | grep fc ; then
+elif uname -srpo | grep fc ; then    # Fedora
     dnf info --installed gtk2-devel | grep Source
     dnf info --installed gtk3-devel | grep Source
+    dnf info --installed gtk4-devel | grep Source
     dnf info --installed glib2 | grep Source
     dnf info --installed plplot-devel | grep Source
 elif uname -srpo | grep FreeBSD ; then
