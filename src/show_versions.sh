@@ -14,9 +14,11 @@ echo "SYSTEM:"
 echo "======="
 
 # Distribution (Linux only):
-lsb_release -sd
+readonly RELEASE=$(lsb_release -sd)
+echo "${RELEASE}"
 # Kernel, release, processor, OS:
-uname -srpo
+readonly SYSTEM=$(uname -srpo)
+echo "${SYSTEM}"
 
 echo "=========="
 echo "LIBRARIES:"
@@ -28,28 +30,28 @@ readonly LIB_GTK3="libgtk-3-dev"
 readonly LIB_GLIB="libglib2.0-dev"
 readonly LIB_PLPLOT="libplplot-dev"
 
-if uname -srpo | grep MINGW ; then
+if echo "${SYSTEM}" | grep -q MINGW ; then
     pacman -Q mingw-w64-x86_64-gtk2
     pacman -Q mingw-w64-x86_64-gtk3	
     pacman -Q mingw-w64-x86_64-glib2
     pacman -Q mingw-w64-x86_64-plplot
-elif uname -srpo | grep MANJARO ; then
+elif echo "${SYSTEM}" | grep -q MANJARO ; then
     pacman -Q gtk2
     pacman -Q gtk3
     pacman -Q glib2
     pacman -Q plplot
-elif uname -srpo | grep fc ; then    # Fedora
+elif echo "${SYSTEM}" | grep -q fc ; then    # Fedora
     dnf info --installed gtk2-devel | grep Source
     dnf info --installed gtk3-devel | grep Source
     dnf info --installed gtk4-devel | grep Source
     dnf info --installed glib2 | grep Source
     dnf info --installed plplot-devel | grep Source
-elif uname -srpo | grep FreeBSD ; then
+elif echo "${SYSTEM}" | grep -q FreeBSD ; then
     pkg info gtk2 | grep gtk2-
     pkg info gtk3 | grep gtk3-
     pkg info glib | grep ^glib
     pkg info plplot | grep plplot-
-elif lsb_release -sd | grep openSUSE ; then
+elif echo "${RELEASE}" | grep -q openSUSE ; then
     zypper info gtk2-devel | grep Source
     zypper info gtk3-devel | grep Source
     zypper info glib2-devel | grep Source
@@ -65,7 +67,7 @@ echo "=========="
 echo "LANGUAGES:"
 echo "=========="
 
-if uname -srpo | grep FreeBSD ; then
+if echo "${SYSTEM}" | grep -q FreeBSD ; then
     gfortran8 --version | head -n 1
 else
     gfortran --version | head -n 1
