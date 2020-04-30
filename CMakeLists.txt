@@ -23,7 +23,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018, 
-# vmagnin 2020-02-11
+# vmagnin 2020-04-30
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -63,7 +63,9 @@ set(CMAKE_PROJECT_VERSION_PATCH 0)
 # be "lib64" for example.
 #===============================================================================
 include(GNUInstallDirs)
+message(STATUS "GNUInstallDirs: ${CMAKE_INSTALL_PREFIX} ${CMAKE_INSTALL_LIBDIR} ${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_DATAROOTDIR} ${CMAKE_INSTALL_MANDIR}")
 set(CMAKE_INSTALL_LIBDIR lib)
+message(STATUS "CMAKE_INSTALL_LIBDIR changed to ${CMAKE_INSTALL_LIBDIR}")
 
 #===============================================================================
 # Default build type is release
