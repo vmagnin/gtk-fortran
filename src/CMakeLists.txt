@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2020-04-29
+#   vmagnin: 2020-04-30
 #
 # CMAKE build file for GtkFortran
 
@@ -98,10 +98,12 @@ set_target_properties(gtk-fortran_object PROPERTIES
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/gtk-fortran.pc.in GTK${GTKv}PCIN)
 string(REPLACE "@gtkfortranname@" "${gtk_V_fortran}" GTK${GTKv}PCOUT1 "${GTK${GTKv}PCIN}")
 string(REPLACE "@prefix@" "${CMAKE_INSTALL_PREFIX}" GTK${GTKv}PCOUT2 "${GTK${GTKv}PCOUT1}")
-string(REPLACE "@version@" "${CPACK_PACKAGE_VERSION}" GTK${GTKv}PCOUT3 "${GTK${GTKv}PCOUT2}")
-string(REPLACE "@gtkname@" "${GTKname}" GTK${GTKv}PCOUT4 "${GTK${GTKv}PCOUT3}")
-string(REPLACE "@linkerflags@" "${CMAKE_EXE_LINKER_FLAGS}" GTK${GTKv}PCOUT5 "${GTK${GTKv}PCOUT4}")
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}.pc "${GTK${GTKv}PCOUT5}")
+string(REPLACE "@CMAKE_INSTALL_LIBDIR@" "${CMAKE_INSTALL_LIBDIR}" GTK${GTKv}PCOUT3 "${GTK${GTKv}PCOUT2}")
+string(REPLACE "@CMAKE_INSTALL_INCLUDEDIR@" "${CMAKE_INSTALL_INCLUDEDIR}" GTK${GTKv}PCOUT4 "${GTK${GTKv}PCOUT3}")
+string(REPLACE "@version@" "${CPACK_PACKAGE_VERSION}" GTK${GTKv}PCOUT5 "${GTK${GTKv}PCOUT4}")
+string(REPLACE "@gtkname@" "${GTKname}" GTK${GTKv}PCOUT6 "${GTK${GTKv}PCOUT5}")
+string(REPLACE "@linkerflags@" "${CMAKE_EXE_LINKER_FLAGS}" GTK${GTKv}PCOUT7 "${GTK${GTKv}PCOUT6}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}.pc "${GTK${GTKv}PCOUT7}")
 add_custom_target(pkgconfig ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}.pc)
 
 # The USE generator system. Copy usemodules.pl and replace strings @PREFIX@, @SHARE@ 

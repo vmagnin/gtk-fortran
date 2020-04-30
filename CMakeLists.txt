@@ -59,13 +59,10 @@ set(CMAKE_PROJECT_VERSION_MINOR 0)
 set(CMAKE_PROJECT_VERSION_PATCH 0)
 
 #===============================================================================
-# We override the default lib directory because on 64-bit systems, lib can also
-# be "lib64" for example.
+# Define GNU standard installation directories:
 #===============================================================================
 include(GNUInstallDirs)
 message(STATUS "GNUInstallDirs: ${CMAKE_INSTALL_PREFIX} ${CMAKE_INSTALL_LIBDIR} ${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_DATAROOTDIR} ${CMAKE_INSTALL_MANDIR}")
-set(CMAKE_INSTALL_LIBDIR lib)
-message(STATUS "CMAKE_INSTALL_LIBDIR changed to ${CMAKE_INSTALL_LIBDIR}")
 
 #===============================================================================
 # Default build type is release
