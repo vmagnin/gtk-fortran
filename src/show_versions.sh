@@ -14,10 +14,10 @@ echo "SYSTEM:"
 echo "======="
 
 # Distribution (Linux only):
-readonly RELEASE=$(lsb_release -sd)
+readonly RELEASE="$(lsb_release -sd)"
 echo "${RELEASE}"
 # Kernel, release, processor, OS:
-readonly SYSTEM=$(uname -srpo)
+readonly SYSTEM="$(uname -srpo)"
 echo "${SYSTEM}"
 
 echo "=========="
