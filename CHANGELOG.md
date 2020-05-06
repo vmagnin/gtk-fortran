@@ -16,6 +16,7 @@ The main objective of this release is to clean up the code and prepare it for th
 - CMake>=3.4 required.
 - cmake/cmake_uninstall.cmake.in: updated with the latest code from https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
 - CMake now uses GNUInstallDirs for the lib dir. On some systems, like Fedora, it will be lib64, on others lib.
+- bash scripts syntax has been improved, using shellcheck.
 - test.sh has been renamed alt_build_test.sh
 - The master branch has been renamed gtk2.
 - src/gdkevents-auto3.f90: no reason to indicate the GTK version for that file. The "3" was removed.
