@@ -2,7 +2,7 @@
 All notable changes to the gtk-fortran project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [Development version]
 The main objective of this release is to clean up the code and prepare it for the future GTK 4 branch.
 
 ### Added
@@ -22,6 +22,7 @@ The main objective of this release is to clean up the code and prepare it for th
 - src/gtk-3-fortran.pc.in => src/gtk-fortran.pc.in: improved pkg-config file.
 - README-high-level now using Markdown: README-high-level.md
 - src/usemodules.pl: can now be used directly from that directory, without make install.
+- Examples: code clean up. Some deprecated GTK 3 functions have been removed to prepare for GTK 4.
 
 ### Removed
 - Gtkextra directory: that directory was not maintained for 9 years, the gtkextra library is not maintained anymore and is based on GTK 2. The gtksheet part was forked (https://github.com/fpaquet/gtksheet), but it is necessary to reduce the amount of work to maintain gtk-fortran. So it was removed from the gtk3 branch.
