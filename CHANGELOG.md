@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 The main objective of this release is to clean up the code and prepare it for the future GTK 4 branch.
 
 ### Added
-- Experimental `meson.build` files have been added. Meson>=0.50.999 is needed. Commands are `meson buildmeson` and `ninja -C buildmeson`. You can install the library using `sudo ninja -C buildmeson install`, but there is still some problems for installing the `.mod` files (see https://github.com/mesonbuild/meson/issues/5374).
+- Experimental and uncomplete `meson.build` files have been added. Meson>=0.53 is needed. Commands are `meson buildmeson` and `ninja -C buildmeson`. The gtk-fortran library can be inst	alled using `sudo ninja -C buildmeson install`, but there is still some problems for installing the `.mod` files (see https://github.com/mesonbuild/meson/issues/5374). Please use CMake for production !
 - examples/menu2.f90: the menu.f90 example is based on deprecated functions.
 - examples/gtkzero_gapp.f90: an empty GTK window based on GtkApplication and GApplication. 
 - CMake -D NO_BUILD_HL=true option to disable building the High Level sub-library (which includes PLplot and sketcher).
