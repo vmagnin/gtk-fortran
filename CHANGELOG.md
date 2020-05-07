@@ -3,16 +3,13 @@ All notable changes to the gtk-fortran project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Development version]
-The main objective of this release is to clean up the code and prepare it for the future GTK 4 branch.
 
-### Added
-- Experimental and uncomplete `meson.build` files have been added. Meson>=0.53 is needed. Commands are `meson buildmeson` and `ninja -C buildmeson`. The gtk-fortran library can be inst	alled using `sudo ninja -C buildmeson install`, but there is still some problems for installing the `.mod` files (see https://github.com/mesonbuild/meson/issues/5374). Please use CMake for production !
-- examples/menu2.f90: the menu.f90 example is based on deprecated functions.
-- examples/gtkzero_gapp.f90: an empty GTK window based on GtkApplication and GApplication. 
-- CMake -D NO_BUILD_HL=true option to disable building the High Level sub-library (which includes PLplot and sketcher).
-- VERSIONS: a CSV file with the gtk-fortran, GTK, GLib and Ubuntu versions. Automatically created by the cfwrapper.py script. It will be used by the building system of the project.
+
+## [gtk-fortran 20.04] - 2020-05-07
+The main objective of this release was to clean up the code and prepare it for the future GTK 4 branch.
 
 ### Changed
+- gtk3 branch based on **GTK 3.24.18, GLib 2.64.2,** generated under Lubuntu 20.04 x86_64.
 - CMake>=3.4 required.
 - cmake/cmake_uninstall.cmake.in: updated with the latest code from https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
 - CMake now uses GNUInstallDirs for the lib dir. On some systems, like Fedora, it will be lib64, on others lib.
@@ -24,6 +21,13 @@ The main objective of this release is to clean up the code and prepare it for th
 - README-high-level now using Markdown: README-high-level.md
 - src/usemodules.pl: can now be used directly from that directory, without make install.
 - Examples: code clean up. Some deprecated GTK 3 functions have been removed to prepare for GTK 4.
+
+### Added
+- Experimental and uncomplete `meson.build` files have been added. Meson>=0.53 is needed. Commands are `meson buildmeson` and `ninja -C buildmeson`. The gtk-fortran library can be inst	alled using `sudo ninja -C buildmeson install`, but there is still some problems for installing the `.mod` files (see https://github.com/mesonbuild/meson/issues/5374). Please use CMake for production !
+- examples/menu2.f90: the menu.f90 example is based on deprecated functions.
+- examples/gtkzero_gapp.f90: an empty GTK window based on GtkApplication and GApplication. 
+- CMake -D NO_BUILD_HL=true option to disable building the High Level sub-library (which includes PLplot and sketcher).
+- VERSIONS: a CSV file with the gtk-fortran, GTK, GLib and Ubuntu versions. Automatically created by the cfwrapper.py script. It will be used by the building system of the project.
 
 ### Removed
 - Gtkextra directory: that directory was not maintained for 9 years, the gtkextra library is not maintained anymore and is based on GTK 2. The gtksheet part was forked (https://github.com/fpaquet/gtksheet), but it is necessary to reduce the amount of work to maintain gtk-fortran. So it was removed from the gtk3 branch.
