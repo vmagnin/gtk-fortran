@@ -1,4 +1,4 @@
 gtk-fortran;3
-GTK;3.24.8
-GLib;2.60.0
-Ubuntu;19.04
+GTK;3.24.18
+GLib;2.64.2
+Ubuntu;20.04
