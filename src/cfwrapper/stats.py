@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2020-02-14
+# Last modification: 2020-05-07
 
 """ This module contains functions for printing statistics at the end of the
 gtk-fortran generation process.
@@ -35,7 +35,7 @@ import hashlib      # To dectect modifications in gtk-fortran files
 import pickle       # To save the hash in a persistent way
 import platform     # To obtain platform informations
 import time
-import os
+import getpass      # To obtain the login with getuser()
 
 # Project modules:
 from globals_const import SRC_DIR
@@ -117,7 +117,7 @@ class Statistics():
         print("\033[1m\n=== Statistics (ready to paste in the Status wiki page) ===\n\033[0m")
 
         print("\033[34m## " + versions + ", Python " + platform.python_version())
-        print(os.getlogin() + ", "
+        print(getpass.getuser() + ", "
               + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()) + "\033[0m")
 
         print('{:<30}{:>6}'.format("* nb_files scanned =", self.nb_files))
