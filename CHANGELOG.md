@@ -3,7 +3,13 @@ All notable changes to the gtk-fortran project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Development version]
+The gtk4 branch is the new development branch.
 
+### Added
+- The gtk-fortran library has been generated using GTK 3.98.2, GLib 2.64.2, under Fedora 32.
+
+### Changed
+- examples/gtkzero_gapp.f90 is now working.
 
 ## [gtk-fortran 20.04] - 2020-05-07
 The main objective of this release was to clean up the code and prepare it for the future GTK 4 branch.
