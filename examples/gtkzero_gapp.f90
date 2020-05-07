@@ -21,7 +21,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !-------------------------------------------------------------------------------
 ! Vincent MAGNIN, 2020-02-18
-! Last modified: 2020-02-18
+! Last modified: 2020-05-07
 ! This example just creates an GTK application with an empty window.
 ! https://developer.gnome.org/gtk3/unstable/gtk-getting-started.html
 ! https://developer.gnome.org/gio//2.30/GApplication.html
@@ -35,7 +35,7 @@ module handlers
   use iso_c_binding, only: c_ptr, c_int
   use gtk, only: FALSE, c_null_char, gtk_window_set_default_size,  &
                & gtk_window_set_title, g_signal_connect, &
-               & gtk_widget_show_all, gtk_application_window_new
+               & gtk_widget_show, gtk_application_window_new
   implicit none
 
 contains
@@ -53,7 +53,7 @@ contains
     ! Don't forget that C strings must end with a null char:
     call gtk_window_set_title(window, "Hello GLib & GTK world!"//c_null_char)
     ! If you don't show it, nothing will appear on screen...
-    call gtk_widget_show_all(window)  
+    call gtk_widget_show(window)  
   end subroutine activate
 
 end module handlers
