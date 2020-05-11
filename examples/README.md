@@ -1,19 +1,17 @@
 # Gtk-fortran Example Programs
 
-This directory contains example programs for the GTK 3 version of gtk-fortran.
+This directory contains example programs for the GTK 4 version of gtk-fortran.
 They are automatically built by CMake but any example may also be individually 
-built on a system with `gtk-3-fortran` installed with the command:
+built on a system with `gtk-4-fortran` installed with the command:
 
 ```bash
-$ gfortran <name>.f90 -o <name> $(pkg-config --cflags --libs gtk-3-fortran)
+$ gfortran <name>.f90 -o <name> $(pkg-config --cflags --libs gtk-4-fortran)
 ```
 
 Among those examples:
 
-- gtkzero.f90 just opens an empty GTK window.
-- gtkzero_gapp.f90: the same but based on GtkApplication and GApplication. 
+- gtkzero_gapp.f90 just opens an empty GTK window. Based on GtkApplication and GApplication. 
 - gtkhello.f90 opens a window with two buttons.
-- gtkhello2.f90 opens a window with three buttons.
 - The *pixbuf*.f90 examples demonstrate pixel drawing (bitmap drawing).
 - The cairo*.f90 examples desmonstrate vectorial drawing using Cairo.
 - bazaar.f90 is used for testing various widgets and functions.
