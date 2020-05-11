@@ -22,9 +22,9 @@
 !-------------------------------------------------------------------------------
 ! Vincent MAGNIN, 2020-02-18
 ! Last modified: 2020-05-07
-! This example just creates an GTK application with an empty window.
-! https://developer.gnome.org/gtk3/unstable/gtk-getting-started.html
-! https://developer.gnome.org/gio//2.30/GApplication.html
+! This example just creates a GTK application with an empty window.
+! https://developer.gnome.org/gtk4/unstable/gtk-getting-started.html
+! https://developer.gnome.org/gio/stable/GApplication.html
 !-------------------------------------------------------------------------------
 
 !*************************************
@@ -45,7 +45,7 @@ contains
   subroutine activate(app, gdata) bind(c)
     type(c_ptr), value :: app, gdata
     type(c_ptr)        :: window
-    
+
     ! Create the window:
     window = gtk_application_window_new(app)
     ! Not compulsory, but can be used if you want a larger window:
@@ -69,7 +69,7 @@ program gtkzero
   ! significantly the compilation time:
   use gtk, only: c_null_char, c_null_ptr, gtk_application_new, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
-  
+
   use handlers
 
   implicit none
@@ -78,7 +78,7 @@ program gtkzero
 
   ! First, let's create a GTK application (it will initialize GTK).
   ! The application ID must contain at least one point:
-  ! https://developer.gnome.org/gio//2.30/GApplication.html#g-application-id-is-valid
+  ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
   app = gtk_application_new("gtk-fortran.examples.gtkzero"//c_null_char, &
                             & G_APPLICATION_FLAGS_NONE)
   ! The activate signal will be sent by g_application_run(). 
@@ -87,11 +87,11 @@ program gtkzero
   call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), c_null_ptr)
   ! Now, the whole application will be managed by GLib (=> main loop).
   ! Note that commandline arguments argc, argv are not passed.
-  ! https://developer.gnome.org/gio//2.30/GApplication.html#g-application-run
+  ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-run
   status = g_application_run(app, 0_c_int, c_null_ptr)
-  
+
   print *, "You have exited the GLib main loop, bye, bye..."
-  
+
   ! Memory is freed:
   call g_object_unref(app)
 
