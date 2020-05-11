@@ -20,7 +20,7 @@
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 02-20-2019
+! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2020-05-11
 ! ****************
 ! Automated tests
 ! ****************
@@ -30,7 +30,7 @@
 ! (OS version, GTK+ version, compiler...)
 
 module tests
-  use gtk, only: gtk_false, gtk_true, TRUE, FALSE, c_null_ptr, c_null_char
+  use gtk, only: TRUE, FALSE, c_null_ptr, c_null_char
   use g, only: g_ascii_tolower, g_bit_storage, g_date_get_day, g_date_get_days_in&
   &_month, g_hostname_is_ip_address, g_inet_socket_address_get_port, g_inet_socke&
   &t_address_new, g_random_double, g_random_double_range, g_random_int, g_random_&
@@ -516,12 +516,6 @@ contains
     l4 = g_hostname_is_ip_address("192.168,0.1"//c_null_char)
     if ((l1 /= TRUE) .or. (l2 /= FALSE) .or. (l3 /= FALSE) .or. (l4 /= FALSE)) then
       write(1,*) "ERROR g_hostname_is_ip_address:", l1, l2, l3, l4
-      errors = errors + 1
-    end if
-    ! gboolean gtk_true (void) G_GNUC_CONST;
-    ! gboolean gtk_false (void) G_GNUC_CONST;
-    if ((gtk_true() /= TRUE) .or. (gtk_false() /= FALSE)) then
-      write(1,*) "ERROR gtk_true, gtk_false:", gtk_true(), gtk_false()
       errors = errors + 1
     end if
 
