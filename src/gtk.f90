@@ -86,6 +86,36 @@ contains
     handler_id = function_g_signal_connect (instance, detailed_signal, c_handler, data0)
   end subroutine g_signal_connect
 
+  ! #define g_signal_connect_swapped(instance, detailed_signal, c_handler, data) \
+  !  g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_SWAPPED)
+  ! The instance on which the signal is emitted and data will be swapped when calling the handler.
+  ! https://developer.gnome.org/gobject/stable/gobject-Signals.html#g-signal-connect-swapped
+  ! We define both a g_signal_connect() function and a subroutine.
+  ! You will generally use the subroutine in your programs.  
+  
+  function function_g_signal_connect_swapped (instance, detailed_signal, c_handler, data0) result(handler_id)
+    use g, only: g_signal_connect_data
+
+    type(c_ptr), intent(in)             :: instance
+    character(kind=c_char), intent(in)  :: detailed_signal(*)
+    type(c_funptr), intent(in)          :: c_handler
+    type(c_ptr), intent(in)             :: data0
+    integer(c_long)                     :: handler_id
+
+    handler_id =  g_signal_connect_data (instance, detailed_signal, &
+                     & c_handler, data0, c_null_funptr, G_CONNECT_SWAPPED)
+  end function function_g_signal_connect_swapped
+
+  subroutine g_signal_connect_swapped (instance, detailed_signal, c_handler, data0)
+    type(c_ptr), intent(in)             :: instance
+    character(kind=c_char), intent(in)  :: detailed_signal(*)
+    type(c_funptr), intent(in)          :: c_handler
+    type(c_ptr), intent(in)             :: data0
+    integer(c_long)                     :: handler_id
+
+    handler_id = function_g_signal_connect_swapped (instance, detailed_signal, c_handler, data0)
+  end subroutine g_signal_connect_swapped
+
 
   subroutine gtk_init()
     use iso_c_binding, only: c_ptr, c_char, c_int, c_null_char, c_loc
@@ -120,5 +150,5 @@ contains
     ! carg being local can be deallocated:
     deallocate(carg)
   end subroutine gtk_init
-  
+
 end module gtk
