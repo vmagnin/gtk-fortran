@@ -29,7 +29,7 @@
 module gtk
   use iso_c_binding
   implicit none
-  public :: FALSE, TRUE, gtk_init_real, gtk_init, function_g_signal_connect, &
+  public :: FALSE, TRUE, gtk_init, function_g_signal_connect, &
             & g_signal_connect, function_g_signal_connect_swapped, &
             & g_signal_connect_swapped
 
@@ -39,10 +39,12 @@ module gtk
   !**************************************************************************
 
   interface
-    subroutine gtk_init_real(argc,argv) bind(c,name='gtk_init')
-      use iso_c_binding, only: c_int, c_ptr
-      integer(c_int) :: argc
-      type(c_ptr)    :: argv
+    ! In GTK 4, the gtk_init() and gtk_init_check() functions no longer
+    ! accept commandline arguments:
+    !   void gtk_init (void);
+    ! https://developer.gnome.org/gtk4/stable/gtk4-General.html#gtk-init
+    ! https://developer.gnome.org/gtk4/3.98/ch31s02.html#id-1.6.4.4.36
+    subroutine gtk_init() bind(c)
     end subroutine 
 
     !**************************************************************************
@@ -128,40 +130,5 @@ contains
 
     handler_id = function_g_signal_connect_swapped (instance, detailed_signal, c_handler, data0)
   end subroutine g_signal_connect_swapped
-
-
-  subroutine gtk_init()
-    use iso_c_binding, only: c_ptr, c_char, c_int, c_null_char, c_loc
-    character(len=256,kind=c_char) :: arg
-    character(len=1,kind=c_char), dimension(:),pointer :: carg
-    type(c_ptr), allocatable, target :: argv(:)
-    integer(c_int) :: argc, j
-    integer :: strlen, i
-
-    argc = command_argument_count()
-    allocate(argv(0:argc))
-
-    do i = 0, argc
-      call get_command_argument (i,arg,strlen)
-      allocate(carg(0:strlen))
-      do j = 0, strlen-1
-        carg(j) = arg(j+1:j+1)
-      end do
-      carg(strlen) = c_null_char
-      argv(i) = c_loc (carg(0))
-    end do
-
-    argc = argc + 1
-
-    ! This is a workaround to prevent locales with decimal comma
-    ! from behaving wrongly reading reals after gtk_init is called
-    ! when the code is compiled using gfortran.
-    call gtk_disable_setlocale()
-
-    call gtk_init_real (argc, c_loc(argv))
-
-    ! carg being local can be deallocated:
-    deallocate(carg)
-  end subroutine gtk_init
 
 end module gtk
