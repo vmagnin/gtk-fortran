@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin, Jerry DeLisle, "jtappin" and Tobias Burnus, 2011-01-23
-! Last modification: 2020-02-12
+! Last modification: 2020-05-12
 
 module gtk
   use iso_c_binding
@@ -48,23 +48,43 @@ module gtk
   integer(c_int), parameter   :: TRUE = 1
 
 contains
-  subroutine g_signal_connect (instance, detailed_signal, c_handler, data0)
-    use iso_c_binding, only: c_ptr, c_char, c_funptr
+  ! For convenience, /usr/include/glib-2.0/gobject/gsignal.h defines a macro based 
+  ! on the g_signal_connect_data() function:
+  ! #define g_signal_connect(instance, detailed_signal, c_handler, data) \
+  !  g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (GConnectFlags) 0)
+  ! It returns the handler ID, of type #gulong (always greater than 0 for successful connections).
+  ! https://developer.gnome.org/gobject/stable/gobject-Signals.html#g-signal-connect
+  ! Historically, in gtk-fortran g_signal_connect() was declared as a subroutine, because the handler_id
+  ! returned by the GLib function is usually never used. Here we define both a g_signal_connect()
+  ! function and a subroutine. You will generally use the subroutine in your programs.  
+  
+  function function_g_signal_connect (instance, detailed_signal, c_handler, data0) result(handler_id)
     use g, only: g_signal_connect_data
-    character(kind=c_char):: detailed_signal(*)
-    type(c_ptr)      :: instance
-    type(c_funptr)   :: c_handler
-    type(c_ptr), optional :: data0
-    integer(c_long) :: handler_id
+
+    type(c_ptr), intent(in)             :: instance
+    character(kind=c_char), intent(in)  :: detailed_signal(*)
+    type(c_funptr), intent(in)          :: c_handler
+    type(c_ptr), optional, intent(in)   :: data0
+    integer(c_long)                     :: handler_id
 
     if (present(data0)) then
       handler_id =  g_signal_connect_data (instance, detailed_signal, &
-           & c_handler, data0, c_null_funptr, 0_c_int)
+                     & c_handler, data0, c_null_funptr, 0_c_int)
     else
       handler_id =  g_signal_connect_data (instance, detailed_signal, &
-           & c_handler, c_null_ptr, c_null_funptr, 0_c_int)
+                     & c_handler, c_null_ptr, c_null_funptr, 0_c_int)
     end if
-  end subroutine
+  end function function_g_signal_connect
+
+  subroutine g_signal_connect (instance, detailed_signal, c_handler, data0)
+    type(c_ptr), intent(in)             :: instance
+    character(kind=c_char), intent(in)  :: detailed_signal(*)
+    type(c_funptr), intent(in)          :: c_handler
+    type(c_ptr), optional, intent(in)   :: data0
+    integer(c_long)                     :: handler_id
+
+    handler_id = function_g_signal_connect (instance, detailed_signal, c_handler, data0)
+  end subroutine g_signal_connect
 
 
   subroutine gtk_init()
