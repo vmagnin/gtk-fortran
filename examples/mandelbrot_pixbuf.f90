@@ -1,45 +1,51 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2020-02-11
-
+! Last modification: vmagnin 2020-05-14
 
 module handlers
-  use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending,&
-  &gtk_main, gtk_main_iteration, gtk_main_iteration_do, &
-  &gtk_widget_queue_draw, gtk_widget_show_all, gtk_window_new,&
-  &gtk_window_set_default_size, gtk_window_set_title,&
-  &GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr,&
-  &c_null_char, GTK_WINDOW_TOPLEVEL, gtk_main_quit
+  use gtk, only: gtk_container_add, gtk_drawing_area_new, &
+  & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
+  & gtk_drawing_area_set_draw_func, &
+  & gtk_widget_queue_draw, gtk_widget_show, gtk_window_new, &
+  & gtk_window_set_default_size, gtk_window_set_title, &
+  & GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, &
+  & c_null_char
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
+  
   use gdk, only: gdk_cairo_set_source_pixbuf
-  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels,&
-                       &gdk_pixbuf_get_rowstride, gdk_pixbuf_new
+  
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_context_iteration, &
+             & g_main_context_pending, g_main_loop_quit
+  
+  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
+                      & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use iso_c_binding, only: c_int, c_ptr, c_char
 
   implicit none
+  type(c_ptr)    :: my_gmainloop
   ! run_status is TRUE until the user closes the top window:
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
@@ -49,75 +55,75 @@ module handlers
   logical :: computing = .false.
 
 contains
-  !*************************************
-  ! User defined event handlers go here
-  !*************************************
+  ! Our callback function before destroying the window:
+  function destroy_signal(widget, event, gdata) result(ret)  bind(c)
+    integer(c_int)                 :: ret
+    type(c_ptr), value, intent(in) :: widget, event, gdata
 
-  ! https://developer.gnome.org/gtk3/stable/GtkWidget.html#GtkWidget-delete-event
-  ! The ::delete-event signal is emitted if a user requests that a toplevel
-  ! window is closed.
-  function delete_event(widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
-    integer(c_int)     :: ret
-    type(c_ptr), value :: widget, event, gdata
-
+    print *, "Your destroy_signal() function has been invoked !"
     ! Some functions and subroutines need to know that it's finished:
     run_status = FALSE
     ! Returns FALSE to propagate the event further:
     ret = FALSE
     ! Makes the innermost invocation of the main loop return when it regains control:
-    if (.not. computing)   call gtk_main_quit()
-  end function delete_event
+    if (.not. computing)   call g_main_loop_quit(my_gmainloop)
+  end function destroy_signal
 
-
-  ! This function is needed to update the GUI during long computations:
+  ! This function is needed to update the GUI during long computations.
+  ! https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
   subroutine pending_events ()
-    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
-      boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
+    do while(IAND(g_main_context_pending(c_null_ptr), run_status) /= FALSE)
+      ! FALSE for non-blocking:
+      boolresult = g_main_context_iteration(c_null_ptr, FALSE)
     end do
   end subroutine pending_events
 
-
-  ! Called each time the window needs to be redrawn:
-  function draw(widget, my_cairo_context, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_int, c_ptr
-    implicit none
-    integer(c_int)                 :: ret
-    type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
+  ! "It is called whenever GTK needs to draw the contents of the drawing area
+  ! to the screen."
+  ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
+  subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
+    type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
+    integer(c_int), value, intent(in) :: width, height    
 
     ! We redraw the pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
     call cairo_paint(my_cairo_context)
-
-    ret = FALSE
-  end function draw
+  end subroutine my_draw_function
 
 end module handlers
 
-
+!***********************************************
+! We define the GUI and then call the main loop:
+!***********************************************
 program mandelbrot
-  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
+  use iso_c_binding, only: c_ptr, c_null_funptr, c_funloc, c_f_pointer
   use handlers
   implicit none
   type(c_ptr) :: my_window
   type(c_ptr) :: my_drawing_area
 
-  call gtk_init ()
+  call gtk_init()
 
   ! Properties of the main window :
   width  = 700
   height = 700
-  my_window = gtk_window_new(GTK_WINDOW_TOPLEVEL)
+  my_window = gtk_window_new()
   call gtk_window_set_default_size(my_window, width, height)
-  call gtk_window_set_title(my_window, "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
-  call g_signal_connect(my_window, "delete-event"//c_null_char, c_funloc(delete_event))
+  call gtk_window_set_title(my_window, &
+                    & "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
+  call g_signal_connect(my_window, "destroy"//c_null_char, &
+                      & c_funloc(destroy_signal))
 
   ! We need a widget where to draw our pixbuf:
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect(my_drawing_area, "draw"//c_null_char, c_funloc(draw))
+  call gtk_drawing_area_set_content_width(my_drawing_area, width)
+  call gtk_drawing_area_set_content_height(my_drawing_area, height)
+  call gtk_drawing_area_set_draw_func(my_drawing_area, &
+                   & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
+
   call gtk_container_add(my_window, my_drawing_area)
 
-  call gtk_widget_show_all(my_window)
+  call gtk_widget_show(my_window)
 
   ! We create a pixbuffer to store the pixels of the image:
   ! "Creates a new GdkPixbuf structure and allocates a buffer for it":
@@ -138,12 +144,15 @@ program mandelbrot
   call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 10000_4)
 
   ! The window will stay opened after the computation, but we need to verify
-  ! that the user has not closed the window during the computation:
-  if (run_status /= FALSE)  call gtk_main()
+  ! that the user has not closed the window during the computation.
+  ! https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
+  if (run_status /= FALSE) then
+    my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+    call g_main_loop_run(my_gmainloop)
+  end if
 
   print *, "All done"
 end program mandelbrot 
-
 
 !*********************************************
 ! A tribute to Benoit MANDELBROT (1924-2010)
@@ -152,7 +161,6 @@ end program mandelbrot
 subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
   ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
   ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
-  use iso_c_binding
   use handlers
   implicit none
 
@@ -213,7 +221,7 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
     ! You need to manage the GTK events during computation:
     ! **************************************************************************
     call pending_events()
-    if (run_status == FALSE) return ! Exit if we had a delete event.
+    if (run_status == FALSE) return ! Exit if we had a destroy signal.
   end do
 
   ! Final update of the display:
@@ -225,7 +233,6 @@ subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
   computing = .false.
 end subroutine mandelbrot_set
 
-
 !***********************************************************
 !  system time since 00:00
 !***********************************************************
@@ -236,3 +243,4 @@ real(8) function system_time()
   call date_and_time(values=dt)
   system_time = dt(5)*3600d0 + dt(6)*60d0 + dt(7) + dt(8)*0.001d0
 end function system_time
+
