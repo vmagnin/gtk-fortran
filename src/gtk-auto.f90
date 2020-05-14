@@ -1370,38 +1370,6 @@ function gtk_container_get_children(container) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_container_set_focus_vadjustment (GtkContainer *container, GtkAdjustment *adjustment);
-subroutine gtk_container_set_focus_vadjustment(container, adjustment) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: container
-  type(c_ptr), value :: adjustment
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkAdjustment *gtk_container_get_focus_vadjustment (GtkContainer *container);
-function gtk_container_get_focus_vadjustment(container) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_container_get_focus_vadjustment
-  type(c_ptr), value :: container
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_container_set_focus_hadjustment (GtkContainer *container, GtkAdjustment *adjustment);
-subroutine gtk_container_set_focus_hadjustment(container, adjustment) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: container
-  type(c_ptr), value :: adjustment
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkAdjustment *gtk_container_get_focus_hadjustment (GtkContainer *container);
-function gtk_container_get_focus_hadjustment(container) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_container_get_focus_hadjustment
-  type(c_ptr), value :: container
-end function
-
-! GDK_AVAILABLE_IN_ALL
 !GType gtk_container_child_type (GtkContainer *container);
 function gtk_container_child_type(container) bind(c)
   use iso_c_binding, only: c_size_t, c_ptr
@@ -1997,6 +1965,14 @@ subroutine gtk_file_chooser_native_set_cancel_label(self, cancel_label) bind(c)
   type(c_ptr), value :: self
   character(kind=c_char), dimension(*) :: cancel_label
 end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkShortcutAction * gtk_shortcut_action_parse_string (const char * string);
+function gtk_shortcut_action_parse_string(string) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_shortcut_action_parse_string
+  character(kind=c_char), dimension(*) :: string
+end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_shortcut_action_print (GtkShortcutAction *self, GString *string);
@@ -3559,15 +3535,36 @@ function gtk_cell_renderer_spin_new() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_show_uri_on_window (GtkWindow *parent, const char *uri, guint32 timestamp, GError **error);
-function gtk_show_uri_on_window(parent, uri, timestamp, error) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char, c_int32_t
-  integer(c_int) :: gtk_show_uri_on_window
+!void gtk_show_uri_full (GtkWindow *parent, const char *uri, guint32 timestamp, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+subroutine gtk_show_uri_full(parent, uri, timestamp, cancellable, callback,&
+& user_data) bind(c)
+  use iso_c_binding, only: c_ptr, c_char, c_int32_t, c_funptr
   type(c_ptr), value :: parent
   character(kind=c_char), dimension(*) :: uri
   integer(c_int32_t), value :: timestamp
+  type(c_ptr), value :: cancellable
+  type(c_funptr), value :: callback
+  type(c_ptr), value :: user_data
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_show_uri_full_finish (GtkWindow *parent, GAsyncResult *result, GError **error);
+function gtk_show_uri_full_finish(parent, result, error) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_show_uri_full_finish
+  type(c_ptr), value :: parent
+  type(c_ptr), value :: result
   type(c_ptr), value :: error
 end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_show_uri (GtkWindow *parent, const char *uri, guint32 timestamp);
+subroutine gtk_show_uri(parent, uri, timestamp) bind(c)
+  use iso_c_binding, only: c_ptr, c_char, c_int32_t
+  type(c_ptr), value :: parent
+  character(kind=c_char), dimension(*) :: uri
+  integer(c_int32_t), value :: timestamp
+end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_button_get_type (void) G_GNUC_CONST;
@@ -3608,18 +3605,18 @@ function gtk_button_new_with_mnemonic(label) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_button_set_relief (GtkButton *button, GtkReliefStyle relief);
-subroutine gtk_button_set_relief(button, relief) bind(c)
+!void gtk_button_set_has_frame (GtkButton *button, gboolean has_frame);
+subroutine gtk_button_set_has_frame(button, has_frame) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: button
-  integer(c_int), value :: relief
+  integer(c_int), value :: has_frame
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkReliefStyle gtk_button_get_relief (GtkButton *button);
-function gtk_button_get_relief(button) bind(c)
+!gboolean gtk_button_get_has_frame (GtkButton *button);
+function gtk_button_get_has_frame(button) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_button_get_relief
+  integer(c_int) :: gtk_button_get_has_frame
   type(c_ptr), value :: button
 end function
 
@@ -3972,7 +3969,7 @@ function gtk_shortcut_trigger_compare(trigger1, trigger2) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkShortcutTriggerMatch gtk_shortcut_trigger_trigger (GtkShortcutTrigger *self, GdkEvent *event, gboolean enable_mnemonics);
+!GdkKeyMatch gtk_shortcut_trigger_trigger (GtkShortcutTrigger *self, GdkEvent *event, gboolean enable_mnemonics);
 function gtk_shortcut_trigger_trigger(self, event, enable_mnemonics) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_shortcut_trigger_trigger
@@ -4304,13 +4301,6 @@ function gtk_accelerator_get_label_with_keycode(display, accelerator_key,&
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_accelerator_set_default_mod_mask (GdkModifierType default_mod_mask);
-subroutine gtk_accelerator_set_default_mod_mask(default_mod_mask) bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int), value :: default_mod_mask
-end subroutine
-
-! 
 !GdkModifierType gtk_accelerator_get_default_mod_mask (void);
 function gtk_accelerator_get_default_mod_mask() bind(c)
   use iso_c_binding, only: c_int
@@ -5010,15 +5000,6 @@ subroutine gtk_widget_class_add_shortcut(widget_class, shortcut) bind(c)
   type(c_ptr), value :: widget_class
   type(c_ptr), value :: shortcut
 end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_widget_can_activate_accel (GtkWidget *widget, guint signal_id);
-function gtk_widget_can_activate_accel(widget, signal_id) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_widget_can_activate_accel
-  type(c_ptr), value :: widget
-  integer(c_int), value :: signal_id
-end function
 
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_widget_mnemonic_activate (GtkWidget *widget, gboolean group_cycling);
@@ -6032,15 +6013,6 @@ function gtk_widget_class_get_css_name(widget_class) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_widget_class_get_css_name
   type(c_ptr), value :: widget_class
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GdkModifierType gtk_widget_get_modifier_mask (GtkWidget *widget, GdkModifierIntent intent);
-function gtk_widget_get_modifier_mask(widget, intent) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_widget_get_modifier_mask
-  type(c_ptr), value :: widget
-  integer(c_int), value :: intent
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -7523,6 +7495,38 @@ subroutine gtk_event_controller_set_name(controller, name) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
+!GdkEvent * gtk_event_controller_get_current_event (GtkEventController *controller);
+function gtk_event_controller_get_current_event(controller) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_event_controller_get_current_event
+  type(c_ptr), value :: controller
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!guint32 gtk_event_controller_get_current_event_time (GtkEventController *controller);
+function gtk_event_controller_get_current_event_time(controller) bind(c)
+  use iso_c_binding, only: c_int32_t, c_ptr
+  integer(c_int32_t) :: gtk_event_controller_get_current_event_time
+  type(c_ptr), value :: controller
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GdkDevice * gtk_event_controller_get_current_event_device (GtkEventController *controller);
+function gtk_event_controller_get_current_event_device(controller) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_event_controller_get_current_event_device
+  type(c_ptr), value :: controller
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GdkModifierType gtk_event_controller_get_current_event_state (GtkEventController *controller);
+function gtk_event_controller_get_current_event_state(controller) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_event_controller_get_current_event_state
+  type(c_ptr), value :: controller
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !guint gtk_get_major_version (void) G_GNUC_CONST;
 function gtk_get_major_version() bind(c)
   use iso_c_binding, only: c_int
@@ -7621,35 +7625,6 @@ end function
 function gtk_get_locale_direction() bind(c)
   use iso_c_binding, only: c_int
   integer(c_int) :: gtk_get_locale_direction
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GdkEvent * gtk_get_current_event (void);
-function gtk_get_current_event() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_get_current_event
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!guint32 gtk_get_current_event_time (void);
-function gtk_get_current_event_time() bind(c)
-  use iso_c_binding, only: c_int32_t
-  integer(c_int32_t) :: gtk_get_current_event_time
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_get_current_event_state (GdkModifierType *state);
-function gtk_get_current_event_state(state) bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gtk_get_current_event_state
-  integer(c_int), value :: state
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GdkDevice *gtk_get_current_event_device (void);
-function gtk_get_current_event_device() bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_get_current_event_device
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -9188,13 +9163,6 @@ subroutine gtk_style_context_get_margin(context, margin) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_style_context_reset_widgets (GdkDisplay *display);
-subroutine gtk_style_context_reset_widgets(display) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: display
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
 !void gtk_render_insertion_cursor (GtkStyleContext *context, cairo_t *cr, gdouble x, gdouble y, PangoLayout *layout, int index, PangoDirection direction);
 subroutine gtk_render_insertion_cursor(context, cr, x, y, layout, index,&
 & direction) bind(c)
@@ -9929,6 +9897,22 @@ subroutine gtk_file_chooser_button_set_width_chars(button, n_chars) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: button
   integer(c_int), value :: n_chars
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_file_chooser_button_get_modal (GtkFileChooserButton *button);
+function gtk_file_chooser_button_get_modal(button) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_file_chooser_button_get_modal
+  type(c_ptr), value :: button
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_file_chooser_button_set_modal (GtkFileChooserButton *button, gboolean modal);
+subroutine gtk_file_chooser_button_set_modal(button, modal) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: button
+  integer(c_int), value :: modal
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -10955,18 +10939,18 @@ function gtk_menu_button_get_use_underline(menu_button) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_menu_button_set_relief (GtkMenuButton *menu_button, GtkReliefStyle relief);
-subroutine gtk_menu_button_set_relief(menu_button, relief) bind(c)
+!void gtk_menu_button_set_has_frame (GtkMenuButton *menu_button, gboolean has_frame);
+subroutine gtk_menu_button_set_has_frame(menu_button, has_frame) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: menu_button
-  integer(c_int), value :: relief
+  integer(c_int), value :: has_frame
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkReliefStyle gtk_menu_button_get_relief (GtkMenuButton *menu_button);
-function gtk_menu_button_get_relief(menu_button) bind(c)
+!gboolean gtk_menu_button_get_has_frame (GtkMenuButton *menu_button);
+function gtk_menu_button_get_has_frame(menu_button) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_menu_button_get_relief
+  integer(c_int) :: gtk_menu_button_get_has_frame
   type(c_ptr), value :: menu_button
 end function
 
@@ -11904,11 +11888,11 @@ function gtk_shortcut_controller_new() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkEventController * gtk_shortcut_controller_new_for_model (GListModel *list);
-function gtk_shortcut_controller_new_for_model(list) bind(c)
+!GtkEventController * gtk_shortcut_controller_new_for_model (GListModel *model);
+function gtk_shortcut_controller_new_for_model(model) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_shortcut_controller_new_for_model
-  type(c_ptr), value :: list
+  type(c_ptr), value :: model
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -12226,18 +12210,19 @@ function gtk_scrolled_window_get_placement(scrolled_window) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_scrolled_window_set_shadow_type (GtkScrolledWindow *scrolled_window, GtkShadowType type);
-subroutine gtk_scrolled_window_set_shadow_type(scrolled_window, type) bind(c)
+!void gtk_scrolled_window_set_has_frame (GtkScrolledWindow *scrolled_window, gboolean has_frame);
+subroutine gtk_scrolled_window_set_has_frame(scrolled_window, has_frame)&
+& bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: scrolled_window
-  integer(c_int), value :: type
+  integer(c_int), value :: has_frame
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkShadowType gtk_scrolled_window_get_shadow_type (GtkScrolledWindow *scrolled_window);
-function gtk_scrolled_window_get_shadow_type(scrolled_window) bind(c)
+!gboolean gtk_scrolled_window_get_has_frame (GtkScrolledWindow *scrolled_window);
+function gtk_scrolled_window_get_has_frame(scrolled_window) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_scrolled_window_get_shadow_type
+  integer(c_int) :: gtk_scrolled_window_get_has_frame
   type(c_ptr), value :: scrolled_window
 end function
 
@@ -14777,6 +14762,22 @@ subroutine gtk_font_button_set_title(font_button, title) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_font_button_get_modal (GtkFontButton *font_button);
+function gtk_font_button_get_modal(font_button) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_font_button_get_modal
+  type(c_ptr), value :: font_button
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_font_button_set_modal (GtkFontButton *font_button, gboolean modal);
+subroutine gtk_font_button_set_modal(font_button, modal) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: font_button
+  integer(c_int), value :: modal
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_font_button_get_use_font (GtkFontButton *font_button);
 function gtk_font_button_get_use_font(font_button) bind(c)
   use iso_c_binding, only: c_int, c_ptr
@@ -15172,11 +15173,10 @@ function gtk_aspect_frame_get_type() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkWidget* gtk_aspect_frame_new (const gchar *label, gfloat xalign, gfloat yalign, gfloat ratio, gboolean obey_child);
-function gtk_aspect_frame_new(label, xalign, yalign, ratio, obey_child) bind(c)
-  use iso_c_binding, only: c_ptr, c_char, c_float, c_int
+!GtkWidget* gtk_aspect_frame_new (float xalign, float yalign, float ratio, gboolean obey_child);
+function gtk_aspect_frame_new(xalign, yalign, ratio, obey_child) bind(c)
+  use iso_c_binding, only: c_ptr, c_float, c_int
   type(c_ptr) :: gtk_aspect_frame_new
-  character(kind=c_char), dimension(*) :: label
   real(c_float), value :: xalign
   real(c_float), value :: yalign
   real(c_float), value :: ratio
@@ -15184,16 +15184,68 @@ function gtk_aspect_frame_new(label, xalign, yalign, ratio, obey_child) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_aspect_frame_set (GtkAspectFrame *aspect_frame, gfloat xalign, gfloat yalign, gfloat ratio, gboolean obey_child);
-subroutine gtk_aspect_frame_set(aspect_frame, xalign, yalign, ratio,&
-& obey_child) bind(c)
-  use iso_c_binding, only: c_ptr, c_float, c_int
-  type(c_ptr), value :: aspect_frame
+!void gtk_aspect_frame_set_xalign (GtkAspectFrame *self, float xalign);
+subroutine gtk_aspect_frame_set_xalign(self, xalign) bind(c)
+  use iso_c_binding, only: c_ptr, c_float
+  type(c_ptr), value :: self
   real(c_float), value :: xalign
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!float gtk_aspect_frame_get_xalign (GtkAspectFrame *self);
+function gtk_aspect_frame_get_xalign(self) bind(c)
+  use iso_c_binding, only: c_float, c_ptr
+  real(c_float) :: gtk_aspect_frame_get_xalign
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_aspect_frame_set_yalign (GtkAspectFrame *self, float yalign);
+subroutine gtk_aspect_frame_set_yalign(self, yalign) bind(c)
+  use iso_c_binding, only: c_ptr, c_float
+  type(c_ptr), value :: self
   real(c_float), value :: yalign
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!float gtk_aspect_frame_get_yalign (GtkAspectFrame *self);
+function gtk_aspect_frame_get_yalign(self) bind(c)
+  use iso_c_binding, only: c_float, c_ptr
+  real(c_float) :: gtk_aspect_frame_get_yalign
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_aspect_frame_set_ratio (GtkAspectFrame *self, float ratio);
+subroutine gtk_aspect_frame_set_ratio(self, ratio) bind(c)
+  use iso_c_binding, only: c_ptr, c_float
+  type(c_ptr), value :: self
   real(c_float), value :: ratio
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!float gtk_aspect_frame_get_ratio (GtkAspectFrame *self);
+function gtk_aspect_frame_get_ratio(self) bind(c)
+  use iso_c_binding, only: c_float, c_ptr
+  real(c_float) :: gtk_aspect_frame_get_ratio
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_aspect_frame_set_obey_child (GtkAspectFrame *self, gboolean obey_child);
+subroutine gtk_aspect_frame_set_obey_child(self, obey_child) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
   integer(c_int), value :: obey_child
 end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_aspect_frame_get_obey_child (GtkAspectFrame *self);
+function gtk_aspect_frame_get_obey_child(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_aspect_frame_get_obey_child
+  type(c_ptr), value :: self
+end function
 
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_message_dialog_get_type (void) G_GNUC_CONST;
@@ -15741,22 +15793,6 @@ end subroutine
 function gtk_frame_get_label_align(frame) bind(c)
   use iso_c_binding, only: c_float, c_ptr
   real(c_float) :: gtk_frame_get_label_align
-  type(c_ptr), value :: frame
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_frame_set_shadow_type (GtkFrame *frame, GtkShadowType type);
-subroutine gtk_frame_set_shadow_type(frame, type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: frame
-  integer(c_int), value :: type
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkShadowType gtk_frame_get_shadow_type (GtkFrame *frame);
-function gtk_frame_get_shadow_type(frame) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_frame_get_shadow_type
   type(c_ptr), value :: frame
 end function
 
@@ -17470,20 +17506,20 @@ function gtk_viewport_new(hadjustment, vadjustment) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_viewport_set_shadow_type (GtkViewport *viewport, GtkShadowType type);
-subroutine gtk_viewport_set_shadow_type(viewport, type) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: viewport
-  integer(c_int), value :: type
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkShadowType gtk_viewport_get_shadow_type (GtkViewport *viewport);
-function gtk_viewport_get_shadow_type(viewport) bind(c)
+!gboolean gtk_viewport_get_scroll_to_focus (GtkViewport *viewport);
+function gtk_viewport_get_scroll_to_focus(viewport) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_viewport_get_shadow_type
+  integer(c_int) :: gtk_viewport_get_scroll_to_focus
   type(c_ptr), value :: viewport
 end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_viewport_set_scroll_to_focus (GtkViewport *viewport, gboolean scroll_to_focus);
+subroutine gtk_viewport_set_scroll_to_focus(viewport, scroll_to_focus) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: viewport
+  integer(c_int), value :: scroll_to_focus
+end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_accel_label_get_type (void) G_GNUC_CONST;
@@ -17886,6 +17922,22 @@ function gtk_app_chooser_button_get_show_default_item(self) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_app_chooser_button_get_modal (GtkAppChooserButton *self);
+function gtk_app_chooser_button_get_modal(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_app_chooser_button_get_modal
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_app_chooser_button_set_modal (GtkAppChooserButton *self, gboolean modal);
+subroutine gtk_app_chooser_button_set_modal(self, modal) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: modal
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_color_button_get_type (void) G_GNUC_CONST;
 function gtk_color_button_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -17922,6 +17974,22 @@ function gtk_color_button_get_title(button) bind(c)
   type(c_ptr) :: gtk_color_button_get_title
   type(c_ptr), value :: button
 end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_color_button_get_modal (GtkColorButton *button);
+function gtk_color_button_get_modal(button) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_color_button_get_modal
+  type(c_ptr), value :: button
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_color_button_set_modal (GtkColorButton *button, gboolean modal);
+subroutine gtk_color_button_set_modal(button, modal) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: button
+  integer(c_int), value :: modal
+end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_emoji_chooser_get_type (void) G_GNUC_CONST;
@@ -24398,391 +24466,367 @@ function gtk_label_new_with_mnemonic(str) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_text (GtkLabel *label, const gchar *str);
-subroutine gtk_label_set_text(label, str) bind(c)
+!void gtk_label_set_text (GtkLabel *self, const gchar *str);
+subroutine gtk_label_set_text(self, str) bind(c)
   use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   character(kind=c_char), dimension(*) :: str
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!const gchar* gtk_label_get_text (GtkLabel *label);
-function gtk_label_get_text(label) bind(c)
+!const gchar* gtk_label_get_text (GtkLabel *self);
+function gtk_label_get_text(self) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_label_get_text
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_attributes (GtkLabel *label, PangoAttrList *attrs);
-subroutine gtk_label_set_attributes(label, attrs) bind(c)
+!void gtk_label_set_attributes (GtkLabel *self, PangoAttrList *attrs);
+subroutine gtk_label_set_attributes(self, attrs) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   type(c_ptr), value :: attrs
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!PangoAttrList *gtk_label_get_attributes (GtkLabel *label);
-function gtk_label_get_attributes(label) bind(c)
+!PangoAttrList *gtk_label_get_attributes (GtkLabel *self);
+function gtk_label_get_attributes(self) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_label_get_attributes
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_label (GtkLabel *label, const gchar *str);
-subroutine gtk_label_set_label(label, str) bind(c)
+!void gtk_label_set_label (GtkLabel *self, const gchar *str);
+subroutine gtk_label_set_label(self, str) bind(c)
   use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   character(kind=c_char), dimension(*) :: str
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!const gchar * gtk_label_get_label (GtkLabel *label);
-function gtk_label_get_label(label) bind(c)
+!const gchar * gtk_label_get_label (GtkLabel *self);
+function gtk_label_get_label(self) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_label_get_label
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_markup (GtkLabel *label, const gchar *str);
-subroutine gtk_label_set_markup(label, str) bind(c)
+!void gtk_label_set_markup (GtkLabel *self, const gchar *str);
+subroutine gtk_label_set_markup(self, str) bind(c)
   use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   character(kind=c_char), dimension(*) :: str
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_use_markup (GtkLabel *label, gboolean setting);
-subroutine gtk_label_set_use_markup(label, setting) bind(c)
+!void gtk_label_set_use_markup (GtkLabel *self, gboolean setting);
+subroutine gtk_label_set_use_markup(self, setting) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: setting
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_label_get_use_markup (GtkLabel *label);
-function gtk_label_get_use_markup(label) bind(c)
+!gboolean gtk_label_get_use_markup (GtkLabel *self);
+function gtk_label_get_use_markup(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_use_markup
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_use_underline (GtkLabel *label, gboolean setting);
-subroutine gtk_label_set_use_underline(label, setting) bind(c)
+!void gtk_label_set_use_underline (GtkLabel *self, gboolean setting);
+subroutine gtk_label_set_use_underline(self, setting) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: setting
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_label_get_use_underline (GtkLabel *label);
-function gtk_label_get_use_underline(label) bind(c)
+!gboolean gtk_label_get_use_underline (GtkLabel *self);
+function gtk_label_get_use_underline(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_use_underline
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_markup_with_mnemonic (GtkLabel *label, const gchar *str);
-subroutine gtk_label_set_markup_with_mnemonic(label, str) bind(c)
+!void gtk_label_set_markup_with_mnemonic (GtkLabel *self, const gchar *str);
+subroutine gtk_label_set_markup_with_mnemonic(self, str) bind(c)
   use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   character(kind=c_char), dimension(*) :: str
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!guint gtk_label_get_mnemonic_keyval (GtkLabel *label);
-function gtk_label_get_mnemonic_keyval(label) bind(c)
+!guint gtk_label_get_mnemonic_keyval (GtkLabel *self);
+function gtk_label_get_mnemonic_keyval(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_mnemonic_keyval
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_mnemonic_widget (GtkLabel *label, GtkWidget *widget);
-subroutine gtk_label_set_mnemonic_widget(label, widget) bind(c)
+!void gtk_label_set_mnemonic_widget (GtkLabel *self, GtkWidget *widget);
+subroutine gtk_label_set_mnemonic_widget(self, widget) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   type(c_ptr), value :: widget
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkWidget *gtk_label_get_mnemonic_widget (GtkLabel *label);
-function gtk_label_get_mnemonic_widget(label) bind(c)
+!GtkWidget *gtk_label_get_mnemonic_widget (GtkLabel *self);
+function gtk_label_get_mnemonic_widget(self) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_label_get_mnemonic_widget
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_text_with_mnemonic (GtkLabel *label, const gchar *str);
-subroutine gtk_label_set_text_with_mnemonic(label, str) bind(c)
+!void gtk_label_set_text_with_mnemonic (GtkLabel *self, const gchar *str);
+subroutine gtk_label_set_text_with_mnemonic(self, str) bind(c)
   use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   character(kind=c_char), dimension(*) :: str
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_justify (GtkLabel *label, GtkJustification jtype);
-subroutine gtk_label_set_justify(label, jtype) bind(c)
+!void gtk_label_set_justify (GtkLabel *self, GtkJustification jtype);
+subroutine gtk_label_set_justify(self, jtype) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: jtype
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkJustification gtk_label_get_justify (GtkLabel *label);
-function gtk_label_get_justify(label) bind(c)
+!GtkJustification gtk_label_get_justify (GtkLabel *self);
+function gtk_label_get_justify(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_justify
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_ellipsize (GtkLabel *label, PangoEllipsizeMode mode);
-subroutine gtk_label_set_ellipsize(label, mode) bind(c)
+!void gtk_label_set_ellipsize (GtkLabel *self, PangoEllipsizeMode mode);
+subroutine gtk_label_set_ellipsize(self, mode) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: mode
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!PangoEllipsizeMode gtk_label_get_ellipsize (GtkLabel *label);
-function gtk_label_get_ellipsize(label) bind(c)
+!PangoEllipsizeMode gtk_label_get_ellipsize (GtkLabel *self);
+function gtk_label_get_ellipsize(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_ellipsize
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_width_chars (GtkLabel *label, gint n_chars);
-subroutine gtk_label_set_width_chars(label, n_chars) bind(c)
+!void gtk_label_set_width_chars (GtkLabel *self, int n_chars);
+subroutine gtk_label_set_width_chars(self, n_chars) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: n_chars
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gint gtk_label_get_width_chars (GtkLabel *label);
-function gtk_label_get_width_chars(label) bind(c)
+!gint gtk_label_get_width_chars (GtkLabel *self);
+function gtk_label_get_width_chars(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_width_chars
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_max_width_chars (GtkLabel *label, gint n_chars);
-subroutine gtk_label_set_max_width_chars(label, n_chars) bind(c)
+!void gtk_label_set_max_width_chars (GtkLabel *self, int n_chars);
+subroutine gtk_label_set_max_width_chars(self, n_chars) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: n_chars
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gint gtk_label_get_max_width_chars (GtkLabel *label);
-function gtk_label_get_max_width_chars(label) bind(c)
+!gint gtk_label_get_max_width_chars (GtkLabel *self);
+function gtk_label_get_max_width_chars(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_max_width_chars
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_lines (GtkLabel *label, gint lines);
-subroutine gtk_label_set_lines(label, lines) bind(c)
+!void gtk_label_set_lines (GtkLabel *self, gint lines);
+subroutine gtk_label_set_lines(self, lines) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: lines
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gint gtk_label_get_lines (GtkLabel *label);
-function gtk_label_get_lines(label) bind(c)
+!gint gtk_label_get_lines (GtkLabel *self);
+function gtk_label_get_lines(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_lines
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_pattern (GtkLabel *label, const gchar *pattern);
-subroutine gtk_label_set_pattern(label, pattern) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: label
-  character(kind=c_char), dimension(*) :: pattern
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_wrap (GtkLabel *label, gboolean wrap);
-subroutine gtk_label_set_wrap(label, wrap) bind(c)
+!void gtk_label_set_wrap (GtkLabel *self, gboolean wrap);
+subroutine gtk_label_set_wrap(self, wrap) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: wrap
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_label_get_wrap (GtkLabel *label);
-function gtk_label_get_wrap(label) bind(c)
+!gboolean gtk_label_get_wrap (GtkLabel *self);
+function gtk_label_get_wrap(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_wrap
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_wrap_mode (GtkLabel *label, PangoWrapMode wrap_mode);
-subroutine gtk_label_set_wrap_mode(label, wrap_mode) bind(c)
+!void gtk_label_set_wrap_mode (GtkLabel *self, PangoWrapMode wrap_mode);
+subroutine gtk_label_set_wrap_mode(self, wrap_mode) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: wrap_mode
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!PangoWrapMode gtk_label_get_wrap_mode (GtkLabel *label);
-function gtk_label_get_wrap_mode(label) bind(c)
+!PangoWrapMode gtk_label_get_wrap_mode (GtkLabel *self);
+function gtk_label_get_wrap_mode(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_wrap_mode
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_selectable (GtkLabel *label, gboolean setting);
-subroutine gtk_label_set_selectable(label, setting) bind(c)
+!void gtk_label_set_selectable (GtkLabel *self, gboolean setting);
+subroutine gtk_label_set_selectable(self, setting) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: setting
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_label_get_selectable (GtkLabel *label);
-function gtk_label_get_selectable(label) bind(c)
+!gboolean gtk_label_get_selectable (GtkLabel *self);
+function gtk_label_get_selectable(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_selectable
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_select_region (GtkLabel *label, gint start_offset, gint end_offset);
-subroutine gtk_label_select_region(label, start_offset, end_offset) bind(c)
+!void gtk_label_select_region (GtkLabel *self, gint start_offset, gint end_offset);
+subroutine gtk_label_select_region(self, start_offset, end_offset) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: start_offset
   integer(c_int), value :: end_offset
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_label_get_selection_bounds (GtkLabel *label, gint *start, gint *end);
-function gtk_label_get_selection_bounds(label, start, end) bind(c)
+!gboolean gtk_label_get_selection_bounds (GtkLabel *self, gint *start, gint *end);
+function gtk_label_get_selection_bounds(self, start, end) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_selection_bounds
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   type(c_ptr), value :: start
   type(c_ptr), value :: end
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!PangoLayout *gtk_label_get_layout (GtkLabel *label);
-function gtk_label_get_layout(label) bind(c)
+!PangoLayout *gtk_label_get_layout (GtkLabel *self);
+function gtk_label_get_layout(self) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_label_get_layout
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_get_layout_offsets (GtkLabel *label, gint *x, gint *y);
-subroutine gtk_label_get_layout_offsets(label, x, y) bind(c)
+!void gtk_label_get_layout_offsets (GtkLabel *self, gint *x, gint *y);
+subroutine gtk_label_get_layout_offsets(self, x, y) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   type(c_ptr), value :: x
   type(c_ptr), value :: y
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_single_line_mode (GtkLabel *label, gboolean single_line_mode);
-subroutine gtk_label_set_single_line_mode(label, single_line_mode) bind(c)
+!void gtk_label_set_single_line_mode (GtkLabel *self, gboolean single_line_mode);
+subroutine gtk_label_set_single_line_mode(self, single_line_mode) bind(c)
   use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   integer(c_int), value :: single_line_mode
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_label_get_single_line_mode (GtkLabel *label);
-function gtk_label_get_single_line_mode(label) bind(c)
+!gboolean gtk_label_get_single_line_mode (GtkLabel *self);
+function gtk_label_get_single_line_mode(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_label_get_single_line_mode
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!const gchar *gtk_label_get_current_uri (GtkLabel *label);
-function gtk_label_get_current_uri(label) bind(c)
+!const gchar *gtk_label_get_current_uri (GtkLabel *self);
+function gtk_label_get_current_uri(self) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_label_get_current_uri
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_track_visited_links (GtkLabel *label, gboolean track_links);
-subroutine gtk_label_set_track_visited_links(label, track_links) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: label
-  integer(c_int), value :: track_links
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_label_get_track_visited_links (GtkLabel *label);
-function gtk_label_get_track_visited_links(label) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_label_get_track_visited_links
-  type(c_ptr), value :: label
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_xalign (GtkLabel *label, gfloat xalign);
-subroutine gtk_label_set_xalign(label, xalign) bind(c)
+!void gtk_label_set_xalign (GtkLabel *self, gfloat xalign);
+subroutine gtk_label_set_xalign(self, xalign) bind(c)
   use iso_c_binding, only: c_ptr, c_float
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   real(c_float), value :: xalign
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gfloat gtk_label_get_xalign (GtkLabel *label);
-function gtk_label_get_xalign(label) bind(c)
+!gfloat gtk_label_get_xalign (GtkLabel *self);
+function gtk_label_get_xalign(self) bind(c)
   use iso_c_binding, only: c_float, c_ptr
   real(c_float) :: gtk_label_get_xalign
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_yalign (GtkLabel *label, gfloat yalign);
-subroutine gtk_label_set_yalign(label, yalign) bind(c)
+!void gtk_label_set_yalign (GtkLabel *self, gfloat yalign);
+subroutine gtk_label_set_yalign(self, yalign) bind(c)
   use iso_c_binding, only: c_ptr, c_float
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   real(c_float), value :: yalign
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gfloat gtk_label_get_yalign (GtkLabel *label);
-function gtk_label_get_yalign(label) bind(c)
+!gfloat gtk_label_get_yalign (GtkLabel *self);
+function gtk_label_get_yalign(self) bind(c)
   use iso_c_binding, only: c_float, c_ptr
   real(c_float) :: gtk_label_get_yalign
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_label_set_extra_menu (GtkLabel *label, GMenuModel *model);
-subroutine gtk_label_set_extra_menu(label, model) bind(c)
+!void gtk_label_set_extra_menu (GtkLabel *self, GMenuModel *model);
+subroutine gtk_label_set_extra_menu(self, model) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
   type(c_ptr), value :: model
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!GMenuModel * gtk_label_get_extra_menu (GtkLabel *label);
-function gtk_label_get_extra_menu(label) bind(c)
+!GMenuModel * gtk_label_get_extra_menu (GtkLabel *self);
+function gtk_label_get_extra_menu(self) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_label_get_extra_menu
-  type(c_ptr), value :: label
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -26281,6 +26325,13 @@ end function
 function gtk_spin_button_accessible_get_type() bind(c)
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_spin_button_accessible_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_scrollbar_accessible_get_type (void);
+function gtk_scrollbar_accessible_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_scrollbar_accessible_get_type
 end function
 
 ! GDK_AVAILABLE_IN_ALL
