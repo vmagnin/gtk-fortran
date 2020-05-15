@@ -35,13 +35,14 @@ module global_widgets
 end module global_widgets
 
 module handlers
-  use gtk, only: gtk_container_add, gtk_drawing_area_new, &
+  use gtk, only: gtk_application_window_new, gtk_widget_destroy, &
+  & g_signal_connect, g_signal_connect_swapped, &
+  & gtk_container_add, gtk_drawing_area_new, &
   & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
   & gtk_drawing_area_set_draw_func, &
-  & gtk_widget_queue_draw, gtk_widget_show, gtk_window_new, &
+  & gtk_widget_queue_draw, gtk_widget_show, &
   & gtk_window_set_default_size, gtk_window_set_title, &
-  & TRUE, FALSE, c_null_ptr, c_null_char, &
-  & GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, &
+  & TRUE, FALSE, c_null_ptr, c_null_char, GDK_COLORSPACE_RGB, &
   & gtk_grid_new, gtk_grid_attach, gtk_button_new_with_label,&
   & gtk_box_new, gtk_spin_button_new,&
   & gtk_adjustment_new, gtk_spin_button_get_value, gtk_label_new, &
@@ -60,19 +61,18 @@ module handlers
   & gtk_grid_set_row_homogeneous, gtk_statusbar_remove_all, &
   & gtk_widget_set_vexpand
   
-  use g, only: g_usleep, g_main_loop_new, g_main_loop_run, &
-             & g_main_context_iteration, g_main_context_pending, g_main_loop_quit
+  use g, only: g_usleep, g_main_context_iteration, g_main_context_pending
   use iso_c_binding, only: c_int, c_ptr
 
   implicit none
-  type(c_ptr)    :: my_gmainloop
+  type(c_ptr)    :: my_window
   ! run_status is TRUE until the user closes the top window:
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
 
 contains
   ! Our callback function before destroying the window:
-  function destroy_signal(widget, event, gdata) result(ret)  bind(c)
+  recursive function destroy_signal(widget, event, gdata) result(ret)  bind(c)
     integer(c_int)                 :: ret
     type(c_ptr), value, intent(in) :: widget, event, gdata
 
@@ -81,13 +81,13 @@ contains
     run_status = FALSE
     ! Returns FALSE to propagate the event further:
     ret = FALSE
-    ! Makes the innermost invocation of the main loop return:
-    call g_main_loop_quit(my_gmainloop)
+
+    call gtk_widget_destroy(my_window)
   end function destroy_signal
 
   ! This function is needed to update the GUI during long computations.
   ! https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
-  subroutine pending_events ()
+  recursive subroutine pending_events ()
     do while(IAND(g_main_context_pending(c_null_ptr), run_status) /= FALSE)
       ! FALSE for non-blocking:
       boolresult = g_main_context_iteration(c_null_ptr, FALSE)
@@ -266,153 +266,154 @@ contains
 
     ret = FALSE
   end function firstToggle
-end module handlers
 
-!**********************************
-! The main program defines the GUI
-!**********************************
-program julia
-  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer, c_null_funptr
-  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
+  ! Callback function for the signal "activate" emitted by g_application_run().
+  ! We use a subroutine because it should return void.
+  ! The GUI is defined here.
+  subroutine activate(app, gdata) bind(c)
+    use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer, c_null_funptr
+    use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                       & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-  use handlers
-  use global_widgets
-  implicit none
-  ! These widgets are used only here:
-  type(c_ptr)    :: my_window, table, button1, button2, button3, box1
-  type(c_ptr)    :: label1, label2, label3, label4
-  type(c_ptr)    :: toggle1, expander, notebook, notebookLabel1, notebookLabel2
-  type(c_ptr)    :: linkButton
-  integer(c_int) :: message_id, firstTab, secondTab
+    use global_widgets
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    ! Pointers toward our GTK widgets:
+    type(c_ptr)    :: table, button1, button2, button3, box1
+    type(c_ptr)    :: label1, label2, label3, label4
+    type(c_ptr)    :: toggle1, expander, notebook, notebookLabel1, notebookLabel2
+    type(c_ptr)    :: linkButton
+    integer(c_int) :: message_id, firstTab, secondTab
 
-  call gtk_init ()
+    ! Create the window:
+    my_window = gtk_application_window_new(app)
+    call g_signal_connect(my_window, "destroy"//c_null_char, &
+                        & c_funloc(destroy_signal))
+   ! Don't forget that C strings must end with a null char:
+    call gtk_window_set_title(my_window, "Julia Set"//c_null_char)
+    ! Properties of the main window :
+    width  = 700
+    height = 700
+    call gtk_window_set_default_size(my_window, width, height)
+ 
+    !******************************************************************
+    ! Adding widgets in the window:
+    !******************************************************************
+    ! The four buttons:
+    button1 = gtk_button_new_with_mnemonic ("_Compute"//c_null_char)
+    call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(firstbutton))
+    button2 = gtk_button_new_with_mnemonic ("_Save as PNG"//c_null_char)
+    call g_signal_connect (button2, "clicked"//c_null_char, c_funloc(secondbutton))
+    button3 = gtk_button_new_with_mnemonic ("_Exit"//c_null_char)
+    call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(destroy_signal))
+    toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause"//c_null_char)
+    call g_signal_connect (toggle1, "toggled"//c_null_char, c_funloc(firstToggle))
 
-  ! Properties of the main window :
-  width  = 700
-  height = 700
-  my_window = gtk_window_new ()
-  call gtk_window_set_default_size(my_window, width, height)
-  call gtk_window_set_title(my_window, "Julia Set"//c_null_char)
-  call g_signal_connect(my_window, "destroy"//c_null_char, &
-                      & c_funloc(destroy_signal))
+    ! The spin buttons to set the parameters:
+    label1 = gtk_label_new("real(c)"//c_null_char)
+    spinButton1 = gtk_spin_button_new (gtk_adjustment_new(-0.835d0,-2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7_c_int)
+    label2 = gtk_label_new("imag(c) "//c_null_char)
+    spinButton2 = gtk_spin_button_new (gtk_adjustment_new(-0.2321d0, -2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7_c_int)
+    label3 = gtk_label_new("iterations"//c_null_char)
+    spinButton3 = gtk_spin_button_new (gtk_adjustment_new(100000d0,1d0,+1000000d0,10d0,100d0,0d0),10d0, 0_c_int)
 
-  ! The four buttons:
-  button1 = gtk_button_new_with_mnemonic ("_Compute"//c_null_char)
-  call g_signal_connect (button1, "clicked"//c_null_char, c_funloc(firstbutton))
-  button2 = gtk_button_new_with_mnemonic ("_Save as PNG"//c_null_char)
-  call g_signal_connect (button2, "clicked"//c_null_char, c_funloc(secondbutton))
-  button3 = gtk_button_new_with_mnemonic ("_Exit"//c_null_char)
-  call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(destroy_signal))
-  toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause"//c_null_char)
-  call g_signal_connect (toggle1, "toggled"//c_null_char, c_funloc(firstToggle))
+    ! The combo box with predifined values of interesting Julia sets:
+    label4 = gtk_label_new("Predefined values:"//c_null_char)
+    combo1 = gtk_combo_box_text_new()
+    call gtk_combo_box_text_append_text(combo1, "1"//c_null_char)
+    call gtk_combo_box_text_append_text(combo1, "2"//c_null_char)
+    call gtk_combo_box_text_append_text(combo1, "3"//c_null_char)
+    call gtk_combo_box_text_append_text(combo1, "4"//c_null_char)
+    call gtk_combo_box_text_append_text(combo1, "5"//c_null_char)
+    call gtk_combo_box_text_append_text(combo1, "6"//c_null_char)
+    call gtk_combo_box_text_append_text(combo1, "7"//c_null_char)
+    call g_signal_connect (combo1, "changed"//c_null_char, c_funloc(firstCombo))
 
-  ! The spin buttons to set the parameters:
-  label1 = gtk_label_new("real(c)"//c_null_char)
-  spinButton1 = gtk_spin_button_new (gtk_adjustment_new(-0.835d0,-2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7_c_int)
-  label2 = gtk_label_new("imag(c) "//c_null_char)
-  spinButton2 = gtk_spin_button_new (gtk_adjustment_new(-0.2321d0, -2d0,+2d0,0.05d0,0.5d0,0d0),0.05d0, 7_c_int)
-  label3 = gtk_label_new("iterations"//c_null_char)
-  spinButton3 = gtk_spin_button_new (gtk_adjustment_new(100000d0,1d0,+1000000d0,10d0,100d0,0d0),10d0, 0_c_int)
+    ! A clickable URL link:
+    linkButton = gtk_link_button_new_with_label ( &
+                          &"http://en.wikipedia.org/wiki/Julia_set"//c_null_char,&
+                          &"More on Julia sets"//c_null_char)
 
-  ! The combo box with predifined values of interesting Julia sets:
-  label4 = gtk_label_new("Predefined values:"//c_null_char)
-  combo1 = gtk_combo_box_text_new()
-  call gtk_combo_box_text_append_text(combo1, "1"//c_null_char)
-  call gtk_combo_box_text_append_text(combo1, "2"//c_null_char)
-  call gtk_combo_box_text_append_text(combo1, "3"//c_null_char)
-  call gtk_combo_box_text_append_text(combo1, "4"//c_null_char)
-  call gtk_combo_box_text_append_text(combo1, "5"//c_null_char)
-  call gtk_combo_box_text_append_text(combo1, "6"//c_null_char)
-  call gtk_combo_box_text_append_text(combo1, "7"//c_null_char)
-  call g_signal_connect (combo1, "changed"//c_null_char, c_funloc(firstCombo))
+    ! A table container will contain buttons and labels:
+    table = gtk_grid_new ()
+    call gtk_grid_set_column_homogeneous(table, TRUE)
+    call gtk_grid_set_row_homogeneous(table, TRUE)
+    call gtk_grid_attach(table, button1, 0_c_int, 3_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, button2, 1_c_int, 3_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, button3, 3_c_int, 3_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, label1, 0_c_int, 0_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, label2, 0_c_int, 1_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, label3, 0_c_int, 2_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, spinButton1, 1_c_int, 0_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, spinButton2, 1_c_int, 1_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, spinButton3, 1_c_int, 2_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, linkButton, 3_c_int, 0_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, label4, 2_c_int, 0_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, combo1, 2_c_int, 1_c_int, 1_c_int,1_c_int)
+    call gtk_grid_attach(table, toggle1, 2_c_int, 3_c_int, 1_c_int,1_c_int)
 
-  ! A clickable URL link:
-  linkButton = gtk_link_button_new_with_label ( &
-                        &"http://en.wikipedia.org/wiki/Julia_set"//c_null_char,&
-                        &"More on Julia sets"//c_null_char)
+    ! The table is contained in an expander, which is contained in the vertical box:
+    expander = gtk_expander_new_with_mnemonic ("_The parameters:"//c_null_char)
+    call gtk_container_add (expander, table)
+    call gtk_expander_set_expanded(expander, TRUE)
 
-  ! A table container will contain buttons and labels:
-  table = gtk_grid_new ()
-  call gtk_grid_set_column_homogeneous(table, TRUE)
-  call gtk_grid_set_row_homogeneous(table, TRUE)
-  call gtk_grid_attach(table, button1, 0_c_int, 3_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, button2, 1_c_int, 3_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, button3, 3_c_int, 3_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, label1, 0_c_int, 0_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, label2, 0_c_int, 1_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, label3, 0_c_int, 2_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, spinButton1, 1_c_int, 0_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, spinButton2, 1_c_int, 1_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, spinButton3, 1_c_int, 2_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, linkButton, 3_c_int, 0_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, label4, 2_c_int, 0_c_int, 1_c_int, 1_c_int)
-  call gtk_grid_attach(table, combo1, 2_c_int, 1_c_int, 1_c_int,1_c_int)
-  call gtk_grid_attach(table, toggle1, 2_c_int, 3_c_int, 1_c_int,1_c_int)
+    ! We create a vertical box container:
+    box1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10_c_int);
+    call gtk_container_add (box1, expander)
 
-  ! The table is contained in an expander, which is contained in the vertical box:
-  expander = gtk_expander_new_with_mnemonic ("_The parameters:"//c_null_char)
-  call gtk_container_add (expander, table)
-  call gtk_expander_set_expanded(expander, TRUE)
+    ! We need a widget where to draw our pixbuf.
+    ! The drawing area is contained in the vertical box:
+    pixwidth  = 500
+    pixheight = 500
+    my_drawing_area = gtk_drawing_area_new()
+    call gtk_drawing_area_set_content_width(my_drawing_area, pixwidth)
+    call gtk_drawing_area_set_content_height(my_drawing_area, pixheight)
+    call gtk_drawing_area_set_draw_func(my_drawing_area, &
+                     & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
 
-  ! We create a vertical box container:
-  box1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10_c_int);
-  call gtk_container_add (box1, expander)
+    ! We define a notebook with two tabs "Graphics" and "Messages":
+    notebook = gtk_notebook_new ()
+    call gtk_widget_set_vexpand (notebook, TRUE)
+    notebookLabel1 = gtk_label_new_with_mnemonic("_Graphics"//c_null_char)
+    firstTab = gtk_notebook_append_page (notebook, my_drawing_area, notebookLabel1)
 
-  ! We need a widget where to draw our pixbuf.
-  ! The drawing area is contained in the vertical box:
-  pixwidth  = 500
-  pixheight = 500
-  my_drawing_area = gtk_drawing_area_new()
-  call gtk_drawing_area_set_content_width(my_drawing_area, pixwidth)
-  call gtk_drawing_area_set_content_height(my_drawing_area, pixheight)
-  call gtk_drawing_area_set_draw_func(my_drawing_area, &
-                   & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
+    textView = gtk_text_view_new ()
+    buffer = gtk_text_view_get_buffer (textView)
+    call gtk_text_buffer_set_text (buffer, "Julia Set"//C_NEW_LINE// &
+        & "You can copy this text and even edit it !"//C_NEW_LINE//c_null_char,&
+        & -1_c_int)
+    scrolled_window = gtk_scrolled_window_new (c_null_ptr, c_null_ptr)
+    notebookLabel2 = gtk_label_new_with_mnemonic("_Messages"//c_null_char)
+    call gtk_container_add (scrolled_window, textView)
+    secondTab = gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
 
-  ! We define a notebook with two tabs "Graphics" and "Messages":
-  notebook = gtk_notebook_new ()
-  call gtk_widget_set_vexpand (notebook, TRUE)
-  notebookLabel1 = gtk_label_new_with_mnemonic("_Graphics"//c_null_char)
-  firstTab = gtk_notebook_append_page (notebook, my_drawing_area, notebookLabel1)
+    call gtk_container_add (box1, notebook)
+    call gtk_widget_set_vexpand (box1, TRUE)
+    
+    ! The window status bar can be used to print messages:
+    statusBar = gtk_statusbar_new ()
+    message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
+                & "Julia"//c_null_char), "Waiting..."//c_null_char)
+    call gtk_container_add (box1, statusBar)
 
-  textView = gtk_text_view_new ()
-  buffer = gtk_text_view_get_buffer (textView)
-  call gtk_text_buffer_set_text (buffer, "Julia Set"//C_NEW_LINE// &
-      & "You can copy this text and even edit it !"//C_NEW_LINE//c_null_char,&
-      & -1_c_int)
-  scrolled_window = gtk_scrolled_window_new (c_null_ptr, c_null_ptr)
-  notebookLabel2 = gtk_label_new_with_mnemonic("_Messages"//c_null_char)
-  call gtk_container_add (scrolled_window, textView)
-  secondTab = gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
+    ! Let's finalize the GUI:
+    call gtk_container_add (my_window, box1)
+    call gtk_window_set_mnemonics_visible (my_window, TRUE)
+    call gtk_widget_show(my_window)
 
-  call gtk_container_add (box1, notebook)
-  call gtk_widget_set_vexpand (box1, TRUE)
-  
-  ! The window status bar can be used to print messages:
-  statusBar = gtk_statusbar_new ()
-  message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
-              & "Julia"//c_null_char), "Waiting..."//c_null_char)
-  call gtk_container_add (box1, statusBar)
+    ! We create a "pixbuffer" to store the pixels of the image:
+    my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, pixwidth, pixheight)
+    nch = gdk_pixbuf_get_n_channels(my_pixbuf)
+    rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
+    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/pixwidth*pixheight*nch/))
+    ! We use char() for "pixel" because we need unsigned integers.
+    ! This pixbuffer has no Alpha channel (15% faster), only RGB.
+    pixel = char(0)
+    !******************************************************************
 
-  ! Let's finalize the GUI:
-  call gtk_container_add (my_window, box1)
-  call gtk_window_set_mnemonics_visible (my_window, TRUE)
-  call gtk_widget_show(my_window)
-
-  ! We create a "pixbuffer" to store the pixels of the image:
-  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, pixwidth, pixheight)
-  nch = gdk_pixbuf_get_n_channels(my_pixbuf)
-  rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
-  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/pixwidth*pixheight*nch/))
-  ! We use char() for "pixel" because we need unsigned integers.
-  ! This pixbuffer has no Alpha channel (15% faster), only RGB.
-  pixel = char(0)
-
-  ! GUI main loop:
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
-  print *, "All done"
-end program julia
+    ! If you don't show it, nothing will appear on screen...
+    call gtk_widget_show(my_window)
+  end subroutine activate
+end module handlers
 
 !*********************************************
 ! Julia Set
@@ -499,4 +500,46 @@ real(8) function system_time()
   call date_and_time(values=dt)
   system_time=dt(5)*3600d0+dt(6)*60d0+dt(7)+dt(8)*0.001d0
 end function system_time
+
+
+!*******************************************************************************
+! In the main program, we declare the GTK application, connect it to its 
+! "activate" function where we will create the GUI, 
+! and finally call the GLib main loop.
+!*******************************************************************************
+program julia_pixbuf
+
+  use iso_c_binding, only: c_ptr, c_funloc
+  ! We will use those GTK functions and values. The "only" statement can improve
+  ! significantly the compilation time:
+  use gtk, only: c_null_char, c_null_ptr, gtk_application_new, &
+               & G_APPLICATION_FLAGS_NONE
+  use g, only: g_application_run, g_object_unref
+  use handlers
+
+  implicit none
+  integer(c_int)     :: status
+  type(c_ptr)        :: app
+
+  ! First, let's create a GTK application (it will initialize GTK).
+  ! The application ID must contain at least one point:
+  ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
+  app = gtk_application_new("gtk-fortran.examples.julia_pixbuf"//c_null_char, &
+                            & G_APPLICATION_FLAGS_NONE)
+  ! The activate signal will be sent by g_application_run(). 
+  ! The c_funloc() function returns the C address of the callback function.
+  ! The c_null_ptr means no data is transfered to the callback function.
+  call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), &
+                      & c_null_ptr)
+  ! Now, the whole application will be managed by GLib (=> main loop).
+  ! Note that commandline arguments argc, argv are not passed.
+  ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-run
+  status = g_application_run(app, 0_c_int, c_null_ptr)
+
+  print *, "You have exited the GLib main loop, bye, bye..."
+
+  ! Memory is freed:
+  call g_object_unref(app)
+
+end program julia_pixbuf
 
