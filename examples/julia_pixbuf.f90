@@ -295,7 +295,7 @@ program julia
   call gtk_init ()
 
   ! Properties of the main window :
-  width = 700
+  width  = 700
   height = 700
   my_window = gtk_window_new ()
   call gtk_window_set_default_size(my_window, width, height)
@@ -367,9 +367,11 @@ program julia
 
   ! We need a widget where to draw our pixbuf.
   ! The drawing area is contained in the vertical box:
+  pixwidth  = 500
+  pixheight = 500
   my_drawing_area = gtk_drawing_area_new()
-  call gtk_drawing_area_set_content_width(my_drawing_area, width)
-  call gtk_drawing_area_set_content_height(my_drawing_area, height)
+  call gtk_drawing_area_set_content_width(my_drawing_area, pixwidth)
+  call gtk_drawing_area_set_content_height(my_drawing_area, pixheight)
   call gtk_drawing_area_set_draw_func(my_drawing_area, &
                    & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
 
@@ -404,8 +406,6 @@ program julia
   call gtk_widget_show(my_window)
 
   ! We create a "pixbuffer" to store the pixels of the image:
-  pixwidth  = 500
-  pixheight = 500
   my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, pixwidth, pixheight)
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
