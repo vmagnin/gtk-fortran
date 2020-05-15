@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-02-13
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-05-15
 
 
 module global_widgets
@@ -38,7 +38,7 @@ end module global_widgets
 
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, &
-  &gtk_main, gtk_main_iteration, gtk_main_iteration_do, gtk_widget_get_window, &
+  &gtk_main, gtk_main_iteration, gtk_main_iteration_do, &
   &gtk_widget_queue_draw, gtk_widget_show, gtk_window_new, &
   &gtk_window_set_default_size, gtk_window_set_title,&
   &TRUE, FALSE, c_null_ptr, c_null_char, &
