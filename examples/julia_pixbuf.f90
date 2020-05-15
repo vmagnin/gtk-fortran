@@ -1,29 +1,28 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran GTK / Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
 ! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-05-15
-
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -35,48 +34,41 @@ module global_widgets
   character(LEN=80) :: string
 end module global_widgets
 
-
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, &
   & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
   & gtk_drawing_area_set_draw_func, &
-  &gtk_widget_queue_draw, gtk_widget_show, gtk_window_new, &
-  &gtk_window_set_default_size, gtk_window_set_title,&
-  &TRUE, FALSE, c_null_ptr, c_null_char, &
-  &GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, &
-  &gtk_grid_new, gtk_grid_attach, gtk_container_add, gtk_button_new_with_label,&
+  & gtk_widget_queue_draw, gtk_widget_show, gtk_window_new, &
+  & gtk_window_set_default_size, gtk_window_set_title, &
+  & TRUE, FALSE, c_null_ptr, c_null_char, &
+  & GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, &
+  & gtk_grid_new, gtk_grid_attach, gtk_button_new_with_label,&
   & gtk_box_new, gtk_spin_button_new,&
-  &gtk_adjustment_new, gtk_spin_button_get_value, gtk_label_new, &
-  &gtk_expander_new_with_mnemonic, gtk_expander_set_expanded, &
-  &gtk_toggle_button_new_with_label, gtk_toggle_button_get_active, gtk_notebook_new,&
-  &gtk_notebook_append_page, gtk_text_view_new, gtk_text_view_get_buffer,&
-  &gtk_text_buffer_set_text, gtk_scrolled_window_new, C_NEW_LINE, &
-  &gtk_text_buffer_insert_at_cursor, gtk_statusbar_new,&
-  &gtk_statusbar_push, gtk_statusbar_pop, gtk_statusbar_get_context_id,&
-  &gtk_button_new_with_mnemonic, gtk_link_button_new_with_label,&
-  &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic, &
-  &gtk_window_set_mnemonics_visible, gtk_combo_box_text_new, &
-  &gtk_combo_box_text_append_text, gtk_combo_box_text_get_active_text, &
-  &gtk_combo_box_text_insert_text, gtk_spin_button_set_value, gtk_spin_button_update,&
-  &GTK_ORIENTATION_VERTICAL, gtk_grid_set_column_homogeneous, &
-  &gtk_grid_set_row_homogeneous, gtk_statusbar_remove_all, &
-  &gtk_widget_set_vexpand
+  & gtk_adjustment_new, gtk_spin_button_get_value, gtk_label_new, &
+  & gtk_expander_new_with_mnemonic, gtk_expander_set_expanded, &
+  & gtk_toggle_button_new_with_label, gtk_toggle_button_get_active, gtk_notebook_new,&
+  & gtk_notebook_append_page, gtk_text_view_new, gtk_text_view_get_buffer, &
+  & gtk_text_buffer_set_text, gtk_scrolled_window_new, C_NEW_LINE, &
+  & gtk_text_buffer_insert_at_cursor, gtk_statusbar_new, &
+  & gtk_statusbar_push, gtk_statusbar_pop, gtk_statusbar_get_context_id, &
+  & gtk_button_new_with_mnemonic, gtk_link_button_new_with_label, &
+  & gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic, &
+  & gtk_window_set_mnemonics_visible, gtk_combo_box_text_new, &
+  & gtk_combo_box_text_append_text, gtk_combo_box_text_get_active_text, &
+  & gtk_combo_box_text_insert_text, gtk_spin_button_set_value, gtk_spin_button_update,&
+  & GTK_ORIENTATION_VERTICAL, gtk_grid_set_column_homogeneous, &
+  & gtk_grid_set_row_homogeneous, gtk_statusbar_remove_all, &
+  & gtk_widget_set_vexpand
   
-  use cairo, only: cairo_paint, cairo_set_source, cairo_surface_write_to_png,&
-                 & cairo_surface_destroy
-  use gdk, only: gdk_cairo_set_source_pixbuf
-  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
-                       &gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use g, only: g_usleep, g_main_loop_new, g_main_loop_run, &
              & g_main_context_iteration, g_main_context_pending, g_main_loop_quit
-  use iso_c_binding, only: c_int, c_ptr, c_char
+  use iso_c_binding, only: c_int, c_ptr
 
   implicit none
   type(c_ptr)    :: my_gmainloop
   ! run_status is TRUE until the user closes the top window:
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
-  logical :: boolevent
 
 contains
   ! Our callback function before destroying the window:
@@ -106,7 +98,10 @@ contains
   ! to the screen."
   ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
+    use cairo, only: cairo_paint
+    use gdk, only: gdk_cairo_set_source_pixbuf
     use global_widgets, only: my_pixbuf
+ 
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
     integer(c_int), value, intent(in) :: width, height    
 
@@ -119,13 +114,12 @@ contains
   ! In this example, this function is declared recursive because it can be
   ! called a second time from the Julia_set() subroutine:
   recursive function firstbutton (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
     use global_widgets
-    implicit none
-    integer(c_int)    :: ret, message_id
-    type(c_ptr), value :: widget, gdata
-    complex(kind(1d0)) :: c
-    integer :: iterations
+
+    integer(c_int)                 :: ret, message_id
+    type(c_ptr), value, intent(in) :: widget, gdata
+    complex(kind(1d0))             :: c
+    integer                        :: iterations
 
     if (.not. computing) then
       ! Get computation parameters:
@@ -139,8 +133,8 @@ contains
                                            & //c_null_char, -1_c_int)
 
       message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(&
-                                      &statusBar, "Julia"//c_null_char),&
-                                      &"Computing..."//c_null_char)
+                                     & statusBar, "Julia"//c_null_char),&
+                                     & "Computing..."//c_null_char)
 
       ! Compute the image:
       call Julia_set(-2d0, +2d0, -2d0, +2d0, c, iterations)
@@ -149,8 +143,8 @@ contains
       ! the statusBar because it has been destroyed:
       if (run_status == TRUE) then
         message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(&
-                                        &statusBar, "Julia"//c_null_char),&
-                                        &"Finished."//c_null_char)
+                                       & statusBar, "Julia"//c_null_char),&
+                                       & "Finished."//c_null_char)
       end if
     else
       print *, "Already computing !"
@@ -159,19 +153,18 @@ contains
     ret = FALSE
   end function firstbutton
 
-
   ! GtkComboBox signal emitted when the user selects predifined c values of
   ! interesting Julia sets in the combo box:
   function firstCombo (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_double, c_f_pointer
+    use iso_c_binding, only: c_double, c_f_pointer
     use gtk_sup, only: c_f_string_copy
     use global_widgets
-    implicit none
-    integer(c_int)    :: ret
-    type(c_ptr), value :: widget, gdata
-    real(c_double) :: x, y
-    integer :: choice
-    character(len=512) :: my_string
+
+    integer(c_int)                 :: ret
+    type(c_ptr), value, intent(in) :: widget, gdata
+    real(c_double)                 :: x, y
+    integer                        :: choice
+    character(len=512)             :: my_string
 
     ! Get the value selected by the user:
     call c_f_string_copy( gtk_combo_box_text_get_active_text(combo1), my_string)
@@ -208,15 +201,14 @@ contains
     ret = FALSE
   end function firstCombo
 
-
   ! GtkButton signal emitted by the button "Save as PNG":
   function secondbutton (widget, gdata) result(ret)  bind(c)
     use gtk_os_dependent, only: gdk_pixbuf_savev
     use global_widgets
-    implicit none
-    integer(c_int)    :: ret
+
+    integer(c_int)                 :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
-    integer(c_int) :: cstatus, message_id
+    integer(c_int)                 :: cstatus, message_id
 
     ! Save the picture if the computation is finished:
     if (.not. computing) then
@@ -228,7 +220,7 @@ contains
       if (cstatus == TRUE) then
         string = "Successfully saved: julia.png"//c_null_char
       else
-        string = "Failed"
+        string = "Failed"//c_null_char
       end if
 
       message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(&
@@ -238,16 +230,16 @@ contains
     ret = FALSE
   end function secondbutton
 
-
   ! GtkToggleButton signal emitted when the "Pause" button is clicked.
   ! This function is declared recursive because it will be pressed a first time
   ! to pause and a second time to end pause (from the "do while" loop):
   recursive function firstToggle (widget, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_long
+    use iso_c_binding, only: c_long
     use global_widgets
-    implicit none
-    integer(c_int)    :: ret, message_id
-    type(c_ptr), value :: widget, gdata
+
+    integer(c_int)                 :: ret
+    type(c_ptr), value, intent(in) :: widget, gdata
+    integer(c_int)                 :: message_id
 
     ! The button is pressed:
     if (gtk_toggle_button_get_active(widget) == TRUE) then
@@ -261,7 +253,7 @@ contains
       ! the GUI:
       do while (gtk_toggle_button_get_active(widget) == TRUE)
         call pending_events
-        if (run_status == FALSE) exit ! Exit if we had a delete event
+        if (run_status == FALSE) exit ! Exit if we had a destroy signal
         call g_usleep(50000_c_long)   ! In microseconds
       end do
     else  ! The button is raised:
@@ -274,7 +266,6 @@ contains
 
     ret = FALSE
   end function firstToggle
-
 end module handlers
 
 !**********************************
@@ -282,14 +273,16 @@ end module handlers
 !**********************************
 program julia
   use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer, c_null_funptr
+  use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
+                      & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use handlers
   use global_widgets
   implicit none
   ! These widgets are used only here:
-  type(c_ptr) :: my_window, table, button1, button2, button3, box1
-  type(c_ptr) :: label1, label2, label3, label4
-  type(c_ptr) :: toggle1, expander, notebook, notebookLabel1, notebookLabel2
-  type(c_ptr) :: linkButton
+  type(c_ptr)    :: my_window, table, button1, button2, button3, box1
+  type(c_ptr)    :: label1, label2, label3, label4
+  type(c_ptr)    :: toggle1, expander, notebook, notebookLabel1, notebookLabel2
+  type(c_ptr)    :: linkButton
   integer(c_int) :: message_id, firstTab, secondTab
 
   call gtk_init ()
@@ -421,7 +414,6 @@ program julia
   print *, "All done"
 end program julia
 
-
 !*********************************************
 ! Julia Set
 ! http://en.wikipedia.org/wiki/Julia_set
@@ -507,3 +499,4 @@ real(8) function system_time()
   call date_and_time(values=dt)
   system_time=dt(5)*3600d0+dt(6)*60d0+dt(7)+dt(8)*0.001d0
 end function system_time
+
