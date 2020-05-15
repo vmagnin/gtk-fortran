@@ -52,8 +52,6 @@ module handlers
   &gtk_text_buffer_set_text, gtk_scrolled_window_new, C_NEW_LINE, &
   &gtk_text_buffer_insert_at_cursor, gtk_statusbar_new,&
   &gtk_statusbar_push, gtk_statusbar_pop, gtk_statusbar_get_context_id,&
-  &CAIRO_STATUS_SUCCESS, CAIRO_STATUS_NO_MEMORY,&
-  &CAIRO_STATUS_SURFACE_TYPE_MISMATCH, CAIRO_STATUS_WRITE_ERROR,&
   &gtk_button_new_with_mnemonic, gtk_link_button_new_with_label,&
   &gtk_toggle_button_new_with_mnemonic, gtk_label_new_with_mnemonic, &
   &gtk_window_set_mnemonics_visible, gtk_combo_box_text_new, &
@@ -223,41 +221,31 @@ contains
 
 
   ! GtkButton signal emitted by the button "Save as PNG":
-  function secondbutton (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+  function secondbutton (widget, gdata) result(ret)  bind(c)
+    use gtk_os_dependent, only: gdk_pixbuf_savev
     use global_widgets
     implicit none
     integer(c_int)    :: ret
-    type(c_ptr), value :: widget, gdata
-    type(c_ptr) :: my_cairo_surface
+    type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int) :: cstatus, message_id
-
-    ! The 0 means same scale as the window:
-    my_cairo_surface = gdk_cairo_surface_create_from_pixbuf(my_pixbuf, 0, &
-                                       & gtk_widget_get_window(my_drawing_area))
 
     ! Save the picture if the computation is finished:
     if (.not. computing) then
-      cstatus = cairo_surface_write_to_png(my_cairo_surface,&
-                                          &"julia.png"//c_null_char)
+      ! https://developer.gnome.org/gdk-pixbuf/stable/gdk-pixbuf-File-saving.html
+      ! https://mail.gnome.org/archives/gtk-list/2004-October/msg00186.html
+      cstatus = gdk_pixbuf_savev(my_pixbuf, "julia.png"//c_null_char, &
+                & "png"//c_null_char, c_null_ptr, c_null_ptr, c_null_ptr);
 
-      if (cstatus == CAIRO_STATUS_SUCCESS) then
+      if (cstatus == TRUE) then
         string = "Successfully saved: julia.png"//c_null_char
-      else if (cstatus == CAIRO_STATUS_NO_MEMORY) then
-        string = "Failed: memory allocation"//c_null_char
-      else if (cstatus == CAIRO_STATUS_SURFACE_TYPE_MISMATCH) then
-        string = "Failed: no pixel content"//c_null_char
-      else if (cstatus == CAIRO_STATUS_WRITE_ERROR) then
-        string = "Failed: I/O error"//c_null_char
       else
         string = "Failed"
       end if
+
       message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(&
-                                      &statusBar, "Julia"//c_null_char), &
-                                      &TRIM(string))
+                         & statusBar, "Julia"//c_null_char), TRIM(string))
     end if
 
-    call cairo_surface_destroy(my_cairo_surface)
     ret = FALSE
   end function secondbutton
 
