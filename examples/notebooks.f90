@@ -59,7 +59,7 @@ end module
 module handlers
   use gtk, only: g_signal_connect, gtk_init, gtk_button_new, gtk_button_new_with_label, &
   & gtk_check_button_new, gtk_check_button_new_with_label, gtk_container_add, &
-  & gtk_frame_new, gtk_label_new, gtk_main, gtk_main_quit, gtk_notebook_append_page, &
+  & gtk_frame_new, gtk_label_new, gtk_notebook_append_page, &
   & gtk_notebook_get_current_page, gtk_notebook_get_n_pages, &
   & gtk_notebook_get_show_border, gtk_notebook_get_show_tabs, gtk_notebook_get_tab_pos, &
   & gtk_notebook_insert_page, gtk_notebook_new, gtk_notebook_next_page, &
@@ -68,15 +68,17 @@ module handlers
   & gtk_notebook_set_show_tabs, gtk_notebook_set_tab_detachable, gtk_notebook_set_tab_pos, &
   & gtk_notebook_set_tab_reorderable, gtk_grid_attach, &
   & gtk_grid_new, gtk_widget_queue_draw, gtk_widget_set_size_request, gtk_widget_show, &
-  & gtk_widget_show_all, gtk_window_new, gtk_window_set_title, &
-  & FALSE, TRUE, c_null_char, GTK_WINDOW_TOPLEVEL, GTK_POS_TOP, &
+  & gtk_window_new, gtk_window_set_title, &
+  & FALSE, TRUE, c_null_char, GTK_POS_TOP, &
   & gtk_notebook_set_group_name, gtk_notebook_get_group_name, &
   & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
   & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
-  
+
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use widgets
 
   implicit none
+  type(c_ptr)    :: my_gmainloop
 
 contains
   !*************************************
@@ -91,18 +93,8 @@ contains
     type(c_ptr), value :: widget, gdata
 
     print *, "my destroy"
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine destroy
-
-! delete event
-  function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
-    integer(c_int)     :: ret
-    type(c_ptr), value :: widget, event, gdata
-
-    print *, "my delete_event"
-    ret = FALSE
-  end function delete_event
 
 ! next page
   function next_page_book (widget, gdata ) result(ret)  bind(c)
@@ -179,11 +171,9 @@ program notebook_example
   use handlers
 
   implicit none
-
   integer :: i
   character(kind=c_char,len=12) :: istr
   integer(c_int) :: nb
-
   character(kind=c_char), dimension(:), pointer :: textptr
   character(len=512) :: my_string
 
@@ -191,11 +181,10 @@ program notebook_example
   call gtk_init ()
 
   ! Properties of the main window :
-  mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL)
+  mainwindow = gtk_window_new()
   call gtk_window_set_title(mainwindow, "Notebook Example"//c_null_char)
 
   ! Connect signals to the main window
-  call g_signal_connect (mainwindow, "delete-event"//c_null_char, c_funloc(delete_event))
   call g_signal_connect (mainwindow, "destroy"//c_null_char, c_funloc(destroy))
 
   ! Container for notebook
@@ -330,9 +319,10 @@ program notebook_example
     call gtk_notebook_set_tab_detachable (notebook_2, frame, TRUE)
   enddo
 
-  call gtk_widget_show_all (mainwindow)
+  call gtk_widget_show(mainwindow)
 
-  ! Main loop
-  call gtk_main ()
+  ! GUI main loop:
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program notebook_example
