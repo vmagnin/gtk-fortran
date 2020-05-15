@@ -37,16 +37,17 @@ end module global_widgets
 
 
 module handlers
-  use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, &
-  &gtk_main, gtk_main_iteration, gtk_main_iteration_do, &
+  use gtk, only: gtk_container_add, gtk_drawing_area_new, &
+  & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
+  & gtk_drawing_area_set_draw_func, &
   &gtk_widget_queue_draw, gtk_widget_show, gtk_window_new, &
   &gtk_window_set_default_size, gtk_window_set_title,&
   &TRUE, FALSE, c_null_ptr, c_null_char, &
-  &GDK_COLORSPACE_RGB, GTK_WINDOW_TOPLEVEL, gtk_init, g_signal_connect, &
+  &GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, &
   &gtk_grid_new, gtk_grid_attach, gtk_container_add, gtk_button_new_with_label,&
-  &gtk_widget_show_all, gtk_box_new, gtk_spin_button_new,&
+  & gtk_box_new, gtk_spin_button_new,&
   &gtk_adjustment_new, gtk_spin_button_get_value, gtk_label_new, &
-  &gtk_expander_new_with_mnemonic, gtk_expander_set_expanded, gtk_main_quit, &
+  &gtk_expander_new_with_mnemonic, gtk_expander_set_expanded, &
   &gtk_toggle_button_new_with_label, gtk_toggle_button_get_active, gtk_notebook_new,&
   &gtk_notebook_append_page, gtk_text_view_new, gtk_text_view_get_buffer,&
   &gtk_text_buffer_set_text, gtk_scrolled_window_new, C_NEW_LINE, &
@@ -66,64 +67,53 @@ module handlers
   use gdk, only: gdk_cairo_set_source_pixbuf
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                        &gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-  use g, only: g_usleep
+  use g, only: g_usleep, g_main_loop_new, g_main_loop_run, &
+             & g_main_context_iteration, g_main_context_pending, g_main_loop_quit
   use iso_c_binding, only: c_int, c_ptr, c_char
 
   implicit none
+  type(c_ptr)    :: my_gmainloop
   ! run_status is TRUE until the user closes the top window:
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
 
 contains
-  !*************************************
-  ! User defined event handlers go here
-  !*************************************
+  ! Our callback function before destroying the window:
+  function destroy_signal(widget, event, gdata) result(ret)  bind(c)
+    integer(c_int)                 :: ret
+    type(c_ptr), value, intent(in) :: widget, event, gdata
 
-  ! https://developer.gnome.org/gtk3/stable/GtkWidget.html#GtkWidget-delete-event
-  ! The ::delete-event signal is emitted if a user requests that a toplevel 
-  ! window is closed.
-  ! This function will also be called when the user clicks on the "Exit" button.
-  function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
-    integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
-
-    print *, "delete_event"
+    print *, "Your destroy_signal() function has been invoked !"
     ! Some functions and subroutines need to know that it's finished:
     run_status = FALSE
     ! Returns FALSE to propagate the event further:
     ret = FALSE
-    ! Makes the innermost invocation of the main loop return when it regains control:
-    call gtk_main_quit()
-  end function delete_event
-
+    ! Makes the innermost invocation of the main loop return:
+    call g_main_loop_quit(my_gmainloop)
+  end function destroy_signal
 
   ! This function is needed to update the GUI during long computations.
-  ! In this example, this function is declared recursive because it can be
-  ! called a second time by the toggle button callback function firstToggle ().
-  recursive subroutine pending_events ()
-    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
-      boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
+  ! https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
+  subroutine pending_events ()
+    do while(IAND(g_main_context_pending(c_null_ptr), run_status) /= FALSE)
+      ! FALSE for non-blocking:
+      boolresult = g_main_context_iteration(c_null_ptr, FALSE)
     end do
   end subroutine pending_events
 
-
-  ! Called each time the window needs to be redrawn:
-  function draw (widget, my_cairo_context, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_int, c_ptr
-    use global_widgets
-    implicit none
-    integer(c_int)                 :: ret
-    type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
+  ! "It is called whenever GTK needs to draw the contents of the drawing area
+  ! to the screen."
+  ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
+  subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
+    use global_widgets, only: my_pixbuf
+    type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
+    integer(c_int), value, intent(in) :: width, height    
 
     ! We redraw the pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
     call cairo_paint(my_cairo_context)
-
-    ret = FALSE
-  end function draw
-
+  end subroutine my_draw_function
 
   ! GtkButton signal emitted by the "Compute" button
   ! In this example, this function is declared recursive because it can be
@@ -291,7 +281,7 @@ end module handlers
 ! The main program defines the GUI
 !**********************************
 program julia
-  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
+  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer, c_null_funptr
   use handlers
   use global_widgets
   implicit none
@@ -307,10 +297,11 @@ program julia
   ! Properties of the main window :
   width = 700
   height = 700
-  my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
+  my_window = gtk_window_new ()
   call gtk_window_set_default_size(my_window, width, height)
   call gtk_window_set_title(my_window, "Julia Set"//c_null_char)
-  call g_signal_connect (my_window, "delete-event"//c_null_char, c_funloc(delete_event))
+  call g_signal_connect(my_window, "destroy"//c_null_char, &
+                      & c_funloc(destroy_signal))
 
   ! The four buttons:
   button1 = gtk_button_new_with_mnemonic ("_Compute"//c_null_char)
@@ -318,7 +309,7 @@ program julia
   button2 = gtk_button_new_with_mnemonic ("_Save as PNG"//c_null_char)
   call g_signal_connect (button2, "clicked"//c_null_char, c_funloc(secondbutton))
   button3 = gtk_button_new_with_mnemonic ("_Exit"//c_null_char)
-  call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(delete_event))
+  call g_signal_connect (button3, "clicked"//c_null_char, c_funloc(destroy_signal))
   toggle1 = gtk_toggle_button_new_with_mnemonic ("_Pause"//c_null_char)
   call g_signal_connect (toggle1, "toggled"//c_null_char, c_funloc(firstToggle))
 
@@ -374,9 +365,13 @@ program julia
   box1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10_c_int);
   call gtk_container_add (box1, expander)
 
+  ! We need a widget where to draw our pixbuf.
   ! The drawing area is contained in the vertical box:
   my_drawing_area = gtk_drawing_area_new()
-  call g_signal_connect (my_drawing_area, "draw"//c_null_char, c_funloc(draw))
+  call gtk_drawing_area_set_content_width(my_drawing_area, width)
+  call gtk_drawing_area_set_content_height(my_drawing_area, height)
+  call gtk_drawing_area_set_draw_func(my_drawing_area, &
+                   & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
 
   ! We define a notebook with two tabs "Graphics" and "Messages":
   notebook = gtk_notebook_new ()
@@ -406,7 +401,7 @@ program julia
   ! Let's finalize the GUI:
   call gtk_container_add (my_window, box1)
   call gtk_window_set_mnemonics_visible (my_window, TRUE)
-  call gtk_widget_show_all (my_window)
+  call gtk_widget_show(my_window)
 
   ! We create a "pixbuffer" to store the pixels of the image:
   pixwidth  = 500
@@ -419,8 +414,10 @@ program julia
   ! This pixbuffer has no Alpha channel (15% faster), only RGB.
   pixel = char(0)
 
-  ! Main GTK loop:
-  call gtk_main ()
+  ! GUI main loop:
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
+
   print *, "All done"
 end program julia
 
