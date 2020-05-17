@@ -32,9 +32,8 @@
 !*************************************
 module handlers
 
-  use iso_c_binding, only: c_ptr
-  use gtk, only: c_null_char, gtk_window_set_default_size,  &
-               & gtk_window_set_title, &
+  use iso_c_binding, only: c_ptr, c_null_char
+  use gtk, only: gtk_window_set_default_size, gtk_window_set_title, &
                & gtk_widget_show, gtk_application_window_new
   implicit none
 
@@ -64,11 +63,10 @@ end module handlers
 !*********************************************************************************************
 program gtkzero
 
-  use iso_c_binding, only: c_ptr, c_int, c_funloc
+  use iso_c_binding, only: c_ptr, c_int, c_null_char, c_null_ptr, c_funloc
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
-  use gtk, only: c_null_char, c_null_ptr, gtk_application_new, g_signal_connect, &
-               & G_APPLICATION_FLAGS_NONE
+  use gtk, only: gtk_application_new, g_signal_connect, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
 
   use handlers
