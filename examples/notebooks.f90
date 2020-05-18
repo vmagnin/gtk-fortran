@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jens Hunger, vmagnin
-! Last modification: vmagnin 2020-05-15
+! Last modification: vmagnin 2020-05-18
 
 module widgets
   use iso_c_binding
@@ -52,10 +52,12 @@ contains
 end module
 
 module handlers
+  use iso_c_binding, only: c_null_char
+
   use gtk, only: gtk_init, gtk_window_new, gtk_window_set_title, &
   & g_signal_connect, g_signal_connect_swapped, &
   & gtk_widget_destroy, gtk_widget_show, gtk_application_window_new, &
-  & FALSE, TRUE, c_null_char, GTK_POS_TOP, &
+  & FALSE, TRUE, GTK_POS_TOP, &
   & gtk_button_new, gtk_button_new_with_label, &
   & gtk_check_button_new, gtk_check_button_new_with_label, gtk_container_add, &
   & gtk_frame_new, gtk_label_new, gtk_notebook_append_page, &
@@ -324,11 +326,10 @@ end module handlers
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program notebooks
-  use iso_c_binding, only: c_ptr, c_funloc
+  use iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
-  use gtk, only: c_null_char, c_null_ptr, gtk_application_new, &
-               & G_APPLICATION_FLAGS_NONE
+  use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers
 

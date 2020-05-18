@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-05-15
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-05-18
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -42,14 +42,14 @@ module handlers
   & gtk_drawing_area_set_draw_func, &
   & gtk_widget_queue_draw, gtk_widget_show, &
   & gtk_window_set_default_size, gtk_window_set_title, &
-  & TRUE, FALSE, c_null_ptr, c_null_char, GDK_COLORSPACE_RGB, &
+  & TRUE, FALSE, GDK_COLORSPACE_RGB, &
   & gtk_grid_new, gtk_grid_attach, gtk_button_new_with_label,&
   & gtk_box_new, gtk_spin_button_new,&
   & gtk_adjustment_new, gtk_spin_button_get_value, gtk_label_new, &
   & gtk_expander_new_with_mnemonic, gtk_expander_set_expanded, &
   & gtk_toggle_button_new_with_label, gtk_toggle_button_get_active, gtk_notebook_new,&
   & gtk_notebook_append_page, gtk_text_view_new, gtk_text_view_get_buffer, &
-  & gtk_text_buffer_set_text, gtk_scrolled_window_new, C_NEW_LINE, &
+  & gtk_text_buffer_set_text, gtk_scrolled_window_new, &
   & gtk_text_buffer_insert_at_cursor, gtk_statusbar_new, &
   & gtk_statusbar_push, gtk_statusbar_pop, gtk_statusbar_get_context_id, &
   & gtk_button_new_with_mnemonic, gtk_link_button_new_with_label, &
@@ -62,7 +62,7 @@ module handlers
   & gtk_widget_set_vexpand
   
   use g, only: g_usleep, g_main_context_iteration, g_main_context_pending
-  use iso_c_binding, only: c_int, c_ptr
+  use iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_char, C_NEW_LINE
 
   implicit none
   type(c_ptr)    :: my_window
@@ -509,11 +509,10 @@ end function system_time
 !*******************************************************************************
 program julia_pixbuf
 
-  use iso_c_binding, only: c_ptr, c_funloc
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
-  use gtk, only: c_null_char, c_null_ptr, gtk_application_new, &
-               & G_APPLICATION_FLAGS_NONE
+  use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers
 

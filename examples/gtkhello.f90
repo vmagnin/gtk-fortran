@@ -21,7 +21,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !-------------------------------------------------------------------------------
 ! Vincent MAGNIN, 2020-05-12, based on gtkzero_gapp.f90
-! Last modified: 2020-05-12
+! Last modified: 2020-05-18
 ! A GTK application with two buttons.
 ! https://developer.gnome.org/gtk4/unstable/gtk-getting-started.html
 ! https://developer.gnome.org/gio/stable/GApplication.html
@@ -34,8 +34,8 @@
 ! the X Window system. Callback functions must have an event argument.
 module handlers
 
-  use iso_c_binding, only: c_ptr, c_int, c_funloc
-  use gtk, only: FALSE, c_null_char, gtk_window_set_default_size,  &
+  use iso_c_binding, only: c_ptr, c_int, c_funloc, c_null_char
+  use gtk, only: FALSE, gtk_window_set_default_size,  &
                & gtk_window_set_title, gtk_widget_destroy, &
                & g_signal_connect, g_signal_connect_swapped, &
                & gtk_widget_show, gtk_application_window_new, &
@@ -132,11 +132,10 @@ end module handlers
 !*******************************************************************************
 program gtkhello
 
-  use iso_c_binding, only: c_ptr, c_funloc
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
-  use gtk, only: c_null_char, c_null_ptr, gtk_application_new, &
-               & G_APPLICATION_FLAGS_NONE
+  use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers
 

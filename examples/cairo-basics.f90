@@ -22,16 +22,17 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2020-05-13
+! Last modification: vmagnin 2020-05-18
 
 module handlers
-  use iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_funptr, c_funloc
+  use iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_funptr, &
+                         & c_funloc, c_null_char
 
   use gtk, only: gtk_application_window_new, gtk_drawing_area_new, &
   & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
   & gtk_drawing_area_set_draw_func, gtk_container_add, gtk_widget_show, &
   & gtk_window_set_default_size, gtk_window_set_title,&
-  & c_null_char, FALSE, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
+  & FALSE, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
 
   use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, &
   & cairo_get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, &
@@ -121,9 +122,8 @@ end module handlers
 
 ! We create a GtkApplication:
 program cairo_basics
-  use iso_c_binding, only: c_int, c_ptr, c_funloc
-  use gtk, only: c_null_char, c_null_ptr, gtk_application_new, &
-               & g_signal_connect, G_APPLICATION_FLAGS_NONE
+  use iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
+  use gtk, only: gtk_application_new, g_signal_connect, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers, only: activate
 

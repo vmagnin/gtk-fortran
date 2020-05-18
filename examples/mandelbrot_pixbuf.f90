@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2020-05-14
+! Last modification: vmagnin 2020-05-18
 
 module handlers
   use gtk, only: gtk_container_add, gtk_drawing_area_new, &
@@ -30,8 +30,7 @@ module handlers
   & gtk_drawing_area_set_draw_func, &
   & gtk_widget_queue_draw, gtk_widget_show, gtk_window_new, &
   & gtk_window_set_default_size, gtk_window_set_title, &
-  & GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, &
-  & c_null_char
+  & GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, FALSE, TRUE
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
   
@@ -42,7 +41,7 @@ module handlers
   
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                       & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-  use iso_c_binding, only: c_int, c_ptr, c_char
+  use iso_c_binding, only: c_int, c_ptr, c_char, c_null_ptr, c_null_char
 
   implicit none
   type(c_ptr)    :: my_gmainloop
