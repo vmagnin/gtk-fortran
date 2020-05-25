@@ -55,7 +55,7 @@ Note that you should adapt these USE statements to each scope unit.
 The script just identifies all the functions used in a given file.
 You will generally need to add:
   & g_signal_connect, gtk_init, FALSE, TRUE, CNULL, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&
-  & GTK_WINDOW_TOPLEVEL, NULL
+  & NULL
 You should also add enums identifiers and parameters.
 \n
 """

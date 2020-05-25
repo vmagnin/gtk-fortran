@@ -80,7 +80,7 @@ module gtk_hl_container
        & gtk_scrolled_window_new, gtk_scrolled_window_set_policy, &
        & gtk_widget_set_size_request, &
        & gtk_container_add, &
-       & GTK_WINDOW_TOPLEVEL, GTK_EXPAND, GTK_FILL, &
+       & GTK_EXPAND, GTK_FILL, &
        & GTK_ALIGN_FILL, GTK_ALIGN_CENTER, &
        & GTK_ORIENTATION_HORIZONTAL,  GTK_ORIENTATION_VERTICAL, &
        & TRUE, FALSE, g_signal_connect, &
@@ -147,7 +147,7 @@ contains
 
     integer(kind=c_int) :: icon_ok
 
-    win = gtk_window_new (GTK_WINDOW_TOPLEVEL)
+    win = gtk_window_new()
     if (present(title)) call gtk_window_set_title(win, title)
 
     if (present(border)) call gtk_container_set_border_width(win, border)
