@@ -40,7 +40,7 @@ module handlers
        & gtk_window_set_title, gtk_init, g_signal_connect, TRUE, FALSE, &
        & GDK_SCROLL_UP, GDK_SCROLL_DOWN, GDK_SHIFT_MASK, GDK_CONTROL_MASK, &
        & GDK_BUTTON_PRESS_MASK, GDK_SCROLL_MASK, GTK_ORIENTATION_VERTICAL, &
-       & GTK_WINDOW_TOPLEVEL, GDK_COLORSPACE_RGB, gtk_main, gtk_main_quit
+       & GDK_COLORSPACE_RGB, gtk_main, gtk_main_quit
   use iso_c_binding
 
   implicit none
@@ -356,7 +356,7 @@ program mandelbrot_zoom
   ! Set the initial view
   call set_limits()
 
-  my_window = gtk_window_new (GTK_WINDOW_TOPLEVEL)
+  my_window = gtk_window_new()
   call gtk_window_set_title(my_window, &
        & "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
   call g_signal_connect (my_window, "delete-event"//c_null_char, &

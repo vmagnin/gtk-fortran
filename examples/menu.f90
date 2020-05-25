@@ -34,7 +34,7 @@ module handlers
   &t_action_group, gtk_ui_manager_new, gtk_box_new, gtk_widget_set_size_request,&
   & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_title,&
   &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char,&
-  & GTK_WINDOW_TOPLEVEL, GTK_ORIENTATION_VERTICAL
+  & GTK_ORIENTATION_VERTICAL
   implicit none
 
 contains
@@ -229,7 +229,7 @@ program simplemenu
   call gtk_init ()
   
   ! Properties of the main window :
-  mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL)
+  mainwindow = gtk_window_new()
   call gtk_window_set_title(mainwindow, "Simple Menu Example"//c_null_char)
   call gtk_widget_set_size_request(mainwindow, 500_c_int, 500_c_int)
   ! You can also use the following statement to automatically 

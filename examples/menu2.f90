@@ -95,7 +95,7 @@ program menu2
   ! significantly the compilation time:
   use gtk, only: gtk_init, gtk_window_new, gtk_window_set_default_size, &
                & gtk_window_set_title, g_signal_connect, gtk_main, &
-               & gtk_widget_show_all, GTK_WINDOW_TOPLEVEL, c_null_char, &
+               & gtk_widget_show_all, c_null_char, &
                & gtk_menu_item_new_with_label, gtk_menu_bar_new, gtk_menu_new, &
                & gtk_menu_item_set_submenu, gtk_menu_shell_append, &
                & gtk_container_add, &
@@ -122,7 +122,7 @@ program menu2
   ! If you want to pass to GTK some command line arguments, see gtk.f90.
 
   ! Create the window and set up some signals for it.
-  window = gtk_window_new(GTK_WINDOW_TOPLEVEL)
+  window = gtk_window_new()
   ! Not compulsory, but can be used if you want a larger window:
   call gtk_window_set_default_size(window, 400, 40)
 
