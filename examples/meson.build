@@ -60,7 +60,8 @@ examples = {
   'mandelbrot_pixbuf_zoom': ['mandelbrot_pixbuf_zoom.f90'],    
   'menu': ['menu.f90'],
   'menu2': ['menu2.f90'],
-  'notebooks': ['notebooks.f90'],    
+  'notebooks': ['notebooks.f90'],
+  'pixbuf_without_gui': ['pixbuf_without_gui.f90'],  
   'gio_demo': ['gio_demo.f90'],    
   'tests': ['tests.f90']   
   }
