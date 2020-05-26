@@ -28,7 +28,7 @@ module common_ex17
   use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area_new, &
        & gtk_events_pending, gtk_main, gtk_main_iteration, &
        & gtk_main_iteration_do,&
-       & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init, &
+       & gtk_widget_show, gtk_window_new, gtk_init, &
        & gtk_widget_queue_draw
   use g, only: g_object_get_data, g_usleep
   use gtk_draw_hl
@@ -288,7 +288,7 @@ program cairo_plplot_ex17
   qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
   call hl_gtk_box_pack(base, qbut, expand=FALSE)
 
-  call gtk_widget_show_all (window)
+  call gtk_widget_show(window)
 
   call x17f95(drawing)
 

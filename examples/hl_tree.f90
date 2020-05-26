@@ -29,7 +29,7 @@ module tr_handlers
   use gtk, only: gtk_button_new, gtk_check_button_new, gtk_container_add, gtk_ent&
        &ry_get_text, gtk_entry_get_text_length, gtk_entry_new, gtk_entry_set_text, gtk&
        &_main, gtk_main_quit, gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
-       &ggle_button_set_active, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
+       &ggle_button_set_active, gtk_widget_show, gtk_window_new, &
        & gtk_init
   use g, only: alloca
 
@@ -226,7 +226,7 @@ program tree
   call hl_gtk_box_pack(base,qbut)
 
   ! realize the window
-  call gtk_widget_show_all(ihwin)
+  call gtk_widget_show(ihwin)
 
   ! Event loop
   call gtk_main()

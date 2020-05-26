@@ -28,7 +28,7 @@ module common_ex1
   use iso_c_binding
   use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area&
        &_new, gtk_main, gtk_main_quit, &
-       & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
+       & gtk_widget_show, gtk_window_new, gtk_init
   use g, only: g_object_get_data
 
   use gtk_draw_hl
@@ -308,7 +308,7 @@ program cairo_plplot_ex1
   qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
   call hl_gtk_box_pack(base, qbut, expand=FALSE)
 
-  call gtk_widget_show_all (window)
+  call gtk_widget_show(window)
 
   call x01f95(drawing)
 

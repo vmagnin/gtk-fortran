@@ -29,7 +29,7 @@ module rb_handlers
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
        &widget_destroy, gtk_radio_button_new, gtk_toggle_button_get_active, gtk_widget&
-       &_show, gtk_widget_show_all, gtk_window_new, gtk_init
+       &_show, gtk_window_new, gtk_init
 
   implicit none
 
@@ -110,7 +110,7 @@ program radio
   call hl_gtk_box_pack(box, qbut)
 
   ! Realize the hierarchy
-  call gtk_widget_show_all(window)
+  call gtk_widget_show(window)
 
   ! Event loop
   call gtk_main

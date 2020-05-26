@@ -32,7 +32,7 @@ module handlers
   &n, gtk_main_quit, gtk_ui_manager_add_ui, gtk_ui_manager_add_ui_from_file, gtk_&
   &ui_manager_add_ui_from_string, gtk_ui_manager_get_widget, gtk_ui_manager_inser&
   &t_action_group, gtk_ui_manager_new, gtk_box_new, gtk_widget_set_size_request,&
-  & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_window_set_title,&
+  & gtk_widget_show, gtk_window_new, gtk_window_set_title,&
   &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char,&
   & GTK_ORIENTATION_VERTICAL
   implicit none
@@ -269,7 +269,7 @@ program simplemenu
   call gtk_container_add (box, gtk_ui_manager_get_widget (menu_manager, "/MainMenu"//c_null_char))
 
   ! Show all
-  call gtk_widget_show_all (mainwindow)
+  call gtk_widget_show(mainwindow)
   
   ! Main loop
   call gtk_main ()

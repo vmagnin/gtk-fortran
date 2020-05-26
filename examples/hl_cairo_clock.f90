@@ -36,7 +36,7 @@ module cl_handlers
   use gdk, only: gdk_keyval_from_name
   use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
        & gtk_widget_destroy, gtk_widget_get_allocation, gtk_widget_queue_draw, &
-       & gtk_widget_show_all, gtk_init, TRUE, FALSE, GDK_CONTROL_MASK, &
+       & gtk_widget_show, gtk_init, TRUE, FALSE, GDK_CONTROL_MASK, &
        & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, &
        & CAIRO_FONT_WEIGHT_BOLD
   use gtk_hl
@@ -342,7 +342,7 @@ program cairo_clock
        & key_press_event=c_funloc(clock_key))
 
   call gtk_container_add(window, drawing)
-  call gtk_widget_show_all (window)
+  call gtk_widget_show(window)
 
   icont =  show_time(drawing)
 

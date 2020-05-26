@@ -5,7 +5,7 @@ module handlers
   use iso_c_binding
   use gtk_hl
   use gtk, only: gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, &
-       & gtk_widget_destroy, gtk_widget_show_all, gtk_init, TRUE, FALSE
+       & gtk_widget_destroy, gtk_widget_show, gtk_init, TRUE, FALSE
 
   implicit none
   type(c_ptr) :: win, base, nbook, qbut, table
@@ -81,7 +81,7 @@ program containers
   call hl_gtk_box_pack(base, junk, expand=FALSE)
 
   ! realize the window
-  call gtk_widget_show_all(win)
+  call gtk_widget_show(win)
 
   ! Event loop
   call gtk_main()

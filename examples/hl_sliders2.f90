@@ -28,7 +28,7 @@ module handlers
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
        &spin_button_get_value, gtk_spin_button_new, gtk_spin_button_set_value, gtk_wid&
-       &get_destroy, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
+       &get_destroy, gtk_widget_show, gtk_window_new, &
        & TRUE, FALSE, gtk_init
 
   implicit none
@@ -158,7 +158,7 @@ program sliders_2
   call hl_gtk_box_pack(base, qbut)
 
   ! Realize the hierarchy
-  call gtk_widget_show_all(win)
+  call gtk_widget_show(win)
   call gtk_main
 
 end program sliders_2

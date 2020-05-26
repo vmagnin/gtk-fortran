@@ -37,7 +37,7 @@ module handlers
   use gdk, only: gdk_device_get_name, gdk_device_get_source, &
        & gdk_event_get_source_device, gdk_keyval_from_name, gdk_keyval_name
   use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
-       & gtk_widget_queue_draw, gtk_widget_show_all, gtk_init, TRUE, FALSE, &
+       & gtk_widget_queue_draw, gtk_widget_show, gtk_init, TRUE, FALSE, &
        & GDK_BUTTON_PRESS, GDK_2BUTTON_PRESS, GDK_BUTTON_RELEASE, &
        & GDK_KEY_PRESS, GDK_ENTER_NOTIFY, GDK_LEAVE_NOTIFY, GDK_CONTROL_MASK, &
        & GDK_POINTER_MOTION_MASK, GDK_BUTTON_MOTION_MASK, &
@@ -331,7 +331,7 @@ program cairo_basics_click
 
   call gtk_container_add(my_window, my_scroll_box)
 
-  call gtk_widget_show_all (my_window)
+  call gtk_widget_show(my_window)
   call draw_pattern(my_drawing_area)
 
   ! The window stays opened after the computation:

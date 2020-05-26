@@ -26,7 +26,7 @@
 module handlers
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
-       &widget_destroy, gtk_widget_show, gtk_widget_show_all, gtk_window_new, &
+       &widget_destroy, gtk_widget_show, gtk_window_new, &
        & gtk_init
 
   implicit none
@@ -106,7 +106,7 @@ program dialog_demo
   call hl_gtk_box_pack(box, but)
 
   ! Display the window
-  call gtk_widget_show_all(Win)
+  call gtk_widget_show(Win)
 
   call gtk_main()
 end program dialog_demo

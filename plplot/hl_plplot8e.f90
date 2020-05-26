@@ -31,7 +31,7 @@ module common_ex8
   use gtk, only: gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, &
        & gtk_toggle_button_get_active, gtk_widget_destroy, &
        & gtk_widget_get_allocation, gtk_widget_queue_draw, &
-       & gtk_widget_show_all, gtk_init, FALSE, GTK_FILL
+       & gtk_widget_show, gtk_init, FALSE, GTK_FILL
   use gtk_hl
   use gtk_draw_hl
   use gdk_pixbuf_hl
@@ -435,7 +435,7 @@ program cairo_plplot_ex8
   qbut=hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
   call hl_gtk_box_pack(base, qbut, expand=FALSE)
 
-  call gtk_widget_show_all (window)
+  call gtk_widget_show(window)
 
   call draw_08(draw, disp_type, alt, az, ifun)
 

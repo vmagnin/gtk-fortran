@@ -30,7 +30,7 @@ module common_ex4
   use cairo, only: cairo_get_target, cairo_image_surface_get_height, &
        & cairo_image_surface_get_width
   use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
-       & gtk_widget_destroy, gtk_widget_show_all, gtk_init, FALSE
+       & gtk_widget_destroy, gtk_widget_show, gtk_init, FALSE
   use gtk_draw_hl
   use gtk_hl
   use plplot_extra
@@ -302,7 +302,7 @@ program cairo_plplot_ex4
   qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
   call hl_gtk_box_pack(base, qbut, expand=FALSE)
 
-  call gtk_widget_show_all (window)
+  call gtk_widget_show(window)
 
   call plot_04(drawing)
 

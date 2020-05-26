@@ -62,7 +62,7 @@ module gtk_hl_dialog
        & gtk_box_new, gtk_about_dialog_set_license_type, &
        & gtk_dialog_add_button, gtk_dialog_get_content_area, gtk_dialog_new, &
        & gtk_dialog_run, gtk_image_new_from_icon_name, gtk_label_new, &
-       & gtk_label_set_markup, gtk_widget_destroy, gtk_widget_show_all, &
+       & gtk_label_set_markup, gtk_widget_destroy, gtk_widget_show, &
        & gtk_window_set_destroy_with_parent, gtk_window_set_modal, &
        & gtk_window_set_title, gtk_window_set_transient_for, TRUE, &
        & GTK_RESPONSE_NONE, GTK_RESPONSE_OK, GTK_RESPONSE_CANCEL, &
@@ -222,7 +222,7 @@ contains
          & parent)
 
     if (c_associated(dialog)) then
-       call gtk_widget_show_all (dialog)
+       call gtk_widget_show(dialog)
        resp = gtk_dialog_run(dialog)
        call gtk_widget_destroy(dialog)
     else

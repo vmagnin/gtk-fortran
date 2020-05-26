@@ -75,7 +75,7 @@ module gtk_hl_chooser
        & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
        & gtk_file_filter_new, gtk_file_filter_set_name, gtk_label_new, &
        & gtk_widget_destroy, gtk_widget_set_sensitive, &
-       & gtk_widget_set_tooltip_text, gtk_widget_show_all, &
+       & gtk_widget_set_tooltip_text, gtk_widget_show, &
        & gtk_window_set_default_size, gtk_window_set_destroy_with_parent, &
        & gtk_window_set_modal, gtk_window_set_title, &
        & gtk_window_set_transient_for, g_signal_connect, TRUE, FALSE, &
@@ -562,7 +562,7 @@ contains
          & initial_dir, current, initial_file, filter, filter_name, parent, &
          & all, wsize, edit_filters)
 
-    call gtk_widget_show_all (dialog)
+    call gtk_widget_show(dialog)
     resp = gtk_dialog_run(dialog)
     call gtk_widget_destroy(dialog)
 

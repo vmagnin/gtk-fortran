@@ -207,7 +207,7 @@ program ztext
   call hl_gtk_box_pack(box, qbut, expand=FALSE)
 
   ! Realize the window
-  call gtk_widget_show_all(win)
+  call gtk_widget_show(win)
 
   ! Event loop
   call gtk_main()

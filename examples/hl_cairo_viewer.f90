@@ -38,7 +38,7 @@ module v_handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_height, gdk_pixbuf_get_width
   use gtk, only: gtk_combo_box_get_active, gtk_combo_box_set_active, &
        & gtk_container_add, gtk_main, gtk_main_quit, gtk_widget_set_sensitive, &
-       & gtk_widget_show_all, gtk_init, TRUE, FALSE
+       & gtk_widget_show, gtk_init, TRUE, FALSE
 
   implicit none
 
@@ -220,7 +220,7 @@ program hl_cairo_viewer
        & "Quit the viewer."//c_null_char)
   call hl_gtk_box_pack(base, junk)
 
-  call gtk_widget_show_all(tl_window)
+  call gtk_widget_show(tl_window)
   if (nfiles == 0) call add_files(c_null_ptr, c_loc(iremove(2)))
      
   if (current_file >= 0) call gtk_combo_box_set_active(select, current_file)

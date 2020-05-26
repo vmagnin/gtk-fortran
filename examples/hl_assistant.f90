@@ -39,7 +39,7 @@ module as_handlers
   use gtk, only: gtk_container_add, gtk_entry_get_text, &
        & gtk_events_pending, gtk_label_new, gtk_main, gtk_main_iteration, &
        & gtk_main_quit, gtk_toggle_button_get_active, gtk_widget_destroy, &
-       & gtk_widget_set_sensitive, gtk_widget_show_all, gtk_init, TRUE, FALSE, &
+       & gtk_widget_set_sensitive, gtk_widget_show, gtk_init, TRUE, FALSE, &
        & GTK_ASSISTANT_PAGE_CONTENT, GTK_ASSISTANT_PAGE_INTRO, &
        & GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_PROGRESS, &
        & gtk_widget_set_halign, gtk_widget_set_valign, gtk_widget_set_hexpand, gtk_widget_set_vexpand, &
@@ -186,7 +186,7 @@ program hl_assistant
   call hl_gtk_assistant_add_page(asstnt, junk, GTK_ASSISTANT_PAGE_CONFIRM, &
        & page_title = "Completed?"//c_null_char)
 
-  call gtk_widget_show_all(asstnt)
+  call gtk_widget_show(asstnt)
   call gtk_main()
 
 end program hl_assistant

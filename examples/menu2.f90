@@ -95,7 +95,7 @@ program menu2
   ! significantly the compilation time:
   use gtk, only: gtk_init, gtk_window_new, gtk_window_set_default_size, &
                & gtk_window_set_title, g_signal_connect, gtk_main, &
-               & gtk_widget_show_all, c_null_char, &
+               & gtk_widget_show, c_null_char, &
                & gtk_menu_item_new_with_label, gtk_menu_bar_new, gtk_menu_new, &
                & gtk_menu_item_set_submenu, gtk_menu_shell_append, &
                & gtk_container_add, &
@@ -200,7 +200,7 @@ program menu2
   call g_signal_connect(window, "destroy"//c_null_char, c_funloc(destroy))
 
   ! If you don't show it, nothing will appear on screen...
-  call gtk_widget_show_all(window)
+  call gtk_widget_show(window)
 
   ! Now, the events will be handled by the main GTK loop:
   call gtk_main()

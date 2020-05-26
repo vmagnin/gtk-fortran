@@ -32,7 +32,7 @@ module ib_handers
 
   use gtk_hl
   use gtk, only: gtk_main, gtk_main_quit, gtk_widget_get_no_show_all, &
-       & gtk_widget_hide, gtk_widget_show_all, gtk_init, TRUE, FALSE, &
+       & gtk_widget_hide, gtk_widget_show, gtk_init, TRUE, FALSE, &
        & GTK_FILL, GTK_MESSAGE_INFO, GTK_MESSAGE_WARNING, &
        & GTK_MESSAGE_QUESTION, GTK_MESSAGE_ERROR, GTK_MESSAGE_OTHER
 
@@ -165,7 +165,7 @@ program hl_infobar
   call hl_gtk_table_attach(jb,infobar,0_c_int,1_c_int, &
        & xspan=5_c_int, yopts=0_c_int)
 
-  call gtk_widget_show_all (tlwindow)
+  call gtk_widget_show(tlwindow)
   call gtk_main()
 
 end program hl_infobar

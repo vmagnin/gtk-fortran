@@ -28,7 +28,7 @@ module handlers
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_container_add, gtk_label_new, gtk_main, gtk_&
        &main_quit, gtk_menu_item_new, gtk_menu_new, gtk_widget_destroy, gtk_widget_sho&
-       &w, gtk_widget_show_all, gtk_window_new, gtk_init, &
+       &w, gtk_window_new, gtk_init, &
        & gtk_check_menu_item_get_active
 
   implicit none
@@ -180,7 +180,7 @@ program menu_test
   call hl_gtk_box_pack(box, qbut)
 
   ! Realize the hierarchy
-  call gtk_widget_show_all(win)
+  call gtk_widget_show(win)
 
   ! Event loop
   call gtk_main()

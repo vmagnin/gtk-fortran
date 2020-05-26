@@ -29,7 +29,7 @@ module handlers
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_combo_box_get_active, gtk_combo_box_new, gtk&
        &_container_add, gtk_main, gtk_main_quit, gtk_widget_destroy, gtk_widget_show, &
-       &gtk_widget_show_all, gtk_window_new,gtk_init,TRUE,FALSE
+       & gtk_window_new,gtk_init,TRUE,FALSE
 
   implicit none
 
@@ -105,7 +105,7 @@ program combo_demo
   call hl_gtk_box_pack(box, qbut)
 
   ! Realize & enter event loop
-  call gtk_widget_show_all(win)
+  call gtk_widget_show(win)
 
   call gtk_main
 end program combo_demo
