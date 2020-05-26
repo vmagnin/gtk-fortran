@@ -48,7 +48,7 @@ program pixbuf_without_gui
 
   ! We create a "pixbuffer" to store the pixels of the image.
   ! This pixbuffer has no Alpha channel (15% faster), only RGB.
-  ! https:!developer.gnome.org/gdk-pixbuf/stable/gdk-pixbuf-The-GdkPixbuf-Structure.html
+  ! https://developer.gnome.org/gdk-pixbuf/stable/gdk-pixbuf-The-GdkPixbuf-Structure.html
   pixwidth  = 800
   pixheight = 800
   my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, &
@@ -86,8 +86,8 @@ program pixbuf_without_gui
   end do
 
   ! Save the picture as a PNG:
-  ! https:!developer.gnome.org/gdk-pixbuf/stable/gdk-pixbuf-File-saving.html
-  ! https:!mail.gnome.org/archives/gtk-list/2004-October/msg00186.html
+  ! https://developer.gnome.org/gdk-pixbuf/stable/gdk-pixbuf-File-saving.html
+  ! https://mail.gnome.org/archives/gtk-list/2004-October/msg00186.html
   cstatus = gdk_pixbuf_savev(my_pixbuf, "sierpinski_triangle.png"//c_null_char,&
               & "png"//c_null_char, c_null_ptr, c_null_ptr, c_null_ptr)
 end program pixbuf_without_gui
