@@ -22,25 +22,27 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin.
-! Last modification: vmagnin 02-20-2019
+! Last modification: vmagnin 2020-05-27 (GTK 4 version)
 
 module handlers
-
-  use gtk_hl
-  use gtk, only: gtk_button_new, gtk_combo_box_get_active, gtk_combo_box_new, gtk&
-       &_container_add, gtk_main, gtk_main_quit, gtk_widget_destroy, gtk_widget_show, &
-       & gtk_window_new,gtk_init,TRUE,FALSE
+  use gtk_hl_container
+  use gtk_hl_combobox
+  use gtk_hl_button
+  use gtk, only: gtk_button_new, gtk_combo_box_get_active, gtk_combo_box_new, &
+       & gtk_container_add, gtk_widget_destroy, &
+       & gtk_widget_show, gtk_window_new, gtk_init, TRUE, FALSE
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   implicit none
-
   type(c_ptr) :: win, box, c1, c2, qbut
+  type(c_ptr) :: my_gmainloop
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
     print *, "Exit called"
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine my_destroy
 
   subroutine c_change(widget, gdata) bind(c)
@@ -107,5 +109,7 @@ program combo_demo
   ! Realize & enter event loop
   call gtk_widget_show(win)
 
-  call gtk_main
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 end program combo_demo
+
