@@ -3,12 +3,12 @@
 ! Original version by: Tim-Philipp Müller (2005)
 ! http://scentric.net/tutorial/ch-treeview.html#sec-TreeView-HelloWorld
 ! varargs calls replaced & translated into Fortran: James Tappin 21-Mar-2011
-! GTK 4 version: vmagnin 2020-05-18
+! GTK 4 version: vmagnin 2020-05-28
 
 module handlers
   use iso_c_binding, only: c_null_char, c_null_ptr
   use gtk_sup  ! Contains iter structure and gtypes definitions
-  use gtk, only: gtk_cell_renderer_text_new, gtk_container_add, &
+  use gtk, only: gtk_cell_renderer_text_new, gtk_window_set_child, &
   & gtk_list_store_append, gtk_list_store_newv, gtk_list_store_set_value,&
   & gtk_tree_view_column_add_attribute, gtk_tree_view_column_new, &
   & gtk_tree_view_column_pack_start, gtk_tree_view_column_set_title, &
@@ -44,7 +44,7 @@ contains
     ! Adding widgets in the window:
     !******************************************************************
     view = create_view_and_model ()
-    call gtk_container_add (window, view)
+    call gtk_window_set_child(window, view)
     !******************************************************************
 
     ! If you don't show it, nothing will appear on screen...
