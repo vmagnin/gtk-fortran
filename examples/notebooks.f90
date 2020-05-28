@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jens Hunger, vmagnin
-! Last modification: vmagnin 2020-05-18
+! Last modification: vmagnin 2020-05-28
 
 module widgets
   use iso_c_binding
@@ -56,10 +56,11 @@ module handlers
 
   use gtk, only: gtk_init, gtk_window_new, gtk_window_set_title, &
   & g_signal_connect, g_signal_connect_swapped, &
-  & gtk_widget_destroy, gtk_widget_show, gtk_application_window_new, &
+  & gtk_window_destroy, gtk_widget_show, gtk_application_window_new, &
   & FALSE, TRUE, GTK_POS_TOP, &
   & gtk_button_new, gtk_button_new_with_label, &
-  & gtk_check_button_new, gtk_check_button_new_with_label, gtk_container_add, &
+  & gtk_check_button_new, gtk_check_button_new_with_label, &
+  & gtk_window_set_child, gtk_frame_set_child, &
   & gtk_frame_new, gtk_label_new, gtk_notebook_append_page, &
   & gtk_notebook_get_current_page, gtk_notebook_get_n_pages, &
   & gtk_notebook_get_show_border, &
@@ -184,7 +185,7 @@ contains
     call gtk_widget_set_margin_end (table, 10_c_int)
     call gtk_widget_set_margin_top (table, 10_c_int)
     call gtk_widget_set_margin_bottom (table, 10_c_int)
-    call gtk_container_add (mainwindow, table)
+    call gtk_window_set_child(mainwindow, table)
    
     ! Create a new notebook, place the position of the tabs
     notebook_1=gtk_notebook_new()
@@ -212,7 +213,7 @@ contains
       call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
 
       label = gtk_label_new ("Append Frame "//trim(adjustl(istr))//c_null_char)
-      call gtk_container_add (frame, label)
+      call gtk_frame_set_child(frame, label)
 
       label = gtk_label_new ("Page "//trim(adjustl(istr))//c_null_char)
       nb = gtk_notebook_append_page (notebook_1, frame, label)
@@ -243,7 +244,7 @@ contains
       call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
 
       label = gtk_label_new ("Prepend Frame "//trim(adjustl(istr))//c_null_char)
-      call gtk_container_add (frame, label)
+      call gtk_frame_set_child(frame, label)
 
       label = gtk_label_new ("PPage "//trim(adjustl(istr))//c_null_char)
       nb = gtk_notebook_prepend_page (notebook_1, frame, label)
@@ -256,10 +257,10 @@ contains
 
     ! Create a bunch of buttons
     button = gtk_button_new_with_label ("close"//c_null_char)
-    ! Here the gtk_widget_destroy() function will be applied
+    ! Here the gtk_window_destroy() function will be applied
     ! to window instead of button:
     call g_signal_connect_swapped(button, "clicked"//c_null_char, &
-                                & c_funloc(gtk_widget_destroy), mainwindow)
+                                & c_funloc(gtk_window_destroy), mainwindow)
 
     call gtk_grid_attach (table, button, 0_c_int, 1_c_int, 1_c_int, 1_c_int)
 
@@ -305,7 +306,7 @@ contains
       call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
 
       label = gtk_label_new ("Notebook 2 - Frame "//trim(adjustl(istr))//c_null_char)
-      call gtk_container_add (frame, label)
+      call gtk_frame_set_child(frame, label)
 
       label = gtk_label_new ("Notebook 2 - Page "//trim(adjustl(istr))//c_null_char)
       nb = gtk_notebook_append_page (notebook_2, frame, label)
