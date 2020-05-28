@@ -21,15 +21,8 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by James Tappin
-! Last modification: 2011-12-01, vmagnin 2020-02-11
-
-! --------------------------------------------------------
-! gtk-hl-misc.f90
-! Generated: Tue Oct 29 17:12:20 2013 GMT
-! Generated for GTK+ version: 3.10.0.
-! Generated for GLIB version: 2.38.0.
-! --------------------------------------------------------
+! Contributed by James Tappin, 2011
+! Last modification: vmagnin 2020-05-28 (GTK 4)
 
 
 !*
@@ -43,15 +36,16 @@ module gtk_hl_misc
   use iso_c_binding
   use iso_fortran_env, only: error_unit
 
-  use gtk, only: gtk_bin_get_child, gtk_label_set_markup,&
-       & gtk_separator_new, &
+  use gtk, only: gtk_label_set_markup, gtk_separator_new, &
        & GTK_ORIENTATION_HORIZONTAL, GTK_ORIENTATION_VERTICAL, &
-       & TRUE, FALSE
+       & TRUE, FALSE, gtk_widget_get_first_child
 
   implicit none
 
 contains
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! GtkBin has been removed in GTK 4
   !+
   subroutine hl_gtk_bin_set_label_markup(widget, label)
     type(c_ptr) :: widget
@@ -65,7 +59,7 @@ contains
 
     type(c_ptr) :: label_w
 
-    label_w = gtk_bin_get_child(widget)
+    label_w = gtk_widget_get_first_child(widget)
     if (.not. c_associated(label_w)) then
        write(error_unit, *) &
             & "ERROR: hl_gtk_bin_set_label_markup: specified widget does not have a label"
