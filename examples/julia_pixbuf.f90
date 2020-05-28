@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-05-18
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-05-28
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -35,9 +35,10 @@ module global_widgets
 end module global_widgets
 
 module handlers
-  use gtk, only: gtk_application_window_new, gtk_widget_destroy, &
+  use gtk, only: gtk_application_window_new, gtk_window_destroy, &
   & g_signal_connect, g_signal_connect_swapped, &
-  & gtk_container_add, gtk_drawing_area_new, &
+  & gtk_window_set_child, gtk_expander_set_child, gtk_box_append, &
+  & gtk_scrolled_window_set_child, gtk_drawing_area_new, &
   & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
   & gtk_drawing_area_set_draw_func, &
   & gtk_widget_queue_draw, gtk_widget_show, &
@@ -82,7 +83,7 @@ contains
     ! Returns FALSE to propagate the event further:
     ret = FALSE
 
-    call gtk_widget_destroy(my_window)
+    call gtk_window_destroy(my_window)
   end function destroy_signal
 
   ! This function is needed to update the GUI during long computations.
@@ -353,12 +354,12 @@ contains
 
     ! The table is contained in an expander, which is contained in the vertical box:
     expander = gtk_expander_new_with_mnemonic ("_The parameters:"//c_null_char)
-    call gtk_container_add (expander, table)
+    call gtk_expander_set_child(expander, table)
     call gtk_expander_set_expanded(expander, TRUE)
 
     ! We create a vertical box container:
     box1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10_c_int);
-    call gtk_container_add (box1, expander)
+    call gtk_box_append(box1, expander)
 
     ! We need a widget where to draw our pixbuf.
     ! The drawing area is contained in the vertical box:
@@ -383,20 +384,20 @@ contains
         & -1_c_int)
     scrolled_window = gtk_scrolled_window_new (c_null_ptr, c_null_ptr)
     notebookLabel2 = gtk_label_new_with_mnemonic("_Messages"//c_null_char)
-    call gtk_container_add (scrolled_window, textView)
+    call gtk_scrolled_window_set_child(scrolled_window, textView)
     secondTab = gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)
 
-    call gtk_container_add (box1, notebook)
+    call gtk_box_append(box1, notebook)
     call gtk_widget_set_vexpand (box1, TRUE)
     
     ! The window status bar can be used to print messages:
     statusBar = gtk_statusbar_new ()
     message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
                 & "Julia"//c_null_char), "Waiting..."//c_null_char)
-    call gtk_container_add (box1, statusBar)
+    call gtk_box_append(box1, statusBar)
 
     ! Let's finalize the GUI:
-    call gtk_container_add (my_window, box1)
+    call gtk_window_set_child(my_window, box1)
     call gtk_window_set_mnemonics_visible (my_window, TRUE)
     call gtk_widget_show(my_window)
 
