@@ -1,35 +1,29 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
-! Contributed by James Tappin
-! Last modification: 2011-11-30
-
-! --------------------------------------------------------
-! gtk-hl-button.f90
-! Generated: Tue Oct 29 17:12:20 2013 GMT
-! Generated for GTK+ version: 3.10.0.
-! Generated for GLIB version: 2.38.0.
-! --------------------------------------------------------
+!-----------------------------------------------------------------
+! Contributed by James Tappin 2011-11-30
+! Last modification: vmagnin 2020-05-28 (GTK 4)
+!-----------------------------------------------------------------
 
 
 !*
@@ -51,7 +45,7 @@ module gtk_hl_button
        & gtk_radio_button_new_with_label, gtk_toggle_button_get_active,&
        & gtk_toggle_button_set_active, &
        & gtk_widget_set_sensitive, gtk_widget_set_tooltip_text, &
-       & gtk_label_new, gtk_label_set_markup, gtk_container_add,&
+       & gtk_label_new, gtk_label_set_markup, gtk_button_set_child, &
        & gtk_button_set_label, gtk_toggle_button_new, &
        & gtk_toggle_button_new_with_label, &
        & TRUE, FALSE, g_signal_connect
@@ -117,7 +111,7 @@ contains
        but = gtk_button_new()
        label_w=gtk_label_new(c_null_char)
        call gtk_label_set_markup(label_w, label)
-       call gtk_container_add(but, label_w)
+       call gtk_button_set_child(but, label_w)
     else
        but=gtk_button_new_with_label(label)
     end if
@@ -228,7 +222,7 @@ contains
        end if
        label_w=gtk_label_new(c_null_char)
        call gtk_label_set_markup(label_w, label)
-       call gtk_container_add(but, label_w)
+       call gtk_button_set_child(but, label_w)
     else
        if (is_toggle) then
           but = gtk_toggle_button_new_with_label(label)
@@ -300,7 +294,7 @@ contains
        but = gtk_radio_button_new(group)
        label_w=gtk_label_new(c_null_char)
        call gtk_label_set_markup(label_w, label)
-       call gtk_container_add(but, label_w)
+       call gtk_button_set_child(but, label_w)
     else
        but = gtk_radio_button_new_with_label(group, label)
     end if
