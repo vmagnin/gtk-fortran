@@ -23,14 +23,13 @@
 !------------------------------------------------------------------------------
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! GTK 4 version: vmagnin 2020-05-19
-! Last modification: vmagnin 2020-05-19
+! Last modification: vmagnin 2020-05-28
 !------------------------------------------------------------------------------
 
 module handlers
-  use gtk, only: gtk_application_window_new, &
+  use gtk, only: gtk_application_window_new, gtk_window_set_child, &
   & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
-  & gtk_drawing_area_set_draw_func, &
-  & gtk_container_add, gtk_drawing_area_new, &
+  & gtk_drawing_area_set_draw_func, gtk_drawing_area_new, &
   & gtk_widget_queue_draw, gtk_widget_show, gtk_window_set_default_size, &
   & gtk_window_set_title, TRUE, FALSE, GDK_COLORSPACE_RGB, g_signal_connect, &
   & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
@@ -181,7 +180,9 @@ contains
     call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 100_4)
     write_png = .true.
 
-    call gtk_container_add(my_window, my_drawing_area)
+!    call gtk_container_add(my_window, my_drawing_area)
+    call gtk_window_set_child(my_window, my_drawing_area)
+    
     call gtk_widget_show(my_window)
   end subroutine activate
 end module handlers

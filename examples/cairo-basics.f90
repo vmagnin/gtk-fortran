@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2020-05-18
+! Last modification: vmagnin 2020-05-28
 
 module handlers
   use iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_funptr, &
@@ -30,7 +30,7 @@ module handlers
 
   use gtk, only: gtk_application_window_new, gtk_drawing_area_new, &
   & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
-  & gtk_drawing_area_set_draw_func, gtk_container_add, gtk_widget_show, &
+  & gtk_drawing_area_set_draw_func, gtk_window_set_child, gtk_widget_show, &
   & gtk_window_set_default_size, gtk_window_set_title,&
   & FALSE, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
 
@@ -62,7 +62,7 @@ contains
     call gtk_drawing_area_set_draw_func(my_drawing_area, &
                    & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
 
-    call gtk_container_add(window, my_drawing_area)
+    call gtk_window_set_child(window, my_drawing_area)
     call gtk_widget_show(window)
   end subroutine activate
 
