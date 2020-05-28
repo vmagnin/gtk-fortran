@@ -23,7 +23,44 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus, Ian Harvey
-! GTK 4 version: vmagnin 2020-05-25
+! GTK 4 version: vmagnin 2020-05-28
+
+module various_functions
+  use iso_c_binding
+  use gtk_sup, only: c_f_string_copy
+  implicit none
+
+  contains
+
+  subroutine some_glib_functions()
+    use g, only: g_get_user_name, g_get_application_name, g_get_host_name, &
+               & g_get_home_dir, g_get_current_dir, g_format_size
+    character(len=512) :: my_string
+
+    call c_f_string_copy(g_get_user_name(), my_string)
+    print *, "Hello ", TRIM(my_string)
+
+    call c_f_string_copy(g_get_host_name(), my_string)
+    print *, "Host name: ", TRIM(my_string)
+
+    call c_f_string_copy(g_get_application_name(), my_string)
+    print *, "Application name: ", TRIM(my_string)
+
+    call c_f_string_copy(g_get_home_dir(), my_string)
+    print *, "Home dir: ", TRIM(my_string)
+
+    call c_f_string_copy(g_get_current_dir(), my_string)
+    print *, "Current dir: ", TRIM(my_string)
+    if (my_string(1:1) == "/") then
+        print *, "UNIX OS"
+    else
+        print *, "Not UNIX OS"
+    endif
+
+    call c_f_string_copy(g_format_size (123456789_c_int64_t), my_string)
+    print *, "g_format_size: ", TRIM(my_string)
+  end subroutine some_glib_functions
+end module various_functions
 
 module my_widgets
   use iso_c_binding
@@ -47,8 +84,8 @@ module handlers
   & gtk_about_dialog_set_program_name, gtk_application_window_new, &
   & gtk_about_dialog_set_website, gtk_window_set_transient_for, &
   & gtk_button_new, gtk_button_new_with_label, &
-  & gtk_container_add, gtk_dialog_run, gtk_drawing_area_new, &
-  & gtk_drawing_area_set_draw_func, &
+  & gtk_window_set_child, gtk_scrolled_window_set_child, &
+  & gtk_drawing_area_new, gtk_drawing_area_set_draw_func, &
   & gtk_entry_get_buffer, gtk_entry_buffer_get_text, gtk_entry_new, &
   & gtk_file_chooser_button_new, GTK_FILE_CHOOSER_ACTION_OPEN, &
   & gtk_file_chooser_get_file, gtk_label_new, &
@@ -56,9 +93,10 @@ module handlers
   & gtk_progress_bar_set_fraction, gtk_progress_bar_set_text, &
   & gtk_scrolled_window_new,&
   & gtk_grid_attach, gtk_grid_new, gtk_text_buffer_set_text,&
-  & gtk_text_view_get_buffer, gtk_text_view_new, gtk_widget_destroy, &
+  & gtk_text_view_get_buffer, gtk_text_view_new, gtk_window_destroy, &
   & gtk_widget_show, gtk_window_set_title, &
-  & g_signal_connect, FALSE, TRUE, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&
+  & g_signal_connect, g_signal_connect_swapped, &
+  & FALSE, TRUE, GDK_COLORSPACE_RGB, GDK_COLORSPACE_RGB,&
   & gtk_grid_set_row_homogeneous, &
   & gtk_grid_set_column_homogeneous, &
   & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
@@ -113,7 +151,7 @@ contains
     call gtk_widget_set_margin_end (table, 10_c_int)
     call gtk_widget_set_margin_top (table, 10_c_int)
     call gtk_widget_set_margin_bottom (table, 10_c_int)  
-    call gtk_container_add (window, table)
+    call gtk_window_set_child(window, table)
 
     button1 = gtk_button_new_with_label ("Button1"//c_null_char)
     call gtk_grid_attach(table, button1, 0_c_int, 0_c_int, 1_c_int, 1_c_int)
@@ -149,7 +187,7 @@ contains
         & "where I can test widgets"//c_new_line//"Vincent"//c_new_line//&
         &"You can edit this text. It will be scrollable."//c_null_char, -1_c_int)
     scrolled_window = gtk_scrolled_window_new(c_null_ptr, c_null_ptr)
-    call gtk_container_add(scrolled_window, view)
+    call gtk_scrolled_window_set_child(scrolled_window, view)
     call gtk_grid_attach(table, scrolled_window, 0_c_int, 3_c_int, 3_c_int, 3_c_int)  
 
     my_drawing_area = gtk_drawing_area_new()
@@ -263,7 +301,7 @@ contains
     print *, "Entry box:", TRIM(my_string)
 
     ! This is the end of the program:
-    call gtk_widget_destroy(window)
+    call gtk_window_destroy(window)
   end subroutine destroy
 
   ! GtkButton signal:
@@ -311,11 +349,10 @@ contains
     
     !TODO: to add authors we need a pointer toward null terminated array of strings.
     !call gtk_about_dialog_set_authors(dialog, authors_ptr)
-    
-    response_id =  gtk_dialog_run(dialog)
-    print *, "Dialog response ID:", response_id
-    call gtk_widget_destroy(dialog)
-
+ 
+    call gtk_widget_show(dialog)
+    call g_signal_connect_swapped (dialog, "response"//c_null_char, &
+                              & c_funloc(gtk_window_destroy), dialog)
     ret = FALSE
   end function aboutbutton
 
@@ -338,43 +375,6 @@ contains
     ret = FALSE
   end function file_changed
 end module handlers
-
-module various_functions
-  use iso_c_binding
-  use gtk_sup, only: c_f_string_copy
-  implicit none
-
-  contains
-
-  subroutine some_glib_functions()
-    use g, only: g_get_user_name, g_get_application_name, g_get_host_name, &
-               & g_get_home_dir, g_get_current_dir, g_format_size
-    character(len=512) :: my_string
-
-    call c_f_string_copy(g_get_user_name(), my_string)
-    print *, "Hello ", TRIM(my_string)
-
-    call c_f_string_copy(g_get_host_name(), my_string)
-    print *, "Host name: ", TRIM(my_string)
-
-    call c_f_string_copy(g_get_application_name(), my_string)
-    print *, "Application name: ", TRIM(my_string)
-
-    call c_f_string_copy(g_get_home_dir(), my_string)
-    print *, "Home dir: ", TRIM(my_string)
-
-    call c_f_string_copy(g_get_current_dir(), my_string)
-    print *, "Current dir: ", TRIM(my_string)
-    if (my_string(1:1) == "/") then
-        print *, "UNIX OS"
-    else
-        print *, "Not UNIX OS"
-    endif
-
-    call c_f_string_copy(g_format_size (123456789_c_int64_t), my_string)
-    print *, "g_format_size: ", TRIM(my_string)
-  end subroutine some_glib_functions
-end module various_functions
 
 !*******************************************************************************
 ! In the main program, we declare the GTK application, connect it to its 
