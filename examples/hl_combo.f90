@@ -22,14 +22,14 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin.
-! Last modification: vmagnin 2020-05-27 (GTK 4 version)
+! Last modification: vmagnin 2020-05-28 (GTK 4 version)
 
 module handlers
   use gtk_hl_container
   use gtk_hl_combobox
   use gtk_hl_button
   use gtk, only: gtk_button_new, gtk_combo_box_get_active, gtk_combo_box_new, &
-       & gtk_container_add, gtk_widget_destroy, &
+       & gtk_window_set_child, &
        & gtk_widget_show, gtk_window_new, gtk_init, TRUE, FALSE
   use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
@@ -83,7 +83,7 @@ program combo_demo
        & destroy=c_funloc(my_destroy))
 
   box = hl_gtk_box_new()
-  call gtk_container_add(win, box)
+  call gtk_window_set_child(win, box)
 
   ! A list with an entry box
   do i = 1, 8
