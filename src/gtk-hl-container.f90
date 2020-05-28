@@ -59,7 +59,8 @@ module gtk_hl_container
 !       & gtk_window_set_icon_from_file, &
 !       & gtk_window_set_icon, & GTK_EXPAND, GTK_FILL, &
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  use gtk, only: gtk_label_new, gtk_container_add, &
+  use gtk, only: gtk_label_new, &
+       & gtk_scrolled_window_set_child, gtk_box_append, &
        & gtk_notebook_append_page, gtk_notebook_insert_page,&
        & gtk_notebook_new, gtk_notebook_popup_disable,&
        & gtk_notebook_popup_enable, gtk_notebook_prepend_page,&
@@ -82,9 +83,7 @@ module gtk_hl_container
        & gtk_window_set_icon_name, gtk_window_set_modal, &
        & gtk_notebook_set_group_name, &
        & gtk_scrolled_window_new, gtk_scrolled_window_set_policy, &
-       & gtk_widget_set_size_request, &
-       & gtk_container_add, &
-       & GTK_ALIGN_FILL, GTK_ALIGN_CENTER, &
+       & gtk_widget_set_size_request, GTK_ALIGN_FILL, GTK_ALIGN_CENTER, &
        & GTK_ORIENTATION_HORIZONTAL,  GTK_ORIENTATION_VERTICAL, &
        & TRUE, FALSE, g_signal_connect, &
        & GTK_POLICY_AUTOMATIC
@@ -310,7 +309,7 @@ contains
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     print *, "Not in GTK 4: call gtk_box_pack_start(box, child, iexp, ifill, ipad)"
     ! Replaced temporarily by:
-    call gtk_container_add(box, child)
+    call gtk_box_append(box, child)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   end subroutine hl_gtk_box_pack
 
@@ -689,7 +688,7 @@ contains
     ! 		whether this is needed.
     !-
 
-       call gtk_container_add(win, child)
+    call gtk_scrolled_window_set_child(win, child)
   end subroutine hl_gtk_scrolled_window_add
 
 end module gtk_hl_container
