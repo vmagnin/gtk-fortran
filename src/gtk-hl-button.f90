@@ -43,7 +43,7 @@ module gtk_hl_button
        & gtk_check_button_new, gtk_check_button_new_with_label,&
        & gtk_radio_button_get_group, gtk_radio_button_new,&
        & gtk_radio_button_new_with_label, gtk_toggle_button_get_active,&
-       & gtk_toggle_button_set_active, &
+       & gtk_toggle_button_set_active, gtk_button_get_child, &
        & gtk_widget_set_sensitive, gtk_widget_set_tooltip_text, &
        & gtk_label_new, gtk_label_set_markup, gtk_button_set_child, &
        & gtk_button_set_label, gtk_toggle_button_new, &
@@ -163,7 +163,7 @@ contains
     end if
 
     if (markup) then
-       label_w = gtk_bin_get_child(button)
+       label_w = gtk_button_get_child(button)
        call gtk_label_set_markup(label_w, label)
     else
        call gtk_button_set_label(button, label)
