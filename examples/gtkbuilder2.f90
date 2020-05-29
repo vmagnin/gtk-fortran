@@ -27,7 +27,7 @@
 
 module widgets
   ! declares the used GTK widgets
-  use iso_c_binding
+  use iso_c_binding, only: c_null_char, c_null_ptr, c_ptr, c_int
   implicit none
 
   type(c_ptr) :: window
@@ -36,12 +36,15 @@ module widgets
 end module
 
 module handlers
-  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
-  &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&
-  &FALSE, c_null_char, c_null_ptr, gtk_init
-  use g, only: g_object_unref
+  use gtk, only: gtk_builder_add_from_file, &
+  & gtk_builder_get_object, gtk_builder_new, gtk_widget_show, &
+  & FALSE, gtk_init
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit, &
+             & g_object_unref
   use widgets
+
   implicit none
+  type(c_ptr)    :: my_gmainloop
 
 contains
   !*************************************
@@ -64,7 +67,7 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: destroy
     type(c_ptr), value :: widget, gdata
     print *, "my destroy"
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine destroy
 
   ! "clicked" is a GtkButton signal
@@ -98,19 +101,17 @@ contains
 end module handlers
 
 program gtkbuilder
-  
   use handlers
   
   implicit none
-
   integer(c_int) :: guint
   type(c_ptr) :: error
   error=c_null_ptr
 
-  ! Initialize the GTK+ Library
+  ! Initialize the GTK Library:
   call gtk_init ()
 
-  ! create a new GtkBuilder object
+  ! Create a new GtkBuilder object:
   builder = gtk_builder_new ()
 
   ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
@@ -125,7 +126,7 @@ program gtkbuilder
   
   ! use GModule to look at the applications symbol table to find the function name 
   ! that matches the handler name we specified in Glade3
-  call gtk_builder_connect_signals (builder, c_null_ptr)  
+  !call gtk_builder_connect_signals (builder, c_null_ptr)  
 
   ! free all memory used by XML stuff      
   call g_object_unref (builder)
@@ -133,7 +134,8 @@ program gtkbuilder
   ! Show the Application Window      
   call gtk_widget_show (window)       
   
-  ! Enter the GTK+ Main Loop
-  call gtk_main ()
-        
+  ! Enter the Main Loop:
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
+
 end program gtkbuilder
