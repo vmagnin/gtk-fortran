@@ -1,46 +1,52 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modification: vmagnin 02-20-2019
+! Last modification: vmagnin 2020-05-28 (GTK 4)
+!------------------------------------------------------------------------------
 
 module handlers
-  use gtk_hl
-  use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
-       &spin_button_get_value, gtk_spin_button_new, gtk_spin_button_set_value, gtk_wid&
-       &get_destroy, gtk_widget_show, gtk_window_new, &
+  use gtk_hl_container
+  use gtk_hl_button
+  use gtk_hl_spin_slider
+  use gtk, only: gtk_button_new, gtk_window_set_child, &
+       & gtk_spin_button_get_value, gtk_spin_button_new, &
+       & gtk_spin_button_set_value, &
+       & gtk_widget_show, gtk_window_new, &
        & TRUE, FALSE, gtk_init
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   implicit none
   type(c_ptr) :: base, box, slid, islid, win, qbut, spin,&
        & ispin
+  type(c_ptr) :: my_gmainloop
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
     print *, "Exit called"
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine my_destroy
 
   subroutine slider1(widget, gdata) bind(c)
@@ -64,7 +70,6 @@ contains
     print *, 'INT slider moved to', ival
     call hl_gtk_spin_button_set_value(ispin, ival)
   end subroutine slider2
-
 
   subroutine spinner1(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
@@ -91,7 +96,6 @@ contains
 end module handlers
 
 program sliders
-
   ! SLIDERS
   ! Demo of sliders & spin buttons
 
@@ -106,7 +110,7 @@ program sliders
   win = hl_gtk_window_new("Sliders demo"//c_null_char, &
        & destroy=c_funloc(my_destroy))
   base = hl_gtk_box_new()
-  call gtk_container_add(win, base)
+  call gtk_window_set_child(win, base)
   box = hl_gtk_box_new(horizontal=TRUE, homogeneous=TRUE)
   call hl_gtk_box_pack(base, box)
 
@@ -140,8 +144,8 @@ program sliders
   qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(base, qbut)
 
-  ! Realize the hierarchy
+  ! Realize & enter event loop
   call gtk_widget_show(win)
-  call gtk_main
-
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 end program sliders
