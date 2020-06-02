@@ -1,36 +1,29 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
-! Contributed by James Tappin
-! Last modification: 2012-05-22, vmagnin 2020-02-11
-
 ! --------------------------------------------------------
-! gtk-hl-entry.f90
-! Generated: Tue Oct 29 17:12:20 2013 GMT
-! Generated for GTK+ version: 3.10.0.
-! Generated for GLIB version: 2.38.0.
+! Contributed by James Tappin (2012)
+! Last modification: vmagnin 2020-05-28 (GTK 4)
 ! --------------------------------------------------------
-
 
 !*
 ! Text Entry
@@ -53,10 +46,12 @@ module gtk_hl_entry
   use iso_fortran_env, only: error_unit
 
   ! auto-generated use's
-  use gtk, only: gtk_container_add, gtk_editable_set_editable,&
-       & gtk_entry_get_text, gtk_entry_get_text_length, gtk_entry_new&
-       &, gtk_entry_set_activates_default, gtk_entry_set_max_length,&
-       & gtk_entry_set_text, gtk_scrolled_window_new,&
+  use gtk, only: gtk_scrolled_window_set_child, gtk_editable_set_editable,&
+       & gtk_entry_buffer_get_text, gtk_entry_buffer_set_text, &
+       & gtk_entry_get_text_length, &
+       & gtk_entry_new, gtk_entry_get_buffer, &
+       & gtk_entry_set_activates_default, gtk_entry_set_max_length,&
+       & gtk_scrolled_window_new,&
        & gtk_scrolled_window_set_policy, gtk_text_buffer_delete,&
        & gtk_text_buffer_get_char_count, gtk_text_buffer_get_end_iter&
        &, gtk_text_buffer_get_insert,&
@@ -99,6 +94,7 @@ contains
     type(c_ptr), optional :: data_changed, data_delete_text, data_insert_text
     type(c_ptr), optional :: data_focus_in, data_focus_out
     integer(kind=c_int), intent(in), optional :: size
+    type(c_ptr) :: buffer
 
     ! Higher level text entry box
     !
@@ -146,7 +142,11 @@ contains
     if (present(editable)) &
          & call gtk_editable_set_editable(entry, editable)
 
-    if (present(value)) call gtk_entry_set_text(entry, value)
+   if (present(value)) then
+     buffer = gtk_entry_get_buffer(entry)
+     ! number of caracters = -1 for automatic length:
+     call gtk_entry_buffer_set_text (buffer, value, -1)
+   end if
 
     if (present(activate)) then
        if (present(data)) then
@@ -226,7 +226,7 @@ contains
     ! To return the text as a c-pointer use gtk_entry_get_text
     !-
 
-    type(c_ptr) :: ctext
+    type(c_ptr) :: ctext, buffer
     character(kind=c_char), dimension(:), pointer :: textptr
     integer(kind=c_int16_t) :: ntext
     integer(kind=c_int) :: istat
@@ -236,10 +236,12 @@ contains
        text=''
        return
     end if
-    ctext = gtk_entry_get_text(entry)
-
-    call c_f_pointer(ctext, textptr, (/int(ntext)/))
-    call convert_c_string(textptr, text, istat)
+    
+    buffer = gtk_entry_get_buffer(entry)
+    call c_f_string_copy(gtk_entry_buffer_get_text(buffer), text)
+    
+!    call c_f_pointer(ctext, textptr, (/int(ntext)/))
+!    call convert_c_string(textptr, text, istat)
 
     if (present(status)) status=istat
   end subroutine hl_gtk_entry_get_text
@@ -334,7 +336,7 @@ contains
        call gtk_scrolled_window_set_policy(scroll,  hscroll, vscroll)
        if (present(ssize)) &
             & call gtk_widget_set_size_request(scroll, ssize(1), ssize(2))
-       call gtk_container_add(scroll, view)
+       call gtk_scrolled_window_set_child(scroll, view)
     else if (present(ssize)) then
        call gtk_widget_set_size_request(view, ssize(1), ssize(2))
     end if
