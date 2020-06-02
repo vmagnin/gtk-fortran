@@ -25,12 +25,11 @@
 ! Last modification: vmagnin 02-20-2019
 
 module tr_handlers
-  use gtk_hl
-  use gtk, only: gtk_button_new, gtk_check_button_new, gtk_container_add, gtk_ent&
-       &ry_get_text, gtk_entry_get_text_length, gtk_entry_new, gtk_entry_set_text, gtk&
-       &_main, gtk_main_quit, gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
-       &ggle_button_set_active, gtk_widget_show, gtk_window_new, &
-       & gtk_init
+  use gtk_hl_container
+  use gtk_hl_combobox
+  use gtk_hl_button
+  use gtk_hl_tree
+  use gtk
   use g, only: alloca
 
   implicit none
@@ -128,6 +127,8 @@ program tree
   ! Demo of a tree
 
   use tr_handlers
+  use gtk_hl_container
+  use gtk
 
   implicit none
 
@@ -144,7 +145,8 @@ program tree
 
   ! Now make a column box & put it into the window
   base = hl_gtk_box_new()
-  call gtk_container_add(ihwin, base)
+  call gtk_scrolled_window_set_child(ihwin, base)
+  !call gtk_container_add(ihwin, base)
 
   ! Now make a multi column list with multiple selections enabled
   ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &

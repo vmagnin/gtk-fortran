@@ -56,7 +56,7 @@ module gtk_hl_tree
   use gtk, only: gtk_cell_layout_get_cells,&
        & gtk_cell_renderer_set_alignment,&
        & gtk_cell_renderer_set_padding, gtk_cell_renderer_text_new,&
-       & gtk_container_add, gtk_list_store_append,&
+       & gtk_list_store_append,&
        & gtk_list_store_clear, gtk_list_store_insert,&
        & gtk_list_store_move_after, gtk_list_store_move_before,&
        & gtk_list_store_newv, gtk_list_store_remove,&
@@ -363,7 +363,7 @@ contains
        scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
        call gtk_scrolled_window_set_policy(scroll, hscroll, &
             & vscroll)
-       call gtk_container_add(scroll, list)
+       call gtk_scrolled_window_set_child(scroll, list)
 
        if (present(height) .and. present(swidth)) then
           call gtk_widget_set_size_request(scroll,swidth,height)
@@ -1316,7 +1316,7 @@ contains
        scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
        call gtk_scrolled_window_set_policy(scroll, hscroll, vscroll)
 
-       call gtk_container_add(scroll, tree)
+       call gtk_scrolled_window_set_child(scroll, tree)
 
        if (present(height) .and. present(swidth)) then
           call gtk_widget_set_size_request(scroll,swidth,height)
