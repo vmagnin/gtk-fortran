@@ -26,5 +26,7 @@ lists.
 - menu2.f90 demonstrates how to create a menu.
 - notebooks.f90 demonstrates how to use GtkNotebook, a tabbed notebook container.
 - hl_* examples uses the "high-level" interface.
+    - hl_pbar.f90:  a progress bar.
+    - hl_pbar_p.f90: several progress bar in parallel (if you compile with `-openmp`)
 - tests.f90 is testing things about ISO_C_BINDING and the relations between 
 Fortran types and GLib types.
