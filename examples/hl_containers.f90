@@ -1,21 +1,49 @@
-! Contributed by jtappin
-! Last modification: vmagnin 02-23-2019
+! Copyright (C) 2011
+! Free Software Foundation, Inc.
+!
+! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+!
+! This is free software; you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation; either version 3, or (at your option)
+! any later version.
+!
+! This software is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+!
+! Under Section 7 of GPL version 3, you are granted additional
+! permissions described in the GCC Runtime Library Exception, version
+! 3.1, as published by the Free Software Foundation.
+!
+! You should have received a copy of the GNU General Public License along with
+! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! If not, see <http://www.gnu.org/licenses/>.
+!------------------------------------------------------------------------------
+! Contributed by James Tappin.
+! Last modification: vmagnin 2020-06-03 (GTK 4 version)
+!------------------------------------------------------------------------------
 
 module handlers
   use iso_c_binding
-  use gtk_hl
-  use gtk, only: gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, &
-       & gtk_widget_destroy, gtk_widget_show, gtk_init, TRUE, FALSE
+!  use gth_hl
+  use gtk_hl_container
+  use gtk_hl_button
+  use gtk, only: gtk_window_set_child, gtk_label_new, &
+       & gtk_widget_show, gtk_init, TRUE, FALSE
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   implicit none
   type(c_ptr) :: win, base, nbook, qbut, table
+  type(c_ptr) :: my_gmainloop
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
     print *, "Exit called"
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine my_destroy
 
   subroutine bpress(widget, gdata) bind(c)
@@ -47,7 +75,7 @@ program containers
 
   ! Now make a column box & put it into the window
   base = hl_gtk_box_new()
-  call gtk_container_add(win, base)
+  call gtk_window_set_child(win, base)
 
   ! Make a notebook container
   nbook = hl_gtk_notebook_new()
@@ -84,6 +112,7 @@ program containers
   call gtk_widget_show(win)
 
   ! Event loop
-  call gtk_main()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program containers
