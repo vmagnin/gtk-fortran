@@ -49,6 +49,7 @@ module gtk_hl_tree
   !/
 
   use gtk_sup
+  use gtk_hl_container
   use iso_c_binding
   use iso_fortran_env, only: error_unit
 
@@ -63,6 +64,7 @@ module gtk_hl_tree
        & gtk_list_store_reorder, gtk_list_store_set_value,&
        & gtk_list_store_swap, gtk_scrolled_window_new,&
        & gtk_scrolled_window_set_policy,&
+       & gtk_scrolled_window_set_child,&
        & gtk_tree_model_get_column_type, gtk_tree_model_get_iter,&
        & gtk_tree_model_get_iter_first, gtk_tree_model_get_value,&
        & gtk_tree_model_iter_children, gtk_tree_model_iter_n_children,&
