@@ -1,39 +1,31 @@
 ! Copyright (C) 2012
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modification: 2012-08-30, vmagnin 2020-02-11
-
-! --------------------------------------------------------
-! gtk-hl-infobar.f90
-! Generated: Tue Oct 29 17:12:20 2013 GMT
-! Generated for GTK+ version: 3.10.0.
-! Generated for GLIB version: 2.38.0.
-! --------------------------------------------------------
-
-
+! Last modification: 2012-08-30, vmagnin 2020-06-04 (GTK 4)
 !*
 ! Infobar
+!------------------------------------------------------------------------------
 module gtk_hl_infobar
   ! Convenience interface for the GtkInfoBar widget.
   ! This is created because the routine for adding multiple buttons is
@@ -41,19 +33,15 @@ module gtk_hl_infobar
   !/
 
   use iso_c_binding
-
   use gtk_sup
-
   use g, only: g_list_nth_data
-
-  use gtk, only: gtk_container_add, gtk_container_get_children, &
-       & gtk_info_bar_add_button, gtk_info_bar_get_action_area, &
-       & gtk_info_bar_get_content_area, gtk_info_bar_new, &
+  use gtk, only: gtk_info_bar_add_child, gtk_info_bar_add_button, &
+       & gtk_info_bar_new, gtk_info_bar_get_revealed, &
+       & gtk_info_bar_set_revealed, & 
        & gtk_info_bar_set_default_response, gtk_info_bar_set_message_type, &
        & gtk_info_bar_set_response_sensitive, gtk_label_new, &
        & gtk_label_set_text, gtk_orientable_set_orientation, &
-       & gtk_widget_get_no_show_all, gtk_widget_set_no_show_all, &
-       & gtk_widget_show, g_signal_connect, TRUE, FALSE, &
+       & gtk_widget_show, gtk_widget_hide, g_signal_connect, TRUE, FALSE, &
        & GTK_ORIENTATION_HORIZONTAL, GTK_ORIENTATION_VERTICAL
 
   implicit none
@@ -83,7 +71,7 @@ contains
     ! 		key action.
     ! DATA_CLOSE: c_ptr: optional: User data to pass to the close handler.
     ! AUTO_SHOW: boolean: optional: Whether the info bar should be displayed
-    ! 		when its parent is shown by gtk_widget_show_all. Default=FALSE.
+    ! 		when its parent is shown. Default=FALSE.
     ! TYPE: c_int: optional: The initial message type.
     ! DEFAULT: c_int: optional: Set the initial default response ID.
     ! HORIZONTAL: boolean: optional: Set to TRUE to lay the buttons in a
@@ -94,25 +82,27 @@ contains
 
     integer(kind=c_int) :: i, id
     integer(kind=c_int) :: no_auto
-    type(c_ptr) :: label, content, junk, action
+    type(c_ptr) :: label, junk, action
 
     infobar = gtk_info_bar_new()
 
     label = gtk_label_new (c_null_char)
-    content = gtk_info_bar_get_content_area (infobar)
-    call gtk_container_add (content, label)
+    call gtk_info_bar_add_child (infobar, label)
     call gtk_widget_show (label)
 
-    if (present(horizontal)) then
-       action = gtk_info_bar_get_action_area(infobar)
-       if (c_f_logical(horizontal)) then
-          call gtk_orientable_set_orientation(action, &
-               & GTK_ORIENTATION_HORIZONTAL)
-       else
-          call gtk_orientable_set_orientation(action, &
-               & GTK_ORIENTATION_VERTICAL)
-       end if
-    end if
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! GTK 4
+!    if (present(horizontal)) then
+       print *, "Not in GTK4: action = gtk_info_bar_get_action_area(infobar)"
+!       if (c_f_logical(horizontal)) then
+!          call gtk_orientable_set_orientation(action, &
+!               & GTK_ORIENTATION_HORIZONTAL)
+!       else
+!          call gtk_orientable_set_orientation(action, &
+!               & GTK_ORIENTATION_VERTICAL)
+!       end if
+!    end if
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (present(buttons_below)) then
        if (c_f_logical(buttons_below)) then
           call gtk_orientable_set_orientation(infobar, &
@@ -158,7 +148,8 @@ contains
     else
        no_auto = TRUE
     end if
-    call gtk_widget_set_no_show_all(infobar, no_auto)
+    call gtk_info_bar_set_revealed(infobar, no_auto)
+    if (no_auto == TRUE) call gtk_widget_hide(infobar)
 
     if (present(type)) &
          & call gtk_info_bar_set_message_type(infobar,type)
@@ -191,11 +182,14 @@ contains
     type(c_ptr) :: content, label, children
     integer :: i
 
-    content = gtk_info_bar_get_content_area(infobar)
-    children = gtk_container_get_children(content)
-    label = g_list_nth_data(children, 0_c_int)
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! GTK 4 
+    !content = gtk_info_bar_get_content_area(infobar)
+    print *, "Not in GTK4: children = gtk_container_get_children(content)"
+    !label = g_list_nth_data(children, 0_c_int)
 
-    call gtk_label_set_text(label,message)
+    !call gtk_label_set_text(label,message)
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (present(type)) &
          & call gtk_info_bar_set_message_type(infobar,type)
     if (present(default)) &
@@ -207,8 +201,8 @@ contains
                & state(i))
        end do
     end if
-
-    if (c_f_logical(gtk_widget_get_no_show_all(infobar))) &
+    
+    if (c_f_logical(gtk_info_bar_get_revealed(infobar))) &
          & call gtk_widget_show(infobar)
 
   end subroutine hl_gtk_info_bar_message
