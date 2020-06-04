@@ -1,37 +1,29 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+! ----------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modifications: 2012-07-09, vmagnin 2020-02-11
-
-! --------------------------------------------------------
-! gtk-hl-container.f90
-! Generated: Fri Jan 31 16:55:52 2020 GMT
-! Generated for GTK+ version: 3.24.0.
-! Generated for GLIB version: 2.62.0.
-! --------------------------------------------------------
-
-
+! Last modifications: 2012-07-09, vmagnin 2020-06-04 (GTK 4 version)
+! ----------------------------------------------------------------------
 !*
 ! Containers
 module gtk_hl_container
@@ -53,8 +45,7 @@ module gtk_hl_container
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! NOT AVAILABLE in GTK 4: gtk_accel_group_new, gtk_box_pack_start, &
-!       & gtk_container_set_border_width, gtk_window_add_accel_group
-!       gtk_window_set_keep_above,&
+!       & gtk_window_add_accel_group, gtk_window_set_keep_above,&
 !       & gtk_window_set_keep_below, &
 !       & gtk_window_set_icon_from_file, &
 !       & gtk_window_set_icon, & GTK_EXPAND, GTK_FILL, &
@@ -86,7 +77,9 @@ module gtk_hl_container
        & gtk_widget_set_size_request, GTK_ALIGN_FILL, GTK_ALIGN_CENTER, &
        & GTK_ORIENTATION_HORIZONTAL,  GTK_ORIENTATION_VERTICAL, &
        & TRUE, FALSE, g_signal_connect, &
-       & GTK_POLICY_AUTOMATIC
+       & GTK_POLICY_AUTOMATIC, &
+       & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
+       & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
 
   implicit none
 
@@ -152,9 +145,12 @@ contains
     win = gtk_window_new()
     if (present(title)) call gtk_window_set_title(win, title)
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    if (present(border)) print *, "NOT in GTK4: call gtk_container_set_border_width(win, border)"
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (present(border)) then
+      call gtk_widget_set_margin_start (win, border)
+      call gtk_widget_set_margin_end (win, border)
+      call gtk_widget_set_margin_top (win, border)
+      call gtk_widget_set_margin_bottom (win, border)
+    end if
 
     if (present(wsize)) &
          & call gtk_window_set_default_size(win, wsize(1), wsize(2))
