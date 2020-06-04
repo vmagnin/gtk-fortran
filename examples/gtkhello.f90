@@ -36,10 +36,10 @@ module handlers
 
   use iso_c_binding, only: c_ptr, c_int, c_funloc, c_null_char
   use gtk, only: FALSE, gtk_window_set_default_size,  &
-               & gtk_window_set_title, gtk_widget_destroy, &
+               & gtk_window_set_title, gtk_window_destroy, &
                & g_signal_connect, g_signal_connect_swapped, &
                & gtk_widget_show, gtk_application_window_new, &
-               & gtk_box_new, gtk_container_add, &
+               & gtk_box_new, gtk_box_append, gtk_window_set_child, &
                & GTK_ORIENTATION_VERTICAL, GTK_ORIENTATION_HORIZONTAL, &
                & gtk_button_new_with_label, gtk_button_new_with_mnemonic, &
                & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
@@ -77,12 +77,12 @@ contains
     call gtk_widget_set_margin_top (box, 10_c_int)
     call gtk_widget_set_margin_bottom (box, 10_c_int)
     ! You need a container where to put the box, it will manage layout:
-    call gtk_container_add(window, box)
+    call gtk_window_set_child(window, box)
 
     ! It's easy to create a button:
     button1 = gtk_button_new_with_label("I say hello"//c_null_char)
     ! Let's pack the button in the box:
-    call gtk_container_add(box, button1)
+    call gtk_box_append(box, button1)
     ! You can associate one or several callback functions with the button,
     ! "clicked" is a GtkButton signal emitted when you click on it:
     call g_signal_connect(button1, "clicked"//c_null_char, &
@@ -93,12 +93,12 @@ contains
     button2 = gtk_button_new_with_mnemonic("I don't know why you say _goodbye"&
                                           &//c_null_char)
     ! Let's pack the second button in the box (from left to right):
-    call gtk_container_add(box, button2)
+    call gtk_box_append(box, button2)
     ! Let's associate one callback function when that button is clicked.
-    ! Here the gtk_widget_destroy() function will be applied
+    ! Here the gtk_window_destroy() function will be applied
     ! to window instead of button2:
     call g_signal_connect_swapped(button2, "clicked"//c_null_char, &
-                                & c_funloc(gtk_widget_destroy), window)
+                                & c_funloc(gtk_window_destroy), window)
     !******************************************************************
 
     ! If you don't show it, nothing will appear on screen...
