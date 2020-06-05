@@ -1,26 +1,55 @@
+! Copyright (C) 2011
+! Free Software Foundation, Inc.
+!
+! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+!
+! This is free software; you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation; either version 3, or (at your option)
+! any later version.
+!
+! This software is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+!
+! Under Section 7 of GPL version 3, you are granted additional
+! permissions described in the GCC Runtime Library Exception, version
+! 3.1, as published by the Free Software Foundation.
+!
+! You should have received a copy of the GNU General Public License along with
+! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! If not, see <http://www.gnu.org/licenses/>.
+!------------------------------------------------------------------------------
 ! Contributed jtappin.
-! Last modification: vmagnin+Ian Harvey, 2020-02-03
+! Last modifications: vmagnin+Ian Harvey, 2020-02-03
+! GTK 4 version: vmagnin 2020-06-02
+!------------------------------------------------------------------------------
 
 module handlers
-
   use iso_c_binding
-  use gtk_hl
-  use gtk, only: gtk_main, gtk_main_quit, &
+!  use gtk_hl
+  use gtk_hl_container
+  use gtk_hl_button
+  use gtk_hl_entry
+  use gtk, only: gtk_window_set_child, &
        & gtk_widget_show, gtk_init, gtk_entry_get_text_length, &
-       & gtk_entry_get_text, gtk_text_iter_get_text
-  use g, only: g_object_unref
+       & gtk_entry_get_buffer, gtk_entry_buffer_get_text, &
+       & gtk_text_iter_get_text
+  use g, only: g_object_unref, g_main_loop_new, g_main_loop_quit, &
+             & g_main_loop_run
 
   implicit none
-
   type(c_ptr) ::  win, zedt, contain, qbut, box, entry, box2, &
-       & abut, ibut, clbut, infobut
+                & abut, ibut, clbut, infobut
+  type(c_ptr) :: my_gmainloop
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
     
     print *, "Exit called"
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine my_destroy
 
   subroutine tv_change(widget, gdata) bind(c)
@@ -36,7 +65,6 @@ contains
     print *, nl, nc
     print *, ncl
     deallocate(ncl)
-
   end subroutine tv_change
 
   subroutine tv_ins(widget,iter, text, nins, gdata) bind(c)
@@ -82,27 +110,29 @@ contains
   end subroutine tv_del
 
   subroutine tv_append(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
-
+    type(c_ptr), value, intent(in) :: widget, gdata
+    type(c_ptr) :: buffer
     character(len=40) :: ftext
 
-    call hl_gtk_entry_get_text(entry, ftext) 
-    call hl_gtk_text_view_insert(zedt, (/ trim(ftext) /))
+    buffer = gtk_entry_get_buffer(entry)
+    call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
 
+    call hl_gtk_text_view_insert(zedt, (/ trim(ftext) /))
   end subroutine tv_append
   
   subroutine tv_insert(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
-
+    type(c_ptr), value, intent(in) :: widget, gdata
+    type(c_ptr) :: buffer
     character(len=40) :: ftext
 
-    call hl_gtk_entry_get_text(entry, ftext)
-    call hl_gtk_text_view_insert(zedt, (/ trim(ftext) /), at_cursor=TRUE)
+    buffer = gtk_entry_get_buffer(entry)
+    call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
 
+    call hl_gtk_text_view_insert(zedt, (/ trim(ftext) /), at_cursor=TRUE)
   end subroutine tv_insert
 
   subroutine tv_clr(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     call hl_gtk_text_view_delete(zedt)
   end subroutine tv_clr
@@ -167,7 +197,7 @@ program ztext
   ! Make a window and a vertical box
   win = hl_gtk_window_new("Scrolling text"//c_null_char, destroy=c_funloc(my_destroy))
   box = hl_gtk_box_new()
-  call gtk_container_add(win, box)
+  call gtk_window_set_child(win, box)
 
   ! Make a scrolling text box and put it in the box
   zedt = hl_gtk_text_view_new(contain, editable=TRUE, &
@@ -210,6 +240,7 @@ program ztext
   call gtk_widget_show(win)
 
   ! Event loop
-  call gtk_main()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program ztext
