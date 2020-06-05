@@ -126,16 +126,16 @@ contains
        select case (itype)
        case (GTK_MESSAGE_ERROR)
           !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_ERROR, &
-               & GTK_ICON_SIZE_DIALOG)
+          !     & GTK_ICON_SIZE_DIALOG)
        case (GTK_MESSAGE_WARNING)
           !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_WARNING, &
-               & GTK_ICON_SIZE_DIALOG)
+          !     & GTK_ICON_SIZE_DIALOG)
        case (GTK_MESSAGE_INFO)
           !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_INFO, &
-               & GTK_ICON_SIZE_DIALOG)
+          !     & GTK_ICON_SIZE_DIALOG)
        case (GTK_MESSAGE_QUESTION)
           !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_QUESTION, &
-               & GTK_ICON_SIZE_DIALOG)
+          !     & GTK_ICON_SIZE_DIALOG)
        case default
           !junk=C_NULL_PTR
        end select
