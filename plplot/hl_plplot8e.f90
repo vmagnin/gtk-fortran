@@ -29,7 +29,7 @@ module common_ex8
 
   ! Gtk includes
   use gtk, only: gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, &
-       & gtk_toggle_button_get_active, gtk_widget_destroy, &
+       & gtk_toggle_button_get_active, gtk_window_destroy, &
        & gtk_widget_get_allocation, gtk_widget_queue_draw, &
        & gtk_widget_show, gtk_init, FALSE, GTK_FILL
   use gtk_hl
@@ -263,7 +263,7 @@ contains
   recursive subroutine quit_cb(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
-    call gtk_widget_destroy(window)
+    call gtk_window_destroy(window)
     call gtk_main_quit ()
   end subroutine quit_cb
   subroutine set_azimuth(widget, gdata) bind(c)

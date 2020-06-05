@@ -35,7 +35,7 @@ module cl_handlers
   use g, only: g_timeout_add
   use gdk, only: gdk_keyval_from_name
   use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
-       & gtk_widget_destroy, gtk_widget_get_allocation, gtk_widget_queue_draw, &
+       & gtk_window_destroy, gtk_widget_get_allocation, gtk_widget_queue_draw, &
        & gtk_widget_show, gtk_init, TRUE, FALSE, GDK_CONTROL_MASK, &
        & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, &
        & CAIRO_FONT_WEIGHT_BOLD
@@ -315,7 +315,7 @@ contains
     call c_f_pointer(event, fevent)
 
     if (fevent%keyval == key_q .and. fevent%state == GDK_CONTROL_MASK) then
-       call gtk_widget_destroy(window)
+       call gtk_window_destroy(window)
        call gtk_main_quit()
        rv = TRUE
     else

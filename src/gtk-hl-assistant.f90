@@ -41,7 +41,7 @@ module gtk_hl_assistant
        & gtk_assistant_new, gtk_assistant_set_forward_page_func, &
        & gtk_assistant_set_page_complete, gtk_assistant_set_page_title, &
        & gtk_assistant_set_page_type, &
-       & gtk_widget_destroy, gtk_window_set_default_size, gtk_window_set_icon, &
+       & gtk_window_destroy, gtk_window_set_default_size, gtk_window_set_icon, &
        & gtk_window_set_icon_from_file, gtk_window_set_icon_name, &
        & gtk_window_set_title, gtk_window_set_transient_for, g_signal_connect, &
        & TRUE, FALSE, GTK_ASSISTANT_PAGE_INTRO, GTK_ASSISTANT_PAGE_CONFIRM, &
@@ -313,6 +313,6 @@ contains
   subroutine hl_gtk_assistant_destroy(widget, data) bind(c)
     type(c_ptr), value :: widget, data
 
-    call gtk_widget_destroy(widget)
+    call gtk_window_destroy(widget)
   end subroutine hl_gtk_assistant_destroy
 end module gtk_hl_assistant

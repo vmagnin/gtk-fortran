@@ -30,7 +30,7 @@ module common_ex4
   use cairo, only: cairo_get_target, cairo_image_surface_get_height, &
        & cairo_image_surface_get_width
   use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
-       & gtk_widget_destroy, gtk_widget_show, gtk_init, FALSE
+       & gtk_window_destroy, gtk_widget_show, gtk_init, FALSE
   use gtk_draw_hl
   use gtk_hl
   use plplot_extra
@@ -251,14 +251,14 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
-    call gtk_widget_destroy(window)
+    call gtk_window_destroy(window)
     call gtk_main_quit ()
     ret = FALSE
   end function delete_cb
   subroutine quit_cb(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
-    call gtk_widget_destroy(window)
+    call gtk_window_destroy(window)
     call gtk_main_quit ()
   end subroutine quit_cb
 

@@ -229,7 +229,7 @@ contains
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
-    call gtk_widget_destroy(window)
+    call gtk_window_destroy(window)
     call gtk_main_quit ()
     ret = FALSE
   end function delete_cb
@@ -237,7 +237,7 @@ contains
   subroutine quit_cb(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
-    call gtk_widget_destroy(window)
+    call gtk_window_destroy(window)
     call gtk_main_quit ()
 
   end subroutine quit_cb

@@ -74,7 +74,7 @@ module gtk_hl_chooser
        & gtk_file_chooser_set_show_hidden, gtk_file_chooser_widget_new, &
        & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
        & gtk_file_filter_new, gtk_file_filter_set_name, gtk_label_new, &
-       & gtk_widget_destroy, gtk_widget_set_sensitive, &
+       & gtk_window_destroy, gtk_widget_set_sensitive, &
        & gtk_widget_set_tooltip_text, gtk_widget_show, &
        & gtk_window_set_default_size, gtk_window_set_destroy_with_parent, &
        & gtk_window_set_modal, gtk_window_set_title, &
@@ -564,7 +564,7 @@ contains
 
     call gtk_widget_show(dialog)
     resp = gtk_dialog_run(dialog)
-    call gtk_widget_destroy(dialog)
+    call gtk_window_destroy(dialog)
 
     isel = chooser_info%iselect
     if (chooser_info%iselect == TRUE) then

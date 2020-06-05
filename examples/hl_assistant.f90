@@ -38,7 +38,7 @@ module as_handlers
 
   use gtk, only: gtk_container_add, gtk_entry_get_text, &
        & gtk_events_pending, gtk_label_new, gtk_main, gtk_main_iteration, &
-       & gtk_main_quit, gtk_toggle_button_get_active, gtk_widget_destroy, &
+       & gtk_main_quit, gtk_toggle_button_get_active, gtk_window_destroy, &
        & gtk_widget_set_sensitive, gtk_widget_show, gtk_init, TRUE, FALSE, &
        & GTK_ASSISTANT_PAGE_CONTENT, GTK_ASSISTANT_PAGE_INTRO, &
        & GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_PROGRESS, &
@@ -61,7 +61,7 @@ contains
     type(c_ptr), value :: widget, gdata
 
     print *, "Completed"
-    call gtk_widget_destroy(widget)
+    call gtk_window_destroy(widget)
     call gtk_main_quit ()
   end subroutine asstnt_close
 
