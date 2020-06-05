@@ -1,37 +1,29 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modifications: 2012-12-31, vmagnin 2020-02-11
-
-! --------------------------------------------------------
-! gtk-hl-dialog.f90
-! Generated: Fri Jan 31 09:26:31 2020 GMT
-! Generated for GTK+ version: 3.24.0.
-! Generated for GLIB version: 2.62.0.
-! --------------------------------------------------------
-
-
+! Last modifications: 2012-12-31, vmagnin 2020-06-05 (GTK 4 version)
+!------------------------------------------------------------------------------
 !*
 ! Dialogue
 module gtk_hl_dialog
@@ -67,7 +59,7 @@ module gtk_hl_dialog
        & gtk_window_set_title, gtk_window_set_transient_for, TRUE, &
        & GTK_RESPONSE_NONE, GTK_RESPONSE_OK, GTK_RESPONSE_CANCEL, &
        & GTK_RESPONSE_CLOSE, GTK_RESPONSE_YES, GTK_RESPONSE_NO, &
-       & GTK_ICON_SIZE_DIALOG, GTK_MESSAGE_INFO, GTK_MESSAGE_WARNING, &
+       & GTK_MESSAGE_INFO, GTK_MESSAGE_WARNING, &
        & GTK_MESSAGE_QUESTION, GTK_MESSAGE_ERROR, GTK_MESSAGE_OTHER, &
        & GTK_BUTTONS_NONE, GTK_BUTTONS_OK, GTK_BUTTONS_CLOSE, &
        & GTK_ORIENTATION_HORIZONTAL,  GTK_ORIENTATION_VERTICAL, &
@@ -130,24 +122,25 @@ contains
     if (itype /= GTK_MESSAGE_OTHER) then
        hb = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0_c_int)
        call gtk_box_pack_start(content, hb, TRUE, TRUE, 0_c_int)
+       print *, "Not in GTK4: GTK_STOCK_DIALOG_* and GTK_ICON_SIZE_DIALOG"
        select case (itype)
        case (GTK_MESSAGE_ERROR)
-          junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_ERROR, &
+          !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_ERROR, &
                & GTK_ICON_SIZE_DIALOG)
        case (GTK_MESSAGE_WARNING)
-          junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_WARNING, &
+          !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_WARNING, &
                & GTK_ICON_SIZE_DIALOG)
        case (GTK_MESSAGE_INFO)
-          junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_INFO, &
+          !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_INFO, &
                & GTK_ICON_SIZE_DIALOG)
        case (GTK_MESSAGE_QUESTION)
-          junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_QUESTION, &
+          !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_QUESTION, &
                & GTK_ICON_SIZE_DIALOG)
        case default
-          junk=C_NULL_PTR
+          !junk=C_NULL_PTR
        end select
-       if (c_associated(junk)) call gtk_box_pack_start(hb, junk, TRUE, &
-            & TRUE, 0_c_int)
+       !if (c_associated(junk)) call gtk_box_pack_start(hb, junk, TRUE, &
+       !     & TRUE, 0_c_int)
        vb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
        call gtk_box_pack_start(hb, vb, TRUE, TRUE, 0_c_int)
     else
