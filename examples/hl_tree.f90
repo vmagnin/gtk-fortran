@@ -26,10 +26,9 @@
 
 module tr_handlers
   use gtk_hl_container
-  use gtk_hl_combobox
   use gtk_hl_button
   use gtk_hl_tree
-  use gtk
+  use gtk, only: gtk_button_new, gtk_widget_show, gtk_window_new, gtk_init
   use g, only: alloca, g_main_loop_quit
 
   implicit none
