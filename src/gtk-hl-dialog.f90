@@ -50,7 +50,7 @@ module gtk_hl_dialog
        & gtk_about_dialog_set_license, gtk_about_dialog_set_program_name, &
        & gtk_about_dialog_set_translator_credits, &
        & gtk_about_dialog_set_version, gtk_about_dialog_set_website, &
-       & gtk_about_dialog_set_website_label, gtk_box_pack_start, &
+       & gtk_about_dialog_set_website_label, gtk_box_append, &
        & gtk_box_new, gtk_about_dialog_set_license_type, &
        & gtk_dialog_add_button, gtk_dialog_get_content_area, gtk_dialog_new, &
        & gtk_dialog_run, gtk_image_new_from_icon_name, gtk_label_new, &
@@ -121,7 +121,7 @@ contains
 
     if (itype /= GTK_MESSAGE_OTHER) then
        hb = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0_c_int)
-       call gtk_box_pack_start(content, hb, TRUE, TRUE, 0_c_int)
+       call gtk_box_append(content, hb)
        print *, "Not in GTK4: GTK_STOCK_DIALOG_* and GTK_ICON_SIZE_DIALOG"
        select case (itype)
        case (GTK_MESSAGE_ERROR)
@@ -142,7 +142,7 @@ contains
        !if (c_associated(junk)) call gtk_box_pack_start(hb, junk, TRUE, &
        !     & TRUE, 0_c_int)
        vb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
-       call gtk_box_pack_start(hb, vb, TRUE, TRUE, 0_c_int)
+       call gtk_box_append(hb, vb)
     else
        vb = content
     end if
@@ -155,7 +155,7 @@ contains
        else
           junk = gtk_label_new(trim(message(i))//c_null_char)
        end if
-       call gtk_box_pack_start(vb, junk, TRUE, TRUE, 0_c_int)
+       call gtk_box_append(vb, junk)
     end do
 
     select case (button_set)
