@@ -47,8 +47,7 @@ module gtk_hl_container
 ! NOT AVAILABLE in GTK 4: gtk_accel_group_new, gtk_box_pack_start, &
 !       & gtk_window_add_accel_group, gtk_window_set_keep_above,&
 !       & gtk_window_set_keep_below, &
-!       & gtk_window_set_icon_from_file, &
-!       & gtk_window_set_icon, & GTK_EXPAND, GTK_FILL, &
+!       & GTK_EXPAND, GTK_FILL, &
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   use gtk, only: gtk_label_new, &
        & gtk_scrolled_window_set_child, gtk_box_append, &

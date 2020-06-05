@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modifications: 2012-01-07, vmagnin 2020-06-04 (GTK 4 version)
+! Last modifications: 2012-01-07, vmagnin 2020-06-05 (GTK 4 version)
 !------------------------------------------------------------------------------ 
 !*
 ! Assistant
@@ -41,8 +41,8 @@ module gtk_hl_assistant
        & gtk_assistant_new, gtk_assistant_set_forward_page_func, &
        & gtk_assistant_set_page_complete, gtk_assistant_set_page_title, &
        & gtk_assistant_set_page_type, &
-       & gtk_window_destroy, gtk_window_set_default_size, gtk_window_set_icon, &
-       & gtk_window_set_icon_from_file, gtk_window_set_icon_name, &
+       & gtk_window_destroy, gtk_window_set_default_size, &
+       & gtk_window_set_icon_name, &
        & gtk_window_set_title, gtk_window_set_transient_for, g_signal_connect, &
        & TRUE, FALSE, GTK_ASSISTANT_PAGE_INTRO, GTK_ASSISTANT_PAGE_CONFIRM, &
        & GTK_ASSISTANT_PAGE_SUMMARY, &
@@ -180,10 +180,12 @@ contains
 
     if (present(parent)) call gtk_window_set_transient_for(asstnt, parent)
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (present(icon)) then
-       call gtk_window_set_icon(asstnt, icon)
+       print *, "Not in GTK 4: call gtk_window_set_icon(asstnt, icon)"
     else if (present(icon_file)) then
-       icon_ok = gtk_window_set_icon_from_file (asstnt, icon_file, c_null_ptr)
+       print *, "Not in GTK 4: icon_ok = gtk_window_set_icon_from_file (asstnt, icon_file, c_null_ptr)"
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     else if (present(icon_name)) then
        call gtk_window_set_icon_name(asstnt, icon_name)
     end if
