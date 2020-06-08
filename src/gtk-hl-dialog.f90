@@ -67,7 +67,8 @@ module gtk_hl_dialog
        & GTK_ORIENTATION_HORIZONTAL,  GTK_ORIENTATION_VERTICAL, &
        & GTK_LICENSE_GPL_3_0, &
        & GTK_BUTTONS_CANCEL, GTK_BUTTONS_YES_NO, GTK_BUTTONS_OK_CANCEL, &
-       & GTK_RESPONSE_DELETE_EVENT
+       & GTK_RESPONSE_DELETE_EVENT, &
+       & gtk_image_set_icon_size, GTK_ICON_SIZE_LARGE
 
   use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
@@ -128,24 +129,27 @@ contains
     if (itype /= GTK_MESSAGE_OTHER) then
        hb = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0_c_int)
        call gtk_box_append(content, hb)
-       print *, "Not in GTK4: GTK_STOCK_DIALOG_* and GTK_ICON_SIZE_DIALOG"
+
+       ! For the new icon names, replacing the GTK_STOCK, see:
+       ! https://developer.gnome.org/gtk3/stable/gtk3-Stock-Items.html
        select case (itype)
        case (GTK_MESSAGE_ERROR)
-          !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_ERROR, &
-          !     & GTK_ICON_SIZE_DIALOG)
+          junk = gtk_image_new_from_icon_name("dialog-error"//c_null_char)
        case (GTK_MESSAGE_WARNING)
-          !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_WARNING, &
-          !     & GTK_ICON_SIZE_DIALOG)
+          junk = gtk_image_new_from_icon_name("dialog-warning"//c_null_char)
        case (GTK_MESSAGE_INFO)
-          !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_INFO, &
-          !     & GTK_ICON_SIZE_DIALOG)
+          junk = gtk_image_new_from_icon_name("dialog-information"//c_null_char)
        case (GTK_MESSAGE_QUESTION)
-          !junk = gtk_image_new_from_icon_name(GTK_STOCK_DIALOG_QUESTION, &
-          !     & GTK_ICON_SIZE_DIALOG)
+          junk = gtk_image_new_from_icon_name("dialog-question"//c_null_char)
        case default
-          !junk=C_NULL_PTR
+          junk=C_NULL_PTR
        end select
-       !if (c_associated(junk)) call gtk_box_append(hb, junk)
+
+       if (c_associated(junk)) then
+         call gtk_image_set_icon_size (junk, GTK_ICON_SIZE_LARGE)
+         call gtk_box_append(hb, junk)
+       end if
+
        vb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
        call gtk_box_append(hb, vb)
     else
