@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! GTK 4 version: vmagnin 2020-06-05
+! GTK 4 version: vmagnin 2020-06-08
 ! https://developer.gnome.org/gtk4/stable/GtkDialog.html
 !------------------------------------------------------------------------------
 
@@ -62,6 +62,7 @@ contains
     resp = hl_gtk_message_dialog_show(msg, GTK_BUTTONS_OK, &
          & "ALERT"//c_null_char, &
          & type=GTK_MESSAGE_WARNING, parent=win)
+    print *, "hl_dialog.f90 resp=", resp
   end subroutine msg_alert
 
   subroutine msg_quit(widget, gdata) bind(c)
