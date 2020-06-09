@@ -1,34 +1,37 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by James Tappin,
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
+! Last modifications: vmagnin 2020-06-09 (GTK 4)
+!------------------------------------------------------------------------------
 
 module handlers
   use iso_c_binding
 
   !********************************
   ! Gtk modules for hl_cairo1.f90
+  !********************************
   use cairo, only: cairo_arc, cairo_curve_to, cairo_get_target, &
        & cairo_line_to, cairo_move_to, cairo_new_sub_path, cairo_paint, &
        & cairo_rectangle, cairo_select_font_face, cairo_set_font_size, &
@@ -36,19 +39,22 @@ module handlers
        & cairo_stroke, cairo_surface_write_to_png
   use gdk, only: gdk_device_get_name, gdk_device_get_source, &
        & gdk_event_get_source_device, gdk_keyval_from_name, gdk_keyval_name
-  use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
+  use gtk, only: gtk_window_set_child, &
        & gtk_widget_queue_draw, gtk_widget_show, gtk_init, TRUE, FALSE, &
-       & GDK_BUTTON_PRESS, GDK_2BUTTON_PRESS, GDK_BUTTON_RELEASE, &
+       & GDK_BUTTON_PRESS, GDK_DOUBLE_BUTTON_PRESS, GDK_BUTTON_RELEASE, &
        & GDK_KEY_PRESS, GDK_ENTER_NOTIFY, GDK_LEAVE_NOTIFY, GDK_CONTROL_MASK, &
        & GDK_POINTER_MOTION_MASK, GDK_BUTTON_MOTION_MASK, &
        & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use gdk_events
+
   use gdk_pixbuf_hl
   use gtk_draw_hl
   use gtk_sup
   use gtk_hl
 
   implicit none
+  type(c_ptr) :: my_gmainloop
   !  integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
@@ -60,11 +66,10 @@ module handlers
 contains
   ! User defined event handlers go here
   function delete_h (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    type(c_ptr), value, intent(in) :: widget, event, gdata
     integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
 
-    call gtk_main_quit
+    call g_main_loop_quit(my_gmainloop)
     ret = FALSE
   end function delete_h
 
@@ -122,7 +127,7 @@ contains
        print *, "Device: ",trim(dname),' (',trim(hdname),') ', &
             & gdk_device_get_source(bevent%device)
 
-       if (bevent%type == GDK_2BUTTON_PRESS .and. &
+       if (bevent%type == GDK_DOUBLE_BUTTON_PRESS .and. &
             & bevent%button == 3) call gtk_main_quit
 
        if (bevent%type == GDK_BUTTON_PRESS .and. &
@@ -329,13 +334,14 @@ program cairo_basics_click
        & event_exclude=GDK_POINTER_MOTION_MASK, &
        & event_mask=GDK_BUTTON_MOTION_MASK)
 
-  call gtk_container_add(my_window, my_scroll_box)
+  call gtk_window_set_child(my_window, my_scroll_box)
 
   call gtk_widget_show(my_window)
   call draw_pattern(my_drawing_area)
 
   ! The window stays opened after the computation:
-  call gtk_main()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
   print *, "All done"
 
 end program cairo_basics_click

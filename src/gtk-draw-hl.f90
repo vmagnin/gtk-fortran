@@ -1,37 +1,30 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+! -----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modifications: 2013-01-31, vmagnin 2020-02-11
-
-! --------------------------------------------------------
-! gtk-draw-hl.f90
-! Generated: Fri Jan 31 10:20:56 2020 GMT
-! Generated for GTK+ version: 3.24.0.
-! Generated for GLIB version: 2.62.0.
-! --------------------------------------------------------
-
+! Last modifications: 2013-01-31, vmagnin 2020-06-09 (GTK 4)
+! -----------------------------------------------------------------------------
 
 !*
 ! gtk_draw_hl
@@ -65,10 +58,9 @@ module gtk_draw_hl
   ! * hl_gtk_drawing_area_cairo_destroy; Destroy the context.
   !/
 
-
-
   !********************************
   ! Gtk modules for gtk-draw-hl.f90
+  !********************************
   use cairo, only: cairo_create, cairo_destroy, cairo_get_target, &
        & cairo_image_surface_create, cairo_image_surface_get_data, &
        & cairo_image_surface_get_format, cairo_image_surface_get_height, &
@@ -79,20 +71,15 @@ module gtk_draw_hl
 
   use g, only: g_object_get_data, g_object_set_data
 
-  use gdk, only: gdk_pixbuf_get_from_surface, &
-     & gdk_cairo_set_source_pixbuf
+  use gdk, only: gdk_pixbuf_get_from_surface, gdk_cairo_set_source_pixbuf
 
-  use gdk_pixbuf, only: gdk_pixbuf_get_pixels, gdk_pixbuf_get_rowstride, &
-       & gdk_pixbuf_new
-
-  use gtk, only: gtk_drawing_area_new, &
-       & gtk_container_add, &
+  use gtk, only: gtk_drawing_area_new, gtk_scrolled_window_set_child, &
        & gtk_scrolled_window_new, gtk_scrolled_window_set_policy, &
        & gtk_widget_add_events, gtk_widget_get_allocation, &
-       & gtk_widget_get_window, gtk_widget_set_can_focus, &
+       & gtk_widget_set_can_focus, &
        & gtk_widget_set_size_request, gtk_widget_set_tooltip_text, &
        & g_signal_connect, gtk_widget_queue_draw, &
-       & gtk_events_pending, gtk_main_iteration_do, &
+       & gtk_widget_get_realized, &
        & TRUE, FALSE, &
        & CAIRO_FORMAT_ARGB32, &
        & CAIRO_FORMAT_RGB24, CAIRO_STATUS_SUCCESS, GDK_EXPOSURE_MASK, &
@@ -102,14 +89,12 @@ module gtk_draw_hl
        & GDK_STRUCTURE_MASK, GDK_SCROLL_MASK, GDK_ALL_EVENTS_MASK, &
        & GTK_POLICY_AUTOMATIC, GDK_COLORSPACE_RGB
 
-
   use gtk_sup
 
   use iso_c_binding
   use iso_fortran_env, only: error_unit
 
   implicit none
-
   type, bind(c) :: gtkallocation
      integer(kind=c_int) :: x,y,width,height
   end type gtkallocation
@@ -258,7 +243,7 @@ contains
        call gtk_scrolled_window_set_policy(scroll, hpolicy, vpolicy)
        if (present(ssize)) &
             & call gtk_widget_set_size_request(scroll, ssize(1), ssize(2))
-       call gtk_container_add(scroll, plota)
+       call gtk_scrolled_window_set_child(scroll, plota)
     end if
 
     ! Create the backing surface
@@ -640,11 +625,10 @@ contains
     ! Note for plplot users, this cairo context is a different one from
     ! the context used by plplot for the actual drawing.
 
-!!$GTK< 3.22!    cr = gdk_cairo_create(gtk_widget_get_window(area))
     cr = event
     call cairo_set_source_surface(cr, isurface, 0._c_double, 0._c_double) 
     call cairo_paint(cr)
-!!$GTK< 3.22!    call cairo_destroy(cr)
+
   end function hl_gtk_drawing_area_expose_cb
 
   !+
@@ -755,7 +739,7 @@ contains
     ! 		contents to the new backing store.
     !-
 
-    type(c_ptr) :: cback, cback_old, cr, gdk_w
+    type(c_ptr) :: cback, cback_old, cr
     integer(kind=c_int) :: szx, szy, s_type
     type(gtkallocation), target:: alloc
     logical :: copy_surface
@@ -787,10 +771,9 @@ contains
     call g_object_set_data(area, "backing-surface", cback)
 
     ! If the copy keyword is set then make a copy from the old
-    ! backing store to the new if the gdk window is really there.
+    ! backing store to the new if the gdk surface is really there.
     if (copy_surface) then
-       gdk_w = gtk_widget_get_window(area)
-       if (c_associated(gdk_w)) then
+       if (c_f_logical(gtk_widget_get_realized(area))) then
           cr = cairo_create(cback)
           call cairo_set_source_surface(cr, cback_old, &
                & 0._c_double, 0._c_double)
