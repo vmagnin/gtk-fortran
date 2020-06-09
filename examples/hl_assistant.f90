@@ -1,52 +1,60 @@
 ! Copyright (C) 2012
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modification: vmagnin 2020-02-13
-
+! Last modification: vmagnin 2020-06-09 (GTK 4)
+!
 ! Based on the C example given in"
 ! https://www.linuxquestions.org/linux/articles/Technical/New_GTK_Widgets_GtkAssistant
+!------------------------------------------------------------------------------
 
 module as_handlers
-  use gtk_hl
+!  use gtk_hl
+  use gtk_hl_container
+  use gtk_hl_button
+  use gtk_hl_progress
+  use gtk_hl_entry
+  use gtk_hl_assistant
   use gtk_sup
   use iso_c_binding
 
   !********************************
   ! Gtk modules for hl_assistant.f90
-  use g, only: g_usleep
-
-  use gtk, only: gtk_container_add, gtk_entry_get_text, &
-       & gtk_events_pending, gtk_label_new, gtk_main, gtk_main_iteration, &
-       & gtk_main_quit, gtk_toggle_button_get_active, gtk_window_destroy, &
+  !********************************
+  use g, only: g_usleep, g_main_loop_new, g_main_loop_quit, &
+             & g_main_loop_run, g_main_context_iteration, &
+             & g_main_context_pending
+  use gtk, only: gtk_entry_get_buffer, gtk_entry_buffer_get_text, &
+       & gtk_label_new, &
+       & gtk_toggle_button_get_active, gtk_window_destroy, &
        & gtk_widget_set_sensitive, gtk_widget_show, gtk_init, TRUE, FALSE, &
        & GTK_ASSISTANT_PAGE_CONTENT, GTK_ASSISTANT_PAGE_INTRO, &
        & GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_PROGRESS, &
-       & gtk_widget_set_halign, gtk_widget_set_valign, gtk_widget_set_hexpand, gtk_widget_set_vexpand, &
-       & GTK_ALIGN_CENTER, GTK_ALIGN_FILL
+       & gtk_widget_set_halign, gtk_widget_set_valign, gtk_widget_set_hexpand,&
+       & gtk_widget_set_vexpand, GTK_ALIGN_CENTER, GTK_ALIGN_FILL
 
   implicit none
-
+  type(c_ptr) :: my_gmainloop
   type(c_ptr) :: asstnt
 
 contains
@@ -54,7 +62,7 @@ contains
     type(c_ptr), value :: widget, gdata
 
     print *, "Exit called"
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine destroy_asstnt
 
   subroutine asstnt_close(widget, gdata) bind(c)
@@ -62,22 +70,22 @@ contains
 
     print *, "Completed"
     call gtk_window_destroy(widget)
-    call gtk_main_quit ()
   end subroutine asstnt_close
 
   subroutine name_enter(widget, data) bind(c)
     type(c_ptr), value :: widget, data
-
-    type(c_ptr) :: ctext, page, ebox
+    type(c_ptr) :: buffer
+    type(c_ptr) :: page, ebox
     character(len=100) :: ftext
+
     if (c_associated(data)) then
        ebox = data
     else
        ebox = widget
     end if
 
-    ctext = gtk_entry_get_text(ebox)
-    call c_f_string(ctext, ftext)
+     buffer = gtk_entry_get_buffer(ebox)
+    call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
     print *, "Entered name as:",trim(ftext)
 
     page = hl_gtk_assistant_get_current_page(asstnt)
@@ -90,7 +98,6 @@ contains
 
     call hl_gtk_assistant_set_page_complete(asstnt, &
          & gtk_toggle_button_get_active(widget))
-
   end subroutine check_tog
 
   subroutine start_pb(widget, data) bind(c)
@@ -103,12 +110,11 @@ contains
 
     page = hl_gtk_assistant_get_current_page(asstnt)
     do i = 1, 10
-
        do
-          if (.not. c_f_logical(gtk_events_pending ())) exit
-          iev = gtk_main_iteration ()
+          if (.not. c_f_logical(g_main_context_pending(c_null_ptr))) exit
+          iev = g_main_context_iteration(c_null_ptr, FALSE)
        end do
-
+    
        call g_usleep(500000_c_long)
        call hl_gtk_progress_bar_set(data, i, 10_c_int, string=TRUE)
     end do
@@ -120,8 +126,8 @@ end module as_handlers
 program hl_assistant
 
   use as_handlers
-  implicit none
 
+  implicit none
   type(c_ptr) :: junk, jb, ebox, pbar
 
   call gtk_init()
@@ -187,6 +193,9 @@ program hl_assistant
        & page_title = "Completed?"//c_null_char)
 
   call gtk_widget_show(asstnt)
-  call gtk_main()
+
+  ! Event loop
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program hl_assistant
