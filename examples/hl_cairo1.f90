@@ -50,7 +50,7 @@ module handlers
 
   use gdk_pixbuf_hl
   use gtk_draw_hl
-  use gtk_hl_chooser
+  use gtk_hl_container
   use gtk_sup
 
   implicit none
@@ -103,14 +103,9 @@ contains
           xs = max(xp0, xp1) - xo + 1
           ys = max(yp0, yp1) - yo + 1
           print *, "Origin:", xo, yo, " Size:", xs, ys
-          ipick = hl_gtk_file_chooser_show(files, &
-               & filter=["image/png"], initial_file="cairo1.png"//c_null_char, &
-               & current=TRUE)
-          if (c_f_logical(ipick)) then
-             pixb = hl_gtk_drawing_area_get_gdk_pixbuf(widget, &
+          pixb = hl_gtk_drawing_area_get_gdk_pixbuf(widget, &
                   & x0 = xo, y0=yo, xsize=xs, ysize=ys)
-             call hl_gdk_pixbuf_save(pixb, trim(files(1)))
-          end if
+          call hl_gdk_pixbuf_save(pixb, "cairo1.png"//c_null_char)
        end if
        rflag = .false.
     else
@@ -223,7 +218,7 @@ contains
             & " Modifier: ", bevent%state
        if (bevent%type == GDK_KEY_PRESS .and. &
             & iand(bevent%state, GDK_CONTROL_MASK) /= 0 .and.&
-            & bevent%keyval == key_q) call gtk_main_quit
+            & bevent%keyval == key_q)  call g_main_loop_quit(my_gmainloop)
     end if
     rv = FALSE
   end function key_event_h
