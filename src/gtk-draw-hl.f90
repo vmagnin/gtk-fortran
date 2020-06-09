@@ -75,8 +75,7 @@ module gtk_draw_hl
 
   use gtk, only: gtk_drawing_area_new, gtk_scrolled_window_set_child, &
        & gtk_scrolled_window_new, gtk_scrolled_window_set_policy, &
-       & gtk_widget_add_events, gtk_widget_get_allocation, &
-       & gtk_widget_set_can_focus, &
+       & gtk_widget_get_allocation, gtk_widget_set_can_focus, &
        & gtk_widget_set_size_request, gtk_widget_set_tooltip_text, &
        & g_signal_connect, gtk_widget_queue_draw, &
        & gtk_widget_get_realized, &
@@ -397,8 +396,11 @@ contains
 
     ! Key_release event
     if (present(key_release_event)) then
-       if (auto_add == TRUE) &
-            & call gtk_widget_add_events(plota, GDK_KEY_RELEASE_MASK)
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Not in GTK 4:    
+!       if (auto_add == TRUE) &
+       print *, "Not in GTK4: & call gtk_widget_add_events(plota, GDK_KEY_RELEASE_MASK)"
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
        if (present(data_key_release)) then
           call g_signal_connect(plota, "key-release-event"//c_null_char, &
                & key_release_event, data_key_release)
@@ -467,8 +469,10 @@ contains
     end if
 
     ! Apply the event mask
-
-    if (mask /= 0) call gtk_widget_add_events(plota, mask)
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Not in GTK 4
+    print *, "Not in GTK4: if (mask /= 0) call gtk_widget_add_events(plota, mask)"
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     if (present(tooltip)) call gtk_widget_set_tooltip_text(plota, tooltip)
 
