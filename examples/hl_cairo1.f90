@@ -41,7 +41,7 @@ module handlers
        & gdk_event_get_source_device, gdk_keyval_from_name, gdk_keyval_name
   use gtk, only: gtk_window_set_child, &
        & gtk_widget_queue_draw, gtk_widget_show, gtk_init, TRUE, FALSE, &
-       & GDK_BUTTON_PRESS, GDK_DOUBLE_BUTTON_PRESS, GDK_BUTTON_RELEASE, &
+       & GDK_BUTTON_PRESS, GDK_BUTTON_RELEASE, &
        & GDK_KEY_PRESS, GDK_ENTER_NOTIFY, GDK_LEAVE_NOTIFY, GDK_CONTROL_MASK, &
        & GDK_POINTER_MOTION_MASK, GDK_BUTTON_MOTION_MASK, &
        & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
@@ -50,8 +50,8 @@ module handlers
 
   use gdk_pixbuf_hl
   use gtk_draw_hl
+  use gtk_hl_chooser
   use gtk_sup
-  use gtk_hl
 
   implicit none
   type(c_ptr) :: my_gmainloop
@@ -127,8 +127,10 @@ contains
        print *, "Device: ",trim(dname),' (',trim(hdname),') ', &
             & gdk_device_get_source(bevent%device)
 
-       if (bevent%type == GDK_DOUBLE_BUTTON_PRESS .and. &
-            & bevent%button == 3) call gtk_main_quit
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       print *, "Not in GTK 4: if (bevent%type == GDK_DOUBLE_BUTTON_PRESS .and. &"
+!            & bevent%button == 3) call gtk_main_quit
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
        if (bevent%type == GDK_BUTTON_PRESS .and. &
             & bevent%button == 1 .and. bevent%state == GDK_CONTROL_MASK) then
