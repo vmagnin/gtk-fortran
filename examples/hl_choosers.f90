@@ -1,42 +1,44 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-
+! Last modifications: vmagnin 2020-06-09 (GTK 4 version)
 ! Demo of file choosers.
+!------------------------------------------------------------------------------
 
 module handlers
-  use gtk_hl
-  use gtk, only: gtk_button_new, gtk_container_add, gtk_main, gtk_main_quit, gtk_&
-       &text_view_new, gtk_widget_set_sensitive, gtk_widget_show, &
+!  use gtk_hl
+  use gtk_hl_container
+  use gtk_hl_button
+  use gtk, only: gtk_button_new, gtk_window_set_child, &
+       &gtk_text_view_new, gtk_widget_set_sensitive, gtk_widget_show, &
        & gtk_window_new, gtk_init, gtk_file_chooser_get_filename, TRUE, FALSE
-  use g, only: alloca
+  use g, only: alloca, g_main_loop_new, g_main_loop_quit, g_main_loop_run
 
   implicit none
-
   ! Those widgets that need to be addressed explicitly in the handlers
   type(c_ptr) :: window, sbut, sabut, tedit
-
+  type(c_ptr) :: my_gmainloop
   ! Other variables that need to be shared between handlers
   logical, private :: file_is_changed = .FALSE.
   character(len=120), private :: filename=''
@@ -59,7 +61,7 @@ contains
     end if
 
     print *, "Exit called"
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine my_destroy
 
   subroutine open_file(widget, gdata) bind(c)
@@ -235,7 +237,7 @@ program choosers_demo
        & destroy=c_funloc(my_destroy))
 
   base = hl_gtk_box_new()
-  call gtk_container_add(window, base)
+  call gtk_window_set_child(window, base)
 
   ! A row of buttons
   jb = hl_gtk_box_new(horizontal=TRUE, homogeneous=TRUE)
@@ -264,6 +266,8 @@ program choosers_demo
   ! Realise & enter event loop
   call gtk_widget_show(window)
 
-  call gtk_main()
+  ! Event loop
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program choosers_demo

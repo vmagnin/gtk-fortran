@@ -1,36 +1,29 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modification: 2012-12-31
-
-! --------------------------------------------------------
-! gtk-hl-chooser.f90
-! Generated: Fri Jan 31 09:38:38 2020 GMT
-! Generated for GTK+ version: 3.24.0.
-! Generated for GLIB version: 2.62.0.
-! --------------------------------------------------------
-
+! Last modifications: 2012-12-31, vmagnin 2020-06-09 (GTK 4 version)
+!------------------------------------------------------------------------------
 
 !*
 ! File Choosers
@@ -56,11 +49,12 @@ module gtk_hl_chooser
   use iso_fortran_env, only: error_unit
 
   ! Auto generated use's
-  use g, only: g_free, g_slist_free, g_slist_length, g_slist_nth_data
-
-  use gtk, only: gtk_box_pack_start, gtk_dialog_add_button, &
-       & gtk_dialog_get_content_area, gtk_dialog_new, gtk_dialog_run, &
-       & gtk_entry_set_text, gtk_file_chooser_add_filter, &
+  use g, only: g_free, g_slist_free, g_slist_length, g_slist_nth_data, &
+             & g_main_loop_new, g_main_loop_run
+  use gtk, only: gtk_box_append, gtk_dialog_add_button, &
+       & gtk_dialog_get_content_area, gtk_dialog_new, &
+       & gtk_entry_get_buffer, gtk_entry_buffer_set_text, &
+       & gtk_file_chooser_add_filter, &
        & gtk_file_chooser_button_new, gtk_file_chooser_button_set_width_chars, &
        & gtk_file_chooser_get_current_folder, gtk_file_chooser_get_filenames, &
        & gtk_file_chooser_get_local_only, gtk_file_chooser_get_uris, &
@@ -91,7 +85,7 @@ module gtk_hl_chooser
   use gtk_hl_button
 
   implicit none
-
+  type(c_ptr) :: dialog_gmainloop
   !+
   type, bind(c) :: hl_gtk_chooser_info
      type(c_ptr) :: chooser=C_NULL_PTR, chooser_sel_list=C_NULL_PTR
@@ -358,7 +352,7 @@ contains
     ! Create the chooser & put it in the content area
     content = gtk_dialog_get_content_area(dialog)
     chooser_info%chooser = gtk_file_chooser_widget_new(action)
-    call gtk_box_pack_start(content, chooser_info%chooser, TRUE, TRUE, 0_c_int)
+    call gtk_box_append(content, chooser_info%chooser)
 
     ! Local/URI
     if (present(allow_uri)) then
@@ -563,8 +557,9 @@ contains
          & all, wsize, edit_filters)
 
     call gtk_widget_show(dialog)
-    resp = gtk_dialog_run(dialog)
-    call gtk_window_destroy(dialog)
+    ! The callback function is defined in hl_gtk_file_chooser_new()
+    dialog_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+    call g_main_loop_run(dialog_gmainloop)
 
     isel = chooser_info%iselect
     if (chooser_info%iselect == TRUE) then
@@ -581,6 +576,8 @@ contains
             & cdir)
     end if
   end function hl_gtk_file_chooser_show
+
+
 
   !+
   subroutine hl_gtk_chooser_resp_cb(dialog, response, gdata) bind(c)
@@ -642,7 +639,7 @@ contains
     type(hl_gtk_chooser_info), pointer :: chooser_info
 
     character(len=60) :: filter
-    type(c_ptr) :: gfilter
+    type(c_ptr) :: gfilter, buffer
     integer :: idx0, idx1
 
     call c_f_pointer(gdata, chooser_info)
@@ -679,6 +676,10 @@ contains
          & trim(filter)//c_null_char)
 
     call gtk_file_chooser_add_filter(chooser_info%chooser, gfilter)
-    call gtk_entry_set_text(chooser_info%fentry, C_NULL_CHAR)
+
+    buffer = gtk_entry_get_buffer(chooser_info%fentry)
+    ! number of caracters = -1 for automatic length:
+    call gtk_entry_buffer_set_text (buffer, C_NULL_CHAR, -1)
+    
   end subroutine hl_gtk_chooser_filt_cb
 end module gtk_hl_chooser
