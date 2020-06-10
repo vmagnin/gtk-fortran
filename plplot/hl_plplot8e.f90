@@ -1,56 +1,57 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 8 by Alan W. Irwin
+! Last modifications: vmagnin 2020-06-10 (GTK 4)
+!------------------------------------------------------------------------------
 
 module common_ex8
   use iso_c_binding
-
   ! Gtk includes
-  use gtk, only: gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, &
+  use gtk, only: gtk_label_new, gtk_window_set_child, &
        & gtk_toggle_button_get_active, gtk_window_destroy, &
        & gtk_widget_get_allocation, gtk_widget_queue_draw, &
        & gtk_widget_show, gtk_init, FALSE, GTK_FILL
-  use gtk_hl
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
+
+  use gtk_hl_container
+  use gtk_hl_button
+  use gtk_hl_chooser
   use gtk_draw_hl
   use gdk_pixbuf_hl
   use plplot_extra
 
   implicit none
-
   type(c_ptr) :: window, draw, alt_sl, az_sl, fun_but, col_but, &
        & facet_but, scont_but, bcont_but, qbut
-
   integer(kind=c_int) :: disp_type=0, ifun=1
   real(kind=c_double) :: alt=30._c_double, az=60._c_double
-
   integer(kind=c_int) :: width, height
 
 end module common_ex8
 
 module plplot_code_ex8
-
   use plplot, PI => PL_PI
   use common_ex8
 
@@ -260,33 +261,37 @@ module handlers_ex8
   implicit none
 
 contains
+
   recursive subroutine quit_cb(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     call gtk_window_destroy(window)
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine quit_cb
+
   subroutine set_azimuth(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     az = real(hl_gtk_slider_get_value(widget), c_double)
     call draw_08(draw, disp_type, alt, az, ifun)
   end subroutine set_azimuth
+
   subroutine set_altitude(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     alt = real(hl_gtk_slider_get_value(widget), c_double)
     call draw_08(draw, disp_type, alt, az, ifun)
   end subroutine set_altitude
+
   subroutine set_rosen(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     ifun = gtk_toggle_button_get_active(widget)
     call draw_08(draw, disp_type, alt, az, ifun)
   end subroutine set_rosen
 
   subroutine set_colour(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     if (gtk_toggle_button_get_active(widget) == 1) then
        disp_type = ior(disp_type, MAG_COLOR)
@@ -295,8 +300,9 @@ contains
     end if
     call draw_08(draw, disp_type, alt, az, ifun)
   end subroutine set_colour
+
   subroutine set_facet(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     if (gtk_toggle_button_get_active(widget) == 1) then
        disp_type = ior(disp_type, FACETED)
@@ -305,8 +311,9 @@ contains
     end if
     call draw_08(draw, disp_type, alt, az, ifun)
   end subroutine set_facet
- subroutine set_scont(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+
+  subroutine set_scont(widget, gdata) bind(c)
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     if (gtk_toggle_button_get_active(widget) == 1) then
        disp_type = ior(disp_type, SURF_CONT)
@@ -315,8 +322,9 @@ contains
     end if
     call draw_08(draw, disp_type, alt, az, ifun)
   end subroutine set_scont
+
   subroutine set_bcont(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     if (gtk_toggle_button_get_active(widget) == 1) then
        disp_type = ior(disp_type, BASE_CONT)
@@ -327,7 +335,7 @@ contains
   end subroutine set_bcont
 
   subroutine resize_area(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     type(gtkallocation), target:: alloc
 
@@ -338,12 +346,10 @@ contains
     height=alloc%height
 
     call draw_08(draw, disp_type, alt, az, ifun)
-
   end subroutine resize_area
 
   subroutine dump_screen(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
-
+    type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr) :: pixb
     character(len=120), dimension(:), allocatable :: files
     integer(kind=c_int) :: ipick
@@ -363,11 +369,9 @@ end module handlers_ex8
 program cairo_plplot_ex8
   use handlers_ex8
   use plplot_code_ex8
-
   use common_ex8
 
   implicit none
-
   type(c_ptr) :: base, btable, junk
 
   height = 600
@@ -379,7 +383,7 @@ program cairo_plplot_ex8
        & c_null_char, &
        & destroy = c_funloc(quit_cb))
   base = hl_gtk_box_new()
-  call gtk_container_add(window, base)
+  call gtk_window_set_child(window, base)
 
   ! The drawing area for the plot
   draw = hl_gtk_drawing_area_new(size=(/width, height/), &
@@ -439,6 +443,7 @@ program cairo_plplot_ex8
 
   call draw_08(draw, disp_type, alt, az, ifun)
 
-  call gtk_main()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program cairo_plplot_ex8
