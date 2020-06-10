@@ -1,37 +1,39 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
-!! Contributed by: James Tappin
+!------------------------------------------------------------------------------
+! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 17 by Alan W. Irwin
-! Last modification: vmagnin, 2019-03-12 (PLplot>=5.11)
+! Last modifications: vmagnin 2020-06-10 (GTK 4)
+!------------------------------------------------------------------------------
 
 module common_ex17_gto
   use iso_c_binding
   use gtk_draw_hl
-  use g, only: g_timeout_add
-  use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
+  use g, only: g_timeout_add, g_main_context_pending, &
+             & g_main_loop_new, g_main_loop_run, g_main_loop_quit
+  use gtk, only: gtk_window_set_child, &
        & gtk_widget_queue_draw, gtk_widget_show, gtk_init, &
-       & gtk_events_pending, TRUE, FALSE
+       & TRUE, FALSE
   use plplot_extra
 
   implicit none
@@ -39,6 +41,7 @@ module common_ex17_gto
   integer(kind=c_int) :: height, width
   integer(kind=c_int) :: run_status = TRUE
   type(c_ptr) :: window
+  type(c_ptr) :: my_gmainloop
 
 end module common_ex17_gto
 
@@ -199,7 +202,7 @@ contains
     y3 = y2 * noise
     y4 = y2 + noise/3._plflt
 
-    if (c_f_logical(gtk_events_pending())) add_point = FALSE   ! Exit
+    if (c_f_logical(g_main_context_pending(c_null_ptr))) add_point = FALSE   ! Exit
 
     !        There is no need for all pens to have the same number of
     !        points or being equally time spaced.
@@ -231,7 +234,8 @@ end module plplot_code_ex17_gto
 module handlers_ex17_gto
 
   use common_ex17_gto
-  use gtk_hl
+  use gtk_hl_container
+  use gtk_hl_button
   use gtk_draw_hl
   use iso_c_binding
   use plplot_code_ex17_gto
@@ -245,7 +249,7 @@ contains
     type(c_ptr), value :: widget, event, gdata
 
     call close_strip()
-    call gtk_main_quit()
+    call g_main_loop_quit(my_gmainloop)
     ret = FALSE
   end function delete_cb
 
@@ -253,11 +257,11 @@ contains
     type(c_ptr), value :: widget, gdata
 
     call close_strip()
-    call gtk_main_quit()
-
+    call g_main_loop_quit(my_gmainloop)
   end subroutine quit_cb
 
 end module handlers_ex17_gto
+
 
 program cairo_plplot_ex17_gto
 
@@ -266,7 +270,6 @@ program cairo_plplot_ex17_gto
   use common_ex17_gto
 
   implicit none
-
   type(c_ptr) :: drawing, base, qbut
   integer(kind=c_int) :: timeid
 
@@ -276,7 +279,7 @@ program cairo_plplot_ex17_gto
        & " g_timeout version"//c_null_char, &
        & delete_event = c_funloc(delete_cb))
   base = hl_gtk_box_new()
-  call gtk_container_add(window, base)
+  call gtk_window_set_child(window, base)
 
   drawing = hl_gtk_drawing_area_new(size=(/1000_c_int, 500_c_int/), &
        & has_alpha = FALSE)
@@ -291,7 +294,9 @@ program cairo_plplot_ex17_gto
   call x17f95(drawing)
 
   timeid = g_timeout_add(100_c_int, c_funloc(add_point), drawing)
-  call gtk_main()
+
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
   print *, "All done"
 end program cairo_plplot_ex17_gto
