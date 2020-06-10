@@ -1,72 +1,73 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by: James Tappin
+! Last modifications: vmagnin 2020-06-10 (GTK 4)
+!------------------------------------------------------------------------------
 
 module cl_handlers
 
   !********************************
   ! Gtk modules for hl_cairo_clock.f90
+  !********************************
   use cairo, only: cairo_arc, cairo_fill, cairo_fill_preserve, cairo_line_to, &
        & cairo_move_to, cairo_new_path, cairo_paint, cairo_rectangle, &
        & cairo_select_font_face, cairo_set_font_size, cairo_set_line_cap, &
        & cairo_set_line_width, cairo_set_source_rgb, cairo_set_source_rgba, &
        & cairo_show_text, cairo_stroke
-  use g, only: g_timeout_add
+  use g, only: g_timeout_add, g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use gdk, only: gdk_keyval_from_name
-  use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
+  use gtk, only: gtk_window_set_child, &
        & gtk_window_destroy, gtk_widget_get_allocation, gtk_widget_queue_draw, &
        & gtk_widget_show, gtk_init, TRUE, FALSE, GDK_CONTROL_MASK, &
        & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, &
        & CAIRO_FONT_WEIGHT_BOLD
-  use gtk_hl
+  use gdk_pixbuf_hl
   use gtk_draw_hl
+  use gtk_hl_container
   use gdk_events
-
   use iso_c_binding
 
   implicit none
-
   integer(kind=c_int) :: height=250_c_int, width=250_c_int
   real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
   integer, dimension(8) :: t0 = 0
   type(c_ptr) :: window
+  type(c_ptr) :: my_gmainloop
 
 contains
   function delete_cb (widget, event, gdata) result(ret)  bind(c)
-
     integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value, intent(in) :: widget, event, gdata
 
-    call gtk_main_quit()
+    call g_main_loop_quit(my_gmainloop)
 
     ret = FALSE
   end function delete_cb
 
-
   function show_time(area) bind(c)
     integer(kind=c_int) :: show_time
-    type(c_ptr), value :: area
+    type(c_ptr), value, intent(in) :: area
 
     integer, dimension(8) :: dat
     type(c_ptr) :: cr
@@ -316,7 +317,7 @@ contains
 
     if (fevent%keyval == key_q .and. fevent%state == GDK_CONTROL_MASK) then
        call gtk_window_destroy(window)
-       call gtk_main_quit()
+       call g_main_loop_quit(my_gmainloop)
        rv = TRUE
     else
        rv = FALSE
@@ -325,10 +326,9 @@ contains
 end module cl_handlers
 
 program cairo_clock
-
   use cl_handlers
-  implicit none
 
+  implicit none
   integer(kind=c_int) :: icont, timeid
   type(c_ptr) :: drawing
 
@@ -341,13 +341,15 @@ program cairo_clock
        & size_allocate=c_funloc(clock_resize), &
        & key_press_event=c_funloc(clock_key))
 
-  call gtk_container_add(window, drawing)
+  call gtk_window_set_child(window, drawing)
   call gtk_widget_show(window)
 
   icont =  show_time(drawing)
 
   timeid = g_timeout_add(300_c_int, c_funloc(show_time), drawing)
-  call gtk_main()
+
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
   print *, "All done"
 end program cairo_clock
