@@ -1,43 +1,48 @@
 ! Copyright (C) 2012
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 4 by Alan W. Irwin
+! Last modifications: vmagnin 2020-06-10 (GTK 4)
+!------------------------------------------------------------------------------
 
 module common_ex4
   use iso_c_binding
 
   use cairo, only: cairo_get_target, cairo_image_surface_get_height, &
        & cairo_image_surface_get_width
-  use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
-       & gtk_window_destroy, gtk_widget_show, gtk_init, FALSE
+  use gtk, only: gtk_window_destroy, gtk_widget_show, gtk_init, FALSE, &
+               & gtk_window_set_child
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
+
   use gtk_draw_hl
-  use gtk_hl
   use plplot_extra
-
+  use gtk_hl_container
+  use gtk_hl_button
+  
   implicit none
-
   type(c_ptr) :: window
+  type(c_ptr) :: my_gmainloop
 
 end module common_ex4
 
@@ -242,26 +247,29 @@ contains
   end subroutine plot1
 end module plplot_code_ex4
 
+
 module handlers_ex4
   use common_ex4
 
   implicit none
+
 contains
+
   function delete_cb (widget, event, gdata) result(ret)  bind(c)
     integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value, intent(in) :: widget, event, gdata
 
     call gtk_window_destroy(window)
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
     ret = FALSE
   end function delete_cb
+
   subroutine quit_cb(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     call gtk_window_destroy(window)
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine quit_cb
-
 end module handlers_ex4
 
 program cairo_plplot_ex4
@@ -283,7 +291,7 @@ program cairo_plplot_ex4
        & delete_event = c_funloc(delete_cb))
 
   base = hl_gtk_box_new()
-  call gtk_container_add(window, base)
+  call gtk_window_set_child(window, base)
 
   nbook = hl_gtk_notebook_new()
   call hl_gtk_box_pack(base, nbook)
@@ -306,7 +314,8 @@ program cairo_plplot_ex4
 
   call plot_04(drawing)
 
-  call gtk_main()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
   print *, "All done"
 end program cairo_plplot_ex4
