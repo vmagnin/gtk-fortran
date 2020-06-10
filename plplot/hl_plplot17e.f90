@@ -1,45 +1,46 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 17 by Alan W. Irwin
+! Last modifications: vmagnin 2020-06-10 (GTK 4)
+!------------------------------------------------------------------------------
 
 module common_ex17
-  use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area_new, &
-       & gtk_events_pending, gtk_main, gtk_main_iteration, &
-       & gtk_main_iteration_do,&
+  use gtk, only: gtk_button_new, gtk_drawing_area_new, &
        & gtk_widget_show, gtk_window_new, gtk_init, &
-       & gtk_widget_queue_draw
-  use g, only: g_object_get_data, g_usleep
+       & gtk_widget_queue_draw, gtk_window_set_child
+  use g, only: g_object_get_data, g_usleep, &
+             & g_main_context_iteration, g_main_context_pending
+
   use gtk_draw_hl
   use plplot_extra
 
   implicit none
-
   integer(kind=c_int) :: height, width
   integer(kind=c_int) :: run_status = TRUE
   type(c_ptr) :: window
-
+  type(c_ptr) :: my_gmainloop
 end module common_ex17
 
 module plplot_code_ex17
@@ -47,11 +48,9 @@ module plplot_code_ex17
   use common_ex17
 
   implicit none
-
   integer,  parameter :: nsteps = 1000
   integer, save :: id1, id2, n=0
   logical :: autoy, acc, pl_errcode
-
   real(kind=plflt) :: y1, y2, y3, y4, ymin, ymax, xlab, ylab
   real(kind=plflt) :: t, tmin, tmax, tjump, dt, noise
   type(c_ptr) :: cc
@@ -225,7 +224,8 @@ end module plplot_code_ex17
 module handlers_ex17
 
   use common_ex17
-  use gtk_hl
+  use gtk_hl_container
+  use gtk_hl_button
   use gtk_draw_hl
   use iso_c_binding
   use plplot_code_ex17
@@ -252,22 +252,19 @@ contains
 
   subroutine pending_events ()
     integer(kind=c_int) :: boolresult
-    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
-       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
+    do while(IAND(g_main_context_pending(c_null_ptr), run_status) /= FALSE)
+       ! False for non-blocking:
+       boolresult = g_main_context_iteration(c_null_ptr, FALSE)
     end do
   end subroutine pending_events
-
-
 end module handlers_ex17
 
 program cairo_plplot_ex17
-
   use handlers_ex17
   use plplot_code_ex17
   use common_ex17
 
   implicit none
-
   type(c_ptr) :: drawing, base, qbut
 
   height = 500
@@ -278,7 +275,7 @@ program cairo_plplot_ex17
   window = hl_gtk_window_new("PLplot x17 / gtk-fortran (extcairo)"//c_null_char, &
        & delete_event = c_funloc(delete_cb))
   base = hl_gtk_box_new()
-  call gtk_container_add(window, base)
+  call gtk_window_set_child(window, base)
 
   drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
        & has_alpha = FALSE)
