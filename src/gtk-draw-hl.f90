@@ -23,7 +23,7 @@
 ! -----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modifications: 2013-01-31, vmagnin 2020-06-09 (GTK 4)
+! Last modifications: 2013-01-31, vmagnin 2020-06-10 (GTK 4)
 ! -----------------------------------------------------------------------------
 
 !*
@@ -78,7 +78,7 @@ module gtk_draw_hl
        & gtk_widget_get_allocation, gtk_widget_set_can_focus, &
        & gtk_widget_set_size_request, gtk_widget_set_tooltip_text, &
        & g_signal_connect, gtk_widget_queue_draw, &
-       & gtk_widget_get_realized, &
+       & gtk_widget_get_realized, gtk_drawing_area_set_draw_func, &
        & TRUE, FALSE, &
        & CAIRO_FORMAT_ARGB32, &
        & CAIRO_FORMAT_RGB24, CAIRO_STATUS_SUCCESS, GDK_EXPOSURE_MASK, &
@@ -323,17 +323,19 @@ contains
             & c_funloc(hl_gtk_drawing_area_resize_cb))
     end if
 
-    ! Expose event
+    ! Expose event (GTK 4):
     if (present(expose_event)) then
        if (present(data_expose)) then
-         call g_signal_connect(plota, "draw"//c_null_char, expose_event, &
-              & data_expose)
+         call gtk_drawing_area_set_draw_func(plota, &
+                           & expose_event, data_expose, c_null_funptr)
        else
-         call g_signal_connect(plota, "draw"//c_null_char, expose_event) 
+         call gtk_drawing_area_set_draw_func(plota, &
+                           & expose_event, c_null_ptr, c_null_funptr)
        endif
     else
-       call g_signal_connect(plota, "draw"//c_null_char, &
-            & c_funloc(hl_gtk_drawing_area_expose_cb))
+      call gtk_drawing_area_set_draw_func(plota, &
+         & c_funloc(hl_gtk_drawing_area_expose_cb), c_null_ptr, c_null_funptr)
+
     end if
 
 
