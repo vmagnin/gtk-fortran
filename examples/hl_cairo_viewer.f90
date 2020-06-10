@@ -1,62 +1,64 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-
-! Contributed by James Tappin,
+!------------------------------------------------------------------------------
+! Contributed by: James Tappin
+! Last modifications: vmagnin 2020-06-10 (GTK 4)
+!------------------------------------------------------------------------------
 
 module v_handlers
   use iso_c_binding
 
   use gdk_events
+  use gtk_hl_container
   use gdk_pixbuf_hl
   use gtk_draw_hl
+  use gtk_hl_chooser
   use gtk_sup
-  use gtk_hl
 
-  !********************************
+  !************************************
   ! Gtk modules for hl_cairo_viewer.f90
+  !************************************
   use cairo, only: cairo_status, cairo_status_to_string
   use gdk_pixbuf, only: gdk_pixbuf_get_height, gdk_pixbuf_get_width
   use gtk, only: gtk_combo_box_get_active, gtk_combo_box_set_active, &
-       & gtk_container_add, gtk_main, gtk_main_quit, gtk_widget_set_sensitive, &
+       & gtk_widget_set_sensitive, &
        & gtk_widget_show, gtk_init, TRUE, FALSE
 
   implicit none
-
   character(len=256), dimension(:), allocatable :: file_list
   integer(kind=c_int) :: current_file
   type(c_ptr) :: tl_window, view, prev, next, select
+  type(c_ptr) :: my_gmainloop
 
 contains
   subroutine delete_v (widget, gdata)  bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
-    call gtk_main_quit
-
+    call g_main_loop_quit(my_gmainloop)
   end subroutine delete_v
 
   recursive subroutine show_image(widget, gdata)  bind(c)
-    type(c_ptr), value :: widget, gdata
-
+    type(c_ptr), value, intent(in) :: widget, gdata
     integer(kind=c_int), pointer :: istep
     integer(kind=c_int) :: nx, ny
     type(c_ptr) :: pixbuf
@@ -136,7 +138,6 @@ end module v_handlers
 
 program hl_cairo_viewer
   ! A very simple image viewer
-
   use v_handlers
   use iso_c_binding
 
@@ -144,7 +145,6 @@ program hl_cairo_viewer
   integer(kind=c_int) :: nfiles, i, istat
   integer(kind=c_int), dimension(2), target :: direction = [-1, 1]
   logical, dimension(2), target :: iremove = [.false., .true.]
-
   type(c_ptr) :: scroll, base, jb, junk, cmsg
   character(len=120) :: err_msg
 
@@ -224,6 +224,8 @@ program hl_cairo_viewer
   if (nfiles == 0) call add_files(c_null_ptr, c_loc(iremove(2)))
      
   if (current_file >= 0) call gtk_combo_box_set_active(select, current_file)
-  call gtk_main()
+
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program hl_cairo_viewer
