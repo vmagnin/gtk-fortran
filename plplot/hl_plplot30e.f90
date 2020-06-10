@@ -1,44 +1,44 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 30 by Hazen Babcock and Andrew Ross
+! Last modifications: vmagnin 2020-06-10 (GTK 4)
+!------------------------------------------------------------------------------
 
 module common_ex30
   use iso_c_binding
-  use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area&
-       &_new, gtk_events_pending, gtk_main, gtk_main_quit, &
-       & gtk_widget_show, gtk_window_new, gtk_init, &
-       & gtk_widget_queue_draw
-  use g, only: g_object_get_data, g_usleep
+  use gtk, only: gtk_button_new, gtk_window_set_child, &
+       & gtk_drawing_area_new, gtk_widget_queue_draw, &
+       & gtk_widget_show, gtk_window_new, gtk_init, gtk_window_destroy
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use gtk_draw_hl
   use plplot_extra
 
   implicit none
-
   integer(kind=c_int) :: height, width
   type(c_ptr) :: window
-
+  type(c_ptr) :: my_gmainloop
 end module common_ex30
 
 module plplot_code_ex30
@@ -46,7 +46,6 @@ module plplot_code_ex30
   use common_ex30
 
   implicit none
-
   real(plflt) :: xscale, yscale, xoff, yoff
 
 contains
@@ -208,38 +207,34 @@ contains
     call hl_gtk_drawing_area_cairo_destroy(cc)
 
   end subroutine x30f95
-
-
 end module plplot_code_ex30
 
 module handlers_ex30
 
   use common_ex30
-  use gtk_hl
+  use gtk_hl_container
+  use gtk_hl_button
   use gtk_draw_hl
   use iso_c_binding
 
   implicit none
-
   real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
 
 contains
   function delete_cb (widget, event, gdata) result(ret)  bind(c)
-
     integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+    type(c_ptr), value, intent(in) :: widget, event, gdata
 
     call gtk_window_destroy(window)
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
     ret = FALSE
   end function delete_cb
 
   subroutine quit_cb(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     call gtk_window_destroy(window)
-    call gtk_main_quit ()
-
+    call g_main_loop_quit(my_gmainloop)
   end subroutine quit_cb
 
 end module handlers_ex30
@@ -250,7 +245,6 @@ program cairo_plplot_ex30
   use plplot_code_ex30
 
   implicit none
-
   type(c_ptr) :: drawing, scroll_w, base, qbut
 
   height = 600
@@ -261,7 +255,7 @@ program cairo_plplot_ex30
   window = hl_gtk_window_new("PLplot x30 / gtk-fortran (extcairo)"//c_null_char, &
        & delete_event = c_funloc(delete_cb))
   base = hl_gtk_box_new()
-  call gtk_container_add(window, base)
+  call gtk_window_set_child(window, base)
 
   drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
        & has_alpha = TRUE, &
@@ -276,7 +270,8 @@ program cairo_plplot_ex30
 
   call x30f95(drawing)
 
-  call gtk_main()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
   print *, "All done"
 end program cairo_plplot_ex30
