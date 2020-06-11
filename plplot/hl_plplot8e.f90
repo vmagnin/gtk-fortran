@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 8 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-10 (GTK 4)
+! Last modifications: vmagnin 2020-06-11 (GTK 4)
 !------------------------------------------------------------------------------
 
 module common_ex8
@@ -32,12 +32,14 @@ module common_ex8
   use gtk, only: gtk_label_new, gtk_window_set_child, &
        & gtk_toggle_button_get_active, gtk_window_destroy, &
        & gtk_widget_get_allocation, gtk_widget_queue_draw, &
-       & gtk_widget_show, gtk_init, FALSE, GTK_FILL
+       & gtk_widget_show, gtk_init, FALSE
   use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   use gtk_hl_container
   use gtk_hl_button
-  use gtk_hl_chooser
+  use gtk_hl_spin_slider
+! Commented until this module will be ported to GTK 4:
+!  use gtk_hl_chooser
   use gtk_draw_hl
   use gdk_pixbuf_hl
   use plplot_extra
@@ -45,6 +47,7 @@ module common_ex8
   implicit none
   type(c_ptr) :: window, draw, alt_sl, az_sl, fun_but, col_but, &
        & facet_but, scont_but, bcont_but, qbut
+  type(c_ptr) :: my_gmainloop
   integer(kind=c_int) :: disp_type=0, ifun=1
   real(kind=c_double) :: alt=30._c_double, az=60._c_double
   integer(kind=c_int) :: width, height
@@ -353,15 +356,17 @@ contains
     type(c_ptr) :: pixb
     character(len=120), dimension(:), allocatable :: files
     integer(kind=c_int) :: ipick
-
-    ipick = hl_gtk_file_chooser_show(files, current=TRUE, &
-         & title="Output image file"//c_null_char, &
-         & filter=['image/png ', 'image/jpeg', 'image/tiff'], &
-         & parent=window)
-    if (c_f_logical(ipick)) then
-       pixb = hl_gtk_drawing_area_get_gdk_pixbuf(draw)
-       call hl_gdk_pixbuf_save(pixb, files(1))
-    end if
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Problems in GTK 4
+    print *, "GTK 4 problem: ipick = hl_gtk_file_chooser_show(files, current=TRUE, &"
+!         & title="Output image file"//c_null_char, &
+!         & filter=['image/png ', 'image/jpeg', 'image/tiff'], &
+!         & parent=window)
+!    if (c_f_logical(ipick)) then
+!       pixb = hl_gtk_drawing_area_get_gdk_pixbuf(draw)
+!       call hl_gdk_pixbuf_save(pixb, files(1))
+!    end if
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   end subroutine dump_screen
 end module handlers_ex8
 
@@ -413,28 +418,28 @@ program cairo_plplot_ex8
 
   fun_but = hl_gtk_check_button_new("Rosen"//c_null_char, &
        & toggled=c_funloc(set_rosen), initial_state=ifun)
-  call hl_gtk_table_attach(btable, fun_but, 0, 0, yopts=0, xopts=GTK_FILL)
+  call hl_gtk_table_attach(btable, fun_but, 0, 0, yopts=0, xopts=0)
 
   col_but=hl_gtk_check_button_new("Colour level"//c_null_char, &
        & toggled=c_funloc(set_colour))
-  call hl_gtk_table_attach(btable,col_but, 1, 0, yopts=0, xopts=GTK_FILL)
+  call hl_gtk_table_attach(btable,col_but, 1, 0, yopts=0, xopts=0)
 
   facet_but=hl_gtk_check_button_new("Facets"//c_null_char, &
        & toggled=c_funloc(set_facet))
-  call hl_gtk_table_attach(btable,facet_but, 2, 0, yopts=0, xopts=GTK_FILL)
+  call hl_gtk_table_attach(btable,facet_but, 2, 0, yopts=0, xopts=0)
 
   scont_but=hl_gtk_check_button_new("Surface contours"//c_null_char, &
        & toggled=c_funloc(set_scont))
-  call hl_gtk_table_attach(btable, scont_but, 0, 1, yopts=0, xopts=GTK_FILL)
+  call hl_gtk_table_attach(btable, scont_but, 0, 1, yopts=0, xopts=0)
 
   bcont_but=hl_gtk_check_button_new("Base contours"//c_null_char, &
        & toggled=c_funloc(set_bcont))
-  call hl_gtk_table_attach(btable, bcont_but, 1, 1, yopts=0, xopts=GTK_FILL)
+  call hl_gtk_table_attach(btable, bcont_but, 1, 1, yopts=0, xopts=0)
 
   junk = hl_gtk_button_new("Dump"//c_new_line//"Screen"//c_null_char, &
        & clicked=c_funloc(dump_screen))
   call hl_gtk_table_attach(btable, junk, 3, 0, yopts=0, &
-       & xopts=GTK_FILL, yspan=2)
+       & xopts=0, yspan=2)
 
   qbut=hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
   call hl_gtk_box_pack(base, qbut, expand=FALSE)
