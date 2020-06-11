@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modifications: vmagnin 2020-06-09 (GTK 4 version)
+! Last modifications: vmagnin 2020-06-11 (GTK 4 version)
 ! Demo of file choosers.
 !------------------------------------------------------------------------------
 
@@ -32,7 +32,8 @@ module handlers
   use gtk_hl_button
   use gtk, only: gtk_button_new, gtk_window_set_child, &
        &gtk_text_view_new, gtk_widget_set_sensitive, gtk_widget_show, &
-       & gtk_window_new, gtk_init, gtk_file_chooser_get_filename, TRUE, FALSE
+       & gtk_window_new, gtk_init, gtk_file_chooser_get_filename, &
+       & TRUE, FALSE, GTK_BUTTONS_YES_NO, GTK_RESPONSE_NO
   use g, only: alloca, g_main_loop_new, g_main_loop_quit, g_main_loop_run
 
   implicit none
