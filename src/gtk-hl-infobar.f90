@@ -40,7 +40,7 @@ module gtk_hl_infobar
        & gtk_info_bar_set_revealed, & 
        & gtk_info_bar_set_default_response, gtk_info_bar_set_message_type, &
        & gtk_info_bar_set_response_sensitive, gtk_label_new, &
-       & gtk_label_set_text, gtk_orientable_set_orientation, &
+       & gtk_label_set_text, &
        & gtk_widget_show, gtk_widget_hide, g_signal_connect, TRUE, FALSE, &
        & GTK_ORIENTATION_HORIZONTAL, GTK_ORIENTATION_VERTICAL
 
@@ -96,13 +96,12 @@ contains
 
     if (present(buttons_below)) then
        if (c_f_logical(buttons_below)) then
-          call gtk_orientable_set_orientation(infobar, &
-               & GTK_ORIENTATION_VERTICAL)
+         print *, "In GTK4, GtkOrientable is not implemented in GtkInfoBar"
        else
-          call gtk_orientable_set_orientation(infobar, &
-               & GTK_ORIENTATION_HORIZONTAL)
+         print *, "In GTK4, GtkOrientable is not implemented in GtkInfoBar"
        end if
     end if
+
     if (present(buttons)) then 
        do i = 1, size(buttons)
           if (present(ids)) then
