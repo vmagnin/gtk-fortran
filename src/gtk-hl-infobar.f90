@@ -74,7 +74,7 @@ contains
     ! 		when its parent is shown. Default=FALSE.
     ! TYPE: c_int: optional: The initial message type.
     ! DEFAULT: c_int: optional: Set the initial default response ID.
-    ! HORIZONTAL: boolean: optional: Set to TRUE to lay the buttons in a
+    ! HORIZONTAL: boolean: optional: not in GTK4: Set to TRUE to lay the buttons in a
     ! 		row rather than a column.
     ! BUTTONS_BELOW: boolean: optional: Set to TRUE to place the buttons
     ! 		below the message rather than to the right.
@@ -90,19 +90,10 @@ contains
     call gtk_info_bar_add_child (infobar, label)
     call gtk_widget_show (label)
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! GTK 4
-!    if (present(horizontal)) then
-       print *, "Not in GTK4: action = gtk_info_bar_get_action_area(infobar)"
-!       if (c_f_logical(horizontal)) then
-!          call gtk_orientable_set_orientation(action, &
-!               & GTK_ORIENTATION_HORIZONTAL)
-!       else
-!          call gtk_orientable_set_orientation(action, &
-!               & GTK_ORIENTATION_VERTICAL)
-!       end if
-!    end if
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (present(horizontal)) then
+       print *, "In GTK4, GtkOrientable is not implemented in GtkInfoBar"
+    end if
+
     if (present(buttons_below)) then
        if (c_f_logical(buttons_below)) then
           call gtk_orientable_set_orientation(infobar, &
