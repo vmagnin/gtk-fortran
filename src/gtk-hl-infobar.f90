@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modification: 2012-08-30, vmagnin 2020-06-04 (GTK 4)
+! Last modification: 2012-08-30, vmagnin 2020-06-11 (GTK 4)
 !*
 ! Infobar
 !------------------------------------------------------------------------------
@@ -34,15 +34,14 @@ module gtk_hl_infobar
 
   use iso_c_binding
   use gtk_sup
-  use g, only: g_list_nth_data
+  use g, only: g_object_set_data, g_object_get_data
   use gtk, only: gtk_info_bar_add_child, gtk_info_bar_add_button, &
        & gtk_info_bar_new, gtk_info_bar_get_revealed, &
        & gtk_info_bar_set_revealed, & 
        & gtk_info_bar_set_default_response, gtk_info_bar_set_message_type, &
        & gtk_info_bar_set_response_sensitive, gtk_label_new, &
        & gtk_label_set_text, &
-       & gtk_widget_show, gtk_widget_hide, g_signal_connect, TRUE, FALSE, &
-       & GTK_ORIENTATION_HORIZONTAL, GTK_ORIENTATION_VERTICAL
+       & gtk_widget_show, gtk_widget_hide, g_signal_connect, TRUE, FALSE
 
   implicit none
 
@@ -88,6 +87,8 @@ contains
 
     label = gtk_label_new (c_null_char)
     call gtk_info_bar_add_child (infobar, label)
+    ! To keep track of the label inside the infobar object:
+    call g_object_set_data (infobar, "info_label"//c_null_char, label)  
     call gtk_widget_show (label)
 
     if (present(horizontal)) then
@@ -171,15 +172,11 @@ contains
 
     type(c_ptr) :: content, label, children
     integer :: i
+ 
+    ! We retrieve the label we have named "info_label" inside the infobar:
+    label = g_object_get_data (infobar, "info_label"//c_null_char)
+    call gtk_label_set_text(label, message)
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! GTK 4 
-    !content = gtk_info_bar_get_content_area(infobar)
-    print *, "Not in GTK4: children = gtk_container_get_children(content)"
-    !label = g_list_nth_data(children, 0_c_int)
-
-    !call gtk_label_set_text(label,message)
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (present(type)) &
          & call gtk_info_bar_set_message_type(infobar,type)
     if (present(default)) &
