@@ -79,7 +79,7 @@ module gtk_hl_container
        & GTK_POLICY_AUTOMATIC, &
        & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
        & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
-  use g, only: g_object_set_data, g_object_get_data
+  use g, only: g_object_set_data, g_object_get_data, g_value_get_int
 
   implicit none
 
@@ -235,17 +235,14 @@ contains
        if (horizontal == TRUE) then
           box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, space)
           ! To keep track of the orientation inside the box object:
-          call g_object_set_data (box, "orientation"//c_null_char, &
-                                & GTK_ORIENTATION_HORIZONTAL)
+          call g_object_set_data (box, "horizontal"//c_null_char, c_null_ptr)
        else
           box = gtk_box_new(GTK_ORIENTATION_VERTICAL, space)
-          call g_object_set_data (box, "orientation"//c_null_char, &
-                                & GTK_ORIENTATION_VERTICAL)
+          call g_object_set_data (box, "vertical"//c_null_char, c_null_ptr)
        end if
     else
        box = gtk_box_new(GTK_ORIENTATION_VERTICAL, space)
-       call g_object_set_data (box, "orientation"//c_null_char, &
-                             & GTK_ORIENTATION_VERTICAL)
+       call g_object_set_data (box, "vertical"//c_null_char, c_null_ptr)
     end if
 
     call gtk_box_set_homogeneous(box, grid)
@@ -301,10 +298,9 @@ contains
 
     call gtk_box_append(box, child)
     ! We retrieve the orientation of the box:
-    orientation = g_object_get_data (box, "orientation"//c_null_char)
-    if (orientation == GTK_ORIENTATION_HORIZONTAL) then
+    if (c_associated(g_object_get_data(box, "horizontal"//c_null_char))) then
       call gtk_widget_set_hexpand (box, iexp)
-    else if (orientation == GTK_ORIENTATION_VERTICAL) then
+    else
       call gtk_widget_set_vexpand (box, iexp)
     end if
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
