@@ -25,13 +25,11 @@
 ! Last modification: vmagnin 02-20-2019
 
 module tr_handlers
-  use gtk_hl
-  use gtk, only: gtk_button_new, gtk_check_button_new, gtk_container_add, gtk_ent&
-       &ry_get_text, gtk_entry_get_text_length, gtk_entry_new, gtk_entry_set_text, gtk&
-       &_main, gtk_main_quit, gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
-       &ggle_button_set_active, gtk_widget_show, gtk_window_new, &
-       & gtk_init
-  use g, only: alloca
+  use gtk_hl_container
+  use gtk_hl_button
+  use gtk_hl_tree
+  use gtk, only: gtk_button_new, gtk_widget_show, gtk_window_new, gtk_init
+  use g, only: alloca, g_main_loop_quit
 
   implicit none
 
@@ -41,12 +39,14 @@ module tr_handlers
   type(c_ptr) :: ihwin,ihscrollcontain,ihlist, base, &
        &  qbut, dbut, lbl
 
+  type(c_ptr) :: my_gmainloop ! Needed in my_destroy and the main program
+
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
     print *, "Exit called"
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine my_destroy
 
   subroutine del_row(but, gdata) bind(c)
@@ -126,8 +126,9 @@ end module tr_handlers
 program tree
   ! TREE
   ! Demo of a tree
-
+  use g
   use tr_handlers
+  use gtk
 
   implicit none
 
@@ -136,6 +137,7 @@ program tree
   integer(kind=type_kind), dimension(6) :: ctypes
   character(len=20), dimension(6) :: titles
   integer(kind=c_int), dimension(6) :: sortable, editable
+
   ! Initialize GTK
   call gtk_init()
 
@@ -144,7 +146,7 @@ program tree
 
   ! Now make a column box & put it into the window
   base = hl_gtk_box_new()
-  call gtk_container_add(ihwin, base)
+  call gtk_window_set_child(ihwin, base)
 
   ! Now make a multi column list with multiple selections enabled
   ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
@@ -221,14 +223,15 @@ program tree
 
   call hl_gtk_box_pack(base, dbut)
 
-! Also a quit button
+  ! Also a quit button
   qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
   call hl_gtk_box_pack(base,qbut)
 
   ! realize the window
   call gtk_widget_show(ihwin)
 
-  ! Event loop
-  call gtk_main()
+  ! Event loop, my_gmainloop is declared in the tr_handlers module above.
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program tree

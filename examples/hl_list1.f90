@@ -26,10 +26,11 @@
 
 module l1_handlers
   use gtk_hl
-  use gtk, only: gtk_button_new, gtk_check_button_new, gtk_container_add, gtk_ent&
-       &ry_get_text, gtk_entry_get_text_length, gtk_entry_new, gtk_entry_set_text, gtk&
-       &_main, gtk_main_quit, gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
-       &ggle_button_set_active, gtk_widget_show, gtk_window_new, &
+  use gtk_hl_container
+  use gtk, only: gtk_button_new, gtk_check_button_new,&
+       & gtk_entry_get_text_length, gtk_entry_new,&
+       & gtk_toggle_button_get_active,&
+       & gtk_toggle_button_set_active, gtk_widget_show, gtk_window_new, &
        & gtk_init
   use g, only: alloca
 
@@ -39,13 +40,14 @@ module l1_handlers
   ! by the handlers need to go here).
   type(c_ptr) :: ihwin,ihscrollcontain,ihlist, base, &
        & newline, qbut, dbut, dabut, jbox, jbox2, abut, swbut
+  type(c_ptr) :: my_gmainloop ! Needed in my_destroy and the main program
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
     print *, "Exit called"
-    call gtk_main_quit ()
+    call g_main_loop_quit(my_gmainloop)
   end subroutine my_destroy
 
   recursive subroutine list_select(list, gdata) bind(c)
@@ -238,6 +240,7 @@ program list1
   call gtk_widget_show(ihwin)
 
   ! Event loop
-  call gtk_main()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program list1

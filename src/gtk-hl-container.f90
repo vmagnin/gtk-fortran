@@ -302,7 +302,7 @@ contains
        iend = FALSE
     end if
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    print *, "Not in GTK 4: call gtk_box_pack_start(box, child, iexp, ifill, ipad)"
+    ! print *, "Not in GTK 4: call gtk_box_pack_start(box, child, iexp, ifill, ipad)"
     ! Replaced temporarily by:
     call gtk_box_append(box, child)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
