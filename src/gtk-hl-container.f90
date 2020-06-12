@@ -120,9 +120,9 @@ contains
     ! RESIZABLE: boolean: optional: Is the window resizable.
     ! DECORATED: boolean: optional: Set FALSE to disable window decorations.
     ! DELETABLE: boolean: optional: Set to FALSE to remove the "delete" button.
-    ! ABOVE: boolean: optional: Set to TRUE to make the window stay on top of
+    ! ABOVE: boolean: optional: GTK<=3: Set to TRUE to make the window stay on top of
     ! 		others.
-    ! BELOW: boolean: optional: Set to TRUE to make the window stay below
+    ! BELOW: boolean: optional: GTK<=3: Set to TRUE to make the window stay below
     ! 		others.
     ! PARENT: c_ptr: optional: An optional parent window for the new window.
     ! ACCEL_GROUP: c_ptr: optional: An accelerator group, used to add
@@ -172,10 +172,9 @@ contains
          & call gtk_window_set_decorated(win, decorated)
     if (present(deletable)) &
          & call gtk_window_set_deletable(win, deletable)
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     if (present(above)) print *, "Not in GTK 4: call gtk_window_set_keep_above(win, above)"
     if (present(below)) print *, "Not in GTK 4: call gtk_window_set_keep_below(win, below)"
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     if (present(parent)) then
        call gtk_window_set_transient_for(win, parent)
