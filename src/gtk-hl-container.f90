@@ -127,19 +127,15 @@ contains
     ! PARENT: c_ptr: optional: An optional parent window for the new window.
     ! ACCEL_GROUP: c_ptr: optional: An accelerator group, used to add
     ! 		accelerators to widgets within the window.
-    ! ICON: c_ptr: optional : A GdkPixbuf containing the icon for the window.
+    ! ICON: c_ptr: optional : A GdkPixbuf containing the icon for the window. (GTK<=3)
     ! ICON_FILE: String : optional : A file from which to read the icon for
-    ! 		the window.
+    ! 		the window.  (GTK<=3)
     ! ICON_NAME: String : optional : The name of a standard icon to use for
     ! 		the window.
     ! MODAL: boolean: optional: Set to true to make the window modal (only
     ! 		meaningful if PARENT is also set).
     !
-    ! Only one way of setting the icon should be given, if more than one
-    ! is specified the priority is ICON, ICON_FILE, ICON_NAME.
     !-
-
-    integer(kind=c_int) :: icon_ok
 
     win = gtk_window_new()
     if (present(title)) call gtk_window_set_title(win, title)
@@ -186,12 +182,12 @@ contains
        if (present(modal)) call gtk_window_set_modal(win, modal)
     end if
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (present(icon)) then
        print *, "Not in GTK 4: call gtk_window_set_icon(win, icon)"
+       print *, "=> use icon_name instead"
     else if (present(icon_file)) then
        print *, "Not in GTK 4: icon_ok = gtk_window_set_icon_from_file (win, icon_file, c_null_ptr)"
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       print *, "=> use icon_name instead"
     else if (present(icon_name)) then
        call gtk_window_set_icon_name(win, icon_name)
     end if
