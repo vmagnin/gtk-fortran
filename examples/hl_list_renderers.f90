@@ -26,7 +26,7 @@
 
 module ln_handlers
   use gtk_hl
-  use gtk, only: gtk_button_new, gtk_check_button_new, gtk_container_add, gtk_ent&
+  use gtk, only: gtk_button_new, gtk_check_button_new, gtk_window_set_child, gtk_ent&
        &ry_get_text, gtk_entry_get_text_length, gtk_entry_new, gtk_entry_set_text, gtk&
        &_main, gtk_main_quit, gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
        &ggle_button_set_active, gtk_widget_show, gtk_widget_show, gtk_window_new, &
@@ -290,7 +290,7 @@ program list_rend
 
   ! Now make a column box & put it into the window
   base = hl_gtk_box_new()
-  call gtk_container_add(ihwin, base)
+  call gtk_window_set_child(ihwin, base)
 
   ! Now make a multi column list with multiple selections enabled
   ctypes = (/ G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_DOUBLE, &

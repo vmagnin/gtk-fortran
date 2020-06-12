@@ -28,8 +28,8 @@
 
 module handlers
   use gtk, only: gtk_action_group_add_action, gtk_action_group_get_action, gtk_ac&
-  &tion_group_new, gtk_action_new, gtk_container_add, gtk_mai&
-  &n, gtk_main_quit, gtk_ui_manager_add_ui, gtk_ui_manager_add_ui_from_file, gtk_&
+  &tion_group_new, gtk_action_new, gtk_window_set_child, gtk_box_append, &
+  & gtk_main, gtk_main_quit, gtk_ui_manager_add_ui, gtk_ui_manager_add_ui_from_file, gtk_&
   &ui_manager_add_ui_from_string, gtk_ui_manager_get_widget, gtk_ui_manager_inser&
   &t_action_group, gtk_ui_manager_new, gtk_box_new, gtk_widget_set_size_request,&
   & gtk_widget_show, gtk_window_new, gtk_window_set_title,&
@@ -265,8 +265,8 @@ program simplemenu
   
   ! Container for menu
   box = gtk_box_new (GTK_ORIENTATION_VERTICAL,0_c_int)
-  call gtk_container_add (mainwindow, box)
-  call gtk_container_add (box, gtk_ui_manager_get_widget (menu_manager, "/MainMenu"//c_null_char))
+  call gtk_window_set_child (mainwindow, box)
+  call gtk_box_append (box, gtk_ui_manager_get_widget (menu_manager, "/MainMenu"//c_null_char))
 
   ! Show all
   call gtk_widget_show(mainwindow)

@@ -55,7 +55,7 @@ module gtk_hl_menu
        & gtk_radio_menu_item_new_with_label, gtk_check_menu_item_get_active, &
        & gtk_separator_menu_item_new, &
        & gtk_widget_add_accelerator, gtk_widget_set_sensitive,&
-       & gtk_label_new, gtk_label_set_markup, gtk_container_add, &
+       & gtk_label_new, gtk_label_set_markup, &
        & gtk_widget_set_tooltip_text, GTK_PACK_DIRECTION_LTR, &
        & TRUE, FALSE, g_signal_connect
 

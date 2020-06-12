@@ -98,7 +98,7 @@ program menu2
                & gtk_widget_show, c_null_char, &
                & gtk_menu_item_new_with_label, gtk_menu_bar_new, gtk_menu_new, &
                & gtk_menu_item_set_submenu, gtk_menu_shell_append, &
-               & gtk_container_add, &
+               & gtk_window_set_child, &
                & gtk_separator_menu_item_new, &
                & gtk_menu_item_new_with_mnemonic, gtk_menu_item_set_use_underline, TRUE, &
                & gtk_accel_group_new, gtk_window_add_accel_group, &
@@ -190,7 +190,7 @@ program menu2
       & GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE)
     
   ! We add the menu bar to the window: 
-  call gtk_container_add(window, menubar)
+  call gtk_window_set_child(window, menubar)
   
   ! Let's define two events for that window. The c_funloc() function returns
   ! the C address of the callback function.

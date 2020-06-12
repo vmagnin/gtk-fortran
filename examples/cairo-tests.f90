@@ -180,7 +180,6 @@ contains
     call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 100_4)
     write_png = .true.
 
-!    call gtk_container_add(my_window, my_drawing_area)
     call gtk_window_set_child(my_window, my_drawing_area)
     
     call gtk_widget_show(my_window)

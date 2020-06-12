@@ -41,7 +41,7 @@ module v_handlers
   use cairo, only: cairo_status, cairo_status_to_string
   use gdk_pixbuf, only: gdk_pixbuf_get_height, gdk_pixbuf_get_width
   use gtk, only: gtk_combo_box_get_active, gtk_combo_box_set_active, &
-       & gtk_widget_set_sensitive, &
+       & gtk_widget_set_sensitive, gtk_window_set_child, &
        & gtk_widget_show, gtk_init, TRUE, FALSE
 
   implicit none
@@ -165,7 +165,7 @@ program hl_cairo_viewer
        & destroy=c_funloc(delete_v), resizable=FALSE)
 
   base = hl_gtk_box_new()
-  call gtk_container_add(tl_window, base)
+  call gtk_window_set_child(tl_window, base)
 
   view = hl_gtk_drawing_area_new(scroll=scroll, ssize=[600_c_int, 600_c_int], &
        & has_alpha=TRUE, cairo_status=istat)

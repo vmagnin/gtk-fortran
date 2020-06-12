@@ -26,7 +26,7 @@
 
 module handlers
   use gtk_hl
-  use gtk, only: gtk_button_new, gtk_container_add, gtk_label_new, gtk_main, gtk_&
+  use gtk, only: gtk_button_new, gtk_window_set_child, gtk_label_new, gtk_main, gtk_&
        &main_quit, gtk_menu_item_new, gtk_menu_new, gtk_widget_destroy, gtk_widget_sho&
        &w, gtk_window_new, gtk_init, &
        & gtk_check_menu_item_get_active
@@ -128,7 +128,7 @@ program menu_test
 
   ! Make a vertical box, and add a label to it
   box=hl_gtk_box_new()
-  call gtk_container_add(win, box)
+  call gtk_window_set_child(win, box)
 
   lab = gtk_label_new("Menu Example"//c_null_char)
   call hl_gtk_box_pack(box, lab)

@@ -32,7 +32,7 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use gtk, only: gtk_bin_get_child, gtk_box_new, &
-       & gtk_container_add, gtk_drawing_area_new, gtk_event_box_new, &
+       & gtk_window_set_child, gtk_drawing_area_new, gtk_event_box_new, &
        & gtk_events_pending, gtk_label_new, gtk_label_set_text, &
        & gtk_main_iteration_do, gtk_statusbar_new, gtk_statusbar_push, &
        & gtk_widget_add_events, gtk_widget_queue_draw, &
@@ -363,7 +363,7 @@ program mandelbrot_zoom
        & c_funloc(delete_event))
 
   jb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
-  call gtk_container_add(my_window, jb)
+  call gtk_window_set_child(my_window, jb)
 
   my_event_box = gtk_event_box_new()
   call gtk_widget_add_events(my_event_box, ev_mask)
@@ -377,16 +377,16 @@ program mandelbrot_zoom
        & c_funloc(mark_point))
   call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
        & c_funloc(zoom_view))
-  call gtk_container_add(jb, my_event_box)
+  call gtk_box_append(jb, my_event_box)
 
   write(rangestr, &
        & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
        & mxmin,  mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
   rangeid = gtk_label_new(trim(rangestr)//c_null_char)
-  call gtk_container_add(jb, rangeid)
+  call gtk_box_append(jb, rangeid)
 
   status_bar = gtk_statusbar_new()
-  call gtk_container_add(jb, status_bar)
+  call gtk_box_append(jb, status_bar)
   id = gtk_statusbar_push(status_bar, 0_c_int, &
        & "Left|Centre: mark region corner, "//&
        & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
