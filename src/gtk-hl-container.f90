@@ -79,6 +79,7 @@ module gtk_hl_container
        & GTK_POLICY_AUTOMATIC, &
        & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
        & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
+  use g, only: g_object_set_data, g_object_get_data
 
   implicit none
 
@@ -233,11 +234,18 @@ contains
     if (present(horizontal)) then
        if (horizontal == TRUE) then
           box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, space)
+          ! To keep track of the orientation inside the box object:
+          call g_object_set_data (box, "orientation"//c_null_char, &
+                                & GTK_ORIENTATION_HORIZONTAL)
        else
           box = gtk_box_new(GTK_ORIENTATION_VERTICAL, space)
+          call g_object_set_data (box, "orientation"//c_null_char, &
+                                & GTK_ORIENTATION_VERTICAL)
        end if
     else
        box = gtk_box_new(GTK_ORIENTATION_VERTICAL, space)
+       call g_object_set_data (box, "orientation"//c_null_char, &
+                             & GTK_ORIENTATION_VERTICAL)
     end if
 
     call gtk_box_set_homogeneous(box, grid)
@@ -266,7 +274,7 @@ contains
     ! 		the end of the box rather than the start.
     !-
 
-    integer(kind=c_int) :: iexp, ifill, ipad, iend
+    integer(kind=c_int) :: iexp, ifill, ipad, iend, orientation
 
     if (present(expand)) then
        iexp = expand
@@ -290,8 +298,15 @@ contains
     end if
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     ! print *, "Not in GTK 4: call gtk_box_pack_start(box, child, iexp, ifill, ipad)"
-    ! Replaced temporarily by:
+
     call gtk_box_append(box, child)
+    ! We retrieve the orientation of the box:
+    orientation = g_object_get_data (box, "orientation"//c_null_char)
+    if (orientation == GTK_ORIENTATION_HORIZONTAL) then
+      call gtk_widget_set_hexpand (box, iexp)
+    else if (orientation == GTK_ORIENTATION_VERTICAL) then
+      call gtk_widget_set_vexpand (box, iexp)
+    end if
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   end subroutine hl_gtk_box_pack
 
