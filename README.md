@@ -26,4 +26,6 @@ Please post bugs on GitHub:
 
 # Citing gtk-fortran
 
+Please acknowledge the use of gtk-fortran by citing the following publication:
+
 Vincent MAGNIN, James TAPPIN, Jens HUNGER, Jerry DE LISLE, "gtk-fortran: a GTK+ binding to build Graphical User Interfaces in Fortran", _Journal of Open Source Software,_ 4(34), 1109, 12th January 2019, [https://doi.org/10.21105/joss.01109](https://doi.org/10.21105/joss.01109)
