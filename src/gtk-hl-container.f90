@@ -403,13 +403,13 @@ contains
     end if
     
     if (present(xopts)) then
-       print *, "In GTK 4 GTK_EXPAND) and GTK_FILL) were removed"
+       print *, "In GTK 4 GTK_EXPAND and GTK_FILL were removed"
     else
        ixexp = TRUE
        ixfill = GTK_ALIGN_FILL
     end if
     if (present(yopts)) then
-       print *, "In GTK 4 GTK_EXPAND) and GTK_FILL) were removed"
+       print *, "In GTK 4 GTK_EXPAND and GTK_FILL were removed"
     else
        iyexp = TRUE
        iyfill = GTK_ALIGN_FILL
