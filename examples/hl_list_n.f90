@@ -1,36 +1,38 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modification: vmagnin 02-20-2019
+! Last modification: vmagnin 2020-06-12 (GTK 4)
+!------------------------------------------------------------------------------
 
 module ln_handlers
-  use gtk_hl
-  use gtk, only: gtk_button_new, gtk_check_button_new, gtk_window_set_child, gtk_ent&
-       &ry_get_text, gtk_entry_get_text_length, gtk_entry_new, gtk_entry_set_text, &
-       & gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
-       &ggle_button_set_active, gtk_widget_show, gtk_window_new, &
-       & gtk_init
+!  use gtk_hl
+  use gtk_hl_container
+  use gtk_hl_button
+  use gtk_hl_tree
+  use gtk_hl_entry
+  use gtk, only: gtk_button_new, gtk_window_set_child, &
+       & gtk_widget_show, gtk_window_new, gtk_init
   use g, only: alloca, g_object_set_property, &
              & g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
@@ -43,14 +45,14 @@ module ln_handlers
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Exit called"
     call g_main_loop_quit (my_gmainloop)
   end subroutine my_destroy
 
   subroutine list_select(list, gdata) bind(c)
-    type(c_ptr), value :: list, gdata
+    type(c_ptr), value, intent(in) :: list, gdata
     integer(kind=c_int) :: nsel
     integer(kind=c_int), dimension(:), allocatable :: selections
     integer(kind=c_int) :: n, n3
@@ -92,7 +94,7 @@ contains
   end subroutine list_select
 
   subroutine display_int(col, cell, model, iter, data) bind(c)
-    type(c_ptr), value :: col, cell, model, iter, data
+    type(c_ptr), value, intent(in) :: col, cell, model, iter, data
 
     ! Formatting routine attached via hl_gtk_listn_set_cell_data_func
     ! Note that the column index is passed via the DATA argument, so
@@ -118,7 +120,7 @@ contains
   end subroutine display_int
 
   subroutine cell_edited(renderer, path, text, gdata) bind(c)
-    type(c_ptr), value :: renderer, path, text, gdata
+    type(c_ptr), value, intent(in) :: renderer, path, text, gdata
 
     ! Callback for edited cells. 
     character(len=200) :: fpath, ftext
@@ -162,7 +164,6 @@ program list_n
   use ln_handlers
 
   implicit none
-
   character(len=35) :: line
   integer(kind=c_int) :: i, ltr
   integer(kind=type_kind), dimension(8) :: ctypes
@@ -170,7 +171,8 @@ program list_n
   integer(kind=c_int), dimension(8) :: sortable, editable
   integer(kind=c_int), target :: fmt_col = 2
   character(kind=c_char), dimension(10) :: codes
-  ! Initialize GTK+
+
+  ! Initialize GTK
   call gtk_init()
 
   ! Create a window that will hold the widget system
