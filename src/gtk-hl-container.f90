@@ -108,7 +108,7 @@ contains
     !
     ! TITLE: String: optional: Title for the window
     ! DESTROY: c_funptr: optional: Callback for the "destroy" signal
-    ! DELETE_EVENT: c_funptr: optional: Callback for the "delete-event" signal
+    ! DELETE_EVENT: c_funptr: optional: Callback for the "delete-event" signal (GTK<=3)
     ! DATA_DESTROY: c_ptr: optional: Data to be passed to the destroy
     ! 		signal handler
     ! DATA_DELETE_EVENT: c_ptr: optional: Data to be passed to the
@@ -154,17 +154,9 @@ contains
     if (present(wsize)) &
          & call gtk_window_set_default_size(win, wsize(1), wsize(2))
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! NOT AVAILABLE in GTK 4:
-!    if (present(delete_event)) then
-!       if (present(data_delete_event)) then
-!          call g_signal_connect(win, "delete-event"//C_NULL_CHAR, delete_event, &
-!               & data_delete_event)
-!       else
-!          call g_signal_connect(win, "delete-event"//C_NULL_CHAR, delete_event)
-!       end if
-!    end if
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (present(delete_event)) then
+        print *, "In GTK 4, there is no more delete-event"
+    end if
 
     if (present(destroy)) then
        if (present(data_destroy)) then
