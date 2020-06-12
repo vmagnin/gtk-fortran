@@ -300,8 +300,10 @@ contains
     ! We retrieve the orientation of the box:
     if (c_associated(g_object_get_data(box, "horizontal"//c_null_char))) then
       call gtk_widget_set_hexpand (child, iexp)
+      call gtk_widget_set_halign (child, ifill)
     else
       call gtk_widget_set_vexpand (child, iexp)
+      call gtk_widget_set_valign (child, ifill)
     end if
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   end subroutine hl_gtk_box_pack
