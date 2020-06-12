@@ -1,37 +1,41 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modification: vmagnin 02-27-2019
+! Last modifications: vmagnin 2020-06-12 (GTK 4)
+!------------------------------------------------------------------------------
 
 module ln_handlers
-  use gtk_hl
-  use gtk, only: gtk_button_new, gtk_check_button_new, gtk_window_set_child, gtk_ent&
-       &ry_get_text, gtk_entry_get_text_length, gtk_entry_new, gtk_entry_set_text, &
-       &gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
-       &ggle_button_set_active, gtk_widget_show, gtk_widget_show, gtk_window_new, &
-       & gtk_init, GTK_POLICY_NEVER 
-  use g, only: alloca, g_object_set_property, &
+!  use gtk_hl
+  use gtk_hl_container
+  use gtk_hl_button
+  use gtk_hl_tree
+  use gtk_hl_entry
+  use gdk_pixbuf_hl
+
+  use gtk, only: gtk_button_new, gtk_window_set_child, &
+       & gtk_widget_show, gtk_init, GTK_POLICY_NEVER 
+  use g, only: g_object_set_property, &
              & g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use gdk_pixbuf_hl
 
@@ -43,14 +47,14 @@ module ln_handlers
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Exit called"
     call g_main_loop_quit (my_gmainloop)
   end subroutine my_destroy
 
   subroutine list_select(list, gdata) bind(c)
-    type(c_ptr), value :: list, gdata
+    type(c_ptr), value, intent(in) :: list, gdata
     integer(kind=c_int) :: nsel
     integer(kind=c_int), dimension(:), allocatable :: selections
     real(kind=c_double) :: x, x3
@@ -92,7 +96,7 @@ contains
   end subroutine list_select
 
   subroutine cell_edited(renderer, path, text, gdata) bind(c)
-    type(c_ptr), value :: renderer, path, text, gdata
+    type(c_ptr), value, intent(in) :: renderer, path, text, gdata
 
     ! Callback for edited cells. 
     character(len=200) :: fpath, ftext
@@ -130,7 +134,7 @@ contains
   end subroutine cell_edited
 
   subroutine ccell_edit(renderer, path, text, gdata) bind(c)
-    type(c_ptr), value :: renderer, path, text, gdata
+    type(c_ptr), value, intent(in) :: renderer, path, text, gdata
 
     ! Basic callback to report what's called
     character(len=200) :: fpath, ftext
@@ -147,7 +151,7 @@ contains
   end subroutine ccell_edit
 
   subroutine ccell_changed(renderer, path, iter, gdata) bind(c)
-    type(c_ptr), value :: renderer, path, iter, gdata
+    type(c_ptr), value, intent(in) :: renderer, path, iter, gdata
 
     ! Basic callback to report what's called
     character(len=200) :: fpath
@@ -158,7 +162,7 @@ contains
   end subroutine ccell_changed
   
   subroutine cell_clicked(renderer, path, gdata) bind(c)
-    type(c_ptr), value :: renderer, path, gdata
+    type(c_ptr), value, intent(in) :: renderer, path, gdata
 
     character(len=200) :: fpath
     integer(kind=c_int) :: irow
@@ -184,7 +188,7 @@ contains
   end subroutine cell_clicked
 
   subroutine rcell_clicked(renderer, path, gdata) bind(c)
-    type(c_ptr), value :: renderer, path, gdata
+    type(c_ptr), value, intent(in) :: renderer, path, gdata
 
     ! Default callback for a toggle button in a list
     !
@@ -229,7 +233,7 @@ contains
   end subroutine rcell_clicked
 
   subroutine display_dbl(col, cell, model, iter, data) bind(c)
-    type(c_ptr), value :: col, cell, model, iter, data
+    type(c_ptr), value, intent(in) :: col, cell, model, iter, data
 
     ! Formatting routine attached via hl_gtk_listn_set_cell_data_func
     ! Note that the column index is passed via the DATA argument, so
@@ -245,7 +249,7 @@ contains
     call gtk_tree_model_get_value(model, iter, colno, c_loc(dvalue))
     dval = g_value_get_double(c_loc(dvalue))
 
-    write(rstring, "(f0.1)") dval
+    write(rstring, "(f8.1)") dval
 
     val_ptr = c_loc(svalue)
     val_ptr = g_value_init(val_ptr, G_TYPE_STRING)
@@ -262,7 +266,6 @@ program list_rend
   use ln_handlers
 
   implicit none
-
   integer, parameter :: ncols = 11, nrows=10
   character(len=35) :: line
   integer(kind=c_int) :: i, ltr
@@ -379,3 +382,4 @@ program list_rend
   call g_main_loop_run(my_gmainloop)
 
 end program list_rend
+
