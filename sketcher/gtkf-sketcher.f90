@@ -44,6 +44,7 @@ module widgets
   type(c_ptr) :: include_files_button
   type(c_ptr) :: widgetshandlers_button
   type(c_ptr) :: about_dialog
+  type(c_ptr) :: my_gmainloop
 
   character(len=256,kind=c_char)::filename
   character(len=256,kind=c_char)::working_dir, base_dir
@@ -148,7 +149,7 @@ module connect
   use strings
 
   use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
-  &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&
+  &der_get_object, gtk_builder_new, gtk_widget_show,&
   &FALSE, c_null_char, c_null_ptr, TRUE, gtk_init, gtk_builder_get_objects, gtk_builder_connect_signals_full,&
   gtk_buildable_get_name, gtk_text_view_get_buffer, gtk_text_buffer_set_text,&
   gtk_combo_box_get_active, gtk_combo_box_set_active, gtk_combo_box_get_model, gtk_combo_box_get_active_iter,&
@@ -156,8 +157,12 @@ module connect
   gtk_toggle_button_get_active, gtk_toggle_button_set_active,GTK_BUTTONS_OK,&
   gtk_widget_is_toplevel, gtk_list_store_append, gtk_list_store_set_value, gtk_list_store_clear,&
   gtk_dialog_run, gtk_widget_hide
+
   use g, only: g_object_unref, g_slist_length, g_slist_nth_data, g_object_get_property,&
-  g_object_get_valist, g_value_get_string, g_mkdir_with_parents, g_value_init, g_value_set_string, g_value_unset
+  & g_object_get_valist, g_value_get_string, g_mkdir_with_parents, g_value_init, &
+  & g_value_set_string, g_value_unset, &
+  & g_main_loop_new, g_main_loop_run, g_main_loop_quit
+
   use gtk_hl, only: hl_gtk_file_chooser_show, gtktreeiter, gvalue, hl_gtk_message_dialog_show, type_kind, G_TYPE_STRING
 
   implicit none
@@ -264,7 +269,7 @@ contains
     if (allocated(connections)) deallocate(connections)
     inquire(unit=99,opened=lopened)
     if (lopened) close(99)
-    call gtk_main_quit ()
+    call g_main_loop_quit (my_gmainloop)
   end subroutine destroy
 
   subroutine create_subdir_toggled (widget, gdata) bind(c)
@@ -583,9 +588,9 @@ contains
       write(hunit,'(A)')""
       write(hunit,'(A)')"module handlers"
       write(hunit,'(A)')"  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&"
-      write(hunit,'(A)')"  &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&"
+      write(hunit,'(A)')"  &der_get_object, gtk_builder_new, gtk_widget_show,&"
       write(hunit,'(A)')"  &FALSE, c_null_char, c_null_ptr, gtk_init"
-      write(hunit,'(A)')"  use g, only: g_object_unref"
+      write(hunit,'(A)')"  use g, only: g_object_unref, g_main_loop_new, g_main_loop_run, g_main_loop_quit"
       if (update_used_functions) then
 
         write(*,*)working_dir
@@ -630,6 +635,7 @@ contains
 
       write(hunit,'(A)')"  use widgets"
       write(hunit,'(A)')"  implicit none"
+      write(hunit,'(A)')"  type(c_ptr) :: my_gmainloop"
       write(hunit,'(A)')""
 
       if (include_files) then
@@ -769,7 +775,8 @@ contains
       write(50,'(A)')"  call gtk_widget_show ("//appwindow(1:len_trim(appwindow))//")"
       write(50,'(A)')""
       write(50,'(A)')"  ! enter the GTK main loop"
-      write(50,'(A)')"  call gtk_main ()"
+      write(50,'(A)')"  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)"
+      write(50,'(A)')"  call g_main_loop_run(my_gmainloop)"
       write(50,'(A)')""
       write(50,'(A)')"end program "//subdir(1:len_trim(subdir))
       close(50)
@@ -877,7 +884,7 @@ program gtkfsketcher
   call get_environment_variable("PWD", base_dir)
   open(99, file="gtkf-sketcher.log", action='write')
 
-  ! Initialize the GTK+ Library
+  ! Initialize the GTK Library
   call gtk_init ()
 
   ! create a new GtkBuilder object
@@ -923,7 +930,8 @@ program gtkfsketcher
   ! Show the Application Window
   call gtk_widget_show (window)
 
-  ! Enter the GTK+ Main Loop
-  call gtk_main ()
+  ! Enter the GTK Main Loop
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program gtkfsketcher

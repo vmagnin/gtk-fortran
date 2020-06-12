@@ -26,13 +26,14 @@
 
 module handlers
   use gtk_hl
-  use gtk, only: gtk_button_new, gtk_window_set_child, gtk_label_new, gtk_main, gtk_&
-       &main_quit, gtk_menu_item_new, gtk_menu_new, gtk_widget_destroy, gtk_widget_sho&
+  use gtk, only: gtk_button_new, gtk_window_set_child, gtk_label_new, &
+       & gtk_menu_item_new, gtk_menu_new, gtk_widget_destroy, gtk_widget_sho&
        &w, gtk_window_new, gtk_init, &
        & gtk_check_menu_item_get_active
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   implicit none
-
+  type(c_ptr) :: my_gmainloop
   type(c_ptr) :: win, box, menubar, qbut,lab, smnu,mba
   type(c_ptr), dimension(10) :: mbuts
   type(c_ptr) :: mnu2, sm1, sm2
@@ -44,7 +45,7 @@ contains
     type(c_ptr), value :: widget, gdata
 
     print *, "Exit called"
-    call gtk_main_quit ()
+    call g_main_loop_quit (my_gmainloop)
   end subroutine my_destroy
 
   subroutine mbut_act(widget, gdata)  bind(c)
@@ -183,6 +184,7 @@ program menu_test
   call gtk_widget_show(win)
 
   ! Event loop
-  call gtk_main()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program menu_test

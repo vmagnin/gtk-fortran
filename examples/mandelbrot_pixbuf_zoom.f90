@@ -33,17 +33,20 @@ module handlers
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use gtk, only: gtk_bin_get_child, gtk_box_new, &
        & gtk_window_set_child, gtk_drawing_area_new, gtk_event_box_new, &
-       & gtk_events_pending, gtk_label_new, gtk_label_set_text, &
-       & gtk_main_iteration_do, gtk_statusbar_new, gtk_statusbar_push, &
+       & gtk_label_new, gtk_label_set_text, &
+       & gtk_statusbar_new, gtk_statusbar_push, &
        & gtk_widget_add_events, gtk_widget_queue_draw, &
        & gtk_widget_set_size_request, gtk_widget_show, gtk_window_new, &
        & gtk_window_set_title, gtk_init, g_signal_connect, TRUE, FALSE, &
        & GDK_SCROLL_UP, GDK_SCROLL_DOWN, GDK_SHIFT_MASK, GDK_CONTROL_MASK, &
        & GDK_BUTTON_PRESS_MASK, GDK_SCROLL_MASK, GTK_ORIENTATION_VERTICAL, &
-       & GDK_COLORSPACE_RGB, gtk_main, gtk_main_quit
+       & GDK_COLORSPACE_RGB
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_context_iteration, &
+             & g_main_context_pending, g_main_loop_quit
   use iso_c_binding
 
   implicit none
+  type(c_ptr)    :: my_gmainloop
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   type(c_ptr) :: my_pixbuf, status_bar, rangeid
@@ -65,13 +68,13 @@ contains
     ! Returns FALSE to propagate the event further:
     ret = FALSE
     ! Makes the innermost invocation of the main loop return when it regains control:
-    if (.not. computing_flag)   call gtk_main_quit()
+    if (.not. computing_flag)   call g_main_loop_quit(my_gmainloop)
   end function delete_event
 
 
   subroutine pending_events ()
-    do while(IAND(gtk_events_pending(), run_status) /= FALSE)
-       boolresult = gtk_main_iteration_do(FALSE) ! False for non-blocking
+    do while(IAND(g_main_context_pending(c_null_ptr, run_status) /= FALSE)
+       boolresult = g_main_context_iteration(c_null_ptr, FALSE) ! False for non-blocking
     end do
   end subroutine pending_events
 
@@ -416,7 +419,10 @@ program mandelbrot_zoom
 
   ! The window will stay opened after the computation, but we need to verify
   ! that the user has not closed the window during the computation:
-  if (run_status /= FALSE)  call gtk_main()
+  if (run_status /= FALSE) then
+    my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+    call g_main_loop_run(my_gmainloop)
+  endif
 
   print *, "All done"
 end program mandelbrot_zoom

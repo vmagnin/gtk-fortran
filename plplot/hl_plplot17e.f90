@@ -289,7 +289,7 @@ program cairo_plplot_ex17
 
   call x17f95(drawing)
 
-  ! Note that here rather than using gtk_main we look for events ourselves
+  ! Note that here rather than using g_main_loop_run we look for events ourselves
   ! this makes it easy to add a point every 1/10s.
   ! An alternative would be to use g_timeout_add to control the updates
   ! (hl_plplot17e_gto.f90).

@@ -27,25 +27,26 @@
 module ln_handlers
   use gtk_hl
   use gtk, only: gtk_button_new, gtk_check_button_new, gtk_window_set_child, gtk_ent&
-       &ry_get_text, gtk_entry_get_text_length, gtk_entry_new, gtk_entry_set_text, gtk&
-       &_main, gtk_main_quit, gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
+       &ry_get_text, gtk_entry_get_text_length, gtk_entry_new, gtk_entry_set_text, &
+       & gtk_widget_destroy, gtk_toggle_button_get_active, gtk_to&
        &ggle_button_set_active, gtk_widget_show, gtk_window_new, &
        & gtk_init
-  use g, only: alloca, g_object_set_property
+  use g, only: alloca, g_object_set_property, &
+             & g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   implicit none
-
   ! The widgets. (Strictly only those that need to be accessed
   ! by the handlers need to go here).
   type(c_ptr) :: ihwin,ihscrollcontain,ihlist, base, &
        &  qbut, lbl
+  type(c_ptr) :: my_gmainloop
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
     print *, "Exit called"
-    call gtk_main_quit ()
+    call g_main_loop_quit (my_gmainloop)
   end subroutine my_destroy
 
   subroutine list_select(list, gdata) bind(c)
@@ -247,6 +248,7 @@ program list_n
   print *, "Realized"
 
   ! Event loop
-  call gtk_main()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program list_n

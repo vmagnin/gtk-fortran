@@ -29,13 +29,17 @@
 module handlers
   use gtk, only: gtk_action_group_add_action, gtk_action_group_get_action, gtk_ac&
   &tion_group_new, gtk_action_new, gtk_window_set_child, gtk_box_append, &
-  & gtk_main, gtk_main_quit, gtk_ui_manager_add_ui, gtk_ui_manager_add_ui_from_file, gtk_&
+  & gtk_ui_manager_add_ui, gtk_ui_manager_add_ui_from_file, gtk_&
   &ui_manager_add_ui_from_string, gtk_ui_manager_get_widget, gtk_ui_manager_inser&
   &t_action_group, gtk_ui_manager_new, gtk_box_new, gtk_widget_set_size_request,&
   & gtk_widget_show, gtk_window_new, gtk_window_set_title,&
   &gtk_init, g_signal_connect, FALSE, TRUE, c_null_ptr, c_null_char,&
   & GTK_ORIENTATION_VERTICAL
+
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
+
   implicit none
+  type(c_ptr) :: my_gmainloop
 
 contains
   !*************************************
@@ -49,7 +53,7 @@ contains
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
     print *, "my destroy"
-    call gtk_main_quit ()
+    call g_main_loop_quit (my_gmainloop)
   end subroutine destroy
 
 ! delete event
@@ -272,6 +276,7 @@ program simplemenu
   call gtk_widget_show(mainwindow)
   
   ! Main loop
-  call gtk_main ()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
 end program simplemenu

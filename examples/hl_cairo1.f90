@@ -124,7 +124,7 @@ contains
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
        print *, "Not in GTK 4: if (bevent%type == GDK_DOUBLE_BUTTON_PRESS .and. &"
-!            & bevent%button == 3) call gtk_main_quit
+!            & bevent%button == 3) call g_main_loop_quit(my_gmainloop)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
        if (bevent%type == GDK_BUTTON_PRESS .and. &

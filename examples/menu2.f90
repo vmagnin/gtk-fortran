@@ -33,8 +33,11 @@
 module handlers
 
   use iso_c_binding, only: c_ptr, c_int
-  use gtk, only: gtk_main_quit, FALSE
+  use gtk, only: FALSE
+  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
+
   implicit none
+  type(c_ptr) :: my_gmainloop
 
 contains
   ! Signal emitted if a user requests that a toplevel window is closed:
@@ -51,7 +54,7 @@ contains
     type(c_ptr), value :: widget, event, gdata
 
     print *, "My destroy: you will exit the GTK main loop..."
-    call gtk_main_quit()
+    call g_main_loop_quit (my_gmainloop)
   end subroutine destroy
 
   ! GtkAction signals:
@@ -94,7 +97,7 @@ program menu2
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
   use gtk, only: gtk_init, gtk_window_new, gtk_window_set_default_size, &
-               & gtk_window_set_title, g_signal_connect, gtk_main, &
+               & gtk_window_set_title, g_signal_connect, &
                & gtk_widget_show, c_null_char, &
                & gtk_menu_item_new_with_label, gtk_menu_bar_new, gtk_menu_new, &
                & gtk_menu_item_set_submenu, gtk_menu_shell_append, &
@@ -203,7 +206,8 @@ program menu2
   call gtk_widget_show(window)
 
   ! Now, the events will be handled by the main GTK loop:
-  call gtk_main()
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
 
   print *, "You have exited the GTK main loop, bye, bye..."
 

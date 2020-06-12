@@ -30,16 +30,18 @@ module widgets
 
   type(c_ptr) :: window
   type(c_ptr) :: builder
-
+  type(c_ptr) :: my_gmainloop
 end module
 
 module handlers
   ! This module is just copied from gtkhello2.f90
   use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
-  &der_connect_signals_full, gtk_builder_get_object, gtk_builder_new, gtk_main, g&
-  &tk_main_quit, gtk_widget_show,&
+  &der_connect_signals_full, gtk_builder_get_object, gtk_builder_new, &
+  & gtk_widget_show,&
   &FALSE, c_null_char, c_null_ptr, gtk_init, g_signal_connect
-  use g, only: g_object_unref, g_signal_connect_object
+  use g, only: g_object_unref, g_signal_connect_object, &
+             & g_main_loop_new, g_main_loop_run, g_main_loop_quit
+
   use widgets
   implicit none
 
@@ -62,7 +64,7 @@ contains
     use iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
     print *, "my destroy"
-    call gtk_main_quit ()
+    call g_main_loop_quit (my_gmainloop)
   end subroutine destroy
 
   ! "clicked" is a GtkButton signal
@@ -199,7 +201,7 @@ program gtkbuilder
   type(c_ptr) :: error
   error=c_null_ptr
 
-  ! Initialize the GTK+ Library
+  ! Initialize the GTK Library
   call gtk_init ()
 
   ! create a new GtkBuilder object
@@ -224,7 +226,8 @@ program gtkbuilder
   ! Show the Application Window      
   call gtk_widget_show (window)       
   
-  ! Enter the GTK+ Main Loop
-  call gtk_main ()
+  ! Enter the GTK Main Loop
+  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+  call g_main_loop_run(my_gmainloop)
         
 end program gtkbuilder
