@@ -381,9 +381,9 @@ contains
     ! YSPAN: c_int: optional: How many cells to span in the Y direction (1)
     ! XPAD: c_int: optional: Padding around the cell in the X direction
     ! YPAD: c_int: optional: Padding in the Y direction
-    ! XOPTS: c_int: optional: X fill/expand options (from the
+    ! XOPTS: c_int: optional: GTK<=3: X fill/expand options (from the
     ! 		GtkAttachOptions enumerator, or 0 for none)
-    ! YOPTS: c_int: optional: Y fill/expand options.
+    ! YOPTS: c_int: optional: GTK<=3: Y fill/expand options.
     !
     ! N.B. GTK_SHRINK in the options is ignored in Gtk+ 3.x
     !-
@@ -401,29 +401,15 @@ contains
     else
        iysz = 1
     end if
-
+    
     if (present(xopts)) then
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-       print *, "Not in GTK 4: ixexp = f_c_logical(iand(xopts, GTK_EXPAND) == GTK_EXPAND)"
-       print *, "Not in GTK 4: if (iand(xopts, GTK_FILL) == GTK_FILL) then"
-       !   ixfill = GTK_ALIGN_FILL
-       !else
-       !   ixfill = GTK_ALIGN_CENTER
-       !end if
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       print *, "In GTK 4 GTK_EXPAND) and GTK_FILL) were removed"
     else
        ixexp = TRUE
        ixfill = GTK_ALIGN_FILL
     end if
     if (present(yopts)) then
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-       print *, "Not in GTK 4: iyexp = f_c_logical(iand(yopts, GTK_EXPAND) == GTK_EXPAND)"
-       print *, "Not in GTK 4: if (iand(yopts, GTK_FILL) == GTK_FILL) then"
-       !   iyfill = GTK_ALIGN_FILL
-       !else
-       !   iyfill = GTK_ALIGN_CENTER
-       !end if
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       print *, "In GTK 4 GTK_EXPAND) and GTK_FILL) were removed"
     else
        iyexp = TRUE
        iyfill = GTK_ALIGN_FILL
