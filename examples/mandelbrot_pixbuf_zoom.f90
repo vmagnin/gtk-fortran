@@ -33,7 +33,7 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use gtk, only: gtk_application_window_new, gtk_application_new, &
-       & gtk_box_new, &
+       & gtk_window_set_default_size, gtk_box_new, &
        & gtk_window_set_child, gtk_box_append, gtk_drawing_area_new,  &
        & gtk_label_new, gtk_label_set_text, &
        & gtk_statusbar_new, gtk_statusbar_push, &
@@ -41,11 +41,9 @@ module handlers
        & gtk_drawing_area_set_draw_func, &
        & gtk_widget_set_size_request, gtk_widget_show, gtk_window_new, &
        & gtk_window_set_title, gtk_init, g_signal_connect, TRUE, FALSE, &
-       & GDK_SCROLL_UP, GDK_SCROLL_DOWN, GDK_SHIFT_MASK, GDK_CONTROL_MASK, &
        & GTK_ORIENTATION_VERTICAL, GDK_COLORSPACE_RGB, &
-    & gtk_widget_get_width, gtk_widget_get_height, &
        & gtk_gesture_click_new, gtk_widget_add_controller, &
-       & gtk_event_controller_get_widget, &
+       & gtk_event_controller_get_widget, gtk_event_controller_motion_new, &
        & gtk_gesture_single_get_current_button, &
        & gtk_gesture_single_set_button, gtk_event_controller_scroll_new, &
        & GTK_EVENT_CONTROLLER_SCROLL_VERTICAL
@@ -64,6 +62,7 @@ module handlers
   logical :: computing_flag
   character(len=120) :: rangestr
   real(kind=c_double) :: mxmin, mxmax, mymin, mymax
+  integer(kind=c_int) :: mouse_x, mouse_y
 
 contains
   ! User defined event handlers go here
@@ -101,18 +100,19 @@ contains
     integer(c_int) :: width, height
 
     print *, "Button ", gtk_gesture_single_get_current_button(gesture)
-    drawing_area = gtk_event_controller_get_widget(gesture)
     print *, n_press, " click(s) at ", int(x), int(y)
-    width  = gtk_widget_get_width(drawing_area)
-    height = gtk_widget_get_height(drawing_area)
-    print *, "widget width and height: ", width, height
 
     if (n_press > 1) then
       print *, "Double clicks have no effect!"
       return
     end if
 
-    if (computing_flag) return
+    if (computing_flag) then
+      print *, "Be patient..."
+      return
+    end if
+
+    drawing_area = gtk_event_controller_get_widget(gesture)
 
     if (gtk_gesture_single_get_current_button(gesture) == 3) then
        ! Right button => reset to full set
@@ -173,11 +173,11 @@ contains
     if (computing_flag) return             ! One wheel step at a time !
 
     if (y > 0) then ! Zoom out
-       call mand_xy(int(x, c_int), int(y, c_int), xx, yy)
+       call mand_xy(mouse_x, mouse_y, xx, yy)
        xr=min(mxmax-mxmin, 1.5_c_double)
        yr=min(mymax-mymin, 1.5_c_double)
     else ! Zoom in
-       call mand_xy(int(x, c_int), int(y, c_int), xx, yy)
+       call mand_xy(mouse_x, mouse_y, xx, yy)
        xr = (mxmax-mxmin)/4._c_double
        yr = (mymax-mymin)/4._c_double
     end if
@@ -216,13 +216,24 @@ contains
          & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
   end function scroll_cb
 
+  ! Motion callback function ("motion" signal):
+  function motion_cb(controller, x, y, gdata) result(ret) bind(c)
+    type(c_ptr), value, intent(in)    :: controller, gdata
+    real(c_double), value, intent(in) :: x, y
+    logical(c_bool) :: ret
+
+    print *, "Motion x,y= ", x, y
+    mouse_x = nint(x)
+    mouse_y = nint(y)
+    ret = .true.
+  end function motion_cb
+
   subroutine set_limits()
     mxmin = -2.0_c_double
     mxmax = 1.0_c_double
     mymin = -1.5_c_double
     mymax = 1.5_c_double
   end subroutine set_limits
-
 
   subroutine mand_xy(ix, iy, x, y)
     integer(kind=c_int), intent(in) :: ix, iy
@@ -317,7 +328,7 @@ contains
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
     type(c_ptr) :: my_window, jb
-    type(c_ptr) :: my_drawing_area, controller, controller2
+    type(c_ptr) :: my_drawing_area, controller, controller2, controller3
     integer :: i, j
     integer(kind=c_int) :: id
 
@@ -326,10 +337,7 @@ contains
     ! Properties of the main window :
     width = 700
     height = 700
-
-    ! Set the initial view
-    call set_limits()
-
+    call gtk_window_set_default_size(my_window, width, height)
     call gtk_window_set_title(my_window, &
          & "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
 
@@ -353,15 +361,25 @@ contains
                                         & c_funloc(click_cb))
     call gtk_widget_add_controller(my_drawing_area, controller)
 
-    ! And a controller for scrolling (modifies the circle radius):
+    ! And a controller for scrolling:
     ! https://developer.gnome.org/gtk4/stable/GtkEventControllerScroll.html
     controller2 = gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_VERTICAL)
     call g_signal_connect(controller2, "scroll"//c_null_char, &
                                         & c_funloc(scroll_cb))
     call gtk_widget_add_controller(my_drawing_area, controller2)
+    ! And a controller to detect motion and know where is the mouse:
+    ! https://developer.gnome.org/gtk4/stable/GtkEventControllerMotion.html
+    controller3 = gtk_event_controller_motion_new ()
+    call g_signal_connect(controller3, "motion"//c_null_char, &
+                                        & c_funloc(motion_cb))
+    call gtk_widget_add_controller(my_drawing_area, controller3)
+    mouse_x = 0
+    mouse_y = 0
 
     call gtk_box_append(jb, my_drawing_area)
 
+    ! Set the initial view
+    call set_limits()
     write(rangestr, &
          & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
          & mxmin,  mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
