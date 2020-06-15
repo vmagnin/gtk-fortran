@@ -28,7 +28,7 @@
 
 module handlers
   use gdk_events, only: gdkeventbutton, gdkeventscroll
-  use cairo, only: cairo_destroy, cairo_paint
+  use cairo, only: cairo_paint
   use gdk, only: gdk_cairo_set_source_pixbuf
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
