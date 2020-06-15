@@ -85,18 +85,10 @@ contains
     type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
     integer(c_int)                 :: ret
 
-    call paint_set(my_cairo_context)
-    ret = FALSE
-  end function draw
-
-
-  subroutine paint_set(my_cairo_context)
-    type(c_ptr), intent(in) :: my_cairo_context
-
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
     call cairo_paint(my_cairo_context)
-  end subroutine paint_set
-
+    ret = FALSE
+  end function draw
 
   recursive subroutine mark_point(widget, event, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, event, gdata
