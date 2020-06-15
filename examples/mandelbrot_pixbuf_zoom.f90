@@ -32,7 +32,8 @@ module handlers
   use gdk, only: gdk_cairo_set_source_pixbuf
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-  use gtk, only: gtk_widget_get_first_child, gtk_box_new, &
+  use gtk, only: gtk_application_window_new, gtk_application_new, &
+       & gtk_widget_get_first_child, gtk_box_new, &
        & gtk_window_set_child, gtk_box_append, gtk_drawing_area_new,  &
        & gtk_label_new, gtk_label_set_text, &
        & gtk_statusbar_new, gtk_statusbar_push, &
@@ -43,12 +44,12 @@ module handlers
        & GDK_SCROLL_UP, GDK_SCROLL_DOWN, GDK_SHIFT_MASK, GDK_CONTROL_MASK, &
        & GDK_BUTTON_PRESS_MASK, GDK_SCROLL_MASK, GTK_ORIENTATION_VERTICAL, &
        & GDK_COLORSPACE_RGB
-  use g, only: g_main_loop_new, g_main_loop_run, g_main_context_iteration, &
-             & g_main_context_pending, g_main_loop_quit
+  use g, only: g_main_context_iteration, &
+             & g_main_context_pending, &
+             & g_application_run, g_object_unref
   use iso_c_binding
 
   implicit none
-  type(c_ptr)    :: my_gmainloop
   integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   type(c_ptr) :: my_pixbuf, status_bar, rangeid
@@ -61,20 +62,6 @@ module handlers
 
 contains
   ! User defined event handlers go here
-
-  ! Our callback function before destroying the window:
-  function destroy_signal(widget, event, gdata) result(ret)  bind(c)
-    integer(c_int)                 :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-
-    print *, "Your destroy_signal() function has been invoked !"
-    ! Some functions and subroutines need to know that it's finished:
-    run_status = FALSE
-    ! Returns FALSE to propagate the event further:
-    ret = FALSE
-    ! Makes the innermost invocation of the main loop return when it regains control:
-    if (.not. computing_flag)   call g_main_loop_quit(my_gmainloop)
-  end function destroy_signal
 
   ! This function is needed to update the GUI during long computations.
   ! https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
@@ -337,94 +324,101 @@ contains
     need_point     = .false.
   end subroutine mandelbrot_set
 
+  ! The GUI is defined here:
+  subroutine activate(app, gdata) bind(c)
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    type(c_ptr) :: my_window, jb
+    type(c_ptr) :: my_drawing_area
+    integer :: i, j
+    integer(kind=c_int) :: id
+    integer(kind=c_int), parameter :: ev_mask = ior(GDK_BUTTON_PRESS_MASK, &
+                                                  & GDK_SCROLL_MASK)
+
+    my_window = gtk_application_window_new(app)
+
+    ! Properties of the main window :
+    width = 700
+    height = 700
+
+    ! Set the initial view
+    call set_limits()
+
+    call gtk_window_set_title(my_window, &
+         & "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
+
+    jb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
+    call gtk_window_set_child(my_window, jb)
+
+
+
+    my_drawing_area = gtk_drawing_area_new()
+    call gtk_widget_set_size_request(my_drawing_area, &
+         & width, height)
+
+    call gtk_drawing_area_set_draw_func(my_drawing_area, &
+                     & c_funloc(draw), c_null_ptr, c_null_funptr)
+
+  !  call g_signal_connect(my_event_box, "button-press-event"//c_null_char, &
+  !       & c_funloc(mark_point))
+  !  call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
+  !       & c_funloc(zoom_view))
+    call gtk_box_append(jb, my_drawing_area)
+
+    write(rangestr, &
+         & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
+         & mxmin,  mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
+    rangeid = gtk_label_new(trim(rangestr)//c_null_char)
+    call gtk_box_append(jb, rangeid)
+
+    status_bar = gtk_statusbar_new()
+    call gtk_box_append(jb, status_bar)
+    id = gtk_statusbar_push(status_bar, 0_c_int, &
+         & "Left|Centre: mark region corner, "//&
+         & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
+
+    call gtk_widget_show(my_window)
+
+    ! We create a pixbuffer to store the pixels of the image:
+    my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
+    nch = gdk_pixbuf_get_n_channels(my_pixbuf)
+    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, &
+         &int((/nch, width, height/)))
+    rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
+
+    ! We use char() because we need unsigned integers.
+    ! Our pixbuffer has an Alpha channel but is possible to create a pixbuffer
+    ! with only Red, Green, Blue.
+    do i=1, height
+       do j=1, width
+          pixel(1,j,i)=char(0)     ! Red
+          pixel(2,j,i)=char(0)     ! Green
+          pixel(3,j,i)=char(0)     ! Blue
+          pixel(4,j,i)=char(255)   ! Opacity (Alpha channel)
+       end do
+    end do
+
+    call Mandelbrot_set(my_drawing_area, 1000_c_int)
+
+  end subroutine activate
 end module handlers
 
+! We create a GtkApplication:
+program mandelbrot_pixbuf_zoom
+  use iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
+  use gtk, only: gtk_application_new, g_signal_connect, G_APPLICATION_FLAGS_NONE
+  use g, only: g_application_run, g_object_unref
+  use handlers, only: activate
 
-program mandelbrot_zoom
-  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
-  use handlers
   implicit none
-  type(c_ptr) :: my_window, jb
-  type(c_ptr) :: my_drawing_area
-  integer :: i, j
-  integer(kind=c_int) :: id
-  integer(kind=c_int), parameter :: ev_mask = ior(GDK_BUTTON_PRESS_MASK, &
-                                                & GDK_SCROLL_MASK)
+  integer(c_int) :: exit_status
+  type(c_ptr)    :: app
 
-  call gtk_init ()
+  app = gtk_application_new("gtk-fortran.examples.mandelbrot-pixbuf-zoom"//c_null_char, &
+                            & G_APPLICATION_FLAGS_NONE)
+  call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), &
+                      & c_null_ptr)
+  exit_status = g_application_run(app, 0_c_int, c_null_ptr)
+  call g_object_unref(app)
+end program mandelbrot_pixbuf_zoom
 
-  ! Properties of the main window :
-  width = 700
-  height = 700
-
-  ! Set the initial view
-  call set_limits()
-
-  my_window = gtk_window_new()
-  call gtk_window_set_title(my_window, &
-       & "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
-  call g_signal_connect(my_window, "destroy"//c_null_char, &
-                      & c_funloc(destroy_signal))
-
-  jb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
-  call gtk_window_set_child(my_window, jb)
-
-
-
-  my_drawing_area = gtk_drawing_area_new()
-  call gtk_widget_set_size_request(my_drawing_area, &
-       & width, height)
-
-  call gtk_drawing_area_set_draw_func(my_drawing_area, &
-                   & c_funloc(draw), c_null_ptr, c_null_funptr)
-
-!  call g_signal_connect(my_event_box, "button-press-event"//c_null_char, &
-!       & c_funloc(mark_point))
-!  call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
-!       & c_funloc(zoom_view))
-  call gtk_box_append(jb, my_drawing_area)
-
-  write(rangestr, &
-       & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
-       & mxmin,  mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
-  rangeid = gtk_label_new(trim(rangestr)//c_null_char)
-  call gtk_box_append(jb, rangeid)
-
-  status_bar = gtk_statusbar_new()
-  call gtk_box_append(jb, status_bar)
-  id = gtk_statusbar_push(status_bar, 0_c_int, &
-       & "Left|Centre: mark region corner, "//&
-       & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
-
-  call gtk_widget_show(my_window)
-
-  ! We create a pixbuffer to store the pixels of the image:
-  my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
-  nch = gdk_pixbuf_get_n_channels(my_pixbuf)
-  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, &
-       &int((/nch, width, height/)))
-  rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
-
-  ! We use char() because we need unsigned integers.
-  ! Our pixbuffer has an Alpha channel but is possible to create a pixbuffer
-  ! with only Red, Green, Blue.
-  do i=1, height
-     do j=1, width
-        pixel(1,j,i)=char(0)     ! Red
-        pixel(2,j,i)=char(0)     ! Green
-        pixel(3,j,i)=char(0)     ! Blue
-        pixel(4,j,i)=char(255)   ! Opacity (Alpha channel)
-     end do
-  end do
-
-  call Mandelbrot_set(my_drawing_area, 1000_c_int)
-
-  ! The window will stay opened after the computation, but we need to verify
-  ! that the user has not closed the window during the computation:
-  if (run_status /= FALSE) then
-    my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-    call g_main_loop_run(my_gmainloop)
-  endif
-
-  print *, "All done"
-end program mandelbrot_zoom
