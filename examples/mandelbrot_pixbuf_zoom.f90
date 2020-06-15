@@ -36,7 +36,7 @@ module handlers
        & gtk_window_set_child, gtk_drawing_area_new,  &
        & gtk_label_new, gtk_label_set_text, &
        & gtk_statusbar_new, gtk_statusbar_push, &
-       & gtk_widget_add_events, gtk_widget_queue_draw, &
+       & gtk_widget_queue_draw, &
        & gtk_drawing_area_set_draw_func, &
        & gtk_widget_set_size_request, gtk_widget_show, gtk_window_new, &
        & gtk_window_set_title, gtk_init, g_signal_connect, TRUE, FALSE, &
@@ -364,7 +364,7 @@ program mandelbrot_zoom
   call gtk_window_set_child(my_window, jb)
 
 
-  call gtk_widget_add_events(my_event_box, ev_mask)
+
   my_drawing_area = gtk_drawing_area_new()
   call gtk_widget_set_size_request(my_drawing_area, &
        & width, height)
