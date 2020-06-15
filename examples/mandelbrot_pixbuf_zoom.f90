@@ -372,11 +372,11 @@ program mandelbrot_zoom
   call gtk_drawing_area_set_draw_func(my_drawing_area, &
                    & c_funloc(draw), c_null_ptr, c_null_funptr)
 
-  call g_signal_connect(my_event_box, "button-press-event"//c_null_char, &
-       & c_funloc(mark_point))
-  call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
-       & c_funloc(zoom_view))
-  call gtk_box_append(jb, my_event_box)
+!  call g_signal_connect(my_event_box, "button-press-event"//c_null_char, &
+!       & c_funloc(mark_point))
+!  call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
+!       & c_funloc(zoom_view))
+!  call gtk_box_append(jb, my_event_box)
 
   write(rangestr, &
        & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
