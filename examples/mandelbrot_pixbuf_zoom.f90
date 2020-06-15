@@ -33,7 +33,7 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use gtk, only: gtk_application_window_new, gtk_application_new, &
-       & gtk_widget_get_first_child, gtk_box_new, &
+       & gtk_box_new, &
        & gtk_window_set_child, gtk_box_append, gtk_drawing_area_new,  &
        & gtk_label_new, gtk_label_set_text, &
        & gtk_statusbar_new, gtk_statusbar_push, &
@@ -42,8 +42,13 @@ module handlers
        & gtk_widget_set_size_request, gtk_widget_show, gtk_window_new, &
        & gtk_window_set_title, gtk_init, g_signal_connect, TRUE, FALSE, &
        & GDK_SCROLL_UP, GDK_SCROLL_DOWN, GDK_SHIFT_MASK, GDK_CONTROL_MASK, &
-       & GDK_BUTTON_PRESS_MASK, GDK_SCROLL_MASK, GTK_ORIENTATION_VERTICAL, &
-       & GDK_COLORSPACE_RGB
+       & GTK_ORIENTATION_VERTICAL, GDK_COLORSPACE_RGB, &
+    & gtk_widget_get_width, gtk_widget_get_height, &
+       & gtk_gesture_click_new, gtk_widget_add_controller, &
+       & gtk_event_controller_get_widget, &
+       & gtk_gesture_single_get_current_button, &
+       & gtk_gesture_single_set_button, gtk_event_controller_scroll_new, &
+       & GTK_EVENT_CONTROLLER_SCROLL_VERTICAL
   use g, only: g_main_context_iteration, &
              & g_main_context_pending, &
              & g_application_run, g_object_unref
@@ -84,21 +89,33 @@ contains
     call cairo_paint(my_cairo_context)
   end subroutine draw
 
-  recursive subroutine mark_point(widget, event, gdata)  bind(c)
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-    type(gdkeventbutton), pointer :: fevent
+  ! Click callback function ("pressed" signal):
+  subroutine click_cb(gesture, n_press, x, y, gdata) bind(c)
+    type(c_ptr), value, intent(in)    :: gesture, gdata
+    integer(c_int), value, intent(in) :: n_press
+    real(c_double), value, intent(in) :: x, y
     real(kind=c_double), save :: x0, y0
-    real(kind=c_double) :: x1, y1, xr, yr, dr
+    real(kind=c_double) :: x1, y1
     type(c_ptr) :: drawing_area
     integer(kind=c_int) :: id
+    integer(c_int) :: width, height
 
-    if (.not. c_associated(event)) return  ! shouldn't happen
+    print *, "Button ", gtk_gesture_single_get_current_button(gesture)
+    drawing_area = gtk_event_controller_get_widget(gesture)
+    print *, n_press, " click(s) at ", int(x), int(y)
+    width  = gtk_widget_get_width(drawing_area)
+    height = gtk_widget_get_height(drawing_area)
+    print *, "widget width and height: ", width, height
+
+    if (n_press > 1) then
+      print *, "Double clicks have no effect!"
+      return
+    end if
+
     if (computing_flag) return
 
-    call c_f_pointer(event, fevent)
-    drawing_area = gtk_widget_get_first_child(widget)
-
-    if (fevent%button == 3) then ! Right button reset to full set
+    if (gtk_gesture_single_get_current_button(gesture) == 3) then
+       ! Right button => reset to full set
        need_point=.false.
        call set_limits
        call mandelbrot_set(drawing_area, 1000_c_int)
@@ -108,14 +125,14 @@ contains
     else if (.not. need_point) then
        need_point=.true.
        print *, "First point"
-       call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x0, y0)
+       call mand_xy(int(x, c_int), int(y, c_int), x0, y0)
        id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Click the opposite corner of the region"//c_null_char)
     else if (need_point) then ! Already have one point
        need_point=.false.
        print *, "Second point"
 
-       call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x1, y1)
+       call mand_xy(int(x, c_int), int(y, c_int), x1, y1)
        ! If it is not a double-click, we zoom:
        if ((min(x0,x1)/=max(x0,x1)).and.(min(y0,y1)/=max(y0,y1))) then
          mxmin=min(x0,x1)
@@ -123,34 +140,6 @@ contains
          mymin=min(y0,y1)
          mymax=max(y0,y1)
        end if
-
-       select case(fevent%state)
-       case(GDK_SHIFT_MASK) ! Second point was shifted: square (bigger)
-          xr=mxmax-mxmin
-          yr=mymax-mymin
-          if (xr > yr) then
-             dr = xr-yr
-             mymin=mymin-dr/2._c_double
-             mymax=mymax+dr/2._c_double
-          else if (yr > xr) then
-             dr = yr-xr
-             mxmin=mxmin-dr/2._c_double
-             mxmax=mxmax+dr/2._c_double
-          end if
-       case(GDK_CONTROL_MASK) ! Second point was control: square (smaller)
-          xr=mxmax-mxmin
-          yr=mymax-mymin
-          if (xr > yr) then
-             dr = xr-yr
-             mxmin=mxmin+dr/2._c_double
-             mxmax=mxmax-dr/2._c_double
-          else if (yr > xr) then
-             dr = yr-xr
-             mymin=mymin+dr/2._c_double
-             mymax=mymax-dr/2._c_double
-          end if
-       case  default
-       end select
 
        write(rangestr, &
             & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: '"//&
@@ -163,36 +152,38 @@ contains
             & "Left|Centre: mark region corner, "//&
             & "Right: Reset, Wheel: Zoom in/out"//c_null_char)    
     end if
-  end subroutine mark_point
+  end subroutine click_cb
 
-  ! Need to be recursive in case the wheel is turned many steps at a time
-  recursive subroutine zoom_view(widget, event, gdata)  bind(c)
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-    type(gdkeventscroll), pointer :: fevent
+  ! Scroll callback function ("scroll" signal):
+  function scroll_cb(controller, x, y, gdata) result(ret) bind(c)
+    type(c_ptr), value, intent(in)    :: controller, gdata
+    real(c_double), value, intent(in) :: x, y
+    logical(c_bool) :: ret
     type(c_ptr) :: drawing_area
-    real(kind=c_double) :: xr, yr, x, y
+    ! Mathematical coordinates:
+    real(kind=c_double) :: xr, yr, xx, yy
     integer(kind=c_int) :: id
 
-    if (.not. c_associated(event)) return  ! shouldn't happen
+    print *, "Scroll x,y= ", x, y
+    ! We need to redraw the area:
+    drawing_area = gtk_event_controller_get_widget(controller)
+
+    ret = .true.
+
     if (computing_flag) return             ! One wheel step at a time !
 
-    call c_f_pointer(event, fevent)
-
-    select case (fevent%direction)
-    case(GDK_SCROLL_UP) ! Zoom out
-       call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x, y)
+    if (y > 0) then ! Zoom out
+       call mand_xy(int(x, c_int), int(y, c_int), xx, yy)
        xr=min(mxmax-mxmin, 1.5_c_double)
        yr=min(mymax-mymin, 1.5_c_double)
-    case (GDK_SCROLL_DOWN) ! Zoom in
-       call mand_xy(int(fevent%x,c_int), int(fevent%y, c_int), x, y)
+    else ! Zoom in
+       call mand_xy(int(x, c_int), int(y, c_int), xx, yy)
        xr = (mxmax-mxmin)/4._c_double
        yr = (mymax-mymin)/4._c_double
-    case default ! Transverse scroll -- ignore
-       return
-    end select
+    end if
 
-    mxmax=x+xr
-    mxmin=x-xr
+    mxmax=xx+xr
+    mxmin=xx-xr
     if (mxmax > 1._c_double) then
        mxmax = 1._c_double
        mxmin = mxmax - 2._c_double * xr
@@ -200,8 +191,9 @@ contains
        mxmin = -2._c_double
        mxmax = mxmin + 2._c_double * xr
     end if
-    mymin = y-yr
-    mymax = y+yr
+
+    mymin = yy-yr
+    mymax = yy+yr
     if (mymax > 1.5_c_double) then
        mymax = 1.5_c_double
        mymin = mymax - 2._c_double * yr
@@ -209,24 +201,20 @@ contains
        mymin = -1.5_c_double
        mymax = mymin + 2._c_double * yr
     end if
+
     write(rangestr, &
          & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',"//&
          & "g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
          & mxmin, mxmax, mxmax-mxmin, mymin, mymax, mymax-mymin
     call gtk_label_set_text(rangeid, trim(rangestr)//c_null_char)
-
     print *, "Window:", mxmin,mxmax,mymin, mymax
-
-    drawing_area = gtk_widget_get_first_child(widget)
 
     call mandelbrot_set(drawing_area, 1000_c_int)
 
     id = gtk_statusbar_push(status_bar, 0_c_int, &
          & "Left|Centre: mark region corner, "//&
          & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
-
-  end subroutine zoom_view
-
+  end function scroll_cb
 
   subroutine set_limits()
     mxmin = -2.0_c_double
@@ -329,11 +317,9 @@ contains
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
     type(c_ptr) :: my_window, jb
-    type(c_ptr) :: my_drawing_area
+    type(c_ptr) :: my_drawing_area, controller, controller2
     integer :: i, j
     integer(kind=c_int) :: id
-    integer(kind=c_int), parameter :: ev_mask = ior(GDK_BUTTON_PRESS_MASK, &
-                                                  & GDK_SCROLL_MASK)
 
     my_window = gtk_application_window_new(app)
 
@@ -350,8 +336,6 @@ contains
     jb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
     call gtk_window_set_child(my_window, jb)
 
-
-
     my_drawing_area = gtk_drawing_area_new()
     call gtk_widget_set_size_request(my_drawing_area, &
          & width, height)
@@ -359,10 +343,23 @@ contains
     call gtk_drawing_area_set_draw_func(my_drawing_area, &
                      & c_funloc(draw), c_null_ptr, c_null_funptr)
 
-  !  call g_signal_connect(my_event_box, "button-press-event"//c_null_char, &
-  !       & c_funloc(mark_point))
-  !  call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
-  !       & c_funloc(zoom_view))
+    ! We need a gesture controller to detect mouse clicks: 
+    ! https://developer.gnome.org/gtk4/stable/GtkGestureClick.html
+    ! https://developer.gnome.org/gtk4/stable/GtkWidget.html#gtk-widget-add-controller
+    controller = gtk_gesture_click_new()
+    ! 0 to listen to all buttons (button 1 by default):
+    call gtk_gesture_single_set_button (controller, 0_c_int)
+    call g_signal_connect(controller, "pressed"//c_null_char, &
+                                        & c_funloc(click_cb))
+    call gtk_widget_add_controller(my_drawing_area, controller)
+
+    ! And a controller for scrolling (modifies the circle radius):
+    ! https://developer.gnome.org/gtk4/stable/GtkEventControllerScroll.html
+    controller2 = gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_VERTICAL)
+    call g_signal_connect(controller2, "scroll"//c_null_char, &
+                                        & c_funloc(scroll_cb))
+    call gtk_widget_add_controller(my_drawing_area, controller2)
+
     call gtk_box_append(jb, my_drawing_area)
 
     write(rangestr, &
