@@ -382,7 +382,7 @@ program mandelbrot_zoom
 !       & c_funloc(mark_point))
 !  call g_signal_connect(my_event_box, "scroll-event"//c_null_char, &
 !       & c_funloc(zoom_view))
-!  call gtk_box_append(jb, my_event_box)
+  call gtk_box_append(jb, my_drawing_area)
 
   write(rangestr, &
        & "('Xmin: ',g11.4,' Xmax: ',g11.4,' Range: ',g11.4,' Ymin: ',g11.4,' Ymax: ', g11.4,' Range: ',g11.4)") &
