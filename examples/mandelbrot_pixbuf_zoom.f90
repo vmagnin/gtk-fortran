@@ -61,17 +61,20 @@ module handlers
 
 contains
   ! User defined event handlers go here
-  function delete_event (widget, event, gdata) result(ret)  bind(c)
-    integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
 
+  ! Our callback function before destroying the window:
+  function destroy_signal(widget, event, gdata) result(ret)  bind(c)
+    integer(c_int)                 :: ret
+    type(c_ptr), value, intent(in) :: widget, event, gdata
+
+    print *, "Your destroy_signal() function has been invoked !"
     ! Some functions and subroutines need to know that it's finished:
     run_status = FALSE
     ! Returns FALSE to propagate the event further:
     ret = FALSE
     ! Makes the innermost invocation of the main loop return when it regains control:
     if (.not. computing_flag)   call g_main_loop_quit(my_gmainloop)
-  end function delete_event
+  end function destroy_signal
 
   ! This function is needed to update the GUI during long computations.
   ! https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
@@ -357,8 +360,8 @@ program mandelbrot_zoom
   my_window = gtk_window_new()
   call gtk_window_set_title(my_window, &
        & "A tribute to Benoit MANDELBROT (1924-2010)"//c_null_char)
-  call g_signal_connect (my_window, "delete-event"//c_null_char, &
-       & c_funloc(delete_event))
+  call g_signal_connect(my_window, "destroy"//c_null_char, &
+                      & c_funloc(destroy_signal))
 
   jb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
   call gtk_window_set_child(my_window, jb)
