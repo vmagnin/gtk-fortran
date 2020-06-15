@@ -33,7 +33,7 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use gtk, only: gtk_widget_get_first_child, gtk_box_new, &
-       & gtk_window_set_child, gtk_drawing_area_new, gtk_event_box_new, &
+       & gtk_window_set_child, gtk_drawing_area_new,  &
        & gtk_label_new, gtk_label_set_text, &
        & gtk_statusbar_new, gtk_statusbar_push, &
        & gtk_widget_add_events, gtk_widget_queue_draw, &
@@ -339,7 +339,7 @@ program mandelbrot_zoom
   use handlers
   implicit none
   type(c_ptr) :: my_window, jb
-  type(c_ptr) :: my_event_box, my_drawing_area
+  type(c_ptr) :: my_drawing_area
   integer :: i, j
   integer(kind=c_int) :: id
   integer(kind=c_int), parameter :: ev_mask = ior(GDK_BUTTON_PRESS_MASK, &
@@ -363,12 +363,12 @@ program mandelbrot_zoom
   jb = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0_c_int)
   call gtk_window_set_child(my_window, jb)
 
-  my_event_box = gtk_event_box_new()
+
   call gtk_widget_add_events(my_event_box, ev_mask)
   my_drawing_area = gtk_drawing_area_new()
   call gtk_widget_set_size_request(my_drawing_area, &
        & width, height)
-  call gtk_container_add(my_event_box, my_drawing_area)
+
   call gtk_drawing_area_set_draw_func(my_drawing_area, &
                    & c_funloc(draw), c_null_ptr, c_null_funptr)
 
