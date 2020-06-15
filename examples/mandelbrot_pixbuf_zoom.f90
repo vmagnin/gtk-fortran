@@ -1,29 +1,30 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
-! Last modifications: vmagnin 2020-02-13
+! Last modifications: vmagnin 2020-06-15 (GTK 4)
+!------------------------------------------------------------------------------
 
 module handlers
   use gdk_events, only: gdkeventbutton, gdkeventscroll
@@ -71,13 +72,14 @@ contains
     if (.not. computing_flag)   call g_main_loop_quit(my_gmainloop)
   end function delete_event
 
-
+  ! This function is needed to update the GUI during long computations.
+  ! https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
   subroutine pending_events ()
-    do while(IAND(g_main_context_pending(c_null_ptr, run_status) /= FALSE)
-       boolresult = g_main_context_iteration(c_null_ptr, FALSE) ! False for non-blocking
+    do while(IAND(g_main_context_pending(c_null_ptr), run_status) /= FALSE)
+      ! FALSE for non-blocking:
+      boolresult = g_main_context_iteration(c_null_ptr, FALSE)
     end do
   end subroutine pending_events
-
 
   function draw (widget, my_cairo_context, gdata) result(ret)  bind(c)
     type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
