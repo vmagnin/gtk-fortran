@@ -85,14 +85,17 @@ contains
     end do
   end subroutine pending_events
 
-  function draw (widget, my_cairo_context, gdata) result(ret)  bind(c)
-    type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
-    integer(c_int)                 :: ret
+  ! "It is called whenever GTK needs to draw the contents of the drawing area
+  ! to the screen."
+  ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
+  subroutine draw(widget, my_cairo_context, width, height, gdata) bind(c)
+    type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
+    integer(c_int), value, intent(in) :: width, height    
 
+    ! We redraw the pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
     call cairo_paint(my_cairo_context)
-    ret = FALSE
-  end function draw
+  end subroutine draw
 
   recursive subroutine mark_point(widget, event, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, event, gdata
