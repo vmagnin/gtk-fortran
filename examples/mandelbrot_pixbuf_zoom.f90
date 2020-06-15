@@ -32,7 +32,7 @@ module handlers
   use gdk, only: gdk_cairo_set_source_pixbuf
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-  use gtk, only: gtk_bin_get_child, gtk_box_new, &
+  use gtk, only: gtk_widget_get_first_child, gtk_box_new, &
        & gtk_window_set_child, gtk_drawing_area_new, gtk_event_box_new, &
        & gtk_label_new, gtk_label_set_text, &
        & gtk_statusbar_new, gtk_statusbar_push, &
@@ -110,7 +110,7 @@ contains
     if (computing_flag) return
 
     call c_f_pointer(event, fevent)
-    drawing_area = gtk_bin_get_child(widget)
+    drawing_area = gtk_widget_get_first_child(widget)
 
     if (fevent%button == 3) then ! Right button reset to full set
        need_point=.false.
@@ -231,7 +231,7 @@ contains
 
     print *, "Window:", mxmin,mxmax,mymin, mymax
 
-    drawing_area = gtk_bin_get_child(widget)
+    drawing_area = gtk_widget_get_first_child(widget)
 
     call mandelbrot_set(drawing_area, 1000_c_int)
 
