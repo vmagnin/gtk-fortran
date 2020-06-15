@@ -33,7 +33,7 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
        & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use gtk, only: gtk_widget_get_first_child, gtk_box_new, &
-       & gtk_window_set_child, gtk_drawing_area_new,  &
+       & gtk_window_set_child, gtk_box_append, gtk_drawing_area_new,  &
        & gtk_label_new, gtk_label_set_text, &
        & gtk_statusbar_new, gtk_statusbar_push, &
        & gtk_widget_queue_draw, &
