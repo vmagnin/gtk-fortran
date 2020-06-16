@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin,
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
-! Last modifications: vmagnin 2020-06-09 (GTK 4)
+! Last modifications: vmagnin 2020-06-16 (GTK 4)
 !------------------------------------------------------------------------------
 
 module handlers
@@ -37,14 +37,16 @@ module handlers
        & cairo_rectangle, cairo_select_font_face, cairo_set_font_size, &
        & cairo_set_line_width, cairo_set_source_rgb, cairo_show_text, &
        & cairo_stroke, cairo_surface_write_to_png
-  use gdk, only: gdk_device_get_name, gdk_device_get_source, &
-       & gdk_event_get_source_device, gdk_keyval_from_name, gdk_keyval_name
+  use gdk, only: gdk_device_get_name, &
+       & gdk_keyval_from_name, gdk_keyval_name
   use gtk, only: gtk_window_set_child, &
        & gtk_widget_queue_draw, gtk_widget_show, gtk_init, TRUE, FALSE, &
        & GDK_BUTTON_PRESS, GDK_BUTTON_RELEASE, &
        & GDK_KEY_PRESS, GDK_ENTER_NOTIFY, GDK_LEAVE_NOTIFY, GDK_CONTROL_MASK, &
        & GDK_POINTER_MOTION_MASK, GDK_BUTTON_MOTION_MASK, &
-       & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
+       & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, &
+       & gtk_event_controller_get_current_event_device, &
+       & gtk_event_controller_get_name
   use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use gdk_events
 
@@ -55,11 +57,9 @@ module handlers
 
   implicit none
   type(c_ptr) :: my_gmainloop
-  !  integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
   logical :: boolevent
   integer(kind=c_int) :: width, height
-
   logical :: rflag = .false.
   integer(kind=c_int) :: xp0, yp0
 
@@ -73,71 +73,6 @@ contains
     ret = FALSE
   end function delete_h
 
-!  function button_event_h(widget, event, gdata) result(rv) bind(c)
-!    integer(kind=c_int) :: rv
-!    type(c_ptr), value, intent(in) :: widget, event, gdata
-!
-!    type(gdkeventbutton), pointer :: bevent
-!    type(c_ptr) :: hdevice, dcname, pixb
-!    character(len=64) :: dname, hdname
-!    integer(kind=c_int) :: xp1, yp1, xo, yo, xs, ys, ipick
-!    character(len=120), dimension(:), allocatable :: files
-
-!    rv = FALSE
-
-!    if (c_associated(event)) then
-!       call c_f_pointer(event,bevent)
-!    else
-!       return
-!    end if
-
-!    if (bevent%type == GDK_BUTTON_RELEASE) then
-!       print *, "Button release detected"
-!       if (rflag) then
-!          xp1 = nint(bevent%x)
-!          yp1 = nint(bevent%y)
-!          print *, "Corners: ", xp0, yp0, " and ", xp1, yp1
-
-!          xo = min(xp0, xp1)
-!          yo = min(yp0, yp1)
-!          xs = max(xp0, xp1) - xo + 1
-!          ys = max(yp0, yp1) - yo + 1
-!          print *, "Origin:", xo, yo, " Size:", xs, ys
-!          pixb = hl_gtk_drawing_area_get_gdk_pixbuf(widget, &
-!                  & x0 = xo, y0=yo, xsize=xs, ysize=ys)
-!          call hl_gdk_pixbuf_save(pixb, "cairo1.png"//c_null_char)
-!       end if
-!       rflag = .false.
-!    else
-!       print *, "Button press detected"
-!       print *, "Clicked at:", int(bevent%x), int(bevent%y)
-!       print *, "Type:", bevent%type
-!       print *, "State, Button:", bevent%state, bevent%button
-!       print *, "Root x,y:", int(bevent%x_root), int(bevent%y_root)
-!       dcname = gdk_device_get_name(bevent%device)
-!       call c_f_string(dcname, dname)
-!       hdevice = gdk_event_get_source_device(event)
-!       dcname = gdk_device_get_name(hdevice)
-!       call c_f_string(dcname, hdname)
-!       print *, "Device: ",trim(dname),' (',trim(hdname),') ', &
-!            & gdk_device_get_source(bevent%device)
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- !      print *, "Not in GTK 4: if (bevent%type == GDK_DOUBLE_BUTTON_PRESS .and. &"
-!            & bevent%button == 3) call g_main_loop_quit(my_gmainloop)
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-!       if (bevent%type == GDK_BUTTON_PRESS .and. &
-!            & bevent%button == 1 .and. bevent%state == GDK_CONTROL_MASK) then
-!          xp0 = nint(bevent%x)
-!          yp0 = nint(bevent%y)
-!          rflag = .true.
-!          print *, "Begin region define"
-!       end if
-!    end if
-!    print *
- ! end function button_event_h
-
   ! GTK 4: Click callback function ("pressed" signal):
   subroutine button_event_h(gesture, n_press, x, y, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: gesture, gdata
@@ -148,6 +83,8 @@ contains
     type(c_ptr) :: drawing_area
     integer(kind=c_int) :: id
     integer(c_int) :: width, height
+    type(c_ptr) :: hdevice, dcname, pixb
+    character(len=80) :: dname, hdname
 
     print *, "Button ", gtk_gesture_single_get_current_button(gesture)
     print *, n_press, " click(s) at ", int(x), int(y)
@@ -156,6 +93,10 @@ contains
       print *, "Multiple click"
     end if
 
+    dcname = gdk_device_get_name(gtk_event_controller_get_current_event_device( &
+                                & gesture))
+    call c_f_string(dcname, dname)
+    print *, "Device: ",trim(dname)
   end subroutine button_event_h
 
   ! GTK 4: Motion callback function ("motion" signal):
@@ -175,23 +116,6 @@ contains
     logical(c_bool) :: ret
 
     print *, "Scroll event detected : x,y= ", x, y
-
- !   type(gdkeventscroll), pointer :: bevent
- !   type(c_ptr) :: hdevice, dcname
- !   character(len=64) :: dname, hdname
-!       call c_f_pointer(event,bevent)
-!       print *, "Clicked at:", int(bevent%x), int(bevent%y)
-!       print *, "State, direction:", bevent%state, bevent%direction
-!       print *, "Root x,y:", int(bevent%x_root), int(bevent%y_root)
-!       dcname = gdk_device_get_name(bevent%device)
-!       call c_f_string(dcname, dname)
-!       hdevice = gdk_event_get_source_device(event)
-!       dcname = gdk_device_get_name(hdevice)
-!       call c_f_string(dcname, hdname)
-!       print *, "Device: ",trim(dname),' (',trim(hdname),') ', &
-!            & gdk_device_get_source(bevent%device)
-!    end if
-
     ret = .true.
   end function scroll_event_h
 
