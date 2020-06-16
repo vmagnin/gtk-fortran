@@ -149,31 +149,31 @@ contains
     ret = .true.
   end function motion_event_h
 
+  ! GTK 4 : Scroll callback function ("scroll" signal):
+  function scroll_event_h(controller, x, y, gdata) result(ret) bind(c)
+    type(c_ptr), value, intent(in)    :: controller, gdata
+    real(c_double), value, intent(in) :: x, y
+    logical(c_bool) :: ret
 
-  function scroll_event_h(widget, event, gdata) bind(c) result(rv)
-    integer(kind=c_int) :: rv
-    type(c_ptr), value, intent(in) :: widget, event, gdata
+    print *, "Scroll event detected : x,y= ", x, y
 
-    type(gdkeventscroll), pointer :: bevent
-    type(c_ptr) :: hdevice, dcname
-    character(len=64) :: dname, hdname
+ !   type(gdkeventscroll), pointer :: bevent
+ !   type(c_ptr) :: hdevice, dcname
+ !   character(len=64) :: dname, hdname
+!       call c_f_pointer(event,bevent)
+!       print *, "Clicked at:", int(bevent%x), int(bevent%y)
+!       print *, "State, direction:", bevent%state, bevent%direction
+!       print *, "Root x,y:", int(bevent%x_root), int(bevent%y_root)
+!       dcname = gdk_device_get_name(bevent%device)
+!       call c_f_string(dcname, dname)
+!       hdevice = gdk_event_get_source_device(event)
+!       dcname = gdk_device_get_name(hdevice)
+!       call c_f_string(dcname, hdname)
+!       print *, "Device: ",trim(dname),' (',trim(hdname),') ', &
+!            & gdk_device_get_source(bevent%device)
+!    end if
 
-    print *, "Wheel event detected"
-    if (c_associated(event)) then
-       call c_f_pointer(event,bevent)
-       print *, "Clicked at:", int(bevent%x), int(bevent%y)
-       print *, "State, direction:", bevent%state, bevent%direction
-       print *, "Root x,y:", int(bevent%x_root), int(bevent%y_root)
-       dcname = gdk_device_get_name(bevent%device)
-       call c_f_string(dcname, dname)
-       hdevice = gdk_event_get_source_device(event)
-       dcname = gdk_device_get_name(hdevice)
-       call c_f_string(dcname, hdname)
-       print *, "Device: ",trim(dname),' (',trim(hdname),') ', &
-            & gdk_device_get_source(bevent%device)
-    end if
-    print *
-    rv = FALSE
+    ret = .true.
   end function scroll_event_h
 
   function cross_event_h(widget, event, gdata) bind(c) result(rv)

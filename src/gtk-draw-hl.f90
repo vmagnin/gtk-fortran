@@ -219,7 +219,7 @@ contains
     logical :: rgba
     integer(kind=c_int) :: cstat, hpolicy, vpolicy
     character(len=120) :: cstat_fstr
-    type(c_ptr) :: controller_m, controller2, controller3
+    type(c_ptr) :: controller_m, controller_s, controller3
 
     plota = gtk_drawing_area_new()
     if (present(size)) then
@@ -371,18 +371,23 @@ contains
             & iand(GDK_BUTTON_RELEASE_MASK, insert_mask))
     end if
 
-    ! Scroll event
+    ! And a controller for scrolling:
+    ! https://developer.gnome.org/gtk4/stable/GtkEventControllerScroll.html
     if (present(scroll_event)) then
+       controller_s = gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_VERTICAL)
        if (present(data_scroll)) then
-          call g_signal_connect(plota, "scroll-event"//c_null_char, &
-               &scroll_event, data_scroll)
+         call g_signal_connect(controller_s, "scroll"//c_null_char, &
+                             & scroll_event, data_scroll)
        else
-          call g_signal_connect(plota, "scroll-event"//c_null_char, &
-               & scroll_event)
+         call g_signal_connect(controller_s, "scroll"//c_null_char, &
+                             & scroll_event)
        endif
-       if (auto_add == TRUE) mask = ior(mask, &
-            & iand(GDK_SCROLL_MASK, insert_mask))
+       call gtk_widget_add_controller(plota, controller_s)
+!       if (auto_add == TRUE) mask = ior(mask, &
+!            & iand(GDK_SCROLL_MASK, insert_mask))
     end if
+
+
 
     ! Key_press event
     if (present(key_press_event)) then
