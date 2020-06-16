@@ -345,42 +345,37 @@ contains
     end if
 
 
-    ! Button_press event
     ! We need a gesture controller to detect mouse clicks: 
     ! https://developer.gnome.org/gtk4/stable/GtkGestureClick.html
     ! https://developer.gnome.org/gtk4/stable/GtkWidget.html#gtk-widget-add-controller
-    if (present(button_press_event)) then
+    if (present(button_press_event).OR.present(button_release_event)) then
        controller_c = gtk_gesture_click_new()
        ! 0 to listen to all buttons (button 1 by default):
        call gtk_gesture_single_set_button (controller_c, 0_c_int)
-       if (present(data_button_press)) then
-         call g_signal_connect(controller_c, "pressed"//c_null_char, &
-                             & button_press_event, data_button_press)
-       else
-         call g_signal_connect(controller_c, "pressed"//c_null_char, &
-                             & button_press_event)
-       endif
+       
+       if (present(button_press_event)) then
+         if (present(data_button_press)) then
+           call g_signal_connect(controller_c, "pressed"//c_null_char, &
+                               & button_press_event, data_button_press)
+         else
+           call g_signal_connect(controller_c, "pressed"//c_null_char, &
+                               & button_press_event)
+         endif
+       end if
+       
+       if (present(button_release_event)) then
+         if (present(data_button_release)) then
+           call g_signal_connect(controller_c, "released"//c_null_char, &
+                               & button_release_event, data_button_release)
+         else
+           call g_signal_connect(controller_c, "released"//c_null_char, &
+                               & button_release_event)
+         endif
+       end if
+
        call gtk_widget_add_controller(plota, controller_c)
 !       if (auto_add == TRUE) mask = ior(mask, &
 !            & iand(GDK_BUTTON_PRESS_MASK, insert_mask))
-    end if
-
- 
-
-
-
-
-    ! Button_release event
-    if (present(button_release_event)) then
-       if (present(data_button_release)) then
-          call g_signal_connect(plota, "button-release-event"//c_null_char, &
-               & button_release_event, data_button_release)
-       else
-          call g_signal_connect(plota, "button-release-event"//c_null_char, &
-               & button_release_event)
-       endif
-       if (auto_add == TRUE) mask = ior(mask, &
-            & iand(GDK_BUTTON_RELEASE_MASK, insert_mask))
     end if
 
     ! And a controller for scrolling:

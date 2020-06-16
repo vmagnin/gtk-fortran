@@ -98,6 +98,15 @@ contains
     print *, "Number of axes: ", nb_axes
   end subroutine button_event_h
 
+  ! GTK 4: Click callback function ("released" signal):
+  subroutine button_release_h(gesture, n_press, x, y, gdata) bind(c)
+    type(c_ptr), value, intent(in)    :: gesture, gdata
+    integer(c_int), value, intent(in) :: n_press
+    real(c_double), value, intent(in) :: x, y
+
+    print *, "Button released: ", gtk_gesture_single_get_current_button(gesture)
+  end subroutine button_release_h
+
   ! GTK 4: Motion callback function ("motion" signal):
   function motion_event_h(controller, x, y, gdata) result(ret) bind(c)
     type(c_ptr), value, intent(in)    :: controller, gdata
@@ -260,7 +269,7 @@ program cairo_basics_click
        & size = (/width, height /), &
        & ssize = (/ 400_c_int, 300_c_int /), &
        & button_press_event=c_funloc(button_event_h), &
-       & button_release_event=c_funloc(button_event_h), &
+       & button_release_event=c_funloc(button_release_h), &
        & scroll_event=c_funloc(scroll_event_h), &
        & enter_event=c_funloc(cross_event_h), &
        & leave_event=c_funloc(cross_event_h), &
