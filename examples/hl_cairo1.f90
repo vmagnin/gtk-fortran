@@ -139,20 +139,16 @@ contains
 
   end function button_event_h
 
-  function motion_event_h(widget, event, gdata) bind(c) result(rv)
-    integer(kind=c_int) :: rv
-    type(c_ptr), value, intent(in) :: widget, event, gdata
+  ! GTK 4: Motion callback function ("motion" signal):
+  function motion_event_h(controller, x, y, gdata) result(ret) bind(c)
+    type(c_ptr), value, intent(in)    :: controller, gdata
+    real(c_double), value, intent(in) :: x, y
+    logical(c_bool) :: ret
 
-    type(gdkeventscroll), pointer :: bevent
-
-    if (c_associated(event)) then
-       call c_f_pointer(event,bevent)
-
-       write(*, "(2I5,A)", advance='no') int(bevent%x), &
-            & int(bevent%y), c_carriage_return
-    end if
-    rv = FALSE
+    write(*, "(2I5,A)", advance='no') nint(x), nint(y), c_carriage_return
+    ret = .true.
   end function motion_event_h
+
 
   function scroll_event_h(widget, event, gdata) bind(c) result(rv)
     integer(kind=c_int) :: rv

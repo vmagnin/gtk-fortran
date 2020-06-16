@@ -23,7 +23,7 @@
 ! -----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modifications: 2013-01-31, vmagnin 2020-06-10 (GTK 4)
+! Last modifications: 2013-01-31, vmagnin 2020-06-16 (GTK 4)
 ! -----------------------------------------------------------------------------
 
 !*
@@ -86,7 +86,12 @@ module gtk_draw_hl
        & GDK_BUTTON_PRESS_MASK, GDK_BUTTON_RELEASE_MASK, GDK_KEY_PRESS_MASK, &
        & GDK_KEY_RELEASE_MASK, GDK_ENTER_NOTIFY_MASK, GDK_LEAVE_NOTIFY_MASK, &
        & GDK_STRUCTURE_MASK, GDK_SCROLL_MASK, GDK_ALL_EVENTS_MASK, &
-       & GTK_POLICY_AUTOMATIC, GDK_COLORSPACE_RGB
+       & GTK_POLICY_AUTOMATIC, GDK_COLORSPACE_RGB,&
+   & gtk_gesture_click_new, gtk_widget_add_controller, &
+       & gtk_event_controller_get_widget, gtk_event_controller_motion_new, &
+       & gtk_gesture_single_get_current_button, &
+       & gtk_gesture_single_set_button, gtk_event_controller_scroll_new, &
+       & GTK_EVENT_CONTROLLER_SCROLL_VERTICAL
 
   use gtk_sup
 
@@ -214,6 +219,7 @@ contains
     logical :: rgba
     integer(kind=c_int) :: cstat, hpolicy, vpolicy
     character(len=120) :: cstat_fstr
+    type(c_ptr) :: controller_m, controller2, controller3
 
     plota = gtk_drawing_area_new()
     if (present(size)) then
@@ -418,17 +424,20 @@ contains
        end if
     end if
 
-    ! Motion event
+    ! And a controller to detect motion and know where is the mouse:
+    ! https://developer.gnome.org/gtk4/stable/GtkEventControllerMotion.html
     if (present(motion_event)) then
+       controller_m = gtk_event_controller_motion_new ()
        if (present(data_motion)) then
-          call g_signal_connect(plota, "motion-notify-event"//c_null_char, &
-               & motion_event, data_motion)
+          call g_signal_connect(controller_m, "motion"//c_null_char, &
+                              & motion_event, data_motion)
        else
-          call g_signal_connect(plota, "motion-notify-event"//c_null_char, &
-               & motion_event)
+          call g_signal_connect(controller_m, "motion"//c_null_char, &
+                              & motion_event)
        endif
-       if (auto_add == TRUE) mask = ior(mask, &
-            & iand(GDK_POINTER_MOTION_MASK, insert_mask))
+       call gtk_widget_add_controller(plota, controller_m)
+!       if (auto_add == TRUE) mask = ior(mask, &
+!            & iand(GDK_POINTER_MOTION_MASK, insert_mask))
     end if
 
     ! Enter event
