@@ -219,7 +219,7 @@ contains
     logical :: rgba
     integer(kind=c_int) :: cstat, hpolicy, vpolicy
     character(len=120) :: cstat_fstr
-    type(c_ptr) :: controller_m, controller_s, controller3
+    type(c_ptr) :: controller_m, controller_s, controller_c
 
     plota = gtk_drawing_area_new()
     if (present(size)) then
@@ -346,17 +346,29 @@ contains
 
 
     ! Button_press event
+    ! We need a gesture controller to detect mouse clicks: 
+    ! https://developer.gnome.org/gtk4/stable/GtkGestureClick.html
+    ! https://developer.gnome.org/gtk4/stable/GtkWidget.html#gtk-widget-add-controller
     if (present(button_press_event)) then
+       controller_c = gtk_gesture_click_new()
+       ! 0 to listen to all buttons (button 1 by default):
+       call gtk_gesture_single_set_button (controller_c, 0_c_int)
        if (present(data_button_press)) then
-          call g_signal_connect(plota, "button-press-event"//c_null_char, &
-               & button_press_event, data_button_press)
+         call g_signal_connect(controller_c, "pressed"//c_null_char, &
+                             & button_press_event, data_button_press)
        else
-          call g_signal_connect(plota, "button-press-event"//c_null_char, &
-               & button_press_event)
+         call g_signal_connect(controller_c, "pressed"//c_null_char, &
+                             & button_press_event)
        endif
-       if (auto_add == TRUE) mask = ior(mask, &
-            & iand(GDK_BUTTON_PRESS_MASK, insert_mask))
+       call gtk_widget_add_controller(plota, controller_c)
+!       if (auto_add == TRUE) mask = ior(mask, &
+!            & iand(GDK_BUTTON_PRESS_MASK, insert_mask))
     end if
+
+ 
+
+
+
 
     ! Button_release event
     if (present(button_release_event)) then
