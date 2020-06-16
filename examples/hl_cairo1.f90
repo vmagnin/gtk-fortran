@@ -37,7 +37,7 @@ module handlers
        & cairo_rectangle, cairo_select_font_face, cairo_set_font_size, &
        & cairo_set_line_width, cairo_set_source_rgb, cairo_show_text, &
        & cairo_stroke, cairo_surface_write_to_png
-  use gdk, only: gdk_device_get_name, &
+  use gdk, only: gdk_device_get_name, gdk_device_get_n_axes, &
        & gdk_keyval_from_name, gdk_keyval_name
   use gtk, only: gtk_window_set_child, &
        & gtk_widget_queue_draw, gtk_widget_show, gtk_init, TRUE, FALSE, &
@@ -78,13 +78,9 @@ contains
     type(c_ptr), value, intent(in)    :: gesture, gdata
     integer(c_int), value, intent(in) :: n_press
     real(c_double), value, intent(in) :: x, y
-    real(kind=c_double), save :: x0, y0
-    real(kind=c_double) :: x1, y1
-    type(c_ptr) :: drawing_area
-    integer(kind=c_int) :: id
-    integer(c_int) :: width, height
-    type(c_ptr) :: hdevice, dcname, pixb
-    character(len=80) :: dname, hdname
+    integer(kind=c_int) :: nb_axes, nb_buttons
+    type(c_ptr) :: device, dcname
+    character(len=80) :: dname
 
     print *, "Button ", gtk_gesture_single_get_current_button(gesture)
     print *, n_press, " click(s) at ", int(x), int(y)
@@ -93,10 +89,13 @@ contains
       print *, "Multiple click"
     end if
 
-    dcname = gdk_device_get_name(gtk_event_controller_get_current_event_device( &
-                                & gesture))
+    device = gtk_event_controller_get_current_event_device(gesture)
+    dcname = gdk_device_get_name(device)
     call c_f_string(dcname, dname)
     print *, "Device: ",trim(dname)
+    
+    nb_axes = gdk_device_get_n_axes(device)
+    print *, "Number of axes: ", nb_axes
   end subroutine button_event_h
 
   ! GTK 4: Motion callback function ("motion" signal):
