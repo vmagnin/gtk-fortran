@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin,
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
-! Last modifications: vmagnin 2020-06-16 (GTK 4)
+! Last modifications: vmagnin 2020-06-17 (GTK 4)
 !------------------------------------------------------------------------------
 
 module handlers
@@ -41,12 +41,10 @@ module handlers
        & gdk_keyval_from_name, gdk_keyval_name
   use gtk, only: gtk_window_set_child, &
        & gtk_widget_queue_draw, gtk_widget_show, gtk_init, TRUE, FALSE, &
-       & GDK_BUTTON_PRESS, GDK_BUTTON_RELEASE, &
-       & GDK_KEY_PRESS, GDK_ENTER_NOTIFY, GDK_LEAVE_NOTIFY, GDK_CONTROL_MASK, &
+       & GDK_CONTROL_MASK, &
        & GDK_POINTER_MOTION_MASK, GDK_BUTTON_MOTION_MASK, &
        & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, &
-       & gtk_event_controller_get_current_event_device, &
-       & gtk_event_controller_get_name
+       & gtk_event_controller_get_current_event_device
   use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use gdk_events
 
@@ -65,6 +63,8 @@ module handlers
 
 contains
   ! User defined event handlers go here
+
+  ! destroy signal:
   function delete_h (widget, event, gdata) result(ret)  bind(c)
     type(c_ptr), value, intent(in) :: widget, event, gdata
     integer(c_int)    :: ret
@@ -86,7 +86,7 @@ contains
     print *, n_press, " click(s) at ", int(x), int(y)
 
     if (n_press > 1) then
-      print *, "Multiple click"
+      print *, "Multiple clicks"
     end if
 
     device = gtk_event_controller_get_current_event_device(gesture)
@@ -140,6 +140,7 @@ contains
   end subroutine leave_event_h
 
   ! GTK 4 : key callback function ("key-pressed" signal):
+  ! https://developer.gnome.org/gdk4/stable/gdk4-Keyboard-Handling.html
   function key_event_h(controller, keyval, keycode, state, gdata) result(ret) bind(c)
     type(c_ptr), value, intent(in) :: controller, gdata
     integer(c_int), value, intent(in) :: keyval, keycode, state
@@ -163,9 +164,7 @@ contains
 
   subroutine draw_pattern(widget)
     type(c_ptr) :: widget
-
     real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
-
     type(c_ptr) :: my_cairo_context
     integer :: cstatus
     integer :: t
@@ -235,9 +234,7 @@ contains
     call gtk_widget_queue_draw(widget)
     call hl_gtk_drawing_area_cairo_destroy(my_cairo_context)
   end subroutine draw_pattern
-
 end module handlers
-
 
 program cairo_basics_click
   use iso_c_binding, only: c_ptr, c_funloc
@@ -278,5 +275,5 @@ program cairo_basics_click
   my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
   call g_main_loop_run(my_gmainloop)
   print *, "All done"
-
 end program cairo_basics_click
+
