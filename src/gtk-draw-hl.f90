@@ -190,7 +190,7 @@ contains
     ! HAS_ALPHA: boolean: optional: If a pixbuf is used, should it have
     ! 		an alpha (transparency) channel (default=FALSE)
     ! SIZE_ALLOCATE: c_funptr: optional: Callback for the
-    ! 		'size-allocate' signal
+    ! 		'size-allocate' ('resize' in GTK 4) signal
     ! DATA_SIZE_ALLOCATE: c_ptr: optional: Data for size_allocate.
     ! CAIRO_STATUS: c_int: optional: Status code from the cairo surface.
     ! HSCROLL_POLICY: int: optional: Horizontal scrolling policy for the
@@ -316,17 +316,17 @@ contains
             & c_funloc(hl_gtk_drawing_area_destroy_cb))
     end if
 
-    ! Size-allocate signal
+    ! Size-allocate (resize) signal
     if (present(size_allocate)) then
        if (present(data_size_allocate)) then
-          call g_signal_connect(plota, "size-allocate"//c_null_char, &
+          call g_signal_connect(plota, "resize"//c_null_char, &
                & size_allocate, data_size_allocate)
        else
-          call g_signal_connect(plota, "size-allocate"//c_null_char, &
+          call g_signal_connect(plota, "resize"//c_null_char, &
                & size_allocate)
        end if
     else
-       call g_signal_connect(plota, "size-allocate"//c_null_char, &
+       call g_signal_connect(plota, "resize"//c_null_char, &
             & c_funloc(hl_gtk_drawing_area_resize_cb))
     end if
 
