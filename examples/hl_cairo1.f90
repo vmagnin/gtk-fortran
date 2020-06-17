@@ -108,14 +108,12 @@ contains
   end subroutine button_release_h
 
   ! GTK 4: Motion callback function ("motion" signal):
-  function motion_event_h(controller, x, y, gdata) result(ret) bind(c)
+  subroutine motion_event_h(controller, x, y, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: controller, gdata
     real(c_double), value, intent(in) :: x, y
-    logical(c_bool) :: ret
 
     write(*, "(2I5,A)", advance='no') nint(x), nint(y), c_carriage_return
-    ret = .true.
-  end function motion_event_h
+  end subroutine motion_event_h
 
   ! GTK 4 : Scroll callback function ("scroll" signal):
   function scroll_event_h(controller, x, y, gdata) result(ret) bind(c)
