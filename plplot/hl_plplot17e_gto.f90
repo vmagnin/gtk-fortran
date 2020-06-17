@@ -277,7 +277,7 @@ program cairo_plplot_ex17_gto
 
   window = hl_gtk_window_new("PLplot x17 / gtk-fortran (extcairo)"//&
        & " g_timeout version"//c_null_char, &
-       & delete_event = c_funloc(delete_cb))
+       & destroy = c_funloc(delete_cb))
   base = hl_gtk_box_new()
   call gtk_window_set_child(window, base)
 

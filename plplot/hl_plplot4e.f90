@@ -288,7 +288,7 @@ program cairo_plplot_ex4
 
   window = hl_gtk_window_new("PLplot x04 / gtk-fortran (extcairo)"&
        & //c_null_char, &
-       & delete_event = c_funloc(delete_cb))
+       & destroy = c_funloc(delete_cb))
 
   base = hl_gtk_box_new()
   call gtk_window_set_child(window, base)

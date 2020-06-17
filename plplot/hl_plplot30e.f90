@@ -253,7 +253,7 @@ program cairo_plplot_ex30
   call gtk_init()
 
   window = hl_gtk_window_new("PLplot x30 / gtk-fortran (extcairo)"//c_null_char, &
-       & delete_event = c_funloc(delete_cb))
+       & destroy = c_funloc(delete_cb))
   base = hl_gtk_box_new()
   call gtk_window_set_child(window, base)
 
