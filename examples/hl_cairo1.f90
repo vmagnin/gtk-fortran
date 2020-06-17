@@ -253,7 +253,7 @@ program cairo_basics_click
   width = 700
   height = 700
   my_window = hl_gtk_window_new("Cairo events demo"//c_null_char, &
-       & delete_event = c_funloc(delete_h))
+       & destroy=c_funloc(delete_h))
       
   my_drawing_area = hl_gtk_drawing_area_new(&
        & scroll=my_scroll_box, &

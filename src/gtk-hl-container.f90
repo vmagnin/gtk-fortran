@@ -148,7 +148,7 @@ contains
          & call gtk_window_set_default_size(win, wsize(1), wsize(2))
 
     if (present(delete_event)) then
-        print *, "In GTK 4, there is no more delete-event"
+        print *, "In GTK 4, there is no more delete-event: use destroy event"
     end if
 
     if (present(destroy)) then
