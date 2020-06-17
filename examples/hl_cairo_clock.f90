@@ -335,7 +335,7 @@ program cairo_clock
   call gtk_init()
 
   window = hl_gtk_window_new("Cairo Clock"//c_null_char, &
-       & delete_event = c_funloc(delete_cb), wsize=(/width, height/))
+       & destroy = c_funloc(delete_cb), wsize=(/width, height/))
 
   drawing = hl_gtk_drawing_area_new(has_alpha = TRUE, &
        & size_allocate=c_funloc(clock_resize), &
