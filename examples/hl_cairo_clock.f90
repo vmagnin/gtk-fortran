@@ -26,7 +26,6 @@
 !------------------------------------------------------------------------------
 
 module cl_handlers
-
   !********************************
   ! Gtk modules for hl_cairo_clock.f90
   !********************************
@@ -38,7 +37,7 @@ module cl_handlers
   use g, only: g_timeout_add, g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use gdk, only: gdk_keyval_from_name
   use gtk, only: gtk_window_set_child, &
-       & gtk_window_destroy, gtk_widget_get_allocation, gtk_widget_queue_draw, &
+       & gtk_widget_get_allocation, gtk_widget_queue_draw, &
        & gtk_widget_show, gtk_init, TRUE, FALSE, GDK_CONTROL_MASK, &
        & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, &
        & CAIRO_FONT_WEIGHT_BOLD
@@ -56,6 +55,7 @@ module cl_handlers
   type(c_ptr) :: my_gmainloop
 
 contains
+
   function delete_cb (widget, event, gdata) result(ret)  bind(c)
     integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, event, gdata
@@ -288,6 +288,7 @@ contains
     call gtk_widget_queue_draw(area)
   end function show_time
 
+
   subroutine clock_resize(area, data) bind(c)
     type(c_ptr), value :: area, data
 
@@ -302,8 +303,8 @@ contains
 
     t0(:) = 0
     irv = show_time(area)
-
   end subroutine clock_resize
+
 
   ! GTK 4 : key callback function ("key-pressed" signal):
   ! https://developer.gnome.org/gdk4/stable/gdk4-Keyboard-Handling.html
@@ -322,6 +323,7 @@ contains
     ret = .true.
   end function clock_key
 end module cl_handlers
+
 
 program cairo_clock
   use cl_handlers
