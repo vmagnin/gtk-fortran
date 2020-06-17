@@ -54,14 +54,14 @@ module gtk_hl_menu
        & gtk_radio_menu_item_get_group, gtk_radio_menu_item_new,&
        & gtk_radio_menu_item_new_with_label, gtk_check_menu_item_get_active, &
        & gtk_separator_menu_item_new, &
-       & gtk_widget_add_accelerator, gtk_widget_set_sensitive,&
+       & gtk_widget_set_sensitive,&
        & gtk_label_new, gtk_label_set_markup, &
        & gtk_widget_set_tooltip_text, GTK_PACK_DIRECTION_LTR, &
        & TRUE, FALSE, g_signal_connect
 
   use g, only: g_slist_length, g_slist_nth, g_slist_nth_data
 
-  use gtk_hl_accelerator
+  !use gtk_hl_accelerator
 
   implicit none
 

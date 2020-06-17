@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin.
-! Last modification: vmagnin 02-20-2019
+! Last modification: vmagnin 2019-02-20, 2020-06-17
 
 module handlers
   use gtk_hl
@@ -118,14 +118,12 @@ program menu_test
 
   integer(kind=c_int), target :: mca = -1
   character(len=12) :: holder
-  type(c_ptr) :: accel
 
   ! Initialize gtk
   call gtk_init()
 
   ! Make a window for the hierarchy
-  win = hl_gtk_window_new("Menu Demo"//c_null_char, destroy=c_funloc(my_destroy), &
-       & accel_group=accel)
+  win = hl_gtk_window_new("Menu Demo"//c_null_char, destroy=c_funloc(my_destroy))
 
   ! Make a vertical box, and add a label to it
   box=hl_gtk_box_new()
@@ -146,8 +144,7 @@ program menu_test
   do i = 1, size(mbuts)
      write(holder,'("Item: ",I2)') i
      mbuts(i) = hl_gtk_menu_item_new(smnu, trim(holder)//c_null_char, &
-          & activate=c_funloc(mbut_act), data=c_loc(mclicks(i)), &
-          & accel_key=char(ichar("a")+i-1)//c_null_char, accel_group=accel)
+          & activate=c_funloc(mbut_act), data=c_loc(mclicks(i)))
   end do
   ! Add a single button
   mba =  hl_gtk_menu_item_new(menubar, "Extra"//c_null_char, &
@@ -176,8 +173,7 @@ program menu_test
 
   ! Make a quit button and put it in the box, put the box
   ! into the window
-  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy), &
-       & accel_key="q"//c_null_char, accel_group=accel)
+  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy),)
   call hl_gtk_box_pack(box, qbut)
 
   ! Realize the hierarchy
