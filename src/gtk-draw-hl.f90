@@ -91,7 +91,8 @@ module gtk_draw_hl
        & gtk_event_controller_get_widget, gtk_event_controller_motion_new, &
        & gtk_gesture_single_get_current_button, &
        & gtk_gesture_single_set_button, gtk_event_controller_scroll_new, &
-       & gtk_event_controller_key_new, GTK_EVENT_CONTROLLER_SCROLL_VERTICAL
+       & gtk_event_controller_key_new, GTK_EVENT_CONTROLLER_SCROLL_VERTICAL, &
+       & gtk_widget_set_focusable
 
   use gtk_sup
 
@@ -425,11 +426,11 @@ contains
       endif
 
       call gtk_widget_add_controller(plota, controller_k)
-       ! Note: For keyboard events, the drawing area must be able to
-       ! accept input focus as well as the KEY events.
+      ! Note: For keyboard events, the drawing area must be able to
+      ! accept input focus:
+      call gtk_widget_set_focusable(plota, TRUE)
 !       if (auto_add == TRUE) then
 !          mask = ior(mask, iand(GDK_KEY_PRESS_MASK, insert_mask))
-          call gtk_widget_set_can_focus(plota, TRUE)
 !       end if
     end if
 
