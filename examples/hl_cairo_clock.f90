@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-10 (GTK 4)
+! Last modifications: vmagnin 2020-06-17 (GTK 4)
 !------------------------------------------------------------------------------
 
 module cl_handlers
@@ -305,23 +305,21 @@ contains
 
   end subroutine clock_resize
 
-  function clock_key(widget, event, data) bind(c) result(rv)
-    integer(kind=c_int) :: rv
-    type(c_ptr), value :: widget, event, data
-
+  ! GTK 4 : key callback function ("key-pressed" signal):
+  ! https://developer.gnome.org/gdk4/stable/gdk4-Keyboard-Handling.html
+  function clock_key(controller, keyval, keycode, state, gdata) result(ret) bind(c)
+    type(c_ptr), value, intent(in) :: controller, gdata
+    integer(c_int), value, intent(in) :: keyval, keycode, state
+    logical(c_bool) :: ret
     integer(kind=c_int) :: key_q
-    type(GdkEventKey), pointer :: fevent
 
     key_q = gdk_keyval_from_name("q"//c_null_char)
-    call c_f_pointer(event, fevent)
-
-    if (fevent%keyval == key_q .and. fevent%state == GDK_CONTROL_MASK) then
-       call gtk_window_destroy(window)
-       call g_main_loop_quit(my_gmainloop)
-       rv = TRUE
-    else
-       rv = FALSE
+    ! CTRL+Q will close the program:
+    if ((iand(state, GDK_CONTROL_MASK) /= 0).and.(keyval == key_q)) then
+      call g_main_loop_quit(my_gmainloop)
     end if
+
+    ret = .true.
   end function clock_key
 end module cl_handlers
 
