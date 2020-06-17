@@ -23,7 +23,7 @@
 ! -----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modifications: 2013-01-31, vmagnin 2020-06-16 (GTK 4)
+! Last modifications: 2013-01-31, vmagnin 2020-06-17 (GTK 4)
 ! -----------------------------------------------------------------------------
 
 !*
@@ -50,7 +50,7 @@ module gtk_draw_hl
   ! * hl_gtk_drawing_area_get_gdk_pixbuf; Get the contents to a GdkPixbuf
   ! * hl_gtk_drawing_area_expose_cb; Default callback for expose events.
   ! * hl_gtk_drawing_area_destroy_cb; Default callback for destroy signal
-  ! * hl_gtk_drawing_area_resize_cb; Default callback for size-allocate signal
+  ! * hl_gtk_drawing_area_resize_cb; Default callback for resize signal
   ! * hl_gtk_drawing_area_cairo_new; Create a cairo context attached to the
   ! backing surface.
   ! * hl_gtk_drawing_area_resize: Resize the drawing area and the backing
@@ -81,15 +81,10 @@ module gtk_draw_hl
        & gtk_widget_get_realized, gtk_drawing_area_set_draw_func, &
        & TRUE, FALSE, &
        & CAIRO_FORMAT_ARGB32, &
-       & CAIRO_FORMAT_RGB24, CAIRO_STATUS_SUCCESS, GDK_EXPOSURE_MASK, &
-       & GDK_POINTER_MOTION_MASK, &
-       & GDK_BUTTON_PRESS_MASK, GDK_BUTTON_RELEASE_MASK, GDK_KEY_PRESS_MASK, &
-       & GDK_KEY_RELEASE_MASK, GDK_ENTER_NOTIFY_MASK, GDK_LEAVE_NOTIFY_MASK, &
-       & GDK_STRUCTURE_MASK, GDK_SCROLL_MASK, GDK_ALL_EVENTS_MASK, &
-       & GTK_POLICY_AUTOMATIC, GDK_COLORSPACE_RGB,&
-   & gtk_gesture_click_new, gtk_widget_add_controller, &
-       & gtk_event_controller_get_widget, gtk_event_controller_motion_new, &
-       & gtk_gesture_single_get_current_button, &
+       & CAIRO_FORMAT_RGB24, CAIRO_STATUS_SUCCESS, &
+       & GTK_POLICY_AUTOMATIC, &
+       & gtk_gesture_click_new, gtk_widget_add_controller, &
+       & gtk_event_controller_motion_new, &
        & gtk_gesture_single_set_button, gtk_event_controller_scroll_new, &
        & gtk_event_controller_key_new, GTK_EVENT_CONTROLLER_SCROLL_VERTICAL, &
        & gtk_widget_set_focusable
@@ -113,8 +108,7 @@ contains
        & data_scroll, motion_event, data_motion, realize, data_realize, &
        & configure_event, data_configure, key_press_event, data_key_press, &
        & key_release_event, data_key_release, enter_event, data_enter, &
-       & leave_event, data_leave, destroy, data_destroy, event_mask, &
-       & event_exclude, auto_add_mask, &
+       & leave_event, data_leave, destroy, data_destroy, &
        & tooltip, has_alpha, size_allocate, data_size_allocate, &
        & cairo_status, hscroll_policy, vscroll_policy) result(plota)
 
@@ -129,8 +123,6 @@ contains
          & data_button_release, data_scroll, data_motion, data_realize, &
          & data_configure, data_key_press, data_key_release, data_enter, &
          & data_leave, data_destroy, data_size_allocate
-    integer(kind=c_int), intent(in), optional :: event_mask, event_exclude
-    integer(kind=c_int), intent(in), optional :: auto_add_mask
     character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
     integer(kind=c_int), intent(in), optional :: has_alpha
     integer(kind=c_int), intent(out), optional :: cairo_status
@@ -181,12 +173,6 @@ contains
     ! DATA_LEAVE: c_ptr: optional: Data for leave_event
     ! DESTROY: c_funptr: optional: Callback when the widget is destroyed.
     ! DATA_DESTROY: c_ptr: optional: Data to pass to the destroy callback.
-    ! EVENT_MASK: c_int: optional: Mask for which events to pass.
-    ! EVENT_EXCLUDE: c_int: optional: Mask for events not to pass (this might
-    ! 		be used to prevent auto-enabling an event that should only
-    ! 		be enabled by user actions)
-    ! AUTO_ADD_MASK: boolean: optional: Set to FALSE to disable automatically
-    ! 		adding events to the event mask if a handler is provided.
     ! TOOLTIP: string: optional: Tooltip for the drawing area.
     ! HAS_ALPHA: boolean: optional: If a pixbuf is used, should it have
     ! 		an alpha (transparency) channel (default=FALSE)
@@ -199,16 +185,6 @@ contains
     ! VSCROLL_POLICY: int: optional: Vertical scrolling policy for the
     ! 		containing scroll window (default AUTOMATIC). 
     !
-    ! Odd notes on mask interactions and other things.
-    !
-    ! * Scroll (wheel) events, are enabled by GDK_SCROLL_MASK or
-    ! GDK_BUTTON_PRESS_MASK, thus (as far as I can see) there is no way
-    ! to mask wheel events while allowing button presses to be processed.
-    ! * It does not appear to be possible to remove events by unsetting bits
-    ! in the event mask.
-    ! * Adding a tooltip looks to implicitly enable some events.
-    ! * An example where an explict EVENT_MASK and EVENT_EXCLUDE might be
-    ! useful would be to enable motion events only if a button is down.
     ! * If an explicit size is given then the drawing area cannot be made
     ! smaller than that by resizing the containing window
     !-
@@ -269,32 +245,7 @@ contains
     isurface = cairo_surface_reference(isurface)   ! Prevent accidental deletion
     call g_object_set_data(plota, "backing-surface", isurface)
 
-    ! Set the event mask, if event callbacks are provided, then
-    ! the corresponding mask will be ORed in unless disabled by setting
-    ! AUTO_ADD_MASK to FALSE, or for individual events by including the
-    ! relevant mask in EVENT_EXCLUDE. Note that expose events are always
-    ! enabled.
-
-    if (present(event_mask)) then
-       mask = ior(event_mask, GDK_EXPOSURE_MASK)
-    else
-       mask = GDK_EXPOSURE_MASK
-    end if
-
-    if (present(event_exclude)) then
-       insert_mask = iand(not(event_exclude), GDK_ALL_EVENTS_MASK)
-    else
-       insert_mask = GDK_ALL_EVENTS_MASK
-    end if
-
-    if (present(auto_add_mask)) then
-       auto_add = auto_add_mask
-    else
-       auto_add = TRUE
-    end if
-
     ! Realize signal
-
     if (present(realize)) then
        if (present(data_realize)) then
           call g_signal_connect(plota, "realize"//c_null_char, realize, &
@@ -343,9 +294,7 @@ contains
     else
       call gtk_drawing_area_set_draw_func(plota, &
          & c_funloc(hl_gtk_drawing_area_expose_cb), c_null_ptr, c_null_funptr)
-
     end if
-
 
     ! We need a gesture controller to detect mouse clicks: 
     ! https://developer.gnome.org/gtk4/stable/GtkGestureClick.html
@@ -376,8 +325,6 @@ contains
        end if
 
        call gtk_widget_add_controller(plota, controller_c)
-!       if (auto_add == TRUE) mask = ior(mask, &
-!            & iand(GDK_BUTTON_PRESS_MASK, insert_mask))
     end if
 
     ! And a controller for scrolling:
@@ -392,11 +339,7 @@ contains
                              & scroll_event)
        endif
        call gtk_widget_add_controller(plota, controller_s)
-!       if (auto_add == TRUE) mask = ior(mask, &
-!            & iand(GDK_SCROLL_MASK, insert_mask))
     end if
-
-
 
     ! And a controller for key events:
     ! https://developer.gnome.org/gtk4/stable/GtkEventControllerKey.html
@@ -429,11 +372,7 @@ contains
       ! Note: For keyboard events, the drawing area must be able to
       ! accept input focus:
       call gtk_widget_set_focusable(plota, TRUE)
-!       if (auto_add == TRUE) then
-!          mask = ior(mask, iand(GDK_KEY_PRESS_MASK, insert_mask))
-!       end if
     end if
-
 
     ! And a controller to detect motion and know where is the mouse:
     ! https://developer.gnome.org/gtk4/stable/GtkEventControllerMotion.html
@@ -456,10 +395,8 @@ contains
         call g_signal_connect(controller_m, "enter"//c_null_char, &
              & enter_event)
       endif
-!         if (auto_add == TRUE) mask = ior(mask, &
-!              & iand(GDK_ENTER_NOTIFY_MASK, insert_mask))
 
-    ! Leave event
+      ! Leave event
       if (present(data_leave)) then
         call g_signal_connect(controller_m, "leave"//c_null_char, &
              & leave_event, data_leave)
@@ -467,14 +404,9 @@ contains
         call g_signal_connect(controller_m, "leave"//c_null_char, &
              & leave_event)
       endif
-!      if (auto_add == TRUE) mask = ior(mask, &
-!          & iand(GDK_LEAVE_NOTIFY_MASK, insert_mask))
 
       call gtk_widget_add_controller(plota, controller_m)
-!       if (auto_add == TRUE) mask = ior(mask, &
-!            & iand(GDK_POINTER_MOTION_MASK, insert_mask))
     end if
-
 
     ! Configure event
     if (present(configure_event)) then
@@ -485,15 +417,7 @@ contains
           call g_signal_connect(plota, "configure-event"//c_null_char, &
                & configure_event)
        endif
-       if (auto_add == TRUE) mask = ior(mask, &
-            & iand(GDK_STRUCTURE_MASK, insert_mask))
     end if
-
-    ! Apply the event mask
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! Not in GTK 4
-    print *, "Not in GTK4: if (mask /= 0) call gtk_widget_add_events(plota, mask)"
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     if (present(tooltip)) call gtk_widget_set_tooltip_text(plota, tooltip)
 
@@ -514,20 +438,10 @@ contains
     end if
   end function hl_gtk_drawing_area_new
 
-
-
-
-!void
-!user_function (GtkEventControllerKey *controller,
-!               gpointer               user_data)
   subroutine im_update_event_h(controller, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: controller, gdata
     print *, "im_update event detected"
   end subroutine im_update_event_h
-  
-  
-  
-
 
   !+
   function hl_gtk_drawing_area_get_surface(area) result(isurface)

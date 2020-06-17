@@ -44,7 +44,8 @@ module handlers
        & GDK_CONTROL_MASK, &
        & GDK_POINTER_MOTION_MASK, GDK_BUTTON_MOTION_MASK, &
        & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, &
-       & gtk_event_controller_get_current_event_device
+       & gtk_event_controller_get_current_event_device, &
+       & gtk_gesture_single_get_current_button
   use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use gdk_events
 
@@ -262,9 +263,7 @@ program cairo_basics_click
        & enter_event=c_funloc(enter_event_h), &
        & leave_event=c_funloc(leave_event_h), &
        & key_press_event=c_funloc(key_event_h), &
-       & motion_event=c_funloc(motion_event_h), &
-       & event_exclude=GDK_POINTER_MOTION_MASK, &
-       & event_mask=GDK_BUTTON_MOTION_MASK)
+       & motion_event=c_funloc(motion_event_h))
 
   call gtk_window_set_child(my_window, my_scroll_box)
 
