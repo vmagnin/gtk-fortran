@@ -11,9 +11,6 @@ optional arguments in Fortran>=90 to simplify creating and initializing widgets.
 
 * gtk_hl: A wrapper that includes all of the other modules.
 
-* gtk_hl_accelerator: Interfaces for adding accelerators to buttons and
-       menu items.
-
 * gtk_hl_assistant: A bundled interface for the assistant widget.
 
 * gtk_hl_button: Implements interfaces to various kinds of button.

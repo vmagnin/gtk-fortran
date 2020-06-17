@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2020-04-30
+#   vmagnin: 2020-06-17
 #
 # CMAKE build file for GtkFortran
 
@@ -54,7 +54,6 @@ if(NOT NO_BUILD_HL)
         "gtk-hl-chooser.f90"
         "gtk-hl-dialog.f90"
         "gtk-hl-progress.f90"
-        "gtk-hl-accelerator.f90"
         "gtk-hl-infobar.f90"
         "gtk-hl-assistant.f90"
         "gtk-hl-misc.f90"

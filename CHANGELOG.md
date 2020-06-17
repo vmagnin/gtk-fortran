@@ -18,6 +18,7 @@ The gtk4 branch is the new development branch.
 - examples/gtkzero.f90: replaced by gtkzero_gapp.f90.
 - examples/gtkhello2.f90: replaced by gtkhello.f90.
 - examples/menu.f90 & menu2.f90: based on deprecated APIs.
+- src/gtk-hl-accelerator.f90: deprecated API.
 
 ## [gtk-fortran 20.04] - 2020-05-07
 The main objective of this release was to clean up the code and prepare it for the future GTK 4 branch.
