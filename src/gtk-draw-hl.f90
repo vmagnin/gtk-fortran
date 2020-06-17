@@ -91,7 +91,7 @@ module gtk_draw_hl
        & gtk_event_controller_get_widget, gtk_event_controller_motion_new, &
        & gtk_gesture_single_get_current_button, &
        & gtk_gesture_single_set_button, gtk_event_controller_scroll_new, &
-       & GTK_EVENT_CONTROLLER_SCROLL_VERTICAL
+       & gtk_event_controller_key_new, GTK_EVENT_CONTROLLER_SCROLL_VERTICAL
 
   use gtk_sup
 
@@ -219,7 +219,8 @@ contains
     logical :: rgba
     integer(kind=c_int) :: cstat, hpolicy, vpolicy
     character(len=120) :: cstat_fstr
-    type(c_ptr) :: controller_m, controller_s, controller_c
+    ! GtkEventControllers:
+    type(c_ptr) :: controller_m, controller_s, controller_c, controller_k
 
     plota = gtk_drawing_area_new()
     if (present(size)) then
@@ -396,45 +397,42 @@ contains
 
 
 
-    ! Key_press event
-    if (present(key_press_event)) then
-       if (present(data_key_press)) then
-          call g_signal_connect(plota, "key-press-event"//c_null_char, &
+    ! And a controller for key events:
+    ! https://developer.gnome.org/gtk4/stable/GtkEventControllerKey.html
+    if (present(key_press_event).or.present(key_release_event)) then
+      controller_k = gtk_event_controller_key_new()
+      call g_signal_connect(controller_k, "im-update"//c_null_char, &
+               & c_funloc(im_update_event_h))
+
+      if (present(key_press_event)) then
+        if (present(data_key_press)) then
+          call g_signal_connect(controller_k, "key-pressed"//c_null_char, &
                & key_press_event, data_key_press)
-       else
-          call g_signal_connect(plota, "key-press-event"//c_null_char, &
+        else
+          call g_signal_connect(controller_k, "key-pressed"//c_null_char, &
                & key_press_event)
-       endif
+        endif
+      end if
+
+      if (present(key_release_event)) then
+        if (present(data_key_release)) then
+          call g_signal_connect(controller_k, "key-released"//c_null_char, &
+               & key_press_event, data_key_release)
+        else
+          call g_signal_connect(controller_k, "key-released"//c_null_char, &
+               & key_press_event)
+        endif
+      endif
+
+      call gtk_widget_add_controller(plota, controller_k)
        ! Note: For keyboard events, the drawing area must be able to
        ! accept input focus as well as the KEY events.
-       if (auto_add == TRUE) then
-          mask = ior(mask, iand(GDK_KEY_PRESS_MASK, insert_mask))
+!       if (auto_add == TRUE) then
+!          mask = ior(mask, iand(GDK_KEY_PRESS_MASK, insert_mask))
           call gtk_widget_set_can_focus(plota, TRUE)
-       end if
-
+!       end if
     end if
 
-    ! Key_release event
-    if (present(key_release_event)) then
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! Not in GTK 4:    
-!       if (auto_add == TRUE) &
-       print *, "Not in GTK4: & call gtk_widget_add_events(plota, GDK_KEY_RELEASE_MASK)"
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-       if (present(data_key_release)) then
-          call g_signal_connect(plota, "key-release-event"//c_null_char, &
-               & key_release_event, data_key_release)
-       else
-          call g_signal_connect(plota, "key-release-event"//c_null_char, &
-               & key_release_event)
-       endif
-       ! Note: For keyboard events, the drawing area must be able to
-       ! accept input focus as well as the KEY events.
-       if (auto_add == TRUE) then
-          mask = ior(mask, iand(GDK_KEY_RELEASE_MASK, insert_mask))
-          call gtk_widget_set_can_focus(plota, TRUE)
-       end if
-    end if
 
     ! And a controller to detect motion and know where is the mouse:
     ! https://developer.gnome.org/gtk4/stable/GtkEventControllerMotion.html
@@ -514,6 +512,21 @@ contains
        end if
     end if
   end function hl_gtk_drawing_area_new
+
+
+
+
+!void
+!user_function (GtkEventControllerKey *controller,
+!               gpointer               user_data)
+  subroutine im_update_event_h(controller, gdata) bind(c)
+    type(c_ptr), value, intent(in)    :: controller, gdata
+    print *, "im_update event detected"
+  end subroutine im_update_event_h
+  
+  
+  
+
 
   !+
   function hl_gtk_drawing_area_get_surface(area) result(isurface)
