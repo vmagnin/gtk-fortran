@@ -141,37 +141,25 @@ contains
 
   ! GTK 4 : key callback function ("key-pressed" signal):
   function key_event_h(controller, keyval, keycode, state, gdata) result(ret) bind(c)
-    type(c_ptr), value, intent(in)    :: controller, gdata
-    real(c_int), value, intent(in) :: keyval, keycode, state
+    type(c_ptr), value, intent(in) :: controller, gdata
+    integer(c_int), value, intent(in) :: keyval, keycode, state
     logical(c_bool) :: ret
+    character(len=20) :: keyname
+    integer(kind=c_int) :: key_q
 
-    print *, "Key-pressed signal detected : ", keyval, keycode, state
+    call convert_c_string(gdk_keyval_name(keyval), keyname)
+    print *, "Keyval: ",keyval," Name: ", trim(keyname), "      Keycode: ", &
+             & keycode, " Modifier: ", state
+
+    key_q = gdk_keyval_from_name("q"//c_null_char)
+    ! CTRL+Q will close the program:
+    if ((iand(state, GDK_CONTROL_MASK) /= 0).and.(keyval == key_q)) then
+      call g_main_loop_quit(my_gmainloop)
+    end if
+
     ret = .true.
   end function key_event_h
 
-
-
-!  function key_event_h(widget, event, gdata) bind(c) result(rv)
-!    integer(kind=c_int) :: rv
-!    type(c_ptr), value, intent(in) :: widget, event, gdata
-
-!    type(gdkeventkey), pointer :: bevent
-!    integer(kind=c_int) :: key_q
-!    character(len=20) :: keyname
-
-!    key_q = gdk_keyval_from_name("q"//c_null_char)
-!    print *, "Key event"
-!    if (c_associated(event)) then
-!       call c_f_pointer(event,bevent)
-!       call convert_c_string(gdk_keyval_name(bevent%keyval), keyname)
-!       print *, "Code: ",bevent%keyval," Name: ", trim(keyname), &
-!            & " Modifier: ", bevent%state
-!       if (bevent%type == GDK_KEY_PRESS .and. &
-!            & iand(bevent%state, GDK_CONTROL_MASK) /= 0 .and.&
-!            & bevent%keyval == key_q)  call g_main_loop_quit(my_gmainloop)
-!    end if
-!    rv = FALSE
-!  end function key_event_h
 
   subroutine draw_pattern(widget)
     type(c_ptr) :: widget
