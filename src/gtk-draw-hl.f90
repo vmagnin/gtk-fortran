@@ -438,45 +438,44 @@ contains
 
     ! And a controller to detect motion and know where is the mouse:
     ! https://developer.gnome.org/gtk4/stable/GtkEventControllerMotion.html
-    if (present(motion_event)) then
-       controller_m = gtk_event_controller_motion_new ()
-       if (present(data_motion)) then
-          call g_signal_connect(controller_m, "motion"//c_null_char, &
-                              & motion_event, data_motion)
-       else
-          call g_signal_connect(controller_m, "motion"//c_null_char, &
-                              & motion_event)
-       endif
-       call gtk_widget_add_controller(plota, controller_m)
+    if (present(motion_event).or.present(enter_event).or.present(leave_event)) then
+      controller_m = gtk_event_controller_motion_new ()
+
+      if (present(data_motion)) then
+        call g_signal_connect(controller_m, "motion"//c_null_char, &
+                            & motion_event, data_motion)
+      else
+        call g_signal_connect(controller_m, "motion"//c_null_char, &
+                            & motion_event)
+      endif
+
+      ! Enter event
+      if (present(data_enter)) then
+        call g_signal_connect(controller_m, "enter"//c_null_char, &
+             & enter_event, data_enter)
+      else
+        call g_signal_connect(controller_m, "enter"//c_null_char, &
+             & enter_event)
+      endif
+!         if (auto_add == TRUE) mask = ior(mask, &
+!              & iand(GDK_ENTER_NOTIFY_MASK, insert_mask))
+
+    ! Leave event
+      if (present(data_leave)) then
+        call g_signal_connect(controller_m, "leave"//c_null_char, &
+             & leave_event, data_leave)
+      else
+        call g_signal_connect(controller_m, "leave"//c_null_char, &
+             & leave_event)
+      endif
+!      if (auto_add == TRUE) mask = ior(mask, &
+!          & iand(GDK_LEAVE_NOTIFY_MASK, insert_mask))
+
+      call gtk_widget_add_controller(plota, controller_m)
 !       if (auto_add == TRUE) mask = ior(mask, &
 !            & iand(GDK_POINTER_MOTION_MASK, insert_mask))
     end if
 
-    ! Enter event
-    if (present(enter_event)) then
-       if (present(data_enter)) then
-          call g_signal_connect(plota, "enter-notify-event"//c_null_char, &
-               & enter_event, data_enter)
-       else
-          call g_signal_connect(plota, "enter-notify-event"//c_null_char, &
-               & enter_event)
-       endif
-       if (auto_add == TRUE) mask = ior(mask, &
-            & iand(GDK_ENTER_NOTIFY_MASK, insert_mask))
-    end if
-
-    ! Leave event
-    if (present(leave_event)) then
-       if (present(data_leave)) then
-          call g_signal_connect(plota, "leave-notify-event"//c_null_char, &
-               & leave_event, data_leave)
-       else
-          call g_signal_connect(plota, "leave-notify-event"//c_null_char, &
-               & leave_event)
-       endif
-       if (auto_add == TRUE) mask = ior(mask, &
-            & iand(GDK_LEAVE_NOTIFY_MASK, insert_mask))
-    end if
 
     ! Configure event
     if (present(configure_event)) then

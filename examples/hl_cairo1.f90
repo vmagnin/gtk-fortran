@@ -127,26 +127,20 @@ contains
     ret = .true.
   end function scroll_event_h
 
-  function cross_event_h(widget, event, gdata) bind(c) result(rv)
-    integer(kind=c_int) :: rv
-    type(c_ptr), value, intent(in) :: widget, event, gdata
+  ! GTK 4 : motion callback function ("enter" signal):
+  subroutine enter_event_h(controller, x, y, gdata) bind(c)
+    type(c_ptr), value, intent(in)    :: controller, gdata
+    real(c_double), value, intent(in) :: x, y
 
-    type(gdkeventcrossing), pointer :: bevent
+    print *, "Enter event detected : x,y= ", x, y
+  end subroutine enter_event_h
 
-    if (c_associated(event)) then
-       call c_f_pointer(event,bevent)
-       select case(bevent%type)
-       case(GDK_ENTER_NOTIFY)
-          print *, "Pointer entered at", int(bevent%x), int(bevent%y)
-       case(GDK_LEAVE_NOTIFY)
-          print *, "Pointer left at", int(bevent%x), int(bevent%y)
-       case default
-          print *, "Unknown type", bevent%type
-       end select
-    end if
-    print *
-    rv = FALSE
-  end function cross_event_h
+  ! GTK 4 : motion callback function ("leave" signal):
+  subroutine leave_event_h(controller, gdata) bind(c)
+    type(c_ptr), value, intent(in)    :: controller, gdata
+    print *, "Leave event detected"
+  end subroutine leave_event_h
+
 
   function key_event_h(widget, event, gdata) bind(c) result(rv)
     integer(kind=c_int) :: rv
@@ -271,8 +265,8 @@ program cairo_basics_click
        & button_press_event=c_funloc(button_event_h), &
        & button_release_event=c_funloc(button_release_h), &
        & scroll_event=c_funloc(scroll_event_h), &
-       & enter_event=c_funloc(cross_event_h), &
-       & leave_event=c_funloc(cross_event_h), &
+       & enter_event=c_funloc(enter_event_h), &
+       & leave_event=c_funloc(leave_event_h), &
        & key_press_event=c_funloc(key_event_h), &
        & motion_event=c_funloc(motion_event_h), &
        & event_exclude=GDK_POINTER_MOTION_MASK, &
