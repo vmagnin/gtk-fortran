@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-10 (GTK 4)
+! Last modifications: vmagnin 2020-06-18 (GTK 4)
 !------------------------------------------------------------------------------
 
 module v_handlers
@@ -33,6 +33,7 @@ module v_handlers
   use gdk_pixbuf_hl
   use gtk_draw_hl
   use gtk_hl_chooser
+  use gtk_hl_combobox
   use gtk_sup
 
   !************************************
@@ -43,6 +44,7 @@ module v_handlers
   use gtk, only: gtk_combo_box_get_active, gtk_combo_box_set_active, &
        & gtk_widget_set_sensitive, gtk_window_set_child, &
        & gtk_widget_show, gtk_init, TRUE, FALSE
+  use g, only: g_main_loop_quit
 
   implicit none
   character(len=256), dimension(:), allocatable :: file_list
