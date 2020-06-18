@@ -56,16 +56,11 @@ module gtk_hl_chooser
        & gtk_entry_get_buffer, gtk_entry_buffer_set_text, &
        & gtk_file_chooser_add_filter, &
        & gtk_file_chooser_button_new, gtk_file_chooser_button_set_width_chars, &
-       & gtk_file_chooser_get_current_folder, gtk_file_chooser_get_filenames, &
-       & gtk_file_chooser_get_local_only, gtk_file_chooser_get_uris, &
-       & gtk_file_chooser_select_filename, &
+       & gtk_file_chooser_get_current_folder, &
        & gtk_file_chooser_set_current_folder, &
        & gtk_file_chooser_set_current_name, &
-       & gtk_file_chooser_set_do_overwrite_confirmation, &
-       & gtk_file_chooser_set_extra_widget, gtk_file_chooser_set_local_only, &
-       & gtk_file_chooser_set_filename, &
        & gtk_file_chooser_set_select_multiple, &
-       & gtk_file_chooser_set_show_hidden, gtk_file_chooser_widget_new, &
+       & gtk_file_chooser_widget_new, &
        & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
        & gtk_file_filter_new, gtk_file_filter_set_name, gtk_label_new, &
        & gtk_window_destroy, gtk_widget_set_sensitive, &
@@ -75,8 +70,7 @@ module gtk_hl_chooser
        & gtk_window_set_transient_for, g_signal_connect, TRUE, FALSE, &
        & GTK_RESPONSE_DELETE_EVENT, GTK_RESPONSE_CANCEL, GTK_RESPONSE_APPLY, &
        & GTK_FILE_CHOOSER_ACTION_OPEN, GTK_FILE_CHOOSER_ACTION_SAVE, &
-       & GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, &
-       & GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER
+       & GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
 
   ! Building the chooser uses a number of other high-level interfaces.
 
@@ -167,14 +161,15 @@ contains
             & mode)
     end if
 
-    call gtk_file_chooser_set_local_only(cbutton, TRUE)
+!    call gtk_file_chooser_set_local_only(cbutton, TRUE)
 
     if (present(show_hidden)) then
        lval = show_hidden
+       print *, "GTK 4: gtk_file_chooser_set_show_hidden removed"
     else
        lval = FALSE
     end if
-    call gtk_file_chooser_set_show_hidden(cbutton, lval)
+!    call gtk_file_chooser_set_show_hidden(cbutton, lval)
 
     if (present(width)) call &
          & gtk_file_chooser_button_set_width_chars(cbutton, width)
@@ -190,7 +185,7 @@ contains
             & lval = gtk_file_chooser_set_current_folder(cbutton, "."//c_null_char)
     end if
     if (present(initial_file)) &
-         & lval = gtk_file_chooser_set_filename(cbutton, initial_file)
+         & print *, "not in GTK 4: lval = gtk_file_chooser_set_filename(cbutton, initial_file)"
 
     if (present(filter)) then
        do i = 1, size(filter)
@@ -337,7 +332,7 @@ contains
 
     if (idir == TRUE) then
        if (icreate == TRUE) then
-          action = GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER
+          print *, "Not in GTK 4: action = GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER"
        else
           action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
        end if
@@ -356,6 +351,7 @@ contains
 
     ! Local/URI
     if (present(allow_uri)) then
+       print *, "Not in GTK 4: allow_uri, gtk_file_chooser_set_local_only"
        if (allow_uri == FALSE) then
           lval = TRUE
        else
@@ -364,7 +360,7 @@ contains
     else
        lval = TRUE
     end if
-    call gtk_file_chooser_set_local_only(chooser_info%chooser, lval)
+!    call gtk_file_chooser_set_local_only(chooser_info%chooser, lval)
 
     ! Multiple selections
     if (present(multiple)) then
@@ -376,21 +372,23 @@ contains
 
     ! Hidden files
     if (present(show_hidden)) then
+       print *, "Not in GTK 4: show_hidden"
        lval = show_hidden
     else
        lval = FALSE
     end if
-    call gtk_file_chooser_set_show_hidden(chooser_info%chooser, lval)
+!    call gtk_file_chooser_set_show_hidden(chooser_info%chooser, lval)
 
     ! Confirm overwrite
     if (icreate == TRUE) then
        if (present(confirm_overwrite)) then
+          print *, "Not in GTK 4: confirm_overwrite"
           lval = confirm_overwrite
        else
           lval = FALSE
        end if
-       call gtk_file_chooser_set_do_overwrite_confirmation(chooser_info%chooser,&
-            & lval)
+!       call gtk_file_chooser_set_do_overwrite_confirmation(chooser_info%chooser,&
+!            & lval)
     end if
 
     ! Initial directory (precedes file so if file contains a dir it
@@ -408,14 +406,13 @@ contains
     ! Initial file
 
     if (present(initial_file)) then
-       if (action == GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER .or. &
-            & action == GTK_FILE_CHOOSER_ACTION_SAVE) then
-          call gtk_file_chooser_set_current_name(chooser_info%chooser, &
-               & initial_file)
-       else
-          lval = gtk_file_chooser_select_filename(chooser_info%chooser, &
-               & initial_file)
-       end if
+!       if (action == GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER .or. &
+!            & action == GTK_FILE_CHOOSER_ACTION_SAVE) then
+!          call gtk_file_chooser_set_current_name(chooser_info%chooser, &
+!               & initial_file)
+!       else
+          print *, "Not in GTK4: lval = gtk_file_chooser_select_filename(chooser_info%chooser, initial_file)"
+!       end if
     end if
 
     ! Set up filters
@@ -470,22 +467,23 @@ contains
     ! Add an entry box for extra filters.
     if (present(edit_filters)) then
        if (edit_filters == TRUE) then
-          fbox = hl_gtk_box_new(horizontal=TRUE)
-          junk = gtk_label_new(c_null_char)
-          call hl_gtk_box_pack(fbox, junk)
-          junk = gtk_label_new("New filter:"//c_null_char)
-          call hl_gtk_box_pack(fbox, junk, expand=FALSE)
-          chooser_info%fentry = &
-               & hl_gtk_entry_new(activate=c_funloc(hl_gtk_chooser_filt_cb), &
-               & len=60_c_int, &
-               & tooltip="Enter a new filter here."//c_null_char, &
-               & data=c_loc(chooser_info))
-          call hl_gtk_box_pack(fbox, chooser_info%fentry)
-          fapply = hl_gtk_button_new("Apply"//c_null_char, &
-               & clicked=c_funloc(hl_gtk_chooser_filt_cb), &
-               & data=c_loc(chooser_info))
-          call hl_gtk_box_pack(fbox, fapply, expand=FALSE)
-          call gtk_file_chooser_set_extra_widget(chooser_info%chooser, fbox)
+          print *, "Not in GTK4 : edit_filters, gtk_file_chooser_set_extra_widget"
+!          fbox = hl_gtk_box_new(horizontal=TRUE)
+!          junk = gtk_label_new(c_null_char)
+!          call hl_gtk_box_pack(fbox, junk)
+!          junk = gtk_label_new("New filter:"//c_null_char)
+!          call hl_gtk_box_pack(fbox, junk, expand=FALSE)
+!          chooser_info%fentry = &
+!               & hl_gtk_entry_new(activate=c_funloc(hl_gtk_chooser_filt_cb), &
+!               & len=60_c_int, &
+!               & tooltip="Enter a new filter here."//c_null_char, &
+!               & data=c_loc(chooser_info))
+!          call hl_gtk_box_pack(fbox, chooser_info%fentry)
+!          fapply = hl_gtk_button_new("Apply"//c_null_char, &
+!               & clicked=c_funloc(hl_gtk_chooser_filt_cb), &
+!               & data=c_loc(chooser_info))
+!          call hl_gtk_box_pack(fbox, fapply, expand=FALSE)
+!          call gtk_file_chooser_set_extra_widget(chooser_info%chooser, fbox)
        end if
     end if
 
@@ -606,13 +604,13 @@ contains
        chooser_info%iselect = FALSE
     case (GTK_RESPONSE_APPLY)
        chooser_info%iselect = TRUE
-       if (gtk_file_chooser_get_local_only(chooser_info%chooser) == TRUE) then
-          chooser_info%chooser_sel_list = &
-               & gtk_file_chooser_get_filenames(chooser_info%chooser)
-       else
-          chooser_info%chooser_sel_list = &
-               & gtk_file_chooser_get_uris(chooser_info%chooser)
-       end if
+!       if (gtk_file_chooser_get_local_only(chooser_info%chooser) == TRUE) then
+!          chooser_info%chooser_sel_list = &
+!               & gtk_file_chooser_get_filenames(chooser_info%chooser)
+!       else
+!          chooser_info%chooser_sel_list = &
+!               & gtk_file_chooser_get_uris(chooser_info%chooser)
+!       end if
        chooser_info%chooser_curdir = &
             & gtk_file_chooser_get_current_folder(chooser_info%chooser)
     case default

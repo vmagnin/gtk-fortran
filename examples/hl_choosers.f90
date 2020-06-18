@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modifications: vmagnin 2020-06-11 (GTK 4 version)
+! Last modifications: vmagnin 2020-06-18 (GTK 4 version)
 ! Demo of file choosers.
 !------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ module handlers
   use gtk_hl_dialog
   use gtk, only: gtk_button_new, gtk_window_set_child, &
        &gtk_text_view_new, gtk_widget_set_sensitive, gtk_widget_show, &
-       & gtk_window_new, gtk_init, gtk_file_chooser_get_filename, &
+       & gtk_window_new, gtk_init, &
        & TRUE, FALSE, GTK_BUTTONS_YES_NO, GTK_RESPONSE_NO
   use g, only: alloca, g_main_loop_new, g_main_loop_quit, g_main_loop_run
 
@@ -119,20 +119,20 @@ contains
     integer :: ios
     integer :: idxs
 
-    c_string = gtk_file_chooser_get_filename(widget)
-    call convert_c_string(c_string, filename)
-    call g_free(c_string)
+!    c_string = gtk_file_chooser_get_filename(widget)
+!    call convert_c_string(c_string, filename)
+!    call g_free(c_string)
 
-    open(37, file=filename, action='read')
-    call hl_gtk_text_view_delete(tedit)
-    do
-       read(37,"(A)",iostat=ios) inln
-       if (ios /= 0) exit
-       call hl_gtk_text_view_insert(tedit, (/ trim(inln)//c_new_line /))
-    end do
-    close(37)
-    idxs = index(filename, '/', .true.)+1
-    call gtk_window_set_title(window, trim(filename(idxs:))//c_null_char)
+!    open(37, file=filename, action='read')
+!    call hl_gtk_text_view_delete(tedit)
+!    do
+!       read(37,"(A)",iostat=ios) inln
+!       if (ios /= 0) exit
+!       call hl_gtk_text_view_insert(tedit, (/ trim(inln)//c_new_line /))
+!    end do
+!    close(37)
+!    idxs = index(filename, '/', .true.)+1
+!    call gtk_window_set_title(window, trim(filename(idxs:))//c_null_char)
 
     ! We manually reset the changed flag as the text box signal handler sets it.
     file_is_changed = .FALSE.
