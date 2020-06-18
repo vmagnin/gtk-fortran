@@ -50,7 +50,7 @@ module gtk_hl_chooser
 
   ! Auto generated use's
   use g, only: g_free, g_slist_free, g_slist_length, g_slist_nth_data, &
-             & g_main_loop_new, g_main_loop_run
+             & g_main_loop_new, g_main_loop_run, g_file_new_for_path
   use gtk, only: gtk_box_append, gtk_dialog_add_button, &
        & gtk_dialog_get_content_area, gtk_dialog_new, &
        & gtk_entry_get_buffer, gtk_entry_buffer_set_text, &
@@ -175,14 +175,17 @@ contains
          & gtk_file_chooser_button_set_width_chars(cbutton, width)
 
     if (present(initial_dir)) then
-       lval = gtk_file_chooser_set_current_folder(cbutton, initial_dir)
+       lval = gtk_file_chooser_set_current_folder(cbutton, &
+            & g_file_new_for_path(initial_dir), c_null_ptr)
     else if (present(initial_folder)) then
-       lval = gtk_file_chooser_set_current_folder(cbutton, initial_folder)
+       lval = gtk_file_chooser_set_current_folder(cbutton, &
+            & g_file_new_for_path(initial_folder), c_null_ptr)
        write(error_unit, *) "HL_GTK_FILE_CHOOSER_BUTTON_NEW:: "// &
             & "INITIAL_FOLDER is deprecated, INITIAL_DIR is preferred"
     else if (present(current)) then
        if (c_f_logical(current)) &
-            & lval = gtk_file_chooser_set_current_folder(cbutton, "."//c_null_char)
+            & lval = gtk_file_chooser_set_current_folder(cbutton, &
+                   & g_file_new_for_path("."//c_null_char), c_null_ptr)
     end if
     if (present(initial_file)) &
          & print *, "not in GTK 4: lval = gtk_file_chooser_set_filename(cbutton, initial_file)"
@@ -393,14 +396,14 @@ contains
 
     ! Initial directory (precedes file so if file contains a dir it
     ! will overwrite)
-
     if (present(initial_dir)) then
        lval = gtk_file_chooser_set_current_folder(chooser_info%chooser, &
-            & initial_dir)
+            & g_file_new_for_path(initial_dir), c_null_ptr)
     else if (present(current)) then
-       if (c_f_logical(current)) &
-            & lval = gtk_file_chooser_set_current_folder(chooser_info%chooser, &
-            & "."//c_null_char)
+       if (c_f_logical(current)) then
+            lval = gtk_file_chooser_set_current_folder(chooser_info%chooser, &
+            & g_file_new_for_path("."//c_null_char), c_null_ptr)
+       end if
     end if
 
     ! Initial file

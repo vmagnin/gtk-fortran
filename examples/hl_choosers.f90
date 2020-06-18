@@ -31,6 +31,9 @@ module handlers
   use gtk_hl_container
   use gtk_hl_button
   use gtk_hl_dialog
+  use gtk_hl_chooser
+  use gtk_hl_misc
+  use gtk_hl_entry
   use gtk, only: gtk_button_new, gtk_window_set_child, &
        &gtk_text_view_new, gtk_widget_set_sensitive, gtk_widget_show, &
        & gtk_window_new, gtk_init, &
