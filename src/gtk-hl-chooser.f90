@@ -59,7 +59,7 @@ module gtk_hl_chooser
        & gtk_file_chooser_get_current_folder, &
        & gtk_file_chooser_set_current_folder, &
        & gtk_file_chooser_set_current_name, gtk_file_chooser_set_file, &
-       & gtk_file_chooser_set_select_multiple, &
+       & gtk_file_chooser_set_select_multiple, gtk_file_chooser_select_file, &
        & gtk_file_chooser_widget_new, gtk_file_chooser_get_files, &
        & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
        & gtk_file_filter_new, gtk_file_filter_set_name, gtk_label_new, &
@@ -388,10 +388,11 @@ contains
 
     if (present(initial_file)) then
        if (action == GTK_FILE_CHOOSER_ACTION_SAVE) then
-!          call gtk_file_chooser_set_current_name(chooser_info%chooser, &
-!               & initial_file)
+          call gtk_file_chooser_set_current_name(chooser_info%chooser, &
+               & initial_file)
        else
-          print *, "Not in GTK4: lval = gtk_file_chooser_select_filename(chooser_info%chooser, initial_file)"
+          lval = gtk_file_chooser_select_file(chooser_info%chooser, &
+               & g_file_new_for_path(initial_file), c_null_ptr)
        end if
     end if
 
