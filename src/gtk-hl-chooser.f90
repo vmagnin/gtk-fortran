@@ -289,7 +289,7 @@ contains
     ! PARENT: c_ptr: optional: Parent window for the dialogue.
     ! ALL: boolean: optional: Set to TRUE to add an all-files filter pattern
     ! WSIZE: c_int(2): optional: Set the size for the dialog.
-    ! EDIT_FILTERS: boolean: optional: Set to TRUE to proves an entry window
+    ! EDIT_FILTERS: boolean: optional: GTK<=3: Set to TRUE to proves an entry window
     ! 		to add extra filters.
     !-
 
@@ -449,22 +449,6 @@ contains
     if (present(edit_filters)) then
        if (edit_filters == TRUE) then
           print *, "Not in GTK4 : edit_filters, gtk_file_chooser_set_extra_widget"
-!          fbox = hl_gtk_box_new(horizontal=TRUE)
-!          junk = gtk_label_new(c_null_char)
-!          call hl_gtk_box_pack(fbox, junk)
-!          junk = gtk_label_new("New filter:"//c_null_char)
-!          call hl_gtk_box_pack(fbox, junk, expand=FALSE)
-!          chooser_info%fentry = &
-!               & hl_gtk_entry_new(activate=c_funloc(hl_gtk_chooser_filt_cb), &
-!               & len=60_c_int, &
-!               & tooltip="Enter a new filter here."//c_null_char, &
-!               & data=c_loc(chooser_info))
-!          call hl_gtk_box_pack(fbox, chooser_info%fentry)
-!          fapply = hl_gtk_button_new("Apply"//c_null_char, &
-!               & clicked=c_funloc(hl_gtk_chooser_filt_cb), &
-!               & data=c_loc(chooser_info))
-!          call hl_gtk_box_pack(fbox, fapply, expand=FALSE)
-!          call gtk_file_chooser_set_extra_widget(chooser_info%chooser, fbox)
        end if
     end if
 
@@ -520,7 +504,7 @@ contains
     ! PARENT: c_ptr: optional: Parent window for the dialogue.
     ! ALL: boolean: optional: Set to TRUE to add an all-files filter pattern
     ! WSIZE: c_int(2): optional: Set the size for the dialog.
-    ! EDIT_FILTERS: boolean: optional: Set to TRUE to proves an entry window
+    ! EDIT_FILTERS: boolean: optional: GTK<=3: Set to TRUE to proves an entry window
     ! 		to add extra filters.
     !
     ! Returns TRUE if one or more files was selected, FALSE otherwise.
