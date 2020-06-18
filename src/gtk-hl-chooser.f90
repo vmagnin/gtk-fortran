@@ -273,7 +273,7 @@ contains
     ! 		multiple files.
     ! ALLOW_URI: boolean: optional: GTK<=3: Set to TRUE to allow nonlocal selections.
     ! SHOW_HIDDEN: boolean: optional: GTK<=3: Set to TRUE to show hidden files.
-    ! CONFIRM_OVERWRITE: boolean: optional: Set to TRUE to request
+    ! CONFIRM_OVERWRITE: boolean: optional: GTK<=3: Set to TRUE to request
     ! 		confirmation of an overwrite (only used if CREATE
     ! 		is TRUE).
     ! TITLE: string: optional: Title for the window.
@@ -373,8 +373,6 @@ contains
        else
           lval = FALSE
        end if
-!       call gtk_file_chooser_set_do_overwrite_confirmation(chooser_info%chooser,&
-!            & lval)
     end if
 
     ! Initial directory (precedes file so if file contains a dir it
@@ -510,7 +508,7 @@ contains
     ! 		multiple files.
     ! ALLOW_URI: boolean: optional: Set to TRUE to allow nonlocal selections.
     ! SHOW_HIDDEN: boolean: optional: GTK<=3: Set to TRUE to show hidden files.
-    ! CONFIRM_OVERWRITE: boolean: optional: Set to TRUE to request
+    ! CONFIRM_OVERWRITE: boolean: optional: GTK<=3: Set to TRUE to request
     ! 		confirmation of an overwrite (only used if CREATE
     ! 		is TRUE).
     ! TITLE: string: optional: Title for the window.
@@ -536,7 +534,7 @@ contains
     integer(kind=c_int) :: i, nsel, resp
 
     dialog =  hl_gtk_file_chooser_new(chooser_info, cdir, directory, create, &
-         & multiple, allow_uri, confirm_overwrite, title, &
+         & multiple, allow_uri, title, &
          & initial_dir, current, initial_file, filter, filter_name, parent, &
          & all, wsize, edit_filters)
 
