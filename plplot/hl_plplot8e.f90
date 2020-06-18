@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 8 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-11 (GTK 4)
+! Last modifications: vmagnin 2020-06-18 (GTK 4)
 !------------------------------------------------------------------------------
 
 module common_ex8
@@ -38,8 +38,7 @@ module common_ex8
   use gtk_hl_container
   use gtk_hl_button
   use gtk_hl_spin_slider
-! Commented until this module will be ported to GTK 4:
-!  use gtk_hl_chooser
+  use gtk_hl_chooser
   use gtk_draw_hl
   use gdk_pixbuf_hl
   use plplot_extra
@@ -358,14 +357,14 @@ contains
     integer(kind=c_int) :: ipick
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Problems in GTK 4
-    print *, "GTK 4 problem: ipick = hl_gtk_file_chooser_show(files, current=TRUE, &"
-!         & title="Output image file"//c_null_char, &
-!         & filter=['image/png ', 'image/jpeg', 'image/tiff'], &
-!         & parent=window)
-!    if (c_f_logical(ipick)) then
-!       pixb = hl_gtk_drawing_area_get_gdk_pixbuf(draw)
-!       call hl_gdk_pixbuf_save(pixb, files(1))
-!    end if
+     ipick = hl_gtk_file_chooser_show(files, current=TRUE, &
+         & title="Output image file"//c_null_char, &
+         & filter=['image/png ', 'image/jpeg', 'image/tiff'], &
+         & parent=window)
+    if (c_f_logical(ipick)) then
+       pixb = hl_gtk_drawing_area_get_gdk_pixbuf(draw)
+       call hl_gdk_pixbuf_save(pixb, files(1))
+    end if
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   end subroutine dump_screen
 end module handlers_ex8
