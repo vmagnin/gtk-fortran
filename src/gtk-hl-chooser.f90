@@ -332,11 +332,7 @@ contains
     end if
 
     if (idir == TRUE) then
-       if (icreate == TRUE) then
-          print *, "Not in GTK 4: action = GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER"
-       else
-          action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
-       end if
+       action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
     else
        if (icreate == TRUE) then
           action = GTK_FILE_CHOOSER_ACTION_SAVE
@@ -391,13 +387,12 @@ contains
     ! Initial file
 
     if (present(initial_file)) then
-!       if (action == GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER .or. &
-!            & action == GTK_FILE_CHOOSER_ACTION_SAVE) then
+       if (action == GTK_FILE_CHOOSER_ACTION_SAVE) then
 !          call gtk_file_chooser_set_current_name(chooser_info%chooser, &
 !               & initial_file)
-!       else
+       else
           print *, "Not in GTK4: lval = gtk_file_chooser_select_filename(chooser_info%chooser, initial_file)"
-!       end if
+       end if
     end if
 
     ! Set up filters
