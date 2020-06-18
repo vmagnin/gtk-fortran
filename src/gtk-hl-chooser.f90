@@ -120,7 +120,7 @@ contains
     ! 		than files.
     ! TITLE: string: optional: A title for the button.
     ! WIDTH: c_int: optional: A maximum number of characters to show.
-    ! SHOW_HIDDEN: boolean: optional: Set to TRUE to display hidden files.
+    ! SHOW_HIDDEN: boolean: optional: GTK<=3: Set to TRUE to display hidden files.
     ! INITIAL_DIR: string: optional: Use to start the search other than
     ! 		in the current directory. (INITIAL_FOLDER is a deprecated
     ! 		alias).
@@ -167,7 +167,6 @@ contains
     else
        lval = FALSE
     end if
-!    call gtk_file_chooser_set_show_hidden(cbutton, lval)
 
     if (present(width)) call &
          & gtk_file_chooser_button_set_width_chars(cbutton, width)
@@ -273,7 +272,7 @@ contains
     ! MULTIPLE: boolean: optional: Set to TRUE to allow the selection of
     ! 		multiple files.
     ! ALLOW_URI: boolean: optional: GTK<=3: Set to TRUE to allow nonlocal selections.
-    ! SHOW_HIDDEN: boolean: optional: Set to TRUE to show hidden files.
+    ! SHOW_HIDDEN: boolean: optional: GTK<=3: Set to TRUE to show hidden files.
     ! CONFIRM_OVERWRITE: boolean: optional: Set to TRUE to request
     ! 		confirmation of an overwrite (only used if CREATE
     ! 		is TRUE).
@@ -365,7 +364,6 @@ contains
     else
        lval = FALSE
     end if
-!    call gtk_file_chooser_set_show_hidden(chooser_info%chooser, lval)
 
     ! Confirm overwrite
     if (icreate == TRUE) then
@@ -511,7 +509,7 @@ contains
     ! MULTIPLE: boolean: optional: Set to TRUE to allow the selection of
     ! 		multiple files.
     ! ALLOW_URI: boolean: optional: Set to TRUE to allow nonlocal selections.
-    ! SHOW_HIDDEN: boolean: optional: Set to TRUE to show hidden files.
+    ! SHOW_HIDDEN: boolean: optional: GTK<=3: Set to TRUE to show hidden files.
     ! CONFIRM_OVERWRITE: boolean: optional: Set to TRUE to request
     ! 		confirmation of an overwrite (only used if CREATE
     ! 		is TRUE).
@@ -538,7 +536,7 @@ contains
     integer(kind=c_int) :: i, nsel, resp
 
     dialog =  hl_gtk_file_chooser_new(chooser_info, cdir, directory, create, &
-         & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
+         & multiple, allow_uri, confirm_overwrite, title, &
          & initial_dir, current, initial_file, filter, filter_name, parent, &
          & all, wsize, edit_filters)
 
