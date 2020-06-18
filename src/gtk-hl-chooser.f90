@@ -534,7 +534,7 @@ contains
     integer(kind=c_int) :: i, nsel, resp
 
     dialog =  hl_gtk_file_chooser_new(chooser_info, cdir, directory, create, &
-         & multiple, allow_uri, title, &
+         & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
          & initial_dir, current, initial_file, filter, filter_name, parent, &
          & all, wsize, edit_filters)
 
