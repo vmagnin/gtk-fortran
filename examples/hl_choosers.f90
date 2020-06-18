@@ -35,10 +35,11 @@ module handlers
   use gtk_hl_misc
   use gtk_hl_entry
   use gtk, only: gtk_button_new, gtk_window_set_child, &
-       &gtk_text_view_new, gtk_widget_set_sensitive, gtk_widget_show, &
-       & gtk_window_new, gtk_init, &
+       & gtk_text_view_new, gtk_widget_set_sensitive, gtk_widget_show, &
+       & gtk_window_new, gtk_init, gtk_file_chooser_get_file, &
        & TRUE, FALSE, GTK_BUTTONS_YES_NO, GTK_RESPONSE_NO
-  use g, only: alloca, g_main_loop_new, g_main_loop_quit, g_main_loop_run
+  use g, only: alloca, g_main_loop_new, g_main_loop_quit, g_main_loop_run, &
+             & g_file_get_path, g_object_unref
 
   implicit none
   ! Those widgets that need to be addressed explicitly in the handlers
@@ -114,28 +115,30 @@ contains
     call gtk_widget_set_sensitive(sbut, FALSE)
   end subroutine open_file
 
+
   subroutine do_open(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
-
-    type(c_ptr) :: c_string
+    type(c_ptr) :: c_string, g_file
     character(len=200) :: inln
     integer :: ios
     integer :: idxs
 
-!    c_string = gtk_file_chooser_get_filename(widget)
-!    call convert_c_string(c_string, filename)
-!    call g_free(c_string)
+    g_file = gtk_file_chooser_get_file (widget)
+    c_string = g_file_get_path(g_file)
+    call g_object_unref(g_file)
+    call convert_c_string(c_string, filename)
+    call g_free(c_string)
 
-!    open(37, file=filename, action='read')
-!    call hl_gtk_text_view_delete(tedit)
-!    do
-!       read(37,"(A)",iostat=ios) inln
-!       if (ios /= 0) exit
-!       call hl_gtk_text_view_insert(tedit, (/ trim(inln)//c_new_line /))
-!    end do
-!    close(37)
-!    idxs = index(filename, '/', .true.)+1
-!    call gtk_window_set_title(window, trim(filename(idxs:))//c_null_char)
+    open(37, file=filename, action='read')
+    call hl_gtk_text_view_delete(tedit)
+    do
+       read(37,"(A)",iostat=ios) inln
+       if (ios /= 0) exit
+       call hl_gtk_text_view_insert(tedit, (/ trim(inln)//c_new_line /))
+    end do
+    close(37)
+    idxs = index(filename, '/', .true.)+1
+    call gtk_window_set_title(window, trim(filename(idxs:))//c_null_char)
 
     ! We manually reset the changed flag as the text box signal handler sets it.
     file_is_changed = .FALSE.
