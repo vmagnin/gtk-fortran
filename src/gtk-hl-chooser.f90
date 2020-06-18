@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modifications: 2012-12-31, vmagnin 2020-06-09 (GTK 4 version)
+! Last modifications: 2012-12-31, vmagnin 2020-06-18 (GTK 4 version)
 !------------------------------------------------------------------------------
 
 !*
@@ -60,7 +60,7 @@ module gtk_hl_chooser
        & gtk_file_chooser_set_current_folder, &
        & gtk_file_chooser_set_current_name, &
        & gtk_file_chooser_set_select_multiple, &
-       & gtk_file_chooser_widget_new, &
+       & gtk_file_chooser_widget_new, gtk_file_chooser_get_files, &
        & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
        & gtk_file_filter_new, gtk_file_filter_set_name, gtk_label_new, &
        & gtk_window_destroy, gtk_widget_set_sensitive, &
@@ -160,8 +160,6 @@ contains
        cbutton = gtk_file_chooser_button_new("Choose directory"//c_null_char,&
             & mode)
     end if
-
-!    call gtk_file_chooser_set_local_only(cbutton, TRUE)
 
     if (present(show_hidden)) then
        lval = show_hidden
@@ -274,7 +272,7 @@ contains
     ! CREATE: boolean: optional: Set to FALSE to prohibit creating new files.
     ! MULTIPLE: boolean: optional: Set to TRUE to allow the selection of
     ! 		multiple files.
-    ! ALLOW_URI: boolean: optional: Set to TRUE to allow nonlocal selections.
+    ! ALLOW_URI: boolean: optional: GTK<=3: Set to TRUE to allow nonlocal selections.
     ! SHOW_HIDDEN: boolean: optional: Set to TRUE to show hidden files.
     ! CONFIRM_OVERWRITE: boolean: optional: Set to TRUE to request
     ! 		confirmation of an overwrite (only used if CREATE
@@ -351,19 +349,6 @@ contains
     content = gtk_dialog_get_content_area(dialog)
     chooser_info%chooser = gtk_file_chooser_widget_new(action)
     call gtk_box_append(content, chooser_info%chooser)
-
-    ! Local/URI
-    if (present(allow_uri)) then
-       print *, "Not in GTK 4: allow_uri, gtk_file_chooser_set_local_only"
-       if (allow_uri == FALSE) then
-          lval = TRUE
-       else
-          lval = FALSE
-       end if
-    else
-       lval = TRUE
-    end if
-!    call gtk_file_chooser_set_local_only(chooser_info%chooser, lval)
 
     ! Multiple selections
     if (present(multiple)) then
@@ -607,13 +592,8 @@ contains
        chooser_info%iselect = FALSE
     case (GTK_RESPONSE_APPLY)
        chooser_info%iselect = TRUE
-!       if (gtk_file_chooser_get_local_only(chooser_info%chooser) == TRUE) then
-!          chooser_info%chooser_sel_list = &
-!               & gtk_file_chooser_get_filenames(chooser_info%chooser)
-!       else
-!          chooser_info%chooser_sel_list = &
-!               & gtk_file_chooser_get_uris(chooser_info%chooser)
-!       end if
+       chooser_info%chooser_sel_list = &
+               & gtk_file_chooser_get_files(chooser_info%chooser)
        chooser_info%chooser_curdir = &
             & gtk_file_chooser_get_current_folder(chooser_info%chooser)
     case default
