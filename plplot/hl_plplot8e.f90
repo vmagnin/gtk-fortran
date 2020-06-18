@@ -50,7 +50,6 @@ module common_ex8
   integer(kind=c_int) :: disp_type=0, ifun=1
   real(kind=c_double) :: alt=30._c_double, az=60._c_double
   integer(kind=c_int) :: width, height
-
 end module common_ex8
 
 module plplot_code_ex8
@@ -355,8 +354,7 @@ contains
     type(c_ptr) :: pixb
     character(len=120), dimension(:), allocatable :: files
     integer(kind=c_int) :: ipick
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! Problems in GTK 4
+
      ipick = hl_gtk_file_chooser_show(files, current=TRUE, &
          & title="Output image file"//c_null_char, &
          & filter=['image/png ', 'image/jpeg', 'image/tiff'], &
@@ -365,8 +363,8 @@ contains
        pixb = hl_gtk_drawing_area_get_gdk_pixbuf(draw)
        call hl_gdk_pixbuf_save(pixb, files(1))
     end if
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   end subroutine dump_screen
+
 end module handlers_ex8
 
 
@@ -451,3 +449,4 @@ program cairo_plplot_ex8
   call g_main_loop_run(my_gmainloop)
 
 end program cairo_plplot_ex8
+
