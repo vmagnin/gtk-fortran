@@ -58,7 +58,7 @@ module gtk_hl_chooser
        & gtk_file_chooser_button_new, gtk_file_chooser_button_set_width_chars, &
        & gtk_file_chooser_get_current_folder, &
        & gtk_file_chooser_set_current_folder, &
-       & gtk_file_chooser_set_current_name, &
+       & gtk_file_chooser_set_current_name, gtk_file_chooser_set_file, &
        & gtk_file_chooser_set_select_multiple, &
        & gtk_file_chooser_widget_new, gtk_file_chooser_get_files, &
        & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
@@ -185,7 +185,8 @@ contains
                    & g_file_new_for_path("."//c_null_char), c_null_ptr)
     end if
     if (present(initial_file)) &
-         & print *, "not in GTK 4: lval = gtk_file_chooser_set_filename(cbutton, initial_file)"
+         lval = gtk_file_chooser_set_file(cbutton, &
+              & g_file_new_for_path(initial_file), c_null_ptr)
 
     if (present(filter)) then
        do i = 1, size(filter)
