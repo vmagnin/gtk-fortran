@@ -21,8 +21,8 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by James Tappin
-! Last modification: 2011-11-21
+! Contributed by James Tappin (2011)
+! Last modifications: vmagnin 2020-06-18
 
 module gtk_hl
   !*
@@ -40,7 +40,6 @@ module gtk_hl
   use gtk_hl_button
   use gtk_hl_entry
   use gtk_hl_tree
-  use gtk_hl_menu
   use gtk_hl_progress
   use gtk_hl_dialog
   use gtk_hl_chooser

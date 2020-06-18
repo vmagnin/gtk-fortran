@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2020-06-17
+#   vmagnin: 2020-06-18
 #
 # CMAKE build file for GtkFortran
 
@@ -48,7 +48,6 @@ if(NOT NO_BUILD_HL)
         "gtk-hl-button.f90"
         "gtk-hl-entry.f90"
         "gtk-hl-tree.f90"
-        "gtk-hl-menu.f90"
         "gtk-hl-combobox.f90"
         "gtk-hl-spin-slider.f90"
         "gtk-hl-chooser.f90"

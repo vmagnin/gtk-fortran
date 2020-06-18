@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by vmagnin (first commit: 2019-05-30)
-# Last modifications: vmagnin 2020-06-17
+# Last modifications: vmagnin 2020-06-18
 
 # Build the gtk-fortran libraries (static and shared):
 src = [
@@ -43,8 +43,7 @@ src = [
   'gtk-hl-container.f90', 
   'gtk-hl-dialog.f90',
   'gtk-hl-entry.f90', 
-  'gtk-hl-infobar.f90',
-  'gtk-hl-menu.f90',
+  'gtk-hl-infobar.f90', 
   'gtk-hl-misc.f90', 
   'gtk-hl-progress.f90',  
   'gtk-hl-spin-slider.f90', 
@@ -80,7 +79,7 @@ shared_lib = shared_library(gtk_V_fortran, sources: src, dependencies: gtk_dep, 
 install_subdir(meson.build_root()/'src'/'25a6634@'/gtk_V_fortran+'@sha',
                 install_dir: 'include'/gtk_V_fortran,
                 strip_directory: true,
-                exclude_files: ['src_atk-auto.f90.o', 'src_gdk-pixbuf-auto.f90.o', 'src_gtk.f90.o', 'src_gtk-hl-chooser.f90.o', 'src_gtk-hl-entry.f90.o', 'src_gtk-hl-misc.f90.o', 'src_gtk-sup.f90.o', 'src_cairo-auto.f90.o', 'src_gdk-pixbuf-hl.f90.o', 'src_gtk-hl-combobox.f90.o', 'src_gtk-hl.f90.o', 'src_gtk-hl-progress.f90.o', 'src_pango-auto.f90.o', 'src_gdk-auto.f90.o', 'src_glib-auto.f90.o', 'src_gtk-hl-assistant.f90.o', 'src_gtk-hl-container.f90.o', 'src_gtk-hl-infobar.f90.o', 'src_gtk-hl-spin-slider.f90.o', 'src_unixonly-auto.f90.o', 'src_gdkevents-auto.f90.o', 'src_gtk-draw-hl.f90.o', 'src_gtk-hl-button.f90.o', 'src_gtk-hl-dialog.f90.o', 'src_gtk-hl-menu.f90.o', 'src_gtk-hl-tree.f90.o'])
+                exclude_files: ['src_atk-auto.f90.o', 'src_gdk-pixbuf-auto.f90.o', 'src_gtk.f90.o', 'src_gtk-hl-chooser.f90.o', 'src_gtk-hl-entry.f90.o', 'src_gtk-hl-misc.f90.o', 'src_gtk-sup.f90.o', 'src_cairo-auto.f90.o', 'src_gdk-pixbuf-hl.f90.o', 'src_gtk-hl-combobox.f90.o', 'src_gtk-hl.f90.o', 'src_gtk-hl-progress.f90.o', 'src_pango-auto.f90.o', 'src_gdk-auto.f90.o', 'src_glib-auto.f90.o', 'src_gtk-hl-assistant.f90.o', 'src_gtk-hl-container.f90.o', 'src_gtk-hl-infobar.f90.o', 'src_gtk-hl-spin-slider.f90.o', 'src_unixonly-auto.f90.o', 'src_gdkevents-auto.f90.o', 'src_gtk-draw-hl.f90.o', 'src_gtk-hl-button.f90.o', 'src_gtk-hl-dialog.f90.o', 'src_gtk-hl-tree.f90.o'])
 # DOES NOT WORK:
 #install_subdir(shared_lib.private_dir_include(),
 # src/meson.build:78:0: ERROR: Arguments must be strings.

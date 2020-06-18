@@ -40,7 +40,7 @@ if (NOT NO_BUILD_EXAMPLES)
   if(NOT NO_BUILD_HL)
     set(examples_list ${examples_list} 
         hl_assistant hl_choosers hl_combo hl_containers hl_dialog hl_list1
-        hl_list_n hl_list_renderers hl_menu hl_pbar hl_pbar_p hl_radio
+        hl_list_n hl_list_renderers hl_pbar hl_pbar_p hl_radio
         hl_sliders hl_sliders2 hl_textview hl_tree hl_cairo1 hl_cairo_clock
         hl_cairo_viewer hl_infobar
     )

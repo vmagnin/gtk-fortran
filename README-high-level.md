@@ -31,8 +31,6 @@ optional arguments in Fortran>=90 to simplify creating and initializing widgets.
 * gtk_hl_infobar: An interface to the infobar widget. Removes much of the
        complexity of putting a message into the widget.
 
-* gtk_hl_menu: Implements interfaces to pull-down menus.
-
 * gtk_hl_misc: Miscellaneous interfaces, mostly used by other modules.
 
 * gtk_hl_progress: Implements progress bars, including "m of n" settings

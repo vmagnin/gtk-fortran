@@ -40,7 +40,6 @@ examples = {
   'hl_list1': ['hl_list1.f90'],    
   'hl_list_n': ['hl_list_n.f90'],    
   'hl_list_renderers': ['hl_list_renderers.f90'],    
-  'hl_menu': ['hl_menu.f90'],    
   'hl_pbar': ['hl_pbar.f90'],    
   'hl_pbar_p': ['hl_pbar_p.f90'],    
   'hl_radio': ['hl_radio.f90'],    
