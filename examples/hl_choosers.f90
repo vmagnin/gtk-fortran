@@ -125,9 +125,10 @@ contains
 
     g_file = gtk_file_chooser_get_file (widget)
     c_string = g_file_get_path(g_file)
-    call g_object_unref(g_file)
     call convert_c_string(c_string, filename)
+    print *, filename
     call g_free(c_string)
+    call g_object_unref(g_file)
 
     open(37, file=filename, action='read')
     call hl_gtk_text_view_delete(tedit)
