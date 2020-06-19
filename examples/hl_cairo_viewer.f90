@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-18 (GTK 4)
+! Last modifications: vmagnin 2020-06-19 (GTK 4)
 !------------------------------------------------------------------------------
 
 module v_handlers
@@ -106,7 +106,7 @@ contains
 
     ipick = hl_gtk_file_chooser_show(new_files, &
          & create=FALSE, multiple=TRUE, filter=["image/*"], &
-         & all=TRUE)
+         & parent=widget, all=TRUE)
 
     if (.not. c_f_logical(ipick)) return
 
@@ -223,7 +223,7 @@ program hl_cairo_viewer
   call hl_gtk_box_pack(base, junk)
 
   call gtk_widget_show(tl_window)
-  if (nfiles == 0) call add_files(c_null_ptr, c_loc(iremove(2)))
+  if (nfiles == 0) call add_files(tl_window, c_loc(iremove(2)))
      
   if (current_file >= 0) call gtk_combo_box_set_active(select, current_file)
 
