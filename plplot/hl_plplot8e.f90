@@ -355,11 +355,13 @@ contains
     character(len=120), dimension(:), allocatable :: files
     integer(kind=c_int) :: ipick
 
-     ipick = hl_gtk_file_chooser_show(files, current=TRUE, &
+     ipick = hl_gtk_file_chooser_show(files, create=TRUE, current=TRUE, &
          & title="Output image file"//c_null_char, &
          & filter=['image/png ', 'image/jpeg', 'image/tiff'], &
          & parent=window)
+
     if (c_f_logical(ipick)) then
+       print *, "File: ", files(1)
        pixb = hl_gtk_drawing_area_get_gdk_pixbuf(draw)
        call hl_gdk_pixbuf_save(pixb, files(1))
     end if
