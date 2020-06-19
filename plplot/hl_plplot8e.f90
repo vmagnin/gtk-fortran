@@ -353,6 +353,7 @@ contains
     type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr) :: pixb
     character(len=120), dimension(:), allocatable :: files
+    character(len=120) :: the_file
     integer(kind=c_int) :: ipick
 
      ipick = hl_gtk_file_chooser_show(files, create=TRUE, current=TRUE, &
@@ -361,9 +362,10 @@ contains
          & parent=window)
 
     if (c_f_logical(ipick)) then
-       print *, "File: ", files(1)
+       the_file = files(1)
+       print *, "File: ", the_file
        pixb = hl_gtk_drawing_area_get_gdk_pixbuf(draw)
-       call hl_gdk_pixbuf_save(pixb, files(1))
+       call hl_gdk_pixbuf_save(pixb, file=the_file)
     end if
   end subroutine dump_screen
 
