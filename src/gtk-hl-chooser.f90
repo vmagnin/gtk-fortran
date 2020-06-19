@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modifications: 2012-12-31, vmagnin 2020-06-18 (GTK 4 version)
+! Last modifications: 2012-12-31, vmagnin 2020-06-19 (GTK 4 version)
 !------------------------------------------------------------------------------
 
 !*
@@ -50,7 +50,8 @@ module gtk_hl_chooser
 
   ! Auto generated use's
   use g, only: g_free, g_slist_free, g_slist_length, g_slist_nth_data, &
-             & g_main_loop_new, g_main_loop_run, g_file_new_for_path
+             & g_main_loop_new, g_main_loop_run, g_main_loop_quit, &
+             & g_file_new_for_path, g_file_get_path, g_object_unref
   use gtk, only: gtk_box_append, gtk_dialog_add_button, &
        & gtk_dialog_get_content_area, gtk_dialog_new, &
        & gtk_entry_get_buffer, gtk_entry_buffer_set_text, &
@@ -320,11 +321,13 @@ contains
          & GTK_RESPONSE_CANCEL)
 
     ! Decode the action
+
     if (present(create)) then
        icreate = create
     else
        icreate = TRUE
     end if
+
     if (present(directory)) then
        idir = directory
     else
@@ -335,6 +338,8 @@ contains
        action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
     else
        if (icreate == TRUE) then
+          ! "Indicates save mode. The file chooser will let the user pick 
+          ! an existing file, or type in a new filename."
           action = GTK_FILE_CHOOSER_ACTION_SAVE
        else
           action = GTK_FILE_CHOOSER_ACTION_OPEN
@@ -343,6 +348,7 @@ contains
 
     ! Create the chooser & put it in the content area
     content = gtk_dialog_get_content_area(dialog)
+    ! https://developer.gnome.org/gtk4/unstable/GtkFileChooserWidget.html
     chooser_info%chooser = gtk_file_chooser_widget_new(action)
     call gtk_box_append(content, chooser_info%chooser)
 
@@ -510,7 +516,7 @@ contains
     ! Returns TRUE if one or more files was selected, FALSE otherwise.
     !-
 
-    type(c_ptr) :: dialog, strptr
+    type(c_ptr) :: dialog, g_file
     type(hl_gtk_chooser_info) :: chooser_info
     integer(kind=c_int) :: i, nsel, resp
 
@@ -520,23 +526,30 @@ contains
          & all, wsize, edit_filters)
 
     call gtk_widget_show(dialog)
+
     ! The callback function is defined in hl_gtk_file_chooser_new()
     dialog_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
     call g_main_loop_run(dialog_gmainloop)
+    call gtk_window_destroy(dialog)
 
     isel = chooser_info%iselect
+
     if (chooser_info%iselect == TRUE) then
+       ! Number of selected files:
        nsel = g_slist_length(chooser_info%chooser_sel_list)
        allocate(files(nsel))
+       ! Store the paths of selected files:
        do i = 1, nsel
-          strptr = g_slist_nth_data(chooser_info%chooser_sel_list, i-1_c_int)
-          call convert_c_string(strptr, files(i))
-          call g_free(strptr)
+          ! It's a list of GFiles:
+          g_file = g_slist_nth_data(chooser_info%chooser_sel_list, i-1_c_int)
+          call convert_c_string(g_file_get_path(g_file), files(i))
+          print *, files(i)
+          call g_object_unref(g_file)
        end do
        call g_slist_free(chooser_info%chooser_sel_list)
 
-       if (present(cdir)) call convert_c_string(chooser_info%chooser_curdir, &
-            & cdir)
+       if (present(cdir)) call convert_c_string(g_file_get_path( &
+                                       & chooser_info%chooser_curdir), cdir)
     end if
   end function hl_gtk_file_chooser_show
 
@@ -578,6 +591,8 @@ contains
        write(error_unit,*) &
             & "hl_gtk_chooser_resp_cb:: Invalid response received", response
     end select
+
+    call g_main_loop_quit(dialog_gmainloop)
   end subroutine hl_gtk_chooser_resp_cb
 
   !+

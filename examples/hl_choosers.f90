@@ -91,7 +91,7 @@ contains
          & filter_name=filtnames, wsize=(/ 600_c_int, 400_c_int /), &
          & edit_filters=TRUE, &
          & parent=window, all=TRUE)
-
+print *, "isel = hl_gtk_file_chooser_show=", isel
     if (isel == FALSE) return   ! No selection made
 
     filename = chfile(1)
