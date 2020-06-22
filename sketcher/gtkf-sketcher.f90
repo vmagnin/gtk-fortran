@@ -1,34 +1,35 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran gtk+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-
+!------------------------------------------------------------------------------
 ! GTK+ Fortran Code Sketcher using Glade3 UI definitions
 ! Contributed by Jens Hunger
-! Last modifications: vmagnin 03-07-2019
+! Last modifications: vmagnin 2020-06-22
+!------------------------------------------------------------------------------
 
 module widgets
   ! declares the used GTK widgets
   use iso_c_binding
-  implicit none
 
+  implicit none
   type(c_ptr) :: window
   type(c_ptr) :: builder
   type(c_ptr) :: textbuffer
@@ -61,11 +62,9 @@ module widgets
   logical::use_hl_gtk=.true.
   logical::include_files=.true.
   logical::widgetshandlers=.false.
-
 end module
 
 module strings
-
   use widgets
   use gtk, only: c_null_char, TRUE, FALSE
   use g, only: g_chdir
@@ -141,11 +140,10 @@ contains
       ret=.false.
     endif
   end function fbool
-
 end module strings
 
-module connect
 
+module connect
   use strings
 
   use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&
@@ -223,15 +221,13 @@ module connect
     connections(n_connections)%handler_name=hname
 
   end subroutine get_connections
-
 end module connect
 
-module handlers
 
+module handlers
   use connect
 
   implicit none
-
   private :: fdate
 
 contains
@@ -853,7 +849,6 @@ contains
 
     dialog = gtk_dialog_run (about_dialog)
     call gtk_widget_hide (about_dialog)
-
   end subroutine show_about_dialog
 
   ! Contributed by IanH0073 (issue #81)
@@ -868,15 +863,13 @@ contains
             // 'T' // time(1:2) // ':' // time(3:4) // ':' // time(5:10)  &
             // zone(1:3) // ':' // zone(4:5)
   end function fdate
-
 end module handlers
 
-program gtkfsketcher
 
+program gtkfsketcher
   use handlers
 
   implicit none
-
   integer(c_int) :: guint
   type(c_ptr) :: error
   error = c_null_ptr
@@ -935,3 +928,4 @@ program gtkfsketcher
   call g_main_loop_run(my_gmainloop)
 
 end program gtkfsketcher
+
