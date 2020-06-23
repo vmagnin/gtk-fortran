@@ -44,18 +44,22 @@ contains
     integer(kind=c_int), pointer :: fdata
     integer(kind=c_int) :: sdata
 
+    if (c_associated(gdata)) then
+       call c_f_pointer(gdata, fdata)
+    else
+       fdata = -1
+    end if
+
     ! Don't do anything for the implicit release event.
     if (gtk_toggle_button_get_active(widget) == FALSE) then
-       print *, "Autonomous release"
+       print *, "Autonomous release: fdata=", fdata
+       sdata = hl_gtk_radio_group_get_select(group)
+       print *, "hl_gtk_radio_group_get_select:", sdata
        return
     end if
 
-    if (c_associated(gdata)) then
-       call c_f_pointer(gdata, fdata)
-       print *, "Selected", fdata
-    end if
-    sdata = hl_gtk_radio_group_get_select(group)
-    print *, "Selection", sdata
+    print *
+    print *, "Selected: fdata=", fdata
   end subroutine rb_toggle
 
 
