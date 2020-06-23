@@ -61,7 +61,7 @@ contains
 
   subroutine activate(app, gdata) bind(c)
     use gtk, only: gtk_application_window_new, gtk_window_destroy, &
-                 & g_signal_connect_swapped
+                 & g_signal_connect_swapped, gtk_toggle_button_set_active
 
     type(c_ptr), value, intent(in)  :: app, gdata
     ! Pointers toward our GTK widgets:
@@ -90,7 +90,10 @@ contains
        call hl_gtk_box_pack(box, rbut(i))
     end do
 
-    ! Set a selection (3)
+    ! In GTK 4, the first button is active by default,
+    ! but we don't want that:
+    call gtk_toggle_button_set_active (rbut(1), FALSE);
+    ! We want the third button by default:
     call hl_gtk_radio_group_set_select(group, 3_c_int)
 
     ! Make a "quit" button:
