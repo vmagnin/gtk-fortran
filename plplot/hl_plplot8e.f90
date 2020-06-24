@@ -33,8 +33,7 @@ module common_ex8
        & gtk_label_new, gtk_window_set_child, &
        & gtk_toggle_button_get_active, gtk_window_destroy, &
        & gtk_widget_get_allocation, gtk_widget_queue_draw, &
-       & gtk_widget_show, gtk_init, FALSE, g_signal_connect_swapped
-  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
+       & gtk_widget_show, FALSE, g_signal_connect_swapped
 
   use gtk_hl_container
   use gtk_hl_button
@@ -47,11 +46,11 @@ module common_ex8
   implicit none
   type(c_ptr) :: window, draw, alt_sl, az_sl, fun_but, col_but, &
        & facet_but, scont_but, bcont_but, qbut
-  type(c_ptr) :: my_gmainloop
   integer(kind=c_int) :: disp_type=0, ifun=1
   real(kind=c_double) :: alt=30._c_double, az=60._c_double
   integer(kind=c_int) :: width, height
 end module common_ex8
+
 
 module plplot_code_ex8
   use plplot, PI => PL_PI
@@ -256,19 +255,13 @@ contains
   end subroutine a2mnmx
 end module plplot_code_ex8
 
+
 module handlers_ex8
   use plplot_code_ex8
 
   implicit none
 
 contains
-
-  recursive subroutine quit_cb(widget, gdata) bind(c)
-    type(c_ptr), value, intent(in) :: widget, gdata
-
-    call gtk_window_destroy(window)
-    call g_main_loop_quit(my_gmainloop)
-  end subroutine quit_cb
 
   subroutine set_azimuth(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
@@ -342,7 +335,7 @@ contains
 
     call gtk_widget_get_allocation(draw,c_loc(alloc))
     call hl_gtk_drawing_area_resize(draw)
-    print*,"resize",alloc%width,alloc%height
+    print *, "resize", alloc%width, alloc%height
     width=alloc%width
     height=alloc%height
 
