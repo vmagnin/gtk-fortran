@@ -23,16 +23,17 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 8 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-18 (GTK 4)
+! Last modifications: vmagnin 2020-06-24 (GTK 4)
 !------------------------------------------------------------------------------
 
 module common_ex8
   use iso_c_binding
   ! Gtk includes
-  use gtk, only: gtk_label_new, gtk_window_set_child, &
+  use gtk, only: gtk_application_window_new, &
+       & gtk_label_new, gtk_window_set_child, &
        & gtk_toggle_button_get_active, gtk_window_destroy, &
        & gtk_widget_get_allocation, gtk_widget_queue_draw, &
-       & gtk_widget_show, gtk_init, FALSE
+       & gtk_widget_show, gtk_init, FALSE, g_signal_connect_swapped
   use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   use gtk_hl_container
@@ -256,7 +257,6 @@ contains
 end module plplot_code_ex8
 
 module handlers_ex8
-  use common_ex8
   use plplot_code_ex8
 
   implicit none
@@ -369,88 +369,97 @@ contains
     end if
   end subroutine dump_screen
 
+
+  subroutine activate(app, gdata) bind(c)
+    type(c_ptr), value, intent(in)  :: app, gdata
+    ! Pointers toward our GTK widgets:
+    type(c_ptr) :: base, btable, junk
+
+    ! Create the window:
+    window = gtk_application_window_new(app)
+
+    height = 600
+    width = 600  ! Must be a multiple of 4
+
+!    window = hl_gtk_window_new("PLplot x08 / gtk-fortran (extcairo)"//&
+!         & c_null_char, &
+!         & destroy = c_funloc(quit_cb))
+
+    base = hl_gtk_box_new()
+    call gtk_window_set_child(window, base)
+
+    ! The drawing area for the plot
+    draw = hl_gtk_drawing_area_new(size=(/width, height/), &
+         & has_alpha = FALSE, size_allocate=c_funloc(resize_area))
+    call hl_gtk_box_pack(base, draw)
+
+    ! Put the direction settings in a table.
+    btable=hl_gtk_table_new(2,2, homogeneous=FALSE)
+    call hl_gtk_box_pack(base, btable, expand=FALSE)
+
+    junk=gtk_label_new("Azimuth:"//c_null_char)
+    call hl_gtk_table_attach(btable, junk, 0, 0, xopts=0, yopts=0)
+    az_sl = hl_gtk_slider_new(0, 360, initial_value=int(az), &
+         & value_changed=c_funloc(set_azimuth))
+    call hl_gtk_table_attach(btable, az_sl, 1, 0, yopts=0)
+
+    ! N.B. Elevation <0 doesn't seem to work.
+    junk=gtk_label_new("Elevation:"//c_null_char)
+    call hl_gtk_table_attach(btable, junk, 0, 1, xopts=0, yopts=0)
+    alt_sl = hl_gtk_slider_new(0, 90, initial_value=int(alt), &
+         & value_changed=c_funloc(set_altitude))
+    call hl_gtk_table_attach(btable, alt_sl, 1, 1, yopts=0)
+
+    ! And another table for the selectors
+    btable=hl_gtk_table_new(homogeneous=TRUE)
+    call hl_gtk_box_pack(base, btable, expand=FALSE)
+
+    fun_but = hl_gtk_check_button_new("Rosen"//c_null_char, &
+         & toggled=c_funloc(set_rosen), initial_state=ifun)
+    call hl_gtk_table_attach(btable, fun_but, 0, 0, yopts=0, xopts=0)
+
+    col_but=hl_gtk_check_button_new("Colour level"//c_null_char, &
+         & toggled=c_funloc(set_colour))
+    call hl_gtk_table_attach(btable,col_but, 1, 0, yopts=0, xopts=0)
+
+    facet_but=hl_gtk_check_button_new("Facets"//c_null_char, &
+         & toggled=c_funloc(set_facet))
+    call hl_gtk_table_attach(btable,facet_but, 2, 0, yopts=0, xopts=0)
+
+    scont_but=hl_gtk_check_button_new("Surface contours"//c_null_char, &
+         & toggled=c_funloc(set_scont))
+    call hl_gtk_table_attach(btable, scont_but, 0, 1, yopts=0, xopts=0)
+
+    bcont_but=hl_gtk_check_button_new("Base contours"//c_null_char, &
+         & toggled=c_funloc(set_bcont))
+    call hl_gtk_table_attach(btable, bcont_but, 1, 1, yopts=0, xopts=0)
+
+    junk = hl_gtk_button_new("Dump"//c_new_line//"Screen"//c_null_char, &
+         & clicked=c_funloc(dump_screen))
+    call hl_gtk_table_attach(btable, junk, 3, 0, yopts=0, &
+         & xopts=0, yspan=2)
+
+    qbut=hl_gtk_button_new("Quit"//c_null_char)
+    call g_signal_connect_swapped(qbut, "clicked"//c_null_char, &
+                                & c_funloc(gtk_window_destroy), window)
+
+    call hl_gtk_box_pack(base, qbut, expand=FALSE)
+
+    call gtk_widget_show(window)
+
+    call draw_08(draw, disp_type, alt, az, ifun)
+  end subroutine activate
 end module handlers_ex8
 
 
 program cairo_plplot_ex8
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use handlers_ex8
-  use plplot_code_ex8
-  use common_ex8
 
   implicit none
-  type(c_ptr) :: base, btable, junk
+  type(c_ptr) :: app
 
-  height = 600
-  width = 600  ! Must be a multiple of 4
-
-  call gtk_init()
-
-  window = hl_gtk_window_new("PLplot x08 / gtk-fortran (extcairo)"//&
-       & c_null_char, &
-       & destroy = c_funloc(quit_cb))
-  base = hl_gtk_box_new()
-  call gtk_window_set_child(window, base)
-
-  ! The drawing area for the plot
-  draw = hl_gtk_drawing_area_new(size=(/width, height/), &
-       & has_alpha = FALSE, size_allocate=c_funloc(resize_area))
-  call hl_gtk_box_pack(base, draw)
-
-  ! Put the direction settings in a table.
-  btable=hl_gtk_table_new(2,2, homogeneous=FALSE)
-  call hl_gtk_box_pack(base, btable, expand=FALSE)
-
-  junk=gtk_label_new("Azimuth:"//c_null_char)
-  call hl_gtk_table_attach(btable, junk, 0, 0, xopts=0, yopts=0)
-  az_sl = hl_gtk_slider_new(0, 360, initial_value=int(az), &
-       & value_changed=c_funloc(set_azimuth))
-  call hl_gtk_table_attach(btable, az_sl, 1, 0, yopts=0)
-
-  ! N.B. Elevation <0 doesn't seem to work.
-  junk=gtk_label_new("Elevation:"//c_null_char)
-  call hl_gtk_table_attach(btable, junk, 0, 1, xopts=0, yopts=0)
-  alt_sl = hl_gtk_slider_new(0, 90, initial_value=int(alt), &
-       & value_changed=c_funloc(set_altitude))
-  call hl_gtk_table_attach(btable, alt_sl, 1, 1, yopts=0)
-
-  ! And another table for the selectors
-  btable=hl_gtk_table_new(homogeneous=TRUE)
-  call hl_gtk_box_pack(base, btable, expand=FALSE)
-
-  fun_but = hl_gtk_check_button_new("Rosen"//c_null_char, &
-       & toggled=c_funloc(set_rosen), initial_state=ifun)
-  call hl_gtk_table_attach(btable, fun_but, 0, 0, yopts=0, xopts=0)
-
-  col_but=hl_gtk_check_button_new("Colour level"//c_null_char, &
-       & toggled=c_funloc(set_colour))
-  call hl_gtk_table_attach(btable,col_but, 1, 0, yopts=0, xopts=0)
-
-  facet_but=hl_gtk_check_button_new("Facets"//c_null_char, &
-       & toggled=c_funloc(set_facet))
-  call hl_gtk_table_attach(btable,facet_but, 2, 0, yopts=0, xopts=0)
-
-  scont_but=hl_gtk_check_button_new("Surface contours"//c_null_char, &
-       & toggled=c_funloc(set_scont))
-  call hl_gtk_table_attach(btable, scont_but, 0, 1, yopts=0, xopts=0)
-
-  bcont_but=hl_gtk_check_button_new("Base contours"//c_null_char, &
-       & toggled=c_funloc(set_bcont))
-  call hl_gtk_table_attach(btable, bcont_but, 1, 1, yopts=0, xopts=0)
-
-  junk = hl_gtk_button_new("Dump"//c_new_line//"Screen"//c_null_char, &
-       & clicked=c_funloc(dump_screen))
-  call hl_gtk_table_attach(btable, junk, 3, 0, yopts=0, &
-       & xopts=0, yspan=2)
-
-  qbut=hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
-  call hl_gtk_box_pack(base, qbut, expand=FALSE)
-
-  call gtk_widget_show(window)
-
-  call draw_08(draw, disp_type, alt, az, ifun)
-
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
+  app = hl_gtk_application_new("gtk-fortran.plplot.hl_plplot8e"//c_null_char, &
+                             & c_funloc(activate))
 end program cairo_plplot_ex8
 
