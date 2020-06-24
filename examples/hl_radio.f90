@@ -123,22 +123,12 @@ program radio
   ! https://developer.gnome.org/gtk4/stable/GtkRadioButton.html
 
   use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
-  use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE
-  use g, only: g_application_run, g_object_unref
   use rb_handlers
 
   implicit none
-  integer(c_int)     :: status
   type(c_ptr)        :: app
 
-  app = gtk_application_new("gtk-fortran.examples.hl_radio"//c_null_char, &
-                            & G_APPLICATION_FLAGS_NONE)
-  call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), &
-                      & c_null_ptr)
-  status = g_application_run(app, 0_c_int, c_null_ptr)
-
-  print *, "You have exited the GLib main loop, bye, bye..."
-
-  call g_object_unref(app)
+  app = hl_gtk_application_new("gtk-fortran.examples.hl_radio"//c_null_char, &
+                             & c_funloc(activate))
 end program radio
 
