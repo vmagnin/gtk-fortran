@@ -49,6 +49,7 @@ module common_ex8
   integer(kind=c_int) :: disp_type=0, ifun=1
   real(kind=c_double) :: alt=30._c_double, az=60._c_double
   integer(kind=c_int) :: width, height
+  type(c_ptr) :: my_app
 end module common_ex8
 
 
@@ -258,10 +259,18 @@ end module plplot_code_ex8
 
 module handlers_ex8
   use plplot_code_ex8
-
   implicit none
 
 contains
+
+  ! Callback function for quitting the application:
+  subroutine my_destroy (window, gdata) bind(c)
+    use iso_c_binding, only: c_ptr
+    type(c_ptr), value, intent(in) :: window, gdata
+
+    print *, "my_destroy()"
+    call gtk_window_destroy(window)
+  end subroutine my_destroy
 
   subroutine set_azimuth(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
@@ -374,10 +383,6 @@ contains
     height = 600
     width = 600  ! Must be a multiple of 4
 
-!    window = hl_gtk_window_new("PLplot x08 / gtk-fortran (extcairo)"//&
-!         & c_null_char, &
-!         & destroy = c_funloc(quit_cb))
-
     base = hl_gtk_box_new()
     call gtk_window_set_child(window, base)
 
@@ -434,7 +439,7 @@ contains
 
     qbut=hl_gtk_button_new("Quit"//c_null_char)
     call g_signal_connect_swapped(qbut, "clicked"//c_null_char, &
-                                & c_funloc(gtk_window_destroy), window)
+                                & c_funloc(my_destroy), window)
 
     call hl_gtk_box_pack(base, qbut, expand=FALSE)
 
@@ -448,11 +453,9 @@ end module handlers_ex8
 program cairo_plplot_ex8
   use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use handlers_ex8
-
   implicit none
-  type(c_ptr) :: app
 
-  app = hl_gtk_application_new("gtk-fortran.plplot.hl_plplot8e"//c_null_char, &
+  my_app = hl_gtk_application_new("gtk-fortran.plplot.hl_plplot8e"//c_null_char, &
                              & c_funloc(activate))
 end program cairo_plplot_ex8
 
