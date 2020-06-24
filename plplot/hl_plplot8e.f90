@@ -61,7 +61,7 @@ module plplot_code_ex8
 
 contains
   subroutine draw_08(area, type, alt, az, rosen)
-    type(c_ptr) :: area
+    type(c_ptr), intent(in) :: area
     integer, intent(in) :: type, rosen
     real(kind=plflt), intent(in) :: alt, az
     integer i, j, xpts, ypts, xdim, ydim
