@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 ! ----------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modifications: 2012-07-09, vmagnin 2020-06-17 (GTK 4 version)
+! Last modifications: 2012-07-09, vmagnin 2020-06-24 (GTK 4 version)
 ! ----------------------------------------------------------------------
 !*
 ! Containers
@@ -76,6 +76,55 @@ module gtk_hl_container
   implicit none
 
 contains
+  !+
+  function hl_gtk_application_new(app_id, activate, flags, data) result(app)
+    use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
+    use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE
+    use g, only: g_application_run, g_object_unref
+
+    type(c_ptr) :: app
+    character(kind=c_char), dimension(*), intent(in) :: app_id
+    type(c_funptr), intent(in) :: activate
+    integer(kind=c_int), optional, intent(in) :: flags
+    type(c_ptr), optional, intent(in) :: data
+
+    integer(kind=c_int) :: the_flags
+
+    ! Higher-level interface to make a GtkApplication
+    !
+    ! APP_ID: C string: compulsory: name of the GtkApplication. must contain
+    ! at least one point
+    ! ACTIVATE: c_funptr: compulsory: Callback for the "activate" signal (defines the GUI)
+    ! FLAGS: integer: optional: flags
+    ! DATA: c_ptr: optional: Data to be passed to the "activate" callback function
+    !
+    !-
+
+    integer(c_int) :: status
+
+    if (present(flags)) then
+      the_flags = flags
+    else
+      the_flags = G_APPLICATION_FLAGS_NONE
+    end if
+
+    ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
+    app = gtk_application_new(app_id, the_flags)
+    
+    if (present(data)) then
+      call g_signal_connect(app, "activate"//c_null_char, activate, data)
+    else
+      call g_signal_connect(app, "activate"//c_null_char, activate, c_null_ptr)
+    end if
+    
+    ! Commandline arguments argc, argv are not passed.
+    ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-run
+    status = g_application_run(app, 0_c_int, c_null_ptr)
+
+    call g_object_unref(app)
+  end function hl_gtk_application_new
+
+
   !+
   function hl_gtk_window_new(title, destroy, delete_event, data_destroy, &
        & data_delete_event, border, wsize, sensitive, resizable, decorated, &
