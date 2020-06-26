@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modification: vmagnin 2020-06-02 (GTK 4 version)
+! Last modification: vmagnin 2020-06-26 (GTK 4 version)
 !------------------------------------------------------------------------------
 
 module handlers
@@ -97,22 +97,33 @@ program progress
   call gtk_widget_show(Win) 
 
   itmax=300
-  !$omp parallel do default(shared), private(istep)
-  do i = 1, 10
-     ! event loop
-     istep=0
-     do
-        call pending_events()
-        if (run_status == FALSE) exit
-        call g_usleep(10000_c_long) ! So we don't burn CPU cycles
-        istep = istep+1
 
-        if (istep > itmax) exit
+  !$omp parallel do private(istep) shared(run_status, itmax, bar, pbar,boolresult)
+  do i = 1, 10
+     ! Event loop:
+     do istep = 0, itmax
+        !$omp critical
         call hl_gtk_progress_bar_set(bar(i), istep, &
              & itmax, string=TRUE)
-        if (mod(istep, 20_c_int) == 0) &
-             & call hl_gtk_progress_bar_set(pbar, text="Working"//c_null_char)
+        !$omp end critical
+
+        !$omp critical
+        if (mod(istep, 20_c_int) == 0) then
+           call hl_gtk_progress_bar_set(pbar, text="Working"//c_null_char)
+        end if
+        !$omp end critical
+
+        !$omp critical
+        call g_usleep(10000_c_long) ! So we don't burn CPU cycles
+        !$omp end critical
+
+        !$omp critical
+        call pending_events()
+        !$omp end critical
+
+        if (run_status == FALSE) exit
      end do
+
      if (run_status == FALSE) cycle
   end do
   !$omp end parallel do
