@@ -44,7 +44,6 @@ examples = {
   'hl_list_renderers': ['hl_list_renderers.f90'],    
   'hl_menu': ['hl_menu.f90'],    
   'hl_pbar': ['hl_pbar.f90'],    
-  'hl_pbar_p': ['hl_pbar_p.f90'],    
   'hl_radio': ['hl_radio.f90'],    
   'hl_sliders': ['hl_sliders.f90'],    
   'hl_sliders2': ['hl_sliders2.f90'],    
