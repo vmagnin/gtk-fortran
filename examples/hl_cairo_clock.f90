@@ -322,34 +322,45 @@ contains
 
     ret = .true.
   end function clock_key
+
+  subroutine activate(app, gdata) bind(c)
+    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use gtk, only: gtk_application_window_new, gtk_window_destroy, &
+                 & g_signal_connect_swapped, gtk_toggle_button_set_active, &
+                 & gtk_window_set_title
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    ! Pointers toward our GTK widgets:
+    type(c_ptr) :: drawing
+    integer(kind=c_int) :: icont, timeid
+
+
+!    window = hl_gtk_window_new("Cairo Clock"//c_null_char, &
+!         & destroy = c_funloc(delete_cb), wsize=(/width, height/))
+    ! Create the window:
+    my_window = gtk_application_window_new(app)
+    call gtk_window_set_title(my_window, "Cairo Clock"//c_null_char)
+
+    drawing = hl_gtk_drawing_area_new(has_alpha = TRUE, &
+         & size_allocate=c_funloc(clock_resize), &
+         & key_press_event=c_funloc(clock_key))
+
+    call gtk_window_set_child(window, drawing)
+    call gtk_widget_show(window)
+
+    icont =  show_time(drawing)
+
+    timeid = g_timeout_add(300_c_int, c_funloc(show_time), drawing)
+  end subroutine activate
 end module cl_handlers
 
-
 program cairo_clock
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use cl_handlers
 
   implicit none
-  integer(kind=c_int) :: icont, timeid
-  type(c_ptr) :: drawing
+  type(c_ptr)        :: app
 
-  call gtk_init()
-
-  window = hl_gtk_window_new("Cairo Clock"//c_null_char, &
-       & destroy = c_funloc(delete_cb), wsize=(/width, height/))
-
-  drawing = hl_gtk_drawing_area_new(has_alpha = TRUE, &
-       & size_allocate=c_funloc(clock_resize), &
-       & key_press_event=c_funloc(clock_key))
-
-  call gtk_window_set_child(window, drawing)
-  call gtk_widget_show(window)
-
-  icont =  show_time(drawing)
-
-  timeid = g_timeout_add(300_c_int, c_funloc(show_time), drawing)
-
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
-  print *, "All done"
+  app = hl_gtk_application_new("gtk-fortran.examples.hl_cairo_clock"//c_null_char, &
+                             & c_funloc(activate))
 end program cairo_clock
