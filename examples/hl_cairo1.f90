@@ -70,7 +70,7 @@ contains
     type(c_ptr), value, intent(in)    :: gesture, gdata
     integer(c_int), value, intent(in) :: n_press
     real(c_double), value, intent(in) :: x, y
-    integer(kind=c_int) :: nb_axes, nb_buttons
+    integer(kind=c_int) :: nb_axes
     type(c_ptr) :: device, dcname
     character(len=80) :: dname
 
