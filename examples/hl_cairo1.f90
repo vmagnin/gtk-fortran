@@ -39,14 +39,13 @@ module handlers
        & cairo_stroke, cairo_surface_write_to_png
   use gdk, only: gdk_device_get_name, gdk_device_get_n_axes, &
        & gdk_keyval_from_name, gdk_keyval_name
-  use gtk, only: gtk_window_set_child, &
+  use gtk, only: gtk_window_set_child, gtk_window_destroy, &
        & gtk_widget_queue_draw, gtk_widget_show, gtk_init, TRUE, FALSE, &
        & GDK_CONTROL_MASK, &
        & GDK_POINTER_MOTION_MASK, GDK_BUTTON_MOTION_MASK, &
        & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, &
        & gtk_event_controller_get_current_event_device, &
        & gtk_gesture_single_get_current_button
-  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use gdk_events
 
   use gdk_pixbuf_hl
@@ -55,7 +54,8 @@ module handlers
   use gtk_sup
 
   implicit none
-  type(c_ptr) :: my_gmainloop
+  type(c_ptr) :: my_window
+  type(c_ptr) :: my_cairo_context
   integer(c_int) :: boolresult
   logical :: boolevent
   integer(kind=c_int) :: width, height
@@ -147,7 +147,7 @@ contains
     key_q = gdk_keyval_from_name("q"//c_null_char)
     ! CTRL+Q will close the program:
     if ((iand(state, GDK_CONTROL_MASK) /= 0).and.(keyval == key_q)) then
-      call g_main_loop_quit(my_gmainloop)
+      call gtk_window_destroy(my_window)
     end if
 
     ret = .true.
@@ -157,7 +157,6 @@ contains
   subroutine draw_pattern(widget)
     type(c_ptr) :: widget
     real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
-    type(c_ptr) :: my_cairo_context
     integer :: cstatus
     integer :: t
 
@@ -229,13 +228,10 @@ contains
 
   subroutine activate(app, gdata) bind(c)
     use iso_c_binding, only: c_ptr, c_funloc, c_null_char
-    use gtk, only: gtk_application_window_new, gtk_window_destroy, &
-                 & g_signal_connect_swapped, gtk_toggle_button_set_active, &
-                 & gtk_window_set_title
+    use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
     ! Pointers toward our GTK widgets:
-    type(c_ptr) :: my_window
     type(c_ptr) :: my_drawing_area
     type(c_ptr) :: my_scroll_box
     
@@ -244,7 +240,7 @@ contains
     height = 700
     ! Create the window:
     my_window = gtk_application_window_new(app)
-    call gtk_window_set_title(my_window, "Cairo events demo"//c_null_char)
+    call gtk_window_set_title(my_window, "Cairo events demo (CTRL+Q to quit)"//c_null_char)
 
     my_drawing_area = hl_gtk_drawing_area_new(&
          & scroll=my_scroll_box, &
