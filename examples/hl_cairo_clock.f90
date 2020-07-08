@@ -338,8 +338,8 @@ contains
 !    window = hl_gtk_window_new("Cairo Clock"//c_null_char, &
 !         & destroy = c_funloc(delete_cb), wsize=(/width, height/))
     ! Create the window:
-    my_window = gtk_application_window_new(app)
-    call gtk_window_set_title(my_window, "Cairo Clock"//c_null_char)
+    window = gtk_application_window_new(app)
+    call gtk_window_set_title(window, "Cairo Clock"//c_null_char)
 
     drawing = hl_gtk_drawing_area_new(has_alpha = TRUE, &
          & size_allocate=c_funloc(clock_resize), &
