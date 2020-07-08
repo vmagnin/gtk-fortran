@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin,
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
-! Last modifications: vmagnin 2020-06-17 (GTK 4)
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2020-07-08
 !------------------------------------------------------------------------------
 
 module handlers
@@ -64,15 +64,6 @@ module handlers
 
 contains
   ! User defined event handlers go here
-
-  ! destroy signal:
-  function delete_h (widget, event, gdata) result(ret)  bind(c)
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-    integer(c_int)    :: ret
-
-    call g_main_loop_quit(my_gmainloop)
-    ret = FALSE
-  end function delete_h
 
   ! GTK 4: Click callback function ("pressed" signal):
   subroutine button_event_h(gesture, n_press, x, y, gdata) bind(c)
@@ -235,44 +226,54 @@ contains
     call gtk_widget_queue_draw(widget)
     call hl_gtk_drawing_area_cairo_destroy(my_cairo_context)
   end subroutine draw_pattern
+
+  subroutine activate(app, gdata) bind(c)
+    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use gtk, only: gtk_application_window_new, gtk_window_destroy, &
+                 & g_signal_connect_swapped, gtk_toggle_button_set_active, &
+                 & gtk_window_set_title
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    ! Pointers toward our GTK widgets:
+    type(c_ptr) :: my_window
+    type(c_ptr) :: my_drawing_area
+    type(c_ptr) :: my_scroll_box
+    
+    ! Properties of the main window :
+    width = 700
+    height = 700
+    ! Create the window:
+    my_window = gtk_application_window_new(app)
+    call gtk_window_set_title(my_window, "Cairo events demo"//c_null_char)
+
+    my_drawing_area = hl_gtk_drawing_area_new(&
+         & scroll=my_scroll_box, &
+         & size = (/width, height /), &
+         & ssize = (/ 400_c_int, 300_c_int /), &
+         & button_press_event=c_funloc(button_event_h), &
+         & button_release_event=c_funloc(button_release_h), &
+         & scroll_event=c_funloc(scroll_event_h), &
+         & enter_event=c_funloc(enter_event_h), &
+         & leave_event=c_funloc(leave_event_h), &
+         & key_press_event=c_funloc(key_event_h), &
+         & motion_event=c_funloc(motion_event_h))
+
+    call gtk_window_set_child(my_window, my_scroll_box)
+
+    call gtk_widget_show(my_window)
+    call draw_pattern(my_drawing_area)
+  end subroutine activate
 end module handlers
 
+
 program cairo_basics_click
-  use iso_c_binding, only: c_ptr, c_funloc
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use handlers
+
   implicit none
-  type(c_ptr) :: my_window
-  type(c_ptr) :: my_drawing_area
-  type(c_ptr) :: my_scroll_box
+  type(c_ptr)        :: app
 
-  call gtk_init ()
-  
-  ! Properties of the main window :
-  width = 700
-  height = 700
-  my_window = hl_gtk_window_new("Cairo events demo"//c_null_char, &
-       & destroy=c_funloc(delete_h))
-      
-  my_drawing_area = hl_gtk_drawing_area_new(&
-       & scroll=my_scroll_box, &
-       & size = (/width, height /), &
-       & ssize = (/ 400_c_int, 300_c_int /), &
-       & button_press_event=c_funloc(button_event_h), &
-       & button_release_event=c_funloc(button_release_h), &
-       & scroll_event=c_funloc(scroll_event_h), &
-       & enter_event=c_funloc(enter_event_h), &
-       & leave_event=c_funloc(leave_event_h), &
-       & key_press_event=c_funloc(key_event_h), &
-       & motion_event=c_funloc(motion_event_h))
-
-  call gtk_window_set_child(my_window, my_scroll_box)
-
-  call gtk_widget_show(my_window)
-  call draw_pattern(my_drawing_area)
-
-  ! The window stays opened after the computation:
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-  print *, "All done"
+  app = hl_gtk_application_new("gtk-fortran.examples.hl_cairo1"//c_null_char, &
+                             & c_funloc(activate))
 end program cairo_basics_click
 
