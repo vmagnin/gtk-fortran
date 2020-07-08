@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-17 (GTK 4)
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2020-07-08
 !------------------------------------------------------------------------------
 
 module cl_handlers
@@ -34,11 +34,11 @@ module cl_handlers
        & cairo_select_font_face, cairo_set_font_size, cairo_set_line_cap, &
        & cairo_set_line_width, cairo_set_source_rgb, cairo_set_source_rgba, &
        & cairo_show_text, cairo_stroke
-  use g, only: g_timeout_add, g_main_loop_new, g_main_loop_run, g_main_loop_quit
+  use g, only: g_timeout_add
   use gdk, only: gdk_keyval_from_name
-  use gtk, only: gtk_window_set_child, &
+  use gtk, only: gtk_window_set_child, gtk_window_destroy, &
        & gtk_widget_get_allocation, gtk_widget_queue_draw, &
-       & gtk_widget_show, gtk_init, TRUE, FALSE, GDK_CONTROL_MASK, &
+       & gtk_widget_show, TRUE, FALSE, GDK_CONTROL_MASK, &
        & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, &
        & CAIRO_FONT_WEIGHT_BOLD
   use gdk_pixbuf_hl
@@ -52,18 +52,9 @@ module cl_handlers
   real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
   integer, dimension(8) :: t0 = 0
   type(c_ptr) :: window
-  type(c_ptr) :: my_gmainloop
+  type(c_ptr) :: app
 
 contains
-
-  function delete_cb (widget, event, gdata) result(ret)  bind(c)
-    integer(c_int)    :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-
-    call g_main_loop_quit(my_gmainloop)
-
-    ret = FALSE
-  end function delete_cb
 
   function show_time(area) bind(c)
     integer(kind=c_int) :: show_time
@@ -317,7 +308,7 @@ contains
     key_q = gdk_keyval_from_name("q"//c_null_char)
     ! CTRL+Q will close the program:
     if ((iand(state, GDK_CONTROL_MASK) /= 0).and.(keyval == key_q)) then
-      call g_main_loop_quit(my_gmainloop)
+      call gtk_window_destroy(window)
     end if
 
     ret = .true.
@@ -325,21 +316,16 @@ contains
 
   subroutine activate(app, gdata) bind(c)
     use iso_c_binding, only: c_ptr, c_funloc, c_null_char
-    use gtk, only: gtk_application_window_new, gtk_window_destroy, &
-                 & g_signal_connect_swapped, gtk_toggle_button_set_active, &
-                 & gtk_window_set_title
+    use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
     ! Pointers toward our GTK widgets:
     type(c_ptr) :: drawing
     integer(kind=c_int) :: icont, timeid
 
-
-!    window = hl_gtk_window_new("Cairo Clock"//c_null_char, &
-!         & destroy = c_funloc(delete_cb), wsize=(/width, height/))
     ! Create the window:
     window = gtk_application_window_new(app)
-    call gtk_window_set_title(window, "Cairo Clock"//c_null_char)
+    call gtk_window_set_title(window, "Cairo Clock (CTRL+Q to quit)"//c_null_char)
 
     drawing = hl_gtk_drawing_area_new(has_alpha = TRUE, &
          & size_allocate=c_funloc(clock_resize), &
@@ -354,12 +340,11 @@ contains
   end subroutine activate
 end module cl_handlers
 
+
 program cairo_clock
   use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use cl_handlers
-
   implicit none
-  type(c_ptr)        :: app
 
   app = hl_gtk_application_new("gtk-fortran.examples.hl_cairo_clock"//c_null_char, &
                              & c_funloc(activate))
