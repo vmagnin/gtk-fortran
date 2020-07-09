@@ -190,7 +190,6 @@ contains
     !-
 
     type(c_ptr) :: isurface, cstat_cstr
-    integer(kind=c_int) :: mask
     integer(kind=c_int) :: s_type
     integer(kind=c_int) :: szx, szy
     logical :: rgba
