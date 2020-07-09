@@ -20,33 +20,33 @@
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modification: vmagnin 2020-05-28 (GTK 4 version)
+! Last modification: vmagnin 2020-05-28 (GTK 4 version), 2020-07-09
+!------------------------------------------------------------------------------
 
 module handlers
   use gtk_hl_container
   use gtk_hl_combobox
   use gtk_hl_button
   use gtk, only: gtk_button_new, gtk_combo_box_get_active, gtk_combo_box_new, &
-       & gtk_window_set_child, &
-       & gtk_widget_show, gtk_window_new, gtk_init, TRUE, FALSE
-  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
+       & gtk_window_set_child, gtk_window_destroy, &
+       & gtk_widget_show, TRUE, FALSE
 
   implicit none
   type(c_ptr) :: win, box, c1, c2, qbut
-  type(c_ptr) :: my_gmainloop
 
 contains
+
   subroutine my_destroy(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Exit called"
-    call g_main_loop_quit(my_gmainloop)
+    call gtk_window_destroy(win)
   end subroutine my_destroy
 
   subroutine c_change(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     integer, pointer :: index
     integer(kind=c_int) :: isel, nrow
@@ -63,53 +63,60 @@ contains
     print "('Choice:',I2,' of ',i2,' Text:',a)", isel, nrow, trim(value)
   end subroutine c_change
 
+
+  subroutine activate(app, gdata) bind(c)
+    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use gtk, only: gtk_application_window_new, gtk_window_set_title
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    character(len=20), dimension(8) :: list1
+    character(len=20) :: item2
+    integer :: i
+    integer, target :: d1=1, d2=2
+
+    ! Create the window:
+    win = gtk_application_window_new(app)
+    call gtk_window_set_title(win, "Combo box demo"//c_null_char)
+
+    ! Column box
+    box = hl_gtk_box_new()
+    call gtk_window_set_child(win, box)
+
+    ! A list with an entry box
+    do i = 1, 8
+       write(list1(i), "('Item # ',I0)") i-1
+    end do
+    c1 = hl_gtk_combo_box_new(has_entry=TRUE, changed=c_funloc(c_change), &
+         & initial_choices=list1, data=c_loc(d1))
+    call hl_gtk_box_pack(box, c1)
+
+    ! One without
+    c2 = hl_gtk_combo_box_new(changed=c_funloc(c_change), data=c_loc(d2))
+    call hl_gtk_box_pack(box, c2)
+
+    do i = 1, 5
+       write(item2, "('Choice Number',I2)") i
+       call hl_gtk_combo_box_add_text(c2, trim(item2)//c_null_char, at_start=TRUE)
+    end do
+
+    ! Quit button
+    qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
+    call hl_gtk_box_pack(box, qbut)
+
+    ! Realize & enter event loop
+    call gtk_widget_show(win)
+  end subroutine activate
 end module handlers
 
-program combo_demo
 
+program combo_demo
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers
 
   implicit none
+  type(c_ptr)        :: app
 
-  character(len=20), dimension(8) :: list1
-  character(len=20) :: item2
-  integer :: i
-  integer, target :: d1=1, d2=2
-
-  call gtk_init()
-
-  ! Top level window, and column box
-  win = hl_gtk_window_new("Combo box demo"//c_null_char, &
-       & destroy=c_funloc(my_destroy))
-
-  box = hl_gtk_box_new()
-  call gtk_window_set_child(win, box)
-
-  ! A list with an entry box
-  do i = 1, 8
-     write(list1(i), "('Item # ',I0)") i-1
-  end do
-  c1 = hl_gtk_combo_box_new(has_entry=TRUE, changed=c_funloc(c_change), &
-       & initial_choices=list1, data=c_loc(d1))
-  call hl_gtk_box_pack(box, c1)
-
-  ! One without
-  c2 = hl_gtk_combo_box_new(changed=c_funloc(c_change), data=c_loc(d2))
-  call hl_gtk_box_pack(box, c2)
-
-  do i = 1, 5
-     write(item2, "('Choice Number',I2)") i
-     call hl_gtk_combo_box_add_text(c2, trim(item2)//c_null_char, at_start=TRUE)
-  end do
-
-  ! Quit button
-  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
-  call hl_gtk_box_pack(box, qbut)
-
-  ! Realize & enter event loop
-  call gtk_widget_show(win)
-
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
+  app = hl_gtk_application_new("gtk-fortran.examples.hl_combo"//c_null_char, &
+                             & c_funloc(activate))
 end program combo_demo
 
