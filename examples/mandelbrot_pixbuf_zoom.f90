@@ -96,7 +96,6 @@ contains
     real(kind=c_double) :: x1, y1
     type(c_ptr) :: drawing_area
     integer(kind=c_int) :: id
-    integer(c_int) :: width, height
 
     print *, "Button ", gtk_gesture_single_get_current_button(gesture)
     print *, n_press, " click(s) at ", int(x), int(y)
