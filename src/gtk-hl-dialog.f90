@@ -239,9 +239,10 @@ contains
   subroutine dialog_callback(dialog, response_id, user_data) bind(c)
     type(c_ptr), value, intent(in) :: dialog, user_data
     integer(kind=c_int), value, intent(in) :: response_id
-    type(c_ptr) :: my_widget
  
+    ! Global variable:
     dialog_response = response_id
+
     call gtk_window_destroy(dialog)
     call g_main_loop_quit(dialog_gmainloop)
   end subroutine dialog_callback           
@@ -397,7 +398,6 @@ contains
     !-
 
     type(c_ptr) :: about
-    integer(kind=c_int) :: response_id
 
     about = hl_gtk_about_dialog_new(name, license, license_type, &
          & comments, authors, website, website_label, copyright, version, &
@@ -408,8 +408,6 @@ contains
                                     & c_funloc(dialog_callback))
     dialog_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
     call g_main_loop_run(dialog_gmainloop)
-    !response_id =  gtk_dialog_run(about)
-    !call gtk_window_destroy(about)
   end subroutine hl_gtk_about_dialog_show
 
   !+
