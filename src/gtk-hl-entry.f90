@@ -226,10 +226,10 @@ contains
     ! To return the text as a c-pointer use gtk_entry_get_text
     !-
 
-    type(c_ptr) :: ctext, buffer
-    character(kind=c_char), dimension(:), pointer :: textptr
+    type(c_ptr) :: buffer
     integer(kind=c_int16_t) :: ntext
     integer(kind=c_int) :: istat
+    istat = 0
 
     ntext = gtk_entry_get_text_length(entry)
     if (ntext == 0) then
@@ -240,9 +240,6 @@ contains
     buffer = gtk_entry_get_buffer(entry)
     call c_f_string_copy(gtk_entry_buffer_get_text(buffer), text)
     
-!    call c_f_pointer(ctext, textptr, (/int(ntext)/))
-!    call convert_c_string(textptr, text, istat)
-
     if (present(status)) status=istat
   end subroutine hl_gtk_entry_get_text
 
