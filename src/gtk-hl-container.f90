@@ -303,7 +303,7 @@ contains
     ! 		the end of the box rather than the start.
     !-
 
-    integer(kind=c_int) :: iexp, ifill, ipad, iend, orientation
+    integer(kind=c_int) :: iexp, ifill, ipad, iend
 
     if (present(expand)) then
        iexp = expand
