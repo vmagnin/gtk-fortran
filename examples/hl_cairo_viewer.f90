@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-19 (GTK 4)
+! Last modifications: vmagnin 2020-06-19 (GTK 4), 2020-07-09
 !------------------------------------------------------------------------------
 
 module v_handlers
@@ -43,20 +43,18 @@ module v_handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_height, gdk_pixbuf_get_width
   use gtk, only: gtk_combo_box_get_active, gtk_combo_box_set_active, &
        & gtk_widget_set_sensitive, gtk_window_set_child, &
-       & gtk_widget_show, gtk_init, TRUE, FALSE
-  use g, only: g_main_loop_quit
+       & gtk_widget_show, gtk_window_destroy, TRUE, FALSE
 
   implicit none
   character(len=256), dimension(:), allocatable :: file_list
   integer(kind=c_int) :: current_file
   type(c_ptr) :: tl_window, view, prev, next, select
-  type(c_ptr) :: my_gmainloop
 
 contains
+
   subroutine delete_v (widget, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-
-    call g_main_loop_quit(my_gmainloop)
+    call gtk_window_destroy(tl_window)
   end subroutine delete_v
 
   recursive subroutine show_image(widget, gdata)  bind(c)
@@ -97,16 +95,16 @@ contains
     end if
   end subroutine show_image
 
-  subroutine add_files(widget, gdata)  bind(c)
-    type(c_ptr), value :: widget, gdata
 
+  subroutine add_files(widget, gdata)  bind(c)
+    type(c_ptr), value, intent(in) :: widget, gdata
     character(len=256), dimension(:), allocatable :: new_files, tmp
     logical, pointer :: idelete
     integer(kind=c_int) :: ipick, i
 
     ipick = hl_gtk_file_chooser_show(new_files, &
          & create=FALSE, multiple=TRUE, filter=["image/*"], &
-         & parent=widget, all=TRUE)
+         & parent=tl_window, all=TRUE)
 
     if (.not. c_f_logical(ipick)) return
 
@@ -136,98 +134,105 @@ contains
     call gtk_combo_box_set_active(select, current_file)
     call gtk_widget_set_sensitive(select, f_c_logical(size(file_list)>0))
   end subroutine add_files
+
+  subroutine activate(app, gdata) bind(c)
+    use gtk, only: gtk_application_window_new, gtk_window_set_title
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    integer(kind=c_int) :: nfiles, i, istat
+    integer(kind=c_int), dimension(2), target :: direction = [-1, 1]
+    logical, dimension(2), target :: iremove = [.false., .true.]
+    type(c_ptr) :: scroll, base, jb, junk, cmsg
+    character(len=120) :: err_msg
+
+    nfiles = command_argument_count()
+    if (nfiles > 0) then
+       allocate(file_list(nfiles))
+       do i = 1, nfiles
+          call get_command_argument(i, value=file_list(i))
+       end do
+       current_file = 0
+    else 
+       current_file = -1
+    end if
+
+    tl_window = gtk_application_window_new(app)
+    call gtk_window_set_title(tl_window, "Simple Image Viewer"//c_null_char)
+    print *, "Note that you can pass filenames as arguments in the command line"
+
+    base = hl_gtk_box_new()
+    call gtk_window_set_child(tl_window, base)
+
+    view = hl_gtk_drawing_area_new(scroll=scroll, ssize=[600_c_int, 600_c_int], &
+         & has_alpha=TRUE, cairo_status=istat)
+    if (istat /= 0) then
+       cmsg = cairo_status_to_string(istat)
+       call c_f_string(cmsg, err_msg)
+       write(error_unit, "(2a)") "hl_cairo_viewer: ", trim(err_msg)
+       stop
+    end if
+
+    call hl_gtk_box_pack(base, scroll)
+
+    jb = hl_gtk_box_new(horizontal=TRUE)
+    call hl_gtk_box_pack(base, jb)
+
+    prev = hl_gtk_button_new("< Prev"//c_null_char, &
+         & clicked=c_funloc(show_image), data=c_loc(direction(1)), &
+         & tooltip="Go to the previous image."//c_null_char,&
+         & sensitive=FALSE)
+    call hl_gtk_box_pack(jb, prev, expand=FALSE)
+
+    select = hl_gtk_combo_box_new(changed=c_funloc(show_image), &
+         & sensitive=f_c_logical(nfiles > 0), tooltip=&
+         & "Select an image to show"//c_null_char)
+    call hl_gtk_box_pack(jb, select, expand=TRUE)
+
+    next = hl_gtk_button_new("Next >"//c_null_char, &
+         & clicked=c_funloc(show_image), data=c_loc(direction(2)), &
+         & tooltip="Go to the next image."//c_null_char, &
+         & sensitive=f_c_logical(nfiles > 0))
+    call hl_gtk_box_pack(jb, next, expand=FALSE)
+
+    if (nfiles > 0) then 
+       do i = 1, nfiles
+          call hl_gtk_combo_box_add_text(select, &
+               & trim(file_list(i))//c_null_char)
+       end do
+    end if
+
+    junk = hl_gtk_button_new("Add files"//c_null_char, &
+         & clicked=c_funloc(add_files), data=c_loc(iremove(1)), &
+         & tooltip="Pick files to add to the list."//c_null_char)
+    call hl_gtk_box_pack(jb, junk, expand=FALSE)
+
+    junk = hl_gtk_button_new("Replace files"//c_null_char, &
+         & clicked=c_funloc(add_files), data=c_loc(iremove(2)), &
+         & tooltip="Pick files to replace the list."//c_null_char)
+    call hl_gtk_box_pack(jb, junk, expand=FALSE)
+
+    junk=hl_gtk_button_new("Quit"//c_null_char, &
+         & clicked=c_funloc(delete_v), tooltip=&
+         & "Quit the viewer."//c_null_char)
+    call hl_gtk_box_pack(base, junk)
+
+    call gtk_widget_show(tl_window)
+    if (nfiles == 0) call add_files(tl_window, c_loc(iremove(2)))
+       
+    if (current_file >= 0) call gtk_combo_box_set_active(select, current_file)
+  end subroutine activate
 end module v_handlers
+
 
 program hl_cairo_viewer
   ! A very simple image viewer
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use v_handlers
-  use iso_c_binding
 
   implicit none
-  integer(kind=c_int) :: nfiles, i, istat
-  integer(kind=c_int), dimension(2), target :: direction = [-1, 1]
-  logical, dimension(2), target :: iremove = [.false., .true.]
-  type(c_ptr) :: scroll, base, jb, junk, cmsg
-  character(len=120) :: err_msg
+  type(c_ptr)        :: app
 
-  call gtk_init()
-
-  nfiles = command_argument_count()
-  if (nfiles > 0) then
-     allocate(file_list(nfiles))
-     do i = 1, nfiles
-        call get_command_argument(i, value=file_list(i))
-     end do
-     current_file = 0
-  else 
-     current_file = -1
-  end if
-
-  tl_window = hl_gtk_window_new("Simple Image Viewer"//c_null_char, &
-       & destroy=c_funloc(delete_v), resizable=FALSE)
-
-  base = hl_gtk_box_new()
-  call gtk_window_set_child(tl_window, base)
-
-  view = hl_gtk_drawing_area_new(scroll=scroll, ssize=[600_c_int, 600_c_int], &
-       & has_alpha=TRUE, cairo_status=istat)
-  if (istat /= 0) then
-     cmsg = cairo_status_to_string(istat)
-     call c_f_string(cmsg, err_msg)
-     write(error_unit, "(2a)") "hl_cairo_viewer: ", trim(err_msg)
-     stop
-  end if
-
-  call hl_gtk_box_pack(base, scroll)
-
-  jb = hl_gtk_box_new(horizontal=TRUE)
-  call hl_gtk_box_pack(base, jb)
-
-  prev = hl_gtk_button_new("< Prev"//c_null_char, &
-       & clicked=c_funloc(show_image), data=c_loc(direction(1)), &
-       & tooltip="Go to the previous image."//c_null_char,&
-       & sensitive=FALSE)
-  call hl_gtk_box_pack(jb, prev, expand=FALSE)
-
-  select = hl_gtk_combo_box_new(changed=c_funloc(show_image), &
-       & sensitive=f_c_logical(nfiles > 0), tooltip=&
-       & "Select an image to show"//c_null_char)
-  call hl_gtk_box_pack(jb, select, expand=TRUE)
-
-  next = hl_gtk_button_new("Next >"//c_null_char, &
-       & clicked=c_funloc(show_image), data=c_loc(direction(2)), &
-       & tooltip="Go to the next image."//c_null_char, &
-       & sensitive=f_c_logical(nfiles > 0))
-  call hl_gtk_box_pack(jb, next, expand=FALSE)
-
-  if (nfiles > 0) then 
-     do i = 1, nfiles
-        call hl_gtk_combo_box_add_text(select, &
-             & trim(file_list(i))//c_null_char)
-     end do
-  end if
-
-  junk = hl_gtk_button_new("Add files"//c_null_char, &
-       & clicked=c_funloc(add_files), data=c_loc(iremove(1)), &
-       & tooltip="Pick files to add to the list."//c_null_char)
-  call hl_gtk_box_pack(jb, junk, expand=FALSE)
-
-  junk = hl_gtk_button_new("Replace files"//c_null_char, &
-       & clicked=c_funloc(add_files), data=c_loc(iremove(2)), &
-       & tooltip="Pick files to replace the list."//c_null_char)
-  call hl_gtk_box_pack(jb, junk, expand=FALSE)
-
-  junk=hl_gtk_button_new("Quit"//c_null_char, &
-       & clicked=c_funloc(delete_v), tooltip=&
-       & "Quit the viewer."//c_null_char)
-  call hl_gtk_box_pack(base, junk)
-
-  call gtk_widget_show(tl_window)
-  if (nfiles == 0) call add_files(tl_window, c_loc(iremove(2)))
-     
-  if (current_file >= 0) call gtk_combo_box_set_active(select, current_file)
-
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
+  app = hl_gtk_application_new("gtk-fortran.examples.hl_cairo_viewer"//c_null_char, &
+                             & c_funloc(activate))
 end program hl_cairo_viewer
+
