@@ -81,7 +81,7 @@ contains
 
     integer(kind=c_int) :: i, id
     integer(kind=c_int) :: no_auto
-    type(c_ptr) :: label, junk, action
+    type(c_ptr) :: label, junk
 
     infobar = gtk_info_bar_new()
 
@@ -170,7 +170,7 @@ contains
     ! and state, and they must be the same length.
     !-
 
-    type(c_ptr) :: content, label, children
+    type(c_ptr) :: label
     integer :: i
  
     ! We retrieve the label we have named "info_label" inside the infobar:
