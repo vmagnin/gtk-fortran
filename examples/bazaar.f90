@@ -329,7 +329,6 @@ contains
     use iso_c_binding, only: c_ptr
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int) :: ret
-    integer(c_int) :: response_id
 
     dialog = gtk_about_dialog_new()
     ! https://developer.gnome.org/gtk4/stable/GtkWindow.html#gtk-window-set-transient-for
