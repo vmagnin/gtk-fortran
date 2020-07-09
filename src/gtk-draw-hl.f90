@@ -190,8 +190,8 @@ contains
     !-
 
     type(c_ptr) :: isurface, cstat_cstr
-    integer(kind=c_int) :: mask, insert_mask
-    integer(kind=c_int) :: auto_add, s_type
+    integer(kind=c_int) :: mask
+    integer(kind=c_int) :: s_type
     integer(kind=c_int) :: szx, szy
     logical :: rgba
     integer(kind=c_int) :: cstat, hpolicy, vpolicy
