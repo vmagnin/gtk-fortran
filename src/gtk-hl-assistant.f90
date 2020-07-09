@@ -103,8 +103,6 @@ contains
     ! used if available, otherwise a default that just destroys the widget.
     !-
 
-    integer(kind=c_int) :: icon_ok
-
     asstnt = gtk_assistant_new()
 
     if (present(title)) call gtk_window_set_title(asstnt, title)
