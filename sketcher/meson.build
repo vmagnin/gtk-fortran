@@ -23,7 +23,7 @@
 #
 # Contributed by vmagnin (first commit: 2019-05-30)
 
-exe = executable('gtkf-sketcher', 'gtkf-sketcher.f90', link_with : static_lib)
+exe = executable('gtkf-sketcher', 'gtkf-sketcher.F90', link_with : static_lib)
 test('gtkf-sketcher', exe)
   
 sketcher_files = {
