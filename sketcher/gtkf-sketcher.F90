@@ -26,8 +26,7 @@
 !------------------------------------------------------------------------------
 ! GTK+ Fortran Code Sketcher using Glade3 UI definitions
 ! Contributed by Jens Hunger
-! Last modifications: vmagnin 2020-06-22
-!------------------------------------------------------------------------------
+! Last modifications: Harris Snyder 11-07-2020
 
 module widgets
   ! declares the used GTK widgets
@@ -601,7 +600,7 @@ contains
         call execute_command_line("python3 usemodules.py .", exitstat=shellout_err)
         if(shellout_err /= 0) then
             write(*,*) "usemodules.py failed or not found, trying " // GTKF_PROG_PREFIX // "-pymodscan"
-            call execute_command_line("python3 /usr/local/bin/" // GTKF_PROG_PREFIX //"-pymodscan", exitstat=shellout_err)
+            call execute_command_line("python3 /usr/local/bin/" // GTKF_PROG_PREFIX //"-pymodscan .", exitstat=shellout_err)
             if(shellout_err /= 0) then
                 write(*,*) GTKF_PROG_PREFIX // "-pymodscan failed or not found, aborting"
                 stop
