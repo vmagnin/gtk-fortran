@@ -27,7 +27,7 @@
 
 include_directories("${CMAKE_BINARY_DIR}/src/modules")
 
-add_executable(gtkf-sketcher "gtkf-sketcher.f90")
+add_executable(gtkf-sketcher "gtkf-sketcher.F90")
 target_link_libraries(gtkf-sketcher gtk-fortran_static ${GTK_LIBRARIES})
 # No test as the glade stuff is too sensitive to location
 
