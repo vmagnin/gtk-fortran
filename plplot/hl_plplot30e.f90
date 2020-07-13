@@ -23,15 +23,14 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 30 by Hazen Babcock and Andrew Ross
-! Last modifications: vmagnin 2020-06-10 (GTK 4)
+! Last modifications: vmagnin 2020-06-10 (GTK 4), 2020-07-13
 !------------------------------------------------------------------------------
 
 module common_ex30
   use iso_c_binding
   use gtk, only: gtk_button_new, gtk_window_set_child, &
        & gtk_drawing_area_new, gtk_widget_queue_draw, &
-       & gtk_widget_show, gtk_window_new, gtk_init, gtk_window_destroy
-  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
+       & gtk_widget_show, gtk_window_destroy
   use gtk_draw_hl
   use plplot_extra
 
@@ -221,57 +220,54 @@ module handlers_ex30
   real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
 
 contains
-  function delete_cb (widget, event, gdata) result(ret)  bind(c)
-    integer(c_int)    :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-
-    call gtk_window_destroy(window)
-    call g_main_loop_quit(my_gmainloop)
-    ret = FALSE
-  end function delete_cb
 
   subroutine quit_cb(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
     call gtk_window_destroy(window)
-    call g_main_loop_quit(my_gmainloop)
   end subroutine quit_cb
 
+
+  subroutine activate(app, gdata) bind(c)
+    use plplot_code_ex30
+    use gtk, only: gtk_application_window_new
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    ! Pointers toward our GTK widgets:
+    type(c_ptr) :: drawing, scroll_w, base, qbut
+
+    height = 600
+    width = 1200
+
+    ! Create the window:
+    window = gtk_application_window_new(app)
+
+    base = hl_gtk_box_new()
+    call gtk_window_set_child(window, base)
+
+    drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
+         & has_alpha = TRUE, &
+         & scroll = scroll_w, &
+         & ssize=(/ 650, 600 /))
+    call hl_gtk_box_pack(base, scroll_w)
+
+    qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
+    call hl_gtk_box_pack(base, qbut, expand=FALSE)
+
+    call gtk_widget_show(window)
+
+    call x30f95(drawing)
+  end subroutine activate
 end module handlers_ex30
 
 program cairo_plplot_ex30
-
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers_ex30
-  use plplot_code_ex30
-
+  use gtk_hl_container, only: hl_gtk_application_new
   implicit none
-  type(c_ptr) :: drawing, scroll_w, base, qbut
+  type(c_ptr) :: my_app
 
-  height = 600
-  width = 1200
-
-  call gtk_init()
-
-  window = hl_gtk_window_new("PLplot x30 / gtk-fortran (extcairo)"//c_null_char, &
-       & destroy = c_funloc(delete_cb))
-  base = hl_gtk_box_new()
-  call gtk_window_set_child(window, base)
-
-  drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
-       & has_alpha = TRUE, &
-       & scroll = scroll_w, &
-       & ssize=(/ 650, 600 /))
-  call hl_gtk_box_pack(base, scroll_w)
-
-  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
-  call hl_gtk_box_pack(base, qbut, expand=FALSE)
-
-  call gtk_widget_show(window)
-
-  call x30f95(drawing)
-
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
-  print *, "All done"
+  my_app = hl_gtk_application_new("gtk-fortran.plplot.hl_plplot30e"//c_null_char, &
+                             & c_funloc(activate))
 end program cairo_plplot_ex30
+
