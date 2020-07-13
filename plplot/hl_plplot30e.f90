@@ -28,8 +28,7 @@
 
 module common_ex30
   use iso_c_binding
-  use gtk, only: gtk_button_new, gtk_window_set_child, &
-       & gtk_drawing_area_new, gtk_widget_queue_draw, &
+  use gtk, only: gtk_window_set_child, gtk_widget_queue_draw, &
        & gtk_widget_show, gtk_window_destroy
   use gtk_draw_hl
   use plplot_extra
