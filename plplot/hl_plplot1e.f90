@@ -23,17 +23,12 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 1 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-10 (GTK 4)
+! Last modifications: vmagnin 2020-06-10 (GTK 4), 2020-07-13
 !------------------------------------------------------------------------------
 
 module common_ex1
   use iso_c_binding
-  use gtk, only: gtk_button_new, gtk_drawing_area_new, &
-       & gtk_widget_show, gtk_window_new, gtk_init, &
-       & gtk_window_set_child, gtk_window_destroy
-  use g, only: g_object_get_data, g_main_loop_new, g_main_loop_run, &
-             & g_main_loop_quit
-
+  use gtk, only: gtk_widget_show, gtk_window_set_child, gtk_window_destroy
   use gtk_draw_hl
   use plplot_extra
 
@@ -245,13 +240,10 @@ contains
 
     call plcol0(4)
     call plline( x, y )
-
   end subroutine plot3
-
 end module plplot_code_ex1
 
 module handlers_ex1
-
   use common_Ex1
   use gtk_hl_container
   use gtk_hl_button
@@ -259,63 +251,58 @@ module handlers_ex1
   use iso_c_binding
 
   implicit none
-
   integer(kind=c_int) :: run_status = TRUE
   real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
 
 contains
-  function delete_cb (widget, event, gdata) result(ret)  bind(c)
-    integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
-
-    call gtk_window_destroy(window)
-    call g_main_loop_quit(my_gmainloop)
-    ret = FALSE
-  end function delete_cb
 
   subroutine quit_cb(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
-
+    type(c_ptr), value, intent(in) :: widget, gdata
     call gtk_window_destroy(window)
-    call g_main_loop_quit(my_gmainloop)
   end subroutine quit_cb
 
+  subroutine activate(app, gdata) bind(c)
+    use plplot_code_ex1
+    use gtk, only: gtk_application_window_new, gtk_window_set_title
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    ! Pointers toward our GTK widgets:
+    type(c_ptr) :: drawing, scroll_w, base, qbut
+
+    height = 1000
+    width = 1200
+
+    ! Create the window:
+    window = gtk_application_window_new(app)
+    call gtk_window_set_title(window, "PLplot x01 / gtk-fortran (extcairo)"//c_null_char)
+
+    base = hl_gtk_box_new()
+    call gtk_window_set_child(window, base)
+
+    drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
+         & has_alpha = FALSE, &
+         & scroll = scroll_w, &
+         & ssize=(/ 600, 500 /))
+    call hl_gtk_box_pack(base, scroll_w)
+
+    qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
+    call hl_gtk_box_pack(base, qbut, expand=FALSE)
+
+    call gtk_widget_show(window)
+
+    call x01f95(drawing)
+  end subroutine activate
 end module handlers_ex1
 
+
 program cairo_plplot_ex1
-
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers_ex1
-  use plplot_code_ex1
-
+  use gtk_hl_container, only: hl_gtk_application_new
   implicit none
-  type(c_ptr) :: drawing, scroll_w, base, qbut
+  type(c_ptr) :: my_app
 
-  height = 1000
-  width = 1200
-
-  call gtk_init()
-
-  window = hl_gtk_window_new("PLplot x01 / gtk-fortran (extcairo)"&
-       & //c_null_char, &
-       & destroy = c_funloc(delete_cb))
-  base = hl_gtk_box_new()
-  call gtk_window_set_child(window, base)
-
-  drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
-       & has_alpha = FALSE, &
-       & scroll = scroll_w, &
-       & ssize=(/ 600, 500 /))
-  call hl_gtk_box_pack(base, scroll_w)
-
-  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
-  call hl_gtk_box_pack(base, qbut, expand=FALSE)
-
-  call gtk_widget_show(window)
-
-  call x01f95(drawing)
-
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
-  print *, "All done"
+  my_app = hl_gtk_application_new("gtk-fortran.plplot.hl_plplot1e"//c_null_char, &
+                             & c_funloc(activate))
 end program cairo_plplot_ex1
+
