@@ -23,26 +23,21 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 17 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-10 (GTK 4)
+! Last modifications: vmagnin 2020-06-10 (GTK 4), 2020-07-14
 !------------------------------------------------------------------------------
 
 module common_ex17_gto
   use iso_c_binding
   use gtk_draw_hl
-  use g, only: g_timeout_add, g_main_context_pending, &
-             & g_main_loop_new, g_main_loop_run, g_main_loop_quit
-  use gtk, only: gtk_window_set_child, &
-       & gtk_widget_queue_draw, gtk_widget_show, gtk_init, &
-       & TRUE, FALSE
+  use g, only: g_timeout_add, g_main_context_pending
+  use gtk, only: gtk_window_set_child, gtk_widget_queue_draw, gtk_widget_show, &
+               & gtk_window_destroy, TRUE, FALSE
   use plplot_extra
 
   implicit none
-
   integer(kind=c_int) :: height, width
   integer(kind=c_int) :: run_status = TRUE
   type(c_ptr) :: window
-  type(c_ptr) :: my_gmainloop
-
 end module common_ex17_gto
 
 module plplot_code_ex17_gto
@@ -50,7 +45,6 @@ module plplot_code_ex17_gto
   use common_ex17_gto
 
   implicit none
-
   integer,  parameter :: nsteps = 1000
   integer, save :: id1, id2, n=0
   logical :: autoy, acc, pl_errcode
@@ -232,7 +226,6 @@ contains
 end module plplot_code_ex17_gto
 
 module handlers_ex17_gto
-
   use common_ex17_gto
   use gtk_hl_container
   use gtk_hl_button
@@ -243,60 +236,55 @@ module handlers_ex17_gto
   implicit none
 
 contains
-  function delete_cb (widget, event, gdata) result(ret)  bind(c)
-
-    integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
-
-    call close_strip()
-    call g_main_loop_quit(my_gmainloop)
-    ret = FALSE
-  end function delete_cb
 
   subroutine quit_cb(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
 
     call close_strip()
-    call g_main_loop_quit(my_gmainloop)
+    call gtk_window_destroy(window)
   end subroutine quit_cb
 
+  subroutine activate(app, gdata) bind(c)
+    use plplot_code_ex17_gto
+    use common_ex17_gto
+    use gtk, only: gtk_application_window_new, gtk_window_set_title
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    ! Pointers toward our GTK widgets:
+    type(c_ptr) :: drawing, base, qbut
+    integer(kind=c_int) :: timeid
+
+    ! Create the window:
+    window = gtk_application_window_new(app)
+    call gtk_window_set_title(window, "PLplot x17 / gtk-fortran (extcairo) g_timeout version"//c_null_char)
+
+    base = hl_gtk_box_new()
+    call gtk_window_set_child(window, base)
+
+    drawing = hl_gtk_drawing_area_new(size=(/1000_c_int, 500_c_int/), &
+         & has_alpha = FALSE)
+
+    call hl_gtk_box_pack(base, drawing)
+
+    qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
+    call hl_gtk_box_pack(base, qbut, expand=FALSE)
+
+    call gtk_widget_show(window)
+
+    call x17f95(drawing)
+
+    timeid = g_timeout_add(100_c_int, c_funloc(add_point), drawing)
+  end subroutine activate
 end module handlers_ex17_gto
 
 
 program cairo_plplot_ex17_gto
-
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers_ex17_gto
-  use plplot_code_ex17_gto
-  use common_ex17_gto
-
+  use gtk_hl_container, only: hl_gtk_application_new
   implicit none
-  type(c_ptr) :: drawing, base, qbut
-  integer(kind=c_int) :: timeid
+  type(c_ptr) :: my_app
 
-  call gtk_init()
-
-  window = hl_gtk_window_new("PLplot x17 / gtk-fortran (extcairo)"//&
-       & " g_timeout version"//c_null_char, &
-       & destroy = c_funloc(delete_cb))
-  base = hl_gtk_box_new()
-  call gtk_window_set_child(window, base)
-
-  drawing = hl_gtk_drawing_area_new(size=(/1000_c_int, 500_c_int/), &
-       & has_alpha = FALSE)
-
-  call hl_gtk_box_pack(base, drawing)
-
-  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
-  call hl_gtk_box_pack(base, qbut, expand=FALSE)
-
-  call gtk_widget_show(window)
-
-  call x17f95(drawing)
-
-  timeid = g_timeout_add(100_c_int, c_funloc(add_point), drawing)
-
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
-  print *, "All done"
+  my_app = hl_gtk_application_new("gtk-fortran.plplot.hl_plplot17e_gto"//c_null_char, &
+                             & c_funloc(activate))
 end program cairo_plplot_ex17_gto
