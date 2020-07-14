@@ -23,18 +23,15 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 4 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-10 (GTK 4)
+! Last modifications: vmagnin 2020-06-10 (GTK 4), 2020-07-14
 !------------------------------------------------------------------------------
 
 module common_ex4
   use iso_c_binding
-
   use cairo, only: cairo_get_target, cairo_image_surface_get_height, &
        & cairo_image_surface_get_width
-  use gtk, only: gtk_window_destroy, gtk_widget_show, gtk_init, FALSE, &
+  use gtk, only: gtk_window_destroy, gtk_widget_show, FALSE, &
                & gtk_window_set_child
-  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
-
   use gtk_draw_hl
   use plplot_extra
   use gtk_hl_container
@@ -42,8 +39,6 @@ module common_ex4
   
   implicit none
   type(c_ptr) :: window
-  type(c_ptr) :: my_gmainloop
-
 end module common_ex4
 
 module plplot_code_ex4
@@ -243,79 +238,71 @@ contains
          box_colors, box_patterns, box_scales, box_line_widths, &
          line_colors, line_styles, line_widths, &
          symbol_colors, symbol_scales, symbol_numbers, symbols )
-
   end subroutine plot1
 end module plplot_code_ex4
 
 
 module handlers_ex4
   use common_ex4
-
   implicit none
 
 contains
 
-  function delete_cb (widget, event, gdata) result(ret)  bind(c)
-    integer(c_int)    :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-
-    call gtk_window_destroy(window)
-    call g_main_loop_quit(my_gmainloop)
-    ret = FALSE
-  end function delete_cb
-
   subroutine quit_cb(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-
     call gtk_window_destroy(window)
-    call g_main_loop_quit(my_gmainloop)
   end subroutine quit_cb
+
+  subroutine activate(app, gdata) bind(c)
+    use plplot_code_ex4
+    use common_ex4
+    use gtk, only: gtk_application_window_new, gtk_window_set_title
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    ! Pointers toward our GTK widgets:
+    type(c_ptr), dimension(2) :: drawing
+    type(c_ptr) :: base, nbook, qbut
+    integer :: pno
+
+    ! Create the window:
+    window = gtk_application_window_new(app)
+    call gtk_window_set_title(window, "PLplot x04 / gtk-fortran (extcairo)"//c_null_char)
+
+    base = hl_gtk_box_new()
+    call gtk_window_set_child(window, base)
+
+    nbook = hl_gtk_notebook_new()
+    call hl_gtk_box_pack(base, nbook)
+    drawing(1) = hl_gtk_drawing_area_new(size=[800,600], &
+         & has_alpha=FALSE)
+
+    pno = hl_gtk_notebook_add_page(nbook, drawing(1), &
+         & label="Plot 1 (No grid)"//c_null_char)
+
+    drawing(2) = hl_gtk_drawing_area_new(size=[800,600], &
+         & has_alpha=FALSE)
+
+    pno= hl_gtk_notebook_add_page(nbook, drawing(2), &
+         & label="Plot 2 (With grid)"//c_null_char)
+
+    qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
+    call hl_gtk_box_pack(base, qbut, expand=FALSE)
+
+    call gtk_widget_show(window)
+
+    call plot_04(drawing)
+  end subroutine activate
 end module handlers_ex4
 
+
 program cairo_plplot_ex4
-
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers_ex4
-  use plplot_code_ex4
-  use common_ex4
-
+  use gtk_hl_container, only: hl_gtk_application_new
   implicit none
+  type(c_ptr) :: my_app
 
-  type(c_ptr), dimension(2) :: drawing
-  type(c_ptr) :: base, nbook, qbut
-  integer :: pno
-
-  call gtk_init()
-
-  window = hl_gtk_window_new("PLplot x04 / gtk-fortran (extcairo)"&
-       & //c_null_char, &
-       & destroy = c_funloc(delete_cb))
-
-  base = hl_gtk_box_new()
-  call gtk_window_set_child(window, base)
-
-  nbook = hl_gtk_notebook_new()
-  call hl_gtk_box_pack(base, nbook)
-  drawing(1) = hl_gtk_drawing_area_new(size=[800,600], &
-       & has_alpha=FALSE)
-
-  pno = hl_gtk_notebook_add_page(nbook, drawing(1), &
-       & label="Plot 1 (No grid)"//c_null_char)
-
-  drawing(2) = hl_gtk_drawing_area_new(size=[800,600], &
-       & has_alpha=FALSE)
-
-  pno= hl_gtk_notebook_add_page(nbook, drawing(2), &
-       & label="Plot 2 (With grid)"//c_null_char)
-
-  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
-  call hl_gtk_box_pack(base, qbut, expand=FALSE)
-
-  call gtk_widget_show(window)
-
-  call plot_04(drawing)
-
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
-  print *, "All done"
+  my_app = hl_gtk_application_new("gtk-fortran.plplot.hl_plplot4e"//c_null_char, &
+                             & c_funloc(activate))
 end program cairo_plplot_ex4
+
