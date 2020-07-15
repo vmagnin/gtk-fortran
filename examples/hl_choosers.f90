@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modifications: vmagnin 2020-06-18 (GTK 4 version)
+! Last modifications: vmagnin 2020-06-18 (GTK 4 version), 2020-07-15
 ! Demo of file choosers.
 !------------------------------------------------------------------------------
 
@@ -36,22 +36,20 @@ module handlers
   use gtk_hl_entry
   use gtk, only: gtk_button_new, gtk_window_set_child, &
        & gtk_text_view_new, gtk_widget_set_sensitive, gtk_widget_show, &
-       & gtk_window_new, gtk_init, gtk_file_chooser_get_file, &
+       & gtk_window_destroy, gtk_file_chooser_get_file, &
        & TRUE, FALSE, GTK_BUTTONS_YES_NO, GTK_RESPONSE_NO
-  use g, only: alloca, g_main_loop_new, g_main_loop_quit, g_main_loop_run, &
-             & g_file_get_path, g_object_unref
+  use g, only: alloca, g_file_get_path, g_object_unref
 
   implicit none
   ! Those widgets that need to be addressed explicitly in the handlers
   type(c_ptr) :: window, sbut, sabut, tedit
-  type(c_ptr) :: my_gmainloop
   ! Other variables that need to be shared between handlers
   logical, private :: file_is_changed = .FALSE.
   character(len=120), private :: filename=''
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
     integer(kind=c_int) :: ok
     character(len=60), dimension(4) :: msg
 
@@ -67,11 +65,11 @@ contains
     end if
 
     print *, "Exit called"
-    call g_main_loop_quit(my_gmainloop)
+    call gtk_window_destroy(window)
   end subroutine my_destroy
 
   subroutine open_file(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     integer(kind=c_int) :: isel
     character(len=120), dimension(:), allocatable :: chfile
@@ -117,7 +115,7 @@ print *, "isel = hl_gtk_file_chooser_show=", isel
 
 
   subroutine do_open(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr) :: c_string, g_file
     character(len=200) :: inln
     integer :: ios
@@ -148,7 +146,7 @@ print *, "isel = hl_gtk_file_chooser_show=", isel
   end subroutine do_open
 
   subroutine save_file(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     character(len=200), dimension(:), allocatable :: text
     integer :: i
@@ -167,7 +165,7 @@ print *, "isel = hl_gtk_file_chooser_show=", isel
   end subroutine save_file
 
   subroutine save_file_as(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     integer(kind=c_int) :: isel
     character(len=120), dimension(:), allocatable :: chfile
@@ -208,7 +206,7 @@ print *, "isel = hl_gtk_file_chooser_show=", isel
   end subroutine save_file_as
 
   subroutine file_edited(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     file_is_changed = .true.
     if (filename == '') then
@@ -217,66 +215,72 @@ print *, "isel = hl_gtk_file_chooser_show=", isel
        call gtk_widget_set_sensitive(sbut, TRUE)
     end if
   end subroutine file_edited
+
+
+  subroutine activate(app, gdata) bind(c)
+    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use gtk, only: gtk_application_window_new, gtk_window_set_title
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    ! Widgets that don't need to be global
+    type(c_ptr) :: base, jb, junk
+
+    ! Filters for the chooser button
+    character(len=30), dimension(3) :: filters
+    character(len=30), dimension(3) :: filtnames
+
+    filters(1) = "text/plain"
+    filters(2) = "*.f90"
+    filters(3) = "*"
+    filtnames(1) = "Text files"
+    filtnames(2) = "Fortran code"
+    filtnames(3) = "All files"
+
+    ! Create a window and a column box
+    window = gtk_application_window_new(app)
+    call gtk_window_set_title(window, "Choosers demo"//c_null_char)
+
+    base = hl_gtk_box_new()
+    call gtk_window_set_child(window, base)
+
+    ! A row of buttons
+    jb = hl_gtk_box_new(horizontal=TRUE, homogeneous=TRUE)
+    call hl_gtk_box_pack(base, jb)
+    junk = hl_gtk_button_new("Open"//c_null_char, clicked=c_funloc(open_file))
+    call hl_gtk_box_pack(jb, junk)
+    junk = hl_gtk_file_chooser_button_new(title="Alt-open"//c_null_char, &
+         & filter=filters, filter_name=filtnames, file_set=c_funloc(do_open))
+    call hl_gtk_box_pack(jb, junk)
+    sbut = hl_gtk_button_new("Save"//c_null_char, clicked=c_funloc(save_file),&
+         & sensitive=FALSE)
+    call hl_gtk_box_pack(jb, sbut)
+    sabut = hl_gtk_button_new("Save as"//c_null_char, clicked=c_funloc(save_file_as), &
+         & sensitive=FALSE)
+    call hl_gtk_box_pack(jb, sabut)
+
+    ! A multiline text editor in which to display the file.
+    tedit = hl_gtk_text_view_new(jb, editable=TRUE, &
+         & changed=c_funloc(file_edited), ssize = (/ 750_c_int, 400_c_int /) )
+    call hl_gtk_box_pack(base, jb)
+
+    ! A quit button
+    junk = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
+    call hl_gtk_box_pack(base, junk)
+
+    ! Realise & enter event loop
+    call gtk_widget_show(window)
+  end subroutine activate
 end module handlers
 
+
 program choosers_demo
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers
 
   implicit none
+  type(c_ptr)        :: app
 
-  ! Widgets that don't need to be global
-  type(c_ptr) :: base, jb, junk
-
-  ! Filters for the chooser button
-  character(len=30), dimension(3) :: filters
-  character(len=30), dimension(3) :: filtnames
-
-  filters(1) = "text/plain"
-  filters(2) = "*.f90"
-  filters(3) = "*"
-  filtnames(1) = "Text files"
-  filtnames(2) = "Fortran code"
-  filtnames(3) = "All files"
-
-  ! Initialize GTK
-  call gtk_init()
-
-  ! Create a window and a column box
-  window = hl_gtk_window_new("Choosers Demo"//c_null_char, &
-       & destroy=c_funloc(my_destroy))
-
-  base = hl_gtk_box_new()
-  call gtk_window_set_child(window, base)
-
-  ! A row of buttons
-  jb = hl_gtk_box_new(horizontal=TRUE, homogeneous=TRUE)
-  call hl_gtk_box_pack(base, jb)
-  junk = hl_gtk_button_new("Open"//c_null_char, clicked=c_funloc(open_file))
-  call hl_gtk_box_pack(jb, junk)
-  junk = hl_gtk_file_chooser_button_new(title="Alt-open"//c_null_char, &
-       & filter=filters, filter_name=filtnames, file_set=c_funloc(do_open))
-  call hl_gtk_box_pack(jb, junk)
-  sbut = hl_gtk_button_new("Save"//c_null_char, clicked=c_funloc(save_file),&
-       & sensitive=FALSE)
-  call hl_gtk_box_pack(jb, sbut)
-  sabut = hl_gtk_button_new("Save as"//c_null_char, clicked=c_funloc(save_file_as), &
-       & sensitive=FALSE)
-  call hl_gtk_box_pack(jb, sabut)
-
-  ! A multiline text editor in which to display the file.
-  tedit = hl_gtk_text_view_new(jb, editable=TRUE, &
-       & changed=c_funloc(file_edited), ssize = (/ 750_c_int, 400_c_int /) )
-  call hl_gtk_box_pack(base, jb)
-
-  ! A quit button
-  junk = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
-  call hl_gtk_box_pack(base, junk)
-
-  ! Realise & enter event loop
-  call gtk_widget_show(window)
-
-  ! Event loop
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
+  app = hl_gtk_application_new("gtk-fortran.examples.hl_choosers"//c_null_char, &
+                             & c_funloc(activate))
 end program choosers_demo
+
