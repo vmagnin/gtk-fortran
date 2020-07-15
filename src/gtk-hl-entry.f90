@@ -20,10 +20,10 @@
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-! --------------------------------------------------------
+! ---------------------------------------------------------
 ! Contributed by James Tappin (2012)
-! Last modification: vmagnin 2020-05-28 (GTK 4)
-! --------------------------------------------------------
+! Last modification: vmagnin 2020-05-28 (GTK 4), 2020-07-15
+! ---------------------------------------------------------
 
 !*
 ! Text Entry
@@ -72,7 +72,7 @@ module gtk_hl_entry
        & gtk_text_view_new_with_buffer, gtk_text_view_set_editable,&
        & gtk_widget_set_sensitive, gtk_widget_set_size_request,&
        & gtk_widget_set_tooltip_text, GTK_POLICY_AUTOMATIC, &
-       & TRUE, FALSE, g_signal_connect, GDK_FOCUS_CHANGE_MASK
+       & TRUE, FALSE, g_signal_connect
 
   implicit none
 
