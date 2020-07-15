@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed jtappin.
 ! Last modifications: vmagnin+Ian Harvey, 2020-02-03
-! GTK 4 version: vmagnin 2020-06-02
+! GTK 4 version: vmagnin 2020-06-02, 2020-07-15
 !------------------------------------------------------------------------------
 
 module handlers
@@ -33,27 +33,24 @@ module handlers
   use gtk_hl_button
   use gtk_hl_entry
   use gtk, only: gtk_window_set_child, &
-       & gtk_widget_show, gtk_init, gtk_entry_get_text_length, &
+       & gtk_widget_show, gtk_entry_get_text_length, &
        & gtk_entry_get_buffer, gtk_entry_buffer_get_text, &
-       & gtk_text_iter_get_text
-  use g, only: g_object_unref, g_main_loop_new, g_main_loop_quit, &
-             & g_main_loop_run
+       & gtk_text_iter_get_text, gtk_window_destroy
 
   implicit none
   type(c_ptr) ::  win, zedt, contain, qbut, box, entry, box2, &
                 & abut, ibut, clbut, infobut
-  type(c_ptr) :: my_gmainloop
 
 contains
+
   subroutine my_destroy(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
-    
+    type(c_ptr), value, intent(in) :: widget, gdata
     print *, "Exit called"
-    call g_main_loop_quit(my_gmainloop)
+    call gtk_window_destroy(win)
   end subroutine my_destroy
 
   subroutine tv_change(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     integer(kind=c_int) :: nl, nc
     integer(kind=c_int), dimension(:), allocatable :: ncl
@@ -68,7 +65,7 @@ contains
   end subroutine tv_change
 
   subroutine tv_ins(widget,iter, text, nins, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr), value :: iter, text
     integer(kind=c_int), value :: nins
 
@@ -91,7 +88,7 @@ contains
   end subroutine tv_ins
 
   subroutine tv_del(widget, s_iter, e_iter, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr), value :: s_iter, e_iter
 
     type(c_ptr) :: ctext
@@ -138,7 +135,7 @@ contains
   end subroutine tv_clr
 
   subroutine tv_info(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     integer(kind=c_int), dimension(3) :: cursor, s_start, s_end
     integer(kind=c_int) :: is_modified, has_select
@@ -166,7 +163,7 @@ contains
   end subroutine tv_info
 
   subroutine entry_text(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     integer(kind=c_int16_t) :: ntext
 
@@ -178,69 +175,73 @@ contains
        call gtk_widget_set_sensitive(abut, FALSE)
        call gtk_widget_set_sensitive(ibut, FALSE)
     end if
-
   end subroutine entry_text
 
+  subroutine activate(app, gdata) bind(c)
+    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use gtk, only: gtk_application_window_new, gtk_window_set_title
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+
+    ! Make a window and a vertical box
+    win = gtk_application_window_new(app)
+    call gtk_window_set_title(win, "Scrolling text"//c_null_char)
+
+    box = hl_gtk_box_new()
+    call gtk_window_set_child(win, box)
+
+    ! Make a scrolling text box and put it in the box
+    zedt = hl_gtk_text_view_new(contain, editable=TRUE, &
+         & changed=c_funloc(tv_change), &
+         & insert_text=c_funloc(tv_ins), &
+         & delete_range=c_funloc(tv_del), &
+         & ssize=(/350_c_int, 200_c_int/), tooltip = &
+         & "Try typing, pasting or cutting text in here"//c_null_char)
+    call hl_gtk_box_pack(box, contain)
+
+    ! Make a single line text entry, and buttons to append or place at cursor.
+    entry = hl_gtk_entry_new(60_c_int, editable=TRUE, tooltip = &
+         & "Enter text here, then click 'append' or 'insert'"//c_null_char, &
+         & changed=c_funloc(entry_text))
+    call hl_gtk_box_pack(box, entry, expand=FALSE)
+
+    box2 = hl_gtk_box_new(horizontal=TRUE)
+    call hl_gtk_box_pack(box, box2, expand=FALSE)
+
+    abut = hl_gtk_button_new("Append"//c_null_char, clicked=c_funloc(tv_append), &
+         & tooltip = "Add contents of entry box at end"//c_null_char, sensitive=FALSE)
+    call hl_gtk_box_pack(box2, abut)
+    ibut = hl_gtk_button_new("Insert"//c_null_char, clicked=c_funloc(tv_insert), &
+         & tooltip = "Add contents of entry box at cursor"//c_null_char, &
+         & sensitive=FALSE)
+    call hl_gtk_box_pack(box2, ibut)
+
+    ! And a clear button, and an info button
+    infobut = hl_gtk_button_new("Information"//c_null_char, clicked=c_funloc(tv_info))
+    call hl_gtk_box_pack(box, infobut, expand=FALSE)
+    clbut = hl_gtk_button_new("Clear"//c_null_char, clicked=c_funloc(tv_clr))
+    call hl_gtk_box_pack(box, clbut, expand=FALSE)
+
+    ! Make a quit button and put that in the box, then
+    ! put the box in the window.
+    qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
+    call hl_gtk_box_pack(box, qbut, expand=FALSE)
+
+    ! Realize the window
+    call gtk_widget_show(win)
+  end subroutine activate
 end module handlers
+
 
 program ztext
   ! ZTEXT
   ! Simple multiline text box example
-
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers
 
   implicit none
+  type(c_ptr)        :: app
 
-  ! Initialize GTK
-  call gtk_init()
-
-  ! Make a window and a vertical box
-  win = hl_gtk_window_new("Scrolling text"//c_null_char, destroy=c_funloc(my_destroy))
-  box = hl_gtk_box_new()
-  call gtk_window_set_child(win, box)
-
-  ! Make a scrolling text box and put it in the box
-  zedt = hl_gtk_text_view_new(contain, editable=TRUE, &
-       & changed=c_funloc(tv_change), &
-       & insert_text=c_funloc(tv_ins), &
-       & delete_range=c_funloc(tv_del), &
-       & ssize=(/350_c_int, 200_c_int/), tooltip = &
-       & "Try typing, pasting or cutting text in here"//c_null_char)
-  call hl_gtk_box_pack(box, contain)
-
-  ! Make a single line text entry, and buttons to append or place at cursor.
-  entry = hl_gtk_entry_new(60_c_int, editable=TRUE, tooltip = &
-       & "Enter text here, then click 'append' or 'insert'"//c_null_char, &
-       & changed=c_funloc(entry_text))
-  call hl_gtk_box_pack(box, entry, expand=FALSE)
-
-  box2 = hl_gtk_box_new(horizontal=TRUE)
-  call hl_gtk_box_pack(box, box2, expand=FALSE)
-
-  abut = hl_gtk_button_new("Append"//c_null_char, clicked=c_funloc(tv_append), &
-       & tooltip = "Add contents of entry box at end"//c_null_char, sensitive=FALSE)
-  call hl_gtk_box_pack(box2, abut)
-  ibut = hl_gtk_button_new("Insert"//c_null_char, clicked=c_funloc(tv_insert), &
-       & tooltip = "Add contents of entry box at cursor"//c_null_char, &
-       & sensitive=FALSE)
-  call hl_gtk_box_pack(box2, ibut)
-
-  ! And a clear button, and an info button
-  infobut = hl_gtk_button_new("Information"//c_null_char, clicked=c_funloc(tv_info))
-  call hl_gtk_box_pack(box, infobut, expand=FALSE)
-  clbut = hl_gtk_button_new("Clear"//c_null_char, clicked=c_funloc(tv_clr))
-  call hl_gtk_box_pack(box, clbut, expand=FALSE)
-
-  ! Make a quit button and put that in the box, then
-  ! put the box in the window.
-  qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(my_destroy))
-  call hl_gtk_box_pack(box, qbut, expand=FALSE)
-
-  ! Realize the window
-  call gtk_widget_show(win)
-
-  ! Event loop
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
+  app = hl_gtk_application_new("gtk-fortran.examples.hl_textview"//c_null_char, &
+                             & c_funloc(activate))
 end program ztext
