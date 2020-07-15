@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! GTK 4 version: vmagnin 2020-06-08
+! GTK 4 version: vmagnin 2020-06-08, 2020-07-15
 ! https://developer.gnome.org/gtk4/stable/GtkDialog.html
 !------------------------------------------------------------------------------
 
@@ -32,20 +32,16 @@ module handlers
   use gtk_hl_button
   use gtk_hl_dialog
   use gtk, only: gtk_button_new, gtk_window_set_child, &
-       & gtk_widget_show, gtk_window_new, gtk_init
-  use g, only: g_object_unref, g_main_loop_new, g_main_loop_quit, &
-             & g_main_loop_run
+       & gtk_widget_show, gtk_window_destroy
 
   implicit none
-  type(c_ptr) :: my_gmainloop
   type(c_ptr) :: win, box, label
 
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-    
     print *, "Exit called"
-    call g_main_loop_quit(my_gmainloop)
+    call gtk_window_destroy(win)
   end subroutine my_destroy
 
   subroutine msg_alert(widget, gdata) bind(c)
@@ -76,7 +72,7 @@ contains
 
     resp = hl_gtk_message_dialog_show(msg, GTK_BUTTONS_YES_NO, &
          & "QUIT"//c_null_char, parent=win)
-    if (resp == GTK_RESPONSE_YES) call g_main_loop_quit(my_gmainloop)
+    if (resp == GTK_RESPONSE_YES) call gtk_window_destroy(win)
   end subroutine msg_quit
 
   subroutine msg_about(widget, gdata) bind(c)
@@ -85,38 +81,46 @@ contains
     call hl_gtk_about_dialog_gtk_fortran(win)
   end subroutine msg_about
 
+
+  subroutine activate(app, gdata) bind(c)
+    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use gtk, only: gtk_application_window_new, gtk_window_set_title
+    implicit none
+    type(c_ptr), value, intent(in)  :: app, gdata
+    type(c_ptr) :: but
+
+    ! Make a window & put a horizontal box in it
+    win = gtk_application_window_new(app)
+    call gtk_window_set_title(win, "Dialog demo"//c_null_char)
+
+    box = hl_gtk_box_new(horizontal=TRUE, spacing=10_c_int)
+    call gtk_window_set_child(win, box)
+
+    ! 3 Buttons one shows a message, the next an about dialog and the
+    ! last a confirm exit dialog
+    but = hl_gtk_button_new('Alert'//c_null_char, clicked=c_funloc(msg_alert))
+    call hl_gtk_box_pack(box, but)
+
+    but = hl_gtk_button_new("About"//c_null_char, clicked=c_funloc(msg_about))
+    call hl_gtk_box_pack(box, but)
+
+    but = hl_gtk_button_new('Quit'//c_null_char, clicked=c_funloc(msg_quit))
+    call hl_gtk_box_pack(box, but)
+
+    ! Display the window
+    call gtk_widget_show(win)
+    end subroutine activate
 end module handlers
 
 
 program dialog_demo
+  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers
+
   implicit none
-  type(c_ptr) :: but
+  type(c_ptr)        :: app
 
-  call gtk_init()
-
-  ! Make a window & put a horizontal box in it
-  win = hl_gtk_window_new('Dialog Demo'//c_null_char, &
-                         & destroy=c_funloc(my_destroy), border=10_c_int )
-  box = hl_gtk_box_new(horizontal=TRUE, spacing=10_c_int)
-  call gtk_window_set_child(win, box)
-
-  ! 3 Buttons one shows a message, the next an about dialog and the
-  ! last a confirm exit dialog
-  but = hl_gtk_button_new('Alert'//c_null_char, clicked=c_funloc(msg_alert))
-  call hl_gtk_box_pack(box, but)
-
-  but = hl_gtk_button_new("About"//c_null_char, clicked=c_funloc(msg_about))
-  call hl_gtk_box_pack(box, but)
-
-  but = hl_gtk_button_new('Quit'//c_null_char, clicked=c_funloc(msg_quit))
-  call hl_gtk_box_pack(box, but)
-
-  ! Display the window
-  call gtk_widget_show(win)
-
-  ! Event loop
-  my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-  call g_main_loop_run(my_gmainloop)
-
+  app = hl_gtk_application_new("gtk-fortran.examples.hl_dialog"//c_null_char, &
+                             & c_funloc(activate))
 end program dialog_demo
+
