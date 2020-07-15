@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin,
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
-! Last modifications: vmagnin 2020-06-17 (GTK 4), 2020-07-08
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2020-07-15
 !------------------------------------------------------------------------------
 
 module handlers
@@ -42,7 +42,6 @@ module handlers
   use gtk, only: gtk_window_set_child, gtk_window_destroy, &
        & gtk_widget_queue_draw, gtk_widget_show, gtk_init, TRUE, FALSE, &
        & GDK_CONTROL_MASK, &
-       & GDK_POINTER_MOTION_MASK, GDK_BUTTON_MOTION_MASK, &
        & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, &
        & gtk_event_controller_get_current_event_device, &
        & gtk_gesture_single_get_current_button
