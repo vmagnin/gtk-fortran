@@ -1,4 +1,4 @@
 gtk-fortran;4
-GTK;3.98.4
-GLib;2.64.3
-Ubuntu;32
+GTK;3.98.5
+GLib;2.65.0
+Ubuntu;33

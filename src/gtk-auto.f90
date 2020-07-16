@@ -13,6 +13,38 @@ function gtk_cell_renderer_progress_new() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_string_sorter_get_expression (GtkStringSorter *self);
+function gtk_string_sorter_get_expression(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_string_sorter_get_expression
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_string_sorter_set_expression (GtkStringSorter *self, GtkExpression *expression);
+subroutine gtk_string_sorter_set_expression(self, expression) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: expression
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_string_sorter_get_ignore_case (GtkStringSorter *self);
+function gtk_string_sorter_get_ignore_case(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_string_sorter_get_ignore_case
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_string_sorter_set_ignore_case (GtkStringSorter *self, gboolean ignore_case);
+subroutine gtk_string_sorter_set_ignore_case(self, ignore_case) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: ignore_case
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !GQuark gtk_icon_theme_error_quark (void);
 function gtk_icon_theme_error_quark() bind(c)
   use iso_c_binding, only: c_int32_t
@@ -200,6 +232,17 @@ function gtk_icon_paintable_is_symbolic(self) bind(c)
   integer(c_int) :: gtk_icon_paintable_is_symbolic
   type(c_ptr), value :: self
 end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_custom_sorter_set_sort_func (GtkCustomSorter *self, GCompareDataFunc sort_func, gpointer user_data, GDestroyNotify user_destroy);
+subroutine gtk_custom_sorter_set_sort_func(self, sort_func, user_data,&
+& user_destroy) bind(c)
+  use iso_c_binding, only: c_ptr, c_funptr
+  type(c_ptr), value :: self
+  type(c_funptr), value :: sort_func
+  type(c_ptr), value :: user_data
+  type(c_funptr), value :: user_destroy
+end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_window_group_get_type (void) G_GNUC_CONST;
@@ -590,13 +633,13 @@ function gtk_builder_create_closure(builder, function_name, flags, object,&
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_builder_extend_with_template (GtkBuilder *builder, GtkWidget *widget, GType template_type, const gchar *buffer, gssize length, GError **error);
-function gtk_builder_extend_with_template(builder, widget, template_type,&
+!gboolean gtk_builder_extend_with_template (GtkBuilder *builder, GObject *object, GType template_type, const gchar *buffer, gssize length, GError **error);
+function gtk_builder_extend_with_template(builder, object, template_type,&
 & buffer, length, error) bind(c)
   use iso_c_binding, only: c_int, c_ptr, c_size_t, c_char
   integer(c_int) :: gtk_builder_extend_with_template
   type(c_ptr), value :: builder
-  type(c_ptr), value :: widget
+  type(c_ptr), value :: object
   integer(c_size_t), value :: template_type
   character(kind=c_char), dimension(*) :: buffer
   integer(c_size_t), value :: length
@@ -689,21 +732,6 @@ subroutine gtk_widget_paintable_set_widget(self, widget) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!GType gtk_accessible_get_type (void) G_GNUC_CONST;
-function gtk_accessible_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_accessible_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_accessible_set_widget (GtkAccessible *accessible, GtkWidget *widget);
-subroutine gtk_accessible_set_widget(accessible, widget) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: accessible
-  type(c_ptr), value :: widget
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
 !GtkWidget *gtk_accessible_get_widget (GtkAccessible *accessible);
 function gtk_accessible_get_widget(accessible) bind(c)
   use iso_c_binding, only: c_ptr
@@ -751,6 +779,85 @@ subroutine gtk_pad_controller_set_action(controller, type, index, mode, label,&
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
+!GType gtk_list_item_get_type (void) G_GNUC_CONST;
+function gtk_list_item_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_list_item_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gpointer gtk_list_item_get_item (GtkListItem *self);
+function gtk_list_item_get_item(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_list_item_get_item
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!guint gtk_list_item_get_position (GtkListItem *self) G_GNUC_PURE;
+function gtk_list_item_get_position(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_list_item_get_position
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_list_item_get_selected (GtkListItem *self) G_GNUC_PURE;
+function gtk_list_item_get_selected(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_list_item_get_selected
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_list_item_get_selectable (GtkListItem *self) G_GNUC_PURE;
+function gtk_list_item_get_selectable(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_list_item_get_selectable
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_list_item_set_selectable (GtkListItem *self, gboolean selectable);
+subroutine gtk_list_item_set_selectable(self, selectable) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: selectable
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_list_item_get_activatable (GtkListItem *self) G_GNUC_PURE;
+function gtk_list_item_get_activatable(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_list_item_get_activatable
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_list_item_set_activatable (GtkListItem *self, gboolean activatable);
+subroutine gtk_list_item_set_activatable(self, activatable) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: activatable
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_list_item_set_child (GtkListItem *self, GtkWidget *child);
+subroutine gtk_list_item_set_child(self, child) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: child
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkWidget * gtk_list_item_get_child (GtkListItem *self);
+function gtk_list_item_get_child(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_list_item_get_child
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_application_get_type (void) G_GNUC_CONST;
 function gtk_application_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -789,22 +896,6 @@ function gtk_application_get_windows(application) bind(c)
   type(c_ptr) :: gtk_application_get_windows
   type(c_ptr), value :: application
 end function
-
-! GDK_AVAILABLE_IN_ALL
-!GMenuModel * gtk_application_get_app_menu (GtkApplication *application);
-function gtk_application_get_app_menu(application) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_application_get_app_menu
-  type(c_ptr), value :: application
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_application_set_app_menu (GtkApplication *application, GMenuModel *app_menu);
-subroutine gtk_application_set_app_menu(application, app_menu) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: application
-  type(c_ptr), value :: app_menu
-end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GMenuModel * gtk_application_get_menubar (GtkApplication *application);
@@ -894,14 +985,6 @@ subroutine gtk_application_set_accels_for_action(application,&
   character(kind=c_char), dimension(*) :: detailed_action_name
   character(kind=c_char), dimension(*) :: accels
 end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_application_prefers_app_menu (GtkApplication *application);
-function gtk_application_prefers_app_menu(application) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_application_prefers_app_menu
-  type(c_ptr), value :: application
-end function
 
 ! GDK_AVAILABLE_IN_ALL
 !GMenu * gtk_application_get_menu_by_id (GtkApplication *application, const gchar *id);
@@ -1046,6 +1129,38 @@ end function
 subroutine gtk_border_free(border_) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: border_
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_numeric_sorter_get_expression (GtkNumericSorter *self);
+function gtk_numeric_sorter_get_expression(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_numeric_sorter_get_expression
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_numeric_sorter_set_expression (GtkNumericSorter *self, GtkExpression *expression);
+subroutine gtk_numeric_sorter_set_expression(self, expression) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: expression
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkSortType gtk_numeric_sorter_get_sort_order (GtkNumericSorter *self);
+function gtk_numeric_sorter_get_sort_order(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_numeric_sorter_get_sort_order
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_numeric_sorter_set_sort_order (GtkNumericSorter *self, GtkSortType sort_order);
+subroutine gtk_numeric_sorter_set_sort_order(self, sort_order) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: sort_order
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -1200,6 +1315,22 @@ subroutine gtk_buildable_parse_context_get_position(context, line_number,&
   type(c_ptr), value :: context
   type(c_ptr), value :: line_number
   type(c_ptr), value :: char_number
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkSorterOrder gtk_sorter_get_order (GtkSorter *self);
+function gtk_sorter_get_order(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_sorter_get_order
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_sorter_changed (GtkSorter *self, GtkSorterChange change);
+subroutine gtk_sorter_changed(self, change) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: change
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -1890,6 +2021,109 @@ end function
 function gtk_event_controller_motion_is_pointer(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_event_controller_motion_is_pointer
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_list_view_get_type (void) G_GNUC_CONST;
+function gtk_list_view_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_list_view_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkWidget * gtk_list_view_new (void);
+function gtk_list_view_new() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_list_view_new
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkWidget * gtk_list_view_new_with_factory (GtkListItemFactory *factory);
+function gtk_list_view_new_with_factory(factory) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_list_view_new_with_factory
+  type(c_ptr), value :: factory
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GListModel * gtk_list_view_get_model (GtkListView *self);
+function gtk_list_view_get_model(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_list_view_get_model
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_list_view_set_model (GtkListView *self, GListModel *model);
+subroutine gtk_list_view_set_model(self, model) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: model
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_list_view_set_factory (GtkListView *self, GtkListItemFactory *factory);
+subroutine gtk_list_view_set_factory(self, factory) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: factory
+end subroutine
+
+! 
+!GtkListItemFactory * gtk_list_view_get_factory (GtkListView *self);
+function gtk_list_view_get_factory(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_list_view_get_factory
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_list_view_set_show_separators (GtkListView *self, gboolean show_separators);
+subroutine gtk_list_view_set_show_separators(self, show_separators) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: show_separators
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_list_view_get_show_separators (GtkListView *self);
+function gtk_list_view_get_show_separators(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_list_view_get_show_separators
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_list_view_set_single_click_activate (GtkListView *self, gboolean single_click_activate);
+subroutine gtk_list_view_set_single_click_activate(self, single_click_activate)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: single_click_activate
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_list_view_get_single_click_activate (GtkListView *self);
+function gtk_list_view_get_single_click_activate(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_list_view_get_single_click_activate
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_list_view_set_enable_rubberband (GtkListView *self, gboolean enable_rubberband);
+subroutine gtk_list_view_set_enable_rubberband(self, enable_rubberband) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: enable_rubberband
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_list_view_get_enable_rubberband (GtkListView *self);
+function gtk_list_view_get_enable_rubberband(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_list_view_get_enable_rubberband
   type(c_ptr), value :: self
 end function
 
@@ -3815,6 +4049,22 @@ function gtk_im_context_filter_keypress(context, event) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_im_context_filter_key (GtkIMContext *context, gboolean press, GdkSurface *surface, GdkDevice *device, guint32 time, guint keycode, GdkModifierType state, int group);
+function gtk_im_context_filter_key(context, press, surface, device, time,&
+& keycode, state, group) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_int32_t
+  integer(c_int) :: gtk_im_context_filter_key
+  type(c_ptr), value :: context
+  integer(c_int), value :: press
+  type(c_ptr), value :: surface
+  type(c_ptr), value :: device
+  integer(c_int32_t), value :: time
+  integer(c_int), value :: keycode
+  integer(c_int), value :: state
+  integer(c_int), value :: group
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !void gtk_im_context_focus_in (GtkIMContext *context);
 subroutine gtk_im_context_focus_in(context) bind(c)
   use iso_c_binding, only: c_ptr
@@ -3991,6 +4241,13 @@ function gtk_alternative_trigger_get_second(self) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_alternative_trigger_get_second
   type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_list_base_get_type (void) G_GNUC_CONST;
+function gtk_list_base_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_list_base_get_type
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -4198,6 +4455,125 @@ end function
 function gtk_style_provider_get_type() bind(c)
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_style_provider_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_grid_view_get_type (void) G_GNUC_CONST;
+function gtk_grid_view_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_grid_view_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkWidget * gtk_grid_view_new (void);
+function gtk_grid_view_new() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_grid_view_new
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkWidget * gtk_grid_view_new_with_factory (GtkListItemFactory *factory);
+function gtk_grid_view_new_with_factory(factory) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_grid_view_new_with_factory
+  type(c_ptr), value :: factory
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GListModel * gtk_grid_view_get_model (GtkGridView *self);
+function gtk_grid_view_get_model(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_grid_view_get_model
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_grid_view_set_model (GtkGridView *self, GListModel *model);
+subroutine gtk_grid_view_set_model(self, model) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: model
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_grid_view_set_factory (GtkGridView *self, GtkListItemFactory *factory);
+subroutine gtk_grid_view_set_factory(self, factory) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: factory
+end subroutine
+
+! 
+!GtkListItemFactory * gtk_grid_view_get_factory (GtkGridView *self);
+function gtk_grid_view_get_factory(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_grid_view_get_factory
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!guint gtk_grid_view_get_min_columns (GtkGridView *self);
+function gtk_grid_view_get_min_columns(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_grid_view_get_min_columns
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_grid_view_set_min_columns (GtkGridView *self, guint min_columns);
+subroutine gtk_grid_view_set_min_columns(self, min_columns) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: min_columns
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!guint gtk_grid_view_get_max_columns (GtkGridView *self);
+function gtk_grid_view_get_max_columns(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_grid_view_get_max_columns
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_grid_view_set_max_columns (GtkGridView *self, guint max_columns);
+subroutine gtk_grid_view_set_max_columns(self, max_columns) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: max_columns
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_grid_view_set_enable_rubberband (GtkGridView *self, gboolean enable_rubberband);
+subroutine gtk_grid_view_set_enable_rubberband(self, enable_rubberband) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: enable_rubberband
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_grid_view_get_enable_rubberband (GtkGridView *self);
+function gtk_grid_view_get_enable_rubberband(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_grid_view_get_enable_rubberband
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_grid_view_set_single_click_activate (GtkGridView *self, gboolean single_click_activate);
+subroutine gtk_grid_view_set_single_click_activate(self, single_click_activate)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: single_click_activate
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_grid_view_get_single_click_activate (GtkGridView *self);
+function gtk_grid_view_get_single_click_activate(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_grid_view_get_single_click_activate
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -5348,6 +5724,15 @@ function gtk_widget_get_height(widget) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!int gtk_widget_get_size (GtkWidget *widget, GtkOrientation orientation);
+function gtk_widget_get_size(widget, orientation) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_widget_get_size
+  type(c_ptr), value :: widget
+  integer(c_int), value :: orientation
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_widget_child_focus (GtkWidget *widget, GtkDirectionType direction);
 function gtk_widget_child_focus(widget, direction) bind(c)
   use iso_c_binding, only: c_int, c_ptr
@@ -5868,7 +6253,7 @@ subroutine gtk_widget_trigger_tooltip_query(widget) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_widget_set_tooltip_text (GtkWidget *widget, const gchar *text);
+!void gtk_widget_set_tooltip_text (GtkWidget *widget, const char *text);
 subroutine gtk_widget_set_tooltip_text(widget, text) bind(c)
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr), value :: widget
@@ -5876,7 +6261,7 @@ subroutine gtk_widget_set_tooltip_text(widget, text) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gchar * gtk_widget_get_tooltip_text (GtkWidget *widget);
+!const char * gtk_widget_get_tooltip_text (GtkWidget *widget);
 function gtk_widget_get_tooltip_text(widget) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_widget_get_tooltip_text
@@ -5884,7 +6269,7 @@ function gtk_widget_get_tooltip_text(widget) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_widget_set_tooltip_markup (GtkWidget *widget, const gchar *markup);
+!void gtk_widget_set_tooltip_markup (GtkWidget *widget, const char *markup);
 subroutine gtk_widget_set_tooltip_markup(widget, markup) bind(c)
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr), value :: widget
@@ -5892,7 +6277,7 @@ subroutine gtk_widget_set_tooltip_markup(widget, markup) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gchar * gtk_widget_get_tooltip_markup (GtkWidget *widget);
+!const char * gtk_widget_get_tooltip_markup (GtkWidget *widget);
 function gtk_widget_get_tooltip_markup(widget) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_widget_get_tooltip_markup
@@ -7748,21 +8133,18 @@ function gtk_sort_list_model_new_for_type(item_type) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_sort_list_model_set_sort_func (GtkSortListModel *self, GCompareDataFunc sort_func, gpointer user_data, GDestroyNotify user_destroy);
-subroutine gtk_sort_list_model_set_sort_func(self, sort_func, user_data,&
-& user_destroy) bind(c)
-  use iso_c_binding, only: c_ptr, c_funptr
+!void gtk_sort_list_model_set_sorter (GtkSortListModel *self, GtkSorter *sorter);
+subroutine gtk_sort_list_model_set_sorter(self, sorter) bind(c)
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: self
-  type(c_funptr), value :: sort_func
-  type(c_ptr), value :: user_data
-  type(c_funptr), value :: user_destroy
+  type(c_ptr), value :: sorter
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_sort_list_model_has_sort (GtkSortListModel *self);
-function gtk_sort_list_model_has_sort(self) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_sort_list_model_has_sort
+!GtkSorter * gtk_sort_list_model_get_sorter (GtkSortListModel *self);
+function gtk_sort_list_model_get_sorter(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_sort_list_model_get_sorter
   type(c_ptr), value :: self
 end function
 
@@ -7783,11 +8165,29 @@ function gtk_sort_list_model_get_model(self) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_sort_list_model_resort (GtkSortListModel *self);
-subroutine gtk_sort_list_model_resort(self) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: self
+!gboolean gtk_overlay_layout_child_get_measure (GtkOverlayLayoutChild *child);
+function gtk_overlay_layout_child_get_measure(child) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_overlay_layout_child_get_measure
+  type(c_ptr), value :: child
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_overlay_layout_child_set_clip_overlay (GtkOverlayLayoutChild *child, gboolean clip_overlay);
+subroutine gtk_overlay_layout_child_set_clip_overlay(child, clip_overlay)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: child
+  integer(c_int), value :: clip_overlay
 end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_overlay_layout_child_get_clip_overlay (GtkOverlayLayoutChild *child);
+function gtk_overlay_layout_child_get_clip_overlay(child) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_overlay_layout_child_get_clip_overlay
+  type(c_ptr), value :: child
+end function
 
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_renderer_get_type (void) G_GNUC_CONST;
@@ -8131,6 +8531,20 @@ function gtk_check_button_get_inconsistent(check_button) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_check_button_get_inconsistent
   type(c_ptr), value :: check_button
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_signal_list_item_factory_get_type (void) G_GNUC_CONST;
+function gtk_signal_list_item_factory_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_signal_list_item_factory_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkListItemFactory * gtk_signal_list_item_factory_new (void);
+function gtk_signal_list_item_factory_new() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_signal_list_item_factory_new
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -9886,6 +10300,25 @@ subroutine gtk_lock_button_set_permission(button, permission) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
+!GType gtk_functions_list_item_factory_get_type (void) G_GNUC_CONST;
+function gtk_functions_list_item_factory_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_functions_list_item_factory_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkListItemFactory * gtk_functions_list_item_factory_new (GtkListItemSetupFunc setup_func, GtkListItemBindFunc bind_func, gpointer user_data, GDestroyNotify user_destroy);
+function gtk_functions_list_item_factory_new(setup_func, bind_func, user_data,&
+& user_destroy) bind(c)
+  use iso_c_binding, only: c_ptr, c_funptr
+  type(c_ptr) :: gtk_functions_list_item_factory_new
+  type(c_funptr), value :: setup_func
+  type(c_funptr), value :: bind_func
+  type(c_ptr), value :: user_data
+  type(c_funptr), value :: user_destroy
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_file_chooser_button_get_type (void) G_GNUC_CONST;
 function gtk_file_chooser_button_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -9955,6 +10388,17 @@ subroutine gtk_file_chooser_button_set_modal(button, modal) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: button
   integer(c_int), value :: modal
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_custom_filter_set_filter_func (GtkCustomFilter *self, GtkCustomFilterFunc match_func, gpointer user_data, GDestroyNotify user_destroy);
+subroutine gtk_custom_filter_set_filter_func(self, match_func, user_data,&
+& user_destroy) bind(c)
+  use iso_c_binding, only: c_ptr, c_funptr
+  type(c_ptr), value :: self
+  type(c_funptr), value :: match_func
+  type(c_ptr), value :: user_data
+  type(c_funptr), value :: user_destroy
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -11433,6 +11877,257 @@ function gtk_combo_box_get_child(combo_box) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_combo_box_get_child
   type(c_ptr), value :: combo_box
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_expression_get_type (void) G_GNUC_CONST;
+function gtk_expression_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_expression_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_expression_ref (GtkExpression *self);
+function gtk_expression_ref(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_expression_ref
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_expression_unref (GtkExpression *self);
+subroutine gtk_expression_unref(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_expression_get_value_type (GtkExpression *self);
+function gtk_expression_get_value_type(self) bind(c)
+  use iso_c_binding, only: c_size_t, c_ptr
+  integer(c_size_t) :: gtk_expression_get_value_type
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_expression_is_static (GtkExpression *self);
+function gtk_expression_is_static(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_expression_is_static
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_expression_evaluate (GtkExpression *self, gpointer this_, GValue *value);
+function gtk_expression_evaluate(self, this_, value) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_expression_evaluate
+  type(c_ptr), value :: self
+  type(c_ptr), value :: this_
+  type(c_ptr), value :: value
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpressionWatch * gtk_expression_watch (GtkExpression *self, gpointer this_, GtkExpressionNotify notify, gpointer user_data, GDestroyNotify user_destroy);
+function gtk_expression_watch(self, this_, notify, user_data, user_destroy)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_funptr
+  type(c_ptr) :: gtk_expression_watch
+  type(c_ptr), value :: self
+  type(c_ptr), value :: this_
+  type(c_funptr), value :: notify
+  type(c_ptr), value :: user_data
+  type(c_funptr), value :: user_destroy
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpressionWatch * gtk_expression_bind (GtkExpression *self, gpointer target, const char * property, gpointer this_);
+function gtk_expression_bind(self, target, property, this_) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_expression_bind
+  type(c_ptr), value :: self
+  type(c_ptr), value :: target
+  character(kind=c_char), dimension(*) :: property
+  type(c_ptr), value :: this_
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpressionWatch * gtk_expression_watch_ref (GtkExpressionWatch *watch);
+function gtk_expression_watch_ref(watch) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_expression_watch_ref
+  type(c_ptr), value :: watch
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_expression_watch_unref (GtkExpressionWatch *watch);
+subroutine gtk_expression_watch_unref(watch) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: watch
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_expression_watch_evaluate (GtkExpressionWatch *watch, GValue *value);
+function gtk_expression_watch_evaluate(watch, value) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_expression_watch_evaluate
+  type(c_ptr), value :: watch
+  type(c_ptr), value :: value
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_expression_watch_unwatch (GtkExpressionWatch *watch);
+subroutine gtk_expression_watch_unwatch(watch) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: watch
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_property_expression_get_type (void) G_GNUC_CONST;
+function gtk_property_expression_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_property_expression_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_property_expression_new (GType this_type, GtkExpression *expression, const char *property_name);
+function gtk_property_expression_new(this_type, expression, property_name)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_size_t, c_char
+  type(c_ptr) :: gtk_property_expression_new
+  integer(c_size_t), value :: this_type
+  type(c_ptr), value :: expression
+  character(kind=c_char), dimension(*) :: property_name
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_property_expression_new_for_pspec (GtkExpression *expression, GParamSpec *pspec);
+function gtk_property_expression_new_for_pspec(expression, pspec) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_property_expression_new_for_pspec
+  type(c_ptr), value :: expression
+  type(c_ptr), value :: pspec
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_constant_expression_get_type (void) G_GNUC_CONST;
+function gtk_constant_expression_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_constant_expression_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_constant_expression_new_for_value (const GValue *value);
+function gtk_constant_expression_new_for_value(value) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_constant_expression_new_for_value
+  type(c_ptr), value :: value
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_object_expression_get_type (void) G_GNUC_CONST;
+function gtk_object_expression_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_object_expression_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_object_expression_new (GObject *object);
+function gtk_object_expression_new(object) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_object_expression_new
+  type(c_ptr), value :: object
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_closure_expression_get_type (void) G_GNUC_CONST;
+function gtk_closure_expression_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_closure_expression_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_closure_expression_new (GType value_type, GClosure *closure, guint n_params, GtkExpression **params);
+function gtk_closure_expression_new(value_type, closure, n_params, params)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_size_t, c_int
+  type(c_ptr) :: gtk_closure_expression_new
+  integer(c_size_t), value :: value_type
+  type(c_ptr), value :: closure
+  integer(c_int), value :: n_params
+  type(c_ptr), value :: params
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_cclosure_expression_get_type (void) G_GNUC_CONST;
+function gtk_cclosure_expression_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_cclosure_expression_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_cclosure_expression_new (GType value_type, GClosureMarshal marshal, guint n_params, GtkExpression **params, GCallback callback_func, gpointer user_data, GClosureNotify user_destroy);
+function gtk_cclosure_expression_new(value_type, marshal, n_params, params,&
+& callback_func, user_data, user_destroy) bind(c)
+  use iso_c_binding, only: c_ptr, c_size_t, c_funptr, c_int
+  type(c_ptr) :: gtk_cclosure_expression_new
+  integer(c_size_t), value :: value_type
+  type(c_funptr), value :: marshal
+  integer(c_int), value :: n_params
+  type(c_ptr), value :: params
+  type(c_funptr), value :: callback_func
+  type(c_ptr), value :: user_data
+  type(c_funptr), value :: user_destroy
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_value_set_expression (GValue *value, GtkExpression *expression);
+subroutine gtk_value_set_expression(value, expression) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: value
+  type(c_ptr), value :: expression
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_value_take_expression (GValue *value, GtkExpression *expression);
+subroutine gtk_value_take_expression(value, expression) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: value
+  type(c_ptr), value :: expression
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_value_get_expression (const GValue *value);
+function gtk_value_get_expression(value) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_value_get_expression
+  type(c_ptr), value :: value
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_value_dup_expression (const GValue *value);
+function gtk_value_dup_expression(value) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_value_dup_expression
+  type(c_ptr), value :: value
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_param_expression_get_type (void) G_GNUC_CONST;
+function gtk_param_expression_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_param_expression_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GParamSpec * gtk_param_spec_expression (const char *name, const char *nick, const char *blurb, GParamFlags flags);
+function gtk_param_spec_expression(name, nick, blurb, flags) bind(c)
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr) :: gtk_param_spec_expression
+  character(kind=c_char), dimension(*) :: name
+  character(kind=c_char), dimension(*) :: nick
+  character(kind=c_char), dimension(*) :: blurb
+  integer(c_int), value :: flags
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -14271,15 +14966,20 @@ function gtk_filter_list_model_new_for_type(item_type) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_filter_list_model_set_filter_func (GtkFilterListModel *self, GtkFilterListModelFilterFunc filter_func, gpointer user_data, GDestroyNotify user_destroy);
-subroutine gtk_filter_list_model_set_filter_func(self, filter_func, user_data,&
-& user_destroy) bind(c)
-  use iso_c_binding, only: c_ptr, c_funptr
+!void gtk_filter_list_model_set_filter (GtkFilterListModel *self, GtkFilter *filter);
+subroutine gtk_filter_list_model_set_filter(self, filter) bind(c)
+  use iso_c_binding, only: c_ptr
   type(c_ptr), value :: self
-  type(c_funptr), value :: filter_func
-  type(c_ptr), value :: user_data
-  type(c_funptr), value :: user_destroy
+  type(c_ptr), value :: filter
 end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkFilter * gtk_filter_list_model_get_filter (GtkFilterListModel *self);
+function gtk_filter_list_model_get_filter(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_filter_list_model_get_filter
+  type(c_ptr), value :: self
+end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_filter_list_model_set_model (GtkFilterListModel *self, GListModel *model);
@@ -14296,21 +14996,6 @@ function gtk_filter_list_model_get_model(self) bind(c)
   type(c_ptr) :: gtk_filter_list_model_get_model
   type(c_ptr), value :: self
 end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_filter_list_model_has_filter (GtkFilterListModel *self);
-function gtk_filter_list_model_has_filter(self) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_filter_list_model_has_filter
-  type(c_ptr), value :: self
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_filter_list_model_refilter (GtkFilterListModel *self);
-subroutine gtk_filter_list_model_refilter(self) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: self
-end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_revealer_get_type (void) G_GNUC_CONST;
@@ -15840,6 +16525,62 @@ function gtk_event_controller_legacy_new() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!GtkWidget * gtk_tree_expander_get_child (GtkTreeExpander *self);
+function gtk_tree_expander_get_child(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_tree_expander_get_child
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_tree_expander_set_child (GtkTreeExpander *self, GtkWidget *child);
+subroutine gtk_tree_expander_set_child(self, child) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: child
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gpointer gtk_tree_expander_get_item (GtkTreeExpander *self);
+function gtk_tree_expander_get_item(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_tree_expander_get_item
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkTreeListRow * gtk_tree_expander_get_list_row (GtkTreeExpander *self);
+function gtk_tree_expander_get_list_row(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_tree_expander_get_list_row
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_tree_expander_set_list_row (GtkTreeExpander *self, GtkTreeListRow *list_row);
+subroutine gtk_tree_expander_set_list_row(self, list_row) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: list_row
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_multi_sorter_append (GtkMultiSorter *self, GtkSorter *sorter);
+subroutine gtk_multi_sorter_append(self, sorter) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: sorter
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_multi_sorter_remove (GtkMultiSorter *self, guint position);
+subroutine gtk_multi_sorter_remove(self, position) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: position
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_frame_get_type (void) G_GNUC_CONST;
 function gtk_frame_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -16388,6 +17129,22 @@ subroutine gtk_cell_area_box_set_spacing(box, spacing) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: box
   integer(c_int), value :: spacing
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkSorter * gtk_tree_list_row_sorter_get_sorter (GtkTreeListRowSorter *self);
+function gtk_tree_list_row_sorter_get_sorter(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_tree_list_row_sorter_get_sorter
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_tree_list_row_sorter_set_sorter (GtkTreeListRowSorter *self, GtkSorter *sorter);
+subroutine gtk_tree_list_row_sorter_set_sorter(self, sorter) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: sorter
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -18179,6 +18936,13 @@ subroutine gtk_color_button_set_modal(button, modal) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
+!GType gtk_list_item_factory_get_type (void) G_GNUC_CONST;
+function gtk_list_item_factory_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_list_item_factory_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_emoji_chooser_get_type (void) G_GNUC_CONST;
 function gtk_emoji_chooser_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -19608,6 +20372,56 @@ function gtk_dialog_get_header_bar(dialog) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_dialog_get_header_bar
   type(c_ptr), value :: dialog
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_builder_list_item_factory_get_type (void) G_GNUC_CONST;
+function gtk_builder_list_item_factory_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_builder_list_item_factory_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkListItemFactory * gtk_builder_list_item_factory_new_from_bytes (GtkBuilderScope *scope, GBytes *bytes);
+function gtk_builder_list_item_factory_new_from_bytes(scope, bytes) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_builder_list_item_factory_new_from_bytes
+  type(c_ptr), value :: scope
+  type(c_ptr), value :: bytes
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkListItemFactory * gtk_builder_list_item_factory_new_from_resource (GtkBuilderScope *scope, const char *resource_path);
+function gtk_builder_list_item_factory_new_from_resource(scope, resource_path)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_builder_list_item_factory_new_from_resource
+  type(c_ptr), value :: scope
+  character(kind=c_char), dimension(*) :: resource_path
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GBytes * gtk_builder_list_item_factory_get_bytes (GtkBuilderListItemFactory *self) G_GNUC_PURE;
+function gtk_builder_list_item_factory_get_bytes(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_builder_list_item_factory_get_bytes
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_builder_list_item_factory_get_resource (GtkBuilderListItemFactory *self) G_GNUC_PURE;
+function gtk_builder_list_item_factory_get_resource(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_builder_list_item_factory_get_resource
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkBuilderScope * gtk_builder_list_item_factory_get_scope (GtkBuilderListItemFactory *self) G_GNUC_PURE;
+function gtk_builder_list_item_factory_get_scope(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_builder_list_item_factory_get_scope
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -21929,13 +22743,13 @@ function gtk_fixed_new() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_fixed_put (GtkFixed *fixed, GtkWidget *widget, gint x, gint y);
+!void gtk_fixed_put (GtkFixed *fixed, GtkWidget *widget, double x, double y);
 subroutine gtk_fixed_put(fixed, widget, x, y) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
+  use iso_c_binding, only: c_ptr, c_double
   type(c_ptr), value :: fixed
   type(c_ptr), value :: widget
-  integer(c_int), value :: x
-  integer(c_int), value :: y
+  real(c_double), value :: x
+  real(c_double), value :: y
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -21947,17 +22761,17 @@ subroutine gtk_fixed_remove(fixed, widget) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_fixed_move (GtkFixed *fixed, GtkWidget *widget, gint x, gint y);
+!void gtk_fixed_move (GtkFixed *fixed, GtkWidget *widget, double x, double y);
 subroutine gtk_fixed_move(fixed, widget, x, y) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
+  use iso_c_binding, only: c_ptr, c_double
   type(c_ptr), value :: fixed
   type(c_ptr), value :: widget
-  integer(c_int), value :: x
-  integer(c_int), value :: y
+  real(c_double), value :: x
+  real(c_double), value :: y
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_fixed_get_child_position (GtkFixed *fixed, GtkWidget *widget, gint *x, gint *y);
+!void gtk_fixed_get_child_position (GtkFixed *fixed, GtkWidget *widget, double *x, double *y);
 subroutine gtk_fixed_get_child_position(fixed, widget, x, y) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: fixed
@@ -22108,6 +22922,26 @@ function gtk_selection_model_unselect_all(model) bind(c)
   use iso_c_binding, only: c_int
   integer(c_int) :: gtk_selection_model_unselect_all
   integer(c_int), value :: model
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_selection_model_select_callback (GtkSelectionModel *model, GtkSelectionCallback callback, gpointer data);
+function gtk_selection_model_select_callback(model, callback, data) bind(c)
+  use iso_c_binding, only: c_int, c_funptr, c_ptr
+  integer(c_int) :: gtk_selection_model_select_callback
+  integer(c_int), value :: model
+  type(c_funptr), value :: callback
+  type(c_ptr), value :: data
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_selection_model_unselect_callback (GtkSelectionModel *model, GtkSelectionCallback callback, gpointer data);
+function gtk_selection_model_unselect_callback(model, callback, data) bind(c)
+  use iso_c_binding, only: c_int, c_funptr, c_ptr
+  integer(c_int) :: gtk_selection_model_unselect_callback
+  integer(c_int), value :: model
+  type(c_funptr), value :: callback
+  type(c_ptr), value :: data
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -22858,6 +23692,166 @@ function gtk_print_operation_preview_is_selected(preview, page_nr) bind(c)
   integer(c_int) :: gtk_print_operation_preview_is_selected
   type(c_ptr), value :: preview
   integer(c_int), value :: page_nr
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_column_view_column_get_type (void) G_GNUC_CONST;
+function gtk_column_view_column_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_column_view_column_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkColumnViewColumn * gtk_column_view_column_new (const char *title);
+function gtk_column_view_column_new(title) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_column_view_column_new
+  character(kind=c_char), dimension(*) :: title
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkColumnViewColumn * gtk_column_view_column_new_with_factory (const char *title, GtkListItemFactory *factory);
+function gtk_column_view_column_new_with_factory(title, factory) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr) :: gtk_column_view_column_new_with_factory
+  character(kind=c_char), dimension(*) :: title
+  type(c_ptr), value :: factory
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkColumnView * gtk_column_view_column_get_column_view (GtkColumnViewColumn *self);
+function gtk_column_view_column_get_column_view(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_column_view_column_get_column_view
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_column_set_factory (GtkColumnViewColumn *self, GtkListItemFactory *factory);
+subroutine gtk_column_view_column_set_factory(self, factory) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: factory
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkListItemFactory * gtk_column_view_column_get_factory (GtkColumnViewColumn *self);
+function gtk_column_view_column_get_factory(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_column_view_column_get_factory
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_column_set_title (GtkColumnViewColumn *self, const char *title);
+subroutine gtk_column_view_column_set_title(self, title) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: title
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_column_view_column_get_title (GtkColumnViewColumn *self);
+function gtk_column_view_column_get_title(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_column_view_column_get_title
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_column_set_sorter (GtkColumnViewColumn *self, GtkSorter *sorter);
+subroutine gtk_column_view_column_set_sorter(self, sorter) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: sorter
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkSorter * gtk_column_view_column_get_sorter (GtkColumnViewColumn *self);
+function gtk_column_view_column_get_sorter(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_column_view_column_get_sorter
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_column_set_visible (GtkColumnViewColumn *self, gboolean visible);
+subroutine gtk_column_view_column_set_visible(self, visible) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: visible
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_column_view_column_get_visible (GtkColumnViewColumn *self);
+function gtk_column_view_column_get_visible(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_column_view_column_get_visible
+  type(c_ptr), value :: self
+end function
+
+! 
+!void gtk_column_view_column_set_header_menu (GtkColumnViewColumn *self, GMenuModel *menu);
+subroutine gtk_column_view_column_set_header_menu(self, menu) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: menu
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GMenuModel * gtk_column_view_column_get_header_menu (GtkColumnViewColumn *self);
+function gtk_column_view_column_get_header_menu(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_column_view_column_get_header_menu
+  type(c_ptr), value :: self
+end function
+
+! 
+!void gtk_column_view_column_set_fixed_width (GtkColumnViewColumn *self, int fixed_width);
+subroutine gtk_column_view_column_set_fixed_width(self, fixed_width) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: fixed_width
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!int gtk_column_view_column_get_fixed_width (GtkColumnViewColumn *self);
+function gtk_column_view_column_get_fixed_width(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_column_view_column_get_fixed_width
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_column_set_resizable (GtkColumnViewColumn *self, gboolean resizable);
+subroutine gtk_column_view_column_set_resizable(self, resizable) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: resizable
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_column_view_column_get_resizable (GtkColumnViewColumn *self);
+function gtk_column_view_column_get_resizable(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_column_view_column_get_resizable
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_column_set_expand (GtkColumnViewColumn *self, gboolean expand);
+subroutine gtk_column_view_column_set_expand(self, expand) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: expand
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_column_view_column_get_expand (GtkColumnViewColumn *self);
+function gtk_column_view_column_get_expand(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_column_view_column_get_expand
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -24677,6 +25671,110 @@ function gtk_image_get_icon_size(image) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!void gtk_drop_down_set_from_strings (GtkDropDown *self, const char *const *texts);
+subroutine gtk_drop_down_set_from_strings(self, texts) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: texts
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_drop_down_set_model (GtkDropDown *self, GListModel *model);
+subroutine gtk_drop_down_set_model(self, model) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: model
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GListModel * gtk_drop_down_get_model (GtkDropDown *self);
+function gtk_drop_down_get_model(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_drop_down_get_model
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_drop_down_set_selected (GtkDropDown *self, guint position);
+subroutine gtk_drop_down_set_selected(self, position) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: position
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!guint gtk_drop_down_get_selected (GtkDropDown *self);
+function gtk_drop_down_get_selected(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_drop_down_get_selected
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_drop_down_set_factory (GtkDropDown *self, GtkListItemFactory *factory);
+subroutine gtk_drop_down_set_factory(self, factory) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: factory
+end subroutine
+
+! 
+!GtkListItemFactory * gtk_drop_down_get_factory (GtkDropDown *self);
+function gtk_drop_down_get_factory(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_drop_down_get_factory
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_drop_down_set_list_factory (GtkDropDown *self, GtkListItemFactory *factory);
+subroutine gtk_drop_down_set_list_factory(self, factory) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: factory
+end subroutine
+
+! 
+!GtkListItemFactory * gtk_drop_down_get_list_factory (GtkDropDown *self);
+function gtk_drop_down_get_list_factory(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_drop_down_get_list_factory
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_drop_down_set_expression (GtkDropDown *self, GtkExpression *expression);
+subroutine gtk_drop_down_set_expression(self, expression) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: expression
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_drop_down_get_expression (GtkDropDown *self);
+function gtk_drop_down_get_expression(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_drop_down_get_expression
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_drop_down_set_enable_search (GtkDropDown *self, gboolean enable_search);
+subroutine gtk_drop_down_set_enable_search(self, enable_search) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: enable_search
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_drop_down_get_enable_search (GtkDropDown *self);
+function gtk_drop_down_get_enable_search(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_drop_down_get_enable_search
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_label_get_type (void) G_GNUC_CONST;
 function gtk_label_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -25120,6 +26218,22 @@ function gtk_slice_list_model_get_size(self) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!GtkFilterMatch gtk_filter_get_strictness (GtkFilter *self);
+function gtk_filter_get_strictness(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_filter_get_strictness
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_filter_changed (GtkFilter *self, GtkFilterChange change);
+subroutine gtk_filter_changed(self, change) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: change
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_mount_operation_get_type (void);
 function gtk_mount_operation_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -25172,6 +26286,70 @@ function gtk_mount_operation_get_display(op) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_mount_operation_get_display
   type(c_ptr), value :: op
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_directory_list_set_file (GtkDirectoryList *self, GFile *file);
+subroutine gtk_directory_list_set_file(self, file) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: file
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GFile * gtk_directory_list_get_file (GtkDirectoryList *self);
+function gtk_directory_list_get_file(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_directory_list_get_file
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_directory_list_set_attributes (GtkDirectoryList *self, const char *attributes);
+subroutine gtk_directory_list_set_attributes(self, attributes) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: attributes
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_directory_list_get_attributes (GtkDirectoryList *self);
+function gtk_directory_list_get_attributes(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_directory_list_get_attributes
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_directory_list_set_io_priority (GtkDirectoryList *self, int io_priority);
+subroutine gtk_directory_list_set_io_priority(self, io_priority) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: io_priority
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!int gtk_directory_list_get_io_priority (GtkDirectoryList *self);
+function gtk_directory_list_get_io_priority(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_directory_list_get_io_priority
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_directory_list_is_loading (GtkDirectoryList *self);
+function gtk_directory_list_is_loading(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_directory_list_is_loading
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!const GError * gtk_directory_list_get_error (GtkDirectoryList *self);
+function gtk_directory_list_get_error(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_directory_list_get_error
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -25592,6 +26770,14 @@ function gtk_paned_get_wide_handle(paned) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!void gtk_multi_filter_remove (GtkMultiFilter *self, guint position);
+subroutine gtk_multi_filter_remove(self, position) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: position
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_link_button_get_type (void) G_GNUC_CONST;
 function gtk_link_button_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -25645,6 +26831,70 @@ subroutine gtk_link_button_set_visited(link_button, visited) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: link_button
   integer(c_int), value :: visited
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_string_filter_get_search (GtkStringFilter *self);
+function gtk_string_filter_get_search(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_string_filter_get_search
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_string_filter_set_search (GtkStringFilter *self, const char *search);
+subroutine gtk_string_filter_set_search(self, search) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: search
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkExpression * gtk_string_filter_get_expression (GtkStringFilter *self);
+function gtk_string_filter_get_expression(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_string_filter_get_expression
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_string_filter_set_expression (GtkStringFilter *self, GtkExpression *expression);
+subroutine gtk_string_filter_set_expression(self, expression) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: expression
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_string_filter_get_ignore_case (GtkStringFilter *self);
+function gtk_string_filter_get_ignore_case(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_string_filter_get_ignore_case
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_string_filter_set_ignore_case (GtkStringFilter *self, gboolean ignore_case);
+subroutine gtk_string_filter_set_ignore_case(self, ignore_case) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: ignore_case
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkStringFilterMatchMode gtk_string_filter_get_match_mode (GtkStringFilter *self);
+function gtk_string_filter_get_match_mode(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_string_filter_get_match_mode
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_string_filter_set_match_mode (GtkStringFilter *self, GtkStringFilterMatchMode mode);
+subroutine gtk_string_filter_set_match_mode(self, mode) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: mode
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -26154,6 +27404,170 @@ function gtk_entry_get_extra_menu(entry) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!GType gtk_column_view_get_type (void) G_GNUC_CONST;
+function gtk_column_view_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_column_view_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkWidget * gtk_column_view_new (void);
+function gtk_column_view_new() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_column_view_new
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GListModel * gtk_column_view_get_columns (GtkColumnView *self);
+function gtk_column_view_get_columns(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_column_view_get_columns
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_append_column (GtkColumnView *self, GtkColumnViewColumn *column);
+subroutine gtk_column_view_append_column(self, column) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: column
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_remove_column (GtkColumnView *self, GtkColumnViewColumn *column);
+subroutine gtk_column_view_remove_column(self, column) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: column
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_insert_column (GtkColumnView *self, guint position, GtkColumnViewColumn *column);
+subroutine gtk_column_view_insert_column(self, position, column) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: position
+  type(c_ptr), value :: column
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GListModel * gtk_column_view_get_model (GtkColumnView *self);
+function gtk_column_view_get_model(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_column_view_get_model
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_set_model (GtkColumnView *self, GListModel *model);
+subroutine gtk_column_view_set_model(self, model) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: model
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_column_view_get_show_row_separators (GtkColumnView *self);
+function gtk_column_view_get_show_row_separators(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_column_view_get_show_row_separators
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_set_show_row_separators (GtkColumnView *self, gboolean show_row_separators);
+subroutine gtk_column_view_set_show_row_separators(self, show_row_separators)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: show_row_separators
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_column_view_get_show_column_separators (GtkColumnView *self);
+function gtk_column_view_get_show_column_separators(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_column_view_get_show_column_separators
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_set_show_column_separators (GtkColumnView *self, gboolean show_column_separators);
+subroutine gtk_column_view_set_show_column_separators(self,&
+& show_column_separators) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: show_column_separators
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkSorter * gtk_column_view_get_sorter (GtkColumnView *self);
+function gtk_column_view_get_sorter(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_column_view_get_sorter
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_sort_by_column (GtkColumnView *self, GtkColumnViewColumn *column, GtkSortType direction);
+subroutine gtk_column_view_sort_by_column(self, column, direction) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  type(c_ptr), value :: column
+  integer(c_int), value :: direction
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_column_view_set_single_click_activate (GtkColumnView *self, gboolean single_click_activate);
+subroutine gtk_column_view_set_single_click_activate(self,&
+& single_click_activate) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: single_click_activate
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_column_view_get_single_click_activate (GtkColumnView *self);
+function gtk_column_view_get_single_click_activate(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_column_view_get_single_click_activate
+  type(c_ptr), value :: self
+end function
+
+! 
+!void gtk_column_view_set_reorderable (GtkColumnView *self, gboolean reorderable);
+subroutine gtk_column_view_set_reorderable(self, reorderable) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: reorderable
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_column_view_get_reorderable (GtkColumnView *self);
+function gtk_column_view_get_reorderable(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_column_view_get_reorderable
+  type(c_ptr), value :: self
+end function
+
+! 
+!void gtk_column_view_set_enable_rubberband (GtkColumnView *self, gboolean enable_rubberband);
+subroutine gtk_column_view_set_enable_rubberband(self, enable_rubberband)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: enable_rubberband
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_column_view_get_enable_rubberband (GtkColumnView *self);
+function gtk_column_view_get_enable_rubberband(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_column_view_get_enable_rubberband
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_settings_get_type (void) G_GNUC_CONST;
 function gtk_settings_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -26254,6 +27668,13 @@ function gtk_image_cell_accessible_get_type() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!GType gtk_search_entry_accessible_get_type (void) G_GNUC_CONST;
+function gtk_search_entry_accessible_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_search_entry_accessible_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_scale_button_accessible_get_type (void);
 function gtk_scale_button_accessible_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -26322,6 +27743,13 @@ function gtk_button_accessible_get_type() bind(c)
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_button_accessible_get_type
 end function
+
+! 
+!void gtk_button_accessible_update_label (GtkButtonAccessible *self);
+subroutine gtk_button_accessible_update_label(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_list_box_accessible_get_type (void);
@@ -26612,6 +28040,13 @@ function gtk_range_accessible_get_type() bind(c)
   integer(c_size_t) :: gtk_range_accessible_get_type
 end function
 
+! 
+!void gtk_range_accessible_update_adjustment (GtkRangeAccessible *self);
+subroutine gtk_range_accessible_update_adjustment(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+end subroutine
+
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_icon_view_accessible_get_type (void);
 function gtk_icon_view_accessible_get_type() bind(c)
@@ -26667,6 +28102,13 @@ function gtk_toplevel_accessible_get_children(accessible) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_toplevel_accessible_get_children
   type(c_ptr), value :: accessible
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_password_entry_accessible_get_type (void) G_GNUC_CONST;
+function gtk_password_entry_accessible_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_password_entry_accessible_get_type
 end function
 
 ! GDK_AVAILABLE_IN_ALL
