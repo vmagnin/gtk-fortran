@@ -112,9 +112,12 @@ string(REPLACE "@SHARE@" "${CMAKE_INSTALL_DATAROOTDIR}" USERMODULE_OUT2 "${USERM
 string(REPLACE "@GTK@" "${GTKv}" USERMODULE_OUT3 "${USERMODULE_OUT2}")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-modscan "${USERMODULE_OUT3}")
 
+# Add the install path to usemodules.py as one of the places it will search for the gtk-fortran csv. 
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.py PYUSERMODULE_IN)
+string(REPLACE "@PATH_TO_CSV@" "${gtk_V_fortran}-index.csv" PYUSERMODULE_OUT "${PYUSERMODULE_IN}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-pymodscan "${PYUSERMODULE_OUT}")
+
 # Copy those files:
-file(COPY usemodules.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
-file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/usemodules.py ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-pymodscan )
 file(COPY gtk-fortran-index.csv DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
 file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-index.csv )
 file(COPY gtk-enumerators.lis DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )

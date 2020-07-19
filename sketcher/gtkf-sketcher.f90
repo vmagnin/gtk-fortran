@@ -1,7 +1,3 @@
-#ifndef GTKF_PROG_PREFIX
-#error "GTKF_PROG_PREFIX has not been defined (Error in build system configuration files)."
-#endif
-
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 !
@@ -599,10 +595,10 @@ contains
         
         call execute_command_line("python3 usemodules.py .", exitstat=shellout_err)
         if(shellout_err /= 0) then
-            write(*,*) "usemodules.py failed or not found, trying " // GTKF_PROG_PREFIX // "-pymodscan"
-            call execute_command_line("python3 /usr/local/bin/" // GTKF_PROG_PREFIX //"-pymodscan .", exitstat=shellout_err)
+            write(*,*) "usemodules.py failed or not found, trying @GTKF_PROG_PREFIX@-pymodscan"
+            call execute_command_line("python3 @GTKF_PROG_PREFIX@-pymodscan .", exitstat=shellout_err)
             if(shellout_err /= 0) then
-                write(*,*) GTKF_PROG_PREFIX // "-pymodscan failed or not found, aborting"
+                write(*,*) "@GTKF_PROG_PREFIX@-pymodscan failed or not found, aborting"
                 stop
             end if
         end if
