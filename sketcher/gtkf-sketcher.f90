@@ -22,7 +22,7 @@
 
 ! GTK+ Fortran Code Sketcher using Glade3 UI definitions
 ! Contributed by Jens Hunger
-! Last modifications: vmagnin 03-07-2019
+! Last modifications: Harris Snyder 11-07-2020
 
 module widgets
   ! declares the used GTK widgets
@@ -451,7 +451,7 @@ contains
     integer(kind=c_int) :: valid
     character(len=256,kind=c_char)::subdir, license_file, line, &
          & handlerfile, appwindow, additional_modules
-    integer::status_read, wunit, hunit
+    integer::status_read, wunit, hunit, shellout_err
     integer(kind=c_int)::i,j
     logical::already_used, lexist
     type(c_ptr) :: gpointer,object_name_ptr
@@ -589,7 +589,16 @@ contains
       if (update_used_functions) then
 
         write(*,*)working_dir
-        call execute_command_line("python3 usemodules.py .")
+        
+        call execute_command_line("python3 usemodules.py .", exitstat=shellout_err)
+        if(shellout_err /= 0) then
+            write(*,*) "usemodules.py failed or not found, trying @GTKF_PROG_PREFIX@-pymodscan"
+            call execute_command_line("python3 @GTKF_PROG_PREFIX@-pymodscan .", exitstat=shellout_err)
+            if(shellout_err /= 0) then
+                write(*,*) "@GTKF_PROG_PREFIX@-pymodscan failed or not found, aborting"
+                stop
+            end if
+        end if
 
         open (40, file="usemodules.txt", action='read')
         do

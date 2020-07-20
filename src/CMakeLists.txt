@@ -114,6 +114,11 @@ string(REPLACE "@SHARE@" "${CMAKE_INSTALL_DATAROOTDIR}" USERMODULE_OUT2 "${USERM
 string(REPLACE "@GTK@" "${GTKv}" USERMODULE_OUT3 "${USERMODULE_OUT2}")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-modscan "${USERMODULE_OUT3}")
 
+# Add the install path to usemodules.py as one of the places it will search for the gtk-fortran csv. 
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.py PYUSERMODULE_IN)
+string(REPLACE "@PATH_TO_CSV@" "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/${gtk_V_fortran}-index.csv" PYUSERMODULE_OUT "${PYUSERMODULE_IN}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-pymodscan "${PYUSERMODULE_OUT}")
+
 # Copy those files:
 file(COPY gtk-fortran-index.csv DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
 file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-index.csv )
@@ -145,7 +150,13 @@ install(DIRECTORY
 install(PROGRAMS
   "${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-modscan"
   DESTINATION ${CMAKE_INSTALL_BINDIR}
-  PERMISSIONS WORLD_EXECUTE
+  PERMISSIONS WORLD_EXECUTE WORLD_READ OWNER_WRITE
+)
+
+install(PROGRAMS
+  "${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-pymodscan"
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
+  PERMISSIONS WORLD_EXECUTE WORLD_READ OWNER_WRITE
 )
 
 install(FILES
