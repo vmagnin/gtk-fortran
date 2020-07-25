@@ -450,7 +450,7 @@ contains
     type(c_ptr), value :: widget, gdata
     integer(kind=c_int) :: valid
     character(len=256,kind=c_char)::subdir, license_file, line, &
-         & handlerfile, appwindow, additional_modules
+         & handlerfile, appwindow
     integer::status_read, wunit, hunit, shellout_err
     integer(kind=c_int)::i,j
     logical::already_used, lexist
@@ -539,17 +539,11 @@ contains
       write(50,'(A)')"!"
       write(50,'(A)')"!"
       write(50,'(A)')"! Compile with:"
-      additional_modules=""
-      if (use_hl_gtk) then
-        additional_modules="gtk-sup.f90 gtk-hl.f90"
-      endif
-      if (widgetshandlers) then
-        additional_modules=additional_modules(1:len_trim(additional_modules))//" "//&
-        subdir(1:len_trim(subdir))//"_widgets.f90 "//subdir(1:len_trim(subdir))//"_handlers.f90"
-      endif
-      write(50,'(A)')"! gfortran "//additional_modules(1:len_trim(additional_modules))//" "//&
+      write(50,'(A)')"! $ gfortran "//&
         subdir(1:len_trim(subdir))//".f90 -o "//subdir(1:len_trim(subdir))//&
-        " `pkg-config --cflags --libs gtk+-3.0 gtk-3-fortran gmodule-2.0`"
+        " $(pkg-config --cflags --libs gtk-3-fortran)"
+      write(50,'(A)')"! With some systems, you may also need to export the PKG_CONFIG_PATH, for example in Fedora:"
+      write(50,'(A)')"! $ export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig/"
       write(50,'(A)')"!"
 
       write(wunit,'(A)')""
