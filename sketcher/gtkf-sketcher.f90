@@ -544,7 +544,7 @@ contains
       write(50,'(A)')"! Compile with:"
       write(50,'(A)')"! $ gfortran "//&
         subdir(1:len_trim(subdir))//".f90 -o "//subdir(1:len_trim(subdir))//&
-        " $(pkg-config --cflags --libs gtk-3-fortran)"
+        " $(pkg-config --cflags --libs gtk-4-fortran)"
       write(50,'(A)')"! With some systems, you may also need to export the PKG_CONFIG_PATH, for example in Fedora:"
       write(50,'(A)')"! $ export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig/"
       write(50,'(A)')"!"
