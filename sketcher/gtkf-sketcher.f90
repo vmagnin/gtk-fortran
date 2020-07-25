@@ -456,6 +456,9 @@ contains
     logical::already_used, lexist
     type(c_ptr) :: gpointer,object_name_ptr
     character(len=128) :: f_string, f_string_ori
+    ! The text between "at signs" will be repplaced by CMake before compiling:
+    character(len=*), parameter :: gtkf_prog_prefix= &
+    &"@GTKF_PROG_PREFIX@"
 
     if (.not.file_loaded) then
       status_read=hl_gtk_message_dialog_show((/"Please load some Glade3 UI file first!"/), GTK_BUTTONS_OK, &
@@ -589,13 +592,13 @@ contains
       if (update_used_functions) then
 
         write(*,*)working_dir
-        
+
         call execute_command_line("python3 usemodules.py .", exitstat=shellout_err)
         if(shellout_err /= 0) then
-            write(*,*) "usemodules.py failed or not found, trying @GTKF_PROG_PREFIX@-pymodscan"
-            call execute_command_line("python3 @GTKF_PROG_PREFIX@-pymodscan .", exitstat=shellout_err)
+            write(*,*) "usemodules.py failed or not found, trying "//gtkf_prog_prefix//"-pymodscan"
+            call execute_command_line("python3 "//gtkf_prog_prefix//"-pymodscan .", exitstat=shellout_err)
             if(shellout_err /= 0) then
-                write(*,*) "@GTKF_PROG_PREFIX@-pymodscan failed or not found, aborting"
+                write(*,*) gtkf_prog_prefix//"-pymodscan failed or not found, aborting"
                 stop
             end if
         end if
