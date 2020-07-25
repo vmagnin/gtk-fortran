@@ -582,10 +582,11 @@ contains
 
       write(hunit,'(A)')""
       write(hunit,'(A)')"module handlers"
-      write(hunit,'(A)')"  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&"
-      write(hunit,'(A)')"  &der_get_object, gtk_builder_new, gtk_widget_show,&"
-      write(hunit,'(A)')"  &FALSE, c_null_char, c_null_ptr, gtk_init"
+      write(hunit,'(A)')"  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, &"
+      write(hunit,'(A)')"  & gtk_builder_get_object, gtk_builder_new, &"
+      write(hunit,'(A)')"  & gtk_widget_show, FALSE, c_null_char, c_null_ptr, gtk_init"
       write(hunit,'(A)')"  use g, only: g_object_unref, g_main_loop_new, g_main_loop_run, g_main_loop_quit"
+
       if (update_used_functions) then
 
         write(*,*)working_dir
