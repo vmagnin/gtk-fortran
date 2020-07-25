@@ -579,9 +579,9 @@ contains
 
       write(hunit,'(A)')""
       write(hunit,'(A)')"module handlers"
-      write(hunit,'(A)')"  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, gtk_buil&"
-      write(hunit,'(A)')"  &der_get_object, gtk_builder_new, gtk_main, gtk_main_quit, gtk_widget_show,&"
-      write(hunit,'(A)')"  &FALSE, c_null_char, c_null_ptr, gtk_init"
+      write(hunit,'(A)')"  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, &"
+      write(hunit,'(A)')"  & gtk_builder_get_object, gtk_builder_new, gtk_main, gtk_main_quit, &"
+      write(hunit,'(A)')"  & gtk_widget_show, FALSE, c_null_char, c_null_ptr, gtk_init"
       write(hunit,'(A)')"  use g, only: g_object_unref"
       if (update_used_functions) then
 
