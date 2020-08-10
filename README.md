@@ -19,7 +19,6 @@ Please post bugs on GitHub:
 * codemeta.json: metadata about the project.
 * INSTALL: installation instructions.
 * LICENSE: text of the GNU GPL v3 license.
-* meson.build: main Meson instructions to build the project (experimental feature).
 * README-high-level: about the High Level part of the gtk-fortran library.
 * VERSIONS: a CSV file with the gtk-fortran, GTK, GLib and Ubuntu versions.
 
