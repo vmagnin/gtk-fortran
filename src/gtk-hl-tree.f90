@@ -1,36 +1,29 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!-----------------------------------------------------------
 ! Contributed by James Tappin
-! Last modification: 2012-07-30
-
-! --------------------------------------------------------
-! gtk-hl-tree.f90
-! Generated: Tue Oct 29 17:12:20 2013 GMT
-! Generated for GTK+ version: 3.10.0.
-! Generated for GLIB version: 2.38.0.
-! --------------------------------------------------------
-
+! Last modification: 2012-07-30, vmagnin 2020-08-25 (GTK 4)
+!-----------------------------------------------------------
 
 !*
 ! Lists and Trees
@@ -362,7 +355,7 @@ contains
        end if
 
        ! Pack the list in the scroll box
-       scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
+       scroll = gtk_scrolled_window_new()
        call gtk_scrolled_window_set_policy(scroll, hscroll, &
             & vscroll)
        call gtk_scrolled_window_set_child(scroll, list)
@@ -1315,7 +1308,7 @@ contains
 
 
        ! Pack the tree in the scroll box
-       scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
+       scroll = gtk_scrolled_window_new()
        call gtk_scrolled_window_set_policy(scroll, hscroll, vscroll)
 
        call gtk_scrolled_window_set_child(scroll, tree)

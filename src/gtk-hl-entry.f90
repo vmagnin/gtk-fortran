@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 ! ---------------------------------------------------------
 ! Contributed by James Tappin (2012)
-! Last modification: vmagnin 2020-05-28 (GTK 4), 2020-07-15
+! Last modification: vmagnin 2020-05-28 (GTK 4), 2020-08-25
 ! ---------------------------------------------------------
 
 !*
@@ -329,7 +329,7 @@ contains
        else
           vscroll = GTK_POLICY_AUTOMATIC
        end if
-       scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
+       scroll = gtk_scrolled_window_new()
        call gtk_scrolled_window_set_policy(scroll,  hscroll, vscroll)
        if (present(ssize)) &
             & call gtk_widget_set_size_request(scroll, ssize(1), ssize(2))

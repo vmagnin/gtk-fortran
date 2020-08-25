@@ -23,7 +23,7 @@
 ! -----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modifications: 2013-01-31, vmagnin 2020-06-17 (GTK 4)
+! Last modifications: 2013-01-31, vmagnin 2020-06-17 (GTK 4), 2020-08-25
 ! -----------------------------------------------------------------------------
 
 !*
@@ -211,7 +211,7 @@ contains
 
     ! Add it to a scrolling window if one is requested
     if (present(scroll)) then
-       scroll = gtk_scrolled_window_new(C_NULL_PTR, C_NULL_PTR)
+       scroll = gtk_scrolled_window_new()
        if (present(hscroll_policy)) then
           hpolicy = hscroll_policy
        else

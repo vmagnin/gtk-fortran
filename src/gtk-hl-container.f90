@@ -22,7 +22,8 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 ! ----------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modifications: 2012-07-09, vmagnin 2020-06-24 (GTK 4 version)
+! Last modifications: 2012-07-09, vmagnin 2020-06-24 (GTK 4 version),
+!                     2020-08-25
 ! ----------------------------------------------------------------------
 !*
 ! Containers
@@ -631,14 +632,13 @@ contains
     ! 		direction.
     ! HADJUSTMENT: c_ptr: optional: An adjustment widget to use in place
     ! 		of the automatically generated scrollbar in the horizontal
-    ! 		direction.
+    ! 		direction. Removed in GTK 4.
     ! VADJUSTMENT: c_ptr: optional: An adjustment widget to use in place
     ! 		of the automatically generated scrollbar in the vertical
-    ! 		direction.
+    ! 		direction. Removed in GTK 4.
     !-
 
     integer(kind=c_int) :: hpol, vpol, hsz, vsz
-    type(c_ptr) :: hadj, vadj
     logical :: have_size, have_policy
 
     ! Set up the scroll bar policies.
@@ -673,17 +673,13 @@ contains
 
     ! Set up the adjustments
     if (present(hadjustment)) then
-       hadj = hadjustment
-    else
-       hadj = c_null_ptr
+       print *, "In GTK 4 hadjustment was removed from gtk_scrolled_window_new()"
     end if
     if (present(vadjustment)) then
-       vadj = vadjustment
-    else
-       vadj = c_null_ptr
+       print *, "In GTK 4 vadjustment was removed from gtk_scrolled_window_new()"
     end if
 
-    win = gtk_scrolled_window_new(hadj, vadj)
+    win = gtk_scrolled_window_new()
 
     if (have_policy) call gtk_scrolled_window_set_policy(win, hpol, vpol)
     if (have_size) call gtk_widget_set_size_request(win, hsz, vsz)
