@@ -22,7 +22,8 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modifications: 2012-12-31, vmagnin 2020-06-19 (GTK 4 version)
+! Last modifications: 2012-12-31, vmagnin 2020-06-19 (GTK 4 version),
+!                     2020-08-25
 !------------------------------------------------------------------------------
 
 !*
@@ -60,7 +61,7 @@ module gtk_hl_chooser
        & gtk_file_chooser_get_current_folder, &
        & gtk_file_chooser_set_current_folder, &
        & gtk_file_chooser_set_current_name, gtk_file_chooser_set_file, &
-       & gtk_file_chooser_set_select_multiple, gtk_file_chooser_select_file, &
+       & gtk_file_chooser_set_select_multiple, &
        & gtk_file_chooser_widget_new, gtk_file_chooser_get_files, &
        & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
        & gtk_file_filter_new, gtk_file_filter_set_name, gtk_label_new, &
@@ -396,7 +397,7 @@ contains
           call gtk_file_chooser_set_current_name(chooser_info%chooser, &
                & initial_file)
        else
-          lval = gtk_file_chooser_select_file(chooser_info%chooser, &
+          lval = gtk_file_chooser_set_file(chooser_info%chooser, &
                & g_file_new_for_path(initial_file), c_null_ptr)
        end if
     end if
