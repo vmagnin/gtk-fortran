@@ -20,9 +20,10 @@
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!------------------------------------------------------------------------------
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-05-28
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-08-25
+!------------------------------------------------------------------------------
 
 module global_widgets
   use iso_c_binding, only: c_ptr, c_char, c_int
@@ -382,7 +383,7 @@ contains
     call gtk_text_buffer_set_text (buffer, "Julia Set"//C_NEW_LINE// &
         & "You can copy this text and even edit it !"//C_NEW_LINE//c_null_char,&
         & -1_c_int)
-    scrolled_window = gtk_scrolled_window_new (c_null_ptr, c_null_ptr)
+    scrolled_window = gtk_scrolled_window_new()
     notebookLabel2 = gtk_label_new_with_mnemonic("_Messages"//c_null_char)
     call gtk_scrolled_window_set_child(scrolled_window, textView)
     secondTab = gtk_notebook_append_page (notebook, scrolled_window, notebookLabel2)

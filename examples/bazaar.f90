@@ -23,7 +23,8 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus, Ian Harvey
-! GTK 4 version: vmagnin 2020-05-28
+! GTK 4 version: vmagnin 2020-05-28, 2020-08-25
+!------------------------------------------------------------------------------
 
 module various_functions
   use iso_c_binding
@@ -186,7 +187,7 @@ contains
     call gtk_text_buffer_set_text(buffer, "This is just a great bazaar"//char(13)// &
         & "where I can test widgets"//c_new_line//"Vincent"//c_new_line//&
         &"You can edit this text. It will be scrollable."//c_null_char, -1_c_int)
-    scrolled_window = gtk_scrolled_window_new(c_null_ptr, c_null_ptr)
+    scrolled_window = gtk_scrolled_window_new()
     call gtk_scrolled_window_set_child(scrolled_window, view)
     call gtk_grid_attach(table, scrolled_window, 0_c_int, 3_c_int, 3_c_int, 3_c_int)  
 
