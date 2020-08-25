@@ -37,8 +37,7 @@ module handlers
        & cairo_rectangle, cairo_select_font_face, cairo_set_font_size, &
        & cairo_set_line_width, cairo_set_source_rgb, cairo_show_text, &
        & cairo_stroke, cairo_surface_write_to_png
-  use gdk, only: gdk_device_get_name, gdk_device_get_n_axes, &
-       & gdk_keyval_from_name, gdk_keyval_name
+  use gdk, only: gdk_device_get_name, gdk_keyval_from_name, gdk_keyval_name
   use gtk, only: gtk_window_set_child, gtk_window_destroy, &
        & gtk_widget_queue_draw, gtk_widget_show, gtk_init, TRUE, FALSE, &
        & GDK_CONTROL_MASK, &
