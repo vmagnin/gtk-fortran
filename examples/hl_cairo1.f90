@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin,
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
-! Last modifications: vmagnin 2020-06-17 (GTK 4), 2020-07-15
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2020-08-25
 !------------------------------------------------------------------------------
 
 module handlers
@@ -69,7 +69,6 @@ contains
     type(c_ptr), value, intent(in)    :: gesture, gdata
     integer(c_int), value, intent(in) :: n_press
     real(c_double), value, intent(in) :: x, y
-    integer(kind=c_int) :: nb_axes
     type(c_ptr) :: device, dcname
     character(len=80) :: dname
 
@@ -84,10 +83,7 @@ contains
     dcname = gdk_device_get_name(device)
     call c_f_string(dcname, dname)
     print *, "Device: ",trim(dname)
-    
-    nb_axes = gdk_device_get_n_axes(device)
-    print *, "Number of axes: ", nb_axes
-  end subroutine button_event_h
+end subroutine button_event_h
 
   ! GTK 4: Click callback function ("released" signal):
   subroutine button_release_h(gesture, n_press, x, y, gdata) bind(c)
