@@ -23,6 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modifications: 2012-01-07, vmagnin 2020-06-05 (GTK 4 version)
+!                     2020-08-25
 !------------------------------------------------------------------------------ 
 !*
 ! Assistant
@@ -309,7 +310,7 @@ contains
 
   !+
   subroutine hl_gtk_assistant_destroy(widget, data) bind(c)
-    type(c_ptr), value :: widget, data
+    type(c_ptr), value, intent(in) :: widget, data
 
     call gtk_window_destroy(widget)
   end subroutine hl_gtk_assistant_destroy
