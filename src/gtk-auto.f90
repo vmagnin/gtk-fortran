@@ -748,33 +748,6 @@ subroutine gtk_widget_paintable_set_widget(self, widget) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_accessible_update_state_value (GtkAccessible *self, GtkAccessibleState state, const GValue *value);
-subroutine gtk_accessible_update_state_value(self, state, value) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: self
-  integer(c_int), value :: state
-  type(c_ptr), value :: value
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_accessible_update_property_value (GtkAccessible *self, GtkAccessibleProperty property, const GValue *value);
-subroutine gtk_accessible_update_property_value(self, property, value) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: self
-  integer(c_int), value :: property
-  type(c_ptr), value :: value
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_accessible_update_relation_value (GtkAccessible *self, GtkAccessibleRelation relation, const GValue *value);
-subroutine gtk_accessible_update_relation_value(self, relation, value) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: self
-  integer(c_int), value :: relation
-  type(c_ptr), value :: value
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
 !void gtk_accessible_reset_state (GtkAccessible *self, GtkAccessibleState state);
 subroutine gtk_accessible_reset_state(self, state) bind(c)
   use iso_c_binding, only: c_ptr, c_int
@@ -2091,36 +2064,28 @@ function gtk_list_view_get_type() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkWidget * gtk_list_view_new (GListModel *model);
-function gtk_list_view_new(model) bind(c)
-  use iso_c_binding, only: c_ptr
+!GtkWidget * gtk_list_view_new (GtkSelectionModel *model, GtkListItemFactory *factory);
+function gtk_list_view_new(model, factory) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_list_view_new
-  type(c_ptr), value :: model
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkWidget * gtk_list_view_new_with_factory (GListModel *model, GtkListItemFactory *factory);
-function gtk_list_view_new_with_factory(model, factory) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_list_view_new_with_factory
-  type(c_ptr), value :: model
+  integer(c_int), value :: model
   type(c_ptr), value :: factory
 end function
 
-! GDK_AVAILABLE_IN_ALL
-!GListModel * gtk_list_view_get_model (GtkListView *self);
+! 
+!GtkSelectionModel * gtk_list_view_get_model (GtkListView *self);
 function gtk_list_view_get_model(self) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_list_view_get_model
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_list_view_get_model
   type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_list_view_set_model (GtkListView *self, GListModel *model);
+!void gtk_list_view_set_model (GtkListView *self, GtkSelectionModel *model);
 subroutine gtk_list_view_set_model(self, model) bind(c)
-  use iso_c_binding, only: c_ptr
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: self
-  type(c_ptr), value :: model
+  integer(c_int), value :: model
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -2740,26 +2705,26 @@ function gtk_grid_layout_get_baseline_row(grid) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!int gtk_grid_layout_child_get_top_attach (GtkGridLayoutChild *child);
-function gtk_grid_layout_child_get_top_attach(child) bind(c)
+!int gtk_grid_layout_child_get_row (GtkGridLayoutChild *child);
+function gtk_grid_layout_child_get_row(child) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_grid_layout_child_get_top_attach
+  integer(c_int) :: gtk_grid_layout_child_get_row
   type(c_ptr), value :: child
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_grid_layout_child_set_left_attach (GtkGridLayoutChild *child, int attach);
-subroutine gtk_grid_layout_child_set_left_attach(child, attach) bind(c)
+!void gtk_grid_layout_child_set_column (GtkGridLayoutChild *child, int column);
+subroutine gtk_grid_layout_child_set_column(child, column) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: child
-  integer(c_int), value :: attach
+  integer(c_int), value :: column
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!int gtk_grid_layout_child_get_left_attach (GtkGridLayoutChild *child);
-function gtk_grid_layout_child_get_left_attach(child) bind(c)
+!int gtk_grid_layout_child_get_column (GtkGridLayoutChild *child);
+function gtk_grid_layout_child_get_column(child) bind(c)
   use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_grid_layout_child_get_left_attach
+  integer(c_int) :: gtk_grid_layout_child_get_column
   type(c_ptr), value :: child
 end function
 
@@ -4526,36 +4491,28 @@ function gtk_grid_view_get_type() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkWidget * gtk_grid_view_new (GListModel *model);
-function gtk_grid_view_new(model) bind(c)
-  use iso_c_binding, only: c_ptr
+!GtkWidget * gtk_grid_view_new (GtkSelectionModel *model, GtkListItemFactory *factory);
+function gtk_grid_view_new(model, factory) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_grid_view_new
-  type(c_ptr), value :: model
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkWidget * gtk_grid_view_new_with_factory (GListModel *model, GtkListItemFactory *factory);
-function gtk_grid_view_new_with_factory(model, factory) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_grid_view_new_with_factory
-  type(c_ptr), value :: model
+  integer(c_int), value :: model
   type(c_ptr), value :: factory
 end function
 
-! GDK_AVAILABLE_IN_ALL
-!GListModel * gtk_grid_view_get_model (GtkGridView *self);
+! 
+!GtkSelectionModel * gtk_grid_view_get_model (GtkGridView *self);
 function gtk_grid_view_get_model(self) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_grid_view_get_model
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_grid_view_get_model
   type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_grid_view_set_model (GtkGridView *self, GListModel *model);
+!void gtk_grid_view_set_model (GtkGridView *self, GtkSelectionModel *model);
 subroutine gtk_grid_view_set_model(self, model) bind(c)
-  use iso_c_binding, only: c_ptr
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: self
-  type(c_ptr), value :: model
+  integer(c_int), value :: model
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -8522,14 +8479,14 @@ function gtk_check_button_get_type() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkWidget* gtk_check_button_new (void);
+!GtkWidget * gtk_check_button_new (void);
 function gtk_check_button_new() bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_check_button_new
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkWidget* gtk_check_button_new_with_label (const char *label);
+!GtkWidget * gtk_check_button_new_with_label (const char *label);
 function gtk_check_button_new_with_label(label) bind(c)
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: gtk_check_button_new_with_label
@@ -8537,28 +8494,11 @@ function gtk_check_button_new_with_label(label) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkWidget* gtk_check_button_new_with_mnemonic (const char *label);
+!GtkWidget * gtk_check_button_new_with_mnemonic (const char *label);
 function gtk_check_button_new_with_mnemonic(label) bind(c)
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: gtk_check_button_new_with_mnemonic
   character(kind=c_char), dimension(*) :: label
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_check_button_set_draw_indicator (GtkCheckButton *check_button, gboolean draw_indicator);
-subroutine gtk_check_button_set_draw_indicator(check_button, draw_indicator)&
-& bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: check_button
-  integer(c_int), value :: draw_indicator
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_check_button_get_draw_indicator (GtkCheckButton *check_button);
-function gtk_check_button_get_draw_indicator(check_button) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_check_button_get_draw_indicator
-  type(c_ptr), value :: check_button
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -8577,6 +8517,62 @@ function gtk_check_button_get_inconsistent(check_button) bind(c)
   integer(c_int) :: gtk_check_button_get_inconsistent
   type(c_ptr), value :: check_button
 end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_check_button_get_active (GtkCheckButton *self);
+function gtk_check_button_get_active(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_check_button_get_active
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_check_button_set_active (GtkCheckButton *self, gboolean setting);
+subroutine gtk_check_button_set_active(self, setting) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: setting
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_check_button_get_label (GtkCheckButton *self);
+function gtk_check_button_get_label(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_check_button_get_label
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_check_button_set_label (GtkCheckButton *self, const char *label);
+subroutine gtk_check_button_set_label(self, label) bind(c)
+  use iso_c_binding, only: c_ptr, c_char
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: label
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_check_button_set_group (GtkCheckButton *self, GtkCheckButton *group);
+subroutine gtk_check_button_set_group(self, group) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: group
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_check_button_get_use_underline (GtkCheckButton *self);
+function gtk_check_button_get_use_underline(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_check_button_get_use_underline
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_check_button_set_use_underline (GtkCheckButton *self, gboolean setting);
+subroutine gtk_check_button_set_use_underline(self, setting) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: setting
+end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_signal_list_item_factory_get_type (void) G_GNUC_CONST;
@@ -8598,91 +8594,6 @@ function gtk_shortcuts_group_get_type() bind(c)
   use iso_c_binding, only: c_size_t
   integer(c_size_t) :: gtk_shortcuts_group_get_type
 end function
-
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_radio_button_get_type (void) G_GNUC_CONST;
-function gtk_radio_button_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_radio_button_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkWidget* gtk_radio_button_new (GSList *group);
-function gtk_radio_button_new(group) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_radio_button_new
-  type(c_ptr), value :: group
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkWidget* gtk_radio_button_new_from_widget (GtkRadioButton *radio_group_member);
-function gtk_radio_button_new_from_widget(radio_group_member) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_radio_button_new_from_widget
-  type(c_ptr), value :: radio_group_member
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkWidget* gtk_radio_button_new_with_label (GSList *group, const char *label);
-function gtk_radio_button_new_with_label(group, label) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_radio_button_new_with_label
-  type(c_ptr), value :: group
-  character(kind=c_char), dimension(*) :: label
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkWidget* gtk_radio_button_new_with_label_from_widget (GtkRadioButton *radio_group_member, const char *label);
-function gtk_radio_button_new_with_label_from_widget(radio_group_member, label)&
-& bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_radio_button_new_with_label_from_widget
-  type(c_ptr), value :: radio_group_member
-  character(kind=c_char), dimension(*) :: label
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkWidget* gtk_radio_button_new_with_mnemonic (GSList *group, const char *label);
-function gtk_radio_button_new_with_mnemonic(group, label) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_radio_button_new_with_mnemonic
-  type(c_ptr), value :: group
-  character(kind=c_char), dimension(*) :: label
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkWidget* gtk_radio_button_new_with_mnemonic_from_widget (GtkRadioButton *radio_group_member, const char *label);
-function gtk_radio_button_new_with_mnemonic_from_widget(radio_group_member,&
-& label) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_radio_button_new_with_mnemonic_from_widget
-  type(c_ptr), value :: radio_group_member
-  character(kind=c_char), dimension(*) :: label
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GSList* gtk_radio_button_get_group (GtkRadioButton *radio_button);
-function gtk_radio_button_get_group(radio_button) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_radio_button_get_group
-  type(c_ptr), value :: radio_button
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_radio_button_set_group (GtkRadioButton *radio_button, GSList *group);
-subroutine gtk_radio_button_set_group(radio_button, group) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: radio_button
-  type(c_ptr), value :: group
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_radio_button_join_group (GtkRadioButton *radio_button, GtkRadioButton *group_source);
-subroutine gtk_radio_button_join_group(radio_button, group_source) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: radio_button
-  type(c_ptr), value :: group_source
-end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_print_settings_get_type (void) G_GNUC_CONST;
@@ -11600,14 +11511,6 @@ subroutine gtk_cell_area_context_push_preferred_height(context, minimum_height,&
   integer(c_int), value :: minimum_height
   integer(c_int), value :: natural_height
 end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkSelectionFilterModel * gtk_selection_filter_model_new_for_type (GType item_type);
-function gtk_selection_filter_model_new_for_type(item_type) bind(c)
-  use iso_c_binding, only: c_ptr, c_size_t
-  type(c_ptr) :: gtk_selection_filter_model_new_for_type
-  integer(c_size_t), value :: item_type
-end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_selection_filter_model_set_model (GtkSelectionFilterModel *self, GtkSelectionModel *model);
@@ -15275,13 +15178,13 @@ function gtk_grid_new() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_grid_attach (GtkGrid *grid, GtkWidget *child, int left, int top, int width, int height);
-subroutine gtk_grid_attach(grid, child, left, top, width, height) bind(c)
+!void gtk_grid_attach (GtkGrid *grid, GtkWidget *child, int column, int row, int width, int height);
+subroutine gtk_grid_attach(grid, child, column, row, width, height) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: grid
   type(c_ptr), value :: child
-  integer(c_int), value :: left
-  integer(c_int), value :: top
+  integer(c_int), value :: column
+  integer(c_int), value :: row
   integer(c_int), value :: width
   integer(c_int), value :: height
 end subroutine
@@ -15300,13 +15203,13 @@ subroutine gtk_grid_attach_next_to(grid, child, sibling, side, width, height)&
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkWidget *gtk_grid_get_child_at (GtkGrid *grid, int left, int top);
-function gtk_grid_get_child_at(grid, left, top) bind(c)
+!GtkWidget *gtk_grid_get_child_at (GtkGrid *grid, int column, int row);
+function gtk_grid_get_child_at(grid, column, row) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_grid_get_child_at
   type(c_ptr), value :: grid
-  integer(c_int), value :: left
-  integer(c_int), value :: top
+  integer(c_int), value :: column
+  integer(c_int), value :: row
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -15457,13 +15360,14 @@ function gtk_grid_get_baseline_row(grid) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_grid_query_child (GtkGrid *grid, GtkWidget *child, int *left, int *top, int *width, int *height);
-subroutine gtk_grid_query_child(grid, child, left, top, width, height) bind(c)
+!void gtk_grid_query_child (GtkGrid *grid, GtkWidget *child, int *column, int *row, int *width, int *height);
+subroutine gtk_grid_query_child(grid, child, column, row, width, height)&
+& bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: grid
   type(c_ptr), value :: child
-  type(c_ptr), value :: left
-  type(c_ptr), value :: top
+  type(c_ptr), value :: column
+  type(c_ptr), value :: row
   type(c_ptr), value :: width
   type(c_ptr), value :: height
 end subroutine
@@ -17409,6 +17313,14 @@ subroutine gtk_list_box_prepend(box, child) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
+!void gtk_list_box_append (GtkListBox *box, GtkWidget *child);
+subroutine gtk_list_box_append(box, child) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: box
+  type(c_ptr), value :: child
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !void gtk_list_box_insert (GtkListBox *box, GtkWidget *child, int position);
 subroutine gtk_list_box_insert(box, child, position) bind(c)
   use iso_c_binding, only: c_ptr, c_int
@@ -17743,6 +17655,14 @@ subroutine gtk_toggle_button_toggled(toggle_button) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
+!void gtk_toggle_button_set_group (GtkToggleButton *toggle_button, GtkToggleButton *group);
+subroutine gtk_toggle_button_set_group(toggle_button, group) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: toggle_button
+  type(c_ptr), value :: group
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_scale_get_type (void) G_GNUC_CONST;
 function gtk_scale_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -18051,26 +17971,26 @@ function gtk_recent_info_get_mime_type(info) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!time_t gtk_recent_info_get_added (GtkRecentInfo *info);
+!GDateTime * gtk_recent_info_get_added (GtkRecentInfo *info);
 function gtk_recent_info_get_added(info) bind(c)
-  use iso_c_binding, only: c_long, c_ptr
-  integer(c_long) :: gtk_recent_info_get_added
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_recent_info_get_added
   type(c_ptr), value :: info
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!time_t gtk_recent_info_get_modified (GtkRecentInfo *info);
+!GDateTime * gtk_recent_info_get_modified (GtkRecentInfo *info);
 function gtk_recent_info_get_modified(info) bind(c)
-  use iso_c_binding, only: c_long, c_ptr
-  integer(c_long) :: gtk_recent_info_get_modified
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_recent_info_get_modified
   type(c_ptr), value :: info
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!time_t gtk_recent_info_get_visited (GtkRecentInfo *info);
+!GDateTime * gtk_recent_info_get_visited (GtkRecentInfo *info);
 function gtk_recent_info_get_visited(info) bind(c)
-  use iso_c_binding, only: c_long, c_ptr
-  integer(c_long) :: gtk_recent_info_get_visited
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_recent_info_get_visited
   type(c_ptr), value :: info
 end function
 
@@ -18083,16 +18003,16 @@ function gtk_recent_info_get_private_hint(info) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_recent_info_get_application_info (GtkRecentInfo *info, const char *app_name, const char **app_exec, guint *count, time_t *time_);
+!gboolean gtk_recent_info_get_application_info (GtkRecentInfo *info, const char *app_name, const char **app_exec, guint *count, GDateTime **stamp);
 function gtk_recent_info_get_application_info(info, app_name, app_exec, count,&
-& time_) bind(c)
+& stamp) bind(c)
   use iso_c_binding, only: c_int, c_ptr, c_char
   integer(c_int) :: gtk_recent_info_get_application_info
   type(c_ptr), value :: info
   character(kind=c_char), dimension(*) :: app_name
   type(c_ptr), dimension(*) :: app_exec
   type(c_ptr), value :: count
-  type(c_ptr), value :: time_
+  type(c_ptr), value :: stamp
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -18608,89 +18528,6 @@ function gtk_viewport_get_child(viewport) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_viewport_get_child
   type(c_ptr), value :: viewport
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_accel_label_get_type (void) G_GNUC_CONST;
-function gtk_accel_label_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_accel_label_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkWidget *gtk_accel_label_new (const char *string);
-function gtk_accel_label_new(string) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_accel_label_new
-  character(kind=c_char), dimension(*) :: string
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!guint gtk_accel_label_get_accel_width (GtkAccelLabel *accel_label);
-function gtk_accel_label_get_accel_width(accel_label) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_accel_label_get_accel_width
-  type(c_ptr), value :: accel_label
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_accel_label_refetch (GtkAccelLabel *accel_label);
-function gtk_accel_label_refetch(accel_label) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_accel_label_refetch
-  type(c_ptr), value :: accel_label
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_accel_label_set_accel (GtkAccelLabel *accel_label, guint accelerator_key, GdkModifierType accelerator_mods);
-subroutine gtk_accel_label_set_accel(accel_label, accelerator_key,&
-& accelerator_mods) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: accel_label
-  integer(c_int), value :: accelerator_key
-  integer(c_int), value :: accelerator_mods
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_accel_label_get_accel (GtkAccelLabel *accel_label, guint *accelerator_key, GdkModifierType *accelerator_mods);
-subroutine gtk_accel_label_get_accel(accel_label, accelerator_key,&
-& accelerator_mods) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: accel_label
-  type(c_ptr), value :: accelerator_key
-  integer(c_int), value :: accelerator_mods
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_accel_label_set_label (GtkAccelLabel *accel_label, const char *text);
-subroutine gtk_accel_label_set_label(accel_label, text) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: accel_label
-  character(kind=c_char), dimension(*) :: text
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_accel_label_get_label (GtkAccelLabel *accel_label);
-function gtk_accel_label_get_label(accel_label) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_accel_label_get_label
-  type(c_ptr), value :: accel_label
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_accel_label_set_use_underline (GtkAccelLabel *accel_label, gboolean setting);
-subroutine gtk_accel_label_set_use_underline(accel_label, setting) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: accel_label
-  integer(c_int), value :: setting
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_accel_label_get_use_underline (GtkAccelLabel *accel_label);
-function gtk_accel_label_get_use_underline(accel_label) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_accel_label_get_use_underline
-  type(c_ptr), value :: accel_label
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -19355,6 +19192,24 @@ end subroutine
 subroutine gtk_popover_popdown(popover) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: popover
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_popover_set_offset (GtkPopover *popover, int x_offset, int y_offset);
+subroutine gtk_popover_set_offset(popover, x_offset, y_offset) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: popover
+  integer(c_int), value :: x_offset
+  integer(c_int), value :: y_offset
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_popover_get_offset (GtkPopover *popover, int *x_offset, int *y_offset);
+subroutine gtk_popover_get_offset(popover, x_offset, y_offset) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: popover
+  type(c_ptr), value :: x_offset
+  type(c_ptr), value :: y_offset
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -28010,11 +27865,11 @@ function gtk_column_view_get_type() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkWidget * gtk_column_view_new (GListModel *model);
+!GtkWidget * gtk_column_view_new (GtkSelectionModel *model);
 function gtk_column_view_new(model) bind(c)
-  use iso_c_binding, only: c_ptr
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_column_view_new
-  type(c_ptr), value :: model
+  integer(c_int), value :: model
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -28050,20 +27905,20 @@ subroutine gtk_column_view_insert_column(self, position, column) bind(c)
   type(c_ptr), value :: column
 end subroutine
 
-! GDK_AVAILABLE_IN_ALL
-!GListModel * gtk_column_view_get_model (GtkColumnView *self);
+! 
+!GtkSelectionModel * gtk_column_view_get_model (GtkColumnView *self);
 function gtk_column_view_get_model(self) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_column_view_get_model
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_column_view_get_model
   type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_column_view_set_model (GtkColumnView *self, GListModel *model);
+!void gtk_column_view_set_model (GtkColumnView *self, GtkSelectionModel *model);
 subroutine gtk_column_view_set_model(self, model) bind(c)
-  use iso_c_binding, only: c_ptr
+  use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: self
-  type(c_ptr), value :: model
+  integer(c_int), value :: model
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
