@@ -41,7 +41,6 @@ examples = {
   'hl_list_n': ['hl_list_n.f90'],    
   'hl_list_renderers': ['hl_list_renderers.f90'],    
   'hl_pbar': ['hl_pbar.f90'],    
-  'hl_radio': ['hl_radio.f90'],    
   'hl_sliders': ['hl_sliders.f90'],    
   'hl_sliders2': ['hl_sliders2.f90'],    
   'hl_textview': ['hl_textview.f90'],    
