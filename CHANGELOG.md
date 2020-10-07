@@ -15,6 +15,16 @@ The gtk4 branch is the new development branch.
 
 ### Changed
 - examples/gtkzero_gapp.f90 is now working.
+- examples/gtkhello.f90: new version using GtkApplication.
+- cfwrapper.py is now systematically launching extract_events.pl. Backported to gtk3 branch.
+
+### Removed
+- examples/gtkzero.f90: replaced by gtkzero_gapp.f90.
+- examples/gtkhello2.f90: replaced by gtkhello.f90.
+- examples/menu.f90 & menu2.f90: based on deprecated APIs.
+- src/gtk-hl-accelerator.f90: deprecated API.
+- src/gtk-hl-menu.f90 and examples/hl_menu.f90: deprecated API.
+- meson.build experimental files were removed. They are now apart in the gtk4-dev-meson branch.
 
 ## [gtk-fortran 20.04] - 2020-05-07
 The main objective of this release was to clean up the code and prepare it for the future GTK 4 branch.
