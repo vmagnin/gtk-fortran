@@ -13,6 +13,7 @@ The gtk4 branch is the new development branch.
 ### Changed
 - examples/gtkzero_gapp.f90 is now working.
 - examples/gtkhello.f90: new version using GtkApplication.
+- cfwrapper.py is now systematically launching extract_events.pl. Backported to gtk3 branch.
 
 ### Removed
 - examples/gtkzero.f90: replaced by gtkzero_gapp.f90.

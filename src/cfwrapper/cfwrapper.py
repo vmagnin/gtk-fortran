@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2020-02-14 (tested with Python 3.7.5, Ubuntu 19.10)
-# pylint *.py : 8.05/10
+# Last modification: 2020-10-07 (tested with Python 3.9.0, Fedora 34 Rawhide)
+# pylint *.py : 8.42/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -345,6 +345,13 @@ my_errors.sort()
 errors_file = csv.writer(open("cfwrapper-errors.csv", "w"), delimiter=";")
 errors_file.writerows(my_errors.errors_list)
 
+print()
+
+# Extracts the structure definitions for Gdk events
+# and generate gdkevents_auto?.f90:
+if GTK_VERSION != "gtk2":
+    subprocess.call(["./extract_events.pl"], cwd=SRC_DIR)
+
 # Write the VERSIONS file in the top directory:
 my_versions.create_file()
 
@@ -352,10 +359,5 @@ my_versions.create_file()
 my_stats.print(T0, my_versions.string(), PATH_DICT, TYPES_DICT, TYPES2_DICT, my_errors)
 
 if ARGS.build:
-    print()
-    # Extracts the structure definitions for Gdk events
-    # and generate gdkevents_auto?.f90:
-    if GTK_VERSION != "gtk2":
-        subprocess.call(["./extract_events.pl"], cwd=SRC_DIR)
     # Build the gtk-fortran project using CMake:
     subprocess.call(["./build.sh"], cwd=SRC_DIR)
