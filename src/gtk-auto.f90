@@ -1203,107 +1203,11 @@ function gtk_buildable_get_type() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_buildable_set_name (GtkBuildable *buildable, const char *name);
-subroutine gtk_buildable_set_name(buildable, name) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: buildable
-  character(kind=c_char), dimension(*) :: name
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_buildable_get_name (GtkBuildable *buildable);
-function gtk_buildable_get_name(buildable) bind(c)
+!const char * gtk_buildable_get_buildable_id (GtkBuildable *buildable);
+function gtk_buildable_get_buildable_id(buildable) bind(c)
   use iso_c_binding, only: c_ptr
-  type(c_ptr) :: gtk_buildable_get_name
+  type(c_ptr) :: gtk_buildable_get_buildable_id
   type(c_ptr), value :: buildable
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_buildable_add_child (GtkBuildable *buildable, GtkBuilder *builder, GObject *child, const char *type);
-subroutine gtk_buildable_add_child(buildable, builder, child, type) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: buildable
-  type(c_ptr), value :: builder
-  type(c_ptr), value :: child
-  character(kind=c_char), dimension(*) :: type
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_buildable_set_buildable_property (GtkBuildable *buildable, GtkBuilder *builder, const char *name, const GValue *value);
-subroutine gtk_buildable_set_buildable_property(buildable, builder, name,&
-& value) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: buildable
-  type(c_ptr), value :: builder
-  character(kind=c_char), dimension(*) :: name
-  type(c_ptr), value :: value
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GObject * gtk_buildable_construct_child (GtkBuildable *buildable, GtkBuilder *builder, const char *name);
-function gtk_buildable_construct_child(buildable, builder, name) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_buildable_construct_child
-  type(c_ptr), value :: buildable
-  type(c_ptr), value :: builder
-  character(kind=c_char), dimension(*) :: name
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_buildable_custom_tag_start (GtkBuildable *buildable, GtkBuilder *builder, GObject *child, const char *tagname, GtkBuildableParser *parser, gpointer *data);
-function gtk_buildable_custom_tag_start(buildable, builder, child, tagname,&
-& parser, data) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
-  integer(c_int) :: gtk_buildable_custom_tag_start
-  type(c_ptr), value :: buildable
-  type(c_ptr), value :: builder
-  type(c_ptr), value :: child
-  character(kind=c_char), dimension(*) :: tagname
-  type(c_ptr), value :: parser
-  type(c_ptr), value :: data
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_buildable_custom_tag_end (GtkBuildable *buildable, GtkBuilder *builder, GObject *child, const char *tagname, gpointer data);
-subroutine gtk_buildable_custom_tag_end(buildable, builder, child, tagname,&
-& data) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: buildable
-  type(c_ptr), value :: builder
-  type(c_ptr), value :: child
-  character(kind=c_char), dimension(*) :: tagname
-  type(c_ptr), value :: data
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_buildable_custom_finished (GtkBuildable *buildable, GtkBuilder *builder, GObject *child, const char *tagname, gpointer data);
-subroutine gtk_buildable_custom_finished(buildable, builder, child, tagname,&
-& data) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr), value :: buildable
-  type(c_ptr), value :: builder
-  type(c_ptr), value :: child
-  character(kind=c_char), dimension(*) :: tagname
-  type(c_ptr), value :: data
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_buildable_parser_finished (GtkBuildable *buildable, GtkBuilder *builder);
-subroutine gtk_buildable_parser_finished(buildable, builder) bind(c)
-  use iso_c_binding, only: c_ptr
-  type(c_ptr), value :: buildable
-  type(c_ptr), value :: builder
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GObject * gtk_buildable_get_internal_child (GtkBuildable *buildable, GtkBuilder *builder, const char *childname);
-function gtk_buildable_get_internal_child(buildable, builder, childname)&
-& bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_buildable_get_internal_child
-  type(c_ptr), value :: buildable
-  type(c_ptr), value :: builder
-  character(kind=c_char), dimension(*) :: childname
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -3904,14 +3808,14 @@ function gtk_button_get_child(button) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!guint gtk_get_debug_flags (void);
+!GtkDebugFlags gtk_get_debug_flags (void);
 function gtk_get_debug_flags() bind(c)
   use iso_c_binding, only: c_int
   integer(c_int) :: gtk_get_debug_flags
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_set_debug_flags (guint flags);
+!void gtk_set_debug_flags (GtkDebugFlags flags);
 subroutine gtk_set_debug_flags(flags) bind(c)
   use iso_c_binding, only: c_int
   integer(c_int), value :: flags
@@ -4920,6 +4824,24 @@ subroutine gtk_snapshot_push_cross_fade(snapshot, progress) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
+!void gtk_snapshot_push_gl_shader (GtkSnapshot *snapshot, GskGLShader *shader, const graphene_rect_t *bounds, GBytes *take_args);
+subroutine gtk_snapshot_push_gl_shader(snapshot, shader, bounds, take_args)&
+& bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: snapshot
+  type(c_ptr), value :: shader
+  type(c_ptr), value :: bounds
+  type(c_ptr), value :: take_args
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_snapshot_gl_shader_pop_texture (GtkSnapshot *snapshot);
+subroutine gtk_snapshot_gl_shader_pop_texture(snapshot) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: snapshot
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !void gtk_snapshot_pop (GtkSnapshot *snapshot);
 subroutine gtk_snapshot_pop(snapshot) bind(c)
   use iso_c_binding, only: c_ptr
@@ -5074,6 +4996,38 @@ subroutine gtk_snapshot_append_repeating_linear_gradient(snapshot, bounds,&
   type(c_ptr), value :: bounds
   type(c_ptr), value :: start_point
   type(c_ptr), value :: end_point
+  type(c_ptr), value :: stops
+  integer(c_size_t), value :: n_stops
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_snapshot_append_radial_gradient (GtkSnapshot *snapshot, const graphene_rect_t *bounds, const graphene_point_t *center, float hradius, float vradius, float start, float end, const GskColorStop *stops, gsize n_stops);
+subroutine gtk_snapshot_append_radial_gradient(snapshot, bounds, center,&
+& hradius, vradius, start, end, stops, n_stops) bind(c)
+  use iso_c_binding, only: c_ptr, c_float, c_size_t
+  type(c_ptr), value :: snapshot
+  type(c_ptr), value :: bounds
+  type(c_ptr), value :: center
+  real(c_float), value :: hradius
+  real(c_float), value :: vradius
+  real(c_float), value :: start
+  real(c_float), value :: end
+  type(c_ptr), value :: stops
+  integer(c_size_t), value :: n_stops
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_snapshot_append_repeating_radial_gradient (GtkSnapshot *snapshot, const graphene_rect_t *bounds, const graphene_point_t *center, float hradius, float vradius, float start, float end, const GskColorStop *stops, gsize n_stops);
+subroutine gtk_snapshot_append_repeating_radial_gradient(snapshot, bounds,&
+& center, hradius, vradius, start, end, stops, n_stops) bind(c)
+  use iso_c_binding, only: c_ptr, c_float, c_size_t
+  type(c_ptr), value :: snapshot
+  type(c_ptr), value :: bounds
+  type(c_ptr), value :: center
+  real(c_float), value :: hradius
+  real(c_float), value :: vradius
+  real(c_float), value :: start
+  real(c_float), value :: end
   type(c_ptr), value :: stops
   integer(c_size_t), value :: n_stops
 end subroutine
@@ -7908,52 +7862,6 @@ function gtk_event_controller_get_current_event_state(controller) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!guint gtk_get_major_version (void) G_GNUC_CONST;
-function gtk_get_major_version() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gtk_get_major_version
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!guint gtk_get_minor_version (void) G_GNUC_CONST;
-function gtk_get_minor_version() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gtk_get_minor_version
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!guint gtk_get_micro_version (void) G_GNUC_CONST;
-function gtk_get_micro_version() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gtk_get_micro_version
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!guint gtk_get_binary_age (void) G_GNUC_CONST;
-function gtk_get_binary_age() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gtk_get_binary_age
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!guint gtk_get_interface_age (void) G_GNUC_CONST;
-function gtk_get_interface_age() bind(c)
-  use iso_c_binding, only: c_int
-  integer(c_int) :: gtk_get_interface_age
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_check_version (guint required_major, guint required_minor, guint required_micro);
-function gtk_check_version(required_major, required_minor, required_micro)&
-& bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr) :: gtk_check_version
-  integer(c_int), value :: required_major
-  integer(c_int), value :: required_minor
-  integer(c_int), value :: required_micro
-end function
-
-! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_init_check (void);
 function gtk_init_check() bind(c)
   use iso_c_binding, only: c_int
@@ -7995,7 +7903,7 @@ subroutine gtk_disable_setlocale() bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!PangoLanguage *gtk_get_default_language (void);
+!PangoLanguage * gtk_get_default_language (void);
 function gtk_get_default_language() bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_get_default_language
@@ -12500,6 +12408,15 @@ function gtk_stack_new() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!GtkStackPage * gtk_stack_add_child (GtkStack *stack, GtkWidget *child);
+function gtk_stack_add_child(stack, child) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_stack_add_child
+  type(c_ptr), value :: stack
+  type(c_ptr), value :: child
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GtkStackPage * gtk_stack_add_named (GtkStack *stack, GtkWidget *child, const char *name);
 function gtk_stack_add_named(stack, child, name) bind(c)
   use iso_c_binding, only: c_ptr, c_char
@@ -13099,23 +13016,6 @@ end subroutine
 function gtk_scrolled_window_get_kinetic_scrolling(scrolled_window) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_scrolled_window_get_kinetic_scrolling
-  type(c_ptr), value :: scrolled_window
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_scrolled_window_set_capture_button_press (GtkScrolledWindow *scrolled_window, gboolean capture_button_press);
-subroutine gtk_scrolled_window_set_capture_button_press(scrolled_window,&
-& capture_button_press) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
-  type(c_ptr), value :: scrolled_window
-  integer(c_int), value :: capture_button_press
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_scrolled_window_get_capture_button_press (GtkScrolledWindow *scrolled_window);
-function gtk_scrolled_window_get_capture_button_press(scrolled_window) bind(c)
-  use iso_c_binding, only: c_int, c_ptr
-  integer(c_int) :: gtk_scrolled_window_get_capture_button_press
   type(c_ptr), value :: scrolled_window
 end function
 
@@ -19328,20 +19228,6 @@ subroutine gtk_render_line(context, cr, x0, y0, x1, y1) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_render_slider (GtkStyleContext *context, cairo_t *cr, double x, double y, double width, double height, GtkOrientation orientation);
-subroutine gtk_render_slider(context, cr, x, y, width, height, orientation)&
-& bind(c)
-  use iso_c_binding, only: c_ptr, c_double, c_int
-  type(c_ptr), value :: context
-  type(c_ptr), value :: cr
-  real(c_double), value :: x
-  real(c_double), value :: y
-  real(c_double), value :: width
-  real(c_double), value :: height
-  integer(c_int), value :: orientation
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
 !void gtk_render_handle (GtkStyleContext *context, cairo_t *cr, double x, double y, double width, double height);
 subroutine gtk_render_handle(context, cr, x, y, width, height) bind(c)
   use iso_c_binding, only: c_ptr, c_double
@@ -23770,18 +23656,10 @@ function gtk_column_view_column_get_type() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkColumnViewColumn * gtk_column_view_column_new (const char *title);
-function gtk_column_view_column_new(title) bind(c)
+!GtkColumnViewColumn * gtk_column_view_column_new (const char *title, GtkListItemFactory *factory);
+function gtk_column_view_column_new(title, factory) bind(c)
   use iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: gtk_column_view_column_new
-  character(kind=c_char), dimension(*) :: title
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkColumnViewColumn * gtk_column_view_column_new_with_factory (const char *title, GtkListItemFactory *factory);
-function gtk_column_view_column_new_with_factory(title, factory) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
-  type(c_ptr) :: gtk_column_view_column_new_with_factory
   character(kind=c_char), dimension(*) :: title
   type(c_ptr), value :: factory
 end function
@@ -26854,6 +26732,52 @@ subroutine gtk_actionable_set_detailed_action_name(actionable,&
   type(c_ptr), value :: actionable
   character(kind=c_char), dimension(*) :: detailed_action_name
 end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!guint gtk_get_major_version (void) G_GNUC_CONST;
+function gtk_get_major_version() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_major_version
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!guint gtk_get_minor_version (void) G_GNUC_CONST;
+function gtk_get_minor_version() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_minor_version
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!guint gtk_get_micro_version (void) G_GNUC_CONST;
+function gtk_get_micro_version() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_micro_version
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!guint gtk_get_binary_age (void) G_GNUC_CONST;
+function gtk_get_binary_age() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_binary_age
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!guint gtk_get_interface_age (void) G_GNUC_CONST;
+function gtk_get_interface_age() bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_get_interface_age
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_check_version (guint required_major, guint required_minor, guint required_micro);
+function gtk_check_version(required_major, required_minor, required_micro)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr) :: gtk_check_version
+  integer(c_int), value :: required_major
+  integer(c_int), value :: required_minor
+  integer(c_int), value :: required_micro
+end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_test_register_all_types (void);
