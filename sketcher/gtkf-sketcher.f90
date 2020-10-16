@@ -20,9 +20,10 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
-! GTK+ Fortran Code Sketcher using Glade3 UI definitions
+! GTK Fortran Code Sketcher using Glade3 UI definitions
 ! Contributed by Jens Hunger
-! Last modifications: Harris Snyder 11-07-2020
+! Last modifications: Harris Snyder 2020-07-11
+! vmagnin 2020-10-16
 
 module widgets
   ! declares the used GTK widgets
@@ -148,7 +149,7 @@ module connect
   use gtk, only: gtk_builder_add_from_file, gtk_builder_get_object, &
   & gtk_builder_new, gtk_widget_show,&
   & FALSE, c_null_char, c_null_ptr, TRUE, gtk_init, gtk_builder_get_objects, &
-  & gtk_buildable_get_name, gtk_text_view_get_buffer, gtk_text_buffer_set_text,&
+  & gtk_buildable_get_buildable_id, gtk_text_view_get_buffer, gtk_text_buffer_set_text,&
   & gtk_combo_box_get_active, gtk_combo_box_set_active, &
   & gtk_combo_box_get_model, gtk_combo_box_get_active_iter,&
   & gtk_tree_model_get_value, gtk_tree_model_iter_nth_child,&
@@ -209,7 +210,7 @@ module connect
 
     call C_F_string_chars(signal_name, sname)
     call C_F_string_chars(handler_name, hname)
-    object_name_ptr=gtk_buildable_get_name (object)
+    object_name_ptr=gtk_buildable_get_buildable_id (object)
     if (.not. C_associated(object_name_ptr)) then
       oname="unknown"
     else
@@ -395,7 +396,7 @@ contains
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     do i=0, g_slist_length(gslist)-1
       gpointer=g_slist_nth_data (gslist,i)
-      object_name_ptr=gtk_buildable_get_name (gpointer)
+      object_name_ptr=gtk_buildable_get_buildable_id (gpointer)
       call C_F_string_ptr(object_name_ptr, F_string)
 !      if (fbool(gtk_widget_is_toplevel(gpointer))) then
         call gtk_list_store_append (toplevel_widgets,c_loc(iter))
@@ -558,7 +559,7 @@ contains
       if (widget_symbols) then
         do i=0, g_slist_length(gslist)-1
           gpointer=g_slist_nth_data (gslist,i)
-          object_name_ptr=gtk_buildable_get_name (gpointer)
+          object_name_ptr=gtk_buildable_get_buildable_id (gpointer)
           call C_F_string_ptr(object_name_ptr, F_string)
           if (len_trim(f_string).gt.0) then
             do
@@ -746,7 +747,7 @@ contains
         write(50,'(A)')"  ! get pointers to all GObjects from GtkBuilder"
         do i=0, g_slist_length(gslist)-1
           gpointer=g_slist_nth_data (gslist,i)
-          object_name_ptr=gtk_buildable_get_name (gpointer)
+          object_name_ptr=gtk_buildable_get_buildable_id (gpointer)
           call C_F_string_ptr(object_name_ptr, F_string)
           if (len_trim(f_string).gt.0) then
             f_string_ori=f_string
