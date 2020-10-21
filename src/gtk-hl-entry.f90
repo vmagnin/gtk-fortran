@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 ! ---------------------------------------------------------
 ! Contributed by James Tappin (2012)
-! Last modification: vmagnin 2020-05-28 (GTK 4), 2020-08-25
+! Last modification: vmagnin 2020-05-28 (GTK 4), 2020-10-21
 ! ---------------------------------------------------------
 
 !*
@@ -443,7 +443,7 @@ contains
 
     type(c_ptr) :: tbuf
     type(gtktextiter), target :: iter
-    integer(kind=c_int) :: icol, irep, atc
+    integer(kind=c_int) :: icol, irep, atc, found
     character(kind=c_char), dimension(:), allocatable :: text0
 
     if (present(buffer)) then
@@ -477,7 +477,7 @@ contains
           call hl_gtk_text_view_delete(C_NULL_PTR, line=line, column=icol, &
                & n_chars=size(text0, kind=c_int), buffer=tbuf)
        end if
-       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(iter), &
+       found=gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(iter), &
             & line, column)
     else
        if (present(replace)) then
@@ -522,7 +522,7 @@ contains
 
     type(c_ptr) :: tbuf
     type(gtktextiter), target :: s_iter, e_iter
-    integer(kind=c_int) :: isok
+    integer(kind=c_int) :: isok, found
 
     ! Input checking
     if (present(n_chars) .and. present(n_lines)) then
@@ -546,14 +546,14 @@ contains
     end if
 
     if (present(n_chars)) then
-       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
+       found=gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
             & line, column)
-       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
+       found=gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
             & line, column)
        isok = gtk_text_iter_forward_chars(c_loc(e_iter), n_chars)
     else if (present(n_lines)) then
-       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(s_iter), line)
-       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(e_iter), line)
+       found=gtk_text_buffer_get_iter_at_line(tbuf, c_loc(s_iter), line)
+       found=gtk_text_buffer_get_iter_at_line(tbuf, c_loc(e_iter), line)
        isok = gtk_text_iter_forward_lines(c_loc(e_iter), n_lines)
     else
        call gtk_text_buffer_get_start_iter(tbuf, c_loc(s_iter))
@@ -604,7 +604,7 @@ contains
     type(c_ptr) :: tbuf, ctext0
     character(kind=c_char), dimension(:), pointer :: ftext0
     type(gtktextiter), target :: s_iter, e_iter
-    integer(kind=c_int) :: ihid
+    integer(kind=c_int) :: ihid, found
     integer :: nchars_r
 
     if (present(buffer)) then
@@ -616,48 +616,48 @@ contains
     ! Fully specified
     if (present(start_line) .and. present(start_column) .and. &
          & present(end_line) .and. present(end_column)) then
-       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
+       found=gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
             & start_line, start_column)
-       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
+       found=gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
             & end_line, end_column)
 
        ! Both columns only start line
     else if (present(start_line) .and. present(start_column) .and. &
          &  present(end_column)) then
-       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
+       found=gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
             & start_line, start_column)
-       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
+       found=gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
             & start_line, end_column)
 
        ! Both lines, at least one column not given
     else if (present(start_line) .and. present(start_column)) then
-       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(s_iter), &
+       found=gtk_text_buffer_get_iter_at_line(tbuf, c_loc(s_iter), &
             & start_line)
-       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(e_iter), &
+       found=gtk_text_buffer_get_iter_at_line(tbuf, c_loc(e_iter), &
             & end_line)
 
        ! Fully specified start, no end
     else if (present(start_line) .and. present(start_column)) then
-       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
+       found=gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(s_iter), &
             & start_line, start_column)
        call gtk_text_buffer_get_end_iter(tbuf, c_loc(e_iter))
 
        ! Start line only
     else if (present(start_line)) then
-       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(s_iter), &
+       found=gtk_text_buffer_get_iter_at_line(tbuf, c_loc(s_iter), &
             & start_line)
        call gtk_text_buffer_get_end_iter(tbuf, c_loc(e_iter))
 
        ! Fully specified end, no start
     else if (present(end_line) .and. present(end_column)) then
        call gtk_text_buffer_get_start_iter(tbuf, c_loc(s_iter))
-       call gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
+       found=gtk_text_buffer_get_iter_at_line_offset(tbuf, c_loc(e_iter), &
             & start_line, end_column)
 
        ! End line only
     else if (present(end_line)) then
        call gtk_text_buffer_get_start_iter(tbuf, c_loc(s_iter))
-       call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(e_iter), &
+       found=gtk_text_buffer_get_iter_at_line(tbuf, c_loc(e_iter), &
             & end_line)
 
        ! Should only get here with nothing specified
@@ -818,7 +818,7 @@ contains
 
     type(c_ptr) :: tbuf
     type(gtktextiter), target :: i1, i2
-    integer(kind=c_int) :: nl
+    integer(kind=c_int) :: nl, found
     integer(kind=c_int) :: i
     if (present(buffer)) then
        tbuf = buffer
@@ -837,7 +837,7 @@ contains
        allocate(ncline(nl))
        call gtk_text_buffer_get_start_iter(tbuf, c_loc(i1))
        do i = 1, nl-1
-          call gtk_text_buffer_get_iter_at_line(tbuf, c_loc(i2), i)
+          found=gtk_text_buffer_get_iter_at_line(tbuf, c_loc(i2), i)
           ncline(i) = gtk_text_iter_get_offset(c_loc(i2)) - &
                & gtk_text_iter_get_offset(c_loc(i1))-1
           i1 = i2

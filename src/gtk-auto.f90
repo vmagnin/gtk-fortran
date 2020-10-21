@@ -74,6 +74,14 @@ function gtk_icon_theme_get_for_display(display) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!GdkDisplay * gtk_icon_theme_get_display (GtkIconTheme *self);
+function gtk_icon_theme_get_display(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_icon_theme_get_display
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !void gtk_icon_theme_set_search_path (GtkIconTheme *self, const char * const *path);
 subroutine gtk_icon_theme_set_search_path(self, path) bind(c)
   use iso_c_binding, only: c_ptr, c_char
@@ -2333,6 +2341,22 @@ end subroutine
 function gtk_spin_button_get_snap_to_ticks(spin_button) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_spin_button_get_snap_to_ticks
+  type(c_ptr), value :: spin_button
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_spin_button_set_climb_rate (GtkSpinButton *spin_button, double climb_rate);
+subroutine gtk_spin_button_set_climb_rate(spin_button, climb_rate) bind(c)
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: spin_button
+  real(c_double), value :: climb_rate
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_spin_button_get_climb_rate (GtkSpinButton *spin_button);
+function gtk_spin_button_get_climb_rate(spin_button) bind(c)
+  use iso_c_binding, only: c_double, c_ptr
+  real(c_double) :: gtk_spin_button_get_climb_rate
   type(c_ptr), value :: spin_button
 end function
 
@@ -7751,6 +7775,56 @@ function gtk_text_get_extra_menu(self) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!void gtk_text_set_enable_emoji_completion (GtkText *self, gboolean enable_emoji_completion);
+subroutine gtk_text_set_enable_emoji_completion(self, enable_emoji_completion)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: enable_emoji_completion
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_text_get_enable_emoji_completion (GtkText *self);
+function gtk_text_get_enable_emoji_completion(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_get_enable_emoji_completion
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_text_set_propagate_text_width (GtkText *self, gboolean propagate_text_width);
+subroutine gtk_text_set_propagate_text_width(self, propagate_text_width)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: propagate_text_width
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_text_get_propagate_text_width (GtkText *self);
+function gtk_text_get_propagate_text_width(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_get_propagate_text_width
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_text_set_truncate_multiline (GtkText *self, gboolean truncate_multiline);
+subroutine gtk_text_set_truncate_multiline(self, truncate_multiline) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: truncate_multiline
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_text_get_truncate_multiline (GtkText *self);
+function gtk_text_get_truncate_multiline(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_get_truncate_multiline
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_crossing_data_get_type (void) G_GNUC_CONST;
 function gtk_crossing_data_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -9431,20 +9505,6 @@ subroutine gtk_style_context_get_margin(context, margin) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr), value :: context
   type(c_ptr), value :: margin
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_render_insertion_cursor (GtkStyleContext *context, cairo_t *cr, double x, double y, PangoLayout *layout, int index, PangoDirection direction);
-subroutine gtk_render_insertion_cursor(context, cr, x, y, layout, index,&
-& direction) bind(c)
-  use iso_c_binding, only: c_ptr, c_double, c_int
-  type(c_ptr), value :: context
-  type(c_ptr), value :: cr
-  real(c_double), value :: x
-  real(c_double), value :: y
-  type(c_ptr), value :: layout
-  integer(c_int), value :: index
-  integer(c_int), value :: direction
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -12609,12 +12669,13 @@ function gtk_at_context_get_accessible_role(self) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkATContext * gtk_at_context_create (GtkAccessibleRole accessible_role, GtkAccessible *accessible);
-function gtk_at_context_create(accessible_role, accessible) bind(c)
+!GtkATContext * gtk_at_context_create (GtkAccessibleRole accessible_role, GtkAccessible *accessible, GdkDisplay *display);
+function gtk_at_context_create(accessible_role, accessible, display) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr) :: gtk_at_context_create
   integer(c_int), value :: accessible_role
   type(c_ptr), value :: accessible
+  type(c_ptr), value :: display
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -19113,6 +19174,22 @@ subroutine gtk_popover_get_offset(popover, x_offset, y_offset) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
+!void gtk_popover_set_cascade_popdown (GtkPopover *popover, gboolean cascade_popdown);
+subroutine gtk_popover_set_cascade_popdown(popover, cascade_popdown) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: popover
+  integer(c_int), value :: cascade_popdown
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_popover_get_cascade_popdown (GtkPopover *popover);
+function gtk_popover_get_cascade_popdown(popover) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_popover_get_cascade_popdown
+  type(c_ptr), value :: popover
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !void gtk_popover_set_default_widget (GtkPopover *popover, GtkWidget *widget);
 subroutine gtk_popover_set_default_widget(popover, widget) bind(c)
   use iso_c_binding, only: c_ptr
@@ -25132,26 +25209,28 @@ subroutine gtk_text_buffer_remove_all_tags(buffer, start, end) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_text_buffer_get_iter_at_line_offset (GtkTextBuffer *buffer, GtkTextIter *iter, int line_number, int char_offset);
-subroutine gtk_text_buffer_get_iter_at_line_offset(buffer, iter, line_number,&
+!gboolean gtk_text_buffer_get_iter_at_line_offset (GtkTextBuffer *buffer, GtkTextIter *iter, int line_number, int char_offset);
+function gtk_text_buffer_get_iter_at_line_offset(buffer, iter, line_number,&
 & char_offset) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_get_iter_at_line_offset
   type(c_ptr), value :: buffer
   type(c_ptr), value :: iter
   integer(c_int), value :: line_number
   integer(c_int), value :: char_offset
-end subroutine
+end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_text_buffer_get_iter_at_line_index (GtkTextBuffer *buffer, GtkTextIter *iter, int line_number, int byte_index);
-subroutine gtk_text_buffer_get_iter_at_line_index(buffer, iter, line_number,&
+!gboolean gtk_text_buffer_get_iter_at_line_index (GtkTextBuffer *buffer, GtkTextIter *iter, int line_number, int byte_index);
+function gtk_text_buffer_get_iter_at_line_index(buffer, iter, line_number,&
 & byte_index) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_get_iter_at_line_index
   type(c_ptr), value :: buffer
   type(c_ptr), value :: iter
   integer(c_int), value :: line_number
   integer(c_int), value :: byte_index
-end subroutine
+end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_text_buffer_get_iter_at_offset (GtkTextBuffer *buffer, GtkTextIter *iter, int char_offset);
@@ -25164,13 +25243,14 @@ subroutine gtk_text_buffer_get_iter_at_offset(buffer, iter, char_offset)&
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_text_buffer_get_iter_at_line (GtkTextBuffer *buffer, GtkTextIter *iter, int line_number);
-subroutine gtk_text_buffer_get_iter_at_line(buffer, iter, line_number) bind(c)
-  use iso_c_binding, only: c_ptr, c_int
+!gboolean gtk_text_buffer_get_iter_at_line (GtkTextBuffer *buffer, GtkTextIter *iter, int line_number);
+function gtk_text_buffer_get_iter_at_line(buffer, iter, line_number) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_text_buffer_get_iter_at_line
   type(c_ptr), value :: buffer
   type(c_ptr), value :: iter
   integer(c_int), value :: line_number
-end subroutine
+end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_text_buffer_get_start_iter (GtkTextBuffer *buffer, GtkTextIter *iter);
