@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2020-10-07 (tested with Python 3.9.0, Fedora 34 Rawhide)
+# Last modification: 2020-10-22 (tested with Python 3.9.0, Fedora 34 Rawhide)
 # pylint *.py : 8.42/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
@@ -71,7 +71,6 @@ my_versions = Version(GTK_VERSION)
 # Define libraries paths and corresponding *-auto.f90 files.
 # Do not change the order of the dictionary keys:
 PATH_DICT = OrderedDict([
-    ("/usr/include/atk-1.0", "atk-auto.f90"),
     ("/usr/include/cairo", "cairo-auto.f90"),
     ("/usr/include/gdk-pixbuf-2.0", "gdk-pixbuf-auto.f90"),
     ("/usr/include/glib-2.0", "glib-auto.f90")])
@@ -83,11 +82,13 @@ if GTK_VERSION == "gtk4":
         ("/usr/include/gtk-4.0/unix-print", "unix-print-auto.f90")])
 elif GTK_VERSION == "gtk3":
     PATH_DICT.update([
+        ("/usr/include/atk-1.0", "atk-auto.f90"),
         ("/usr/include/gtk-3.0/gdk", "gdk-auto.f90"),
         ("/usr/include/gtk-3.0/gtk", "gtk-auto.f90"),
         ("/usr/include/gtk-3.0/unix-print", "unix-print-auto.f90")])
 elif GTK_VERSION == "gtk2":
     PATH_DICT.update([
+        ("/usr/include/atk-1.0", "atk-auto.f90"),
         ("/usr/include/gtk-2.0/gdk", "gdk-auto.f90"),
         ("/usr/include/gtk-2.0/gtk", "gtk-auto.f90")])
 PATH_DICT.update([("/usr/include/pango-1.0", "pango-auto.f90")])
