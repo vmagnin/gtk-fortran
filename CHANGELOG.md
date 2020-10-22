@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 The gtk4 branch is the new development branch.
 
 ### Added
-- The gtk-fortran library has been generated using GTK 3.98.2, GLib 2.64.2, under Fedora 32.
+- The gtk-fortran library has been generated using GTK ?.??.?, GLib 2.??.?, under Fedora ??.
 - src/gtk.f90: historically, in gtk-fortran g\_signal\_connect() was declared as a subroutine, because the handler\_id returned by the GLib function is usually never used. Here we define both a g\_signal\_connect() function and a subroutine. You will generally use the subroutine in your programs. The function\_g\_signal\_connect\_swapped and g\_signal\_connect\_swapped procedure were also added.
 - examples/pixbuf\_without\_gui.f90: a new example drawing a Sierpinski triangle in a PNG file, without using a GUI. Backported to the gtk3 branch.
 
@@ -16,12 +16,15 @@ The gtk4 branch is the new development branch.
 ### Changed
 - examples/gtkzero_gapp.f90 is now working.
 - examples/gtkhello.f90: new version using GtkApplication.
+- Most examples are now using GtkApplication.
 - cfwrapper.py is now systematically launching extract_events.pl. Backported to gtk3 branch.
 
 ### Removed
 - examples/gtkzero.f90: replaced by gtkzero_gapp.f90.
 - examples/gtkhello2.f90: replaced by gtkhello.f90.
 - examples/menu.f90 & menu2.f90: based on deprecated APIs.
+- examples/hl_radio.f90: based on the GtkRadioButton deprecated API.
+- src/atk-auto.f90: removed from GTK 4 (deprecated API).
 - src/gtk-hl-accelerator.f90: deprecated API.
 - src/gtk-hl-menu.f90 and examples/hl_menu.f90: deprecated API.
 - meson.build experimental files were removed. They are now apart in the gtk4-dev-meson branch.
