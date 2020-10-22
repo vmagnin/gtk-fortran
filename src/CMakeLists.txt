@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2020-06-18
+#   vmagnin: 2020-10-22
 #
 # CMAKE build file for GtkFortran
 
@@ -30,7 +30,6 @@
 # Fortran files composing the gtk-fortran library:
 #=================================================
 set(sources
-    "atk-auto.f90"
     "cairo-auto.f90"
     "gdk-auto.f90"
     "gdk-pixbuf-auto.f90"
