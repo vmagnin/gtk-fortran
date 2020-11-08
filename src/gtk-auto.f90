@@ -1669,6 +1669,25 @@ function gtk_popover_menu_get_menu_model(popover) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_popover_menu_add_child (GtkPopoverMenu *popover, GtkWidget *child, const char *id);
+function gtk_popover_menu_add_child(popover, child, id) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_popover_menu_add_child
+  type(c_ptr), value :: popover
+  type(c_ptr), value :: child
+  character(kind=c_char), dimension(*) :: id
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_popover_menu_remove_child (GtkPopoverMenu *popover, GtkWidget *child);
+function gtk_popover_menu_remove_child(popover, child) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_popover_menu_remove_child
+  type(c_ptr), value :: popover
+  type(c_ptr), value :: child
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GType gtk_drop_target_get_type (void) G_GNUC_CONST;
 function gtk_drop_target_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -4402,6 +4421,25 @@ function gtk_popover_menu_bar_get_menu_model(bar) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_popover_menu_bar_get_menu_model
   type(c_ptr), value :: bar
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_popover_menu_bar_add_child (GtkPopoverMenuBar *bar, GtkWidget *child, const char *id);
+function gtk_popover_menu_bar_add_child(bar, child, id) bind(c)
+  use iso_c_binding, only: c_int, c_ptr, c_char
+  integer(c_int) :: gtk_popover_menu_bar_add_child
+  type(c_ptr), value :: bar
+  type(c_ptr), value :: child
+  character(kind=c_char), dimension(*) :: id
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_popover_menu_bar_remove_child (GtkPopoverMenuBar *bar, GtkWidget *child);
+function gtk_popover_menu_bar_remove_child(bar, child) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_popover_menu_bar_remove_child
+  type(c_ptr), value :: bar
+  type(c_ptr), value :: child
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -18403,6 +18441,14 @@ function gtk_editable_install_properties(object_class, first_prop) bind(c)
   integer(c_int) :: gtk_editable_install_properties
   type(c_ptr), value :: object_class
   integer(c_int), value :: first_prop
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkEditable *gtk_editable_get_delegate (GtkEditable *editable);
+function gtk_editable_get_delegate(editable) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_editable_get_delegate
+  type(c_ptr), value :: editable
 end function
 
 ! GDK_AVAILABLE_IN_ALL
