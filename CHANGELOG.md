@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 The gtk4 branch is the new development branch.
 
 ### Added
-- The gtk-fortran library has been generated using GTK ?.??.?, GLib 2.??.?, under Fedora ??.
+- The gtk-fortran library has been generated using GTK 3.99.5, GLib 2.??.?, under Fedora ??.
 - src/gtk.f90: historically, in gtk-fortran g\_signal\_connect() was declared as a subroutine, because the handler\_id returned by the GLib function is usually never used. Here we define both a g\_signal\_connect() function and a subroutine. You will generally use the subroutine in your programs. The function\_g\_signal\_connect\_swapped and g\_signal\_connect\_swapped procedure were also added.
 - examples/pixbuf\_without\_gui.f90: a new example drawing a Sierpinski triangle in a PNG file, without using a GUI. Backported to the gtk3 branch.
 
