@@ -7916,13 +7916,6 @@ function gtk_text_get_truncate_multiline(self) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GType gtk_crossing_data_get_type (void) G_GNUC_CONST;
-function gtk_crossing_data_get_type() bind(c)
-  use iso_c_binding, only: c_size_t
-  integer(c_size_t) :: gtk_crossing_data_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
 !GType gtk_event_controller_get_type (void) G_GNUC_CONST;
 function gtk_event_controller_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -8511,11 +8504,11 @@ function gtk_cell_renderer_get_is_expander(cell) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!void gtk_cell_renderer_set_is_expanded (GtkCellRenderer *cell, gboolean is_expander);
-subroutine gtk_cell_renderer_set_is_expanded(cell, is_expander) bind(c)
+!void gtk_cell_renderer_set_is_expanded (GtkCellRenderer *cell, gboolean is_expanded);
+subroutine gtk_cell_renderer_set_is_expanded(cell, is_expanded) bind(c)
   use iso_c_binding, only: c_ptr, c_int
   type(c_ptr), value :: cell
-  integer(c_int), value :: is_expander
+  integer(c_int), value :: is_expanded
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL

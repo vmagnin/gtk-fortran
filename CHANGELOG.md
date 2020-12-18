@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 The gtk4 branch is the new development branch.
 
 ### Added
-- The gtk-fortran library has been generated using GTK 3.99.5, GLib 2.??.?, under Fedora ??.
+- The gtk-fortran library has been generated using GTK 4.0.0, GLib 2.67.0, under Fedora Rawhide.
 - src/gtk.f90: historically, in gtk-fortran g\_signal\_connect() was declared as a subroutine, because the handler\_id returned by the GLib function is usually never used. Here we define both a g\_signal\_connect() function and a subroutine. You will generally use the subroutine in your programs. The function\_g\_signal\_connect\_swapped and g\_signal\_connect\_swapped procedure were also added.
 - examples/pixbuf\_without\_gui.f90: a new example drawing a Sierpinski triangle in a PNG file, without using a GUI. Backported to the gtk3 branch.
 
@@ -24,6 +24,7 @@ The gtk4 branch is the new development branch.
 - src/atk-auto.f90: removed from GTK 4 (deprecated API).
 - src/gtk-hl-accelerator.f90: deprecated API.
 - src/gtk-hl-menu.f90 and examples/hl_menu.f90: deprecated API.
+- src/gtk-hl-chooser.f90, bazaar.f90, hl_choosers.f90: GtkFileChooserButton has been removed from GTK 4.
 - meson.build experimental files were removed. They are now apart in the gtk4-dev-meson branch.
 
 ## [gtk-fortran 20.04] - 2020-05-07
