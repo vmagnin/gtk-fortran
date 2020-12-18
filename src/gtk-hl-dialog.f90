@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modifications: 2012-12-31, vmagnin 2020-06-08 (GTK 4 version)
+! Last modifications: 2012-12-31, vmagnin 2020-12-18
 ! https://developer.gnome.org/gtk4/stable/GtkDialog.html
 !------------------------------------------------------------------------------
 !*
@@ -404,7 +404,7 @@ contains
          & documenters, translators, artists, logo, parent)
 
     call gtk_widget_show(about)
-    call g_signal_connect(about, "response"//c_null_char, &
+    call g_signal_connect(about, "close-request"//c_null_char, &
                                     & c_funloc(dialog_callback))
     dialog_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
     call g_main_loop_run(dialog_gmainloop)

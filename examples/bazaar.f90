@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus, Ian Harvey
-! GTK 4 version: vmagnin 2020-05-28, 2020-12-17
+! GTK 4 version: vmagnin 2020-05-28, 2020-12-18
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -344,8 +344,6 @@ contains
     !call gtk_about_dialog_set_authors(dialog, authors_ptr)
  
     call gtk_widget_show(dialog)
-    call g_signal_connect_swapped (dialog, "response"//c_null_char, &
-                              & c_funloc(gtk_window_destroy), dialog)
     ret = FALSE
   end function aboutbutton
 end module handlers
