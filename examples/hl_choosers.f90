@@ -36,7 +36,7 @@ module handlers
   use gtk_hl_entry
   use gtk, only: gtk_button_new, gtk_window_set_child, &
        & gtk_text_view_new, gtk_widget_set_sensitive, gtk_widget_show, &
-       & gtk_window_destroy, gtk_file_chooser_get_file, &
+       & gtk_window_destroy, &
        & TRUE, FALSE, GTK_BUTTONS_YES_NO, GTK_RESPONSE_NO
   use g, only: alloca, g_file_get_path, g_object_unref
 
@@ -89,7 +89,7 @@ contains
          & filter_name=filtnames, wsize=(/ 600_c_int, 400_c_int /), &
          & edit_filters=TRUE, &
          & parent=window, all=TRUE)
-print *, "isel = hl_gtk_file_chooser_show=", isel
+    print *, "isel = hl_gtk_file_chooser_show=", isel
     if (isel == FALSE) return   ! No selection made
 
     filename = chfile(1)
