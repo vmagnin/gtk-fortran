@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
-! Last modifications: vmagnin 2020-06-15 (GTK 4)
+! Last modifications: vmagnin 2020-12-18
 !------------------------------------------------------------------------------
 
 module handlers
@@ -153,7 +153,7 @@ contains
   end subroutine click_cb
 
   ! Scroll callback function ("scroll" signal):
-  function scroll_cb(controller, x, y, gdata) result(ret) bind(c)
+  recursive function scroll_cb(controller, x, y, gdata) result(ret) bind(c)
     type(c_ptr), value, intent(in)    :: controller, gdata
     real(c_double), value, intent(in) :: x, y
     logical(c_bool) :: ret
