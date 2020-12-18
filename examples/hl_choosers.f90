@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modifications: vmagnin 2020-06-18 (GTK 4 version), 2020-07-15
+! Last modifications: vmagnin 2020-06-18 (GTK 4 version), 2020-12-17
 ! Demo of file choosers.
 !------------------------------------------------------------------------------
 
@@ -114,37 +114,6 @@ print *, "isel = hl_gtk_file_chooser_show=", isel
   end subroutine open_file
 
 
-  subroutine do_open(widget, gdata) bind(c)
-    type(c_ptr), value, intent(in) :: widget, gdata
-    type(c_ptr) :: c_string, g_file
-    character(len=200) :: inln
-    integer :: ios
-    integer :: idxs
-
-    g_file = gtk_file_chooser_get_file (widget)
-    c_string = g_file_get_path(g_file)
-    call convert_c_string(c_string, filename)
-    print *, filename
-    call g_free(c_string)
-    call g_object_unref(g_file)
-
-    open(37, file=filename, action='read')
-    call hl_gtk_text_view_delete(tedit)
-    do
-       read(37,"(A)",iostat=ios) inln
-       if (ios /= 0) exit
-       call hl_gtk_text_view_insert(tedit, (/ trim(inln)//c_new_line /))
-    end do
-    close(37)
-    idxs = index(filename, '/', .true.)+1
-    call gtk_window_set_title(window, trim(filename(idxs:))//c_null_char)
-
-    ! We manually reset the changed flag as the text box signal handler sets it.
-    file_is_changed = .FALSE.
-    call gtk_widget_set_sensitive(sabut, TRUE)
-    call gtk_widget_set_sensitive(sbut, FALSE)
-  end subroutine do_open
-
   subroutine save_file(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
@@ -225,17 +194,6 @@ print *, "isel = hl_gtk_file_chooser_show=", isel
     ! Widgets that don't need to be global
     type(c_ptr) :: base, jb, junk
 
-    ! Filters for the chooser button
-    character(len=30), dimension(3) :: filters
-    character(len=30), dimension(3) :: filtnames
-
-    filters(1) = "text/plain"
-    filters(2) = "*.f90"
-    filters(3) = "*"
-    filtnames(1) = "Text files"
-    filtnames(2) = "Fortran code"
-    filtnames(3) = "All files"
-
     ! Create a window and a column box
     window = gtk_application_window_new(app)
     call gtk_window_set_title(window, "Choosers demo"//c_null_char)
@@ -247,9 +205,6 @@ print *, "isel = hl_gtk_file_chooser_show=", isel
     jb = hl_gtk_box_new(horizontal=TRUE, homogeneous=TRUE)
     call hl_gtk_box_pack(base, jb)
     junk = hl_gtk_button_new("Open"//c_null_char, clicked=c_funloc(open_file))
-    call hl_gtk_box_pack(jb, junk)
-    junk = hl_gtk_file_chooser_button_new(title="Alt-open"//c_null_char, &
-         & filter=filters, filter_name=filtnames, file_set=c_funloc(do_open))
     call hl_gtk_box_pack(jb, junk)
     sbut = hl_gtk_button_new("Save"//c_null_char, clicked=c_funloc(save_file),&
          & sensitive=FALSE)

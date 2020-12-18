@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus, Ian Harvey
-! GTK 4 version: vmagnin 2020-05-28, 2020-08-25
+! GTK 4 version: vmagnin 2020-05-28, 2020-12-17
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -71,7 +71,7 @@ module my_widgets
   type(c_ptr) :: box1, table
   type(c_ptr) :: button1, button2, button3, button4, label1
   type(c_ptr) :: entry1
-  type(c_ptr) :: progress, file_selector
+  type(c_ptr) :: progress
   type(c_ptr) :: view, buffer, scrolled_window
   type(c_ptr) :: my_drawing_area, my_pixbuf
   type(c_ptr) :: dialog
@@ -88,8 +88,7 @@ module handlers
   & gtk_window_set_child, gtk_scrolled_window_set_child, &
   & gtk_drawing_area_new, gtk_drawing_area_set_draw_func, &
   & gtk_entry_get_buffer, gtk_entry_buffer_get_text, gtk_entry_new, &
-  & gtk_file_chooser_button_new, GTK_FILE_CHOOSER_ACTION_OPEN, &
-  & gtk_file_chooser_get_file, gtk_label_new, &
+  & gtk_label_new, &
   & gtk_progress_bar_new, gtk_progress_bar_pulse, &
   & gtk_progress_bar_set_fraction, gtk_progress_bar_set_text, &
   & gtk_scrolled_window_new,&
@@ -103,7 +102,7 @@ module handlers
   & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
   & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
 
-  use g, only: g_file_get_basename, g_object_unref
+  use g, only: g_object_unref
 
   use cairo, only: cairo_create, cairo_curve_to, cairo_destroy, cairo_line_to, &
   & cairo_move_to, cairo_paint, cairo_set_line_width, cairo_set_source, &
@@ -196,12 +195,6 @@ contains
                      & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
     call gtk_grid_attach(table, my_drawing_area, 0_c_int, 6_c_int, 3_c_int, 6_c_int)  
 
-    ! https://developer.gnome.org/gtk4/stable/GtkFileChooserButton.html
-    ! https://developer.gnome.org/gtk4/stable/GtkFileChooser.html
-    file_selector = gtk_file_chooser_button_new ("Choose a file..."//&
-         & c_null_char, GTK_FILE_CHOOSER_ACTION_OPEN)
-    call gtk_grid_attach(table, file_selector, 0_c_int, 12_c_int, 3_c_int, 1_c_int)  
-    call g_signal_connect (file_selector, "file-set"//c_null_char, c_funloc(file_changed));
     !******************************************************************
     ! If you don't show it, nothing will appear on screen...
     call gtk_widget_show(window)
@@ -355,25 +348,6 @@ contains
                               & c_funloc(gtk_window_destroy), dialog)
     ret = FALSE
   end function aboutbutton
-
-  ! GtkFileChooser signal:
-  function file_changed (widget, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
-    use gtk_sup, only: c_f_string_copy
-    type(c_ptr), value, intent(in) :: widget, gdata
-    integer(c_int)     :: ret
-    type(c_ptr) :: GFile
-    character(len=512) :: my_string
-
-    ! https://developer.gnome.org/gtk4/stable/GtkFileChooser.html#gtk-file-chooser-get-file
-    ! https://developer.gnome.org/gio/stable/GFile.html#g-file-get-basename
-    GFile = gtk_file_chooser_get_file(widget);
-    call c_f_string_copy(g_file_get_basename(GFile), my_string)
-    print *, "Selected File has changed: ", TRIM(my_string)
-    call g_object_unref(GFile)
-
-    ret = FALSE
-  end function file_changed
 end module handlers
 
 !*******************************************************************************

@@ -23,19 +23,15 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modifications: 2012-12-31, vmagnin 2020-06-19 (GTK 4 version),
-!                     2020-08-25
+!                     2020-12-17
 !------------------------------------------------------------------------------
 
 !*
 ! File Choosers
 module gtk_hl_chooser
-  ! hl_gtk_file_chooser_button_new implements the GtkFileChooserButton
-  ! and its GtkFileChooser options in a convenient package.
-  !
-  ! hl_gtk_file_chooser_new and _show implement a more general chooser
+  ! hl_gtk_file_chooser_new and _show implement a general chooser
   ! dialogue via the file_chooser_widget (file_choose_dialog only has
-  ! variadic constructors). Unless you need to add extra items to the
-  ! dialog it is usually easiest to use the hl_gtk_file_chooser_show function.
+  ! variadic constructors).
   !
   ! Filters may be either patterns (e.g. '*.f90' or '2011*.lis') or mime types
   ! (e.g. 'image/png' or 'text/*'). The constructors recognise the difference by
@@ -57,7 +53,6 @@ module gtk_hl_chooser
        & gtk_dialog_get_content_area, gtk_dialog_new, &
        & gtk_entry_get_buffer, gtk_entry_buffer_set_text, &
        & gtk_file_chooser_add_filter, &
-       & gtk_file_chooser_button_new, gtk_file_chooser_button_set_width_chars, &
        & gtk_file_chooser_get_current_folder, &
        & gtk_file_chooser_set_current_folder, &
        & gtk_file_chooser_set_current_name, gtk_file_chooser_set_file, &
@@ -96,153 +91,6 @@ module gtk_hl_chooser
   !-
 
 contains
-  !+
-  function hl_gtk_file_chooser_button_new(directory, title, &
-       & width, show_hidden, initial_dir, current, &
-       & initial_folder, initial_file, filter, filter_name, file_set, &
-       & data, sensitive, tooltip) result(cbutton)
-
-    type(c_ptr) :: cbutton
-    integer(kind=c_int), intent(in), optional :: directory
-    character(kind=c_char), dimension(*), optional, intent(in) :: title
-    integer(kind=c_int), intent(in), optional :: width
-    integer(kind=c_int), intent(in), optional :: show_hidden, current
-    character(kind=c_char), dimension(*), optional, intent(in) :: &
-         & initial_folder, initial_file, initial_dir
-    character(len=*), dimension(:), intent(in), optional :: filter
-    character(len=*), dimension(:), optional, intent(in) :: filter_name
-    type(c_funptr), optional :: file_set
-    type(c_ptr), optional :: data
-    integer(kind=c_int), intent(in), optional :: sensitive
-    character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
-
-    ! Bundled file chooser button
-    !
-    ! DIRECTORY: boolean: optional: Set to TRUE to select directories rather
-    ! 		than files.
-    ! TITLE: string: optional: A title for the button.
-    ! WIDTH: c_int: optional: A maximum number of characters to show.
-    ! SHOW_HIDDEN: boolean: optional: GTK<=3: Set to TRUE to display hidden files.
-    ! INITIAL_DIR: string: optional: Use to start the search other than
-    ! 		in the current directory. (INITIAL_FOLDER is a deprecated
-    ! 		alias).
-    ! CURRENT: boolean: optional: Use to force start in current directory.
-    ! INITIAL_FILE: string: optional: An initial file selection.
-    ! FILTER: string(): optional: An initial list of filename patterns to
-    ! 		allow. Each filter is a comma-separated list.
-    ! FILTER_NAME: string(): optional: Names for the filters.
-    ! FILE_SET: f_funptr: optional: The callback routine for the "file-set"
-    ! 		signal.
-    ! DATA: c_ptr: optional: User data to pass to the file_Set callback.
-    ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
-    ! 		insensitive state.
-    ! TOOLTIP: string: optional: A tooltip to display when the pointer is
-    ! 		held over the widget.
-    !-
-
-    integer(kind=c_int) :: mode, lval
-    type(c_ptr) :: gfilter
-    integer :: i, idx0, idx1
-
-    if (present(directory)) then
-       if (directory == TRUE) then
-          mode = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
-       else
-          mode = GTK_FILE_CHOOSER_ACTION_OPEN
-       end if
-    else
-       mode = GTK_FILE_CHOOSER_ACTION_OPEN
-    end if
-
-    if (present(title)) then
-       cbutton = gtk_file_chooser_button_new(title, mode)
-    else  if (mode == GTK_FILE_CHOOSER_ACTION_OPEN) then
-       cbutton = gtk_file_chooser_button_new("Choose file"//c_null_char, mode)
-    else
-       cbutton = gtk_file_chooser_button_new("Choose directory"//c_null_char,&
-            & mode)
-    end if
-
-    if (present(show_hidden)) then
-       lval = show_hidden
-       print *, "GTK 4: gtk_file_chooser_set_show_hidden removed"
-    else
-       lval = FALSE
-    end if
-
-    if (present(width)) call &
-         & gtk_file_chooser_button_set_width_chars(cbutton, width)
-
-    if (present(initial_dir)) then
-       lval = gtk_file_chooser_set_current_folder(cbutton, &
-            & g_file_new_for_path(initial_dir), c_null_ptr)
-    else if (present(initial_folder)) then
-       lval = gtk_file_chooser_set_current_folder(cbutton, &
-            & g_file_new_for_path(initial_folder), c_null_ptr)
-       write(error_unit, *) "HL_GTK_FILE_CHOOSER_BUTTON_NEW:: "// &
-            & "INITIAL_FOLDER is deprecated, INITIAL_DIR is preferred"
-    else if (present(current)) then
-       if (c_f_logical(current)) &
-            & lval = gtk_file_chooser_set_current_folder(cbutton, &
-                   & g_file_new_for_path("."//c_null_char), c_null_ptr)
-    end if
-    if (present(initial_file)) &
-         lval = gtk_file_chooser_set_file(cbutton, &
-              & g_file_new_for_path(initial_file), c_null_ptr)
-
-    if (present(filter)) then
-       do i = 1, size(filter)
-          gfilter = gtk_file_filter_new()
-
-          idx0 = 1
-          do
-             idx1 = index(filter(i),',')-2
-             if (idx1 < 0) then
-                if (index(filter(i)(idx0:), '/') == 0) then
-                   call gtk_file_filter_add_pattern(gfilter, &
-                        & trim(adjustl(filter(i)(idx0:)))//c_null_char)
-                else
-                   call gtk_file_filter_add_mime_type(gfilter, &
-                        & trim(adjustl(filter(i)(idx0:)))//c_null_char)
-                end if
-                exit
-             else
-                if (index(filter(i)(idx0:idx1), '/') == 0) then
-                   call gtk_file_filter_add_pattern(gfilter, &
-                        & trim(adjustl(filter(i)(idx0:idx1)))//c_null_char)
-                else
-                   call gtk_file_filter_add_mime_type(gfilter, &
-                        & trim(adjustl(filter(i)(idx0:idx1)))//c_null_char)
-                end if
-                idx0=idx1+2
-             end if
-          end do
-          if (present(filter_name)) then
-             call gtk_file_filter_set_name(gfilter, filter_name(i)//c_null_char)
-          else
-             call gtk_file_filter_set_name(gfilter, &
-                  & trim(filter(i))//c_null_char)
-          end if
-          call gtk_file_chooser_add_filter(cbutton, gfilter)
-       end do
-    end if
-
-    if (present(file_set)) then
-       if (present(data)) then
-          call g_signal_connect(cbutton, "file-set"//c_null_char,&
-               & file_set, data)
-       else
-          call g_signal_connect(cbutton, "file-set"//c_null_char, file_set)
-       end if
-    end if
-
-    if (present(tooltip)) call gtk_widget_set_tooltip_text(cbutton, &
-         & tooltip)
-
-    if (present(sensitive)) &
-         & call gtk_widget_set_sensitive(cbutton, sensitive)
-  end function hl_gtk_file_chooser_button_new
-
   !+
   function hl_gtk_file_chooser_new(chooser_info, cdir, directory, create, &
        & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
