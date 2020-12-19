@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-19 (GTK 4), 2020-07-09
+! Last modifications: vmagnin 2020-06-19 (GTK 4), 2020-12-19
 !------------------------------------------------------------------------------
 
 module v_handlers
@@ -150,6 +150,7 @@ contains
        allocate(file_list(nfiles))
        do i = 1, nfiles
           call get_command_argument(i, value=file_list(i))
+          print *, file_list(i)
        end do
        current_file = 0
     else 
