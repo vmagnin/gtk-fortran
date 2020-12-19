@@ -1,7 +1,7 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 !
-! This file is part of the gtk-fortran GTK+ Fortran Interface library.
+! This file is part of the gtk-fortran GTK Fortran Interface library.
 !
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modifications: 2012-12-31, vmagnin 2020-06-19 (GTK 4 version),
-!                     2020-12-17
+!                     2020-12-19
 !------------------------------------------------------------------------------
 
 !*
@@ -46,7 +46,7 @@ module gtk_hl_chooser
   use iso_fortran_env, only: error_unit
 
   ! Auto generated use's
-  use g, only: g_free, g_slist_free, g_slist_length, g_slist_nth_data, &
+  use g, only: g_list_model_get_n_items, g_list_model_get_item, &
              & g_main_loop_new, g_main_loop_run, g_main_loop_quit, &
              & g_file_new_for_path, g_file_get_path, g_object_unref
   use gtk, only: gtk_box_append, gtk_dialog_add_button, &
@@ -59,9 +59,8 @@ module gtk_hl_chooser
        & gtk_file_chooser_set_select_multiple, &
        & gtk_file_chooser_widget_new, gtk_file_chooser_get_files, &
        & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
-       & gtk_file_filter_new, gtk_file_filter_set_name, gtk_label_new, &
-       & gtk_window_destroy, gtk_widget_set_sensitive, &
-       & gtk_widget_set_tooltip_text, gtk_widget_show, &
+       & gtk_file_filter_new, gtk_file_filter_set_name, &
+       & gtk_window_destroy, gtk_widget_show, &
        & gtk_window_set_default_size, gtk_window_set_destroy_with_parent, &
        & gtk_window_set_modal, gtk_window_set_title, &
        & gtk_window_set_transient_for, g_signal_connect, TRUE, FALSE, &
@@ -384,17 +383,16 @@ contains
 
     if (chooser_info%iselect == TRUE) then
        ! Number of selected files:
-       nsel = g_slist_length(chooser_info%chooser_sel_list)
+       nsel = g_list_model_get_n_items(chooser_info%chooser_sel_list)
        allocate(files(nsel))
        ! Store the paths of selected files:
        do i = 1, nsel
           ! It's a list of GFiles:
-          g_file = g_slist_nth_data(chooser_info%chooser_sel_list, i-1_c_int)
+          g_file = g_list_model_get_item(chooser_info%chooser_sel_list, i-1_c_int)
           call convert_c_string(g_file_get_path(g_file), files(i))
           print *, files(i)
           call g_object_unref(g_file)
        end do
-       call g_slist_free(chooser_info%chooser_sel_list)
 
        if (present(cdir)) call convert_c_string(g_file_get_path( &
                                        & chooser_info%chooser_curdir), cdir)
