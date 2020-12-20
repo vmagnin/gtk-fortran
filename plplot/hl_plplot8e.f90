@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 8 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-24 (GTK 4)
+! Last modifications: vmagnin 2020-06-24 (GTK 4), 2020-12-20
 !------------------------------------------------------------------------------
 
 module common_ex8
@@ -31,7 +31,7 @@ module common_ex8
   ! Gtk includes
   use gtk, only: gtk_application_window_new, &
        & gtk_label_new, gtk_window_set_child, &
-       & gtk_toggle_button_get_active, gtk_window_destroy, &
+       & gtk_check_button_get_active, gtk_window_destroy, &
        & gtk_widget_get_allocation, gtk_widget_queue_draw, &
        & gtk_widget_show, FALSE, g_signal_connect_swapped
 
@@ -289,14 +289,14 @@ contains
   subroutine set_rosen(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    ifun = gtk_toggle_button_get_active(widget)
+    ifun = gtk_check_button_get_active(widget)
     call draw_08(draw, disp_type, alt, az, ifun)
   end subroutine set_rosen
 
   subroutine set_colour(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    if (gtk_toggle_button_get_active(widget) == 1) then
+    if (gtk_check_button_get_active(widget) == 1) then
        disp_type = ior(disp_type, MAG_COLOR)
     else
        disp_type = iand(disp_type, not(MAG_COLOR))
@@ -307,7 +307,7 @@ contains
   subroutine set_facet(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    if (gtk_toggle_button_get_active(widget) == 1) then
+    if (gtk_check_button_get_active(widget) == 1) then
        disp_type = ior(disp_type, FACETED)
     else
        disp_type = iand(disp_type, not(FACETED))
@@ -318,7 +318,7 @@ contains
   subroutine set_scont(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    if (gtk_toggle_button_get_active(widget) == 1) then
+    if (gtk_check_button_get_active(widget) == 1) then
        disp_type = ior(disp_type, SURF_CONT)
     else
        disp_type = iand(disp_type, not(SURF_CONT))
@@ -329,7 +329,7 @@ contains
   subroutine set_bcont(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    if (gtk_toggle_button_get_active(widget) == 1) then
+    if (gtk_check_button_get_active(widget) == 1) then
        disp_type = ior(disp_type, BASE_CONT)
     else
        disp_type = iand(disp_type, not(BASE_CONT))

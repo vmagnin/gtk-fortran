@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modifications: jerryd 2020-06-05 (GTK 4), vmagnin 2020-07-10
+! Last modifications: jerryd 2020-06-05 (GTK 4), vmagnin 2020-12-20
 !------------------------------------------------------------------------------
 
 module l1_handlers
@@ -35,8 +35,8 @@ module l1_handlers
        & gtk_entry_get_text_length, gtk_entry_new, &
        & gtk_entry_get_buffer, gtk_entry_buffer_get_text, &
        & gtk_entry_buffer_set_text, &
-       & gtk_toggle_button_get_active,&
-       & gtk_toggle_button_set_active, gtk_widget_show, &
+       & gtk_check_button_get_active,&
+       & gtk_check_button_set_active, gtk_widget_show, &
        & gtk_window_destroy, gtk_window_set_child
   use g, only: alloca
 
@@ -72,7 +72,7 @@ contains
           print *, selections
           deallocate(selections)
        else    ! Delete the selected row
-          call gtk_toggle_button_set_active(dbut, FALSE)
+          call gtk_check_button_set_active(dbut, FALSE)
           fdata = 0
           print *, "Delete row:", selections(1)
           call hl_gtk_list1_rem(ihlist, selections(1))
@@ -125,7 +125,7 @@ contains
 
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
-       fdata = gtk_toggle_button_get_active(widget)
+       fdata = gtk_check_button_get_active(widget)
     end if
   end subroutine del_toggle
 

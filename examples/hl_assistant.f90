@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modification: vmagnin 2020-06-09 (GTK 4)
+! Last modification: vmagnin 2020-06-09 (GTK 4), 2020-12-20
 !
 ! Based on the C example given in"
 ! https://www.linuxquestions.org/linux/articles/Technical/New_GTK_Widgets_GtkAssistant
@@ -46,7 +46,7 @@ module as_handlers
              & g_main_context_pending
   use gtk, only: gtk_entry_get_buffer, gtk_entry_buffer_get_text, &
        & gtk_label_new, &
-       & gtk_toggle_button_get_active, gtk_window_destroy, &
+       & gtk_check_button_get_active, gtk_window_destroy, &
        & gtk_widget_set_sensitive, gtk_widget_show, gtk_init, TRUE, FALSE, &
        & GTK_ASSISTANT_PAGE_CONTENT, GTK_ASSISTANT_PAGE_INTRO, &
        & GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_PROGRESS, &
@@ -97,7 +97,7 @@ contains
     type(c_ptr), value :: widget, data
 
     call hl_gtk_assistant_set_page_complete(asstnt, &
-         & gtk_toggle_button_get_active(widget))
+         & gtk_check_button_get_active(widget))
   end subroutine check_tog
 
   subroutine start_pb(widget, data) bind(c)
