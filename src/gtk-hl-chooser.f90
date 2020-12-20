@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modifications: 2012-12-31, vmagnin 2020-06-19 (GTK 4 version),
-!                     2020-12-19
+!                     2020-12-20
 !------------------------------------------------------------------------------
 
 !*
@@ -377,7 +377,6 @@ contains
     ! The callback function is defined in hl_gtk_file_chooser_new()
     dialog_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
     call g_main_loop_run(dialog_gmainloop)
-    call gtk_window_destroy(dialog)
 
     isel = chooser_info%iselect
 
