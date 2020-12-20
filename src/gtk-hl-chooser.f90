@@ -393,6 +393,7 @@ contains
           print *, files(i)
           call g_object_unref(g_file)
        end do
+       call g_object_unref(chooser_info%chooser_sel_list)
 
        if (present(cdir)) call convert_c_string(g_file_get_path( &
                                        & chooser_info%chooser_curdir), cdir)
