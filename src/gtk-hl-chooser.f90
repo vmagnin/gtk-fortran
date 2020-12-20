@@ -60,7 +60,7 @@ module gtk_hl_chooser
        & gtk_file_chooser_widget_new, gtk_file_chooser_get_files, &
        & gtk_file_filter_add_mime_type, gtk_file_filter_add_pattern, &
        & gtk_file_filter_new, gtk_file_filter_set_name, &
-       & gtk_window_destroy, gtk_widget_show, &
+       & gtk_window_destroy, gtk_widget_show, gtk_window_close, &
        & gtk_window_set_default_size, gtk_window_set_destroy_with_parent, &
        & gtk_window_set_modal, gtk_window_set_title, &
        & gtk_window_set_transient_for, g_signal_connect, TRUE, FALSE, &
@@ -402,7 +402,7 @@ contains
 
 
   !+
-  subroutine hl_gtk_chooser_resp_cb(dialog, response, gdata) bind(c)
+  recursive subroutine hl_gtk_chooser_resp_cb(dialog, response, gdata) bind(c)
 
     type(c_ptr), value :: dialog
     integer(c_int), value :: response
@@ -426,6 +426,9 @@ contains
        chooser_info%iselect = FALSE
     case (GTK_RESPONSE_CANCEL)
        chooser_info%iselect = FALSE
+       ! This will call the callback function a second time,
+       ! that's why it has the "recursive" attribute:
+       call gtk_window_close(dialog)
     case (GTK_RESPONSE_APPLY)
        chooser_info%iselect = TRUE
        chooser_info%chooser_sel_list = &
