@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jens Hunger, vmagnin
-! Last modification: vmagnin 2020-05-28,
+! Last modification: vmagnin 2020-05-28, 2020-12-22
 
 module widgets
   use iso_c_binding
@@ -54,7 +54,7 @@ end module
 module handlers
   use iso_c_binding, only: c_null_char
 
-  use gtk, only: gtk_init, gtk_window_new, gtk_window_set_title, &
+  use gtk, only: gtk_window_set_title, &
   & g_signal_connect, g_signal_connect_swapped, &
   & gtk_window_destroy, gtk_widget_show, gtk_application_window_new, &
   & FALSE, TRUE, GTK_POS_TOP, &
@@ -77,7 +77,6 @@ module handlers
   & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
   & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
 
-  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
   use widgets
 
   implicit none
