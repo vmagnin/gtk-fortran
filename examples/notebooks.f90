@@ -21,8 +21,8 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by Jens Hunger
-! Last modification: vmagnin 2019-03-18
+! Contributed by Jens Hunger, vmagnin
+! Last modification: vmagnin 2020-05-28, 2020-12-20
 
 module widgets
   use iso_c_binding
@@ -166,9 +166,13 @@ contains
     integer(c_int) :: page
 
     page = gtk_notebook_get_current_page (notebook_1)
-    call gtk_notebook_remove_page (notebook_1, page)
-    ! Need to refresh the widget -- This forces the widget to redraw itself.
-    call gtk_widget_queue_draw (notebook_1)
+
+    if (page >= 0) then
+      call gtk_notebook_remove_page (notebook_1, page)
+      ! Need to refresh the widget -- This forces the widget to redraw itself.
+      call gtk_widget_queue_draw (notebook_1)
+    end if
+
     ret = FALSE
   end function remove_book
 
