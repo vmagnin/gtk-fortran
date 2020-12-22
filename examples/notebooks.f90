@@ -80,7 +80,6 @@ module handlers
   use widgets
 
   implicit none
-  type(c_ptr)    :: my_gmainloop
 
 contains
   !*************************************
