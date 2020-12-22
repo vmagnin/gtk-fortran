@@ -35,20 +35,6 @@ module widgets
   type(c_ptr) :: frame
   type(c_ptr) :: label
   type(c_ptr) :: checkbutton
-
-contains
-  subroutine convert_c_string(textptr, f_string)
-    character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
-    character(len=*), intent(out) :: f_string
-    integer :: i
-
-    f_string=""
-    i=1
-    do while(textptr(i) .NE. char(0))
-      f_string(i:i)=textptr(i)
-      i=i+1
-    end do
-  end subroutine convert_c_string
 end module
 
 module handlers
@@ -76,6 +62,8 @@ module handlers
   & gtk_notebook_set_group_name, gtk_notebook_get_group_name, &
   & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
   & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
+
+  use gtk_sup, only: convert_c_string_scalar
 
   use widgets
 
@@ -198,7 +186,7 @@ contains
     ! between the two notebooks
     call gtk_notebook_set_group_name(notebook_1,"group"//c_null_char)
     call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, (/64/))
-    call convert_c_string(textptr, my_string)
+    call convert_c_string_scalar(textptr, my_string)
     print *, "group name = <"//TRIM(my_string)//">"
 
     !append a bunch of pages to the notebook
