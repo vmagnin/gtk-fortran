@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2011-01-28
-# Last modification: 2020-02-14
+# Last modification: 2020-01-07
 
 import os
 import re           # Regular expression library
@@ -62,7 +62,8 @@ class Version():
 
         self.gtk_fortran = GTK_VERSION.replace("gtk", "")
         self.glib = self.library(pack_glib)
-        self.ubuntu = subprocess.getoutput("lsb_release -rs")
+        self.distro_version = subprocess.getoutput("lsb_release -rs")
+        self.distro_name = subprocess.getoutput("lsb_release -is")
 
         
     def find_library(self, lib_name, psys):
@@ -113,12 +114,12 @@ class Version():
 
 
     def string(self):
-        """Returns a string containing the GTK, GLib and Ubuntu versions used to
-        generate gtk-fortran, with the names of the libraries, for example :
-        GTK 3.24.12, GLib 2.62.1, Ubuntu 19.10 x86_64
+        """Returns a string containing the GTK, GLib and distribution versions used to
+        generate gtk-fortran, for example :
+        GTK 4.0.0, GLib 2.67.1, Fedora 34 x86_64
         """
         return ("GTK " + self.gtk + ", GLib "+ self.glib
-                + ", Ubuntu " + self.ubuntu + " " + platform.machine())
+                + ", " + self.distro_name + " " + self.distro_version + " " + platform.machine())
 
 
     def create_file(self):
@@ -129,7 +130,7 @@ class Version():
         all_versions.append(["gtk-fortran", self.gtk_fortran])
         all_versions.append(["GTK", self.gtk])
         all_versions.append(["GLib", self.glib])
-        all_versions.append(["Ubuntu", self.ubuntu])
+        all_versions.append([self.distro_name, self.distro_version])
 
         VERSIONS_file = csv.writer(open(TOP_DIR+"VERSIONS", "w"), delimiter=";")
         VERSIONS_file.writerows(all_versions)

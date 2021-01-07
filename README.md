@@ -20,7 +20,7 @@ Please post bugs on GitHub:
 * INSTALL: installation instructions.
 * LICENSE: text of the GNU GPL v3 license.
 * README-high-level: about the High Level part of the gtk-fortran library.
-* VERSIONS: a CSV file with the gtk-fortran, GTK, GLib and Ubuntu versions.
+* VERSIONS: a CSV file with the gtk-fortran, GTK, GLib and distribution versions.
 
 
 # Citing gtk-fortran
