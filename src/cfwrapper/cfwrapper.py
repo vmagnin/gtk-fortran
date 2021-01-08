@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2020-10-22 (tested with Python 3.9.0, Fedora 34 Rawhide)
+# Last modification: 2021-01-08 (tested with Python 3.9.1, Fedora 34 Rawhide)
 # pylint *.py : 8.42/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
@@ -353,8 +353,9 @@ print()
 if GTK_VERSION != "gtk2":
     subprocess.call(["./extract_events.pl"], cwd=SRC_DIR)
 
-# Write the VERSIONS file in the top directory:
+# Write the VERSIONS file in the top directory, and update the codemeta.json file:
 my_versions.create_file()
+my_versions.update_json_file()
 
 # Print the final statistics:
 my_stats.print(T0, my_versions.string(), PATH_DICT, TYPES_DICT, TYPES2_DICT, my_errors)
