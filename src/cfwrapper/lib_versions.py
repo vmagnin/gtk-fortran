@@ -25,13 +25,14 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2011-01-28
-# Last modification: 2020-01-07
+# Last modification: 2020-01-08
 
 import os
 import re           # Regular expression library
 import platform     # To obtain platform informations
 import subprocess   # To launch a shell command
 import csv          # To write .csv files
+import datetime
 
 from globals_const import TOP_DIR
 
@@ -134,3 +135,15 @@ class Version():
 
         VERSIONS_file = csv.writer(open(TOP_DIR+"VERSIONS", "w"), delimiter=";")
         VERSIONS_file.writerows(all_versions)
+
+
+    def update_json_file(self):
+        """Update the codemeta.json file a the top of the project.
+        """
+        with open('../../codemeta.json', 'r+') as json_file:
+            content = json_file.read()
+            json_file.seek(0)
+            json_file.truncate()
+            content = re.sub('"dateModified": "(.*)"', '"dateModified": "'+datetime.date.today().isoformat()+'"', content)
+            json_file.write(content)
+
