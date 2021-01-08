@@ -29,6 +29,8 @@
 #=================================================
 # Fortran files composing the gtk-fortran library:
 #=================================================
+
+# Main files (gtk.f90 includes gtk-auto.f90 and gtkenums-auto.f90):
 set(sources
     "cairo-auto.f90"
     "gdk-auto.f90"
@@ -68,7 +70,7 @@ endif(NOT NO_BUILD_HL)
 if (CMAKE_HOST_WIN32)
   set(sources ${sources} "mswindowsonly-auto.f90")
 else()
-  set(sources ${sources} "unixonly-auto.f90")
+  set(sources ${sources} "unixonly-auto.f90" "unix-print-auto.f90")
 endif()
 
 #======================================================

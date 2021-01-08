@@ -30,6 +30,9 @@ The gtk4 branch is the new development branch.
 - src/gtk-hl-chooser.f90, bazaar.f90, hl_choosers.f90: GtkFileChooserButton has been removed from GTK 4.
 - meson.build experimental files were removed. They are now apart in the gtk4-dev-meson branch.
 
+### Fixed
+- src/CMakeLists.txt: added unix-print-auto.f90 which was missing. Backported to gtk3.
+
 ## [gtk-fortran 20.04] - 2020-05-07
 The main objective of this release was to clean up the code and prepare it for the future GTK 4 branch.
 
