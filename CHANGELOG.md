@@ -6,7 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 The gtk4 branch is the new development branch.
 
 ### Added
-- The gtk-fortran library has been generated using GTK 4.0.0, GLib 2.67.0, under Fedora Rawhide.
+- The gtk-fortran library has been generated using GTK 4.0.0, GLib 2.67.1, under Fedora Rawhide.
+- GTK 4 now includes the GSK and graphene libraries: src/gsk-auto.f90 and src/graphene-auto.f90 (see https://developer.gnome.org/gtk4/stable/gtk.html)
 - src/gtk.f90: historically, in gtk-fortran g\_signal\_connect() was declared as a subroutine, because the handler\_id returned by the GLib function is usually never used. Here we define both a g\_signal\_connect() function and a subroutine. You will generally use the subroutine in your programs. The function\_g\_signal\_connect\_swapped and g\_signal\_connect\_swapped procedure were also added.
 - examples/pixbuf\_without\_gui.f90: a new example drawing a Sierpinski triangle in a PNG file, without using a GUI. Backported to the gtk3 branch.
 

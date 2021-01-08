@@ -26,7 +26,7 @@
 #
 # Contributed by Vincent Magnin, 01.28.2011
 # Last modification: 2021-01-08 (tested with Python 3.9.1, Fedora 34 Rawhide)
-# pylint *.py : 8.42/10
+# pylint *.py : 8.40/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -79,7 +79,8 @@ if GTK_VERSION == "gtk4":
         ("/usr/include/gtk-4.0/gdk", "gdk-auto.f90"),
         ("/usr/include/gtk-4.0/gsk", "gsk-auto.f90"),
         ("/usr/include/gtk-4.0/gtk", "gtk-auto.f90"),
-        ("/usr/include/gtk-4.0/unix-print", "unix-print-auto.f90")])
+        ("/usr/include/gtk-4.0/unix-print", "unix-print-auto.f90"),
+        ("/usr/include/graphene-1.0", "graphene-auto.f90")])
 elif GTK_VERSION == "gtk3":
     PATH_DICT.update([
         ("/usr/include/atk-1.0", "atk-auto.f90"),

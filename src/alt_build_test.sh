@@ -3,7 +3,7 @@
 # and finally launching one by one the examples for testing.
 # GNU GPL v3
 # Contributed by Vincent MAGNIN
-# 2011-04-08, last updated 2020-10-22
+# 2011-04-08, last updated 2021-01-08
 
 # For a safer script:
 set -eu
@@ -44,7 +44,7 @@ readonly gtk_hl_obj="gtk-hl-misc.o gtk-hl-button.o gtk-hl-combobox.o gtk-hl-cont
 
 echo
 echo ">>> Compiling the GTK+ libraries and gtk_hl using ${GFC}"
-for file in "unixonly-auto.f90" "gdk-auto.f90" "glib-auto.f90" "gtk.f90" "unix-print-auto.f90" "cairo-auto.f90" "gdk-pixbuf-auto.f90" "pango-auto.f90" "gtk-sup.f90" "gtk-hl-misc.f90" "gtk-hl-button.f90" "gtk-hl-combobox.f90" "gtk-hl-container.f90" "gtk-hl-entry.f90" "gtk-hl-infobar.f90" "gtk-hl-assistant.f90" "gtk-hl-progress.f90" "gtk-hl-spin-slider.f90" "gtk-hl-tree.f90" "gtk-hl-chooser.f90" "gtk-hl-dialog.f90" "gtk-hl.f90" "gdkevents-auto.f90" "gtk-draw-hl.f90" "gdk-pixbuf-hl.f90"; do 
+for file in "unixonly-auto.f90" "gdk-auto.f90" "glib-auto.f90" "gtk.f90" "unix-print-auto.f90" "cairo-auto.f90" "gdk-pixbuf-auto.f90" "pango-auto.f90" "gsk-auto.f90" "graphene-auto.f90" "gtk-sup.f90" "gtk-hl-misc.f90" "gtk-hl-button.f90" "gtk-hl-combobox.f90" "gtk-hl-container.f90" "gtk-hl-entry.f90" "gtk-hl-infobar.f90" "gtk-hl-assistant.f90" "gtk-hl-progress.f90" "gtk-hl-spin-slider.f90" "gtk-hl-tree.f90" "gtk-hl-chooser.f90" "gtk-hl-dialog.f90" "gtk-hl.f90" "gdkevents-auto.f90" "gtk-draw-hl.f90" "gdk-pixbuf-hl.f90"; do 
   echo "${file}"
   #compile that file:
   "${GFC}" -c ../../src/${file} ${gtkoptions}

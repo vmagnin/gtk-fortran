@@ -3968,6 +3968,71 @@ enum, bind(c)    !GtkPrintCapabilities
 end enum
 
 ! gtkunixprint.h
+! graphene-rect.h
+! graphene-point.h
+! graphene-macros.h
+! graphene-frustum.h
+! graphene-euler.h
+enum, bind(c)    !graphene_euler_order_t
+  enumerator :: GRAPHENE_EULER_ORDER_DEFAULT = -1
+  enumerator :: GRAPHENE_EULER_ORDER_XYZ = 0
+  enumerator :: GRAPHENE_EULER_ORDER_YZX
+  enumerator :: GRAPHENE_EULER_ORDER_ZXY
+  enumerator :: GRAPHENE_EULER_ORDER_XZY
+  enumerator :: GRAPHENE_EULER_ORDER_YXZ
+  enumerator :: GRAPHENE_EULER_ORDER_ZYX
+  enumerator :: GRAPHENE_EULER_ORDER_SXYZ
+  enumerator :: GRAPHENE_EULER_ORDER_SXYX
+  enumerator :: GRAPHENE_EULER_ORDER_SXZY
+  enumerator :: GRAPHENE_EULER_ORDER_SXZX
+  enumerator :: GRAPHENE_EULER_ORDER_SYZX
+  enumerator :: GRAPHENE_EULER_ORDER_SYZY
+  enumerator :: GRAPHENE_EULER_ORDER_SYXZ
+  enumerator :: GRAPHENE_EULER_ORDER_SYXY
+  enumerator :: GRAPHENE_EULER_ORDER_SZXY
+  enumerator :: GRAPHENE_EULER_ORDER_SZXZ
+  enumerator :: GRAPHENE_EULER_ORDER_SZYX
+  enumerator :: GRAPHENE_EULER_ORDER_SZYZ
+  enumerator :: GRAPHENE_EULER_ORDER_RZYX
+  enumerator :: GRAPHENE_EULER_ORDER_RXYX
+  enumerator :: GRAPHENE_EULER_ORDER_RYZX
+  enumerator :: GRAPHENE_EULER_ORDER_RXZX
+  enumerator :: GRAPHENE_EULER_ORDER_RXZY
+  enumerator :: GRAPHENE_EULER_ORDER_RYZY
+  enumerator :: GRAPHENE_EULER_ORDER_RZXY
+  enumerator :: GRAPHENE_EULER_ORDER_RYXY
+  enumerator :: GRAPHENE_EULER_ORDER_RYXZ
+  enumerator :: GRAPHENE_EULER_ORDER_RZXZ
+  enumerator :: GRAPHENE_EULER_ORDER_RXYZ
+  enumerator :: GRAPHENE_EULER_ORDER_RZYZ
+end enum
+
+! graphene-vec3.h
+! graphene-simd4x4f.h
+! graphene-simd4f.h
+! graphene-vec4.h
+! graphene-plane.h
+! graphene-box.h
+! graphene-point3d.h
+! graphene-sphere.h
+! graphene-types.h
+! graphene-size.h
+! graphene-triangle.h
+! graphene-version.h
+! graphene-version-macros.h
+! graphene-matrix.h
+! graphene.h
+! graphene-gobject.h
+! graphene-ray.h
+enum, bind(c)    !graphene_ray_intersection_kind_t
+  enumerator :: GRAPHENE_RAY_INTERSECTION_KIND_NONE
+  enumerator :: GRAPHENE_RAY_INTERSECTION_KIND_ENTER
+  enumerator :: GRAPHENE_RAY_INTERSECTION_KIND_LEAVE
+end enum
+
+! graphene-quad.h
+! graphene-vec2.h
+! graphene-quaternion.h
 ! pango-tabs.h
 enum, bind(c)    !PangoTabAlign
   enumerator :: PANGO_TAB_LEFT

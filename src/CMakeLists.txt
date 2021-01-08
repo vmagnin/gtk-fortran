@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2020-10-22
+#   vmagnin: 2021-01-08
 #
 # CMAKE build file for GtkFortran
 
@@ -38,6 +38,8 @@ set(sources
     "gtk-sup.f90"
     "pango-auto.f90"
     "gdkevents-auto.f90"
+    "gsk-auto.f90"
+    "graphene-auto.f90"
 )
 
 if(NOT NO_BUILD_HL)
