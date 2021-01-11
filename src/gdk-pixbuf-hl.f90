@@ -1044,7 +1044,7 @@ contains
 
     if (present(mime_types)) then
        vlist = gdk_pixbuf_format_get_mime_types(fmt)
-       call c_f_pointer(vlist, val, [0])
+       call c_f_pointer(vlist, val, [g_strv_length(vlist)])
        i = 1
        idx = 0
        ! Get the size of the val() array:
