@@ -23,7 +23,8 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modifications: 2012-12-13, 2020-02-11
+! Last modifications: 2012-12-13
+!   vmagnin 2021-01-11
 
 !*
 ! GDK_PIXBUF_HL
@@ -34,7 +35,7 @@ module gdk_pixbuf_hl
   ! unsigned.
   !/
 
-  use g, only: g_slist_free, g_slist_length, g_slist_nth_data
+  use g, only: g_slist_free, g_slist_length, g_slist_nth_data, g_strv_length
 
   use gdk_pixbuf, only: gdk_pixbuf_format_get_description, &
        & gdk_pixbuf_format_get_extensions, gdk_pixbuf_format_get_license, &
@@ -1061,7 +1062,7 @@ contains
     end if
     if (present(extensions)) then
        vlist = gdk_pixbuf_format_get_extensions(fmt)
-       call c_f_pointer(vlist, val, [0])
+       call c_f_pointer(vlist, val, [g_strv_length(vlist)])
        i = 1
        idx = 0
        do
