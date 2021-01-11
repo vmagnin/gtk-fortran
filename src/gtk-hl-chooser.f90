@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modifications: 2012-12-31, vmagnin 2020-06-19 (GTK 4 version),
-!                     2020-12-20
+!                     2021-01-11
 !------------------------------------------------------------------------------
 
 !*
@@ -397,6 +397,8 @@ contains
        if (present(cdir)) call convert_c_string(g_file_get_path( &
                                        & chooser_info%chooser_curdir), cdir)
     end if
+
+    call gtk_window_close(dialog)
   end function hl_gtk_file_chooser_show
 
 
