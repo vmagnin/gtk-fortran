@@ -36,7 +36,7 @@ module gdk_pixbuf_hl
   ! unsigned.
   !/
 
-  use g, only: g_slist_free, g_slist_length, g_slist_nth_data, g_strv_length
+  use g, only: g_slist_free, g_slist_length, g_slist_nth_data
 
   use gdk_pixbuf, only: gdk_pixbuf_format_get_description, &
        & gdk_pixbuf_format_get_extensions, gdk_pixbuf_format_get_license, &
@@ -1044,7 +1044,8 @@ contains
 
     if (present(mime_types)) then
        vlist = gdk_pixbuf_format_get_mime_types(fmt)
-       call c_f_pointer(vlist, val, [g_strv_length(vlist)])
+       ! A size of 20 should be enough for all formats:
+       call c_f_pointer(vlist, val, [20])
        i = 1
        idx = 0
        ! Get the size of the val() array:
@@ -1065,7 +1066,8 @@ contains
     end if
     if (present(extensions)) then
        vlist = gdk_pixbuf_format_get_extensions(fmt)
-       call c_f_pointer(vlist, val, [g_strv_length(vlist)])
+       ! A size of 20 should be enough for all formats:
+       call c_f_pointer(vlist, val, [20])
        i = 1
        idx = 0
        ! Get the size of the val() array:
