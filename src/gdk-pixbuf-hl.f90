@@ -23,7 +23,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin
-! Last modifications: 2012-12-13, 2020-02-11
+! Last modifications: 2012-12-13, 2021-01-11
 
 !*
 ! GDK_PIXBUF_HL
@@ -1042,7 +1042,8 @@ contains
 
     if (present(mime_types)) then
        vlist = gdk_pixbuf_format_get_mime_types(fmt)
-       call c_f_pointer(vlist, val, [0])
+       ! A size of 20 should be enough for all formats:
+       call c_f_pointer(vlist, val, [20])
        i = 1
        idx = 0
        do
@@ -1061,7 +1062,8 @@ contains
     end if
     if (present(extensions)) then
        vlist = gdk_pixbuf_format_get_extensions(fmt)
-       call c_f_pointer(vlist, val, [0])
+       ! A size of 20 should be enough for all formats:
+       call c_f_pointer(vlist, val, [20])
        i = 1
        idx = 0
        do
