@@ -1,30 +1,31 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
+!
 ! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public
 !  License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-!
+!-----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modifications: 2012-12-13
 !   vmagnin 2021-01-11
+!-----------------------------------------------------------------------------
 
 !*
 ! GDK_PIXBUF_HL
@@ -1046,6 +1047,7 @@ contains
        call c_f_pointer(vlist, val, [0])
        i = 1
        idx = 0
+       ! Get the size of the val() array:
        do
           if (.not. c_associated(val(i))) then
              idx = i-1
@@ -1053,6 +1055,7 @@ contains
           end if
           i = i+1
        end do
+
        if (idx > 0) then
           allocate(mime_types(idx))
           do i = 1, idx
@@ -1065,6 +1068,7 @@ contains
        call c_f_pointer(vlist, val, [g_strv_length(vlist)])
        i = 1
        idx = 0
+       ! Get the size of the val() array:
        do
           if (.not. c_associated(val(i))) then
              idx = i-1
@@ -1072,6 +1076,7 @@ contains
           end if
           i = i+1
        end do
+
        if (idx > 0) then
           allocate(extensions(idx))
           do i = 1, idx
