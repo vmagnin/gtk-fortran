@@ -404,7 +404,7 @@ contains
 
 
   !+
-  recursive subroutine hl_gtk_chooser_resp_cb(dialog, response, gdata) bind(c)
+  subroutine hl_gtk_chooser_resp_cb(dialog, response, gdata) bind(c)
 
     type(c_ptr), value :: dialog
     integer(c_int), value :: response
@@ -428,9 +428,6 @@ contains
        chooser_info%iselect = FALSE
     case (GTK_RESPONSE_CANCEL)
        chooser_info%iselect = FALSE
-       ! This will call the callback function a second time,
-       ! that's why it has the "recursive" attribute:
-       call gtk_window_close(dialog)
     case (GTK_RESPONSE_APPLY)
        chooser_info%iselect = TRUE
        chooser_info%chooser_sel_list = &
