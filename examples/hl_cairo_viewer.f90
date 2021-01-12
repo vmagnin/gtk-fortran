@@ -41,7 +41,8 @@ module v_handlers
   use gtk, only: gtk_combo_box_get_active, gtk_combo_box_set_active, &
        & gtk_widget_set_sensitive, gtk_window_set_child, &
        & gtk_widget_show, gtk_window_destroy, TRUE, FALSE
-
+  use g, only: g_timeout_add
+  
   implicit none
   character(len=256), dimension(:), allocatable :: file_list
   integer(kind=c_int) :: current_file
@@ -53,6 +54,20 @@ contains
     type(c_ptr), value, intent(in) :: widget, gdata
     call gtk_window_destroy(tl_window)
   end subroutine delete_v
+
+
+  function show_at_start(select) bind(c)
+    ! This function is needed to show image passed as argument
+    ! in the command line.
+    ! See https://github.com/vmagnin/gtk-fortran/issues/224
+    integer(kind=c_int) :: show_at_start
+    type(c_ptr), value, intent(in) :: select
+    
+    call gtk_combo_box_set_active(select, current_file)
+    ! This function will be launched only once:
+    show_at_start = FALSE
+  end function
+
 
   recursive subroutine show_image(widget, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
@@ -137,6 +152,7 @@ contains
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
     integer(kind=c_int) :: nfiles, i, istat
+    integer(kind=c_int) :: timeid
     integer(kind=c_int), dimension(2), target :: direction = [-1, 1]
     logical, dimension(2), target :: iremove = [.false., .true.]
     type(c_ptr) :: scroll, base, jb, junk, cmsg
@@ -215,9 +231,12 @@ contains
     call hl_gtk_box_pack(base, junk)
 
     call gtk_widget_show(tl_window)
+
     if (nfiles == 0) call add_files(tl_window, c_loc(iremove(2)))
-       
-    if (current_file >= 0) call gtk_combo_box_set_active(select, current_file)
+
+    ! Will show an image passed in the command line, after the
+    ! termination of the activate subroutine:
+    if (current_file >= 0) timeid = g_timeout_add(100_c_int, c_funloc(show_at_start), select)
   end subroutine activate
 end module v_handlers
 
