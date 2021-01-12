@@ -22,19 +22,16 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-19 (GTK 4), 2020-12-19
+! Last modifications: vmagnin 2020-06-19 (GTK 4), 2021-01-12
 !------------------------------------------------------------------------------
 
 module v_handlers
   use iso_c_binding
 
-  use gdk_events
-  use gtk_hl_container
   use gdk_pixbuf_hl
   use gtk_draw_hl
   use gtk_hl_chooser
   use gtk_hl_combobox
-  use gtk_sup
 
   !************************************
   ! Gtk modules for hl_cairo_viewer.f90
