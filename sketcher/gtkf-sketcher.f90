@@ -23,7 +23,7 @@
 ! GTK Fortran Code Sketcher using Glade3 UI definitions
 ! Contributed by Jens Hunger
 ! Last modifications: Harris Snyder 2020-07-11
-! vmagnin 2020-10-16
+! vmagnin 2020-10-16, 2021-01-18
 
 module widgets
   ! declares the used GTK widgets
@@ -899,6 +899,10 @@ program gtkfsketcher
 
   ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
   guint = gtk_builder_add_from_file (builder, "gtkf-sketcher.glade"//c_null_char, error)
+  if (guint == 0) then
+     print *, "Could not open gtkf-sketcher.glade"
+     stop
+  end if
 
   ! get a pointer to the GObject "window" from GtkBuilder
   window = gtk_builder_get_object (builder, "window"//c_null_char)
