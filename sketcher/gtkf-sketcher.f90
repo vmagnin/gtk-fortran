@@ -149,22 +149,22 @@ module connect
   use gtk, only: gtk_builder_add_from_file, gtk_builder_get_object, &
   & gtk_builder_new, gtk_widget_show,&
   & FALSE, c_null_char, c_null_ptr, TRUE, gtk_init, gtk_builder_get_objects, &
-  & gtk_buildable_get_buildable_id, gtk_text_view_get_buffer, gtk_text_buffer_set_text,&
+  & gtk_buildable_get_buildable_id, gtk_text_buffer_set_text,&
   & gtk_combo_box_get_active, gtk_combo_box_set_active, &
-  & gtk_combo_box_get_model, gtk_combo_box_get_active_iter,&
+  & gtk_combo_box_get_model, &
   & gtk_tree_model_get_value, gtk_tree_model_iter_nth_child,&
   & gtk_check_button_get_active, gtk_check_button_set_active,GTK_BUTTONS_OK,&
   & gtk_list_store_append, gtk_list_store_set_value, gtk_list_store_clear,&
-  & gtk_widget_hide, gtk_window_destroy, g_signal_connect_swapped
+  & gtk_window_destroy, g_signal_connect_swapped
 
   use g, only: g_object_unref, g_slist_length, g_slist_nth_data, &
-  & g_object_get_property, g_object_get_valist, g_value_get_string, &
+  & g_value_get_string, &
   & g_mkdir_with_parents, g_value_init, &
   & g_value_set_string, g_value_unset, &
   & g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   use gtk_hl, only: hl_gtk_file_chooser_show, gtktreeiter, gvalue, &
-  & hl_gtk_message_dialog_show, type_kind, G_TYPE_STRING
+  & hl_gtk_message_dialog_show, G_TYPE_STRING
 
   implicit none
 
