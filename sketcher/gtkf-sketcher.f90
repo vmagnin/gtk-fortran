@@ -407,7 +407,6 @@ contains
     enddo
 
     n_connections=0
-    !call gtk_builder_connect_signals_full (b, c_funloc(count_connections), c_null_ptr)
     write(f_string,*) n_connections," signal connections found"
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     call g_object_unref (b)
@@ -417,7 +416,6 @@ contains
     n_connections=0
     b = gtk_builder_new ()
     guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
-    !call gtk_builder_connect_signals_full (b, c_funloc(get_connections), c_null_ptr)
     call g_object_unref (b)
     call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//c_null_char, -1_c_int)
 
@@ -583,7 +581,7 @@ contains
 
       write(hunit,'(A)')""
       write(hunit,'(A)')"module handlers"
-      write(hunit,'(A)')"  use gtk, only: gtk_builder_add_from_file, gtk_builder_connect_signals, &"
+      write(hunit,'(A)')"  use gtk, only: gtk_builder_add_from_file, &"
       write(hunit,'(A)')"  & gtk_builder_get_object, gtk_builder_new, &"
       write(hunit,'(A)')"  & gtk_widget_show, FALSE, c_null_char, c_null_ptr, gtk_init"
       write(hunit,'(A)')"  use g, only: g_object_unref, g_main_loop_new, g_main_loop_run, g_main_loop_quit"
@@ -772,7 +770,6 @@ contains
       write(50,'(A)')""
       write(50,'(A)')"  ! use GModule to look at the applications symbol table to find the function name"
       write(50,'(A)')"  ! that matches the handler name specified in Glade3"
-      write(50,'(A)')"  call gtk_builder_connect_signals (builder, c_null_ptr)"
       write(50,'(A)')""
       write(50,'(A)')"  ! free all memory used by XML stuff"
       write(50,'(A)')"  call g_object_unref (builder)"
@@ -933,7 +930,6 @@ program gtkfsketcher
 
   ! use GModule to look at the applications symbol table to find the function name
   ! that matches the handler name we specified in Glade3
-  !call gtk_builder_connect_signals (builder, c_null_ptr)
 
   ! free all memory used by XML stuff
   call g_object_unref (builder)
