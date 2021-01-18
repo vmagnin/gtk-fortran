@@ -153,7 +153,7 @@ module connect
   & gtk_combo_box_get_active, gtk_combo_box_set_active, &
   & gtk_combo_box_get_model, gtk_combo_box_get_active_iter,&
   & gtk_tree_model_get_value, gtk_tree_model_iter_nth_child,&
-  & gtk_check_button_get_active, gtk_toggle_button_set_active,GTK_BUTTONS_OK,&
+  & gtk_check_button_get_active, gtk_check_button_set_active,GTK_BUTTONS_OK,&
   & gtk_list_store_append, gtk_list_store_set_value, gtk_list_store_clear,&
   & gtk_widget_hide, gtk_window_destroy, g_signal_connect_swapped
 
@@ -840,14 +840,14 @@ contains
     print *, "PWD: ", TRIM(ADJUSTL(working_dir))
 
     call load_default_options
-    call gtk_toggle_button_set_active (create_subdir_button, gbool(create_subdir))
-    call gtk_toggle_button_set_active (create_handlerfiles_button, gbool(create_handlerfiles))
-    call gtk_toggle_button_set_active (overwrite_handlerfiles_button, gbool(overwrite_handlerfiles))
-    call gtk_toggle_button_set_active (widget_symbols_button, gbool(widget_symbols))
-    call gtk_toggle_button_set_active (update_used_functions_button, gbool(update_used_functions))
-    call gtk_toggle_button_set_active (use_hl_gtk_button, gbool(use_hl_gtk))
-    call gtk_toggle_button_set_active (include_files_button, gbool(include_files))
-    call gtk_toggle_button_set_active (widgetshandlers_button, gbool(widgetshandlers))
+    call gtk_check_button_set_active (create_subdir_button, gbool(create_subdir))
+    call gtk_check_button_set_active (create_handlerfiles_button, gbool(create_handlerfiles))
+    call gtk_check_button_set_active (overwrite_handlerfiles_button, gbool(overwrite_handlerfiles))
+    call gtk_check_button_set_active (widget_symbols_button, gbool(widget_symbols))
+    call gtk_check_button_set_active (update_used_functions_button, gbool(update_used_functions))
+    call gtk_check_button_set_active (use_hl_gtk_button, gbool(use_hl_gtk))
+    call gtk_check_button_set_active (include_files_button, gbool(include_files))
+    call gtk_check_button_set_active (widgetshandlers_button, gbool(widgetshandlers))
 
   end subroutine default_options
 
