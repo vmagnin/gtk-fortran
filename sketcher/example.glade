@@ -1,63 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.22"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk" version="4.0"/>
   <object class="GtkWindow" id="window">
-    <property name="can_focus">False</property>
-    <property name="border_width">10</property>
     <property name="title" translatable="yes">My title</property>
-    <signal name="destroy-event" handler="destroy" swapped="no"/>
-    <signal name="delete-event" handler="delete_event" swapped="no"/>
-    <child>
-      <object class="GtkHBox" id="box1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
+    <signal name="close-request" handler="destroy" swapped="no"/>
+    <property name="child">
+      <object class="GtkBox" id="box1">
         <child>
           <object class="GtkButton" id="button1">
+            <property name="hexpand">1</property>
             <property name="label" translatable="yes">Button1</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
+            <property name="receives_default">1</property>
             <signal name="clicked" handler="hello" swapped="no"/>
           </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
           <object class="GtkButton" id="button2">
+            <property name="hexpand">1</property>
             <property name="label" translatable="yes">Button2</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
+            <property name="receives_default">1</property>
             <signal name="clicked" handler="button2clicked" swapped="no"/>
           </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
         </child>
         <child>
           <object class="GtkButton" id="button3">
+            <property name="hexpand">1</property>
             <property name="label" translatable="yes">Exit</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
+            <property name="receives_default">1</property>
             <signal name="clicked" handler="destroy" swapped="no"/>
           </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
         </child>
       </object>
-    </child>
+    </property>
   </object>
 </interface>
