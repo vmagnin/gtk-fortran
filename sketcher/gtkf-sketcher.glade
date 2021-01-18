@@ -56,13 +56,11 @@
     </columns>
   </object>
   <object class="GtkApplicationWindow" id="window">
-    <property name="can_focus">0</property>
     <property name="title" translatable="yes">GTK Fortran Code Sketcher</property>
     <property name="icon_name">text-x-script</property>
     <signal name="destroy" handler="destroy" swapped="no"/>
     <child>
       <object class="GtkBox" id="box1">
-        <property name="can_focus">0</property>
         <property name="orientation">vertical</property>
         <child>
           <!-- object class="GtkMenuBar" id="menu">
@@ -134,7 +132,6 @@
               <object class="GtkNotebookPage">
                 <property name="child">
                   <object class="GtkBox" id="box2">
-                    <property name="can_focus">0</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow2">
@@ -157,7 +154,6 @@
                 </property>
                 <property name="tab">
                   <object class="GtkLabel" id="file_info">
-                    <property name="can_focus">0</property>
                     <property name="label" translatable="yes">File Info</property>
                   </object>
                 </property>
@@ -167,7 +163,6 @@
               <object class="GtkNotebookPage">
                 <property name="child">
                   <object class="GtkBox" id="box3">
-                    <property name="can_focus">0</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkCheckButton" id="create_subdir">
@@ -223,17 +218,14 @@
                     </child>
                     <child>
                       <object class="GtkBox" id="hbox2">
-                        <property name="can_focus">0</property>
                         <child>
                           <object class="GtkLabel" id="label_appwindow">
-                            <property name="can_focus">0</property>
                             <property name="label" translatable="yes">Application window</property>
                           </object>
                         </child>
                         <child>
                           <object class="GtkComboBox" id="appwindow">
                             <property name="hexpand">1</property>
-                            <property name="can_focus">0</property>
                             <property name="model">toplevel_widgets</property>
                             <property name="has_entry">1</property>
                             <property name="entry_text_column">0</property>
@@ -249,17 +241,14 @@
                     </child>
                     <child>
                       <object class="GtkBox" id="hbox1">
-                        <property name="can_focus">0</property>
                         <child>
                           <object class="GtkLabel" id="label_license">
-                            <property name="can_focus">0</property>
                             <property name="label" translatable="yes">License</property>
                           </object>
                         </child>
                         <child>
                           <object class="GtkComboBox" id="license">
                             <property name="hexpand">1</property>
-                            <property name="can_focus">0</property>
                             <property name="model">licenses</property>
                             <property name="has_entry">1</property>
                             <property name="entry_text_column">0</property>
@@ -299,7 +288,6 @@
                 </property>
                 <property name="tab">
                   <object class="GtkLabel" id="options">
-                    <property name="can_focus">0</property>
                     <property name="label" translatable="yes">Options</property>
                   </object>
                 </property>
@@ -309,7 +297,6 @@
               <object class="GtkNotebookPage">
                 <property name="child">
                   <object class="GtkBox" id="box4">
-                    <property name="can_focus">0</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkButton" id="button_write">
@@ -328,7 +315,6 @@
                 </property>
                 <property name="tab">
                   <object class="GtkLabel" id="output">
-                    <property name="can_focus">0</property>
                     <property name="label" translatable="yes">Output</property>
                   </object>
                 </property>
@@ -338,14 +324,12 @@
         </child>
         <child>
           <object class="GtkStatusbar" id="statusbar1">
-            <property name="can_focus">0</property>
           </object>
         </child>
       </object>
     </child>
   </object>
   <object class="GtkAboutDialog" id="about">
-    <property name="can_focus">0</property>
     <property name="transient_for">window</property>
     <property name="program_name">gtkf-sketcher</property>
     <property name="comments" translatable="yes">GTK+ Fortran Code Sketcher</property>
@@ -353,7 +337,6 @@
     <property name="license_type">gpl-3-0</property>
     <!-- child internal-child="vbox">
       <object class="GtkBox">
-        <property name="can_focus">0</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
