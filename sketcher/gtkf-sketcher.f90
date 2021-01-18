@@ -74,7 +74,7 @@ contains
 ! String routine from C_interface_module by Joseph M. Krahn
 ! http://fortranwiki.org/fortran/show/c_interface_module
 ! Copy a C string, passed as a char-array reference, to a Fortran string.
-   subroutine C_F_string_chars(C_string, F_string)
+  subroutine C_F_string_chars(C_string, F_string)
     character(len=1,kind=C_char), intent(in) :: C_string(*)
     character(len=*), intent(out) :: F_string
     integer :: i
@@ -84,7 +84,7 @@ contains
       i=i+1
     end do
     if (i<len(F_string)) F_string(i:) = ' '
-   end subroutine C_F_string_chars
+  end subroutine C_F_string_chars
 
 ! Copy a C string, passed by pointer, to a Fortran string.
 ! If the C pointer is NULL, the Fortran string is blanked.
@@ -109,6 +109,7 @@ contains
     end if
   end subroutine C_F_string_ptr
 
+
   function gbool_equal_fbool(gbool,fbool) result(ret)
     integer(c_int), intent(in) :: gbool
     logical, intent(in) :: fbool
@@ -121,6 +122,7 @@ contains
     write(*,*) gbool,fbool,ret
   end function gbool_equal_fbool
 
+
   function gbool(fbool) result(ret)
     logical, intent(in) :: fbool
     integer(c_int) :: ret
@@ -130,6 +132,7 @@ contains
       ret=false
     endif
   end function gbool
+
 
   function fbool(gbool) result(ret)
     integer(c_int), intent(in) :: gbool
@@ -222,7 +225,6 @@ module connect
     connections(n_connections)%object_name=oname
     connections(n_connections)%signal_name=sname
     connections(n_connections)%handler_name=hname
-
   end subroutine get_connections
 end module connect
 
@@ -251,6 +253,7 @@ contains
     close(50)
   end subroutine copy_file
 
+
   function delete_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: delete_event
@@ -259,6 +262,7 @@ contains
     call destroy (widget, gdata)
     ret = FALSE
   end function delete_event
+
 
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
@@ -275,6 +279,7 @@ contains
     call g_main_loop_quit (my_gmainloop)
   end subroutine destroy
 
+
   subroutine create_subdir_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: create_subdir_toggled
@@ -282,6 +287,7 @@ contains
     create_subdir=fbool(gtk_check_button_get_active(create_subdir_button))
     write(*,*)"subdir creation = ",create_subdir
   end subroutine create_subdir_toggled
+
 
   subroutine create_handlerfiles_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
@@ -291,6 +297,7 @@ contains
     write(*,*)"handlerfiles creation = ",create_handlerfiles
   end subroutine create_handlerfiles_toggled
 
+
   subroutine overwrite_handlerfiles_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: overwrite_handlerfiles_toggled
@@ -298,6 +305,7 @@ contains
     overwrite_handlerfiles=fbool(gtk_check_button_get_active(overwrite_handlerfiles_button))
     write(*,*)"handlerfiles overwrite = ",overwrite_handlerfiles
   end subroutine overwrite_handlerfiles_toggled
+
 
   subroutine widget_symbols_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
@@ -307,6 +315,7 @@ contains
     write(*,*)"symbols for all widgets = ",widget_symbols
   end subroutine widget_symbols_toggled
 
+
   subroutine update_used_functions_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: update_used_functions_toggled
@@ -314,6 +323,7 @@ contains
     update_used_functions=fbool(gtk_check_button_get_active(update_used_functions_button))
     write(*,*)"update used functions = ",update_used_functions
   end subroutine update_used_functions_toggled
+
 
   subroutine use_hl_gtk_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
@@ -323,6 +333,7 @@ contains
     write(*,*)"use high level interface = ",use_hl_gtk
   end subroutine use_hl_gtk_toggled
 
+
   subroutine include_files_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: include_files_toggled
@@ -331,6 +342,7 @@ contains
     write(*,*)"generate include files = ",include_files
   end subroutine include_files_toggled
 
+
   subroutine widgetshandlers_toggled (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: widgetshandlers_toggled
@@ -338,6 +350,7 @@ contains
     widgetshandlers=fbool(gtk_check_button_get_active(widgetshandlers_button))
     write(*,*)"generate separate files for widgets and handlers = ",widgetshandlers
   end subroutine widgetshandlers_toggled
+
 
   function file_open (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
@@ -427,8 +440,8 @@ contains
     call g_value_unset(val)
 
     file_loaded=.true.
-
   end function file_open
+
 
   subroutine combobox_get_active_string_value(combobox,column,text)
     type(c_ptr)       :: combobox
@@ -446,8 +459,8 @@ contains
     call gtk_tree_model_get_value(model, c_loc(iter), column, val)
     textptr = g_value_get_string(val)
     call C_F_string_ptr(textptr, text)
-
   end subroutine combobox_get_active_string_value
+
 
   function write_files (widget, gdata ) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
@@ -799,6 +812,7 @@ contains
     ret = FALSE
   end function write_files
 
+
   subroutine save_default_options (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: save_default_options
@@ -810,8 +824,8 @@ contains
       use_hl_gtk,include_files,widgetshandlers
     write(111,'(I2)')gtk_combo_box_get_active(license_selector)
     close(111)
-
   end subroutine save_default_options
+
 
   subroutine load_default_options
     character(len=20)::defaultsfile="default.options"
@@ -823,8 +837,8 @@ contains
     read(111,'(I2)')license_no
     call gtk_combo_box_set_active(license_selector,license_no)
     close(111)
-
   end subroutine load_default_options
+
 
   subroutine default_options (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
@@ -850,26 +864,9 @@ contains
     call gtk_check_button_set_active (use_hl_gtk_button, gbool(use_hl_gtk))
     call gtk_check_button_set_active (include_files_button, gbool(include_files))
     call gtk_check_button_set_active (widgetshandlers_button, gbool(widgetshandlers))
-
   end subroutine default_options
 
 
-
-
-
-
-
-! https://developer.gnome.org/gtk4/stable/GtkDialog.html#GtkDialog-response
-!  subroutine dialog_callback(dialog, user_data) bind(c)
-!    type(c_ptr), value, intent(in) :: dialog, user_data
-
-   ! call gtk_window_destroy(dialog)
-   ! call g_main_loop_quit(dialog_gmainloop)
-!        call gtk_widget_hide(about_dialog)
-!  end subroutine dialog_callback     
-  
-  
-  
   subroutine show_about_dialog (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: show_about_dialog
@@ -878,9 +875,8 @@ contains
     call gtk_widget_show(about_dialog)
     call g_signal_connect(about_dialog, "close-request"//c_null_char, &
                                     & c_funloc(gtk_widget_hide))
-!    dialog_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
-!    call g_main_loop_run(dialog_gmainloop)
   end subroutine show_about_dialog
+
 
   ! Contributed by IanH0073 (issue #81)
   function fdate()
@@ -960,6 +956,5 @@ program gtkfsketcher
   ! Enter the GTK Main Loop
   my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
   call g_main_loop_run(my_gmainloop)
-
 end program gtkfsketcher
 

@@ -103,9 +103,6 @@
                         </property>
                       </object>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                 </property>
                 <property name="tab">
@@ -221,9 +218,6 @@
                           </object>
                         </child>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
                           <object class="GtkButton" id="save_as_defaults">
                             <property name="label" translatable="yes">Save as defaults</property>
                             <property name="receives_default">1</property>
@@ -252,12 +246,6 @@
                         <property name="receives_default">1</property>
                         <signal name="clicked" handler="write_files" swapped="no"/>
                       </object>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
                     </child>
                   </object>
                 </property>
