@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.20.1 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtk+" version="4.0"/>
   <object class="GtkTextBuffer" id="fileinfo_buffer">
     <property name="text" translatable="yes">No Glade3 file loaded yet.</property>
   </object>
@@ -74,49 +74,26 @@
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkMenuBar" id="menu">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuItem" id="menu_file">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">File</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="file_open">
-                        <property name="label">gtk-open</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                         <signal name="activate" handler="file_open" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem4">
-                        <property name="label">gtk-save-as</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem5">
-                        <property name="label">gtk-quit</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                         <signal name="activate" handler="destroy" swapped="no"/>
                       </object>
                     </child>
@@ -126,47 +103,23 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="menu_edit">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Edit</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem6">
-                        <property name="label">gtk-cut</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem7">
-                        <property name="label">gtk-copy</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem8">
-                        <property name="label">gtk-paste</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem9">
-                        <property name="label">gtk-delete</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                       </object>
                     </child>
                   </object>
@@ -175,20 +128,11 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="menu_help">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Help</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu3">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="help_about">
-                        <property name="label">gtk-about</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                         <signal name="activate" handler="show_about_dialog" swapped="no"/>
                       </object>
                     </child>
@@ -216,7 +160,6 @@
                   <object class="GtkScrolledWindow" id="scrolledwindow2">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTextView" id="textview1">
                         <property name="width_request">350</property>
@@ -470,9 +413,6 @@
                 </child>
                 <child>
                   <object class="GtkButtonBox" id="buttonbox1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="layout_style">spread</property>
                     <child>
                       <object class="GtkButton" id="load_defaults">
                         <property name="label" translatable="yes">Load defaults</property>
@@ -482,9 +422,6 @@
                         <signal name="clicked" handler="default_options" swapped="no"/>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
@@ -499,9 +436,6 @@
                         <signal name="clicked" handler="save_default_options" swapped="no"/>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
@@ -513,7 +447,6 @@
                 </child>
               </object>
               <packing>
-                <property name="position">1</property>
               </packing>
             </child>
             <child type="tab">
@@ -554,7 +487,6 @@
                 </child>
               </object>
               <packing>
-                <property name="position">2</property>
               </packing>
             </child>
             <child type="tab">
@@ -579,7 +511,6 @@
           <object class="GtkStatusbar" id="statusbar1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="spacing">2</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -592,7 +523,6 @@
   </object>
   <object class="GtkAboutDialog" id="about">
     <property name="can_focus">False</property>
-    <property name="type_hint">dialog</property>
     <property name="transient_for">window</property>
     <property name="program_name">gtkf-sketcher</property>
     <property name="comments" translatable="yes">GTK+ Fortran Code Sketcher</property>
@@ -605,8 +535,6 @@
         <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
           </object>
           <packing>
             <property name="expand">False</property>
