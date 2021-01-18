@@ -464,7 +464,7 @@ contains
 
     if (.not.file_loaded) then
       status_read=hl_gtk_message_dialog_show((/"Please load some Glade3 UI file first!"/), GTK_BUTTONS_OK, &
-        title="No Glade3 file loaded yet")
+        title="No Glade3 file loaded yet"//c_null_char)
       ret = FALSE
       return
     else
