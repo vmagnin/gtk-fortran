@@ -147,7 +147,7 @@ module connect
   use strings
 
   use gtk, only: gtk_builder_add_from_file, gtk_builder_get_object, &
-  & gtk_builder_new, gtk_widget_show,&
+  & gtk_builder_new, gtk_widget_show, gtk_widget_hide, &
   & FALSE, c_null_char, c_null_ptr, TRUE, gtk_init, gtk_builder_get_objects, &
   & gtk_buildable_get_buildable_id, gtk_text_buffer_set_text,&
   & gtk_combo_box_get_active, gtk_combo_box_set_active, &
@@ -155,7 +155,7 @@ module connect
   & gtk_tree_model_get_value, gtk_tree_model_iter_nth_child,&
   & gtk_check_button_get_active, gtk_check_button_set_active,GTK_BUTTONS_OK,&
   & gtk_list_store_append, gtk_list_store_set_value, gtk_list_store_clear,&
-  & gtk_window_destroy, g_signal_connect_swapped
+  & gtk_window_destroy, g_signal_connect_swapped, g_signal_connect
 
   use g, only: g_object_unref, g_slist_length, g_slist_nth_data, &
   & g_value_get_string, &
@@ -853,14 +853,33 @@ contains
 
   end subroutine default_options
 
+
+
+
+
+
+
+! https://developer.gnome.org/gtk4/stable/GtkDialog.html#GtkDialog-response
+!  subroutine dialog_callback(dialog, user_data) bind(c)
+!    type(c_ptr), value, intent(in) :: dialog, user_data
+
+   ! call gtk_window_destroy(dialog)
+   ! call g_main_loop_quit(dialog_gmainloop)
+!        call gtk_widget_hide(about_dialog)
+!  end subroutine dialog_callback     
+  
+  
+  
   subroutine show_about_dialog (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: show_about_dialog
     type(c_ptr), value :: widget, gdata
 
     call gtk_widget_show(about_dialog)
-!    call g_signal_connect_swapped (widget, "close-request"//c_null_char, &
-!                              & c_funloc(gtk_window_destroy), widget)
+    call g_signal_connect(about_dialog, "close-request"//c_null_char, &
+                                    & c_funloc(gtk_widget_hide))
+!    dialog_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
+!    call g_main_loop_run(dialog_gmainloop)
   end subroutine show_about_dialog
 
   ! Contributed by IanH0073 (issue #81)
