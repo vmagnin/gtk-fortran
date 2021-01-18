@@ -63,68 +63,24 @@
       <object class="GtkBox" id="box1">
         <property name="orientation">vertical</property>
         <child>
-          <!-- object class="GtkMenuBar" id="menu">
+          <object class="GtkBox" id="box_menu">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">20</property>
             <child>
-              <object class="GtkMenuItem" id="menu_file">
-                <property name="label" translatable="yes">File</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu1">
-                    <child>
-                      <object class="GtkImageMenuItem" id="file_open">
-                        <signal name="activate" handler="file_open" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem4"/>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1"/>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem5">
-                        <signal name="activate" handler="destroy" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
+              <object class="GtkButton" id="open_button">
+                <property name="label" translatable="yes">Open file</property>
+                <property name="receives_default">1</property>
+                <signal name="clicked" handler="file_open" swapped="no"/>
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="menu_edit">
-                <property name="label" translatable="yes">Edit</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu2">
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem6"/>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem7"/>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem8"/>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem9"/>
-                    </child>
-                  </object>
-                </child>
+              <object class="GtkButton" id="about_button">
+                <property name="label" translatable="yes">About</property>
+                <property name="receives_default">1</property>
+                <signal name="clicked" handler="show_about_dialog" swapped="no"/>
               </object>
             </child>
-            <child>
-              <object class="GtkMenuItem" id="menu_help">
-                <property name="label" translatable="yes">Help</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu3">
-                    <child>
-                      <object class="GtkImageMenuItem" id="help_about">
-                        <signal name="activate" handler="show_about_dialog" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object -->
+          </object>
         </child>
         <child>
           <object class="GtkNotebook" id="notebook1">
@@ -324,24 +280,8 @@
   <object class="GtkAboutDialog" id="about">
     <property name="transient_for">window</property>
     <property name="program_name">gtkf-sketcher</property>
-    <property name="comments" translatable="yes">GTK+ Fortran Code Sketcher</property>
+    <property name="comments" translatable="yes">GTK Fortran Code Sketcher</property>
     <property name="logo_icon_name">text-x-script</property>
     <property name="license_type">gpl-3-0</property>
-    <!-- child internal-child="vbox">
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox">
-          </object>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-    </child -->
-    <child>
-      <placeholder/>
-    </child>
   </object>
 </interface>
