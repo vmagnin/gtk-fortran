@@ -254,11 +254,6 @@
                             <property name="entry_text_column">0</property>
                             <property name="id_column">0</property>
                             <property name="active_id">GNU General Public License v3</property>
-                            <property name="child">
-                              <object class="GtkEntry">
-                                <property name="can_focus">0</property>
-                              </object>
-                            </property>
                           </object>
                         </child>
                       </object>
