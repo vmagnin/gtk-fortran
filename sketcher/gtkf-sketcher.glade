@@ -280,6 +280,8 @@
   <object class="GtkAboutDialog" id="about">
     <property name="transient_for">window</property>
     <property name="program_name">gtkf-sketcher</property>
+    <property name="authors">Jens Hunger (main author), James Tappin, Vincent Magnin, Harris Snyder</property>
+    <property name="version">GTK 4</property>
     <property name="comments" translatable="yes">GTK Fortran Code Sketcher</property>
     <property name="logo_icon_name">text-x-script</property>
     <property name="license_type">gpl-3-0</property>

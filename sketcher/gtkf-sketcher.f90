@@ -857,14 +857,10 @@ contains
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: show_about_dialog
     type(c_ptr), value :: widget, gdata
-!    integer(c_int) :: dialog
-!    dialog = gtk_dialog_run (about_dialog)
-!    call gtk_widget_hide (about_dialog)
 
-    call gtk_widget_show(widget)
-    call g_signal_connect_swapped (widget, "response"//c_null_char, &
-                              & c_funloc(gtk_window_destroy), widget)
-
+    call gtk_widget_show(about_dialog)
+!    call g_signal_connect_swapped (widget, "close-request"//c_null_char, &
+!                              & c_funloc(gtk_window_destroy), widget)
   end subroutine show_about_dialog
 
   ! Contributed by IanH0073 (issue #81)
