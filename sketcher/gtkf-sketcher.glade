@@ -59,6 +59,7 @@
     <property name="can_focus">0</property>
     <property name="title" translatable="yes">GTK Fortran Code Sketcher</property>
     <property name="icon_name">text-x-script</property>
+    <signal name="destroy" handler="destroy" swapped="no"/>
     <child>
       <object class="GtkBox" id="box1">
         <property name="can_focus">0</property>

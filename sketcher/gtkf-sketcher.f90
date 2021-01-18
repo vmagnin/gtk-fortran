@@ -265,9 +265,13 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: destroy
     type(c_ptr), value :: widget, gdata
     logical::lopened
+
     if (allocated(connections)) deallocate(connections)
+
     inquire(unit=99,opened=lopened)
     if (lopened) close(99)
+
+    print *, "my destroy"
     call g_main_loop_quit (my_gmainloop)
   end subroutine destroy
 
