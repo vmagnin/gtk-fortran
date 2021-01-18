@@ -463,8 +463,9 @@ contains
     &"@GTKF_PROG_PREFIX@"
 
     if (.not.file_loaded) then
-      status_read=hl_gtk_message_dialog_show((/"Please load some Glade3 UI file first!"/), GTK_BUTTONS_OK, &
-        title="No Glade3 file loaded yet"//c_null_char)
+      status_read=hl_gtk_message_dialog_show((/"Please load some Glade3 UI file first!"/),&
+        & GTK_BUTTONS_OK, title="No Glade3 file loaded yet"//c_null_char, &
+        & parent=window)
       ret = FALSE
       return
     else
