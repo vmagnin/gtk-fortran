@@ -400,22 +400,25 @@ contains
 
     files_written=.false.
 
-    b = gtk_builder_new ()
     ! Will contain the text to show in the gtk_text_buffer:
     fileinfo=filename(1:len_trim(filename))
+
+    b = gtk_builder_new ()
     guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
+
+    ! We count and print the list of objects found in the UI file:
     gslist = gtk_builder_get_objects(b)
     write(f_string,*) g_slist_length(gslist)," objects found"
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     do i=0, g_slist_length(gslist)-1
       gpointer=g_slist_nth_data (gslist,i)
       object_name_ptr=gtk_buildable_get_buildable_id (gpointer)
-      call C_F_string_ptr(object_name_ptr, F_string)
+      call C_F_string_ptr(object_name_ptr, f_string)
       fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     enddo
 
     n_connections=0
-    ! Here, we must count connections
+    ! Here, we need to count connections for the allocation of the connections array
     write(f_string,*) n_connections," signal connections found"
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     ! Need to be unreferenced because b will be used a second time:
@@ -433,7 +436,7 @@ contains
     guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
     ! Here, we must get connections
     call g_object_unref (b)
-    
+
     ! All the infos are printed in the GtkTextBuffer:
     call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//c_null_char, -1_c_int)
 
