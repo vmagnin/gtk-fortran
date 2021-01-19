@@ -418,15 +418,23 @@ contains
     ! Here, we must count connections
     write(f_string,*) n_connections," signal connections found"
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
+    ! Need to be unreferenced because b will be used a second time:
     call g_object_unref (b)
 
+    ! Necessary if file_open() is called several times:
     if (allocated(connections)) deallocate(connections)
+    
     allocate(connections(n_connections))
+
+    ! Connections will be recounted as they are put into the connections array:
     n_connections=0
+
     b = gtk_builder_new ()
     guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
     ! Here, we must get connections
     call g_object_unref (b)
+    
+    ! All the infos are printed in the GtkTextBuffer:
     call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//c_null_char, -1_c_int)
 
     call gtk_combo_box_set_active(appwindow_selector,0_c_int)
