@@ -401,6 +401,7 @@ contains
     files_written=.false.
 
     b = gtk_builder_new ()
+    ! Will contain the text to show in the gtk_text_buffer:
     fileinfo=filename(1:len_trim(filename))
     guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
     gslist = gtk_builder_get_objects(b)
@@ -414,6 +415,7 @@ contains
     enddo
 
     n_connections=0
+    ! Here, we must count connections
     write(f_string,*) n_connections," signal connections found"
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     call g_object_unref (b)
@@ -423,6 +425,7 @@ contains
     n_connections=0
     b = gtk_builder_new ()
     guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
+    ! Here, we must get connections
     call g_object_unref (b)
     call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//c_null_char, -1_c_int)
 
