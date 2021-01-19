@@ -367,7 +367,7 @@ contains
     type(c_ptr) :: error = c_null_ptr
     type(c_ptr) :: gpointer,object_name_ptr
     type(c_ptr) :: b
-    character(len=128) :: F_string
+    character(len=128) :: f_string
     type(c_ptr) :: val
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
