@@ -732,6 +732,14 @@ function gtk_cell_renderer_accel_new() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!GtkLayoutManager * gtk_layout_child_get_layout_manager (GtkLayoutChild *layout_child);
+function gtk_layout_child_get_layout_manager(layout_child) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_layout_child_get_layout_manager
+  type(c_ptr), value :: layout_child
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GtkWidget * gtk_layout_child_get_child_widget (GtkLayoutChild *layout_child);
 function gtk_layout_child_get_child_widget(layout_child) bind(c)
   use iso_c_binding, only: c_ptr
@@ -754,6 +762,14 @@ subroutine gtk_widget_paintable_set_widget(self, widget) bind(c)
   type(c_ptr), value :: self
   type(c_ptr), value :: widget
 end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkAccessibleRole gtk_accessible_get_accessible_role (GtkAccessible *self);
+function gtk_accessible_get_accessible_role(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_accessible_get_accessible_role
+  type(c_ptr), value :: self
+end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_accessible_reset_state (GtkAccessible *self, GtkAccessibleState state);
@@ -1060,6 +1076,13 @@ function gtk_application_get_menu_by_id(application, id) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!GtkBuilderScope * gtk_builder_cscope_new (void);
+function gtk_builder_cscope_new() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_builder_cscope_new
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !void gtk_builder_cscope_add_callback_symbol (GtkBuilderCScope *self, const char *callback_name, GCallback callback_symbol);
 subroutine gtk_builder_cscope_add_callback_symbol(self, callback_name,&
 & callback_symbol) bind(c)
@@ -1284,6 +1307,16 @@ subroutine gtk_buildable_parse_context_get_position(context, line_number,&
   type(c_ptr), value :: line_number
   type(c_ptr), value :: char_number
 end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkOrdering gtk_sorter_compare (GtkSorter *self, gpointer item1, gpointer item2);
+function gtk_sorter_compare(self, item1, item2) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_sorter_compare
+  type(c_ptr), value :: self
+  type(c_ptr), value :: item1
+  type(c_ptr), value :: item2
+end function
 
 ! GDK_AVAILABLE_IN_ALL
 !GtkSorterOrder gtk_sorter_get_order (GtkSorter *self);
@@ -9780,6 +9813,13 @@ function gtk_expander_get_child(expander) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!void gtk_native_realize (GtkNative *self);
+subroutine gtk_native_realize(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !void gtk_native_unrealize (GtkNative *self);
 subroutine gtk_native_unrealize(self) bind(c)
   use iso_c_binding, only: c_ptr
@@ -10880,6 +10920,14 @@ function gtk_icon_view_get_tooltip_column(icon_view) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_icon_view_get_tooltip_column
   type(c_ptr), value :: icon_view
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GdkDisplay * gtk_root_get_display (GtkRoot *self);
+function gtk_root_get_display(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_root_get_display
+  type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -18520,6 +18568,21 @@ function gtk_viewport_get_child(viewport) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!void gtk_layout_manager_measure (GtkLayoutManager *manager, GtkWidget *widget, GtkOrientation orientation, int for_size, int *minimum, int *natural, int *minimum_baseline, int *natural_baseline);
+subroutine gtk_layout_manager_measure(manager, widget, orientation, for_size,&
+& minimum, natural, minimum_baseline, natural_baseline) bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: manager
+  type(c_ptr), value :: widget
+  integer(c_int), value :: orientation
+  integer(c_int), value :: for_size
+  type(c_ptr), value :: minimum
+  type(c_ptr), value :: natural
+  type(c_ptr), value :: minimum_baseline
+  type(c_ptr), value :: natural_baseline
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !void gtk_layout_manager_allocate (GtkLayoutManager *manager, GtkWidget *widget, int width, int height, int baseline);
 subroutine gtk_layout_manager_allocate(manager, widget, width, height,&
 & baseline) bind(c)
@@ -20494,6 +20557,13 @@ function gtk_gesture_click_new() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!GtkMediaStream * gtk_media_file_new (void);
+function gtk_media_file_new() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: gtk_media_file_new
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GtkMediaStream * gtk_media_file_new_for_filename (const char *filename);
 function gtk_media_file_new_for_filename(filename) bind(c)
   use iso_c_binding, only: c_ptr, c_char
@@ -20577,6 +20647,14 @@ end subroutine
 function gtk_media_file_get_input_stream(self) bind(c)
   use iso_c_binding, only: c_ptr
   type(c_ptr) :: gtk_media_file_get_input_stream
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_media_stream_is_prepared (GtkMediaStream *self);
+function gtk_media_stream_is_prepared(self) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_media_stream_is_prepared
   type(c_ptr), value :: self
 end function
 
@@ -22874,6 +22952,15 @@ subroutine gtk_cell_renderer_toggle_set_activatable(toggle, setting) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_selection_model_is_selected (GtkSelectionModel *model, guint position);
+function gtk_selection_model_is_selected(model, position) bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_selection_model_is_selected
+  integer(c_int), value :: model
+  integer(c_int), value :: position
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GtkBitset * gtk_selection_model_get_selection (GtkSelectionModel *model);
 function gtk_selection_model_get_selection(model) bind(c)
   use iso_c_binding, only: c_ptr, c_int
@@ -23911,6 +23998,13 @@ function gtk_column_view_column_get_expand(self) bind(c)
   integer(c_int) :: gtk_column_view_column_get_expand
   type(c_ptr), value :: self
 end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_native_dialog_show (GtkNativeDialog *self);
+subroutine gtk_native_dialog_show(self) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: self
+end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_native_dialog_hide (GtkNativeDialog *self);
@@ -26598,6 +26692,15 @@ function gtk_slice_list_model_get_size(self) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: gtk_slice_list_model_get_size
   type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_filter_match (GtkFilter *self, gpointer item);
+function gtk_filter_match(self, item) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_filter_match
+  type(c_ptr), value :: self
+  type(c_ptr), value :: item
 end function
 
 ! GDK_AVAILABLE_IN_ALL

@@ -17257,6 +17257,13 @@ subroutine g_file_monitor_emit_event(monitor, child, other_file, event_type)&
   integer(c_int), value :: event_type
 end subroutine
 
+! GLIB_AVAILABLE_IN_2_64
+!GMemoryMonitor *g_memory_monitor_dup_default (void);
+function g_memory_monitor_dup_default() bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr) :: g_memory_monitor_dup_default
+end function
+
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_async_initable_get_type (void) G_GNUC_CONST;
 function g_async_initable_get_type() bind(c)
@@ -28201,6 +28208,14 @@ function g_tcp_connection_get_graceful_disconnect(connection) bind(c)
   use iso_c_binding, only: c_int, c_ptr
   integer(c_int) :: g_tcp_connection_get_graceful_disconnect
   type(c_ptr), value :: connection
+end function
+
+! GLIB_AVAILABLE_IN_2_44
+!GType g_list_model_get_item_type (GListModel *list);
+function g_list_model_get_item_type(list) bind(c)
+  use iso_c_binding, only: c_size_t, c_ptr
+  integer(c_size_t) :: g_list_model_get_item_type
+  type(c_ptr), value :: list
 end function
 
 ! GLIB_AVAILABLE_IN_2_44

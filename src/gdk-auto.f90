@@ -963,6 +963,16 @@ function gdk_drop_read_value_finish(self, result, error) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!gboolean gdk_drag_surface_present (GdkDragSurface *drag_surface, int width, int height);
+function gdk_drag_surface_present(drag_surface, width, height) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_drag_surface_present
+  type(c_ptr), value :: drag_surface
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GType gdk_cursor_get_type (void) G_GNUC_CONST;
 function gdk_cursor_get_type() bind(c)
   use iso_c_binding, only: c_size_t
@@ -1999,6 +2009,16 @@ function gdk_key_event_get_match(event, keyval, modifiers) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!void gdk_paintable_snapshot (GdkPaintable *paintable, GdkSnapshot *snapshot, double width, double height);
+subroutine gdk_paintable_snapshot(paintable, snapshot, width, height) bind(c)
+  use iso_c_binding, only: c_ptr, c_double
+  type(c_ptr), value :: paintable
+  type(c_ptr), value :: snapshot
+  real(c_double), value :: width
+  real(c_double), value :: height
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
 !GdkPaintable * gdk_paintable_get_current_image (GdkPaintable *paintable);
 function gdk_paintable_get_current_image(paintable) bind(c)
   use iso_c_binding, only: c_ptr
@@ -2651,6 +2671,17 @@ function gdk_content_provider_get_value(provider, value, error) bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
+!gboolean gdk_popup_present (GdkPopup *popup, int width, int height, GdkPopupLayout *layout);
+function gdk_popup_present(popup, width, height, layout) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gdk_popup_present
+  type(c_ptr), value :: popup
+  integer(c_int), value :: width
+  integer(c_int), value :: height
+  type(c_ptr), value :: layout
+end function
+
+! GDK_AVAILABLE_IN_ALL
 !GdkGravity gdk_popup_get_surface_anchor (GdkPopup *popup);
 function gdk_popup_get_surface_anchor(popup) bind(c)
   use iso_c_binding, only: c_int, c_ptr
@@ -2947,6 +2978,14 @@ function gdk_pango_layout_get_clip_region(layout, x_origin, y_origin,&
   type(c_ptr), value :: index_ranges
   integer(c_int), value :: n_ranges
 end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gdk_toplevel_present (GdkToplevel *toplevel, GdkToplevelLayout *layout);
+subroutine gdk_toplevel_present(toplevel, layout) bind(c)
+  use iso_c_binding, only: c_ptr
+  type(c_ptr), value :: toplevel
+  type(c_ptr), value :: layout
+end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gdk_toplevel_minimize (GdkToplevel *toplevel);
