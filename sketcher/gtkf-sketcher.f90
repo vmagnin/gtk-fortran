@@ -35,6 +35,7 @@ module widgets
   type(c_ptr) :: textbuffer
   type(c_ptr) :: license_selector
   type(c_ptr) :: appwindow_selector
+  type(c_ptr) :: toplevel_widgets
   type(c_ptr) :: create_subdir_button
   type(c_ptr) :: create_handlerfiles_button
   type(c_ptr) :: overwrite_handlerfiles_button
@@ -156,13 +157,13 @@ module connect
   & gtk_combo_box_get_model, &
   & gtk_tree_model_get_value, gtk_tree_model_iter_nth_child,&
   & gtk_check_button_get_active, gtk_check_button_set_active,GTK_BUTTONS_OK,&
-  & gtk_list_store_clear,&
+  & gtk_list_store_append, gtk_list_store_set_value, gtk_list_store_clear,&
   & gtk_window_destroy, g_signal_connect_swapped, g_signal_connect
 
   use g, only: g_object_unref, g_slist_length, g_slist_nth_data, &
   & g_value_get_string, &
   & g_mkdir_with_parents, g_value_init, &
-  & g_value_unset, &
+  & g_value_set_string, g_value_unset, &
   & g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   use gtk_hl, only: hl_gtk_file_chooser_show, gtktreeiter, gvalue, &
@@ -404,6 +405,10 @@ contains
 
     files_written=.false.
 
+    val = c_loc(value)
+    val = g_value_init(val, G_TYPE_STRING)
+    call gtk_list_store_clear(toplevel_widgets)
+
     ! Will contain the text to show in the gtk_text_buffer:
     fileinfo=filename(1:len_trim(filename))
 
@@ -418,6 +423,15 @@ contains
       gpointer=g_slist_nth_data (gslist,i)
       object_name_ptr=gtk_buildable_get_buildable_id (gpointer)
       call C_F_string_ptr(object_name_ptr, f_string)
+      ! FIXME: in GTK 3, gtk_widget_is_toplevel() was used to identify the toplevel
+      ! object in the UI file. In GTK 4, that function is gone. We could try to
+      ! test if the object class is "GtkApplicationWindow". For the moment, we
+      ! just suppose it's name will be "window"...
+      if (f_string .eq. "window") then
+        call gtk_list_store_append (toplevel_widgets,c_loc(iter))
+        call g_value_set_string(val, f_string(1:len_trim(f_string))//c_null_char)
+        call gtk_list_store_set_value (toplevel_widgets,c_loc(iter),0_c_int,val)
+      endif
       fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     enddo
 
@@ -449,6 +463,7 @@ contains
     call gtk_text_buffer_set_text (textbuffer, fileinfo(1:len_trim(fileinfo))//c_null_char, -1_c_int)
 
     call gtk_combo_box_set_active(appwindow_selector,0_c_int)
+    call g_value_unset(val)
 
     file_loaded=.true.
   end function file_open
@@ -937,6 +952,7 @@ program gtkfsketcher
   ! get a pointer to the selection combo boxes
   license_selector = gtk_builder_get_object (builder, "license"//c_null_char)
   appwindow_selector = gtk_builder_get_object (builder, "appwindow"//c_null_char)
+  toplevel_widgets = gtk_builder_get_object (builder, "toplevel_widgets"//c_null_char)
 
   ! get pointers to the option check buttons
   create_subdir_button = gtk_builder_get_object (builder, "create_subdir"//c_null_char)
