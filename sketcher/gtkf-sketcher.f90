@@ -68,6 +68,7 @@ module strings
   use widgets
   use gtk, only: c_null_char, TRUE, FALSE
   use g, only: g_chdir
+  use gtk_sup, only: c_f_logical
 
 contains
 
@@ -132,17 +133,6 @@ contains
       ret=false
     endif
   end function gbool
-
-
-  function fbool(gbool) result(ret)
-    integer(c_int), intent(in) :: gbool
-    logical :: ret
-    if (gbool.eq.true) then
-      ret=.true.
-    else
-      ret=.false.
-    endif
-  end function fbool
 end module strings
 
 
@@ -290,7 +280,7 @@ contains
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: create_subdir_toggled
     type(c_ptr), value :: widget, gdata
-    create_subdir=fbool(gtk_check_button_get_active(create_subdir_button))
+    create_subdir=c_f_logical(gtk_check_button_get_active(create_subdir_button))
     write(*,*)"subdir creation = ",create_subdir
   end subroutine create_subdir_toggled
 
@@ -299,7 +289,7 @@ contains
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: create_handlerfiles_toggled
     type(c_ptr), value :: widget, gdata
-    create_handlerfiles=fbool(gtk_check_button_get_active(create_handlerfiles_button))
+    create_handlerfiles=c_f_logical(gtk_check_button_get_active(create_handlerfiles_button))
     write(*,*)"handlerfiles creation = ",create_handlerfiles
   end subroutine create_handlerfiles_toggled
 
@@ -308,7 +298,7 @@ contains
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: overwrite_handlerfiles_toggled
     type(c_ptr), value :: widget, gdata
-    overwrite_handlerfiles=fbool(gtk_check_button_get_active(overwrite_handlerfiles_button))
+    overwrite_handlerfiles=c_f_logical(gtk_check_button_get_active(overwrite_handlerfiles_button))
     write(*,*)"handlerfiles overwrite = ",overwrite_handlerfiles
   end subroutine overwrite_handlerfiles_toggled
 
@@ -317,7 +307,7 @@ contains
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: widget_symbols_toggled
     type(c_ptr), value :: widget, gdata
-    widget_symbols=fbool(gtk_check_button_get_active(widget_symbols_button))
+    widget_symbols=c_f_logical(gtk_check_button_get_active(widget_symbols_button))
     write(*,*)"symbols for all widgets = ",widget_symbols
   end subroutine widget_symbols_toggled
 
@@ -326,7 +316,7 @@ contains
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: update_used_functions_toggled
     type(c_ptr), value :: widget, gdata
-    update_used_functions=fbool(gtk_check_button_get_active(update_used_functions_button))
+    update_used_functions=c_f_logical(gtk_check_button_get_active(update_used_functions_button))
     write(*,*)"update used functions = ",update_used_functions
   end subroutine update_used_functions_toggled
 
@@ -335,7 +325,7 @@ contains
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: use_hl_gtk_toggled
     type(c_ptr), value :: widget, gdata
-    use_hl_gtk=fbool(gtk_check_button_get_active(use_hl_gtk_button))
+    use_hl_gtk=c_f_logical(gtk_check_button_get_active(use_hl_gtk_button))
     write(*,*)"use high level interface = ",use_hl_gtk
   end subroutine use_hl_gtk_toggled
 
@@ -344,7 +334,7 @@ contains
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: include_files_toggled
     type(c_ptr), value :: widget, gdata
-    include_files=fbool(gtk_check_button_get_active(include_files_button))
+    include_files=c_f_logical(gtk_check_button_get_active(include_files_button))
     write(*,*)"generate include files = ",include_files
   end subroutine include_files_toggled
 
@@ -353,7 +343,7 @@ contains
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: widgetshandlers_toggled
     type(c_ptr), value :: widget, gdata
-    widgetshandlers=fbool(gtk_check_button_get_active(widgetshandlers_button))
+    widgetshandlers=c_f_logical(gtk_check_button_get_active(widgetshandlers_button))
     write(*,*)"generate separate files for widgets and handlers = ",widgetshandlers
   end subroutine widgetshandlers_toggled
 
