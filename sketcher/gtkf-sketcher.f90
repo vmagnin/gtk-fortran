@@ -110,18 +110,6 @@ contains
     end if
   end subroutine C_F_string_ptr
 
-
-  function gbool_equal_fbool(gbool,fbool) result(ret)
-    integer(c_int), intent(in) :: gbool
-    logical, intent(in) :: fbool
-    logical :: ret
-    if (((gbool.eq.true).and.(fbool)).or.((gbool.eq.false).and.(.not.fbool))) then
-      ret=.true.
-    else
-      ret=.false.
-    endif
-    write(*,*) gbool,fbool,ret
-  end function gbool_equal_fbool
 end module strings
 
 
