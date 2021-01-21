@@ -1,7 +1,7 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 !
-! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+! This file is part of the gtk-fortran GTK Fortran Interface library.
 !
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 ! GTK Fortran Code Sketcher using Glade3 UI definitions
 ! Contributed by Jens Hunger
 ! Last modifications: Harris Snyder 2020-07-11
-! vmagnin 2020-10-16, 2021-01-19
+! vmagnin 2020-10-16, 2021-01-21
 
 module widgets
   ! declares the used GTK widgets
@@ -182,6 +182,10 @@ module connect
 
   contains
 
+! FIXME: In GTK 3, those two callback functions were used with gtk_builder_connect_signals_full()
+! to obtain informations about signals defined in the UI file.
+! In GTK 4, gtk_builder_connect_signals_full() is gone. We have not yet found a solution
+! to replace it.
   subroutine count_connections (builder, object, signal_name, handler_name, connect_object, flags, user_data) bind(c)
     use iso_c_binding, only: c_ptr, c_char, c_int
     type(c_ptr), value                     :: builder        !a GtkBuilder
@@ -418,7 +422,8 @@ contains
     enddo
 
     n_connections=0
-    ! Here, we need to count connections for the allocation of the connections array
+    ! FIXME: here, we need to count connections for the allocation of the connections array
+    ! But in GTK 4, gtk_builder_connect_signals_full() is gone.
     write(f_string,*) n_connections," signal connections found"
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
     ! Need to be unreferenced because b will be used a second time:
@@ -434,7 +439,10 @@ contains
 
     b = gtk_builder_new ()
     guint = gtk_builder_add_from_file (b, filename(1:len_trim(filename))//c_null_char, error)
-    ! Here, we must get connections
+    ! FIXME: here, we must get connections.
+    ! But in GTK 4, gtk_builder_connect_signals_full() is gone.
+    fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//"The GTK 4 version of gtkf-sketcher&
+                     & can not detect signals in the UI file,"//c_new_line//" for the moment!"
     call g_object_unref (b)
 
     ! All the infos are printed in the GtkTextBuffer:
