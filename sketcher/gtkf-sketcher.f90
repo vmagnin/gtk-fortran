@@ -68,7 +68,7 @@ module strings
   use widgets
   use gtk, only: c_null_char, TRUE, FALSE
   use g, only: g_chdir
-  use gtk_sup, only: c_f_logical
+  use gtk_sup, only: c_f_logical, f_c_logical
 
 contains
 
@@ -122,17 +122,6 @@ contains
     endif
     write(*,*) gbool,fbool,ret
   end function gbool_equal_fbool
-
-
-  function gbool(fbool) result(ret)
-    logical, intent(in) :: fbool
-    integer(c_int) :: ret
-    if (fbool) then
-      ret=true
-    else
-      ret=false
-    endif
-  end function gbool
 end module strings
 
 
@@ -876,14 +865,14 @@ contains
     print *, "PWD: ", TRIM(ADJUSTL(working_dir))
 
     call load_default_options
-    call gtk_check_button_set_active (create_subdir_button, gbool(create_subdir))
-    call gtk_check_button_set_active (create_handlerfiles_button, gbool(create_handlerfiles))
-    call gtk_check_button_set_active (overwrite_handlerfiles_button, gbool(overwrite_handlerfiles))
-    call gtk_check_button_set_active (widget_symbols_button, gbool(widget_symbols))
-    call gtk_check_button_set_active (update_used_functions_button, gbool(update_used_functions))
-    call gtk_check_button_set_active (use_hl_gtk_button, gbool(use_hl_gtk))
-    call gtk_check_button_set_active (include_files_button, gbool(include_files))
-    call gtk_check_button_set_active (widgetshandlers_button, gbool(widgetshandlers))
+    call gtk_check_button_set_active (create_subdir_button, f_c_logical(create_subdir))
+    call gtk_check_button_set_active (create_handlerfiles_button, f_c_logical(create_handlerfiles))
+    call gtk_check_button_set_active (overwrite_handlerfiles_button, f_c_logical(overwrite_handlerfiles))
+    call gtk_check_button_set_active (widget_symbols_button, f_c_logical(widget_symbols))
+    call gtk_check_button_set_active (update_used_functions_button, f_c_logical(update_used_functions))
+    call gtk_check_button_set_active (use_hl_gtk_button, f_c_logical(use_hl_gtk))
+    call gtk_check_button_set_active (include_files_button, f_c_logical(include_files))
+    call gtk_check_button_set_active (widgetshandlers_button, f_c_logical(widgetshandlers))
   end subroutine default_options
 
 
