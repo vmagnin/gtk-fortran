@@ -68,7 +68,7 @@ module strings
   use widgets
   use gtk, only: c_null_char, TRUE, FALSE
   use g, only: g_chdir
-  use gtk_sup, only: c_f_logical, f_c_logical
+  use gtk_sup, only: c_f_logical, f_c_logical, fdate, copy_file
 
 contains
 
@@ -216,26 +216,8 @@ module handlers
   use connect
 
   implicit none
-  private :: fdate
 
 contains
-
-  subroutine copy_file(source,destination)
-    character(*),intent(in) :: source
-    character(*),intent(in) :: destination
-    character(len=256,kind=c_char)::line
-    integer::status_read
-    open(50, file=destination, action='write')
-    open(60, file=source, action='read')
-    do
-      read(60,'(A)',iostat=status_read) line
-      if ( status_read /= 0 ) exit
-      write(50,'(A)')line(1:len_trim(line))
-    enddo
-    close(60)
-    close(50)
-  end subroutine copy_file
-
 
   function delete_event (widget, event, gdata) result(ret)  bind(c)
     use iso_c_binding, only: c_ptr, c_int
@@ -885,20 +867,6 @@ contains
     call g_signal_connect(about_dialog, "close-request"//c_null_char, &
                                     & c_funloc(gtk_widget_hide))
   end subroutine show_about_dialog
-
-
-  ! Contributed by IanH0073 (issue #81)
-  function fdate()
-    character(29) :: fdate
-    character(8) :: date
-    character(10) :: time
-    character(5) :: zone
-
-    call date_and_time(date, time, zone)
-    fdate = date(1:4) // '-' // date(5:6) // '-' // date(7:8)  &
-            // 'T' // time(1:2) // ':' // time(3:4) // ':' // time(5:10)  &
-            // zone(1:3) // ':' // zone(4:5)
-  end function fdate
 end module handlers
 
 

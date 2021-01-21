@@ -24,7 +24,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
-! vmagnin 2020-06-08 (GTK 4)
+! vmagnin 2020-06-08 (GTK 4), 2021-01-21
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
@@ -44,7 +44,6 @@ module gtk_sup
   ! GValue: Pseudo type definition.
   ! GtkTextIter: Type definition.
   ! GError: Type definition.
-  ! Various GTK_STOCK strings.
 
   use iso_c_binding
   use gtk, only:  TRUE, FALSE
@@ -56,7 +55,7 @@ module gtk_sup
           & convert_c_string_scalar, convert_c_string_array, &
           & convert_c_string_scalar_cptr, convert_c_string_array_cptr, &
           & convert_f_string_a, convert_f_string_s, c_f_logical, f_c_logical4, &
-          & f_c_logical1
+          & f_c_logical1, fdate, copy_file
   !+
   ! Gtype
   ! The various Gtype definitions.
@@ -654,5 +653,37 @@ contains
     endif
 
   end function is_UNIX_OS
+
+  ! Contributed by IanH0073 (issue #81)
+  function fdate()
+    character(29) :: fdate
+    character(8) :: date
+    character(10) :: time
+    character(5) :: zone
+
+    call date_and_time(date, time, zone)
+    fdate = date(1:4) // '-' // date(5:6) // '-' // date(7:8)  &
+            // 'T' // time(1:2) // ':' // time(3:4) // ':' // time(5:10)  &
+            // zone(1:3) // ':' // zone(4:5)
+  end function fdate
+
+  ! A function to copy a text file
+  ! Used especially in sketcher/gtkf-sketcher.f90
+  subroutine copy_file(source, destination)
+    character(*),intent(in) :: source
+    character(*),intent(in) :: destination
+    character(len=256,kind=c_char) :: line
+    integer :: status_read
+
+    open(50, file=destination, action='write')
+    open(60, file=source, action='read')
+    do
+      read(60,'(A)',iostat=status_read) line
+      if ( status_read /= 0 ) exit
+      write(50,'(A)')line(1:len_trim(line))
+    enddo
+    close(60)
+    close(50)
+  end subroutine copy_file
 
 end module gtk_sup
