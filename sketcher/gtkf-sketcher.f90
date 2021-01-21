@@ -381,6 +381,8 @@ contains
 
     filters(1) = "*.glade"
     filtnames(1) = "Glade UI file"
+    filters(2) = "*.ui"
+    filtnames(2) = "UI file"
 
     isel = hl_gtk_file_chooser_show(chfile, cdir=working_dir, create=FALSE,&
          & title="Select input file"//c_null_char, filter=filters, &
