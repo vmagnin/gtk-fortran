@@ -133,8 +133,9 @@ module connect
   & g_value_set_string, g_value_unset, &
   & g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
-  use gtk_hl, only: hl_gtk_file_chooser_show, gtktreeiter, gvalue, &
-  & hl_gtk_message_dialog_show, G_TYPE_STRING
+  use gtk_hl, only: hl_gtk_file_chooser_show, hl_gtk_message_dialog_show
+
+  use gtk_sup, only: gtktreeiter, gvalue, G_TYPE_STRING
 
   implicit none
 
