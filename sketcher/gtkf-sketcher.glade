@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <object class="GtkTextBuffer" id="fileinfo_buffer">
-    <property name="text" translatable="yes">No Glade3 file loaded yet.</property>
+    <property name="text" translatable="yes">No UI file loaded yet.</property>
   </object>
   <object class="GtkListStore" id="licenses">
     <columns>

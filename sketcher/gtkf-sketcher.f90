@@ -20,7 +20,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
-! GTK Fortran Code Sketcher using Glade3 UI definitions
+! GTK Fortran Code Sketcher using UI definitions
 ! Contributed by Jens Hunger
 ! Last modifications: Harris Snyder 2020-07-11
 ! vmagnin 2020-10-16, 2021-01-21
@@ -379,7 +379,7 @@ contains
     ret = FALSE
 
     filters(1) = "*.glade"
-    filtnames(1) = "Glade3 file"
+    filtnames(1) = "Glade UI file"
 
     isel = hl_gtk_file_chooser_show(chfile, cdir=working_dir, create=FALSE,&
          & title="Select input file"//c_null_char, filter=filters, &
@@ -491,8 +491,8 @@ contains
     &"@GTKF_PROG_PREFIX@"
 
     if (.not.file_loaded) then
-      status_read=hl_gtk_message_dialog_show((/"Please load some Glade3 UI file first!"/),&
-        & GTK_BUTTONS_OK, title="No Glade3 file loaded yet"//c_null_char, &
+      status_read=hl_gtk_message_dialog_show((/"Please load some UI file first!"/),&
+        & GTK_BUTTONS_OK, title="No UI file loaded yet"//c_null_char, &
         & parent=window)
       ret = FALSE
       return
@@ -766,7 +766,7 @@ contains
       write(50,'(A)')"  ! create a new GtkBuilder object"
       write(50,'(A)')"  builder = gtk_builder_new ()"
       write(50,'(A)')""
-      write(50,'(A)')"  ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object"
+      write(50,'(A)')"  ! parse the UI XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object"
       write(50,'(A)')"  guint = gtk_builder_add_from_file (builder, """//subdir(1:len_trim(subdir))//".glade""//c_null_char, error)"
       write(50,'(A)')""
       call combobox_get_active_string_value(appwindow_selector, 0_c_int, appwindow)
@@ -798,7 +798,7 @@ contains
       endif
       write(50,'(A)')""
       write(50,'(A)')"  ! use GModule to look at the applications symbol table to find the function name"
-      write(50,'(A)')"  ! that matches the handler name specified in Glade3"
+      write(50,'(A)')"  ! that matches the handler name specified in the UI file"
       write(50,'(A)')""
       write(50,'(A)')"  ! free all memory used by XML stuff"
       write(50,'(A)')"  call g_object_unref (builder)"
@@ -921,7 +921,7 @@ program gtkfsketcher
   ! create a new GtkBuilder object
   builder = gtk_builder_new ()
 
-  ! parse the Glade3 XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
+  ! parse the UI XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
   guint = gtk_builder_add_from_file (builder, "gtkf-sketcher.glade"//c_null_char, error)
   if (guint == 0) then
      print *, "Could not open gtkf-sketcher.glade"
@@ -953,9 +953,6 @@ program gtkfsketcher
 
   ! get default options
   call default_options (builder, error)
-
-  ! use GModule to look at the applications symbol table to find the function name
-  ! that matches the handler name we specified in Glade3
 
   ! free all memory used by XML stuff
   call g_object_unref (builder)
