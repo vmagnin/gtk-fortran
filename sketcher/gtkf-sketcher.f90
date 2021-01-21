@@ -207,16 +207,6 @@ module handlers
 
 contains
 
-  function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
-    !GCC$ ATTRIBUTES DLLEXPORT :: delete_event
-    integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
-    call destroy (widget, gdata)
-    ret = FALSE
-  end function delete_event
-
-
   subroutine destroy (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: destroy
