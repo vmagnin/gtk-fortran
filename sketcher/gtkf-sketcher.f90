@@ -161,7 +161,7 @@ module connect
   & gtk_window_destroy, g_signal_connect_swapped, g_signal_connect
 
   use g, only: g_object_unref, g_slist_length, g_slist_nth_data, &
-  & g_value_get_string, &
+  & g_value_get_string, g_slist_free, &
   & g_mkdir_with_parents, g_value_init, &
   & g_value_set_string, g_value_unset, &
   & g_main_loop_new, g_main_loop_run, g_main_loop_quit
@@ -278,6 +278,8 @@ contains
 
     inquire(unit=99,opened=lopened)
     if (lopened) close(99)
+
+    call g_slist_free(gslist)
 
     print *, "my destroy"
     call g_main_loop_quit (my_gmainloop)
