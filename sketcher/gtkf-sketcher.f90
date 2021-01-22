@@ -251,11 +251,10 @@ contains
   end subroutine widgetshandlers_toggled
 
 
-  function file_open (widget, gdata ) result(ret)  bind(c)
+  subroutine file_open (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
     use gtk_sup, only: is_UNIX_OS
     !GCC$ ATTRIBUTES DLLEXPORT :: file_open
-    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
 
     integer(kind=c_int) :: isel
@@ -271,8 +270,6 @@ contains
     type(c_ptr) :: val
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
-
-    ret = FALSE
 
     filters(1) = "*.glade"
     filtnames(1) = "Glade UI file"
@@ -363,7 +360,7 @@ contains
     call g_value_unset(val)
 
     file_loaded=.true.
-  end function file_open
+  end subroutine file_open
 
 
   subroutine combobox_get_active_string_value(combobox,column,text)
@@ -385,10 +382,9 @@ contains
   end subroutine combobox_get_active_string_value
 
 
-  function write_files (widget, gdata ) result(ret)  bind(c)
+  subroutine write_files (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: write_files
-    integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     integer(kind=c_int) :: valid
     character(len=256,kind=c_char)::subdir, license_file, line, &
@@ -406,7 +402,6 @@ contains
       status_read=hl_gtk_message_dialog_show((/"Please load some UI file first!"/),&
         & GTK_BUTTONS_OK, title="No UI file loaded yet"//c_null_char, &
         & parent=window)
-      ret = FALSE
       return
     else
       print *, "1) Working dir: ", TRIM(ADJUSTL(working_dir))
@@ -731,9 +726,7 @@ contains
 
       files_written=.true.
     endif
-
-    ret = FALSE
-  end function write_files
+  end subroutine write_files
 
 
   subroutine save_default_options (widget, gdata ) bind(c)

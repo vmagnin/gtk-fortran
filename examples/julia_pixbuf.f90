@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-08-25
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2021-01-22
 !------------------------------------------------------------------------------
 
 module global_widgets
@@ -74,18 +74,14 @@ module handlers
 
 contains
   ! Our callback function before destroying the window:
-  recursive function destroy_signal(widget, event, gdata) result(ret)  bind(c)
-    integer(c_int)                 :: ret
+  recursive subroutine destroy_signal(widget, event, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, event, gdata
 
     print *, "Your destroy_signal() function has been invoked !"
     ! Some functions and subroutines need to know that it's finished:
     run_status = FALSE
-    ! Returns FALSE to propagate the event further:
-    ret = FALSE
-
     call gtk_window_destroy(my_window)
-  end function destroy_signal
+  end subroutine destroy_signal
 
   ! This function is needed to update the GUI during long computations.
   ! https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
@@ -115,10 +111,10 @@ contains
   ! GtkButton signal emitted by the "Compute" button
   ! In this example, this function is declared recursive because it can be
   ! called a second time from the Julia_set() subroutine:
-  recursive function firstbutton (widget, gdata ) result(ret)  bind(c)
+  recursive subroutine firstbutton (widget, gdata ) bind(c)
     use global_widgets
 
-    integer(c_int)                 :: ret, message_id
+    integer(c_int)                 :: message_id
     type(c_ptr), value, intent(in) :: widget, gdata
     complex(kind(1d0))             :: c
     integer                        :: iterations
@@ -151,18 +147,15 @@ contains
     else
       print *, "Already computing !"
     end if
-
-    ret = FALSE
-  end function firstbutton
+  end subroutine firstbutton
 
   ! GtkComboBox signal emitted when the user selects predifined c values of
   ! interesting Julia sets in the combo box:
-  function firstCombo (widget, gdata ) result(ret)  bind(c)
+  subroutine firstCombo (widget, gdata ) bind(c)
     use iso_c_binding, only: c_double, c_f_pointer
     use gtk_sup, only: c_f_string_copy
     use global_widgets
 
-    integer(c_int)                 :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
     real(c_double)                 :: x, y
     integer                        :: choice
@@ -199,16 +192,13 @@ contains
     ! Update the spin buttons real(c) and imag(c):
     call gtk_spin_button_set_value (spinButton1, x)
     call gtk_spin_button_set_value (spinButton2, y)
-
-    ret = FALSE
-  end function firstCombo
+  end subroutine firstCombo
 
   ! GtkButton signal emitted by the button "Save as PNG":
-  function secondbutton (widget, gdata) result(ret)  bind(c)
+  subroutine secondbutton (widget, gdata) bind(c)
     use gtk_os_dependent, only: gdk_pixbuf_savev
     use global_widgets
 
-    integer(c_int)                 :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int)                 :: cstatus, message_id
 
@@ -228,18 +218,15 @@ contains
       message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(&
                          & statusBar, "Julia"//c_null_char), TRIM(string))
     end if
-
-    ret = FALSE
-  end function secondbutton
+  end subroutine secondbutton
 
   ! GtkToggleButton signal emitted when the "Pause" button is clicked.
   ! This function is declared recursive because it will be pressed a first time
   ! to pause and a second time to end pause (from the "do while" loop):
-  recursive function firstToggle (widget, gdata) result(ret)  bind(c)
+  recursive subroutine firstToggle (widget, gdata) bind(c)
     use iso_c_binding, only: c_long
     use global_widgets
 
-    integer(c_int)                 :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int)                 :: message_id
 
@@ -265,9 +252,7 @@ contains
       call gtk_statusbar_pop (statusBar, gtk_statusbar_get_context_id(statusBar,&
                             & "Julia"//c_null_char))
     end if
-
-    ret = FALSE
-  end function firstToggle
+  end subroutine firstToggle
 
   ! Callback function for the signal "activate" emitted by g_application_run().
   ! We use a subroutine because it should return void.

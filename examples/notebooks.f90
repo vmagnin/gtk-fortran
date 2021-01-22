@@ -75,9 +75,8 @@ contains
   !*************************************
 
   ! next page
-  function next_page_book (widget, gdata ) result(ret)  bind(c)
+  subroutine next_page_book (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
-    integer(c_int)     :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
 
     if (gtk_notebook_get_current_page(notebook_1) .eq. gtk_notebook_get_n_pages(notebook_1) - 1) then
@@ -85,13 +84,11 @@ contains
     else
       call gtk_notebook_next_page (notebook_1)
     endif
-    ret = FALSE
-  end function next_page_book
+  end subroutine next_page_book
 
 ! prev page
-  function prev_page_book (widget, gdata ) result(ret)  bind(c)
+  subroutine prev_page_book (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
-    integer(c_int)     :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
 
     if (gtk_notebook_get_current_page(notebook_1) .eq. 0) then
@@ -99,23 +96,19 @@ contains
     else
       call gtk_notebook_prev_page (notebook_1)
     endif
-    ret = FALSE
-  end function prev_page_book
+  end subroutine prev_page_book
 
 ! Rotate the position of the tabs
-  function rotate_book (widget, gdata ) result(ret)  bind(c)
+  subroutine rotate_book (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
-    integer(c_int)     :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
 
     call gtk_notebook_set_tab_pos (notebook_1, gtk_notebook_get_tab_pos(notebook_1)+1_c_int)
-    ret = FALSE
-  end function rotate_book
+  end subroutine rotate_book
 
 ! Add/Remove the page tabs and the borders
-  function tabsborder_book (widget, gdata ) result(ret)  bind(c)
+  subroutine tabsborder_book (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
-    integer(c_int)     :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int) :: tval, bval
 
@@ -125,13 +118,11 @@ contains
     if (gtk_notebook_get_show_border(notebook_1) == FALSE) bval = TRUE
     call gtk_notebook_set_show_tabs (notebook_1, tval)
     call gtk_notebook_set_show_border (notebook_1, bval)
-    ret = FALSE
-  end function tabsborder_book
+  end subroutine tabsborder_book
 
 ! Remove a page from the notebook
-  function remove_book (widget, gdata ) result(ret)  bind(c)
+  subroutine remove_book (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
-    integer(c_int)     :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int) :: page
 
@@ -142,9 +133,7 @@ contains
       ! Need to refresh the widget -- This forces the widget to redraw itself.
       call gtk_widget_queue_draw (notebook_1)
     end if
-
-    ret = FALSE
-  end function remove_book
+  end subroutine remove_book
 
   ! Callback function for the signal "activate" emitted by g_application_run().
   ! We use a subroutine because it should return void.

@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin,
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
-! Last modifications: vmagnin 2020-06-17 (GTK 4), 2020-08-25
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2021-01-22
 !------------------------------------------------------------------------------
 
 module handlers
@@ -82,7 +82,7 @@ contains
     dcname = gdk_device_get_name(device)
     call c_f_string(dcname, dname)
     print *, "Device: ",trim(dname)
-end subroutine button_event_h
+  end subroutine button_event_h
 
   ! GTK 4: Click callback function ("released" signal):
   subroutine button_release_h(gesture, n_press, x, y, gdata) bind(c)
@@ -102,14 +102,12 @@ end subroutine button_event_h
   end subroutine motion_event_h
 
   ! GTK 4 : Scroll callback function ("scroll" signal):
-  function scroll_event_h(controller, x, y, gdata) result(ret) bind(c)
+  subroutine scroll_event_h(controller, x, y, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: controller, gdata
     real(c_double), value, intent(in) :: x, y
-    logical(c_bool) :: ret
 
     print *, "Scroll event detected : x,y= ", x, y
-    ret = .true.
-  end function scroll_event_h
+  end subroutine scroll_event_h
 
   ! GTK 4 : motion callback function ("enter" signal):
   subroutine enter_event_h(controller, x, y, gdata) bind(c)

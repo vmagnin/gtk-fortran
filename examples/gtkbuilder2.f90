@@ -60,35 +60,29 @@ contains
   end subroutine destroy
 
   ! "clicked" is a GtkButton signal
-  function hello (widget, gdata ) result(ret)  bind(c)
+  subroutine hello (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: hello
-    integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Hello World!"
-    ret = FALSE
-  end function hello
+  end subroutine hello
 
-  function button1clicked (widget, gdata ) result(ret)  bind(c)
+  subroutine button1clicked (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: button1clicked
-    integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Button 1 clicked!"
-    ret = FALSE
-  end function button1clicked
+  end subroutine button1clicked
 
-  function button2clicked (widget, gdata ) result(ret)  bind(c)
+  subroutine button2clicked (widget, gdata ) bind(c)
     use iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: button2clicked
-    integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Button 2 clicked!"
-    ret = FALSE
-  end function button2clicked
+  end subroutine button2clicked
 end module handlers
 
 program gtkbuilder

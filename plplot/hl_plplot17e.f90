@@ -233,18 +233,15 @@ module handlers_ex17
   implicit none
 
 contains
-  function delete_cb (widget, event, gdata) result(ret)  bind(c)
-
-    integer(c_int)    :: ret
-    type(c_ptr), value :: widget, event, gdata
+  subroutine delete_cb (widget, event, gdata) bind(c)
+    type(c_ptr), value, intent(in) :: widget, event, gdata
 
     call close_strip()
     run_status = FALSE
-    ret = FALSE
-  end function delete_cb
+  end subroutine delete_cb
 
   subroutine quit_cb(widget, gdata) bind(c)
-    type(c_ptr), value :: widget, gdata
+    type(c_ptr), value, intent(in) :: widget, gdata
 
     call close_strip()
     run_status = FALSE

@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! Event handling & Zoom : James Tappin
-! Last modifications: vmagnin 2020-12-18
+! Last modifications: vmagnin 2020-12-18, 2021-01-22
 !------------------------------------------------------------------------------
 
 module handlers
@@ -153,10 +153,9 @@ contains
   end subroutine click_cb
 
   ! Scroll callback function ("scroll" signal):
-  recursive function scroll_cb(controller, x, y, gdata) result(ret) bind(c)
+  recursive subroutine scroll_cb(controller, x, y, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: controller, gdata
     real(c_double), value, intent(in) :: x, y
-    logical(c_bool) :: ret
     type(c_ptr) :: drawing_area
     ! Mathematical coordinates:
     real(kind=c_double) :: xr, yr, xx, yy
@@ -165,8 +164,6 @@ contains
     print *, "Scroll x,y= ", x, y
     ! We need to redraw the area:
     drawing_area = gtk_event_controller_get_widget(controller)
-
-    ret = .true.
 
     if (computing_flag) return             ! One wheel step at a time !
 
@@ -212,19 +209,17 @@ contains
     id = gtk_statusbar_push(status_bar, 0_c_int, &
          & "Left|Centre: mark region corner, "//&
          & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
-  end function scroll_cb
+  end subroutine scroll_cb
 
   ! Motion callback function ("motion" signal):
-  function motion_cb(controller, x, y, gdata) result(ret) bind(c)
+  subroutine motion_cb(controller, x, y, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: controller, gdata
     real(c_double), value, intent(in) :: x, y
-    logical(c_bool) :: ret
 
     print *, "Motion x,y= ", x, y
     mouse_x = nint(x)
     mouse_y = nint(y)
-    ret = .true.
-  end function motion_cb
+  end subroutine motion_cb
 
   subroutine set_limits()
     mxmin = -2.0_c_double
