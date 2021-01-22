@@ -21,7 +21,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !-------------------------------------------------------------------------------
 ! Vincent MAGNIN, 2020-05-12, based on gtkzero_gapp.f90
-! Last modified: 2020-05-18
+! Last modified: 2021-01-22
 ! A GTK application with two buttons.
 ! https://developer.gnome.org/gtk4/unstable/gtk-getting-started.html
 ! https://developer.gnome.org/gio/stable/GApplication.html
@@ -106,22 +106,21 @@ contains
 
   end subroutine activate
 
-  ! The two callback functions for the button1:
-  function hello(widget, gdata) result(ret)  bind(c)
-    integer(c_int)                  :: ret
+  ! The two callback functions for the button1, here subroutines
+  ! because the C prototype returns void:
+  ! void user_function (GtkButton *button, gpointer   user_data)
+  ! https://developer.gnome.org/gtk4/stable/GtkButton.html#GtkButton-clicked
+  subroutine hello(widget, gdata) bind(c)
     type(c_ptr), value, intent(in)  :: widget, gdata
 
     print *, "So I say Hello GTK World!"
-    ret = FALSE
-  end function hello
+  end subroutine hello
 
-  function button1clicked(widget, gdata) result(ret)  bind(c)
-    integer(c_int)                  :: ret
+  subroutine button1clicked(widget, gdata) bind(c)
     type(c_ptr), value, intent(in)  :: widget, gdata
 
     print *, "Button 1 clicked!"
-    ret = FALSE
-  end function button1clicked
+  end subroutine button1clicked
 
 end module handlers
 
