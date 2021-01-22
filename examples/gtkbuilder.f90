@@ -21,7 +21,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Jens Hunger, 03-27-2011
-! Last modified: vmagnin 2020-06-20 (GTK 4 version)
+! Last modified: vmagnin 2020-06-20 (GTK 4 version), 2021-01-22
 !------------------------------------------------------------------------------
 
 module widgets
@@ -50,15 +50,6 @@ contains
   !*************************************
   ! User defined event handlers go here
   !*************************************
-  ! Note that events are a special type of signals, coming from the
-  ! X Window system. Then callback functions must have an event argument:
-  function delete_event (widget, event, gdata) result(ret)  bind(c)
-    integer(c_int)    :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-
-    print *, "my delete_event"
-    ret = FALSE
-  end function delete_event
 
   ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
@@ -112,8 +103,7 @@ module connect
       type(C_FUNPTR) :: handler_ptr
    end type handler
    
-   type(handler),dimension(5)::h=(/&
-    handler("delete_event"//c_null_char, c_null_funptr),&
+   type(handler),dimension(4)::h=(/&
     handler("destroy"//c_null_char, c_null_funptr),&
     handler("hello"//c_null_char, c_null_funptr),&
     handler("button1clicked"//c_null_char, c_null_funptr),&
@@ -172,11 +162,10 @@ module connect
   ! and g95 e.g.:
   ! Variable 'destroy' cannot appear in an initialization expression
       if (.NOT.(handlers_initialized)) then
-         h(1)%handler_ptr=c_funloc(delete_event)
-         h(2)%handler_ptr=c_funloc(destroy)
-         h(3)%handler_ptr=c_funloc(hello)
-         h(4)%handler_ptr=c_funloc(button1clicked)
-         h(5)%handler_ptr=c_funloc(button2clicked)
+         h(1)%handler_ptr=c_funloc(destroy)
+         h(2)%handler_ptr=c_funloc(hello)
+         h(3)%handler_ptr=c_funloc(button1clicked)
+         h(4)%handler_ptr=c_funloc(button2clicked)
          handlers_initialized=.true.
       endif
 
