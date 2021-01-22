@@ -22,7 +22,7 @@
 !
 ! Example using GtkBuilder
 ! Jens Hunger, 04-01-2011
-! Last modified: vmagnin 2020-06-20 (GTK 4 version)
+! Last modified: vmagnin 2020-06-20 (GTK 4 version), 2021-01-22
 
 module widgets
   ! declares the used GTK widgets
@@ -48,17 +48,6 @@ contains
   !*************************************
   ! User defined event handlers go here
   !*************************************
-  ! Note that events are a special type of signals, coming from the
-  ! X Window system. Then callback functions must have an event argument:
-  function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
-    !GCC$ ATTRIBUTES DLLEXPORT :: delete_event
-    integer(c_int)    :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-
-    print *, "my delete_event"
-    ret = FALSE
-  end function delete_event
 
   ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
