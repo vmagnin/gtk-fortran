@@ -35,13 +35,12 @@ module widgets
 end module
 
 module handlers
-  ! This module is just copied from gtkhello2.f90
   use widgets
 
   use gtk, only: gtk_builder_add_from_file, gtk_builder_get_object, &
-  & gtk_builder_new, gtk_widget_show, FALSE, gtk_init, g_signal_connect
+  & gtk_builder_new, gtk_widget_show, FALSE, gtk_init
 
-  use g, only: g_object_unref, g_signal_connect_object, &
+  use g, only: g_object_unref, &
              & g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   implicit none
@@ -85,79 +84,6 @@ contains
     end if
   end subroutine button2clicked
 end module handlers
-
-
-module connect
-! replacement for gtk_builder_connect_signals from GModule (see also gtkbuilder2.f90)
-   use handlers
-   use gtk_sup, only: C_F_string_chars
-
-   implicit none
-
-   type handler
-      character(kind=c_char,len=30) ::handler_name
-      type(C_FUNPTR) :: handler_ptr
-   end type handler
-   
-   type(handler),dimension(4)::h=(/&
-    handler("destroy"//c_null_char, c_null_funptr),&
-    handler("hello"//c_null_char, c_null_funptr),&
-    handler("button1clicked"//c_null_char, c_null_funptr),&
-    handler("button2clicked"//c_null_char, c_null_funptr)&
-    /)
-
-   logical::handlers_initialized=.false.
-
-   contains
-
-!void        (*GtkBuilderConnectFunc)        (GtkBuilder *builder,
-!                                             GObject *object,
-!                                             const gchar *signal_name,
-!                                             const gchar *handler_name,
-!                                             GObject *connect_object,
-!                                             GConnectFlags flags,
-!                                             gpointer user_data);
-!This is the signature of a function used to connect signals. 
-!It is used by the gtk_builder_connect_signals() and gtk_builder_connect_signals_full() methods. 
-!It is mainly intended for interpreted language bindings, but could be useful where the programmer wants 
-!more control over the signal connection process.
-
-   subroutine connect_signals (builder, object, signal_name, handler_name, connect_object, flags, user_data) bind(c)
-      use iso_c_binding, only: c_ptr, c_char, c_int
-      type(c_ptr), value                     :: builder        !a GtkBuilder
-      type(c_ptr), value                     :: object         !object to connect a signal to
-      character(kind=c_char), dimension(*)   :: signal_name    !name of the signal
-      character(kind=c_char), dimension(*)   :: handler_name   !name of the handler
-      type(c_ptr), value                     :: connect_object !a GObject, if non-NULL, use g_signal_connect_object()
-      integer(c_int), value                  :: flags          !GConnectFlags to use
-      type(c_ptr), value                     :: user_data      !user data 
-      
-      integer                                :: i
-      character(len=30)                      :: name1, name2
-
-  ! this is necessary because gfortran gives error on using c_funloc in an initialization expression:
-  ! Function 'c_funloc' in initialization expression at must be an intrinsic function
-  ! and g95 e.g.:
-  ! Variable 'destroy' cannot appear in an initialization expression
-      if (.NOT.(handlers_initialized)) then
-         h(1)%handler_ptr=c_funloc(destroy)
-         h(2)%handler_ptr=c_funloc(hello)
-         h(3)%handler_ptr=c_funloc(button1clicked)
-         h(4)%handler_ptr=c_funloc(button2clicked)
-         handlers_initialized=.true.
-      endif
-
-      call C_F_string_chars(handler_name, name1)
-      print*,"connecting signal "//name1
-      do i=1,size(h)
-         call C_F_string_chars(h(i)%handler_name, name2)
-         if (name1 .eq. name2) then
-            call g_signal_connect (object, signal_name, h(i)%handler_ptr)
-            exit
-         endif
-      enddo
-   end subroutine connect_signals
-end module connect
 
 
 program gtkbuilder
