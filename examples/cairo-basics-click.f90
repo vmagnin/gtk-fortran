@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! GTK 4 version contributed by Vincent Magnin
-! Last modification: vmagnin 2020-05-28
+! Last modification: vmagnin 2020-05-28, 2021-01-22
 
 module handlers
   use iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_funptr, &
@@ -109,10 +109,9 @@ contains
   end subroutine click_cb
 
   ! Scroll callback function ("scroll" signal):
-  function scroll_cb(controller, x, y, gdata) result(ret) bind(c)
+  subroutine scroll_cb(controller, x, y, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: controller, gdata
     real(c_double), value, intent(in) :: x, y
-    logical(c_bool) :: ret
     type(c_ptr) :: widget
 
     radius = radius + y
@@ -120,9 +119,7 @@ contains
     ! We need to redraw the area:
     widget = gtk_event_controller_get_widget(controller)
     call gtk_widget_queue_draw(widget);
-
-    ret = .true.
-  end function scroll_cb
+  end subroutine scroll_cb
 
   ! "It is called whenever GTK needs to draw the contents of the drawing area
   ! to the screen."

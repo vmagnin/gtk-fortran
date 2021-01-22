@@ -299,30 +299,25 @@ contains
   end subroutine destroy
 
   ! GtkButton signal:
-  function firstbutton (widget, gdata) result(ret)  bind(c)
+  subroutine firstbutton (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value, intent(in) :: widget, gdata
-    integer(c_int) :: ret
 
     print *, "Hello World!"
-    ret = FALSE
-  end function firstbutton
+  end subroutine firstbutton
 
   ! GtkButton signal:
-  function secondbutton (widget, gdata) result(ret)  bind(c)
+  subroutine secondbutton (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value, intent(in) :: widget, gdata
-    integer(c_int) :: ret
 
     call gtk_progress_bar_pulse (progress)
-    ret = FALSE
-  end function secondbutton
+  end subroutine secondbutton
 
   ! GtkButton signal:
-  function aboutbutton (widget, gdata) result(ret)  bind(c)
+  subroutine aboutbutton (widget, gdata) bind(c)
     use iso_c_binding, only: c_ptr
     type(c_ptr), value, intent(in) :: widget, gdata
-    integer(c_int) :: ret
 
     dialog = gtk_about_dialog_new()
     ! https://developer.gnome.org/gtk4/stable/GtkWindow.html#gtk-window-set-transient-for
@@ -344,8 +339,7 @@ contains
     !call gtk_about_dialog_set_authors(dialog, authors_ptr)
  
     call gtk_widget_show(dialog)
-    ret = FALSE
-  end function aboutbutton
+  end subroutine aboutbutton
 end module handlers
 
 !*******************************************************************************
