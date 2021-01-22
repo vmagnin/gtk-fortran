@@ -73,7 +73,7 @@ module connect
   & FALSE, c_null_char, c_null_ptr, TRUE, gtk_init, gtk_builder_get_objects, &
   & gtk_buildable_get_buildable_id, gtk_text_buffer_set_text,&
   & gtk_combo_box_get_active, gtk_combo_box_set_active, &
-  & gtk_combo_box_get_model, &
+  & gtk_combo_box_get_model, gtk_widget_get_root, &
   & gtk_tree_model_get_value, gtk_tree_model_iter_nth_child,&
   & gtk_check_button_get_active, gtk_check_button_set_active,GTK_BUTTONS_OK,&
   & gtk_list_store_append, gtk_list_store_set_value, gtk_list_store_clear,&
@@ -264,9 +264,9 @@ contains
 
     integer(c_int) :: guint, i
     type(c_ptr) :: error = c_null_ptr
-    type(c_ptr) :: gpointer,object_name_ptr
+    type(c_ptr) :: gpointer,object_name_ptr, root
     type(c_ptr) :: b
-    character(len=128) :: f_string
+    character(len=128) :: f_string, last_root
     type(c_ptr) :: val
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
@@ -313,20 +313,21 @@ contains
     gslist = gtk_builder_get_objects(b)
     write(f_string,*) g_slist_length(gslist)," objects found"
     fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
+    last_root=""
     do i=0, g_slist_length(gslist)-1
       gpointer=g_slist_nth_data (gslist,i)
       object_name_ptr=gtk_buildable_get_buildable_id (gpointer)
       call C_F_string_ptr(object_name_ptr, f_string)
-      ! FIXME: in GTK 3, gtk_widget_is_toplevel() was used to identify the toplevel
-      ! object in the UI file. In GTK 4, that function is gone. We could try to
-      ! test if the object class is "GtkApplicationWindow". For the moment, we
-      ! just suppose it's name will be "window"...
-      if (f_string .eq. "window") then
+      fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
+      ! We add the names of the toplevel widgets in a list:
+      root =  gtk_buildable_get_buildable_id(gtk_widget_get_root(gpointer))
+      call C_F_string_ptr(root, f_string)
+      if ((f_string /= last_root).and.(f_string /= "")) then
         call gtk_list_store_append (toplevel_widgets,c_loc(iter))
         call g_value_set_string(val, f_string(1:len_trim(f_string))//c_null_char)
         call gtk_list_store_set_value (toplevel_widgets,c_loc(iter),0_c_int,val)
-      endif
-      fileinfo=fileinfo(1:len_trim(fileinfo))//c_new_line//f_string
+      end if
+      if (f_string /= "") last_root = f_string
     enddo
 
     n_connections=0
