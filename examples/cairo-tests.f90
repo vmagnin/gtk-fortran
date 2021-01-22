@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! GTK 4 version: vmagnin 2020-05-19
-! Last modification: vmagnin 2020-05-28
+! Last modification: vmagnin 2020-05-28, 2021-01-22
 !------------------------------------------------------------------------------
 
 module handlers
@@ -45,8 +45,7 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
   & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
 
-  use g, only: g_main_context_iteration, g_main_context_pending, &
-             & g_main_loop_quit
+  use g, only: g_main_context_iteration, g_main_context_pending
 
   use iso_c_binding
 
@@ -58,23 +57,8 @@ module handlers
   character(kind=c_char), dimension(:), pointer :: pixel
   integer(kind=c_int) :: nch, rowstride, width, height, pwidth, pheight
   logical :: write_png
-  logical :: computing = .false.
 
 contains
-  ! Our callback function before destroying the window:
-  function destroy_signal(widget, event, gdata) result(ret)  bind(c)
-    integer(c_int)                 :: ret
-    type(c_ptr), value, intent(in) :: widget, event, gdata
-
-    print *, "Your destroy_signal() function has been invoked !"
-    ! Some functions and subroutines need to know that it's finished:
-    run_status = FALSE
-    ! Returns FALSE to propagate the event further:
-    ret = FALSE
-    ! Makes the innermost invocation of the main loop return when it regains control:
-    if (.not. computing)   call g_main_loop_quit(my_gmainloop)
-  end function destroy_signal
-
   ! This function is needed to update the GUI during long computations.
   ! https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
   subroutine pending_events ()
