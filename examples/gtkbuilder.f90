@@ -90,6 +90,7 @@ end module handlers
 module connect
 ! replacement for gtk_builder_connect_signals from GModule (see also gtkbuilder2.f90)
    use handlers
+   use gtk_sup, only: C_F_string_chars
 
    implicit none
 
@@ -108,24 +109,6 @@ module connect
    logical::handlers_initialized=.false.
 
    contains
-
-! String routine from C_interface_module by Joseph M. Krahn
-! http://fortranwiki.org/fortran/show/c_interface_module
-! Copy a C string, passed as a char-array reference, to a Fortran string.
-   subroutine C_F_string_chars(C_string, F_string)
-    character(len=1,kind=C_char), intent(in) :: C_string(*)
-    character(len=*), intent(out) :: F_string
-    integer :: i
-
-    i=1
-    do while(C_string(i)/=c_null_char .and. i<=len(F_string))
-      F_string(i:i) = C_string(i)
-      i=i+1
-    end do
-
-    if (i<len(F_string)) F_string(i:) = ' '
-   end subroutine C_F_string_chars
-
 
 !void        (*GtkBuilderConnectFunc)        (GtkBuilder *builder,
 !                                             GObject *object,

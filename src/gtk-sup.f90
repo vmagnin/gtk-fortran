@@ -24,7 +24,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
-! vmagnin 2020-06-08 (GTK 4), 2021-01-21
+! vmagnin 2020-06-08 (GTK 4), 2021-01-22
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
@@ -55,7 +55,7 @@ module gtk_sup
           & convert_c_string_scalar, convert_c_string_array, &
           & convert_c_string_scalar_cptr, convert_c_string_array_cptr, &
           & convert_f_string_a, convert_f_string_s, c_f_logical, f_c_logical4, &
-          & f_c_logical1, fdate, copy_file
+          & f_c_logical1, fdate, copy_file, C_F_string_chars, C_F_string_ptr
   !+
   ! Gtype
   ! The various Gtype definitions.
@@ -230,7 +230,48 @@ contains
     gval%i64=(/0,0/)
   end subroutine clear_gvalue
 
+  !*********************************
   ! Some string conversion routines
+  !*********************************
+
+! String routine from C_interface_module by Joseph M. Krahn
+! http://fortranwiki.org/fortran/show/c_interface_module
+! Copy a C string, passed as a char-array reference, to a Fortran string.
+  subroutine C_F_string_chars(C_string, F_string)
+    character(len=1,kind=C_char), intent(in) :: C_string(*)
+    character(len=*), intent(out) :: F_string
+    integer :: i
+    i=1
+    do while(C_string(i)/=c_null_char .and. i<=len(F_string))
+      F_string(i:i) = C_string(i)
+      i=i+1
+    end do
+    if (i<len(F_string)) F_string(i:) = ' '
+  end subroutine C_F_string_chars
+
+! Copy a C string, passed by pointer, to a Fortran string.
+! If the C pointer is NULL, the Fortran string is blanked.
+! C_string must be NUL terminated, or at least as long as F_string.
+! If C_string is longer, it is truncated. Otherwise, F_string is
+! blank-padded at the end.
+  subroutine C_F_string_ptr(C_string, F_string)
+    type(C_ptr), intent(in) :: C_string
+    character(len=*), intent(out) :: F_string
+    character(len=1,kind=C_char), dimension(:), pointer :: p_chars
+    integer :: i
+    if (.not. C_associated(C_string)) then
+      F_string = ' '
+    else
+      call C_F_pointer(C_string,p_chars,[huge(0)])
+      i=1
+      do while(p_chars(i)/=c_null_char .and. i<=len(F_string))
+        F_string(i:i) = p_chars(i)
+        i=i+1
+      end do
+      if (i<len(F_string)) F_string(i:) = ' '
+    end if
+  end subroutine C_F_string_ptr
+
 
   ! Create a default character deferred length allocatable copy of the 
   ! value of a c string.

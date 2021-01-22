@@ -23,7 +23,7 @@
 ! GTK Fortran Code Sketcher using UI definitions
 ! Contributed by Jens Hunger
 ! Last modifications: Harris Snyder 2020-07-11
-! vmagnin 2020-10-16, 2021-01-21
+! vmagnin 2020-10-16, 2021-01-22
 
 module widgets
   ! declares the used GTK widgets
@@ -64,57 +64,9 @@ module widgets
   logical::widgetshandlers=.false.
 end module
 
-module strings
-  use widgets
-  use gtk, only: c_null_char, TRUE, FALSE
-  use g, only: g_chdir
-  use gtk_sup, only: c_f_logical, f_c_logical, fdate, copy_file
-
-contains
-
-! String routine from C_interface_module by Joseph M. Krahn
-! http://fortranwiki.org/fortran/show/c_interface_module
-! Copy a C string, passed as a char-array reference, to a Fortran string.
-  subroutine C_F_string_chars(C_string, F_string)
-    character(len=1,kind=C_char), intent(in) :: C_string(*)
-    character(len=*), intent(out) :: F_string
-    integer :: i
-    i=1
-    do while(C_string(i)/=c_null_char .and. i<=len(F_string))
-      F_string(i:i) = C_string(i)
-      i=i+1
-    end do
-    if (i<len(F_string)) F_string(i:) = ' '
-  end subroutine C_F_string_chars
-
-! Copy a C string, passed by pointer, to a Fortran string.
-! If the C pointer is NULL, the Fortran string is blanked.
-! C_string must be NUL terminated, or at least as long as F_string.
-! If C_string is longer, it is truncated. Otherwise, F_string is
-! blank-padded at the end.
-  subroutine C_F_string_ptr(C_string, F_string)
-    type(C_ptr), intent(in) :: C_string
-    character(len=*), intent(out) :: F_string
-    character(len=1,kind=C_char), dimension(:), pointer :: p_chars
-    integer :: i
-    if (.not. C_associated(C_string)) then
-      F_string = ' '
-    else
-      call C_F_pointer(C_string,p_chars,[huge(0)])
-      i=1
-      do while(p_chars(i)/=c_null_char .and. i<=len(F_string))
-        F_string(i:i) = p_chars(i)
-        i=i+1
-      end do
-      if (i<len(F_string)) F_string(i:) = ' '
-    end if
-  end subroutine C_F_string_ptr
-
-end module strings
-
 
 module connect
-  use strings
+  use widgets
 
   use gtk, only: gtk_builder_add_from_file, gtk_builder_get_object, &
   & gtk_builder_new, gtk_widget_show, gtk_widget_hide, &
@@ -128,14 +80,15 @@ module connect
   & gtk_window_destroy, g_signal_connect_swapped, g_signal_connect
 
   use g, only: g_object_unref, g_slist_length, g_slist_nth_data, &
-  & g_value_get_string, g_slist_free, &
+  & g_value_get_string, g_slist_free, g_chdir, &
   & g_mkdir_with_parents, g_value_init, &
   & g_value_set_string, g_value_unset, &
   & g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   use gtk_hl, only: hl_gtk_file_chooser_show, hl_gtk_message_dialog_show
 
-  use gtk_sup, only: gtktreeiter, gvalue, G_TYPE_STRING
+  use gtk_sup, only: gtktreeiter, gvalue, G_TYPE_STRING, c_f_logical, &
+  & f_c_logical, fdate, copy_file, C_F_string_chars, C_F_string_ptr
 
   implicit none
 
