@@ -60,35 +60,30 @@ contains
   end subroutine destroy
 
   ! "clicked" is a GtkButton signal
-  function hello (widget, gdata ) result(ret)  bind(c)
-    integer(c_int)    :: ret
+  subroutine hello (widget, gdata ) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Hello World!"
-    ret = FALSE
-  end function hello
+  end subroutine hello
 
-  function button1clicked (widget, gdata ) result(ret)  bind(c)
-    integer(c_int)    :: ret
+  subroutine button1clicked (widget, gdata ) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Button 1 clicked!"
-    ret = FALSE
-  end function button1clicked
+  end subroutine button1clicked
 
-  function button2clicked (widget, gdata ) result(ret)  bind(c)
-    integer(c_int)    :: ret
+  subroutine button2clicked (widget, gdata ) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     integer, pointer :: val
 
     print *, "Button 2 clicked!"
-    ret = FALSE
+
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, val)
        print *, "Value =", val
        val = val + 1
     end if
-  end function button2clicked
+  end subroutine button2clicked
 end module handlers
 
 
