@@ -7,6 +7,9 @@ module unix_print
 implicit none
 interface
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/unix-print/gtk/gtkprintunixdialog.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_print_unix_dialog_get_type (void) G_GNUC_CONST;
 function gtk_print_unix_dialog_get_type() bind(c)
@@ -164,6 +167,9 @@ function gtk_print_unix_dialog_get_page_setup_set(dialog) bind(c)
   type(c_ptr), value :: dialog
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/unix-print/gtk/gtkprintjob.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_print_job_get_type (void) G_GNUC_CONST;
 function gtk_print_job_get_type() bind(c)
@@ -431,6 +437,12 @@ subroutine gtk_print_job_set_reverse(job, reverse) bind(c)
   integer(c_int), value :: reverse
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/unix-print/gtk/gtkunixprint-autocleanups.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/unix-print/gtk/gtkpagesetupunixdialog.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_page_setup_unix_dialog_get_type (void) G_GNUC_CONST;
 function gtk_page_setup_unix_dialog_get_type() bind(c)
@@ -481,6 +493,9 @@ function gtk_page_setup_unix_dialog_get_print_settings(dialog) bind(c)
   integer(c_int), value :: dialog
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/unix-print/gtk/gtkprinter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_print_capabilities_get_type (void) G_GNUC_CONST;
 function gtk_print_capabilities_get_type() bind(c)
@@ -702,5 +717,8 @@ subroutine gtk_enumerate_printers(func, data, destroy, wait) bind(c)
   integer(c_int), value :: wait
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/unix-print/gtk/gtkunixprint.h
+!--------------------------------------------------
 end interface
 end module unix_print

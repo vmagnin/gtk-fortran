@@ -7,6 +7,9 @@ module gdk
 implicit none
 interface
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkseat.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_seat_get_type (void) G_GNUC_CONST;
 function gdk_seat_get_type() bind(c)
@@ -63,6 +66,9 @@ function gdk_seat_get_keyboard(seat) bind(c)
   type(c_ptr), value :: seat
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkcairo.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gdk_cairo_set_source_rgba (cairo_t *cr, const GdkRGBA *rgba);
 subroutine gdk_cairo_set_source_rgba(cr, rgba) bind(c)
@@ -121,6 +127,9 @@ subroutine gdk_cairo_draw_from_gl(cr, surface, source, source_type,&
   integer(c_int), value :: height
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkgltexture.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GdkTexture * gdk_gl_texture_new (GdkGLContext *context, guint id, int width, int height, GDestroyNotify destroy, gpointer data);
 function gdk_gl_texture_new(context, id, width, height, destroy, data) bind(c)
@@ -141,6 +150,9 @@ subroutine gdk_gl_texture_release(self) bind(c)
   type(c_ptr), value :: self
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdksurface.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_surface_get_type (void) G_GNUC_CONST;
 function gdk_surface_get_type() bind(c)
@@ -367,6 +379,9 @@ function gdk_surface_create_vulkan_context(surface, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkdisplay.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_display_get_type (void) G_GNUC_CONST;
 function gdk_display_get_type() bind(c)
@@ -597,6 +612,9 @@ function gdk_display_get_setting(display, name, value) bind(c)
   type(c_ptr), value :: value
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdktoplevellayout.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_toplevel_layout_get_type (void);
 function gdk_toplevel_layout_get_type() bind(c)
@@ -703,6 +721,9 @@ function gdk_toplevel_layout_get_resizable(layout) bind(c)
   type(c_ptr), value :: layout
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdktexture.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GdkTexture * gdk_texture_new_for_pixbuf (GdkPixbuf *pixbuf);
 function gdk_texture_new_for_pixbuf(pixbuf) bind(c)
@@ -762,6 +783,9 @@ function gdk_texture_save_to_png(texture, filename) bind(c)
   character(kind=c_char), dimension(*) :: filename
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkrectangle.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gdk_rectangle_intersect (const GdkRectangle *src1, const GdkRectangle *src2, GdkRectangle *dest);
 function gdk_rectangle_intersect(src1, src2, dest) bind(c)
@@ -807,6 +831,9 @@ function gdk_rectangle_get_type() bind(c)
   integer(c_size_t) :: gdk_rectangle_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkdevicepad.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_device_pad_get_type (void) G_GNUC_CONST;
 function gdk_device_pad_get_type() bind(c)
@@ -850,6 +877,9 @@ function gdk_device_pad_get_feature_group(pad, feature, feature_idx) bind(c)
   integer(c_int), value :: feature_idx
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkdrop.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GdkDisplay * gdk_drop_get_display (GdkDrop *self);
 function gdk_drop_get_display(self) bind(c)
@@ -962,6 +992,9 @@ function gdk_drop_read_value_finish(self, result, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkdragsurface.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gdk_drag_surface_present (GdkDragSurface *drag_surface, int width, int height);
 function gdk_drag_surface_present(drag_surface, width, height) bind(c)
@@ -972,6 +1005,12 @@ function gdk_drag_surface_present(drag_surface, width, height) bind(c)
   integer(c_int), value :: height
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdktypes.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkcursor.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_cursor_get_type (void) G_GNUC_CONST;
 function gdk_cursor_get_type() bind(c)
@@ -1040,6 +1079,12 @@ function gdk_cursor_get_hotspot_y(cursor) bind(c)
   type(c_ptr), value :: cursor
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkversionmacros.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkdrag.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_drag_get_type (void) G_GNUC_CONST;
 function gdk_drag_get_type() bind(c)
@@ -1149,6 +1194,9 @@ function gdk_drag_get_surface(drag) bind(c)
   type(c_ptr), value :: drag
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkcontentdeserializer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_content_deserializer_get_type (void) G_GNUC_CONST;
 function gdk_content_deserializer_get_type() bind(c)
@@ -1297,6 +1345,9 @@ function gdk_content_deserialize_finish(result, value, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkpixbuf.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GdkPixbuf *gdk_pixbuf_get_from_surface (cairo_surface_t *surface, int src_x, int src_y, int width, int height);
 function gdk_pixbuf_get_from_surface(surface, src_x, src_y, width, height)&
@@ -1318,6 +1369,9 @@ function gdk_pixbuf_get_from_texture(texture) bind(c)
   type(c_ptr), value :: texture
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkdisplaymanager.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_display_manager_get_type (void) G_GNUC_CONST;
 function gdk_display_manager_get_type() bind(c)
@@ -1372,6 +1426,9 @@ subroutine gdk_set_allowed_backends(backends) bind(c)
   character(kind=c_char), dimension(*) :: backends
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkrgba.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_rgba_get_type (void) G_GNUC_CONST;
 function gdk_rgba_get_type() bind(c)
@@ -1444,6 +1501,15 @@ function gdk_rgba_to_string(rgba) bind(c)
   type(c_ptr), value :: rgba
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdk-autocleanup.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdk.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkdrawcontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_draw_context_get_type (void) G_GNUC_CONST;
 function gdk_draw_context_get_type() bind(c)
@@ -1498,6 +1564,9 @@ function gdk_draw_context_get_frame_region(context) bind(c)
   type(c_ptr), value :: context
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkevents.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_event_get_type (void) G_GNUC_CONST;
 function gdk_event_get_type() bind(c)
@@ -2008,6 +2077,9 @@ function gdk_key_event_get_match(event, keyval, modifiers) bind(c)
   integer(c_int), value :: modifiers
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkpaintable.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gdk_paintable_snapshot (GdkPaintable *paintable, GdkSnapshot *snapshot, double width, double height);
 subroutine gdk_paintable_snapshot(paintable, snapshot, width, height) bind(c)
@@ -2096,6 +2168,12 @@ function gdk_paintable_new_empty(intrinsic_width, intrinsic_height) bind(c)
   integer(c_int), value :: intrinsic_height
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkconfig.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkglcontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GQuark gdk_gl_error_quark (void);
 function gdk_gl_error_quark() bind(c)
@@ -2246,6 +2324,9 @@ subroutine gdk_gl_context_clear_current() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkkeys.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !const char *gdk_keyval_name (guint keyval) G_GNUC_CONST;
 function gdk_keyval_name(keyval) bind(c)
@@ -2319,6 +2400,9 @@ function gdk_unicode_to_keyval(wc) bind(c)
   integer(c_int32_t), value :: wc
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkapplaunchcontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GdkDisplay * gdk_app_launch_context_get_display (GdkAppLaunchContext *context);
 function gdk_app_launch_context_get_display(context) bind(c)
@@ -2359,6 +2443,9 @@ subroutine gdk_app_launch_context_set_icon_name(context, icon_name) bind(c)
   character(kind=c_char), dimension(*) :: icon_name
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkvulkancontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GQuark gdk_vulkan_error_quark (void);
 function gdk_vulkan_error_quark() bind(c)
@@ -2373,6 +2460,9 @@ function gdk_vulkan_context_get_type() bind(c)
   integer(c_size_t) :: gdk_vulkan_context_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkmonitor.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_monitor_get_type (void) G_GNUC_CONST;
 function gdk_monitor_get_type() bind(c)
@@ -2468,6 +2558,9 @@ function gdk_monitor_is_valid(monitor) bind(c)
   type(c_ptr), value :: monitor
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkdevice.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_device_get_type (void) G_GNUC_CONST;
 function gdk_device_get_type() bind(c)
@@ -2605,6 +2698,9 @@ function gdk_device_get_surface_at_position(device, win_x, win_y) bind(c)
   type(c_ptr), value :: win_y
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkcontentprovider.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_content_provider_get_type (void) G_GNUC_CONST;
 function gdk_content_provider_get_type() bind(c)
@@ -2670,6 +2766,9 @@ function gdk_content_provider_get_value(provider, value, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkpopup.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gdk_popup_present (GdkPopup *popup, int width, int height, GdkPopupLayout *layout);
 function gdk_popup_present(popup, width, height, layout) bind(c)
@@ -2729,6 +2828,9 @@ function gdk_popup_get_autohide(popup) bind(c)
   type(c_ptr), value :: popup
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkmemorytexture.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GdkTexture * gdk_memory_texture_new (int width, int height, GdkMemoryFormat format, GBytes *bytes, gsize stride);
 function gdk_memory_texture_new(width, height, format, bytes, stride) bind(c)
@@ -2741,6 +2843,12 @@ function gdk_memory_texture_new(width, height, format, bytes, stride) bind(c)
   integer(c_size_t), value :: stride
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdksnapshot.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkcontentformats.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !const char * gdk_intern_mime_type (const char *string);
 function gdk_intern_mime_type(string) bind(c)
@@ -2953,6 +3061,9 @@ function gdk_file_list_get_type() bind(c)
   integer(c_size_t) :: gdk_file_list_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkpango.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !cairo_region_t *gdk_pango_layout_line_get_clip_region (PangoLayoutLine *line, int x_origin, int y_origin, const int *index_ranges, int n_ranges);
 function gdk_pango_layout_line_get_clip_region(line, x_origin, y_origin,&
@@ -2979,6 +3090,9 @@ function gdk_pango_layout_get_clip_region(layout, x_origin, y_origin,&
   integer(c_int), value :: n_ranges
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdktoplevel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gdk_toplevel_present (GdkToplevel *toplevel, GdkToplevelLayout *layout);
 subroutine gdk_toplevel_present(toplevel, layout) bind(c)
@@ -3134,6 +3248,9 @@ subroutine gdk_toplevel_begin_move(toplevel, device, button, x, y, timestamp)&
   integer(c_int32_t), value :: timestamp
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkclipboard.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_clipboard_get_type (void) G_GNUC_CONST;
 function gdk_clipboard_get_type() bind(c)
@@ -3327,6 +3444,9 @@ subroutine gdk_clipboard_set_texture(clipboard, texture) bind(c)
   type(c_ptr), value :: texture
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdktoplevelsize.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_toplevel_size_get_type (void);
 function gdk_toplevel_size_get_type() bind(c)
@@ -3374,6 +3494,9 @@ subroutine gdk_toplevel_size_set_shadow_width(size, left, right, top, bottom)&
   integer(c_int), value :: bottom
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkdevicetool.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_device_tool_get_type (void) G_GNUC_CONST;
 function gdk_device_tool_get_type() bind(c)
@@ -3413,6 +3536,9 @@ function gdk_device_tool_get_axes(tool) bind(c)
   type(c_ptr), value :: tool
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkcontentproviderimpl.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GdkContentProvider * gdk_content_provider_new_for_value (const GValue *value);
 function gdk_content_provider_new_for_value(value) bind(c)
@@ -3439,6 +3565,9 @@ function gdk_content_provider_new_for_bytes(mime_type, bytes) bind(c)
   type(c_ptr), value :: bytes
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkcairocontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_cairo_context_get_type (void) G_GNUC_CONST;
 function gdk_cairo_context_get_type() bind(c)
@@ -3454,6 +3583,9 @@ function gdk_cairo_context_cairo_create(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkframetimings.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_frame_timings_get_type (void) G_GNUC_CONST;
 function gdk_frame_timings_get_type() bind(c)
@@ -3524,6 +3656,9 @@ function gdk_frame_timings_get_predicted_presentation_time(timings) bind(c)
   type(c_ptr), value :: timings
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkframeclock.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_frame_clock_get_type (void) G_GNUC_CONST;
 function gdk_frame_clock_get_type() bind(c)
@@ -3613,6 +3748,15 @@ function gdk_frame_clock_get_fps(frame_clock) bind(c)
   type(c_ptr), value :: frame_clock
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkenumtypes.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkkeysyms.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkcontentserializer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_content_serializer_get_type (void) G_GNUC_CONST;
 function gdk_content_serializer_get_type() bind(c)
@@ -3760,6 +3904,9 @@ function gdk_content_serialize_finish(result, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/gdkpopuplayout.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_popup_layout_get_type (void);
 function gdk_popup_layout_get_type() bind(c)
@@ -3891,6 +4038,9 @@ subroutine gdk_popup_layout_get_offset(layout, dx, dy) bind(c)
   type(c_ptr), value :: dy
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/wayland/gdkwaylandseat.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_wayland_seat_get_type (void) G_GNUC_CONST;
 function gdk_wayland_seat_get_type() bind(c)
@@ -3898,6 +4048,9 @@ function gdk_wayland_seat_get_type() bind(c)
   integer(c_size_t) :: gdk_wayland_seat_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/wayland/gdkwaylanddevice.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_wayland_device_get_type (void);
 function gdk_wayland_device_get_type() bind(c)
@@ -3913,6 +4066,9 @@ function gdk_wayland_device_get_node_path(device) bind(c)
   type(c_ptr), value :: device
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/wayland/gdkwaylandsurface.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_wayland_surface_get_type (void);
 function gdk_wayland_surface_get_type() bind(c)
@@ -3972,6 +4128,9 @@ subroutine gdk_wayland_toplevel_set_application_id(toplevel, application_id)&
   character(kind=c_char), dimension(*) :: application_id
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/wayland/gdkwaylanddisplay.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_wayland_display_get_type (void);
 function gdk_wayland_display_get_type() bind(c)
@@ -4014,6 +4173,9 @@ function gdk_wayland_display_query_registry(display, global) bind(c)
   character(kind=c_char), dimension(*) :: global
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/wayland/gdkwaylandglcontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_wayland_gl_context_get_type (void) G_GNUC_CONST;
 function gdk_wayland_gl_context_get_type() bind(c)
@@ -4021,6 +4183,12 @@ function gdk_wayland_gl_context_get_type() bind(c)
   integer(c_size_t) :: gdk_wayland_gl_context_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/wayland/gdkwayland.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/wayland/gdkwaylandmonitor.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_wayland_monitor_get_type (void) G_GNUC_CONST;
 function gdk_wayland_monitor_get_type() bind(c)
@@ -4028,6 +4196,9 @@ function gdk_wayland_monitor_get_type() bind(c)
   integer(c_size_t) :: gdk_wayland_monitor_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11device.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !int gdk_x11_device_get_id (GdkDevice *device);
 function gdk_x11_device_get_id(device) bind(c)
@@ -4036,6 +4207,9 @@ function gdk_x11_device_get_id(device) bind(c)
   type(c_ptr), value :: device
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11devicemanager.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GdkDevice * gdk_x11_device_manager_lookup (GdkX11DeviceManagerXI2 *device_manager, int device_id);
 function gdk_x11_device_manager_lookup(device_manager, device_id) bind(c)
@@ -4045,6 +4219,9 @@ function gdk_x11_device_manager_lookup(device_manager, device_id) bind(c)
   integer(c_int), value :: device_id
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11applaunchcontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_x11_app_launch_context_get_type (void);
 function gdk_x11_app_launch_context_get_type() bind(c)
@@ -4052,6 +4229,9 @@ function gdk_x11_app_launch_context_get_type() bind(c)
   integer(c_size_t) :: gdk_x11_app_launch_context_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11property.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !Atom gdk_x11_get_xatom_by_name_for_display (GdkDisplay *display, const char *atom_name);
 function gdk_x11_get_xatom_by_name_for_display(display, atom_name) bind(c)
@@ -4070,6 +4250,9 @@ function gdk_x11_get_xatom_name_for_display(display, xatom) bind(c)
   integer(c_long), value :: xatom
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11surface.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_x11_surface_get_type (void);
 function gdk_x11_surface_get_type() bind(c)
@@ -4200,6 +4383,9 @@ function gdk_x11_surface_get_group(surface) bind(c)
   type(c_ptr), value :: surface
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11dnd.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_x11_drag_get_type (void);
 function gdk_x11_drag_get_type() bind(c)
@@ -4207,6 +4393,9 @@ function gdk_x11_drag_get_type() bind(c)
   integer(c_size_t) :: gdk_x11_drag_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11monitor.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_x11_monitor_get_type (void) G_GNUC_CONST;
 function gdk_x11_monitor_get_type() bind(c)
@@ -4230,6 +4419,9 @@ subroutine gdk_x11_monitor_get_workarea(monitor, workarea) bind(c)
   type(c_ptr), value :: workarea
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11device-xi2.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_x11_device_xi2_get_type (void) G_GNUC_CONST;
 function gdk_x11_device_xi2_get_type() bind(c)
@@ -4237,6 +4429,12 @@ function gdk_x11_device_xi2_get_type() bind(c)
   integer(c_size_t) :: gdk_x11_device_xi2_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11glcontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_x11_gl_context_get_type (void) G_GNUC_CONST;
 function gdk_x11_gl_context_get_type() bind(c)
@@ -4254,6 +4452,9 @@ function gdk_x11_display_get_glx_version(display, major, minor) bind(c)
   type(c_ptr), value :: minor
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11devicemanager-xi2.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_x11_device_manager_xi2_get_type (void) G_GNUC_CONST;
 function gdk_x11_device_manager_xi2_get_type() bind(c)
@@ -4261,6 +4462,9 @@ function gdk_x11_device_manager_xi2_get_type() bind(c)
   integer(c_size_t) :: gdk_x11_device_manager_xi2_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11display.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_x11_display_get_type (void);
 function gdk_x11_display_get_type() bind(c)
@@ -4434,6 +4638,9 @@ function gdk_x11_display_get_default_group(display) bind(c)
   type(c_ptr), value :: display
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11screen.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_x11_screen_get_type (void);
 function gdk_x11_screen_get_type() bind(c)
@@ -4499,6 +4706,12 @@ function gdk_x11_screen_get_current_desktop(screen) bind(c)
   type(c_ptr), value :: screen
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11utils.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx11selection.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !int gdk_x11_display_text_property_to_text_list (GdkDisplay *display, const char *encoding, int format, const guchar *text, int length, char ***list);
 function gdk_x11_display_text_property_to_text_list(display, encoding, format,&
@@ -4555,6 +4768,12 @@ subroutine gdk_x11_free_compound_text(ctext) bind(c)
   character(kind=c_char), dimension(*) :: ctext
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/x11/gdkx-autocleanups.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/broadway/gdkbroadwaysurface.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_broadway_surface_get_type (void);
 function gdk_broadway_surface_get_type() bind(c)
@@ -4562,6 +4781,9 @@ function gdk_broadway_surface_get_type() bind(c)
   integer(c_size_t) :: gdk_broadway_surface_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/broadway/gdkbroadwaydisplay.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_broadway_display_get_type (void);
 function gdk_broadway_display_get_type() bind(c)
@@ -4583,6 +4805,9 @@ subroutine gdk_broadway_display_hide_keyboard(display) bind(c)
   type(c_ptr), value :: display
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/broadway/gdkbroadwaycursor.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_broadway_cursor_get_type (void);
 function gdk_broadway_cursor_get_type() bind(c)
@@ -4590,6 +4815,9 @@ function gdk_broadway_cursor_get_type() bind(c)
   integer(c_size_t) :: gdk_broadway_cursor_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/broadway/gdkbroadwaymonitor.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gdk_broadway_monitor_get_type (void) G_GNUC_CONST;
 function gdk_broadway_monitor_get_type() bind(c)
@@ -4597,5 +4825,8 @@ function gdk_broadway_monitor_get_type() bind(c)
   integer(c_size_t) :: gdk_broadway_monitor_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gdk/broadway/gdkbroadway.h
+!--------------------------------------------------
 end interface
 end module gdk

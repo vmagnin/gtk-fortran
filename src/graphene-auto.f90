@@ -7,6 +7,9 @@ module graphene
 implicit none
 interface
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-rect.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS graphene_rect_t * graphene_rect_alloc (void);
 function graphene_rect_alloc() bind(c)
@@ -284,6 +287,9 @@ subroutine graphene_rect_scale(r, s_h, s_v, res) bind(c)
   type(c_ptr), value :: res
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-point.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS graphene_point_t * graphene_point_alloc (void);
 function graphene_point_alloc() bind(c)
@@ -381,6 +387,12 @@ function graphene_point_zero() bind(c)
   type(c_ptr) :: graphene_point_zero
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-macros.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-frustum.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_2
 !GRAPHENE_BEGIN_DECLS graphene_frustum_t * graphene_frustum_alloc (void);
 function graphene_frustum_alloc() bind(c)
@@ -463,6 +475,9 @@ function graphene_frustum_equal(a, b) bind(c)
   type(c_ptr), value :: b
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-euler.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_2
 !GRAPHENE_BEGIN_DECLS graphene_euler_t * graphene_euler_alloc (void);
 function graphene_euler_alloc() bind(c)
@@ -649,6 +664,9 @@ subroutine graphene_euler_reorder(e, order, res) bind(c)
   type(c_ptr), value :: res
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-vec3.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS graphene_vec3_t * graphene_vec3_alloc (void);
 function graphene_vec3_alloc() bind(c)
@@ -934,6 +952,9 @@ function graphene_vec3_z_axis() bind(c)
   type(c_ptr) :: graphene_vec3_z_axis
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-simd4x4f.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS void graphene_simd4x4f_transpose_in_place (graphene_simd4x4f_t *s);
 subroutine graphene_simd4x4f_transpose_in_place(s) bind(c)
@@ -941,6 +962,12 @@ subroutine graphene_simd4x4f_transpose_in_place(s) bind(c)
   type(c_ptr), value :: s
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-simd4f.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-vec4.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS graphene_vec4_t * graphene_vec4_alloc (void);
 function graphene_vec4_alloc() bind(c)
@@ -1229,6 +1256,9 @@ function graphene_vec4_w_axis() bind(c)
   type(c_ptr) :: graphene_vec4_w_axis
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-plane.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_2
 !GRAPHENE_BEGIN_DECLS graphene_plane_t * graphene_plane_alloc (void);
 function graphene_plane_alloc() bind(c)
@@ -1352,6 +1382,9 @@ subroutine graphene_plane_transform(p, matrix, normal_matrix, res) bind(c)
   type(c_ptr), value :: res
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-box.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_2
 !GRAPHENE_BEGIN_DECLS graphene_box_t * graphene_box_alloc (void);
 function graphene_box_alloc() bind(c)
@@ -1594,6 +1627,9 @@ function graphene_box_empty() bind(c)
   type(c_ptr) :: graphene_box_empty
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-point3d.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS graphene_point3d_t * graphene_point3d_alloc (void);
 function graphene_point3d_alloc() bind(c)
@@ -1746,6 +1782,9 @@ function graphene_point3d_zero() bind(c)
   type(c_ptr) :: graphene_point3d_zero
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-sphere.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_2
 !GRAPHENE_BEGIN_DECLS graphene_sphere_t * graphene_sphere_alloc (void);
 function graphene_sphere_alloc() bind(c)
@@ -1861,6 +1900,12 @@ subroutine graphene_sphere_translate(s, point, res) bind(c)
   type(c_ptr), value :: res
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-types.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-size.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS graphene_size_t * graphene_size_alloc (void);
 function graphene_size_alloc() bind(c)
@@ -1929,6 +1974,9 @@ function graphene_size_zero() bind(c)
   type(c_ptr) :: graphene_size_zero
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-triangle.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_2
 !GRAPHENE_BEGIN_DECLS graphene_triangle_t * graphene_triangle_alloc (void);
 function graphene_triangle_alloc() bind(c)
@@ -2077,6 +2125,15 @@ function graphene_triangle_equal(a, b) bind(c)
   type(c_ptr), value :: b
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-version.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-version-macros.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-matrix.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS graphene_matrix_t * graphene_matrix_alloc (void);
 function graphene_matrix_alloc() bind(c)
@@ -2699,6 +2756,12 @@ function graphene_matrix_decompose(m, translate, scale, rotate, shear,&
   type(c_ptr), value :: perspective
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-gobject.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GType graphene_point_get_type (void);
 function graphene_point_get_type() bind(c)
@@ -2818,6 +2881,9 @@ function graphene_ray_get_type() bind(c)
   integer(c_size_t) :: graphene_ray_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-ray.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_4
 !GRAPHENE_BEGIN_DECLS graphene_ray_t * graphene_ray_alloc (void);
 function graphene_ray_alloc() bind(c)
@@ -2979,6 +3045,9 @@ function graphene_ray_intersects_triangle(r, t) bind(c)
   type(c_ptr), value :: t
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-quad.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS graphene_quad_t * graphene_quad_alloc (void);
 function graphene_quad_alloc() bind(c)
@@ -3040,6 +3109,9 @@ function graphene_quad_get_point(q, index_) bind(c)
   integer(c_int), value :: index_
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-vec2.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS graphene_vec2_t * graphene_vec2_alloc (void);
 function graphene_vec2_alloc() bind(c)
@@ -3259,6 +3331,9 @@ function graphene_vec2_y_axis() bind(c)
   type(c_ptr) :: graphene_vec2_y_axis
 end function
 
+!--------------------------------------------------
+! /usr/include/graphene-1.0/graphene-quaternion.h
+!--------------------------------------------------
 ! GRAPHENE_AVAILABLE_IN_1_0
 !GRAPHENE_BEGIN_DECLS graphene_quaternion_t * graphene_quaternion_alloc (void);
 function graphene_quaternion_alloc() bind(c)

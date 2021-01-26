@@ -7,6 +7,9 @@ module pango
 implicit none
 interface
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-tabs.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !PangoTabArray *pango_tab_array_new (gint initial_size, gboolean positions_in_pixels);
 function pango_tab_array_new(initial_size, positions_in_pixels) bind(c)
@@ -93,6 +96,12 @@ function pango_tab_array_get_positions_in_pixels(tab_array) bind(c)
   type(c_ptr), value :: tab_array
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-enum-types.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_attr_type_get_type (void) G_GNUC_CONST;
 function pango_attr_type_get_type() bind(c)
@@ -240,6 +249,9 @@ function pango_tab_align_get_type() bind(c)
   integer(c_size_t) :: pango_tab_align_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-language.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_language_get_type (void) G_GNUC_CONST;
 function pango_language_get_type() bind(c)
@@ -312,6 +324,9 @@ function pango_language_get_scripts(language, num_scripts) bind(c)
   type(c_ptr), value :: num_scripts
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-break.h
+!--------------------------------------------------
 ! PANGO_DEPRECATED_IN_1_44
 !void pango_break (const gchar *text, int length, PangoAnalysis *analysis, PangoLogAttr *attrs, int attrs_len);
 subroutine pango_break(text, length, analysis, attrs, attrs_len) bind(c)
@@ -372,6 +387,9 @@ subroutine pango_tailor_break(text, length, analysis, offset, log_attrs,&
   integer(c_int), value :: log_attrs_len
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-attributes.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_color_get_type (void) G_GNUC_CONST;
 function pango_color_get_type() bind(c)
@@ -959,6 +977,9 @@ function pango_markup_parser_finish(context, attr_list, text, accel_char,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-engine.h
+!--------------------------------------------------
 ! PANGO_DEPRECATED_IN_1_38
 !GType pango_engine_get_type (void) G_GNUC_CONST;
 function pango_engine_get_type() bind(c)
@@ -1009,6 +1030,9 @@ function script_engine_create(id) bind(c)
   character(kind=c_char), dimension(*) :: id
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-modules.h
+!--------------------------------------------------
 ! PANGO_DEPRECATED_IN_1_38
 !PangoMap * pango_find_map (PangoLanguage *language, guint engine_type_id, guint render_type_id);
 function pango_find_map(language, engine_type_id, render_type_id) bind(c)
@@ -1046,6 +1070,9 @@ subroutine pango_module_register(module) bind(c)
   type(c_ptr), value :: module
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-fontmap.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_font_map_get_type (void) G_GNUC_CONST;
 function pango_font_map_get_type() bind(c)
@@ -1115,6 +1142,9 @@ function pango_font_map_get_family(fontmap, name) bind(c)
   character(kind=c_char), dimension(*) :: name
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-fontset.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_fontset_get_type (void) G_GNUC_CONST;
 function pango_fontset_get_type() bind(c)
@@ -1179,6 +1209,9 @@ subroutine pango_fontset_foreach(fontset, func, data) bind(c)
   type(c_ptr), value :: data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pangocairo.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_1_10
 !GType pango_cairo_font_map_get_type (void) G_GNUC_CONST;
 function pango_cairo_font_map_get_type() bind(c)
@@ -1427,6 +1460,12 @@ subroutine pango_cairo_error_underline_path(cr, x, y, width, height) bind(c)
   real(c_double), value :: height
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-direction.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-bidi-type.h
+!--------------------------------------------------
 ! PANGO_DEPRECATED_IN_1_44
 !PangoBidiType pango_bidi_type_for_unichar (gunichar ch) G_GNUC_CONST;
 function pango_bidi_type_for_unichar(ch) bind(c)
@@ -1461,6 +1500,9 @@ function pango_get_mirror_char(ch, mirrored_ch) bind(c)
   character(kind=c_char), dimension(*) :: mirrored_ch
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-glyph.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !PangoGlyphString *pango_glyph_string_new (void);
 function pango_glyph_string_new() bind(c)
@@ -1615,6 +1657,9 @@ function pango_reorder_items(logical_items) bind(c)
   type(c_ptr), value :: logical_items
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-script.h
+!--------------------------------------------------
 ! PANGO_DEPRECATED_IN_1_44_FOR(g_unichar_get_script)
 !PangoScript pango_script_for_unichar (gunichar ch) G_GNUC_CONST;
 function pango_script_for_unichar(ch) bind(c)
@@ -1672,6 +1717,9 @@ function pango_script_get_sample_language(script) bind(c)
   integer(c_int), value :: script
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-coverage.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_coverage_get_type (void) G_GNUC_CONST;
 function pango_coverage_get_type() bind(c)
@@ -1753,6 +1801,9 @@ function pango_coverage_from_bytes(bytes, n_bytes) bind(c)
   integer(c_int), value :: n_bytes
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-font.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_font_description_get_type (void) G_GNUC_CONST;
 function pango_font_description_get_type() bind(c)
@@ -2343,6 +2394,9 @@ function pango_font_get_hb_font(font) bind(c)
   type(c_ptr), value :: font
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-item.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_item_get_type (void) G_GNUC_CONST;
 function pango_item_get_type() bind(c)
@@ -2390,6 +2444,9 @@ subroutine pango_item_apply_attrs(item, iter) bind(c)
   type(c_ptr), value :: iter
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pangofc-fontmap.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_fc_font_map_get_type (void) G_GNUC_CONST;
 function pango_fc_font_map_get_type() bind(c)
@@ -2498,6 +2555,9 @@ subroutine pango_fc_font_map_substitute_changed(fontmap) bind(c)
   type(c_ptr), value :: fontmap
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-types.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_1_16
 !int pango_units_from_double (double d) G_GNUC_CONST;
 function pango_units_from_double(d) bind(c)
@@ -2522,6 +2582,9 @@ subroutine pango_extents_to_pixels(inclusive, nearest) bind(c)
   type(c_ptr), value :: nearest
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-utils.h
+!--------------------------------------------------
 ! PANGO_DEPRECATED
 !char ** pango_split_file_list (const char *str);
 function pango_split_file_list(str) bind(c)
@@ -2685,6 +2748,9 @@ function pango_version_check(required_major, required_minor, required_micro)&
   integer(c_int), value :: required_micro
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pangoft2.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !void pango_ft2_render (FT_Bitmap *bitmap, PangoFont *font, PangoGlyphString *glyphs, gint x, gint y);
 subroutine pango_ft2_render(bitmap, font, glyphs, x, y) bind(c)
@@ -2855,6 +2921,9 @@ function pango_ft2_font_get_coverage(font, language) bind(c)
   type(c_ptr), value :: language
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-context.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_context_get_type (void) G_GNUC_CONST;
 function pango_context_get_type() bind(c)
@@ -3088,6 +3157,9 @@ function pango_itemize_with_base_dir(context, base_dir, text, start_index,&
   type(c_ptr), value :: cached_iter
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-glyph-item.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_glyph_item_get_type (void) G_GNUC_CONST;
 function pango_glyph_item_get_type() bind(c)
@@ -3209,6 +3281,9 @@ function pango_glyph_item_iter_prev_cluster(iter) bind(c)
   type(c_ptr), value :: iter
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-matrix.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_1_6
 !GType pango_matrix_get_type (void) G_GNUC_CONST;
 function pango_matrix_get_type() bind(c)
@@ -3316,6 +3391,9 @@ subroutine pango_matrix_get_font_scale_factors(matrix, xscale, yscale) bind(c)
   type(c_ptr), value :: yscale
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-gravity.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_1_16
 !double pango_gravity_to_rotation (PangoGravity gravity) G_GNUC_CONST;
 function pango_gravity_to_rotation(gravity) bind(c)
@@ -3354,6 +3432,9 @@ function pango_gravity_get_for_script_and_width(script, wide, base_gravity,&
   integer(c_int), value :: hint
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pangofc-font.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_fc_font_get_type (void) G_GNUC_CONST;
 function pango_fc_font_get_type() bind(c)
@@ -3427,6 +3508,9 @@ subroutine pango_fc_font_unlock_face(font) bind(c)
   type(c_ptr), value :: font
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-renderer.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_1_8
 !GType pango_renderer_get_type (void) G_GNUC_CONST;
 function pango_renderer_get_type() bind(c)
@@ -3618,6 +3702,9 @@ function pango_renderer_get_layout_line(renderer) bind(c)
   type(c_ptr), value :: renderer
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pangofc-decoder.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_1_6
 !GType pango_fc_decoder_get_type (void) G_GNUC_CONST;
 function pango_fc_decoder_get_type() bind(c)
@@ -3644,6 +3731,9 @@ function pango_fc_decoder_get_glyph(decoder, fcfont, wc) bind(c)
   integer(c_int32_t), value :: wc
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-layout.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_ALL
 !GType pango_layout_get_type (void) G_GNUC_CONST;
 function pango_layout_get_type() bind(c)
@@ -4421,6 +4511,9 @@ function pango_layout_iter_get_baseline(iter) bind(c)
   type(c_ptr), value :: iter
 end function
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pangoxft-render.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_1_8
 !GType pango_xft_renderer_get_type (void) G_GNUC_CONST;
 function pango_xft_renderer_get_type() bind(c)
@@ -4516,6 +4609,15 @@ subroutine pango_xft_render_layout(draw, color, layout, x, y) bind(c)
   integer(c_int), value :: y
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-features.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-version-macros.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pango-ot.h
+!--------------------------------------------------
 ! PANGO_DEPRECATED
 !GType pango_ot_info_get_type (void) G_GNUC_CONST;
 function pango_ot_info_get_type() bind(c)
@@ -4855,6 +4957,9 @@ subroutine pango_ot_ruleset_description_free(desc) bind(c)
   type(c_ptr), value :: desc
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/pango-1.0/pango/pangoxft.h
+!--------------------------------------------------
 ! PANGO_AVAILABLE_IN_1_2
 !PangoFontMap *pango_xft_get_font_map (Display *display, int screen);
 function pango_xft_get_font_map(display, screen) bind(c)

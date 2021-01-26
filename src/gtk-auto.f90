@@ -1,3 +1,6 @@
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellrendererprogress.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_renderer_progress_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_progress_get_type() bind(c)
@@ -12,6 +15,9 @@ function gtk_cell_renderer_progress_new() bind(c)
   type(c_ptr) :: gtk_cell_renderer_progress_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkstringsorter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkExpression * gtk_string_sorter_get_expression (GtkStringSorter *self);
 function gtk_string_sorter_get_expression(self) bind(c)
@@ -44,6 +50,9 @@ subroutine gtk_string_sorter_set_ignore_case(self, ignore_case) bind(c)
   integer(c_int), value :: ignore_case
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkicontheme.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GQuark gtk_icon_theme_error_quark (void);
 function gtk_icon_theme_error_quark() bind(c)
@@ -241,6 +250,9 @@ function gtk_icon_paintable_is_symbolic(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcustomsorter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_custom_sorter_set_sort_func (GtkCustomSorter *self, GCompareDataFunc sort_func, gpointer user_data, GDestroyNotify user_destroy);
 subroutine gtk_custom_sorter_set_sort_func(self, sort_func, user_data,&
@@ -252,6 +264,9 @@ subroutine gtk_custom_sorter_set_sort_func(self, sort_func, user_data,&
   type(c_funptr), value :: user_destroy
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkwindowgroup.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_window_group_get_type (void) G_GNUC_CONST;
 function gtk_window_group_get_type() bind(c)
@@ -290,6 +305,9 @@ function gtk_window_group_list_windows(window_group) bind(c)
   type(c_ptr), value :: window_group
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkdragsource.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_drag_source_get_type (void) G_GNUC_CONST;
 function gtk_drag_source_get_type() bind(c)
@@ -374,6 +392,9 @@ function gtk_drag_check_threshold(widget, start_x, start_y, current_x,&
   integer(c_int), value :: current_y
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkeventcontrollerfocus.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_event_controller_focus_get_type (void) G_GNUC_CONST;
 function gtk_event_controller_focus_get_type() bind(c)
@@ -404,6 +425,9 @@ function gtk_event_controller_focus_is_focus(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkbuilder.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GQuark gtk_builder_error_quark (void);
 function gtk_builder_error_quark() bind(c)
@@ -654,6 +678,9 @@ function gtk_builder_extend_with_template(builder, object, template_type,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmultiselection.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GListModel * gtk_multi_selection_get_model (GtkMultiSelection *self);
 function gtk_multi_selection_get_model(self) bind(c)
@@ -670,6 +697,9 @@ subroutine gtk_multi_selection_set_model(self, model) bind(c)
   type(c_ptr), value :: model
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfontchooserdialog.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_font_chooser_dialog_get_type (void) G_GNUC_CONST;
 function gtk_font_chooser_dialog_get_type() bind(c)
@@ -686,6 +716,9 @@ function gtk_font_chooser_dialog_new(title, parent) bind(c)
   type(c_ptr), value :: parent
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgesturepan.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gesture_pan_get_type (void) G_GNUC_CONST;
 function gtk_gesture_pan_get_type() bind(c)
@@ -717,6 +750,9 @@ subroutine gtk_gesture_pan_set_orientation(gesture, orientation) bind(c)
   integer(c_int), value :: orientation
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellrendereraccel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_renderer_accel_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_accel_get_type() bind(c)
@@ -731,6 +767,9 @@ function gtk_cell_renderer_accel_new() bind(c)
   type(c_ptr) :: gtk_cell_renderer_accel_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklayoutchild.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkLayoutManager * gtk_layout_child_get_layout_manager (GtkLayoutChild *layout_child);
 function gtk_layout_child_get_layout_manager(layout_child) bind(c)
@@ -747,6 +786,9 @@ function gtk_layout_child_get_child_widget(layout_child) bind(c)
   type(c_ptr), value :: layout_child
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkwidgetpaintable.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkWidget * gtk_widget_paintable_get_widget (GtkWidgetPaintable *self);
 function gtk_widget_paintable_get_widget(self) bind(c)
@@ -763,6 +805,9 @@ subroutine gtk_widget_paintable_set_widget(self, widget) bind(c)
   type(c_ptr), value :: widget
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkaccessible.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkAccessibleRole gtk_accessible_get_accessible_role (GtkAccessible *self);
 function gtk_accessible_get_accessible_role(self) bind(c)
@@ -819,6 +864,9 @@ subroutine gtk_accessible_relation_init_value(relation, value) bind(c)
   type(c_ptr), value :: value
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkpadcontroller.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_pad_controller_get_type (void) G_GNUC_CONST;
 function gtk_pad_controller_get_type() bind(c)
@@ -858,6 +906,9 @@ subroutine gtk_pad_controller_set_action(controller, type, index, mode, label,&
   character(kind=c_char), dimension(*) :: action_name
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklistitem.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_list_item_get_type (void) G_GNUC_CONST;
 function gtk_list_item_get_type() bind(c)
@@ -937,6 +988,9 @@ function gtk_list_item_get_child(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkapplication.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_application_get_type (void) G_GNUC_CONST;
 function gtk_application_get_type() bind(c)
@@ -1075,6 +1129,9 @@ function gtk_application_get_menu_by_id(application, id) bind(c)
   character(kind=c_char), dimension(*) :: id
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkbuilderscope.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkBuilderScope * gtk_builder_cscope_new (void);
 function gtk_builder_cscope_new() bind(c)
@@ -1101,6 +1158,9 @@ function gtk_builder_cscope_lookup_callback_symbol(self, callback_name) bind(c)
   character(kind=c_char), dimension(*) :: callback_name
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreednd.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_tree_row_data_get_type (void) G_GNUC_CONST;
 function gtk_tree_row_data_get_type() bind(c)
@@ -1189,6 +1249,9 @@ function gtk_tree_get_row_drag_data(value, tree_model, path) bind(c)
   type(c_ptr), value :: path
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkborder.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_border_get_type (void) G_GNUC_CONST;
 function gtk_border_get_type() bind(c)
@@ -1218,6 +1281,9 @@ subroutine gtk_border_free(border_) bind(c)
   type(c_ptr), value :: border_
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtknumericsorter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkExpression * gtk_numeric_sorter_get_expression (GtkNumericSorter *self);
 function gtk_numeric_sorter_get_expression(self) bind(c)
@@ -1250,6 +1316,9 @@ subroutine gtk_numeric_sorter_set_sort_order(self, sort_order) bind(c)
   integer(c_int), value :: sort_order
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkbuildable.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_buildable_get_type (void) G_GNUC_CONST;
 function gtk_buildable_get_type() bind(c)
@@ -1308,6 +1377,9 @@ subroutine gtk_buildable_parse_context_get_position(context, line_number,&
   type(c_ptr), value :: char_number
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksorter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkOrdering gtk_sorter_compare (GtkSorter *self, gpointer item1, gpointer item2);
 function gtk_sorter_compare(self, item1, item2) bind(c)
@@ -1334,6 +1406,9 @@ subroutine gtk_sorter_changed(self, change) bind(c)
   integer(c_int), value :: change
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktexttagtable.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_text_tag_table_get_type (void) G_GNUC_CONST;
 function gtk_text_tag_table_get_type() bind(c)
@@ -1391,6 +1466,9 @@ function gtk_text_tag_table_get_size(table) bind(c)
   type(c_ptr), value :: table
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksearchbar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_search_bar_get_type (void) G_GNUC_CONST;
 function gtk_search_bar_get_type() bind(c)
@@ -1477,6 +1555,9 @@ function gtk_search_bar_get_child(bar) bind(c)
   type(c_ptr), value :: bar
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgesture.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gesture_get_type (void) G_GNUC_CONST;
 function gtk_gesture_get_type() bind(c)
@@ -1632,6 +1713,9 @@ function gtk_gesture_is_grouped_with(gesture, other) bind(c)
   type(c_ptr), value :: other
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksearchentry.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_search_entry_get_type (void) G_GNUC_CONST;
 function gtk_search_entry_get_type() bind(c)
@@ -1662,6 +1746,9 @@ function gtk_search_entry_get_key_capture_widget(entry) bind(c)
   type(c_ptr), value :: entry
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkorientable.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_orientable_get_type (void) G_GNUC_CONST;
 function gtk_orientable_get_type() bind(c)
@@ -1685,6 +1772,9 @@ function gtk_orientable_get_orientation(orientable) bind(c)
   type(c_ptr), value :: orientable
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkpopovermenu.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_popover_menu_get_type (void) G_GNUC_CONST;
 function gtk_popover_menu_get_type() bind(c)
@@ -1744,6 +1834,9 @@ function gtk_popover_menu_remove_child(popover, child) bind(c)
   type(c_ptr), value :: child
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkdroptarget.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_drop_target_get_type (void) G_GNUC_CONST;
 function gtk_drop_target_get_type() bind(c)
@@ -1841,6 +1934,9 @@ subroutine gtk_drop_target_reject(self) bind(c)
   type(c_ptr), value :: self
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkliststore.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_list_store_get_type (void) G_GNUC_CONST;
 function gtk_list_store_get_type() bind(c)
@@ -2014,6 +2110,9 @@ subroutine gtk_list_store_move_before(store, iter, position) bind(c)
   type(c_ptr), value :: position
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkeventcontrollermotion.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_event_controller_motion_get_type (void) G_GNUC_CONST;
 function gtk_event_controller_motion_get_type() bind(c)
@@ -2044,6 +2143,9 @@ function gtk_event_controller_motion_is_pointer(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklistview.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_list_view_get_type (void) G_GNUC_CONST;
 function gtk_list_view_get_type() bind(c)
@@ -2141,6 +2243,9 @@ function gtk_list_view_get_enable_rubberband(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfilechoosernative.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !const char *gtk_file_chooser_native_get_accept_label (GtkFileChooserNative *self);
 function gtk_file_chooser_native_get_accept_label(self) bind(c)
@@ -2173,6 +2278,9 @@ subroutine gtk_file_chooser_native_set_cancel_label(self, cancel_label) bind(c)
   character(kind=c_char), dimension(*) :: cancel_label
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshortcutaction.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkShortcutAction * gtk_shortcut_action_parse_string (const char * string);
 function gtk_shortcut_action_parse_string(string) bind(c)
@@ -2216,6 +2324,9 @@ function gtk_named_action_get_action_name(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkspinbutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_spin_button_get_type (void) G_GNUC_CONST;
 function gtk_spin_button_get_type() bind(c)
@@ -2443,6 +2554,9 @@ subroutine gtk_spin_button_update(spin_button) bind(c)
   type(c_ptr), value :: spin_button
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkpicture.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkWidget* gtk_picture_new_for_paintable (GdkPaintable *paintable);
 function gtk_picture_new_for_paintable(paintable) bind(c)
@@ -2587,6 +2701,9 @@ function gtk_picture_get_alternative_text(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellrenderertext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_renderer_text_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_text_get_type() bind(c)
@@ -2610,6 +2727,9 @@ subroutine gtk_cell_renderer_text_set_fixed_height_from_font(renderer,&
   integer(c_int), value :: number_of_rows
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgridlayout.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_grid_layout_set_row_homogeneous (GtkGridLayout *grid, gboolean homogeneous);
 subroutine gtk_grid_layout_set_row_homogeneous(grid, homogeneous) bind(c)
@@ -2764,6 +2884,9 @@ function gtk_grid_layout_child_get_row_span(child) bind(c)
   type(c_ptr), value :: child
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreemodelsort.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_tree_model_sort_get_type (void) G_GNUC_CONST;
 function gtk_tree_model_sort_get_type() bind(c)
@@ -2851,6 +2974,9 @@ function gtk_tree_model_sort_iter_is_valid(tree_model_sort, iter) bind(c)
   type(c_ptr), value :: iter
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkglarea.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gl_area_get_type (void) G_GNUC_CONST;
 function gtk_gl_area_get_type() bind(c)
@@ -2992,6 +3118,9 @@ function gtk_gl_area_get_error(area) bind(c)
   type(c_ptr), value :: area
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcenterbox.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_center_box_get_type (void) G_GNUC_CONST;
 function gtk_center_box_get_type() bind(c)
@@ -3070,6 +3199,9 @@ function gtk_center_box_get_baseline_position(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgesturerotate.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gesture_rotate_get_type (void) G_GNUC_CONST;
 function gtk_gesture_rotate_get_type() bind(c)
@@ -3092,6 +3224,9 @@ function gtk_gesture_rotate_get_angle_delta(gesture) bind(c)
   type(c_ptr), value :: gesture
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcssprovider.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_css_provider_get_type (void) G_GNUC_CONST;
 function gtk_css_provider_get_type() bind(c)
@@ -3157,6 +3292,9 @@ subroutine gtk_css_provider_load_named(provider, name, variant) bind(c)
   character(kind=c_char), dimension(*) :: variant
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellview.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_view_get_type (void) G_GNUC_CONST;
 function gtk_cell_view_get_type() bind(c)
@@ -3268,6 +3406,9 @@ subroutine gtk_cell_view_set_fit_model(cell_view, fit_model) bind(c)
   integer(c_int), value :: fit_model
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkwindow.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_window_get_type (void) G_GNUC_CONST;
 function gtk_window_get_type() bind(c)
@@ -3733,6 +3874,9 @@ subroutine gtk_window_set_interactive_debugging(enable) bind(c)
   integer(c_int), value :: enable
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellrendererspin.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_renderer_spin_get_type (void);
 function gtk_cell_renderer_spin_get_type() bind(c)
@@ -3747,6 +3891,9 @@ function gtk_cell_renderer_spin_new() bind(c)
   type(c_ptr) :: gtk_cell_renderer_spin_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshow.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_show_uri_full (GtkWindow *parent, const char *uri, guint32 timestamp, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 subroutine gtk_show_uri_full(parent, uri, timestamp, cancellable, callback,&
@@ -3779,6 +3926,9 @@ subroutine gtk_show_uri(parent, uri, timestamp) bind(c)
   integer(c_int32_t), value :: timestamp
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkbutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_button_get_type (void) G_GNUC_CONST;
 function gtk_button_get_type() bind(c)
@@ -3897,6 +4047,9 @@ function gtk_button_get_child(button) bind(c)
   type(c_ptr), value :: button
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkdebug.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkDebugFlags gtk_get_debug_flags (void);
 function gtk_get_debug_flags() bind(c)
@@ -3911,6 +4064,12 @@ subroutine gtk_set_debug_flags(flags) bind(c)
   integer(c_int), value :: flags
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkbinlayout.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktextmark.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_text_mark_get_type (void) G_GNUC_CONST;
 function gtk_text_mark_get_type() bind(c)
@@ -3975,6 +4134,9 @@ function gtk_text_mark_get_left_gravity(mark) bind(c)
   type(c_ptr), value :: mark
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkstatusbar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_statusbar_get_type (void) G_GNUC_CONST;
 function gtk_statusbar_get_type() bind(c)
@@ -4033,6 +4195,9 @@ subroutine gtk_statusbar_remove_all(statusbar, context_id) bind(c)
   integer(c_int), value :: context_id
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkimcontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_im_context_get_type (void) G_GNUC_CONST;
 function gtk_im_context_get_type() bind(c)
@@ -4152,6 +4317,9 @@ function gtk_im_context_delete_surrounding(context, offset, n_chars) bind(c)
   integer(c_int), value :: n_chars
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshortcuttrigger.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !char * gtk_shortcut_trigger_to_string (GtkShortcutTrigger *self);
 function gtk_shortcut_trigger_to_string(self) bind(c)
@@ -4263,6 +4431,9 @@ function gtk_alternative_trigger_get_second(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklistbase.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_list_base_get_type (void) G_GNUC_CONST;
 function gtk_list_base_get_type() bind(c)
@@ -4270,6 +4441,9 @@ function gtk_list_base_get_type() bind(c)
   integer(c_size_t) :: gtk_list_base_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkstackswitcher.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_stack_switcher_get_type (void) G_GNUC_CONST;
 function gtk_stack_switcher_get_type() bind(c)
@@ -4300,6 +4474,9 @@ function gtk_stack_switcher_get_stack(switcher) bind(c)
   type(c_ptr), value :: switcher
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcelleditable.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_editable_get_type (void) G_GNUC_CONST;
 function gtk_cell_editable_get_type() bind(c)
@@ -4329,6 +4506,9 @@ subroutine gtk_cell_editable_remove_widget(cell_editable) bind(c)
   type(c_ptr), value :: cell_editable
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshortcutssection.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_shortcuts_section_get_type (void) G_GNUC_CONST;
 function gtk_shortcuts_section_get_type() bind(c)
@@ -4336,6 +4516,9 @@ function gtk_shortcuts_section_get_type() bind(c)
   integer(c_size_t) :: gtk_shortcuts_section_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgestureswipe.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gesture_swipe_get_type (void) G_GNUC_CONST;
 function gtk_gesture_swipe_get_type() bind(c)
@@ -4361,6 +4544,9 @@ function gtk_gesture_swipe_get_velocity(gesture, velocity_x, velocity_y)&
   type(c_ptr), value :: velocity_y
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfilechooserdialog.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_file_chooser_dialog_get_type (void) G_GNUC_CONST;
 function gtk_file_chooser_dialog_get_type() bind(c)
@@ -4368,6 +4554,9 @@ function gtk_file_chooser_dialog_get_type() bind(c)
   integer(c_size_t) :: gtk_file_chooser_dialog_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcolorchooserdialog.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_color_chooser_dialog_get_type (void) G_GNUC_CONST;
 function gtk_color_chooser_dialog_get_type() bind(c)
@@ -4384,6 +4573,9 @@ function gtk_color_chooser_dialog_new(title, parent) bind(c)
   type(c_ptr), value :: parent
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksizegroup.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_size_group_get_type (void) G_GNUC_CONST;
 function gtk_size_group_get_type() bind(c)
@@ -4439,6 +4631,9 @@ function gtk_size_group_get_widgets(size_group) bind(c)
   type(c_ptr), value :: size_group
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkpopovermenubar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_popover_menu_bar_get_type (void) G_GNUC_CONST;
 function gtk_popover_menu_bar_get_type() bind(c)
@@ -4489,6 +4684,9 @@ function gtk_popover_menu_bar_remove_child(bar, child) bind(c)
   type(c_ptr), value :: child
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkstyleprovider.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_style_provider_get_type (void) G_GNUC_CONST;
 function gtk_style_provider_get_type() bind(c)
@@ -4496,6 +4694,9 @@ function gtk_style_provider_get_type() bind(c)
   integer(c_size_t) :: gtk_style_provider_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgridview.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_grid_view_get_type (void) G_GNUC_CONST;
 function gtk_grid_view_get_type() bind(c)
@@ -4609,6 +4810,9 @@ function gtk_grid_view_get_single_click_activate(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkaccelgroup.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_accelerator_valid (guint keyval, GdkModifierType modifiers) G_GNUC_CONST;
 function gtk_accelerator_valid(keyval, modifiers) bind(c)
@@ -4691,6 +4895,9 @@ function gtk_accelerator_get_default_mod_mask() bind(c)
   integer(c_int) :: gtk_accelerator_get_default_mod_mask
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellrendererspinner.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_renderer_spinner_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_spinner_get_type() bind(c)
@@ -4705,6 +4912,9 @@ function gtk_cell_renderer_spinner_new() bind(c)
   type(c_ptr) :: gtk_cell_renderer_spinner_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcalendar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_calendar_get_type (void) G_GNUC_CONST;
 function gtk_calendar_get_type() bind(c)
@@ -4815,6 +5025,9 @@ function gtk_calendar_get_day_is_marked(calendar, day) bind(c)
   integer(c_int), value :: day
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksnapshot.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkSnapshot * gtk_snapshot_new (void);
 function gtk_snapshot_new() bind(c)
@@ -5255,6 +5468,9 @@ subroutine gtk_snapshot_render_insertion_cursor(snapshot, context, x, y,&
   integer(c_int), value :: direction
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkwidget.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_widget_get_type (void) G_GNUC_CONST;
 function gtk_widget_get_type() bind(c)
@@ -6767,6 +6983,9 @@ function gtk_widget_class_get_accessible_role(widget_class) bind(c)
   type(c_ptr), value :: widget_class
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkactionbar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_action_bar_get_type (void) G_GNUC_CONST;
 function gtk_action_bar_get_type() bind(c)
@@ -6837,6 +7056,9 @@ function gtk_action_bar_get_revealed(action_bar) bind(c)
   type(c_ptr), value :: action_bar
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshortcut.h
+!--------------------------------------------------
 ! 
 !GtkShortcutTrigger * gtk_shortcut_get_trigger (GtkShortcut *self);
 function gtk_shortcut_get_trigger(self) bind(c)
@@ -6885,6 +7107,9 @@ subroutine gtk_shortcut_set_arguments(self, args) bind(c)
   type(c_ptr), value :: args
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtknoselection.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GListModel * gtk_no_selection_get_model (GtkNoSelection *self);
 function gtk_no_selection_get_model(self) bind(c)
@@ -6901,6 +7126,9 @@ subroutine gtk_no_selection_set_model(self, model) bind(c)
   type(c_ptr), value :: model
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktextview.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_text_view_get_type (void) G_GNUC_CONST;
 function gtk_text_view_get_type() bind(c)
@@ -7530,6 +7758,9 @@ function gtk_text_view_get_extra_menu(text_view) bind(c)
   type(c_ptr), value :: text_view
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkinfobar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_info_bar_get_type (void) G_GNUC_CONST;
 function gtk_info_bar_get_type() bind(c)
@@ -7661,6 +7892,9 @@ function gtk_info_bar_get_revealed(info_bar) bind(c)
   type(c_ptr), value :: info_bar
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_text_get_type (void) G_GNUC_CONST;
 function gtk_text_get_type() bind(c)
@@ -7948,6 +8182,9 @@ function gtk_text_get_truncate_multiline(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkeventcontroller.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_event_controller_get_type (void) G_GNUC_CONST;
 function gtk_event_controller_get_type() bind(c)
@@ -8052,6 +8289,9 @@ function gtk_event_controller_get_current_event_state(controller) bind(c)
   type(c_ptr), value :: controller
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmain.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_init_check (void);
 function gtk_init_check() bind(c)
@@ -8107,6 +8347,9 @@ function gtk_get_locale_direction() bind(c)
   integer(c_int) :: gtk_get_locale_direction
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkappchooserwidget.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_app_chooser_widget_get_type (void) G_GNUC_CONST;
 function gtk_app_chooser_widget_get_type() bind(c)
@@ -8218,6 +8461,9 @@ function gtk_app_chooser_widget_get_default_text(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksortlistmodel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_sort_list_model_set_sorter (GtkSortListModel *self, GtkSorter *sorter);
 subroutine gtk_sort_list_model_set_sorter(self, sorter) bind(c)
@@ -8274,6 +8520,9 @@ function gtk_sort_list_model_get_pending(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkoverlaylayout.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_overlay_layout_child_get_measure (GtkOverlayLayoutChild *child);
 function gtk_overlay_layout_child_get_measure(child) bind(c)
@@ -8299,6 +8548,9 @@ function gtk_overlay_layout_child_get_clip_overlay(child) bind(c)
   type(c_ptr), value :: child
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellrenderer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_renderer_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_get_type() bind(c)
@@ -8570,6 +8822,9 @@ function gtk_cell_renderer_get_state(cell, widget, cell_state) bind(c)
   integer(c_int), value :: cell_state
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcheckbutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_check_button_get_type (void) G_GNUC_CONST;
 function gtk_check_button_get_type() bind(c)
@@ -8673,6 +8928,9 @@ subroutine gtk_check_button_set_use_underline(self, setting) bind(c)
   integer(c_int), value :: setting
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksignallistitemfactory.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_signal_list_item_factory_get_type (void) G_GNUC_CONST;
 function gtk_signal_list_item_factory_get_type() bind(c)
@@ -8687,6 +8945,9 @@ function gtk_signal_list_item_factory_new() bind(c)
   type(c_ptr) :: gtk_signal_list_item_factory_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshortcutsgroup.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_shortcuts_group_get_type (void) G_GNUC_CONST;
 function gtk_shortcuts_group_get_type() bind(c)
@@ -8694,6 +8955,9 @@ function gtk_shortcuts_group_get_type() bind(c)
   integer(c_size_t) :: gtk_shortcuts_group_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkprintsettings.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_print_settings_get_type (void) G_GNUC_CONST;
 function gtk_print_settings_get_type() bind(c)
@@ -9351,6 +9615,9 @@ function gtk_print_settings_new_from_gvariant(variant) bind(c)
   type(c_ptr), value :: variant
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkconstraintlayout.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkLayoutManager * gtk_constraint_layout_new (void);
 function gtk_constraint_layout_new() bind(c)
@@ -9428,6 +9695,9 @@ function gtk_constraint_layout_observe_guides(layout) bind(c)
   type(c_ptr), value :: layout
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcolorutils.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_hsv_to_rgb (float h, float s, float v, float *r, float *g, float *b);
 subroutine gtk_hsv_to_rgb(h, s, v, r, g, b) bind(c)
@@ -9452,6 +9722,9 @@ subroutine gtk_rgb_to_hsv(r, g, b, h, s, v) bind(c)
   type(c_ptr), value :: v
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkstylecontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_style_context_get_type (void) G_GNUC_CONST;
 function gtk_style_context_get_type() bind(c)
@@ -9633,6 +9906,9 @@ function gtk_style_context_to_string(context, flags) bind(c)
   integer(c_int), value :: flags
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcolorchooserwidget.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_color_chooser_widget_get_type (void) G_GNUC_CONST;
 function gtk_color_chooser_widget_get_type() bind(c)
@@ -9647,6 +9923,12 @@ function gtk_color_chooser_widget_new() bind(c)
   type(c_ptr) :: gtk_color_chooser_widget_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtk.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkappchooser.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_app_chooser_get_type (void) G_GNUC_CONST;
 function gtk_app_chooser_get_type() bind(c)
@@ -9677,6 +9959,9 @@ subroutine gtk_app_chooser_refresh(self) bind(c)
   type(c_ptr), value :: self
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkexpander.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_expander_get_type (void) G_GNUC_CONST;
 function gtk_expander_get_type() bind(c)
@@ -9812,6 +10097,9 @@ function gtk_expander_get_child(expander) bind(c)
   type(c_ptr), value :: expander
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtknative.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_native_realize (GtkNative *self);
 subroutine gtk_native_realize(self) bind(c)
@@ -9859,6 +10147,9 @@ subroutine gtk_native_get_surface_transform(self, x, y) bind(c)
   type(c_ptr), value :: y
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktexttag.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_text_tag_get_type (void) G_GNUC_CONST;
 function gtk_text_tag_get_type() bind(c)
@@ -9898,6 +10189,9 @@ subroutine gtk_text_tag_changed(tag, size_changed) bind(c)
   integer(c_int), value :: size_changed
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkflattenlistmodel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_flatten_list_model_set_model (GtkFlattenListModel *self, GListModel *model);
 subroutine gtk_flatten_list_model_set_model(self, model) bind(c)
@@ -9923,6 +10217,9 @@ function gtk_flatten_list_model_get_model_for_item(self, position) bind(c)
   integer(c_int), value :: position
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkbox.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_box_get_type (void) G_GNUC_CONST;
 function gtk_box_get_type() bind(c)
@@ -10029,6 +10326,9 @@ subroutine gtk_box_reorder_child_after(box, child, sibling) bind(c)
   type(c_ptr), value :: sibling
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkaboutdialog.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_about_dialog_get_type (void) G_GNUC_CONST;
 function gtk_about_dialog_get_type() bind(c)
@@ -10311,12 +10611,18 @@ subroutine gtk_about_dialog_add_credit_section(about, section_name, people)&
   type(c_ptr), dimension(*) :: people
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkimmodule.h
+!--------------------------------------------------
 ! 
 !void gtk_im_modules_init (void);
 subroutine gtk_im_modules_init() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshortcutswindow.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_shortcuts_window_get_type (void) G_GNUC_CONST;
 function gtk_shortcuts_window_get_type() bind(c)
@@ -10324,6 +10630,9 @@ function gtk_shortcuts_window_get_type() bind(c)
   integer(c_size_t) :: gtk_shortcuts_window_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklockbutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_lock_button_get_type (void) G_GNUC_CONST;
 function gtk_lock_button_get_type() bind(c)
@@ -10355,6 +10664,9 @@ subroutine gtk_lock_button_set_permission(button, permission) bind(c)
   type(c_ptr), value :: permission
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcustomfilter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_custom_filter_set_filter_func (GtkCustomFilter *self, GtkCustomFilterFunc match_func, gpointer user_data, GDestroyNotify user_destroy);
 subroutine gtk_custom_filter_set_filter_func(self, match_func, user_data,&
@@ -10366,6 +10678,9 @@ subroutine gtk_custom_filter_set_filter_func(self, match_func, user_data,&
   type(c_funptr), value :: user_destroy
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkiconview.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_icon_view_get_type (void) G_GNUC_CONST;
 function gtk_icon_view_get_type() bind(c)
@@ -10922,6 +11237,9 @@ function gtk_icon_view_get_tooltip_column(icon_view) bind(c)
   type(c_ptr), value :: icon_view
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkroot.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GdkDisplay * gtk_root_get_display (GtkRoot *self);
 function gtk_root_get_display(self) bind(c)
@@ -10946,6 +11264,9 @@ function gtk_root_get_focus(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgesturezoom.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gesture_zoom_get_type (void) G_GNUC_CONST;
 function gtk_gesture_zoom_get_type() bind(c)
@@ -10968,6 +11289,9 @@ function gtk_gesture_zoom_get_scale_delta(gesture) bind(c)
   type(c_ptr), value :: gesture
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkflowbox.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_flow_box_child_get_type (void) G_GNUC_CONST;
 function gtk_flow_box_child_get_type() bind(c)
@@ -11294,6 +11618,9 @@ subroutine gtk_flow_box_invalidate_sort(box) bind(c)
   type(c_ptr), value :: box
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmenubutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_menu_button_get_type (void) G_GNUC_CONST;
 function gtk_menu_button_get_type() bind(c)
@@ -11446,6 +11773,9 @@ subroutine gtk_menu_button_set_create_popup_func(menu_button, func, user_data,&
   type(c_funptr), value :: destroy_notify
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellareacontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_area_context_get_type (void) G_GNUC_CONST;
 function gtk_cell_area_context_get_type() bind(c)
@@ -11548,6 +11878,9 @@ subroutine gtk_cell_area_context_push_preferred_height(context, minimum_height,&
   integer(c_int), value :: natural_height
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkselectionfiltermodel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_selection_filter_model_set_model (GtkSelectionFilterModel *self, GtkSelectionModel *model);
 subroutine gtk_selection_filter_model_set_model(self, model) bind(c)
@@ -11564,6 +11897,9 @@ function gtk_selection_filter_model_get_model(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkboxlayout.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_box_layout_set_homogeneous (GtkBoxLayout *box_layout, gboolean homogeneous);
 subroutine gtk_box_layout_set_homogeneous(box_layout, homogeneous) bind(c)
@@ -11612,6 +11948,9 @@ function gtk_box_layout_get_baseline_position(box_layout) bind(c)
   type(c_ptr), value :: box_layout
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcombobox.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_combo_box_get_type (void) G_GNUC_CONST;
 function gtk_combo_box_get_type() bind(c)
@@ -11844,6 +12183,9 @@ function gtk_combo_box_get_child(combo_box) bind(c)
   type(c_ptr), value :: combo_box
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkexpression.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_expression_get_type (void) G_GNUC_CONST;
 function gtk_expression_get_type() bind(c)
@@ -12127,6 +12469,9 @@ function gtk_param_spec_expression(name, nick, blurb, flags) bind(c)
   integer(c_int), value :: flags
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkscalebutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_scale_button_get_type (void) G_GNUC_CONST;
 function gtk_scale_button_get_type() bind(c)
@@ -12209,6 +12554,9 @@ function gtk_scale_button_get_popup(button) bind(c)
   type(c_ptr), value :: button
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkrange.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_range_get_type (void) G_GNUC_CONST;
 function gtk_range_get_type() bind(c)
@@ -12396,6 +12744,9 @@ function gtk_range_get_round_digits(range) bind(c)
   type(c_ptr), value :: range
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfontchooserwidget.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_font_chooser_widget_get_type (void) G_GNUC_CONST;
 function gtk_font_chooser_widget_get_type() bind(c)
@@ -12410,6 +12761,9 @@ function gtk_font_chooser_widget_new() bind(c)
   type(c_ptr) :: gtk_font_chooser_widget_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkstack.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_stack_page_get_type (void) G_GNUC_CONST;
 function gtk_stack_page_get_type() bind(c)
@@ -12728,6 +13082,9 @@ function gtk_stack_get_pages(stack) bind(c)
   type(c_ptr), value :: stack
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkatcontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkAccessibleRole gtk_at_context_get_accessible_role (GtkATContext *self);
 function gtk_at_context_get_accessible_role(self) bind(c)
@@ -12746,6 +13103,9 @@ function gtk_at_context_create(accessible_role, accessible, display) bind(c)
   type(c_ptr), value :: display
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshortcutcontroller.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_shortcut_controller_get_type (void) G_GNUC_CONST;
 function gtk_shortcut_controller_get_type() bind(c)
@@ -12817,6 +13177,9 @@ subroutine gtk_shortcut_controller_remove_shortcut(self, shortcut) bind(c)
   type(c_ptr), value :: shortcut
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkentrybuffer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_entry_buffer_get_type (void) G_GNUC_CONST;
 function gtk_entry_buffer_get_type() bind(c)
@@ -12924,6 +13287,9 @@ subroutine gtk_entry_buffer_emit_deleted_text(buffer, position, n_chars)&
   integer(c_int), value :: n_chars
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkeventcontrollerkey.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_event_controller_key_get_type (void) G_GNUC_CONST;
 function gtk_event_controller_key_get_type() bind(c)
@@ -12972,6 +13338,9 @@ function gtk_event_controller_key_get_group(controller) bind(c)
   type(c_ptr), value :: controller
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkscrolledwindow.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_scrolled_window_get_type (void) G_GNUC_CONST;
 function gtk_scrolled_window_get_type() bind(c)
@@ -13251,6 +13620,9 @@ function gtk_scrolled_window_get_child(scrolled_window) bind(c)
   type(c_ptr), value :: scrolled_window
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfixedlayout.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GskTransform * gtk_fixed_layout_child_get_transform (GtkFixedLayoutChild *child);
 function gtk_fixed_layout_child_get_transform(child) bind(c)
@@ -13259,6 +13631,9 @@ function gtk_fixed_layout_child_get_transform(child) bind(c)
   type(c_ptr), value :: child
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkconstraintguide.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_constraint_guide_set_min_size (GtkConstraintGuide *guide, int width, int height);
 subroutine gtk_constraint_guide_set_min_size(guide, width, height) bind(c)
@@ -13345,6 +13720,9 @@ function gtk_constraint_guide_get_name(guide) bind(c)
   type(c_ptr), value :: guide
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkdrawingarea.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_drawing_area_get_type (void) G_GNUC_CONST;
 function gtk_drawing_area_get_type() bind(c)
@@ -13402,6 +13780,9 @@ subroutine gtk_drawing_area_set_draw_func(self, draw_func, user_data, destroy)&
   type(c_funptr), value :: destroy
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkentrycompletion.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_entry_completion_get_type (void) G_GNUC_CONST;
 function gtk_entry_completion_get_type() bind(c)
@@ -13608,6 +13989,9 @@ function gtk_entry_completion_get_text_column(completion) bind(c)
   type(c_ptr), value :: completion
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkstringlist.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !const char * gtk_string_object_get_string (GtkStringObject *self);
 function gtk_string_object_get_string(self) bind(c)
@@ -13660,6 +14044,9 @@ function gtk_string_list_get_string(self, position) bind(c)
   integer(c_int), value :: position
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkeventcontrollerscroll.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_event_controller_scroll_get_type (void) G_GNUC_CONST;
 function gtk_event_controller_scroll_get_type() bind(c)
@@ -13691,6 +14078,9 @@ function gtk_event_controller_scroll_get_flags(scroll) bind(c)
   type(c_ptr), value :: scroll
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcomboboxtext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_combo_box_text_get_type (void) G_GNUC_CONST;
 function gtk_combo_box_text_get_type() bind(c)
@@ -13788,6 +14178,9 @@ subroutine gtk_combo_box_text_prepend(combo_box, id, text) bind(c)
   character(kind=c_char), dimension(*) :: text
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkdropcontrollermotion.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_drop_controller_motion_get_type (void) G_GNUC_CONST;
 function gtk_drop_controller_motion_get_type() bind(c)
@@ -13826,6 +14219,9 @@ function gtk_drop_controller_motion_is_pointer(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktextiter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkTextBuffer *gtk_text_iter_get_buffer (const GtkTextIter *iter);
 function gtk_text_iter_get_buffer(iter) bind(c)
@@ -14602,6 +14998,12 @@ subroutine gtk_text_iter_order(first, second) bind(c)
   type(c_ptr), value :: second
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkenums.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtknotebook.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_notebook_get_type (void) G_GNUC_CONST;
 function gtk_notebook_get_type() bind(c)
@@ -15018,6 +15420,9 @@ function gtk_notebook_get_pages(notebook) bind(c)
   type(c_ptr), value :: notebook
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkscrollbar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_scrollbar_get_type (void) G_GNUC_CONST;
 function gtk_scrollbar_get_type() bind(c)
@@ -15050,6 +15455,9 @@ function gtk_scrollbar_get_adjustment(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfilterlistmodel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_filter_list_model_set_filter (GtkFilterListModel *self, GtkFilter *filter);
 subroutine gtk_filter_list_model_set_filter(self, filter) bind(c)
@@ -15106,6 +15514,9 @@ function gtk_filter_list_model_get_pending(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkrevealer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_revealer_get_type (void) G_GNUC_CONST;
 function gtk_revealer_get_type() bind(c)
@@ -15192,6 +15603,9 @@ function gtk_revealer_get_child(revealer) bind(c)
   type(c_ptr), value :: revealer
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgrid.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_grid_get_type (void) G_GNUC_CONST;
 function gtk_grid_get_type() bind(c)
@@ -15401,6 +15815,9 @@ subroutine gtk_grid_query_child(grid, child, column, row, width, height)&
   type(c_ptr), value :: height
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkpagesetup.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_page_setup_get_type (void) G_GNUC_CONST;
 function gtk_page_setup_get_type() bind(c)
@@ -15648,6 +16065,12 @@ function gtk_page_setup_new_from_gvariant(variant) bind(c)
   type(c_ptr), value :: variant
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktypebuiltins.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfontbutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_font_button_get_type (void) G_GNUC_CONST;
 function gtk_font_button_get_type() bind(c)
@@ -15734,6 +16157,9 @@ subroutine gtk_font_button_set_use_size(font_button, use_size) bind(c)
   integer(c_int), value :: use_size
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkvolumebutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_volume_button_get_type (void) G_GNUC_CONST;
 function gtk_volume_button_get_type() bind(c)
@@ -15748,6 +16174,9 @@ function gtk_volume_button_new() bind(c)
   type(c_ptr) :: gtk_volume_button_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkadjustment.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_adjustment_get_type (void) G_GNUC_CONST;
 function gtk_adjustment_get_type() bind(c)
@@ -15898,6 +16327,9 @@ function gtk_adjustment_get_minimum_increment(adjustment) bind(c)
   type(c_ptr), value :: adjustment
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgesturesingle.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gesture_single_get_type (void) G_GNUC_CONST;
 function gtk_gesture_single_get_type() bind(c)
@@ -15969,6 +16401,9 @@ function gtk_gesture_single_get_current_sequence(gesture) bind(c)
   type(c_ptr), value :: gesture
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkappchooserdialog.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_app_chooser_dialog_get_type (void) G_GNUC_CONST;
 function gtk_app_chooser_dialog_get_type() bind(c)
@@ -16021,6 +16456,9 @@ function gtk_app_chooser_dialog_get_heading(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgesturedrag.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gesture_drag_get_type (void) G_GNUC_CONST;
 function gtk_gesture_drag_get_type() bind(c)
@@ -16055,6 +16493,9 @@ function gtk_gesture_drag_get_offset(gesture, x, y) bind(c)
   type(c_ptr), value :: y
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmaplistmodel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_map_list_model_set_map_func (GtkMapListModel *self, GtkMapListModelMapFunc map_func, gpointer user_data, GDestroyNotify user_destroy);
 subroutine gtk_map_list_model_set_map_func(self, map_func, user_data,&
@@ -16090,6 +16531,9 @@ function gtk_map_list_model_has_map(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkaspectframe.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_aspect_frame_get_type (void) G_GNUC_CONST;
 function gtk_aspect_frame_get_type() bind(c)
@@ -16188,6 +16632,9 @@ function gtk_aspect_frame_get_child(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmessagedialog.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_message_dialog_get_type (void) G_GNUC_CONST;
 function gtk_message_dialog_get_type() bind(c)
@@ -16211,6 +16658,9 @@ function gtk_message_dialog_get_message_area(message_dialog) bind(c)
   type(c_ptr), value :: message_dialog
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkheaderbar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_header_bar_get_type (void) G_GNUC_CONST;
 function gtk_header_bar_get_type() bind(c)
@@ -16297,6 +16747,9 @@ function gtk_header_bar_get_decoration_layout(bar) bind(c)
   type(c_ptr), value :: bar
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkprintoperation.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GQuark gtk_print_error_quark (void);
 function gtk_print_error_quark() bind(c)
@@ -16574,6 +17027,9 @@ subroutine gtk_print_run_page_setup_dialog_async(parent, page_setup, settings,&
   type(c_ptr), value :: data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkpasswordentry.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_password_entry_get_type (void) G_GNUC_CONST;
 function gtk_password_entry_get_type() bind(c)
@@ -16620,6 +17076,9 @@ function gtk_password_entry_get_extra_menu(entry) bind(c)
   type(c_ptr), value :: entry
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkeventcontrollerlegacy.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_event_controller_legacy_get_type (void) G_GNUC_CONST;
 function gtk_event_controller_legacy_get_type() bind(c)
@@ -16634,6 +17093,9 @@ function gtk_event_controller_legacy_new() bind(c)
   type(c_ptr) :: gtk_event_controller_legacy_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreeexpander.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkWidget * gtk_tree_expander_get_child (GtkTreeExpander *self);
 function gtk_tree_expander_get_child(self) bind(c)
@@ -16674,6 +17136,9 @@ subroutine gtk_tree_expander_set_list_row(self, list_row) bind(c)
   type(c_ptr), value :: list_row
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmultisorter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_multi_sorter_append (GtkMultiSorter *self, GtkSorter *sorter);
 subroutine gtk_multi_sorter_append(self, sorter) bind(c)
@@ -16690,6 +17155,9 @@ subroutine gtk_multi_sorter_remove(self, position) bind(c)
   integer(c_int), value :: position
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkframe.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_frame_get_type (void) G_GNUC_CONST;
 function gtk_frame_get_type() bind(c)
@@ -16769,6 +17237,9 @@ function gtk_frame_get_child(frame) bind(c)
   type(c_ptr), value :: frame
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktextchild.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_text_child_anchor_get_type (void) G_GNUC_CONST;
 function gtk_text_child_anchor_get_type() bind(c)
@@ -16800,6 +17271,9 @@ function gtk_text_child_anchor_get_deleted(anchor) bind(c)
   type(c_ptr), value :: anchor
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfilechooser.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_file_chooser_get_type (void) G_GNUC_CONST;
 function gtk_file_chooser_get_type() bind(c)
@@ -17030,6 +17504,9 @@ function gtk_file_chooser_get_choice(chooser, id) bind(c)
   character(kind=c_char), dimension(*) :: id
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellrenderercombo.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_renderer_combo_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_combo_get_type() bind(c)
@@ -17044,6 +17521,9 @@ function gtk_cell_renderer_combo_new() bind(c)
   type(c_ptr) :: gtk_cell_renderer_combo_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreemodelfilter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_tree_model_filter_get_type (void) G_GNUC_CONST;
 function gtk_tree_model_filter_get_type() bind(c)
@@ -17155,6 +17635,9 @@ subroutine gtk_tree_model_filter_clear_cache(filter) bind(c)
   type(c_ptr), value :: filter
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellareabox.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_area_box_get_type (void) G_GNUC_CONST;
 function gtk_cell_area_box_get_type() bind(c)
@@ -17209,6 +17692,9 @@ subroutine gtk_cell_area_box_set_spacing(box, spacing) bind(c)
   integer(c_int), value :: spacing
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreelistrowsorter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkSorter * gtk_tree_list_row_sorter_get_sorter (GtkTreeListRowSorter *self);
 function gtk_tree_list_row_sorter_get_sorter(self) bind(c)
@@ -17225,6 +17711,9 @@ subroutine gtk_tree_list_row_sorter_set_sorter(self, sorter) bind(c)
   type(c_ptr), value :: sorter
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklistbox.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_list_box_row_get_type (void) G_GNUC_CONST;
 function gtk_list_box_row_get_type() bind(c)
@@ -17599,6 +18088,9 @@ function gtk_list_box_get_show_separators(box) bind(c)
   type(c_ptr), value :: box
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgesturelongpress.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gesture_long_press_get_type (void) G_GNUC_CONST;
 function gtk_gesture_long_press_get_type() bind(c)
@@ -17630,6 +18122,9 @@ function gtk_gesture_long_press_get_delay_factor(gesture) bind(c)
   type(c_ptr), value :: gesture
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktogglebutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_toggle_button_get_type (void) G_GNUC_CONST;
 function gtk_toggle_button_get_type() bind(c)
@@ -17691,6 +18186,9 @@ subroutine gtk_toggle_button_set_group(toggle_button, group) bind(c)
   type(c_ptr), value :: group
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkscale.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_scale_get_type (void) G_GNUC_CONST;
 function gtk_scale_get_type() bind(c)
@@ -17827,6 +18325,9 @@ subroutine gtk_scale_set_format_value_func(scale, func, user_data,&
   type(c_funptr), value :: destroy_notify
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellrendererpixbuf.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_renderer_pixbuf_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_pixbuf_get_type() bind(c)
@@ -17841,6 +18342,9 @@ function gtk_cell_renderer_pixbuf_new() bind(c)
   type(c_ptr) :: gtk_cell_renderer_pixbuf_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkrecentmanager.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GQuark gtk_recent_manager_error_quark (void);
 function gtk_recent_manager_error_quark() bind(c)
@@ -18155,6 +18659,9 @@ function gtk_recent_info_match(info_a, info_b) bind(c)
   type(c_ptr), value :: info_b
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkoverlay.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_overlay_get_type (void) G_GNUC_CONST;
 function gtk_overlay_get_type() bind(c)
@@ -18237,6 +18744,9 @@ subroutine gtk_overlay_set_clip_overlay(overlay, widget, clip_overlay) bind(c)
   integer(c_int), value :: clip_overlay
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgesturestylus.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gesture_stylus_get_type (void) G_GNUC_CONST;
 function gtk_gesture_stylus_get_type() bind(c)
@@ -18289,6 +18799,9 @@ function gtk_gesture_stylus_get_device_tool(gesture) bind(c)
   type(c_ptr), value :: gesture
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkeditable.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_editable_get_type (void) G_GNUC_CONST;
 function gtk_editable_get_type() bind(c)
@@ -18519,6 +19032,9 @@ function gtk_editable_delegate_get_property(object, prop_id, value, pspec)&
   type(c_ptr), value :: pspec
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkviewport.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_viewport_get_type (void) G_GNUC_CONST;
 function gtk_viewport_get_type() bind(c)
@@ -18567,6 +19083,9 @@ function gtk_viewport_get_child(viewport) bind(c)
   type(c_ptr), value :: viewport
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklayoutmanager.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_layout_manager_measure (GtkLayoutManager *manager, GtkWidget *widget, GtkOrientation orientation, int for_size, int *minimum, int *natural, int *minimum_baseline, int *natural_baseline);
 subroutine gtk_layout_manager_measure(manager, widget, orientation, for_size,&
@@ -18626,6 +19145,9 @@ function gtk_layout_manager_get_layout_child(manager, child) bind(c)
   type(c_ptr), value :: child
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkprintcontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_print_context_get_type (void) G_GNUC_CONST;
 function gtk_print_context_get_type() bind(c)
@@ -18729,6 +19251,9 @@ subroutine gtk_print_context_set_cairo_context(context, cr, dpi_x, dpi_y)&
   real(c_double), value :: dpi_y
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcenterlayout.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_center_layout_set_orientation (GtkCenterLayout *self, GtkOrientation orientation);
 subroutine gtk_center_layout_set_orientation(self, orientation) bind(c)
@@ -18810,6 +19335,9 @@ function gtk_center_layout_get_end_widget(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkappchooserbutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_app_chooser_button_get_type (void) G_GNUC_CONST;
 function gtk_app_chooser_button_get_type() bind(c)
@@ -18915,6 +19443,9 @@ subroutine gtk_app_chooser_button_set_modal(self, modal) bind(c)
   integer(c_int), value :: modal
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcolorbutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_color_button_get_type (void) G_GNUC_CONST;
 function gtk_color_button_get_type() bind(c)
@@ -18969,6 +19500,9 @@ subroutine gtk_color_button_set_modal(button, modal) bind(c)
   integer(c_int), value :: modal
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklistitemfactory.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_list_item_factory_get_type (void) G_GNUC_CONST;
 function gtk_list_item_factory_get_type() bind(c)
@@ -18976,6 +19510,9 @@ function gtk_list_item_factory_get_type() bind(c)
   integer(c_size_t) :: gtk_list_item_factory_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkemojichooser.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_emoji_chooser_get_type (void) G_GNUC_CONST;
 function gtk_emoji_chooser_get_type() bind(c)
@@ -18990,6 +19527,9 @@ function gtk_emoji_chooser_new() bind(c)
   type(c_ptr) :: gtk_emoji_chooser_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklevelbar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_level_bar_get_type (void) G_GNUC_CONST;
 function gtk_level_bar_get_type() bind(c)
@@ -19120,6 +19660,9 @@ function gtk_level_bar_get_offset_value(self, name, value) bind(c)
   type(c_ptr), value :: value
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkpopover.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_popover_get_type (void) G_GNUC_CONST;
 function gtk_popover_get_type() bind(c)
@@ -19295,6 +19838,9 @@ subroutine gtk_popover_present(popover) bind(c)
   type(c_ptr), value :: popover
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkrender.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_render_check (GtkStyleContext *context, cairo_t *cr, double x, double y, double width, double height);
 subroutine gtk_render_check(context, cr, x, y, width, height) bind(c)
@@ -19437,6 +19983,9 @@ subroutine gtk_render_icon(context, cr, texture, x, y) bind(c)
   real(c_double), value :: y
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktooltip.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_tooltip_get_type (void);
 function gtk_tooltip_get_type() bind(c)
@@ -19500,6 +20049,9 @@ subroutine gtk_tooltip_set_tip_area(tooltip, rect) bind(c)
   type(c_ptr), value :: rect
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellarea.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_area_get_type (void) G_GNUC_CONST;
 function gtk_cell_area_get_type() bind(c)
@@ -19966,6 +20518,12 @@ subroutine gtk_cell_area_request_renderer(area, renderer, orientation, widget,&
   type(c_ptr), value :: natural_size
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcustomlayout.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkconstraint.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkConstraint * gtk_constraint_new_constant (gpointer target, GtkConstraintAttribute target_attribute, GtkConstraintRelation relation, double constant, int strength);
 function gtk_constraint_new_constant(target, target_attribute, relation,&
@@ -20067,6 +20625,9 @@ function gtk_constraint_is_constant(constraint) bind(c)
   type(c_ptr), value :: constraint
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkpapersize.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_paper_size_get_type (void) G_GNUC_CONST;
 function gtk_paper_size_get_type() bind(c)
@@ -20295,6 +20856,9 @@ function gtk_paper_size_to_gvariant(paper_size) bind(c)
   type(c_ptr), value :: paper_size
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshortcutlabel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_shortcut_label_get_type (void) G_GNUC_CONST;
 function gtk_shortcut_label_get_type() bind(c)
@@ -20342,6 +20906,9 @@ subroutine gtk_shortcut_label_set_disabled_text(self, disabled_text) bind(c)
   character(kind=c_char), dimension(*) :: disabled_text
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkdialog.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_dialog_get_type (void) G_GNUC_CONST;
 function gtk_dialog_get_type() bind(c)
@@ -20435,6 +21002,9 @@ function gtk_dialog_get_header_bar(dialog) bind(c)
   type(c_ptr), value :: dialog
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkbuilderlistitemfactory.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_builder_list_item_factory_get_type (void) G_GNUC_CONST;
 function gtk_builder_list_item_factory_get_type() bind(c)
@@ -20485,6 +21055,9 @@ function gtk_builder_list_item_factory_get_scope(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkapplicationwindow.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_application_window_get_type (void) G_GNUC_CONST;
 function gtk_application_window_get_type() bind(c)
@@ -20542,6 +21115,9 @@ function gtk_application_window_get_help_overlay(window) bind(c)
   type(c_ptr), value :: window
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkgestureclick.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_gesture_click_get_type (void) G_GNUC_CONST;
 function gtk_gesture_click_get_type() bind(c)
@@ -20556,6 +21132,9 @@ function gtk_gesture_click_new() bind(c)
   type(c_ptr) :: gtk_gesture_click_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmediafile.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkMediaStream * gtk_media_file_new (void);
 function gtk_media_file_new() bind(c)
@@ -20650,6 +21229,9 @@ function gtk_media_file_get_input_stream(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmediastream.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_media_stream_is_prepared (GtkMediaStream *self);
 function gtk_media_stream_is_prepared(self) bind(c)
@@ -20892,6 +21474,9 @@ subroutine gtk_media_stream_error_valist(self, domain, code, format, args)&
   type(c_ptr), value :: args
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkassistant.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_assistant_page_get_type (void) G_GNUC_CONST;
 function gtk_assistant_page_get_type() bind(c)
@@ -21116,6 +21701,9 @@ function gtk_assistant_get_pages(assistant) bind(c)
   type(c_ptr), value :: assistant
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkimmulticontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_im_multicontext_get_type (void) G_GNUC_CONST;
 function gtk_im_multicontext_get_type() bind(c)
@@ -21146,6 +21734,9 @@ subroutine gtk_im_multicontext_set_context_id(context, context_id) bind(c)
   character(kind=c_char), dimension(*) :: context_id
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcelllayout.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_layout_get_type (void) G_GNUC_CONST;
 function gtk_cell_layout_get_type() bind(c)
@@ -21234,6 +21825,9 @@ function gtk_cell_layout_get_area(cell_layout) bind(c)
   type(c_ptr), value :: cell_layout
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreemodel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkTreePath *gtk_tree_path_new (void);
 function gtk_tree_path_new() bind(c)
@@ -21756,6 +22350,9 @@ subroutine gtk_tree_model_rows_reordered_with_length(tree_model, path, iter,&
   integer(c_int), value :: length
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksingleselection.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GListModel * gtk_single_selection_get_model (GtkSingleSelection *self);
 function gtk_single_selection_get_model(self) bind(c)
@@ -21828,6 +22425,9 @@ subroutine gtk_single_selection_set_can_unselect(self, can_unselect) bind(c)
   integer(c_int), value :: can_unselect
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkwindowhandle.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkWidget * gtk_window_handle_get_child (GtkWindowHandle *self);
 function gtk_window_handle_get_child(self) bind(c)
@@ -21844,6 +22444,9 @@ subroutine gtk_window_handle_set_child(self, child) bind(c)
   type(c_ptr), value :: child
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreeview.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_tree_view_get_type (void) G_GNUC_CONST;
 function gtk_tree_view_get_type() bind(c)
@@ -22681,6 +23284,9 @@ function gtk_tree_view_get_tooltip_column(tree_view) bind(c)
   type(c_ptr), value :: tree_view
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkscrollable.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_scrollable_get_type (void) G_GNUC_CONST;
 function gtk_scrollable_get_type() bind(c)
@@ -22761,6 +23367,9 @@ function gtk_scrollable_get_border(scrollable, border) bind(c)
   type(c_ptr), value :: border
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcolorchooser.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_color_chooser_get_type (void) G_GNUC_CONST;
 function gtk_color_chooser_get_type() bind(c)
@@ -22812,6 +23421,9 @@ subroutine gtk_color_chooser_add_palette(chooser, orientation, colors_per_line,&
   type(c_ptr), value :: colors
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfixed.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_fixed_get_type (void) G_GNUC_CONST;
 function gtk_fixed_get_type() bind(c)
@@ -22882,6 +23494,9 @@ function gtk_fixed_get_child_transform(fixed, widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshortcutsshortcut.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_shortcuts_shortcut_get_type (void) G_GNUC_CONST;
 function gtk_shortcuts_shortcut_get_type() bind(c)
@@ -22889,6 +23504,9 @@ function gtk_shortcuts_shortcut_get_type() bind(c)
   integer(c_size_t) :: gtk_shortcuts_shortcut_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcellrenderertoggle.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_cell_renderer_toggle_get_type (void) G_GNUC_CONST;
 function gtk_cell_renderer_toggle_get_type() bind(c)
@@ -22951,6 +23569,9 @@ subroutine gtk_cell_renderer_toggle_set_activatable(toggle, setting) bind(c)
   integer(c_int), value :: setting
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkselectionmodel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_selection_model_is_selected (GtkSelectionModel *model, guint position);
 function gtk_selection_model_is_selected(model, position) bind(c)
@@ -23057,6 +23678,9 @@ subroutine gtk_selection_model_selection_changed(model, position, n_items)&
   integer(c_int), value :: n_items
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfilefilter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_file_filter_get_type (void) G_GNUC_CONST;
 function gtk_file_filter_get_type() bind(c)
@@ -23134,6 +23758,9 @@ function gtk_file_filter_new_from_gvariant(variant) bind(c)
   type(c_ptr), value :: variant
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktestatcontext.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_test_accessible_has_role (GtkAccessible *accessible, GtkAccessibleRole role);
 function gtk_test_accessible_has_role(accessible, role) bind(c)
@@ -23185,6 +23812,12 @@ subroutine gtk_test_accessible_assertion_message_role(domain, file, line, func,&
   integer(c_int), value :: actual_role
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtk-autocleanups.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkdroptargetasync.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_drop_target_async_get_type (void) G_GNUC_CONST;
 function gtk_drop_target_async_get_type() bind(c)
@@ -23241,6 +23874,9 @@ subroutine gtk_drop_target_async_reject_drop(self, drop) bind(c)
   type(c_ptr), value :: drop
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreestore.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_tree_store_get_type (void) G_GNUC_CONST;
 function gtk_tree_store_get_type() bind(c)
@@ -23442,6 +24078,9 @@ subroutine gtk_tree_store_move_after(tree_store, iter, position) bind(c)
   type(c_ptr), value :: position
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkwindowcontrols.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkPackType gtk_window_controls_get_side (GtkWindowControls *self);
 function gtk_window_controls_get_side(self) bind(c)
@@ -23482,6 +24121,9 @@ function gtk_window_controls_get_empty(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreelistmodel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GListModel * gtk_tree_list_model_get_model (GtkTreeListModel *self);
 function gtk_tree_list_model_get_model(self) bind(c)
@@ -23605,6 +24247,9 @@ function gtk_tree_list_row_get_child_row(self, position) bind(c)
   integer(c_int), value :: position
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkboolfilter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkExpression * gtk_bool_filter_get_expression (GtkBoolFilter *self);
 function gtk_bool_filter_get_expression(self) bind(c)
@@ -23637,6 +24282,9 @@ subroutine gtk_bool_filter_set_invert(self, invert) bind(c)
   integer(c_int), value :: invert
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkspinner.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_spinner_get_type (void) G_GNUC_CONST;
 function gtk_spinner_get_type() bind(c)
@@ -23681,6 +24329,9 @@ function gtk_spinner_get_spinning(spinner) bind(c)
   type(c_ptr), value :: spinner
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkdragicon.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_drag_icon_set_child (GtkDragIcon *self, GtkWidget *child);
 subroutine gtk_drag_icon_set_child(self, child) bind(c)
@@ -23716,6 +24367,9 @@ function gtk_drag_icon_create_widget_for_value(value) bind(c)
   type(c_ptr), value :: value
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreesortable.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_tree_sortable_get_type (void) G_GNUC_CONST;
 function gtk_tree_sortable_get_type() bind(c)
@@ -23782,6 +24436,9 @@ function gtk_tree_sortable_has_default_sort_func(sortable) bind(c)
   type(c_ptr), value :: sortable
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkimcontextsimple.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_im_context_simple_get_type (void) G_GNUC_CONST;
 function gtk_im_context_simple_get_type() bind(c)
@@ -23816,6 +24473,9 @@ subroutine gtk_im_context_simple_add_compose_file(context_simple, compose_file)&
   character(kind=c_char), dimension(*) :: compose_file
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkprintoperationpreview.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_print_operation_preview_get_type (void) G_GNUC_CONST;
 function gtk_print_operation_preview_get_type() bind(c)
@@ -23847,6 +24507,9 @@ function gtk_print_operation_preview_is_selected(preview, page_nr) bind(c)
   integer(c_int), value :: page_nr
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcolumnviewcolumn.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_column_view_column_get_type (void) G_GNUC_CONST;
 function gtk_column_view_column_get_type() bind(c)
@@ -23999,6 +24662,9 @@ function gtk_column_view_column_get_expand(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtknativedialog.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_native_dialog_show (GtkNativeDialog *self);
 subroutine gtk_native_dialog_show(self) bind(c)
@@ -24076,6 +24742,9 @@ function gtk_native_dialog_get_transient_for(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkswitch.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_switch_get_type (void) G_GNUC_CONST;
 function gtk_switch_get_type() bind(c)
@@ -24122,6 +24791,9 @@ function gtk_switch_get_state(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkvideo.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkWidget * gtk_video_new_for_media_stream (GtkMediaStream *stream);
 function gtk_video_new_for_media_stream(stream) bind(c)
@@ -24234,6 +24906,9 @@ subroutine gtk_video_set_loop(self, loop) bind(c)
   integer(c_int), value :: loop
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkprogressbar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_progress_bar_get_type (void) G_GNUC_CONST;
 function gtk_progress_bar_get_type() bind(c)
@@ -24351,6 +25026,9 @@ function gtk_progress_bar_get_show_text(pbar) bind(c)
   type(c_ptr), value :: pbar
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfontchooser.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_font_chooser_get_type (void) G_GNUC_CONST;
 function gtk_font_chooser_get_type() bind(c)
@@ -24514,6 +25192,12 @@ subroutine gtk_font_chooser_set_language(fontchooser, language) bind(c)
   character(kind=c_char), dimension(*) :: language
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkshortcutmanager.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkseparator.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_separator_get_type (void) G_GNUC_CONST;
 function gtk_separator_get_type() bind(c)
@@ -24529,6 +25213,9 @@ function gtk_separator_new(orientation) bind(c)
   integer(c_int), value :: orientation
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmediacontrols.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkMediaStream *gtk_media_controls_get_media_stream (GtkMediaControls *controls);
 function gtk_media_controls_get_media_stream(controls) bind(c)
@@ -24545,6 +25232,9 @@ subroutine gtk_media_controls_set_media_stream(controls, stream) bind(c)
   type(c_ptr), value :: stream
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreeviewcolumn.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_tree_view_column_get_type (void) G_GNUC_CONST;
 function gtk_tree_view_column_get_type() bind(c)
@@ -24982,6 +25672,9 @@ function gtk_tree_view_column_get_button(tree_column) bind(c)
   type(c_ptr), value :: tree_column
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktextbuffer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_text_buffer_get_type (void) G_GNUC_CONST;
 function gtk_text_buffer_get_type() bind(c)
@@ -25614,6 +26307,9 @@ subroutine gtk_text_buffer_end_user_action(buffer) bind(c)
   type(c_ptr), value :: buffer
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkstacksidebar.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_stack_sidebar_get_type (void) G_GNUC_CONST;
 function gtk_stack_sidebar_get_type() bind(c)
@@ -25644,6 +26340,9 @@ function gtk_stack_sidebar_get_stack(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkimage.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_image_get_type (void) G_GNUC_CONST;
 function gtk_image_get_type() bind(c)
@@ -25825,6 +26524,9 @@ function gtk_image_get_icon_size(image) bind(c)
   type(c_ptr), value :: image
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkbitset.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_bitset_get_type (void) G_GNUC_CONST;
 function gtk_bitset_get_type() bind(c)
@@ -26147,6 +26849,9 @@ function gtk_bitset_iter_is_valid(iter) bind(c)
   type(c_ptr), value :: iter
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkdropdown.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GtkWidget * gtk_drop_down_new_from_strings (const char * const * strings);
 function gtk_drop_down_new_from_strings(strings) bind(c)
@@ -26259,6 +26964,9 @@ function gtk_drop_down_get_enable_search(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklabel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_label_get_type (void) G_GNUC_CONST;
 function gtk_label_get_type() bind(c)
@@ -26646,6 +27354,9 @@ function gtk_label_get_extra_menu(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkslicelistmodel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_slice_list_model_set_model (GtkSliceListModel *self, GListModel *model);
 subroutine gtk_slice_list_model_set_model(self, model) bind(c)
@@ -26694,6 +27405,9 @@ function gtk_slice_list_model_get_size(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfilter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_filter_match (GtkFilter *self, gpointer item);
 function gtk_filter_match(self, item) bind(c)
@@ -26719,6 +27433,9 @@ subroutine gtk_filter_changed(self, change) bind(c)
   integer(c_int), value :: change
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkbookmarklist.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !const char * gtk_bookmark_list_get_filename (GtkBookmarkList *self);
 function gtk_bookmark_list_get_filename(self) bind(c)
@@ -26767,6 +27484,9 @@ function gtk_bookmark_list_is_loading(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmountoperation.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_mount_operation_get_type (void);
 function gtk_mount_operation_get_type() bind(c)
@@ -26822,6 +27542,9 @@ function gtk_mount_operation_get_display(op) bind(c)
   type(c_ptr), value :: op
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkdirectorylist.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_directory_list_set_file (GtkDirectoryList *self, GFile *file);
 subroutine gtk_directory_list_set_file(self, file) bind(c)
@@ -26902,6 +27625,9 @@ function gtk_directory_list_get_monitored(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkactionable.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_actionable_get_type (void) G_GNUC_CONST;
 function gtk_actionable_get_type() bind(c)
@@ -26951,6 +27677,9 @@ subroutine gtk_actionable_set_detailed_action_name(actionable,&
   character(kind=c_char), dimension(*) :: detailed_action_name
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkversion.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !guint gtk_get_major_version (void) G_GNUC_CONST;
 function gtk_get_major_version() bind(c)
@@ -26997,6 +27726,9 @@ function gtk_check_version(required_major, required_minor, required_micro)&
   integer(c_int), value :: required_micro
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktestutils.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_test_register_all_types (void);
 subroutine gtk_test_register_all_types() bind(c)
@@ -27018,6 +27750,9 @@ subroutine gtk_test_widget_wait_for_draw(widget) bind(c)
   type(c_ptr), value :: widget
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkfilechooserwidget.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_file_chooser_widget_get_type (void) G_GNUC_CONST;
 function gtk_file_chooser_widget_get_type() bind(c)
@@ -27033,6 +27768,9 @@ function gtk_file_chooser_widget_new(action) bind(c)
   integer(c_int), value :: action
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktreeselection.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_tree_selection_get_type (void) G_GNUC_CONST;
 function gtk_tree_selection_get_type() bind(c)
@@ -27211,6 +27949,9 @@ subroutine gtk_tree_selection_unselect_range(selection, start_path, end_path)&
   type(c_ptr), value :: end_path
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksizerequest.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !int gtk_distribute_natural_allocation (int extra_space, guint n_requested_sizes, GtkRequestedSize *sizes);
 function gtk_distribute_natural_allocation(extra_space, n_requested_sizes,&
@@ -27222,6 +27963,9 @@ function gtk_distribute_natural_allocation(extra_space, n_requested_sizes,&
   type(c_ptr), value :: sizes
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkpaned.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_paned_get_type (void) G_GNUC_CONST;
 function gtk_paned_get_type() bind(c)
@@ -27365,6 +28109,9 @@ function gtk_paned_get_wide_handle(paned) bind(c)
   type(c_ptr), value :: paned
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkmultifilter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_multi_filter_remove (GtkMultiFilter *self, guint position);
 subroutine gtk_multi_filter_remove(self, position) bind(c)
@@ -27373,6 +28120,9 @@ subroutine gtk_multi_filter_remove(self, position) bind(c)
   integer(c_int), value :: position
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklinkbutton.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_link_button_get_type (void) G_GNUC_CONST;
 function gtk_link_button_get_type() bind(c)
@@ -27429,6 +28179,9 @@ subroutine gtk_link_button_set_visited(link_button, visited) bind(c)
   integer(c_int), value :: visited
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkstringfilter.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !const char * gtk_string_filter_get_search (GtkStringFilter *self);
 function gtk_string_filter_get_search(self) bind(c)
@@ -27493,6 +28246,12 @@ subroutine gtk_string_filter_set_match_mode(self, mode) bind(c)
   integer(c_int), value :: mode
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtktypes.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkentry.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_entry_get_type (void) G_GNUC_CONST;
 function gtk_entry_get_type() bind(c)
@@ -27999,6 +28758,9 @@ function gtk_entry_get_extra_menu(entry) bind(c)
   type(c_ptr), value :: entry
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcolumnview.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_column_view_get_type (void) G_GNUC_CONST;
 function gtk_column_view_get_type() bind(c)
@@ -28164,6 +28926,9 @@ function gtk_column_view_get_enable_rubberband(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksettings.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_settings_get_type (void) G_GNUC_CONST;
 function gtk_settings_get_type() bind(c)
@@ -28194,6 +28959,9 @@ subroutine gtk_settings_reset_property(settings, name) bind(c)
   character(kind=c_char), dimension(*) :: name
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkeditablelabel.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_editable_label_get_editing (GtkEditableLabel *self);
 function gtk_editable_label_get_editing(self) bind(c)
@@ -28217,6 +28985,21 @@ subroutine gtk_editable_label_stop_editing(self, commit) bind(c)
   integer(c_int), value :: commit
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/css/gtkcss.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/css/gtkcssenums.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/css/gtkcsslocation.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/css/gtkcssenumtypes.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/css/gtkcsserror.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GQuark gtk_css_parser_error_quark (void);
 function gtk_css_parser_error_quark() bind(c)
@@ -28231,6 +29014,9 @@ function gtk_css_parser_warning_quark() bind(c)
   integer(c_int32_t) :: gtk_css_parser_warning_quark
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/css/gtkcsssection.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gtk_css_section_get_type (void) G_GNUC_CONST;
 function gtk_css_section_get_type() bind(c)
