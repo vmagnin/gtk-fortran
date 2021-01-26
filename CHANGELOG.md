@@ -15,6 +15,7 @@ The gtk4 branch is the new development branch.
 - examples/gtkzero_gapp.f90 is now working.
 - examples/gtkhello.f90: new version using GtkApplication.
 - Most examples are now using GtkApplication.
+- cfwrapper.py is now writing the path and name of each C header file in the *-auto.f90 files.
 - cfwrapper.py is now systematically launching extract_events.pl. Backported to gtk3 branch.
 - cfwrapper.py is now updating the codemeta.json file (dateModified field). Backported to gtk3 branch.
 - VERSIONS : the name of the distribution used to generate gtk-fortran is now automatically found. Backported to the gtk3 branch.
