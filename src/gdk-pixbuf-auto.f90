@@ -7,6 +7,15 @@ module gdk_pixbuf
 implicit none
 interface
 
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-autocleanups.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-simple-anim.h
+!--------------------------------------------------
 ! GDK_PIXBUF_AVAILABLE_IN_ALL
 !GType gdk_pixbuf_simple_anim_get_type (void) G_GNUC_CONST;
 function gdk_pixbuf_simple_anim_get_type() bind(c)
@@ -55,6 +64,9 @@ function gdk_pixbuf_simple_anim_get_loop(animation) bind(c)
   type(c_ptr), value :: animation
 end function
 
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-enum-types.h
+!--------------------------------------------------
 ! GDK_PIXBUF_AVAILABLE_IN_ALL
 !GType gdk_pixbuf_alpha_mode_get_type (void) G_GNUC_CONST;
 function gdk_pixbuf_alpha_mode_get_type() bind(c)
@@ -90,6 +102,9 @@ function gdk_pixbuf_rotation_get_type() bind(c)
   integer(c_size_t) :: gdk_pixbuf_rotation_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-transform.h
+!--------------------------------------------------
 ! GDK_PIXBUF_AVAILABLE_IN_ALL
 !void gdk_pixbuf_scale (const GdkPixbuf *src, GdkPixbuf *dest, int dest_x, int dest_y, int dest_width, int dest_height, double offset_x, double offset_y, double scale_x, double scale_y, GdkInterpType interp_type);
 subroutine gdk_pixbuf_scale(src, dest, dest_x, dest_y, dest_width, dest_height,&
@@ -199,6 +214,9 @@ function gdk_pixbuf_flip(src, horizontal) bind(c)
   integer(c_int), value :: horizontal
 end function
 
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-loader.h
+!--------------------------------------------------
 ! GDK_PIXBUF_AVAILABLE_IN_ALL
 !GType gdk_pixbuf_loader_get_type (void) G_GNUC_CONST;
 function gdk_pixbuf_loader_get_type() bind(c)
@@ -294,6 +312,18 @@ function gdk_pixbuf_loader_get_format(loader) bind(c)
   type(c_ptr), value :: loader
 end function
 
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-marshal.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-features.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-macros.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-io.h
+!--------------------------------------------------
 ! GDK_PIXBUF_AVAILABLE_IN_2_40
 !gboolean gdk_pixbuf_init_modules (const char *path, GError **error);
 function gdk_pixbuf_init_modules(path, error) bind(c)
@@ -446,6 +476,9 @@ subroutine gdk_pixbuf_format_free(format) bind(c)
   type(c_ptr), value :: format
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-core.h
+!--------------------------------------------------
 ! GDK_PIXBUF_AVAILABLE_IN_ALL
 !GQuark gdk_pixbuf_error_quark (void);
 function gdk_pixbuf_error_quark() bind(c)
@@ -967,6 +1000,9 @@ function gdk_pixbuf_copy_options(src_pixbuf, dest_pixbuf) bind(c)
   type(c_ptr), value :: dest_pixbuf
 end function
 
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixdata.h
+!--------------------------------------------------
 ! GDK_PIXBUF_DEPRECATED_IN_2_32
 !guint8* gdk_pixdata_serialize (const GdkPixdata *pixdata, guint *stream_length_p);
 function gdk_pixdata_serialize(pixdata, stream_length_p) bind(c)
@@ -1017,6 +1053,9 @@ function gdk_pixdata_to_csource(pixdata, name, dump_type) bind(c)
   integer(c_int), value :: dump_type
 end function
 
+!--------------------------------------------------
+! /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-animation.h
+!--------------------------------------------------
 ! GDK_PIXBUF_AVAILABLE_IN_ALL
 !GType gdk_pixbuf_animation_get_type (void) G_GNUC_CONST;
 function gdk_pixbuf_animation_get_type() bind(c)

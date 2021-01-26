@@ -7,6 +7,12 @@ module cairo
 implicit none
 interface
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-deprecated.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/cairo/cairo-ft.h
+!--------------------------------------------------
 ! 
 !cairo_font_face_t * cairo_ft_font_face_create_for_ft_face (FT_Face face, int load_flags);
 function cairo_ft_font_face_create_for_ft_face(face, load_flags) bind(c)
@@ -71,6 +77,9 @@ subroutine cairo_ft_font_options_substitute(options, pattern) bind(c)
   type(c_ptr), value :: pattern
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-ps.h
+!--------------------------------------------------
 ! 
 !cairo_surface_t * cairo_ps_surface_create (const char *filename, double width_in_points, double height_in_points);
 function cairo_ps_surface_create(filename, width_in_points, height_in_points)&
@@ -166,6 +175,9 @@ subroutine cairo_ps_surface_dsc_begin_page_setup(surface) bind(c)
   type(c_ptr), value :: surface
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-gobject.h
+!--------------------------------------------------
 ! 
 !GType cairo_gobject_context_get_type (void);
 function cairo_gobject_context_get_type() bind(c)
@@ -397,6 +409,9 @@ function cairo_gobject_region_overlap_get_type() bind(c)
   integer(c_size_t) :: cairo_gobject_region_overlap_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-tee.h
+!--------------------------------------------------
 ! 
 !cairo_surface_t * cairo_tee_surface_create (cairo_surface_t *master);
 function cairo_tee_surface_create(master) bind(c)
@@ -430,6 +445,9 @@ function cairo_tee_surface_index(surface, index) bind(c)
   integer(c_int), value :: index
 end function
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo.h
+!--------------------------------------------------
 ! 
 !int cairo_version (void);
 function cairo_version() bind(c)
@@ -3352,6 +3370,9 @@ subroutine cairo_debug_reset_static_data() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-xlib.h
+!--------------------------------------------------
 ! 
 !cairo_surface_t * cairo_xlib_surface_create (Display *dpy, Drawable drawable, Visual *visual, int width, int height);
 function cairo_xlib_surface_create(dpy, drawable, visual, width, height)&
@@ -3480,6 +3501,12 @@ function cairo_xlib_device_debug_get_precision(device) bind(c)
   type(c_ptr), value :: device
 end function
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-version.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/cairo/cairo-script.h
+!--------------------------------------------------
 ! 
 !cairo_device_t * cairo_script_create (const char *filename);
 function cairo_script_create(filename) bind(c)
@@ -3551,6 +3578,9 @@ function cairo_script_from_recording_surface(script, recording_surface) bind(c)
   type(c_ptr), value :: recording_surface
 end function
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-pdf.h
+!--------------------------------------------------
 ! 
 !cairo_surface_t * cairo_pdf_surface_create (const char *filename, double width_in_points, double height_in_points);
 function cairo_pdf_surface_create(filename, width_in_points, height_in_points)&
@@ -3647,6 +3677,9 @@ subroutine cairo_pdf_surface_set_thumbnail_size(surface, width, height) bind(c)
   integer(c_int), value :: height
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-script-interpreter.h
+!--------------------------------------------------
 ! 
 !cairo_script_interpreter_t * cairo_script_interpreter_create (void);
 function cairo_script_interpreter_create() bind(c)
@@ -3733,6 +3766,12 @@ function cairo_script_interpreter_translate_stream(stream, write_func, closure)&
   type(c_ptr), value :: closure
 end function
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-features.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/cairo/cairo-xlib-xrender.h
+!--------------------------------------------------
 ! 
 !cairo_surface_t * cairo_xlib_surface_create_with_xrender_format (Display *dpy, Drawable drawable, Screen *screen, XRenderPictFormat *format, int width, int height);
 function cairo_xlib_surface_create_with_xrender_format(dpy, drawable, screen,&
@@ -3755,6 +3794,9 @@ function cairo_xlib_surface_get_xrender_format(surface) bind(c)
   type(c_ptr), value :: surface
 end function
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-xcb.h
+!--------------------------------------------------
 ! 
 !cairo_surface_t * cairo_xcb_surface_create (xcb_connection_t *connection, xcb_drawable_t drawable, xcb_visualtype_t *visual, int width, int height);
 function cairo_xcb_surface_create(connection, drawable, visual, width, height)&
@@ -3859,6 +3901,9 @@ function cairo_xcb_device_debug_get_precision(device) bind(c)
   type(c_ptr), value :: device
 end function
 
+!--------------------------------------------------
+! /usr/include/cairo/cairo-svg.h
+!--------------------------------------------------
 ! 
 !cairo_surface_t * cairo_svg_surface_create (const char *filename, double width_in_points, double height_in_points);
 function cairo_svg_surface_create(filename, width_in_points, height_in_points)&

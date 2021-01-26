@@ -7,6 +7,9 @@ module gsk
 implicit none
 interface
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gskrenderer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gsk_renderer_get_type (void) G_GNUC_CONST;
 function gsk_renderer_get_type() bind(c)
@@ -74,6 +77,12 @@ subroutine gsk_renderer_render(renderer, root, region) bind(c)
   type(c_ptr), value :: region
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gsk-autocleanup.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gsktransform.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gsk_transform_get_type (void) G_GNUC_CONST;
 function gsk_transform_get_type() bind(c)
@@ -299,6 +308,9 @@ subroutine gsk_transform_transform_point(self, point, out_point) bind(c)
   type(c_ptr), value :: out_point
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gskglshader.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GskGLShader * gsk_gl_shader_new_from_resource (const char *resource_path);
 function gsk_gl_shader_new_from_resource(resource_path) bind(c)
@@ -582,6 +594,9 @@ subroutine gsk_shader_args_builder_set_vec4(builder, idx, value) bind(c)
   type(c_ptr), value :: value
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gskroundedrect.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GskRoundedRect * gsk_rounded_rect_init (GskRoundedRect *self, const graphene_rect_t *bounds, const graphene_size_t *top_left, const graphene_size_t *top_right, const graphene_size_t *bottom_right, const graphene_size_t *bottom_left);
 function gsk_rounded_rect_init(self, bounds, top_left, top_right, bottom_right,&
@@ -680,6 +695,9 @@ function gsk_rounded_rect_intersects_rect(self, rect) bind(c)
   type(c_ptr), value :: rect
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gskcairorenderer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gsk_cairo_renderer_get_type (void) G_GNUC_CONST;
 function gsk_cairo_renderer_get_type() bind(c)
@@ -694,6 +712,21 @@ function gsk_cairo_renderer_new() bind(c)
   type(c_ptr) :: gsk_cairo_renderer_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gsk.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gskenumtypes.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gsktypes.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gskenums.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gskrendernode.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gsk_render_node_get_type (void) G_GNUC_CONST;
 function gsk_render_node_get_type() bind(c)
@@ -1795,6 +1828,9 @@ function gsk_gl_shader_node_get_shader(node) bind(c)
   type(c_ptr), value :: node
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/gl/gskglrenderer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gsk_gl_renderer_get_type (void) G_GNUC_CONST;
 function gsk_gl_renderer_get_type() bind(c)
@@ -1809,6 +1845,9 @@ function gsk_gl_renderer_new() bind(c)
   type(c_ptr) :: gsk_gl_renderer_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/vulkan/gskvulkanrenderer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gsk_vulkan_renderer_get_type (void) G_GNUC_CONST;
 function gsk_vulkan_renderer_get_type() bind(c)
@@ -1823,6 +1862,9 @@ function gsk_vulkan_renderer_new() bind(c)
   type(c_ptr) :: gsk_vulkan_renderer_new
 end function
 
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gsk/broadway/gskbroadwayrenderer.h
+!--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
 !GType gsk_broadway_renderer_get_type (void) G_GNUC_CONST;
 function gsk_broadway_renderer_get_type() bind(c)

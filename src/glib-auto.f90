@@ -7,6 +7,15 @@ module g
 implicit none
 interface
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib-object.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib-unix.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_30
 !GQuark g_unix_error_quark (void);
 function g_unix_error_quark() bind(c)
@@ -99,6 +108,9 @@ function g_unix_fd_add(fd, condition, function, user_data) bind(c)
   type(c_ptr), value :: user_data
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gmodule.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gboolean g_module_supported (void) G_GNUC_CONST;
 function g_module_supported() bind(c)
@@ -164,6 +176,9 @@ function g_module_build_path(directory, module_name) bind(c)
   character(kind=c_char), dimension(*) :: module_name
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/galloca.h
+!--------------------------------------------------
 ! 
 !char *alloca ();
 function alloca() bind(c)
@@ -171,6 +186,9 @@ function alloca() bind(c)
   type(c_ptr) :: alloca
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gtimer.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GTimer* g_timer_new (void);
 function g_timer_new() bind(c)
@@ -262,6 +280,9 @@ function g_time_val_to_iso8601(time_) bind(c)
   type(c_ptr), value :: time_
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gkeyfile.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_key_file_error_quark (void);
 function g_key_file_error_quark() bind(c)
@@ -803,6 +824,9 @@ function g_key_file_remove_group(key_file, group_name, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gatomic.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gint g_atomic_int_get (const volatile gint *atomic);
 function g_atomic_int_get(atomic) bind(c)
@@ -951,6 +975,9 @@ function g_atomic_int_exchange_and_add(atomic, val) bind(c)
   integer(c_int), value :: val
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gtimezone.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GTimeZone * g_time_zone_new (const gchar *identifier);
 function g_time_zone_new(identifier) bind(c)
@@ -1051,6 +1078,9 @@ function g_time_zone_get_identifier(tz) bind(c)
   type(c_ptr), value :: tz
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/guuid.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_52
 !gboolean g_uuid_string_is_valid (const gchar *str);
 function g_uuid_string_is_valid(str) bind(c)
@@ -1066,6 +1096,9 @@ function g_uuid_string_random() bind(c)
   type(c_ptr) :: g_uuid_string_random
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/grand.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GRand* g_rand_new_with_seed (guint32 seed);
 function g_rand_new_with_seed(seed) bind(c)
@@ -1197,6 +1230,9 @@ function g_random_double_range(begin, end) bind(c)
   real(c_double), value :: end
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gstdio.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !FILE *g_fopen (const gchar *filename, const gchar *mode);
 function g_fopen(filename, mode) bind(c)
@@ -1347,6 +1383,9 @@ function g_utime(filename, utb) bind(c)
   type(c_ptr), value :: utb
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/goption.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_option_error_quark (void);
 function g_option_error_quark() bind(c)
@@ -1614,6 +1653,12 @@ subroutine g_option_group_set_translation_domain(group, domain) bind(c)
   character(kind=c_char), dimension(*) :: domain
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/glib-autocleanups.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gvariant.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_variant_unref (GVariant *value);
 subroutine g_variant_unref(value) bind(c)
@@ -2535,6 +2580,9 @@ subroutine g_variant_dict_unref(dict) bind(c)
   type(c_ptr), value :: dict
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gsequence.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GSequence * g_sequence_new (GDestroyNotify data_destroy);
 function g_sequence_new(data_destroy) bind(c)
@@ -2870,6 +2918,9 @@ function g_sequence_range_get_midpoint(begin, end) bind(c)
   type(c_ptr), value :: end
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gtestutils.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !int g_strcmp0 (const char *str1, const char *str2);
 function g_strcmp0(str1, str2) bind(c)
@@ -3294,6 +3345,9 @@ function g_test_get_dir(file_type) bind(c)
   integer(c_int), value :: file_type
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gversion.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !const gchar * glib_check_version (guint required_major, guint required_minor, guint required_micro);
 function glib_check_version(required_major, required_minor, required_micro)&
@@ -3305,6 +3359,9 @@ function glib_check_version(required_major, required_minor, required_micro)&
   integer(c_int), value :: required_micro
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gqueue.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQueue* g_queue_new (void);
 function g_queue_new() bind(c)
@@ -3665,6 +3722,9 @@ subroutine g_queue_delete_link(queue, link_) bind(c)
   type(c_ptr), value :: link_
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gdataset.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_datalist_init (GData **datalist);
 subroutine g_datalist_init(datalist) bind(c)
@@ -3820,6 +3880,9 @@ subroutine g_dataset_foreach(dataset_location, func, user_data) bind(c)
   type(c_ptr), value :: user_data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gbytes.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GBytes * g_bytes_new (gconstpointer data, gsize size);
 function g_bytes_new(data, size) bind(c)
@@ -3943,6 +4006,9 @@ function g_bytes_compare(bytes1, bytes2) bind(c)
   type(c_ptr), value :: bytes2
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gscanner.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GScanner* g_scanner_new (const GScannerConfig *config_templ);
 function g_scanner_new(config_templ) bind(c)
@@ -4102,6 +4168,9 @@ subroutine g_scanner_unexp_token(scanner, expected_token, identifier_spec,&
   integer(c_int), value :: is_error
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gvarianttype.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gboolean g_variant_type_string_is_valid (const gchar *type_string);
 function g_variant_type_string_is_valid(type_string) bind(c)
@@ -4354,6 +4423,9 @@ function g_variant_type_string_get_depth_(type_string) bind(c)
   character(kind=c_char), dimension(*) :: type_string
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gchecksum.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gssize g_checksum_type_get_length (GChecksumType checksum_type);
 function g_checksum_type_get_length(checksum_type) bind(c)
@@ -4447,6 +4519,9 @@ function g_compute_checksum_for_bytes(checksum_type, data) bind(c)
   type(c_ptr), value :: data
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gqsort.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_qsort_with_data (gconstpointer pbase, gint total_elems, gsize size, GCompareDataFunc compare_func, gpointer user_data);
 subroutine g_qsort_with_data(pbase, total_elems, size, compare_func, user_data)&
@@ -4459,6 +4534,12 @@ subroutine g_qsort_with_data(pbase, total_elems, size, compare_func, user_data)&
   type(c_ptr), value :: user_data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gversionmacros.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gprintf.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gint g_vprintf (gchar const *format, va_list args) G_GNUC_PRINTF(1, 0);
 function g_vprintf(format, args) bind(c)
@@ -4498,6 +4579,9 @@ function g_vasprintf(string, format, args) bind(c)
   type(c_ptr), value :: args
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gstrfuncs.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gchar g_ascii_tolower (gchar c) G_GNUC_CONST;
 function g_ascii_tolower(c) bind(c)
@@ -5001,6 +5085,9 @@ function g_ascii_string_to_unsigned(str, base, min, max, out_num, error)&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gspawn.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_spawn_error_quark (void);
 function g_spawn_error_quark() bind(c)
@@ -5127,6 +5214,9 @@ subroutine g_spawn_close_pid(pid) bind(c)
   integer(c_int), value :: pid
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gfileutils.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_file_error_quark (void);
 function g_file_error_quark() bind(c)
@@ -5327,6 +5417,12 @@ function g_canonicalize_filename(filename, relative_to) bind(c)
   character(kind=c_char), dimension(*) :: relative_to
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gi18n.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gmem.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_free (gpointer mem);
 subroutine g_free(mem) bind(c)
@@ -5468,6 +5564,12 @@ subroutine g_mem_profile() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gtypes.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gslice.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gpointer g_slice_alloc (gsize block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 function g_slice_alloc(block_size) bind(c)
@@ -5543,6 +5645,9 @@ subroutine g_slice_debug_tree_statistics() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/ghash.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GHashTable* g_hash_table_new (GHashFunc hash_func, GEqualFunc key_equal_func);
 function g_hash_table_new(hash_func, key_equal_func) bind(c)
@@ -5894,6 +5999,9 @@ function g_direct_equal(v1, v2) bind(c)
   type(c_ptr), value :: v2
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gdatetime.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_date_time_unref (GDateTime *datetime);
 subroutine g_date_time_unref(datetime) bind(c)
@@ -6331,6 +6439,9 @@ function g_date_time_format_iso8601(datetime) bind(c)
   type(c_ptr), value :: datetime
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/ggettext.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !const gchar *g_strip_context (const gchar *msgid, const gchar *msgval) G_GNUC_FORMAT(1);
 function g_strip_context(msgid, msgval) bind(c)
@@ -6390,6 +6501,9 @@ function g_dpgettext2(domain, context, msgid) bind(c)
   character(kind=c_char), dimension(*) :: msgid
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gwin32.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gint g_win32_ftruncate (gint f, guint size);
 function g_win32_ftruncate(f, size) bind(c)
@@ -6475,6 +6589,9 @@ function g_win32_check_windows_version(major, minor, spver, os_type) bind(c)
   integer(c_int), value :: os_type
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gbookmarkfile.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_bookmark_file_error_quark (void);
 function g_bookmark_file_error_quark() bind(c)
@@ -6966,6 +7083,9 @@ function g_bookmark_file_move_item(bookmark, old_uri, new_uri, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gbase64.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gsize g_base64_encode_step (const guchar *in, gsize len, gboolean break_lines, gchar *out, gint *state, gint *save);
 function g_base64_encode_step(in, len, break_lines, out, state, save) bind(c)
@@ -7029,6 +7149,9 @@ function g_base64_decode_inplace(text, out_len) bind(c)
   type(c_ptr), value :: out_len
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gmain.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GLIB_AVAILABLE_TYPE_IN_2_64 GMainContext *g_main_context_new (void);
 function g_main_context_new() bind(c)
@@ -7770,6 +7893,9 @@ subroutine g_main_context_invoke(context, function, data) bind(c)
   type(c_ptr), value :: data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gpoll.h
+!--------------------------------------------------
 ! 
 !gint g_poll (GPollFD *fds, guint nfds, gint timeout);
 function g_poll(fds, nfds, timeout) bind(c)
@@ -7780,6 +7906,9 @@ function g_poll(fds, nfds, timeout) bind(c)
   integer(c_int), value :: timeout
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gbitlock.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_bit_lock (volatile gint *address, gint lock_bit);
 subroutine g_bit_lock(address, lock_bit) bind(c)
@@ -7830,6 +7959,9 @@ subroutine g_pointer_bit_unlock(address, lock_bit) bind(c)
   integer(c_int), value :: lock_bit
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/grcbox.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_58
 !gpointer g_rc_box_alloc (gsize block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 function g_rc_box_alloc(block_size) bind(c)
@@ -7942,6 +8074,12 @@ function g_atomic_rc_box_get_size(mem_block) bind(c)
   type(c_ptr), value :: mem_block
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gmacros.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gmessages.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gsize g_printf_string_upper_bound (const gchar* format, va_list args) G_GNUC_PRINTF(1, 0);
 function g_printf_string_upper_bound(format, args) bind(c)
@@ -8168,6 +8306,9 @@ function g_set_printerr_handler(func) bind(c)
   type(c_funptr), value :: func
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/giochannel.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_io_channel_init (GIOChannel *channel);
 subroutine g_io_channel_init(channel) bind(c)
@@ -8585,6 +8726,9 @@ subroutine g_io_channel_win32_set_debug(channel, flag) bind(c)
   integer(c_int), value :: flag
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gshell.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_shell_error_quark (void);
 function g_shell_error_quark() bind(c)
@@ -8620,6 +8764,9 @@ function g_shell_parse_argv(command_line, argcp, argvp, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gregex.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_regex_error_quark (void);
 function g_regex_error_quark() bind(c)
@@ -9025,6 +9172,9 @@ function g_match_info_fetch_all(match_info) bind(c)
   type(c_ptr), value :: match_info
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gcharset.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gboolean g_get_charset (const char **charset);
 function g_get_charset(charset) bind(c)
@@ -9071,6 +9221,9 @@ function g_get_locale_variants(locale) bind(c)
   character(kind=c_char), dimension(*) :: locale
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/grefstring.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_58
 !char * g_ref_string_new (const char *str);
 function g_ref_string_new(str) bind(c)
@@ -9119,6 +9272,9 @@ function g_ref_string_length(str) bind(c)
   character(kind=c_char), dimension(*) :: str
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/genviron.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !const gchar * g_getenv (const gchar *variable);
 function g_getenv(variable) bind(c)
@@ -9187,6 +9343,9 @@ function g_environ_unsetenv(envp, variable) bind(c)
   character(kind=c_char), dimension(*) :: variable
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/guri.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_66
 !GUri * g_uri_ref (GUri *uri);
 function g_uri_ref(uri) bind(c)
@@ -9562,6 +9721,9 @@ function g_uri_escape_bytes(unescaped, length, reserved_chars_allowed) bind(c)
   character(kind=c_char), dimension(*) :: reserved_chars_allowed
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/grefcount.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_58
 !void g_ref_count_init (grefcount *rc);
 subroutine g_ref_count_init(rc) bind(c)
@@ -9624,6 +9786,9 @@ function g_atomic_ref_count_compare(arc, val) bind(c)
   integer(c_int), value :: val
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gconvert.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_convert_error_quark (void);
 function g_convert_error_quark() bind(c)
@@ -9809,6 +9974,9 @@ function g_uri_list_extract_uris(uri_list) bind(c)
   character(kind=c_char), dimension(*) :: uri_list
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gutils.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !const gchar * g_get_user_name (void);
 function g_get_user_name() bind(c)
@@ -10050,6 +10218,9 @@ subroutine g_abort() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/garray.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GArray* g_array_new (gboolean zero_terminated, gboolean clear_, guint element_size);
 function g_array_new(zero_terminated, clear_, element_size) bind(c)
@@ -10603,6 +10774,9 @@ subroutine g_byte_array_sort_with_data(array, compare_func, user_data) bind(c)
   type(c_ptr), value :: user_data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gdate.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GDate* g_date_new (void);
 function g_date_new() bind(c)
@@ -10998,6 +11172,9 @@ function g_date_strftime(s, slen, format, date) bind(c)
   type(c_ptr), value :: date
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gunicode.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !guint32 g_unicode_script_to_iso15924 (GUnicodeScript script);
 function g_unicode_script_to_iso15924(script) bind(c)
@@ -11590,6 +11767,9 @@ function g_utf8_make_valid(str, len) bind(c)
   integer(c_size_t), value :: len
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gthreadpool.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GThreadPool * g_thread_pool_new (GFunc func, gpointer user_data, gint max_threads, gboolean exclusive, GError **error);
 function g_thread_pool_new(func, user_data, max_threads, exclusive, error)&
@@ -11715,6 +11895,9 @@ function g_thread_pool_get_max_idle_time() bind(c)
   integer(c_int) :: g_thread_pool_get_max_idle_time
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/ghook.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_hook_list_init (GHookList *hook_list, guint hook_size);
 subroutine g_hook_list_init(hook_list, hook_size) bind(c)
@@ -11923,6 +12106,9 @@ subroutine g_hook_list_marshal_check(hook_list, may_recurse, marshaller,&
   type(c_ptr), value :: marshal_data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/ghmac.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_30
 !GHmac * g_hmac_new (GChecksumType digest_type, const guchar *key, gsize key_len);
 function g_hmac_new(digest_type, key, key_len) bind(c)
@@ -12018,6 +12204,9 @@ function g_compute_hmac_for_bytes(digest_type, key, data) bind(c)
   type(c_ptr), value :: data
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gdir.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GDir * g_dir_open (const gchar *path, guint flags, GError **error);
 function g_dir_open(path, flags, error) bind(c)
@@ -12050,6 +12239,9 @@ subroutine g_dir_close(dir) bind(c)
   type(c_ptr), value :: dir
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gmarkup.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_markup_error_quark (void);
 function g_markup_error_quark() bind(c)
@@ -12180,6 +12372,9 @@ function g_markup_vprintf_escaped(format, args) bind(c)
   type(c_ptr), value :: args
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gtree.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GTree* g_tree_new (GCompareFunc key_compare_func);
 function g_tree_new(key_compare_func) bind(c)
@@ -12333,6 +12528,9 @@ function g_tree_nnodes(tree) bind(c)
   type(c_ptr), value :: tree
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/glist.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GList* g_list_alloc (void) G_GNUC_WARN_UNUSED_RESULT;
 function g_list_alloc() bind(c)
@@ -12626,6 +12824,9 @@ subroutine g_clear_list(list_ptr, destroy) bind(c)
   type(c_funptr), value :: destroy
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gerror.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GError* g_error_new_literal (GQuark domain, gint code, const gchar *message);
 function g_error_new_literal(domain, code, message) bind(c)
@@ -12697,6 +12898,9 @@ subroutine g_clear_error(err) bind(c)
   type(c_ptr), value :: err
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gnode.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GNode* g_node_new (gpointer data);
 function g_node_new(data) bind(c)
@@ -12927,6 +13131,9 @@ function g_node_last_sibling(node) bind(c)
   type(c_ptr), value :: node
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gstringchunk.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GStringChunk* g_string_chunk_new (gsize size);
 function g_string_chunk_new(size) bind(c)
@@ -12977,6 +13184,9 @@ function g_string_chunk_insert_const(chunk, string) bind(c)
   character(kind=c_char), dimension(*) :: string
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/ghostutils.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gboolean g_hostname_is_non_ascii (const gchar *hostname);
 function g_hostname_is_non_ascii(hostname) bind(c)
@@ -13017,6 +13227,9 @@ function g_hostname_to_unicode(hostname) bind(c)
   character(kind=c_char), dimension(*) :: hostname
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gprimes.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !guint g_spaced_primes_closest (guint num) G_GNUC_CONST;
 function g_spaced_primes_closest(num) bind(c)
@@ -13025,6 +13238,9 @@ function g_spaced_primes_closest(num) bind(c)
   integer(c_int), value :: num
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gslist.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GSList* g_slist_alloc (void) G_GNUC_WARN_UNUSED_RESULT;
 function g_slist_alloc() bind(c)
@@ -13291,6 +13507,9 @@ subroutine g_clear_slist(slist_ptr, destroy) bind(c)
   type(c_funptr), value :: destroy
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gbacktrace.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_on_error_query (const gchar *prg_name);
 subroutine g_on_error_query(prg_name) bind(c)
@@ -13305,6 +13524,9 @@ subroutine g_on_error_stack_trace(prg_name) bind(c)
   character(kind=c_char), dimension(*) :: prg_name
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gtrashstack.h
+!--------------------------------------------------
 ! GLIB_DEPRECATED_IN_2_48
 !void g_trash_stack_push (GTrashStack **stack_p, gpointer data_p);
 subroutine g_trash_stack_push(stack_p, data_p) bind(c)
@@ -13337,6 +13559,12 @@ function g_trash_stack_height(stack_p) bind(c)
   type(c_ptr), value :: stack_p
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gi18n-lib.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gquark.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_quark_try_string (const gchar *string);
 function g_quark_try_string(string) bind(c)
@@ -13385,6 +13613,9 @@ function g_intern_static_string(string) bind(c)
   character(kind=c_char), dimension(*) :: string
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gasyncqueue.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GAsyncQueue *g_async_queue_new (void);
 function g_async_queue_new() bind(c)
@@ -13616,6 +13847,9 @@ function g_async_queue_timed_pop_unlocked(queue, end_time) bind(c)
   type(c_ptr), value :: end_time
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gpattern.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GPatternSpec* g_pattern_spec_new (const gchar *pattern);
 function g_pattern_spec_new(pattern) bind(c)
@@ -13669,6 +13903,9 @@ function g_pattern_match_simple(pattern, string) bind(c)
   character(kind=c_char), dimension(*) :: string
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gstring.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GString* g_string_new (const gchar *init);
 function g_string_new(init) bind(c)
@@ -13963,6 +14200,9 @@ function g_string_up(string) bind(c)
   type(c_ptr), value :: string
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gmappedfile.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GMappedFile *g_mapped_file_new (const gchar *filename, gboolean writable, GError **error);
 function g_mapped_file_new(filename, writable, error) bind(c)
@@ -14029,6 +14269,9 @@ subroutine g_mapped_file_free(file) bind(c)
   type(c_ptr), value :: file
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/gthread.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_thread_error_quark (void);
 function g_thread_error_quark() bind(c)
@@ -14333,6 +14576,9 @@ function g_get_num_processors() bind(c)
   integer(c_int) :: g_get_num_processors
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/deprecated/gcompletion.h
+!--------------------------------------------------
 ! GLIB_DEPRECATED_IN_2_26
 !GCompletion* g_completion_new (GCompletionFunc func);
 function g_completion_new(func) bind(c)
@@ -14399,6 +14645,9 @@ subroutine g_completion_free(cmp) bind(c)
   type(c_ptr), value :: cmp
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/deprecated/gallocator.h
+!--------------------------------------------------
 ! GLIB_DEPRECATED
 !GMemChunk * g_mem_chunk_new (const gchar *name, gint atom_size, gsize area_size, gint type);
 function g_mem_chunk_new(name, atom_size, area_size, type) bind(c)
@@ -14529,6 +14778,9 @@ subroutine g_node_pop_allocator() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/deprecated/grel.h
+!--------------------------------------------------
 ! GLIB_DEPRECATED_IN_2_26
 !GRelation* g_relation_new (gint fields);
 function g_relation_new(fields) bind(c)
@@ -14608,6 +14860,12 @@ function g_tuples_index(tuples, index_, field) bind(c)
   integer(c_int), value :: field
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/deprecated/gmain.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/deprecated/gthread.h
+!--------------------------------------------------
 ! 
 !guint64 (*g_thread_gettime) (void);
 function guint64() bind(c)
@@ -14872,6 +15130,9 @@ function g_cond_timed_wait(cond, mutex, timeval) bind(c)
   type(c_ptr), value :: timeval
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/glib/deprecated/gcache.h
+!--------------------------------------------------
 ! GLIB_DEPRECATED
 !GCache* g_cache_new (GCacheNewFunc value_new_func, GCacheDestroyFunc value_destroy_func, GCacheDupFunc key_dup_func, GCacheDestroyFunc key_destroy_func, GHashFunc hash_key_func, GHashFunc hash_value_func, GEqualFunc key_equal_func);
 function g_cache_new(value_new_func, value_destroy_func, key_dup_func,&
@@ -14929,6 +15190,9 @@ subroutine g_cache_value_foreach(cache, func, user_data) bind(c)
   type(c_ptr), value :: user_data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gmemoryinputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_memory_input_stream_get_type (void) G_GNUC_CONST;
 function g_memory_input_stream_get_type() bind(c)
@@ -14979,6 +15243,9 @@ subroutine g_memory_input_stream_add_bytes(stream, bytes) bind(c)
   type(c_ptr), value :: bytes
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtlsbackend.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tls_backend_get_type (void) G_GNUC_CONST;
 function g_tls_backend_get_type() bind(c)
@@ -15073,6 +15340,9 @@ function g_tls_backend_get_dtls_server_connection_type(backend) bind(c)
   type(c_ptr), value :: backend
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gmount.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_mount_get_type (void) G_GNUC_CONST;
 function g_mount_get_type() bind(c)
@@ -15337,6 +15607,12 @@ function g_mount_get_sort_key(mount) bind(c)
   type(c_ptr), value :: mount
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gio-autocleanups.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtlspassword.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tls_password_get_type (void) G_GNUC_CONST;
 function g_tls_password_get_type() bind(c)
@@ -15430,6 +15706,9 @@ subroutine g_tls_password_set_warning(password, warning) bind(c)
   character(kind=c_char), dimension(*) :: warning
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdatagrambased.h
+!--------------------------------------------------
 ! 
 !GType g_datagram_based_get_type (void);
 function g_datagram_based_get_type() bind(c)
@@ -15500,6 +15779,9 @@ function g_datagram_based_condition_wait(datagram_based, condition, timeout,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsettingsschema.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_32
 !GType g_settings_schema_source_get_type (void) G_GNUC_CONST;
 function g_settings_schema_source_get_type() bind(c)
@@ -15713,6 +15995,9 @@ function g_settings_schema_key_get_description(key) bind(c)
   type(c_ptr), value :: key
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsocketservice.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_socket_service_get_type (void);
 function g_socket_service_get_type() bind(c)
@@ -15749,6 +16034,9 @@ function g_socket_service_is_active(service) bind(c)
   type(c_ptr), value :: service
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/ginetsocketaddress.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_inet_socket_address_get_type (void) G_GNUC_CONST;
 function g_inet_socket_address_get_type() bind(c)
@@ -15806,6 +16094,9 @@ function g_inet_socket_address_get_scope_id(address) bind(c)
   type(c_ptr), value :: address
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsocketaddressenumerator.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_socket_address_enumerator_get_type (void) G_GNUC_CONST;
 function g_socket_address_enumerator_get_type() bind(c)
@@ -15846,6 +16137,9 @@ function g_socket_address_enumerator_next_finish(enumerator, result, error)&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gliststore.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_44
 !void g_list_store_insert (GListStore *store, guint position, gpointer item);
 subroutine g_list_store_insert(store, position, item) bind(c)
@@ -15933,6 +16227,9 @@ function g_list_store_find_with_equal_func(store, item, equal_func, position)&
   type(c_ptr), value :: position
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusauthobserver.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_auth_observer_get_type (void) G_GNUC_CONST;
 function g_dbus_auth_observer_get_type() bind(c)
@@ -15967,6 +16264,9 @@ function g_dbus_auth_observer_allow_mechanism(observer, mechanism) bind(c)
   character(kind=c_char), dimension(*) :: mechanism
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsocketconnection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_socket_connection_get_type (void) G_GNUC_CONST;
 function g_socket_connection_get_type() bind(c)
@@ -16072,6 +16372,9 @@ function g_socket_connection_factory_create_connection(socket) bind(c)
   type(c_ptr), value :: socket
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtlsfiledatabase.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tls_file_database_get_type (void) G_GNUC_CONST;
 function g_tls_file_database_get_type() bind(c)
@@ -16088,6 +16391,9 @@ function g_tls_file_database_new(anchors, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gpropertyaction.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_38
 !GType g_property_action_get_type (void) G_GNUC_CONST;
 function g_property_action_get_type() bind(c)
@@ -16105,6 +16411,9 @@ function g_property_action_new(name, object, property_name) bind(c)
   character(kind=c_char), dimension(*) :: property_name
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusmethodinvocation.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_method_invocation_get_type (void) G_GNUC_CONST;
 function g_dbus_method_invocation_get_type() bind(c)
@@ -16260,6 +16569,9 @@ subroutine g_dbus_method_invocation_return_dbus_error(invocation, error_name,&
   character(kind=c_char), dimension(*) :: error_message
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsettings.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_settings_get_type (void);
 function g_settings_get_type() bind(c)
@@ -16717,6 +17029,9 @@ function g_settings_get_mapped(settings, key, mapping, user_data) bind(c)
   type(c_ptr), value :: user_data
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gcancellable.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_cancellable_get_type (void) G_GNUC_CONST;
 function g_cancellable_get_type() bind(c)
@@ -16835,6 +17150,9 @@ subroutine g_cancellable_cancel(cancellable) bind(c)
   type(c_ptr), value :: cancellable
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtlsconnection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tls_connection_get_type (void) G_GNUC_CONST;
 function g_tls_connection_get_type() bind(c)
@@ -17025,6 +17343,9 @@ function g_tls_connection_emit_accept_certificate(conn, peer_cert, errors)&
   integer(c_int), value :: errors
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfilemonitor.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_file_monitor_get_type (void) G_GNUC_CONST;
 function g_file_monitor_get_type() bind(c)
@@ -17067,6 +17388,9 @@ subroutine g_file_monitor_emit_event(monitor, child, other_file, event_type)&
   integer(c_int), value :: event_type
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gmemorymonitor.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_64
 !GMemoryMonitor *g_memory_monitor_dup_default (void);
 function g_memory_monitor_dup_default() bind(c)
@@ -17074,6 +17398,9 @@ function g_memory_monitor_dup_default() bind(c)
   type(c_ptr) :: g_memory_monitor_dup_default
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gasyncinitable.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_async_initable_get_type (void) G_GNUC_CONST;
 function g_async_initable_get_type() bind(c)
@@ -17141,6 +17468,9 @@ function g_async_initable_new_finish(initable, res, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfilteroutputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_filter_output_stream_get_type (void) G_GNUC_CONST;
 function g_filter_output_stream_get_type() bind(c)
@@ -17173,6 +17503,9 @@ subroutine g_filter_output_stream_set_close_base_stream(stream, close_base)&
   integer(c_int), value :: close_base
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusobjectmanagerclient.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_object_manager_client_get_type (void) G_GNUC_CONST;
 function g_dbus_object_manager_client_get_type() bind(c)
@@ -17302,6 +17635,9 @@ function g_dbus_object_manager_client_get_name_owner(manager) bind(c)
   type(c_ptr), value :: manager
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gaction.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_30
 !GType g_action_get_type (void) G_GNUC_CONST;
 function g_action_get_type() bind(c)
@@ -17402,6 +17738,9 @@ function g_action_print_detailed_name(action_name, target_value) bind(c)
   type(c_ptr), value :: target_value
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsocketclient.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_socket_client_get_type (void) G_GNUC_CONST;
 function g_socket_client_get_type() bind(c)
@@ -17711,6 +18050,9 @@ subroutine g_socket_client_add_application_proxy(client, protocol) bind(c)
   character(kind=c_char), dimension(*) :: protocol
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gicon.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_icon_get_type (void) G_GNUC_CONST;
 function g_icon_get_type() bind(c)
@@ -17768,6 +18110,9 @@ function g_icon_deserialize(value) bind(c)
   type(c_ptr), value :: value
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsimpleiostream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_44
 !GType g_simple_io_stream_get_type (void) G_GNUC_CONST;
 function g_simple_io_stream_get_type() bind(c)
@@ -17784,6 +18129,9 @@ function g_simple_io_stream_new(input_stream, output_stream) bind(c)
   type(c_ptr), value :: output_stream
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gproxyaddress.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_proxy_address_get_type (void) G_GNUC_CONST;
 function g_proxy_address_get_type() bind(c)
@@ -17862,6 +18210,9 @@ function g_proxy_address_get_uri(proxy) bind(c)
   type(c_ptr), value :: proxy
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsimplepermission.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_simple_permission_get_type (void);
 function g_simple_permission_get_type() bind(c)
@@ -17877,6 +18228,9 @@ function g_simple_permission_new(allowed) bind(c)
   integer(c_int), value :: allowed
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtlscertificate.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tls_certificate_get_type (void) G_GNUC_CONST;
 function g_tls_certificate_get_type() bind(c)
@@ -17949,6 +18303,9 @@ function g_tls_certificate_is_same(cert_one, cert_two) bind(c)
   type(c_ptr), value :: cert_two
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gcontenttype.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gboolean g_content_type_equals (const gchar *type1, const gchar *type2);
 function g_content_type_equals(type1, type2) bind(c)
@@ -18081,6 +18438,9 @@ subroutine g_content_type_set_mime_dirs(dirs) bind(c)
   character(kind=c_char), dimension(*) :: dirs
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gnativesocketaddress.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_46
 !GType g_native_socket_address_get_type (void) G_GNUC_CONST;
 function g_native_socket_address_get_type() bind(c)
@@ -18097,6 +18457,9 @@ function g_native_socket_address_new(native, len) bind(c)
   integer(c_size_t), value :: len
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gresolver.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_resolver_get_type (void) G_GNUC_CONST;
 function g_resolver_get_type() bind(c)
@@ -18318,6 +18681,9 @@ function g_resolver_error_quark() bind(c)
   integer(c_int32_t) :: g_resolver_error_quark
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gloadableicon.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_loadable_icon_get_type (void) G_GNUC_CONST;
 function g_loadable_icon_get_type() bind(c)
@@ -18360,6 +18726,9 @@ function g_loadable_icon_load_finish(icon, res, type, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gthemedicon.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_themed_icon_get_type (void) G_GNUC_CONST;
 function g_themed_icon_get_type() bind(c)
@@ -18416,6 +18785,9 @@ function g_themed_icon_get_names(icon) bind(c)
   type(c_ptr), value :: icon
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/ginputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_input_stream_get_type (void) G_GNUC_CONST;
 function g_input_stream_get_type() bind(c)
@@ -18631,6 +19003,9 @@ subroutine g_input_stream_clear_pending(stream) bind(c)
   type(c_ptr), value :: stream
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfileiostream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_file_io_stream_get_type (void) G_GNUC_CONST;
 function g_file_io_stream_get_type() bind(c)
@@ -18681,6 +19056,9 @@ function g_file_io_stream_get_etag(stream) bind(c)
   type(c_ptr), value :: stream
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsocketconnectable.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_socket_connectable_get_type (void) G_GNUC_CONST;
 function g_socket_connectable_get_type() bind(c)
@@ -18712,6 +19090,9 @@ function g_socket_connectable_to_string(connectable) bind(c)
   type(c_ptr), value :: connectable
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtestdbus.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_34
 !GType g_test_dbus_get_type (void) G_GNUC_CONST;
 function g_test_dbus_get_type() bind(c)
@@ -18778,6 +19159,9 @@ subroutine g_test_dbus_unset() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusnameowning.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !guint g_bus_own_name (GBusType bus_type, const gchar *name, GBusNameOwnerFlags flags, GBusAcquiredCallback bus_acquired_handler, GBusNameAcquiredCallback name_acquired_handler, GBusNameLostCallback name_lost_handler, gpointer user_data, GDestroyNotify user_data_free_func);
 function g_bus_own_name(bus_type, name, flags, bus_acquired_handler,&
@@ -18845,6 +19229,9 @@ subroutine g_bus_unown_name(owner_id) bind(c)
   integer(c_int), value :: owner_id
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusinterface.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_interface_get_type (void) G_GNUC_CONST;
 function g_dbus_interface_get_type() bind(c)
@@ -18884,6 +19271,9 @@ function g_dbus_interface_dup_object(interface_) bind(c)
   type(c_ptr), value :: interface_
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusintrospection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !const gchar *g_dbus_annotation_info_lookup (GDBusAnnotationInfo **annotations, const gchar *name);
 function g_dbus_annotation_info_lookup(annotations, name) bind(c)
@@ -19125,6 +19515,9 @@ function g_dbus_annotation_info_get_type() bind(c)
   integer(c_size_t) :: g_dbus_annotation_info_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdataoutputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_data_output_stream_get_type (void) G_GNUC_CONST;
 function g_data_output_stream_get_type() bind(c)
@@ -19252,6 +19645,9 @@ function g_data_output_stream_put_string(stream, str, cancellable, error)&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gzlibdecompressor.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_zlib_decompressor_get_type (void) G_GNUC_CONST;
 function g_zlib_decompressor_get_type() bind(c)
@@ -19275,6 +19671,9 @@ function g_zlib_decompressor_get_file_info(decompressor) bind(c)
   type(c_ptr), value :: decompressor
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfilterinputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_filter_input_stream_get_type (void) G_GNUC_CONST;
 function g_filter_input_stream_get_type() bind(c)
@@ -19307,6 +19706,9 @@ subroutine g_filter_input_stream_set_close_base_stream(stream, close_base)&
   integer(c_int), value :: close_base
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gappinfo.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_app_info_get_type (void) G_GNUC_CONST;
 function g_app_info_get_type() bind(c)
@@ -19723,6 +20125,9 @@ function g_app_info_monitor_get() bind(c)
   type(c_ptr) :: g_app_info_monitor_get
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gnotification.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_40
 !GType g_notification_get_type (void) G_GNUC_CONST;
 function g_notification_get_type() bind(c)
@@ -19818,6 +20223,9 @@ subroutine g_notification_set_default_action_and_target_value(notification,&
   type(c_ptr), value :: target
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gapplication.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_application_get_type (void) G_GNUC_CONST;
 function g_application_get_type() bind(c)
@@ -20138,6 +20546,9 @@ subroutine g_application_unbind_busy_property(application, object, property)&
   character(kind=c_char), dimension(*) :: property
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/giostream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_io_stream_get_type (void) G_GNUC_CONST;
 function g_io_stream_get_type() bind(c)
@@ -20248,6 +20659,9 @@ subroutine g_io_stream_clear_pending(stream) bind(c)
   type(c_ptr), value :: stream
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusconnection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_connection_get_type (void) G_GNUC_CONST;
 function g_dbus_connection_get_type() bind(c)
@@ -20794,6 +21208,9 @@ subroutine g_dbus_connection_remove_filter(connection, filter_id) bind(c)
   integer(c_int), value :: filter_id
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtlsserverconnection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tls_server_connection_get_type (void) G_GNUC_CONST;
 function g_tls_server_connection_get_type() bind(c)
@@ -20812,6 +21229,9 @@ function g_tls_server_connection_new(base_io_stream, certificate, error)&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gpollableutils.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GSource *g_pollable_source_new (GObject *pollable_stream);
 function g_pollable_source_new(pollable_stream) bind(c)
@@ -20874,6 +21294,9 @@ function g_pollable_stream_write_all(stream, buffer, count, blocking,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gmenumodel.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_32
 !GType g_menu_model_get_type (void) G_GNUC_CONST;
 function g_menu_model_get_type() bind(c)
@@ -21029,6 +21452,9 @@ function g_menu_link_iter_get_value(iter) bind(c)
   type(c_ptr), value :: iter
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsocket.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_socket_get_type (void) G_GNUC_CONST;
 function g_socket_get_type() bind(c)
@@ -21627,6 +22053,9 @@ function g_socket_set_option(socket, level, optname, value, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gbytesicon.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_38
 !GType g_bytes_icon_get_type (void) G_GNUC_CONST;
 function g_bytes_icon_get_type() bind(c)
@@ -21650,6 +22079,9 @@ function g_bytes_icon_get_bytes(icon) bind(c)
   type(c_ptr), value :: icon
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfileenumerator.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_file_enumerator_get_type (void) G_GNUC_CONST;
 function g_file_enumerator_get_type() bind(c)
@@ -21776,6 +22208,9 @@ function g_file_enumerator_iterate(direnum, out_info, out_child, cancellable,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/ginitable.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_initable_get_type (void) G_GNUC_CONST;
 function g_initable_get_type() bind(c)
@@ -21819,6 +22254,9 @@ function g_initable_new_valist(object_type, first_property_name, var_args,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gnetworkmonitor.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_32
 !GType g_network_monitor_get_type (void) G_GNUC_CONST;
 function g_network_monitor_get_type() bind(c)
@@ -21891,6 +22329,9 @@ function g_network_monitor_can_reach_finish(monitor, result, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gconverter.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_converter_get_type (void) G_GNUC_CONST;
 function g_converter_get_type() bind(c)
@@ -21922,6 +22363,9 @@ subroutine g_converter_reset(converter) bind(c)
   type(c_ptr), value :: converter
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusobjectmanager.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_object_manager_get_type (void) G_GNUC_CONST;
 function g_dbus_object_manager_get_type() bind(c)
@@ -21965,6 +22409,9 @@ function g_dbus_object_manager_get_interface(manager, object_path,&
   character(kind=c_char), dimension(*) :: interface_name
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gmenu.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_32
 !GType g_menu_get_type (void) G_GNUC_CONST;
 function g_menu_get_type() bind(c)
@@ -22241,6 +22688,9 @@ subroutine g_menu_item_set_icon(menu_item, icon) bind(c)
   type(c_ptr), value :: icon
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsubprocesslauncher.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_40
 !GType g_subprocess_launcher_get_type (void) G_GNUC_CONST;
 function g_subprocess_launcher_get_type() bind(c)
@@ -22386,6 +22836,9 @@ subroutine g_subprocess_launcher_set_child_setup(self, child_setup, user_data,&
   type(c_funptr), value :: destroy_notify
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gproxyresolver.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_proxy_resolver_get_type (void) G_GNUC_CONST;
 function g_proxy_resolver_get_type() bind(c)
@@ -22441,6 +22894,9 @@ function g_proxy_resolver_lookup_finish(resolver, result, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gnetworkservice.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_network_service_get_type (void) G_GNUC_CONST;
 function g_network_service_get_type() bind(c)
@@ -22498,6 +22954,9 @@ subroutine g_network_service_set_scheme(srv, scheme) bind(c)
   character(kind=c_char), dimension(*) :: scheme
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gmemoryoutputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_memory_output_stream_get_type (void) G_GNUC_CONST;
 function g_memory_output_stream_get_type() bind(c)
@@ -22564,6 +23023,9 @@ function g_memory_output_stream_steal_as_bytes(ostream) bind(c)
   type(c_ptr), value :: ostream
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusactiongroup.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_action_group_get_type (void) G_GNUC_CONST;
 function g_dbus_action_group_get_type() bind(c)
@@ -22581,6 +23043,9 @@ function g_dbus_action_group_get(connection, bus_name, object_path) bind(c)
   character(kind=c_char), dimension(*) :: object_path
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusaddress.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_36
 !gchar *g_dbus_address_escape_value (const gchar *string);
 function g_dbus_address_escape_value(string) bind(c)
@@ -22649,6 +23114,9 @@ function g_dbus_address_get_for_bus_sync(bus_type, cancellable, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusobjectskeleton.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_object_skeleton_get_type (void) G_GNUC_CONST;
 function g_dbus_object_skeleton_get_type() bind(c)
@@ -22704,6 +23172,9 @@ subroutine g_dbus_object_skeleton_set_object_path(object, object_path) bind(c)
   character(kind=c_char), dimension(*) :: object_path
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gmountoperation.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_mount_operation_get_type (void) G_GNUC_CONST;
 function g_mount_operation_get_type() bind(c)
@@ -22872,6 +23343,9 @@ subroutine g_mount_operation_set_pim(op, pim) bind(c)
   integer(c_int), value :: pim
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gpermission.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_permission_get_type (void);
 function g_permission_get_type() bind(c)
@@ -22976,6 +23450,9 @@ subroutine g_permission_impl_update(permission, allowed, can_acquire,&
   integer(c_int), value :: can_release
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusobject.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_object_get_type (void) G_GNUC_CONST;
 function g_dbus_object_get_type() bind(c)
@@ -23008,6 +23485,9 @@ function g_dbus_object_get_interface(object, interface_name) bind(c)
   character(kind=c_char), dimension(*) :: interface_name
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gemblemedicon.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_emblemed_icon_get_type (void) G_GNUC_CONST;
 function g_emblemed_icon_get_type() bind(c)
@@ -23055,6 +23535,9 @@ subroutine g_emblemed_icon_clear_emblems(emblemed) bind(c)
   type(c_ptr), value :: emblemed
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gresource.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_32
 !GQuark g_resource_error_quark (void);
 function g_resource_error_quark() bind(c)
@@ -23228,6 +23711,9 @@ function g_static_resource_get_resource(static_resource) bind(c)
   type(c_ptr), value :: static_resource
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gproxyaddressenumerator.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_proxy_address_enumerator_get_type (void) G_GNUC_CONST;
 function g_proxy_address_enumerator_get_type() bind(c)
@@ -23235,6 +23721,9 @@ function g_proxy_address_enumerator_get_type() bind(c)
   integer(c_size_t) :: g_proxy_address_enumerator_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusmessage.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_message_get_type (void) G_GNUC_CONST;
 function g_dbus_message_get_type() bind(c)
@@ -23650,6 +24139,9 @@ function g_dbus_message_to_gerror(message, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsimpleactiongroup.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_simple_action_group_get_type (void) G_GNUC_CONST;
 function g_simple_action_group_get_type() bind(c)
@@ -23700,6 +24192,9 @@ subroutine g_simple_action_group_add_entries(simple, entries, n_entries,&
   type(c_ptr), value :: user_data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gproxy.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_proxy_get_type (void) G_GNUC_CONST;
 function g_proxy_get_type() bind(c)
@@ -23759,6 +24254,9 @@ function g_proxy_supports_hostname(proxy) bind(c)
   type(c_ptr), value :: proxy
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gbufferedoutputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_buffered_output_stream_get_type (void) G_GNUC_CONST;
 function g_buffered_output_stream_get_type() bind(c)
@@ -23815,6 +24313,12 @@ subroutine g_buffered_output_stream_set_auto_grow(stream, auto_grow) bind(c)
   integer(c_int), value :: auto_grow
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gioenumtypes.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gactionmap.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_32
 !GType g_action_map_get_type (void) G_GNUC_CONST;
 function g_action_map_get_type() bind(c)
@@ -23858,12 +24362,18 @@ subroutine g_action_map_add_action_entries(action_map, entries, n_entries,&
   type(c_ptr), value :: user_data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gnetworking.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_36
 !void g_networking_init (void);
 subroutine g_networking_init() bind(c)
   use iso_c_binding, only: 
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gconverterinputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_converter_input_stream_get_type (void) G_GNUC_CONST;
 function g_converter_input_stream_get_type() bind(c)
@@ -23888,6 +24398,9 @@ function g_converter_input_stream_get_converter(converter_stream) bind(c)
   type(c_ptr), value :: converter_stream
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsubprocess.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_40
 !GType g_subprocess_get_type (void) G_GNUC_CONST;
 function g_subprocess_get_type() bind(c)
@@ -24140,6 +24653,9 @@ function g_subprocess_communicate_utf8_finish(subprocess, result, stdout_buf,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gvolumemonitor.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_volume_monitor_get_type (void) G_GNUC_CONST;
 function g_volume_monitor_get_type() bind(c)
@@ -24204,6 +24720,9 @@ function g_volume_monitor_adopt_orphan_mount(mount) bind(c)
   type(c_ptr), value :: mount
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gmenuexporter.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_32
 !guint g_dbus_connection_export_menu_model (GDBusConnection *connection, const gchar *object_path, GMenuModel *menu, GError **error);
 function g_dbus_connection_export_menu_model(connection, object_path, menu,&
@@ -24224,6 +24743,9 @@ subroutine g_dbus_connection_unexport_menu_model(connection, export_id) bind(c)
   integer(c_int), value :: export_id
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gpollableinputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_pollable_input_stream_get_type (void) G_GNUC_CONST;
 function g_pollable_input_stream_get_type() bind(c)
@@ -24269,6 +24791,9 @@ function g_pollable_input_stream_read_nonblocking(stream, buffer, count,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfileattribute.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_file_attribute_info_list_get_type (void);
 function g_file_attribute_info_list_get_type() bind(c)
@@ -24325,6 +24850,9 @@ subroutine g_file_attribute_info_list_add(list, name, type, flags) bind(c)
   integer(c_int), value :: flags
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsocketlistener.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_socket_listener_get_type (void) G_GNUC_CONST;
 function g_socket_listener_get_type() bind(c)
@@ -24474,6 +25002,9 @@ subroutine g_socket_listener_close(listener) bind(c)
   type(c_ptr), value :: listener
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gactiongroupexporter.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_32
 !guint g_dbus_connection_export_action_group (GDBusConnection *connection, const gchar *object_path, GActionGroup *action_group, GError **error);
 function g_dbus_connection_export_action_group(connection, object_path,&
@@ -24495,6 +25026,9 @@ subroutine g_dbus_connection_unexport_action_group(connection, export_id)&
   integer(c_int), value :: export_id
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gapplicationcommandline.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_application_command_line_get_type (void) G_GNUC_CONST;
 function g_application_command_line_get_type() bind(c)
@@ -24594,6 +25128,9 @@ function g_application_command_line_create_file_for_arg(cmdline, arg) bind(c)
   character(kind=c_char), dimension(*) :: arg
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gseekable.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_seekable_get_type (void) G_GNUC_CONST;
 function g_seekable_get_type() bind(c)
@@ -24648,6 +25185,9 @@ function g_seekable_truncate(seekable, offset, cancellable, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gremoteactiongroup.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_32
 !GType g_remote_action_group_get_type (void) G_GNUC_CONST;
 function g_remote_action_group_get_type() bind(c)
@@ -24677,6 +25217,9 @@ subroutine g_remote_action_group_change_action_state_full(remote, action_name,&
   type(c_ptr), value :: platform_data
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsocketcontrolmessage.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_socket_control_message_get_type (void) G_GNUC_CONST;
 function g_socket_control_message_get_type() bind(c)
@@ -24727,6 +25270,9 @@ function g_socket_control_message_deserialize(level, type, size, data) bind(c)
   type(c_ptr), value :: data
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gactiongroup.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_action_group_get_type (void) G_GNUC_CONST;
 function g_action_group_get_type() bind(c)
@@ -24870,6 +25416,9 @@ function g_action_group_query_action(action_group, action_name, enabled,&
   type(c_ptr), value :: state
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsimpleasyncresult.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_simple_async_result_get_type (void) G_GNUC_CONST;
 function g_simple_async_result_get_type() bind(c)
@@ -25083,6 +25632,9 @@ subroutine g_simple_async_report_take_gerror_in_idle(object, callback,&
   type(c_ptr), value :: error
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gbufferedinputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_buffered_input_stream_get_type (void) G_GNUC_CONST;
 function g_buffered_input_stream_get_type() bind(c)
@@ -25196,6 +25748,9 @@ function g_buffered_input_stream_read_byte(stream, cancellable, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gioscheduler.h
+!--------------------------------------------------
 ! GLIB_DEPRECATED_IN_2_36_FOR ("GThreadPool or g_task_run_in_thread")
 !void g_io_scheduler_push_job (GIOSchedulerJobFunc job_func, gpointer user_data, GDestroyNotify notify, gint io_priority, GCancellable *cancellable);
 subroutine g_io_scheduler_push_job(job_func, user_data, notify, io_priority,&
@@ -25237,6 +25792,9 @@ subroutine g_io_scheduler_job_send_to_mainloop_async(job, func, user_data,&
   type(c_funptr), value :: notify
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusmenumodel.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_menu_model_get_type (void) G_GNUC_CONST;
 function g_dbus_menu_model_get_type() bind(c)
@@ -25254,6 +25812,12 @@ function g_dbus_menu_model_get(connection, bus_name, object_path) bind(c)
   character(kind=c_char), dimension(*) :: object_path
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gioenums.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusproxy.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_proxy_get_type (void) G_GNUC_CONST;
 function g_dbus_proxy_get_type() bind(c)
@@ -25536,6 +26100,9 @@ function g_dbus_proxy_call_with_unix_fd_list_sync(proxy, method_name,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdtlsclientconnection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_48
 !GType g_dtls_client_connection_get_type (void) G_GNUC_CONST;
 function g_dtls_client_connection_get_type() bind(c)
@@ -25594,6 +26161,9 @@ function g_dtls_client_connection_get_accepted_cas(conn) bind(c)
   type(c_ptr), value :: conn
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsimpleaction.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_simple_action_get_type (void) G_GNUC_CONST;
 function g_simple_action_get_type() bind(c)
@@ -25644,6 +26214,9 @@ subroutine g_simple_action_set_state_hint(simple, state_hint) bind(c)
   type(c_ptr), value :: state_hint
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsettingsbackend.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_settings_backend_get_type (void);
 function g_settings_backend_get_type() bind(c)
@@ -25747,6 +26320,9 @@ function g_memory_settings_backend_new() bind(c)
   type(c_ptr) :: g_memory_settings_backend_new
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtlsinteraction.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tls_interaction_get_type (void) G_GNUC_CONST;
 function g_tls_interaction_get_type() bind(c)
@@ -25851,6 +26427,12 @@ function g_tls_interaction_request_certificate_finish(interaction, result,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/giotypes.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusinterfaceskeleton.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_interface_skeleton_get_type (void) G_GNUC_CONST;
 function g_dbus_interface_skeleton_get_type() bind(c)
@@ -25967,6 +26549,9 @@ function g_dbus_interface_skeleton_get_object_path(interface_) bind(c)
   type(c_ptr), value :: interface_
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtask.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_36
 !GType g_task_get_type (void) G_GNUC_CONST;
 function g_task_get_type() bind(c)
@@ -26256,6 +26841,9 @@ function g_task_get_completed(task) bind(c)
   type(c_ptr), value :: task
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gcredentials.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_credentials_get_type (void) G_GNUC_CONST;
 function g_credentials_get_type() bind(c)
@@ -26326,6 +26914,9 @@ function g_credentials_set_unix_user(credentials, uid, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdtlsserverconnection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_48
 !GType g_dtls_server_connection_get_type (void) G_GNUC_CONST;
 function g_dtls_server_connection_get_type() bind(c)
@@ -26343,6 +26934,9 @@ function g_dtls_server_connection_new(base_socket, certificate, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfileoutputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_file_output_stream_get_type (void) G_GNUC_CONST;
 function g_file_output_stream_get_type() bind(c)
@@ -26393,6 +26987,9 @@ function g_file_output_stream_get_etag(stream) bind(c)
   type(c_ptr), value :: stream
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsrvtarget.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_srv_target_get_type (void) G_GNUC_CONST;
 function g_srv_target_get_type() bind(c)
@@ -26466,6 +27063,9 @@ function g_srv_target_list_sort(targets) bind(c)
   type(c_ptr), value :: targets
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/giomodule.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_30
 !GIOModuleScope * g_io_module_scope_new (GIOModuleScopeFlags flags);
 function g_io_module_scope_new(flags) bind(c)
@@ -26653,6 +27253,9 @@ function g_io_module_query() bind(c)
   type(c_ptr) :: g_io_module_query
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/ginetaddress.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_inet_address_get_type (void) G_GNUC_CONST;
 function g_inet_address_get_type() bind(c)
@@ -26814,6 +27417,9 @@ function g_inet_address_get_is_mc_site_local(address) bind(c)
   type(c_ptr), value :: address
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gvfs.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_vfs_get_type (void) G_GNUC_CONST;
 function g_vfs_get_type() bind(c)
@@ -26903,6 +27509,12 @@ function g_vfs_unregister_uri_scheme(vfs, scheme) bind(c)
   character(kind=c_char), dimension(*) :: scheme
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gio.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gconverteroutputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_converter_output_stream_get_type (void) G_GNUC_CONST;
 function g_converter_output_stream_get_type() bind(c)
@@ -26927,6 +27539,9 @@ function g_converter_output_stream_get_converter(converter_stream) bind(c)
   type(c_ptr), value :: converter_stream
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gpollableoutputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_pollable_output_stream_get_type (void) G_GNUC_CONST;
 function g_pollable_output_stream_get_type() bind(c)
@@ -26986,6 +27601,9 @@ function g_pollable_output_stream_writev_nonblocking(stream, vectors,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gthreadedsocketservice.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_threaded_socket_service_get_type (void);
 function g_threaded_socket_service_get_type() bind(c)
@@ -27001,6 +27619,9 @@ function g_threaded_socket_service_new(max_threads) bind(c)
   integer(c_int), value :: max_threads
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsocketaddress.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_socket_address_get_type (void) G_GNUC_CONST;
 function g_socket_address_get_type() bind(c)
@@ -27044,6 +27665,9 @@ function g_socket_address_get_native_size(address) bind(c)
   type(c_ptr), value :: address
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusnamewatching.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !guint g_bus_watch_name (GBusType bus_type, const gchar *name, GBusNameWatcherFlags flags, GBusNameAppearedCallback name_appeared_handler, GBusNameVanishedCallback name_vanished_handler, gpointer user_data, GDestroyNotify user_data_free_func);
 function g_bus_watch_name(bus_type, name, flags, name_appeared_handler,&
@@ -27108,6 +27732,9 @@ subroutine g_bus_unwatch_name(watcher_id) bind(c)
   integer(c_int), value :: watcher_id
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/ginetaddressmask.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_32
 !GType g_inet_address_mask_get_type (void) G_GNUC_CONST;
 function g_inet_address_mask_get_type() bind(c)
@@ -27184,6 +27811,9 @@ function g_inet_address_mask_equal(mask, mask2) bind(c)
   type(c_ptr), value :: mask2
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gsimpleproxyresolver.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_36
 !GType g_simple_proxy_resolver_get_type (void) G_GNUC_CONST;
 function g_simple_proxy_resolver_get_type() bind(c)
@@ -27228,6 +27858,9 @@ subroutine g_simple_proxy_resolver_set_uri_proxy(resolver, uri_scheme, proxy)&
   character(kind=c_char), dimension(*) :: proxy
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdrive.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_drive_get_type (void) G_GNUC_CONST;
 function g_drive_get_type() bind(c)
@@ -27492,6 +28125,9 @@ function g_drive_get_sort_key(drive) bind(c)
   type(c_ptr), value :: drive
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gioerror.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_io_error_quark (void);
 function g_io_error_quark() bind(c)
@@ -27515,6 +28151,9 @@ function g_io_error_from_win32_error(error_code) bind(c)
   integer(c_int), value :: error_code
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/goutputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_output_stream_get_type (void) G_GNUC_CONST;
 function g_output_stream_get_type() bind(c)
@@ -27868,6 +28507,9 @@ subroutine g_output_stream_clear_pending(stream) bind(c)
   type(c_ptr), value :: stream
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gnetworkaddress.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_network_address_get_type (void) G_GNUC_CONST;
 function g_network_address_get_type() bind(c)
@@ -27936,6 +28578,9 @@ function g_network_address_get_scheme(addr) bind(c)
   type(c_ptr), value :: addr
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gcharsetconverter.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_charset_converter_get_type (void) G_GNUC_CONST;
 function g_charset_converter_get_type() bind(c)
@@ -27978,6 +28623,9 @@ function g_charset_converter_get_num_fallbacks(converter) bind(c)
   type(c_ptr), value :: converter
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtcpconnection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tcp_connection_get_type (void) G_GNUC_CONST;
 function g_tcp_connection_get_type() bind(c)
@@ -28002,6 +28650,9 @@ function g_tcp_connection_get_graceful_disconnect(connection) bind(c)
   type(c_ptr), value :: connection
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/glistmodel.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_44
 !GType g_list_model_get_item_type (GListModel *list);
 function g_list_model_get_item_type(list) bind(c)
@@ -28046,6 +28697,9 @@ subroutine g_list_model_items_changed(list, position, removed, added) bind(c)
   integer(c_int), value :: added
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdtlsconnection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_2_48
 !GType g_dtls_connection_get_type (void) G_GNUC_CONST;
 function g_dtls_connection_get_type() bind(c)
@@ -28274,6 +28928,9 @@ function g_dtls_connection_get_channel_binding_data(conn, type, data, error)&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gasyncresult.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_async_result_get_type (void) G_GNUC_CONST;
 function g_async_result_get_type() bind(c)
@@ -28315,6 +28972,9 @@ function g_async_result_is_tagged(res, source_tag) bind(c)
   type(c_ptr), value :: source_tag
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gzlibcompressor.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_zlib_compressor_get_type (void) G_GNUC_CONST;
 function g_zlib_compressor_get_type() bind(c)
@@ -28347,6 +29007,9 @@ subroutine g_zlib_compressor_set_file_info(compressor, file_info) bind(c)
   type(c_ptr), value :: file_info
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusobjectmanagerserver.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_object_manager_server_get_type (void) G_GNUC_CONST;
 function g_dbus_object_manager_server_get_type() bind(c)
@@ -28414,6 +29077,9 @@ function g_dbus_object_manager_server_unexport(manager, object_path) bind(c)
   character(kind=c_char), dimension(*) :: object_path
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusobjectproxy.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_object_proxy_get_type (void) G_GNUC_CONST;
 function g_dbus_object_proxy_get_type() bind(c)
@@ -28438,6 +29104,9 @@ function g_dbus_object_proxy_get_connection(proxy) bind(c)
   type(c_ptr), value :: proxy
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfileinputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_file_input_stream_get_type (void) G_GNUC_CONST;
 function g_file_input_stream_get_type() bind(c)
@@ -28480,6 +29149,9 @@ function g_file_input_stream_query_info_finish(stream, result, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbuserror.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GQuark g_dbus_error_quark (void);
 function g_dbus_error_quark() bind(c)
@@ -28574,6 +29246,9 @@ function g_dbus_error_encode_gerror(error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusutils.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gboolean g_dbus_is_guid (const gchar *string);
 function g_dbus_is_guid(string) bind(c)
@@ -28638,6 +29313,9 @@ function g_dbus_gvalue_to_gvariant(gvalue, type) bind(c)
   type(c_ptr), value :: type
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gvolume.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_volume_get_type (void) G_GNUC_CONST;
 function g_volume_get_type() bind(c)
@@ -28818,6 +29496,9 @@ function g_volume_get_sort_key(volume) bind(c)
   type(c_ptr), value :: volume
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtlsdatabase.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tls_database_get_type (void) G_GNUC_CONST;
 function g_tls_database_get_type() bind(c)
@@ -28993,6 +29674,9 @@ function g_tls_database_lookup_certificates_issued_by_finish(self, result,&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtcpwrapperconnection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tcp_wrapper_connection_get_type (void) G_GNUC_CONST;
 function g_tcp_wrapper_connection_get_type() bind(c)
@@ -29017,6 +29701,9 @@ function g_tcp_wrapper_connection_get_base_io_stream(conn) bind(c)
   type(c_ptr), value :: conn
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gtlsclientconnection.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_tls_client_connection_get_type (void) G_GNUC_CONST;
 function g_tls_client_connection_get_type() bind(c)
@@ -29099,6 +29786,9 @@ subroutine g_tls_client_connection_copy_session_state(conn, source) bind(c)
   type(c_ptr), value :: source
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdbusserver.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_dbus_server_get_type (void) G_GNUC_CONST;
 function g_dbus_server_get_type() bind(c)
@@ -29166,6 +29856,9 @@ function g_dbus_server_is_active(server) bind(c)
   type(c_ptr), value :: server
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gdatainputstream.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_data_input_stream_get_type (void) G_GNUC_CONST;
 function g_data_input_stream_get_type() bind(c)
@@ -29421,6 +30114,9 @@ function g_data_input_stream_read_upto_finish(stream, result, length, error)&
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gemblem.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_emblem_get_type (void) G_GNUC_CONST;
 function g_emblem_get_type() bind(c)
@@ -29461,6 +30157,9 @@ function g_emblem_get_origin(emblem) bind(c)
   type(c_ptr), value :: emblem
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfileinfo.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_file_info_get_type (void) G_GNUC_CONST;
 function g_file_info_get_type() bind(c)
@@ -30107,6 +30806,9 @@ function g_file_attribute_matcher_to_string(matcher) bind(c)
   type(c_ptr), value :: matcher
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfileicon.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_file_icon_get_type (void) G_GNUC_CONST;
 function g_file_icon_get_type() bind(c)
@@ -30130,6 +30832,9 @@ function g_file_icon_get_file(icon) bind(c)
   type(c_ptr), value :: icon
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfile.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_file_get_type (void) G_GNUC_CONST;
 function g_file_get_type() bind(c)
@@ -31605,6 +32310,9 @@ function g_file_load_bytes_finish(file, result, etag_out, error) bind(c)
   type(c_ptr), value :: error
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gnativevolumemonitor.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_native_volume_monitor_get_type (void) G_GNUC_CONST;
 function g_native_volume_monitor_get_type() bind(c)
@@ -31612,6 +32320,9 @@ function g_native_volume_monitor_get_type() bind(c)
   integer(c_size_t) :: g_native_volume_monitor_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gio/gfilenamecompleter.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_filename_completer_get_type (void) G_GNUC_CONST;
 function g_filename_completer_get_type() bind(c)
@@ -31653,6 +32364,9 @@ subroutine g_filename_completer_set_dirs_only(completer, dirs_only) bind(c)
   integer(c_int), value :: dirs_only
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gmarshal.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_cclosure_marshal_VOID__VOID (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
 subroutine g_cclosure_marshal_VOID__VOID(closure, return_value, n_param_values,&
@@ -32247,6 +32961,9 @@ subroutine g_cclosure_marshal_BOOLEAN__BOXED_BOXEDv(closure, return_value,&
   type(c_ptr), value :: param_types
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gparamspecs.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GParamSpec* g_param_spec_char (const gchar *name, const gchar *nick, const gchar *blurb, gint8 minimum, gint8 maximum, gint8 default_value, GParamFlags flags);
 function g_param_spec_char(name, nick, blurb, minimum, maximum, default_value,&
@@ -32556,6 +33273,9 @@ function g_param_spec_variant(name, nick, blurb, type, default_value, flags)&
   integer(c_int), value :: flags
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gobject.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_initially_unowned_get_type (void);
 function g_initially_unowned_get_type() bind(c)
@@ -33084,6 +33804,12 @@ subroutine g_weak_ref_set(weak_ref, object) bind(c)
   type(c_ptr), value :: object
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gobject-autocleanups.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gboxed.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gpointer g_boxed_copy (GType boxed_type, gconstpointer src_boxed);
 function g_boxed_copy(boxed_type, src_boxed) bind(c)
@@ -33173,6 +33899,9 @@ function g_value_get_type() bind(c)
   integer(c_size_t) :: g_value_get_type
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gvaluetypes.h
+!--------------------------------------------------
 ! GLIB_DEPRECATED_IN_2_32_FOR(g_value_set_schar)
 !void g_value_set_char (GValue *value, gchar v_char);
 subroutine g_value_set_char(value, v_char) bind(c)
@@ -33508,6 +34237,9 @@ subroutine g_value_set_string_take_ownership(value, v_string) bind(c)
   character(kind=c_char), dimension(*) :: v_string
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gsignal.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !guint g_signal_newv (const gchar *signal_name, GType itype, GSignalFlags signal_flags, GClosure *class_closure, GSignalAccumulator accumulator, gpointer accu_data, GSignalCMarshaller c_marshaller, GType return_type, guint n_params, GType *param_types);
 function g_signal_newv(signal_name, itype, signal_flags, class_closure,&
@@ -33879,6 +34611,9 @@ subroutine g_signal_handlers_destroy(instance) bind(c)
   type(c_ptr), value :: instance
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gtypeplugin.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_type_plugin_get_type (void) G_GNUC_CONST;
 function g_type_plugin_get_type() bind(c)
@@ -33922,6 +34657,9 @@ subroutine g_type_plugin_complete_interface_info(plugin, instance_type,&
   type(c_ptr), value :: info
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gclosure.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GClosure* g_cclosure_new (GCallback callback_func, gpointer user_data, GClosureNotify destroy_data);
 function g_cclosure_new(callback_func, user_data, destroy_data) bind(c)
@@ -34098,6 +34836,9 @@ subroutine g_cclosure_marshal_generic_va(closure, return_value, instance,&
   type(c_ptr), value :: param_types
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gvalue.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !union GValue* g_value_init (GValue *value, GType g_type);
 function g_value_init(value, g_type) bind(c)
@@ -34199,6 +34940,9 @@ subroutine g_value_register_transform_func(src_type, dest_type, transform_func)&
   type(c_funptr), value :: transform_func
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gbinding.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_binding_flags_get_type (void) G_GNUC_CONST;
 function g_binding_flags_get_type() bind(c)
@@ -34306,6 +35050,9 @@ function g_object_bind_property_with_closures(source, source_property, target,&
   type(c_ptr), value :: transform_from
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/genums.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GEnumValue* g_enum_get_value (GEnumClass *enum_class, gint value);
 function g_enum_get_value(enum_class, value) bind(c)
@@ -34446,6 +35193,12 @@ subroutine g_flags_complete_type_info(g_flags_type, info, const_values) bind(c)
   type(c_ptr), value :: const_values
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gvaluecollector.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gtypemodule.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !gboolean g_type_module_use (GTypeModule *module);
 function g_type_module_use(module) bind(c)
@@ -34514,6 +35267,9 @@ function g_type_module_register_flags(module, name, const_static_values)&
   type(c_ptr), value :: const_static_values
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gparam.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GParamSpec* g_param_spec_ref (GParamSpec *pspec);
 function g_param_spec_ref(pspec) bind(c)
@@ -34802,6 +35558,9 @@ function g_param_spec_pool_list(pool, owner_type, n_pspecs_p) bind(c)
   type(c_ptr), value :: n_pspecs_p
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gsourceclosure.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !void g_source_set_closure (GSource *source, GClosure *closure);
 subroutine g_source_set_closure(source, closure) bind(c)
@@ -34817,6 +35576,9 @@ subroutine g_source_set_dummy_callback(source) bind(c)
   type(c_ptr), value :: source
 end subroutine
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/glib-types.h
+!--------------------------------------------------
 ! GLIB_AVAILABLE_IN_ALL
 !GType g_date_get_type (void) G_GNUC_CONST;
 function g_date_get_type() bind(c)
@@ -35027,6 +35789,15 @@ function g_variant_get_gtype() bind(c)
   integer(c_size_t) :: g_variant_get_gtype
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gobjectnotifyqueue.c
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/glib-enumtypes.h
+!--------------------------------------------------
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gtype.h
+!--------------------------------------------------
 ! GLIB_DEPRECATED_IN_2_36
 !void g_type_init (void);
 subroutine g_type_init() bind(c)
@@ -35583,6 +36354,9 @@ function g_type_name_from_class(g_class) bind(c)
   type(c_ptr), value :: g_class
 end function
 
+!--------------------------------------------------
+! /usr/include/glib-2.0/gobject/gvaluearray.h
+!--------------------------------------------------
 ! GLIB_DEPRECATED_IN_2_32_FOR(GArray)
 !GType g_value_array_get_type (void) G_GNUC_CONST;
 function g_value_array_get_type() bind(c)
