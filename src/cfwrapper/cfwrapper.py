@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2021-01-08 (tested with Python 3.9.1, Fedora 34 Rawhide)
-# pylint *.py : 8.42/10
+# Last modification: 2021-01-26 (tested with Python 3.9.1, Fedora 33)
+# pylint *.py : 8.40/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -282,6 +282,11 @@ for library_path in PATH_DICT:
             # Problematic files can be excluded here:
             #if c_file_name in ["this_file.h"]:
             #    continue    # Go to next file
+
+            # Write the file name in comments:
+            f_file.write("!" + 50*"-" + "\n")
+            f_file.write("! " + directory[0] + "/" + c_file_name + "\n")
+            f_file.write("!" + 50*"-" + "\n")
 
             my_stats.inc_nb_files()
             whole_file_original = open(directory[0] + "/" + c_file_name, 'r',
