@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus, Ian Harvey
-! GTK 4 version: vmagnin 2020-05-28, 2020-12-18
+! GTK 4 version: vmagnin 2020-05-28, 2021-01-28
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -100,7 +100,8 @@ module handlers
   & gtk_grid_set_row_homogeneous, &
   & gtk_grid_set_column_homogeneous, &
   & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
-  & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom
+  & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom, &
+  & gtk_get_major_version, gtk_get_minor_version, gtk_get_micro_version
 
   use g, only: g_object_unref
 
@@ -138,11 +139,12 @@ contains
     call gtk_window_set_title(window, "A great bazaar to test widgets..."//&
                                       &c_null_char)
 
+    print '(A4,I0,A1,I0,A1,I0)', "GTK ", gtk_get_major_version(),".", gtk_get_minor_version(), ".", gtk_get_micro_version()
+    call some_glib_functions()
+
     !******************************************************************
     ! Adding widgets in the window:
     !******************************************************************
-    call some_glib_functions()
-
     table = gtk_grid_new ()
     call gtk_grid_set_column_homogeneous(table, TRUE)
     call gtk_grid_set_row_homogeneous(table, TRUE)
