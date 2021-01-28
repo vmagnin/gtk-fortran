@@ -35,7 +35,9 @@ module various_functions
 
   subroutine some_glib_functions()
     use g, only: g_get_user_name, g_get_application_name, g_get_host_name, &
-               & g_get_home_dir, g_get_current_dir, g_format_size
+               & g_get_home_dir, g_get_current_dir, g_format_size, &
+               & g_get_os_info
+
     character(len=512) :: my_string
 
     call c_f_string_copy(g_get_user_name(), my_string)
@@ -57,6 +59,9 @@ module various_functions
     else
         print *, "Not UNIX OS"
     endif
+
+    call c_f_string_copy(g_get_os_info("PRETTY_NAME"//c_null_char), my_string)
+    print *, "Your OS:", my_string
 
     call c_f_string_copy(g_format_size (123456789_c_int64_t), my_string)
     print *, "g_format_size: ", TRIM(my_string)
