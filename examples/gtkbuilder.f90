@@ -87,7 +87,7 @@ end module handlers
 
 
 program gtkbuilder
-  use connect
+  use handlers
 
   implicit none
   integer(c_int) :: guint
