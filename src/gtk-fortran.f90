@@ -25,7 +25,7 @@
 ! Contributors: Vincent Magnin 2021-01-29
 !------------------------------------------------------------------------------
 
-module handlers
+module handlers_gtk_fortran
   use iso_c_binding
   use gtk, only: gtk_get_major_version, gtk_get_minor_version, &
                & gtk_get_micro_version
@@ -54,13 +54,13 @@ module handlers
     print *
     print '(A)', "Documentation: https://github.com/vmagnin/gtk-fortran/wiki"
   end subroutine activate
-end module handlers
+end module handlers_gtk_fortran
 
 
 program gtk_fortran
   use gtk, only: gtk_application_new, g_signal_connect, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
-  use handlers
+  use handlers_gtk_fortran
 
   implicit none
   integer(c_int)     :: status
