@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2020-04-30
+#   vmagnin: 2021-01-29
 #
 # CMAKE build file for GtkFortran
 
@@ -92,6 +92,15 @@ set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
 
 set_target_properties(gtk-fortran_object PROPERTIES
   Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
+
+#======================================================
+# The gtk-?-fortran command:
+#======================================================
+add_executable(gtk-fortran "gtk-fortran.f90")
+target_link_libraries(gtk-fortran gtk-fortran_static ${GTK_LIBRARIES})
+set_target_properties(gtk-fortran PROPERTIES
+  Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
+add_test(gtk-fortran ./gtk-fortran)
 
 #==========================
 # Copy some specific files:
