@@ -52,7 +52,11 @@ module handlers_gtk_fortran
     print '(A)', "This is free software: you are free to change and redistribute it."
     print '(A)', "There is NO WARRANTY, to the extent permitted by law."
     print *
+    print '(A)', "Usage example:"
+    print '(3A)', "gfortran my_app.f90 $(pkg-config --cflags --libs ", TRIM(name_string), ")"
+    print *
     print '(A)', "Documentation: https://github.com/vmagnin/gtk-fortran/wiki"
+    print '(A)', "Bug reports:   https://github.com/vmagnin/gtk-fortran/issues"
   end subroutine activate
 end module handlers_gtk_fortran
 
