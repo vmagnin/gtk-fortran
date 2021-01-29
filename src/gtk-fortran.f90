@@ -27,36 +27,37 @@
 
 module handlers
   use iso_c_binding
-  use gtk, only: gtk_init_check, FALSE, TRUE, &
-               & gtk_get_major_version, gtk_get_minor_version, &
+  use gtk, only: gtk_get_major_version, gtk_get_minor_version, &
                & gtk_get_micro_version
   use gtk_sup, only: c_f_string_copy
-  use g, only: g_get_prgname, g_get_home_dir, g_get_current_dir, g_format_size, &
-             & g_get_os_info
+  use g, only: g_get_prgname, g_get_os_info
+
   implicit none
 
   contains
 
   subroutine activate(app, gdata) bind(c)
     type(c_ptr), value, intent(in)  :: app, gdata
-    character(len=256) :: name_string, dir_string, os_string
+    character(len=128) :: name_string, os_string
 
     call c_f_string_copy(g_get_prgname(), name_string)
     call c_f_string_copy(g_get_os_info("PRETTY_NAME"//c_null_char), os_string)
     
-    print '(4A)', TRIM(name_string), " (", TRIM(os_string), ")"
-    print '(A)', "This is free software; see the source for copying &
-      & conditions. There is NO warranty; not even for MERCHANTABILITY or &
-      & FITNESS FOR A PARTICULAR PURPOSE."
+    print '(4A,I0,A1,I0,A1,I0,A1)', TRIM(name_string), " (", TRIM(os_string),&
+      & ", GTK ", gtk_get_major_version(),".", &
+      & gtk_get_minor_version(), ".", gtk_get_micro_version(), ")"
 
-    print '(A16,I0,A1,I0,A1,I0)', "Linked with GTK ", gtk_get_major_version(),".", &
-      & gtk_get_minor_version(), ".", gtk_get_micro_version()
+    print '(A)', "Licensed under GNU GPL 3 with the additional permissions&
+      & described in the GCC Runtime Library Exception version 3.1"
+    print '(A)', "This is free software: you are free to change and redistribute it."
+    print '(A)', "There is NO WARRANTY, to the extent permitted by law."
+    print *
+    print '(A)', "Documentation: https://github.com/vmagnin/gtk-fortran/wiki"
   end subroutine activate
 end module handlers
 
 
 program gtk_fortran
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use gtk, only: gtk_application_new, g_signal_connect, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers
