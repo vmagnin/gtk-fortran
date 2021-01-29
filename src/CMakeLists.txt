@@ -96,11 +96,11 @@ set_target_properties(gtk-fortran_object PROPERTIES
 #======================================================
 # The gtk-?-fortran command:
 #======================================================
-add_executable(gtk-fortran "gtk-fortran.f90")
-target_link_libraries(gtk-fortran gtk-fortran_static ${GTK_LIBRARIES})
-set_target_properties(gtk-fortran PROPERTIES
+add_executable(${gtk_V_fortran} "gtk-fortran.f90")
+target_link_libraries(${gtk_V_fortran} gtk-fortran_static ${GTK_LIBRARIES})
+set_target_properties(${gtk_V_fortran} PROPERTIES
   Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
-add_test(gtk-fortran ./gtk-fortran)
+add_test(${gtk_V_fortran} ./${gtk_V_fortran})
 
 #==========================
 # Copy some specific files:
@@ -166,6 +166,12 @@ install(PROGRAMS
 
 install(PROGRAMS
   "${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-pymodscan"
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
+  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+)
+
+install(PROGRAMS
+  "${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}"
   DESTINATION ${CMAKE_INSTALL_BINDIR}
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 )
