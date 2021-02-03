@@ -1,7 +1,7 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 !
-! This file is part of the gtk-fortran GTK+ Fortran Interface library.
+! This file is part of the gtk-fortran GTK Fortran Interface library.
 !
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -24,12 +24,13 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
-! vmagnin 2020-06-08 (GTK 4), 2021-01-22
+! vmagnin 2020-06-08 (GTK 4), 2021-02-03
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
-! This module contains some supplementary material useful for writing Gtk+
-! programs in Fortran.
+! This module contains some supplementary material useful for writing GTK
+! programs in Fortran.  The functions are not listed in the 
+! gtk-fortran-index.csv file.
 !
 ! These are mostly definitions that are not (currenty) extracted by the
 ! automatic tools. There are also some character conversion routines.
@@ -51,14 +52,16 @@ module gtk_sup
 
   implicit none
 
-  public :: is_UNIX_OS, clear_gtktreeiter, clear_gvalue, c_f_string_copy, &
+  public :: clear_gtktreeiter, clear_gvalue, C_F_string_chars, C_F_string_ptr,&
+          & c_f_string_copy_alloc, c_f_string_copy, &
           & convert_c_string_scalar, convert_c_string_array, &
           & convert_c_string_scalar_cptr, convert_c_string_array_cptr, &
-          & convert_f_string_a, convert_f_string_s, c_f_logical, f_c_logical4, &
-          & f_c_logical1, fdate, copy_file, C_F_string_chars, C_F_string_ptr
+          & convert_f_string_a, convert_f_string_s, &
+          & c_f_logical, f_c_logical4, &
+          & f_c_logical1, is_UNIX_OS, fdate, copy_file
   !+
   ! Gtype
-  ! The various Gtype definitions.
+  ! The various Gtype definitions from the gtype.h file.
   !-
 
   ! Gtype definitions
@@ -112,7 +115,7 @@ module gtk_sup
   !+
   ! Iterators and Gvalues
   ! These structures are always allocated in the calling program, rather
-  ! than being declared as pointers and leaving Gtk+ to allocate them.
+  ! than being declared as pointers and leaving GTK to allocate them.
   !
   ! * GtkTreeIter, Iterator for TreeView widgets
   ! * GtkTextIter, Iterator for TextView widgets
@@ -151,7 +154,9 @@ module gtk_sup
      type(c_ptr) :: message    ! A C pointer to the error message.
   end type gerror
 
+  !***********************************
   ! Interfaces for string conversions
+  !***********************************
   interface convert_c_string
      module procedure convert_c_string_scalar
      module procedure convert_c_string_array
@@ -195,13 +200,9 @@ module gtk_sup
     end function strlen
   end interface
 
-!  private :: strlen
-!  private :: do_association
-
-
 contains
   ! These 2 clear_ routines are only needed of you need to re-initialize
-  ! the types. The definitions include the intial setting to zero or NULL.
+  ! the types. The definitions include the initial setting to zero or NULL.
 
   !+
   subroutine clear_gtktreeiter(iter)
@@ -277,17 +278,17 @@ contains
   ! value of a c string.
   ! Contributed by Ian Harvey, 2014.
   ! This requires a relatively recent gfortran.
-!  subroutine c_f_string_copy_alloc(the_ptr, f_string)
-!    type(c_ptr), intent(in) :: the_ptr
-!    character(:), intent(out), allocatable :: f_string
-!
-!    character(kind=c_char), pointer :: f_array(:)
-!    integer :: i
-!
-!    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
-!    allocate(character(size(f_array)) :: f_string)
-!    forall (i = 1:size(f_array)) f_string(i:i) = f_array(i)
-!  end subroutine c_f_string_copy_alloc
+  subroutine c_f_string_copy_alloc(the_ptr, f_string)
+    type(c_ptr), intent(in) :: the_ptr
+    character(:), intent(out), allocatable :: f_string
+
+    character(kind=c_char), pointer :: f_array(:)
+    integer :: i
+
+    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
+    allocate(character(size(f_array)) :: f_string)
+    forall (i = 1:size(f_array)) f_string(i:i) = f_array(i)
+  end subroutine c_f_string_copy_alloc
 
   ! Create a default character fixed length copy of the value of a c string.
   !
@@ -468,7 +469,6 @@ contains
 
     f_string(i:) = ''
     if (present(status)) status = 0
-
   end subroutine convert_c_string_scalar_cptr
 
 
@@ -614,7 +614,6 @@ contains
        textptr(j) = f_string(j:j)
     end do
     if (add_null) textptr(lcstr) = c_null_char
-
   end subroutine convert_f_string_s
 
   !+
@@ -632,7 +631,6 @@ contains
     else
        c_f_logical = .true.
     end if
-
   end function c_f_logical
 
   !+
@@ -680,7 +678,7 @@ contains
     character(len=512) :: path
 
     ! Returns .true. if the OS is of the UNIX type. On a Windows system, it 
-    ! will return .false. because an absolute path can not begin by a /
+    ! will return .false. because an absolute path can not begin by a slash.
     !-
 
     ! If the length of the path is >512, it will be cut but we need only
@@ -692,7 +690,6 @@ contains
     else
         is_UNIX_OS = .false.
     endif
-
   end function is_UNIX_OS
 
   ! Contributed by IanH0073 (issue #81)
