@@ -22,6 +22,7 @@ in the current directory.
 create your graphical user interface.
 - list_demo.f90 demonstrates how to use GtkTreeView for displaying trees and 
 lists.
+- menubar.f90 demonstrates a menubar based on GMenu and GAction. It also uses CSS styles.
 - notebooks.f90 demonstrates how to use GtkNotebook, a tabbed notebook container.
 - hl_* examples uses the "high-level" interface.
     - hl_pbar.f90:  a progress bar.

@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2020-09-29
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2021-02-25
 #
 # CMAKE build file for gtk-fortran
 
@@ -34,7 +34,8 @@ if (NOT NO_BUILD_EXAMPLES)
   #==========================
   set(examples_list gtkzero_gapp gtkhello list_demo gio_demo tests
     notebooks julia_pixbuf  mandelbrot_pixbuf mandelbrot_pixbuf_zoom 
-    cairo-tests cairo-basics cairo-basics-click bazaar pixbuf_without_gui
+    menubar cairo-tests cairo-basics cairo-basics-click bazaar 
+    pixbuf_without_gui
   )
   
   if(NOT NO_BUILD_HL)

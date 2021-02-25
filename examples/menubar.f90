@@ -102,12 +102,12 @@ contains
   !*******************************************************
   ! The activate callback function of the GtkApplication:
   !*******************************************************
-  subroutine activate (app, user_data)
+  subroutine activate (app, user_data) bind(c)
     type(c_ptr), value, intent(in)  :: app, user_data
     type(c_ptr) :: win, display, lb, act_fullscreen, &
                  & act_color, act_quit
     type(c_ptr) :: menubar, menu, section1, section2, section3, &
-      & menu_item, fullscreen, menu_item_red, menu_item_green, &
+      & menu_item_red, menu_item_green, &
       & menu_item_blue, menu_item_quit, menu_item_fullscreen
     integer(c_size_t) :: length = -1
 
