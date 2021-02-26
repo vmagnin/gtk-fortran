@@ -1,4 +1,4 @@
-! Copyright (C) 2011
+! Copyright (C) 2021
 ! Free Software Foundation, Inc.
 !
 ! This file is part of the gtk-fortran GTK / Fortran Interface library.
