@@ -24,6 +24,7 @@ create your graphical user interface.
 lists.
 - menubar.f90 demonstrates a menubar based on GMenu and GAction. It also uses CSS styles.
 - notebooks.f90 demonstrates how to use GtkNotebook, a tabbed notebook container.
+- regex.f90 demonstrates how to use GLib regular expressions functions.
 - hl_* examples uses the "high-level" interface.
     - hl_pbar.f90:  a progress bar.
     - ...
