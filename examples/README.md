@@ -27,6 +27,7 @@ lists.
 - menu.f90 demonstrates how to use GtkActionGroup to create a menu. But gtk_action_new gtk_ui_manager_new are deprecated since version 3.10 and should not be used in newly-written code.
 - menu2.f90 demonstrates how to create a menu.
 - notebooks.f90 demonstrates how to use GtkNotebook, a tabbed notebook container.
+- regex.f90 demonstrates how to use GLib regular expressions functions.
 - hl_* examples uses the "high-level" interface.
     - hl_pbar.f90:  a progress bar.
     - ...
