@@ -163,6 +163,15 @@ function gtk_icon_theme_has_icon(self, icon_name) bind(c)
   character(kind=c_char), dimension(*) :: icon_name
 end function
 
+! GDK_AVAILABLE_IN_4_2
+!gboolean gtk_icon_theme_has_gicon (GtkIconTheme *self, GIcon *gicon);
+function gtk_icon_theme_has_gicon(self, gicon) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_icon_theme_has_gicon
+  type(c_ptr), value :: self
+  type(c_ptr), value :: gicon
+end function
+
 ! GDK_AVAILABLE_IN_ALL
 !int *gtk_icon_theme_get_icon_sizes (GtkIconTheme *self, const char *icon_name);
 function gtk_icon_theme_get_icon_sizes(self, icon_name) bind(c)
@@ -3874,6 +3883,23 @@ subroutine gtk_window_set_interactive_debugging(enable) bind(c)
   integer(c_int), value :: enable
 end subroutine
 
+! GDK_AVAILABLE_IN_4_2
+!void gtk_window_set_handle_menubar_accel (GtkWindow *window, gboolean handle_menubar_accel);
+subroutine gtk_window_set_handle_menubar_accel(window, handle_menubar_accel)&
+& bind(c)
+  use iso_c_binding, only: c_ptr, c_int
+  type(c_ptr), value :: window
+  integer(c_int), value :: handle_menubar_accel
+end subroutine
+
+! GDK_AVAILABLE_IN_4_2
+!gboolean gtk_window_get_handle_menubar_accel (GtkWindow *window);
+function gtk_window_get_handle_menubar_accel(window) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_window_get_handle_menubar_accel
+  type(c_ptr), value :: window
+end function
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkcellrendererspin.h
 !--------------------------------------------------
@@ -4286,7 +4312,7 @@ subroutine gtk_im_context_set_use_preedit(context, use_preedit) bind(c)
   integer(c_int), value :: use_preedit
 end subroutine
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_2_FOR(gtk_im_context_set_surrounding_with_selection)
 !void gtk_im_context_set_surrounding (GtkIMContext *context, const char *text, int len, int cursor_index);
 subroutine gtk_im_context_set_surrounding(context, text, len, cursor_index)&
 & bind(c)
@@ -4297,7 +4323,7 @@ subroutine gtk_im_context_set_surrounding(context, text, len, cursor_index)&
   integer(c_int), value :: cursor_index
 end subroutine
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_2_FOR(gtk_im_context_get_surrounding_with_selection)
 !gboolean gtk_im_context_get_surrounding (GtkIMContext *context, char **text, int *cursor_index);
 function gtk_im_context_get_surrounding(context, text, cursor_index) bind(c)
   use iso_c_binding, only: c_int, c_ptr
@@ -4305,6 +4331,30 @@ function gtk_im_context_get_surrounding(context, text, cursor_index) bind(c)
   type(c_ptr), value :: context
   type(c_ptr), dimension(*) :: text
   type(c_ptr), value :: cursor_index
+end function
+
+! GDK_AVAILABLE_IN_4_2
+!void gtk_im_context_set_surrounding_with_selection (GtkIMContext *context, const char *text, int len, int cursor_index, int anchor_index);
+subroutine gtk_im_context_set_surrounding_with_selection(context, text, len,&
+& cursor_index, anchor_index) bind(c)
+  use iso_c_binding, only: c_ptr, c_char, c_int
+  type(c_ptr), value :: context
+  character(kind=c_char), dimension(*) :: text
+  integer(c_int), value :: len
+  integer(c_int), value :: cursor_index
+  integer(c_int), value :: anchor_index
+end subroutine
+
+! GDK_AVAILABLE_IN_4_2
+!gboolean gtk_im_context_get_surrounding_with_selection (GtkIMContext *context, char **text, int *cursor_index, int *anchor_index);
+function gtk_im_context_get_surrounding_with_selection(context, text,&
+& cursor_index, anchor_index) bind(c)
+  use iso_c_binding, only: c_int, c_ptr
+  integer(c_int) :: gtk_im_context_get_surrounding_with_selection
+  type(c_ptr), value :: context
+  type(c_ptr), dimension(*) :: text
+  type(c_ptr), value :: cursor_index
+  type(c_ptr), value :: anchor_index
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -10614,12 +10664,6 @@ end subroutine
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkimmodule.h
 !--------------------------------------------------
-! 
-!void gtk_im_modules_init (void);
-subroutine gtk_im_modules_init() bind(c)
-  use iso_c_binding, only: 
-end subroutine
-
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkshortcutswindow.h
 !--------------------------------------------------
@@ -12256,6 +12300,13 @@ function gtk_expression_bind(self, target, property, this_) bind(c)
   type(c_ptr), value :: target
   character(kind=c_char), dimension(*) :: property
   type(c_ptr), value :: this_
+end function
+
+! GDK_AVAILABLE_IN_4_2
+!GType gtk_expression_watch_get_type (void) G_GNUC_CONST;
+function gtk_expression_watch_get_type() bind(c)
+  use iso_c_binding, only: c_size_t
+  integer(c_size_t) :: gtk_expression_watch_get_type
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -15001,6 +15052,14 @@ end subroutine
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkenums.h
 !--------------------------------------------------
+! 
+!GtkOrdering gtk_ordering_from_cmpfunc (int cmpfunc_result);
+function gtk_ordering_from_cmpfunc(cmpfunc_result) bind(c)
+  use iso_c_binding, only: c_int
+  integer(c_int) :: gtk_ordering_from_cmpfunc
+  integer(c_int), value :: cmpfunc_result
+end function
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtknotebook.h
 !--------------------------------------------------
