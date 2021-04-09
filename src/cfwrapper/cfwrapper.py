@@ -79,7 +79,8 @@ if GTK_VERSION == "gtk4":
         ("/usr/include/gtk-4.0/gdk", "gdk-auto.f90"),
         ("/usr/include/gtk-4.0/gsk", "gsk-auto.f90"),
         ("/usr/include/gtk-4.0/gtk", "gtk-auto.f90"),
-        ("/usr/include/gtk-4.0/unix-print", "unix-print-auto.f90")])
+        ("/usr/include/gtk-4.0/unix-print", "unix-print-auto.f90"),
+        ("/usr/include/graphene-1.0", "graphene-auto.f90")])
 elif GTK_VERSION == "gtk3":
     PATH_DICT.update([
         ("/usr/include/atk-1.0", "atk-auto.f90"),
