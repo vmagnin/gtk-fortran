@@ -1,4 +1,4 @@
 gtk-fortran;3
-GTK;3.24.18
-GLib;2.64.2
-Ubuntu;20.04
+GTK;3.24.28
+GLib;2.68.1
+Fedora;34
