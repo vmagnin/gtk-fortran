@@ -25,7 +25,7 @@
 ! Last modification: vmagnin 2020-02-11
 
 module handlers
-  use iso_c_binding, only: c_int
+  use, intrinsic :: iso_c_binding, only: c_int
 
   use gtk, only: gtk_container_add, gtk_drawing_area_new, gtk_events_pending, gtk&
   &_main, gtk_main_iteration, gtk_main_iteration_do, gtk_w&
@@ -49,7 +49,7 @@ module handlers
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     run_status = FALSE
@@ -66,7 +66,7 @@ contains
 
 
   function expose_event (widget, my_cairo_context, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_int, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_int, c_ptr
     implicit none
     real(8), parameter :: pi = 3.14159265358979323846d0
     integer(c_int)    :: ret
@@ -118,7 +118,7 @@ end module handlers
 
 
 program cairo_basics
-  use iso_c_binding, only: c_ptr, c_funloc
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc
   use handlers
   implicit none
   type(c_ptr) :: my_window

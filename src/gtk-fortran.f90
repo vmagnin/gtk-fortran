@@ -27,7 +27,7 @@
 !------------------------------------------------------------------------------
 
 module handlers_gtk_fortran
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use, intrinsic :: iso_fortran_env, only: compiler_version
   use gtk, only: gtk_get_major_version, gtk_get_minor_version, &
                & gtk_get_micro_version

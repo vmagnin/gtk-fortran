@@ -30,7 +30,7 @@
 module as_handlers
   use gtk_hl
   use gtk_sup
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   !********************************
   ! Gtk modules for hl_assistant.f90

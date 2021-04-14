@@ -39,7 +39,7 @@ module gtk_hl_accelerator
   ! menu item). 
   !/
 
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   ! Auto-generated use's
   use gtk, only: gtk_widget_add_accelerator, &

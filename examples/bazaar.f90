@@ -26,7 +26,7 @@
 ! Last modifications: vmagnin+Ian Harvey 2019, 02-21, vmagnin 2020-02-12
 
 module my_widgets
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   implicit none
 
   type(c_ptr) :: window
@@ -81,7 +81,7 @@ contains
 
   ! GtkWidget event:
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     print *, "my delete_event"
@@ -91,7 +91,7 @@ contains
 
   ! GtkWidget event:
   function draw (widget, my_cairo_context, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_char
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int, c_char
     implicit none
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, my_cairo_context, gdata
@@ -171,7 +171,7 @@ contains
 
   ! GtkObject signal:
   subroutine destroy (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     use gtk_sup, only: c_f_string_copy
     type(c_ptr), value :: widget, gdata
     character(len=512) :: my_string
@@ -187,7 +187,7 @@ contains
 
   ! GtkButton signal:
   function firstbutton (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
 
@@ -198,7 +198,7 @@ contains
 
   ! GtkButton signal:
   function secondbutton (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
 
@@ -209,7 +209,7 @@ contains
 
   ! GtkButton signal:
   function aboutbutton (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     integer(c_int) :: response_id
@@ -238,7 +238,7 @@ contains
 
   ! GtkFileChooser signal:
   function file_changed (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_char
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_char
     use gtk_sup, only: c_f_string_copy
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
@@ -255,7 +255,7 @@ end module handlers
 
 
 module various_functions
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk_sup, only: c_f_string_copy
   implicit none
 

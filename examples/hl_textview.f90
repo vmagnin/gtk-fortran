@@ -3,7 +3,7 @@
 
 module handlers
 
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk_hl
   use gtk, only: gtk_main, gtk_main_quit, &
        & gtk_widget_show, gtk_init, gtk_entry_get_text_length, &

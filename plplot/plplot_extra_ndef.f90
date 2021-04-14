@@ -27,7 +27,7 @@
 module plplot_extra
   ! Plplot extras for accessing the pl_cmd routine.
 
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
 
@@ -37,7 +37,7 @@ module plplot_extra
   ! Interface for the pl_cmd routine
   interface
      subroutine pl_cmd(cmd, arg) bind(c)
-       use iso_c_binding, only: c_int, c_ptr
+       use, intrinsic :: iso_c_binding, only: c_int, c_ptr
        integer(kind=c_int), value :: cmd
        type(c_ptr), value :: arg
      end subroutine pl_cmd

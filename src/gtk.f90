@@ -25,13 +25,13 @@
 ! Last modification: 2020-02-12
 
 module gtk
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   implicit none
   include "gtkenums-auto.f90"
 
   interface
     subroutine gtk_init_real(argc,argv) bind(c,name='gtk_init')
-      use iso_c_binding, only: c_int, c_ptr
+      use, intrinsic :: iso_c_binding, only: c_int, c_ptr
       integer(c_int) :: argc
       type(c_ptr)    :: argv
     end subroutine 
@@ -49,7 +49,7 @@ module gtk
 
 contains
   subroutine g_signal_connect (instance, detailed_signal, c_handler, data0)
-    use iso_c_binding, only: c_ptr, c_char, c_funptr
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_char, c_funptr
     use g, only: g_signal_connect_data
     character(kind=c_char):: detailed_signal(*)
     type(c_ptr)      :: instance
@@ -68,7 +68,7 @@ contains
 
 
   subroutine gtk_init()
-    use iso_c_binding, only: c_ptr, c_char, c_int, c_null_char, c_loc
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_char, c_int, c_null_char, c_loc
     character(len=256,kind=c_char) :: arg
     character(len=1,kind=c_char), dimension(:),pointer :: carg
     type(c_ptr), allocatable, target :: argv(:)

@@ -24,7 +24,7 @@
 ! Contributed by James Tappin,
 
 module v_handlers
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   use gdk_events
   use gdk_pixbuf_hl
@@ -138,7 +138,7 @@ program hl_cairo_viewer
   ! A very simple image viewer
 
   use v_handlers
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
   integer(kind=c_int) :: nfiles, i, istat

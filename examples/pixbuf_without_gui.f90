@@ -27,7 +27,7 @@
 !------------------------------------------------------------------------------
 
 program pixbuf_without_gui
-  use iso_c_binding, only: c_ptr, c_null_char, c_null_ptr, &
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_null_char, c_null_ptr, &
                          & c_f_pointer, c_char, c_int
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                       & gdk_pixbuf_get_rowstride, gdk_pixbuf_new

@@ -27,7 +27,7 @@
 
 module widgets
   ! declares the used GTK widgets
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   implicit none
 
   type(c_ptr) :: window
@@ -50,7 +50,7 @@ contains
   ! Note that events are a special type of signals, coming from the
   ! X Window system. Then callback functions must have an event argument:
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: delete_event
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
@@ -60,7 +60,7 @@ contains
 
   ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: destroy
     type(c_ptr), value :: widget, gdata
     print *, "my destroy"
@@ -69,7 +69,7 @@ contains
 
   ! "clicked" is a GtkButton signal
   function hello (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: hello
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
@@ -78,7 +78,7 @@ contains
   end function hello
 
   function button1clicked (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: button1clicked
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
@@ -87,7 +87,7 @@ contains
   end function button1clicked
 
   function button2clicked (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: button2clicked
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata

@@ -52,7 +52,7 @@ module gdk_pixbuf_hl
 
   use gtk_sup
 
-  use iso_c_binding, only: c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_null_ptr
   use iso_fortran_env, only: error_unit
 
   implicit none

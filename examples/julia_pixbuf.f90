@@ -26,7 +26,7 @@
 
 
 module global_widgets
-  use iso_c_binding, only: c_ptr, c_char, c_int
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: my_pixbuf, my_drawing_area, spinButton1, spinButton2, spinButton3
   type(c_ptr) :: textView, buffer, scrolled_window, statusBar, combo1
   character(kind=c_char), dimension(:), pointer :: pixel
@@ -68,7 +68,7 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                        &gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use g, only: g_usleep
-  use iso_c_binding, only: c_int, c_ptr, c_char
+  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_char
 
   implicit none
   ! run_status is TRUE until the user closes the top window:
@@ -86,7 +86,7 @@ contains
   ! window is closed.
   ! This function will also be called when the user clicks on the "Exit" button.
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
@@ -112,7 +112,7 @@ contains
 
   ! Called each time the window needs to be redrawn:
   function draw (widget, my_cairo_context, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_int, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_int, c_ptr
     use global_widgets
     implicit none
     integer(c_int)                 :: ret
@@ -130,7 +130,7 @@ contains
   ! In this example, this function is declared recursive because it can be
   ! called a second time from the Julia_set() subroutine:
   recursive function firstbutton (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     use global_widgets
     implicit none
     integer(c_int)    :: ret, message_id
@@ -174,7 +174,7 @@ contains
   ! GtkComboBox signal emitted when the user selects predifined c values of
   ! interesting Julia sets in the combo box:
   function firstCombo (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_double, c_f_pointer
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int, c_double, c_f_pointer
     use gtk_sup, only: c_f_string_copy
     use global_widgets
     implicit none
@@ -254,7 +254,7 @@ contains
   ! This function is declared recursive because it will be pressed a first time
   ! to pause and a second time to end pause (from the "do while" loop):
   recursive function firstToggle (widget, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_long
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_long
     use global_widgets
     implicit none
     integer(c_int)    :: ret, message_id
@@ -292,7 +292,7 @@ end module handlers
 ! The main program defines the GUI
 !**********************************
 program julia
-  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
   use handlers
   use global_widgets
   implicit none
@@ -432,7 +432,7 @@ end program julia
 ! The scientific computing is done here
 !*********************************************
 subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use handlers
   use global_widgets
   implicit none

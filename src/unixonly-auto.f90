@@ -10,7 +10,7 @@ interface
 ! GDK_PIXBUF_AVAILABLE_IN_ALL
 !GdkPixbuf *gdk_pixbuf_new_from_file (const char *filename, GError **error);
 function gdk_pixbuf_new_from_file(filename, error) bind(c)
-  use iso_c_binding, only: c_ptr, c_char
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_char
   type(c_ptr) :: gdk_pixbuf_new_from_file
   character(kind=c_char), dimension(*) :: filename
   type(c_ptr), value :: error
@@ -20,7 +20,7 @@ end function
 !GdkPixbuf *gdk_pixbuf_new_from_file_at_size (const char *filename, int width, int height, GError **error);
 function gdk_pixbuf_new_from_file_at_size(filename, width, height, error)&
 & bind(c)
-  use iso_c_binding, only: c_ptr, c_char, c_int
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: gdk_pixbuf_new_from_file_at_size
   character(kind=c_char), dimension(*) :: filename
   integer(c_int), value :: width
@@ -32,7 +32,7 @@ end function
 !GdkPixbuf *gdk_pixbuf_new_from_file_at_scale (const char *filename, int width, int height, gboolean preserve_aspect_ratio, GError **error);
 function gdk_pixbuf_new_from_file_at_scale(filename, width, height,&
 & preserve_aspect_ratio, error) bind(c)
-  use iso_c_binding, only: c_ptr, c_char, c_int
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: gdk_pixbuf_new_from_file_at_scale
   character(kind=c_char), dimension(*) :: filename
   integer(c_int), value :: width
@@ -45,7 +45,7 @@ end function
 !gboolean gdk_pixbuf_savev (GdkPixbuf *pixbuf, const char *filename, const char *type, char **option_keys, char **option_values, GError **error);
 function gdk_pixbuf_savev(pixbuf, filename, type, option_keys, option_values,&
 & error) bind(c)
-  use iso_c_binding, only: c_int, c_ptr, c_char
+  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_char
   integer(c_int) :: gdk_pixbuf_savev
   type(c_ptr), value :: pixbuf
   character(kind=c_char), dimension(*) :: filename

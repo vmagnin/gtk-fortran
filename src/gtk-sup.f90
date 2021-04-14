@@ -46,7 +46,7 @@ module gtk_sup
   ! GError: Type definition.
   ! Various GTK_STOCK strings.
 
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk, only:  TRUE, FALSE
   use g, only: g_type_fundamental
 

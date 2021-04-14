@@ -25,7 +25,7 @@
 ! Last modification: vmagnin 2020-05-28, 2020-12-20
 
 module widgets
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
 
@@ -39,7 +39,7 @@ module widgets
 
 contains
   subroutine convert_c_string(textptr, f_string)
-    use iso_c_binding, only: c_char
+    use, intrinsic :: iso_c_binding, only: c_char
     implicit none
     character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
     character(len=*), intent(out) :: f_string
@@ -87,7 +87,7 @@ contains
 
   ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
 
     print *, "my destroy"
@@ -96,7 +96,7 @@ contains
 
 ! delete event
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_bool
     integer(c_int)     :: ret
     type(c_ptr), value :: widget, event, gdata
 
@@ -106,7 +106,7 @@ contains
 
 ! next page
   function next_page_book (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_bool
     integer(c_int)     :: ret
     type(c_ptr), value :: widget, gdata
 
@@ -120,7 +120,7 @@ contains
 
 ! prev page
   function prev_page_book (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_bool
     integer(c_int)     :: ret
     type(c_ptr), value :: widget, gdata
 
@@ -134,7 +134,7 @@ contains
 
 ! Rotate the position of the tabs
   function rotate_book (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_bool
     integer(c_int)     :: ret
     type(c_ptr), value :: widget, gdata
 
@@ -144,7 +144,7 @@ contains
 
 ! Add/Remove the page tabs and the borders
   function tabsborder_book (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_bool
     integer(c_int)     :: ret
     type(c_ptr), value :: widget, gdata
     integer(c_int) :: tval, bval ! tval = FALSE, bval = FALSE: does not work properly with gfortran 4.6 !
@@ -160,7 +160,7 @@ contains
 
 ! Remove a page from the notebook
   function remove_book (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_bool
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_bool
     integer(c_int)     :: ret
     type(c_ptr), value :: widget, gdata
     integer(c_int) :: page

@@ -25,7 +25,7 @@
 ! PLplot code derived from PLplot's example 4 by Alan W. Irwin
 
 module common_ex4
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   use cairo, only: cairo_get_target, cairo_image_surface_get_height, &
        & cairo_image_surface_get_width

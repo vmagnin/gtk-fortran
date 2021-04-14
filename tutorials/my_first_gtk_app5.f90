@@ -1,7 +1,7 @@
 ! $ gfortran -Wall -Wextra -std=f2008 -pedantic -g my_first_gtk_app5.f90 $(pkg-config --cflags --libs gtk-3-fortran)
 
 module math
-  use iso_c_binding, only: dp=>c_double
+  use, intrinsic :: iso_c_binding, only: dp=>c_double
   implicit none
 
   contains
@@ -18,7 +18,7 @@ module math
 end module math
 
 module handlers
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE, &
                & gtk_application_window_new, gtk_widget_show_all, &
                & gtk_window_set_title, g_signal_connect, &

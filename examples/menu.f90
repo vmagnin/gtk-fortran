@@ -46,7 +46,7 @@ contains
 
   ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
     print *, "my destroy"
     call gtk_main_quit ()
@@ -54,7 +54,7 @@ contains
 
 ! delete event
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     print *, "my delete_event"
@@ -64,7 +64,7 @@ contains
 ! GtkAction signals:
 ! open file
   function file_open (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "File open"
@@ -73,7 +73,7 @@ contains
 
 ! save file
   function file_save (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "File save"
@@ -82,7 +82,7 @@ contains
 
 ! close file
   function file_close (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "File close"
@@ -91,7 +91,7 @@ contains
 
 ! cut
   function cut (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Cut"
@@ -100,7 +100,7 @@ contains
 
 ! copy
   function copy (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Copy"
@@ -109,7 +109,7 @@ contains
 
 ! paste
   function paste (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Paste"
@@ -118,7 +118,7 @@ contains
   
 ! help
   function help (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Help"
@@ -127,7 +127,7 @@ contains
 
 ! menu dummy function
   function menu (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     !print *, "Menu"
@@ -136,7 +136,7 @@ contains
   
   ! This is not a handler
   subroutine convert_c_string(textptr, f_string)
-    use iso_c_binding, only: c_char
+    use, intrinsic :: iso_c_binding, only: c_char
     implicit none
     character(kind=c_char), dimension(:), pointer, intent(in) :: textptr
     character(len=*), intent(out) :: f_string
@@ -154,7 +154,7 @@ end module handlers
 
 
 program simplemenu
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use handlers
   use gtk_sup, only: c_f_string_copy
   implicit none

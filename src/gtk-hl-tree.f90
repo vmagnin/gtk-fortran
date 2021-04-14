@@ -49,7 +49,7 @@ module gtk_hl_tree
   !/
 
   use gtk_sup
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use iso_fortran_env, only: error_unit
 
   ! Auto generated use's

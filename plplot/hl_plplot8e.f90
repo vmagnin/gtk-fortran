@@ -25,7 +25,7 @@
 ! PLplot code derived from PLplot's example 8 by Alan W. Irwin
 
 module common_ex8
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   ! Gtk includes
   use gtk, only: gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, &

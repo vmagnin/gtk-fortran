@@ -41,7 +41,7 @@ module handlers
        & GDK_SCROLL_UP, GDK_SCROLL_DOWN, GDK_SHIFT_MASK, GDK_CONTROL_MASK, &
        & GDK_BUTTON_PRESS_MASK, GDK_SCROLL_MASK, GTK_ORIENTATION_VERTICAL, &
        & GTK_WINDOW_TOPLEVEL, GDK_COLORSPACE_RGB, gtk_main, gtk_main_quit
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
   integer(c_int) :: run_status = TRUE
@@ -337,7 +337,7 @@ end module handlers
 
 
 program mandelbrot_zoom
-  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
   use handlers
   implicit none
   type(c_ptr) :: my_window, jb

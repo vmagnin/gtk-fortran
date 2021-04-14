@@ -40,7 +40,7 @@ module gtk_hl_infobar
   ! variadic, and setting the message involves several levels of indirection.
   !/
 
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   use gtk_sup
 

@@ -35,7 +35,7 @@ contains
   ! Note that events are a special type of signals, coming from the
   ! X Window system. Then callback functions must have an event argument:
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     print *, "my delete_event"
@@ -44,7 +44,7 @@ contains
 
   ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
     print *, "my destroy"
     call gtk_main_quit ()
@@ -52,7 +52,7 @@ contains
 
   ! "clicked" is a GtkButton signal
   function hello (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Hello World!"
@@ -60,7 +60,7 @@ contains
   end function hello
 
   function button1clicked (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Button 1 clicked!"
@@ -68,7 +68,7 @@ contains
   end function button1clicked
 
   function button2clicked (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_associated, c_f_pointer
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int, c_associated, c_f_pointer
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
 
@@ -87,7 +87,7 @@ end module handlers
 
 
 program gtkFortran
-  use iso_c_binding, only: c_ptr, c_funloc, c_loc, c_int
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_loc, c_int
   use gtk, only: gtk_init, gtk_window_new, GTK_WINDOW_TOPLEVEL, gtk_window_set_title, &
       & g_signal_connect, gtk_box_new, gtk_container_add, &
       & gtk_button_new_with_label, gtk_widget_show, gtk_main, &

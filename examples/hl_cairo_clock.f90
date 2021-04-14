@@ -43,7 +43,7 @@ module cl_handlers
   use gtk_draw_hl
   use gdk_events
 
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
 

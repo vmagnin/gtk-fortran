@@ -2,7 +2,7 @@
 ! Last modification: vmagnin 02-23-2019
 
 module handlers
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk_hl
   use gtk, only: gtk_container_add, gtk_label_new, gtk_main, gtk_main_quit, &
        & gtk_widget_destroy, gtk_widget_show_all, gtk_init, TRUE, FALSE

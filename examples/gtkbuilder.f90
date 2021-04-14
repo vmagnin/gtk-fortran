@@ -25,7 +25,7 @@
 
 module widgets
   ! declares the used GTK widgets
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   implicit none
 
   type(c_ptr) :: window
@@ -50,7 +50,7 @@ contains
   ! Note that events are a special type of signals, coming from the
   ! X Window system. Then callback functions must have an event argument:
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
     print *, "my delete_event"
@@ -59,7 +59,7 @@ contains
 
   ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     type(c_ptr), value :: widget, gdata
     print *, "my destroy"
     call gtk_main_quit ()
@@ -67,7 +67,7 @@ contains
 
   ! "clicked" is a GtkButton signal
   function hello (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Hello World!"
@@ -75,7 +75,7 @@ contains
   end function hello
 
   function button1clicked (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "Button 1 clicked!"
@@ -83,7 +83,7 @@ contains
   end function button1clicked
 
   function button2clicked (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
 
@@ -150,7 +150,7 @@ module connect
 !more control over the signal connection process.
 
    subroutine connect_signals (builder, object, signal_name, handler_name, connect_object, flags, user_data) bind(c)
-      use iso_c_binding, only: c_ptr, c_char, c_int
+      use, intrinsic :: iso_c_binding, only: c_ptr, c_char, c_int
       type(c_ptr), value                     :: builder        !a GtkBuilder
       type(c_ptr), value                     :: object         !object to connect a signal to
       character(kind=c_char), dimension(*)   :: signal_name    !name of the signal

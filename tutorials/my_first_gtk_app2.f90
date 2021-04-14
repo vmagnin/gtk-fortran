@@ -1,7 +1,7 @@
 ! $ gfortran -Wall -Wextra -std=f2008 -pedantic -g my_first_gtk_app2.f90 $(pkg-config --cflags --libs gtk-3-fortran)
 
 module handlers
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
 

@@ -43,7 +43,7 @@ module handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, gdk_pix&
   &buf_get_rowstride, gdk_pixbuf_new
 
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
   integer(c_int) :: run_status = TRUE
@@ -57,7 +57,7 @@ module handlers
 contains
   ! User defined event handlers go here
   function delete_event (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
@@ -75,7 +75,7 @@ contains
 
 
   function expose_event (widget, my_cairo_context, gdata) result(ret)  bind(c)
-    use iso_c_binding
+    use, intrinsic :: iso_c_binding
     implicit none
     integer(c_int)    :: ret
     type(c_ptr), value, intent(in) :: widget, my_cairo_context, gdata
@@ -125,7 +125,7 @@ end module handlers
 
 
 program mandelbrot
-  use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_f_pointer
   use handlers
   implicit none
   type(c_ptr) :: my_window
@@ -188,7 +188,7 @@ end program mandelbrot
 subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
   ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
   ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use handlers
   implicit none
 

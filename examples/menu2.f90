@@ -32,7 +32,7 @@
 ! Callback functions must have an event argument.
 module handlers
 
-  use iso_c_binding, only: c_ptr, c_int
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_int
   use gtk, only: gtk_main_quit, FALSE
   implicit none
 
@@ -57,7 +57,7 @@ contains
   ! GtkAction signals:
 ! New file
   function file_new (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "You want to create a new file."
@@ -66,7 +66,7 @@ contains
   
 ! open file
   function file_open (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "You want to open a file."
@@ -75,7 +75,7 @@ contains
 
 ! help
   function help_about (widget, gdata ) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, gdata
     print *, "This is the menu2.f90 example, you can quit with CTRL+Q"
@@ -90,7 +90,7 @@ end module handlers
 !*********************************************************************************************
 program menu2
 
-  use iso_c_binding, only: c_ptr, c_funloc
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
   use gtk, only: gtk_init, gtk_window_new, gtk_window_set_default_size, &

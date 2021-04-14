@@ -26,7 +26,7 @@
 ! Last modification: vmagnin, 2019-03-12 (PLplot>=5.11)
 
 module common_ex17_gto
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk_draw_hl
   use g, only: g_timeout_add
   use gtk, only: gtk_container_add, gtk_main, gtk_main_quit, &
@@ -233,7 +233,7 @@ module handlers_ex17_gto
   use common_ex17_gto
   use gtk_hl
   use gtk_draw_hl
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use plplot_code_ex17_gto
 
   implicit none

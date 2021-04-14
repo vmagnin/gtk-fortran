@@ -40,7 +40,7 @@ module gtk_hl_misc
 
   use gtk_sup
 
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use iso_fortran_env, only: error_unit
 
   use gtk, only: gtk_bin_get_child, gtk_label_set_markup,&

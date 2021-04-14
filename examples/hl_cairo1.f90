@@ -25,7 +25,7 @@
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
 
 module handlers
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   !********************************
   ! Gtk modules for hl_cairo1.f90
@@ -60,7 +60,7 @@ module handlers
 contains
   ! User defined event handlers go here
   function delete_h (widget, event, gdata) result(ret)  bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     integer(c_int)    :: ret
     type(c_ptr), value :: widget, event, gdata
 
@@ -300,7 +300,7 @@ end module handlers
 
 
 program cairo_basics_click
-  use iso_c_binding, only: c_ptr, c_funloc
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc
   use handlers
   implicit none
   type(c_ptr) :: my_window

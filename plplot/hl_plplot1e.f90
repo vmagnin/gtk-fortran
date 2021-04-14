@@ -25,7 +25,7 @@
 ! PLplot code derived from PLplot's example 1 by Alan W. Irwin
 
 module common_ex1
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk, only: gtk_button_new, gtk_container_add, gtk_drawing_area&
        &_new, gtk_main, gtk_main_quit, &
        & gtk_widget_show, gtk_widget_show_all, gtk_window_new, gtk_init
@@ -253,7 +253,7 @@ module handlers_ex1
   use common_Ex1
   use gtk_hl
   use gtk_draw_hl
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
 
