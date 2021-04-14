@@ -48,7 +48,7 @@ module handlers
              & g_object_unref, g_menu_append_section, g_menu_append_submenu
   use iso_c_binding, only: c_null_ptr, c_null_char, c_ptr, c_int, c_char, &
                          & c_funloc, c_size_t
-  use iso_fortran_env, only: int64
+  use, intrinsic :: iso_fortran_env, only: int64
 
   implicit none
   type(c_ptr) :: app, provider

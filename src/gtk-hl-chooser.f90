@@ -43,7 +43,7 @@ module gtk_hl_chooser
 
   use gtk_sup
   use iso_c_binding
-  use iso_fortran_env, only: error_unit
+  use, intrinsic :: iso_fortran_env, only: error_unit
 
   ! Auto generated use's
   use g, only: g_list_model_get_n_items, g_list_model_get_item, &

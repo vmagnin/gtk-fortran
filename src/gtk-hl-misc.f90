@@ -34,7 +34,7 @@ module gtk_hl_misc
   use gtk_sup
 
   use iso_c_binding
-  use iso_fortran_env, only: error_unit
+  use, intrinsic :: iso_fortran_env, only: error_unit
 
   use gtk, only: gtk_label_set_markup, gtk_separator_new, &
        & GTK_ORIENTATION_HORIZONTAL, GTK_ORIENTATION_VERTICAL, &

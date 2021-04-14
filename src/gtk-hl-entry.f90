@@ -43,7 +43,7 @@ module gtk_hl_entry
 
   use gtk_sup
   use iso_c_binding
-  use iso_fortran_env, only: error_unit
+  use, intrinsic :: iso_fortran_env, only: error_unit
 
   ! auto-generated use's
   use gtk, only: gtk_scrolled_window_set_child, gtk_editable_set_editable,&

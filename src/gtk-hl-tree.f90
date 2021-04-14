@@ -44,7 +44,7 @@ module gtk_hl_tree
   use gtk_sup
   use gtk_hl_container
   use iso_c_binding
-  use iso_fortran_env, only: error_unit
+  use, intrinsic :: iso_fortran_env, only: error_unit
 
   ! Auto generated use's
   use gtk, only: gtk_cell_layout_get_cells,&

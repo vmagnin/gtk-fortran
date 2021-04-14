@@ -92,7 +92,7 @@ module gtk_draw_hl
   use gtk_sup
 
   use iso_c_binding
-  use iso_fortran_env, only: error_unit
+  use, intrinsic :: iso_fortran_env, only: error_unit
 
   implicit none
   type, bind(c) :: gtkallocation
