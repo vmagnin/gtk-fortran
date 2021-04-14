@@ -26,7 +26,7 @@
 !------------------------------------------------------------------------------
 
 module global_widgets
-  use iso_c_binding, only: c_ptr, c_char, c_int
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_char, c_int
   type(c_ptr) :: my_pixbuf, my_drawing_area, spinButton1, spinButton2, spinButton3
   type(c_ptr) :: textView, buffer, scrolled_window, statusBar, combo1
   character(kind=c_char), dimension(:), pointer :: pixel
@@ -64,7 +64,7 @@ module handlers
   & gtk_widget_set_vexpand
   
   use g, only: g_usleep, g_main_context_iteration, g_main_context_pending
-  use iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_char, C_NEW_LINE
+  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_char, C_NEW_LINE
 
   implicit none
   type(c_ptr)    :: my_window
@@ -152,7 +152,7 @@ contains
   ! GtkComboBox signal emitted when the user selects predifined c values of
   ! interesting Julia sets in the combo box:
   subroutine firstCombo (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_double, c_f_pointer
+    use, intrinsic :: iso_c_binding, only: c_double, c_f_pointer
     use gtk_sup, only: c_f_string_copy
     use global_widgets
 
@@ -224,7 +224,7 @@ contains
   ! This function is declared recursive because it will be pressed a first time
   ! to pause and a second time to end pause (from the "do while" loop):
   recursive subroutine firstToggle (widget, gdata) bind(c)
-    use iso_c_binding, only: c_long
+    use, intrinsic :: iso_c_binding, only: c_long
     use global_widgets
 
     type(c_ptr), value, intent(in) :: widget, gdata
@@ -258,7 +258,7 @@ contains
   ! We use a subroutine because it should return void.
   ! The GUI is defined here.
   subroutine activate(app, gdata) bind(c)
-    use iso_c_binding, only: c_ptr, c_funloc, c_f_pointer, c_null_funptr
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_f_pointer, c_null_funptr
     use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                       & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
     use global_widgets
@@ -408,7 +408,7 @@ end module handlers
 ! The scientific computing is done here
 !*********************************************
 subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use handlers
   use global_widgets
   implicit none
@@ -496,7 +496,7 @@ end function system_time
 !*******************************************************************************
 program julia_pixbuf
 
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
   use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE

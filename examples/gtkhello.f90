@@ -34,7 +34,7 @@
 ! the X Window system. Callback functions must have an event argument.
 module handlers
 
-  use iso_c_binding, only: c_ptr, c_int, c_funloc, c_null_char
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_int, c_funloc, c_null_char
   use gtk, only: FALSE, gtk_window_set_default_size,  &
                & gtk_window_set_title, gtk_window_destroy, &
                & g_signal_connect, g_signal_connect_swapped, &
@@ -131,7 +131,7 @@ end module handlers
 !*******************************************************************************
 program gtkhello
 
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
   use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE

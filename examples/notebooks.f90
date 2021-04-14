@@ -25,7 +25,7 @@
 ! Last modification: vmagnin 2020-05-28, 2020-12-22
 
 module widgets
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
   type(c_ptr) :: mainwindow
@@ -38,7 +38,7 @@ module widgets
 end module
 
 module handlers
-  use iso_c_binding, only: c_null_char
+  use, intrinsic :: iso_c_binding, only: c_null_char
 
   use gtk, only: gtk_window_set_title, &
   & g_signal_connect, g_signal_connect_swapped, &
@@ -76,7 +76,7 @@ contains
 
   ! next page
   subroutine next_page_book (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     type(c_ptr), value, intent(in) :: widget, gdata
 
     if (gtk_notebook_get_current_page(notebook_1) .eq. gtk_notebook_get_n_pages(notebook_1) - 1) then
@@ -88,7 +88,7 @@ contains
 
 ! prev page
   subroutine prev_page_book (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     type(c_ptr), value, intent(in) :: widget, gdata
 
     if (gtk_notebook_get_current_page(notebook_1) .eq. 0) then
@@ -100,7 +100,7 @@ contains
 
 ! Rotate the position of the tabs
   subroutine rotate_book (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     type(c_ptr), value, intent(in) :: widget, gdata
 
     call gtk_notebook_set_tab_pos (notebook_1, gtk_notebook_get_tab_pos(notebook_1)+1_c_int)
@@ -108,7 +108,7 @@ contains
 
 ! Add/Remove the page tabs and the borders
   subroutine tabsborder_book (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int) :: tval, bval
 
@@ -122,7 +122,7 @@ contains
 
 ! Remove a page from the notebook
   subroutine remove_book (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int) :: page
 
@@ -306,7 +306,7 @@ end module handlers
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program notebooks
-  use iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
   use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE

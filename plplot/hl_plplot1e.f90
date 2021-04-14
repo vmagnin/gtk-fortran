@@ -27,7 +27,7 @@
 !------------------------------------------------------------------------------
 
 module common_ex1
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk, only: gtk_widget_show, gtk_window_set_child, gtk_window_destroy
   use gtk_draw_hl
   use plplot_extra
@@ -248,7 +248,7 @@ module handlers_ex1
   use gtk_hl_container
   use gtk_hl_button
   use gtk_draw_hl
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
   integer(kind=c_int) :: run_status = TRUE
@@ -296,7 +296,7 @@ end module handlers_ex1
 
 
 program cairo_plplot_ex1
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers_ex1
   use gtk_hl_container, only: hl_gtk_application_new
   implicit none

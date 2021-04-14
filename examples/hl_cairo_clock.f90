@@ -45,7 +45,7 @@ module cl_handlers
   use gtk_draw_hl
   use gtk_hl_container
   use gdk_events
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
   integer(kind=c_int) :: height=250_c_int, width=250_c_int
@@ -315,7 +315,7 @@ contains
   end function clock_key
 
   subroutine activate(app, gdata) bind(c)
-    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
     use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
@@ -342,7 +342,7 @@ end module cl_handlers
 
 
 program cairo_clock
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use cl_handlers
   implicit none
 

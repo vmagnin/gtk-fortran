@@ -26,7 +26,7 @@
 !------------------------------------------------------------------------------
 
 module v_handlers
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   use gdk_pixbuf_hl
   use gtk_draw_hl
@@ -243,7 +243,7 @@ end module v_handlers
 
 program hl_cairo_viewer
   ! A very simple image viewer
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use v_handlers
 
   implicit none

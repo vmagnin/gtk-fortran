@@ -25,7 +25,7 @@
 ! Last modification: vmagnin 2020-05-28, 2021-01-22
 
 module handlers
-  use iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_funptr, &
+  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_funptr, &
                          & c_funloc, c_null_char, c_double, c_bool
 
   use gtk, only: gtk_application_window_new, gtk_drawing_area_new, &
@@ -166,7 +166,7 @@ end module handlers
 
 ! We create a GtkApplication:
 program cairo_basics_click
-  use iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
   use gtk, only: gtk_application_new, g_signal_connect, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers, only: activate

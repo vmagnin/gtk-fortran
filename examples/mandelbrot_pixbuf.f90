@@ -41,7 +41,7 @@ module handlers
   
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                       & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
-  use iso_c_binding, only: c_int, c_ptr, c_char, c_null_ptr, c_null_char
+  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_char, c_null_ptr, c_null_char
 
   implicit none
   type(c_ptr)    :: my_gmainloop
@@ -92,7 +92,7 @@ end module handlers
 ! We define the GUI and then call the main loop:
 !***********************************************
 program mandelbrot
-  use iso_c_binding, only: c_ptr, c_null_funptr, c_funloc, c_f_pointer
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_null_funptr, c_funloc, c_f_pointer
   use handlers
   implicit none
   type(c_ptr) :: my_window

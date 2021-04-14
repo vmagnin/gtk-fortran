@@ -85,7 +85,7 @@ contains
   end subroutine spinner2
 
   subroutine activate(app, gdata) bind(c)
-    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
     use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
@@ -138,7 +138,7 @@ end module handlers
 program sliders
   ! SLIDERS
   ! Demo of sliders & spin buttons
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers
 
   implicit none

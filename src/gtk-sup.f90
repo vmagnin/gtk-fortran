@@ -46,7 +46,7 @@ module gtk_sup
   ! GtkTextIter: Type definition.
   ! GError: Type definition.
 
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk, only:  TRUE, FALSE
   use g, only: g_type_fundamental
 

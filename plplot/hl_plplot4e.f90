@@ -27,7 +27,7 @@
 !------------------------------------------------------------------------------
 
 module common_ex4
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use cairo, only: cairo_get_target, cairo_image_surface_get_height, &
        & cairo_image_surface_get_width
   use gtk, only: gtk_window_destroy, gtk_widget_show, FALSE, &
@@ -296,7 +296,7 @@ end module handlers_ex4
 
 
 program cairo_plplot_ex4
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers_ex4
   use gtk_hl_container, only: hl_gtk_application_new
   implicit none

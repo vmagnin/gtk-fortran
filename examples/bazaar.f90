@@ -27,7 +27,7 @@
 !------------------------------------------------------------------------------
 
 module various_functions
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk_sup, only: c_f_string_copy
   implicit none
 
@@ -69,7 +69,7 @@ module various_functions
 end module various_functions
 
 module my_widgets
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
   type(c_ptr) :: window
@@ -83,7 +83,7 @@ module my_widgets
 end module
 
 module handlers
-  use iso_c_binding, only: c_null_ptr, c_null_char
+  use, intrinsic :: iso_c_binding, only: c_null_ptr, c_null_char
 
   use gtk, only: gtk_about_dialog_new, gtk_about_dialog_set_authors, &
   & gtk_about_dialog_set_comments, gtk_about_dialog_set_license, &
@@ -211,7 +211,7 @@ contains
   ! to the screen."
   ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
-    use iso_c_binding, only: c_ptr, c_int, c_char
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int, c_char
 
     implicit none
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
@@ -289,7 +289,7 @@ contains
 
   ! GtkObject signal:
   subroutine destroy (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     use gtk_sup, only: c_f_string_copy
     type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr) :: buffer
@@ -307,7 +307,7 @@ contains
 
   ! GtkButton signal:
   subroutine firstbutton (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Hello World!"
@@ -315,7 +315,7 @@ contains
 
   ! GtkButton signal:
   subroutine secondbutton (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     type(c_ptr), value, intent(in) :: widget, gdata
 
     call gtk_progress_bar_pulse (progress)
@@ -323,7 +323,7 @@ contains
 
   ! GtkButton signal:
   subroutine aboutbutton (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     type(c_ptr), value, intent(in) :: widget, gdata
 
     dialog = gtk_about_dialog_new()
@@ -355,7 +355,7 @@ end module handlers
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program bazaar
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers

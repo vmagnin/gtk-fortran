@@ -27,7 +27,7 @@
 !------------------------------------------------------------------------------
 
 module common_ex8
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   ! Gtk includes
   use gtk, only: gtk_application_window_new, &
        & gtk_label_new, gtk_window_set_child, &
@@ -265,7 +265,7 @@ contains
 
   ! Callback function for quitting the application:
   subroutine my_destroy (window, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     type(c_ptr), value, intent(in) :: window, gdata
 
     print *, "my_destroy()"
@@ -451,7 +451,7 @@ end module handlers_ex8
 
 
 program cairo_plplot_ex8
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use handlers_ex8
   implicit none
 

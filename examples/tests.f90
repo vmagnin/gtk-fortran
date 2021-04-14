@@ -40,11 +40,11 @@ module tests
   &nt_new_boolean, g_variant_new_byte, g_variant_new_double, g_variant_new_int16,&
   & g_variant_new_int32, g_variant_new_int64, g_variant_new_string, g_variant_new&
   &_uint16, g_variant_new_uint32, g_variant_new_uint64, guint64
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
 contains
   integer function test_iso_c_binding()
-    use iso_c_binding
+    use, intrinsic :: iso_c_binding
     implicit none
     integer :: errors
 
@@ -221,7 +221,7 @@ contains
     end do
   !    ! gdouble g_random_double_range (gdouble begin, gdouble end);
   !    function g_random_double_range(begin, end) bind(c) 
-  !      use iso_c_binding, only: c_double
+  !      use, intrinsic :: iso_c_binding, only: c_double
   !      real(c_double) :: g_random_double_range
   !      real(c_double), value :: begin
   !      real(c_double), value :: end
@@ -247,7 +247,7 @@ contains
     integer(c_int) :: r
   !    ! guint g_bit_storage (gulong number) G_GNUC_CONST;
   !    function g_bit_storage(number) bind(c) 
-  !      use iso_c_binding, only: c_int, c_long
+  !      use, intrinsic :: iso_c_binding, only: c_int, c_long
   !      integer(c_int) :: g_bit_storage
   !      integer(c_long), value :: number
   !    end function
@@ -274,14 +274,14 @@ contains
     integer(c_int32_t) :: c, d
   !! GVariant * g_variant_new_uint16 (guint16 uint16);
   !function g_variant_new_uint16(uint16) bind(c) 
-  !  use iso_c_binding, only: c_ptr, c_int16_t
+  !  use, intrinsic :: iso_c_binding, only: c_ptr, c_int16_t
   !  type(c_ptr) :: g_variant_new_uint16
   !  integer(c_int16_t), value :: uint16
   !end function
 
   !! guint16 g_variant_get_uint16 (GVariant *value);
   !function g_variant_get_uint16(value) bind(c) 
-  !  use iso_c_binding, only: c_int16_t, c_ptr
+  !  use, intrinsic :: iso_c_binding, only: c_int16_t, c_ptr
   !  integer(c_int16_t) :: g_variant_get_uint16
   !  type(c_ptr), value :: value
   !end function
@@ -380,7 +380,7 @@ contains
     end do
   !    ! gint32 g_random_int_range (gint32 begin, gint32 end);
   !    function g_random_int_range(begin, end) bind(c) 
-  !      use iso_c_binding, only: c_int32_t
+  !      use, intrinsic :: iso_c_binding, only: c_int32_t
   !      integer(c_int32_t) :: g_random_int_range
   !      integer(c_int32_t), value :: begin
   !      integer(c_int32_t), value :: end
@@ -506,7 +506,7 @@ contains
     end if
   !      ! gboolean g_hostname_is_ip_address (const gchar *hostname);
   !    function g_hostname_is_ip_address(hostname) bind(c) 
-  !      use iso_c_binding, only: c_bool, c_char
+  !      use, intrinsic :: iso_c_binding, only: c_bool, c_char
   !      logical(c_bool) :: g_hostname_is_ip_address
   !      character(kind=c_char), dimension(*) :: hostname
   !    end function

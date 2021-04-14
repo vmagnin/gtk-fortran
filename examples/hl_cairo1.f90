@@ -27,7 +27,7 @@
 !------------------------------------------------------------------------------
 
 module handlers
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   !********************************
   ! Gtk modules for hl_cairo1.f90
@@ -219,7 +219,7 @@ contains
   end subroutine draw_pattern
 
   subroutine activate(app, gdata) bind(c)
-    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
     use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
@@ -255,7 +255,7 @@ end module handlers
 
 
 program cairo_basics_click
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use handlers
 
   implicit none

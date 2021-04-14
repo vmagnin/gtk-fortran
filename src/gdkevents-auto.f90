@@ -6,7 +6,7 @@
 module gdk_events
   ! GDK events and related structures
   ! Automatically extracted from gdktypes.h & gdkevents.h
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
 

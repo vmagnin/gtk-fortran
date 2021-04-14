@@ -6,7 +6,7 @@
 ! GTK 4 version: vmagnin 2020-05-28
 
 module handlers
-  use iso_c_binding, only: c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_null_char, c_null_ptr
   use gtk_sup  ! Contains iter structure and gtypes definitions
   use gtk, only: gtk_cell_renderer_text_new, gtk_window_set_child, &
   & gtk_list_store_append, gtk_list_store_newv, gtk_list_store_set_value,&
@@ -132,7 +132,7 @@ end module handlers
 !*******************************************************************************
 program list_demo
 
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
   use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE

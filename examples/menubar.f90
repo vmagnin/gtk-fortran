@@ -46,7 +46,7 @@ module handlers
              & g_simple_action_new, g_menu_new, g_menu_item_new, &
              & g_action_map_add_action, g_menu_append_item, &
              & g_object_unref, g_menu_append_section, g_menu_append_submenu
-  use iso_c_binding, only: c_null_ptr, c_null_char, c_ptr, c_int, c_char, &
+  use, intrinsic :: iso_c_binding, only: c_null_ptr, c_null_char, c_ptr, c_int, c_char, &
                          & c_funloc, c_size_t
   use, intrinsic :: iso_fortran_env, only: int64
 

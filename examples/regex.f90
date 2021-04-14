@@ -31,7 +31,7 @@
 ! https://developer.gnome.org/glib/stable/glib-Perl-compatible-regular-expressions.html
 
 program glib_regex
-    use iso_c_binding
+    use, intrinsic :: iso_c_binding
     use g, only: g_regex_new, g_regex_match, g_match_info_matches, &
                & g_match_info_fetch, g_match_info_next, g_free, g_regex_unref, &
                & g_match_info_free, g_regex_replace

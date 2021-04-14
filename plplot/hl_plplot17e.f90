@@ -227,7 +227,7 @@ module handlers_ex17
   use gtk_hl_container
   use gtk_hl_button
   use gtk_draw_hl
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use plplot_code_ex17
 
   implicit none

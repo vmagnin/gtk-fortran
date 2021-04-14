@@ -32,7 +32,7 @@ module gtk_hl_infobar
   ! variadic, and setting the message involves several levels of indirection.
   !/
 
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   use gtk_sup
   use g, only: g_object_set_data, g_object_get_data
   use gtk, only: gtk_info_bar_add_child, gtk_info_bar_add_button, &

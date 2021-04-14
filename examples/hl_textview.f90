@@ -27,7 +27,7 @@
 !------------------------------------------------------------------------------
 
 module handlers
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 !  use gtk_hl
   use gtk_hl_container
   use gtk_hl_button
@@ -178,7 +178,7 @@ contains
   end subroutine entry_text
 
   subroutine activate(app, gdata) bind(c)
-    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
     use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
@@ -236,7 +236,7 @@ end module handlers
 program ztext
   ! ZTEXT
   ! Simple multiline text box example
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers
 
   implicit none

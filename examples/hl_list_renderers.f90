@@ -257,7 +257,7 @@ contains
 
 
   subroutine activate(app, gdata) bind(c)
-    use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
     use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
@@ -375,7 +375,7 @@ end module ln_handlers
 program list_rend
   ! LIST_REND
   ! Demo of multi column list, with renderers
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use ln_handlers
 
   implicit none

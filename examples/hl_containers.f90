@@ -26,7 +26,7 @@
 !------------------------------------------------------------------------------
 
 module handlers
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 !  use gth_hl
   use gtk_hl_container
   use gtk_hl_button
@@ -112,7 +112,7 @@ end module handlers
 program containers
   ! Containers
   ! Test/demo of tables & notebooks.
-  use iso_c_binding, only: c_ptr, c_funloc, c_null_char
+  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use handlers
 
   implicit none

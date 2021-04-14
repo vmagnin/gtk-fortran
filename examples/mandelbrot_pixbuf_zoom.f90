@@ -49,7 +49,7 @@ module handlers
   use g, only: g_main_context_iteration, &
              & g_main_context_pending, &
              & g_application_run, g_object_unref
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
   integer(c_int) :: run_status = TRUE
@@ -413,7 +413,7 @@ end module handlers
 
 ! We create a GtkApplication:
 program mandelbrot_pixbuf_zoom
-  use iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
   use gtk, only: gtk_application_new, g_signal_connect, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers, only: activate

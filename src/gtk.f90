@@ -27,7 +27,7 @@
 ! This module is needed for every gtk-fortran application. The gtkenums-auto.f90
 ! and gtk-auto.f90 are automatically included.
 module gtk
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
   implicit none
   public :: FALSE, TRUE, gtk_init, function_g_signal_connect, &
             & g_signal_connect, function_g_signal_connect_swapped, &

@@ -27,7 +27,7 @@
 
 module widgets
   ! declares the used GTK widgets
-  use iso_c_binding
+  use, intrinsic :: iso_c_binding
 
   implicit none
   type(c_ptr) :: window
@@ -109,7 +109,7 @@ module connect
 ! In GTK 4, gtk_builder_connect_signals_full() is gone. We have not yet found a solution
 ! to replace it.
   subroutine count_connections (builder, object, signal_name, handler_name, connect_object, flags, user_data) bind(c)
-    use iso_c_binding, only: c_ptr, c_char, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_char, c_int
     type(c_ptr), value                     :: builder        !a GtkBuilder
     type(c_ptr), value                     :: object         !object to connect a signal to
     character(kind=c_char), dimension(*)   :: signal_name    !name of the signal
@@ -122,7 +122,7 @@ module connect
   end subroutine count_connections
 
   subroutine get_connections (builder, object, signal_name, handler_name, connect_object, flags, user_data) bind(c)
-    use iso_c_binding, only: c_ptr, c_char, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_char, c_int
     type(c_ptr), value                     :: builder        !a GtkBuilder
     type(c_ptr), value                     :: object         !object to connect a signal to
     character(kind=c_char), dimension(*)   :: signal_name    !name of the signal
@@ -162,7 +162,7 @@ module handlers
 contains
 
   subroutine destroy (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: destroy
     type(c_ptr), value :: widget, gdata
     logical::lopened
@@ -180,7 +180,7 @@ contains
 
 
   subroutine create_subdir_toggled (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: create_subdir_toggled
     type(c_ptr), value :: widget, gdata
     create_subdir=c_f_logical(gtk_check_button_get_active(create_subdir_button))
@@ -189,7 +189,7 @@ contains
 
 
   subroutine create_handlerfiles_toggled (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: create_handlerfiles_toggled
     type(c_ptr), value :: widget, gdata
     create_handlerfiles=c_f_logical(gtk_check_button_get_active(create_handlerfiles_button))
@@ -198,7 +198,7 @@ contains
 
 
   subroutine overwrite_handlerfiles_toggled (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: overwrite_handlerfiles_toggled
     type(c_ptr), value :: widget, gdata
     overwrite_handlerfiles=c_f_logical(gtk_check_button_get_active(overwrite_handlerfiles_button))
@@ -207,7 +207,7 @@ contains
 
 
   subroutine widget_symbols_toggled (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: widget_symbols_toggled
     type(c_ptr), value :: widget, gdata
     widget_symbols=c_f_logical(gtk_check_button_get_active(widget_symbols_button))
@@ -216,7 +216,7 @@ contains
 
 
   subroutine update_used_functions_toggled (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: update_used_functions_toggled
     type(c_ptr), value :: widget, gdata
     update_used_functions=c_f_logical(gtk_check_button_get_active(update_used_functions_button))
@@ -225,7 +225,7 @@ contains
 
 
   subroutine use_hl_gtk_toggled (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: use_hl_gtk_toggled
     type(c_ptr), value :: widget, gdata
     use_hl_gtk=c_f_logical(gtk_check_button_get_active(use_hl_gtk_button))
@@ -234,7 +234,7 @@ contains
 
 
   subroutine include_files_toggled (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: include_files_toggled
     type(c_ptr), value :: widget, gdata
     include_files=c_f_logical(gtk_check_button_get_active(include_files_button))
@@ -243,7 +243,7 @@ contains
 
 
   subroutine widgetshandlers_toggled (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: widgetshandlers_toggled
     type(c_ptr), value :: widget, gdata
     widgetshandlers=c_f_logical(gtk_check_button_get_active(widgetshandlers_button))
@@ -252,7 +252,7 @@ contains
 
 
   subroutine file_open (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     use gtk_sup, only: is_UNIX_OS
     !GCC$ ATTRIBUTES DLLEXPORT :: file_open
     type(c_ptr), value :: widget, gdata
@@ -384,7 +384,7 @@ contains
 
 
   subroutine write_files (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: write_files
     type(c_ptr), value :: widget, gdata
     integer(kind=c_int) :: valid
@@ -488,7 +488,7 @@ contains
       write(wunit,'(A)')""
       write(wunit,'(A)')"module widgets"
       write(wunit,'(A)')"! declares the used GTK widgets"
-      write(wunit,'(A)')"  use iso_c_binding"
+      write(wunit,'(A)')"  use, intrinsic :: iso_c_binding"
       write(wunit,'(A)')"  implicit none"
       write(wunit,'(A)')""
       if (widget_symbols) then
@@ -614,7 +614,7 @@ contains
           if (index(connections(i)%signal_name,"event").gt.0) then
             write(hunit,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
               " (widget, event, gdata) result(ret) bind(c)"
-            write(hunit,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
+            write(hunit,'(A)')"    use, intrinsic :: iso_c_binding, only: c_ptr, c_int"
             write(hunit,'(A)')"    !GCC$ ATTRIBUTES DLLEXPORT :: "//&
               connections(i)%handler_name(1:len_trim(connections(i)%handler_name))
             write(hunit,'(A)')"    integer(c_int)     :: ret"
@@ -622,7 +622,7 @@ contains
           else
             write(hunit,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
               " (widget, gdata) result(ret) bind(c)"
-            write(hunit,'(A)')"    use iso_c_binding, only: c_ptr, c_int"
+            write(hunit,'(A)')"    use, intrinsic :: iso_c_binding, only: c_ptr, c_int"
             write(hunit,'(A)')"    !GCC$ ATTRIBUTES DLLEXPORT :: "//&
               connections(i)%handler_name(1:len_trim(connections(i)%handler_name))
             write(hunit,'(A)')"    integer(c_int)     :: ret"
@@ -731,7 +731,7 @@ contains
 
 
   subroutine save_default_options (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: save_default_options
     type(c_ptr), value :: widget, gdata
     character(len=20)::defaultsfile="default.options"
@@ -758,7 +758,7 @@ contains
 
 
   subroutine default_options (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     use gtk_sup, only: is_UNIX_OS
     !GCC$ ATTRIBUTES DLLEXPORT :: default_options
     type(c_ptr), value :: widget, gdata
@@ -785,7 +785,7 @@ contains
 
 
   subroutine show_about_dialog (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: show_about_dialog
     type(c_ptr), value :: widget, gdata
 

@@ -26,7 +26,7 @@
 
 module widgets
   ! declares the used GTK widgets
-  use iso_c_binding, only: c_null_char, c_null_ptr, c_ptr, c_int
+  use, intrinsic :: iso_c_binding, only: c_null_char, c_null_ptr, c_ptr, c_int
 
   implicit none
   type(c_ptr) :: window
@@ -51,7 +51,7 @@ contains
 
   ! "destroy" is a GtkObject signal
   subroutine destroy (widget, gdata) bind(c)
-    use iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_ptr
     !GCC$ ATTRIBUTES DLLEXPORT :: destroy
     type(c_ptr), value, intent(in) :: widget, gdata
 
@@ -61,7 +61,7 @@ contains
 
   ! "clicked" is a GtkButton signal
   subroutine hello (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: hello
     type(c_ptr), value, intent(in) :: widget, gdata
 
@@ -69,7 +69,7 @@ contains
   end subroutine hello
 
   subroutine button1clicked (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: button1clicked
     type(c_ptr), value, intent(in) :: widget, gdata
 
@@ -77,7 +77,7 @@ contains
   end subroutine button1clicked
 
   subroutine button2clicked (widget, gdata ) bind(c)
-    use iso_c_binding, only: c_ptr, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: button2clicked
     type(c_ptr), value, intent(in) :: widget, gdata
 
