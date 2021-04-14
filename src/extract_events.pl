@@ -95,7 +95,7 @@ print FGDKE "! GNU General Public License version 3\n\n";
 print FGDKE "module gdk_events\n";
 print FGDKE "  ! GDK events and related structures\n";
 print FGDKE "  ! Automatically extracted from gdktypes.h & gdkevents.h\n";
-print FGDKE "  use iso_c_binding\n\n";
+print FGDKE "  use, intrinsic :: iso_c_binding\n\n";
 print FGDKE "  implicit none\n\n";
 
 foreach $hfile ($gdktypes, $gdkevents) {
