@@ -10,8 +10,8 @@ includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@/${libname}
 
 # Keywords:
 Name: gtk-fortran
-Description: A GTK / Fortran 2003 binding
-URL: https://github.com/vmagnin/gtk-fortran
+Description: A GTK / Fortran binding
+URL: https://github.com/vmagnin/gtk-fortran/wiki
 Version: @version@
 Requires: @gtkname@
 Cflags: @linkerflags@ -I${includedir}
