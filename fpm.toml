@@ -1,9 +1,0 @@
-name = "gtk-3-fortran"
-version = "3"
-license = "GPLv3"
-author = "The gtk-fortran team"
-maintainer = "https://github.com/vmagnin/gtk-fortran/issues"
-copyright = "2011-2021 The gtk-fortran team"
-
-[library]
-build-script="src/build.sh"
