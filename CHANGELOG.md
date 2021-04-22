@@ -11,9 +11,6 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - src/gtk.f90: historically, in gtk-fortran g\_signal\_connect() was declared as a subroutine, because the handler\_id returned by the GLib function is usually never used. Here we define both a g\_signal\_connect() function and a subroutine. You will generally use the subroutine in your programs. The function\_g\_signal\_connect\_swapped and g\_signal\_connect\_swapped procedure were also added.
 - examples/menubar.f90: a new menu example based on GMenu and GAction.
 
-### Removed
-- meson.build files were removed. They will be put apart in a development branch.
-
 ### Changed
 - examples/gtkzero_gapp.f90 is now working.
 - examples/gtkhello.f90: new version using GtkApplication.
