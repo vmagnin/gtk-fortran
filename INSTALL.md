@@ -59,8 +59,7 @@ Use MSYS2-MINGW64 and use same commands as under Linux, except:
 Dependencies
 ------------
 
-- A Fortran compiler with the ISO_C_BINDING module, i.e. compliant with 
-the Fortran 2003 standard, for example gfortran.
+- A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran.
 - GTK and the associated development files. For 2.xx use the "gtk2"
   git branch, for 3.x use the "gtk3" branch.
 - CMake >= 3.4 or better and pkg-config.

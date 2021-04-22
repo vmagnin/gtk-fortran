@@ -37,7 +37,7 @@ cmake_minimum_required(VERSION 3.4)
 
 project(gtk-fortran Fortran)
 
-set(CMAKE_PROJECT_DESCRIPTION "A partial GTK / Fortran 2003 binding")
+set(CMAKE_PROJECT_DESCRIPTION "A GTK / Fortran binding")
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/vmagnin/gtk-fortran/")
 
 #===============================================================================
