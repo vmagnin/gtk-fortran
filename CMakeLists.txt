@@ -55,8 +55,8 @@ else()
 endif()
 
 set(CMAKE_PROJECT_VERSION_MAJOR ${GTKv})
-set(CMAKE_PROJECT_VERSION_MINOR 0)
-set(CMAKE_PROJECT_VERSION_PATCH 0)
+set(CMAKE_PROJECT_VERSION_MINOR 24)
+set(CMAKE_PROJECT_VERSION_PATCH 28)
 
 #===============================================================================
 # Define GNU standard installation directories:
