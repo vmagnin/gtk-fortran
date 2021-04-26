@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2021-01-29
+#   vmagnin: 2021-04-26
 #
 # CMAKE build file for GtkFortran
 
@@ -87,8 +87,7 @@ target_link_libraries(gtk-fortran_shared ${GTK_LIBRARIES})
 
 set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES 
   OUTPUT_NAME ${gtk_V_fortran}
-  VERSION "0.1"
-  SOVERSION "0.1")
+  VERSION "3.24.28")
 
 set_target_properties(gtk-fortran_object PROPERTIES
   Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
