@@ -37,7 +37,7 @@
   "issueTracker": "https://github.com/vmagnin/gtk-fortran/issues",
   "copyrightYear": "2011",
   "dateCreated": "2011-01-10",
-  "dateModified": "2021-04-14",
+  "dateModified": "2021-04-28",
   "developmentStatus": "Active",
   "description": "The gtk-fortran project aims to offer scientists programming in Fortran a cross-platform library to build Graphical User Interfaces (GUI). Gtk-fortran is a partial GTK / Fortran binding 100% written in Fortran, thanks to the ISO_C_BINDING module for interoperability between C and Fortran, which is a part of the Fortran 2003 standard.",
   "isAccessibleForFree": true,
