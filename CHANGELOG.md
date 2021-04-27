@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [gtk-fortran 4.0] 2021-04-23
+## [gtk-fortran 4.0] 2021-04-28
 - The gtk-4-fortran library has been generated from GTK 4.2.0 and GLib 2.68.1 under Fedora 34. 
 - Starting from this 4.0 release, the project will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - All the improvements included in the simultaneously released gtk-fortran 3.24.28 (gtk3 branch) are also in the gtk4 branch.
@@ -29,7 +29,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - meson.build experimental files were removed. They are now apart in the gtk4-dev-meson branch.
 
 
-## [gtk-fortran 3.24.28] - 2021-04-23
+## [gtk-fortran 3.24.28] - 2021-04-28
 
 ### Added
 - examples/regex.f90: a new example demonstrating GLib regular expressions functions.
