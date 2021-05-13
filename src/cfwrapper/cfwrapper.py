@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2021-01-26 (tested with Python 3.9.1, Fedora 33)
+# Last modification: 2021-05-13 (tested with Python 3.9.4, Fedora 34)
 # pylint *.py : 8.40/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
@@ -58,15 +58,18 @@ PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files",
 PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3, 4],
                      metavar="2|3|4", nargs=1, required=True,
                      help="GTK major version")
+PARSARG.add_argument("-v", "--version", action="store", nargs=1, required=True,
+                     help="gtk-fortran semantic versioning")
 PARSARG.add_argument("-b", "--build", action="store_true",
                      help="Build gtk-fortran libraries and examples")
 PARSARG.add_argument("-d", "--deprecated", action="store_true",
                      help="Remove deprecated functions")
 ARGS = PARSARG.parse_args()
 GTK_VERSION = "gtk" + str(ARGS.gtk[0])
+GTK_FORTRAN_VERSION = ARGS.version[0]
 
 # An instance of the Version class:
-my_versions = Version(GTK_VERSION)
+my_versions = Version(GTK_VERSION, GTK_FORTRAN_VERSION)
 
 # Define libraries paths and corresponding *-auto.f90 files.
 # Do not change the order of the dictionary keys:
