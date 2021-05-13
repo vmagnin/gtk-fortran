@@ -23,7 +23,7 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin 05/11/2011, vmagnin 2020-02-11
+# Contributed by James Tappin 05/11/2011, vmagnin 2021-05-13
 
 # Extracts the structure definitions for Gdk events from the gdk 
 # header files.
@@ -32,12 +32,15 @@ use strict ;
 use warnings ;
 use IO::File ;
 
-# Major version of GTK for the current branch (from VERSIONS file):
+# Getting major version of GTK for the current branch (from VERSIONS file):
 my $versions_file = IO::File->new('../VERSIONS', '<') ;
 my @lines = $versions_file->getlines ;
-my @match = grep { /^gtk-fortran;([0-9.]+)/m } @lines ;
-my ($name, $gdkvers) = split /;/, $match[0] ;
+my @match = grep { /^gtk-fortran;([0-9]+)/m } @lines ;
+my ($name, $semantic) = split /;/, $match[0] ;
+my ($major, $minor, $patch) = split /\./, $semantic ;
+my $gdkvers = "$major" ;
 $gdkvers =~ s/\R// ;
+
 print "Extracting GDK events for gtk-".$gdkvers."-fortran\n" ;
 
 my $gdktypes="/usr/include/gtk-".$gdkvers.".0/gdk/gdktypes.h";
