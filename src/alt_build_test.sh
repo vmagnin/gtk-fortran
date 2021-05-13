@@ -3,7 +3,7 @@
 # and finally launching one by one the examples for testing.
 # GNU GPL v3
 # Contributed by Vincent MAGNIN
-# 2011-04-08, last updated 2021-01-08
+# 2011-04-08, last updated 2021-05-13
 
 # For a safer script:
 set -eu
@@ -15,7 +15,7 @@ set -eu
 : ${GFC="gfortran"}
 
 # Major version of GTK for the current branch (from VERSIONS file):
-readonly GTKv=$(sed -n -E 's/gtk-fortran;([0-9\.]+)\r$/\1/p' ../VERSIONS)
+readonly GTKv=$(sed -n -E 's/gtk-fortran;([0-9]+).*\r$/\1/p' ../VERSIONS)
 echo "Building gtk-${GTKv}-fortran"
 
 # Compiler and linker options:
