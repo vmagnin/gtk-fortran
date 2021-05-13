@@ -23,7 +23,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018, 
-# vmagnin 2020-04-30
+# vmagnin 2021-05-13
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -38,15 +38,19 @@ cmake_minimum_required(VERSION 3.4)
 project(gtk-fortran Fortran)
 
 set(CMAKE_PROJECT_DESCRIPTION "A GTK / Fortran binding")
-set(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/vmagnin/gtk-fortran/")
+set(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/vmagnin/gtk-fortran/wiki/")
 
 #===============================================================================
 # Major version of GTK for the current branch (from VERSIONS file):
 #===============================================================================
 file(STRINGS VERSIONS OneLine REGEX "gtk-fortran;(.*)")
-string(REGEX REPLACE "gtk-fortran;" "" GTKv ${OneLine})
+string(REGEX REPLACE "gtk-fortran;" "" SEMANTIC_VERSION ${OneLine})
+string(REGEX MATCH "[0-9]+" GTKv ${SEMANTIC_VERSION})
+string(REGEX REPLACE "[0-9]+\.([0-9]+)\.[0-9]+" "\\1" MINOR_VERSION ${SEMANTIC_VERSION})
+string(REGEX REPLACE "[0-9]+\.[0-9]+\.([0-9]+)" "\\1" PATCH_VERSION ${SEMANTIC_VERSION})
+
 set(gtk_V_fortran "gtk-${GTKv}-fortran")
-message(STATUS "Building ${gtk_V_fortran}")
+message(STATUS "Building ${gtk_V_fortran} ${SEMANTIC_VERSION}")
 
 if (${GTKv} LESS_EQUAL 3)
     set(GTKname "gtk+-${GTKv}.0")
@@ -55,8 +59,8 @@ else()
 endif()
 
 set(CMAKE_PROJECT_VERSION_MAJOR ${GTKv})
-set(CMAKE_PROJECT_VERSION_MINOR 0)
-set(CMAKE_PROJECT_VERSION_PATCH 0)
+set(CMAKE_PROJECT_VERSION_MINOR ${MINOR_VERSION})
+set(CMAKE_PROJECT_VERSION_PATCH ${PATCH_VERSION})
 
 #===============================================================================
 # Define GNU standard installation directories:
