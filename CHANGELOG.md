@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Development version]
+
+### Added
+- The cfwrapper has a new required parameter `-v` to set the gtk-fortran semantic version (major.minor.patch). It is written in the `VERSIONS` file (used by CMake, `src/extract_events.pl`, `src/alt_build_test.sh`) and `codemeta.json`. Backported to the gtk3 branch.
+ 
+
 ## [gtk-fortran 4.0] 2021-04-28
 - The gtk-4-fortran library has been generated from GTK 4.2.0 and GLib 2.68.1 under Fedora 34. 
 - Starting from this 4.0 release, the project will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
