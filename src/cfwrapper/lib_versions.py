@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2011-01-28
-# Last modification: 2020-01-08
+# Last modification: 2021-05-13
 
 import os
 import re           # Regular expression library
@@ -42,7 +42,7 @@ class Version():
     and programs used in gkt-fortran.
     """
     
-    def __init__(self, GTK_VERSION):
+    def __init__(self, GTK_VERSION, GTK_FORTRAN_VERSION):
         # Packages in Ubuntu, Arch/Manjaro, Fedora, Mageia (you can add the 
         # names in you distro and the command in the function find_library):
         pack_gtk4 = (("libgtk-4-0", "deb"), ("gtk4", "pacman"),
@@ -61,7 +61,7 @@ class Version():
         elif GTK_VERSION == "gtk2":
             self.gtk = self.library(pack_gtk2)
 
-        self.gtk_fortran = GTK_VERSION.replace("gtk", "")
+        self.gtk_fortran = GTK_FORTRAN_VERSION
         self.glib = self.library(pack_glib)
         self.distro_version = subprocess.getoutput("lsb_release -rs")
         self.distro_name = subprocess.getoutput("lsb_release -is")
@@ -115,11 +115,11 @@ class Version():
 
 
     def string(self):
-        """Returns a string containing the GTK, GLib and distribution versions used to
-        generate gtk-fortran, for example :
-        GTK 4.0.0, GLib 2.67.1, Fedora 34 x86_64
+        """Returns a string containing the gtk-fortran semantic version and GTK, GLib
+           and distribution versions used to generate the library, for example :
+           gtk-fortran 4.0.0, GTK 4.0.0, GLib 2.67.1, Fedora 34 x86_64
         """
-        return ("GTK " + self.gtk + ", GLib "+ self.glib
+        return ("gtk-fortran " + self.gtk_fortran + ", GTK " + self.gtk + ", GLib "+ self.glib
                 + ", " + self.distro_name + " " + self.distro_version + " " + platform.machine())
 
 
@@ -145,5 +145,6 @@ class Version():
             json_file.seek(0)
             json_file.truncate()
             content = re.sub('"dateModified": "(.*)"', '"dateModified": "'+datetime.date.today().isoformat()+'"', content)
+            content = re.sub('"version": "(.*)"', '"version": "'+self.gtk_fortran+'"', content)
             json_file.write(content)
 
