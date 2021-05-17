@@ -2,7 +2,7 @@
 # Show libraries and tools versions used in gtk-fortran
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13
-# Updated 2020-04-30
+# Updated 2021-05-17
 # Needs: in Fedora, lsb_release is in the package redhat-lsb-core 
 
 # The shell -e option is not used in this script to avoid exiting each time a
@@ -24,9 +24,10 @@ echo "=========="
 echo "LIBRARIES:"
 echo "=========="
 
-# Default package names:
+# Default package names (Debian/Ubuntu):
 readonly LIB_GTK2="libgtk2.0-dev"
 readonly LIB_GTK3="libgtk-3-dev"
+readonly LIB_GTK4="libgtk-4-dev"
 readonly LIB_GLIB="libglib2.0-dev"
 readonly LIB_PLPLOT="libplplot-dev"
 
@@ -59,6 +60,7 @@ elif echo "${RELEASE}" | grep -q openSUSE ; then
 else
     dpkg-query --show ${LIB_GTK2}
     dpkg-query --show ${LIB_GTK3}
+    dpkg-query --show ${LIB_GTK4}
     dpkg-query --show ${LIB_GLIB}
     dpkg-query --show ${LIB_PLPLOT}
 fi
