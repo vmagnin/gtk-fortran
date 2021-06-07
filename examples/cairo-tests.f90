@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! GTK 4 version: vmagnin 2020-05-19
-! Last modification: vmagnin 2020-05-28, 2021-01-22
+! Last modification: vmagnin 2020-05-28, 2021-06-07
 !------------------------------------------------------------------------------
 
 module handlers
@@ -165,92 +165,79 @@ contains
     write_png = .true.
 
     call gtk_window_set_child(my_window, my_drawing_area)
-    
+
     call gtk_widget_show(my_window)
   end subroutine activate
-end module handlers
 
-!*********************************************
-! A tribute to Benoit MANDELBROT (1924-2010)
-! http://en.wikipedia.org/wiki/Mandelbrot_set
-!*********************************************
-subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
-  ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
-  ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
-  use handlers
+  !*********************************************
+  ! A tribute to Benoit MANDELBROT (1924-2010)
+  ! http://en.wikipedia.org/wiki/Mandelbrot_set
+  !*********************************************
+  subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
+    ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
+    ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
 
-  implicit none
-  type(c_ptr) :: my_drawing_area
-  integer(4) :: i, j, k, p, itermax
-  real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-  complex(8) :: c, z
-  real(8)    :: scx, scy             ! scales
-  integer(1) :: red, green, blue     ! rgb color
-  real(8) :: system_time, t0, t1
+    type(c_ptr) :: my_drawing_area
+    integer(4) :: i, j, k, p, itermax
+    real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+    complex(8) :: c, z
+    real(8)    :: scx, scy             ! scales
+    integer(1) :: red, green, blue     ! rgb color
+    real(8) :: t0, t1
 
-  print *, "Entering Mandelbrot_set() subroutine"
+    print *, "Entering Mandelbrot_set() subroutine"
 
-  t0 = system_time()
-  scx = (xmax-xmin) / pwidth   ! x scale
-  scy = (ymax-ymin) / pheight  ! y scale
+    call cpu_time(t0)
+    scx = (xmax-xmin) / pwidth   ! x scale
+    scy = (ymax-ymin) / pheight  ! y scale
 
-  do i=0, pwidth-1
-    ! We provoke an expose_event:
-    !if (mod(i,10)==0) then
-    if (mod(i,1_c_int)==0) then
-      call gtk_widget_queue_draw(my_drawing_area)
-    end if
-
-    x = xmin + scx * i
-    do j=0, pheight-1
-      y = ymin + scy * j
-      c = x + y*(0d0,1d0)   ! Starting point
-      z = (0d0, 0d0)        ! z0
-      k = 1
-      do while ((k <= itermax) .and. (abs(z)<2d0))
-        z = z*z+c
-        k = k+1
-      end do
-
-      if (k>itermax) then
-        ! Black pixel:
-        red   = 0
-        green = 0
-        blue  = 0
-      else
-        red   = int(min(255, k*2),  KIND=1)
-        green = int(min(255, k*5),  KIND=1)
-        blue  = int(min(255, k*10), KIND=1)
+    do i=0, pwidth-1
+      ! We provoke an expose_event:
+      !if (mod(i,10)==0) then
+      if (mod(i,1_c_int)==0) then
+        call gtk_widget_queue_draw(my_drawing_area)
       end if
 
-      p = i * nch + j * rowstride + 1
-      pixel(p)=char(red)
-      pixel(p+1)=char(green)
-      pixel(p+2)=char(blue)
-      pixel(p+3)=char(255)  ! Opacity (alpha channel)
+      x = xmin + scx * i
+      do j=0, pheight-1
+        y = ymin + scy * j
+        c = x + y*(0d0,1d0)   ! Starting point
+        z = (0d0, 0d0)        ! z0
+        k = 1
+        do while ((k <= itermax) .and. (abs(z)<2d0))
+          z = z*z+c
+          k = k+1
+        end do
 
-      ! This subrountine processes gtk events as needed during the computation.
-      call pending_events()
-      if (run_status == FALSE) return ! Exit if we had a delete event.
+        if (k>itermax) then
+          ! Black pixel:
+          red   = 0
+          green = 0
+          blue  = 0
+        else
+          red   = int(min(255, k*2),  KIND=1)
+          green = int(min(255, k*5),  KIND=1)
+          blue  = int(min(255, k*10), KIND=1)
+        end if
+
+        p = i * nch + j * rowstride + 1
+        pixel(p)=char(red)
+        pixel(p+1)=char(green)
+        pixel(p+2)=char(blue)
+        pixel(p+3)=char(255)  ! Opacity (alpha channel)
+
+        ! This subrountine processes gtk events as needed during the computation.
+        call pending_events()
+        if (run_status == FALSE) return ! Exit if we had a delete event.
+      end do
     end do
-  end do
 
-  call gtk_widget_queue_draw(my_drawing_area)
+    call gtk_widget_queue_draw(my_drawing_area)
 
-  t1=system_time()
-  print *, "System time = ", t1-t0
-end subroutine mandelbrot_set
-
-!***********************************************************
-!  system time since 00:00
-!***********************************************************
-real(8) function system_time()   
-  implicit none
-  integer, dimension(8) :: dt
-
-  call date_and_time(values=dt)
-  system_time=dt(5)*3600d0+dt(6)*60d0+dt(7)+dt(8)*0.001d0
-end function system_time
+    call cpu_time(t1)
+    print '(A, F6.2, A)', "System time = ", t1-t0, " s"
+  end subroutine mandelbrot_set
+end module handlers
 
 !***********************************************************
 ! We create a GtkApplication:
@@ -272,4 +259,3 @@ program cairo_tests
   exit_status = g_application_run(app, 0_c_int, c_null_ptr)
   call g_object_unref(app)
 end program cairo_tests
-
