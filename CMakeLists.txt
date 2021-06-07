@@ -23,7 +23,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018, 
-# vmagnin 2021-05-13
+# vmagnin 2021-06-07
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -92,7 +92,7 @@ if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
 elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
     # ifort compiler:    set(GTKname "gtk+-${GTKv}.0")
     set(CMAKE_Fortran_FLAGS_DEBUG "-g -warn all")
-    set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -mtune=native -march=native")
+    set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
 # >>> You can add here other elseif() for other specific compilers...
 else()
     # Standard flags for all the other compilers:
