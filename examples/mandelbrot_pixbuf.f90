@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2020-05-28
+! Last modification: vmagnin 2021-06-07
 
 module handlers
   use gtk, only: gtk_window_set_child, gtk_drawing_area_new, &
@@ -88,12 +88,99 @@ contains
 
 end module handlers
 
+
+module scientific_computation
+  implicit none
+
+contains
+  !*********************************************
+  ! A tribute to Benoit MANDELBROT (1924-2010)
+  ! http://en.wikipedia.org/wiki/Mandelbrot_set
+  !*********************************************
+  subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
+    ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
+    ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
+    use handlers
+
+    type(c_ptr) :: my_drawing_area
+    integer(4)  :: i, j, k, p, itermax
+    real(8)     :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+    complex(8)  :: c, z
+    real(8)     :: scx, scy             ! scales
+    integer(1)  :: red, green, blue     ! rgb color
+    real(8)     :: t0, t1
+
+    computing = .true.
+    call cpu_time(t0)
+    scx = (xmax-xmin) / width   ! x scale
+    scy = (ymax-ymin) / height  ! y scale
+
+    do i=0, width-1
+      ! **************************************************************************
+      ! Needed if you want to display progressively the result during computation.
+      ! We provoke a draw event only once in a while to avoid degrading
+      ! the performances:
+      ! **************************************************************************
+      if (mod(i, 10_c_int) == 0) then
+        call gtk_widget_queue_draw(my_drawing_area)
+      end if
+
+      x = xmin + scx * i
+      do j=0, height-1
+        y = ymin + scy * j
+        c = x + y*(0d0,1d0)   ! Starting point
+        z = (0d0, 0d0)        ! z0
+        k = 1
+        do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2) < 4d0)) 
+          z = z*z + c
+          k = k + 1
+        end do
+
+        if (k > itermax) then
+          ! Black pixel:
+          red   = 0
+          green = 0
+          blue  = 0
+        else
+          ! Colour palette:
+          red   = int(min(255, k*2),  KIND=1)
+          green = int(min(255, k*5),  KIND=1)
+          blue  = int(min(255, k*10), KIND=1)
+        end if
+
+        ! We write in the pixbuffer, using char() because we need unsigned integers:
+        p = i * nch + j * rowstride + 1
+        pixel(p)   = char(red)
+        pixel(p+1) = char(green)
+        pixel(p+2) = char(blue)
+
+      end do
+      ! **************************************************************************
+      ! You need to manage the GTK events during computation:
+      ! **************************************************************************
+      call pending_events()
+      if (run_status == FALSE) return ! Exit if we had a destroy signal.
+    end do
+
+    ! Final update of the display:
+    call gtk_widget_queue_draw(my_drawing_area)
+
+    call cpu_time(t1)
+    print '(A, F6.2, A)', "CPU time = ", t1-t0, " s"
+
+    computing = .false.
+  end subroutine mandelbrot_set
+end module scientific_computation
+
+
 !***********************************************
 ! We define the GUI and then call the main loop:
 !***********************************************
 program mandelbrot
   use, intrinsic :: iso_c_binding, only: c_ptr, c_null_funptr, c_funloc, c_f_pointer
   use handlers
+  use scientific_computation
+
   implicit none
   type(c_ptr) :: my_window
   type(c_ptr) :: my_drawing_area
@@ -149,94 +236,3 @@ program mandelbrot
 
   print *, "All done"
 end program mandelbrot 
-
-!*********************************************
-! A tribute to Benoit MANDELBROT (1924-2010)
-! http://en.wikipedia.org/wiki/Mandelbrot_set
-!*********************************************
-subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
-  ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
-  ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
-  use handlers
-  implicit none
-
-  type(c_ptr) :: my_drawing_area
-  integer(4)  :: i, j, k, p, itermax
-  real(8)     :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-  complex(8)  :: c, z
-  real(8)     :: scx, scy             ! scales
-  integer(1)  :: red, green, blue     ! rgb color
-  real(8)     :: system_time, t0, t1
-
-  computing = .true.
-  t0  = system_time()
-  scx = (xmax-xmin) / width   ! x scale
-  scy = (ymax-ymin) / height  ! y scale
-
-  do i=0, width-1
-    ! **************************************************************************
-    ! Needed if you want to display progressively the result during computation.
-    ! We provoke a draw event only once in a while to avoid degrading
-    ! the performances:
-    ! **************************************************************************
-    if (mod(i, 10_c_int) == 0) then
-      call gtk_widget_queue_draw(my_drawing_area)
-    end if
-
-    x = xmin + scx * i
-    do j=0, height-1
-      y = ymin + scy * j
-      c = x + y*(0d0,1d0)   ! Starting point
-      z = (0d0, 0d0)        ! z0
-      k = 1
-      do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2) < 4d0)) 
-        z = z*z + c
-        k = k + 1
-      end do
-
-      if (k > itermax) then
-        ! Black pixel:
-        red   = 0
-        green = 0
-        blue  = 0
-      else
-        ! Colour palette:
-        red   = int(min(255, k*2),  KIND=1)
-        green = int(min(255, k*5),  KIND=1)
-        blue  = int(min(255, k*10), KIND=1)
-      end if
-
-      ! We write in the pixbuffer, using char() because we need unsigned integers:
-      p = i * nch + j * rowstride + 1
-      pixel(p)   = char(red)
-      pixel(p+1) = char(green)
-      pixel(p+2) = char(blue)
-
-    end do
-    ! **************************************************************************
-    ! You need to manage the GTK events during computation:
-    ! **************************************************************************
-    call pending_events()
-    if (run_status == FALSE) return ! Exit if we had a destroy signal.
-  end do
-
-  ! Final update of the display:
-  call gtk_widget_queue_draw(my_drawing_area)
-
-  t1=system_time()
-  print *, "System time = ", t1-t0
-
-  computing = .false.
-end subroutine mandelbrot_set
-
-!***********************************************************
-!  system time since 00:00
-!***********************************************************
-real(8) function system_time()
-  implicit none
-  integer, dimension(8) :: dt
-
-  call date_and_time(values=dt)
-  system_time = dt(5)*3600d0 + dt(6)*60d0 + dt(7) + dt(8)*0.001d0
-end function system_time
-

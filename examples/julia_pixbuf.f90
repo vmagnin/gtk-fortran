@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2021-01-22
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2021-06-07
 !------------------------------------------------------------------------------
 
 module global_widgets
@@ -281,7 +281,7 @@ contains
     width  = 700
     height = 700
     call gtk_window_set_default_size(my_window, width, height)
- 
+
     !******************************************************************
     ! Adding widgets in the window:
     !******************************************************************
@@ -375,7 +375,7 @@ contains
 
     call gtk_box_append(box1, notebook)
     call gtk_widget_set_vexpand (box1, TRUE)
-    
+
     ! The window status bar can be used to print messages:
     statusBar = gtk_statusbar_new ()
     message_id = gtk_statusbar_push (statusBar, gtk_statusbar_get_context_id(statusBar, &
@@ -400,94 +400,82 @@ contains
     ! If you don't show it, nothing will appear on screen...
     call gtk_widget_show(my_window)
   end subroutine activate
-end module handlers
 
-!*********************************************
-! Julia Set
-! http://en.wikipedia.org/wiki/Julia_set
-! The scientific computing is done here
-!*********************************************
-subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
-  use, intrinsic :: iso_c_binding
-  use handlers
-  use global_widgets
-  implicit none
-  integer    :: i, j, k, p, itermax
-  double precision :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-  complex(kind(1d0)) :: c, z
-  double precision :: scx, scy       ! scales
-  integer(1) :: red, green, blue     ! rgb color
-  double precision :: system_time, t0, t1
+  !*********************************************
+  ! Julia Set
+  ! http://en.wikipedia.org/wiki/Julia_set
+  ! The scientific computing is done here
+  !*********************************************
+  subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
+    use, intrinsic :: iso_c_binding
+    use global_widgets
 
-  computing = .true.
-  t0=system_time()
+    integer    :: i, j, k, p, itermax
+    double precision :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+    complex(kind(1d0)) :: c, z
+    double precision :: scx, scy       ! scales
+    integer(1) :: red, green, blue     ! rgb color
+    double precision :: t0, t1
 
-  scx = ((xmax - xmin) / pixwidth)   ! x scale
-  scy = ((ymax - ymin) / pixheight)  ! y scale
+    computing = .true.
+    call cpu_time(t0)
 
-  ! We compute the colour of each pixel (i,j):
-  do i=0, pixwidth-1
-    ! We provoke a draw event only once in a while to improve performances:
-    if (mod(i,10) == 0) then
-      call gtk_widget_queue_draw(my_drawing_area)
-    end if
+    scx = ((xmax - xmin) / pixwidth)   ! x scale
+    scy = ((ymax - ymin) / pixheight)  ! y scale
 
-    x = xmin + scx * i
-    do j=0, pixheight-1
-      y = ymin + scy * j
-      z = x + y*(0d0,1d0)   ! Starting point
-      k = 1
-      do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4d0))
-        z = z*z + c
-        k = k + 1
-      end do
-
-      if (k>itermax) then
-        ! Black pixel:
-        red   = 0
-        green = 0
-        blue  = 0
-      else
-        ! Colour palette:
-        red   = int(min(255, k*2),  KIND=1)
-        green = int(min(255, k*5),  KIND=1)
-        blue  = int(min(255, k*10), KIND=1)
+    ! We compute the colour of each pixel (i,j):
+    do i=0, pixwidth-1
+      ! We provoke a draw event only once in a while to improve performances:
+      if (mod(i,10) == 0) then
+        call gtk_widget_queue_draw(my_drawing_area)
       end if
 
-      ! We write in the pixbuffer:
-      p = i * nch + j * rowstride + 1
-      pixel(p)   = char(red)
-      pixel(p+1) = char(green)
-      pixel(p+2) = char(blue)
+      x = xmin + scx * i
+      do j=0, pixheight-1
+        y = ymin + scy * j
+        z = x + y*(0d0,1d0)   ! Starting point
+        k = 1
+        do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4d0))
+          z = z*z + c
+          k = k + 1
+        end do
 
-      ! This subroutine processes GTK events that occurs during the computation:
-      call pending_events()
-      if (run_status == FALSE) return ! Exit subroutine if we had a delete event.
+        if (k>itermax) then
+          ! Black pixel:
+          red   = 0
+          green = 0
+          blue  = 0
+        else
+          ! Colour palette:
+          red   = int(min(255, k*2),  KIND=1)
+          green = int(min(255, k*5),  KIND=1)
+          blue  = int(min(255, k*10), KIND=1)
+        end if
+
+        ! We write in the pixbuffer:
+        p = i * nch + j * rowstride + 1
+        pixel(p)   = char(red)
+        pixel(p+1) = char(green)
+        pixel(p+2) = char(blue)
+
+        ! This subroutine processes GTK events that occurs during the computation:
+        call pending_events()
+        if (run_status == FALSE) return ! Exit subroutine if we had a delete event.
+      end do
     end do
-  end do
 
-  ! Final update of the display:
-  call gtk_widget_queue_draw(my_drawing_area)
+    ! Final update of the display:
+    call gtk_widget_queue_draw(my_drawing_area)
 
-  computing = .false.
+    computing = .false.
 
-  t1=system_time()
-  write(string, '("System time = ",F8.3, " s")') t1-t0
-  call gtk_text_buffer_insert_at_cursor (buffer, &
-                                    & string//C_NEW_LINE//c_null_char, -1_c_int)
-end subroutine Julia_set
+    call cpu_time(t1)
+    write(string, '("System time = ",F8.3, " s")') t1-t0
+    call gtk_text_buffer_insert_at_cursor (buffer, &
+                                      & string//C_NEW_LINE//c_null_char, -1_c_int)
+  end subroutine Julia_set
 
-!***********************************************************
-!  system time since 00:00
-!***********************************************************
-real(8) function system_time()
-  implicit none
-  integer, dimension(8) :: dt
-
-  call date_and_time(values=dt)
-  system_time=dt(5)*3600d0+dt(6)*60d0+dt(7)+dt(8)*0.001d0
-end function system_time
-
+end module handlers
 
 !*******************************************************************************
 ! In the main program, we declare the GTK application, connect it to its 
