@@ -25,9 +25,9 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-02, 2021-04-14
+# Last modification: 2019-04-02, 2021-06-11
 
-""" This module contains functions to analyze C prototypes 
+""" This module contains functions to analyze C prototypes
     and generate Fortran interfaces.
 """
 
@@ -232,7 +232,10 @@ def write_fortran_interface(index, module_name, f_file_name, unix_only_file,
     interface1 += 0*TAB + "!" + prototype + "\n"
     first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
     interface2 = multiline(first_line, 80) + "\n"
-    interface3 = 1*TAB + "use, intrinsic :: iso_c_binding, only: " + f_use + "\n"
+    if f_use != "":
+        interface3 = 1*TAB + "import :: " + f_use + "\n"
+    else:
+        interface3 = ""
     if isfunction:
         interface3 += 1*TAB + returned_type + " :: " + f_name + "\n"
     interface3 += declarations

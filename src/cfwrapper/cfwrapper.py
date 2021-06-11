@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2021-05-13 (tested with Python 3.9.4, Fedora 34)
+# Last modification: 2021-06-11 (tested with Python 3.9.5, Fedora 34)
 # pylint *.py : 8.40/10
 
 """ Generates the *-auto.f90 files from the C header files of GLib and GTK.
@@ -244,7 +244,7 @@ enums_file = open(SRC_DIR+"gtkenums-auto.f90", "w")
 enums_file.write(FILE_HEADER+"\n")
 
 # Files for platform specific functions:
-HEAD = "\nmodule " + "gtk_os_dependent" + "\nimplicit none\ninterface\n\n"
+HEAD = "\nmodule " + "gtk_os_dependent" + "\nuse, intrinsic :: iso_c_binding\nimplicit none\ninterface\n\n"
 unix_only_file = open(SRC_DIR+"unixonly-auto.f90", "w")
 unix_only_file.write(FILE_HEADER + HEAD)
 mswindows_only_file = open(SRC_DIR+"mswindowsonly-auto.f90", "w")
@@ -278,7 +278,7 @@ for library_path in PATH_DICT:
                 module_name = "g"
             # Write the beginning of the .f90 file:
             f_file.write(FILE_HEADER+"\nmodule " + module_name +
-                         "\nimplicit none\ninterface\n\n")
+                         "\nuse, intrinsic :: iso_c_binding\nimplicit none\ninterface\n\n")
 
     # Analyze each C header file in each subdirectory of that library:
     for directory in os.walk(library_path):
