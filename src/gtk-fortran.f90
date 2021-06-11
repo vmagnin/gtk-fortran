@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! The gtk-?-fortran command prints information about gtk-fortran.
 ! Contributors: Vincent Magnin 2021-01-29
-! Last modifications: 2021-04-13
+! Last modifications: 2021-06-11
 !------------------------------------------------------------------------------
 
 module handlers_gtk_fortran
@@ -41,8 +41,13 @@ module handlers_gtk_fortran
   subroutine activate(app, gdata) bind(c)
     type(c_ptr), value, intent(in)  :: app, gdata
     character(len=128) :: name_string, os_string
+    integer :: suffix_pos
 
     call c_f_string_copy(g_get_prgname(), name_string)
+    ! Removing the .exe suffix if the OS is Windows:
+    suffix_pos = index(name_string, ".exe")
+    if (suffix_pos /= 0) name_string = name_string(1:suffix_pos-1)
+
     call c_f_string_copy(g_get_os_info("PRETTY_NAME"//c_null_char), os_string)
     
     print '(4A,I0,A1,I0,A1,I0,A1)', TRIM(name_string), " (", TRIM(os_string),&
