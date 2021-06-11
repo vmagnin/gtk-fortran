@@ -3,7 +3,7 @@
 # and finally launching one by one the examples for testing.
 # GNU GPL v3
 # Contributed by Vincent MAGNIN
-# 2011-04-08, last updated 2021-05-13
+# 2011-04-08, last updated 2021-06-11
 
 # For a safer script:
 set -eu
@@ -19,7 +19,7 @@ readonly GTKv=$(sed -n -E 's/gtk-fortran;([0-9]+).*\r$/\1/p' ../VERSIONS)
 echo "Building gtk-${GTKv}-fortran"
 
 # Compiler and linker options:
-readonly gtkoptions="$(pkg-config --cflags --libs gtk+-"${GTKv}".0)"
+readonly gtkoptions="$(pkg-config --cflags --libs gtk"${GTKv}")"
 
 # Go to the top of the project:
 cd ..
