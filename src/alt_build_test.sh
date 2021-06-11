@@ -15,7 +15,7 @@ set -eu
 : ${GFC="gfortran"}
 
 # Major version of GTK for the current branch (from VERSIONS file):
-readonly GTKv=$(sed -n -E 's/gtk-fortran;([0-9]+).*\r$/\1/p' ../VERSIONS)
+readonly GTKv=$(sed -n -E 's/gtk-fortran;([0-9]+).*/\1/p' ../VERSIONS)
 echo "Building gtk-${GTKv}-fortran"
 
 # Compiler and linker options:
