@@ -9,10 +9,9 @@
 set -eu
 
 # Allow override of default compiler. For example:
-#  GFC='gfortran-4.8' ./alt_build_test.sh
-# (Contributed by A. GRAZIOSI)
-# Default:
-: ${GFC="gfortran"}
+#  FC='ifort' ./alt_build_test.sh
+# The default compiler is:
+: ${FC="gfortran"}
 
 # Major version of GTK for the current branch (from VERSIONS file):
 readonly GTKv=$(sed -n -E 's/gtk-fortran;([0-9]+).*/\1/p' ../VERSIONS)
@@ -43,11 +42,11 @@ fi
 readonly gtk_hl_obj="gtk-hl-misc.o gtk-hl-button.o gtk-hl-combobox.o gtk-hl-container.o gtk-hl-entry.o gtk-hl-progress.o gtk-hl-spin-slider.o gtk-hl-tree.o  gtk-hl-chooser.o gtk-hl-dialog.o gtk-hl-infobar.o gtk-hl-assistant.o gdk-pixbuf-hl.o"
 
 echo
-echo ">>> Compiling the GTK+ libraries and gtk_hl using ${GFC}"
+echo ">>> Compiling the GTK+ libraries and gtk_hl using ${FC}"
 for file in "unixonly-auto.f90" "gdk-auto.f90" "glib-auto.f90" "gtk.f90" "unix-print-auto.f90" "cairo-auto.f90" "gdk-pixbuf-auto.f90" "pango-auto.f90" "gsk-auto.f90" "graphene-auto.f90" "gtk-sup.f90" "gtk-hl-misc.f90" "gtk-hl-button.f90" "gtk-hl-combobox.f90" "gtk-hl-container.f90" "gtk-hl-entry.f90" "gtk-hl-infobar.f90" "gtk-hl-assistant.f90" "gtk-hl-progress.f90" "gtk-hl-spin-slider.f90" "gtk-hl-tree.f90" "gtk-hl-chooser.f90" "gtk-hl-dialog.f90" "gtk-hl.f90" "gdkevents-auto.f90" "gtk-draw-hl.f90" "gdk-pixbuf-hl.f90"; do 
   echo "${file}"
   #compile that file:
-  "${GFC}" -c ../../src/${file} ${gtkoptions}
+  "${FC}" -c ../../src/${file} ${gtkoptions}
 done
 
 echo
@@ -59,12 +58,12 @@ for i in ../../examples/*.f90 ; do
   e=$(echo "${f}"|sed 's/\.f90//')
   echo "${e}"
   #compile that file:
-  "${GFC}" gtk.o gtk-sup.o gtk-hl.o unixonly-auto.o ${gtk_hl_obj} gtk-draw-hl.o "${i}" ${gtkoptions} -o "${e}.out"
+  "${FC}" gtk.o gtk-sup.o gtk-hl.o unixonly-auto.o ${gtk_hl_obj} gtk-draw-hl.o "${i}" ${gtkoptions} -o "${e}.out"
 done
 # Other examples:
-"${GFC}" gtk.o ../../examples/gtkbuilder2.f90 -o gtkbuilder2.out ${gtkoptions} $(pkg-config --cflags --libs gmodule-2.0)
+"${FC}" gtk.o ../../examples/gtkbuilder2.f90 -o gtkbuilder2.out ${gtkoptions} $(pkg-config --cflags --libs gmodule-2.0)
 
-"${GFC}" gtk.o gtk-sup.o gtk-hl.o ${gtk_hl_obj} ../../sketcher/gtkf-sketcher.f90 ${gtkoptions} $(pkg-config --cflags --libs gmodule-2.0) -o gtkf-sketcher.out
+"${FC}" gtk.o gtk-sup.o gtk-hl.o ${gtk_hl_obj} ../../sketcher/gtkf-sketcher.f90 ${gtkoptions} $(pkg-config --cflags --libs gmodule-2.0) -o gtkf-sketcher.out
 
 # List the executables:
 echo
