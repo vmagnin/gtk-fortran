@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2021-03-04
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2021-06-14
 #
 # CMAKE build file for gtk-fortran
 
@@ -37,7 +37,7 @@ if (NOT NO_BUILD_EXAMPLES)
     menubar cairo-tests cairo-basics cairo-basics-click bazaar 
     pixbuf_without_gui regex
   )
-  
+
   if(NOT NO_BUILD_HL)
     set(examples_list ${examples_list} 
         hl_assistant hl_choosers hl_combo hl_containers hl_dialog hl_list1
@@ -46,7 +46,7 @@ if (NOT NO_BUILD_EXAMPLES)
         hl_cairo_viewer hl_infobar
     )
   endif(NOT NO_BUILD_HL)
-    
+
   foreach(example ${examples_list})
     add_executable(${example} "${example}.f90")
     target_link_libraries(${example} gtk-fortran_static ${GTK_LIBRARIES})
@@ -55,15 +55,10 @@ if (NOT NO_BUILD_EXAMPLES)
   endforeach(example)
 
   #====================================
-  # Build the two gtkbuilders examples:
+  # Build the gtkbuilder example:
   #====================================
   file(COPY gtkbuilder.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ )
 
-  add_executable(gtkbuilder "gtkbuilder.f90")
-  target_link_libraries(gtkbuilder gtk-fortran_static ${GTK_LIBRARIES})
-  set_target_properties(gtkbuilder PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder_mod/ )
-  # This test is excluded because the directories don't match up.
-  #add_test(gtkbuilder gtkbuilder)
   add_executable(gtkbuilder2 "gtkbuilder2.f90" "gtkbuilder.glade")
   target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
   set_target_properties(gtkbuilder2 PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder2_mod/ )

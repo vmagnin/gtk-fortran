@@ -6,6 +6,8 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ### Added
 - The cfwrapper has a new required parameter `-v` to set the gtk-fortran semantic version (major.minor.patch). It is written in the `VERSIONS` file (used by CMake, `src/extract_events.pl`, `src/alt_build_test.sh`) and `codemeta.json`. Backported to the gtk3 branch.
  
+### Removed
+- `examples/gtkbuilder.f90`: `gtk_builder_connect_signals_full` being removed from GTK 4, this example has become identical to `gtkbuilder2.f90`.
 
 ## [gtk-fortran 4.0] 2021-04-28
 - The gtk-4-fortran library has been generated from GTK 4.2.0 and GLib 2.68.1 under Fedora 34. 

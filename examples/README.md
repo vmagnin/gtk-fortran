@@ -18,8 +18,8 @@ Among those examples:
 - gio_demo.f90: this is a very basic demo to get started with GIO. It uses 
 Fortran I/O to read text from the keyboard & writes it to the file `gio_demo.dat`
 in the current directory.
-- gtkbuilder*.f90 examples demonstrates how you can use a Glade3 XML file to
-create your graphical user interface.
+- gtkbuilder2.f90 demonstrates how you can use an UI XML file to create your
+graphical user interface.
 - list_demo.f90 demonstrates how to use GtkTreeView for displaying trees and 
 lists.
 - menubar.f90 demonstrates a menubar based on GMenu and GAction. It also uses CSS styles.
