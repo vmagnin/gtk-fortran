@@ -1,9 +1,9 @@
-Last update: 2020-02-12
+Last update: 2021-08-02
 
 Building & Installing gtk-fortran
 ================================
 
-The build install system uses `cmake`.
+The build install system uses `cmake`. This file gives quick instructions to install gtk-fortran. See the Wiki documentation for more detailed instructions.
 
 UNIX/Linux
 ----------
@@ -49,11 +49,10 @@ Sometimes it can help to clean out the build directory and re-run `cmake`:
      cmake ..
 **************************************************************************
 
-Windows
+Other systems (Windows, macOS, FreeBSD...)
 -------
-Use MSYS2-MINGW64 and use same commands as under Linux, except:
 
-    cmake -G "MSYS Makefiles" -D EXCLUDE_PLPLOT=Y .. 
+See the Wiki documentation for detailed instructions.
 
 
 Dependencies
@@ -85,11 +84,11 @@ as simple as:
 If you have made a default install to `/usr/local` you *may* need to run:
 
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-    
+
 (Or
 
     setenv PKG_CONFIG_PATH /usr/local/lib/pkgconfig
-    
+
 if you use csh or one of its derivatives)
 
 this will depend on your distribution, Ubuntu looks there by default,
@@ -99,7 +98,7 @@ Uninstalling GtkFortran
 =======================
 
     sudo make uninstall
-    
+
 See https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
 
 More informations
