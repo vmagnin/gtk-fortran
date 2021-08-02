@@ -59,8 +59,7 @@ Dependencies
 ------------
 
 - A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran.
-- GTK and the associated development files. For 2.xx use the "gtk2"
-  git branch, for 3.x use the "gtk3" branch.
+- GTK and the associated development files. For 4.x use the "gtk4" branch.
 - CMake >= 3.4 or better and pkg-config.
 - PLplot is used if available (you need the development files).
 
@@ -79,7 +78,7 @@ On Linux and Unix systems the build system generates a pkg-config file
 and installs it. So building a single source file application should be
 as simple as:
 
-    gfortran my_app.f90 $(pkg-config --cflags --libs gtk-3-fortran)
+    gfortran my_app.f90 $(pkg-config --cflags --libs gtk-4-fortran)
 
 If you have made a default install to `/usr/local` you *may* need to run:
 
