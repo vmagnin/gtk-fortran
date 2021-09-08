@@ -1,13 +1,30 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Development version]
+## [Development version gtk4]
 
 ### Added
 - The cfwrapper has a new required parameter `-v` to set the gtk-fortran semantic version (major.minor.patch). It is written in the `VERSIONS` file (used by CMake, `src/extract_events.pl`, `src/alt_build_test.sh`) and `codemeta.json`. Backported to the gtk3 branch.
- 
+
+### Changed
+- The compiler flags for release is now `-O3` instead of `-O3 -mtune=native -march=native`.
+- The Fortran / C interfaces now use the `import ::` statement instead of `use, intrinsic :: iso_c_binding, only:`.
+
 ### Removed
 - `examples/gtkbuilder.f90`: `gtk_builder_connect_signals_full` being removed from GTK 4, this example has become identical to `gtkbuilder2.f90`.
+
+
+## [gtk-fortran 3.24.30] 2021-09-08
+- The gtk-3-fortran library has been generated from GTK 3.24.30 and GLib 2.68.4 under Fedora 34. 
+
+### Added
+- The cfwrapper has a new required parameter `-v` to set the gtk-fortran semantic version (major.minor.patch). It is written in the `VERSIONS` file (used by CMake, `src/extract_events.pl`, `src/alt_build_test.sh`) and `codemeta.json`.
+- A `tutorials/` directory contains the sources and screenshots used in the Wiki new tutorials.
+ 
+### Changed
+- The compiler flags for release is now `-O3` instead of `-O3 -mtune=native -march=native`.
+- The Fortran / C interfaces now use the `import ::` statement instead of `use, intrinsic :: iso_c_binding, only:`.
+
 
 ## [gtk-fortran 4.0] 2021-04-28
 - The gtk-4-fortran library has been generated from GTK 4.2.0 and GLib 2.68.1 under Fedora 34. 
