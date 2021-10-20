@@ -2,7 +2,7 @@
 # Show libraries and tools versions used in gtk-fortran
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13
-# Updated 2021-05-17
+# Updated 2021-10-20
 # Needs: in Fedora, lsb_release is in the package redhat-lsb-core 
 
 # The shell -e option is not used in this script to avoid exiting each time a
@@ -50,6 +50,7 @@ elif echo "${SYSTEM}" | grep -q fc ; then    # Fedora
 elif echo "${SYSTEM}" | grep -q FreeBSD ; then
     pkg info gtk2 | grep gtk2-
     pkg info gtk3 | grep gtk3-
+    pkg info gtk4 | grep gtk4-
     pkg info glib | grep ^glib
     pkg info plplot | grep plplot-
 elif echo "${RELEASE}" | grep -q openSUSE ; then
@@ -70,7 +71,7 @@ echo "LANGUAGES:"
 echo "=========="
 
 if echo "${SYSTEM}" | grep -q FreeBSD ; then
-    gfortran8 --version | head -n 1
+    gfortran11 --version | head -n 1
 else
     gfortran --version | head -n 1
 fi
