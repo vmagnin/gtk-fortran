@@ -1,14 +1,17 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Development version gtk4]
+## [gtk-fortran 4.1] 2021-10-22
+The gtk-4-fortran library has been generated from GTK 4.4.0 and GLib 2.70.0 under Fedora 35.
 
 ### Added
 - The cfwrapper has a new required parameter `-v` to set the gtk-fortran semantic version (major.minor.patch). It is written in the `VERSIONS` file (used by CMake, `src/extract_events.pl`, `src/alt_build_test.sh`) and `codemeta.json`. Backported to the gtk3 branch.
 
 ### Changed
 - The compiler flags for release is now `-O3` instead of `-O3 -mtune=native -march=native`.
+- The `-warn nounused` flag was added for ifort.
 - The Fortran / C interfaces now use the `import ::` statement instead of `use, intrinsic :: iso_c_binding, only:`.
+- In some examples, a module was added to contain the scientific subroutines: `julia_pixbuf.f90`, `mandelbrot_pixbuf.f90`, `cairo-tests.f90`.
 
 ### Removed
 - `examples/gtkbuilder.f90`: `gtk_builder_connect_signals_full` being removed from GTK 4, this example has become identical to `gtkbuilder2.f90`.
