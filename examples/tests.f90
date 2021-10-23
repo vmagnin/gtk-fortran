@@ -42,10 +42,10 @@ module tests
   &_uint16, g_variant_new_uint32, g_variant_new_uint64, guint64, g_variant_unref
   use, intrinsic :: iso_c_binding
 
+  implicit none
+
 contains
   integer function test_iso_c_binding()
-    use, intrinsic :: iso_c_binding
-    implicit none
     integer :: errors
 
     errors = 0
@@ -167,7 +167,6 @@ contains
 
 
   integer function test_c_char_in_out()
-    implicit none
     integer :: i
     integer :: errors
     character(kind=c_char) :: c
@@ -201,7 +200,6 @@ contains
 
 
   integer function test_gdouble_in_out()
-    implicit none
     integer :: i
     integer :: errors
     real(c_double) :: a, b, r, rmin, rmax
@@ -243,7 +241,6 @@ contains
 
 
   integer function test_gulong_in()
-    implicit none
     integer :: i
     integer :: errors
     integer(c_long) :: nb
@@ -270,7 +267,6 @@ contains
 
 
   integer function test_uint16_in_out()
-    implicit none
     integer :: i
     integer :: errors
     integer(c_int16_t) :: a, b
@@ -355,7 +351,6 @@ contains
 
 
   integer function test_int16_in_out()
-    implicit none
     integer(c_int16_t) :: a, b
     integer :: errors, i
     type(c_ptr) :: gv
@@ -377,7 +372,6 @@ contains
 
 
   integer function test_int32_in_out()
-    implicit none
     integer :: i
     integer :: errors
     integer(c_int32_t) :: r, rmin, rmax
@@ -416,7 +410,6 @@ contains
 
 
   integer function test_uint32_in_out()
-    implicit none
     integer :: i
     integer :: errors
     integer(c_int32_t) :: a, b
@@ -488,7 +481,6 @@ contains
 
 
   integer function test_guchar_in_out()
-    implicit none
     integer(c_int16_t) :: i, j
     integer :: errors 
     character(kind=c_char) :: a, b
@@ -512,7 +504,6 @@ contains
 
 
   integer function test_gboolean_in_out()
-    implicit none
     integer(c_int) :: l1, l2, l3, l4
     integer :: errors
     type(c_ptr) :: gv
