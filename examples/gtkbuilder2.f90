@@ -22,7 +22,7 @@
 !
 ! Example using GtkBuilder
 ! Jens Hunger, 04-01-2011
-! Last modified: vmagnin 2020-06-20 (GTK 4 version), 2021-01-22
+! Last modified: vmagnin 2020-06-20 (GTK 4 version), 2021-10-23
 
 module widgets
   ! declares the used GTK widgets
@@ -35,7 +35,7 @@ end module
 
 module handlers
   use gtk, only: gtk_builder_add_from_file, &
-        & gtk_builder_get_object, gtk_builder_new, gtk_widget_show, &
+        & gtk_builder_get_object, gtk_builder_new_from_file, gtk_widget_show, &
         & FALSE, gtk_init
   use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit, &
              & g_object_unref
@@ -89,7 +89,6 @@ program gtkbuilder
   use handlers
   
   implicit none
-  integer(c_int) :: guint
   type(c_ptr) :: error
 
   error = c_null_ptr
@@ -97,18 +96,9 @@ program gtkbuilder
   ! Initialize the GTK Library:
   call gtk_init ()
 
-  ! Create a new GtkBuilder object:
-  builder = gtk_builder_new ()
-
-  ! parse the Glade3 XML file 'gtkbuilder.glade' and add
-  ! it's contents to the GtkBuilder object
-  guint = gtk_builder_add_from_file (builder, &
-          & "gtkbuilder.glade"//c_null_char, error)
-  if (guint == 0) then
-     print *, "Could not open gtkbuilder.glade"
-     stop
-  end if
-
+  ! Create a new GtkBuilder object and parse the 
+  ! Glade3 XML file 'gtkbuilder.glade' and add it's contents:
+  builder=gtk_builder_new_from_file("gtkbuilder.glade"//c_null_char)
   ! get a pointer to the GObject "window" from GtkBuilder
   window = gtk_builder_get_object (builder, "window"//c_null_char)
   
