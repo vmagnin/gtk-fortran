@@ -25,24 +25,24 @@
 ! Last modified: vmagnin 2020-06-20 (GTK 4 version), 2021-10-23
 
 module widgets
-  ! declares the used GTK widgets
   use, intrinsic :: iso_c_binding, only: c_null_char, c_null_ptr, c_ptr, c_int
 
+  ! Declares the used GTK widgets:
   implicit none
   type(c_ptr) :: window
   type(c_ptr) :: builder
 end module
 
+
 module handlers
-  use gtk, only: gtk_builder_add_from_file, &
-        & gtk_builder_get_object, gtk_builder_new_from_file, gtk_widget_show, &
-        & FALSE, gtk_init
+  use gtk, only: gtk_builder_get_object, gtk_builder_new_from_file, &
+             & gtk_widget_show, FALSE, gtk_init
   use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit, &
              & g_object_unref
   use widgets
 
   implicit none
-  type(c_ptr)    :: my_gmainloop
+  type(c_ptr) :: my_gmainloop
 
 contains
   !*************************************
@@ -50,8 +50,7 @@ contains
   !*************************************
 
   ! "destroy" is a GtkObject signal
-  subroutine destroy (widget, gdata) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr
+  subroutine destroy(widget, gdata) bind(c)
     !GCC$ ATTRIBUTES DLLEXPORT :: destroy
     type(c_ptr), value, intent(in) :: widget, gdata
 
@@ -60,24 +59,21 @@ contains
   end subroutine destroy
 
   ! "clicked" is a GtkButton signal
-  subroutine hello (widget, gdata ) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
+  subroutine hello(widget, gdata ) bind(c)
     !GCC$ ATTRIBUTES DLLEXPORT :: hello
     type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Hello World!"
   end subroutine hello
 
-  subroutine button1clicked (widget, gdata ) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
+  subroutine button1clicked(widget, gdata ) bind(c)
     !GCC$ ATTRIBUTES DLLEXPORT :: button1clicked
     type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Button 1 clicked!"
   end subroutine button1clicked
 
-  subroutine button2clicked (widget, gdata ) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
+  subroutine button2clicked(widget, gdata ) bind(c)
     !GCC$ ATTRIBUTES DLLEXPORT :: button2clicked
     type(c_ptr), value, intent(in) :: widget, gdata
 
@@ -85,13 +81,11 @@ contains
   end subroutine button2clicked
 end module handlers
 
+
 program gtkbuilder
   use handlers
-  
-  implicit none
-  type(c_ptr) :: error
 
-  error = c_null_ptr
+  implicit none
 
   ! Initialize the GTK Library:
   call gtk_init ()
@@ -99,15 +93,16 @@ program gtkbuilder
   ! Create a new GtkBuilder object and parse the 
   ! Glade3 XML file 'gtkbuilder.glade' and add it's contents:
   builder=gtk_builder_new_from_file("gtkbuilder.glade"//c_null_char)
+
   ! get a pointer to the GObject "window" from GtkBuilder
-  window = gtk_builder_get_object (builder, "window"//c_null_char)
-  
+  window = gtk_builder_get_object(builder, "window"//c_null_char)
+
   ! free all memory used by XML stuff
-  call g_object_unref (builder)
-  
+  call g_object_unref(builder)
+
   ! Show the Application Window
-  call gtk_widget_show (window)
-  
+  call gtk_widget_show(window)
+
   ! Enter the Main Loop:
   my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
   call g_main_loop_run(my_gmainloop)
