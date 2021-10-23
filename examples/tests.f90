@@ -195,6 +195,7 @@ contains
         errors = errors + 1
       end if
     end do
+
     test_c_char_in_out = errors
   end function test_c_char_in_out
 
@@ -236,6 +237,7 @@ contains
         errors = errors + 1
       end if
     end do
+
     test_gdouble_in_out = errors
   end function test_gdouble_in_out
 
@@ -245,15 +247,15 @@ contains
     integer :: errors
     integer(c_long) :: nb
     integer(c_int) :: r
-  !    ! guint g_bit_storage (gulong number) G_GNUC_CONST;
-  !    function g_bit_storage(number) bind(c) 
-  !      use, intrinsic :: iso_c_binding, only: c_int, c_long
-  !      integer(c_int) :: g_bit_storage
-  !      integer(c_long), value :: number
-  !    end function
-  errors = 0
-  ! Fortran integers are signed. 32 bits integers are in [-2147483648, +2147483647].
-  ! C language: typedef unsigned long   gulong;
+    !    ! guint g_bit_storage (gulong number) G_GNUC_CONST;
+    !    function g_bit_storage(number) bind(c) 
+    !      use, intrinsic :: iso_c_binding, only: c_int, c_long
+    !      integer(c_int) :: g_bit_storage
+    !      integer(c_long), value :: number
+    !    end function
+    errors = 0
+    ! Fortran integers are signed. 32 bits integers are in [-2147483648, +2147483647].
+    ! C language: typedef unsigned long   gulong;
     do i = 1, 31, +1
       nb = 2**i-1
       r = g_bit_storage(nb)
@@ -262,6 +264,7 @@ contains
         errors = errors + 1
       end if
     end do
+
     test_gulong_in = errors
   end function test_gulong_in
 
@@ -272,30 +275,30 @@ contains
     integer(c_int16_t) :: a, b
     integer(c_int32_t) :: c, d
     type(c_ptr) :: gv
-  !! GVariant * g_variant_new_uint16 (guint16 uint16);
-  !function g_variant_new_uint16(uint16) bind(c) 
-  !  use, intrinsic :: iso_c_binding, only: c_ptr, c_int16_t
-  !  type(c_ptr) :: g_variant_new_uint16
-  !  integer(c_int16_t), value :: uint16
-  !end function
+    !! GVariant * g_variant_new_uint16 (guint16 uint16);
+    !function g_variant_new_uint16(uint16) bind(c) 
+    !  use, intrinsic :: iso_c_binding, only: c_ptr, c_int16_t
+    !  type(c_ptr) :: g_variant_new_uint16
+    !  integer(c_int16_t), value :: uint16
+    !end function
 
-  !! guint16 g_variant_get_uint16 (GVariant *value);
-  !function g_variant_get_uint16(value) bind(c) 
-  !  use, intrinsic :: iso_c_binding, only: c_int16_t, c_ptr
-  !  integer(c_int16_t) :: g_variant_get_uint16
-  !  type(c_ptr), value :: value
-  !end function
+    !! guint16 g_variant_get_uint16 (GVariant *value);
+    !function g_variant_get_uint16(value) bind(c) 
+    !  use, intrinsic :: iso_c_binding, only: c_int16_t, c_ptr
+    !  integer(c_int16_t) :: g_variant_get_uint16
+    !  type(c_ptr), value :: value
+    !end function
 
-  ! INTEGER(2) ranges from -32768 to 32767
-  ! uint16 ranges from 0 to 65535.
-  !***********************************
-  ! We must be careful because the following loop is undefined in the Fortran Standard:
-  ! do a = 0, 32767
-  !                 1
-  ! Warning: DO loop at (1) is undefined as it overflows [-Wundefined-do-loop]
-  ! With some compilers, it will run OK, with others a will become <0 and the
-  ! loop will never end...
-  !***********************************
+    ! INTEGER(2) ranges from -32768 to 32767
+    ! uint16 ranges from 0 to 65535.
+    !***********************************
+    ! We must be careful because the following loop is undefined in the Fortran Standard:
+    ! do a = 0, 32767
+    !                 1
+    ! Warning: DO loop at (1) is undefined as it overflows [-Wundefined-do-loop]
+    ! With some compilers, it will run OK, with others a will become <0 and the
+    ! loop will never end...
+    !***********************************
     errors = 0
     do a = 0, 32766
       gv = g_variant_new_uint16(a)
@@ -306,6 +309,7 @@ contains
       end if
       call g_variant_unref(gv)
     end do
+
     a = 32767
     gv = g_variant_new_uint16(a)
     b = g_variant_get_uint16(gv)
@@ -346,6 +350,7 @@ contains
       end if
       call g_variant_unref(gv)
     end do
+
     test_uint16_in_out = errors
   end function test_uint16_in_out
 
@@ -367,6 +372,7 @@ contains
        end if
        call g_variant_unref(gv)
     end do
+
     test_int16_in_out = errors
   end function test_int16_in_out
 
@@ -389,6 +395,7 @@ contains
       end if
       call g_variant_unref(gv)
     end do
+
     !    ! gint32 g_random_int_range (gint32 begin, gint32 end);
     !    function g_random_int_range(begin, end) bind(c) 
     !      use, intrinsic :: iso_c_binding, only: c_int32_t
@@ -405,6 +412,7 @@ contains
         errors = errors + 1
       end if
     end do
+
     test_int32_in_out = errors 
   end function test_int32_in_out
 
@@ -417,15 +425,15 @@ contains
     type(c_ptr) :: gv
 
     errors = 0
-  ! INTEGER(4) ranges from -2147483648 to +2147483647
-  ! uint32 ranges from 0 to 4294967295
-  !***********************************
-  ! We must be careful because the following loop is undefined in the Fortran Standard:
-  ! do a = 0, 2147483647, +65536
-  !
-  ! With some compilers, it will run OK, with others a will become <0 and the
-  ! loop will never end...
-  !***********************************
+    ! INTEGER(4) ranges from -2147483648 to +2147483647
+    ! uint32 ranges from 0 to 4294967295
+    !***********************************
+    ! We must be careful because the following loop is undefined in the Fortran Standard:
+    ! do a = 0, 2147483647, +65536
+    !
+    ! With some compilers, it will run OK, with others a will become <0 and the
+    ! loop will never end...
+    !***********************************
     do a = 0, 2147483647-65536, +65536
       gv = g_variant_new_uint32(a)
       b = g_variant_get_uint32(gv)
@@ -435,6 +443,7 @@ contains
       end if
       call g_variant_unref(gv)
     end do
+
     a = 2147483647
     gv = g_variant_new_uint32(a)
     b = g_variant_get_uint32(gv)
@@ -499,6 +508,7 @@ contains
       end if
       call g_variant_unref(gv)
     end do
+
     test_guchar_in_out = errors
   end function test_guchar_in_out
 
@@ -507,8 +517,8 @@ contains
     integer(c_int) :: l1, l2, l3, l4
     integer :: errors
     type(c_ptr) :: gv
-  !GVariant *          g_variant_new_boolean  (gboolean value);
-  !gboolean            g_variant_get_boolean               (GVariant *value);
+    !GVariant *          g_variant_new_boolean  (gboolean value);
+    !gboolean            g_variant_get_boolean               (GVariant *value);
     errors = 0
     l1 = TRUE
     gv = g_variant_new_boolean(l1)
@@ -528,6 +538,7 @@ contains
         write(1,*) "ERROR g_variant_get_boolean:", l1, l2
         errors = errors + 1
     end if
+
   !      ! gboolean g_hostname_is_ip_address (const gchar *hostname);
   !    function g_hostname_is_ip_address(hostname) bind(c) 
   !      use, intrinsic :: iso_c_binding, only: c_bool, c_char
