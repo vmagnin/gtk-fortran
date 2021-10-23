@@ -20,7 +20,7 @@
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2020-05-18
+! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2021-10-23
 ! ****************
 ! Automated tests
 ! ****************
@@ -39,7 +39,7 @@ module tests
   &ing, g_variant_get_uint16, g_variant_get_uint32, g_variant_get_uint64, g_varia&
   &nt_new_boolean, g_variant_new_byte, g_variant_new_double, g_variant_new_int16,&
   & g_variant_new_int32, g_variant_new_int64, g_variant_new_string, g_variant_new&
-  &_uint16, g_variant_new_uint32, g_variant_new_uint64, guint64
+  &_uint16, g_variant_new_uint32, g_variant_new_uint64, guint64, g_variant_unref
   use, intrinsic :: iso_c_binding
 
 contains
@@ -205,6 +205,7 @@ contains
     integer :: i
     integer :: errors
     real(c_double) :: a, b, r, rmin, rmax
+    type(c_ptr) :: gv
     !See the official documentation:
     !http://library.gnome.org/devel/glib/stable/glib-GVariant.html
     !http://library.gnome.org/devel/glib/stable/glib-GVariantType.html
@@ -213,19 +214,21 @@ contains
     errors = 0
     do i = -308, +308
       a = 10d0 ** i
-      b = g_variant_get_double(g_variant_new_double(a))
+      gv = g_variant_new_double(a)
+      b = g_variant_get_double(gv)
       if (a /= b) then
         write(1,*) "ERROR g_random_double_range:", i, a, b
         errors = errors + 1
       end if
+      call g_variant_unref(gv)
     end do
-  !    ! gdouble g_random_double_range (gdouble begin, gdouble end);
-  !    function g_random_double_range(begin, end) bind(c) 
-  !      use, intrinsic :: iso_c_binding, only: c_double
-  !      real(c_double) :: g_random_double_range
-  !      real(c_double), value :: begin
-  !      real(c_double), value :: end
-  !    end function
+    !    ! gdouble g_random_double_range (gdouble begin, gdouble end);
+    !    function g_random_double_range(begin, end) bind(c) 
+    !      use, intrinsic :: iso_c_binding, only: c_double
+    !      real(c_double) :: g_random_double_range
+    !      real(c_double), value :: begin
+    !      real(c_double), value :: end
+    !    end function
     rmin = -10d0
     rmax = +100d0
     do i = 1, 10000, +1
@@ -272,6 +275,7 @@ contains
     integer :: errors
     integer(c_int16_t) :: a, b
     integer(c_int32_t) :: c, d
+    type(c_ptr) :: gv
   !! GVariant * g_variant_new_uint16 (guint16 uint16);
   !function g_variant_new_uint16(uint16) bind(c) 
   !  use, intrinsic :: iso_c_binding, only: c_ptr, c_int16_t
@@ -298,22 +302,27 @@ contains
   !***********************************
     errors = 0
     do a = 0, 32766
-      b = g_variant_get_uint16(g_variant_new_uint16 (a))
+      gv = g_variant_new_uint16(a)
+      b = g_variant_get_uint16(gv)
       if (a /= b) then
         write(1,*) "ERROR g_variant_get_uint16:", a, b
         errors = errors + 1
       end if
+      call g_variant_unref(gv)
     end do
     a = 32767
-    b = g_variant_get_uint16(g_variant_new_uint16 (a))
+    gv = g_variant_new_uint16(a)
+    b = g_variant_get_uint16(gv)
     if (a /= b) then
       write(1,*) "ERROR g_variant_get_uint16:", a, b
       errors = errors + 1
     end if
+    call g_variant_unref(gv)
 
     do c = 32768, 65535
       a = transfer(c, a)
-      b = g_variant_get_uint16(g_variant_new_uint16 (a))
+      gv = g_variant_new_uint16(a)
+      b = g_variant_get_uint16(gv)
       d = transfer(b, d)
       do i = bit_size(b),  bit_size(d)-1
         d= ibclr(d, i)
@@ -339,6 +348,7 @@ contains
         write(1,*) "ERROR g_variant_get_uint16:", a, b
         errors = errors + 1
       end if
+      call g_variant_unref(gv)
     end do
     test_uint16_in_out = errors
   end function test_uint16_in_out
@@ -348,15 +358,19 @@ contains
     implicit none
     integer(c_int16_t) :: a, b
     integer :: errors, i
+    type(c_ptr) :: gv
+
     errors = 0
 
     do i = -32768, 32767
        a = int(i,c_int16_t)
-       b = g_variant_get_int16(g_variant_new_int16 (a))
+       gv = g_variant_new_int16(a)
+       b = g_variant_get_int16(gv)
        if (a /= b) then
           write(1,*) "ERROR g_variant_get_int16:", a, b
           errors = errors + 1
        end if
+       call g_variant_unref(gv)
     end do
     test_int16_in_out = errors
   end function test_int16_in_out
@@ -368,23 +382,26 @@ contains
     integer :: errors
     integer(c_int32_t) :: r, rmin, rmax
     integer(c_int32_t) :: a, b
-  !GVariant *          g_variant_new_int32    (gint32 value);
-  !gint32              g_variant_get_int32                 (GVariant *value);
+    type(c_ptr) :: gv
+    !GVariant *          g_variant_new_int32    (gint32 value);
+    !gint32              g_variant_get_int32                 (GVariant *value);
     errors = 0
     do a = -huge(b), huge(b), +65536
-      b = g_variant_get_int32(g_variant_new_int32 (a))
+      gv = g_variant_new_int32(a)
+      b = g_variant_get_int32(gv)
       if (a /= b) then
         write(1,*) "ERROR g_variant_get_int32:", a, b
         errors = errors + 1
       end if
+      call g_variant_unref(gv)
     end do
-  !    ! gint32 g_random_int_range (gint32 begin, gint32 end);
-  !    function g_random_int_range(begin, end) bind(c) 
-  !      use, intrinsic :: iso_c_binding, only: c_int32_t
-  !      integer(c_int32_t) :: g_random_int_range
-  !      integer(c_int32_t), value :: begin
-  !      integer(c_int32_t), value :: end
-  !    end function
+    !    ! gint32 g_random_int_range (gint32 begin, gint32 end);
+    !    function g_random_int_range(begin, end) bind(c) 
+    !      use, intrinsic :: iso_c_binding, only: c_int32_t
+    !      integer(c_int32_t) :: g_random_int_range
+    !      integer(c_int32_t), value :: begin
+    !      integer(c_int32_t), value :: end
+    !    end function
     rmin = -10
     rmax = +100
     do i = 1, 10000, +1
@@ -404,6 +421,8 @@ contains
     integer :: errors
     integer(c_int32_t) :: a, b
     integer(c_int64_t) :: c, d
+    type(c_ptr) :: gv
+
     errors = 0
   ! INTEGER(4) ranges from -2147483648 to +2147483647
   ! uint32 ranges from 0 to 4294967295
@@ -415,22 +434,27 @@ contains
   ! loop will never end...
   !***********************************
     do a = 0, 2147483647-65536, +65536
-      b = g_variant_get_uint32(g_variant_new_uint32(a))
+      gv = g_variant_new_uint32(a)
+      b = g_variant_get_uint32(gv)
       if (a /= b) then
         write(1,*) "ERROR g_variant_get_uint32:", a, b
         errors = errors + 1
       end if
+      call g_variant_unref(gv)
     end do
     a = 2147483647
-    b = g_variant_get_uint32(g_variant_new_uint32(a))
+    gv = g_variant_new_uint32(a)
+    b = g_variant_get_uint32(gv)
     if (a /= b) then
       write(1,*) "ERROR g_variant_get_uint32:", a, b
       errors = errors + 1
     end if
+    call g_variant_unref(gv)
 
     do c = 2147483648_8, 4294967295_8, +65536
       a = transfer(c, a)
-      b = g_variant_get_uint32(g_variant_new_uint32(a))
+      gv = g_variant_new_uint32(a)
+      b = g_variant_get_uint32(gv)
       d = transfer(b, d)
       do i = bit_size(b),  bit_size(d)-1
         d= ibclr(d, i)
@@ -456,7 +480,9 @@ contains
         write(1,*) "ERROR g_variant_get_uint32:", a, b
         errors = errors + 1
       end if
-    end do    
+      call g_variant_unref(gv)
+    end do
+
     test_uint32_in_out = errors 
   end function test_uint32_in_out
 
@@ -466,17 +492,20 @@ contains
     integer(c_int16_t) :: i, j
     integer :: errors 
     character(kind=c_char) :: a, b
-  !GVariant *          g_variant_new_byte     (guchar value);
-  !guchar              g_variant_get_byte     (GVariant *value);
+    type(c_ptr) :: gv
+    !GVariant *          g_variant_new_byte     (guchar value);
+    !guchar              g_variant_get_byte     (GVariant *value);
     errors = 0
     do i = 0, 255, +1
       a = char(i)
-      j = g_variant_get_byte(g_variant_new_byte (int(i,c_int8_t))) 
+      gv = g_variant_new_byte(int(i,c_int8_t))
+      j = g_variant_get_byte(gv)
       b = achar(j)
       if ((a /= b) .or. (iand(i,255_c_int16_t) /= iand(j, 255_c_int16_t))) then
         write(1,*) "ERROR test_guchar_in_out:", a, b, i, j
         errors = errors + 1
       end if
+      call g_variant_unref(gv)
     end do
     test_guchar_in_out = errors
   end function test_guchar_in_out
@@ -486,19 +515,23 @@ contains
     implicit none
     integer(c_int) :: l1, l2, l3, l4
     integer :: errors
+    type(c_ptr) :: gv
   !GVariant *          g_variant_new_boolean  (gboolean value);
   !gboolean            g_variant_get_boolean               (GVariant *value);
     errors = 0
     l1 = TRUE
-    l2 = g_variant_get_boolean(g_variant_new_boolean (l1))
+    gv = g_variant_new_boolean(l1)
+    l2 = g_variant_get_boolean(gv)
     print *, l1, l2
     if (l1 /= l2) then
         write(1,*) "ERROR g_variant_get_boolean:", l1, l2
         errors = errors + 1
     end if
+    call g_variant_unref(gv)
 
     l1 = FALSE
-    l2 = g_variant_get_boolean(g_variant_new_boolean (l1))
+    gv = g_variant_new_boolean(l1)
+    l2 = g_variant_get_boolean(gv)
     print *, l1, l2
     if (l1 /= l2) then
         write(1,*) "ERROR g_variant_get_boolean:", l1, l2
@@ -518,6 +551,7 @@ contains
       write(1,*) "ERROR g_hostname_is_ip_address:", l1, l2, l3, l4
       errors = errors + 1
     end if
+    call g_variant_unref(gv)
 
     test_gboolean_in_out = errors
   end function test_gboolean_in_out
