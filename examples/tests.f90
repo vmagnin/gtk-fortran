@@ -386,7 +386,15 @@ contains
     !GVariant *          g_variant_new_int32    (gint32 value);
     !gint32              g_variant_get_int32                 (GVariant *value);
     errors = 0
-    do a = -huge(b), huge(b), +65536
+    !***********************************
+    ! We must be careful because the following loop is undefined in the Fortran Standard:
+    ! do a = -huge(b), huge(b), +65536
+    !
+    ! Warning: DO loop at is undefined as it overflows [-Wundefined-do-loop]
+    ! With some compilers, it will run OK (GFortran), with others a will become <0 and the
+    ! loop will never end (ifort)...
+    !***********************************
+    do a = -huge(b), huge(b)-65536, +65536
       gv = g_variant_new_int32(a)
       b = g_variant_get_int32(gv)
       if (a /= b) then
