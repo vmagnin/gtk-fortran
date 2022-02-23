@@ -89,10 +89,9 @@ message(STATUS "System: ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_VERSION} ${CMAKE_SYS
 message(STATUS "Compiler: ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION} ${CMAKE_Fortran_COMPILER}")
 message(STATUS "Build type is: ${CMAKE_BUILD_TYPE}")
 # Print compilation flags :
-if (${CMAKE_BUILD_TYPE} STREQUAL "release")
-    message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS_RELEASE}")
-elseif(${CMAKE_BUILD_TYPE} STREQUAL "debug")
-    message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS_DEBUG}")
+string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE)
+if(CMAKE_Fortran_FLAGS OR CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE})
+  message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS} ${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE}}")
 endif()
 
 #===============================================================================
