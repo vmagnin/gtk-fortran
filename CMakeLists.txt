@@ -33,7 +33,7 @@
 # -D NO_BUILD_HL=true
 # -D INSTALL_EXAMPLES=true
 
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.7)
 
 # Include overwrites before setting up the project
 set(CMAKE_USER_MAKE_RULES_OVERRIDE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/DefaultFlags.cmake)
