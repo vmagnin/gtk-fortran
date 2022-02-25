@@ -33,7 +33,10 @@
 # -D NO_BUILD_HL=true
 # -D INSTALL_EXAMPLES=true
 
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.7)
+
+# Include overwrites before setting up the project
+set(CMAKE_USER_MAKE_RULES_OVERRIDE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/DefaultFlags.cmake)
 
 project(gtk-fortran Fortran)
 
@@ -80,35 +83,14 @@ endif()
 #===============================================================================
 # Setting compilation flags for various compilers and build types:
 #===============================================================================
-if (${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
-    # gfortran compiler:
-    set(CMAKE_Fortran_FLAGS_DEBUG
-        # Only gtkf-sketcher.f90 needs Fortran 2008 for execute_command_line():
-        "-g -pthread -Wall -Wextra -pedantic -std=f2008 -Wtabs -fcheck=all -fbacktrace -Wno-unused-dummy-argument")
-    set(CMAKE_Fortran_FLAGS_RELEASE "-pthread -O3 -mtune=native -march=native")
-    if (UNIX)
-        set(CMAKE_EXE_LINKER_FLAGS "-rdynamic")
-    endif()
-elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
-    # ifort compiler:    set(GTKname "gtk+-${GTKv}.0")
-    set(CMAKE_Fortran_FLAGS_DEBUG "-g -warn all")
-    set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
-# >>> You can add here other elseif() for other specific compilers...
-else()
-    # Standard flags for all the other compilers:
-    set(CMAKE_Fortran_FLAGS_DEBUG "-g")
-    set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
-endif()
-
 # Print system, compiler CMake ID, version and path:
 message(STATUS "System: ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_VERSION} ${CMAKE_SYSTEM_PROCESSOR}")
 message(STATUS "Compiler: ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION} ${CMAKE_Fortran_COMPILER}")
 message(STATUS "Build type is: ${CMAKE_BUILD_TYPE}")
 # Print compilation flags :
-if (${CMAKE_BUILD_TYPE} STREQUAL "release")
-    message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS_RELEASE}")
-elseif(${CMAKE_BUILD_TYPE} STREQUAL "debug")
-    message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS_DEBUG}")
+string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE)
+if(CMAKE_Fortran_FLAGS OR CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE})
+  message(STATUS "Compilation flags: ${CMAKE_Fortran_FLAGS} ${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE}}")
 endif()
 
 #===============================================================================
