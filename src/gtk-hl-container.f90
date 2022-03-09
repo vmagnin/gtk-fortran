@@ -120,7 +120,7 @@ contains
     
     ! Commandline arguments argc, argv are not passed.
     ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-run
-    status = g_application_run(app, 0_c_int, c_null_ptr)
+    status = g_application_run(app, 0_c_int, [c_null_ptr])
 
     call g_object_unref(app)
   end function hl_gtk_application_new

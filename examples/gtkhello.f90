@@ -155,7 +155,7 @@ program gtkhello
   ! Now, the whole application will be managed by GLib (=> main loop).
   ! Note that commandline arguments argc, argv are not passed.
   ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-run
-  status = g_application_run(app, 0_c_int, c_null_ptr)
+  status = g_application_run(app, 0_c_int, [c_null_ptr])
 
   print *, "You have exited the GLib main loop, bye, bye..."
 

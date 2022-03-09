@@ -179,7 +179,7 @@ program cairo_basics_click
                             & G_APPLICATION_FLAGS_NONE)
   call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), &
                       & c_null_ptr)
-  exit_status = g_application_run(app, 0_c_int, c_null_ptr)
+  exit_status = g_application_run(app, 0_c_int, [c_null_ptr])
   call g_object_unref(app)
 end program cairo_basics_click
 

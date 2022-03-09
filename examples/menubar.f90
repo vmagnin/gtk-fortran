@@ -184,6 +184,6 @@ program menu_example
   call g_signal_connect(app, "activate"//c_null_char, &
                       & c_funloc(activate), c_null_ptr)
 
-  app_stat = g_application_run(app, 0_c_int, c_null_ptr)
+  app_stat = g_application_run(app, 0_c_int, [c_null_ptr])
   call g_object_unref (app)
 end program
