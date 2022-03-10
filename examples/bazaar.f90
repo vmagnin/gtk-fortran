@@ -22,8 +22,8 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
-! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus, Ian Harvey
-! GTK 4 version: vmagnin 2020-05-28, 2021-01-28
+! Contributors: Vincent Magnin, James Tappin
+! GTK 4 version: vmagnin 2020-05-28, 2021-01-28, 2022-03-10
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -68,6 +68,7 @@ module various_functions
   end subroutine some_glib_functions
 end module various_functions
 
+
 module my_widgets
   use, intrinsic :: iso_c_binding
 
@@ -82,11 +83,13 @@ module my_widgets
   type(c_ptr) :: dialog
 end module
 
+
 module handlers
   use, intrinsic :: iso_c_binding, only: c_null_ptr, c_null_char
 
   use gtk, only: gtk_about_dialog_new, gtk_about_dialog_set_authors, &
-  & gtk_about_dialog_set_comments, gtk_about_dialog_set_license, &
+  & gtk_about_dialog_set_comments, &
+  & gtk_about_dialog_set_license_type, GTK_LICENSE_GPL_3_0, &
   & gtk_about_dialog_set_program_name, gtk_application_window_new, &
   & gtk_about_dialog_set_website, gtk_window_set_transient_for, &
   & gtk_button_new, gtk_button_new_with_label, &
@@ -135,7 +138,6 @@ contains
     use my_widgets
     use various_functions
 
-    implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
 
     ! Create the window:
@@ -144,7 +146,8 @@ contains
     call gtk_window_set_title(window, "A great bazaar to test widgets..."//&
                                       &c_null_char)
 
-    print '(A4,I0,A1,I0,A1,I0)', "GTK ", gtk_get_major_version(),".", gtk_get_minor_version(), ".", gtk_get_micro_version()
+    print '(A4,I0,A1,I0,A1,I0)', "GTK ", gtk_get_major_version(),".", &
+         & gtk_get_minor_version(), ".", gtk_get_micro_version()
     call some_glib_functions()
 
     !******************************************************************
@@ -157,7 +160,7 @@ contains
     call gtk_widget_set_margin_start (table, 10_c_int)
     call gtk_widget_set_margin_end (table, 10_c_int)
     call gtk_widget_set_margin_top (table, 10_c_int)
-    call gtk_widget_set_margin_bottom (table, 10_c_int)  
+    call gtk_widget_set_margin_bottom (table, 10_c_int)
     call gtk_window_set_child(window, table)
 
     button1 = gtk_button_new_with_label ("Button1"//c_null_char)
@@ -180,12 +183,12 @@ contains
     call gtk_grid_attach(table, label1, 0_c_int, 1_c_int, 1_c_int, 1_c_int)
 
     entry1 = gtk_entry_new()
-    call gtk_grid_attach(table, entry1, 1_c_int, 1_c_int, 1_c_int, 1_c_int)  
+    call gtk_grid_attach(table, entry1, 1_c_int, 1_c_int, 1_c_int, 1_c_int)
 
     progress = gtk_progress_bar_new()
     call gtk_progress_bar_set_fraction (progress, 0.15d0)
     call gtk_progress_bar_set_text (progress, "My progress bar"//c_null_char)
-    call gtk_grid_attach(table, progress, 1_c_int, 2_c_int, 3_c_int, 1_c_int)  
+    call gtk_grid_attach(table, progress, 1_c_int, 2_c_int, 3_c_int, 1_c_int)
 
     ! https://developer.gnome.org/gtk4/stable/GtkTextView.html#gtk-text-view-new
     view = gtk_text_view_new()
@@ -195,27 +198,24 @@ contains
         &"You can edit this text. It will be scrollable."//c_null_char, -1_c_int)
     scrolled_window = gtk_scrolled_window_new()
     call gtk_scrolled_window_set_child(scrolled_window, view)
-    call gtk_grid_attach(table, scrolled_window, 0_c_int, 3_c_int, 3_c_int, 3_c_int)  
+    call gtk_grid_attach(table, scrolled_window, 0_c_int, 3_c_int, 3_c_int, 3_c_int)
 
     my_drawing_area = gtk_drawing_area_new()
+    ! https://docs.gtk.org/gtk4/method.DrawingArea.set_draw_func.html
     call gtk_drawing_area_set_draw_func(my_drawing_area, &
                      & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
-    call gtk_grid_attach(table, my_drawing_area, 0_c_int, 6_c_int, 3_c_int, 6_c_int)  
+    call gtk_grid_attach(table, my_drawing_area, 0_c_int, 6_c_int, 3_c_int, 6_c_int)
 
-    !******************************************************************
-    ! If you don't show it, nothing will appear on screen...
     call gtk_widget_show(window)
   end subroutine activate
 
   ! "It is called whenever GTK needs to draw the contents of the drawing area
   ! to the screen."
-  ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
     use, intrinsic :: iso_c_binding, only: c_ptr, c_int, c_char
 
-    implicit none
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
-    integer(c_int), value, intent(in) :: width, height    
+    integer(c_int), value, intent(in) :: width, height
     type(c_ptr) :: my_pixbuf
     character(kind=c_char), dimension(:), pointer :: pixel
     integer(kind=c_int) :: i, nch, rowstride
@@ -291,6 +291,7 @@ contains
   subroutine destroy (widget, gdata) bind(c)
     use, intrinsic :: iso_c_binding, only: c_ptr
     use gtk_sup, only: c_f_string_copy
+
     type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr) :: buffer
     character(len=512) :: my_string
@@ -324,13 +325,22 @@ contains
   ! GtkButton signal:
   subroutine aboutbutton (widget, gdata) bind(c)
     use, intrinsic :: iso_c_binding, only: c_ptr
+    use gtk_sup, only: f_c_string
+
     type(c_ptr), value, intent(in) :: widget, gdata
+    ! Authors of bazaar.f90 (list returned by git blame bazaar.f90):
+    character(len=14, kind=c_char), dimension(2), parameter :: authors = &
+                                          & ["Vincent MAGNIN", "James TAPPIN  "]
+    character(kind=c_char), dimension(:), allocatable :: string
+    character(kind=c_char), pointer, dimension(:) :: credit
+    type(c_ptr), dimension(:), allocatable :: c_ptr_array
+    integer :: i
 
     dialog = gtk_about_dialog_new()
     ! https://developer.gnome.org/gtk4/stable/GtkWindow.html#gtk-window-set-transient-for
     call gtk_window_set_transient_for(dialog, window)
-    call gtk_about_dialog_set_program_name(dialog, "gtk-fortran"//c_null_char)
-    call gtk_about_dialog_set_license(dialog, "GNU GPLv3"//c_null_char)
+    call gtk_about_dialog_set_program_name(dialog, "The gtk-fortran bazaar"//c_null_char)
+    call gtk_about_dialog_set_license_type(dialog, GTK_LICENSE_GPL_3_0)
     call gtk_about_dialog_set_comments(dialog, "The gtk-fortran project &
     & aims to offer scientists programming in Fortran a cross-platform library &
     &to build Graphical User Interfaces (GUI)."//c_new_line//" Gtk-fortran&
@@ -341,10 +351,26 @@ contains
     &Linux, UNIX, Windows and MacOs."//c_null_char)
     call gtk_about_dialog_set_website(dialog, &
                   & "https://github.com/vmagnin/gtk-fortran/wiki"//c_null_char)
-    
-    !TODO: to add authors we need a pointer toward null terminated array of strings.
-    !call gtk_about_dialog_set_authors(dialog, authors_ptr)
- 
+
+    ! To add authors we need a pointer toward a null terminated array of strings.
+    ! This code comes from src/gtk-hl-dialog.f90:
+    allocate(c_ptr_array(size(authors)+1))
+
+    do i = 1, size(authors)
+      call f_c_string(authors(i), string)
+      allocate(credit(size(string)))
+      ! A Fortran pointer toward the Fortran string:
+      credit(:) = string(:)
+      ! Store the C address in the array:
+      c_ptr_array(i) = c_loc(credit(1))
+      nullify(credit)
+    end do
+    ! The array must be null terminated:
+    c_ptr_array(size(authors)+1) = c_null_ptr
+    ! https://docs.gtk.org/gtk3/method.AboutDialog.set_authors.html
+    call gtk_about_dialog_set_authors(dialog, c_ptr_array)
+    deallocate(c_ptr_array)
+
     call gtk_widget_show(dialog)
   end subroutine aboutbutton
 end module handlers
