@@ -20,6 +20,6 @@ program my_first_gtk_app
 
   app = gtk_application_new("gtk-fortran.my_first_gtk_app"//c_null_char, &
                           & G_APPLICATION_FLAGS_NONE)
-  status = g_application_run(app, 0_c_int, c_null_ptr)
+  status = g_application_run(app, 0_c_int, [c_null_ptr])
   call g_object_unref(app)
 end program
