@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Development]
+
+### Added
+- `examples/bazaar.f90`: the About button credits the authors of that file.
+
+
 ## [gtk-fortran 4.1] 2021-10-22
 The gtk-4-fortran library has been generated from GTK 4.4.0 and GLib 2.70.0 under Fedora 35.
 

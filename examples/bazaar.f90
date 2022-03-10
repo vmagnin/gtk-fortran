@@ -22,8 +22,8 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
-! Contributors: Vincent Magnin, Jerry DeLisle, Tobias Burnus, Ian Harvey
-! GTK 4 version: vmagnin 2020-05-28, 2021-01-28
+! Contributors: Vincent Magnin, James Tappin
+! GTK 4 version: vmagnin 2020-05-28, 2021-01-28, 2022-03-10
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -324,12 +324,21 @@ contains
   ! GtkButton signal:
   subroutine aboutbutton (widget, gdata) bind(c)
     use, intrinsic :: iso_c_binding, only: c_ptr
+    use gtk_sup, only: f_c_string
+
     type(c_ptr), value, intent(in) :: widget, gdata
+    ! Authors of bazaar.f90 (list returned by git blame bazaar.f90):
+    character(len=14, kind=c_char), dimension(2), parameter :: authors = &
+                                          & ["Vincent MAGNIN", "James TAPPIN  "]
+    character(kind=c_char), dimension(:), allocatable :: string
+    character(kind=c_char), pointer, dimension(:) :: credit
+    type(c_ptr), dimension(:), allocatable :: c_ptr_array
+    integer :: i
 
     dialog = gtk_about_dialog_new()
     ! https://developer.gnome.org/gtk4/stable/GtkWindow.html#gtk-window-set-transient-for
     call gtk_window_set_transient_for(dialog, window)
-    call gtk_about_dialog_set_program_name(dialog, "gtk-fortran"//c_null_char)
+    call gtk_about_dialog_set_program_name(dialog, "The gtk-fortran bazaar"//c_null_char)
     call gtk_about_dialog_set_license(dialog, "GNU GPLv3"//c_null_char)
     call gtk_about_dialog_set_comments(dialog, "The gtk-fortran project &
     & aims to offer scientists programming in Fortran a cross-platform library &
@@ -341,10 +350,26 @@ contains
     &Linux, UNIX, Windows and MacOs."//c_null_char)
     call gtk_about_dialog_set_website(dialog, &
                   & "https://github.com/vmagnin/gtk-fortran/wiki"//c_null_char)
-    
-    !TODO: to add authors we need a pointer toward null terminated array of strings.
-    !call gtk_about_dialog_set_authors(dialog, authors_ptr)
- 
+
+    ! To add authors we need a pointer toward a null terminated array of strings.
+    ! This code comes from src/gtk-hl-dialog.f90:
+    allocate(c_ptr_array(size(authors)+1))
+
+    do i = 1, size(authors)
+      call f_c_string(authors(i), string)
+      allocate(credit(size(string)))
+      ! A Fortran pointer toward the Fortran string:
+      credit(:) = string(:)
+      ! Store the C address in the array:
+      c_ptr_array(i) = c_loc(credit(1))
+      nullify(credit)
+    end do
+    ! The array must be null terminated:
+    c_ptr_array(size(authors)+1) = c_null_ptr
+    ! https://docs.gtk.org/gtk3/method.AboutDialog.set_authors.html
+    call gtk_about_dialog_set_authors(dialog, c_ptr_array)
+    deallocate(c_ptr_array)
+
     call gtk_widget_show(dialog)
   end subroutine aboutbutton
 end module handlers
