@@ -86,7 +86,8 @@ module handlers
   use, intrinsic :: iso_c_binding, only: c_null_ptr, c_null_char
 
   use gtk, only: gtk_about_dialog_new, gtk_about_dialog_set_authors, &
-  & gtk_about_dialog_set_comments, gtk_about_dialog_set_license, &
+  & gtk_about_dialog_set_comments, &
+  & gtk_about_dialog_set_license_type, GTK_LICENSE_GPL_3_0, &
   & gtk_about_dialog_set_program_name, gtk_application_window_new, &
   & gtk_about_dialog_set_website, gtk_window_set_transient_for, &
   & gtk_button_new, gtk_button_new_with_label, &
@@ -339,7 +340,7 @@ contains
     ! https://developer.gnome.org/gtk4/stable/GtkWindow.html#gtk-window-set-transient-for
     call gtk_window_set_transient_for(dialog, window)
     call gtk_about_dialog_set_program_name(dialog, "The gtk-fortran bazaar"//c_null_char)
-    call gtk_about_dialog_set_license(dialog, "GNU GPLv3"//c_null_char)
+    call gtk_about_dialog_set_license_type(dialog, GTK_LICENSE_GPL_3_0)
     call gtk_about_dialog_set_comments(dialog, "The gtk-fortran project &
     & aims to offer scientists programming in Fortran a cross-platform library &
     &to build Graphical User Interfaces (GUI)."//c_new_line//" Gtk-fortran&

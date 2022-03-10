@@ -4,7 +4,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ## [Development]
 
 ### Added
-- `examples/bazaar.f90`: the About button credits the authors of that file.
+- `examples/bazaar.f90`: the About button credits the authors of that file. The call to gtk_about_dialog_set_license() is replaced by the more convenient gtk_about_dialog_set_license_type().
 
 
 ## [gtk-fortran 4.1] 2021-10-22
