@@ -4,10 +4,15 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ## [Development]
 
 ### Added
-- `examples/bazaar.f90`: the About button credits the authors of that file. The call to gtk_about_dialog_set_license() is replaced by the more convenient gtk_about_dialog_set_license_type().
+- `examples/bazaar.f90`: the About button credits the authors of that file. The call to `gtk_about_dialog_set_license()` is replaced by the more convenient `gtk_about_dialog_set_license_type()`.
+
+### Changed
+- Better handling of default compiler flags, using flags like `CMAKE_Fortran_FLAGS_RELEASE_INIT` (CMake>=3.7 required). A file `cmake/DefaultFlags.cmake` was added. Backported to gtk3 branch.
+- `gtkbuilder2.f90`: replaced `gtk_builder_add_from_file()` by `gtk_builder_new_from_file()`.
 
 ### Fixed
-- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of ``c_null_ptr`. Needed with the NAG Fortran compiler.
+- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of ``c_null_ptr`. Needed with the NAG Fortran compiler. Backported to gtk3 branch.
+- `examples/tests.f90`: loop undefined with ifort. And now uses `g_variant_unref()`.
 
 ## [gtk-fortran 4.1] 2021-10-22
 The gtk-4-fortran library has been generated from GTK 4.4.0 and GLib 2.70.0 under Fedora 35.
