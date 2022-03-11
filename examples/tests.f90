@@ -260,8 +260,7 @@ contains
     ! C language: typedef unsigned long   gulong;
     do i = 1, 31, +1
       ! Writing 2**i - 1 could overflow with some compilers (ifort):
-      nb = 2**(i-1)
-      nb = nb + (nb - 1)
+      nb = 2_c_long**i - 1
       r = g_bit_storage(nb)
       if (i /= r) then
         write(1,*) "ERROR g_bit_storage:", i, nb, r
