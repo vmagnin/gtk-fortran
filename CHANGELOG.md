@@ -1,14 +1,33 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Development version gtk4]
+## [Development]
+
+### Added
+- `examples/bazaar.f90`: the About button credits the authors of that file. The call to `gtk_about_dialog_set_license()` is replaced by the more convenient `gtk_about_dialog_set_license_type()`.
+
+### Changed
+- Better handling of default compiler flags, using flags like `CMAKE_Fortran_FLAGS_RELEASE_INIT` (CMake>=3.7 required). A file `cmake/DefaultFlags.cmake` was added. Backported to gtk3 branch.
+- `gtkbuilder2.f90`: replaced `gtk_builder_add_from_file()` by `gtk_builder_new_from_file()`.
+
+### Fixed
+- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of ``c_null_ptr`. Needed with the NAG Fortran compiler. Backported to gtk3 branch.
+- `examples/tests.f90`: loop undefined with ifort. And now uses `g_variant_unref()`.
+
+## [gtk-fortran 4.1] 2021-10-22
+The gtk-4-fortran library has been generated from GTK 4.4.0 and GLib 2.70.0 under Fedora 35.
 
 ### Added
 - The cfwrapper has a new required parameter `-v` to set the gtk-fortran semantic version (major.minor.patch). It is written in the `VERSIONS` file (used by CMake, `src/extract_events.pl`, `src/alt_build_test.sh`) and `codemeta.json`. Backported to the gtk3 branch.
 
 ### Changed
 - The compiler flags for release is now `-O3` instead of `-O3 -mtune=native -march=native`.
+- The `-warn nounused` flag was added for ifort.
 - The Fortran / C interfaces now use the `import ::` statement instead of `use, intrinsic :: iso_c_binding, only:`.
+- In some examples, a module was added to contain the scientific subroutines: `julia_pixbuf.f90`, `mandelbrot_pixbuf.f90`, `cairo-tests.f90`.
+
+### Removed
+- `examples/gtkbuilder.f90`: `gtk_builder_connect_signals_full` being removed from GTK 4, this example has become identical to `gtkbuilder2.f90`.
 
 
 ## [gtk-fortran 3.24.30] 2021-09-08
@@ -47,6 +66,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - src/atk-auto.f90: removed from GTK 4 (deprecated API).
 - src/gtk-hl-accelerator.f90: deprecated API.
 - src/gtk-hl-menu.f90 and examples/hl_menu.f90: deprecated API.
+- src/gtk-hl-chooser.f90, bazaar.f90, hl_choosers.f90: GtkFileChooserButton has been removed from GTK 4.
 - meson.build experimental files were removed. They are now apart in the gtk4-dev-meson branch.
 
 
