@@ -20,7 +20,7 @@
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2021-10-23
+! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2022-03-11
 ! ****************
 ! Automated tests
 ! ****************
@@ -248,16 +248,19 @@ contains
     integer(c_long) :: nb
     integer(c_int) :: r
     !    ! guint g_bit_storage (gulong number) G_GNUC_CONST;
-    !    function g_bit_storage(number) bind(c) 
+    !    function g_bit_storage(number) bind(c)
     !      use, intrinsic :: iso_c_binding, only: c_int, c_long
     !      integer(c_int) :: g_bit_storage
     !      integer(c_long), value :: number
     !    end function
     errors = 0
-    ! Fortran integers are signed. 32 bits integers are in [-2147483648, +2147483647].
+    ! Fortran integers are signed. 32 bits integers are in [-2147483648, +2147483647],
+    ! and the C language guarantee [-2147483647, +2147483647] for long.
     ! C language: typedef unsigned long   gulong;
     do i = 1, 31, +1
-      nb = 2**i-1
+      ! Writing 2**i - 1 could overflow with some compilers (ifort):
+      nb = 2**(i-1)
+      nb = nb + (nb - 1)
       r = g_bit_storage(nb)
       if (i /= r) then
         write(1,*) "ERROR g_bit_storage:", i, nb, r
