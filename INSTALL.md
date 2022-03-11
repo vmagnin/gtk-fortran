@@ -1,9 +1,9 @@
-Last update: 2021-08-02
+Last update: 2022-03-11
 
 Building & Installing gtk-fortran
 ================================
 
-The build install system uses `cmake`. This file gives quick instructions to install gtk-fortran. See the Wiki documentation for more detailed instructions.
+The build install system uses `cmake`. This file gives quick instructions to install gtk-fortran. **See the [Wiki documentation](https://github.com/vmagnin/gtk-fortran/wiki#installation-and-building) for more detailed instructions.**
 
 UNIX/Linux
 ----------
@@ -41,6 +41,14 @@ Useful variables that are specific to gtk-fortran are:
 
 To interactively control the build, use `ccmake` in place of `cmake`
 
+Default compiler options can be overridden, for example:
+
+    cmake -D CMAKE_Fortran_FLAGS_RELEASE="-O2 -std=f2018" ..
+
+The system default Fortran compiler can be overridden, for example to use the Intel ifx compiler:
+
+    cmake -D CMAKE_Fortran_COMPILER:FILEPATH=$(which ifx) ..
+
 **************************************************************************
 Sometimes it can help to clean out the build directory and re-run `cmake`:
 
@@ -52,15 +60,15 @@ Sometimes it can help to clean out the build directory and re-run `cmake`:
 Other systems (Windows, macOS, FreeBSD...)
 -------
 
-See the Wiki documentation for detailed instructions.
+See the Wiki documentation for specific and detailed instructions.
 
 
 Dependencies
 ------------
 
-- A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran.
+- A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran, ifort, ifx...
 - GTK and the associated development files. For 4.x use the "gtk4" branch.
-- CMake >= 3.4 or better and pkg-config.
+- CMake 3.7 or higher and pkg-config.
 - PLplot is used if available (you need the development files).
 
 
@@ -93,8 +101,8 @@ if you use csh or one of its derivatives)
 this will depend on your distribution, Ubuntu looks there by default,
 Pardus and Manjaro don't.
 
-Uninstalling GtkFortran
-=======================
+Uninstalling gtk-fortran
+========================
 
     sudo make uninstall
 
