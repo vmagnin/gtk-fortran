@@ -1,33 +1,34 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
-! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
+! This file is part of the gtk-fortran GTK Fortran Interface library.
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
+!
 ! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2022-03-11
 ! ****************
 ! Automated tests
 ! ****************
 ! This program is testing things about ISO_C_BINDING and the relations
-! between Fortran types and GLib types. If it generates errors, please send us 
+! between Fortran types and GLib types. If it generates errors, please send us
 ! the tests_errors.txt file with informations on your system 
-! (OS version, GTK+ version, compiler...)
+! (OS version, GTK version, compiler...)
 
 module tests
   use gtk, only: TRUE, FALSE
@@ -286,7 +287,7 @@ contains
     !end function
 
     !! guint16 g_variant_get_uint16 (GVariant *value);
-    !function g_variant_get_uint16(value) bind(c) 
+    !function g_variant_get_uint16(value) bind(c)
     !  use, intrinsic :: iso_c_binding, only: c_int16_t, c_ptr
     !  integer(c_int16_t) :: g_variant_get_uint16
     !  type(c_ptr), value :: value
@@ -330,23 +331,7 @@ contains
       do i = bit_size(b),  bit_size(d)-1
         d= ibclr(d, i)
       end do
-!      write(1,*) c, a, b, d
-!      do i = 0,  bit_size(c)-1
-!        write(*, "(l1)", advance="no") btest(c, i)
-!      end do
-!      write(*,*)
-!      do i = 0,  bit_size(a)-1
-!        write(*, "(l1)", advance="no") btest(a, i)
-!      end do
-!      write(*,*)
-!      do i = 0,  bit_size(b)-1
-!        write(*, "(l1)", advance="no") btest(b, i)
-!      end do
-!      write(*,*)    
-!      do i = 0,  bit_size(d)-1
-!        write(*, "(l1)", advance="no") btest(d, i)
-!      end do
-!      write(*,*)    
+
       if (a /= b) then
         write(1,*) "ERROR g_variant_get_uint16:", a, b
         errors = errors + 1
@@ -387,7 +372,7 @@ contains
     integer(c_int32_t) :: a, b
     type(c_ptr) :: gv
     !GVariant *          g_variant_new_int32    (gint32 value);
-    !gint32              g_variant_get_int32                 (GVariant *value);
+    !gint32              g_variant_get_int32    (GVariant *value);
     errors = 0
     !***********************************
     ! We must be careful because the following loop is undefined in the Fortran Standard:
@@ -408,7 +393,7 @@ contains
     end do
 
     !    ! gint32 g_random_int_range (gint32 begin, gint32 end);
-    !    function g_random_int_range(begin, end) bind(c) 
+    !    function g_random_int_range(begin, end) bind(c)
     !      use, intrinsic :: iso_c_binding, only: c_int32_t
     !      integer(c_int32_t) :: g_random_int_range
     !      integer(c_int32_t), value :: begin
@@ -425,7 +410,7 @@ contains
       end if
     end do
 
-    test_int32_in_out = errors 
+    test_int32_in_out = errors
   end function test_int32_in_out
 
 
@@ -473,23 +458,7 @@ contains
       do i = bit_size(b),  bit_size(d)-1
         d= ibclr(d, i)
       end do
-!      write(1,*) c, a, b, d
-!      do i = 0,  bit_size(c)-1
-!        write(*, "(l1)", advance="no") btest(c, i)
-!      end do
-!      write(*,*)
-!      do i = 0,  bit_size(a)-1
-!        write(*, "(l1)", advance="no") btest(a, i)
-!      end do
-!      write(*,*)
-!      do i = 0,  bit_size(b)-1
-!        write(*, "(l1)", advance="no") btest(b, i)
-!      end do
-!      write(*,*)    
-!      do i = 0,  bit_size(d)-1
-!        write(*, "(l1)", advance="no") btest(d, i)
-!      end do
-!      write(*,*)    
+
       if (a /= b) then
         write(1,*) "ERROR g_variant_get_uint32:", a, b
         errors = errors + 1
@@ -552,7 +521,7 @@ contains
     end if
 
   !      ! gboolean g_hostname_is_ip_address (const gchar *hostname);
-  !    function g_hostname_is_ip_address(hostname) bind(c) 
+  !    function g_hostname_is_ip_address(hostname) bind(c)
   !      use, intrinsic :: iso_c_binding, only: c_bool, c_char
   !      logical(c_bool) :: g_hostname_is_ip_address
   !      character(kind=c_char), dimension(*) :: hostname
@@ -572,25 +541,6 @@ contains
 
 end module tests
 
-!guint8              g_date_get_days_in_month            (GDateMonth month,
-!                                                         GDateYear year);
-!GSocketAddress *    g_inet_socket_address_new           (GInetAddress *address,
-!                                                         guint16 port);
-!guint16             g_inet_socket_address_get_port      (GInetSocketAddress *address);
-
-!GVariant *                       g_variant_new_int64    (gint64 value);
-!GVariant *                       g_variant_new_uint64   (guint64 value);
-!GVariant *                       g_variant_new_string   (const gchar *string);
-
-!gint64              g_variant_get_int64                 (GVariant *value);
-!guint64             g_variant_get_uint64                (GVariant *value);
-!const gchar *                    g_variant_get_string   (GVariant *value,
-!                                                         gsize *length);
-
-! iso_c types used in gtk-fortran:
-! ['c_ptr', 'c_char', 'c_funptr', 'c_int', 'c_int64_t', 'c_bool', 
-! 'c_size_t', 'c_int16_t', 'c_int32_t', 'c_double', 'c_long', 'c_long_double', 
-! 'c_int8_t', 'c_float']
 
 program gtk_fortran_test
   use tests
