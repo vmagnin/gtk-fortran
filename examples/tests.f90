@@ -414,8 +414,9 @@ contains
     rmin = -10
     rmax = +100
     do i = 1, 10000, +1
+      ! Returns a random number over the range [rmin..rmax-1]:
       r = g_random_int_range(rmin, rmax)
-      if ((r<rmin).or.(r>rmax)) then
+      if ((r < rmin).or.(r >= rmax)) then
         write(1,*) "ERROR g_random_double_range:", r
         errors = errors + 1
       end if
