@@ -23,7 +23,7 @@
 ! -----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modifications: 2013-01-31, vmagnin 2020-06-17 (GTK 4), 2020-08-25
+! Last modifications: 2013-01-31, vmagnin 2020-06-17 (GTK 4), 2022-03-29
 ! -----------------------------------------------------------------------------
 
 !*
@@ -242,7 +242,7 @@ contains
     end if
     isurface = cairo_image_surface_create(s_type, szx, szy)
     isurface = cairo_surface_reference(isurface)   ! Prevent accidental deletion
-    call g_object_set_data(plota, "backing-surface", isurface)
+    call g_object_set_data(plota, "backing-surface"//c_null_char, isurface)
 
     ! Realize signal
     if (present(realize)) then
@@ -452,7 +452,7 @@ contains
     ! AREA: c_ptr: required: The drawing area whose surface is required.
     !-
 
-    isurface = g_object_get_data(area, "backing-surface")
+    isurface = g_object_get_data(area, "backing-surface"//c_null_char)
 
   end function hl_gtk_drawing_area_get_surface
 
@@ -568,7 +568,7 @@ contains
 
     rv = FALSE
 
-    isurface = g_object_get_data(area, "backing-surface")
+    isurface = g_object_get_data(area, "backing-surface"//c_null_char)
     if (.not. c_associated(isurface)) then
        write(error_unit,*) &
             & 'hl_gtk_drawing_area_expose_cb: Backing surface is NULL'
@@ -597,7 +597,7 @@ contains
 
     type(c_ptr) :: isurface
 
-    isurface = g_object_get_data(area, "backing-surface")
+    isurface = g_object_get_data(area, "backing-surface"//c_null_char)
     if (c_associated(isurface)) call cairo_surface_destroy(isurface)
 
   end subroutine hl_gtk_drawing_area_destroy_cb
@@ -632,7 +632,7 @@ contains
 
     type(c_ptr) :: isurface
 
-    isurface = g_object_get_data(area, "backing-surface")
+    isurface = g_object_get_data(area, "backing-surface"//c_null_char)
     if (.not. c_associated(isurface)) then
        cr = C_NULL_PTR
        write(error_unit,*) "hl_gtk_pixbuf_cairo_new:: Backing surface is NULL"
@@ -717,11 +717,11 @@ contains
 
     ! Get the backing store and make a new one with the right type. Then
     ! make that into the backing store.
-    cback_old = g_object_get_data(area, "backing-surface")
+    cback_old = g_object_get_data(area, "backing-surface"//c_null_char)
     s_type = cairo_image_surface_get_format(cback_old)
     cback = cairo_image_surface_create(s_type, szx, szy)
     cback = cairo_surface_reference(cback)   ! Prevent accidental deletion
-    call g_object_set_data(area, "backing-surface", cback)
+    call g_object_set_data(area, "backing-surface"//c_null_char, cback)
 
     ! If the copy keyword is set then make a copy from the old
     ! backing store to the new if the gdk surface is really there.
