@@ -500,7 +500,7 @@ contains
           do i = 0,xtop-1
              ioff = iroff + i*nchans
              fpixels(ioff:ioff+2) = pixels(1, i+1,j+1)
-             if (salpha) then 
+             if (salpha) then
                 fpixels(ioff+3) = -1_c_int8_t
              else if (nchans == 4) then
                 fpixels(ioff+3) = pixels(2, i+1,j+1)
@@ -610,7 +610,7 @@ contains
     ! YOFF: int: optional: The Y-offset at which to write the image.
     !
     ! This is normally called via the generic hl_gdk_pixbuf_set_pixels
-    ! interface. 
+    ! interface.
     ! N.B. To leave a gap at the "high" sides of the pixbuf, just use a
     ! smaller input array or array slice than the pixbuf size.
     !-
@@ -735,7 +735,7 @@ contains
     ! YOFF: int: optional: The Y-offset at which to write the image.
     !
     ! This is normally called via the generic hl_gdk_pixbuf_set_pixels
-    ! interface. 
+    ! interface.
     ! N.B. To leave a gap at the "high" sides of the pixbuf, just use a
     ! smaller input array or array slice than the pixbuf size.
     !-
@@ -911,7 +911,7 @@ contains
        if (present(ok)) ok = .false.
        call c_f_pointer(err, ferr)
        call c_f_string(ferr%message, ferrmsg)
-       if (present(error)) then 
+       if (present(error)) then
           error=trim(ferrmsg)
        else
           write(error_unit, *) "HL_GDK_PIXBUF_SAVE: "//trim(ferrmsg)
@@ -963,7 +963,7 @@ contains
        call c_f_string(gdk_pixbuf_format_get_name(fmt), names(i+1))
        if (present(description)) &
             & call c_f_string(gdk_pixbuf_format_get_description(fmt), &
-            & description(i+1)) 
+            & description(i+1))
        if (present(license)) &
             & call c_f_string(gdk_pixbuf_format_get_license(fmt), &
             & license(i+1))
@@ -1037,7 +1037,7 @@ contains
 
     if (present(description)) &
          & call c_f_string(gdk_pixbuf_format_get_description(fmt), &
-         & description) 
+         & description)
     if (present(license)) &
          & call c_f_string(gdk_pixbuf_format_get_license(fmt), &
          & license)
@@ -1117,7 +1117,7 @@ contains
        if (zidx == 0) zidx=len(mime_type)+1
        do i = 1, size(names)
           found = hl_gdk_pixbuf_format_info(names(i), mime_types=types)
-          if (any(types == mime_type(:zidx-1))) then 
+          if (any(types == mime_type(:zidx-1))) then
              name = names(i)
              exit
           end if
@@ -1127,7 +1127,7 @@ contains
        if (zidx == 0) zidx=len_trim(extension)+1
        do i = 1, size(names)
           found = hl_gdk_pixbuf_format_info(names(i), extensions=types)
-          if (any(types == extension(:zidx-1))) then 
+          if (any(types == extension(:zidx-1))) then
              name = names(i)
              exit
           end if

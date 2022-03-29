@@ -71,7 +71,7 @@ contains
     call hl_gtk_entry_get_text(widget, slim)
 
     read(slim, *, iostat=ios) ulim
-    if (ios /= 0) then 
+    if (ios /= 0) then
        print *, "Bad FP value: ", slim
        return
     else
@@ -90,7 +90,7 @@ contains
     call hl_gtk_entry_get_text(widget, slim)
 
     read(slim, *, iostat=ios) llim
-    if (ios /= 0) then 
+    if (ios /= 0) then
        print *, "Bad FP value: ", slim
        return
     else

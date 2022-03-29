@@ -34,7 +34,7 @@ module gtk_draw_hl
   ! be needed.
   !
   ! Note:
-  ! 
+  !
   ! This module has undergone a major rewrite which has considerably
   ! streamlined the code. To the ordinary user, the most noticable difference
   ! is that the backing image is now a cairo image surface rather than a
@@ -181,9 +181,9 @@ contains
     ! DATA_SIZE_ALLOCATE: c_ptr: optional: Data for size_allocate.
     ! CAIRO_STATUS: c_int: optional: Status code from the cairo surface.
     ! HSCROLL_POLICY: int: optional: Horizontal scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC). 
+    ! 		containing scroll window (default AUTOMATIC).
     ! VSCROLL_POLICY: int: optional: Vertical scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC). 
+    ! 		containing scroll window (default AUTOMATIC).
     !
     ! * If an explicit size is given then the drawing area cannot be made
     ! smaller than that by resizing the containing window
@@ -295,14 +295,14 @@ contains
          & c_funloc(hl_gtk_drawing_area_expose_cb), c_null_ptr, c_null_funptr)
     end if
 
-    ! We need a gesture controller to detect mouse clicks: 
+    ! We need a gesture controller to detect mouse clicks:
     ! https://developer.gnome.org/gtk4/stable/GtkGestureClick.html
     ! https://developer.gnome.org/gtk4/stable/GtkWidget.html#gtk-widget-add-controller
     if (present(button_press_event).OR.present(button_release_event)) then
        controller_c = gtk_gesture_click_new()
        ! 0 to listen to all buttons (button 1 by default):
        call gtk_gesture_single_set_button (controller_c, 0_c_int)
-       
+
        if (present(button_press_event)) then
          if (present(data_button_press)) then
            call g_signal_connect(controller_c, "pressed"//c_null_char, &
@@ -312,7 +312,7 @@ contains
                                & button_press_event)
          endif
        end if
-       
+
        if (present(button_release_event)) then
          if (present(data_button_release)) then
            call g_signal_connect(controller_c, "released"//c_null_char, &
@@ -579,7 +579,7 @@ contains
     ! the context used by plplot for the actual drawing.
 
     cr = event
-    call cairo_set_source_surface(cr, isurface, 0._c_double, 0._c_double) 
+    call cairo_set_source_surface(cr, isurface, 0._c_double, 0._c_double)
     call cairo_paint(cr)
 
   end function hl_gtk_drawing_area_expose_cb
@@ -624,7 +624,7 @@ contains
     ! Create a cairo context which will draw into the backing surface
     !
     ! AREA: c_ptr: required: The drawing area to which we will draw.
-    ! 
+    !
     ! After the drawing operations, you should call `gtk_widget_queue_draw`
     ! to update the plot on the screen and `hl_gtk_pixbuf_cairo_destroy`
     ! to destroy the cairo context.
@@ -754,7 +754,7 @@ contains
     ! WIDTH: c_int: optional: The width of the area.
     ! HEIGHT: c_int: optional: The height of the area
     !-
- 
+
     type(gtkallocation), target :: alloc
 
     call gtk_widget_get_allocation(area,c_loc(alloc))

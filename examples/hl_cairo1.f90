@@ -169,11 +169,11 @@ contains
     call cairo_set_source_rgb(my_cairo_context, 0.9_c_double, 0.8_c_double, &
          & 0.8_c_double)
     call cairo_set_line_width(my_cairo_context, 4._c_double)
-    call cairo_move_to(my_cairo_context, 0._c_double, 0._c_double)  
+    call cairo_move_to(my_cairo_context, 0._c_double, 0._c_double)
     call cairo_curve_to(my_cairo_context, 600._c_double, 50._c_double, &
          & 115._c_double, 545._c_double, &
          & real(width, c_double), real(height, c_double))
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     ! Lines:
     call cairo_set_source_rgb(my_cairo_context, 0._c_double, 0.5_c_double, &
@@ -183,7 +183,7 @@ contains
        call cairo_move_to(my_cairo_context, 0._c_double, real(t, c_double))
        call cairo_line_to(my_cairo_context, real(t, c_double), &
             & real(height, c_double))
-       call cairo_stroke(my_cairo_context) 
+       call cairo_stroke(my_cairo_context)
     end do
 
     ! Text:
@@ -206,8 +206,8 @@ contains
        call cairo_arc(my_cairo_context, 353._c_double+ &
             & 200._c_double*cos(t*2_c_double*pi/50), &
             & 350._c_double+200._c_double*sin(t*2._c_double*pi/50.), &
-            & 50._c_double, 0._c_double, 2.*pi) 
-       call cairo_stroke(my_cairo_context) 
+            & 50._c_double, 0._c_double, 2.*pi)
+       call cairo_stroke(my_cairo_context)
     end do
 
     ! Save:
@@ -226,7 +226,7 @@ contains
     ! Pointers toward our GTK widgets:
     type(c_ptr) :: my_drawing_area
     type(c_ptr) :: my_scroll_box
-    
+
     ! Properties of the main window :
     width = 700
     height = 700

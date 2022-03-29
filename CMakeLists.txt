@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018, 
+# Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018,
 # vmagnin 2021-10-21
 #
 # CMAKE build file for gtk-fortran
@@ -105,7 +105,7 @@ set(CPACK_SOURCE_GENERATOR "TGZ")
 include(CPack)
 
 #===============================================================================
-# "Path for CMake modules to be loaded by the include() or find_package() 
+# "Path for CMake modules to be loaded by the include() or find_package()
 # commands before checking the default modules that come with CMake"
 #===============================================================================
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -146,8 +146,8 @@ add_definitions(${GTK_CFLAGS_OTHER})
 #===============================================================================
 # PLplot integration (>=5.13 needed)
 # ----------------------------------
-# A lot of changes have occured in PLplot 5.11, 5.12 and 5.13: the libraries 
-# have been renamed (plplot and plplot-fortran) and the ISO_C_BINDING has been 
+# A lot of changes have occured in PLplot 5.11, 5.12 and 5.13: the libraries
+# have been renamed (plplot and plplot-fortran) and the ISO_C_BINDING has been
 # adopted.
 # By now (March 2019), the find_package(plplot) command gives a lot of errors
 # in Debian/Ubuntu distributions because of some renaming in Debian packages.

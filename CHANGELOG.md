@@ -31,19 +31,19 @@ The gtk-4-fortran library has been generated from GTK 4.4.0 and GLib 2.70.0 unde
 
 
 ## [gtk-fortran 3.24.30] 2021-09-08
-- The gtk-3-fortran library has been generated from GTK 3.24.30 and GLib 2.68.4 under Fedora 34. 
+- The gtk-3-fortran library has been generated from GTK 3.24.30 and GLib 2.68.4 under Fedora 34.
 
 ### Added
 - The cfwrapper has a new required parameter `-v` to set the gtk-fortran semantic version (major.minor.patch). It is written in the `VERSIONS` file (used by CMake, `src/extract_events.pl`, `src/alt_build_test.sh`) and `codemeta.json`.
 - A `tutorials/` directory contains the sources and screenshots used in the Wiki new tutorials.
- 
+
 ### Changed
 - The compiler flags for release is now `-O3` instead of `-O3 -mtune=native -march=native`.
 - The Fortran / C interfaces now use the `import ::` statement instead of `use, intrinsic :: iso_c_binding, only:`.
 
 
 ## [gtk-fortran 4.0] 2021-04-28
-- The gtk-4-fortran library has been generated from GTK 4.2.0 and GLib 2.68.1 under Fedora 34. 
+- The gtk-4-fortran library has been generated from GTK 4.2.0 and GLib 2.68.1 under Fedora 34.
 - Starting from this 4.0 release, the project will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - All the improvements included in the simultaneously released gtk-fortran 3.24.28 (gtk3 branch) are also in the gtk4 branch.
 
@@ -110,7 +110,7 @@ The main objective of this release was to clean up the code and prepare it for t
 ### Added
 - Experimental and uncomplete `meson.build` files have been added. Meson>=0.53 is needed. Commands are `meson buildmeson` and `ninja -C buildmeson`. The gtk-fortran library can be inst	alled using `sudo ninja -C buildmeson install`, but there is still some problems for installing the `.mod` files (see https://github.com/mesonbuild/meson/issues/5374). Please use CMake for production !
 - examples/menu2.f90: the menu.f90 example is based on deprecated functions.
-- examples/gtkzero_gapp.f90: an empty GTK window based on GtkApplication and GApplication. 
+- examples/gtkzero_gapp.f90: an empty GTK window based on GtkApplication and GApplication.
 - CMake -D NO_BUILD_HL=true option to disable building the High Level sub-library (which includes PLplot and sketcher).
 - VERSIONS: a CSV file with the gtk-fortran, GTK, GLib and Ubuntu versions. Automatically created by the cfwrapper.py script. It will be used by the building system of the project.
 
@@ -181,7 +181,7 @@ in several modules to ease maintenance.
 ### Changed
 - GTK 3.20.9,  GLib 2.50.2
 - GTK 2.24.30, GLib 2.50.2
-- The code of the heart of gtk-fortran, the `cfwrapper.py` script, has been refactored and improved in order to ease maintenance. 
+- The code of the heart of gtk-fortran, the `cfwrapper.py` script, has been refactored and improved in order to ease maintenance.
 - CMake files have been unified in master (gtk2) and gtk3 branches.
 
 ## [gtk-fortran 16.04] - 2016-06-15

@@ -42,7 +42,7 @@ module v_handlers
        & gtk_widget_set_sensitive, gtk_window_set_child, &
        & gtk_widget_show, gtk_window_destroy, TRUE, FALSE
   use g, only: g_timeout_add
-  
+
   implicit none
   character(len=256), dimension(:), allocatable :: file_list
   integer(kind=c_int) :: current_file
@@ -62,7 +62,7 @@ contains
     ! See https://github.com/vmagnin/gtk-fortran/issues/224
     integer(kind=c_int) :: show_at_start
     type(c_ptr), value, intent(in) :: select
-    
+
     call gtk_combo_box_set_active(select, current_file)
     ! This function will be launched only once:
     show_at_start = FALSE
@@ -166,7 +166,7 @@ contains
           print *, file_list(i)
        end do
        current_file = 0
-    else 
+    else
        current_file = -1
     end if
 
@@ -208,7 +208,7 @@ contains
          & sensitive=f_c_logical(nfiles > 0))
     call hl_gtk_box_pack(jb, next, expand=FALSE)
 
-    if (nfiles > 0) then 
+    if (nfiles > 0) then
        do i = 1, nfiles
           call hl_gtk_combo_box_add_text(select, &
                & trim(file_list(i))//c_null_char)

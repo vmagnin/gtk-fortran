@@ -114,7 +114,7 @@ contains
           if (.not. c_f_logical(g_main_context_pending(c_null_ptr))) exit
           iev = g_main_context_iteration(c_null_ptr, FALSE)
        end do
-    
+
        call g_usleep(500000_c_long)
        call hl_gtk_progress_bar_set(data, i, 10_c_int, string=TRUE)
     end do
@@ -140,7 +140,7 @@ program hl_assistant
   junk = gtk_label_new("This is an example of a GtkAssistant"//c_new_line// &
        & "by clicking the forward button,"//c_new_line// &
        & " you can continue to the next section!"//c_null_char);
-  
+
   call hl_gtk_assistant_add_page(asstnt, junk, GTK_ASSISTANT_PAGE_INTRO, &
        & page_title="Introduction"//c_null_char)
 
@@ -156,7 +156,7 @@ program hl_assistant
 
   ebox = hl_gtk_entry_new(editable=TRUE, activate=c_funloc(name_enter))
   call hl_gtk_box_pack(jb, ebox)
-  
+
   junk = hl_gtk_button_new("Apply"//c_null_char, clicked=c_funloc(name_enter), &
        & data=ebox)
   call hl_gtk_box_pack(jb, junk, expand=FALSE)
@@ -170,7 +170,7 @@ program hl_assistant
        & page_title="Click the Check Button"//c_null_char)
 
   ! Progress
-  jb = hl_gtk_box_new(horizontal=TRUE)  
+  jb = hl_gtk_box_new(horizontal=TRUE)
   call gtk_widget_set_halign (jb, GTK_ALIGN_FILL)
   call gtk_widget_set_valign (jb, GTK_ALIGN_CENTER)
   call gtk_widget_set_hexpand (jb, TRUE)

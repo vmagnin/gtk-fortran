@@ -84,7 +84,7 @@ contains
     ! Convert it to a Fortran string
     call convert_c_string(param_string, color_str)
     print *, "The color will be: "//trim(color_str)//"!"
-    
+
     color = "label#lb {background-color: "//trim(color_str)//"; }"//c_null_char
 
     print *, "Let's change the color!"

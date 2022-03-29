@@ -41,9 +41,9 @@ class Version():
     """ This class contains functions to determine the versions of the libraries
     and programs used in gkt-fortran.
     """
-    
+
     def __init__(self, GTK_VERSION, GTK_FORTRAN_VERSION):
-        # Packages in Ubuntu, Arch/Manjaro, Fedora, Mageia (you can add the 
+        # Packages in Ubuntu, Arch/Manjaro, Fedora, Mageia (you can add the
         # names in you distro and the command in the function find_library):
         pack_gtk4 = (("libgtk-4-0", "deb"), ("gtk4", "pacman"),
                     ("gtk4", "rpm"), ("gtk4.0", "rpm"))
@@ -66,7 +66,7 @@ class Version():
         self.distro_version = subprocess.getoutput("lsb_release -rs")
         self.distro_name = subprocess.getoutput("lsb_release -is")
 
-        
+
     def find_library(self, lib_name, psys):
         """ Receive the name of a library package and the packaging system, and
         returns the version of the library if found, else returns ?.?.?
@@ -93,7 +93,7 @@ class Version():
             pass     # no operation instruction to avoid an empty if statement
 
         try:
-            libversion = re.search(r"(\d{1,2}\.\d{1,2}\.\d{1,2})", 
+            libversion = re.search(r"(\d{1,2}\.\d{1,2}\.\d{1,2})",
                                    libversion).group(1)
         except AttributeError:
             libversion = "?.?.?"
@@ -124,7 +124,7 @@ class Version():
 
 
     def create_file(self):
-        """Create the VERSIONS file a the top of the project. This file is used 
+        """Create the VERSIONS file a the top of the project. This file is used
         by other parts of the build system.
         """
         all_versions = []

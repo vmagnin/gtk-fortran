@@ -71,7 +71,7 @@ contains
   ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
-    integer(c_int), value, intent(in) :: width, height    
+    integer(c_int), value, intent(in) :: width, height
     integer                           :: cstatus
     integer                           :: t
     real(8), parameter                :: pi = 3.14159265358979323846d0
@@ -82,7 +82,7 @@ contains
     call cairo_move_to(my_cairo_context, 0d0, 0d0)
     call cairo_curve_to(my_cairo_context, 600d0, 50d0, 115d0, 545d0, &
                       & width*1d0, height*1d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     ! Lines:
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0.5d0, 0.5d0)
@@ -90,7 +90,7 @@ contains
     do t = 0, int(height), +20
       call cairo_move_to(my_cairo_context, 0d0, t*1d0)
       call cairo_line_to(my_cairo_context, t*1d0, height*1d0)
-      call cairo_stroke(my_cairo_context) 
+      call cairo_stroke(my_cairo_context)
     end do
 
     ! Text:
@@ -111,7 +111,7 @@ contains
         call cairo_set_line_width(my_cairo_context, 5d0*t/50d0)
         call cairo_arc(my_cairo_context, 353d0 + 200d0*cos(t*2d0*pi/50), &
                      & 350d0 + 200d0*sin(t*2d0*pi/50), 50d0, 0d0, 2*pi)
-        call cairo_stroke(my_cairo_context) 
+        call cairo_stroke(my_cairo_context)
     end do
 
     ! Save the image as a PNG:

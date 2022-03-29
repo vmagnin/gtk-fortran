@@ -236,10 +236,10 @@ contains
        text=''
        return
     end if
-    
+
     buffer = gtk_entry_get_buffer(entry)
     call c_f_string_copy(gtk_entry_buffer_get_text(buffer), text)
-    
+
     if (present(status)) status=istat
   end subroutine hl_gtk_entry_get_text
 
@@ -301,9 +301,9 @@ contains
     ! DATA_FOCUS_IN: c_ptr: optional: Data to pass to the focus_in_event
     ! 		callback
     ! HSCROLL_POLICY: int: optional: Horizontal scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC). 
+    ! 		containing scroll window (default AUTOMATIC).
     ! VSCROLL_POLICY: int: optional: Vertical scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC). 
+    ! 		containing scroll window (default AUTOMATIC).
     !
     ! NOTE -- The insert-text and delete-range callbacks take extra arguments.
     ! They are called before the buffer is actually modified. The changed

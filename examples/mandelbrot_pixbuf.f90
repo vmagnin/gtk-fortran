@@ -33,12 +33,12 @@ module handlers
   & GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, FALSE, TRUE
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
-  
+
   use gdk, only: gdk_cairo_set_source_pixbuf
-  
+
   use g, only: g_main_loop_new, g_main_loop_run, g_main_context_iteration, &
              & g_main_context_pending, g_main_loop_quit
-  
+
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                       & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_char, c_null_ptr, c_null_char
@@ -79,7 +79,7 @@ contains
   ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
-    integer(c_int), value, intent(in) :: width, height    
+    integer(c_int), value, intent(in) :: width, height
 
     ! We redraw the pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
@@ -131,7 +131,7 @@ contains
         c = x + y*(0d0,1d0)   ! Starting point
         z = (0d0, 0d0)        ! z0
         k = 1
-        do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2) < 4d0)) 
+        do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2) < 4d0))
           z = z*z + c
           k = k + 1
         end do
@@ -215,7 +215,7 @@ program mandelbrot
   ! Queries the number of channels of a pixbuf:
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   print *, "Number of channels of the pixbuf: ", nch
-  ! "Queries the rowstride of a pixbuf, which is the number of bytes between 
+  ! "Queries the rowstride of a pixbuf, which is the number of bytes between
   ! the start of a row and the start of the next row":
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
   print *, "Rowstride of the pixbuf: ", rowstride
@@ -235,4 +235,4 @@ program mandelbrot
   end if
 
   print *, "All done"
-end program mandelbrot 
+end program mandelbrot

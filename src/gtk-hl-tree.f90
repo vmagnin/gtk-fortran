@@ -33,7 +33,7 @@ module gtk_hl_tree
   ! to be accessed. Most possible renderers are supported (spinner is not).
   !
   ! There are three types of list and tree supported.
-  ! 
+  !
   ! 1. listn; A multi-column flat list.
   ! 2. list1; A single-column flat list, that allows only string values.
   !    (This is now implemented by calls to the corresponding listn routines).
@@ -261,9 +261,9 @@ contains
     ! 		edited signal will be emitted as soon as focus leaves the combo.
     ! DATA_CHANGED_COMBO: c_ptr: optional: Data to pass to the changed callback.
     ! HSCROLL_POLICY: int: optional: Horizontal scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC). 
+    ! 		containing scroll window (default AUTOMATIC).
     ! VSCROLL_POLICY: int: optional: Vertical scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC). 
+    ! 		containing scroll window (default AUTOMATIC).
     !
     ! At least one of the array arguments or NCOLS must be given.
     ! If TYPES is not given, then strings are assumed.
@@ -427,7 +427,7 @@ contains
 
     type(c_ptr), intent(in) :: list
     integer(kind=c_int), intent(in), optional :: row, count
-    
+
     ! Insert a row into a tabular list.
     !
     ! LIST: c_ptr: required: The list into which to insert the row.
@@ -1230,9 +1230,9 @@ contains
     ! 		edited signal will be emitted as soon as focus leaves the combo.
     ! DATA_CHANGED_COMBO: c_ptr: optional: Data to pass to the changed callback.
     ! HSCROLL_POLICY: int: optional: Horizontal scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC). 
+    ! 		containing scroll window (default AUTOMATIC).
     ! VSCROLL_POLICY: int: optional: Vertical scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC). 
+    ! 		containing scroll window (default AUTOMATIC).
     !
     ! At least one of the array arguments or NCOLS must be given.
     ! If TYPES is not given, then strings are assumed.
@@ -1884,7 +1884,7 @@ contains
     call clear_gtktreeiter(viter)
     valid = gtk_tree_model_iter_nth_child(store, c_loc(viter), C_NULL_PTR, row)
     if (.not. c_f_logical(valid)) return
-    
+
     ! Find the renderer for the column
     col = gtk_tree_view_get_column(view, colno)
     rlist = gtk_cell_layout_get_cells(col)
@@ -1896,7 +1896,7 @@ contains
     pmodel = g_value_init(pmodel, gtk_tree_model_get_type())
     call g_object_get_property(renderer, "model"//c_null_char, pmodel)
     model = g_value_get_object(pmodel)
-    
+
     call clear_gtktreeiter(citer)
     valid = gtk_tree_model_iter_nth_child(model, c_loc(citer), &
          & c_null_ptr, selection)
@@ -1941,7 +1941,7 @@ contains
        valid=FALSE
     end if
     if (.not. c_f_logical(valid)) return
-    
+
     ! Find the renderer for the column
     col = gtk_tree_view_get_column(view, colno)
     rlist = gtk_cell_layout_get_cells(col)
@@ -1953,7 +1953,7 @@ contains
     pmodel = g_value_init(pmodel, gtk_tree_model_get_type())
     call g_object_get_property(renderer, "model"//c_null_char, pmodel)
     model = g_value_get_object(pmodel)
-    
+
     call clear_gtktreeiter(citer)
     valid = gtk_tree_model_iter_nth_child(model, c_loc(citer), &
          & c_null_ptr, selection)
@@ -2216,7 +2216,7 @@ contains
     state = c_f_logical(gtk_cell_renderer_toggle_get_active(renderer))
     if (state) return ! Don't act on a release of a selected toggle
 
-    ! Clear all the siblings of the chosen 
+    ! Clear all the siblings of the chosen
     valid = gtk_tree_model_get_iter_from_string(tree_model, c_loc(iter), fpath)
     valid = gtk_tree_model_iter_parent (tree_model, c_loc(piter), c_loc(iter))
     call clear_gtktreeiter(iter)
@@ -3269,14 +3269,14 @@ contains
 
     call g_value_unset(padjv)
 
-    if (present(digits)) then 
+    if (present(digits)) then
        padjv = g_value_init(padjv, G_TYPE_UINT)
        call g_value_set_uint(padjv, digits)
        call g_object_set_property(renderer, "digits"//c_null_char, &
             & padjv)
        call g_value_unset(padjv)
     end if
-    if (present(rate)) then 
+    if (present(rate)) then
        padjv = g_value_init(padjv, G_TYPE_DOUBLE)
        call g_value_set_double(padjv, rate)
        call g_object_set_property(renderer, "climb-rate"//c_null_char, &
@@ -3299,7 +3299,7 @@ contains
     ! CMODEL: c_ptr: optional: A custom model for the combobox
     ! COLNO: int: optional: Which column of the custom model contains
     ! 		the text.
-    ! 
+    !
     ! This routine is automatically called by the list/tree constructor if needed.
     ! To explicitly set a different model, use one of its aliases
     ! hl_gtk_listn_combo_set_model or hl_gtk_tree_combo_set_model.

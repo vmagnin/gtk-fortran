@@ -80,7 +80,7 @@ contains
   ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine draw(widget, my_cairo_context, width, height, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
-    integer(c_int), value, intent(in) :: width, height    
+    integer(c_int), value, intent(in) :: width, height
 
     ! We redraw the pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
@@ -148,7 +148,7 @@ contains
        call mandelbrot_set(drawing_area, 1000_c_int)
        id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Left|Centre: mark region corner, "//&
-            & "Right: Reset, Wheel: Zoom in/out"//c_null_char)    
+            & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
     end if
   end subroutine click_cb
 
@@ -344,7 +344,7 @@ contains
     call gtk_drawing_area_set_draw_func(my_drawing_area, &
                      & c_funloc(draw), c_null_ptr, c_null_funptr)
 
-    ! We need a gesture controller to detect mouse clicks: 
+    ! We need a gesture controller to detect mouse clicks:
     ! https://developer.gnome.org/gtk4/stable/GtkGestureClick.html
     ! https://developer.gnome.org/gtk4/stable/GtkWidget.html#gtk-widget-add-controller
     controller = gtk_gesture_click_new()

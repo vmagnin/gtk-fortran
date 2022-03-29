@@ -263,5 +263,5 @@ contains
     count = gtk_tree_model_iter_n_children (model, C_NULL_PTR)
 
   end function hl_gtk_combo_box_n_entries
-    
+
 end module gtk_hl_combobox

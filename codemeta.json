@@ -43,7 +43,7 @@
   "isAccessibleForFree": true,
   "keywords": "GTK, Fortran, Graphical User Interface",
   "license": "GPL v3.0",
-  "name": "gtk-fortran",  
+  "name": "gtk-fortran",
   "version": "4.1.0",
   "operatingSystem": "Linux, MacOS, MSYS2/Windows, BSD...",
   "programmingLanguage": "Fortran",

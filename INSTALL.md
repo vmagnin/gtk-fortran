@@ -29,7 +29,7 @@ Useful variables that are specific to gtk-fortran are:
 
        EXCLUDE_PLPLOT -- set this to disable building the plplot
          integration even if PLplot is found.
-       NO_BUILD_HL -- set this to disable building the High Level sub-library 
+       NO_BUILD_HL -- set this to disable building the High Level sub-library
          (includes PLplot and sketcher).
        NO_BUILD_EXAMPLES -- set this to prevent compiling the example
          programs, also mostly useful for packagers.

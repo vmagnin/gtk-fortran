@@ -119,7 +119,7 @@ contains
   subroutine cell_edited(renderer, path, text, gdata) bind(c)
     type(c_ptr), value, intent(in) :: renderer, path, text, gdata
 
-    ! Callback for edited cells. 
+    ! Callback for edited cells.
     character(len=200) :: fpath, ftext
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
@@ -168,7 +168,7 @@ contains
     ! Create the window:
     ihwin = gtk_application_window_new(app)
     call gtk_window_set_title(ihwin, "multi-column list demo"//c_null_char)
- 
+
     ! Now make a column box & put it into the window
     base = hl_gtk_box_new()
     call gtk_window_set_child(ihwin, base)

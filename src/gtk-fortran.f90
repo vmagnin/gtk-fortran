@@ -49,7 +49,7 @@ module handlers_gtk_fortran
     if (suffix_pos /= 0) name_string = name_string(1:suffix_pos-1)
 
     call c_f_string_copy(g_get_os_info("PRETTY_NAME"//c_null_char), os_string)
-    
+
     print '(4A,I0,A1,I0,A1,I0,A1)', TRIM(name_string), " (", TRIM(os_string),&
       & ", GTK ", gtk_get_major_version(),".", &
       & gtk_get_minor_version(), ".", gtk_get_micro_version(), ")"

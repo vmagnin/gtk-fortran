@@ -36,7 +36,7 @@ module common_ex4
   use plplot_extra
   use gtk_hl_container
   use gtk_hl_button
-  
+
   implicit none
   type(c_ptr) :: window
 end module common_ex4

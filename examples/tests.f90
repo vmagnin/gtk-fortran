@@ -27,7 +27,7 @@
 ! ****************
 ! This program is testing things about ISO_C_BINDING and the relations
 ! between Fortran types and GLib types. If it generates errors, please send us
-! the tests_errors.txt file with informations on your system 
+! the tests_errors.txt file with informations on your system
 ! (OS version, GTK version, compiler...)
 
 module tests
@@ -223,7 +223,7 @@ contains
       call g_variant_unref(gv)
     end do
     !    ! gdouble g_random_double_range (gdouble begin, gdouble end);
-    !    function g_random_double_range(begin, end) bind(c) 
+    !    function g_random_double_range(begin, end) bind(c)
     !      use, intrinsic :: iso_c_binding, only: c_double
     !      real(c_double) :: g_random_double_range
     !      real(c_double), value :: begin
@@ -279,7 +279,7 @@ contains
     integer(c_int32_t) :: c, d
     type(c_ptr) :: gv
     !! GVariant * g_variant_new_uint16 (guint16 uint16);
-    !function g_variant_new_uint16(uint16) bind(c) 
+    !function g_variant_new_uint16(uint16) bind(c)
     !  use, intrinsic :: iso_c_binding, only: c_ptr, c_int16_t
     !  type(c_ptr) :: g_variant_new_uint16
     !  integer(c_int16_t), value :: uint16
@@ -465,13 +465,13 @@ contains
       call g_variant_unref(gv)
     end do
 
-    test_uint32_in_out = errors 
+    test_uint32_in_out = errors
   end function test_uint32_in_out
 
 
   integer function test_guchar_in_out()
     integer(c_int16_t) :: i, j
-    integer :: errors 
+    integer :: errors
     character(kind=c_char) :: a, b
     type(c_ptr) :: gv
     !GVariant *          g_variant_new_byte     (guchar value);

@@ -185,7 +185,7 @@ contains
        action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER
     else
        if (icreate == TRUE) then
-          ! "Indicates save mode. The file chooser will let the user pick 
+          ! "Indicates save mode. The file chooser will let the user pick
           ! an existing file, or type in a new filename."
           action = GTK_FILE_CHOOSER_ACTION_SAVE
        else
@@ -501,6 +501,6 @@ contains
     buffer = gtk_entry_get_buffer(chooser_info%fentry)
     ! number of caracters = -1 for automatic length:
     call gtk_entry_buffer_set_text (buffer, C_NULL_CHAR, -1)
-    
+
   end subroutine hl_gtk_chooser_filt_cb
 end module gtk_hl_chooser

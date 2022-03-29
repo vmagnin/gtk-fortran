@@ -45,7 +45,7 @@ set(sources
 )
 
 if(NOT NO_BUILD_HL)
-    set(sources ${sources} 
+    set(sources ${sources}
         "gtk-hl.f90"
         "gtk-hl-container.f90"
         "gtk-hl-button.f90"
@@ -84,7 +84,7 @@ add_library(gtk-fortran_static STATIC $<TARGET_OBJECTS:gtk-fortran_object>)
 add_library(gtk-fortran_shared SHARED $<TARGET_OBJECTS:gtk-fortran_object>)
 target_link_libraries(gtk-fortran_shared ${GTK_LIBRARIES})
 
-set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES 
+set_target_properties(gtk-fortran_static gtk-fortran_shared PROPERTIES
   OUTPUT_NAME ${gtk_V_fortran}
   VERSION ${SEMANTIC_VERSION})
 
@@ -115,7 +115,7 @@ string(REPLACE "@linkerflags@" "${CMAKE_EXE_LINKER_FLAGS}" GTK${GTKv}PCOUT7 "${G
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}.pc "${GTK${GTKv}PCOUT7}")
 add_custom_target(pkgconfig ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}.pc)
 
-# The USE generator system. Copy usemodules.pl and replace strings @PREFIX@, @SHARE@ 
+# The USE generator system. Copy usemodules.pl and replace strings @PREFIX@, @SHARE@
 # and @GTK@ by their values:
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.pl USERMODULE_IN)
 string(REPLACE "@PREFIX@" "${CMAKE_INSTALL_PREFIX}" USERMODULE_OUT1 "${USERMODULE_IN}")
@@ -123,7 +123,7 @@ string(REPLACE "@SHARE@" "${CMAKE_INSTALL_DATAROOTDIR}" USERMODULE_OUT2 "${USERM
 string(REPLACE "@GTK@" "${GTKv}" USERMODULE_OUT3 "${USERMODULE_OUT2}")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-modscan "${USERMODULE_OUT3}")
 
-# Add the install path to usemodules.py as one of the places it will search for the gtk-fortran csv. 
+# Add the install path to usemodules.py as one of the places it will search for the gtk-fortran csv.
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.py PYUSERMODULE_IN)
 string(REPLACE "@PATH_TO_CSV@" "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/${gtk_V_fortran}-index.csv" PYUSERMODULE_OUT "${PYUSERMODULE_IN}")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-pymodscan "${PYUSERMODULE_OUT}")

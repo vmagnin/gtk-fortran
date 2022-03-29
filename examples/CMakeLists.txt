@@ -33,13 +33,13 @@ if (NOT NO_BUILD_EXAMPLES)
   # Build the main examples:
   #==========================
   set(examples_list gtkzero_gapp gtkhello list_demo gio_demo tests
-    notebooks julia_pixbuf  mandelbrot_pixbuf mandelbrot_pixbuf_zoom 
-    menubar cairo-tests cairo-basics cairo-basics-click bazaar 
+    notebooks julia_pixbuf  mandelbrot_pixbuf mandelbrot_pixbuf_zoom
+    menubar cairo-tests cairo-basics cairo-basics-click bazaar
     pixbuf_without_gui regex
   )
 
   if(NOT NO_BUILD_HL)
-    set(examples_list ${examples_list} 
+    set(examples_list ${examples_list}
         hl_assistant hl_choosers hl_combo hl_containers hl_dialog hl_list1
         hl_list_n hl_list_renderers hl_pbar
         hl_sliders hl_sliders2 hl_textview hl_tree hl_cairo1 hl_cairo_clock

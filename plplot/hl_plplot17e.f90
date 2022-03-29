@@ -112,7 +112,7 @@ contains
     tmax = 50._plflt
     !      percentage of plot to jump
     tjump = 0.3_plflt
-    
+
     !      Axes options same as plbox.
     !      Only automatic tick generation and label placement allowed
     !      Eventually I'll make this fancier

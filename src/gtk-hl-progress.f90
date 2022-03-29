@@ -83,7 +83,7 @@ contains
     end if
 
     if (present(reversed)) call gtk_progress_bar_set_inverted(bar, reversed)
- 
+
     if (present(step)) &
          & call gtk_progress_bar_set_pulse_step(bar, step)
 

@@ -1,7 +1,7 @@
 # gtk-fortran & PLplot
 
 In this directory there are a few examples of using the PLplot library
-(http://plplot.sourceforge.net/) in conjunction with gtk-fortran. 
+(http://plplot.sourceforge.net/) in conjunction with gtk-fortran.
 
 PLplot is a scientific graphics library that has a Fortran 2003 ISO_C_BINDING.
 The gtk-fortran & PLplot can now also run under MSYS2 / Windows. See the wiki
@@ -48,7 +48,7 @@ The typical program structure is summarized as:
 
 ### Globals:
 
-- For convenience in all examples I've put all the (etc.) use statements 
+- For convenience in all examples I've put all the (etc.) use statements
 and any global variables into a separate module that can be used by all of the other units.
 
 ###  In the example codes these are:

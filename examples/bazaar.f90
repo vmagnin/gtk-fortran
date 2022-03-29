@@ -376,8 +376,8 @@ contains
 end module handlers
 
 !*******************************************************************************
-! In the main program, we declare the GTK application, connect it to its 
-! "activate" function where we will create the GUI, 
+! In the main program, we declare the GTK application, connect it to its
+! "activate" function where we will create the GUI,
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program bazaar

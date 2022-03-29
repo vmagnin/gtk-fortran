@@ -80,29 +80,29 @@ contains
 
     ! We redraw the Mandelbrot set pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, &
-                                   & 700d0/4d0, 700d0/4d0) 
+                                   & 700d0/4d0, 700d0/4d0)
     call cairo_paint(my_cairo_context)
 
     ! And do some vectorial Cairo drawings above:
     call cairo_set_line_width(my_cairo_context, 1d0)
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 1d0)
-    call cairo_move_to(my_cairo_context, 100d0, 50d0)  
+    call cairo_move_to(my_cairo_context, 100d0, 50d0)
     call cairo_line_to(my_cairo_context, 700d0, 700d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     call cairo_set_source_rgb(my_cairo_context, 1d0, 0d0, 0d0)
     call cairo_set_line_width(my_cairo_context, 3d0)
-    call cairo_move_to(my_cairo_context, 60d0, 0d0)  
+    call cairo_move_to(my_cairo_context, 60d0, 0d0)
     call cairo_curve_to(my_cairo_context, 600d0, 50d0, 135d0, 45d0, 500d0, 500d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     call cairo_set_source_rgb(my_cairo_context, 1d0, 1d0, 0d0)
     call cairo_set_line_width(my_cairo_context, 2d0)
-    call cairo_move_to(my_cairo_context, 0d0, height/2d0)  
+    call cairo_move_to(my_cairo_context, 0d0, height/2d0)
     call cairo_line_to(my_cairo_context, 1d0*width, height/2d0)
-    call cairo_move_to(my_cairo_context, width/2d0+width/12d0, 0d0)  
+    call cairo_move_to(my_cairo_context, width/2d0+width/12d0, 0d0)
     call cairo_line_to(my_cairo_context, width/2d0+width/12d0, height*1d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, &
                    & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
@@ -111,8 +111,8 @@ contains
     call cairo_show_text (my_cairo_context, "Mandelbrot set"//c_null_char)
 
     call cairo_new_sub_path(my_cairo_context)
-    call cairo_arc(my_cairo_context, 300d0, 300d0, 100d0, 0d0, 3.14159d0) 
-    call cairo_stroke(my_cairo_context) 
+    call cairo_arc(my_cairo_context, 300d0, 300d0, 100d0, 0d0, 3.14159d0)
+    call cairo_stroke(my_cairo_context)
 
     ! The image is written to PNG only one time:
     if (write_png) then
@@ -153,7 +153,7 @@ contains
     ! Queries the number of channels of a pixbuf:
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
     print *, "Number of channels of the pixbuf: ", nch
-    ! "Queries the rowstride of a pixbuf, which is the number of bytes between 
+    ! "Queries the rowstride of a pixbuf, which is the number of bytes between
     ! the start of a row and the start of the next row":
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
     print *, "Rowstride of the pixbuf: ", rowstride

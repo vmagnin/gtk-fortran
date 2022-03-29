@@ -340,7 +340,7 @@ contains
 
     ! Necessary if file_open() is called several times:
     if (allocated(connections)) deallocate(connections)
-    
+
     allocate(connections(n_connections))
 
     ! Connections will be recounted as they are put into the connections array:

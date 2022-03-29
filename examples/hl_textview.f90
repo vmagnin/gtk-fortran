@@ -116,7 +116,7 @@ contains
 
     call hl_gtk_text_view_insert(zedt, (/ trim(ftext) /))
   end subroutine tv_append
-  
+
   subroutine tv_insert(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr) :: buffer
@@ -154,7 +154,7 @@ contains
     else
        print *, "No Selection"
     end if
-    if (is_modified == TRUE) then 
+    if (is_modified == TRUE) then
        print *, "Modified"
     else
        print *, "Not modified"

@@ -34,7 +34,7 @@ module ln_handlers
   use gdk_pixbuf_hl
 
   use gtk, only: gtk_button_new, gtk_window_set_child, &
-               & gtk_widget_show, gtk_window_destroy 
+               & gtk_widget_show, gtk_window_destroy
   use g, only: g_object_set_property
   use gdk_pixbuf_hl
 
@@ -95,7 +95,7 @@ contains
   subroutine cell_edited(renderer, path, text, gdata) bind(c)
     type(c_ptr), value, intent(in) :: renderer, path, text, gdata
 
-    ! Callback for edited cells. 
+    ! Callback for edited cells.
     character(len=200) :: fpath, ftext
     integer(kind=c_int) :: irow
     integer(kind=c_int), pointer :: icol
@@ -157,7 +157,7 @@ contains
     print *, "Combo sent changed signal from ", trim(fpath)
 
   end subroutine ccell_changed
-  
+
   subroutine cell_clicked(renderer, path, gdata) bind(c)
     type(c_ptr), value, intent(in) :: renderer, path, gdata
 
@@ -325,7 +325,7 @@ contains
     end do
     ! Now put <nrows> rows into it
     call hl_gtk_listn_ins(ihlist, count=nrows)
-    do i=1,nrows 
+    do i=1,nrows
        write(line,"('List entry number ',I0)") i
        ltr=len_trim(line)+1
        line(ltr:ltr)=c_null_char

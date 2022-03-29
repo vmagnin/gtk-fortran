@@ -71,7 +71,7 @@ module gtk_hl_container
        & GTK_ORIENTATION_HORIZONTAL,  GTK_ORIENTATION_VERTICAL, &
        & TRUE, FALSE, g_signal_connect, &
        & GTK_POLICY_AUTOMATIC
-       
+
   use g, only: g_object_set_data, g_object_get_data, g_value_get_int
 
   implicit none
@@ -111,13 +111,13 @@ contains
 
     ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
     app = gtk_application_new(app_id, the_flags)
-    
+
     if (present(data)) then
       call g_signal_connect(app, "activate"//c_null_char, activate, data)
     else
       call g_signal_connect(app, "activate"//c_null_char, activate, c_null_ptr)
     end if
-    
+
     ! Commandline arguments argc, argv are not passed.
     ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-run
     status = g_application_run(app, 0_c_int, [c_null_ptr])
@@ -331,7 +331,7 @@ contains
     if (c_associated(g_object_get_data(box, "horizontal"//c_null_char))) then
       call gtk_widget_set_hexpand (child, iexp)
       call gtk_widget_set_halign (child, ifill)
-    else     
+    else
       call gtk_widget_set_vexpand (child, iexp)
       call gtk_widget_set_valign (child, ifill)
     end if
@@ -340,7 +340,7 @@ contains
     call gtk_widget_set_margin_end (child, ipad)
     call gtk_widget_set_margin_top (child, ipad)
     call gtk_widget_set_margin_bottom (child, ipad)
-      
+
     call gtk_box_append(box, child)
   end subroutine hl_gtk_box_pack
 
@@ -437,7 +437,7 @@ contains
     else
        iysz = 1
     end if
-    
+
     if (present(xopts)) then
        print *, "In GTK 4 GTK_EXPAND and GTK_FILL were removed"
     else
@@ -627,7 +627,7 @@ contains
     ! VPOLICY: c_int: optional: Whether to show the vertical scrollbar
     ! 		default- GTK_POLICY_AUTOMATIC, allowed- any GTK_POLICY_TYPE
     ! HSIZE: c_int: optional: The size of the window in the horizontal
-    ! 		direction. 
+    ! 		direction.
     ! VSIZE: c_int: optional: The size of the window in the vertical
     ! 		direction.
     ! HADJUSTMENT: c_ptr: optional: An adjustment widget to use in place

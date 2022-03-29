@@ -22,7 +22,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
-! Contributed by James Tappin 
+! Contributed by James Tappin
 ! Last modification: 2012-08-30, vmagnin 2020-06-04 (GTK 4), 2020-07-15
 !
 !! A demo of the HL infobar widget.
@@ -37,7 +37,7 @@ module ib_handers
        & gtk_widget_show, TRUE, FALSE, &
        & GTK_MESSAGE_INFO, GTK_MESSAGE_WARNING, &
        & GTK_MESSAGE_QUESTION, GTK_MESSAGE_ERROR, GTK_MESSAGE_OTHER
-  
+
   implicit none
   type(c_ptr) :: tlwindow, infobar
   enum, bind(c)

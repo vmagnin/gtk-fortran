@@ -33,7 +33,7 @@ module handlers
        & gtk_spin_button_get_value, gtk_spin_button_new, &
        & gtk_spin_button_set_value, gtk_window_destroy, &
        & gtk_widget_show, TRUE, FALSE
- 
+
   implicit none
   type(c_ptr) :: base, box, slid, islid, win, qbut, spin, ispin
 
