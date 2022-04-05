@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2021-06-07
+! Last modification: vmagnin 2022-04-05
 
 module handlers
   use gtk, only: gtk_window_set_child, gtk_drawing_area_new, &
@@ -100,6 +100,7 @@ contains
   subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
     ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
     ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
+    use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
     use handlers
 
     type(c_ptr) :: my_drawing_area
@@ -107,7 +108,7 @@ contains
     real(8)     :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
     complex(8)  :: c, z
     real(8)     :: scx, scy             ! scales
-    integer(1)  :: red, green, blue     ! rgb color
+    integer(int8)  :: red, green, blue     ! rgb color
     real(8)     :: t0, t1
 
     computing = .true.
