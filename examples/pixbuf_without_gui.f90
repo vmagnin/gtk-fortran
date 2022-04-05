@@ -27,6 +27,7 @@
 !------------------------------------------------------------------------------
 
 program pixbuf_without_gui
+  use, intrinsic :: iso_fortran_env, only: wp=>real64
   use, intrinsic :: iso_c_binding, only: c_ptr, c_null_char, c_null_ptr, &
                          & c_f_pointer, c_char, c_int
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
@@ -40,11 +41,11 @@ program pixbuf_without_gui
   character(c_char), dimension(:), pointer :: pixel
   integer(c_int) :: nch, rowstride, pixwidth, pixheight
   integer(c_int) :: cstatus   ! Command status
-  double precision, dimension(1:3) :: x, y
-  double precision :: xx, yy, diag, r
-  integer :: s            ! Triangle vertex number
-  integer :: n = 300000   ! Number of points
-  integer :: i, p
+  real(wp), dimension(1:3) :: x, y
+  real(wp) :: xx, yy, diag, r
+  integer  :: s            ! Triangle vertex number
+  integer  :: n = 300000   ! Number of points
+  integer  :: i, p
 
   ! We create a "pixbuffer" to store the pixels of the image.
   ! This pixbuffer has no Alpha channel (15% faster), only RGB.

@@ -407,15 +407,16 @@ contains
   ! The scientific computing is done here
   !*********************************************
   subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
+    use, intrinsic :: iso_fortran_env, only: wp=>real64
     use, intrinsic :: iso_c_binding
     use global_widgets
 
-    integer    :: i, j, k, p, itermax
-    double precision :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-    complex(kind(1d0)) :: c, z
-    double precision :: scx, scy       ! scales
-    integer(1) :: red, green, blue     ! rgb color
-    double precision :: t0, t1
+    integer     :: i, j, k, p, itermax
+    real(wp)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+    complex(wp) :: c, z
+    real(wp)    :: scx, scy       ! scales
+    integer(1)  :: red, green, blue     ! rgb color
+    real(wp)    :: t0, t1
 
     computing = .true.
     call cpu_time(t0)
