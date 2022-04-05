@@ -178,13 +178,13 @@ contains
     ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
     use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
 
-    type(c_ptr) :: my_drawing_area
-    integer    :: i, j, k, p, itermax
-    real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-    complex(8) :: c, z
-    real(8)    :: scx, scy             ! scales
+    type(c_ptr)   :: my_drawing_area
+    integer       :: i, j, k, p, itermax
+    real(wp)      :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+    complex(8)    :: c, z
+    real(wp)      :: scx, scy             ! scales
     integer(int8) :: red, green, blue     ! rgb color
-    real(8) :: t0, t1
+    real(wp)      :: t0, t1
 
     print *, "Entering Mandelbrot_set() subroutine"
 

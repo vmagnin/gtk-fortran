@@ -22,9 +22,10 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! GTK 4 version contributed by Vincent Magnin
-! Last modification: vmagnin 2020-05-28, 2021-01-22
+! Last modification: vmagnin 2020-05-28, 2022-04-05
 
 module handlers
+  use, intrinsic :: iso_fortran_env, only: wp=>real64
   use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_funptr, &
                          & c_funloc, c_null_char, c_double, c_bool
 
@@ -45,7 +46,7 @@ module handlers
 
   implicit none
   ! Circle radius:
-  real(8) :: radius = 100d0
+  real(wp) :: radius = 100.0_wp
 
 contains
   ! The GUI is defined here:
@@ -95,7 +96,7 @@ contains
     real(c_double), value, intent(in) :: x, y
     type(c_ptr) :: widget
     integer(c_int) :: width, height
-    real(8) :: d
+    real(wp) :: d
 
     print *, "Button ", gtk_gesture_single_get_current_button(gesture)
 
@@ -129,8 +130,10 @@ contains
     integer(c_int), value, intent(in) :: width, height
     integer(c_int)                    :: cstatus
     integer                           :: t
-    real(8), parameter                :: pi = 3.14159265358979323846d0
-print *, "draw"
+    real(wp), parameter               :: pi = acos(-1.0_wp)
+
+    print *, "draw"
+
     ! https://cairographics.org/manual/
     ! Note that Cairo numerical parameters are generally doubles.
 

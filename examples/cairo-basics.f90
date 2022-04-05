@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2020-05-28
+! Last modification: vmagnin 2022-04-05
 
 module handlers
   use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_funptr, &
@@ -70,11 +70,13 @@ contains
   ! to the screen."
   ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
+    use, intrinsic :: iso_fortran_env, only: wp=>real64
+
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
     integer(c_int), value, intent(in) :: width, height
     integer                           :: cstatus
     integer                           :: t
-    real(8), parameter                :: pi = 3.14159265358979323846d0
+    real(wp), parameter               :: pi = acos(-1.0_wp)
 
     ! Bezier curve:
     call cairo_set_source_rgb(my_cairo_context, 0.9d0, 0.8d0, 0.8d0)

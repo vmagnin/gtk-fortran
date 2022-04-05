@@ -103,13 +103,13 @@ contains
     use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
     use handlers
 
-    type(c_ptr) :: my_drawing_area
-    integer     :: i, j, k, p, itermax
-    real(8)     :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-    complex(8)  :: c, z
-    real(8)     :: scx, scy             ! scales
-    integer(int8)  :: red, green, blue     ! rgb color
-    real(8)     :: t0, t1
+    type(c_ptr)   :: my_drawing_area
+    integer       :: i, j, k, p, itermax
+    real(wp)      :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+    complex(8)    :: c, z
+    real(wp)      :: scx, scy             ! scales
+    integer(int8) :: red, green, blue     ! rgb color
+    real(wp)      :: t0, t1
 
     computing = .true.
     call cpu_time(t0)
