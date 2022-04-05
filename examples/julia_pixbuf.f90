@@ -448,9 +448,9 @@ contains
           blue  = 0
         else
           ! Colour palette:
-          red   = int(min(255, k*2),  KIND=1)
-          green = int(min(255, k*5),  KIND=1)
-          blue  = int(min(255, k*10), KIND=1)
+          red   = int(min(255, k*2),  int8)
+          green = int(min(255, k*5),  int8)
+          blue  = int(min(255, k*10), int8)
         end if
 
         ! We write in the pixbuffer:
