@@ -104,7 +104,7 @@ contains
     use handlers
 
     type(c_ptr) :: my_drawing_area
-    integer(4)  :: i, j, k, p, itermax
+    integer     :: i, j, k, p, itermax
     real(8)     :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
     complex(8)  :: c, z
     real(8)     :: scx, scy             ! scales
