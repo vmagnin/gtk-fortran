@@ -112,7 +112,7 @@ contains
     call cairo_show_text (my_cairo_context, "Mandelbrot set"//c_null_char)
 
     call cairo_new_sub_path(my_cairo_context)
-    call cairo_arc(my_cairo_context, 300d0, 300d0, 100d0, 0d0, 3.14159d0)
+    call cairo_arc(my_cairo_context, 300d0, 300d0, 100d0, 0d0, acos(-1d0))
     call cairo_stroke(my_cairo_context)
 
     ! The image is written to PNG only one time:

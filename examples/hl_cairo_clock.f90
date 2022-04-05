@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-17 (GTK 4), 2020-07-08
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2022-04-05
 !------------------------------------------------------------------------------
 
 module cl_handlers
@@ -49,7 +49,7 @@ module cl_handlers
 
   implicit none
   integer(kind=c_int) :: height=250_c_int, width=250_c_int
-  real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
+  real(kind=c_double), parameter :: pi = acos(-1.0_c_double)
   integer, dimension(8) :: t0 = 0
   type(c_ptr) :: window
   type(c_ptr) :: app

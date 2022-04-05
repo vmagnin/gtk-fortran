@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin,
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
-! Last modifications: vmagnin 2020-06-17 (GTK 4), 2021-01-22
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2022-04-05
 !------------------------------------------------------------------------------
 
 module handlers
@@ -148,7 +148,7 @@ contains
 
   subroutine draw_pattern(widget)
     type(c_ptr) :: widget
-    real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
+    real(kind=c_double), parameter :: pi = acos(-1.0_c_double)
     integer :: cstatus
     integer :: t
 

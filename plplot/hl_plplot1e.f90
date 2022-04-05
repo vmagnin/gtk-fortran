@@ -252,7 +252,7 @@ module handlers_ex1
 
   implicit none
   integer(kind=c_int) :: run_status = TRUE
-  real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
+  real(kind=c_double), parameter :: pi = acos(-1.0_c_double)
 
 contains
 

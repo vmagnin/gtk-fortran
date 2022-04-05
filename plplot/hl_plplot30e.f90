@@ -216,7 +216,7 @@ module handlers_ex30
   use, intrinsic :: iso_c_binding
 
   implicit none
-  real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
+  real(kind=c_double), parameter :: pi = acos(-1.0_c_double)
 
 contains
 
