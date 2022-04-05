@@ -174,10 +174,10 @@ contains
     call gtk_window_set_child(ihwin, base)
 
     ! Now make a multi column list with multiple selections enabled
-    ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
-         & G_TYPE_UINT64, G_TYPE_BOOLEAN, G_TYPE_CHAR, G_TYPE_UCHAR /)
-    sortable = (/ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE /)
-    editable = (/ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE /)
+    ctypes = [ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
+         & G_TYPE_UINT64, G_TYPE_BOOLEAN, G_TYPE_CHAR, G_TYPE_UCHAR ]
+    sortable = [ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE ]
+    editable = [ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE ]
     codes = [ 'A', 'X', 'B', '?', 'A', 'C', char(185), 'u', '*', char(201)]
 
     titles(1) = "Name"

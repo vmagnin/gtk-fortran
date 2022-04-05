@@ -387,7 +387,7 @@ contains
     call gtk_window_set_child(window, base)
 
     ! The drawing area for the plot
-    draw = hl_gtk_drawing_area_new(size=(/width, height/), &
+    draw = hl_gtk_drawing_area_new(size=[width, height], &
          & has_alpha = FALSE, size_allocate=c_funloc(resize_area))
     call hl_gtk_box_pack(base, draw)
 

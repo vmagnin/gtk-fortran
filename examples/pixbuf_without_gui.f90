@@ -57,15 +57,15 @@ program pixbuf_without_gui
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
   print *, "Channels= ", nch, "      Rowstride=", rowstride
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, &
-                 & (/pixwidth*pixheight*nch/))
+                 & [pixwidth*pixheight*nch])
 
   ! The background is black (red=0, green=0, blue=0):
   pixel = char(0)
   ! Diagonal of the image:
   diag = sqrt(real(pixwidth*pixwidth + pixheight*pixheight, kind(0d0)))
   ! Coordinates of the triangle vertices:
-  x = (/ pixwidth/2d0,  0d0,                      (pixwidth-1)*1d0        /)
-  y = (/ 0d0,           pixheight*sqrt(3d0)/2d0,  pixheight*sqrt(3d0)/2d0 /)
+  x = [ pixwidth/2d0,  0d0,                      (pixwidth-1)*1d0        ]
+  y = [ 0d0,           pixheight*sqrt(3d0)/2d0,  pixheight*sqrt(3d0)/2d0 ]
   ! We start at an arbitrary position:
   xx = (x(1) + x(2)) / 2d0
   yy = (y(1) + y(2)) / 2d0

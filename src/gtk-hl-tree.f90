@@ -901,7 +901,7 @@ contains
 
     ! Create list storage with 2 colums (one is a dummy, to provide an index)
 
-    types = (/ G_TYPE_STRING /)
+    types = [ G_TYPE_STRING ]
 
     ! This slightly clunky if /else cascade is needed because the attempt to convert
     ! an unset scalar argument to an array causes a segfault.
@@ -909,17 +909,17 @@ contains
        list = hl_gtk_listn_new(scroll, ncols=1_c_int, types=types, &
             & changed=changed, &
             & data=data, multiple=multiple, sensitive=sensitive, &
-            & tooltip=tooltip, width=(/width/), titles=(/title/), height=height)
+            & tooltip=tooltip, width=[width], titles=[title], height=height)
     else if (present(title)) then
        list = hl_gtk_listn_new(scroll, ncols=1_c_int, types=types, &
             & changed=changed, &
             & data=data, multiple=multiple, sensitive=sensitive, &
-            & tooltip=tooltip, titles=(/title/), height=height)
+            & tooltip=tooltip, titles=[title], height=height)
     else if (present(width)) then
        list = hl_gtk_listn_new(scroll, ncols=1_c_int, types=types, &
             & changed=changed, &
             & data=data, multiple=multiple, sensitive=sensitive, &
-            & tooltip=tooltip, width=(/width/), height=height)
+            & tooltip=tooltip, width=[width], height=height)
     else
        list = hl_gtk_listn_new(scroll, ncols=1_c_int, types=types, &
             & changed=changed, &
@@ -1386,7 +1386,7 @@ contains
     ! ROW: c_int(): optional: The row BEFORE which to insert the row
     ! 		(append if an element is -1) For example; to put a new row
     ! 		after all other children of the second child of the fifth
-    ! 		top-level row use (/ 4, 1, -1 /).
+    ! 		top-level row use [ 4, 1, -1 ].
     ! ABSROW: c_int: optional: The row BEFORE which to insert the new row
     ! 		treating the tree as a flat list.
     ! COUNT: c_int: optional: How many rows to add (default 1)
@@ -1685,7 +1685,7 @@ contains
        idxlc = gtk_tree_path_get_indices_with_depth( &
             & g_list_nth_data(slist, i-1_c_int), &
             & c_loc(dep))
-       call c_f_pointer(idxlc, idxl, (/ int(dep) /) )
+       call c_f_pointer(idxlc, idxl, [ int(dep) ] )
        indices(:dep,i) = idxl
        if (present(depths)) depths(i) = dep
     end do

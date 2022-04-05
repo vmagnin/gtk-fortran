@@ -160,7 +160,7 @@ contains
     bytes = pwidth*pheight*nch
     print *, "Size (bytes) of the pixbuf: ", bytes
 
-    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/bytes/))
+    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [bytes])
     call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 100_4)
     write_png = .true.
 

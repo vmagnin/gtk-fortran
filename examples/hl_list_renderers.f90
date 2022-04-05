@@ -289,19 +289,19 @@ contains
     call gtk_window_set_child(ihwin, base)
 
     ! Now make a multi column list with multiple selections enabled
-    ctypes = (/ G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_DOUBLE, &
+    ctypes = [ G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_DOUBLE, &
          & G_TYPE_UINT64, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_INT,&
-         & gdk_pixbuf_get_type(), G_TYPE_STRING , G_TYPE_BOOLEAN /)
-    editable = (/ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, &
-         & FALSE, TRUE, TRUE /)
+         & gdk_pixbuf_get_type(), G_TYPE_STRING , G_TYPE_BOOLEAN ]
+    editable = [ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, &
+         & FALSE, TRUE, TRUE ]
     widths = [-1, -1, -1, -1, -1, -1, -1, 150, -1, -1, -1]
 
-    titles = (/ character(len=20) :: "Name", "N", "3N", "Log(n)", &
-         & "N**4", "Odd?", "Select?", "Fraction", "Colour", "Choose", "Pick" /)
-    renderers = (/ hl_gtk_cell_text, hl_gtk_cell_spin, hl_gtk_cell_text, &
+    titles = [ character(len=20) :: "Name", "N", "3N", "Log(n)", &
+         & "N**4", "Odd?", "Select?", "Fraction", "Colour", "Choose", "Pick" ]
+    renderers = [ hl_gtk_cell_text, hl_gtk_cell_spin, hl_gtk_cell_text, &
          & hl_gtk_cell_text, hl_gtk_cell_text, hl_gtk_cell_text,&
          & hl_gtk_cell_toggle, hl_gtk_cell_progress, hl_gtk_cell_pixbuf, &
-         & hl_gtk_cell_combo, hl_gtk_cell_radio /)
+         & hl_gtk_cell_combo, hl_gtk_cell_radio ]
 
     ihlist = hl_gtk_listn_new(types=ctypes, &
          & changed=c_funloc(list_select),&

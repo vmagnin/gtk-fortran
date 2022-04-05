@@ -236,8 +236,8 @@ contains
 
     my_drawing_area = hl_gtk_drawing_area_new(&
          & scroll=my_scroll_box, &
-         & size = (/width, height /), &
-         & ssize = (/ 400_c_int, 300_c_int /), &
+         & size = [width, height ], &
+         & ssize = [ 400_c_int, 300_c_int ], &
          & button_press_event=c_funloc(button_event_h), &
          & button_release_event=c_funloc(button_release_h), &
          & scroll_event=c_funloc(scroll_event_h), &

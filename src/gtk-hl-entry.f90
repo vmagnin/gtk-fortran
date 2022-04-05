@@ -675,7 +675,7 @@ contains
     nchars_r = int(gtk_text_iter_get_offset(c_loc(e_iter)) - &
          & gtk_text_iter_get_offset(c_loc(s_iter))) + 1
 
-    call c_f_pointer(ctext0, ftext0, (/ nchars_r /))
+    call c_f_pointer(ctext0, ftext0, [ nchars_r ])
     call convert_c_string(ftext0, text)
 
   end subroutine hl_gtk_text_view_get_text

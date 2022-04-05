@@ -221,7 +221,7 @@ program mandelbrot
   print *, "Rowstride of the pixbuf: ", rowstride
 
   ! We need a pointer toward the pixel buffer:
-  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/width*height*nch/))
+  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [width*height*nch])
 
   ! Scientific computing:
   call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 10000_4)

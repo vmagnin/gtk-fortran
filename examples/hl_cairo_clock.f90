@@ -65,10 +65,10 @@ contains
     character(len=3) :: sdate
 
     character(len=4), parameter, dimension(12) :: mnames = &
-         & (/'JAN'//c_null_char, 'FEB'//c_null_char, 'MAR'//c_null_char, &
+         & ['JAN'//c_null_char, 'FEB'//c_null_char, 'MAR'//c_null_char, &
          &   'APR'//c_null_char, 'MAY'//c_null_char, 'JUN'//c_null_char, &
          &   'JUL'//c_null_char, 'AUG'//c_null_char, 'SEP'//c_null_char, &
-         &   'OCT'//c_null_char, 'NOV'//c_null_char, 'DEC'//c_null_char /)
+         &   'OCT'//c_null_char, 'NOV'//c_null_char, 'DEC'//c_null_char ]
     integer :: i
     real(kind=c_double) :: r0, r1, x0, x1, y0, y1, th, xc, yc, ycs
     real(kind=c_double) :: xb, xt, yb, yt, radius, scale_factor

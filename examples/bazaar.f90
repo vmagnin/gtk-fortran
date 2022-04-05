@@ -248,7 +248,7 @@ contains
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
     print *, rowstride, nch, gdk_pixbuf_get_has_alpha(my_pixbuf)
-    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/width*height*nch/))
+    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [width*height*nch])
 
     ! pixel is an array with 4 bytes per pixel (RGBA)
     ! We use chars because we need unsigned integers

@@ -391,7 +391,7 @@ contains
     my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
     call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, &
-         &int((/nch, width, height/)))
+         &int([nch, width, height]))
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
 
     ! We use char() because we need unsigned integers.

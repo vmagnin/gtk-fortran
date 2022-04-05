@@ -62,7 +62,7 @@ contains
     integer(kind=c_int) :: ipos
     type(c_ptr) :: junk
     integer(kind=c_int) :: i
-    integer(kind=c_int), dimension(6), target :: bval = (/ (i, i = 1,6) /)
+    integer(kind=c_int), dimension(6), target :: bval = [ (i, i = 1,6) ]
     character(len=15) :: ltext
 
     ! Create the window:

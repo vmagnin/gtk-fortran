@@ -76,7 +76,7 @@ contains
     character(len=100), dimension(:), allocatable :: f_text
 
     print *, "INSERT event", nins
-    call c_f_pointer(text, cf_text, (/ int(nins) /))
+    call c_f_pointer(text, cf_text, [ int(nins) ])
     call convert_c_string(cf_text, f_text)
 
     print "(a)", f_text
@@ -114,7 +114,7 @@ contains
     buffer = gtk_entry_get_buffer(entry)
     call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
 
-    call hl_gtk_text_view_insert(zedt, (/ trim(ftext) /))
+    call hl_gtk_text_view_insert(zedt, [ trim(ftext) ])
   end subroutine tv_append
 
   subroutine tv_insert(widget, gdata) bind(c)
@@ -125,7 +125,7 @@ contains
     buffer = gtk_entry_get_buffer(entry)
     call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
 
-    call hl_gtk_text_view_insert(zedt, (/ trim(ftext) /), at_cursor=TRUE)
+    call hl_gtk_text_view_insert(zedt, [ trim(ftext) ], at_cursor=TRUE)
   end subroutine tv_insert
 
   subroutine tv_clr(widget, gdata) bind(c)
@@ -195,7 +195,7 @@ contains
          & changed=c_funloc(tv_change), &
          & insert_text=c_funloc(tv_ins), &
          & delete_range=c_funloc(tv_del), &
-         & ssize=(/350_c_int, 200_c_int/), tooltip = &
+         & ssize=[350_c_int, 200_c_int], tooltip = &
          & "Try typing, pasting or cutting text in here"//c_null_char)
     call hl_gtk_box_pack(box, contain)
 

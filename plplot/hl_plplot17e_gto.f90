@@ -70,12 +70,12 @@ contains
 
     ! Define colour map 0 to match the "GRAFFER" colour table in
     ! place of the PLPLOT default.
-    integer, parameter, dimension(16) :: rval = (/255, 0, 255, &
-         & 0, 0, 0, 255, 255, 255, 127, 0, 0, 127, 255, 85, 170/),&
-         & gval = (/ 255, 0, 0, 255, 0, 255, 0, 255, 127, 255, 255, 127,&
-         & 0, 0, 85, 170/), &
-         & bval = (/ 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 127, 255, 255,&
-         & 127, 85, 170/)
+    integer, parameter, dimension(16) :: rval = [255, 0, 255, &
+         & 0, 0, 0, 255, 255, 255, 127, 0, 0, 127, 255, 85, 170],&
+         & gval = [ 255, 0, 0, 255, 0, 255, 0, 255, 127, 255, 255, 127,&
+         & 0, 0, 85, 170], &
+         & bval = [ 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 127, 255, 255,&
+         & 127, 85, 170]
 
     !  Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
@@ -261,7 +261,7 @@ contains
     base = hl_gtk_box_new()
     call gtk_window_set_child(window, base)
 
-    drawing = hl_gtk_drawing_area_new(size=(/1000_c_int, 500_c_int/), &
+    drawing = hl_gtk_drawing_area_new(size=[1000_c_int, 500_c_int], &
          & has_alpha = FALSE)
 
     call hl_gtk_box_pack(base, drawing)

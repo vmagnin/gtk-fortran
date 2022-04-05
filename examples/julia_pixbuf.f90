@@ -391,7 +391,7 @@ contains
     my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, pixwidth, pixheight)
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
-    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/pixwidth*pixheight*nch/))
+    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [pixwidth*pixheight*nch])
     ! We use char() for "pixel" because we need unsigned integers.
     ! This pixbuffer has no Alpha channel (15% faster), only RGB.
     pixel = char(0)

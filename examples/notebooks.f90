@@ -174,7 +174,7 @@ contains
     ! Attach notebook to group, necessary to enable drag and drop
     ! between the two notebooks
     call gtk_notebook_set_group_name(notebook_1,"group"//c_null_char)
-    call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, (/64/))
+    call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, [64])
     call convert_c_string_scalar(textptr, my_string)
     print *, "group name = <"//TRIM(my_string)//">"
 

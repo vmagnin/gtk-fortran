@@ -278,7 +278,7 @@ contains
 
     isel = hl_gtk_file_chooser_show(chfile, cdir=working_dir, create=FALSE,&
          & title="Select input file"//c_null_char, filter=filters, &
-         & filter_name=filtnames, wsize=(/ 600_c_int, 400_c_int /), edit_filters=TRUE, &
+         & filter_name=filtnames, wsize=[ 600_c_int, 400_c_int ], edit_filters=TRUE, &
          & parent=window)
     if (.not. is_UNIX_OS()) then
         do i = 1, len(working_dir)
@@ -400,7 +400,7 @@ contains
     &"@GTKF_PROG_PREFIX@"
 
     if (.not.file_loaded) then
-      status_read=hl_gtk_message_dialog_show((/"Please load some UI file first!"/),&
+      status_read=hl_gtk_message_dialog_show(["Please load some UI file first!"],&
         & GTK_BUTTONS_OK, title="No UI file loaded yet"//c_null_char, &
         & parent=window)
       return

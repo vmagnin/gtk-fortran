@@ -59,12 +59,12 @@ contains
 
     ! Define colour map 0 to match the "GRAFFER" colour table in
     ! place of the PLPLOT default.
-    integer, parameter, dimension(16) :: rval = (/255, 0, 255, &
-         & 0, 0, 0, 255, 255, 255, 127, 0, 0, 127, 255, 85, 170/),&
-         & gval = (/ 255, 0, 0, 255, 0, 255, 0, 255, 127, 255, 255, 127,&
-         & 0, 0, 85, 170/), &
-         & bval = (/ 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 127, 255, 255,&
-         & 127, 85, 170/)
+    integer, parameter, dimension(16) :: rval = [255, 0, 255, &
+         & 0, 0, 0, 255, 255, 255, 127, 0, 0, 127, 255, 85, 170],&
+         & gval = [ 255, 0, 0, 255, 0, 255, 0, 255, 127, 255, 255, 127,&
+         & 0, 0, 85, 170], &
+         & bval = [ 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 127, 255, 255,&
+         & 127, 85, 170]
 
     !  Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
@@ -223,12 +223,12 @@ contains
 
     !   Superimpose a dashed line grid, with 1.5 mm marks and spaces. With
     !   only a single mark and space element, we do not need arrays
-    call plstyl( (/1500/), (/1500/) )
+    call plstyl( [1500], [1500] )
     call plcol0(2)
     call plbox( 'g', 30.0_plflt, 0, 'g', 0.2_plflt, 0 )
     !   remember from the error message:
     !   plstyl: At least one mark or space must be > 0, aborting operation
-    call plstyl( (/0/), (/1/) )
+    call plstyl( [0], [1] )
 
     call plcol0(3)
     call pllab( 'Angle (degrees)', 'sine', '#frPLplot Example 1 - Sine function' )
@@ -279,10 +279,10 @@ contains
     base = hl_gtk_box_new()
     call gtk_window_set_child(window, base)
 
-    drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
+    drawing = hl_gtk_drawing_area_new(size=[width, height], &
          & has_alpha = FALSE, &
          & scroll = scroll_w, &
-         & ssize=(/ 600, 500 /))
+         & ssize=[ 600, 500 ])
     call hl_gtk_box_pack(base, scroll_w)
 
     qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))

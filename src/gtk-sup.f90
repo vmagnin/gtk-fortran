@@ -132,7 +132,7 @@ module gtk_sup
   ! i.e. one long and 2 64-bit integers
   type, bind(c) :: gvalue
      integer(kind=c_long) :: il = 0
-     integer(kind=c_int64_t), dimension(2) :: i64 = (/0, 0/)
+     integer(kind=c_int64_t), dimension(2) :: i64 = [0, 0]
   end type gvalue
 
   ! Define a GtkTextIter (this has to be pre-allocated in the calls)
@@ -228,7 +228,7 @@ contains
     ! GVAL: gvalue: required: The GValue to clear.
     !-
     gval%il=0
-    gval%i64=(/0,0/)
+    gval%i64=[0,0]
   end subroutine clear_gvalue
 
   !*********************************
@@ -457,7 +457,7 @@ contains
     integer :: i
     character(kind=c_char), dimension(:), pointer :: textptr
 
-    call c_f_pointer(ctext, textptr, (/ strlen(ctext) /))
+    call c_f_pointer(ctext, textptr, [ strlen(ctext) ])
 
     do i = 1, size(textptr)
       if (i > len(f_string)) then
@@ -491,7 +491,7 @@ contains
     integer :: i, j, ii, count
     character(kind=c_char), dimension(:), pointer :: textptr
 
-    call c_f_pointer(ctext, textptr, (/ strlen(ctext) /))
+    call c_f_pointer(ctext, textptr, [ strlen(ctext) ])
     ! count = COUNT(textptr == c_new_line)
     count = 1
     i = 1

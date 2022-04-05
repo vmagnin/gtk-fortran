@@ -244,10 +244,10 @@ contains
     base = hl_gtk_box_new()
     call gtk_window_set_child(window, base)
 
-    drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
+    drawing = hl_gtk_drawing_area_new(size=[width, height], &
          & has_alpha = TRUE, &
          & scroll = scroll_w, &
-         & ssize=(/ 650, 600 /))
+         & ssize=[ 650, 600 ])
     call hl_gtk_box_pack(base, scroll_w)
 
     qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
