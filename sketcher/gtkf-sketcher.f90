@@ -411,7 +411,7 @@ contains
 
       subdir=filename(index(filename,"/",.true.)+1:index(filename,".",.true.)-1)
       if (create_subdir) then
-        if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//c_null_char,488_c_int) .ge. 0) then
+        if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//c_null_char,488_c_int) >= 0) then
           working_dir=working_dir(1:len_trim(working_dir))//"/"//subdir
 
           print *, "2) Working dir: ", TRIM(ADJUSTL(working_dir))
@@ -496,10 +496,10 @@ contains
           gpointer=g_slist_nth_data (gslist,i)
           object_name_ptr=gtk_buildable_get_buildable_id (gpointer)
           call C_F_string_ptr(object_name_ptr, F_string)
-          if (len_trim(f_string).gt.0) then
+          if (len_trim(f_string) > 0) then
             do
               j=index(f_string,"-")
-              if (j.gt.0) then
+              if (j > 0) then
                 f_string(j:j)="_"
               else
                 exit
@@ -541,11 +541,11 @@ contains
         do
           read(40,'(A)',iostat=status_read) line
           if ( status_read /= 0 ) exit
-          if (index(line,"handler").gt.0) then
+          if (index(line,"handler") > 0) then
             read(40,'(A)',iostat=status_read) line
             do
               read(40,'(A)',iostat=status_read) line
-              if ((status_read /= 0).or.(len_trim(line).eq.0)) exit
+              if ((status_read /= 0).or.(len_trim(line) == 0)) exit
               write(hunit,'(A)')"  "//line(1:len_trim(line))
             enddo
           endif
@@ -600,9 +600,9 @@ contains
 
       do i=1,n_connections
         already_used=.false.
-        if (i.gt.1) then
+        if (i > 1) then
           do j=1,i-1
-            if (connections(i)%handler_name.eq.connections(j)%handler_name) then
+            if (connections(i)%handler_name == connections(j)%handler_name) then
               already_used=.true.
               exit
             endif
@@ -611,7 +611,7 @@ contains
         if (.not.already_used) then
           write(hunit,'(A)')"! handler function for signal "//connections(i)%signal_name(1:len_trim(connections(i)%signal_name))//&
             " ("//connections(i)%object_name(1:len_trim(connections(i)%object_name))//")"
-          if (index(connections(i)%signal_name,"event").gt.0) then
+          if (index(connections(i)%signal_name,"event") > 0) then
             write(hunit,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
               " (widget, event, gdata) result(ret) bind(c)"
             write(hunit,'(A)')"    use, intrinsic :: iso_c_binding, only: c_ptr, c_int"
@@ -684,11 +684,11 @@ contains
           gpointer=g_slist_nth_data (gslist,i)
           object_name_ptr=gtk_buildable_get_buildable_id (gpointer)
           call C_F_string_ptr(object_name_ptr, F_string)
-          if (len_trim(f_string).gt.0) then
+          if (len_trim(f_string) > 0) then
             f_string_ori=f_string
             do
               j=index(f_string,"-")
-              if (j.gt.0) then
+              if (j > 0) then
                 f_string(j:j)="_"
               else
                 exit

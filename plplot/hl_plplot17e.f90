@@ -81,7 +81,7 @@ contains
 
     !  Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
-    if (plparseopts_rc .ne. 0) stop "plparseopts error"
+    if (plparseopts_rc /= 0) stop "plparseopts error"
 
     ! Get a cairo context from the drawing area.
     cc = hl_gtk_drawing_area_cairo_new(area)
@@ -93,12 +93,12 @@ contains
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
     plsetopt_rc = plsetopt( 'geometry', geometry)
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     !      Specify some reasonable defaults for ymin and ymax
     !      The plot will grow automatically if needed (but not shrink)
@@ -198,16 +198,16 @@ contains
 
     !        There is no need for all pens to have the same number of
     !        points or being equally time spaced.
-    if ( mod(n,2) .ne. 0 ) then
+    if ( mod(n,2) /= 0 ) then
        call plstripa(id1, 0, t, y1)
     endif
-    if ( mod(n,3) .ne. 0 ) then
+    if ( mod(n,3) /= 0 ) then
        call plstripa(id1, 1, t, y2)
     endif
-    if ( mod(n,4) .ne. 0 ) then
+    if ( mod(n,4) /= 0 ) then
        call plstripa(id1, 2, t, y3)
     endif
-    if ( mod(n,5) .ne. 0 ) then
+    if ( mod(n,5) /= 0 ) then
        call plstripa(id1, 3, t, y4)
     end if
     call gtk_widget_queue_draw(area)

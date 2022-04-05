@@ -71,7 +71,7 @@ contains
 
     !  Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
-    if (plparseopts_rc .ne. 0) stop "plparseopts error"
+    if (plparseopts_rc /= 0) stop "plparseopts error"
 
 
     ! Get a cairo context from the drawing area.
@@ -87,13 +87,13 @@ contains
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") cairo_image_surface_get_width(cs(1)), &
          & cairo_image_surface_get_height(cs(1))
     plsetopt_rc = plsetopt( 'geometry', geometry)
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     ! Initialize
     call plinit
@@ -158,9 +158,9 @@ contains
     call plwind(-2.0_plflt, 3.0_plflt, -80.0_plflt, 0.0_plflt)
     call plcol0(1)
     !      Try different axis and labelling styles.
-    if (type.eq.0) then
+    if (type == 0) then
        call plbox('bclnst', 0.0_plflt, 0, 'bnstv', 0.0_plflt, 0)
-    elseif (type.eq.1) then
+    elseif (type == 1) then
        call plbox('bcfghlnst', 0.0_plflt, 0, 'bcghnstv', 0.0_plflt, 0)
     else
        stop 'plot1: invalid type'
@@ -180,7 +180,7 @@ contains
     call plmtex('l', 5.0_plflt, 0.5_plflt, 0.5_plflt, 'Amplitude (dB)')
     nlegend = 1
     !      For the gridless case, put phase vs freq on same plot.
-    if (type.eq.0) then
+    if (type == 0) then
        call plcol0(1)
        call plwind(-2.0_plflt, 3.0_plflt, -100.0_plflt, 0.0_plflt)
        call plbox(' ', 0.0_plflt, 0, 'cmstv', 30.0_plflt, 3)

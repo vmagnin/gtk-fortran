@@ -1012,7 +1012,7 @@ contains
     ! Set the selected row in a list (single row only)
     !
     ! LIST: c_ptr: required: The list to work on.
-    ! ROW: c_int: optional: The row to select (absent or .lt. 0
+    ! ROW: c_int: optional: The row to select (absent or < 0
     ! 		is clear selection)
     !-
 

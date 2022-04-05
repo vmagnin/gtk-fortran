@@ -79,7 +79,7 @@ contains
     use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    if (gtk_notebook_get_current_page(notebook_1) .eq. gtk_notebook_get_n_pages(notebook_1) - 1) then
+    if (gtk_notebook_get_current_page(notebook_1) == gtk_notebook_get_n_pages(notebook_1) - 1) then
       call gtk_notebook_set_current_page (notebook_1, 0_c_int)
     else
       call gtk_notebook_next_page (notebook_1)
@@ -91,7 +91,7 @@ contains
     use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    if (gtk_notebook_get_current_page(notebook_1) .eq. 0) then
+    if (gtk_notebook_get_current_page(notebook_1) == 0) then
       call gtk_notebook_set_current_page (notebook_1, -1_c_int)
     else
       call gtk_notebook_prev_page (notebook_1)

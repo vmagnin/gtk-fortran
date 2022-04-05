@@ -83,28 +83,28 @@ contains
     real(kind=plflt) zmin, zmax, step, clevel(nlevel)
     ! Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
-    if (plparseopts_rc .ne. 0) stop "plparseopts error"
+    if (plparseopts_rc /= 0) stop "plparseopts error"
 
     write(title, "('#frPLplot Example 8 - Alt=',I3,', Az=',I3)")&
          & nint(alt), nint(az)
 
     do i = 1,xpts
        x(i) = dble(i-1-(xpts/2))/dble (xpts/2)
-       if (rosen.eq.1) x(i) = 1.5_plflt*x(i)
+       if (rosen == 1) x(i) = 1.5_plflt*x(i)
     enddo
     do j = 1,ypts
        y(j) = dble(j-1-(ypts/2))/dble (ypts/2)
-       if (rosen.eq.1) y(j) = y(j) + 0.5_plflt
+       if (rosen == 1) y(j) = y(j) + 0.5_plflt
     enddo
 
     do i=1,xpts
        xx = x(i)
        do j=1,ypts
           yy = y(j)
-          if (rosen.eq.1) then
+          if (rosen == 1) then
              z(i,j) = (1._plflt - xx)**2 + 100._plflt*(yy - xx**2)**2
              !            The log argument may be zero for just the right grid.
-             if (z(i,j).gt.0._plflt) then
+             if (z(i,j) > 0._plflt) then
                 z(i,j) = log(z(i,j))
              else
                 z(i,j) = -5._plflt
@@ -131,12 +131,12 @@ contains
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
     plsetopt_rc = plsetopt( 'geometry', geometry)
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     call plinit
 
@@ -152,7 +152,7 @@ contains
     call plcol0(3)
     call plmtex('t', 1.0_plflt, 0.5_plflt, 0.5_plflt, title)
     call plcol0(1)
-    if (rosen.eq.1) then
+    if (rosen == 1) then
        call plw3d(1.0_plflt, 1.0_plflt, 1.0_plflt, -1.5_plflt, &
             1.5_plflt, -0.5_plflt, 1.5_plflt, zmin, zmax, alt,az)
     else
@@ -186,7 +186,7 @@ contains
 
   !----------------------------------------------------------------------------
   subroutine cmap1_init(gray)
-    !      For gray.eq.1, basic grayscale variation from half-dark
+    !      For gray == 1, basic grayscale variation from half-dark
     !      to light.  Otherwise, hue variations around the front of the
     !      colour wheel from blue to green to red with constant lightness
     !      and saturation.
@@ -199,7 +199,7 @@ contains
     i(0) = 0._plflt
     !      right boundary
     i(1) = 1._plflt
-    if (gray.eq.1) then
+    if (gray == 1) then
        !        hue -- low: red (arbitrary if s=0)
        h(0) = 0.0_plflt
        !        hue -- high: red (arbitrary if s=0)
