@@ -56,9 +56,9 @@ module handlers
   type(c_ptr) :: my_cairo_context
   integer(c_int) :: boolresult
   logical :: boolevent
-  integer(kind=c_int) :: width, height
+  integer(c_int) :: width, height
   logical :: rflag = .false.
-  integer(kind=c_int) :: xp0, yp0
+  integer(c_int) :: xp0, yp0
 
 contains
   ! User defined event handlers go here
@@ -130,7 +130,7 @@ contains
     integer(c_int), value, intent(in) :: keyval, keycode, state
     logical(c_bool) :: ret
     character(len=20) :: keyname
-    integer(kind=c_int) :: key_q
+    integer(c_int) :: key_q
 
     call convert_c_string(gdk_keyval_name(keyval), keyname)
     print *, "Keyval: ",keyval," Name: ", trim(keyname), "      Keycode: ", &
@@ -148,7 +148,7 @@ contains
 
   subroutine draw_pattern(widget)
     type(c_ptr) :: widget
-    real(kind=c_double), parameter :: pi = acos(-1.0_c_double)
+    real(c_double), parameter :: pi = acos(-1.0_c_double)
     integer :: cstatus
     integer :: t
 

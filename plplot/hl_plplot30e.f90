@@ -34,7 +34,7 @@ module common_ex30
   use plplot_extra
 
   implicit none
-  integer(kind=c_int) :: height, width
+  integer(c_int) :: height, width
   type(c_ptr) :: window
   type(c_ptr) :: my_gmainloop
 end module common_ex30
@@ -58,8 +58,8 @@ contains
     integer :: plsetopt_rc
 
     integer, dimension(4) ::  red, green, blue
-    real(kind=plflt), dimension (4) :: alpha, px, py
-    real(kind=plflt), dimension (2) :: pos, rcoord, gcoord, bcoord, acoord
+    real(plflt), dimension (4) :: alpha, px, py
+    real(plflt), dimension (2) :: pos, rcoord, gcoord, bcoord, acoord
     logical, dimension(1) :: rev
 
     data red   / 127, 255, 0, 0 /
@@ -77,7 +77,7 @@ contains
 
     integer i, j
     integer icol, r, g, b
-    real(kind=plflt) :: a
+    real(plflt) :: a
 
     !  Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
@@ -216,7 +216,7 @@ module handlers_ex30
   use, intrinsic :: iso_c_binding
 
   implicit none
-  real(kind=c_double), parameter :: pi = acos(-1.0_c_double)
+  real(c_double), parameter :: pi = acos(-1.0_c_double)
 
 contains
 

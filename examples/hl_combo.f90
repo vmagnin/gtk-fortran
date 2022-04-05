@@ -49,7 +49,7 @@ contains
     type(c_ptr), value, intent(in) :: widget, gdata
 
     integer, pointer :: index
-    integer(kind=c_int) :: isel, nrow
+    integer(c_int) :: isel, nrow
     character(len=40) :: value
 
     if (c_associated(gdata)) then

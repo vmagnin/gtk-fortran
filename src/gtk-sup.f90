@@ -65,51 +65,51 @@ module gtk_sup
   !-
 
   ! Gtype definitions
-  integer, parameter :: type_kind=c_size_t
-  integer(kind=c_int), parameter :: g_type_fundamental_shift=2
-  integer(kind=type_kind), parameter :: G_TYPE_INVALID = &
+  integer, parameter :: type_kind = c_size_t
+  integer(c_int), parameter :: g_type_fundamental_shift=2
+  integer(type_kind), parameter :: G_TYPE_INVALID = &
        & ishft(0_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_NONE = &
+  integer(type_kind), parameter :: G_TYPE_NONE = &
        & ishft(1_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_INTERFACE = &
+  integer(type_kind), parameter :: G_TYPE_INTERFACE = &
        & ishft(2_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_CHAR = &
+  integer(type_kind), parameter :: G_TYPE_CHAR = &
        & ishft(3_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_UCHAR = &
+  integer(type_kind), parameter :: G_TYPE_UCHAR = &
        & ishft(4_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_BOOLEAN = &
+  integer(type_kind), parameter :: G_TYPE_BOOLEAN = &
        & ishft(5_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_INT = &
+  integer(type_kind), parameter :: G_TYPE_INT = &
        & ishft(6_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_UINT = &
+  integer(type_kind), parameter :: G_TYPE_UINT = &
        & ishft(7_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_LONG = &
+  integer(type_kind), parameter :: G_TYPE_LONG = &
        & ishft(8_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_ULONG = &
+  integer(type_kind), parameter :: G_TYPE_ULONG = &
        & ishft(9_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_INT64 = &
+  integer(type_kind), parameter :: G_TYPE_INT64 = &
        & ishft(10_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_UINT64 = &
+  integer(type_kind), parameter :: G_TYPE_UINT64 = &
        & ishft(11_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_ENUM = &
+  integer(type_kind), parameter :: G_TYPE_ENUM = &
        & ishft(12_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_FLAGS = &
+  integer(type_kind), parameter :: G_TYPE_FLAGS = &
        & ishft(13_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_FLOAT = &
+  integer(type_kind), parameter :: G_TYPE_FLOAT = &
        & ishft(14_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_DOUBLE = &
+  integer(type_kind), parameter :: G_TYPE_DOUBLE = &
        & ishft(15_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_STRING = &
+  integer(type_kind), parameter :: G_TYPE_STRING = &
        & ishft(16_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_POINTER = &
+  integer(type_kind), parameter :: G_TYPE_POINTER = &
        & ishft(17_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_BOXED = &
+  integer(type_kind), parameter :: G_TYPE_BOXED = &
        & ishft(18_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_PARAM = &
+  integer(type_kind), parameter :: G_TYPE_PARAM = &
        & ishft(19_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_OBJECT = &
+  integer(type_kind), parameter :: G_TYPE_OBJECT = &
        & ishft(20_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_VARIANT = &
+  integer(type_kind), parameter :: G_TYPE_VARIANT = &
        & ishft(21_type_kind, g_type_fundamental_shift)
 
   !+
@@ -124,23 +124,23 @@ module gtk_sup
 
   ! Define a GtkTreeIter (this has to be pre-allocated in the calls)
   type, bind(c) :: gtktreeiter
-     integer(kind=c_int) :: intv=0
+     integer(c_int) :: intv=0
      type(c_ptr) :: p0=C_NULL_PTR, p1=C_NULL_PTR, p2=C_NULL_PTR
   end type gtktreeiter
 
   ! Define a spacemaker for GValue It's 24 bytes on 64 bit & 20 on 32,
   ! i.e. one long and 2 64-bit integers
   type, bind(c) :: gvalue
-     integer(kind=c_long) :: il = 0
-     integer(kind=c_int64_t), dimension(2) :: i64 = [0, 0]
+     integer(c_long) :: il = 0
+     integer(c_int64_t), dimension(2) :: i64 = [0, 0]
   end type gvalue
 
   ! Define a GtkTextIter (this has to be pre-allocated in the calls)
   type, bind(c) :: gtktextiter
      type(c_ptr) :: d1, d2
-     integer(kind=c_int) :: d3, d4, d5, d6, d7, d8
+     integer(c_int) :: d3, d4, d5, d6, d7, d8
      type(c_ptr) :: d9, d10
-     integer(kind=c_int) :: d11, d12, d13
+     integer(c_int) :: d11, d12, d13
      type(c_ptr) :: d14
   end type gtktextiter
 
@@ -149,8 +149,8 @@ module gtk_sup
   ! GError is a transparent structure that returns error information.
   !-
   type, bind(c) :: gerror
-     integer(kind=c_int32_t) :: domain
-     integer(kind=c_int) :: code
+     integer(c_int32_t) :: domain
+     integer(c_int) :: code
      type(c_ptr) :: message    ! A C pointer to the error message.
   end type gerror
 
@@ -355,7 +355,7 @@ contains
   subroutine convert_c_string_scalar(textptr, f_string, status)
     character(kind=c_char), dimension(:), intent(in) :: textptr
     character(len=*), intent(out) :: f_string
-    integer(kind=c_int), intent(out), optional :: status
+    integer(c_int), intent(out), optional :: status
 
     ! Convert a null-terminated c-string to  a fortran string
     !
@@ -528,7 +528,7 @@ contains
   subroutine convert_f_string_a(f_string, textptr, length)
     character(len=*), intent(in), dimension(:) :: f_string
     character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
-    integer(kind=c_int), intent(out), optional :: length
+    integer(c_int), intent(out), optional :: length
 
     ! Convert a fortran string array into a null-terminated, LF_separated
     ! c-string
@@ -584,7 +584,7 @@ contains
   subroutine convert_f_string_s(f_string, textptr, length)
     character(len=*), intent(in) :: f_string
     character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
-    integer(kind=c_int), intent(out), optional :: length
+    integer(c_int), intent(out), optional :: length
 
     ! Convert a fortran string into a null-terminated c-string
     !
@@ -619,7 +619,7 @@ contains
   !+
   function c_f_logical(cbool)
     logical :: c_f_logical
-    integer(kind=c_int), intent(in) :: cbool
+    integer(c_int), intent(in) :: cbool
 
     ! Convert a gboolean to a Fortran logical
     !
@@ -635,7 +635,7 @@ contains
 
   !+
   function f_c_logical4(flog)
-    integer(kind=c_int) :: f_c_logical4
+    integer(c_int) :: f_c_logical4
     logical, intent(in) :: flog
 
     ! Convert a Fortran default logical to a gboolean
@@ -654,8 +654,8 @@ contains
 
   !+
   function f_c_logical1(flog)
-    integer(kind=c_int) :: f_c_logical1
-    logical(kind=1), intent(in) :: flog
+    integer(c_int) :: f_c_logical1
+    logical(1), intent(in) :: flog
 
     ! Convert a Fortran 1-byte logical to a gboolean
     !

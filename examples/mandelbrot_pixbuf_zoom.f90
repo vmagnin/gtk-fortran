@@ -56,12 +56,12 @@ module handlers
   integer(c_int) :: boolresult
   type(c_ptr) :: my_pixbuf, status_bar, rangeid
   character(kind=c_char), dimension(:,:,:), pointer :: pixel
-  integer(kind=c_int) :: nch, rowstride, width, height
+  integer(c_int) :: nch, rowstride, width, height
   logical :: need_point     ! even/odd point flag
   logical :: computing_flag
   character(len=120) :: rangestr
-  real(kind=c_double) :: mxmin, mxmax, mymin, mymax
-  integer(kind=c_int) :: mouse_x, mouse_y
+  real(c_double) :: mxmin, mxmax, mymin, mymax
+  integer(c_int) :: mouse_x, mouse_y
 
 contains
   ! User defined event handlers go here
@@ -92,10 +92,10 @@ contains
     type(c_ptr), value, intent(in)    :: gesture, gdata
     integer(c_int), value, intent(in) :: n_press
     real(c_double), value, intent(in) :: x, y
-    real(kind=c_double), save :: x0, y0
-    real(kind=c_double) :: x1, y1
+    real(c_double), save :: x0, y0
+    real(c_double) :: x1, y1
     type(c_ptr) :: drawing_area
-    integer(kind=c_int) :: id
+    integer(c_int) :: id
 
     print *, "Button ", gtk_gesture_single_get_current_button(gesture)
     print *, n_press, " click(s) at ", int(x), int(y)
@@ -158,8 +158,8 @@ contains
     real(c_double), value, intent(in) :: x, y
     type(c_ptr) :: drawing_area
     ! Mathematical coordinates:
-    real(kind=c_double) :: xr, yr, xx, yy
-    integer(kind=c_int) :: id
+    real(c_double) :: xr, yr, xx, yy
+    integer(c_int) :: id
 
     print *, "Scroll x,y= ", x, y
     ! We need to redraw the area:
@@ -229,9 +229,9 @@ contains
   end subroutine set_limits
 
   subroutine mand_xy(ix, iy, x, y)
-    integer(kind=c_int), intent(in) :: ix, iy
-    real(kind=c_double), intent(out) :: x, y
-    real(kind=c_double) :: scx, scy
+    integer(c_int), intent(in) :: ix, iy
+    real(c_double), intent(out) :: x, y
+    real(c_double) :: scx, scy
 
     scx = (mxmax-mxmin)/real(width, c_double)   ! x scale
     scy = (mymax-mymin)/real(height, c_double)  ! y scale
@@ -248,12 +248,12 @@ contains
     ! Whole set: xmin=-2.0_wp, xmax=+1.0_wp, ymin=-1.5_wp, ymax=+1.5_wp, itermax=1000
     ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
     type(c_ptr), intent(in) :: my_drawing_area
-    integer(kind=c_int), intent(in) :: itermax
-    integer(kind=c_int)    :: i, j, k
-    real(kind=c_double)    :: x, y ! coordinates in the complex plane
-    complex(kind=c_double) :: c, z
-    integer(kind=c_int8_t) :: red, green, blue     ! rgb color
-    real(kind=c_double)    :: t0, t1
+    integer(c_int), intent(in) :: itermax
+    integer(c_int)    :: i, j, k
+    real(c_double)    :: x, y ! coordinates in the complex plane
+    complex(c_double) :: c, z
+    integer(c_int8_t) :: red, green, blue     ! rgb color
+    real(c_double)    :: t0, t1
     integer :: it
 
     computing_flag = .true.
@@ -323,7 +323,7 @@ contains
     type(c_ptr) :: my_window, jb
     type(c_ptr) :: my_drawing_area, controller, controller2, controller3
     integer :: i, j
-    integer(kind=c_int) :: id
+    integer(c_int) :: id
 
     my_window = gtk_application_window_new(app)
 

@@ -35,8 +35,8 @@ module common_ex17_gto
   use plplot_extra
 
   implicit none
-  integer(kind=c_int) :: height, width
-  integer(kind=c_int) :: run_status = TRUE
+  integer(c_int) :: height, width
+  integer(c_int) :: run_status = TRUE
   type(c_ptr) :: window
 end module common_ex17_gto
 
@@ -49,8 +49,8 @@ module plplot_code_ex17_gto
   integer, save :: id1, id2, n=0
   logical :: autoy, acc, pl_errcode
 
-  real(kind=plflt) :: y1, y2, y3, y4, ymin, ymax, xlab, ylab
-  real(kind=plflt) :: t, tmin, tmax, tjump, dt, noise
+  real(plflt) :: y1, y2, y3, y4, ymin, ymax, xlab, ylab
+  real(plflt) :: t, tmin, tmax, tjump, dt, noise
   type(c_ptr) :: cc
   integer :: colbox, collab, colline(4), styline(4)
   character(len=20) :: legline(4)
@@ -184,7 +184,7 @@ contains
   end subroutine x17f95
 
   function add_point(area) bind(c)
-    integer(kind=c_int) :: add_point
+    integer(c_int) :: add_point
     type(c_ptr), value :: area
 
     n=n+1
@@ -252,7 +252,7 @@ contains
     type(c_ptr), value, intent(in)  :: app, gdata
     ! Pointers toward our GTK widgets:
     type(c_ptr) :: drawing, base, qbut
-    integer(kind=c_int) :: timeid
+    integer(c_int) :: timeid
 
     ! Create the window:
     window = gtk_application_window_new(app)

@@ -184,26 +184,26 @@ contains
 
     type(c_ptr) :: list
     type(c_ptr), intent(out), optional :: scroll
-    integer(kind=c_int), intent(in), optional :: ncols
-    integer(kind=type_kind), dimension(:), intent(in), optional :: types
+    integer(c_int), intent(in), optional :: ncols
+    integer(type_kind), dimension(:), intent(in), optional :: types
     type(c_funptr), optional :: changed
     type(c_ptr), intent(in), optional :: data
-    integer(kind=c_int), intent(in), optional :: multiple
-    integer(kind=c_int), intent(in), optional, dimension(:) :: width
+    integer(c_int), intent(in), optional :: multiple
+    integer(c_int), intent(in), optional, dimension(:) :: width
     character(len=*), dimension(:), intent(in), optional :: titles, renderers
-    integer(kind=c_int), intent(in), optional :: height, swidth
-    real(kind=c_float), intent(in), optional, dimension(:) :: align
-    integer(kind=c_int), intent(in), optional, dimension(:) :: ixpad, iypad
-    integer(kind=c_int), intent(in), optional :: sensitive
+    integer(c_int), intent(in), optional :: height, swidth
+    real(c_float), intent(in), optional, dimension(:) :: align
+    integer(c_int), intent(in), optional, dimension(:) :: ixpad, iypad
+    integer(c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable, editable
+    integer(c_int), intent(in), optional, dimension(:) :: sortable, editable
     type(c_funptr), optional :: edited, edited_text, toggled, edited_spin, &
          & edited_combo, changed_combo, toggled_radio
     type(c_ptr), optional, intent(in) :: data_edited, data_edited_text, &
          & data_toggled, data_edited_spin, data_edited_combo, &
          & data_changed_combo, data_toggled_radio
-    integer(kind=c_int), dimension(:), allocatable, intent(out), optional, target :: colnos
-    integer(kind=c_int), intent(in), optional :: hscroll_policy, vscroll_policy
+    integer(c_int), dimension(:), allocatable, intent(out), optional, target :: colnos
+    integer(c_int), intent(in), optional :: hscroll_policy, vscroll_policy
 
     ! Make a multi column list
     !
@@ -289,8 +289,8 @@ contains
     ! * The spinner type is not (yet) implemented.
     !-
 
-    integer(kind=c_int) :: ncols_all, i, hscroll, vscroll
-    integer(kind=type_kind), dimension(:), allocatable, target :: types_all
+    integer(c_int) :: ncols_all, i, hscroll, vscroll
+    integer(type_kind), dimension(:), allocatable, target :: types_all
 
     type(c_ptr) :: model, select
 
@@ -426,7 +426,7 @@ contains
   subroutine hl_gtk_listn_ins(list, row, count)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in), optional :: row, count
+    integer(c_int), intent(in), optional :: row, count
 
     ! Insert a row into a tabular list.
     !
@@ -438,7 +438,7 @@ contains
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter
-    integer(kind=c_int) :: i, n
+    integer(c_int) :: i, n
 
     ! Get the ListStore
     store = gtk_tree_view_get_model(list)
@@ -465,7 +465,7 @@ contains
   subroutine hl_gtk_listn_rem(list, row)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), optional, intent(in) :: row
+    integer(c_int), optional, intent(in) :: row
 
     ! Remove a row or clear a list
     !
@@ -473,7 +473,7 @@ contains
     ! ROW: integer: optional: The row to remove, if absent clear the list
     !-
 
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter
 
@@ -496,9 +496,9 @@ contains
   !+
   function hl_gtk_listn_get_selections(list, indices, selection) result(count)
 
-    integer(kind=c_int) :: count
+    integer(c_int) :: count
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), dimension(:), allocatable, target, &
+    integer(c_int), dimension(:), allocatable, target, &
          & intent(out), optional :: indices
     type(c_ptr), optional :: selection
 
@@ -518,9 +518,9 @@ contains
     !-
 
     type(c_ptr) :: slist, vselection
-    integer(kind=c_int) :: i
+    integer(c_int) :: i
     type(c_ptr) :: cindex
-    integer(kind=c_int), pointer :: findex
+    integer(c_int), pointer :: findex
 
     if (present(selection)) then
        vselection = selection
@@ -563,7 +563,7 @@ contains
   subroutine  hl_gtk_listn_set_selection(list, row)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in), optional :: row
+    integer(c_int), intent(in), optional :: row
 
     ! Set the selected row in a list (single row only).
     !
@@ -574,7 +574,7 @@ contains
 
     type(c_ptr) :: selection, store
     type(gtktreeiter), target :: iter
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
 
     ! Get list store and selection
     store = gtk_tree_view_get_model(list)
@@ -598,15 +598,15 @@ contains
        & i8value, pbvalue)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row, col
+    integer(c_int), intent(in) :: row, col
     character(len=*), intent(in), optional :: svalue
-    real(kind=c_float), intent(in), optional :: fvalue
-    real(kind=c_double), intent(in), optional :: dvalue
-    integer(kind=c_int), intent(in), optional :: ivalue
-    integer(kind=c_long), intent(in), optional :: lvalue
-    integer(kind=c_int64_t), intent(in), optional :: l64value
+    real(c_float), intent(in), optional :: fvalue
+    real(c_double), intent(in), optional :: dvalue
+    integer(c_int), intent(in), optional :: ivalue
+    integer(c_long), intent(in), optional :: lvalue
+    integer(c_int64_t), intent(in), optional :: l64value
     logical, intent(in), optional :: logvalue
-    integer(kind=c_int8_t), intent(in), optional :: i8value
+    integer(c_int8_t), intent(in), optional :: i8value
     type(c_ptr), intent(in), optional :: pbvalue
 
     ! Set the value of a cell.
@@ -627,9 +627,9 @@ contains
     ! Note that reasonable conversions are made between types.
     !-
 
-    integer(kind=type_kind) :: ctype
+    integer(type_kind) :: ctype
     type(c_ptr) :: store, val
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
 
@@ -660,15 +660,15 @@ contains
        & i8value, pbvalue)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row, col
+    integer(c_int), intent(in) :: row, col
     character(len=*), intent(out), optional :: svalue
-    real(kind=c_float), intent(out), optional :: fvalue
-    real(kind=c_double), intent(out), optional :: dvalue
-    integer(kind=c_int), intent(out), optional :: ivalue
-    integer(kind=c_long), intent(out), optional :: lvalue
-    integer(kind=c_int64_t), intent(out), optional :: l64value
+    real(c_float), intent(out), optional :: fvalue
+    real(c_double), intent(out), optional :: dvalue
+    integer(c_int), intent(out), optional :: ivalue
+    integer(c_long), intent(out), optional :: lvalue
+    integer(c_int64_t), intent(out), optional :: l64value
     logical, intent(out), optional :: logvalue
-    integer(kind=c_int8_t), intent(out), optional :: i8value
+    integer(c_int8_t), intent(out), optional :: i8value
     type(c_ptr), intent(out), optional :: pbvalue
 
     ! Retrieve the value of a cell.
@@ -690,9 +690,9 @@ contains
     ! except that strings can only be returned to SVALUE.
     !-
 
-    integer(kind=type_kind) :: ctype
+    integer(type_kind) :: ctype
     type(c_ptr) :: store, val
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
 
@@ -724,9 +724,9 @@ contains
   subroutine hl_gtk_listn_move_row(list, row1, row2, after)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row1
-    integer(kind=c_int), intent(in), optional :: row2
-    integer(kind=c_int), intent(in), optional :: after
+    integer(c_int), intent(in) :: row1
+    integer(c_int), intent(in), optional :: row2
+    integer(c_int), intent(in), optional :: after
 
     ! Move a row in a list to a new location
     !
@@ -741,8 +741,8 @@ contains
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter1, iter2
-    integer(kind=c_int) :: isafter
-    integer(kind=c_int) :: valid
+    integer(c_int) :: isafter
+    integer(c_int) :: valid
 
     if (present(after)) then
        isafter = after
@@ -784,7 +784,7 @@ contains
   subroutine hl_gtk_listn_swap_rows(list, row1, row2)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row1, row2
+    integer(c_int), intent(in) :: row1, row2
 
     ! Move a row in a list to a new location
     !
@@ -795,7 +795,7 @@ contains
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter1, iter2
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
 
     ! Get list store
     store = gtk_tree_view_get_model(list)
@@ -818,7 +818,7 @@ contains
   subroutine hl_gtk_listn_reorder(list, indices)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in), dimension(:) :: indices
+    integer(c_int), intent(in), dimension(:) :: indices
 
     ! Move a row in a list to a new location
     !
@@ -828,7 +828,7 @@ contains
     !-
 
     type(c_ptr) :: store
-    integer(kind=c_int), dimension(:), allocatable, target :: idx
+    integer(c_int), dimension(:), allocatable, target :: idx
 
     allocate(idx(size(indices)))
     idx = indices
@@ -846,7 +846,7 @@ contains
   !+
   function hl_gtk_listn_get_n_rows(list) result(nrows)
 
-    integer(kind=c_int) :: nrows
+    integer(c_int) :: nrows
     type(c_ptr), intent(in) :: list
 
     ! Return the number of rows in a list.
@@ -870,13 +870,13 @@ contains
 
     type(c_ptr) :: list
     type(c_ptr), intent(out), optional :: scroll
-    integer(kind=c_int), intent(in), optional :: width
+    integer(c_int), intent(in), optional :: width
     type(c_funptr), intent(in), optional :: changed
     type(c_ptr), intent(in), optional :: data
-    integer(kind=c_int), intent(in),  optional :: multiple, sensitive
+    integer(c_int), intent(in),  optional :: multiple, sensitive
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
     character(len=*), intent(in), optional :: title
-    integer(kind=c_int), intent(in), optional :: height
+    integer(c_int), intent(in), optional :: height
 
     ! A single column selectable list based on the GTK Tree View
     !
@@ -897,7 +897,7 @@ contains
     ! the use hl_gtk_listn_new with 1 column).
     !-
 
-    integer(kind=type_kind), target, dimension(1) :: types
+    integer(type_kind), target, dimension(1) :: types
 
     ! Create list storage with 2 colums (one is a dummy, to provide an index)
 
@@ -933,7 +933,7 @@ contains
 
     type(c_ptr), intent(in) :: list
     character(kind=c_char, len=*), intent(in), optional :: text
-    integer(kind=c_int), intent(in), optional :: row
+    integer(c_int), intent(in), optional :: row
 
     ! Insert a row into a list
     !
@@ -943,7 +943,7 @@ contains
     ! 		(omit to append)
     !-
 
-    integer(kind=c_int) :: irow
+    integer(c_int) :: irow
     type(c_ptr) :: store
 
     call hl_gtk_listn_ins(list, row)
@@ -964,7 +964,7 @@ contains
   subroutine hl_gtk_list1_rem(list, row)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), optional, intent(in) :: row
+    integer(c_int), optional, intent(in) :: row
 
     ! Remove a row or clear a list
     !
@@ -979,9 +979,9 @@ contains
   !+
   function hl_gtk_list1_get_selections(list, indices, selection) result(count)
 
-    integer(kind=c_int) :: count
+    integer(c_int) :: count
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), dimension(:), allocatable, target, &
+    integer(c_int), dimension(:), allocatable, target, &
          & intent(out), optional :: indices
     type(c_ptr), optional :: selection
 
@@ -1007,7 +1007,7 @@ contains
   !+
   subroutine  hl_gtk_list1_set_selection(list, row)
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in), optional :: row
+    integer(c_int), intent(in), optional :: row
 
     ! Set the selected row in a list (single row only)
     !
@@ -1023,7 +1023,7 @@ contains
   !+
   subroutine hl_gtk_list1_set_cell(list, row, svalue)
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row
+    integer(c_int), intent(in) :: row
     character(len=*), intent(in) :: svalue
 
     ! Set a cell in a single column list
@@ -1040,7 +1040,7 @@ contains
   !+
   subroutine hl_gtk_list1_get_cell(list, row, svalue)
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row
+    integer(c_int), intent(in) :: row
     character(len=*), intent(out) :: svalue
 
     ! Set a cell in a single column list
@@ -1057,9 +1057,9 @@ contains
   !+
   subroutine hl_gtk_list1_move_row(list, row1, row2, after)
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row1
-    integer(kind=c_int), intent(in), optional :: row2
-    integer(kind=c_int), intent(in), optional :: after
+    integer(c_int), intent(in) :: row1
+    integer(c_int), intent(in), optional :: row2
+    integer(c_int), intent(in), optional :: after
 
     ! Move a row in a list to a new location
     !
@@ -1078,7 +1078,7 @@ contains
   !+
   subroutine hl_gtk_list1_swap_rows(list, row1, row2)
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: row1, row2
+    integer(c_int), intent(in) :: row1, row2
 
     ! Move a row in a list to a new location
     !
@@ -1094,7 +1094,7 @@ contains
   !+
   subroutine hl_gtk_list1_reorder(list, indices)
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in), dimension(:), target :: indices
+    integer(c_int), intent(in), dimension(:), target :: indices
 
     ! Move a row in a list to a new location
     !
@@ -1110,7 +1110,7 @@ contains
   !+
   function hl_gtk_list1_get_n_rows(list) result(nrows)
 
-    integer(kind=c_int) :: nrows
+    integer(c_int) :: nrows
     type(c_ptr), intent(in) :: list
 
     ! Return the number of rows in a list.
@@ -1156,26 +1156,26 @@ contains
 
     type(c_ptr) :: tree
     type(c_ptr), intent(out), optional :: scroll
-    integer(kind=c_int), intent(in), optional :: ncols
-    integer(kind=type_kind), dimension(:), intent(in), optional :: types
+    integer(c_int), intent(in), optional :: ncols
+    integer(type_kind), dimension(:), intent(in), optional :: types
     type(c_funptr), optional :: changed
     type(c_ptr), intent(in), optional :: data
-    integer(kind=c_int), intent(in), optional :: multiple
-    integer(kind=c_int), intent(in), optional, dimension(:) :: width
+    integer(c_int), intent(in), optional :: multiple
+    integer(c_int), intent(in), optional, dimension(:) :: width
     character(len=*), dimension(:), intent(in), optional :: titles, renderers
-    integer(kind=c_int), intent(in), optional :: height, swidth
-    real(kind=c_float), intent(in), optional, dimension(:) :: align
-    integer(kind=c_int), intent(in), optional, dimension(:) :: ixpad, iypad
-    integer(kind=c_int), intent(in), optional :: sensitive
+    integer(c_int), intent(in), optional :: height, swidth
+    real(c_float), intent(in), optional, dimension(:) :: align
+    integer(c_int), intent(in), optional, dimension(:) :: ixpad, iypad
+    integer(c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional, dimension(:) :: sortable, editable
-    integer(kind=c_int), dimension(:), allocatable, intent(out), optional, target :: colnos
+    integer(c_int), intent(in), optional, dimension(:) :: sortable, editable
+    integer(c_int), dimension(:), allocatable, intent(out), optional, target :: colnos
     type(c_funptr), optional :: edited, edited_text, toggled, edited_spin, &
          & edited_combo, changed_combo, toggled_radio
     type(c_ptr), optional, intent(in) :: data_edited, data_edited_text,&
          & data_toggled, data_edited_spin, data_edited_combo, &
          & data_changed_combo, data_toggled_radio
-    integer(kind=c_int), intent(in), optional :: hscroll_policy, vscroll_policy
+    integer(c_int), intent(in), optional :: hscroll_policy, vscroll_policy
 
     ! Make a tree view
     !
@@ -1240,8 +1240,8 @@ contains
     ! For renderer types see HL_GTK_LISTN_NEW.
     !-
 
-    integer(kind=c_int) :: ncols_all, i, hscroll, vscroll
-    integer(kind=type_kind), dimension(:), allocatable, target :: types_all
+    integer(c_int) :: ncols_all, i, hscroll, vscroll
+    integer(type_kind), dimension(:), allocatable, target :: types_all
 
     type(c_ptr) :: model, select
 
@@ -1377,8 +1377,8 @@ contains
   subroutine hl_gtk_tree_ins(tree, row, absrow, count)
 
     type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), intent(in), optional, dimension(:) :: row
-    integer(kind=c_int), intent(in), optional :: absrow, count
+    integer(c_int), intent(in), optional, dimension(:) :: row
+    integer(c_int), intent(in), optional :: absrow, count
 
     ! Insert a row into a tabular tree.
     !
@@ -1394,7 +1394,7 @@ contains
 
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter1, iter2
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
     integer :: i, ndep, n
 
     if (present(count)) then
@@ -1478,10 +1478,10 @@ contains
   !+
   function hl_gtk_tree_abs_iter(tree, iter, index, model) result(valid)
 
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
     type(c_ptr), intent(in) :: tree
     type(gtktreeiter), intent(out), target :: iter
-    integer(kind=c_int), intent(in) :: index
+    integer(c_int), intent(in) :: index
     type(c_ptr), intent(in), optional :: model
 
     ! Get the indexth iterator of a tree (treating it as a flat list)
@@ -1497,7 +1497,7 @@ contains
     !-
 
     type(gtktreeiter), target :: iter2
-    integer(kind=c_int) :: irow
+    integer(c_int) :: irow
     type(c_ptr) :: store
 
     ! Get the TreeStore
@@ -1537,7 +1537,7 @@ contains
 
     type(gtktreeiter), target :: iter
     type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), intent(in), dimension(:) :: row
+    integer(c_int), intent(in), dimension(:) :: row
     type(c_ptr), intent(in), optional :: model
 
     ! Get the iterator for a given row of the tree
@@ -1552,7 +1552,7 @@ contains
     type(gtktreeiter), target :: iter2
     integer :: i, ndep
     type(c_ptr) :: store
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
 
     ! Get the TreeStore
     if (present(model)) then
@@ -1578,8 +1578,8 @@ contains
   subroutine hl_gtk_tree_rem(tree, row, absrow)
 
     type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), optional, intent(in), dimension(:) :: row
-    integer(kind=c_int), intent(in), optional :: absrow
+    integer(c_int), optional, intent(in), dimension(:) :: row
+    integer(c_int), intent(in), optional :: absrow
 
     ! Remove a row or clear a tree
     !
@@ -1589,7 +1589,7 @@ contains
     ! 		flat list.
     !-
 
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
     type(c_ptr) :: store
     type(gtktreeiter), target :: iter
 
@@ -1617,11 +1617,11 @@ contains
   function hl_gtk_tree_get_selections(tree, indices, depths, &
        & selection) result(count)
 
-    integer(kind=c_int) :: count
+    integer(c_int) :: count
     type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), dimension(:,:), allocatable, target, &
+    integer(c_int), dimension(:,:), allocatable, target, &
          & intent(out), optional :: indices
-    integer(kind=c_int), dimension(:), allocatable, target, &
+    integer(c_int), dimension(:), allocatable, target, &
          & intent(out), optional :: depths
     type(c_ptr), intent(in), optional :: selection
 
@@ -1644,10 +1644,10 @@ contains
     !-
 
     type(c_ptr) :: slist, vselection
-    integer(kind=c_int) :: i
-    integer(kind=c_int) :: maxdepth
-    integer(kind=c_int), dimension(:), pointer :: idxl
-    integer(kind=c_int), target :: dep
+    integer(c_int) :: i
+    integer(c_int) :: maxdepth
+    integer(c_int), dimension(:), pointer :: idxl
+    integer(c_int), target :: dep
     type(c_ptr) :: idxlc
 
     if (present(selection)) then
@@ -1702,16 +1702,16 @@ contains
        & logvalue, i8value, pbvalue)
 
     type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), intent(in), optional :: absrow, col
-    integer(kind=c_int), intent(in), optional, dimension(:) :: row
+    integer(c_int), intent(in), optional :: absrow, col
+    integer(c_int), intent(in), optional, dimension(:) :: row
     character(len=*), intent(in), optional :: svalue
-    real(kind=c_float), intent(in), optional :: fvalue
-    real(kind=c_double), intent(in), optional :: dvalue
-    integer(kind=c_int), intent(in), optional :: ivalue
-    integer(kind=c_long), intent(in), optional :: lvalue
-    integer(kind=c_int64_t), intent(in), optional :: l64value
+    real(c_float), intent(in), optional :: fvalue
+    real(c_double), intent(in), optional :: dvalue
+    integer(c_int), intent(in), optional :: ivalue
+    integer(c_long), intent(in), optional :: lvalue
+    integer(c_int64_t), intent(in), optional :: l64value
     logical, intent(in), optional :: logvalue
-    integer(kind=c_int8_t), intent(in), optional :: i8value
+    integer(c_int8_t), intent(in), optional :: i8value
     type(c_ptr), intent(in), optional :: pbvalue
 
     ! Set the value of a cell.
@@ -1734,9 +1734,9 @@ contains
     ! Note that reasonable conversions are made between types.
     !-
 
-    integer(kind=type_kind) :: ctype
+    integer(type_kind) :: ctype
     type(c_ptr) :: store, val
-    integer(kind=c_int) :: valid, icol
+    integer(c_int) :: valid, icol
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
 
@@ -1781,16 +1781,16 @@ contains
        & i8value, pbvalue)
 
     type(c_ptr), intent(in) :: tree
-    integer(kind=c_int), intent(in), optional :: absrow, col
-    integer(kind=c_int), intent(in), optional, dimension(:) :: row
+    integer(c_int), intent(in), optional :: absrow, col
+    integer(c_int), intent(in), optional, dimension(:) :: row
     character(len=*), intent(out), optional :: svalue
-    real(kind=c_float), intent(out), optional :: fvalue
-    real(kind=c_double), intent(out), optional :: dvalue
-    integer(kind=c_int), intent(out), optional :: ivalue
-    integer(kind=c_long), intent(out), optional :: lvalue
-    integer(kind=c_int64_t), intent(out), optional :: l64value
+    real(c_float), intent(out), optional :: fvalue
+    real(c_double), intent(out), optional :: dvalue
+    integer(c_int), intent(out), optional :: ivalue
+    integer(c_long), intent(out), optional :: lvalue
+    integer(c_int64_t), intent(out), optional :: l64value
     logical, intent(out), optional :: logvalue
-    integer(kind=c_int8_t), intent(out), optional :: i8value
+    integer(c_int8_t), intent(out), optional :: i8value
     type(c_ptr), intent(out), optional :: pbvalue
 
     ! Retrieve the value of a cell.
@@ -1815,9 +1815,9 @@ contains
     ! except that strings can only be returned to SVALUE.
     !-
 
-    integer(kind=type_kind) :: ctype
+    integer(type_kind) :: ctype
     type(c_ptr) :: store, val
-    integer(kind=c_int) :: valid, icol
+    integer(c_int) :: valid, icol
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
 
@@ -1862,7 +1862,7 @@ contains
   !+
   subroutine hl_gtk_listn_combo_set_select(view, row, colno, selection)
     type(c_ptr), intent(in) :: view
-    integer(kind=c_int), intent(in) :: row, colno, selection
+    integer(c_int), intent(in) :: row, colno, selection
 
     ! Set the selected item in a combo cell renderer.
     !
@@ -1875,7 +1875,7 @@ contains
     type(c_ptr) :: store, pstring, col, rlist, renderer, pmodel, model
     type(gvalue), target :: stringv, modelv
     type(gtktreeiter), target :: viter, citer
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
 
     ! Get list store
     store = gtk_tree_view_get_model(view)
@@ -1911,8 +1911,8 @@ contains
   !+
   subroutine hl_gtk_tree_combo_set_select(view, row, colno, absrow, selection)
     type(c_ptr), intent(in) :: view
-    integer(kind=c_int), dimension(:), intent(in), optional :: row
-    integer(kind=c_int), intent(in), optional ::  colno, absrow, selection
+    integer(c_int), dimension(:), intent(in), optional :: row
+    integer(c_int), intent(in), optional ::  colno, absrow, selection
 
     ! Set the selected item in a combo cell renderer.
     !
@@ -1927,7 +1927,7 @@ contains
     type(c_ptr) :: store, pstring, col, rlist, renderer, pmodel, model
     type(gvalue), target :: modelv
     type(gtktreeiter), target :: viter, citer
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
 
     ! Get list store
     store = gtk_tree_view_get_model(view)
@@ -1987,8 +1987,8 @@ contains
     !-
 
     character(len=200) :: fpath, ftext
-    integer(kind=c_int) :: irow
-    integer(kind=c_int), pointer :: icol
+    integer(c_int) :: irow
+    integer(c_int), pointer :: icol
     type(c_ptr) :: pcol, list
 
     call convert_c_string(path, fpath)
@@ -2018,8 +2018,8 @@ contains
     ! This routine is not normally called by the application developer.
     !-
     character(len=200) :: fpath
-    integer(kind=c_int) :: irow
-    integer(kind=c_int), pointer :: icol
+    integer(c_int) :: irow
+    integer(c_int), pointer :: icol
     type(c_ptr) :: pcol, list
     logical :: state
 
@@ -2052,12 +2052,12 @@ contains
     ! This routine is not normally called by the application developer.
     !-
     character(len=200) :: fpath
-    integer(kind=c_int) :: irow
-    integer(kind=c_int), pointer :: icol
-    integer(kind=c_int) :: i
+    integer(c_int) :: irow
+    integer(c_int), pointer :: icol
+    integer(c_int) :: i
     type(c_ptr) :: pcol, list
     logical :: state
-    integer(kind=c_int) :: nrows
+    integer(c_int) :: nrows
 
     call convert_c_string(path, fpath)
     read(fpath, *) irow
@@ -2098,8 +2098,8 @@ contains
     !-
 
     character(len=200) :: fpath, ftext
-    integer(kind=c_int), allocatable, dimension(:) :: irow
-    integer(kind=c_int), pointer :: icol
+    integer(c_int), allocatable, dimension(:) :: irow
+    integer(c_int), pointer :: icol
     integer :: i, n
     type(c_ptr) :: tree, pcol
 
@@ -2142,8 +2142,8 @@ contains
     ! This routine is not normally called by the application developer.
     !-
     character(len=200) :: fpath
-    integer(kind=c_int), allocatable, dimension(:) :: irow
-    integer(kind=c_int), pointer :: icol
+    integer(c_int), allocatable, dimension(:) :: irow
+    integer(c_int), pointer :: icol
     integer :: i, n
     type(c_ptr) :: pcol, tree
     logical :: state
@@ -2188,13 +2188,13 @@ contains
     ! the button that was pressed.
     !-
     character(len=200) :: fpath
-    integer(kind=c_int), allocatable, dimension(:) :: irow, jrow
-    integer(kind=c_int), pointer :: icol
+    integer(c_int), allocatable, dimension(:) :: irow, jrow
+    integer(c_int), pointer :: icol
     integer :: i, n
     type(c_ptr) :: pcol, tree, ipath, tree_model
     logical :: state
     type(gtktreeiter), target :: iter, piter
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
 
     call convert_c_string(path, fpath)
     n = 0
@@ -2261,7 +2261,7 @@ contains
        & data, destroy_notify)
 
     type(c_ptr), intent(in) :: list
-    integer(kind=c_int), intent(in) :: colno
+    integer(c_int), intent(in) :: colno
     type(c_funptr), optional :: func
     type(c_ptr), optional :: data
     type(c_funptr), optional :: destroy_notify
@@ -2320,13 +2320,13 @@ contains
        & toggled, data_toggled, edited_spin, data_edited_spin, edited_combo, &
        & data_edited_combo, changed_combo, data_changed_combo, toggled_radio, &
        & data_toggled_radio)
-    integer(kind=c_int), intent(in) :: icol
+    integer(c_int), intent(in) :: icol
     type(c_ptr), intent(in), target :: view
     logical, intent(in) :: is_list
-    integer(kind=type_kind), intent(in) :: type
-    integer(kind=c_int), dimension(:), optional, intent(in) :: editable, &
+    integer(type_kind), intent(in) :: type
+    integer(c_int), dimension(:), optional, intent(in) :: editable, &
          & ixpad, iypad, sortable, width
-    real(kind=c_float), intent(in), optional, dimension(:) :: align
+    real(c_float), intent(in), optional, dimension(:) :: align
     character(len=*), dimension(:), intent(in), optional :: titles, renderers
     type(c_funptr), optional :: edited, edited_text, toggled, edited_spin, &
          & edited_combo, changed_combo, toggled_radio
@@ -2348,10 +2348,10 @@ contains
     !-
 
     type(c_ptr) :: renderer, column
-    integer(kind=c_int), pointer :: coldat
+    integer(c_int), pointer :: coldat
     type(gvalue), target :: isedit, adjval, crate
     type(c_ptr) :: pisedit, padjval, pcrate
-    integer(kind=c_int) :: nc
+    integer(c_int) :: nc
     character(len=20) :: render_id
     character(len=16) :: editable_property
     type(c_ptr) :: adjust
@@ -2632,15 +2632,15 @@ contains
   subroutine hl_gtk_list_tree_set_gvalue(val, ctype, svalue, fvalue, dvalue, &
        & ivalue, lvalue, l64value, logvalue, i8value, pbvalue)
     type(c_ptr), intent(inout) :: val
-    integer(kind=type_kind) :: ctype
+    integer(type_kind) :: ctype
     character(len=*), intent(in), optional :: svalue
-    real(kind=c_float), intent(in), optional :: fvalue
-    real(kind=c_double), intent(in), optional :: dvalue
-    integer(kind=c_int), intent(in), optional :: ivalue
-    integer(kind=c_long), intent(in), optional :: lvalue
-    integer(kind=c_int64_t), intent(in), optional :: l64value
+    real(c_float), intent(in), optional :: fvalue
+    real(c_double), intent(in), optional :: dvalue
+    integer(c_int), intent(in), optional :: ivalue
+    integer(c_long), intent(in), optional :: lvalue
+    integer(c_int64_t), intent(in), optional :: l64value
     logical, intent(in), optional :: logvalue
-    integer(kind=c_int8_t), intent(in), optional :: i8value
+    integer(c_int8_t), intent(in), optional :: i8value
     type(c_ptr), intent(in), optional :: pbvalue
 
     ! Set a gvalue to the appropriate type and value to set a list or
@@ -2653,11 +2653,11 @@ contains
     !-
 
     character(len=120) :: sconv
-    integer(kind=c_int) :: iconv
-    integer(kind=c_long) :: lconv
-    integer(kind=c_int64_t) :: l64conv
-    real(kind=c_float) :: fconv
-    real(kind=c_double) :: dconv
+    integer(c_int) :: iconv
+    integer(c_long) :: lconv
+    integer(c_int64_t) :: l64conv
+    real(c_float) :: fconv
+    real(c_double) :: dconv
     integer :: ios
 
     val = g_value_init(val, ctype)
@@ -2957,15 +2957,15 @@ contains
        & svalue, fvalue, dvalue, ivalue, lvalue, l64value, logvalue, &
        & i8value, pbvalue)
     type(c_ptr), intent(in) :: val
-    integer(kind=type_kind), intent(in) :: ctype
+    integer(type_kind), intent(in) :: ctype
     character(len=*), intent(out), optional :: svalue
-    real(kind=c_float), intent(out), optional :: fvalue
-    real(kind=c_double), intent(out), optional :: dvalue
-    integer(kind=c_int), intent(out), optional :: ivalue
-    integer(kind=c_long), intent(out), optional :: lvalue
-    integer(kind=c_int64_t), intent(out), optional :: l64value
+    real(c_float), intent(out), optional :: fvalue
+    real(c_double), intent(out), optional :: dvalue
+    integer(c_int), intent(out), optional :: ivalue
+    integer(c_long), intent(out), optional :: lvalue
+    integer(c_int64_t), intent(out), optional :: l64value
     logical, intent(out), optional :: logvalue
-    integer(kind=c_int8_t), intent(out), optional :: i8value
+    integer(c_int8_t), intent(out), optional :: i8value
     type(c_ptr), intent(out), optional :: pbvalue
 
     ! Get the contents of a Gvalue (private)
@@ -3186,7 +3186,7 @@ contains
 
   !+
   subroutine hl_gtk_list_tree_type_adjust(types, renderers)
-    integer(kind=type_kind), dimension(:), intent(inout) :: types
+    integer(type_kind), dimension(:), intent(inout) :: types
     character(len=*), dimension(:), intent(in) :: renderers
 
     ! Ensure that the types are appropriate to the renderers.
@@ -3220,11 +3220,11 @@ contains
   subroutine hl_gtk_list_tree_config_spin(view, colno, vmin, vmax, &
        & step, bigstep, value, digits, rate)
     type(c_ptr), intent(in) :: view
-    integer(kind=c_int), intent(in) :: colno
-    real(kind=c_double), intent(in), optional :: vmin, vmax, step, &
+    integer(c_int), intent(in) :: colno
+    real(c_double), intent(in), optional :: vmin, vmax, step, &
          & bigstep, value
-    integer(kind=c_int), intent(in), optional :: digits
-    real(kind=c_double), intent(in), optional :: rate
+    integer(c_int), intent(in), optional :: digits
+    real(c_double), intent(in), optional :: rate
 
     ! Set up a spin button in a list or tree.
     !
@@ -3289,7 +3289,7 @@ contains
   subroutine hl_gtk_list_tree_combo_model_attach(renderer, cmodel, colno)
     type(c_ptr), intent(in) :: renderer
     type(c_ptr), intent(in), optional :: cmodel
-    integer(kind=c_int), optional, intent(in) :: colno
+    integer(c_int), optional, intent(in) :: colno
 
     ! Create a tree model suitable for a GtkCellRendererCombo and attach
     ! it to the renderer.
@@ -3307,12 +3307,12 @@ contains
     ! be obtained from the PATH argument in the edited hander.
     !-
 
-    integer(kind=c_int), parameter :: ncols=1
-    integer(kind=type_kind), dimension(ncols), target :: coltypes = &
+    integer(c_int), parameter :: ncols=1
+    integer(type_kind), dimension(ncols), target :: coltypes = &
          & [G_TYPE_STRING]
     type(gvalue), target :: modelv, columnv
     type(c_ptr) :: pmodel, pcolumn, model
-    integer(kind=c_int) :: icol
+    integer(c_int) :: icol
 
     ! Create the model
     if (present(cmodel)) then
@@ -3345,9 +3345,9 @@ contains
   subroutine  hl_gtk_list_tree_combo_model_config(view, colno, vals, &
        & append, has_entry)
     type(c_ptr), intent(in) :: view
-    integer(kind=c_int), intent(in) :: colno
+    integer(c_int), intent(in) :: colno
     character(len=*), intent(in), dimension(:), optional :: vals
-    integer(kind=c_int), intent(in), optional :: append, has_entry
+    integer(c_int), intent(in), optional :: append, has_entry
 
     ! Set the strings in the combo model.
     !
@@ -3368,7 +3368,7 @@ contains
     type(gvalue), target :: modelv, stringv, entryv
     type(c_ptr) :: pmodel, model, pstring, pentry
     logical :: iappend
-    integer(kind=c_int) :: nvals, i, valid
+    integer(c_int) :: nvals, i, valid
     type(gtktreeiter), target :: iter
 
     if (present(append)) then

@@ -41,14 +41,14 @@ program g_io_demo
 
 
   character(len=80) :: str
-  integer(kind=c_int8_t), dimension(80), target :: istr
+  integer(c_int8_t), dimension(80), target :: istr
 
   type(c_ptr) :: file, stream
   type(gerror), target :: errmsg
   character(len=120) :: errtxt
-  integer(kind=4) :: ios, i
-  integer(kind=c_size_t) :: ncput, nchars
-  integer(kind=c_int) :: iok
+  integer(4) :: ios, i
+  integer(c_size_t) :: ncput, nchars
+  integer(c_int) :: iok
 
   file = g_file_new_for_path('gio_demo.dat'//c_null_char)
 

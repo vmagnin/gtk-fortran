@@ -52,11 +52,11 @@ contains
        & result(infobar)
     type(c_ptr) :: infobar
     character(len=*,kind=c_char), dimension(:), intent(in), optional :: buttons
-    integer(kind=c_int), dimension(:), intent(in), optional :: ids
+    integer(c_int), dimension(:), intent(in), optional :: ids
     type(c_funptr), optional :: response, close
     type(c_ptr), intent(in), optional :: data_response, data_close
-    integer(kind=c_int), intent(in), optional :: auto_show, type, default
-    integer(kind=c_int), intent(in), optional :: horizontal, buttons_below
+    integer(c_int), intent(in), optional :: auto_show, type, default
+    integer(c_int), intent(in), optional :: horizontal, buttons_below
 
     ! Create a new info bar.
     !
@@ -79,8 +79,8 @@ contains
     ! 		below the message rather than to the right.
     !-
 
-    integer(kind=c_int) :: i, id
-    integer(kind=c_int) :: no_auto
+    integer(c_int) :: i, id
+    integer(c_int) :: no_auto
     type(c_ptr) :: label, junk
 
     infobar = gtk_info_bar_new()
@@ -154,8 +154,8 @@ contains
        & ids, state)
     type(c_ptr), intent(in) :: infobar
     character(kind=c_char), dimension(*), intent(in) :: message
-    integer(kind=c_int), intent(in), optional :: type, default
-    integer(kind=c_int), intent(in), optional, dimension(:) :: ids, state
+    integer(c_int), intent(in), optional :: type, default
+    integer(c_int), intent(in), optional, dimension(:) :: ids, state
 
     ! Show a message in an infobar
     !

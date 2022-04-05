@@ -103,7 +103,7 @@ contains
   subroutine start_pb(widget, data) bind(c)
     type(c_ptr), value :: widget, data
 
-    integer(kind=c_int) :: i, iev
+    integer(c_int) :: i, iev
     type(c_ptr) :: page
 
     call gtk_widget_set_sensitive(widget, FALSE)

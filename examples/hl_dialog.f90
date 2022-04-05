@@ -46,7 +46,7 @@ contains
 
   subroutine msg_alert(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-    integer(kind=c_int) :: resp
+    integer(c_int) :: resp
     character(len=40), dimension(5) :: msg
 
     msg(1) = "ALERT"
@@ -63,7 +63,7 @@ contains
 
   subroutine msg_quit(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-    integer(kind=c_int) :: resp
+    integer(c_int) :: resp
     character(len=40), dimension(3) :: msg
 
     msg(1) ="QUIT?"

@@ -46,9 +46,9 @@ module common_ex8
   implicit none
   type(c_ptr) :: window, draw, alt_sl, az_sl, fun_but, col_but, &
        & facet_but, scont_but, bcont_but, qbut
-  integer(kind=c_int) :: disp_type=0, ifun=1
-  real(kind=c_double) :: alt=30._c_double, az=60._c_double
-  integer(kind=c_int) :: width, height
+  integer(c_int) :: disp_type=0, ifun=1
+  real(c_double) :: alt=30._c_double, az=60._c_double
+  integer(c_int) :: width, height
   type(c_ptr) :: my_app
 end module common_ex8
 
@@ -63,12 +63,12 @@ contains
   subroutine draw_08(area, type, alt, az, rosen)
     type(c_ptr), intent(in) :: area
     integer, intent(in) :: type, rosen
-    real(kind=plflt), intent(in) :: alt, az
+    real(plflt), intent(in) :: alt, az
     integer i, j, xpts, ypts, xdim, ydim
     !      xdim is the leading dimension of z, xpts <= xdim is the leading
     !      dimension of z that is defined.
     parameter (xdim=99, ydim=100, xpts=35, ypts=46)
-    real(kind=plflt) x(xdim), y(ydim), z(xdim,ypts), xx, yy, r
+    real(plflt) x(xdim), y(ydim), z(xdim,ypts), xx, yy, r
 
     character(len=80) :: title
     character(len=20) :: geometry
@@ -80,7 +80,7 @@ contains
 
     integer nlevel
     parameter (nlevel = 10)
-    real(kind=plflt) zmin, zmax, step, clevel(nlevel)
+    real(plflt) zmin, zmax, step, clevel(nlevel)
     ! Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
     if (plparseopts_rc /= 0) stop "plparseopts error"
@@ -194,7 +194,7 @@ contains
     use plplot
     implicit none
     integer gray
-    real(kind=plflt) i(0:1), h(0:1), l(0:1), s(0:1)
+    real(plflt) i(0:1), h(0:1), l(0:1), s(0:1)
     !      left boundary
     i(0) = 0._plflt
     !      right boundary
@@ -243,7 +243,7 @@ contains
     implicit none
 
     integer   i, j, nx, ny, xdim
-    real(kind=plflt)    f(xdim, ny), fmin, fmax
+    real(plflt)    f(xdim, ny), fmin, fmax
 
     fmax = f(1, 1)
     fmin = fmax
@@ -356,7 +356,7 @@ contains
     type(c_ptr) :: pixb
     character(len=120), dimension(:), allocatable :: files
     character(len=120) :: the_file
-    integer(kind=c_int) :: ipick
+    integer(c_int) :: ipick
 
      ipick = hl_gtk_file_chooser_show(files, create=TRUE, current=TRUE, &
          & title="Output image file"//c_null_char, &

@@ -80,7 +80,7 @@ module gtk_hl_chooser
   type, bind(c) :: hl_gtk_chooser_info
      type(c_ptr) :: chooser=C_NULL_PTR, chooser_sel_list=C_NULL_PTR
      type(c_ptr) :: chooser_curdir=C_NULL_PTR, fentry=C_NULL_PTR
-     integer(kind=c_int) :: iselect=0
+     integer(c_int) :: iselect=0
   end type hl_gtk_chooser_info
 
   ! These items must be shared between the file chooser widget and its event
@@ -99,17 +99,17 @@ contains
     type(c_ptr) :: dialog
     type(hl_gtk_chooser_info), intent(out), target :: chooser_info
     character(len=*), intent(out), optional :: cdir
-    integer(kind=c_int), intent(in), optional :: directory, create, multiple
-    integer(kind=c_int), intent(in), optional :: allow_uri, show_hidden
-    integer(kind=c_int), intent(in), optional :: confirm_overwrite
+    integer(c_int), intent(in), optional :: directory, create, multiple
+    integer(c_int), intent(in), optional :: allow_uri, show_hidden
+    integer(c_int), intent(in), optional :: confirm_overwrite
     character(kind=c_char), dimension(*), intent(in), optional :: title, initial_dir, initial_file
-    integer(kind=c_int), intent(in), optional :: current
+    integer(c_int), intent(in), optional :: current
     character(len=*), dimension(:), intent(in), optional :: filter
     character(len=*), dimension(:), intent(in), optional :: filter_name
     type(c_ptr), intent(in), optional :: parent
-    integer(kind=c_int), intent(in), optional :: all
-    integer(kind=c_int), intent(in), dimension(2), optional :: wsize
-    integer(kind=c_int), intent(in), optional :: edit_filters
+    integer(c_int), intent(in), optional :: all
+    integer(c_int), intent(in), dimension(2), optional :: wsize
+    integer(c_int), intent(in), optional :: edit_filters
 
     ! Create a file chooser widget.
     !
@@ -143,8 +143,8 @@ contains
     !-
 
     type(c_ptr) :: content, junk, gfilter
-    integer(kind=c_int) :: icreate, idir, action, lval
-    integer(kind=c_int) :: i, idx0, idx1
+    integer(c_int) :: icreate, idir, action, lval
+    integer(c_int) :: i, idx0, idx1
 
     ! Create a modal dialogue
     dialog = gtk_dialog_new()
@@ -316,20 +316,20 @@ contains
        & initial_dir, current, initial_file, filter, filter_name, parent, &
        & all, wsize, edit_filters) result(isel)
 
-    integer(kind=c_int) :: isel
+    integer(c_int) :: isel
     character(len=*), dimension(:), intent(out), allocatable :: files
     character(len=*), intent(out), optional :: cdir
-    integer(kind=c_int), intent(in), optional :: directory, create, multiple
-    integer(kind=c_int), intent(in), optional :: allow_uri, show_hidden
-    integer(kind=c_int), intent(in), optional :: confirm_overwrite
+    integer(c_int), intent(in), optional :: directory, create, multiple
+    integer(c_int), intent(in), optional :: allow_uri, show_hidden
+    integer(c_int), intent(in), optional :: confirm_overwrite
     character(kind=c_char), dimension(*), intent(in), optional :: title, initial_dir, initial_file
-    integer(kind=c_int), intent(in), optional :: current
+    integer(c_int), intent(in), optional :: current
     character(len=*), dimension(:), intent(in), optional :: filter
     character(len=*), dimension(:), intent(in), optional :: filter_name
     type(c_ptr), intent(in), optional :: parent
-    integer(kind=c_int), intent(in), optional :: all
-    integer(kind=c_int), intent(in), dimension(2), optional :: wsize
-    integer(kind=c_int), intent(in), optional :: edit_filters
+    integer(c_int), intent(in), optional :: all
+    integer(c_int), intent(in), dimension(2), optional :: wsize
+    integer(c_int), intent(in), optional :: edit_filters
 
     ! Create and show a file chooser widget.
     !
@@ -365,7 +365,7 @@ contains
 
     type(c_ptr) :: dialog, g_file
     type(hl_gtk_chooser_info) :: chooser_info
-    integer(kind=c_int) :: i, nsel
+    integer(c_int) :: i, nsel
 
     dialog =  hl_gtk_file_chooser_new(chooser_info, cdir, directory, create, &
          & multiple, allow_uri, show_hidden, confirm_overwrite, title, &

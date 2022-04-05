@@ -49,9 +49,9 @@ contains
 
   subroutine del_row(but, gdata) bind(c)
     type(c_ptr), value, intent(in) :: but, gdata
-    integer(kind=c_int), dimension(:,:), allocatable :: selections
-    integer(kind=c_int), dimension(:), allocatable :: dep
-    integer(kind=c_int) :: nsel
+    integer(c_int), dimension(:,:), allocatable :: selections
+    integer(c_int), dimension(:), allocatable :: dep
+    integer(c_int) :: nsel
 
     nsel = hl_gtk_tree_get_selections(ihlist, selections, &
          & depths=dep)
@@ -68,12 +68,12 @@ contains
 
   subroutine list_select(list, gdata) bind(c)
     type(c_ptr), value, intent(in) :: list, gdata
-    integer(kind=c_int) :: nsel
-    integer(kind=c_int), dimension(:,:), allocatable :: selections
-    integer(kind=c_int), dimension(:), allocatable :: dep
-    integer(kind=c_int) :: n, n3
-    integer(kind=c_int64_t) :: n4
-    real(kind=c_float) :: nlog
+    integer(c_int) :: nsel
+    integer(c_int), dimension(:,:), allocatable :: selections
+    integer(c_int), dimension(:), allocatable :: dep
+    integer(c_int) :: n, n3
+    integer(c_int64_t) :: n4
+    real(c_float) :: nlog
     character(len=30) :: name
     character(len=10) :: nodd
     integer :: i
@@ -122,10 +122,10 @@ contains
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
     character(len=35) :: line
-    integer(kind=c_int) :: i, ltr, j
-    integer(kind=type_kind), dimension(6) :: ctypes
+    integer(c_int) :: i, ltr, j
+    integer(type_kind), dimension(6) :: ctypes
     character(len=20), dimension(6) :: titles
-    integer(kind=c_int), dimension(6) :: sortable, editable
+    integer(c_int), dimension(6) :: sortable, editable
 
     ! Create a window that will hold the widget system
     ihwin = gtk_application_window_new(app)

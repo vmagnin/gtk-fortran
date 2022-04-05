@@ -50,7 +50,7 @@ module handlers
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-    integer(kind=c_int) :: ok
+    integer(c_int) :: ok
     character(len=60), dimension(4) :: msg
 
     msg(1) = "File is changed"
@@ -71,7 +71,7 @@ contains
   subroutine open_file(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    integer(kind=c_int) :: isel
+    integer(c_int) :: isel
     character(len=120), dimension(:), allocatable :: chfile
     character(len=30), dimension(2) :: filters
     character(len=30), dimension(2) :: filtnames
@@ -136,7 +136,7 @@ contains
   subroutine save_file_as(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    integer(kind=c_int) :: isel
+    integer(c_int) :: isel
     character(len=120), dimension(:), allocatable :: chfile
     character(len=20), dimension(2) :: filters
     character(len=30), dimension(2) :: filtnames

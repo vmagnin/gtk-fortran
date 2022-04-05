@@ -47,7 +47,7 @@ contains
   subroutine slider1(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     ! Moved the float slider, set the int spinner and report
-    real(kind=c_double) :: val
+    real(c_double) :: val
 
     val = hl_gtk_slider_get_value(widget)
     print *, "FP slider moved to", val
@@ -57,7 +57,7 @@ contains
   subroutine slider2(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     ! Moved the int slider, set the int spinner and report
-    integer(kind=c_int) :: ival
+    integer(c_int) :: ival
 
     ival = nint(hl_gtk_slider_get_value(widget), c_int)
     print *, 'INT slider moved to', ival
@@ -67,7 +67,7 @@ contains
   subroutine spinner1(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     ! Moved the FP spinner, set the FP slider & report
-    real(kind=c_double) :: val
+    real(c_double) :: val
 
     val = hl_gtk_spin_button_get_value(widget)
     print *, "FP spinner moved to", val
@@ -77,7 +77,7 @@ contains
   subroutine spinner2(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     ! Move the int spinner, set the int slider & report
-    integer(kind=c_int) :: ival
+    integer(c_int) :: ival
 
     ival = nint(hl_gtk_spin_button_get_value(widget), c_int)
     print *, 'INT spinner moved to', ival

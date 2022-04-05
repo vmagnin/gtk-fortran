@@ -54,7 +54,7 @@ contains
 
   function create_and_fill_model() result(store)
     type(c_ptr) :: store
-    integer(kind=type_kind), dimension(2), target :: ctypes = &
+    integer(type_kind), dimension(2), target :: ctypes = &
          & [g_type_string, g_type_uint]
     type(gtktreeiter), target :: iter
     type(gvalue), target :: valt, vali
@@ -97,7 +97,7 @@ contains
     type(c_ptr) :: view
 
     type(c_ptr) :: col, renderer, model
-    integer(kind=c_int) :: ncol
+    integer(c_int) :: ncol
 
     view = gtk_tree_view_new ()
 

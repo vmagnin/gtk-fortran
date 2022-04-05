@@ -37,8 +37,8 @@ module common_ex17
   use plplot_extra
 
   implicit none
-  integer(kind=c_int) :: height, width
-  integer(kind=c_int) :: run_status = TRUE
+  integer(c_int) :: height, width
+  integer(c_int) :: run_status = TRUE
   type(c_ptr) :: window
   type(c_ptr) :: my_gmainloop
 end module common_ex17
@@ -51,8 +51,8 @@ module plplot_code_ex17
   integer,  parameter :: nsteps = 1000
   integer, save :: id1, id2, n=0
   logical :: autoy, acc, pl_errcode
-  real(kind=plflt) :: y1, y2, y3, y4, ymin, ymax, xlab, ylab
-  real(kind=plflt) :: t, tmin, tmax, tjump, dt, noise
+  real(plflt) :: y1, y2, y3, y4, ymin, ymax, xlab, ylab
+  real(plflt) :: t, tmin, tmax, tjump, dt, noise
   type(c_ptr) :: cc
   integer :: colbox, collab, colline(4), styline(4)
   character(len=20) :: legline(4)
@@ -248,7 +248,7 @@ contains
   end subroutine quit_cb
 
   subroutine pending_events ()
-    integer(kind=c_int) :: boolresult
+    integer(c_int) :: boolresult
     do while(IAND(g_main_context_pending(c_null_ptr), run_status) /= FALSE)
        ! False for non-blocking:
        boolresult = g_main_context_iteration(c_null_ptr, FALSE)

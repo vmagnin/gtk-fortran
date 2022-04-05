@@ -32,7 +32,7 @@ module common_ex1
   use gtk_draw_hl
   use plplot_extra
 
-  integer(kind=c_int) :: height, width
+  integer(c_int) :: height, width
   type(c_ptr) :: window
   type(c_ptr) :: my_gmainloop
 end module common_ex1
@@ -251,8 +251,8 @@ module handlers_ex1
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(kind=c_int) :: run_status = TRUE
-  real(kind=c_double), parameter :: pi = acos(-1.0_c_double)
+  integer(c_int) :: run_status = TRUE
+  real(c_double), parameter :: pi = acos(-1.0_c_double)
 
 contains
 

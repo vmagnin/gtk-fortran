@@ -37,7 +37,7 @@ module handlers
 
   implicit none
   type(c_ptr) :: win,bar,pbar,qbut, box
-  integer(kind=c_int) :: run_status = TRUE
+  integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
 
 contains
@@ -67,7 +67,7 @@ program progress
 
   implicit none
   integer :: t0, t1, istep
-  real(kind=c_double) :: bval
+  real(c_double) :: bval
 
   ! Initialize gtk & create a window for the heirarchy
   call gtk_init()

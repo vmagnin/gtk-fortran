@@ -61,8 +61,8 @@ contains
     type(c_funptr), optional :: clicked
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional :: sensitive
-    integer(kind=c_int), optional, intent(in) :: is_markup
+    integer(c_int), intent(in), optional :: sensitive
+    integer(c_int), optional, intent(in) :: is_markup
 
     ! Higher-level button
     !
@@ -115,7 +115,7 @@ contains
   subroutine hl_gtk_button_set_label(button, label, is_markup)
     type(c_ptr), intent(in) :: button
     character(kind=c_char), dimension(*), intent(in) :: label
-    integer(kind=c_int), intent(in), optional :: is_markup
+    integer(c_int), intent(in), optional :: is_markup
 
     ! Set the label of a button, including using markup.
     !
@@ -151,8 +151,8 @@ contains
     type(c_funptr), optional :: toggled
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip
-    integer(kind=c_int), intent(in), optional :: initial_state
-    integer(kind=c_int), intent(in), optional :: sensitive, is_markup, toggle
+    integer(c_int), intent(in), optional :: initial_state
+    integer(c_int), intent(in), optional :: sensitive, is_markup, toggle
 
     ! Higher level check box.
     !

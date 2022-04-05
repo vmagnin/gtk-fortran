@@ -122,24 +122,24 @@ contains
     implicit none
     integer, parameter :: MAX_NLEGEND = 2
 
-    real(kind=plflt) :: freql(0:100),ampl(0:100),phase(0:100), freq, f0
+    real(plflt) :: freql(0:100),ampl(0:100),phase(0:100), freq, f0
     integer          :: i, type
     integer          :: nlegend
 
-    real(kind=plflt) :: legend_width, legend_height
+    real(plflt) :: legend_width, legend_height
     integer          :: opt_array(MAX_NLEGEND), text_colors(MAX_NLEGEND), line_colors(MAX_NLEGEND), &
          line_styles(MAX_NLEGEND), symbol_colors(MAX_NLEGEND), symbol_numbers(MAX_NLEGEND)
 
     ! For plplot 5.9.9 or lower the next declarations should be integers
     ! For 5.9.10 or higher they should be reals
-!    real(kind=plflt) :: symbol_scales(MAX_NLEGEND), box_scales(0)
+!    real(plflt) :: symbol_scales(MAX_NLEGEND), box_scales(0)
 !    integer :: line_widths(MAX_NLEGEND), box_line_widths(0)
-    real(kind=plflt) :: symbol_scales(MAX_NLEGEND), box_scales(MAX_NLEGEND)
+    real(plflt) :: symbol_scales(MAX_NLEGEND), box_scales(MAX_NLEGEND)
 
-!    real(kind=plflt) :: line_widths(MAX_NLEGEND), box_line_widths(0)
+!    real(plflt) :: line_widths(MAX_NLEGEND), box_line_widths(0)
 !    integer          :: box_colors(0), box_patterns(0)
 
-    real(kind=plflt) :: line_widths(MAX_NLEGEND), box_line_widths(MAX_NLEGEND)
+    real(plflt) :: line_widths(MAX_NLEGEND), box_line_widths(MAX_NLEGEND)
     integer          :: box_colors(MAX_NLEGEND), box_patterns(MAX_NLEGEND)
 
     character(len=20):: text(MAX_NLEGEND)

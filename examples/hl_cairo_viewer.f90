@@ -45,7 +45,7 @@ module v_handlers
 
   implicit none
   character(len=256), dimension(:), allocatable :: file_list
-  integer(kind=c_int) :: current_file
+  integer(c_int) :: current_file
   type(c_ptr) :: tl_window, view, prev, next, select
 
 contains
@@ -60,7 +60,7 @@ contains
     ! This function is needed to show image passed as argument
     ! in the command line.
     ! See https://github.com/vmagnin/gtk-fortran/issues/224
-    integer(kind=c_int) :: show_at_start
+    integer(c_int) :: show_at_start
     type(c_ptr), value, intent(in) :: select
 
     call gtk_combo_box_set_active(select, current_file)
@@ -71,8 +71,8 @@ contains
 
   recursive subroutine show_image(widget, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-    integer(kind=c_int), pointer :: istep
-    integer(kind=c_int) :: nx, ny
+    integer(c_int), pointer :: istep
+    integer(c_int) :: nx, ny
     type(c_ptr) :: pixbuf
     character(len=120) :: errm=''
 
@@ -112,7 +112,7 @@ contains
     type(c_ptr), value, intent(in) :: widget, gdata
     character(len=256), dimension(:), allocatable :: new_files, tmp
     logical, pointer :: idelete
-    integer(kind=c_int) :: ipick, i
+    integer(c_int) :: ipick, i
 
     ipick = hl_gtk_file_chooser_show(new_files, &
          & create=FALSE, multiple=TRUE, filter=["image/*"], &
@@ -151,9 +151,9 @@ contains
     use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
-    integer(kind=c_int) :: nfiles, i, istat
-    integer(kind=c_int) :: timeid
-    integer(kind=c_int), dimension(2), target :: direction = [-1, 1]
+    integer(c_int) :: nfiles, i, istat
+    integer(c_int) :: timeid
+    integer(c_int), dimension(2), target :: direction = [-1, 1]
     logical, dimension(2), target :: iremove = [.false., .true.]
     type(c_ptr) :: scroll, base, jb, junk, cmsg
     character(len=120) :: err_msg

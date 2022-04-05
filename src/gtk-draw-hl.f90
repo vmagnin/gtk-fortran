@@ -96,7 +96,7 @@ module gtk_draw_hl
 
   implicit none
   type, bind(c) :: gtkallocation
-     integer(kind=c_int) :: x,y,width,height
+     integer(c_int) :: x,y,width,height
   end type gtkallocation
 
 contains
@@ -114,7 +114,7 @@ contains
 
     type(c_ptr) :: plota
     type(c_ptr), intent(out), optional :: scroll
-    integer(kind=c_int), intent(in), optional, dimension(2) :: size, ssize
+    integer(c_int), intent(in), optional, dimension(2) :: size, ssize
     type(c_funptr), optional :: expose_event, button_press_event, &
          & button_release_event, scroll_event, key_press_event, &
          & key_release_event, motion_event, realize, configure_event,&
@@ -124,9 +124,9 @@ contains
          & data_configure, data_key_press, data_key_release, data_enter, &
          & data_leave, data_destroy, data_size_allocate
     character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
-    integer(kind=c_int), intent(in), optional :: has_alpha
-    integer(kind=c_int), intent(out), optional :: cairo_status
-    integer(kind=c_int), intent(in), optional :: hscroll_policy, vscroll_policy
+    integer(c_int), intent(in), optional :: has_alpha
+    integer(c_int), intent(out), optional :: cairo_status
+    integer(c_int), intent(in), optional :: hscroll_policy, vscroll_policy
 
     ! A high-level drawing area
     !
@@ -190,10 +190,10 @@ contains
     !-
 
     type(c_ptr) :: isurface, cstat_cstr
-    integer(kind=c_int) :: s_type
-    integer(kind=c_int) :: szx, szy
+    integer(c_int) :: s_type
+    integer(c_int) :: szx, szy
     logical :: rgba
-    integer(kind=c_int) :: cstat, hpolicy, vpolicy
+    integer(c_int) :: cstat, hpolicy, vpolicy
     character(len=120) :: cstat_fstr
     ! GtkEventControllers:
     type(c_ptr) :: controller_m, controller_s, controller_c, controller_k
@@ -461,7 +461,7 @@ contains
        & result(pixb)
     type(c_ptr) :: pixb
     type(c_ptr), intent(in) :: area
-    integer(kind=c_int), intent(in), optional :: x0, y0, xsize, ysize
+    integer(c_int), intent(in), optional :: x0, y0, xsize, ysize
 
     ! Read a drawing area (strictly the cairo surface
     ! backing store) to a GDK pixbuf.
@@ -473,8 +473,8 @@ contains
     !-
 
     type(c_ptr) :: surface
-    integer(kind=c_int) :: nx, ny, rs, fmt, lpix
-    integer(kind=c_int) :: xorig, yorig, xrange, yrange
+    integer(c_int) :: nx, ny, rs, fmt, lpix
+    integer(c_int) :: xorig, yorig, xrange, yrange
 
     if (present(x0)) then
        xorig = max(x0, 0)
@@ -512,7 +512,7 @@ contains
   !+
   subroutine hl_gtk_drawing_area_draw_pixbuf(area, pixbuf, x, y)
     type(c_ptr), intent(in) :: area, pixbuf
-    integer(kind=c_int), intent(in), optional :: x, y
+    integer(c_int), intent(in), optional :: x, y
 
     ! Render a GdkPixbuf on a drawing area
     !
@@ -527,7 +527,7 @@ contains
     !-
 
     type(c_ptr) :: cc
-    real(kind=c_double) :: xx, yy
+    real(c_double) :: xx, yy
 
     if (present(x)) then
        xx = real(x,c_double)
@@ -553,7 +553,7 @@ contains
   !+
   function hl_gtk_drawing_area_expose_cb(area, event, data) bind(c) &
        & result(rv)
-    integer(kind=c_int) :: rv
+    integer(c_int) :: rv
     type(c_ptr), value :: area, event, data
 
     ! Default callback for exposing a drawing area. For this to be connected
@@ -647,7 +647,7 @@ contains
   subroutine hl_gtk_drawing_area_cairo_destroy(cr, destroy_surface)
 
     type(c_ptr), intent(inout) :: cr
-    integer(kind=c_int), intent(in), optional :: destroy_surface
+    integer(c_int), intent(in), optional :: destroy_surface
 
     ! Update the backing surface and destroy the cairo context
     !
@@ -679,7 +679,7 @@ contains
   !+
   subroutine hl_gtk_drawing_area_resize(area, size, copy)
     type(c_ptr), intent(in) :: area
-    integer(kind=c_int), intent(in), optional, dimension(2) :: size
+    integer(c_int), intent(in), optional, dimension(2) :: size
     logical, optional, intent(in) :: copy
 
     ! Resize a drawing area and its backing store.
@@ -693,7 +693,7 @@ contains
     !-
 
     type(c_ptr) :: cback, cback_old, cr
-    integer(kind=c_int) :: szx, szy, s_type
+    integer(c_int) :: szx, szy, s_type
     type(gtkallocation), target:: alloc
     logical :: copy_surface
 
@@ -746,7 +746,7 @@ contains
   !+
   subroutine hl_gtk_drawing_area_get_size(area, width, height)
     type(c_ptr), intent(in) :: area
-    integer(kind=c_int), intent(out), optional :: width, height
+    integer(c_int), intent(out), optional :: width, height
 
     ! Convenience routine to get the current size of a drawing area
     !

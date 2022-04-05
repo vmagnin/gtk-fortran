@@ -70,13 +70,13 @@ contains
        & sensitive, tooltip, active) result(cbox)
 
     type(c_ptr) :: cbox
-    integer(kind=c_int), intent(in), optional :: has_entry
+    integer(c_int), intent(in), optional :: has_entry
     type(c_funptr), optional :: changed
     type(c_ptr), intent(in), optional :: data
     character(len=*), dimension(:), intent(in), optional :: initial_choices
-    integer(kind=c_int), intent(in), optional :: sensitive
+    integer(c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), optional, intent(in) :: tooltip
-    integer(kind=c_int), optional, intent(in) :: active
+    integer(c_int), optional, intent(in) :: active
 
     ! Creator for the combobox.
     !
@@ -91,8 +91,8 @@ contains
     ! ACTIVE: c_int: optional: The initial active selection.
     !-
 
-    integer(kind=c_int) :: ientry
-    integer(kind=c_int) :: i
+    integer(c_int) :: ientry
+    integer(c_int) :: i
 
     if (present(has_entry)) then
        ientry = has_entry
@@ -132,8 +132,8 @@ contains
 
     type(c_ptr), intent(in) :: cbox
     character(kind=c_char), dimension(*), optional :: text
-    integer(kind=c_int), intent(in), optional :: index
-    integer(kind=c_int), intent(in), optional :: at_start
+    integer(c_int), intent(in), optional :: index
+    integer(c_int), intent(in), optional :: at_start
 
     ! Add a new choice to a combo box.
     !
@@ -146,7 +146,7 @@ contains
     ! If neither INDEX nor AT_START is present the text is appended.
     !-
 
-    integer(kind=c_int) :: prepend
+    integer(c_int) :: prepend
 
     if (present(index)) then
        call gtk_combo_box_text_insert_text(cbox, index, text)
@@ -168,7 +168,7 @@ contains
   subroutine hl_gtk_combo_box_delete_single(cbox, index)
 
     type(c_ptr), intent(in) :: cbox
-    integer(kind=c_int), intent(in) :: index
+    integer(c_int), intent(in) :: index
 
     ! Delete a line from a combo box
     !
@@ -186,7 +186,7 @@ contains
   subroutine hl_gtk_combo_box_delete_multi(cbox, index)
 
     type(c_ptr), intent(in) :: cbox
-    integer(kind=c_int), dimension(:), intent(in) :: index
+    integer(c_int), dimension(:), intent(in) :: index
 
     ! Delete lines from a combo box
     !
@@ -196,7 +196,7 @@ contains
     ! Usually called via the generic hl_gtk_combo_box_delete interface.
     !-
 
-    integer(kind=c_int) :: i
+    integer(c_int) :: i
 
     do i = size(index),1,-1
        call gtk_combo_box_text_remove(cbox, index(i))
@@ -221,7 +221,7 @@ contains
   !+
   function hl_gtk_combo_box_get_active(cbox, text, ftext) result(index)
 
-    integer(kind=c_int) :: index
+    integer(c_int) :: index
     type(c_ptr), intent(in) :: cbox
     type(c_ptr), intent(out), optional :: text
     character(len=*), intent(out), optional :: ftext
@@ -249,7 +249,7 @@ contains
 
   !+
   function hl_gtk_combo_box_n_entries(cbox) result(count)
-    integer(kind=c_int) :: count
+    integer(c_int) :: count
     type(c_ptr), intent(in) :: cbox
 
     ! Find the number of entries in a combo box.

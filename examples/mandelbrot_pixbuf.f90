@@ -50,7 +50,7 @@ module handlers
   integer(c_int) :: boolresult
   type(c_ptr)    :: my_pixbuf
   character(kind=c_char), dimension(:), pointer :: pixel
-  integer(kind=c_int) :: nch, rowstride, width, height
+  integer(c_int) :: nch, rowstride, width, height
   logical :: computing = .false.
 
 contains

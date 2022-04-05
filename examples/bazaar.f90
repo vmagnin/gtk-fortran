@@ -219,7 +219,7 @@ contains
     integer(c_int), value, intent(in) :: width, height
     type(c_ptr) :: my_pixbuf
     character(kind=c_char), dimension(:), pointer :: pixel
-    integer(kind=c_int) :: i, nch, rowstride
+    integer(c_int) :: i, nch, rowstride
     integer :: j
     integer :: x, y
 

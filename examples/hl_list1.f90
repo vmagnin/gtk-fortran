@@ -58,8 +58,8 @@ contains
     type(c_ptr), value, intent(in) :: list, gdata
 
     integer, pointer :: fdata
-    integer(kind=c_int) :: nsel
-    integer(kind=c_int), dimension(:), allocatable :: selections
+    integer(c_int) :: nsel
+    integer(c_int), dimension(:), allocatable :: selections
 
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
@@ -138,8 +138,8 @@ contains
   subroutine swap_rows(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    integer(kind=c_int) :: nsel, nrows
-    integer(kind=c_int), dimension(:), allocatable :: selections
+    integer(c_int) :: nsel, nrows
+    integer(c_int), dimension(:), allocatable :: selections
     integer :: i
 
     nsel = hl_gtk_list1_get_selections(ihlist, selections)

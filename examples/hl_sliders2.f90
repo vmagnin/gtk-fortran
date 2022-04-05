@@ -48,7 +48,7 @@ contains
   subroutine slider1(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     ! Moved the float slider
-    real(kind=c_double) :: val
+    real(c_double) :: val
 
     val = hl_gtk_slider_get_value(widget)
     print *, "Slider moved to", val
@@ -57,7 +57,7 @@ contains
   subroutine spin1(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     ! Moved the spinner
-    real(kind=c_double) :: val
+    real(c_double) :: val
 
     val = hl_gtk_spin_button_get_value(widget)
     print *, "Spinner moved to", val
@@ -65,7 +65,7 @@ contains
 
   subroutine set_upper(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-    real(kind=c_double) :: ulim
+    real(c_double) :: ulim
     character(len=20)   :: slim
     integer :: ios
     call hl_gtk_entry_get_text(widget, slim)
@@ -84,7 +84,7 @@ contains
 
   subroutine set_lower(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-    real(kind=c_double) :: llim
+    real(c_double) :: llim
     character(len=20)   :: slim
     integer :: ios
     call hl_gtk_entry_get_text(widget, slim)

@@ -257,7 +257,7 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: file_open
     type(c_ptr), value :: widget, gdata
 
-    integer(kind=c_int) :: isel
+    integer(c_int) :: isel
     character(len=120), dimension(:), allocatable :: chfile
     character(len=30), dimension(2) :: filters
     character(len=30), dimension(2) :: filtnames
@@ -371,7 +371,7 @@ contains
 
     type(c_ptr):: model, val, textptr
     type(gtktreeiter), target :: iter
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
     type(gvalue), target :: value
 
     model = gtk_combo_box_get_model(combobox)
@@ -387,11 +387,11 @@ contains
     use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: write_files
     type(c_ptr), value :: widget, gdata
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
     character(len=256,kind=c_char)::subdir, license_file, line, &
          & handlerfile, appwindow
     integer::status_read, wunit, hunit, shellout_err
-    integer(kind=c_int)::i,j
+    integer(c_int)::i,j
     logical::already_used, lexist
     type(c_ptr) :: gpointer,object_name_ptr
     character(len=128) :: f_string, f_string_ori

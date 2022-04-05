@@ -38,7 +38,7 @@ module plplot_extra
   interface
      subroutine pl_cmd(cmd, arg) bind(c)
        use, intrinsic :: iso_c_binding, only: c_int, c_ptr
-       integer(kind=c_int), value :: cmd
+       integer(c_int), value :: cmd
        type(c_ptr), value :: arg
      end subroutine pl_cmd
   end interface

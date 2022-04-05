@@ -58,8 +58,8 @@ contains
   function hl_gtk_progress_bar_new(vertical, reversed, step) result(bar)
 
     type(c_ptr) :: bar
-    integer(kind=c_int), optional :: vertical, reversed
-    real(kind=c_double), optional :: step
+    integer(c_int), optional :: vertical, reversed
+    real(c_double), optional :: step
 
     ! Intializer for a progress bar
     !
@@ -93,8 +93,8 @@ contains
   subroutine hl_gtk_progress_bar_set_f(bar, val, string, text)
 
     type(c_ptr) :: bar
-    real(kind=c_double), optional :: val
-    integer(kind=c_int), optional :: string
+    real(c_double), optional :: val
+    integer(c_int), optional :: string
     character(len=*), intent(in), optional:: text
 
     ! Set the value of a progress bar (fraction or pulse)
@@ -138,8 +138,8 @@ contains
   subroutine hl_gtk_progress_bar_set_ii(bar, val, maxv, string, text)
 
     type(c_ptr) :: bar
-    integer(kind=c_int) :: val, maxv
-    integer(kind=c_int), optional :: string
+    integer(c_int) :: val, maxv
+    integer(c_int), optional :: string
     character(len=*), intent(in), optional:: text
 
     ! Set the value of a progress bar (n of m)
@@ -154,7 +154,7 @@ contains
     ! hl_gtk_progress_bar_set
     !-
 
-    real(kind=c_double) :: frac
+    real(c_double) :: frac
     character(len=50) :: sval
 
     frac = real(val,c_double)/real(maxv,c_double)

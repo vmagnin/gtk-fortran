@@ -84,16 +84,16 @@ contains
        & result(slider)
 
     type(c_ptr) :: slider
-    real(kind=c_double), intent(in) :: vmin, vmax, step
-    integer(kind=c_int), intent(in), optional :: vertical
-    real(kind=c_double), intent(in), optional :: initial_value
+    real(c_double), intent(in) :: vmin, vmax, step
+    integer(c_int), intent(in), optional :: vertical
+    real(c_double), intent(in), optional :: initial_value
     type(c_funptr), optional :: value_changed
     type(c_ptr), optional :: data
-    integer(kind=c_int), optional, intent(in) :: digits
-    integer(kind=c_int), optional, intent(in) :: sensitive
+    integer(c_int), optional, intent(in) :: digits
+    integer(c_int), optional, intent(in) :: sensitive
     character(len=*), intent(in), optional:: tooltip
-    integer(kind=c_int), intent(in), optional :: draw
-    integer(kind=c_int), intent(in), optional :: length
+    integer(c_int), intent(in), optional :: draw
+    integer(c_int), intent(in), optional :: length
 
     ! Floating point version of a slider
     !
@@ -118,7 +118,7 @@ contains
     ! hl_gtk_slider_new
     !-
 
-    integer(kind=c_int) :: isvertical, idraw
+    integer(c_int) :: isvertical, idraw
 
     ! Create the slider
     if (present(vertical)) then
@@ -173,15 +173,15 @@ contains
        & value_changed, data, sensitive, tooltip, draw, length) result(slider)
 
     type(c_ptr) :: slider
-    integer(kind=c_int), intent(in) :: imin, imax
-    integer(kind=c_int), intent(in), optional :: vertical
-    integer(kind=c_int), intent(in), optional :: initial_value
+    integer(c_int), intent(in) :: imin, imax
+    integer(c_int), intent(in), optional :: vertical
+    integer(c_int), intent(in), optional :: initial_value
     type(c_funptr), optional :: value_changed
     type(c_ptr), optional :: data
-    integer(kind=c_int), optional, intent(in) :: sensitive
+    integer(c_int), optional, intent(in) :: sensitive
     character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
-    integer(kind=c_int), intent(in), optional :: draw
-    integer(kind=c_int), intent(in), optional :: length
+    integer(c_int), intent(in), optional :: draw
+    integer(c_int), intent(in), optional :: length
 
     ! Integer version of a slider
     !
@@ -222,7 +222,7 @@ contains
   !+
   function hl_gtk_slider_get_value(slider) result(val)
 
-    real(kind=c_double) :: val
+    real(c_double) :: val
     type(c_ptr) :: slider
 
     ! Get the value of a slider
@@ -240,7 +240,7 @@ contains
   subroutine hl_gtk_slider_set_flt(slider, val)
 
     type(c_ptr), intent(in) :: slider
-    real(kind=c_double), intent(in) :: val
+    real(c_double), intent(in) :: val
 
     ! Set a floating point value for a slider
     !
@@ -259,7 +259,7 @@ contains
   subroutine hl_gtk_slider_set_int(slider, val)
 
     type(c_ptr), intent(in) :: slider
-    integer(kind=c_int), intent(in) :: val
+    integer(c_int), intent(in) :: val
 
     ! Set an integer value for a slider
     !
@@ -277,8 +277,8 @@ contains
   !+
   subroutine hl_gtk_slider_set_range(slider, lower, upper, step, digits)
     type(c_ptr), intent(in) :: slider
-    real(kind=c_double), intent(in), optional :: lower, upper, step
-    integer(kind=c_int), intent(in), optional :: digits
+    real(c_double), intent(in), optional :: lower, upper, step
+    integer(c_int), intent(in), optional :: digits
 
     ! Adjust the bounds of a slider
     !
@@ -295,7 +295,7 @@ contains
     !-
 
     type(c_ptr) :: adjustment
-    real(kind=c_double) :: nlower, nupper
+    real(c_double) :: nlower, nupper
 
     if (present(upper) .or. present(lower)) then
 
@@ -324,7 +324,7 @@ contains
   !+
   subroutine hl_gtk_slider_set_range_int(slider, lower, upper)
     type(c_ptr), intent(in) :: slider
-    integer(kind=c_int), intent(in), optional :: lower, upper
+    integer(c_int), intent(in), optional :: lower, upper
 
     ! Adjust the bounds of a slider, integer values
     !
@@ -339,7 +339,7 @@ contains
     !-
 
     type(c_ptr) :: adjustment
-    real(kind=c_double) :: nlower, nupper
+    real(c_double) :: nlower, nupper
 
     ! Check it's not a do-nothing
     if (.not. (present(upper) .or. present(lower))) return
@@ -368,14 +368,14 @@ contains
        & result(spin_button)
 
     type(c_ptr) :: spin_button
-    real(kind=c_double), intent(in) :: vmin, vmax, step
-    real(kind=c_double), intent(in), optional :: initial_value
+    real(c_double), intent(in) :: vmin, vmax, step
+    real(c_double), intent(in), optional :: initial_value
     type(c_funptr), optional :: value_changed
     type(c_ptr), optional :: data
-    integer(kind=c_int), optional, intent(in) :: digits
-    integer(kind=c_int), optional, intent(in) :: sensitive
+    integer(c_int), optional, intent(in) :: digits
+    integer(c_int), optional, intent(in) :: sensitive
     character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
-    integer(kind=c_int), intent(in), optional :: wrap
+    integer(c_int), intent(in), optional :: wrap
     type(c_funptr), optional :: focus_in_event, focus_out_event
     type(c_ptr), optional :: data_focus_in, data_focus_out
 
@@ -466,13 +466,13 @@ contains
        & result(spin_button)
 
     type(c_ptr) :: spin_button
-    integer(kind=c_int), intent(in) :: imin, imax
-    integer(kind=c_int), intent(in), optional :: initial_value
+    integer(c_int), intent(in) :: imin, imax
+    integer(c_int), intent(in), optional :: initial_value
     type(c_funptr), optional :: value_changed
     type(c_ptr), optional :: data
-    integer(kind=c_int), optional, intent(in) :: sensitive
+    integer(c_int), optional, intent(in) :: sensitive
     character(len=*), intent(in), optional:: tooltip ! NB the C-type confuses generic interfaces.
-    integer(kind=c_int), intent(in), optional :: wrap
+    integer(c_int), intent(in), optional :: wrap
     type(c_funptr), optional :: focus_in_event, focus_out_event
     type(c_ptr), optional :: data_focus_in, data_focus_out
 
@@ -529,7 +529,7 @@ contains
   !+
   function hl_gtk_spin_button_get_value(spin_button) result(val)
 
-    real(kind=c_double) :: val
+    real(c_double) :: val
     type(c_ptr) :: spin_button
 
     ! Get the value of a spin_button
@@ -547,7 +547,7 @@ contains
   subroutine hl_gtk_spin_button_set_flt(spin_button, val)
 
     type(c_ptr), intent(in) :: spin_button
-    real(kind=c_double), intent(in) :: val
+    real(c_double), intent(in) :: val
 
     ! Set a floating point value for a spin_button
     !
@@ -566,7 +566,7 @@ contains
   subroutine hl_gtk_spin_button_set_int(spin_button, val)
 
     type(c_ptr), intent(in) :: spin_button
-    integer(kind=c_int), intent(in) :: val
+    integer(c_int), intent(in) :: val
 
     ! Set an integer value for a spin_button
     !
@@ -585,8 +585,8 @@ contains
   subroutine hl_gtk_spin_button_set_range(spin_button, lower, upper, &
        & step, digits)
     type(c_ptr), intent(in) :: spin_button
-    real(kind=c_double), intent(in), optional :: lower, upper, step
-    integer(kind=c_int), intent(in), optional :: digits
+    real(c_double), intent(in), optional :: lower, upper, step
+    integer(c_int), intent(in), optional :: digits
 
     ! Adjust the bounds of a spin box
     !
@@ -603,7 +603,7 @@ contains
     !-
 
     type(c_ptr) :: adjustment
-    real(kind=c_double) :: nlower, nupper
+    real(c_double) :: nlower, nupper
 
     if (present(upper) .or. present(lower)) then
        adjustment = gtk_spin_button_get_adjustment(spin_button)
@@ -632,7 +632,7 @@ contains
   !+
   subroutine hl_gtk_spin_button_set_range_int(spin_button, lower, upper)
     type(c_ptr), intent(in) :: spin_button
-    integer(kind=c_int), intent(in), optional :: lower, upper
+    integer(c_int), intent(in), optional :: lower, upper
 
     ! Adjust the bounds of a spin box, integer values
     !
@@ -647,7 +647,7 @@ contains
     !-
 
     type(c_ptr) :: adjustment
-    real(kind=c_double) :: nlower, nupper
+    real(c_double) :: nlower, nupper
 
     ! Check it's not a do-nothing
     if (.not. (present(upper) .or. present(lower))) return

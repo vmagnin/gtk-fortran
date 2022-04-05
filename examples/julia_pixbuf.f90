@@ -30,7 +30,7 @@ module global_widgets
   type(c_ptr) :: my_pixbuf, my_drawing_area, spinButton1, spinButton2, spinButton3
   type(c_ptr) :: textView, buffer, scrolled_window, statusBar, combo1
   character(kind=c_char), dimension(:), pointer :: pixel
-  integer(kind=c_int) :: nch, rowstride, width, height, pixwidth, pixheight
+  integer(c_int) :: nch, rowstride, width, height, pixwidth, pixheight
   logical :: computing = .false.
   character(LEN=80) :: string
 end module global_widgets
