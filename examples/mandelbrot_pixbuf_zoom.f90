@@ -276,7 +276,7 @@ contains
           c = x + y*(0.0_c_double,1.0_c_double)   ! Starting point
           z = (0.0_c_double, 0.0_c_double)        ! z0
           k = 1
-          do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4.0_c_double))
+          do while ((k <= itermax) .and. ((z%re**2 + z%im**2)<4.0_c_double))
              z = z*z+c
              k = k+1
           end do

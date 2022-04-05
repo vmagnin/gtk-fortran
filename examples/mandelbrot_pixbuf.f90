@@ -131,7 +131,7 @@ contains
         c = x + y*(0d0,1d0)   ! Starting point
         z = (0d0, 0d0)        ! z0
         k = 1
-        do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2) < 4d0))
+        do while ((k <= itermax) .and. ((z%re**2 + z%im**2) < 4d0))
           z = z*z + c
           k = k + 1
         end do
