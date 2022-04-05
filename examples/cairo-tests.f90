@@ -205,7 +205,7 @@ contains
         c = x + y*(0.0_wp,1.0_wp)   ! Starting point
         z = (0.0_wp, 0.0_wp)        ! z0
         k = 1
-        do while ((k <= itermax) .and. (abs(z)<2.0_wp))
+        do while ((k <= itermax) .and. ((z%re**2 + z%im**2) < 4.0_wp))
           z = z*z+c
           k = k+1
         end do
