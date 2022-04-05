@@ -434,7 +434,7 @@ contains
       x = xmin + scx * i
       do j=0, pixheight-1
         y = ymin + scy * j
-        z = x + y*(0.0_wp,1.0_wp)   ! Starting point
+        z = cmplx(x, y, kind=wp)   ! Starting point
         k = 1
         do while ((k <= itermax) .and. ((z%re**2 + z%im**2)<4.0_wp))
           z = z*z + c

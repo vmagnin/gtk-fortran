@@ -130,7 +130,7 @@ contains
       x = xmin + scx * i
       do j=0, height-1
         y = ymin + scy * j
-        c = x + y*(0.0_wp,1.0_wp)   ! Starting point
+        c = cmplx(x, y, kind=wp)    ! Starting point
         z = (0.0_wp, 0.0_wp)        ! z0
         k = 1
         do while ((k <= itermax) .and. ((z%re**2 + z%im**2) < 4.0_wp))
