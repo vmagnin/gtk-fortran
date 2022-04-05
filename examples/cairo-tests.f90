@@ -181,7 +181,7 @@ contains
     type(c_ptr)   :: my_drawing_area
     integer       :: i, j, k, p, itermax
     real(wp)      :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-    complex(8)    :: c, z
+    complex(wp)   :: c, z
     real(wp)      :: scx, scy             ! scales
     integer(int8) :: red, green, blue     ! rgb color
     real(wp)      :: t0, t1

@@ -117,7 +117,7 @@ contains
 
     integer(c_int)                 :: message_id
     type(c_ptr), value, intent(in) :: widget, gdata
-    complex(kind(1.0_wp))             :: c
+    complex(wp)                    :: c
     integer                        :: iterations
 
     if (.not. computing) then
