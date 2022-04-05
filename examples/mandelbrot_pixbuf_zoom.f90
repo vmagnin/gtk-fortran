@@ -245,7 +245,7 @@ contains
   ! http://en.wikipedia.org/wiki/Mandelbrot_set
   !*********************************************
   subroutine mandelbrot_set(my_drawing_area, itermax)
-    ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
+    ! Whole set: xmin=-2.0_wp, xmax=+1.0_wp, ymin=-1.5_wp, ymax=+1.5_wp, itermax=1000
     ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
     type(c_ptr), intent(in) :: my_drawing_area
     integer(kind=c_int), intent(in) :: itermax

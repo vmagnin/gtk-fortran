@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Draw a Sierpinski triangle in a PNG file, without any GUI
 ! https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle#Chaos_game
-! Contributed by Vincent Magnin, 2020-05-26
+! Contributed by Vincent Magnin, 2022-04-05
 !------------------------------------------------------------------------------
 
 program pixbuf_without_gui
@@ -63,21 +63,21 @@ program pixbuf_without_gui
   ! The background is black (red=0, green=0, blue=0):
   pixel = char(0)
   ! Diagonal of the image:
-  diag = sqrt(real(pixwidth*pixwidth + pixheight*pixheight, kind(0d0)))
+  diag = sqrt(real(pixwidth*pixwidth + pixheight*pixheight, kind(0.0_wp)))
   ! Coordinates of the triangle vertices:
-  x = [ pixwidth/2d0,  0d0,                      (pixwidth-1)*1d0        ]
-  y = [ 0d0,           pixheight*sqrt(3d0)/2d0,  pixheight*sqrt(3d0)/2d0 ]
+  x = [ pixwidth/2.0_wp,  0.0_wp,                      (pixwidth-1)*1.0_wp        ]
+  y = [ 0.0_wp,           pixheight*sqrt(3.0_wp)/2.0_wp,  pixheight*sqrt(3.0_wp)/2.0_wp ]
   ! We start at an arbitrary position:
-  xx = (x(1) + x(2)) / 2d0
-  yy = (y(1) + y(2)) / 2d0
+  xx = (x(1) + x(2)) / 2.0_wp
+  yy = (y(1) + y(2)) / 2.0_wp
 
   do i = 1, n
       ! We choose randomly a vertex number (1, 2 or 3):
       call random_number(r)
       s = 1 + int(3*r)
       ! We compute the coordinates of the new point:
-      xx = (xx + x(s)) / 2d0
-      yy = (yy + y(s)) / 2d0
+      xx = (xx + x(s)) / 2.0_wp
+      yy = (yy + y(s)) / 2.0_wp
       ! Position of the corresponding pixel in the pixbuffer:
       p = 1 + nint(xx)*nch + nint(yy)*rowstride
       ! Red, Green, Blue values computed from the distances to vertices:

@@ -65,6 +65,7 @@ module handlers
 
   use g, only: g_usleep, g_main_context_iteration, g_main_context_pending
   use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_char, C_NEW_LINE
+  use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
 
   implicit none
   type(c_ptr)    :: my_window
@@ -116,13 +117,13 @@ contains
 
     integer(c_int)                 :: message_id
     type(c_ptr), value, intent(in) :: widget, gdata
-    complex(kind(1d0))             :: c
+    complex(kind(1.0_wp))             :: c
     integer                        :: iterations
 
     if (.not. computing) then
       ! Get computation parameters:
       c = gtk_spin_button_get_value (spinButton1) + &
-          & (0d0, 1d0)*gtk_spin_button_get_value (spinButton2)
+          & (0.0_wp, 1.0_wp)*gtk_spin_button_get_value (spinButton2)
       iterations = INT(gtk_spin_button_get_value (spinButton3))
 
       ! Print them in the text buffer:
@@ -135,7 +136,7 @@ contains
                                      & "Computing..."//c_null_char)
 
       ! Compute the image:
-      call Julia_set(-2d0, +2d0, -2d0, +2d0, c, iterations)
+      call Julia_set(-2.0_wp, +2.0_wp, -2.0_wp, +2.0_wp, c, iterations)
 
       ! If Julia_set() was quitted because of a delete_event, we can not use
       ! the statusBar because it has been destroyed:
@@ -167,26 +168,26 @@ contains
 
     select case (choice)
     case(1)
-      x = +0d0
-      y = +1d0
+      x = +0.0_wp
+      y = +1.0_wp
     case(2)
-      x = -1d0
-      y = +0d0
+      x = -1.0_wp
+      y = +0.0_wp
     case(3)
-      x = -0.8d0
-      y = +0.2d0
+      x = -0.8_wp
+      y = +0.2_wp
     case(4)
-      x = +0.39d0
-      y = +0.60d0
+      x = +0.39_wp
+      y = +0.60_wp
     case(5)
-      x = -0.2d0
-      y = +0.8d0
+      x = -0.2_wp
+      y = +0.8_wp
     case(6)
-      x = -0.8d0
-      y = +0.4d0
+      x = -0.8_wp
+      y = +0.4_wp
     case(7)
-      x = +0.39d0
-      y = +0.00d0
+      x = +0.39_wp
+      y = +0.00_wp
     end select
 
     ! Update the spin buttons real(c) and imag(c):
@@ -407,7 +408,6 @@ contains
   ! The scientific computing is done here
   !*********************************************
   subroutine Julia_set(xmin, xmax, ymin, ymax, c, itermax)
-    use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
     use, intrinsic :: iso_c_binding
     use global_widgets
 
@@ -434,9 +434,9 @@ contains
       x = xmin + scx * i
       do j=0, pixheight-1
         y = ymin + scy * j
-        z = x + y*(0d0,1d0)   ! Starting point
+        z = x + y*(0.0_wp,1.0_wp)   ! Starting point
         k = 1
-        do while ((k <= itermax) .and. ((z%re**2 + z%im**2)<4d0))
+        do while ((k <= itermax) .and. ((z%re**2 + z%im**2)<4.0_wp))
           z = z*z + c
           k = k + 1
         end do

@@ -90,6 +90,8 @@ end module handlers
 
 
 module scientific_computation
+  use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
+
   implicit none
 
 contains
@@ -98,9 +100,8 @@ contains
   ! http://en.wikipedia.org/wiki/Mandelbrot_set
   !*********************************************
   subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
-    ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
+    ! Whole set: xmin=-2.0_wp, xmax=+1.0_wp, ymin=-1.5_wp, ymax=+1.5_wp, itermax=1000
     ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
-    use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
     use handlers
 
     type(c_ptr)   :: my_drawing_area
@@ -129,10 +130,10 @@ contains
       x = xmin + scx * i
       do j=0, height-1
         y = ymin + scy * j
-        c = x + y*(0d0,1d0)   ! Starting point
-        z = (0d0, 0d0)        ! z0
+        c = x + y*(0.0_wp,1.0_wp)   ! Starting point
+        z = (0.0_wp, 0.0_wp)        ! z0
         k = 1
-        do while ((k <= itermax) .and. ((z%re**2 + z%im**2) < 4d0))
+        do while ((k <= itermax) .and. ((z%re**2 + z%im**2) < 4.0_wp))
           z = z*z + c
           k = k + 1
         end do
@@ -225,7 +226,7 @@ program mandelbrot
   call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [width*height*nch])
 
   ! Scientific computing:
-  call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 10000_4)
+  call Mandelbrot_set(my_drawing_area, -2.0_wp, +1.0_wp, -1.5_wp, +1.5_wp, 10000_4)
 
   ! The window will stay opened after the computation, but we need to verify
   ! that the user has not closed the window during the computation.

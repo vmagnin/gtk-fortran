@@ -105,7 +105,7 @@ contains
 
     width  = gtk_widget_get_width(widget)
     height = gtk_widget_get_height(widget)
-    d = sqrt((x - width/2d0)**2 + (y - height/2d0)**2)
+    d = sqrt((x - width/2.0_wp)**2 + (y - height/2.0_wp)**2)
     print *, "Distance from the centre of the circle: ", d
   end subroutine click_cb
 
