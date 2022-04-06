@@ -23,7 +23,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018,
-# vmagnin 2021-10-21
+# vmagnin 2022-04-06
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -116,6 +116,9 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 # https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
 #===============================================================================
 if(NOT TARGET uninstall)
+    # configure_file() copies a file and substitutes @VAR@ or ${VAR}
+    # @ONLY means only @VAR@ will be sustituted
+    # https://cmake.org/cmake/help/latest/command/configure_file.html
     configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
         "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"

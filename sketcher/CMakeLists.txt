@@ -21,14 +21,17 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #=============================================================================
 # Contributed by James Tappin 05/20/2011
-# Last modifications: Jens Hunger: 03/07/2013, vmagnin 2019-04-05
+# Last modifications: Jens Hunger: 03/07/2013, vmagnin 2022-04-06
 #
 # CMAKE build file for gtkf-sketcher
 
 include_directories("${CMAKE_BINARY_DIR}/src/modules")
 
+# configure_file() copies a file and substitutes @VAR@ or ${VAR}
+# https://cmake.org/cmake/help/latest/command/configure_file.html
 set(GTKF_PROG_PREFIX "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/${gtk_V_fortran}")
 configure_file(gtkf-sketcher.f90 gtkf-sketcher.out.f90)
+
 add_executable(gtkf-sketcher "gtkf-sketcher.out.f90")
 target_link_libraries(gtkf-sketcher gtk-fortran_static ${GTK_LIBRARIES})
 # No test as the glade stuff is too sensitive to location
