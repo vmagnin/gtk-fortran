@@ -44,10 +44,11 @@ set(CMAKE_PROJECT_DESCRIPTION "A GTK / Fortran binding")
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/vmagnin/gtk-fortran/wiki/")
 
 #===============================================================================
-# Major version of GTK for the current branch (from VERSIONS file):
+# Version of gtk-fortran for the current branch (from VERSIONS file):
 #===============================================================================
 file(STRINGS VERSIONS OneLine REGEX "gtk-fortran;(.*)")
 string(REGEX REPLACE "gtk-fortran;" "" SEMANTIC_VERSION ${OneLine})
+# Major, minor and patch versions of gtk-fortran:
 string(REGEX MATCH "[0-9]+" GTKv ${SEMANTIC_VERSION})
 string(REGEX REPLACE "[0-9]+\.([0-9]+)\.[0-9]+" "\\1" MINOR_VERSION ${SEMANTIC_VERSION})
 string(REGEX REPLACE "[0-9]+\.[0-9]+\.([0-9]+)" "\\1" PATCH_VERSION ${SEMANTIC_VERSION})
@@ -64,6 +65,13 @@ endif()
 set(CMAKE_PROJECT_VERSION_MAJOR ${GTKv})
 set(CMAKE_PROJECT_VERSION_MINOR ${MINOR_VERSION})
 set(CMAKE_PROJECT_VERSION_PATCH ${PATCH_VERSION})
+
+# Extracting the GTK and GLib versions from the VERSIONS file:
+file(STRINGS VERSIONS OneLine REGEX "GTK;(.*)")
+string(REGEX REPLACE "GTK;" "" GTK_SEMANTIC_VERSION ${OneLine})
+file(STRINGS VERSIONS OneLine REGEX "GLib;(.*)")
+string(REGEX REPLACE "GLib;" "" GLIB_SEMANTIC_VERSION ${OneLine})
+message(STATUS "Based on GTK ${GTK_SEMANTIC_VERSION} and GLib ${GLIB_SEMANTIC_VERSION}")
 
 #===============================================================================
 # Define GNU standard installation directories:
