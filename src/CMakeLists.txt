@@ -92,9 +92,11 @@ set_target_properties(gtk-fortran_object PROPERTIES
   Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )
 
 #======================================================
-# The gtk-?-fortran command:
+# The gtk-?-fortran command
+# @VAR@ are susbtituted using configure_file()
 #======================================================
-add_executable(${gtk_V_fortran} "gtk-fortran.f90")
+configure_file(gtk-fortran.f90 gtk-fortran.out.f90)
+add_executable(${gtk_V_fortran} "gtk-fortran.out.f90")
 target_link_libraries(${gtk_V_fortran} gtk-fortran_static ${GTK_LIBRARIES})
 set_target_properties(${gtk_V_fortran} PROPERTIES
   Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/ )

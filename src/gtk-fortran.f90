@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! The gtk-?-fortran command prints information about gtk-fortran.
 ! Contributors: Vincent Magnin 2021-01-29
-! Last modifications: 2021-06-11
+! Last modifications: 2022-04-06
 !------------------------------------------------------------------------------
 
 module handlers_gtk_fortran
@@ -50,10 +50,9 @@ module handlers_gtk_fortran
 
     call c_f_string_copy(g_get_os_info("PRETTY_NAME"//c_null_char), os_string)
 
-    print '(4A,I0,A1,I0,A1,I0,A1)', TRIM(name_string), " (", TRIM(os_string),&
-      & ", GTK ", gtk_get_major_version(),".", &
-      & gtk_get_minor_version(), ".", gtk_get_micro_version(), ")"
-    print '(A)', "Compiled with "//compiler_version()
+    print '(2A)', TRIM(name_string), " (GTK @GTK_SEMANTIC_VERSION@ and GLib @GLIB_SEMANTIC_VERSION@)"
+    print '(3A,I0,A1,I0,A1,I0)', "Compiled with "//compiler_version()//" on ", TRIM(os_string), &
+      & ", linked to GTK ", gtk_get_major_version(),".", gtk_get_minor_version(), ".", gtk_get_micro_version()
 
     print *
     print '(A)', "Licensed under GNU GPL 3 with the additional permissions&
