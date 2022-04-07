@@ -1,6 +1,8 @@
 #! /bin/sh
 # An alternative simple build system, using the directory ../build/byscript
 # and finally launching one by one the examples for testing.
+# It does not substitutes the @..@ strings in gtkf-sketcher.f90,
+# and gtk-fortran.f90, like CMake.
 # GNU GPL v3
 # Contributed by Vincent MAGNIN
 # 2011-04-08, last updated 2021-06-11
@@ -42,7 +44,7 @@ fi
 readonly gtk_hl_obj="gtk-hl-misc.o gtk-hl-button.o gtk-hl-combobox.o gtk-hl-container.o gtk-hl-entry.o gtk-hl-progress.o gtk-hl-spin-slider.o gtk-hl-tree.o  gtk-hl-chooser.o gtk-hl-dialog.o gtk-hl-infobar.o gtk-hl-assistant.o gdk-pixbuf-hl.o"
 
 echo
-echo ">>> Compiling the GTK+ libraries and gtk_hl using ${FC}"
+echo ">>> Compiling the GTK libraries and gtk_hl using ${FC}"
 for file in "unixonly-auto.f90" "gdk-auto.f90" "glib-auto.f90" "gtk.f90" "unix-print-auto.f90" "cairo-auto.f90" "gdk-pixbuf-auto.f90" "pango-auto.f90" "gsk-auto.f90" "graphene-auto.f90" "gtk-sup.f90" "gtk-hl-misc.f90" "gtk-hl-button.f90" "gtk-hl-combobox.f90" "gtk-hl-container.f90" "gtk-hl-entry.f90" "gtk-hl-infobar.f90" "gtk-hl-assistant.f90" "gtk-hl-progress.f90" "gtk-hl-spin-slider.f90" "gtk-hl-tree.f90" "gtk-hl-chooser.f90" "gtk-hl-dialog.f90" "gtk-hl.f90" "gdkevents-auto.f90" "gtk-draw-hl.f90" "gdk-pixbuf-hl.f90"; do
   echo "${file}"
   #compile that file:
