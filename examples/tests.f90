@@ -32,15 +32,15 @@
 
 module tests
   use gtk, only: TRUE, FALSE
-  use g, only: g_ascii_tolower, g_bit_storage, g_date_get_day, g_date_get_days_in&
-  &_month, g_hostname_is_ip_address, g_inet_socket_address_get_port, g_inet_socke&
-  &t_address_new, g_random_double, g_random_double_range, g_random_int, g_random_&
-  &int_range, g_variant_get_boolean, g_variant_get_byte, g_variant_get_double, g_&
-  &variant_get_int16, g_variant_get_int32, g_variant_get_int64, g_variant_get_str&
-  &ing, g_variant_get_uint16, g_variant_get_uint32, g_variant_get_uint64, g_varia&
-  &nt_new_boolean, g_variant_new_byte, g_variant_new_double, g_variant_new_int16,&
-  & g_variant_new_int32, g_variant_new_int64, g_variant_new_string, g_variant_new&
-  &_uint16, g_variant_new_uint32, g_variant_new_uint64, guint64, g_variant_unref
+  use g, only: g_ascii_tolower, g_bit_storage, g_date_get_day, &
+    g_date_get_days_in_month, g_hostname_is_ip_address, g_inet_socket_address_get_port, &
+    g_inet_socket_address_new, g_random_double, g_random_double_range, g_random_int, &
+    g_random_int_range, g_variant_get_boolean, g_variant_get_byte, g_variant_get_double,&
+    g_variant_get_int16, g_variant_get_int32, g_variant_get_int64, g_variant_get_string,&
+    g_variant_get_uint16, g_variant_get_uint32, g_variant_get_uint64, &
+    g_variant_new_boolean, g_variant_new_byte, g_variant_new_double, g_variant_new_int16,&
+    g_variant_new_int32, g_variant_new_int64, g_variant_new_string, g_variant_new_uint16,&
+    g_variant_new_uint32, g_variant_new_uint64, guint64, g_variant_unref
   use, intrinsic :: iso_c_binding
 
   implicit none
@@ -547,6 +547,8 @@ program gtk_fortran_test
   integer :: errors
   integer :: file_unit
 
+  print *, "Testing iso_c_binding with GTK and GLib..."
+  print *
   open(newunit=file_unit, file="tests_errors.txt")
 
   print *, "test_iso_c_binding()"
