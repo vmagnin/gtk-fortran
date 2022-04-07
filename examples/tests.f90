@@ -213,7 +213,7 @@ contains
     !gdouble             g_variant_get_double   (GVariant *value);
     errors = 0
     do i = -308, +308
-      a = 10d0 ** i
+      a = 10.0_c_double ** i
       gv = g_variant_new_double(a)
       b = g_variant_get_double(gv)
       if (a /= b) then
@@ -229,8 +229,8 @@ contains
     !      real(c_double), value :: begin
     !      real(c_double), value :: end
     !    end function
-    rmin = -10d0
-    rmax = +100d0
+    rmin = -10.0_c_double
+    rmax = +100.0_c_double
     do i = 1, 10000, +1
       r = g_random_double_range(rmin, rmax)
       if ((r<rmin).or.(r>rmax)) then
