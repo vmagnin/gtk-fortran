@@ -31,7 +31,9 @@
 ! (OS version, GTK version, compiler...)
 
 module tests
-  use gtk, only: TRUE, FALSE
+  use gtk, only: TRUE, FALSE, gtk_get_major_version, gtk_get_minor_version, &
+                 gtk_get_micro_version
+  use gtk_sup, only: c_f_string_copy
   use g, only: g_ascii_tolower, g_bit_storage, g_date_get_day, &
     g_date_get_days_in_month, g_hostname_is_ip_address, g_inet_socket_address_get_port, &
     g_inet_socket_address_new, g_random_double, g_random_double_range, g_random_int, &
@@ -40,7 +42,8 @@ module tests
     g_variant_get_uint16, g_variant_get_uint32, g_variant_get_uint64, &
     g_variant_new_boolean, g_variant_new_byte, g_variant_new_double, g_variant_new_int16,&
     g_variant_new_int32, g_variant_new_int64, g_variant_new_string, g_variant_new_uint16,&
-    g_variant_new_uint32, g_variant_new_uint64, guint64, g_variant_unref
+    g_variant_new_uint32, g_variant_new_uint64, guint64, g_variant_unref, g_get_os_info
+  use, intrinsic :: iso_fortran_env, only: compiler_version
   use, intrinsic :: iso_c_binding
 
   implicit none
@@ -546,9 +549,14 @@ program gtk_fortran_test
   implicit none
   integer :: errors
   integer :: file_unit
+  character(len=128) :: os_string
 
-  print *, "Testing iso_c_binding with GTK and GLib..."
-  print *
+  print '(A)', "Testing iso_c_binding with GTK and GLib..."
+
+  call c_f_string_copy(g_get_os_info("PRETTY_NAME"//c_null_char), os_string)
+  print '(3A,I0,A1,I0,A1,I0)', "Compiled with "//compiler_version()//" on ", TRIM(os_string), &
+      & ", linked to GTK ", gtk_get_major_version(),".", gtk_get_minor_version(), ".", gtk_get_micro_version()
+
   open(newunit=file_unit, file="tests_errors.txt")
 
   print *, "test_iso_c_binding()"
