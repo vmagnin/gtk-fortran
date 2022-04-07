@@ -23,7 +23,7 @@
 ! GTK Fortran Code Sketcher using UI definitions
 ! Contributed by Jens Hunger
 ! Last modifications: Harris Snyder 2020-07-11
-! vmagnin 2020-10-16, 2021-01-22
+! vmagnin 2020-10-16, 2022-04-07
 
 module widgets
   ! declares the used GTK widgets
@@ -158,6 +158,7 @@ module handlers
   use connect
 
   implicit none
+  integer :: log_unit
 
 contains
 
@@ -169,8 +170,9 @@ contains
 
     if (allocated(connections)) deallocate(connections)
 
-    inquire(unit=99,opened=lopened)
-    if (lopened) close(99)
+    ! Closes the gtkf-sketcher.log file if necessary:
+    inquire(unit=log_unit,opened=lopened)
+    if (lopened) close(log_unit)
 
     call g_slist_free(gslist)
 
@@ -805,7 +807,7 @@ program gtkfsketcher
   error = c_null_ptr
 
   call get_environment_variable("PWD", base_dir)
-  open(99, file="gtkf-sketcher.log", action='write')
+  open(newunit=log_unit, file="gtkf-sketcher.log", action='write')
 
   ! Initialize the GTK Library
   call gtk_init ()

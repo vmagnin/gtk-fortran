@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2022-03-11
+! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2022-04-07
 ! ****************
 ! Automated tests
 ! ****************
@@ -545,8 +545,9 @@ program gtk_fortran_test
   use tests
   implicit none
   integer :: errors
+  integer :: file_unit
 
-  open(unit=1, file="tests_errors.txt")
+  open(newunit=file_unit, file="tests_errors.txt")
 
   print *, "test_iso_c_binding()"
   errors = test_iso_c_binding()
@@ -569,7 +570,7 @@ program gtk_fortran_test
   print *, "test_gboolean_in_out()"
   errors = errors +  test_gboolean_in_out()
 
-  close(1)
+  close(file_unit)
 
   print *
   if (errors == 0) then
