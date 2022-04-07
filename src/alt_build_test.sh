@@ -10,6 +10,8 @@
 # For a safer script:
 set -eu
 
+readonly BUILD_DIR='../build/byscript'
+
 # Allow override of default compiler. For example:
 #  FC='ifort' ./alt_build_test.sh
 # The default compiler is:
@@ -69,9 +71,13 @@ done
 
 # List the executables:
 echo
-echo ">>> Executables in ../build/byscript"
+echo ">>> Executables in ${BUILD_DIR}"
 ls ./*.out
 echo
+
+# Copy directories and files needed to run the programs:
+cp -r ../../sketcher/data/ ../../sketcher/example ../../sketcher/default.options ../../sketcher/*.glade .
+cp ../../examples/gtkbuilder.glade .
 
 echo ">>> Running each example (CTRL+C to exit)..."
 for i in *.out ; do
