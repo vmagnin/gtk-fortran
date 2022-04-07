@@ -1,11 +1,13 @@
 #! /bin/sh
 # An alternative simple build system, using the directory ../build/byscript
 # and finally launching one by one the examples for testing.
-# It does not substitutes the @..@ strings in gtkf-sketcher.f90,
-# and gtk-fortran.f90, like CMake.
+# - It does not substitute the @..@ strings in gtkf-sketcher.f90,
+# and gtk-fortran.f90, unlike CMake.
+# - It does not build the PLplot examples.
+#
 # GNU GPL v3
 # Contributed by Vincent MAGNIN
-# 2011-04-08, last updated 2021-06-11
+# 2011-04-08, last updated 2022-04-07
 
 # For a safer script:
 set -eu
