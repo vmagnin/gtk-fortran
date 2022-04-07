@@ -1,0 +1,9 @@
+name = "gtk-4-fortran"
+version = "4.1.0"
+license = "GPLv3"
+author = "Vincent Magnin et al."
+maintainer = "https://github.com/vmagnin/gtk-fortran/issues"
+copyright = "2011-2022 Vincent Magnin et al."
+
+#[library]
+#build-script="src/build.sh"
