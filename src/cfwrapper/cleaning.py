@@ -55,7 +55,7 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     whole_file = re.sub("[ ]\w*_DEPRECATED_ENUMERATOR_IN_[\w()]*[ ]", " ", whole_file)
 
     # Gather and translate C enumerators to Fortran enumerators,
-    # and write them to gtkenums-auto.f90:
+    # and write them to gtkenums-auto.* file:
     enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
     f_enum, nb = translate_enums(c_file_name, enum_types)
     nb_enums += nb

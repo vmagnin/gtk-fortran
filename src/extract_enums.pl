@@ -23,17 +23,18 @@
 # this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-# Contributed by James Tappin 8/14/2012.
+# Contributed by James Tappin 2012-08-14.
+# Vincent Magnin, last modification: 2022-04-08
 
 
-# Find the enumerator constants in gtkenums-auto.f90 and write
+# Find the enumerator constants in gtkenums-auto.inc and write
 # them out to a simple list.
 
 use strict ;
 use warnings ;
 use Getopt::Long;
 
-my $infile="gtkenums-auto.f90";
+my $infile="gtkenums-auto.inc";
 my $outfile="gtk-enumerators.lis";
 
 my $str;
