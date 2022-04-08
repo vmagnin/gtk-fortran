@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2011-01-28
-# Last modification: 2021-05-13
+# Last modification: 2022-04-08
 
 import os
 import re           # Regular expression library
@@ -45,7 +45,7 @@ class Version():
     def __init__(self, GTK_VERSION, GTK_FORTRAN_VERSION):
         # Packages in Ubuntu, Arch/Manjaro, Fedora, Mageia (you can add the
         # names in you distro and the command in the function find_library):
-        pack_gtk4 = (("libgtk-4-0", "deb"), ("gtk4", "pacman"),
+        pack_gtk4 = (("libgtk-4-1", "deb"), ("gtk4", "pacman"),
                     ("gtk4", "rpm"), ("gtk4.0", "rpm"))
         pack_gtk3 = (("libgtk-3-0", "deb"), ("gtk3", "pacman"),
                     ("gtk3", "rpm"), ("gtk+3.0", "rpm"))
