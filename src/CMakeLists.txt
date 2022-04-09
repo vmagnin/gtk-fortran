@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2021-05-13
+#   vmagnin: 2021-05-13, 2022-04-09
 #
 # CMAKE build file for gtk-fortran
 
@@ -63,15 +63,6 @@ if(NOT NO_BUILD_HL)
         "gdk-pixbuf-hl.f90"
     )
 endif(NOT NO_BUILD_HL)
-
-#==================================
-# Adding OS specific Fortran files:
-#==================================
-if (CMAKE_HOST_WIN32)
-  set(sources ${sources} "mswindowsonly-auto.f90")
-else()
-  set(sources ${sources} "unixonly-auto.f90" "unix-print-auto.f90")
-endif()
 
 #======================================================
 # Defining the static and shared gtk-fortran libraries:

@@ -48,7 +48,7 @@ def hash_gtk_fortran(PATH_DICT, GTKENUMS_FILE):
     hasher = hashlib.sha1()
 
     files_list = list(PATH_DICT.values())
-    files_list.extend([GTKENUMS_FILE, "unixonly-auto.f90", "mswindowsonly-auto.f90"])
+    files_list.extend([GTKENUMS_FILE, "unix-print-auto.f90"])
 
     for file_name in files_list:
         with open(SRC_DIR+file_name, 'rb') as auto_file:

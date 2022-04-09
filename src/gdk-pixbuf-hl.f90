@@ -24,7 +24,7 @@
 !-----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modifications: 2012-12-13
-!   vmagnin 2021-01-11
+!   vmagnin 2022-04-09
 !-----------------------------------------------------------------------------
 
 !*
@@ -45,12 +45,11 @@ module gdk_pixbuf_hl
        & gdk_pixbuf_get_bits_per_sample, gdk_pixbuf_get_formats, &
        & gdk_pixbuf_get_has_alpha, gdk_pixbuf_get_height, &
        & gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
-       & gdk_pixbuf_get_rowstride, gdk_pixbuf_get_width, gdk_pixbuf_new
+       & gdk_pixbuf_get_rowstride, gdk_pixbuf_get_width, gdk_pixbuf_new, &
+       & gdk_pixbuf_new_from_file, &
+       & gdk_pixbuf_new_from_file_at_scale, gdk_pixbuf_savev
 
   use gtk, only: TRUE, FALSE, GDK_COLORSPACE_RGB
-
-  use gtk_os_dependent, only: gdk_pixbuf_new_from_file, &
-       & gdk_pixbuf_new_from_file_at_scale, gdk_pixbuf_savev
 
   use gtk_sup
 

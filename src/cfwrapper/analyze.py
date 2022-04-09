@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-02, 2021-06-11
+# Last modification: 2019-04-02, 2022-04-09
 
 """ This module contains functions to analyze C prototypes
     and generate Fortran interfaces.
@@ -58,8 +58,7 @@ RGX_UNDERSCORE = re.compile(r"^_\w+$")
 
 # TODO: these procedures need refactoring !
 
-def analyze_prototypes(index, module_name, f_file_name, unix_only_file,
-                       mswindows_only_file, f_file, preprocessed_list,
+def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_list,
                        whole_file_original, c_dir, c_file_name, gtk_enums,
                        gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats, my_errors,
                        ARGS):
@@ -213,16 +212,14 @@ def analyze_prototypes(index, module_name, f_file_name, unix_only_file,
 
         # Write the Fortran interface in the .f90 file:
         if not error_flag:
-            write_fortran_interface(index, module_name, f_file_name,
-                                    unix_only_file, mswindows_only_file, f_file,
+            write_fortran_interface(index, module_name, f_file_name, f_file,
                                     whole_file_original, c_dir, c_file_name,
                                     function_status, proto, f_procedure, f_name,
                                     args_list, f_use, declarations, isfunction,
                                     returned_type, f_the_end, my_stats)
 
 
-def write_fortran_interface(index, module_name, f_file_name, unix_only_file,
-                            mswindows_only_file, f_file, whole_file_original,
+def write_fortran_interface(index, module_name, f_file_name, f_file, whole_file_original,
                             c_dir, c_file_name, function_status, prototype,
                             f_procedure, f_name, args_list, f_use, declarations,
                             isfunction, returned_type, f_the_end, my_stats):
@@ -247,42 +244,8 @@ def write_fortran_interface(index, module_name, f_file_name, unix_only_file,
     my_f_file_name = f_file_name
     my_first_line = first_line
 
-    # For Win32 _utf8 functions, the normal form and the Windows form must be
-    # dispatched in two platform dependent files, with the same module name.
-    # Some _utf8 functions are defined by a #define, and others declared.
-        # gdk_pixbuf_new_from_file_utf8
-        # gdk_pixbuf_new_from_file_at_size_utf8
-        # gdk_pixbuf_new_from_file_at_scale_utf8
-        # gdk_pixbuf_savev
-        # Historically these functions were defined by #define for win32,
-        # so we maintain them in the gtk_os_dependent modules because
-        # the gdk-pixbuf-hl.f90 uses them.
-        # PROBABLY OTHER FUNCTIONS ARE IN THE SAME CASE.
-        # IN THE FUTURE, gdk-pixbuf-hl.f90 COULD BE INSTEAD MODIFIED.
-
-    if ((("gdk_pixbuf_new_from_file" in f_name) or ("gdk_pixbuf_savev" in f_name))
-            and ("_utf8" not in f_name)) or re.search(r"(?m)^#define\s+" + f_name
-                                                      + r"\s+"+f_name+r"_utf8\s*$",
-                                                      whole_file_original):
-        # The re.search() test is for GTK 2.
-        # In recent versions of GTK 3, there is no more functions defined
-        # like this (verified in GTK 3.24.4).
-
-        unix_only_file.write(interface)
-
-        my_module_name = "gtk_os_dependent"
-        my_f_file_name = "unixonly-auto.f90/mswindowsonly-auto.f90"
-
-        first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c, name='"+f_name+"_utf8')"
-        interface2_utf8 = multiline(first_line, 80) + "\n"
-
-        mswindows_only_file.write(interface1+interface2_utf8+interface3)
-
-        my_stats.inc_nb_generated_interfaces(2)
-        my_stats.inc_nb_win32_utf8()
-    else: # Non platform specific functions
-        f_file.write(interface)
-        my_stats.inc_nb_generated_interfaces(1)
+    f_file.write(interface)
+    my_stats.inc_nb_generated_interfaces(1)
 
     # Adds the function in the gtk-fortran-index.csv file:
     index.append([my_module_name, f_name, function_status, my_f_file_name,
