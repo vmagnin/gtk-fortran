@@ -49,7 +49,7 @@ readonly gtk_hl_obj="gtk-hl-misc.o gtk-hl-button.o gtk-hl-combobox.o gtk-hl-cont
 
 echo
 echo ">>> Compiling the GTK libraries and gtk_hl using ${FC}"
-for file in ""gdk-auto.f90" "glib-auto.f90" "gtk.f90" "unix-print-auto.f90" "cairo-auto.f90" "gdk-pixbuf-auto.f90" "api_compatibility.f90" "pango-auto.f90" "gsk-auto.f90" "graphene-auto.f90" "gtk-sup.f90" "gtk-hl-misc.f90" "gtk-hl-button.f90" "gtk-hl-combobox.f90" "gtk-hl-container.f90" "gtk-hl-entry.f90" "gtk-hl-infobar.f90" "gtk-hl-assistant.f90" "gtk-hl-progress.f90" "gtk-hl-spin-slider.f90" "gtk-hl-tree.f90" "gtk-hl-chooser.f90" "gtk-hl-dialog.f90" "gtk-hl.f90" "gdkevents-auto.f90" "gtk-draw-hl.f90" "gdk-pixbuf-hl.f90"; do
+for file in "gdk-auto.f90" "glib-auto.f90" "gtk.f90" "unix-print-auto.f90" "cairo-auto.f90" "gdk-pixbuf-auto.f90" "api_compatibility.f90" "pango-auto.f90" "gsk-auto.f90" "graphene-auto.f90" "gtk-sup.f90" "gtk-hl-misc.f90" "gtk-hl-button.f90" "gtk-hl-combobox.f90" "gtk-hl-container.f90" "gtk-hl-entry.f90" "gtk-hl-infobar.f90" "gtk-hl-assistant.f90" "gtk-hl-progress.f90" "gtk-hl-spin-slider.f90" "gtk-hl-tree.f90" "gtk-hl-chooser.f90" "gtk-hl-dialog.f90" "gtk-hl.f90" "gdkevents-auto.f90" "gtk-draw-hl.f90" "gdk-pixbuf-hl.f90"; do
   echo "${file}"
   #compile that file:
   "${FC}" -c ../../src/${file} ${gtkoptions}
@@ -78,7 +78,7 @@ ls ./*.out
 echo
 
 # Copy directories and files needed to run the programs:
-cp -r ../../sketcher/data/ ../../sketcher/example ../../sketcher/default.options ../../sketcher/*.glade .
+cp -r ../../sketcher/data/ ../../sketcher/default.options ../../sketcher/*.glade .
 cp ../../examples/gtkbuilder.glade .
 
 echo ">>> Running each example (CTRL+C to exit)..."
