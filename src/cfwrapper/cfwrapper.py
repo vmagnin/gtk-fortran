@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2022-04-09 (tested with Python 3.9.7, Ubuntu 21.10)
+# Last modification: 2022-04-10 (tested with Python 3.10.4, Fedora 35)
 # pylint *.py : 8.46/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
@@ -353,9 +353,11 @@ print()
 if GTK_VERSION != "gtk2":
     subprocess.call(["./extract_events.pl"], cwd=SRC_DIR)
 
-# Write the VERSIONS file in the top directory, and update the codemeta.json file:
+# Write the VERSIONS file in the top directory,
+# and update the codemeta.json and fpm.toml files:
 my_versions.create_file()
 my_versions.update_json_file()
+my_versions.update_fpm_file()
 
 # Print the final statistics:
 my_stats.print(T0, my_versions.string(), PATH_DICT, GTKENUMS_FILE,

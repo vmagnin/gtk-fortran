@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2011-01-28
-# Last modification: 2022-04-08
+# Last modification: 2022-04-10
 
 import os
 import re           # Regular expression library
@@ -39,7 +39,7 @@ from globals_const import TOP_DIR
 
 class Version():
     """ This class contains functions to determine the versions of the libraries
-    and programs used in gkt-fortran.
+    and programs used in gkt-fortran, and procedures to write them in various files.
     """
 
     def __init__(self, GTK_VERSION, GTK_FORTRAN_VERSION):
@@ -147,4 +147,14 @@ class Version():
             content = re.sub('"dateModified": "(.*)"', '"dateModified": "'+datetime.date.today().isoformat()+'"', content)
             content = re.sub('"version": "(.*)"', '"version": "'+self.gtk_fortran+'"', content)
             json_file.write(content)
+            
+    def update_fpm_file(self):
+        """Update the fpm.toml file a the top of the project.
+        """
+        with open('../../fpm.toml', 'r+') as fpm_file:
+            content = fpm_file.read()
+            fpm_file.seek(0)
+            fpm_file.truncate()
+            content = re.sub('version = "(.*)"', 'version = "'+self.gtk_fortran+'"', content)
+            fpm_file.write(content)
 
