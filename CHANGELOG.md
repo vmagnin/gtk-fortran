@@ -4,6 +4,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ## [Development]
 
 ### Added
+- gtk-fortran can now be used as a simple [fpm](https://fpm.fortran-lang.org) dependency (gtk4 branch only). See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm).
 - `examples/bazaar.f90`: the About button credits the authors of that file. The call to `gtk_about_dialog_set_license()` is replaced by the more convenient `gtk_about_dialog_set_license_type()`.
 
 ### Changed
