@@ -11,3 +11,17 @@ keywords = ["gtk-fortran", "GUI", "GTK", "fpm"]
 # When gtk-fortran is used as a fpm dependency, fpm will automatically discover
 # the gtk-fortran modules in the gtk-fortran/src/ directory.
 
+[build]
+link = [
+  "gtk-4",
+  "pangocairo-1.0",
+  "pango-1.0",
+  "harfbuzz",
+  "gdk_pixbuf-2.0",
+  "cairo-gobject",
+  "cairo",
+  "graphene-1.0",
+  "gio-2.0",
+  "gobject-2.0",
+  "glib-2.0" ]
+
