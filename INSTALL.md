@@ -6,6 +6,7 @@ Dependencies
 If you want to use gtk-fortran as a fpm dependency, you just need:
 - A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran, ifort, ifx...
 - GTK and the associated development files. For 4.x use the "gtk4" branch.
+- The Fortran Package Manager [fpm](https://fpm.fortran-lang.org).
 
 If you want to build and install the whole project (library, tools, examples...), you also need:
 - CMake (>=3.7) and pkg-config.
