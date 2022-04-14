@@ -1,6 +1,27 @@
-Last update: 2022-03-11
+Last update: 2022-04-14
 
-Building & Installing gtk-fortran
+Dependencies
+================================
+
+- A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran, ifort, ifx...
+- GTK and the associated development files. For 4.x use the "gtk4" branch.
+- CMake 3.7 or higher and pkg-config.
+- PLplot is used if available (you need the development files).
+
+Using gtk-fortran as a fpm dependency
+================================
+
+Starting from version 4.2, gtk-fortran can be used as a [fpm](https://fpm.fortran-lang.org) dependency. You simply need to add gtk-fortran in the dependencies section of the `fpm.toml` manifest of your project:
+
+```toml
+[dependencies]
+gtk-fortran = { git = "https://github.com/vmagnin/gtk-fortran.git", branch = "gtk4" }
+```
+
+See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm) (MIT license) for a demonstration.
+
+
+Building & installing gtk-fortran
 ================================
 
 The build install system uses `cmake`. This file gives quick instructions to install gtk-fortran. **See the [Wiki documentation](https://github.com/vmagnin/gtk-fortran/wiki#installation-and-building) for more detailed instructions.**
@@ -61,16 +82,6 @@ Other systems (Windows, macOS, FreeBSD...)
 -------
 
 See the Wiki documentation for specific and detailed instructions.
-
-
-Dependencies
-------------
-
-- A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran, ifort, ifx...
-- GTK and the associated development files. For 4.x use the "gtk4" branch.
-- CMake 3.7 or higher and pkg-config.
-- PLplot is used if available (you need the development files).
-
 
 Known issues
 ------------
