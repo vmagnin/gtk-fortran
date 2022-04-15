@@ -21,7 +21,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 # Contributed by James Tappin
-# Last updated: vmagnin 2019-03-14 (PLplot>=5.13)
+# Last updated: vmagnin 2019-03-14 (PLplot>=5.13), 2022-04-15
 #===============================================================================
 # PLplot integration (>=5.13 needed)
 # ----------------------------------
@@ -40,7 +40,7 @@ include_directories("${CMAKE_BINARY_DIR}/src/modules")
 #===============================================================================
 # Plplot extras for accessing the pl_cmd() routine:
 #===============================================================================
-set(extra_file "plplot_extra_ndef.f90")
+set(extra_file "plplot_extra.f90")
 
 add_custom_command(
   OUTPUT plplot_extra.mod
