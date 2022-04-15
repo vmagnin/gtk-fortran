@@ -44,7 +44,7 @@
   "keywords": "GTK, Fortran, Graphical User Interface",
   "license": "GPL v3.0",
   "name": "gtk-fortran",
-  "version": "4.2.0",
+  "version": "4.1.1",
   "operatingSystem": "Linux, MacOS, MSYS2/Windows, BSD...",
   "programmingLanguage": "Fortran",
   "softwareRequirements": "GTK, CMake",
