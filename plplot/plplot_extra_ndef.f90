@@ -27,8 +27,6 @@
 module plplot_extra
   ! Plplot extras for accessing the pl_cmd routine.
 
-  use, intrinsic :: iso_c_binding
-
   implicit none
 
   ! The operation codes for pl_cmd were removed because
