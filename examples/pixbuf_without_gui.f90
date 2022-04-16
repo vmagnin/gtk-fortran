@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Draw a Sierpinski triangle in a PNG file, without any GUI
 ! https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle#Chaos_game
-! Contributed by Vincent Magnin, 2022-04-05
+! Contributed by Vincent Magnin, 2022-04-16
 !------------------------------------------------------------------------------
 
 program pixbuf_without_gui
@@ -33,7 +33,7 @@ program pixbuf_without_gui
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                       & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use gtk, only: GDK_COLORSPACE_RGB, FALSE
-  use gtk_os_dependent, only: gdk_pixbuf_savev
+  use gdk_pixbuf, only: gdk_pixbuf_savev
 
   implicit none
   type(c_ptr) :: my_pixbuf
