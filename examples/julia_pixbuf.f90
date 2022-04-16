@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2022-04-05
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2022-04-16
 !------------------------------------------------------------------------------
 
 module global_widgets
@@ -197,7 +197,7 @@ contains
 
   ! GtkButton signal emitted by the button "Save as PNG":
   subroutine secondbutton (widget, gdata) bind(c)
-    use gtk_os_dependent, only: gdk_pixbuf_savev
+    use gdk_pixbuf, only: gdk_pixbuf_savev
     use global_widgets
 
     type(c_ptr), value, intent(in) :: widget, gdata
