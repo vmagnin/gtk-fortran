@@ -38,9 +38,9 @@ include_directories("${CMAKE_BINARY_DIR}/plplot")
 include_directories("${CMAKE_BINARY_DIR}/src/modules")
 
 #===============================================================================
-# Plplot extras for accessing the pl_cmd() routine:
+# PLplot extra for accessing the pl_cmd() routine:
 #===============================================================================
-set(extra_file "plplot_extra.f90")
+set(extra_file "../src/plplot_extra.f90")
 
 add_custom_command(
   OUTPUT plplot_extra.mod
