@@ -90,7 +90,7 @@ program gtkbuilder
   ! Initialize the GTK Library:
   call gtk_init ()
 
-  ! Create a new GtkBuilder object and parse the 
+  ! Create a new GtkBuilder object and parse the
   ! Glade3 XML file 'gtkbuilder.glade' and add it's contents:
   builder=gtk_builder_new_from_file("gtkbuilder.glade"//c_null_char)
 

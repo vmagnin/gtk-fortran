@@ -24,7 +24,7 @@
 ! Contributed by James Tappin
 ! Last modifications: 2012-01-07, vmagnin 2020-06-05 (GTK 4 version)
 !                     2020-08-25
-!------------------------------------------------------------------------------ 
+!------------------------------------------------------------------------------
 !*
 ! Assistant
 module gtk_hl_assistant
@@ -64,8 +64,8 @@ contains
     type(c_funptr), optional :: destroy, delete_event, close, cancel
     type(c_ptr), optional :: data_destroy, data_delete_event, data_close, &
          & data_cancel
-    integer(kind=c_int), optional, intent(in) :: border
-    integer(kind=c_int), optional, intent(in), dimension(2) :: wsize
+    integer(c_int), optional, intent(in) :: border
+    integer(c_int), optional, intent(in), dimension(2) :: wsize
     type(c_ptr), optional :: parent
     type(c_ptr), intent(in), optional :: icon
     character(kind=c_char), dimension(*), intent(in), optional :: icon_name, &
@@ -204,10 +204,10 @@ contains
        & complete, position)
 
     type(c_ptr), intent(in) :: asstnt, page
-    integer(kind=c_int), intent(in) :: type
+    integer(c_int), intent(in) :: type
     character(kind=c_char), dimension(*), intent(in), optional :: page_title
-    integer(kind=c_int), intent(in), optional :: complete
-    integer(kind=c_int), intent(in), optional :: position
+    integer(c_int), intent(in), optional :: complete
+    integer(c_int), intent(in), optional :: position
 
     ! Add a page to a GtkAssistant
     !
@@ -227,7 +227,7 @@ contains
     ! flagged as incomplete must have an action that sets the complete flag.
     !-
 
-    integer(kind=c_int) :: idx
+    integer(c_int) :: idx
 
     if (present(position)) then
        idx = gtk_assistant_insert_page(asstnt, page, position)
@@ -256,7 +256,7 @@ contains
   function hl_gtk_assistant_get_current_page(asstnt, pageno) result(page)
     type(c_ptr) :: page
     type(c_ptr), intent(in) :: asstnt
-    integer(kind=c_int), intent(out), optional :: pageno
+    integer(c_int), intent(out), optional :: pageno
 
     ! Return the current page of an assistant.
     !
@@ -266,7 +266,7 @@ contains
     ! number only just use gtk_assistant_get_current_page,
     !-
 
-    integer(kind=c_int) :: ipage
+    integer(c_int) :: ipage
 
     ipage =  gtk_assistant_get_current_page(asstnt)
     page = gtk_assistant_get_nth_page(asstnt, ipage)
@@ -280,9 +280,9 @@ contains
        & page, pageno)
 
     type(c_ptr), intent(in) :: asstnt
-    integer(kind=c_int), intent(in) :: state
+    integer(c_int), intent(in) :: state
     type(c_ptr), intent(in), optional :: page
-    integer(kind=c_int), intent(in), optional :: pageno
+    integer(c_int), intent(in), optional :: pageno
 
     ! Set the completion state of a page of an assistant
     !

@@ -36,7 +36,7 @@ import sys
 
 
 '''
-NOTE: the function "multiline" is copied from tools.py, to make the 
+NOTE: the function "multiline" is copied from tools.py, to make the
 installation of this script more straightforward. If you update this function,
 please update the corresponding function in tools.py as well.
 '''

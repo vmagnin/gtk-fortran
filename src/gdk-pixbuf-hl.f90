@@ -24,7 +24,7 @@
 !-----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modifications: 2012-12-13
-!   vmagnin 2021-01-11
+!   vmagnin 2022-04-09
 !-----------------------------------------------------------------------------
 
 !*
@@ -45,12 +45,11 @@ module gdk_pixbuf_hl
        & gdk_pixbuf_get_bits_per_sample, gdk_pixbuf_get_formats, &
        & gdk_pixbuf_get_has_alpha, gdk_pixbuf_get_height, &
        & gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
-       & gdk_pixbuf_get_rowstride, gdk_pixbuf_get_width, gdk_pixbuf_new
+       & gdk_pixbuf_get_rowstride, gdk_pixbuf_get_width, gdk_pixbuf_new, &
+       & gdk_pixbuf_new_from_file, &
+       & gdk_pixbuf_new_from_file_at_scale, gdk_pixbuf_savev
 
   use gtk, only: TRUE, FALSE, GDK_COLORSPACE_RGB
-
-  use gtk_os_dependent, only: gdk_pixbuf_new_from_file, &
-       & gdk_pixbuf_new_from_file_at_scale, gdk_pixbuf_savev
 
   use gtk_sup
 
@@ -89,8 +88,8 @@ contains
   function hl_gdk_pixbuf_new_empty(width, height, alpha, bits) &
        & result(pixbuf)
     type(c_ptr) :: pixbuf
-    integer(kind=c_int), intent(in) :: width, height
-    integer(kind=c_int), intent(in), optional :: alpha, bits
+    integer(c_int), intent(in) :: width, height
+    integer(c_int), intent(in), optional :: alpha, bits
 
     ! Create a new empty pixbuf of the given size
     !
@@ -104,7 +103,7 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer(kind=c_int) :: isalpha, bpp
+    integer(c_int) :: isalpha, bpp
 
     if (present(alpha)) then
        isalpha = alpha
@@ -126,7 +125,7 @@ contains
        & error) result(pixbuf)
     type(c_ptr) :: pixbuf
     character(len=*), intent(in) :: file
-    integer(kind=c_int), optional, intent(in) :: width, height, aspect
+    integer(c_int), optional, intent(in) :: width, height, aspect
     character(len=*), optional, intent(out) :: error
 
     ! Read an image file into a new pixbuf
@@ -144,7 +143,7 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer(kind=c_int) :: nx, ny, keep_asp
+    integer(c_int) :: nx, ny, keep_asp
     type(gerror), pointer :: error_struct
     type(c_ptr), target :: error_str
     character(len=120) :: errmsg
@@ -193,7 +192,7 @@ contains
   !+
   function hl_gdk_pixbuf_new_data8(data) result(pixbuf)
     type(c_ptr) :: pixbuf
-    integer(kind=c_int8_t), dimension(:,:,:), intent(in) :: data
+    integer(c_int8_t), dimension(:,:,:), intent(in) :: data
 
     ! Create a pixbuf from an RGB(A) array of values.
     !
@@ -203,8 +202,8 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer(kind=c_int), dimension(3) :: sz
-    integer(kind=c_int) :: alpha
+    integer(c_int), dimension(3) :: sz
+    integer(c_int) :: alpha
 
     sz = shape(data)
     select case (sz(1))
@@ -230,7 +229,7 @@ contains
   !+
   function hl_gdk_pixbuf_new_data8g(data) result(pixbuf)
     type(c_ptr) :: pixbuf
-    integer(kind=c_int8_t), dimension(:,:), intent(in) :: data
+    integer(c_int8_t), dimension(:,:), intent(in) :: data
 
     ! Create a pixbuf from a greyscale array of values.
     !
@@ -240,7 +239,7 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer(kind=c_int), dimension(2) :: sz
+    integer(c_int), dimension(2) :: sz
 
     sz = shape(data)
 
@@ -254,7 +253,7 @@ contains
   !+
   function hl_gdk_pixbuf_new_data16(data) result(pixbuf)
     type(c_ptr) :: pixbuf
-    integer(kind=c_short), dimension(:,:,:), intent(in) :: data
+    integer(c_short), dimension(:,:,:), intent(in) :: data
 
     ! Create a pixbuf from an RGB(A) array of values. This version
     ! uses 2-byte integers to avoid the signing issues of the c_int8_t type.
@@ -265,8 +264,8 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer(kind=c_int), dimension(3) :: sz
-    integer(kind=c_int) :: alpha
+    integer(c_int), dimension(3) :: sz
+    integer(c_int) :: alpha
 
     sz = shape(data)
 
@@ -292,7 +291,7 @@ contains
   !+
   function hl_gdk_pixbuf_new_data16g(data) result(pixbuf)
     type(c_ptr) :: pixbuf
-    integer(kind=c_short), dimension(:,:), intent(in) :: data
+    integer(c_short), dimension(:,:), intent(in) :: data
 
     ! Create a pixbuf from a greyscale array of values. This version
     ! uses 2-byte integers to avoid the signing issues of the c_int8_t type.
@@ -303,7 +302,7 @@ contains
     ! hl_gdk_pixbuf_new.
     !-
 
-    integer(kind=c_int), dimension(2) :: sz
+    integer(c_int), dimension(2) :: sz
 
     sz = shape(data)
 
@@ -316,7 +315,7 @@ contains
   !+
   subroutine hl_gdk_pixbuf_get_pixels8(pixbuf, pixels)
     type(c_ptr), intent(in) :: pixbuf
-    integer(kind=c_int8_t), dimension(:,:,:), allocatable, intent(out) :: pixels
+    integer(c_int8_t), dimension(:,:,:), allocatable, intent(out) :: pixels
 
     ! Get the pixels of a pixbuf and return them as a Fortran 3xnxm or 4xnxm
     ! array
@@ -329,9 +328,9 @@ contains
     !-
 
     type(c_ptr), target :: cpixels
-    integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
+    integer(c_int8_t), pointer, dimension(:) :: fpixels
     integer :: i,j, iroff, ioff
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer(c_int) :: rowstr, nrows, ncols, nchans
     integer :: lpix
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
@@ -356,7 +355,7 @@ contains
   !+
   subroutine hl_gdk_pixbuf_get_pixels16(pixbuf, pixels)
     type(c_ptr), intent(in) :: pixbuf
-    integer(kind=c_short), dimension(:,:,:), allocatable, intent(out) :: pixels
+    integer(c_short), dimension(:,:,:), allocatable, intent(out) :: pixels
 
     ! Get the pixels of a pixbuf and return them as a Fortran 3xnxm or 4xnxm
     ! array. This version returns as a short array to evade the signing issues
@@ -370,9 +369,9 @@ contains
     !-
 
     type(c_ptr), target :: cpixels
-    integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
+    integer(c_int8_t), pointer, dimension(:) :: fpixels
     integer :: i,j, iroff, ioff
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer(c_int) :: rowstr, nrows, ncols, nchans
     integer :: lpix
 
     call hl_gdk_pixbuf_info(pixbuf, nchannels=nchans, height=nrows, &
@@ -397,7 +396,7 @@ contains
   !+
   subroutine hl_gdk_pixbuf_set_pixels8(pixbuf, pixels, xoff, yoff)
     type(c_ptr), intent(in) :: pixbuf
-    integer(kind=c_int8_t), dimension(:,:,:), intent(in) :: pixels
+    integer(c_int8_t), dimension(:,:,:), intent(in) :: pixels
     integer, intent(in), optional :: xoff, yoff
 
     ! Set the pixels of a pixbuf from a Fortran array.
@@ -414,10 +413,10 @@ contains
     !-
 
     integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop, lput
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer(c_int) :: rowstr, nrows, ncols, nchans
     integer :: lpix
     type(c_ptr), target :: cpixels
-    integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
+    integer(c_int8_t), pointer, dimension(:) :: fpixels
     integer, dimension(3) :: sz
     logical :: salpha, gscale
 
@@ -500,7 +499,7 @@ contains
           do i = 0,xtop-1
              ioff = iroff + i*nchans
              fpixels(ioff:ioff+2) = pixels(1, i+1,j+1)
-             if (salpha) then 
+             if (salpha) then
                 fpixels(ioff+3) = -1_c_int8_t
              else if (nchans == 4) then
                 fpixels(ioff+3) = pixels(2, i+1,j+1)
@@ -523,7 +522,7 @@ contains
   !+
   subroutine hl_gdk_pixbuf_set_pixels8g(pixbuf, pixels, xoff, yoff)
     type(c_ptr), intent(in) :: pixbuf
-    integer(kind=c_int8_t), dimension(:,:), intent(in) :: pixels
+    integer(c_int8_t), dimension(:,:), intent(in) :: pixels
     integer, intent(in), optional :: xoff, yoff
 
     ! Set the pixels of a pixbuf from a Fortran array (greyscale).
@@ -540,10 +539,10 @@ contains
     !-
 
     integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer(c_int) :: rowstr, nrows, ncols, nchans
     integer :: lpix
     type(c_ptr), target :: cpixels
-    integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
+    integer(c_int8_t), pointer, dimension(:) :: fpixels
     integer, dimension(2) :: sz
 
     sz=shape(pixels)
@@ -599,7 +598,7 @@ contains
   !+
   subroutine hl_gdk_pixbuf_set_pixels16(pixbuf, pixels, xoff, yoff)
     type(c_ptr), intent(in) :: pixbuf
-    integer(kind=c_short), dimension(:,:,:), intent(in) :: pixels
+    integer(c_short), dimension(:,:,:), intent(in) :: pixels
     integer, intent(in), optional :: xoff, yoff
 
     ! Set the pixels of a pixbuf from a Fortran array (16-bit).
@@ -610,16 +609,16 @@ contains
     ! YOFF: int: optional: The Y-offset at which to write the image.
     !
     ! This is normally called via the generic hl_gdk_pixbuf_set_pixels
-    ! interface. 
+    ! interface.
     ! N.B. To leave a gap at the "high" sides of the pixbuf, just use a
     ! smaller input array or array slice than the pixbuf size.
     !-
 
     integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop, lput
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer(c_int) :: rowstr, nrows, ncols, nchans
     integer :: lpix
     type(c_ptr), target :: cpixels
-    integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
+    integer(c_int8_t), pointer, dimension(:) :: fpixels
     integer, dimension(3) :: sz
     logical :: salpha, gscale
 
@@ -724,7 +723,7 @@ contains
   !+
   subroutine hl_gdk_pixbuf_set_pixels16g(pixbuf, pixels, xoff, yoff)
     type(c_ptr), intent(in) :: pixbuf
-    integer(kind=c_short), dimension(:,:), intent(in) :: pixels
+    integer(c_short), dimension(:,:), intent(in) :: pixels
     integer, intent(in), optional :: xoff, yoff
 
     ! Set the pixels of a pixbuf from a Fortran array (16-bit, greyscale).
@@ -735,16 +734,16 @@ contains
     ! YOFF: int: optional: The Y-offset at which to write the image.
     !
     ! This is normally called via the generic hl_gdk_pixbuf_set_pixels
-    ! interface. 
+    ! interface.
     ! N.B. To leave a gap at the "high" sides of the pixbuf, just use a
     ! smaller input array or array slice than the pixbuf size.
     !-
 
     integer :: i,j, ioff, iroff, xstart, ystart, xtop, ytop
-    integer(kind=c_int) :: rowstr, nrows, ncols, nchans
+    integer(c_int) :: rowstr, nrows, ncols, nchans
     integer :: lpix
     type(c_ptr), target :: cpixels
-    integer(kind=c_int8_t), pointer, dimension(:) :: fpixels
+    integer(c_int8_t), pointer, dimension(:) :: fpixels
     integer, dimension(2) :: sz
 
     sz=shape(pixels)
@@ -802,7 +801,7 @@ contains
        & height, width, rowstride)
 
     type(c_ptr), intent(in) :: pixbuf
-    integer(kind=c_int), optional, intent(out) :: nchannels, bits, alpha, &
+    integer(c_int), optional, intent(out) :: nchannels, bits, alpha, &
          & height, width, rowstride
 
     ! Return information about an existing pixbuf.
@@ -851,7 +850,7 @@ contains
     integer :: pd
     type(c_ptr), target :: err
     type(gerror), pointer :: ferr
-    integer(kind=c_int) :: iok
+    integer(c_int) :: iok
     character(len=120) :: ferrmsg
     type(c_ptr), dimension(:), allocatable :: copt_names, copt_vals
     character(len=hl_gdk_pixbuf_option_len), target, &
@@ -911,7 +910,7 @@ contains
        if (present(ok)) ok = .false.
        call c_f_pointer(err, ferr)
        call c_f_string(ferr%message, ferrmsg)
-       if (present(error)) then 
+       if (present(error)) then
           error=trim(ferrmsg)
        else
           write(error_unit, *) "HL_GDK_PIXBUF_SAVE: "//trim(ferrmsg)
@@ -946,7 +945,7 @@ contains
     !-
 
     type(c_ptr) :: flist, fmt
-    integer(kind=c_int) :: nfmt, i
+    integer(c_int) :: nfmt, i
 
     flist = gdk_pixbuf_get_formats()
 
@@ -963,7 +962,7 @@ contains
        call c_f_string(gdk_pixbuf_format_get_name(fmt), names(i+1))
        if (present(description)) &
             & call c_f_string(gdk_pixbuf_format_get_description(fmt), &
-            & description(i+1)) 
+            & description(i+1))
        if (present(license)) &
             & call c_f_string(gdk_pixbuf_format_get_license(fmt), &
             & license(i+1))
@@ -1005,7 +1004,7 @@ contains
     !-
 
     character(len=hl_gdk_pixbuf_type_len), dimension(:), allocatable :: names
-    integer(kind=c_int) :: idx, i
+    integer(c_int) :: idx, i
     type(c_ptr) :: flist, fmt
     type(c_ptr), target :: vlist
     type(c_ptr), dimension(:), pointer :: val
@@ -1037,7 +1036,7 @@ contains
 
     if (present(description)) &
          & call c_f_string(gdk_pixbuf_format_get_description(fmt), &
-         & description) 
+         & description)
     if (present(license)) &
          & call c_f_string(gdk_pixbuf_format_get_license(fmt), &
          & license)
@@ -1117,7 +1116,7 @@ contains
        if (zidx == 0) zidx=len(mime_type)+1
        do i = 1, size(names)
           found = hl_gdk_pixbuf_format_info(names(i), mime_types=types)
-          if (any(types == mime_type(:zidx-1))) then 
+          if (any(types == mime_type(:zidx-1))) then
              name = names(i)
              exit
           end if
@@ -1127,7 +1126,7 @@ contains
        if (zidx == 0) zidx=len_trim(extension)+1
        do i = 1, size(names)
           found = hl_gdk_pixbuf_format_info(names(i), extensions=types)
-          if (any(types == extension(:zidx-1))) then 
+          if (any(types == extension(:zidx-1))) then
              name = names(i)
              exit
           end if

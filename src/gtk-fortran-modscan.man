@@ -1,4 +1,4 @@
-.TH "GTK-FORTRAN-MODSCAN" "1" "16 August 2012" "Function scanner for gtk-fortran" 
+.TH "GTK-FORTRAN-MODSCAN" "1" "16 August 2012" "Function scanner for gtk-fortran"
 .SH NAME
 gtk-@GTK@-fortran-modscan \- scan one or more Fortran sources for GTK
 functions.
@@ -40,7 +40,7 @@ or
 .SH AUTHORS
 
 .PP
-James Tappin (jtappin at gmail dot com). 
+James Tappin (jtappin at gmail dot com).
 .PP
 
 .SH LICENCE

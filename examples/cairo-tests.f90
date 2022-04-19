@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! GTK 4 version: vmagnin 2020-05-19
-! Last modification: vmagnin 2020-05-28, 2021-06-07
+! Last modification: vmagnin 2020-05-28, 2022-04-05
 !------------------------------------------------------------------------------
 
 module handlers
@@ -47,6 +47,7 @@ module handlers
 
   use g, only: g_main_context_iteration, g_main_context_pending
 
+  use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
   use, intrinsic :: iso_c_binding
 
   implicit none
@@ -55,7 +56,7 @@ module handlers
   integer(c_int) :: boolresult
   type(c_ptr)    :: my_pixbuf
   character(kind=c_char), dimension(:), pointer :: pixel
-  integer(kind=c_int) :: nch, rowstride, width, height, pwidth, pheight
+  integer(c_int) :: nch, rowstride, width, height, pwidth, pheight
   logical :: write_png
 
 contains
@@ -80,29 +81,29 @@ contains
 
     ! We redraw the Mandelbrot set pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, &
-                                   & 700d0/4d0, 700d0/4d0) 
+                                   & 700d0/4d0, 700d0/4d0)
     call cairo_paint(my_cairo_context)
 
     ! And do some vectorial Cairo drawings above:
     call cairo_set_line_width(my_cairo_context, 1d0)
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 1d0)
-    call cairo_move_to(my_cairo_context, 100d0, 50d0)  
+    call cairo_move_to(my_cairo_context, 100d0, 50d0)
     call cairo_line_to(my_cairo_context, 700d0, 700d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     call cairo_set_source_rgb(my_cairo_context, 1d0, 0d0, 0d0)
     call cairo_set_line_width(my_cairo_context, 3d0)
-    call cairo_move_to(my_cairo_context, 60d0, 0d0)  
+    call cairo_move_to(my_cairo_context, 60d0, 0d0)
     call cairo_curve_to(my_cairo_context, 600d0, 50d0, 135d0, 45d0, 500d0, 500d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     call cairo_set_source_rgb(my_cairo_context, 1d0, 1d0, 0d0)
     call cairo_set_line_width(my_cairo_context, 2d0)
-    call cairo_move_to(my_cairo_context, 0d0, height/2d0)  
+    call cairo_move_to(my_cairo_context, 0d0, height/2d0)
     call cairo_line_to(my_cairo_context, 1d0*width, height/2d0)
-    call cairo_move_to(my_cairo_context, width/2d0+width/12d0, 0d0)  
+    call cairo_move_to(my_cairo_context, width/2d0+width/12d0, 0d0)
     call cairo_line_to(my_cairo_context, width/2d0+width/12d0, height*1d0)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, &
                    & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
@@ -111,8 +112,8 @@ contains
     call cairo_show_text (my_cairo_context, "Mandelbrot set"//c_null_char)
 
     call cairo_new_sub_path(my_cairo_context)
-    call cairo_arc(my_cairo_context, 300d0, 300d0, 100d0, 0d0, 3.14159d0) 
-    call cairo_stroke(my_cairo_context) 
+    call cairo_arc(my_cairo_context, 300d0, 300d0, 100d0, 0d0, acos(-1d0))
+    call cairo_stroke(my_cairo_context)
 
     ! The image is written to PNG only one time:
     if (write_png) then
@@ -153,15 +154,15 @@ contains
     ! Queries the number of channels of a pixbuf:
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
     print *, "Number of channels of the pixbuf: ", nch
-    ! "Queries the rowstride of a pixbuf, which is the number of bytes between 
+    ! "Queries the rowstride of a pixbuf, which is the number of bytes between
     ! the start of a row and the start of the next row":
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
     print *, "Rowstride of the pixbuf: ", rowstride
     bytes = pwidth*pheight*nch
     print *, "Size (bytes) of the pixbuf: ", bytes
 
-    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/bytes/))
-    call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 100_4)
+    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [bytes])
+    call Mandelbrot_set(my_drawing_area, -2.0_wp, +1.0_wp, -1.5_wp, +1.5_wp, 100_4)
     write_png = .true.
 
     call gtk_window_set_child(my_window, my_drawing_area)
@@ -174,16 +175,16 @@ contains
   ! http://en.wikipedia.org/wiki/Mandelbrot_set
   !*********************************************
   subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
-    ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
+    ! Whole set: xmin=-2.0_wp, xmax=+1.0_wp, ymin=-1.5_wp, ymax=+1.5_wp, itermax=1000
     ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
 
-    type(c_ptr) :: my_drawing_area
-    integer(4) :: i, j, k, p, itermax
-    real(8)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-    complex(8) :: c, z
-    real(8)    :: scx, scy             ! scales
-    integer(1) :: red, green, blue     ! rgb color
-    real(8) :: t0, t1
+    type(c_ptr)   :: my_drawing_area
+    integer       :: i, j, k, p, itermax
+    real(wp)      :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+    complex(wp)   :: c, z
+    real(wp)      :: scx, scy             ! scales
+    integer(int8) :: red, green, blue     ! rgb color
+    real(wp)      :: t0, t1
 
     print *, "Entering Mandelbrot_set() subroutine"
 
@@ -201,10 +202,10 @@ contains
       x = xmin + scx * i
       do j=0, pheight-1
         y = ymin + scy * j
-        c = x + y*(0d0,1d0)   ! Starting point
-        z = (0d0, 0d0)        ! z0
+        c = cmplx(x, y, kind=wp)    ! Starting point
+        z = (0.0_wp, 0.0_wp)        ! z0
         k = 1
-        do while ((k <= itermax) .and. (abs(z)<2d0))
+        do while ((k <= itermax) .and. ((z%re**2 + z%im**2) < 4.0_wp))
           z = z*z+c
           k = k+1
         end do
@@ -215,9 +216,9 @@ contains
           green = 0
           blue  = 0
         else
-          red   = int(min(255, k*2),  KIND=1)
-          green = int(min(255, k*5),  KIND=1)
-          blue  = int(min(255, k*10), KIND=1)
+          red   = int(min(255, k*2),  int8)
+          green = int(min(255, k*5),  int8)
+          blue  = int(min(255, k*10), int8)
         end if
 
         p = i * nch + j * rowstride + 1

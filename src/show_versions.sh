@@ -3,7 +3,7 @@
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13
 # Updated 2021-10-20
-# Needs: in Fedora, lsb_release is in the package redhat-lsb-core 
+# Needs: in Fedora, lsb_release is in the package redhat-lsb-core
 
 # The shell -e option is not used in this script to avoid exiting each time a
 # command is not installed on a specific system:

@@ -73,7 +73,7 @@ module gtk_hl_dialog
   use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit
 
   implicit none
-  integer(kind=c_int) :: dialog_response
+  integer(c_int) :: dialog_response
   type(c_ptr) :: dialog_gmainloop
 
 contains
@@ -84,9 +84,9 @@ contains
 
     type(c_ptr) :: dialog
     character(len=*), dimension(:), intent(in) :: message
-    integer(kind=c_int), intent(in) :: button_set
+    integer(c_int), intent(in) :: button_set
     character(kind=c_char), dimension(*), intent(in), optional :: title
-    integer(kind=c_int), intent(in), optional :: type
+    integer(c_int), intent(in), optional :: type
     type(c_ptr), intent(in), optional :: parent
 
     ! A DIY version of the message dialogue, needed because both creators
@@ -103,7 +103,7 @@ contains
 
     type(c_ptr) :: content, junk, hb, vb
     integer :: i
-    integer(kind=c_int) :: itype
+    integer(c_int) :: itype
 
     ! Create the dialog window and make it modal.
 
@@ -196,11 +196,11 @@ contains
   function hl_gtk_message_dialog_show(message, button_set, title, type, &
        & parent) result(resp)
 
-    integer(kind=c_int) :: resp
+    integer(c_int) :: resp
     character(len=*), dimension(:), intent(in) :: message
-    integer(kind=c_int), intent(in) :: button_set
+    integer(c_int), intent(in) :: button_set
     character(kind=c_char), dimension(*), intent(in), optional :: title
-    integer(kind=c_int), intent(in), optional :: type
+    integer(c_int), intent(in), optional :: type
     type(c_ptr), intent(in), optional :: parent
 
     ! A DIY version of the message dialogue, needed because both creators
@@ -238,15 +238,15 @@ contains
 ! https://developer.gnome.org/gtk4/stable/GtkDialog.html#GtkDialog-response
   subroutine dialog_callback(dialog, response_id, user_data) bind(c)
     type(c_ptr), value, intent(in) :: dialog, user_data
-    integer(kind=c_int), value, intent(in) :: response_id
- 
+    integer(c_int), value, intent(in) :: response_id
+
     ! Global variable:
     dialog_response = response_id
 
     call gtk_window_destroy(dialog)
     call g_main_loop_quit(dialog_gmainloop)
-  end subroutine dialog_callback           
-               
+  end subroutine dialog_callback
+
   !+
   function hl_gtk_about_dialog_new(name, license, license_type, &
        & comments, authors, website, website_label, copyright, version, &
@@ -254,7 +254,7 @@ contains
     type(c_ptr) :: about
     character(kind=c_char, len=*), intent(in), optional :: name
     character(kind=c_char, len=*), intent(in), optional :: license
-    integer(kind=c_int), intent(in), optional :: license_type
+    integer(c_int), intent(in), optional :: license_type
     character(kind=c_char, len=*), intent(in), optional :: comments
     character(len=*, kind=c_char), dimension(:), optional, target :: authors, &
          & documenters, artists
@@ -384,7 +384,7 @@ contains
 
     character(kind=c_char, len=*), intent(in), optional :: name
     character(kind=c_char, len=*), intent(in), optional :: license
-    integer(kind=c_int), intent(in), optional :: license_type
+    integer(c_int), intent(in), optional :: license_type
     character(kind=c_char, len=*), intent(in), optional :: comments
     character(len=*, kind=c_char), dimension(:), optional, target :: authors, &
          & documenters, artists
@@ -426,13 +426,13 @@ contains
          & comments = &
          &"The gtk-fortran project aims to offer scientists programming "//&
          &"in Fortran a cross-platform library to build Graphical User "//&
-         &"Interfaces (GUI)."//c_new_line// & 
+         &"Interfaces (GUI)."//c_new_line// &
          &"Gtk-fortran is a partial GTK / Fortran binding 100% written "//&
          &"in Fortran, thanks to the ISO_C_BINDING module for "//&
          &"interoperability between C and Fortran, which is a part of the "//&
          &"Fortran 2003 standard. Gtk-Fortran also provides a number of "//&
          &"'high-level' interfaces to common widgets."//&
-         &c_new_line//c_new_line// & 
+         &c_new_line//c_new_line// &
          &"GTK is a free software cross-platform graphical library "//&
          &"available for Linux, Unix, Windows and MacOs X."//C_NULL_CHAR, &
          & website="https://github.com/jerryd/gtk-fortran/wiki"//C_NULL_CHAR,&

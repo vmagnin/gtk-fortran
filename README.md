@@ -17,6 +17,7 @@ Please post bugs on GitHub:
 * CHANGELOG.md: list of the releases with main changes.
 * CMakeLists.txt: main CMake instructions to build the project.
 * codemeta.json: metadata about the project.
+* fpm.toml: Fortran Package Manager manifest.
 * INSTALL: quick installation instructions (see the Wiki for more details).
 * LICENSE: text of the GNU GPL v3 license.
 * README-high-level: about the High Level part of the gtk-fortran library.

@@ -54,7 +54,7 @@ contains
 
   function create_and_fill_model() result(store)
     type(c_ptr) :: store
-    integer(kind=type_kind), dimension(2), target :: ctypes = &
+    integer(type_kind), dimension(2), target :: ctypes = &
          & [g_type_string, g_type_uint]
     type(gtktreeiter), target :: iter
     type(gvalue), target :: valt, vali
@@ -97,7 +97,7 @@ contains
     type(c_ptr) :: view
 
     type(c_ptr) :: col, renderer, model
-    integer(kind=c_int) :: ncol
+    integer(c_int) :: ncol
 
     view = gtk_tree_view_new ()
 
@@ -126,8 +126,8 @@ contains
 end module handlers
 
 !*******************************************************************************
-! In the main program, we declare the GTK application, connect it to its 
-! "activate" function where we will create the GUI, 
+! In the main program, we declare the GTK application, connect it to its
+! "activate" function where we will create the GUI,
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program list_demo
@@ -148,7 +148,7 @@ program list_demo
   ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
   app = gtk_application_new("gtk-fortran.examples.list_demo"//c_null_char, &
                             & G_APPLICATION_FLAGS_NONE)
-  ! The activate signal will be sent by g_application_run(). 
+  ! The activate signal will be sent by g_application_run().
   ! The c_funloc() function returns the C address of the callback function.
   ! The c_null_ptr means no data is transfered to the callback function.
   call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), &

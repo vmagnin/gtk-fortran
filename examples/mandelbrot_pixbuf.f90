@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2021-06-07
+! Last modification: vmagnin 2022-04-05
 
 module handlers
   use gtk, only: gtk_window_set_child, gtk_drawing_area_new, &
@@ -33,12 +33,12 @@ module handlers
   & GDK_COLORSPACE_RGB, gtk_init, g_signal_connect, FALSE, TRUE
 
   use cairo, only: cairo_create, cairo_destroy, cairo_paint, cairo_set_source
-  
+
   use gdk, only: gdk_cairo_set_source_pixbuf
-  
+
   use g, only: g_main_loop_new, g_main_loop_run, g_main_context_iteration, &
              & g_main_context_pending, g_main_loop_quit
-  
+
   use gdk_pixbuf, only: gdk_pixbuf_get_n_channels, gdk_pixbuf_get_pixels, &
                       & gdk_pixbuf_get_rowstride, gdk_pixbuf_new
   use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_char, c_null_ptr, c_null_char
@@ -50,7 +50,7 @@ module handlers
   integer(c_int) :: boolresult
   type(c_ptr)    :: my_pixbuf
   character(kind=c_char), dimension(:), pointer :: pixel
-  integer(kind=c_int) :: nch, rowstride, width, height
+  integer(c_int) :: nch, rowstride, width, height
   logical :: computing = .false.
 
 contains
@@ -79,7 +79,7 @@ contains
   ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
-    integer(c_int), value, intent(in) :: width, height    
+    integer(c_int), value, intent(in) :: width, height
 
     ! We redraw the pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
@@ -90,6 +90,8 @@ end module handlers
 
 
 module scientific_computation
+  use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
+
   implicit none
 
 contains
@@ -98,17 +100,17 @@ contains
   ! http://en.wikipedia.org/wiki/Mandelbrot_set
   !*********************************************
   subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
-    ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
+    ! Whole set: xmin=-2.0_wp, xmax=+1.0_wp, ymin=-1.5_wp, ymax=+1.5_wp, itermax=1000
     ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
     use handlers
 
-    type(c_ptr) :: my_drawing_area
-    integer(4)  :: i, j, k, p, itermax
-    real(8)     :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-    complex(8)  :: c, z
-    real(8)     :: scx, scy             ! scales
-    integer(1)  :: red, green, blue     ! rgb color
-    real(8)     :: t0, t1
+    type(c_ptr)   :: my_drawing_area
+    integer       :: i, j, k, p, itermax
+    real(wp)      :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+    complex(wp)   :: c, z
+    real(wp)      :: scx, scy             ! scales
+    integer(int8) :: red, green, blue     ! rgb color
+    real(wp)      :: t0, t1
 
     computing = .true.
     call cpu_time(t0)
@@ -128,10 +130,10 @@ contains
       x = xmin + scx * i
       do j=0, height-1
         y = ymin + scy * j
-        c = x + y*(0d0,1d0)   ! Starting point
-        z = (0d0, 0d0)        ! z0
+        c = cmplx(x, y, kind=wp)    ! Starting point
+        z = (0.0_wp, 0.0_wp)        ! z0
         k = 1
-        do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2) < 4d0)) 
+        do while ((k <= itermax) .and. ((z%re**2 + z%im**2) < 4.0_wp))
           z = z*z + c
           k = k + 1
         end do
@@ -143,9 +145,9 @@ contains
           blue  = 0
         else
           ! Colour palette:
-          red   = int(min(255, k*2),  KIND=1)
-          green = int(min(255, k*5),  KIND=1)
-          blue  = int(min(255, k*10), KIND=1)
+          red   = int(min(255, k*2),  int8)
+          green = int(min(255, k*5),  int8)
+          blue  = int(min(255, k*10), int8)
         end if
 
         ! We write in the pixbuffer, using char() because we need unsigned integers:
@@ -215,16 +217,16 @@ program mandelbrot
   ! Queries the number of channels of a pixbuf:
   nch = gdk_pixbuf_get_n_channels(my_pixbuf)
   print *, "Number of channels of the pixbuf: ", nch
-  ! "Queries the rowstride of a pixbuf, which is the number of bytes between 
+  ! "Queries the rowstride of a pixbuf, which is the number of bytes between
   ! the start of a row and the start of the next row":
   rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
   print *, "Rowstride of the pixbuf: ", rowstride
 
   ! We need a pointer toward the pixel buffer:
-  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/width*height*nch/))
+  call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [width*height*nch])
 
   ! Scientific computing:
-  call Mandelbrot_set(my_drawing_area, -2d0, +1d0, -1.5d0, +1.5d0, 10000_4)
+  call Mandelbrot_set(my_drawing_area, -2.0_wp, +1.0_wp, -1.5_wp, +1.5_wp, 10000_4)
 
   ! The window will stay opened after the computation, but we need to verify
   ! that the user has not closed the window during the computation.
@@ -235,4 +237,4 @@ program mandelbrot
   end if
 
   print *, "All done"
-end program mandelbrot 
+end program mandelbrot

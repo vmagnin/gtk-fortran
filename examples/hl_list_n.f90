@@ -50,15 +50,15 @@ contains
 
   subroutine list_select(list, gdata) bind(c)
     type(c_ptr), value, intent(in) :: list, gdata
-    integer(kind=c_int) :: nsel
-    integer(kind=c_int), dimension(:), allocatable :: selections
-    integer(kind=c_int) :: n, n3
-    integer(kind=c_int64_t) :: n4
-    real(kind=c_float) :: nlog
+    integer(c_int) :: nsel
+    integer(c_int), dimension(:), allocatable :: selections
+    integer(c_int) :: n, n3
+    integer(c_int64_t) :: n4
+    real(c_float) :: nlog
     character(len=30) :: name
     character(len=10) :: nodd
     character :: code, ucode
-    integer(kind=c_int) :: icode, iucode
+    integer(c_int) :: icode, iucode
 
     nsel = hl_gtk_listn_get_selections(C_NULL_PTR, selections, list)
     if (nsel == 0) then
@@ -97,10 +97,10 @@ contains
     ! Note that the column index is passed via the DATA argument, so
     ! far as I can see the only other way is to use constants.
     character(len=10) :: rstring
-    integer(kind=c_int) :: ival
+    integer(c_int) :: ival
     type(gvalue), target :: ivalue, svalue
     type(c_ptr) :: val_ptr
-    integer(kind=c_int), pointer :: colno
+    integer(c_int), pointer :: colno
 
     call c_f_pointer(data, colno)
 
@@ -119,13 +119,13 @@ contains
   subroutine cell_edited(renderer, path, text, gdata) bind(c)
     type(c_ptr), value, intent(in) :: renderer, path, text, gdata
 
-    ! Callback for edited cells. 
+    ! Callback for edited cells.
     character(len=200) :: fpath, ftext
-    integer(kind=c_int) :: irow
-    integer(kind=c_int), pointer :: icol
+    integer(c_int) :: irow
+    integer(c_int), pointer :: icol
     integer :: ios
     type(c_ptr) :: pcol, list
-    integer(kind=c_int) :: n
+    integer(c_int) :: n
 
     call convert_c_string(path, fpath)
     read(fpath, *) irow
@@ -158,26 +158,26 @@ contains
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
     character(len=35) :: line
-    integer(kind=c_int) :: i, ltr
-    integer(kind=type_kind), dimension(8) :: ctypes
+    integer(c_int) :: i, ltr
+    integer(type_kind), dimension(8) :: ctypes
     character(len=20), dimension(8) :: titles
-    integer(kind=c_int), dimension(8) :: sortable, editable
-    integer(kind=c_int), target :: fmt_col = 2
+    integer(c_int), dimension(8) :: sortable, editable
+    integer(c_int), target :: fmt_col = 2
     character(kind=c_char), dimension(10) :: codes
 
     ! Create the window:
     ihwin = gtk_application_window_new(app)
     call gtk_window_set_title(ihwin, "multi-column list demo"//c_null_char)
- 
+
     ! Now make a column box & put it into the window
     base = hl_gtk_box_new()
     call gtk_window_set_child(ihwin, base)
 
     ! Now make a multi column list with multiple selections enabled
-    ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
-         & G_TYPE_UINT64, G_TYPE_BOOLEAN, G_TYPE_CHAR, G_TYPE_UCHAR /)
-    sortable = (/ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE /)
-    editable = (/ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE /)
+    ctypes = [ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
+         & G_TYPE_UINT64, G_TYPE_BOOLEAN, G_TYPE_CHAR, G_TYPE_UCHAR ]
+    sortable = [ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE ]
+    editable = [ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE ]
     codes = [ 'A', 'X', 'B', '?', 'A', 'C', char(185), 'u', '*', char(201)]
 
     titles(1) = "Name"

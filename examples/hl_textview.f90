@@ -52,8 +52,8 @@ contains
   subroutine tv_change(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    integer(kind=c_int) :: nl, nc
-    integer(kind=c_int), dimension(:), allocatable :: ncl
+    integer(c_int) :: nl, nc
+    integer(c_int), dimension(:), allocatable :: ncl
 
     print *, "CHANGED event"
 
@@ -67,16 +67,16 @@ contains
   subroutine tv_ins(widget,iter, text, nins, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr), value :: iter, text
-    integer(kind=c_int), value :: nins
+    integer(c_int), value :: nins
 
-    integer(kind=c_int) :: nl, nc
-    integer(kind=c_int), dimension(:), allocatable :: ncl
+    integer(c_int) :: nl, nc
+    integer(c_int), dimension(:), allocatable :: ncl
 
     character(kind=c_char), dimension(:), pointer :: cf_text
     character(len=100), dimension(:), allocatable :: f_text
 
     print *, "INSERT event", nins
-    call c_f_pointer(text, cf_text, (/ int(nins) /))
+    call c_f_pointer(text, cf_text, [ int(nins) ])
     call convert_c_string(cf_text, f_text)
 
     print "(a)", f_text
@@ -93,7 +93,7 @@ contains
 
     type(c_ptr) :: ctext
     character(len=100), dimension(:), allocatable :: ftext
-    integer(kind=c_int) :: dlen
+    integer(c_int) :: dlen
 
     print *, "DELETE event"
     dlen = gtk_text_iter_get_offset(e_iter) - &
@@ -114,9 +114,9 @@ contains
     buffer = gtk_entry_get_buffer(entry)
     call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
 
-    call hl_gtk_text_view_insert(zedt, (/ trim(ftext) /))
+    call hl_gtk_text_view_insert(zedt, [ trim(ftext) ])
   end subroutine tv_append
-  
+
   subroutine tv_insert(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr) :: buffer
@@ -125,7 +125,7 @@ contains
     buffer = gtk_entry_get_buffer(entry)
     call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
 
-    call hl_gtk_text_view_insert(zedt, (/ trim(ftext) /), at_cursor=TRUE)
+    call hl_gtk_text_view_insert(zedt, [ trim(ftext) ], at_cursor=TRUE)
   end subroutine tv_insert
 
   subroutine tv_clr(widget, gdata) bind(c)
@@ -137,8 +137,8 @@ contains
   subroutine tv_info(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    integer(kind=c_int), dimension(3) :: cursor, s_start, s_end
-    integer(kind=c_int) :: is_modified, has_select
+    integer(c_int), dimension(3) :: cursor, s_start, s_end
+    integer(c_int) :: is_modified, has_select
 
     cursor = hl_gtk_text_view_get_cursor(zedt)
     has_select = hl_gtk_text_view_get_selection(zedt, &
@@ -154,7 +154,7 @@ contains
     else
        print *, "No Selection"
     end if
-    if (is_modified == TRUE) then 
+    if (is_modified == TRUE) then
        print *, "Modified"
     else
        print *, "Not modified"
@@ -165,7 +165,7 @@ contains
   subroutine entry_text(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    integer(kind=c_int16_t) :: ntext
+    integer(c_int16_t) :: ntext
 
     ntext = gtk_entry_get_text_length(widget)
     if (ntext > 0) then
@@ -195,7 +195,7 @@ contains
          & changed=c_funloc(tv_change), &
          & insert_text=c_funloc(tv_ins), &
          & delete_range=c_funloc(tv_del), &
-         & ssize=(/350_c_int, 200_c_int/), tooltip = &
+         & ssize=[350_c_int, 200_c_int], tooltip = &
          & "Try typing, pasting or cutting text in here"//c_null_char)
     call hl_gtk_box_pack(box, contain)
 

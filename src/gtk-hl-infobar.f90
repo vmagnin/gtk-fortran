@@ -37,7 +37,7 @@ module gtk_hl_infobar
   use g, only: g_object_set_data, g_object_get_data
   use gtk, only: gtk_info_bar_add_child, gtk_info_bar_add_button, &
        & gtk_info_bar_new, gtk_info_bar_get_revealed, &
-       & gtk_info_bar_set_revealed, & 
+       & gtk_info_bar_set_revealed, &
        & gtk_info_bar_set_default_response, gtk_info_bar_set_message_type, &
        & gtk_info_bar_set_response_sensitive, gtk_label_new, &
        & gtk_label_set_text, &
@@ -52,15 +52,15 @@ contains
        & result(infobar)
     type(c_ptr) :: infobar
     character(len=*,kind=c_char), dimension(:), intent(in), optional :: buttons
-    integer(kind=c_int), dimension(:), intent(in), optional :: ids
+    integer(c_int), dimension(:), intent(in), optional :: ids
     type(c_funptr), optional :: response, close
     type(c_ptr), intent(in), optional :: data_response, data_close
-    integer(kind=c_int), intent(in), optional :: auto_show, type, default
-    integer(kind=c_int), intent(in), optional :: horizontal, buttons_below
+    integer(c_int), intent(in), optional :: auto_show, type, default
+    integer(c_int), intent(in), optional :: horizontal, buttons_below
 
     ! Create a new info bar.
     !
-    ! BUTTONS: f_string(): optional: The buttons to add to the 
+    ! BUTTONS: f_string(): optional: The buttons to add to the
     ! IDS: c_int(): optional: The response IDs for the buttons. If buttons are
     ! 		specified and no IDS are given, then the button index is used.
     ! RESPONSE: c_funptr: optional: The handler for a button pressed (has
@@ -79,8 +79,8 @@ contains
     ! 		below the message rather than to the right.
     !-
 
-    integer(kind=c_int) :: i, id
-    integer(kind=c_int) :: no_auto
+    integer(c_int) :: i, id
+    integer(c_int) :: no_auto
     type(c_ptr) :: label, junk
 
     infobar = gtk_info_bar_new()
@@ -88,7 +88,7 @@ contains
     label = gtk_label_new (c_null_char)
     call gtk_info_bar_add_child (infobar, label)
     ! To keep track of the label inside the infobar object:
-    call g_object_set_data (infobar, "info_label"//c_null_char, label)  
+    call g_object_set_data (infobar, "info_label"//c_null_char, label)
     call gtk_widget_show (label)
 
     if (present(horizontal)) then
@@ -103,7 +103,7 @@ contains
        end if
     end if
 
-    if (present(buttons)) then 
+    if (present(buttons)) then
        do i = 1, size(buttons)
           if (present(ids)) then
              id = ids(i)
@@ -135,7 +135,7 @@ contains
     end if
 
     if (present(auto_show)) then
-       no_auto = f_c_logical(auto_show /= FALSE) 
+       no_auto = f_c_logical(auto_show /= FALSE)
     else
        no_auto = TRUE
     end if
@@ -154,8 +154,8 @@ contains
        & ids, state)
     type(c_ptr), intent(in) :: infobar
     character(kind=c_char), dimension(*), intent(in) :: message
-    integer(kind=c_int), intent(in), optional :: type, default
-    integer(kind=c_int), intent(in), optional, dimension(:) :: ids, state
+    integer(c_int), intent(in), optional :: type, default
+    integer(c_int), intent(in), optional, dimension(:) :: ids, state
 
     ! Show a message in an infobar
     !
@@ -172,7 +172,7 @@ contains
 
     type(c_ptr) :: label
     integer :: i
- 
+
     ! We retrieve the label we have named "info_label" inside the infobar:
     label = g_object_get_data (infobar, "info_label"//c_null_char)
     call gtk_label_set_text(label, message)
@@ -188,7 +188,7 @@ contains
                & state(i))
        end do
     end if
-    
+
     if (c_f_logical(gtk_info_bar_get_revealed(infobar))) &
          & call gtk_widget_show(infobar)
 

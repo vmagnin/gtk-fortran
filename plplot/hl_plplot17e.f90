@@ -37,8 +37,8 @@ module common_ex17
   use plplot_extra
 
   implicit none
-  integer(kind=c_int) :: height, width
-  integer(kind=c_int) :: run_status = TRUE
+  integer(c_int) :: height, width
+  integer(c_int) :: run_status = TRUE
   type(c_ptr) :: window
   type(c_ptr) :: my_gmainloop
 end module common_ex17
@@ -51,8 +51,8 @@ module plplot_code_ex17
   integer,  parameter :: nsteps = 1000
   integer, save :: id1, id2, n=0
   logical :: autoy, acc, pl_errcode
-  real(kind=plflt) :: y1, y2, y3, y4, ymin, ymax, xlab, ylab
-  real(kind=plflt) :: t, tmin, tmax, tjump, dt, noise
+  real(plflt) :: y1, y2, y3, y4, ymin, ymax, xlab, ylab
+  real(plflt) :: t, tmin, tmax, tjump, dt, noise
   type(c_ptr) :: cc
   integer :: colbox, collab, colline(4), styline(4)
   character(len=20) :: legline(4)
@@ -72,16 +72,16 @@ contains
 
     ! Define colour map 0 to match the "GRAFFER" colour table in
     ! place of the PLPLOT default.
-    integer, parameter, dimension(16) :: rval = (/255, 0, 255, &
-         & 0, 0, 0, 255, 255, 255, 127, 0, 0, 127, 255, 85, 170/),&
-         & gval = (/ 255, 0, 0, 255, 0, 255, 0, 255, 127, 255, 255, 127,&
-         & 0, 0, 85, 170/), &
-         & bval = (/ 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 127, 255, 255,&
-         & 127, 85, 170/)
+    integer, parameter, dimension(16) :: rval = [255, 0, 255, &
+         & 0, 0, 0, 255, 255, 255, 127, 0, 0, 127, 255, 85, 170],&
+         & gval = [ 255, 0, 0, 255, 0, 255, 0, 255, 127, 255, 255, 127,&
+         & 0, 0, 85, 170], &
+         & bval = [ 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 127, 255, 255,&
+         & 127, 85, 170]
 
     !  Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
-    if (plparseopts_rc .ne. 0) stop "plparseopts error"
+    if (plparseopts_rc /= 0) stop "plparseopts error"
 
     ! Get a cairo context from the drawing area.
     cc = hl_gtk_drawing_area_cairo_new(area)
@@ -93,12 +93,12 @@ contains
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
     plsetopt_rc = plsetopt( 'geometry', geometry)
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     !      Specify some reasonable defaults for ymin and ymax
     !      The plot will grow automatically if needed (but not shrink)
@@ -112,7 +112,7 @@ contains
     tmax = 50._plflt
     !      percentage of plot to jump
     tjump = 0.3_plflt
-    
+
     !      Axes options same as plbox.
     !      Only automatic tick generation and label placement allowed
     !      Eventually I'll make this fancier
@@ -198,16 +198,16 @@ contains
 
     !        There is no need for all pens to have the same number of
     !        points or being equally time spaced.
-    if ( mod(n,2) .ne. 0 ) then
+    if ( mod(n,2) /= 0 ) then
        call plstripa(id1, 0, t, y1)
     endif
-    if ( mod(n,3) .ne. 0 ) then
+    if ( mod(n,3) /= 0 ) then
        call plstripa(id1, 1, t, y2)
     endif
-    if ( mod(n,4) .ne. 0 ) then
+    if ( mod(n,4) /= 0 ) then
        call plstripa(id1, 2, t, y3)
     endif
-    if ( mod(n,5) .ne. 0 ) then
+    if ( mod(n,5) /= 0 ) then
        call plstripa(id1, 3, t, y4)
     end if
     call gtk_widget_queue_draw(area)
@@ -248,7 +248,7 @@ contains
   end subroutine quit_cb
 
   subroutine pending_events ()
-    integer(kind=c_int) :: boolresult
+    integer(c_int) :: boolresult
     do while(IAND(g_main_context_pending(c_null_ptr), run_status) /= FALSE)
        ! False for non-blocking:
        boolresult = g_main_context_iteration(c_null_ptr, FALSE)
@@ -274,7 +274,7 @@ program cairo_plplot_ex17
   base = hl_gtk_box_new()
   call gtk_window_set_child(window, base)
 
-  drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
+  drawing = hl_gtk_drawing_area_new(size=[width, height], &
        & has_alpha = FALSE)
 
   call hl_gtk_box_pack(base, drawing)

@@ -1,45 +1,49 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
-
-! This file is part of the gtk-fortran GTK+ Fortran Interface library.
-
+!
+! This file is part of the gtk-fortran GTK Fortran Interface library.
+!
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation; either version 3, or (at your option)
 ! any later version.
-
+!
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
-
+!
 ! Under Section 7 of GPL version 3, you are granted additional
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
-
+!
 ! You should have received a copy of the GNU General Public License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
-! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2021-10-23
+!
+! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2022-04-07
 ! ****************
 ! Automated tests
 ! ****************
 ! This program is testing things about ISO_C_BINDING and the relations
-! between Fortran types and GLib types. If it generates errors, please send us 
-! the tests_errors.txt file with informations on your system 
-! (OS version, GTK+ version, compiler...)
+! between Fortran types and GLib types. If it generates errors, please send us
+! the tests_errors.txt file with informations on your system
+! (OS version, GTK version, compiler...)
 
 module tests
-  use gtk, only: TRUE, FALSE
-  use g, only: g_ascii_tolower, g_bit_storage, g_date_get_day, g_date_get_days_in&
-  &_month, g_hostname_is_ip_address, g_inet_socket_address_get_port, g_inet_socke&
-  &t_address_new, g_random_double, g_random_double_range, g_random_int, g_random_&
-  &int_range, g_variant_get_boolean, g_variant_get_byte, g_variant_get_double, g_&
-  &variant_get_int16, g_variant_get_int32, g_variant_get_int64, g_variant_get_str&
-  &ing, g_variant_get_uint16, g_variant_get_uint32, g_variant_get_uint64, g_varia&
-  &nt_new_boolean, g_variant_new_byte, g_variant_new_double, g_variant_new_int16,&
-  & g_variant_new_int32, g_variant_new_int64, g_variant_new_string, g_variant_new&
-  &_uint16, g_variant_new_uint32, g_variant_new_uint64, guint64, g_variant_unref
+  use gtk, only: TRUE, FALSE, gtk_get_major_version, gtk_get_minor_version, &
+                 gtk_get_micro_version
+  use gtk_sup, only: c_f_string_copy
+  use g, only: g_ascii_tolower, g_bit_storage, g_date_get_day, &
+    g_date_get_days_in_month, g_hostname_is_ip_address, g_inet_socket_address_get_port, &
+    g_inet_socket_address_new, g_random_double, g_random_double_range, g_random_int, &
+    g_random_int_range, g_variant_get_boolean, g_variant_get_byte, g_variant_get_double,&
+    g_variant_get_int16, g_variant_get_int32, g_variant_get_int64, g_variant_get_string,&
+    g_variant_get_uint16, g_variant_get_uint32, g_variant_get_uint64, &
+    g_variant_new_boolean, g_variant_new_byte, g_variant_new_double, g_variant_new_int16,&
+    g_variant_new_int32, g_variant_new_int64, g_variant_new_string, g_variant_new_uint16,&
+    g_variant_new_uint32, g_variant_new_uint64, guint64, g_variant_unref, g_get_os_info
+  use, intrinsic :: iso_fortran_env, only: compiler_version
   use, intrinsic :: iso_c_binding
 
   implicit none
@@ -212,7 +216,7 @@ contains
     !gdouble             g_variant_get_double   (GVariant *value);
     errors = 0
     do i = -308, +308
-      a = 10d0 ** i
+      a = 10.0_c_double ** i
       gv = g_variant_new_double(a)
       b = g_variant_get_double(gv)
       if (a /= b) then
@@ -222,14 +226,14 @@ contains
       call g_variant_unref(gv)
     end do
     !    ! gdouble g_random_double_range (gdouble begin, gdouble end);
-    !    function g_random_double_range(begin, end) bind(c) 
+    !    function g_random_double_range(begin, end) bind(c)
     !      use, intrinsic :: iso_c_binding, only: c_double
     !      real(c_double) :: g_random_double_range
     !      real(c_double), value :: begin
     !      real(c_double), value :: end
     !    end function
-    rmin = -10d0
-    rmax = +100d0
+    rmin = -10.0_c_double
+    rmax = +100.0_c_double
     do i = 1, 10000, +1
       r = g_random_double_range(rmin, rmax)
       if ((r<rmin).or.(r>rmax)) then
@@ -248,16 +252,18 @@ contains
     integer(c_long) :: nb
     integer(c_int) :: r
     !    ! guint g_bit_storage (gulong number) G_GNUC_CONST;
-    !    function g_bit_storage(number) bind(c) 
+    !    function g_bit_storage(number) bind(c)
     !      use, intrinsic :: iso_c_binding, only: c_int, c_long
     !      integer(c_int) :: g_bit_storage
     !      integer(c_long), value :: number
     !    end function
     errors = 0
-    ! Fortran integers are signed. 32 bits integers are in [-2147483648, +2147483647].
+    ! Fortran integers are signed. 32 bits integers are in [-2147483648, +2147483647],
+    ! and the C language guarantee [-2147483647, +2147483647] for long.
     ! C language: typedef unsigned long   gulong;
     do i = 1, 31, +1
-      nb = 2**i-1
+      ! Writing 2**i - 1 could overflow with some compilers (ifort):
+      nb = 2_c_long**i - 1
       r = g_bit_storage(nb)
       if (i /= r) then
         write(1,*) "ERROR g_bit_storage:", i, nb, r
@@ -276,14 +282,14 @@ contains
     integer(c_int32_t) :: c, d
     type(c_ptr) :: gv
     !! GVariant * g_variant_new_uint16 (guint16 uint16);
-    !function g_variant_new_uint16(uint16) bind(c) 
+    !function g_variant_new_uint16(uint16) bind(c)
     !  use, intrinsic :: iso_c_binding, only: c_ptr, c_int16_t
     !  type(c_ptr) :: g_variant_new_uint16
     !  integer(c_int16_t), value :: uint16
     !end function
 
     !! guint16 g_variant_get_uint16 (GVariant *value);
-    !function g_variant_get_uint16(value) bind(c) 
+    !function g_variant_get_uint16(value) bind(c)
     !  use, intrinsic :: iso_c_binding, only: c_int16_t, c_ptr
     !  integer(c_int16_t) :: g_variant_get_uint16
     !  type(c_ptr), value :: value
@@ -327,23 +333,7 @@ contains
       do i = bit_size(b),  bit_size(d)-1
         d= ibclr(d, i)
       end do
-!      write(1,*) c, a, b, d
-!      do i = 0,  bit_size(c)-1
-!        write(*, "(l1)", advance="no") btest(c, i)
-!      end do
-!      write(*,*)
-!      do i = 0,  bit_size(a)-1
-!        write(*, "(l1)", advance="no") btest(a, i)
-!      end do
-!      write(*,*)
-!      do i = 0,  bit_size(b)-1
-!        write(*, "(l1)", advance="no") btest(b, i)
-!      end do
-!      write(*,*)    
-!      do i = 0,  bit_size(d)-1
-!        write(*, "(l1)", advance="no") btest(d, i)
-!      end do
-!      write(*,*)    
+
       if (a /= b) then
         write(1,*) "ERROR g_variant_get_uint16:", a, b
         errors = errors + 1
@@ -384,7 +374,7 @@ contains
     integer(c_int32_t) :: a, b
     type(c_ptr) :: gv
     !GVariant *          g_variant_new_int32    (gint32 value);
-    !gint32              g_variant_get_int32                 (GVariant *value);
+    !gint32              g_variant_get_int32    (GVariant *value);
     errors = 0
     !***********************************
     ! We must be careful because the following loop is undefined in the Fortran Standard:
@@ -405,7 +395,7 @@ contains
     end do
 
     !    ! gint32 g_random_int_range (gint32 begin, gint32 end);
-    !    function g_random_int_range(begin, end) bind(c) 
+    !    function g_random_int_range(begin, end) bind(c)
     !      use, intrinsic :: iso_c_binding, only: c_int32_t
     !      integer(c_int32_t) :: g_random_int_range
     !      integer(c_int32_t), value :: begin
@@ -414,14 +404,15 @@ contains
     rmin = -10
     rmax = +100
     do i = 1, 10000, +1
+      ! Returns a random number over the range [rmin..rmax-1]:
       r = g_random_int_range(rmin, rmax)
-      if ((r<rmin).or.(r>rmax)) then
+      if ((r < rmin).or.(r >= rmax)) then
         write(1,*) "ERROR g_random_double_range:", r
         errors = errors + 1
       end if
     end do
 
-    test_int32_in_out = errors 
+    test_int32_in_out = errors
   end function test_int32_in_out
 
 
@@ -469,23 +460,7 @@ contains
       do i = bit_size(b),  bit_size(d)-1
         d= ibclr(d, i)
       end do
-!      write(1,*) c, a, b, d
-!      do i = 0,  bit_size(c)-1
-!        write(*, "(l1)", advance="no") btest(c, i)
-!      end do
-!      write(*,*)
-!      do i = 0,  bit_size(a)-1
-!        write(*, "(l1)", advance="no") btest(a, i)
-!      end do
-!      write(*,*)
-!      do i = 0,  bit_size(b)-1
-!        write(*, "(l1)", advance="no") btest(b, i)
-!      end do
-!      write(*,*)    
-!      do i = 0,  bit_size(d)-1
-!        write(*, "(l1)", advance="no") btest(d, i)
-!      end do
-!      write(*,*)    
+
       if (a /= b) then
         write(1,*) "ERROR g_variant_get_uint32:", a, b
         errors = errors + 1
@@ -493,13 +468,13 @@ contains
       call g_variant_unref(gv)
     end do
 
-    test_uint32_in_out = errors 
+    test_uint32_in_out = errors
   end function test_uint32_in_out
 
 
   integer function test_guchar_in_out()
     integer(c_int16_t) :: i, j
-    integer :: errors 
+    integer :: errors
     character(kind=c_char) :: a, b
     type(c_ptr) :: gv
     !GVariant *          g_variant_new_byte     (guchar value);
@@ -548,7 +523,7 @@ contains
     end if
 
   !      ! gboolean g_hostname_is_ip_address (const gchar *hostname);
-  !    function g_hostname_is_ip_address(hostname) bind(c) 
+  !    function g_hostname_is_ip_address(hostname) bind(c)
   !      use, intrinsic :: iso_c_binding, only: c_bool, c_char
   !      logical(c_bool) :: g_hostname_is_ip_address
   !      character(kind=c_char), dimension(*) :: hostname
@@ -568,32 +543,21 @@ contains
 
 end module tests
 
-!guint8              g_date_get_days_in_month            (GDateMonth month,
-!                                                         GDateYear year);
-!GSocketAddress *    g_inet_socket_address_new           (GInetAddress *address,
-!                                                         guint16 port);
-!guint16             g_inet_socket_address_get_port      (GInetSocketAddress *address);
-
-!GVariant *                       g_variant_new_int64    (gint64 value);
-!GVariant *                       g_variant_new_uint64   (guint64 value);
-!GVariant *                       g_variant_new_string   (const gchar *string);
-
-!gint64              g_variant_get_int64                 (GVariant *value);
-!guint64             g_variant_get_uint64                (GVariant *value);
-!const gchar *                    g_variant_get_string   (GVariant *value,
-!                                                         gsize *length);
-
-! iso_c types used in gtk-fortran:
-! ['c_ptr', 'c_char', 'c_funptr', 'c_int', 'c_int64_t', 'c_bool', 
-! 'c_size_t', 'c_int16_t', 'c_int32_t', 'c_double', 'c_long', 'c_long_double', 
-! 'c_int8_t', 'c_float']
 
 program gtk_fortran_test
   use tests
   implicit none
   integer :: errors
+  integer :: file_unit
+  character(len=128) :: os_string
 
-  open(unit=1, file="tests_errors.txt")
+  print '(A)', "Testing iso_c_binding with GTK and GLib..."
+
+  call c_f_string_copy(g_get_os_info("PRETTY_NAME"//c_null_char), os_string)
+  print '(3A,I0,A1,I0,A1,I0)', "Compiled with "//compiler_version()//" on ", TRIM(os_string), &
+      & ", linked to GTK ", gtk_get_major_version(),".", gtk_get_minor_version(), ".", gtk_get_micro_version()
+
+  open(newunit=file_unit, file="tests_errors.txt")
 
   print *, "test_iso_c_binding()"
   errors = test_iso_c_binding()
@@ -616,7 +580,7 @@ program gtk_fortran_test
   print *, "test_gboolean_in_out()"
   errors = errors +  test_gboolean_in_out()
 
-  close(1)
+  close(file_unit)
 
   print *
   if (errors == 0) then

@@ -73,7 +73,7 @@ contains
   !+
   function hl_gtk_separator_new(vertical) result(spacer)
     type(c_ptr) :: spacer
-    integer(kind=c_int), intent(in), optional :: vertical
+    integer(c_int), intent(in), optional :: vertical
 
     ! A Version-independent separator.
     !
@@ -81,7 +81,7 @@ contains
     ! 		a vertical separator.
     !-
 
-    integer(kind=c_int) :: direction
+    integer(c_int) :: direction
 
     if (present(vertical)) then
        if (c_f_logical(vertical)) then

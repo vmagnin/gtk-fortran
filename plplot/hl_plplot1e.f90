@@ -32,7 +32,7 @@ module common_ex1
   use gtk_draw_hl
   use plplot_extra
 
-  integer(kind=c_int) :: height, width
+  integer(c_int) :: height, width
   type(c_ptr) :: window
   type(c_ptr) :: my_gmainloop
 end module common_ex1
@@ -59,16 +59,16 @@ contains
 
     ! Define colour map 0 to match the "GRAFFER" colour table in
     ! place of the PLPLOT default.
-    integer, parameter, dimension(16) :: rval = (/255, 0, 255, &
-         & 0, 0, 0, 255, 255, 255, 127, 0, 0, 127, 255, 85, 170/),&
-         & gval = (/ 255, 0, 0, 255, 0, 255, 0, 255, 127, 255, 255, 127,&
-         & 0, 0, 85, 170/), &
-         & bval = (/ 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 127, 255, 255,&
-         & 127, 85, 170/)
+    integer, parameter, dimension(16) :: rval = [255, 0, 255, &
+         & 0, 0, 0, 255, 255, 255, 127, 0, 0, 127, 255, 85, 170],&
+         & gval = [ 255, 0, 0, 255, 0, 255, 0, 255, 127, 255, 255, 127,&
+         & 0, 0, 85, 170], &
+         & bval = [ 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 127, 255, 255,&
+         & 127, 85, 170]
 
     !  Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
-    if (plparseopts_rc .ne. 0) stop "plparseopts error"
+    if (plparseopts_rc /= 0) stop "plparseopts error"
 
     !  Print plplot version
     call plgver(version)
@@ -84,12 +84,12 @@ contains
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
     plsetopt_rc = plsetopt( 'geometry', geometry)
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     !  Divide page into 2x2 plots
     call plstar(2,2)
@@ -191,7 +191,7 @@ contains
     do i = 1, 100
        x(i) = (i-20.0_plflt)/6.0_plflt
        y(i) = 1.0_plflt
-       if (x(i) .ne. 0.0_plflt) y(i) = sin(x(i)) / x(i)
+       if (x(i) /= 0.0_plflt) y(i) = sin(x(i)) / x(i)
     enddo
 
     !   Draw the line
@@ -223,12 +223,12 @@ contains
 
     !   Superimpose a dashed line grid, with 1.5 mm marks and spaces. With
     !   only a single mark and space element, we do not need arrays
-    call plstyl( (/1500/), (/1500/) )
+    call plstyl( [1500], [1500] )
     call plcol0(2)
     call plbox( 'g', 30.0_plflt, 0, 'g', 0.2_plflt, 0 )
     !   remember from the error message:
     !   plstyl: At least one mark or space must be > 0, aborting operation
-    call plstyl( (/0/), (/1/) )
+    call plstyl( [0], [1] )
 
     call plcol0(3)
     call pllab( 'Angle (degrees)', 'sine', '#frPLplot Example 1 - Sine function' )
@@ -251,8 +251,8 @@ module handlers_ex1
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(kind=c_int) :: run_status = TRUE
-  real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
+  integer(c_int) :: run_status = TRUE
+  real(c_double), parameter :: pi = acos(-1.0_c_double)
 
 contains
 
@@ -279,10 +279,10 @@ contains
     base = hl_gtk_box_new()
     call gtk_window_set_child(window, base)
 
-    drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
+    drawing = hl_gtk_drawing_area_new(size=[width, height], &
          & has_alpha = FALSE, &
          & scroll = scroll_w, &
-         & ssize=(/ 600, 500 /))
+         & ssize=[ 600, 500 ])
     call hl_gtk_box_pack(base, scroll_w)
 
     qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))

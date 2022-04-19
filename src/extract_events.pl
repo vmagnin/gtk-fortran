@@ -25,7 +25,7 @@
 #
 # Contributed by James Tappin 05/11/2011, vmagnin 2021-05-13
 
-# Extracts the structure definitions for Gdk events from the gdk 
+# Extracts the structure definitions for Gdk events from the gdk
 # header files.
 
 use strict ;
@@ -48,8 +48,8 @@ my $gdkevents="/usr/include/gtk-".$gdkvers.".0/gdk/gdkevents.h";
 my $ftninterface="gdkevents-auto.f90";
 
 # Type conversions.
-# Defaults are pointers "type(c_ptr)", actual objects "integer(kind=c_int)" 
-# (i.e. enumeration) (We assume that gdk-auto.f90 contains the actual 
+# Defaults are pointers "type(c_ptr)", actual objects "integer(kind=c_int)"
+# (i.e. enumeration) (We assume that gdk-auto.f90 contains the actual
 # enumerations). As structures are defined, they are added to the hash.
 
 my %conversions = ("GdkAtom" => "type(c_ptr)",
@@ -103,7 +103,7 @@ print FGDKE "  implicit none\n\n";
 
 foreach $hfile ($gdktypes, $gdkevents) {
     open(GDKE, "<", $hfile) || die "Failed to open $hfile:$!\n";
-  LINE: 
+  LINE:
     while (<GDKE>) {
 	chop();
 	if ( /$sspattern/ ) {  # Start a new definition
@@ -114,7 +114,7 @@ foreach $hfile ($gdktypes, $gdkevents) {
 	    next LINE;
 	}
 	if ( $sflag ) {  # We are defining a structure
-	    next LINE  if ($_ eq "{"); # Skip the starting delimiter 
+	    next LINE  if ($_ eq "{"); # Skip the starting delimiter
 	    next LINE if ($_ eq ""); # Skip blank lines
 
 	    if ($_ eq $sepattern) { # Ending delimiter close out the definition
@@ -122,7 +122,7 @@ foreach $hfile ($gdktypes, $gdkevents) {
 		print FGDKE "  end type $tname\n\n";
 		next LINE;
 	    }
-	    if ( /$dppattern/ ) { # A pointer to something 
+	    if ( /$dppattern/ ) { # A pointer to something
                                            #-- always a c_ptr
 		$list = $2;
 		$list =~ tr/:/=/;

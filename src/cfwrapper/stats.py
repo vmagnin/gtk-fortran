@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2020-05-07
+# Last modification: 2022-04-08
 
 """ This module contains functions for printing statistics at the end of the
 gtk-fortran generation process.
@@ -41,14 +41,14 @@ import getpass      # To obtain the login with getuser()
 from globals_const import SRC_DIR
 
 
-def hash_gtk_fortran(PATH_DICT):
-    """Compute the SHA1 hash of all *-auto.f90 files to detect modifications
-    in gtk-fortran (useful during development)
+def hash_gtk_fortran(PATH_DICT, GTKENUMS_FILE):
+    """Compute the SHA1 hash of all *-auto.f90 and *-auto.inc files to detect
+    modifications in gtk-fortran (useful during development)
     """
     hasher = hashlib.sha1()
 
     files_list = list(PATH_DICT.values())
-    files_list.extend(["gtkenums-auto.f90", "unixonly-auto.f90", "mswindowsonly-auto.f90"])
+    files_list.extend([GTKENUMS_FILE, "unix-print-auto.f90"])
 
     for file_name in files_list:
         with open(SRC_DIR+file_name, 'rb') as auto_file:
@@ -110,7 +110,7 @@ class Statistics():
     def append_type(self, iso_c):
         self.used_types.append(iso_c)
 
-    def print(self, T0, versions, PATH_DICT, TYPES_DICT, TYPES2_DICT, my_errors):
+    def print(self, T0, versions, PATH_DICT, GTKENUMS_FILE, TYPES_DICT, TYPES2_DICT, my_errors):
         """Print various statistics about the generation of gtk-fortran
         """
 
@@ -134,6 +134,6 @@ class Statistics():
         print("* Computing time: {0:.2f} s".format(time.time()-T0))
 
         # Print the SHA1 of all *-auto.f90 files and look for modification:
-        hash_gtk_fortran(PATH_DICT)
+        hash_gtk_fortran(PATH_DICT, GTKENUMS_FILE)
 
         print("\n\033[1m Used types:", self.used_types, "\033[0m")

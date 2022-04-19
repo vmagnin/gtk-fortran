@@ -56,12 +56,12 @@ module handlers
   integer(c_int) :: boolresult
   type(c_ptr) :: my_pixbuf, status_bar, rangeid
   character(kind=c_char), dimension(:,:,:), pointer :: pixel
-  integer(kind=c_int) :: nch, rowstride, width, height
+  integer(c_int) :: nch, rowstride, width, height
   logical :: need_point     ! even/odd point flag
   logical :: computing_flag
   character(len=120) :: rangestr
-  real(kind=c_double) :: mxmin, mxmax, mymin, mymax
-  integer(kind=c_int) :: mouse_x, mouse_y
+  real(c_double) :: mxmin, mxmax, mymin, mymax
+  integer(c_int) :: mouse_x, mouse_y
 
 contains
   ! User defined event handlers go here
@@ -80,7 +80,7 @@ contains
   ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine draw(widget, my_cairo_context, width, height, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
-    integer(c_int), value, intent(in) :: width, height    
+    integer(c_int), value, intent(in) :: width, height
 
     ! We redraw the pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
@@ -92,10 +92,10 @@ contains
     type(c_ptr), value, intent(in)    :: gesture, gdata
     integer(c_int), value, intent(in) :: n_press
     real(c_double), value, intent(in) :: x, y
-    real(kind=c_double), save :: x0, y0
-    real(kind=c_double) :: x1, y1
+    real(c_double), save :: x0, y0
+    real(c_double) :: x1, y1
     type(c_ptr) :: drawing_area
-    integer(kind=c_int) :: id
+    integer(c_int) :: id
 
     print *, "Button ", gtk_gesture_single_get_current_button(gesture)
     print *, n_press, " click(s) at ", int(x), int(y)
@@ -148,7 +148,7 @@ contains
        call mandelbrot_set(drawing_area, 1000_c_int)
        id = gtk_statusbar_push(status_bar, 0_c_int, &
             & "Left|Centre: mark region corner, "//&
-            & "Right: Reset, Wheel: Zoom in/out"//c_null_char)    
+            & "Right: Reset, Wheel: Zoom in/out"//c_null_char)
     end if
   end subroutine click_cb
 
@@ -158,8 +158,8 @@ contains
     real(c_double), value, intent(in) :: x, y
     type(c_ptr) :: drawing_area
     ! Mathematical coordinates:
-    real(kind=c_double) :: xr, yr, xx, yy
-    integer(kind=c_int) :: id
+    real(c_double) :: xr, yr, xx, yy
+    integer(c_int) :: id
 
     print *, "Scroll x,y= ", x, y
     ! We need to redraw the area:
@@ -229,9 +229,9 @@ contains
   end subroutine set_limits
 
   subroutine mand_xy(ix, iy, x, y)
-    integer(kind=c_int), intent(in) :: ix, iy
-    real(kind=c_double), intent(out) :: x, y
-    real(kind=c_double) :: scx, scy
+    integer(c_int), intent(in) :: ix, iy
+    real(c_double), intent(out) :: x, y
+    real(c_double) :: scx, scy
 
     scx = (mxmax-mxmin)/real(width, c_double)   ! x scale
     scy = (mymax-mymin)/real(height, c_double)  ! y scale
@@ -245,15 +245,15 @@ contains
   ! http://en.wikipedia.org/wiki/Mandelbrot_set
   !*********************************************
   subroutine mandelbrot_set(my_drawing_area, itermax)
-    ! Whole set: xmin=-2d0, xmax=+1d0, ymin=-1.5d0, ymax=+1.5d0, itermax=1000
+    ! Whole set: xmin=-2.0_wp, xmax=+1.0_wp, ymin=-1.5_wp, ymax=+1.5_wp, itermax=1000
     ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
     type(c_ptr), intent(in) :: my_drawing_area
-    integer(kind=c_int), intent(in) :: itermax
-    integer(kind=c_int)    :: i, j, k
-    real(kind=c_double)    :: x, y ! coordinates in the complex plane
-    complex(kind=c_double) :: c, z
-    integer(kind=c_int8_t) :: red, green, blue     ! rgb color
-    real(kind=c_double)    :: t0, t1
+    integer(c_int), intent(in) :: itermax
+    integer(c_int)    :: i, j, k
+    real(c_double)    :: x, y ! coordinates in the complex plane
+    complex(c_double) :: c, z
+    integer(c_int8_t) :: red, green, blue     ! rgb color
+    real(c_double)    :: t0, t1
     integer :: it
 
     computing_flag = .true.
@@ -273,10 +273,10 @@ contains
 
        do j=0, height-1
           call mand_xy(i, j, x, y)
-          c = x + y*(0.0_c_double,1.0_c_double)   ! Starting point
+          c = cmplx(x, y, kind=c_double)          ! Starting point
           z = (0.0_c_double, 0.0_c_double)        ! z0
           k = 1
-          do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4.0_c_double))
+          do while ((k <= itermax) .and. ((z%re**2 + z%im**2)<4.0_c_double))
              z = z*z+c
              k = k+1
           end do
@@ -323,7 +323,7 @@ contains
     type(c_ptr) :: my_window, jb
     type(c_ptr) :: my_drawing_area, controller, controller2, controller3
     integer :: i, j
-    integer(kind=c_int) :: id
+    integer(c_int) :: id
 
     my_window = gtk_application_window_new(app)
 
@@ -344,7 +344,7 @@ contains
     call gtk_drawing_area_set_draw_func(my_drawing_area, &
                      & c_funloc(draw), c_null_ptr, c_null_funptr)
 
-    ! We need a gesture controller to detect mouse clicks: 
+    ! We need a gesture controller to detect mouse clicks:
     ! https://developer.gnome.org/gtk4/stable/GtkGestureClick.html
     ! https://developer.gnome.org/gtk4/stable/GtkWidget.html#gtk-widget-add-controller
     controller = gtk_gesture_click_new()
@@ -391,7 +391,7 @@ contains
     my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, width, height)
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
     call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, &
-         &int((/nch, width, height/)))
+         &int([nch, width, height]))
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
 
     ! We use char() because we need unsigned integers.

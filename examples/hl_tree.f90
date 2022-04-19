@@ -49,9 +49,9 @@ contains
 
   subroutine del_row(but, gdata) bind(c)
     type(c_ptr), value, intent(in) :: but, gdata
-    integer(kind=c_int), dimension(:,:), allocatable :: selections
-    integer(kind=c_int), dimension(:), allocatable :: dep
-    integer(kind=c_int) :: nsel
+    integer(c_int), dimension(:,:), allocatable :: selections
+    integer(c_int), dimension(:), allocatable :: dep
+    integer(c_int) :: nsel
 
     nsel = hl_gtk_tree_get_selections(ihlist, selections, &
          & depths=dep)
@@ -68,12 +68,12 @@ contains
 
   subroutine list_select(list, gdata) bind(c)
     type(c_ptr), value, intent(in) :: list, gdata
-    integer(kind=c_int) :: nsel
-    integer(kind=c_int), dimension(:,:), allocatable :: selections
-    integer(kind=c_int), dimension(:), allocatable :: dep
-    integer(kind=c_int) :: n, n3
-    integer(kind=c_int64_t) :: n4
-    real(kind=c_float) :: nlog
+    integer(c_int) :: nsel
+    integer(c_int), dimension(:,:), allocatable :: selections
+    integer(c_int), dimension(:), allocatable :: dep
+    integer(c_int) :: n, n3
+    integer(c_int64_t) :: n4
+    real(c_float) :: nlog
     character(len=30) :: name
     character(len=10) :: nodd
     integer :: i
@@ -122,10 +122,10 @@ contains
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
     character(len=35) :: line
-    integer(kind=c_int) :: i, ltr, j
-    integer(kind=type_kind), dimension(6) :: ctypes
+    integer(c_int) :: i, ltr, j
+    integer(type_kind), dimension(6) :: ctypes
     character(len=20), dimension(6) :: titles
-    integer(kind=c_int), dimension(6) :: sortable, editable
+    integer(c_int), dimension(6) :: sortable, editable
 
     ! Create a window that will hold the widget system
     ihwin = gtk_application_window_new(app)
@@ -136,10 +136,10 @@ contains
     call gtk_window_set_child(ihwin, base)
 
     ! Now make a multi column list with multiple selections enabled
-    ctypes = (/ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
-         & G_TYPE_UINT64, G_TYPE_BOOLEAN /)
-    sortable = (/ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE /)
-    editable = (/ TRUE, FALSE, TRUE, FALSE, FALSE, FALSE /)
+    ctypes = [ G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_FLOAT, &
+         & G_TYPE_UINT64, G_TYPE_BOOLEAN ]
+    sortable = [ FALSE, TRUE, FALSE, FALSE, FALSE, TRUE ]
+    editable = [ TRUE, FALSE, TRUE, FALSE, FALSE, FALSE ]
 
     titles(1) = "Name"
     titles(2) = "N"
@@ -155,7 +155,7 @@ contains
 
     ! Now put 10 top level rows into it
     do i=1,10
-       call hl_gtk_tree_ins(ihlist, row = (/ -1_c_int /))
+       call hl_gtk_tree_ins(ihlist, row = [ -1_c_int ])
        write(line,"('List entry number ',I0)") i
        ltr=len_trim(line)+1
        line(ltr:ltr)=c_null_char
@@ -175,22 +175,22 @@ contains
 
     ! Add some child rows
     do j = 2, 6, 2
-       call hl_gtk_tree_ins(ihlist, row = (/ j, -1_c_int /), count=5)
+       call hl_gtk_tree_ins(ihlist, row = [ j, -1_c_int ], count=5)
        do i = 1, 5
           write(line,"('List entry number',I0,':',I0)") j+1,i
           ltr=len_trim(line)+1
           line(ltr:ltr)=c_null_char
-          call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=0_c_int, &
+          call hl_gtk_tree_set_cell(ihlist, row=[ j, i-1_c_int], col=0_c_int, &
                & svalue=line)
-          call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=1_c_int, &
+          call hl_gtk_tree_set_cell(ihlist, row=[ j, i-1_c_int], col=1_c_int, &
                & ivalue=i)
-          call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=2_c_int, &
+          call hl_gtk_tree_set_cell(ihlist, row=[ j, i-1_c_int], col=2_c_int, &
                & ivalue=3_c_int*i)
-          call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=3_c_int, &
+          call hl_gtk_tree_set_cell(ihlist, row=[ j, i-1_c_int], col=3_c_int, &
                & fvalue=log10(real(i)))
-          call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=4_c_int, &
+          call hl_gtk_tree_set_cell(ihlist, row=[ j, i-1_c_int], col=4_c_int, &
                & l64value=int(i,c_int64_t)**4)
-          call hl_gtk_tree_set_cell(ihlist, row=(/ j, i-1_c_int/), col=5_c_int, &
+          call hl_gtk_tree_set_cell(ihlist, row=[ j, i-1_c_int], col=5_c_int, &
                & ivalue=mod(i,2_c_int))
        end do
     end do

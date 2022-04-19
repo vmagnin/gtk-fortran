@@ -79,7 +79,7 @@ contains
     use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    if (gtk_notebook_get_current_page(notebook_1) .eq. gtk_notebook_get_n_pages(notebook_1) - 1) then
+    if (gtk_notebook_get_current_page(notebook_1) == gtk_notebook_get_n_pages(notebook_1) - 1) then
       call gtk_notebook_set_current_page (notebook_1, 0_c_int)
     else
       call gtk_notebook_next_page (notebook_1)
@@ -91,7 +91,7 @@ contains
     use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    if (gtk_notebook_get_current_page(notebook_1) .eq. 0) then
+    if (gtk_notebook_get_current_page(notebook_1) == 0) then
       call gtk_notebook_set_current_page (notebook_1, -1_c_int)
     else
       call gtk_notebook_prev_page (notebook_1)
@@ -114,7 +114,7 @@ contains
 
     tval = FALSE
     bval = FALSE
-    if (gtk_notebook_get_show_tabs(notebook_1) == FALSE) tval = TRUE 
+    if (gtk_notebook_get_show_tabs(notebook_1) == FALSE) tval = TRUE
     if (gtk_notebook_get_show_border(notebook_1) == FALSE) bval = TRUE
     call gtk_notebook_set_show_tabs (notebook_1, tval)
     call gtk_notebook_set_show_border (notebook_1, bval)
@@ -153,7 +153,7 @@ contains
     mainwindow = gtk_application_window_new(app)
     ! Don't forget that C strings must end with a null char:
     call gtk_window_set_title(mainwindow, "Notebooks Example"//c_null_char)
- 
+
     !******************************************************************
     ! Adding widgets in the window:
     !******************************************************************
@@ -165,7 +165,7 @@ contains
     call gtk_widget_set_margin_top (table, 10_c_int)
     call gtk_widget_set_margin_bottom (table, 10_c_int)
     call gtk_window_set_child(mainwindow, table)
-   
+
     ! Create a new notebook, place the position of the tabs
     notebook_1=gtk_notebook_new()
     call gtk_notebook_set_tab_pos (notebook_1, GTK_POS_TOP)
@@ -174,7 +174,7 @@ contains
     ! Attach notebook to group, necessary to enable drag and drop
     ! between the two notebooks
     call gtk_notebook_set_group_name(notebook_1,"group"//c_null_char)
-    call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, (/64/))
+    call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, [64])
     call convert_c_string_scalar(textptr, my_string)
     print *, "group name = <"//TRIM(my_string)//">"
 
@@ -188,7 +188,7 @@ contains
       call gtk_widget_set_margin_end (frame, 10_c_int)
       call gtk_widget_set_margin_top (frame, 10_c_int)
       call gtk_widget_set_margin_bottom (frame, 10_c_int)
-    
+
       call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
 
       label = gtk_label_new ("Append Frame "//trim(adjustl(istr))//c_null_char)
@@ -209,7 +209,7 @@ contains
     call gtk_notebook_set_tab_reorderable(notebook_1, checkbutton, TRUE)
     call gtk_notebook_set_tab_detachable (notebook_1, checkbutton, TRUE)
 
-    ! prepend pages to the notebook 
+    ! prepend pages to the notebook
     do i=1,3
       write(istr,*) i
 
@@ -219,7 +219,7 @@ contains
       call gtk_widget_set_margin_end (frame, 10_c_int)
       call gtk_widget_set_margin_top (frame, 10_c_int)
       call gtk_widget_set_margin_bottom (frame, 10_c_int)
-      
+
       call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
 
       label = gtk_label_new ("Prepend Frame "//trim(adjustl(istr))//c_null_char)
@@ -281,7 +281,7 @@ contains
       call gtk_widget_set_margin_end (frame, 10_c_int)
       call gtk_widget_set_margin_top (frame, 10_c_int)
       call gtk_widget_set_margin_bottom (frame, 10_c_int)
-      
+
       call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
 
       label = gtk_label_new ("Notebook 2 - Frame "//trim(adjustl(istr))//c_null_char)
@@ -301,8 +301,8 @@ contains
 end module handlers
 
 !*******************************************************************************
-! In the main program, we declare the GTK application, connect it to its 
-! "activate" function where we will create the GUI, 
+! In the main program, we declare the GTK application, connect it to its
+! "activate" function where we will create the GUI,
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program notebooks
@@ -322,7 +322,7 @@ program notebooks
   ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
   app = gtk_application_new("gtk-fortran.examples.notebooks"//c_null_char, &
                             & G_APPLICATION_FLAGS_NONE)
-  ! The activate signal will be sent by g_application_run(). 
+  ! The activate signal will be sent by g_application_run().
   ! The c_funloc() function returns the C address of the callback function.
   ! The c_null_ptr means no data is transfered to the callback function.
   call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), &

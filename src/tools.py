@@ -29,7 +29,7 @@
 
 """ This module contains various functions used in the cfwrapper.
 
-NOTE: the function "multiline" is duplicated in usemodules.py, to make the 
+NOTE: the function "multiline" is duplicated in usemodules.py, to make the
 installation of the latter more straightforward. If you update this function,
 please update the corresponding function in usemodules.py as well.
 """

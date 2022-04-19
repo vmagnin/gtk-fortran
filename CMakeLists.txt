@@ -22,8 +22,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
-# Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018, 
-# vmagnin 2021-10-21
+# Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018,
+# vmagnin 2022-04-06
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -44,10 +44,11 @@ set(CMAKE_PROJECT_DESCRIPTION "A GTK / Fortran binding")
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/vmagnin/gtk-fortran/wiki/")
 
 #===============================================================================
-# Major version of GTK for the current branch (from VERSIONS file):
+# Version of gtk-fortran for the current branch (from VERSIONS file):
 #===============================================================================
 file(STRINGS VERSIONS OneLine REGEX "gtk-fortran;(.*)")
 string(REGEX REPLACE "gtk-fortran;" "" SEMANTIC_VERSION ${OneLine})
+# Major, minor and patch versions of gtk-fortran:
 string(REGEX MATCH "[0-9]+" GTKv ${SEMANTIC_VERSION})
 string(REGEX REPLACE "[0-9]+\.([0-9]+)\.[0-9]+" "\\1" MINOR_VERSION ${SEMANTIC_VERSION})
 string(REGEX REPLACE "[0-9]+\.[0-9]+\.([0-9]+)" "\\1" PATCH_VERSION ${SEMANTIC_VERSION})
@@ -64,6 +65,13 @@ endif()
 set(CMAKE_PROJECT_VERSION_MAJOR ${GTKv})
 set(CMAKE_PROJECT_VERSION_MINOR ${MINOR_VERSION})
 set(CMAKE_PROJECT_VERSION_PATCH ${PATCH_VERSION})
+
+# Extracting the GTK and GLib versions from the VERSIONS file:
+file(STRINGS VERSIONS OneLine REGEX "GTK;(.*)")
+string(REGEX REPLACE "GTK;" "" GTK_SEMANTIC_VERSION ${OneLine})
+file(STRINGS VERSIONS OneLine REGEX "GLib;(.*)")
+string(REGEX REPLACE "GLib;" "" GLIB_SEMANTIC_VERSION ${OneLine})
+message(STATUS "Based on GTK ${GTK_SEMANTIC_VERSION} and GLib ${GLIB_SEMANTIC_VERSION}")
 
 #===============================================================================
 # Define GNU standard installation directories:
@@ -105,7 +113,7 @@ set(CPACK_SOURCE_GENERATOR "TGZ")
 include(CPack)
 
 #===============================================================================
-# "Path for CMake modules to be loaded by the include() or find_package() 
+# "Path for CMake modules to be loaded by the include() or find_package()
 # commands before checking the default modules that come with CMake"
 #===============================================================================
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -116,10 +124,13 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 # https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
 #===============================================================================
 if(NOT TARGET uninstall)
+    # configure_file() copies a file and substitutes @VAR@ or ${VAR}
+    # @ONLY means only @VAR@ will be sustituted
+    # https://cmake.org/cmake/help/latest/command/configure_file.html
     configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
         "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-        IMMEDIATE @ONLY)
+        @ONLY)
 
     add_custom_target(uninstall
         COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
@@ -146,8 +157,8 @@ add_definitions(${GTK_CFLAGS_OTHER})
 #===============================================================================
 # PLplot integration (>=5.13 needed)
 # ----------------------------------
-# A lot of changes have occured in PLplot 5.11, 5.12 and 5.13: the libraries 
-# have been renamed (plplot and plplot-fortran) and the ISO_C_BINDING has been 
+# A lot of changes have occured in PLplot 5.11, 5.12 and 5.13: the libraries
+# have been renamed (plplot and plplot-fortran) and the ISO_C_BINDING has been
 # adopted.
 # By now (March 2019), the find_package(plplot) command gives a lot of errors
 # in Debian/Ubuntu distributions because of some renaming in Debian packages.

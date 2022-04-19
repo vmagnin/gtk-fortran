@@ -37,7 +37,7 @@ module handlers
 
   implicit none
   type(c_ptr) :: win,bar,pbar,qbut, box
-  integer(kind=c_int) :: run_status = TRUE
+  integer(c_int) :: run_status = TRUE
   integer(c_int) :: boolresult
 
 contains
@@ -56,7 +56,7 @@ contains
       boolresult = g_main_context_iteration(c_null_ptr, FALSE)
     end do
   end subroutine pending_events
- 
+
 end module handlers
 
 program progress
@@ -67,7 +67,7 @@ program progress
 
   implicit none
   integer :: t0, t1, istep
-  real(kind=c_double) :: bval
+  real(c_double) :: bval
 
   ! Initialize gtk & create a window for the heirarchy
   call gtk_init()
@@ -88,7 +88,7 @@ program progress
   call hl_gtk_box_pack(box, qbut)
 
   ! Display the window
-  call gtk_widget_show(win) 
+  call gtk_widget_show(win)
 
   ! Get the epoch in milliseconds and start a counter
   call system_clock(t0)

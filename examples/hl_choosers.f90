@@ -50,7 +50,7 @@ module handlers
 contains
   subroutine my_destroy(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-    integer(kind=c_int) :: ok
+    integer(c_int) :: ok
     character(len=60), dimension(4) :: msg
 
     msg(1) = "File is changed"
@@ -71,7 +71,7 @@ contains
   subroutine open_file(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    integer(kind=c_int) :: isel
+    integer(c_int) :: isel
     character(len=120), dimension(:), allocatable :: chfile
     character(len=30), dimension(2) :: filters
     character(len=30), dimension(2) :: filtnames
@@ -86,7 +86,7 @@ contains
 
     isel = hl_gtk_file_chooser_show(chfile, create=FALSE,&
          & title="Select input file"//c_null_char, filter=filters, &
-         & filter_name=filtnames, wsize=(/ 600_c_int, 400_c_int /), &
+         & filter_name=filtnames, wsize=[ 600_c_int, 400_c_int ], &
          & edit_filters=TRUE, &
          & parent=window, all=TRUE)
     print *, "isel = hl_gtk_file_chooser_show=", isel
@@ -100,7 +100,7 @@ contains
     do
        read(37,"(A)",iostat=ios) inln
        if (ios /= 0) exit
-       call hl_gtk_text_view_insert(tedit, (/ trim(inln)//c_new_line /))
+       call hl_gtk_text_view_insert(tedit, [ trim(inln)//c_new_line ])
     end do
     close(37)
     idxs = index(filename, '/', .true.)+1
@@ -136,7 +136,7 @@ contains
   subroutine save_file_as(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    integer(kind=c_int) :: isel
+    integer(c_int) :: isel
     character(len=120), dimension(:), allocatable :: chfile
     character(len=20), dimension(2) :: filters
     character(len=30), dimension(2) :: filtnames
@@ -215,7 +215,7 @@ contains
 
     ! A multiline text editor in which to display the file.
     tedit = hl_gtk_text_view_new(jb, editable=TRUE, &
-         & changed=c_funloc(file_edited), ssize = (/ 750_c_int, 400_c_int /) )
+         & changed=c_funloc(file_edited), ssize = [ 750_c_int, 400_c_int ] )
     call hl_gtk_box_pack(base, jb)
 
     ! A quit button

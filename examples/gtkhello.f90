@@ -30,7 +30,7 @@
 !*************************************
 ! User defined event handlers go here
 !*************************************
-! Note that events are a special type of signals, coming from 
+! Note that events are a special type of signals, coming from
 ! the X Window system. Callback functions must have an event argument.
 module handlers
 
@@ -125,8 +125,8 @@ contains
 end module handlers
 
 !*******************************************************************************
-! In the main program, we declare the GTK application, connect it to its 
-! "activate" function where we will create the GUI, 
+! In the main program, we declare the GTK application, connect it to its
+! "activate" function where we will create the GUI,
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program gtkhello
@@ -147,7 +147,7 @@ program gtkhello
   ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
   app = gtk_application_new("gtk-fortran.examples.gtkhello"//c_null_char, &
                             & G_APPLICATION_FLAGS_NONE)
-  ! The activate signal will be sent by g_application_run(). 
+  ! The activate signal will be sent by g_application_run().
   ! The c_funloc() function returns the C address of the callback function.
   ! The c_null_ptr means no data is transfered to the callback function.
   call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), &

@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-17 (GTK 4), 2020-07-08
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2022-04-05
 !------------------------------------------------------------------------------
 
 module cl_handlers
@@ -48,8 +48,8 @@ module cl_handlers
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(kind=c_int) :: height=250_c_int, width=250_c_int
-  real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
+  integer(c_int) :: height=250_c_int, width=250_c_int
+  real(c_double), parameter :: pi = acos(-1.0_c_double)
   integer, dimension(8) :: t0 = 0
   type(c_ptr) :: window
   type(c_ptr) :: app
@@ -57,7 +57,7 @@ module cl_handlers
 contains
 
   function show_time(area) bind(c)
-    integer(kind=c_int) :: show_time
+    integer(c_int) :: show_time
     type(c_ptr), value, intent(in) :: area
 
     integer, dimension(8) :: dat
@@ -65,13 +65,13 @@ contains
     character(len=3) :: sdate
 
     character(len=4), parameter, dimension(12) :: mnames = &
-         & (/'JAN'//c_null_char, 'FEB'//c_null_char, 'MAR'//c_null_char, &
+         & ['JAN'//c_null_char, 'FEB'//c_null_char, 'MAR'//c_null_char, &
          &   'APR'//c_null_char, 'MAY'//c_null_char, 'JUN'//c_null_char, &
          &   'JUL'//c_null_char, 'AUG'//c_null_char, 'SEP'//c_null_char, &
-         &   'OCT'//c_null_char, 'NOV'//c_null_char, 'DEC'//c_null_char /)
+         &   'OCT'//c_null_char, 'NOV'//c_null_char, 'DEC'//c_null_char ]
     integer :: i
-    real(kind=c_double) :: r0, r1, x0, x1, y0, y1, th, xc, yc, ycs
-    real(kind=c_double) :: xb, xt, yb, yt, radius, scale_factor
+    real(c_double) :: r0, r1, x0, x1, y0, y1, th, xc, yc, ycs
+    real(c_double) :: xb, xt, yb, yt, radius, scale_factor
 
     show_time = TRUE
 
@@ -284,7 +284,7 @@ contains
     type(c_ptr), value :: area, data
 
     type(gtkallocation), target:: alloc
-    integer(kind=c_int) :: irv
+    integer(c_int) :: irv
 
     call gtk_widget_get_allocation(area,c_loc(alloc))
     width = alloc%width
@@ -303,7 +303,7 @@ contains
     type(c_ptr), value, intent(in) :: controller, gdata
     integer(c_int), value, intent(in) :: keyval, keycode, state
     logical(c_bool) :: ret
-    integer(kind=c_int) :: key_q
+    integer(c_int) :: key_q
 
     key_q = gdk_keyval_from_name("q"//c_null_char)
     ! CTRL+Q will close the program:
@@ -321,7 +321,7 @@ contains
     type(c_ptr), value, intent(in)  :: app, gdata
     ! Pointers toward our GTK widgets:
     type(c_ptr) :: drawing
-    integer(kind=c_int) :: icont, timeid
+    integer(c_int) :: icont, timeid
 
     ! Create the window:
     window = gtk_application_window_new(app)

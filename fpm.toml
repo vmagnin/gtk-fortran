@@ -1,0 +1,27 @@
+name = "gtk-fortran"
+description = "With this file gtk-fortran can be used as a fpm dependency. But if you want a full build and install of gtk-fortran on your system, you must use CMake."
+version = "4.1.1"
+license = "GPL-3.0-or-later"
+author = "Vincent Magnin et al."
+maintainer = "https://github.com/vmagnin/gtk-fortran/issues"
+copyright = "2011-2022 Vincent Magnin et al."
+homepage = "https://github.com/vmagnin/gtk-fortran/wiki"
+keywords = ["gtk-fortran", "GUI", "GTK", "fpm"]
+
+# When gtk-fortran is used as a fpm dependency, fpm will automatically discover
+# the gtk-fortran modules in the gtk-fortran/src/ directory.
+
+[build]
+link = [
+  "gtk-4",
+  "pangocairo-1.0",
+  "pango-1.0",
+  "harfbuzz",
+  "gdk_pixbuf-2.0",
+  "cairo-gobject",
+  "cairo",
+  "graphene-1.0",
+  "gio-2.0",
+  "gobject-2.0",
+  "glib-2.0" ]
+

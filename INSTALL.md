@@ -1,9 +1,34 @@
-Last update: 2021-08-02
+Last update: 2022-04-14
 
-Building & Installing gtk-fortran
+Dependencies
 ================================
 
-The build install system uses `cmake`. This file gives quick instructions to install gtk-fortran. See the Wiki documentation for more detailed instructions.
+If you want to use gtk-fortran as a fpm dependency, you just need:
+- A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran, ifort, ifx...
+- GTK and the associated development files. For 4.x use the "gtk4" branch.
+- The Fortran Package Manager [fpm](https://fpm.fortran-lang.org).
+
+If you want to build and install the whole project (library, tools, examples...), you also need:
+- CMake (>=3.7) and pkg-config.
+- PLplot (>=5.13) is used if available (you need the development files).
+
+Using gtk-fortran as a fpm dependency
+================================
+
+Starting from version 4.2, gtk-fortran can be used as a [fpm](https://fpm.fortran-lang.org) dependency. You simply need to add gtk-fortran in the dependencies section of the `fpm.toml` manifest of your project:
+
+```toml
+[dependencies]
+gtk-fortran = { git = "https://github.com/vmagnin/gtk-fortran.git", branch = "gtk4" }
+```
+
+See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm) (MIT license) for a demonstration.
+
+
+Building & installing gtk-fortran
+================================
+
+The build install system uses `cmake`. This file gives quick instructions to install gtk-fortran. **See the [Wiki documentation](https://github.com/vmagnin/gtk-fortran/wiki#installation-and-building) for more detailed instructions.**
 
 UNIX/Linux
 ----------
@@ -29,7 +54,7 @@ Useful variables that are specific to gtk-fortran are:
 
        EXCLUDE_PLPLOT -- set this to disable building the plplot
          integration even if PLplot is found.
-       NO_BUILD_HL -- set this to disable building the High Level sub-library 
+       NO_BUILD_HL -- set this to disable building the High Level sub-library
          (includes PLplot and sketcher).
        NO_BUILD_EXAMPLES -- set this to prevent compiling the example
          programs, also mostly useful for packagers.
@@ -40,6 +65,14 @@ Useful variables that are specific to gtk-fortran are:
          package of gtk-fortran.
 
 To interactively control the build, use `ccmake` in place of `cmake`
+
+Default compiler options can be overridden, for example:
+
+    cmake -D CMAKE_Fortran_FLAGS_RELEASE="-O2 -std=f2018" ..
+
+The system default Fortran compiler can be overridden, for example to use the Intel ifx compiler:
+
+    cmake -D CMAKE_Fortran_COMPILER:FILEPATH=$(which ifx) ..
 
 **************************************************************************
 Sometimes it can help to clean out the build directory and re-run `cmake`:
@@ -52,17 +85,7 @@ Sometimes it can help to clean out the build directory and re-run `cmake`:
 Other systems (Windows, macOS, FreeBSD...)
 -------
 
-See the Wiki documentation for detailed instructions.
-
-
-Dependencies
-------------
-
-- A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran.
-- GTK and the associated development files. For 4.x use the "gtk4" branch.
-- CMake >= 3.4 or better and pkg-config.
-- PLplot is used if available (you need the development files).
-
+See the Wiki documentation for specific and detailed instructions.
 
 Known issues
 ------------
@@ -93,8 +116,8 @@ if you use csh or one of its derivatives)
 this will depend on your distribution, Ubuntu looks there by default,
 Pardus and Manjaro don't.
 
-Uninstalling GtkFortran
-=======================
+Uninstalling gtk-fortran
+========================
 
     sudo make uninstall
 

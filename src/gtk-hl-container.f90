@@ -71,7 +71,7 @@ module gtk_hl_container
        & GTK_ORIENTATION_HORIZONTAL,  GTK_ORIENTATION_VERTICAL, &
        & TRUE, FALSE, g_signal_connect, &
        & GTK_POLICY_AUTOMATIC
-       
+
   use g, only: g_object_set_data, g_object_get_data, g_value_get_int
 
   implicit none
@@ -86,10 +86,10 @@ contains
     type(c_ptr) :: app
     character(kind=c_char), dimension(*), intent(in) :: app_id
     type(c_funptr), intent(in) :: activate
-    integer(kind=c_int), optional, intent(in) :: flags
+    integer(c_int), optional, intent(in) :: flags
     type(c_ptr), optional, intent(in) :: data
 
-    integer(kind=c_int) :: the_flags
+    integer(c_int) :: the_flags
 
     ! Higher-level interface to make a GtkApplication
     !
@@ -111,13 +111,13 @@ contains
 
     ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
     app = gtk_application_new(app_id, the_flags)
-    
+
     if (present(data)) then
       call g_signal_connect(app, "activate"//c_null_char, activate, data)
     else
       call g_signal_connect(app, "activate"//c_null_char, activate, c_null_ptr)
     end if
-    
+
     ! Commandline arguments argc, argv are not passed.
     ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-run
     status = g_application_run(app, 0_c_int, [c_null_ptr])
@@ -136,15 +136,15 @@ contains
     character(kind=c_char), dimension(*), intent(in), optional :: title
     type(c_funptr), optional :: destroy, delete_event
     type(c_ptr), optional :: data_destroy, data_delete_event
-    integer(kind=c_int), optional, intent(in) :: border
-    integer(kind=c_int), optional, intent(in), dimension(2) :: wsize
-    integer(kind=c_int), intent(in), optional :: sensitive, resizable, decorated
-    integer(kind=c_int), intent(in), optional :: deletable, above, below
+    integer(c_int), optional, intent(in) :: border
+    integer(c_int), optional, intent(in), dimension(2) :: wsize
+    integer(c_int), intent(in), optional :: sensitive, resizable, decorated
+    integer(c_int), intent(in), optional :: deletable, above, below
     type(c_ptr), intent(in), optional :: parent
     type(c_ptr), intent(in), optional :: icon
     character(kind=c_char), dimension(*), intent(in), optional :: icon_name, &
          & icon_file
-    integer(kind=c_int), intent(in), optional :: modal
+    integer(c_int), intent(in), optional :: modal
 
     ! Higher-level interface to make a gtk_window
     !
@@ -236,8 +236,8 @@ contains
   function hl_gtk_box_new(horizontal, homogeneous, spacing) result(box)
 
     type(c_ptr) :: box
-    integer(kind=c_int), intent(in), optional :: horizontal, homogeneous
-    integer(kind=c_int), intent(in), optional :: spacing
+    integer(c_int), intent(in), optional :: horizontal, homogeneous
+    integer(c_int), intent(in), optional :: spacing
 
     ! Generic packing box
     !
@@ -249,7 +249,7 @@ contains
     ! SPACING: c_int: optional: Set the space between children.
     !-
 
-    integer(kind=c_int) :: grid, space
+    integer(c_int) :: grid, space
 
     if (present(homogeneous)) then
        grid = homogeneous
@@ -285,9 +285,9 @@ contains
   subroutine hl_gtk_box_pack(box, child, expand, fill, padding, atend)
 
     type(c_ptr), intent(in) :: box, child
-    integer(kind=c_int), intent(in), optional :: expand, fill
-    integer(kind=c_int), intent(in), optional :: padding
-    integer(kind=c_int), intent(in), optional :: atend
+    integer(c_int), intent(in), optional :: expand, fill
+    integer(c_int), intent(in), optional :: padding
+    integer(c_int), intent(in), optional :: atend
 
     ! Put a widget into a box
     !
@@ -304,7 +304,7 @@ contains
     ! 		the end of the box rather than the start.
     !-
 
-    integer(kind=c_int) :: iexp, ifill, ipad, iend
+    integer(c_int) :: iexp, ifill, ipad, iend
 
     if (present(expand)) then
        iexp = expand
@@ -331,7 +331,7 @@ contains
     if (c_associated(g_object_get_data(box, "horizontal"//c_null_char))) then
       call gtk_widget_set_hexpand (child, iexp)
       call gtk_widget_set_halign (child, ifill)
-    else     
+    else
       call gtk_widget_set_vexpand (child, iexp)
       call gtk_widget_set_valign (child, ifill)
     end if
@@ -340,7 +340,7 @@ contains
     call gtk_widget_set_margin_end (child, ipad)
     call gtk_widget_set_margin_top (child, ipad)
     call gtk_widget_set_margin_bottom (child, ipad)
-      
+
     call gtk_box_append(box, child)
   end subroutine hl_gtk_box_pack
 
@@ -349,10 +349,10 @@ contains
        & col_spacing, row_homogeneous, col_homogeneous) result(table)
 
     type(c_ptr) :: table
-    integer(kind=c_int), intent(in), optional :: nrows, ncols
-    integer(kind=c_int), intent(in), optional :: homogeneous
-    integer(kind=c_int), intent(in), optional :: row_spacing, col_spacing
-    integer(kind=c_int), intent(in), optional :: row_homogeneous,&
+    integer(c_int), intent(in), optional :: nrows, ncols
+    integer(c_int), intent(in), optional :: homogeneous
+    integer(c_int), intent(in), optional :: row_spacing, col_spacing
+    integer(c_int), intent(in), optional :: row_homogeneous,&
          & col_homogeneous
 
     ! Utility interface to create a table container
@@ -377,7 +377,7 @@ contains
     ! The NROWS and NCOLS arguments are ignored for Gtk+ 3.x
     !-
 
-    integer(kind=c_int) :: gridr, gridc
+    integer(c_int) :: gridr, gridc
     if (present(homogeneous)) then
        gridr = homogeneous
        gridc = homogeneous
@@ -402,10 +402,10 @@ contains
        & xpad, ypad, xopts, yopts)
 
     type(c_ptr), intent(in) :: table, widget
-    integer(kind=c_int), intent(in) :: ix, iy
-    integer(kind=c_int), intent(in), optional :: xspan, yspan
-    integer(kind=c_int), intent(in), optional :: xpad, ypad
-    integer(kind=c_int), intent(in), optional :: xopts, yopts
+    integer(c_int), intent(in) :: ix, iy
+    integer(c_int), intent(in), optional :: xspan, yspan
+    integer(c_int), intent(in), optional :: xpad, ypad
+    integer(c_int), intent(in), optional :: xopts, yopts
 
     ! Attach a widget to a table
     !
@@ -424,8 +424,8 @@ contains
     ! N.B. GTK_SHRINK in the options is ignored in Gtk+ 3.x
     !-
 
-    integer(kind=c_int) :: ixsz, iysz
-    integer(kind=c_int) :: ixexp, iyexp, ixfill, iyfill
+    integer(c_int) :: ixsz, iysz
+    integer(c_int) :: ixexp, iyexp, ixfill, iyfill
 
     if (present(xspan)) then
        ixsz = xspan
@@ -437,7 +437,7 @@ contains
     else
        iysz = 1
     end if
-    
+
     if (present(xopts)) then
        print *, "In GTK 4 GTK_EXPAND and GTK_FILL were removed"
     else
@@ -471,7 +471,7 @@ contains
   subroutine hl_gtk_table_expand(table, ny, nx)
 
     type(c_ptr), intent(in) :: table
-    integer(kind=c_int), intent(in), optional :: ny, nx
+    integer(c_int), intent(in), optional :: ny, nx
 
     ! Add rows and/or columns to a table
     !
@@ -491,9 +491,9 @@ contains
        & scrollable, group, switch_page, data) result(nbook)
 
     type(c_ptr) :: nbook
-    integer(kind=c_int), intent(in), optional :: show_tabs
-    integer(kind=c_int), intent(in), optional :: tab_position
-    integer(kind=c_int), intent(in), optional :: popup, scrollable
+    integer(c_int), intent(in), optional :: show_tabs
+    integer(c_int), intent(in), optional :: tab_position
+    integer(c_int), intent(in), optional :: popup, scrollable
     character(kind=c_char), intent(in), optional, dimension(*), target :: group
     type(c_funptr), optional :: switch_page
     type(c_ptr), intent(in), optional :: data
@@ -554,10 +554,10 @@ contains
   function hl_gtk_notebook_add_page(nbook, page, position, at_start, &
        & reorderable, detachable, label) result(location)
 
-    integer(kind=c_int) :: location
+    integer(c_int) :: location
     type(c_ptr), intent(in) :: nbook, page
-    integer(kind=c_int), intent(in), optional :: position
-    integer(kind=c_int), intent(in), optional :: at_start, reorderable, &
+    integer(c_int), intent(in), optional :: position
+    integer(c_int), intent(in), optional :: at_start, reorderable, &
          & detachable
     character(kind=c_char), dimension(*), intent(in), optional :: label
 
@@ -578,7 +578,7 @@ contains
     !-
 
     type(c_ptr) :: lwidget
-    integer(kind=c_int) :: istart
+    integer(c_int) :: istart
 
     if (present(label)) then
        lwidget = gtk_label_new(label)
@@ -616,8 +616,8 @@ contains
        & hsize, vsize, hadjustment, vadjustment) result(win)
 
     type(c_ptr) :: win
-    integer(kind=c_int), intent(in), optional :: hpolicy, vpolicy
-    integer(kind=c_int), intent(in), optional :: hsize, vsize
+    integer(c_int), intent(in), optional :: hpolicy, vpolicy
+    integer(c_int), intent(in), optional :: hsize, vsize
     type(c_ptr), intent(in), optional :: hadjustment, vadjustment
 
     ! Create a scrolled window, with convenient settings.
@@ -627,7 +627,7 @@ contains
     ! VPOLICY: c_int: optional: Whether to show the vertical scrollbar
     ! 		default- GTK_POLICY_AUTOMATIC, allowed- any GTK_POLICY_TYPE
     ! HSIZE: c_int: optional: The size of the window in the horizontal
-    ! 		direction. 
+    ! 		direction.
     ! VSIZE: c_int: optional: The size of the window in the vertical
     ! 		direction.
     ! HADJUSTMENT: c_ptr: optional: An adjustment widget to use in place
@@ -638,7 +638,7 @@ contains
     ! 		direction. Removed in GTK 4.
     !-
 
-    integer(kind=c_int) :: hpol, vpol, hsz, vsz
+    integer(c_int) :: hpol, vpol, hsz, vsz
     logical :: have_size, have_policy
 
     ! Set up the scroll bar policies.
@@ -688,7 +688,7 @@ contains
   !+
   subroutine hl_gtk_scrolled_window_add(win, child, viewport)
     type(c_ptr), intent(in) :: win, child
-    integer(kind=c_int), intent(in), optional :: viewport
+    integer(c_int), intent(in), optional :: viewport
 
     ! Add a widget to a scrolled window.
     !

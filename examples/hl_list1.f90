@@ -58,8 +58,8 @@ contains
     type(c_ptr), value, intent(in) :: list, gdata
 
     integer, pointer :: fdata
-    integer(kind=c_int) :: nsel
-    integer(kind=c_int), dimension(:), allocatable :: selections
+    integer(c_int) :: nsel
+    integer(c_int), dimension(:), allocatable :: selections
 
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
@@ -138,8 +138,8 @@ contains
   subroutine swap_rows(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    integer(kind=c_int) :: nsel, nrows
-    integer(kind=c_int), dimension(:), allocatable :: selections
+    integer(c_int) :: nsel, nrows
+    integer(c_int), dimension(:), allocatable :: selections
     integer :: i
 
     nsel = hl_gtk_list1_get_selections(ihlist, selections)
@@ -148,7 +148,7 @@ contains
     select case(nsel)
     case(0) ! No selected rows (roll the list)
        allocate(selections(nrows))
-       selections = (/ (i-1, i=1, nrows) /)
+       selections = [ (i-1, i=1, nrows) ]
        selections = cshift(selections, 1)
        call hl_gtk_list1_reorder(ihlist, selections)
     case(1) ! One row selected (move it up one unless it's the first)

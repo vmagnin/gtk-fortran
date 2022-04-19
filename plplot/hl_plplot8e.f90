@@ -46,9 +46,9 @@ module common_ex8
   implicit none
   type(c_ptr) :: window, draw, alt_sl, az_sl, fun_but, col_but, &
        & facet_but, scont_but, bcont_but, qbut
-  integer(kind=c_int) :: disp_type=0, ifun=1
-  real(kind=c_double) :: alt=30._c_double, az=60._c_double
-  integer(kind=c_int) :: width, height
+  integer(c_int) :: disp_type=0, ifun=1
+  real(c_double) :: alt=30._c_double, az=60._c_double
+  integer(c_int) :: width, height
   type(c_ptr) :: my_app
 end module common_ex8
 
@@ -63,12 +63,12 @@ contains
   subroutine draw_08(area, type, alt, az, rosen)
     type(c_ptr), intent(in) :: area
     integer, intent(in) :: type, rosen
-    real(kind=plflt), intent(in) :: alt, az
+    real(plflt), intent(in) :: alt, az
     integer i, j, xpts, ypts, xdim, ydim
     !      xdim is the leading dimension of z, xpts <= xdim is the leading
     !      dimension of z that is defined.
     parameter (xdim=99, ydim=100, xpts=35, ypts=46)
-    real(kind=plflt) x(xdim), y(ydim), z(xdim,ypts), xx, yy, r
+    real(plflt) x(xdim), y(ydim), z(xdim,ypts), xx, yy, r
 
     character(len=80) :: title
     character(len=20) :: geometry
@@ -80,31 +80,31 @@ contains
 
     integer nlevel
     parameter (nlevel = 10)
-    real(kind=plflt) zmin, zmax, step, clevel(nlevel)
+    real(plflt) zmin, zmax, step, clevel(nlevel)
     ! Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
-    if (plparseopts_rc .ne. 0) stop "plparseopts error"
+    if (plparseopts_rc /= 0) stop "plparseopts error"
 
     write(title, "('#frPLplot Example 8 - Alt=',I3,', Az=',I3)")&
          & nint(alt), nint(az)
 
     do i = 1,xpts
        x(i) = dble(i-1-(xpts/2))/dble (xpts/2)
-       if (rosen.eq.1) x(i) = 1.5_plflt*x(i)
+       if (rosen == 1) x(i) = 1.5_plflt*x(i)
     enddo
     do j = 1,ypts
        y(j) = dble(j-1-(ypts/2))/dble (ypts/2)
-       if (rosen.eq.1) y(j) = y(j) + 0.5_plflt
+       if (rosen == 1) y(j) = y(j) + 0.5_plflt
     enddo
 
     do i=1,xpts
        xx = x(i)
        do j=1,ypts
           yy = y(j)
-          if (rosen.eq.1) then
+          if (rosen == 1) then
              z(i,j) = (1._plflt - xx)**2 + 100._plflt*(yy - xx**2)**2
              !            The log argument may be zero for just the right grid.
-             if (z(i,j).gt.0._plflt) then
+             if (z(i,j) > 0._plflt) then
                 z(i,j) = log(z(i,j))
              else
                 z(i,j) = -5._plflt
@@ -131,12 +131,12 @@ contains
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
     plsetopt_rc = plsetopt( 'geometry', geometry)
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     call plinit
 
@@ -152,7 +152,7 @@ contains
     call plcol0(3)
     call plmtex('t', 1.0_plflt, 0.5_plflt, 0.5_plflt, title)
     call plcol0(1)
-    if (rosen.eq.1) then
+    if (rosen == 1) then
        call plw3d(1.0_plflt, 1.0_plflt, 1.0_plflt, -1.5_plflt, &
             1.5_plflt, -0.5_plflt, 1.5_plflt, zmin, zmax, alt,az)
     else
@@ -186,7 +186,7 @@ contains
 
   !----------------------------------------------------------------------------
   subroutine cmap1_init(gray)
-    !      For gray.eq.1, basic grayscale variation from half-dark
+    !      For gray == 1, basic grayscale variation from half-dark
     !      to light.  Otherwise, hue variations around the front of the
     !      colour wheel from blue to green to red with constant lightness
     !      and saturation.
@@ -194,12 +194,12 @@ contains
     use plplot
     implicit none
     integer gray
-    real(kind=plflt) i(0:1), h(0:1), l(0:1), s(0:1)
+    real(plflt) i(0:1), h(0:1), l(0:1), s(0:1)
     !      left boundary
     i(0) = 0._plflt
     !      right boundary
     i(1) = 1._plflt
-    if (gray.eq.1) then
+    if (gray == 1) then
        !        hue -- low: red (arbitrary if s=0)
        h(0) = 0.0_plflt
        !        hue -- high: red (arbitrary if s=0)
@@ -243,7 +243,7 @@ contains
     implicit none
 
     integer   i, j, nx, ny, xdim
-    real(kind=plflt)    f(xdim, ny), fmin, fmax
+    real(plflt)    f(xdim, ny), fmin, fmax
 
     fmax = f(1, 1)
     fmin = fmax
@@ -356,7 +356,7 @@ contains
     type(c_ptr) :: pixb
     character(len=120), dimension(:), allocatable :: files
     character(len=120) :: the_file
-    integer(kind=c_int) :: ipick
+    integer(c_int) :: ipick
 
      ipick = hl_gtk_file_chooser_show(files, create=TRUE, current=TRUE, &
          & title="Output image file"//c_null_char, &
@@ -387,7 +387,7 @@ contains
     call gtk_window_set_child(window, base)
 
     ! The drawing area for the plot
-    draw = hl_gtk_drawing_area_new(size=(/width, height/), &
+    draw = hl_gtk_drawing_area_new(size=[width, height], &
          & has_alpha = FALSE, size_allocate=c_funloc(resize_area))
     call hl_gtk_box_pack(base, draw)
 

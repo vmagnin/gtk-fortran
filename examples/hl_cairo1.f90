@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin,
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
-! Last modifications: vmagnin 2020-06-17 (GTK 4), 2021-01-22
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2022-04-05
 !------------------------------------------------------------------------------
 
 module handlers
@@ -56,9 +56,9 @@ module handlers
   type(c_ptr) :: my_cairo_context
   integer(c_int) :: boolresult
   logical :: boolevent
-  integer(kind=c_int) :: width, height
+  integer(c_int) :: width, height
   logical :: rflag = .false.
-  integer(kind=c_int) :: xp0, yp0
+  integer(c_int) :: xp0, yp0
 
 contains
   ! User defined event handlers go here
@@ -130,7 +130,7 @@ contains
     integer(c_int), value, intent(in) :: keyval, keycode, state
     logical(c_bool) :: ret
     character(len=20) :: keyname
-    integer(kind=c_int) :: key_q
+    integer(c_int) :: key_q
 
     call convert_c_string(gdk_keyval_name(keyval), keyname)
     print *, "Keyval: ",keyval," Name: ", trim(keyname), "      Keycode: ", &
@@ -148,7 +148,7 @@ contains
 
   subroutine draw_pattern(widget)
     type(c_ptr) :: widget
-    real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
+    real(c_double), parameter :: pi = acos(-1.0_c_double)
     integer :: cstatus
     integer :: t
 
@@ -169,11 +169,11 @@ contains
     call cairo_set_source_rgb(my_cairo_context, 0.9_c_double, 0.8_c_double, &
          & 0.8_c_double)
     call cairo_set_line_width(my_cairo_context, 4._c_double)
-    call cairo_move_to(my_cairo_context, 0._c_double, 0._c_double)  
+    call cairo_move_to(my_cairo_context, 0._c_double, 0._c_double)
     call cairo_curve_to(my_cairo_context, 600._c_double, 50._c_double, &
          & 115._c_double, 545._c_double, &
          & real(width, c_double), real(height, c_double))
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     ! Lines:
     call cairo_set_source_rgb(my_cairo_context, 0._c_double, 0.5_c_double, &
@@ -183,7 +183,7 @@ contains
        call cairo_move_to(my_cairo_context, 0._c_double, real(t, c_double))
        call cairo_line_to(my_cairo_context, real(t, c_double), &
             & real(height, c_double))
-       call cairo_stroke(my_cairo_context) 
+       call cairo_stroke(my_cairo_context)
     end do
 
     ! Text:
@@ -206,8 +206,8 @@ contains
        call cairo_arc(my_cairo_context, 353._c_double+ &
             & 200._c_double*cos(t*2_c_double*pi/50), &
             & 350._c_double+200._c_double*sin(t*2._c_double*pi/50.), &
-            & 50._c_double, 0._c_double, 2.*pi) 
-       call cairo_stroke(my_cairo_context) 
+            & 50._c_double, 0._c_double, 2.*pi)
+       call cairo_stroke(my_cairo_context)
     end do
 
     ! Save:
@@ -226,7 +226,7 @@ contains
     ! Pointers toward our GTK widgets:
     type(c_ptr) :: my_drawing_area
     type(c_ptr) :: my_scroll_box
-    
+
     ! Properties of the main window :
     width = 700
     height = 700
@@ -236,8 +236,8 @@ contains
 
     my_drawing_area = hl_gtk_drawing_area_new(&
          & scroll=my_scroll_box, &
-         & size = (/width, height /), &
-         & ssize = (/ 400_c_int, 300_c_int /), &
+         & size = [width, height ], &
+         & ssize = [ 400_c_int, 300_c_int ], &
          & button_press_event=c_funloc(button_event_h), &
          & button_release_event=c_funloc(button_release_h), &
          & scroll_event=c_funloc(scroll_event_h), &

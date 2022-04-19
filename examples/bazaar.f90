@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, James Tappin
-! GTK 4 version: vmagnin 2020-05-28, 2021-01-28, 2022-03-10
+! GTK 4 version: vmagnin 2020-05-28, 2021-01-28, 2022-04-05
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -213,12 +213,13 @@ contains
   ! to the screen."
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
     use, intrinsic :: iso_c_binding, only: c_ptr, c_int, c_char
+    use, intrinsic :: iso_fortran_env, only: wp=>real64
 
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
     integer(c_int), value, intent(in) :: width, height
     type(c_ptr) :: my_pixbuf
     character(kind=c_char), dimension(:), pointer :: pixel
-    integer(kind=c_int) :: i, nch, rowstride
+    integer(c_int) :: i, nch, rowstride
     integer :: j
     integer :: x, y
 
@@ -248,7 +249,7 @@ contains
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
     print *, rowstride, nch, gdk_pixbuf_get_has_alpha(my_pixbuf)
-    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/width*height*nch/))
+    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [width*height*nch])
 
     ! pixel is an array with 4 bytes per pixel (RGBA)
     ! We use chars because we need unsigned integers
@@ -267,7 +268,7 @@ contains
     ! Green sinus:
     do j=0, width-1
       x = j
-      y = height/2 + int(50 * sin(j/10d0))
+      y = height/2 + int(50 * sin(j/10.0_wp))
       i = x * nch + y * rowstride + 1
       pixel(i)   = char(0)
       pixel(i+1) = char(255)
@@ -376,8 +377,8 @@ contains
 end module handlers
 
 !*******************************************************************************
-! In the main program, we declare the GTK application, connect it to its 
-! "activate" function where we will create the GUI, 
+! In the main program, we declare the GTK application, connect it to its
+! "activate" function where we will create the GUI,
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program bazaar

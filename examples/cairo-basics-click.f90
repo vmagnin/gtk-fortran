@@ -22,9 +22,10 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! GTK 4 version contributed by Vincent Magnin
-! Last modification: vmagnin 2020-05-28, 2021-01-22
+! Last modification: vmagnin 2020-05-28, 2022-04-05
 
 module handlers
+  use, intrinsic :: iso_fortran_env, only: wp=>real64
   use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_funptr, &
                          & c_funloc, c_null_char, c_double, c_bool
 
@@ -45,7 +46,7 @@ module handlers
 
   implicit none
   ! Circle radius:
-  real(8) :: radius = 100d0
+  real(wp) :: radius = 100.0_wp
 
 contains
   ! The GUI is defined here:
@@ -54,7 +55,7 @@ contains
     type(c_ptr)     :: window
     type(c_ptr)     :: my_drawing_area, controller, controller2
     integer(c_int)  :: width, height
-       
+
     window = gtk_application_window_new(app)
     width  = 700
     height = 700
@@ -67,7 +68,7 @@ contains
     call gtk_drawing_area_set_draw_func(my_drawing_area, &
                    & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
 
-    ! We need a gesture controller to detect mouse clicks: 
+    ! We need a gesture controller to detect mouse clicks:
     ! https://developer.gnome.org/gtk4/stable/GtkGestureClick.html
     ! https://developer.gnome.org/gtk4/stable/GtkWidget.html#gtk-widget-add-controller
     controller = gtk_gesture_click_new()
@@ -95,7 +96,7 @@ contains
     real(c_double), value, intent(in) :: x, y
     type(c_ptr) :: widget
     integer(c_int) :: width, height
-    real(8) :: d
+    real(wp) :: d
 
     print *, "Button ", gtk_gesture_single_get_current_button(gesture)
 
@@ -104,7 +105,7 @@ contains
 
     width  = gtk_widget_get_width(widget)
     height = gtk_widget_get_height(widget)
-    d = sqrt((x - width/2d0)**2 + (y - height/2d0)**2)
+    d = sqrt((x - width/2.0_wp)**2 + (y - height/2.0_wp)**2)
     print *, "Distance from the centre of the circle: ", d
   end subroutine click_cb
 
@@ -126,36 +127,38 @@ contains
   ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
-    integer(c_int), value, intent(in) :: width, height    
+    integer(c_int), value, intent(in) :: width, height
     integer(c_int)                    :: cstatus
     integer                           :: t
-    real(8), parameter                :: pi = 3.14159265358979323846d0
-print *, "draw"
+    real(wp), parameter               :: pi = acos(-1.0_wp)
+
+    print *, "draw"
+
     ! https://cairographics.org/manual/
     ! Note that Cairo numerical parameters are generally doubles.
 
     ! Horizontal and vertical thin blue lines:
     call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 1d0)
     call cairo_set_line_width(my_cairo_context, 1d0)
- 
+
     do t = 0, height, +100
       ! https://cairographics.org/manual/cairo-Paths.html#cairo-move-to
       call cairo_move_to(my_cairo_context, 0d0,       t*1d0)
       call cairo_line_to(my_cairo_context, width*1d0, t*1d0)
-      call cairo_stroke(my_cairo_context) 
+      call cairo_stroke(my_cairo_context)
     end do
- 
+
     do t = 0, width, +100
       call cairo_move_to(my_cairo_context, t*1d0, 0d0)
       call cairo_line_to(my_cairo_context, t*1d0, height*1d0)
-      call cairo_stroke(my_cairo_context) 
+      call cairo_stroke(my_cairo_context)
     end do
 
     ! A thick red circle at the centre:
     call cairo_set_source_rgb(my_cairo_context, 1d0, 0d0, 0d0)
     call cairo_set_line_width(my_cairo_context, 5d0)
     call cairo_arc(my_cairo_context, width/2d0, height/2d0, radius, 0d0, 2*pi)
-    call cairo_stroke(my_cairo_context) 
+    call cairo_stroke(my_cairo_context)
 
     ! Save the image as a PNG
     ! https://cairographics.org/manual/cairo-PNG-Support.html#cairo-surface-write-to-png

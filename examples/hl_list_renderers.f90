@@ -34,7 +34,7 @@ module ln_handlers
   use gdk_pixbuf_hl
 
   use gtk, only: gtk_button_new, gtk_window_set_child, &
-               & gtk_widget_show, gtk_window_destroy 
+               & gtk_widget_show, gtk_window_destroy
   use g, only: g_object_set_property
   use gdk_pixbuf_hl
 
@@ -52,16 +52,16 @@ contains
 
   subroutine list_select(list, gdata) bind(c)
     type(c_ptr), value, intent(in) :: list, gdata
-    integer(kind=c_int) :: nsel
-    integer(kind=c_int), dimension(:), allocatable :: selections
-    real(kind=c_double) :: x, x3
-    integer(kind=c_int64_t) :: n4
-    real(kind=c_float) :: nlog
+    integer(c_int) :: nsel
+    integer(c_int), dimension(:), allocatable :: selections
+    real(c_double) :: x, x3
+    integer(c_int64_t) :: n4
+    real(c_float) :: nlog
     character(len=30) :: name
     character(len=10) :: nodd
     character :: code
     type(c_ptr) :: pixbuf
-    integer(kind=c_short), dimension(:,:,:), allocatable :: pixels
+    integer(c_short), dimension(:,:,:), allocatable :: pixels
 
     nsel = hl_gtk_listn_get_selections(C_NULL_PTR, selections, list)
     if (nsel == 0) then
@@ -95,13 +95,13 @@ contains
   subroutine cell_edited(renderer, path, text, gdata) bind(c)
     type(c_ptr), value, intent(in) :: renderer, path, text, gdata
 
-    ! Callback for edited cells. 
+    ! Callback for edited cells.
     character(len=200) :: fpath, ftext
-    integer(kind=c_int) :: irow
-    integer(kind=c_int), pointer :: icol
+    integer(c_int) :: irow
+    integer(c_int), pointer :: icol
     integer :: ios
     type(c_ptr) :: pcol, list
-    real(kind=c_double) :: x
+    real(c_double) :: x
 
     call convert_c_string(path, fpath)
     read(fpath, *) irow
@@ -135,7 +135,7 @@ contains
 
     ! Basic callback to report what's called
     character(len=200) :: fpath, ftext
-    integer(kind=c_int) :: irow
+    integer(c_int) :: irow
 
     call c_f_string(path, fpath)
     call c_f_string(text, ftext)
@@ -157,13 +157,13 @@ contains
     print *, "Combo sent changed signal from ", trim(fpath)
 
   end subroutine ccell_changed
-  
+
   subroutine cell_clicked(renderer, path, gdata) bind(c)
     type(c_ptr), value, intent(in) :: renderer, path, gdata
 
     character(len=200) :: fpath
-    integer(kind=c_int) :: irow
-    integer(kind=c_int), pointer :: icol
+    integer(c_int) :: irow
+    integer(c_int), pointer :: icol
     type(c_ptr) :: pcol, list
     logical :: state
 
@@ -200,12 +200,12 @@ contains
     ! This routine is not normally called by the application developer.
     !-
     character(len=200) :: fpath
-    integer(kind=c_int) :: irow
-    integer(kind=c_int), pointer :: icol
-    integer(kind=c_int) :: i
+    integer(c_int) :: irow
+    integer(c_int), pointer :: icol
+    integer(c_int) :: i
     type(c_ptr) :: pcol, list
     logical :: state
-    integer(kind=c_int) :: nrows
+    integer(c_int) :: nrows
 
     call convert_c_string(path, fpath)
     read(fpath, *) irow
@@ -236,10 +236,10 @@ contains
     ! Note that the column index is passed via the DATA argument, so
     ! far as I can see the only other way is to use constants.
     character(len=20) :: rstring
-    real(kind=c_double) :: dval
+    real(c_double) :: dval
     type(gvalue), target :: dvalue, svalue
     type(c_ptr) :: val_ptr
-    integer(kind=c_int), pointer :: colno
+    integer(c_int), pointer :: colno
 
     call c_f_pointer(data, colno)
 
@@ -263,14 +263,14 @@ contains
     type(c_ptr), value, intent(in)  :: app, gdata
     integer, parameter :: ncols = 11, nrows=10
     character(len=35) :: line
-    integer(kind=c_int) :: i, ltr
-    integer(kind=type_kind), dimension(ncols) :: ctypes
+    integer(c_int) :: i, ltr
+    integer(type_kind), dimension(ncols) :: ctypes
     character(len=20), dimension(ncols) :: titles, renderers
-    integer(kind=c_int), dimension(ncols) :: editable
-    integer(kind=c_int), dimension(ncols) :: widths
-    integer(kind=c_int), dimension(2), target :: fmt_col = [1, 2]
-    integer(kind=c_short), dimension(3, 100, 24) :: image
-    integer(kind=c_short), dimension(nrows) :: red, green, blue
+    integer(c_int), dimension(ncols) :: editable
+    integer(c_int), dimension(ncols) :: widths
+    integer(c_int), dimension(2), target :: fmt_col = [1, 2]
+    integer(c_short), dimension(3, 100, 24) :: image
+    integer(c_short), dimension(nrows) :: red, green, blue
     type(c_ptr) :: pixbuf
 
     red =   [0_c_short, 255_c_short, 255_c_short,   0_c_short,   0_c_short,&
@@ -289,19 +289,19 @@ contains
     call gtk_window_set_child(ihwin, base)
 
     ! Now make a multi column list with multiple selections enabled
-    ctypes = (/ G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_DOUBLE, &
+    ctypes = [ G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_DOUBLE, &
          & G_TYPE_UINT64, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_INT,&
-         & gdk_pixbuf_get_type(), G_TYPE_STRING , G_TYPE_BOOLEAN /)
-    editable = (/ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, &
-         & FALSE, TRUE, TRUE /)
+         & gdk_pixbuf_get_type(), G_TYPE_STRING , G_TYPE_BOOLEAN ]
+    editable = [ TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, &
+         & FALSE, TRUE, TRUE ]
     widths = [-1, -1, -1, -1, -1, -1, -1, 150, -1, -1, -1]
 
-    titles = (/ character(len=20) :: "Name", "N", "3N", "Log(n)", &
-         & "N**4", "Odd?", "Select?", "Fraction", "Colour", "Choose", "Pick" /)
-    renderers = (/ hl_gtk_cell_text, hl_gtk_cell_spin, hl_gtk_cell_text, &
+    titles = [ character(len=20) :: "Name", "N", "3N", "Log(n)", &
+         & "N**4", "Odd?", "Select?", "Fraction", "Colour", "Choose", "Pick" ]
+    renderers = [ hl_gtk_cell_text, hl_gtk_cell_spin, hl_gtk_cell_text, &
          & hl_gtk_cell_text, hl_gtk_cell_text, hl_gtk_cell_text,&
          & hl_gtk_cell_toggle, hl_gtk_cell_progress, hl_gtk_cell_pixbuf, &
-         & hl_gtk_cell_combo, hl_gtk_cell_radio /)
+         & hl_gtk_cell_combo, hl_gtk_cell_radio ]
 
     ihlist = hl_gtk_listn_new(types=ctypes, &
          & changed=c_funloc(list_select),&
@@ -325,7 +325,7 @@ contains
     end do
     ! Now put <nrows> rows into it
     call hl_gtk_listn_ins(ihlist, count=nrows)
-    do i=1,nrows 
+    do i=1,nrows
        write(line,"('List entry number ',I0)") i
        ltr=len_trim(line)+1
        line(ltr:ltr)=c_null_char

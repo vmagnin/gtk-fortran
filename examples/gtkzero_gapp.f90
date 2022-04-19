@@ -52,7 +52,7 @@ contains
     ! Don't forget that C strings must end with a null char:
     call gtk_window_set_title(window, "Hello GLib & GTK world!"//c_null_char)
     ! If you don't show it, nothing will appear on screen...
-    call gtk_widget_show(window)  
+    call gtk_widget_show(window)
   end subroutine activate
 
 end module handlers
@@ -80,7 +80,7 @@ program gtkzero
   ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
   app = gtk_application_new("gtk-fortran.examples.gtkzero"//c_null_char, &
                             & G_APPLICATION_FLAGS_NONE)
-  ! The activate signal will be sent by g_application_run(). 
+  ! The activate signal will be sent by g_application_run().
   ! The c_funloc() function returns the C address of the callback function.
   ! The c_null_ptr means no data is transfered to the callback function.
   call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), c_null_ptr)

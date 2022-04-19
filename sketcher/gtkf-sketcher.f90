@@ -23,7 +23,7 @@
 ! GTK Fortran Code Sketcher using UI definitions
 ! Contributed by Jens Hunger
 ! Last modifications: Harris Snyder 2020-07-11
-! vmagnin 2020-10-16, 2021-01-22
+! vmagnin 2020-10-16, 2022-04-07
 
 module widgets
   ! declares the used GTK widgets
@@ -158,6 +158,7 @@ module handlers
   use connect
 
   implicit none
+  integer :: log_unit
 
 contains
 
@@ -169,8 +170,9 @@ contains
 
     if (allocated(connections)) deallocate(connections)
 
-    inquire(unit=99,opened=lopened)
-    if (lopened) close(99)
+    ! Closes the gtkf-sketcher.log file if necessary:
+    inquire(unit=log_unit,opened=lopened)
+    if (lopened) close(log_unit)
 
     call g_slist_free(gslist)
 
@@ -257,7 +259,7 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: file_open
     type(c_ptr), value :: widget, gdata
 
-    integer(kind=c_int) :: isel
+    integer(c_int) :: isel
     character(len=120), dimension(:), allocatable :: chfile
     character(len=30), dimension(2) :: filters
     character(len=30), dimension(2) :: filtnames
@@ -278,7 +280,7 @@ contains
 
     isel = hl_gtk_file_chooser_show(chfile, cdir=working_dir, create=FALSE,&
          & title="Select input file"//c_null_char, filter=filters, &
-         & filter_name=filtnames, wsize=(/ 600_c_int, 400_c_int /), edit_filters=TRUE, &
+         & filter_name=filtnames, wsize=[ 600_c_int, 400_c_int ], edit_filters=TRUE, &
          & parent=window)
     if (.not. is_UNIX_OS()) then
         do i = 1, len(working_dir)
@@ -340,7 +342,7 @@ contains
 
     ! Necessary if file_open() is called several times:
     if (allocated(connections)) deallocate(connections)
-    
+
     allocate(connections(n_connections))
 
     ! Connections will be recounted as they are put into the connections array:
@@ -371,7 +373,7 @@ contains
 
     type(c_ptr):: model, val, textptr
     type(gtktreeiter), target :: iter
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
     type(gvalue), target :: value
 
     model = gtk_combo_box_get_model(combobox)
@@ -387,11 +389,11 @@ contains
     use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     !GCC$ ATTRIBUTES DLLEXPORT :: write_files
     type(c_ptr), value :: widget, gdata
-    integer(kind=c_int) :: valid
+    integer(c_int) :: valid
     character(len=256,kind=c_char)::subdir, license_file, line, &
          & handlerfile, appwindow
     integer::status_read, wunit, hunit, shellout_err
-    integer(kind=c_int)::i,j
+    integer(c_int)::i,j
     logical::already_used, lexist
     type(c_ptr) :: gpointer,object_name_ptr
     character(len=128) :: f_string, f_string_ori
@@ -400,7 +402,7 @@ contains
     &"@GTKF_PROG_PREFIX@"
 
     if (.not.file_loaded) then
-      status_read=hl_gtk_message_dialog_show((/"Please load some UI file first!"/),&
+      status_read=hl_gtk_message_dialog_show(["Please load some UI file first!"],&
         & GTK_BUTTONS_OK, title="No UI file loaded yet"//c_null_char, &
         & parent=window)
       return
@@ -411,7 +413,7 @@ contains
 
       subdir=filename(index(filename,"/",.true.)+1:index(filename,".",.true.)-1)
       if (create_subdir) then
-        if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//c_null_char,488_c_int) .ge. 0) then
+        if (g_mkdir_with_parents (subdir(1:len_trim(subdir))//c_null_char,488_c_int) >= 0) then
           working_dir=working_dir(1:len_trim(working_dir))//"/"//subdir
 
           print *, "2) Working dir: ", TRIM(ADJUSTL(working_dir))
@@ -496,10 +498,10 @@ contains
           gpointer=g_slist_nth_data (gslist,i)
           object_name_ptr=gtk_buildable_get_buildable_id (gpointer)
           call C_F_string_ptr(object_name_ptr, F_string)
-          if (len_trim(f_string).gt.0) then
+          if (len_trim(f_string) > 0) then
             do
               j=index(f_string,"-")
-              if (j.gt.0) then
+              if (j > 0) then
                 f_string(j:j)="_"
               else
                 exit
@@ -541,11 +543,11 @@ contains
         do
           read(40,'(A)',iostat=status_read) line
           if ( status_read /= 0 ) exit
-          if (index(line,"handler").gt.0) then
+          if (index(line,"handler") > 0) then
             read(40,'(A)',iostat=status_read) line
             do
               read(40,'(A)',iostat=status_read) line
-              if ((status_read /= 0).or.(len_trim(line).eq.0)) exit
+              if ((status_read /= 0).or.(len_trim(line) == 0)) exit
               write(hunit,'(A)')"  "//line(1:len_trim(line))
             enddo
           endif
@@ -600,9 +602,9 @@ contains
 
       do i=1,n_connections
         already_used=.false.
-        if (i.gt.1) then
+        if (i > 1) then
           do j=1,i-1
-            if (connections(i)%handler_name.eq.connections(j)%handler_name) then
+            if (connections(i)%handler_name == connections(j)%handler_name) then
               already_used=.true.
               exit
             endif
@@ -611,7 +613,7 @@ contains
         if (.not.already_used) then
           write(hunit,'(A)')"! handler function for signal "//connections(i)%signal_name(1:len_trim(connections(i)%signal_name))//&
             " ("//connections(i)%object_name(1:len_trim(connections(i)%object_name))//")"
-          if (index(connections(i)%signal_name,"event").gt.0) then
+          if (index(connections(i)%signal_name,"event") > 0) then
             write(hunit,'(A)')"  function "//connections(i)%handler_name(1:len_trim(connections(i)%handler_name))//&
               " (widget, event, gdata) result(ret) bind(c)"
             write(hunit,'(A)')"    use, intrinsic :: iso_c_binding, only: c_ptr, c_int"
@@ -684,11 +686,11 @@ contains
           gpointer=g_slist_nth_data (gslist,i)
           object_name_ptr=gtk_buildable_get_buildable_id (gpointer)
           call C_F_string_ptr(object_name_ptr, F_string)
-          if (len_trim(f_string).gt.0) then
+          if (len_trim(f_string) > 0) then
             f_string_ori=f_string
             do
               j=index(f_string,"-")
-              if (j.gt.0) then
+              if (j > 0) then
                 f_string(j:j)="_"
               else
                 exit
@@ -805,7 +807,7 @@ program gtkfsketcher
   error = c_null_ptr
 
   call get_environment_variable("PWD", base_dir)
-  open(99, file="gtkf-sketcher.log", action='write')
+  open(newunit=log_unit, file="gtkf-sketcher.log", action='write')
 
   ! Initialize the GTK Library
   call gtk_init ()

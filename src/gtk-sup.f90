@@ -29,7 +29,7 @@
 !*
 ! Supplementary material
 ! This module contains some supplementary material useful for writing GTK
-! programs in Fortran.  The functions are not listed in the 
+! programs in Fortran.  The functions are not listed in the
 ! gtk-fortran-index.csv file.
 !
 ! These are mostly definitions that are not (currenty) extracted by the
@@ -65,51 +65,51 @@ module gtk_sup
   !-
 
   ! Gtype definitions
-  integer, parameter :: type_kind=c_size_t
-  integer(kind=c_int), parameter :: g_type_fundamental_shift=2
-  integer(kind=type_kind), parameter :: G_TYPE_INVALID = &
+  integer, parameter :: type_kind = c_size_t
+  integer(c_int), parameter :: g_type_fundamental_shift=2
+  integer(type_kind), parameter :: G_TYPE_INVALID = &
        & ishft(0_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_NONE = &
+  integer(type_kind), parameter :: G_TYPE_NONE = &
        & ishft(1_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_INTERFACE = &
+  integer(type_kind), parameter :: G_TYPE_INTERFACE = &
        & ishft(2_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_CHAR = &
+  integer(type_kind), parameter :: G_TYPE_CHAR = &
        & ishft(3_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_UCHAR = &
+  integer(type_kind), parameter :: G_TYPE_UCHAR = &
        & ishft(4_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_BOOLEAN = &
+  integer(type_kind), parameter :: G_TYPE_BOOLEAN = &
        & ishft(5_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_INT = &
+  integer(type_kind), parameter :: G_TYPE_INT = &
        & ishft(6_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_UINT = &
+  integer(type_kind), parameter :: G_TYPE_UINT = &
        & ishft(7_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_LONG = &
+  integer(type_kind), parameter :: G_TYPE_LONG = &
        & ishft(8_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_ULONG = &
+  integer(type_kind), parameter :: G_TYPE_ULONG = &
        & ishft(9_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_INT64 = &
+  integer(type_kind), parameter :: G_TYPE_INT64 = &
        & ishft(10_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_UINT64 = &
+  integer(type_kind), parameter :: G_TYPE_UINT64 = &
        & ishft(11_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_ENUM = &
+  integer(type_kind), parameter :: G_TYPE_ENUM = &
        & ishft(12_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_FLAGS = &
+  integer(type_kind), parameter :: G_TYPE_FLAGS = &
        & ishft(13_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_FLOAT = &
+  integer(type_kind), parameter :: G_TYPE_FLOAT = &
        & ishft(14_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_DOUBLE = &
+  integer(type_kind), parameter :: G_TYPE_DOUBLE = &
        & ishft(15_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_STRING = &
+  integer(type_kind), parameter :: G_TYPE_STRING = &
        & ishft(16_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_POINTER = &
+  integer(type_kind), parameter :: G_TYPE_POINTER = &
        & ishft(17_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_BOXED = &
+  integer(type_kind), parameter :: G_TYPE_BOXED = &
        & ishft(18_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_PARAM = &
+  integer(type_kind), parameter :: G_TYPE_PARAM = &
        & ishft(19_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_OBJECT = &
+  integer(type_kind), parameter :: G_TYPE_OBJECT = &
        & ishft(20_type_kind, g_type_fundamental_shift)
-  integer(kind=type_kind), parameter :: G_TYPE_VARIANT = &
+  integer(type_kind), parameter :: G_TYPE_VARIANT = &
        & ishft(21_type_kind, g_type_fundamental_shift)
 
   !+
@@ -124,23 +124,23 @@ module gtk_sup
 
   ! Define a GtkTreeIter (this has to be pre-allocated in the calls)
   type, bind(c) :: gtktreeiter
-     integer(kind=c_int) :: intv=0
+     integer(c_int) :: intv=0
      type(c_ptr) :: p0=C_NULL_PTR, p1=C_NULL_PTR, p2=C_NULL_PTR
   end type gtktreeiter
 
   ! Define a spacemaker for GValue It's 24 bytes on 64 bit & 20 on 32,
   ! i.e. one long and 2 64-bit integers
   type, bind(c) :: gvalue
-     integer(kind=c_long) :: il = 0
-     integer(kind=c_int64_t), dimension(2) :: i64 = (/0, 0/)
+     integer(c_long) :: il = 0
+     integer(c_int64_t), dimension(2) :: i64 = [0, 0]
   end type gvalue
 
   ! Define a GtkTextIter (this has to be pre-allocated in the calls)
-  type, bind(c) :: gtktextiter 
+  type, bind(c) :: gtktextiter
      type(c_ptr) :: d1, d2
-     integer(kind=c_int) :: d3, d4, d5, d6, d7, d8
+     integer(c_int) :: d3, d4, d5, d6, d7, d8
      type(c_ptr) :: d9, d10
-     integer(kind=c_int) :: d11, d12, d13
+     integer(c_int) :: d11, d12, d13
      type(c_ptr) :: d14
   end type gtktextiter
 
@@ -149,8 +149,8 @@ module gtk_sup
   ! GError is a transparent structure that returns error information.
   !-
   type, bind(c) :: gerror
-     integer(kind=c_int32_t) :: domain
-     integer(kind=c_int) :: code
+     integer(c_int32_t) :: domain
+     integer(c_int) :: code
      type(c_ptr) :: message    ! A C pointer to the error message.
   end type gerror
 
@@ -187,8 +187,8 @@ module gtk_sup
      module procedure f_c_logical1
   end interface f_c_logical
 
-  ! String conversion routines below lazily use the C std library function 
-  ! strlen.  If this is not available for some bizarre reason, then a 
+  ! String conversion routines below lazily use the C std library function
+  ! strlen.  If this is not available for some bizarre reason, then a
   ! simple index of the null character will suffice.
   ! Contributed by Ian Harvey, 2014.
   interface
@@ -228,7 +228,7 @@ contains
     ! GVAL: gvalue: required: The GValue to clear.
     !-
     gval%il=0
-    gval%i64=(/0,0/)
+    gval%i64=[0,0]
   end subroutine clear_gvalue
 
   !*********************************
@@ -274,7 +274,7 @@ contains
   end subroutine C_F_string_ptr
 
 
-  ! Create a default character deferred length allocatable copy of the 
+  ! Create a default character deferred length allocatable copy of the
   ! value of a c string.
   ! Contributed by Ian Harvey, 2014.
   ! This requires a relatively recent gfortran.
@@ -327,21 +327,21 @@ contains
 !    character(kind=c_char), pointer :: f_array(:)
 !
 !    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
-!    ! Here we rely on sequence association.  f_array is an array expression 
-!    ! (one that happens to be an array designator), so it designates an 
-!    ! array element sequence of all the elements of the array.  That array 
-!    ! element sequence is then associated with an array of different length 
+!    ! Here we rely on sequence association.  f_array is an array expression
+!    ! (one that happens to be an array designator), so it designates an
+!    ! array element sequence of all the elements of the array.  That array
+!    ! element sequence is then associated with an array of different length
 !    ! (but same total number of characters) inside do_association.
 !    call do_association(size(f_array), f_array, f_string)
 !  end subroutine c_f_string_ptr
 
   ! Worker routine for c_f_string_ptr
   !
-  ! It is processor dependent whether pointers associated with the actual 
-  ! argument are associated with the dummy argument inside the procedure.  
-  ! It is similarly processor dependent whether pointers associated with a 
-  ! dummy argument remain associated after the procedure exits.  But in 
-  ! F2003, this is the only way.  In F2008 things are a little better.  In 
+  ! It is processor dependent whether pointers associated with the actual
+  ! argument are associated with the dummy argument inside the procedure.
+  ! It is similarly processor dependent whether pointers associated with a
+  ! dummy argument remain associated after the procedure exits.  But in
+  ! F2003, this is the only way.  In F2008 things are a little better.  In
   ! F201X they are probably quite ok.
 !  subroutine do_association(l, str, f_string)
 !    integer, intent(in) :: l
@@ -355,7 +355,7 @@ contains
   subroutine convert_c_string_scalar(textptr, f_string, status)
     character(kind=c_char), dimension(:), intent(in) :: textptr
     character(len=*), intent(out) :: f_string
-    integer(kind=c_int), intent(out), optional :: status
+    integer(c_int), intent(out), optional :: status
 
     ! Convert a null-terminated c-string to  a fortran string
     !
@@ -457,7 +457,7 @@ contains
     integer :: i
     character(kind=c_char), dimension(:), pointer :: textptr
 
-    call c_f_pointer(ctext, textptr, (/ strlen(ctext) /))
+    call c_f_pointer(ctext, textptr, [ strlen(ctext) ])
 
     do i = 1, size(textptr)
       if (i > len(f_string)) then
@@ -491,7 +491,7 @@ contains
     integer :: i, j, ii, count
     character(kind=c_char), dimension(:), pointer :: textptr
 
-    call c_f_pointer(ctext, textptr, (/ strlen(ctext) /))
+    call c_f_pointer(ctext, textptr, [ strlen(ctext) ])
     ! count = COUNT(textptr == c_new_line)
     count = 1
     i = 1
@@ -528,7 +528,7 @@ contains
   subroutine convert_f_string_a(f_string, textptr, length)
     character(len=*), intent(in), dimension(:) :: f_string
     character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
-    integer(kind=c_int), intent(out), optional :: length
+    integer(c_int), intent(out), optional :: length
 
     ! Convert a fortran string array into a null-terminated, LF_separated
     ! c-string
@@ -545,7 +545,7 @@ contains
     allocate(lfstr(nfstr))
     lfstr = len_trim(f_string)
 
-    lcstr = sum(lfstr) 
+    lcstr = sum(lfstr)
     do i = 1, nfstr-1
        if (lfstr(i) == 0) then
           lcstr = lcstr+1
@@ -584,7 +584,7 @@ contains
   subroutine convert_f_string_s(f_string, textptr, length)
     character(len=*), intent(in) :: f_string
     character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
-    integer(kind=c_int), intent(out), optional :: length
+    integer(c_int), intent(out), optional :: length
 
     ! Convert a fortran string into a null-terminated c-string
     !
@@ -619,7 +619,7 @@ contains
   !+
   function c_f_logical(cbool)
     logical :: c_f_logical
-    integer(kind=c_int), intent(in) :: cbool
+    integer(c_int), intent(in) :: cbool
 
     ! Convert a gboolean to a Fortran logical
     !
@@ -635,7 +635,7 @@ contains
 
   !+
   function f_c_logical4(flog)
-    integer(kind=c_int) :: f_c_logical4
+    integer(c_int) :: f_c_logical4
     logical, intent(in) :: flog
 
     ! Convert a Fortran default logical to a gboolean
@@ -654,8 +654,8 @@ contains
 
   !+
   function f_c_logical1(flog)
-    integer(kind=c_int) :: f_c_logical1
-    logical(kind=1), intent(in) :: flog
+    integer(c_int) :: f_c_logical1
+    logical(1), intent(in) :: flog
 
     ! Convert a Fortran 1-byte logical to a gboolean
     !
@@ -677,7 +677,7 @@ contains
     logical :: is_UNIX_OS
     character(len=512) :: path
 
-    ! Returns .true. if the OS is of the UNIX type. On a Windows system, it 
+    ! Returns .true. if the OS is of the UNIX type. On a Windows system, it
     ! will return .false. because an absolute path can not begin by a slash.
     !-
 

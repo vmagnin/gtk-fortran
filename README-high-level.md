@@ -4,7 +4,7 @@ The high level interface for gtk-fortran is in the source file
 gtk-hl.f90. This provides a number of higher level interfaces to the
 GTK widget system, with the intent of making GUI construction more
 accessible to scientific programmers (the feel should not be too alien
-to anyone who has developed GUIs in IDL). The routines make use of the 
+to anyone who has developed GUIs in IDL). The routines make use of the
 optional arguments in Fortran>=90 to simplify creating and initializing widgets.
 
 ## Modules list:
@@ -16,7 +16,7 @@ optional arguments in Fortran>=90 to simplify creating and initializing widgets.
 * gtk_hl_button: Implements interfaces to various kinds of button.
 
 * gtk_hl_chooser: Implements file choosers that do not need variadic
-       arguments. 
+       arguments.
 
 * gtk_hl_combobox: Implements interfaces to text comboboxes.
 
@@ -39,7 +39,7 @@ optional arguments in Fortran>=90 to simplify creating and initializing widgets.
 * gtk_hl_spin_slider: Implements spin boxes and sliders (including
        convenient integer interfaces).
 
-* gtk_hl_tree: Implements interfaces to the list & tree widgets. 
+* gtk_hl_tree: Implements interfaces to the list & tree widgets.
 
 
 In addition two graphics modules are available, but are not automatically
@@ -52,7 +52,7 @@ included with the gtk_hl module:
        plplot.
 
 * gdk_pixbuf_hl: Implements convenient interfaces to GDK pixbufs and
-       formats. 
+       formats.
 
 Several demos are provided in the examples/ directory: they have the
 prefix hl_.

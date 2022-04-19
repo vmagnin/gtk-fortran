@@ -22,7 +22,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
-! Contributed by James Tappin 
+! Contributed by James Tappin
 ! Last modification: 2012-08-30, vmagnin 2020-06-04 (GTK 4), 2020-07-15
 !
 !! A demo of the HL infobar widget.
@@ -37,7 +37,7 @@ module ib_handers
        & gtk_widget_show, TRUE, FALSE, &
        & GTK_MESSAGE_INFO, GTK_MESSAGE_WARNING, &
        & GTK_MESSAGE_QUESTION, GTK_MESSAGE_ERROR, GTK_MESSAGE_OTHER
-  
+
   implicit none
   type(c_ptr) :: tlwindow, infobar
   enum, bind(c)
@@ -59,7 +59,7 @@ contains
 
   subroutine response_h(widget, id, data) bind(c)
    type(c_ptr), value, intent(in) :: widget, data
-   integer(kind=c_int), value, intent(in) :: id
+   integer(c_int), value, intent(in) :: id
 
    select case(id)
    case(my_quit)
@@ -79,8 +79,8 @@ contains
   subroutine button_h(widget, data) bind(c)
    type(c_ptr), value, intent(in) :: widget, data
 
-   integer(kind=c_int), pointer :: index
-   integer(kind=c_int), parameter, dimension(5) :: ids=[my_ok, my_yes, &
+   integer(c_int), pointer :: index
+   integer(c_int), parameter, dimension(5) :: ids=[my_ok, my_yes, &
         & my_no, my_ignore, my_quit]
 
    call c_f_pointer(data, index)
@@ -125,7 +125,7 @@ contains
     use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
-    integer(kind=c_int), dimension(5), target :: button_states = &
+    integer(c_int), dimension(5), target :: button_states = &
          & [0,1,2,3,4]
     type(c_ptr) :: jb, junk
 

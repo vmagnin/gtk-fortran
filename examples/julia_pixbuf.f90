@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2021-06-07
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2022-04-16
 !------------------------------------------------------------------------------
 
 module global_widgets
@@ -30,7 +30,7 @@ module global_widgets
   type(c_ptr) :: my_pixbuf, my_drawing_area, spinButton1, spinButton2, spinButton3
   type(c_ptr) :: textView, buffer, scrolled_window, statusBar, combo1
   character(kind=c_char), dimension(:), pointer :: pixel
-  integer(kind=c_int) :: nch, rowstride, width, height, pixwidth, pixheight
+  integer(c_int) :: nch, rowstride, width, height, pixwidth, pixheight
   logical :: computing = .false.
   character(LEN=80) :: string
 end module global_widgets
@@ -62,9 +62,10 @@ module handlers
   & GTK_ORIENTATION_VERTICAL, gtk_grid_set_column_homogeneous, &
   & gtk_grid_set_row_homogeneous, gtk_statusbar_remove_all, &
   & gtk_widget_set_vexpand
-  
+
   use g, only: g_usleep, g_main_context_iteration, g_main_context_pending
   use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_char, C_NEW_LINE
+  use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
 
   implicit none
   type(c_ptr)    :: my_window
@@ -99,9 +100,9 @@ contains
     use cairo, only: cairo_paint
     use gdk, only: gdk_cairo_set_source_pixbuf
     use global_widgets, only: my_pixbuf
- 
+
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
-    integer(c_int), value, intent(in) :: width, height    
+    integer(c_int), value, intent(in) :: width, height
 
     ! We redraw the pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0d0, 0d0)
@@ -116,13 +117,13 @@ contains
 
     integer(c_int)                 :: message_id
     type(c_ptr), value, intent(in) :: widget, gdata
-    complex(kind(1d0))             :: c
+    complex(wp)                    :: c
     integer                        :: iterations
 
     if (.not. computing) then
       ! Get computation parameters:
       c = gtk_spin_button_get_value (spinButton1) + &
-          & (0d0, 1d0)*gtk_spin_button_get_value (spinButton2)
+          & (0.0_wp, 1.0_wp)*gtk_spin_button_get_value (spinButton2)
       iterations = INT(gtk_spin_button_get_value (spinButton3))
 
       ! Print them in the text buffer:
@@ -135,7 +136,7 @@ contains
                                      & "Computing..."//c_null_char)
 
       ! Compute the image:
-      call Julia_set(-2d0, +2d0, -2d0, +2d0, c, iterations)
+      call Julia_set(-2.0_wp, +2.0_wp, -2.0_wp, +2.0_wp, c, iterations)
 
       ! If Julia_set() was quitted because of a delete_event, we can not use
       ! the statusBar because it has been destroyed:
@@ -167,26 +168,26 @@ contains
 
     select case (choice)
     case(1)
-      x = +0d0
-      y = +1d0
+      x = +0.0_wp
+      y = +1.0_wp
     case(2)
-      x = -1d0
-      y = +0d0
+      x = -1.0_wp
+      y = +0.0_wp
     case(3)
-      x = -0.8d0
-      y = +0.2d0
+      x = -0.8_wp
+      y = +0.2_wp
     case(4)
-      x = +0.39d0
-      y = +0.60d0
+      x = +0.39_wp
+      y = +0.60_wp
     case(5)
-      x = -0.2d0
-      y = +0.8d0
+      x = -0.2_wp
+      y = +0.8_wp
     case(6)
-      x = -0.8d0
-      y = +0.4d0
+      x = -0.8_wp
+      y = +0.4_wp
     case(7)
-      x = +0.39d0
-      y = +0.00d0
+      x = +0.39_wp
+      y = +0.00_wp
     end select
 
     ! Update the spin buttons real(c) and imag(c):
@@ -196,7 +197,7 @@ contains
 
   ! GtkButton signal emitted by the button "Save as PNG":
   subroutine secondbutton (widget, gdata) bind(c)
-    use gtk_os_dependent, only: gdk_pixbuf_savev
+    use gdk_pixbuf, only: gdk_pixbuf_savev
     use global_widgets
 
     type(c_ptr), value, intent(in) :: widget, gdata
@@ -391,7 +392,7 @@ contains
     my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, pixwidth, pixheight)
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
-    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, (/pixwidth*pixheight*nch/))
+    call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [pixwidth*pixheight*nch])
     ! We use char() for "pixel" because we need unsigned integers.
     ! This pixbuffer has no Alpha channel (15% faster), only RGB.
     pixel = char(0)
@@ -410,12 +411,12 @@ contains
     use, intrinsic :: iso_c_binding
     use global_widgets
 
-    integer    :: i, j, k, p, itermax
-    double precision :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
-    complex(kind(1d0)) :: c, z
-    double precision :: scx, scy       ! scales
-    integer(1) :: red, green, blue     ! rgb color
-    double precision :: t0, t1
+    integer     :: i, j, k, p, itermax
+    real(wp)    :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+    complex(wp) :: c, z
+    real(wp)    :: scx, scy       ! scales
+    integer(int8)  :: red, green, blue     ! rgb color
+    real(wp)    :: t0, t1
 
     computing = .true.
     call cpu_time(t0)
@@ -433,9 +434,9 @@ contains
       x = xmin + scx * i
       do j=0, pixheight-1
         y = ymin + scy * j
-        z = x + y*(0d0,1d0)   ! Starting point
+        z = cmplx(x, y, kind=wp)   ! Starting point
         k = 1
-        do while ((k <= itermax) .and. ((real(z)**2+aimag(z)**2)<4d0))
+        do while ((k <= itermax) .and. ((z%re**2 + z%im**2)<4.0_wp))
           z = z*z + c
           k = k + 1
         end do
@@ -447,9 +448,9 @@ contains
           blue  = 0
         else
           ! Colour palette:
-          red   = int(min(255, k*2),  KIND=1)
-          green = int(min(255, k*5),  KIND=1)
-          blue  = int(min(255, k*10), KIND=1)
+          red   = int(min(255, k*2),  int8)
+          green = int(min(255, k*5),  int8)
+          blue  = int(min(255, k*10), int8)
         end if
 
         ! We write in the pixbuffer:
@@ -478,8 +479,8 @@ contains
 end module handlers
 
 !*******************************************************************************
-! In the main program, we declare the GTK application, connect it to its 
-! "activate" function where we will create the GUI, 
+! In the main program, we declare the GTK application, connect it to its
+! "activate" function where we will create the GUI,
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program julia_pixbuf
@@ -500,7 +501,7 @@ program julia_pixbuf
   ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
   app = gtk_application_new("gtk-fortran.examples.julia_pixbuf"//c_null_char, &
                             & G_APPLICATION_FLAGS_NONE)
-  ! The activate signal will be sent by g_application_run(). 
+  ! The activate signal will be sent by g_application_run().
   ! The c_funloc() function returns the C address of the callback function.
   ! The c_null_ptr means no data is transfered to the callback function.
   call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), &

@@ -34,7 +34,7 @@ module common_ex30
   use plplot_extra
 
   implicit none
-  integer(kind=c_int) :: height, width
+  integer(c_int) :: height, width
   type(c_ptr) :: window
   type(c_ptr) :: my_gmainloop
 end module common_ex30
@@ -58,8 +58,8 @@ contains
     integer :: plsetopt_rc
 
     integer, dimension(4) ::  red, green, blue
-    real(kind=plflt), dimension (4) :: alpha, px, py
-    real(kind=plflt), dimension (2) :: pos, rcoord, gcoord, bcoord, acoord
+    real(plflt), dimension (4) :: alpha, px, py
+    real(plflt), dimension (2) :: pos, rcoord, gcoord, bcoord, acoord
     logical, dimension(1) :: rev
 
     data red   / 127, 255, 0, 0 /
@@ -77,11 +77,11 @@ contains
 
     integer i, j
     integer icol, r, g, b
-    real(kind=plflt) :: a
+    real(plflt) :: a
 
     !  Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
-    if (plparseopts_rc .ne. 0) stop "plparseopts error"
+    if (plparseopts_rc /= 0) stop "plparseopts error"
 
     ! Get a cairo context from the drawing area.
     cc = hl_gtk_drawing_area_cairo_new(area)
@@ -92,12 +92,12 @@ contains
     ! By default the "extcairo" driver does not reset the background
     ! This is equivalent to the command line option "-drvopt set_background=1"
     plsetopt_rc = plsetopt("drvopt", "set_background=1")
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
     write(geometry, "(I0,'x',I0)") width, height
     plsetopt_rc = plsetopt( 'geometry', geometry)
-    if (plsetopt_rc .ne. 0) stop "plsetopt error"
+    if (plsetopt_rc /= 0) stop "plsetopt error"
 
     call plscmap0n(4)
 
@@ -216,7 +216,7 @@ module handlers_ex30
   use, intrinsic :: iso_c_binding
 
   implicit none
-  real(kind=c_double), parameter :: pi = 3.14159265358979323846_c_double
+  real(c_double), parameter :: pi = acos(-1.0_c_double)
 
 contains
 
@@ -244,10 +244,10 @@ contains
     base = hl_gtk_box_new()
     call gtk_window_set_child(window, base)
 
-    drawing = hl_gtk_drawing_area_new(size=(/width, height/), &
+    drawing = hl_gtk_drawing_area_new(size=[width, height], &
          & has_alpha = TRUE, &
          & scroll = scroll_w, &
-         & ssize=(/ 650, 600 /))
+         & ssize=[ 650, 600 ])
     call hl_gtk_box_pack(base, scroll_w)
 
     qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))

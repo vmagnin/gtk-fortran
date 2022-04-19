@@ -84,16 +84,16 @@ contains
        & data_focus_in, data_focus_out, size) result(entry)
 
     type(c_ptr) :: entry
-    integer(kind=c_int), intent(in), optional :: len
+    integer(c_int), intent(in), optional :: len
     integer(c_int), intent(in), optional :: editable
     type(c_funptr), optional :: activate, focus_in_event, focus_out_event
     type(c_ptr), optional :: data
     character(kind=c_char), dimension(*), intent(in), optional :: tooltip, value
-    integer(kind=c_int), intent(in), optional :: sensitive
+    integer(c_int), intent(in), optional :: sensitive
     type(c_funptr), optional :: changed, delete_text, insert_text
     type(c_ptr), optional :: data_changed, data_delete_text, data_insert_text
     type(c_ptr), optional :: data_focus_in, data_focus_out
-    integer(kind=c_int), intent(in), optional :: size
+    integer(c_int), intent(in), optional :: size
     type(c_ptr) :: buffer
 
     ! Higher level text entry box
@@ -215,7 +215,7 @@ contains
 
     type(c_ptr), intent(in) :: entry
     character(len=*), intent(out) :: text
-    integer(kind=c_int), optional, intent(out) :: status
+    integer(c_int), optional, intent(out) :: status
 
     ! Return the text in an entry box as a fortran string.
     !
@@ -227,8 +227,8 @@ contains
     !-
 
     type(c_ptr) :: buffer
-    integer(kind=c_int16_t) :: ntext
-    integer(kind=c_int) :: istat
+    integer(c_int16_t) :: ntext
+    integer(c_int) :: istat
     istat = 0
 
     ntext = gtk_entry_get_text_length(entry)
@@ -236,10 +236,10 @@ contains
        text=''
        return
     end if
-    
+
     buffer = gtk_entry_get_buffer(entry)
     call c_f_string_copy(gtk_entry_buffer_get_text(buffer), text)
-    
+
     if (present(status)) status=istat
   end subroutine hl_gtk_entry_get_text
 
@@ -252,18 +252,18 @@ contains
 
     type(c_ptr) :: view
     type(c_ptr), intent(out), optional :: scroll
-    integer(kind=c_int), intent(in), optional :: editable
+    integer(c_int), intent(in), optional :: editable
     type(c_funptr), optional :: changed, insert_text, delete_range
     type(c_ptr), optional :: data_changed, data_insert_text, data_delete_range
     character(kind=c_char, len=*), dimension(:), intent(in), &
          & optional :: initial_text
-    integer(kind=c_int), intent(in), optional :: sensitive
+    integer(c_int), intent(in), optional :: sensitive
     character(kind=c_char), dimension(*), optional :: tooltip
-    integer(kind=c_int), dimension(:), optional :: ssize
+    integer(c_int), dimension(:), optional :: ssize
     type(c_ptr), intent(out), optional :: buffer
     type(c_funptr), optional :: focus_in_event, focus_out_event
     type(c_ptr), optional :: data_focus_in, data_focus_out
-    integer(kind=c_int), intent(in), optional :: hscroll_policy, vscroll_policy
+    integer(c_int), intent(in), optional :: hscroll_policy, vscroll_policy
 
     ! A multiline text edit widget
     !
@@ -301,9 +301,9 @@ contains
     ! DATA_FOCUS_IN: c_ptr: optional: Data to pass to the focus_in_event
     ! 		callback
     ! HSCROLL_POLICY: int: optional: Horizontal scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC). 
+    ! 		containing scroll window (default AUTOMATIC).
     ! VSCROLL_POLICY: int: optional: Vertical scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC). 
+    ! 		containing scroll window (default AUTOMATIC).
     !
     ! NOTE -- The insert-text and delete-range callbacks take extra arguments.
     ! They are called before the buffer is actually modified. The changed
@@ -313,7 +313,7 @@ contains
     type(c_ptr) :: tbuf
     character(kind=c_char), dimension(:), allocatable :: text0
     type(gtktextiter), target :: iter
-    integer(kind=c_int) :: itextlen, hscroll, vscroll
+    integer(c_int) :: itextlen, hscroll, vscroll
 
     tbuf = gtk_text_buffer_new(C_NULL_PTR)
     view = gtk_text_view_new_with_buffer(tbuf)
@@ -420,8 +420,8 @@ contains
 
     type(c_ptr), intent(in) :: view
     character(len=*), dimension(:), intent(in) :: text
-    integer(kind=c_int), optional, intent(in) :: line, column
-    integer(kind=c_int), optional, intent(in) :: replace, at_cursor
+    integer(c_int), optional, intent(in) :: line, column
+    integer(c_int), optional, intent(in) :: replace, at_cursor
     type(c_ptr), intent(in), optional :: buffer
 
     ! Insert text to an text view
@@ -443,7 +443,7 @@ contains
 
     type(c_ptr) :: tbuf
     type(gtktextiter), target :: iter
-    integer(kind=c_int) :: icol, irep, atc, found
+    integer(c_int) :: icol, irep, atc, found
     character(kind=c_char), dimension(:), allocatable :: text0
 
     if (present(buffer)) then
@@ -502,7 +502,7 @@ contains
        & buffer)
 
     type(c_ptr), intent(in) :: view
-    integer(kind=c_int), intent(in), optional :: line, column, n_chars, n_lines
+    integer(c_int), intent(in), optional :: line, column, n_chars, n_lines
     type(c_ptr), intent(in), optional :: buffer
 
     ! Delete from a text view
@@ -522,7 +522,7 @@ contains
 
     type(c_ptr) :: tbuf
     type(gtktextiter), target :: s_iter, e_iter
-    integer(kind=c_int) :: isok, found
+    integer(c_int) :: isok, found
 
     ! Input checking
     if (present(n_chars) .and. present(n_lines)) then
@@ -569,9 +569,9 @@ contains
 
     type(c_ptr), intent(in) :: view
     character(len=*), dimension(:), allocatable, intent(out) :: text
-    integer(kind=c_int), intent(in), optional :: start_column, start_line, &
+    integer(c_int), intent(in), optional :: start_column, start_line, &
          & end_line, end_column
-    integer(kind=c_int), intent(in), optional :: hidden
+    integer(c_int), intent(in), optional :: hidden
     type(c_ptr), intent(in), optional :: buffer
 
     ! Get text from s text view.
@@ -604,7 +604,7 @@ contains
     type(c_ptr) :: tbuf, ctext0
     character(kind=c_char), dimension(:), pointer :: ftext0
     type(gtktextiter), target :: s_iter, e_iter
-    integer(kind=c_int) :: ihid, found
+    integer(c_int) :: ihid, found
     integer :: nchars_r
 
     if (present(buffer)) then
@@ -675,7 +675,7 @@ contains
     nchars_r = int(gtk_text_iter_get_offset(c_loc(e_iter)) - &
          & gtk_text_iter_get_offset(c_loc(s_iter))) + 1
 
-    call c_f_pointer(ctext0, ftext0, (/ nchars_r /))
+    call c_f_pointer(ctext0, ftext0, [ nchars_r ])
     call convert_c_string(ftext0, text)
 
   end subroutine hl_gtk_text_view_get_text
@@ -683,7 +683,7 @@ contains
   !+
   function hl_gtk_text_view_get_cursor(view, buffer) result(ipos)
 
-    integer(kind=c_int), dimension(3) :: ipos
+    integer(c_int), dimension(3) :: ipos
     type(c_ptr), intent(in) :: view
     type(c_ptr), intent(in), optional :: buffer
 
@@ -716,9 +716,9 @@ contains
   function hl_gtk_text_view_get_selection(view, s_start, s_end, buffer) &
        & result(issel)
 
-    integer(kind=c_int) :: issel
+    integer(c_int) :: issel
     type(c_ptr), intent(in) :: view
-    integer(kind=c_int), dimension(3), intent(out) :: s_start, s_end
+    integer(c_int), dimension(3), intent(out) :: s_start, s_end
     type(c_ptr), intent(in), optional :: buffer
 
     ! Get the selection range
@@ -760,7 +760,7 @@ contains
   !+
   function hl_gtk_text_view_get_modified(view) result(ismod)
 
-    integer(kind=c_int) :: ismod
+    integer(c_int) :: ismod
     type(c_ptr), intent(in) :: view
 
     ! Check if the buffer of a text view is modified
@@ -782,7 +782,7 @@ contains
   subroutine hl_gtk_text_view_set_modified(view, state)
 
     type(c_ptr), intent(in) :: view
-    integer(kind=c_int), intent(in) :: state
+    integer(c_int), intent(in) :: state
 
     ! Set/clear the modified flag on the text buffer of a text view
     !
@@ -801,8 +801,8 @@ contains
   subroutine hl_gtk_text_view_get_info(view, nlines, nchars, ncline, buffer)
 
     type(c_ptr), intent(in) :: view
-    integer(kind=c_int), intent(out), optional :: nlines, nchars
-    integer(kind=c_int), intent(out), optional, allocatable, dimension(:) :: ncline
+    integer(c_int), intent(out), optional :: nlines, nchars
+    integer(c_int), intent(out), optional, allocatable, dimension(:) :: ncline
     type(c_ptr), intent(in), optional :: buffer
 
     ! Get various useful information about a text view
@@ -818,8 +818,8 @@ contains
 
     type(c_ptr) :: tbuf
     type(gtktextiter), target :: i1, i2
-    integer(kind=c_int) :: nl, found
-    integer(kind=c_int) :: i
+    integer(c_int) :: nl, found
+    integer(c_int) :: i
     if (present(buffer)) then
        tbuf = buffer
     else

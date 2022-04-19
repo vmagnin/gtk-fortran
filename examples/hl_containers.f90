@@ -48,7 +48,7 @@ contains
 
   subroutine bpress(widget, gdata) bind(c)
     type(c_ptr), value :: widget, gdata
-    integer(kind=c_int), pointer :: fdata
+    integer(c_int), pointer :: fdata
 
     call c_f_pointer(gdata, fdata)
     print *, "Pressed button ", fdata
@@ -59,10 +59,10 @@ contains
     use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
-    integer(kind=c_int) :: ipos
+    integer(c_int) :: ipos
     type(c_ptr) :: junk
-    integer(kind=c_int) :: i
-    integer(kind=c_int), dimension(6), target :: bval = (/ (i, i = 1,6) /)
+    integer(c_int) :: i
+    integer(c_int), dimension(6), target :: bval = [ (i, i = 1,6) ]
     character(len=15) :: ltext
 
     ! Create the window:
