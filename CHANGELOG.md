@@ -6,6 +6,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ### Added
 - gtk-fortran can now be used as a simple [fpm](https://fpm.fortran-lang.org) dependency (gtk4 branch only). See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm).
 - `examples/bazaar.f90`: the About button credits the authors of that file. The call to `gtk_about_dialog_set_license()` is replaced by the more convenient `gtk_about_dialog_set_license_type()`.
+- A `tutorials/` directory contains the GTK 4 sources used in the Wiki first tutorial.
 
 ### Changed
 - Better handling of default compiler flags, using flags like `CMAKE_Fortran_FLAGS_RELEASE_INIT` (CMake>=3.7 required). A file `cmake/DefaultFlags.cmake` was added. Backported to gtk3 branch.
