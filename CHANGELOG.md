@@ -4,9 +4,14 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ## [Development]
 
 ### Added
-- gtk-fortran can now be used as a simple [fpm](https://fpm.fortran-lang.org) dependency (gtk4 branch only). See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm).
+- gtk-fortran can now be used as a simple [fpm](https://fpm.fortran-lang.org) dependency (gtk4 branch only). See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm). It implied some changes:
+    * `gtk-auto.f90` and `gtkenums-auto.f90` are renamed with the `.inc` extension.
+    * Removed `mswindowsonly-auto.f90` and `unixonly-auto.f90`, and added `api_compatibility.f90` with the module `gtk_os_dependent` to keep API compatibility.
+    * `plplot/plplot_extra_ndef.f90` renamed `plplot_extra.f90` and moved to `src/`.
 - `examples/bazaar.f90`: the About button credits the authors of that file. The call to `gtk_about_dialog_set_license()` is replaced by the more convenient `gtk_about_dialog_set_license_type()`.
 - A `tutorials/` directory contains the GTK 4 sources used in the Wiki first tutorial.
+- `src/gtk-fortran.f90`: prints the GTK and GLib version of the release.
+- A [conda repository](https://github.com/conda-forge/gtk-4-fortran-feedstock) for gtk-4-fortran.
 
 ### Changed
 - Better handling of default compiler flags, using flags like `CMAKE_Fortran_FLAGS_RELEASE_INIT` (CMake>=3.7 required). A file `cmake/DefaultFlags.cmake` was added. Backported to gtk3 branch.
@@ -16,6 +21,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ### Fixed
 - `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of ``c_null_ptr`. Needed with the NAG Fortran compiler. Backported to gtk3 branch.
 - `examples/tests.f90`: loop undefined with ifort. And now uses `g_variant_unref()`.
+- Various bug fixes.
 
 ## [gtk-fortran 4.1] 2021-10-22
 The gtk-4-fortran library has been generated from GTK 4.4.0 and GLib 2.70.0 under Fedora 35.
