@@ -27,12 +27,17 @@
 !------------------------------------------------------------------------------
 
 module common_ex1
-  use, intrinsic :: iso_c_binding
+  use, intrinsic :: iso_c_binding      ! Enable the c-binding routines & constants
+  ! These are the gtk & glib routines used explicitly in the code:
   use gtk, only: gtk_widget_show, gtk_window_set_child, gtk_window_destroy
+  ! These are the high-level drawing area modules:
   use gtk_draw_hl
+  ! This makes the low-level pl_cmd routine accessible:
   use plplot_extra
 
+  ! The size of the drawing area:
   integer(c_int) :: height, width
+  ! The top-level window must be here as its destroy signal need not come from it:
   type(c_ptr) :: window
 end module common_ex1
 
@@ -58,12 +63,10 @@ contains
 
     ! Define colour map 0 to match the "GRAFFER" colour table in
     ! place of the PLPLOT default.
-    integer, parameter, dimension(16) :: rval = [255, 0, 255, &
-         & 0, 0, 0, 255, 255, 255, 127, 0, 0, 127, 255, 85, 170],&
-         & gval = [ 255, 0, 0, 255, 0, 255, 0, 255, 127, 255, 255, 127,&
-         & 0, 0, 85, 170], &
-         & bval = [ 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 127, 255, 255,&
-         & 127, 85, 170]
+    integer, parameter, dimension(16) :: &
+      & rval = [255, 0, 255, 0, 0, 0, 255, 255, 255, 127, 0, 0, 127, 255, 85, 170],&
+      & gval = [ 255, 0, 0, 255, 0, 255, 0, 255, 127, 255, 255, 127, 0, 0, 85, 170],&
+      & bval = [ 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 127, 255, 255, 127, 85, 170]
 
     !  Process command-line arguments
     plparseopts_rc = plparseopts(PL_PARSE_FULL)
@@ -95,7 +98,6 @@ contains
 
     ! Tell the "extcairo" driver where the context is located. This must be
     ! done AFTER the plstar or plinit call.
-
     call pl_cmd(PLESC_DEVINIT, cc)
 
     !  Set up the data
@@ -261,6 +263,7 @@ contains
   end subroutine quit_cb
 
   subroutine activate(app, gdata) bind(c)
+    ! This gives the main program access to the plotting code
     use plplot_code_ex1
     use gtk, only: gtk_application_window_new, gtk_window_set_title
     implicit none
@@ -268,27 +271,36 @@ contains
     ! Pointers toward our GTK widgets:
     type(c_ptr) :: drawing, scroll_w, base, qbut
 
+    ! Set the size of the drawing area (these are global variables)
     height = 1000
     width = 1200
 
-    ! Create the window:
+    ! Create a top-level window and then pack a column box into it:
     window = gtk_application_window_new(app)
     call gtk_window_set_title(window, "PLplot x01 / gtk-fortran (extcairo)"//c_null_char)
 
     base = hl_gtk_box_new()
     call gtk_window_set_child(window, base)
 
+    ! Create a drawing area, in a 600x500 scrolled window.
+    ! The high-level drawing area creator automatically adds a cairo surface as
+    ! backing store. Here we use the default expose/draw callback which
+    ! just copies the backing store to the drawing surface.
+    ! Pack it into the vertical box.
     drawing = hl_gtk_drawing_area_new(size=[width, height], &
          & has_alpha = FALSE, &
          & scroll = scroll_w, &
          & ssize=[ 600, 500 ])
     call hl_gtk_box_pack(base, scroll_w)
 
+    ! Add a quit button, and pack that into the box as well:
     qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
     call hl_gtk_box_pack(base, qbut, expand=FALSE)
 
+    ! Display the widgets:
     call gtk_widget_show(window)
 
+    ! Call the plotting routine:
     call x01f95(drawing)
   end subroutine activate
 end module handlers_ex1
@@ -296,11 +308,13 @@ end module handlers_ex1
 
 program cairo_plplot_ex1
   use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
+  ! Set the size of the drawing area (these are global variables)
   use handlers_ex1
   use gtk_hl_container, only: hl_gtk_application_new
   implicit none
   type(c_ptr) :: my_app
 
+  ! Initalize GTK, create the GUI and launch the main loop:
   my_app = hl_gtk_application_new("gtk-fortran.plplot.hl_plplot1e"//c_null_char, &
                              & c_funloc(activate))
 end program cairo_plplot_ex1
