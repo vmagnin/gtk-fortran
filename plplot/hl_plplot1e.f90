@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 1 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-10 (GTK 4), 2020-07-13
+! Last modifications: vmagnin 2020-06-10 (GTK 4), 2022-04-20
 !------------------------------------------------------------------------------
 
 module common_ex1
@@ -34,7 +34,6 @@ module common_ex1
 
   integer(c_int) :: height, width
   type(c_ptr) :: window
-  type(c_ptr) :: my_gmainloop
 end module common_ex1
 
 module plplot_code_ex1
