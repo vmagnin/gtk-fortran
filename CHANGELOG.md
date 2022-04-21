@@ -19,7 +19,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - The syntax was modernized in many places (Fortran 2008).
 
 ### Fixed
-- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of ``c_null_ptr`. Needed with the NAG Fortran compiler. Backported to gtk3 branch.
+- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of `c_null_ptr`. Needed with the NAG Fortran compiler. Backported to gtk3 branch.
 - `examples/tests.f90`: loop undefined with ifort. And now uses `g_variant_unref()`.
 - Various bug fixes.
 
@@ -31,7 +31,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - Better handling of default compiler flags, using flags like `CMAKE_Fortran_FLAGS_RELEASE_INIT` (CMake>=3.7 required). A file `cmake/DefaultFlags.cmake` was added.
 
 ### Fixed
-- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of ``c_null_ptr`. Needed with the NAG Fortran compiler.
+- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of `c_null_ptr`. Needed with the NAG Fortran compiler.
 
 
 ## [gtk-fortran 4.1] 2021-10-22
