@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Development]
+## [gtk-fortran 4.2] 2022-??-??
 
 ### Added
 - gtk-fortran can now be used as a simple [fpm](https://fpm.fortran-lang.org) dependency (gtk4 branch only). See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm). It implied some changes:
@@ -22,6 +22,17 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of ``c_null_ptr`. Needed with the NAG Fortran compiler. Backported to gtk3 branch.
 - `examples/tests.f90`: loop undefined with ifort. And now uses `g_variant_unref()`.
 - Various bug fixes.
+
+
+## [gtk-fortran 3.24.31] 2022-04-21
+- The gtk-3-fortran library offers interfaces to GTK 3.24.31 and GLib 2.72.1 (generated with Fedora 36).
+
+### Changed
+- Better handling of default compiler flags, using flags like `CMAKE_Fortran_FLAGS_RELEASE_INIT` (CMake>=3.7 required). A file `cmake/DefaultFlags.cmake` was added.
+
+### Fixed
+- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of ``c_null_ptr`. Needed with the NAG Fortran compiler.
+
 
 ## [gtk-fortran 4.1] 2021-10-22
 The gtk-4-fortran library has been generated from GTK 4.4.0 and GLib 2.70.0 under Fedora 35.
