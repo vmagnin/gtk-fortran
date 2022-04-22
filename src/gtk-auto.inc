@@ -4950,7 +4950,7 @@ function gtk_accelerator_get_label_with_keycode(display, accelerator_key,&
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GdkModifierType gtk_accelerator_get_default_mod_mask (void);
+!GdkModifierType gtk_accelerator_get_default_mod_mask (void) G_GNUC_CONST;
 function gtk_accelerator_get_default_mod_mask() bind(c)
   import :: c_int
   integer(c_int) :: gtk_accelerator_get_default_mod_mask
@@ -8421,7 +8421,7 @@ subroutine gtk_disable_setlocale() bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!PangoLanguage * gtk_get_default_language (void);
+!PangoLanguage * gtk_get_default_language (void) G_GNUC_CONST;
 function gtk_get_default_language() bind(c)
   import :: c_ptr
   type(c_ptr) :: gtk_get_default_language
@@ -11548,6 +11548,22 @@ function gtk_flow_box_get_activate_on_single_click(box) bind(c)
   type(c_ptr), value :: box
 end function
 
+! GDK_AVAILABLE_IN_4_6
+!void gtk_flow_box_prepend (GtkFlowBox *self, GtkWidget *child);
+subroutine gtk_flow_box_prepend(self, child) bind(c)
+  import :: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: child
+end subroutine
+
+! GDK_AVAILABLE_IN_4_6
+!void gtk_flow_box_append (GtkFlowBox *self, GtkWidget *child);
+subroutine gtk_flow_box_append(self, child) bind(c)
+  import :: c_ptr
+  type(c_ptr), value :: self
+  type(c_ptr), value :: child
+end subroutine
+
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_flow_box_insert (GtkFlowBox *box, GtkWidget *widget, int position);
 subroutine gtk_flow_box_insert(box, widget, position) bind(c)
@@ -11884,6 +11900,22 @@ end subroutine
 function gtk_menu_button_get_primary(menu_button) bind(c)
   import :: c_int, c_ptr
   integer(c_int) :: gtk_menu_button_get_primary
+  type(c_ptr), value :: menu_button
+end function
+
+! GDK_AVAILABLE_IN_4_6
+!void gtk_menu_button_set_child (GtkMenuButton *menu_button, GtkWidget *child);
+subroutine gtk_menu_button_set_child(menu_button, child) bind(c)
+  import :: c_ptr
+  type(c_ptr), value :: menu_button
+  type(c_ptr), value :: child
+end subroutine
+
+! GDK_AVAILABLE_IN_4_6
+!GtkWidget * gtk_menu_button_get_child (GtkMenuButton *menu_button);
+function gtk_menu_button_get_child(menu_button) bind(c)
+  import :: c_ptr
+  type(c_ptr) :: gtk_menu_button_get_child
   type(c_ptr), value :: menu_button
 end function
 
@@ -12321,14 +12353,6 @@ subroutine gtk_expression_unref(self) bind(c)
   import :: c_ptr
   type(c_ptr), value :: self
 end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_expression_get_value_type (GtkExpression *self);
-function gtk_expression_get_value_type(self) bind(c)
-  import :: c_size_t, c_ptr
-  integer(c_size_t) :: gtk_expression_get_value_type
-  type(c_ptr), value :: self
-end function
 
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_expression_is_static (GtkExpression *self);
@@ -16586,6 +16610,22 @@ function gtk_app_chooser_dialog_get_heading(self) bind(c)
 end function
 
 !--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksymbolicpaintable.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_4_6
+!void gtk_symbolic_paintable_snapshot_symbolic (GtkSymbolicPaintable *paintable, GdkSnapshot *snapshot, double width, double height, const GdkRGBA *colors, gsize n_colors);
+subroutine gtk_symbolic_paintable_snapshot_symbolic(paintable, snapshot, width,&
+& height, colors, n_colors) bind(c)
+  import :: c_ptr, c_double, c_size_t
+  type(c_ptr), value :: paintable
+  type(c_ptr), value :: snapshot
+  real(c_double), value :: width
+  real(c_double), value :: height
+  type(c_ptr), value :: colors
+  integer(c_size_t), value :: n_colors
+end subroutine
+
+!--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkgesturedrag.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
@@ -17265,6 +17305,22 @@ subroutine gtk_tree_expander_set_list_row(self, list_row) bind(c)
   type(c_ptr), value :: list_row
 end subroutine
 
+! GDK_AVAILABLE_IN_4_6
+!gboolean gtk_tree_expander_get_indent_for_icon (GtkTreeExpander *self);
+function gtk_tree_expander_get_indent_for_icon(self) bind(c)
+  import :: c_int, c_ptr
+  integer(c_int) :: gtk_tree_expander_get_indent_for_icon
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_6
+!void gtk_tree_expander_set_indent_for_icon (GtkTreeExpander *self, gboolean indent_for_icon);
+subroutine gtk_tree_expander_set_indent_for_icon(self, indent_for_icon) bind(c)
+  import :: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: indent_for_icon
+end subroutine
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkmultisorter.h
 !--------------------------------------------------
@@ -17377,14 +17433,22 @@ function gtk_text_child_anchor_get_type() bind(c)
 end function
 
 ! GDK_AVAILABLE_IN_ALL
-!GtkTextChildAnchor* gtk_text_child_anchor_new (void);
+!GtkTextChildAnchor *gtk_text_child_anchor_new (void);
 function gtk_text_child_anchor_new() bind(c)
   import :: c_ptr
   type(c_ptr) :: gtk_text_child_anchor_new
 end function
 
+! GDK_AVAILABLE_IN_4_6
+!GtkTextChildAnchor *gtk_text_child_anchor_new_with_replacement (const char *character);
+function gtk_text_child_anchor_new_with_replacement(character) bind(c)
+  import :: c_ptr, c_char
+  type(c_ptr) :: gtk_text_child_anchor_new_with_replacement
+  character(kind=c_char), dimension(*) :: character
+end function
+
 ! GDK_AVAILABLE_IN_ALL
-!GtkWidget ** gtk_text_child_anchor_get_widgets (GtkTextChildAnchor *anchor, guint *out_len);
+!GtkWidget **gtk_text_child_anchor_get_widgets (GtkTextChildAnchor *anchor, guint *out_len);
 function gtk_text_child_anchor_get_widgets(anchor, out_len) bind(c)
   import :: c_ptr
   type(c_ptr) :: gtk_text_child_anchor_get_widgets
@@ -18955,7 +19019,7 @@ subroutine gtk_editable_set_text(editable, text) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!char * gtk_editable_get_chars (GtkEditable *editable, int start_pos, int end_pos);
+!char * gtk_editable_get_chars (GtkEditable *editable, int start_pos, int end_pos) G_GNUC_MALLOC;
 function gtk_editable_get_chars(editable, start_pos, end_pos) bind(c)
   import :: c_ptr, c_int
   type(c_ptr) :: gtk_editable_get_chars
@@ -24674,13 +24738,6 @@ end function
 ! /usr/include/gtk-4.0/gtk/gtkcolumnviewcolumn.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
-!GType gtk_column_view_column_get_type (void) G_GNUC_CONST;
-function gtk_column_view_column_get_type() bind(c)
-  import :: c_size_t
-  integer(c_size_t) :: gtk_column_view_column_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
 !GtkColumnViewColumn * gtk_column_view_column_new (const char *title, GtkListItemFactory *factory);
 function gtk_column_view_column_new(title, factory) bind(c)
   import :: c_ptr, c_char
@@ -26713,15 +26770,6 @@ subroutine gtk_bitset_unref(self) bind(c)
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_bitset_contains (const GtkBitset *self, guint value);
-function gtk_bitset_contains(self, value) bind(c)
-  import :: c_int, c_ptr
-  integer(c_int) :: gtk_bitset_contains
-  type(c_ptr), value :: self
-  integer(c_int), value :: value
-end function
-
-! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_bitset_is_empty (const GtkBitset *self);
 function gtk_bitset_is_empty(self) bind(c)
   import :: c_int, c_ptr
@@ -26947,6 +26995,13 @@ subroutine gtk_bitset_splice(self, position, removed, added) bind(c)
   integer(c_int), value :: added
 end subroutine
 
+! GDK_AVAILABLE_IN_4_6
+!GType gtk_bitset_iter_get_type (void) G_GNUC_CONST;
+function gtk_bitset_iter_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_bitset_iter_get_type
+end function
+
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_bitset_iter_init_first (GtkBitsetIter *iter, const GtkBitset *set, guint *value);
 function gtk_bitset_iter_init_first(iter, set, value) bind(c)
@@ -27124,6 +27179,22 @@ end subroutine
 function gtk_drop_down_get_enable_search(self) bind(c)
   import :: c_int, c_ptr
   integer(c_int) :: gtk_drop_down_get_enable_search
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_6
+!void gtk_drop_down_set_show_arrow (GtkDropDown *self, gboolean show_arrow);
+subroutine gtk_drop_down_set_show_arrow(self, show_arrow) bind(c)
+  import :: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: show_arrow
+end subroutine
+
+! GDK_AVAILABLE_IN_4_6
+!gboolean gtk_drop_down_get_show_arrow (GtkDropDown *self);
+function gtk_drop_down_get_show_arrow(self) bind(c)
+  import :: c_int, c_ptr
+  integer(c_int) :: gtk_drop_down_get_show_arrow
   type(c_ptr), value :: self
 end function
 
@@ -27390,6 +27461,22 @@ end subroutine
 function gtk_label_get_wrap_mode(self) bind(c)
   import :: c_int, c_ptr
   integer(c_int) :: gtk_label_get_wrap_mode
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_6
+!void gtk_label_set_natural_wrap_mode (GtkLabel *self, GtkNaturalWrapMode wrap_mode);
+subroutine gtk_label_set_natural_wrap_mode(self, wrap_mode) bind(c)
+  import :: c_ptr, c_int
+  type(c_ptr), value :: self
+  integer(c_int), value :: wrap_mode
+end subroutine
+
+! GDK_AVAILABLE_IN_4_6
+!GtkNaturalWrapMode gtk_label_get_natural_wrap_mode(GtkLabel *self);
+function gtk_label_get_natural_wrap_mode(self) bind(c)
+  import :: c_int, c_ptr
+  integer(c_int) :: gtk_label_get_natural_wrap_mode
   type(c_ptr), value :: self
 end function
 
