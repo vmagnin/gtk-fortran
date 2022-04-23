@@ -1,7 +1,8 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [gtk-fortran 4.2] 2022-??-??
+## [gtk-fortran 4.2] 2022-04-23
+This release offers interfaces to GTK 4.6.2 and GLib 2.72.1.
 
 ### Added
 - gtk-fortran can now be used as a simple [fpm](https://fpm.fortran-lang.org) dependency (gtk4 branch only). See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm). It implied some changes:
