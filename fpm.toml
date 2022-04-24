@@ -1,6 +1,6 @@
 name = "gtk-fortran"
 description = "With this file gtk-fortran can be used as a fpm dependency. But if you want a full build and install of gtk-fortran on your system, you must use CMake."
-version = "4.2.0"
+version = "4.2.1"
 license = "GPL-3.0-or-later"
 author = "Vincent Magnin et al."
 maintainer = "https://github.com/vmagnin/gtk-fortran/issues"

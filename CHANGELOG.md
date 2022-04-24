@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [gtk-fortran 4.2.1] 2022-04-24
+
+### Fixed
+- [Issue #257](https://github.com/vmagnin/gtk-fortran/issues/257): `examples/tests.f90`, `examples/bazaar.f90` and `src/gtk-fortran.f90` were crashing (segmentation fault) on macOS because the GLib `g_get_os_info()` function returns NULL on that OS.
+
+
 ## [gtk-fortran 4.2] 2022-04-23
 This release offers interfaces to GTK 4.6.2 and GLib 2.72.1.
 

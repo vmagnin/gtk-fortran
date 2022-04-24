@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, James Tappin
-! GTK 4 version: vmagnin 2020-05-28, 2021-01-28, 2022-04-05
+! GTK 4 version: vmagnin 2020-05-28, 2021-01-28, 2022-04-24
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -39,6 +39,7 @@ module various_functions
                & g_get_os_info
 
     character(len=512) :: my_string
+    type(c_ptr) :: ret
 
     call c_f_string_copy(g_get_user_name(), my_string)
     print *, "Hello ", TRIM(my_string)
@@ -60,7 +61,13 @@ module various_functions
         print *, "Not UNIX OS"
     endif
 
-    call c_f_string_copy(g_get_os_info("PRETTY_NAME"//c_null_char), my_string)
+    ! That function may return NULL with some OS:
+    ret = g_get_os_info("PRETTY_NAME"//c_null_char)
+    if (c_associated(ret)) then
+      call c_f_string_copy(ret, my_string)
+    else
+      my_string = "?"
+    end if
     print *, "Your OS:", my_string
 
     call c_f_string_copy(g_format_size (123456789_c_int64_t), my_string)
