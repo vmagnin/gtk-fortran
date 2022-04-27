@@ -34,7 +34,6 @@
 !
 ! These are mostly definitions that are not (currenty) extracted by the
 ! automatic tools. There are also some character conversion routines.
-!/
 module gtk_sup
   ! The definitions in this supplementary module are ones that are not (yet)
   !  automatically extracted from the GTK headers.
@@ -45,6 +44,7 @@ module gtk_sup
   ! GValue: Pseudo type definition.
   ! GtkTextIter: Type definition.
   ! GError: Type definition.
+  !/
 
   use, intrinsic :: iso_c_binding
   use gtk, only:  TRUE, FALSE
