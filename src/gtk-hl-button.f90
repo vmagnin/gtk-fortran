@@ -66,14 +66,14 @@ contains
 
     ! Higher-level button
     !
-    ! LABEL: string: required: The label on the button
-    ! CLICKED: c_funptr: optional: callback routine for the "clicked" signal
-    ! DATA: c_ptr: optional: Data to be passed to the clicked callback
-    ! TOOLTIP: string: optional: tooltip to be displayed when the pointer
+    ! LABEL |  string |  required |  The label on the button
+    ! CLICKED |  c_funptr |  optional |  callback routine for the "clicked" signal
+    ! DATA |  c_ptr |  optional |  Data to be passed to the clicked callback
+    ! TOOLTIP |  string |  optional |  tooltip to be displayed when the pointer
     ! 		is held over the button.
-    ! SENSITIVE: boolean: optional: Whether the widget should initially
+    ! SENSITIVE |  boolean |  optional |  Whether the widget should initially
     ! 		be sensitive or not.
-    ! IS_MARKUP: boolean: optional: Set this to TRUE if the label contains
+    ! IS_MARKUP |  boolean |  optional |  Set this to TRUE if the label contains
     ! 		Pango markup.
     !-
 
@@ -119,9 +119,9 @@ contains
 
     ! Set the label of a button, including using markup.
     !
-    ! BUTTON: c_ptr: required: The button to modify.
-    ! LABEL: string: required: The new label for the button.
-    ! IS_MARKUP: boolean: optional: Set this to TRUE if the label contains
+    ! BUTTON |  c_ptr |  required |  The button to modify.
+    ! LABEL |  string |  required |  The new label for the button.
+    ! IS_MARKUP |  boolean |  optional |  Set this to TRUE if the label contains
     ! 		pango markup.
     !-
 
@@ -156,17 +156,17 @@ contains
 
     ! Higher level check box.
     !
-    ! LABEL: string: required:  The label on the button.
-    ! TOGGLED: c_funptr: optional: Callback function for the "toggled" signal.
-    ! DATA: c_ptr: optional: Data to pass to/from the toggled callback.
-    ! TOOLTIP: string: optional: A tooltip for the check_button.
-    ! INITIAL_STATE: integer: optional: set the initial state of the
+    ! LABEL |  string |  required |   The label on the button.
+    ! TOGGLED |  c_funptr |  optional |  Callback function for the "toggled" signal.
+    ! DATA |  c_ptr |  optional |  Data to pass to/from the toggled callback.
+    ! TOOLTIP |  string |  optional |  A tooltip for the check_button.
+    ! INITIAL_STATE |  integer |  optional |  set the initial state of the
     !               check_button.
-    ! SENSITIVE: boolean: optional: Whether the widget should initially
+    ! SENSITIVE |  boolean |  optional |  Whether the widget should initially
     ! 		be sensitive or not.
-    ! IS_MARKUP: boolean: optional: Set this to TRUE if the label contains
+    ! IS_MARKUP |  boolean |  optional |  Set this to TRUE if the label contains
     ! 		Pango markup.
-    ! TOGGLE: boolean: optional: Set this to TRUE to make a toggle button
+    ! TOGGLE |  boolean |  optional |  Set this to TRUE to make a toggle button
     ! 		rather than a check button.
     !-
 
@@ -233,8 +233,8 @@ contains
 
     ! Set a markup label on a button
     !
-    ! BUT: c_ptr: required: The button to relabel
-    ! LABEL: string: required: The string (with Pango markup) to apply.
+    ! BUT |  c_ptr |  required |  The button to relabel
+    ! LABEL |  string |  required |  The string (with Pango markup) to apply.
     !
     ! Normally if the label does not need Pango markup, then
     ! gtk_button_set_label can be used.

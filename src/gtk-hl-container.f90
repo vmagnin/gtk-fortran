@@ -93,11 +93,11 @@ contains
 
     ! Higher-level interface to make a GtkApplication
     !
-    ! APP_ID: C string: compulsory: name of the GtkApplication. must contain
+    ! APP_ID |  C string |  compulsory |  name of the GtkApplication. must contain
     ! at least one point
-    ! ACTIVATE: c_funptr: compulsory: Callback for the "activate" signal (defines the GUI)
-    ! FLAGS: integer: optional: flags
-    ! DATA: c_ptr: optional: Data to be passed to the "activate" callback function
+    ! ACTIVATE |  c_funptr |  compulsory |  Callback for the "activate" signal (defines the GUI)
+    ! FLAGS |  integer |  optional |  flags
+    ! DATA |  c_ptr |  optional |  Data to be passed to the "activate" callback function
     !
     !-
 
@@ -148,31 +148,31 @@ contains
 
     ! Higher-level interface to make a gtk_window
     !
-    ! TITLE: String: optional: Title for the window
-    ! DESTROY: c_funptr: optional: Callback for the "destroy" signal
-    ! DELETE_EVENT: c_funptr: optional: Callback for the "delete-event" signal (GTK<=3)
-    ! DATA_DESTROY: c_ptr: optional: Data to be passed to the destroy
+    ! TITLE |  String |  optional |  Title for the window
+    ! DESTROY |  c_funptr |  optional |  Callback for the "destroy" signal
+    ! DELETE_EVENT |  c_funptr |  optional |  Callback for the "delete-event" signal (GTK<=3)
+    ! DATA_DESTROY |  c_ptr |  optional |  Data to be passed to the destroy
     ! 		signal handler
-    ! DATA_DELETE_EVENT: c_ptr: optional: Data to be passed to the
+    ! DATA_DELETE_EVENT |  c_ptr |  optional |  Data to be passed to the
     ! 		delete_event signal handler
-    ! BORDER: integer: optional: Size of the window border
-    ! WSIZE: integer(2): optional: Size of the window
-    ! SENSITIVE: boolean: optional: Whether the widget should initially
+    ! BORDER |  integer |  optional |  Size of the window border
+    ! WSIZE |  integer(2) |  optional |  Size of the window
+    ! SENSITIVE |  boolean |  optional |  Whether the widget should initially
     ! 		be sensitive or not.
-    ! RESIZABLE: boolean: optional: Is the window resizable.
-    ! DECORATED: boolean: optional: Set FALSE to disable window decorations.
-    ! DELETABLE: boolean: optional: Set to FALSE to remove the "delete" button.
-    ! ABOVE: boolean: optional: GTK<=3: Set to TRUE to make the window stay on top of
+    ! RESIZABLE |  boolean |  optional |  Is the window resizable.
+    ! DECORATED |  boolean |  optional |  Set FALSE to disable window decorations.
+    ! DELETABLE |  boolean |  optional |  Set to FALSE to remove the "delete" button.
+    ! ABOVE: boolean |  optional |  GTK<=3 |  Set to TRUE to make the window stay on top of
     ! 		others.
-    ! BELOW: boolean: optional: GTK<=3: Set to TRUE to make the window stay below
+    ! BELOW: boolean |  optional |  GTK<=3 |  Set to TRUE to make the window stay below
     ! 		others.
-    ! PARENT: c_ptr: optional: An optional parent window for the new window.
-    ! ICON: c_ptr: optional : A GdkPixbuf containing the icon for the window. (GTK<=3)
-    ! ICON_FILE: String : optional : A file from which to read the icon for
+    ! PARENT |  c_ptr |  optional |  An optional parent window for the new window.
+    ! ICON |  c_ptr |  optional  |  A GdkPixbuf containing the icon for the window. (GTK<=3)
+    ! ICON_FILE |  String  |  optional  |  A file from which to read the icon for
     ! 		the window.  (GTK<=3)
-    ! ICON_NAME: String : optional : The name of a standard icon to use for
+    ! ICON_NAME |  String  |  optional  |  The name of a standard icon to use for
     ! 		the window.
-    ! MODAL: boolean: optional: Set to true to make the window modal (only
+    ! MODAL |  boolean |  optional |  Set to true to make the window modal (only
     ! 		meaningful if PARENT is also set).
     !
     !-
@@ -241,12 +241,12 @@ contains
 
     ! Generic packing box
     !
-    ! HORIZONTAL: boolean: optional: Set to TRUE to make a row box. FALSE or
+    ! HORIZONTAL |  boolean |  optional |  Set to TRUE to make a row box. FALSE or
     !		absent implies a column box.
-    ! HOMOGENEOUS: boolean: optional: If set to TRUE then all children are
+    ! HOMOGENEOUS |  boolean |  optional |  If set to TRUE then all children are
     ! 		the same size, FALSE or absent allows each widget to take its
     ! 		natural size.
-    ! SPACING: c_int: optional: Set the space between children.
+    ! SPACING |  c_int |  optional |  Set the space between children.
     !-
 
     integer(c_int) :: grid, space
@@ -291,16 +291,16 @@ contains
 
     ! Put a widget into a box
     !
-    ! BOX: c_ptr: required: The box into which to put the child
-    ! CHILD: c_ptr: required: The child to pack
-    ! EXPAND: boolean: optional: If TRUE then expand this child when
+    ! BOX |  c_ptr |  required |  The box into which to put the child
+    ! CHILD |  c_ptr |  required |  The child to pack
+    ! EXPAND |  boolean |  optional |  If TRUE then expand this child when
     ! 		filling the box, if FALSE don't, (Default TRUE)
-    ! FILL: boolean: optional: If TRUE, then expand the widget when
+    ! FILL |  boolean |  optional |  If TRUE, then expand the widget when
     ! 		expanding, if FALSE, then put space round it. (Default TRUE,
     ! 		ignored if EXPAND==FALSE.
-    ! PADDING: c_int: optional: Extra space to put around the child in the
+    ! PADDING |  c_int |  optional |  Extra space to put around the child in the
     ! 		fill direction.
-    ! ATEND: boolean: optional: If present and TRUE, then put the child at
+    ! ATEND |  boolean |  optional |  If present and TRUE, then put the child at
     ! 		the end of the box rather than the start.
     !-
 
@@ -357,16 +357,16 @@ contains
 
     ! Utility interface to create a table container
     !
-    ! NROWS: c_int: optional: The initial number of rows.
-    ! NCOLS: c_int: optional: The initial number of columns.
-    ! HOMOGENEOUS: boolean: optional: Whether the cells all have the
+    ! NROWS |  c_int |  optional |  The initial number of rows.
+    ! NCOLS |  c_int |  optional |  The initial number of columns.
+    ! HOMOGENEOUS |  boolean |  optional |  Whether the cells all have the
     ! 	same size.
-    ! ROW_HOMOGENEOUS: boolean: optional: Whether the rows all have the
+    ! ROW_HOMOGENEOUS |  boolean |  optional |  Whether the rows all have the
     ! 	same size.
-    ! COL_HOMOGENEOUS: boolean: optional: Whether the columns all have the
+    ! COL_HOMOGENEOUS |  boolean |  optional |  Whether the columns all have the
     ! 	same size.
-    ! ROW_SPACING: c_int: optional: Spacing between rows.
-    ! COL_SPACING: c_int: optional: Spacing between columns.
+    ! ROW_SPACING |  c_int |  optional |  Spacing between rows.
+    ! COL_SPACING |  c_int |  optional |  Spacing between columns.
     !
     ! Note
     ! This is implemented as a GtkTable for Gtk+2.x and as a GtkGrid for 3.x
@@ -409,17 +409,17 @@ contains
 
     ! Attach a widget to a table
     !
-    ! TABLE: c_ptr: required: The table to which to attach
-    ! WIDGET: c_ptr: required: The widget to attach to the table
-    ! IX: c_int: required: The cell number of the left edge of the widget
-    ! IY: c_int: required: The cell number of the top edge of the widget.
-    ! XSPAN: c_int: optional: How many cells to span in the X direction (1)
-    ! YSPAN: c_int: optional: How many cells to span in the Y direction (1)
-    ! XPAD: c_int: optional: Padding around the cell in the X direction
-    ! YPAD: c_int: optional: Padding in the Y direction
-    ! XOPTS: c_int: optional: GTK<=3: X fill/expand options (from the
+    ! TABLE |  c_ptr |  required |  The table to which to attach
+    ! WIDGET |  c_ptr |  required |  The widget to attach to the table
+    ! IX |  c_int |  required |  The cell number of the left edge of the widget
+    ! IY |  c_int |  required |  The cell number of the top edge of the widget.
+    ! XSPAN |  c_int |  optional |  How many cells to span in the X direction (1)
+    ! YSPAN |  c_int |  optional |  How many cells to span in the Y direction (1)
+    ! XPAD |  c_int |  optional |  Padding around the cell in the X direction
+    ! YPAD |  c_int |  optional |  Padding in the Y direction
+    ! XOPTS: c_int |  optional |  GTK<=3 |  X fill/expand options (from the
     ! 		GtkAttachOptions enumerator, or 0 for none)
-    ! YOPTS: c_int: optional: GTK<=3: Y fill/expand options.
+    ! YOPTS: c_int |  optional |  GTK<=3 |  Y fill/expand options.
     !
     ! N.B. GTK_SHRINK in the options is ignored in Gtk+ 3.x
     !-
@@ -475,9 +475,9 @@ contains
 
     ! Add rows and/or columns to a table
     !
-    ! TABLE: c_ptr: required: The table to enlarge
-    ! NY: c_int: optional: How many rows to add
-    ! NX: c_int: optional: How many columns to add
+    ! TABLE |  c_ptr |  required |  The table to enlarge
+    ! NY |  c_int |  optional |  How many rows to add
+    ! NX |  c_int |  optional |  How many columns to add
     !
     ! To set an absolute size, use gtk_table_resize
     ! directly. Negative NX and/or NY will reduce the table.
@@ -500,20 +500,20 @@ contains
 
     ! Convenience function to create a notebook (tabbed) container
     !
-    ! SHOW_TABS: boolean: optional: Whether the tabs are visible
-    ! TAB_POSITION: c_int: optional:  Where the tabs are placed (from the
+    ! SHOW_TABS |  boolean |  optional |  Whether the tabs are visible
+    ! TAB_POSITION |  c_int |  optional |   Where the tabs are placed (from the
     ! 		GtkPositionType enumerator).
-    ! POPUP: boolean: optional: Whether to have a popup tab selector.
-    ! SCROLLABLE: boolean: optional: Whether the tabs are scrollable if
+    ! POPUP |  boolean |  optional |  Whether to have a popup tab selector.
+    ! SCROLLABLE |  boolean |  optional |  Whether the tabs are scrollable if
     ! 		there are too many to fit.
-    ! GROUP: string: optional: A group name for the notebook (needed if you
+    ! GROUP |  string |  optional |  A group name for the notebook (needed if you
     ! 		want to drag tabs from one book to another). N.B. For GTK+2,
     ! 		this probably has to be a variable to work.
-    ! SWITCH_PAGE: c_funptr: optional: A callback to be called when the page
+    ! SWITCH_PAGE |  c_funptr |  optional |  A callback to be called when the page
     ! 		selection is changed (signal switch-page). Note that this
     ! 		callback has 4 arguments; the notebook, the selected page, the
     ! 		index of that page and the user data.
-    ! DATA: c_ptr: optional: Data to pass the the switch-page callback.
+    ! DATA |  c_ptr |  optional |  Data to pass the the switch-page callback.
     !-
 
     nbook = gtk_notebook_new()
@@ -563,16 +563,16 @@ contains
 
     ! Convenience function to add a page to a notebook.
     !
-    ! NBOOK: c_ptr: required: The book to which to add the page
-    ! PAGE: c_ptr: required: The page to at to the book.
-    ! POSITION: c_int: optional: The position at which to add the page.
-    ! AT_START: boolean: optional: Set to TRUE to add at the start. (If neither
+    ! NBOOK |  c_ptr |  required |  The book to which to add the page
+    ! PAGE |  c_ptr |  required |  The page to at to the book.
+    ! POSITION |  c_int |  optional |  The position at which to add the page.
+    ! AT_START |  boolean |  optional |  Set to TRUE to add at the start. (If neither
     ! 		AT_START nor POSITION is given the page is added at the end).
-    ! REORDERABLE: boolean: optional: Whether the tab can be reordered by
+    ! REORDERABLE |  boolean |  optional |  Whether the tab can be reordered by
     ! 		drag and drop
-    ! DETACHABLE: boolean: optional: Whether the tab can be dragged to a
+    ! DETACHABLE |  boolean |  optional |  Whether the tab can be dragged to a
     ! 		different notebook (requires a group name for the notebooks).
-    ! LABEL: string: optional: A label to show on the tab.
+    ! LABEL |  string |  optional |  A label to show on the tab.
     !
     ! Returns the location at which the tab was added or -1 for failure.
     !-
@@ -622,18 +622,18 @@ contains
 
     ! Create a scrolled window, with convenient settings.
     !
-    ! HPOLICY: c_int: optional: Whether to show the horizontal scrollbar
+    ! HPOLICY |  c_int |  optional |  Whether to show the horizontal scrollbar
     ! 		default- GTK_POLICY_AUTOMATIC, allowed- any GTK_POLICY_TYPE
-    ! VPOLICY: c_int: optional: Whether to show the vertical scrollbar
+    ! VPOLICY |  c_int |  optional |  Whether to show the vertical scrollbar
     ! 		default- GTK_POLICY_AUTOMATIC, allowed- any GTK_POLICY_TYPE
-    ! HSIZE: c_int: optional: The size of the window in the horizontal
+    ! HSIZE |  c_int |  optional |  The size of the window in the horizontal
     ! 		direction.
-    ! VSIZE: c_int: optional: The size of the window in the vertical
+    ! VSIZE |  c_int |  optional |  The size of the window in the vertical
     ! 		direction.
-    ! HADJUSTMENT: c_ptr: optional: An adjustment widget to use in place
+    ! HADJUSTMENT |  c_ptr |  optional |  An adjustment widget to use in place
     ! 		of the automatically generated scrollbar in the horizontal
     ! 		direction. Removed in GTK 4.
-    ! VADJUSTMENT: c_ptr: optional: An adjustment widget to use in place
+    ! VADJUSTMENT |  c_ptr |  optional |  An adjustment widget to use in place
     ! 		of the automatically generated scrollbar in the vertical
     ! 		direction. Removed in GTK 4.
     !-
@@ -692,9 +692,9 @@ contains
 
     ! Add a widget to a scrolled window.
     !
-    ! WIN: c_ptr: required: The scrolled window.
-    ! CHILD: c_ptr: required: The widget to insert.
-    ! VIEWPORT: c_int: optional: Set this to true if the child widget
+    ! WIN |  c_ptr |  required |  The scrolled window.
+    ! CHILD |  c_ptr |  required |  The widget to insert.
+    ! VIEWPORT |  c_int |  optional |  Set this to true if the child widget
     ! 		requires a viewport between it and the scrolled window.
     ! 		Unfortunately I can't see a way to determine automatically
     ! 		whether this is needed.

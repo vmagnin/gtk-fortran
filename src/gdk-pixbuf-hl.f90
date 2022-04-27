@@ -93,11 +93,11 @@ contains
 
     ! Create a new empty pixbuf of the given size
     !
-    ! WIDTH: int: required: The width in pixels of the pixbuf
-    ! HEIGHT: int: required: The height in pixels of the pixbuf
-    ! ALPHA: boolean: optional: Whether to include an alpha channel
+    ! WIDTH |  int |  required |  The width in pixels of the pixbuf
+    ! HEIGHT |  int |  required |  The height in pixels of the pixbuf
+    ! ALPHA |  boolean |  optional |  Whether to include an alpha channel
     ! 		(default=FALSE)
-    ! BITS: int: optional: The nuber of bits per sample (default=8).
+    ! BITS |  int |  optional |  The nuber of bits per sample (default=8).
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -130,14 +130,14 @@ contains
 
     ! Read an image file into a new pixbuf
     !
-    ! FILE: string: required: The file to read
-    ! WIDTH: int: optional: The desired width for the pixbuf
-    ! HEIGHT: int: optional: The desired height for the pixbuf
-    ! ASPECT: boolean: optional: If sizing is given then set to TRUE
+    ! FILE |  string |  required |  The file to read
+    ! WIDTH |  int |  optional |  The desired width for the pixbuf
+    ! HEIGHT |  int |  optional |  The desired height for the pixbuf
+    ! ASPECT |  boolean |  optional |  If sizing is given then set to TRUE
     ! 		to preserve the aspect ratio, or FALSE not to. If both
     ! 		dimensions are given, then the default is FALSE, if one is
     ! 		given, the default is TRUE.
-    ! ERROR: gerror: optional: The error code & message.
+    ! ERROR |  gerror |  optional |  The error code & message.
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -196,7 +196,7 @@ contains
 
     ! Create a pixbuf from an RGB(A) array of values.
     !
-    ! DATA: int8: required: The data values as a 1..4 x n x m array.
+    ! DATA |  int8 |  required |  The data values as a 1..4 x n x m array.
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -233,7 +233,7 @@ contains
 
     ! Create a pixbuf from a greyscale array of values.
     !
-    ! DATA: int8: required: The data values as a n x m array.
+    ! DATA |  int8 |  required |  The data values as a n x m array.
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -258,7 +258,7 @@ contains
     ! Create a pixbuf from an RGB(A) array of values. This version
     ! uses 2-byte integers to avoid the signing issues of the c_int8_t type.
     !
-    ! DATA: short: required: The data values as a 1..4 x n x m array.
+    ! DATA |  short |  required |  The data values as a 1..4 x n x m array.
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -296,7 +296,7 @@ contains
     ! Create a pixbuf from a greyscale array of values. This version
     ! uses 2-byte integers to avoid the signing issues of the c_int8_t type.
     !
-    ! DATA: short: required: The data values as a n x m array.
+    ! DATA |  short |  required |  The data values as a n x m array.
     !
     ! This routine will usually be called via the generic interface
     ! hl_gdk_pixbuf_new.
@@ -320,8 +320,8 @@ contains
     ! Get the pixels of a pixbuf and return them as a Fortran 3xnxm or 4xnxm
     ! array
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to read
-    ! PIXELS: int8: required: Will contain the image.
+    ! PIXBUF |  c_ptr |  required |  The pixbuf to read
+    ! PIXELS |  int8 |  required |  Will contain the image.
     !
     ! This is normally called via the generic hl_gdk_pixbuf_get_pixels
     ! interface. Implemented as a subroutine to allow this.
@@ -361,8 +361,8 @@ contains
     ! array. This version returns as a short array to evade the signing issues
     ! of 8-bit integers in Fortran
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to read
-    ! PIXELS: short: required: Will contain the image.
+    ! PIXBUF |  c_ptr |  required |  The pixbuf to read
+    ! PIXELS |  short |  required |  Will contain the image.
     !
     ! This is normally called via the generic hl_gdk_pixbuf_get_pixels
     ! interface. Implemented as a subroutine to allow this.
@@ -401,10 +401,10 @@ contains
 
     ! Set the pixels of a pixbuf from a Fortran array.
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to update
-    ! PIXELS: int8: required: Contains the image to insert.
-    ! XOFF: int: optional: The X-offset at which to write the image.
-    ! YOFF: int: optional: The Y-offset at which to write the image.
+    ! PIXBUF |  c_ptr |  required |  The pixbuf to update
+    ! PIXELS |  int8 |  required |  Contains the image to insert.
+    ! XOFF |  int |  optional |  The X-offset at which to write the image.
+    ! YOFF |  int |  optional |  The Y-offset at which to write the image.
     !
     ! This is normally called via the generic hl_gdk_pixbuf_set_pixels
     ! interface.
@@ -527,10 +527,10 @@ contains
 
     ! Set the pixels of a pixbuf from a Fortran array (greyscale).
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to update
-    ! PIXELS: int8: required: Contains the image to insert.
-    ! XOFF: int: optional: The X-offset at which to write the image.
-    ! YOFF: int: optional: The Y-offset at which to write the image.
+    ! PIXBUF |  c_ptr |  required |  The pixbuf to update
+    ! PIXELS |  int8 |  required |  Contains the image to insert.
+    ! XOFF |  int |  optional |  The X-offset at which to write the image.
+    ! YOFF |  int |  optional |  The Y-offset at which to write the image.
     !
     ! This is normally called via the generic hl_gdk_pixbuf_set_pixels
     ! interface.
@@ -603,10 +603,10 @@ contains
 
     ! Set the pixels of a pixbuf from a Fortran array (16-bit).
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to update
-    ! PIXELS: short: required: Contains the image to insert.
-    ! XOFF: int: optional: The X-offset at which to write the image.
-    ! YOFF: int: optional: The Y-offset at which to write the image.
+    ! PIXBUF |  c_ptr |  required |  The pixbuf to update
+    ! PIXELS |  short |  required |  Contains the image to insert.
+    ! XOFF |  int |  optional |  The X-offset at which to write the image.
+    ! YOFF |  int |  optional |  The Y-offset at which to write the image.
     !
     ! This is normally called via the generic hl_gdk_pixbuf_set_pixels
     ! interface.
@@ -728,10 +728,10 @@ contains
 
     ! Set the pixels of a pixbuf from a Fortran array (16-bit, greyscale).
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to update
-    ! PIXELS: short: required: Contains the image to insert.
-    ! XOFF: int: optional: The X-offset at which to write the image.
-    ! YOFF: int: optional: The Y-offset at which to write the image.
+    ! PIXBUF |  c_ptr |  required |  The pixbuf to update
+    ! PIXELS |  short |  required |  Contains the image to insert.
+    ! XOFF |  int |  optional |  The X-offset at which to write the image.
+    ! YOFF |  int |  optional |  The Y-offset at which to write the image.
     !
     ! This is normally called via the generic hl_gdk_pixbuf_set_pixels
     ! interface.
@@ -806,13 +806,13 @@ contains
 
     ! Return information about an existing pixbuf.
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to be queried.
-    ! NCHANNELS: int: optional: How many channels does the pixbuf have?
-    ! BITS: int: optional: How many bits per pixel?
-    ! ALPHA: boolean: optional: Does the pixbuf have an alpha channel?
-    ! HEIGHT: int: optional: How many rows in the image.
-    ! WIDTH: int: optional: How many columns in the image.
-    ! ROWSTRIDE: int: optional: How many bytes between the start of
+    ! PIXBUF |  c_ptr |  required |  The pixbuf to be queried.
+    ! NCHANNELS |  int |  optional |  How many channels does the pixbuf have?
+    ! BITS |  int |  optional |  How many bits per pixel?
+    ! ALPHA |  boolean |  optional |  Does the pixbuf have an alpha channel?
+    ! HEIGHT |  int |  optional |  How many rows in the image.
+    ! WIDTH |  int |  optional |  How many columns in the image.
+    ! ROWSTRIDE |  int |  optional |  How many bytes between the start of
     ! 		successive rows.
     !-
 
@@ -836,14 +836,14 @@ contains
 
     ! Save a pixbuf to a file.
     !
-    ! PIXBUF: c_ptr: required: The pixbuf to save
-    ! FILE: f_string: required: The filename to which to save.
-    ! TYPE: f_string: optional: The file type to use, if not given then it
+    ! PIXBUF |  c_ptr |  required |  The pixbuf to save
+    ! FILE |  f_string |  required |  The filename to which to save.
+    ! TYPE |  f_string |  optional |  The file type to use, if not given then it
     ! 		is deduced from the extension.
-    ! OPTIONS: f_string(): optional: A list of options in the form
+    ! OPTIONS |  f_string() |  optional |  A list of options in the form
     ! 		"option=value".
-    ! OK: logical: optional: Was the write successful.
-    ! ERROR: f_string: optional: An error message if the write failed.
+    ! OK |  logical |  optional |  Was the write successful.
+    ! ERROR |  f_string |  optional |  An error message if the write failed.
     !-
 
     character(len=hl_gdk_pixbuf_type_len) :: ftype
@@ -937,11 +937,11 @@ contains
     ! Get information about the available file formats for reading/writing
     ! pixbufs.
     !
-    ! NAMES: f_string(): required: The names found
-    ! WRITABLE: logical(): optional: Whether the formats are writable.
-    ! DESCRIPTION: f_string(): optional: Descriptions of the formats.
-    ! SCALABLE: logical(): optional: Whether the formats are scalable.
-    ! LICENSE: f_string(): optional: The licence of the format module.
+    ! NAMES |  f_string() |  required |  The names found
+    ! WRITABLE |  logical() |  optional |  Whether the formats are writable.
+    ! DESCRIPTION |  f_string() |  optional |  Descriptions of the formats.
+    ! SCALABLE |  logical() |  optional |  Whether the formats are scalable.
+    ! LICENSE |  f_string() |  optional |  The licence of the format module.
     !-
 
     type(c_ptr) :: flist, fmt
@@ -989,15 +989,15 @@ contains
 
     ! Get information about a specific file type.
     !
-    ! NAME: string: required: The file type to query.
-    ! MIME_TYPE: fstring(): optional: Will contain a list of mime-types
+    ! NAME |  string |  required |  The file type to query.
+    ! MIME_TYPE |  fstring() |  optional |  Will contain a list of mime-types
     !		associated with this file type.
-    ! EXTENSIONS: fstring(): optional: Will contain a list of file
+    ! EXTENSIONS |  fstring() |  optional |  Will contain a list of file
     !		extensions normally used for this type.
-    ! WRITABLE: logical: optional: Whether the type is writable.
-    ! SCALABLE: logical: optional: Whether the type is scalable.
-    ! DESCRIPTION: f_string: optional: A description of the file type.
-    ! LICENSE: f_string: optional: The license of the module for the
+    ! WRITABLE |  logical |  optional |  Whether the type is writable.
+    ! SCALABLE |  logical |  optional |  Whether the type is scalable.
+    ! DESCRIPTION |  f_string |  optional |  A description of the file type.
+    ! LICENSE |  f_string |  optional |  The license of the module for the
     !		file type.
     !
     ! Returns .true. if the type is found, .false. if it is not.
@@ -1095,8 +1095,8 @@ contains
     ! Find the format type appropriate to a mime_type or a
     ! filename extension.
     !
-    ! MIME_TYPE: f_string: optional: The mime-type to match.
-    ! EXTENSION: f_string: optional: The file extension to match.
+    ! MIME_TYPE |  f_string |  optional |  The mime-type to match.
+    ! EXTENSION |  f_string |  optional |  The file extension to match.
     !
     ! If no match is found then an empty string is returned.
     ! Mime_type has precedence over extension.

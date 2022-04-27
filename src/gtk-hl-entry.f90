@@ -98,37 +98,37 @@ contains
 
     ! Higher level text entry box
     !
-    ! LEN: integer: optional: The maximum length of the entry field.
-    ! EDITABLE: boolean: optional: whether the entry box can be edited
+    ! LEN |  integer |  optional |  The maximum length of the entry field.
+    ! EDITABLE |  boolean |  optional |  whether the entry box can be edited
     ! 		by the user
-    ! ACTIVATE: c_funptr: optional: Callback function for the "activate" signal
-    ! DATA: c_ptr: optional: Data to be passed to the activate callback (this
+    ! ACTIVATE |  c_funptr |  optional |  Callback function for the "activate" signal
+    ! DATA |  c_ptr |  optional |  Data to be passed to the activate callback (this
     ! 		is a plain DATA because the changed and other signals were
     ! 		added later.
-    ! TOOLTIP: string: optional: tooltip to be displayed when the pointer
+    ! TOOLTIP |  string |  optional |  tooltip to be displayed when the pointer
     ! 		is held over the button.
-    ! VALUE: string: optional: An initial value for the entry box.
-    ! SENSITIVE: boolean: optional: Whether the widget should initially
+    ! VALUE |  string |  optional |  An initial value for the entry box.
+    ! SENSITIVE |  boolean |  optional |  Whether the widget should initially
     ! 		be sensitive or not.
-    ! CHANGED: c_funptr: optional: Callback for the "changed" signal.
-    ! DATA_CHANGED: c_ptr: optional: Data to be passed to the changed callback.
-    ! DELETE_TEXT: c_funptr: optional: Callback for the "delete-text" signal.
-    ! DATA_DELETE_TEXT: c_ptr: optional: Data to be passed to the delete_text
+    ! CHANGED |  c_funptr |  optional |  Callback for the "changed" signal.
+    ! DATA_CHANGED |  c_ptr |  optional |  Data to be passed to the changed callback.
+    ! DELETE_TEXT |  c_funptr |  optional |  Callback for the "delete-text" signal.
+    ! DATA_DELETE_TEXT |  c_ptr |  optional |  Data to be passed to the delete_text
     !            callback
-    ! INSERT_TEXT: c_funptr: optional: Callback for the "insert-text" signal.
-    ! DATA_INSERT_TEXT: c_ptr: optional: Data to be passed to the insert_text
+    ! INSERT_TEXT |  c_funptr |  optional |  Callback for the "insert-text" signal.
+    ! DATA_INSERT_TEXT |  c_ptr |  optional |  Data to be passed to the insert_text
     !            callback
-    ! FOCUS_OUT_EVENT: c_funptr: optional: Callback for the "focus-out-event"
+    ! FOCUS_OUT_EVENT |  c_funptr |  optional |  Callback for the "focus-out-event"
     ! 		signal, this is a GDK event rather than a GTK signal, so the
     ! 		call back is a function of 3 arguments returning gboolean.
-    ! DATA_FOCUS_OUT: c_ptr: optional: Data to pass to the focus_out_event
+    ! DATA_FOCUS_OUT |  c_ptr |  optional |  Data to pass to the focus_out_event
     ! 		callback
-    ! FOCUS_IN_EVENT: c_funptr: optional: Callback for the "focus-in-event"
+    ! FOCUS_IN_EVENT |  c_funptr |  optional |  Callback for the "focus-in-event"
     ! 		signal, this is a GDK event rather than a GTK signal, so the
     ! 		call back is a function of 3 arguments returning gboolean.
-    ! DATA_FOCUS_IN: c_ptr: optional: Data to pass to the focus_in_event
+    ! DATA_FOCUS_IN |  c_ptr |  optional |  Data to pass to the focus_in_event
     ! 		callback
-    ! SIZE: integer : optional : The X-size request for the widget. Y is set
+    ! SIZE |  integer  |  optional  |  The X-size request for the widget. Y is set
     ! 		to default (-1). Note that Gtk may make the widget bigger than
     ! 		this if expand/fill options in the packing require it.
     !-
@@ -219,9 +219,9 @@ contains
 
     ! Return the text in an entry box as a fortran string.
     !
-    ! ENTRY: c_ptr: required: The text entry to read
-    ! TEXT: f_string: required: The text read.
-    ! STATUS: c_int: optional: Returns -1 if the string is truncated.
+    ! ENTRY |  c_ptr |  required |  The text entry to read
+    ! TEXT |  f_string |  required |  The text read.
+    ! STATUS |  c_int |  optional |  Returns -1 if the string is truncated.
     !
     ! To return the text as a c-pointer use gtk_entry_get_text
     !-
@@ -267,42 +267,42 @@ contains
 
     ! A multiline text edit widget
     !
-    ! SCROLL: c_ptr: optional: A scrolled window in which the text editor
+    ! SCROLL |  c_ptr |  optional |  A scrolled window in which the text editor
     ! 		is placed. If it is present, then it must be used used for
     ! 		packing the widget into your application. If it is not used,
     ! 		then scroll bars will not be added if the text goes beyond
     ! 		the edge of the box.
-    ! EDITABLE: boolean: optional: Set to FALSE to make a non-editable text box.
-    ! CHANGED: c_funptr: optional: Callback for the "activate" signal.
-    ! DATA_CHANGED: c_ptr: optional: User data to pass to/from the activate
+    ! EDITABLE |  boolean |  optional |  Set to FALSE to make a non-editable text box.
+    ! CHANGED |  c_funptr |  optional |  Callback for the "activate" signal.
+    ! DATA_CHANGED |  c_ptr |  optional |  User data to pass to/from the activate
     ! 		callback
-    ! INSERT_TEXT: c_funptr: optional: Callback for the "insert-text" signal.
+    ! INSERT_TEXT |  c_funptr |  optional |  Callback for the "insert-text" signal.
     ! 		This handler is attached to the text buffer not the text view.
-    ! DATA_INSERT_TEXT: c_ptr: optional: User data for the insert-text callback.
-    ! DELETE_RANGE: c_funptr: optional: Callback for the "delete-range" signal.
+    ! DATA_INSERT_TEXT |  c_ptr |  optional |  User data for the insert-text callback.
+    ! DELETE_RANGE |  c_funptr |  optional |  Callback for the "delete-range" signal.
     ! 		This handler is attached to the text buffer not the text view.
-    ! DATA_DELETE_RANGE: c_ptr: optional: User data for the delete-range
+    ! DATA_DELETE_RANGE |  c_ptr |  optional |  User data for the delete-range
     ! 		callback.
-    ! INITIAL_TEXT: string(): optional: Initial text to put in the text window.
-    ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
+    ! INITIAL_TEXT |  string() |  optional |  Initial text to put in the text window.
+    ! SENSITIVE |  boolean |  optional |  Set to FALSE to make the widget start in an
     ! 		insensitive state.
-    ! TOOLTIP: string: optional: A tooltip to display when the pointer is
+    ! TOOLTIP |  string |  optional |  A tooltip to display when the pointer is
     ! 		held over the widget.
-    ! SSIZE: c_int(2): optional: Size of the scroll widget.
-    ! BUFFER: c_ptr: optional: Variable to return the buffer pointer
-    ! FOCUS_OUT_EVENT: c_funptr: optional: Callback for the "focus-out-event"
+    ! SSIZE |  c_int(2) |  optional |  Size of the scroll widget.
+    ! BUFFER |  c_ptr |  optional |  Variable to return the buffer pointer
+    ! FOCUS_OUT_EVENT |  c_funptr |  optional |  Callback for the "focus-out-event"
     ! 		signal, this is a GDK event rather than a GTK signal, so the
     ! 		call back is a function of 3 arguments returning gboolean.
-    ! DATA_FOCUS_OUT: c_ptr: optional: Data to pass to the focus_out_event
+    ! DATA_FOCUS_OUT |  c_ptr |  optional |  Data to pass to the focus_out_event
     ! 		callback
-    ! FOCUS_IN_EVENT: c_funptr: optional: Callback for the "focus-in-event"
+    ! FOCUS_IN_EVENT |  c_funptr |  optional |  Callback for the "focus-in-event"
     ! 		signal, this is a GDK event rather than a GTK signal, so the
     ! 		call back is a function of 3 arguments returning gboolean.
-    ! DATA_FOCUS_IN: c_ptr: optional: Data to pass to the focus_in_event
+    ! DATA_FOCUS_IN |  c_ptr |  optional |  Data to pass to the focus_in_event
     ! 		callback
-    ! HSCROLL_POLICY: int: optional: Horizontal scrolling policy for the
+    ! HSCROLL_POLICY |  int |  optional |  Horizontal scrolling policy for the
     ! 		containing scroll window (default AUTOMATIC).
-    ! VSCROLL_POLICY: int: optional: Vertical scrolling policy for the
+    ! VSCROLL_POLICY |  int |  optional |  Vertical scrolling policy for the
     ! 		containing scroll window (default AUTOMATIC).
     !
     ! NOTE -- The insert-text and delete-range callbacks take extra arguments.
@@ -426,17 +426,17 @@ contains
 
     ! Insert text to an text view
     !
-    ! VIEW: c_ptr: required: The text view into which to insert.
-    ! TEXT: string(): required: The text to insert.
-    ! LINE: c_int: optional: The line at which to insert (if omitted,
+    ! VIEW |  c_ptr |  required |  The text view into which to insert.
+    ! TEXT |  string() |  required |  The text to insert.
+    ! LINE |  c_int |  optional |  The line at which to insert (if omitted,
     ! 		then the text is appended).
-    ! COLUMN: c_int: optional: The column as which to insert the text
+    ! COLUMN |  c_int |  optional |  The column as which to insert the text
     ! 		(If omitted, then insert at the start of the line).
-    ! REPLACE: boolean: optional: If set to TRUE and LINE and COLUMN are omitted
+    ! REPLACE |  boolean |  optional |  If set to TRUE and LINE and COLUMN are omitted
     ! 		then replace the text in the buffer.
-    ! AT_CURSOR: boolean: optional: Set to TRUE to insert the text at the
+    ! AT_CURSOR |  boolean |  optional |  Set to TRUE to insert the text at the
     ! 		cursor.
-    ! BUFFER: c_ptr: optional: The text buffer in which to insert the text
+    ! BUFFER |  c_ptr |  optional |  The text buffer in which to insert the text
     ! 		If this is given, then VIEW is ignored -- used in signal
     ! 		handlers attached to the buffer.
     !-
@@ -507,13 +507,13 @@ contains
 
     ! Delete from a text view
     !
-    ! VIEW: c_ptr: required: The text view from which to delete.
-    ! LINE: c_int: optional: The line at which to start the deletion
-    ! COLUMN: c_int: optional: The column at which to start the deletion.
+    ! VIEW |  c_ptr |  required |  The text view from which to delete.
+    ! LINE |  c_int |  optional |  The line at which to start the deletion
+    ! COLUMN |  c_int |  optional |  The column at which to start the deletion.
     ! 		required if N_CHARS is given. Ignored if N_LINES is given.
-    ! N_CHARS: c_int: optional: How many characters to delete.
-    ! N_LINES: c_int: optional: How many lines to delete.
-    ! BUFFER: c_ptr: optional: The text buffer from which to delete. If this
+    ! N_CHARS |  c_int |  optional |  How many characters to delete.
+    ! N_LINES |  c_int |  optional |  How many lines to delete.
+    ! BUFFER |  c_ptr |  optional |  The text buffer from which to delete. If this
     ! 		is given, then VIEW is ignored, used in signal handlers
     ! 		attached to the buffer.
     !
@@ -576,15 +576,15 @@ contains
 
     ! Get text from s text view.
     !
-    ! VIEW: c_ptr: required: The text view to read.
-    ! TEXT: string(): required: A variable to contain the output text.
-    ! START_LINE: c_int: optional: The first line to read.
-    ! START_COLUMN: c_int: optional: The column at which to start reading.
-    ! END_LINE: c_int: optional: The last line to read.
-    ! END_COLUMN: c_int: optional: The column at which to stop reading.
-    ! HIDDEN: boolean: optional: If set to FALSE, then do not get hidden
+    ! VIEW |  c_ptr |  required |  The text view to read.
+    ! TEXT |  string() |  required |  A variable to contain the output text.
+    ! START_LINE |  c_int |  optional |  The first line to read.
+    ! START_COLUMN |  c_int |  optional |  The column at which to start reading.
+    ! END_LINE |  c_int |  optional |  The last line to read.
+    ! END_COLUMN |  c_int |  optional |  The column at which to stop reading.
+    ! HIDDEN |  boolean |  optional |  If set to FALSE, then do not get hidden
     ! 		characters
-    ! BUFFER: c_ptr: optional: The text buffer from which to read. If this
+    ! BUFFER |  c_ptr |  optional |  The text buffer from which to read. If this
     ! 		is given, then VIEW is ignored, useful for signal handlers
     ! 		attached to the buffer.
     !
@@ -689,8 +689,8 @@ contains
 
     ! Get the current cursor location
     !
-    ! VIEW: c_ptr: required: The text view to query
-    ! BUFFER: c_ptr: optional: The buffer to query (if given, then
+    ! VIEW |  c_ptr |  required |  The text view to query
+    ! BUFFER |  c_ptr |  optional |  The buffer to query (if given, then
     ! 		VIEW is ignored).
     !
     ! Returns a 3-element array with the line, column and offset of the cursor
@@ -723,10 +723,10 @@ contains
 
     ! Get the selection range
     !
-    ! VIEW: c_ptr: required: The text view to query.
-    ! S_START: c_int(): required: The start of the selection. (line, column, offset)
-    ! S_END: c_int(): required: The end of the selection. (line, column, offset)
-    ! BUFFER: c_ptr: optional: The text buffer to query. If present, then the
+    ! VIEW |  c_ptr |  required |  The text view to query.
+    ! S_START |  c_int() |  required |  The start of the selection. (line, column, offset)
+    ! S_END |  c_int() |  required |  The end of the selection. (line, column, offset)
+    ! BUFFER |  c_ptr |  optional |  The text buffer to query. If present, then the
     ! 		view argument is ignored.
     !
     ! Returns TRUE if there is a selection, FALSE if there isn't
@@ -765,7 +765,7 @@ contains
 
     ! Check if the buffer of a text view is modified
     !
-    ! VIEW: c_ptr: required: The text view to check.
+    ! VIEW |  c_ptr |  required |  The text view to check.
     !
     ! N.B. No BUFFER argument is provided as gtk_text_buffer_get_modified
     ! is just a single call
@@ -786,8 +786,8 @@ contains
 
     ! Set/clear the modified flag on the text buffer of a text view
     !
-    ! VIEW: c_ptr: required: The text view to set
-    ! STATE: boolean: required: The state to set the flag to.
+    ! VIEW |  c_ptr |  required |  The text view to set
+    ! STATE |  boolean |  required |  The state to set the flag to.
     !-
 
     type(c_ptr) :: tbuf
@@ -807,12 +807,12 @@ contains
 
     ! Get various useful information about a text view
     !
-    ! VIEW: c_ptr: required: The view to query
-    ! NLINES: c_int: optional: Return the number of lines in the view
-    ! NCHARS: c_int: optional: Return the number of characters in the view
-    ! NCLINE: c_int(): optional: Return the nuber of characters in each
+    ! VIEW |  c_ptr |  required |  The view to query
+    ! NLINES |  c_int |  optional |  Return the number of lines in the view
+    ! NCHARS |  c_int |  optional |  Return the number of characters in the view
+    ! NCLINE |  c_int() |  optional |  Return the nuber of characters in each
     ! 		line. Must be an allocatable array.
-    ! BUFFER: c_ptr: optional: If present use this buffer and ignore the
+    ! BUFFER |  c_ptr |  optional |  If present use this buffer and ignore the
     ! 		VIEW argument
     !-
 

@@ -75,27 +75,27 @@ contains
 
     ! Higher level interface to make a GtkAssistant
     !
-    ! TITLE: String: optional: Title for the window
-    ! DESTROY: c_funptr: optional: Callback for the "destroy" signal
-    ! DELETE_EVENT: c_funptr: optional: Callback for the "delete-event" signal
-    ! CLOSE: c_funptr: optional: Callback for when the assistant is completed
-    ! CANCEL: c_funptr: optional: Callback for the Cancel operation.
-    ! DATA_DESTROY: c_ptr: optional: Data to be passed to the destroy
+    ! TITLE |  String |  optional |  Title for the window
+    ! DESTROY |  c_funptr |  optional |  Callback for the "destroy" signal
+    ! DELETE_EVENT |  c_funptr |  optional |  Callback for the "delete-event" signal
+    ! CLOSE |  c_funptr |  optional |  Callback for when the assistant is completed
+    ! CANCEL |  c_funptr |  optional |  Callback for the Cancel operation.
+    ! DATA_DESTROY |  c_ptr |  optional |  Data to be passed to the destroy
     ! 		signal handler
-    ! DATA_DELETE_EVENT: c_ptr: optional: Data to be passed to the
+    ! DATA_DELETE_EVENT |  c_ptr |  optional |  Data to be passed to the
     ! 		delete_event signal handler
-    ! DATA_CLOSE: c_ptr: optional: Data to be passed to the close signal
-    ! DATA_CANCEL: c_ptr: optional: Data to be passed to the cancel signal.
-    ! BORDER: integer: optional: Size of the window border
-    ! WSIZE: integer(2): optional: Size of the window
-    ! PARENT: c_ptr: optional: An optional parent window for the new window.
-    ! ICON: c_ptr: optional : A GdkPixbuf containing the icon for the window.
-    ! ICON_FILE: String : optional : A file from which to read the icon for
+    ! DATA_CLOSE |  c_ptr |  optional |  Data to be passed to the close signal
+    ! DATA_CANCEL |  c_ptr |  optional |  Data to be passed to the cancel signal.
+    ! BORDER |  integer |  optional |  Size of the window border
+    ! WSIZE |  integer(2) |  optional |  Size of the window
+    ! PARENT |  c_ptr |  optional |  An optional parent window for the new window.
+    ! ICON |  c_ptr |  optional  |  A GdkPixbuf containing the icon for the window.
+    ! ICON_FILE |  String  |  optional  |  A file from which to read the icon for
     ! 		the window.
-    ! ICON_NAME: String : optional : The name of a standard icon to use for
+    ! ICON_NAME |  String  |  optional  |  The name of a standard icon to use for
     ! 		the window.
-    ! FORWARD: c_funptr: optional: A function to handle paging.
-    ! DATA_FORWARD: c_ptr: optional: Data for the paging function.
+    ! FORWARD |  c_funptr |  optional |  A function to handle paging.
+    ! DATA_FORWARD |  c_ptr |  optional |  Data for the paging function.
     !
     ! At most one way of setting the icon should be given, if more than one
     ! is specified the priority is ICON, ICON_FILE, ICON_NAME.
@@ -211,15 +211,15 @@ contains
 
     ! Add a page to a GtkAssistant
     !
-    ! ASSTNT: c_ptr: required: The Assistant to which to add the page.
-    ! PAGE: c_ptr: required: The widget to add to the assistant.
-    ! TYPE: c_int: required: The type of page (from the GtkAssistantPageType
+    ! ASSTNT |  c_ptr |  required |  The Assistant to which to add the page.
+    ! PAGE |  c_ptr |  required |  The widget to add to the assistant.
+    ! TYPE |  c_int |  required |  The type of page (from the GtkAssistantPageType
     ! 		enumeration).
-    ! PAGE_TITLE: string: optional: A title for the page.
-    ! COMPLETE: boolean: optional: Can the use advance? (Default FALSE, unless
+    ! PAGE_TITLE |  string |  optional |  A title for the page.
+    ! COMPLETE |  boolean |  optional |  Can the use advance? (Default FALSE, unless
     ! 		type is GTK_ASSISTANT_PAGE_INTRO, GTK_ASSISTANT_PAGE_CONFIRM,
     ! 		or GTK_ASSISTANT_PAGE_SUMMARY).
-    ! POSITION: c_int: optional: The position of the page in the sequence
+    ! POSITION |  c_int |  optional |  The position of the page in the sequence
     ! 		(Append the page if omitted).
     !
     ! N.B. Supplying handlers for actions within the page is the responsibility
@@ -260,7 +260,7 @@ contains
 
     ! Return the current page of an assistant.
     !
-    ! ASSTNT: c_ptr: required: The assistant to query
+    ! ASSTNT |  c_ptr |  required |  The assistant to query
     !
     ! The returns the widget of the current page. To get the page
     ! number only just use gtk_assistant_get_current_page,
@@ -286,10 +286,10 @@ contains
 
     ! Set the completion state of a page of an assistant
     !
-    ! ASSTNT: c_ptr: required: The assistant with the page.
-    ! STATE: boolean: required: The completion state.
-    ! PAGE: c_ptr: optional: The page whose state is to be set.
-    ! PAGENO: c_int: optional: The page number to set.
+    ! ASSTNT |  c_ptr |  required |  The assistant with the page.
+    ! STATE |  boolean |  required |  The completion state.
+    ! PAGE |  c_ptr |  optional |  The page whose state is to be set.
+    ! PAGENO |  c_int |  optional |  The page number to set.
     !
     ! If neither PAGE nor PAGENO is given then the current page is used.
     !-

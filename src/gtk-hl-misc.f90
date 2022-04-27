@@ -53,8 +53,8 @@ contains
 
     ! Add a markup label to a button or menu item.
     !
-    ! WIDGET: c_ptr: required: The widget to update.
-    ! LABEL: string: required: The new label string.
+    ! WIDGET |  c_ptr |  required |  The widget to update.
+    ! LABEL |  string |  required |  The new label string.
     !-
 
     type(c_ptr) :: label_w
@@ -77,7 +77,7 @@ contains
 
     ! A Version-independent separator.
     !
-    ! HORIZONTAL: boolean : optional : Set to TRUE to make
+    ! HORIZONTAL |  boolean  |  optional  |  Set to TRUE to make
     ! 		a vertical separator.
     !-
 

@@ -92,13 +92,13 @@ contains
     ! A DIY version of the message dialogue, needed because both creators
     ! for the built in one are variadic and so not callable from Fortran.
     !
-    ! MESSAGE: string(n): required: The message to display. Since this is
+    ! MESSAGE |  string(n) |  required |  The message to display. Since this is
     ! 		a string array, the C_NULL_CHAR terminations are provided
     ! 		internally
-    ! BUTTON_SET: integer: required: The set of buttons to display
-    ! TITLE: string: optional: Title for the window.
-    ! TYPE: c_int: optional: Message type (a GTK_MESSAGE_ value)
-    ! PARENT: c_ptr: optional: An optional parent for the dialogue.
+    ! BUTTON_SET |  integer |  required |  The set of buttons to display
+    ! TITLE |  string |  optional |  Title for the window.
+    ! TYPE |  c_int |  optional |  Message type (a GTK_MESSAGE_ value)
+    ! PARENT |  c_ptr |  optional |  An optional parent for the dialogue.
     !-
 
     type(c_ptr) :: content, junk, hb, vb
@@ -207,13 +207,13 @@ contains
     ! for the built in one are variadic and so not callable from Fortran.
     ! This version runs the dialog as well as creating it.
     !
-    ! MESSAGE: string(n): required: The message to display. Since this is
+    ! MESSAGE |  string(n) |  required |  The message to display. Since this is
     ! 		a string array, the C_NULL_CHAR terminations are provided
     ! 		internally
-    ! BUTTON_SET: integer: required: The set of buttons to display
-    ! TITLE: string: optional: Title for the window.
-    ! TYPE: c_int: optional: Message type (a GTK_MESSAGE_ value)
-    ! PARENT: c_ptr: optional: An optional parent for the dialogue.
+    ! BUTTON_SET |  integer |  required |  The set of buttons to display
+    ! TITLE |  string |  optional |  Title for the window.
+    ! TYPE |  c_int |  optional |  Message type (a GTK_MESSAGE_ value)
+    ! PARENT |  c_ptr |  optional |  An optional parent for the dialogue.
     !
     ! This version returns a response code, not a widget pointer.
     !-
@@ -264,22 +264,22 @@ contains
 
     ! A convenience interface for about dialogues.
     !
-    ! NAME: string: optional: The name of the program etc.
-    ! LICENCE: string: optional: The license for the program.
-    ! LICENCE_TYPE: c_int: optional: Specify a license from the
+    ! NAME |  string |  optional |  The name of the program etc.
+    ! LICENCE |  string |  optional |  The license for the program.
+    ! LICENCE_TYPE |  c_int |  optional |  Specify a license from the
     ! 		GtkLicence enumerator. (Only valid in Gtk+ 3.0 and later)
-    ! COMMENTS: string: optional: A description of the program/library...
-    ! AUTHORS: string(): optional: A list of the authors.
-    ! WEBSITE: string: optional: The website.
-    ! WEBSITE_LABEL: string: optional: A label to describe the website.
-    ! COPYRIGHT: string: optional: The copyright message.
-    ! VERSION: string: optional: The version of the program.
-    ! DOCUMENTERS: string(): optional: The documentation authors.
-    ! TRANSLATORS: string: optional: The translators (N.B. unlike the
+    ! COMMENTS |  string |  optional |  A description of the program/library...
+    ! AUTHORS |  string() |  optional |  A list of the authors.
+    ! WEBSITE |  string |  optional |  The website.
+    ! WEBSITE_LABEL |  string |  optional |  A label to describe the website.
+    ! COPYRIGHT |  string |  optional |  The copyright message.
+    ! VERSION |  string |  optional |  The version of the program.
+    ! DOCUMENTERS |  string() |  optional |  The documentation authors.
+    ! TRANSLATORS |  string |  optional |  The translators (N.B. unlike the
     ! 		other credits, this is a single string).
-    ! ARTISTS: string(): optional: The artists involved.
-    ! LOGO: c_ptr: optional: A gdk_pixbuf with the project's logo.
-    ! PARENT: c_ptr: optional: The parent widget of the window.
+    ! ARTISTS |  string() |  optional |  The artists involved.
+    ! LOGO |  c_ptr |  optional |  A gdk_pixbuf with the project's logo.
+    ! PARENT |  c_ptr |  optional |  The parent widget of the window.
     !-
 
     character(kind=c_char), dimension(:), allocatable :: string
@@ -416,7 +416,7 @@ contains
 
     ! A standard "About" dialogue for gtk-fortran
     !
-    ! PARENT: c_ptr: optional: A parent widget for the dialogue.
+    ! PARENT |  c_ptr |  optional |  A parent widget for the dialogue.
     !-
 
     call hl_gtk_about_dialog_show(name="Gtk-fortran", &

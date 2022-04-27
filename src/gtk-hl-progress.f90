@@ -63,10 +63,10 @@ contains
 
     ! Intializer for a progress bar
     !
-    ! VERTICAL: boolean: optional: The orientation of the bar.
-    ! REVERSED: boolean: optional: Whether the direction of the bar should
+    ! VERTICAL |  boolean |  optional |  The orientation of the bar.
+    ! REVERSED |  boolean |  optional |  Whether the direction of the bar should
     ! 		be reversed.
-    ! STEP: double: optional: The fractional step to advance when
+    ! STEP |  double |  optional |  The fractional step to advance when
     ! 		pulsing the bar
     !-
 
@@ -99,10 +99,10 @@ contains
 
     ! Set the value of a progress bar (fraction or pulse)
     !
-    ! BAR: c_ptr: required: The bar to set
-    ! VAL: double: optional: The value to set. If absent, the bar is pulsed
-    ! STRING: boolean: optional: Whether to put a string on the bar.
-    ! TEXT: string: optional: Text to put in the bar, (overrides STRING)
+    ! BAR |  c_ptr |  required |  The bar to set
+    ! VAL |  double |  optional |  The value to set. If absent, the bar is pulsed
+    ! STRING |  boolean |  optional |  Whether to put a string on the bar.
+    ! TEXT |  string |  optional |  Text to put in the bar, (overrides STRING)
     !
     ! This routine is normally accessed via the generic interface
     ! hl_gtk_progress_bar_set
@@ -144,11 +144,11 @@ contains
 
     ! Set the value of a progress bar (n of m)
     !
-    ! BAR: c_ptr: required: The bar to set
-    ! VAL: int: required: The value to set.
-    ! MAXV: int: required: The maximum value for the bar
-    ! STRING: boolean: optional: Whether to put a string on the bar.
-    ! TEXT: string: optional: Text to put in the bar, (overrides STRING)
+    ! BAR |  c_ptr |  required |  The bar to set
+    ! VAL |  int |  required |  The value to set.
+    ! MAXV |  int |  required |  The maximum value for the bar
+    ! STRING |  boolean |  optional |  Whether to put a string on the bar.
+    ! TEXT |  string |  optional |  Text to put in the bar, (overrides STRING)
     !
     ! This routine is normally accessed via the generic interface
     ! hl_gtk_progress_bar_set

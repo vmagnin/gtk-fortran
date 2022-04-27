@@ -189,9 +189,9 @@ contains
 
     ! Default callback for a toggle button in a list
     !
-    ! RENDERER: c_ptr: required: The renderer which sent the signal
-    ! PATH: c_ptr: required: The path at which to insert
-    ! GDATA: c_ptr: required: User data, Not used.
+    ! RENDERER |  c_ptr |  required |  The renderer which sent the signal
+    ! PATH |  c_ptr |  required |  The path at which to insert
+    ! GDATA |  c_ptr |  required |  User data, Not used.
     !
     ! The column number is passed via the "column-number" gobject data value.
     ! The treeview containing the cell is passed via the "view" gobject

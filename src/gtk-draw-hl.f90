@@ -130,59 +130,59 @@ contains
 
     ! A high-level drawing area
     !
-    ! SCROLL: c_ptr: optional: If present, then the drawing area will be
+    ! SCROLL |  c_ptr |  optional |  If present, then the drawing area will be
     ! 		placed in a scrollable window, whose pointer will be returned
     ! 		here. If it is present, then it rather than the drawable should
     ! 		be used for packing.
-    ! SIZE: c_int(): optional: The requested size for the area. If no size is
+    ! SIZE |  c_int() |  optional |  The requested size for the area. If no size is
     ! 		given then a default size of 256x256 is used.
-    ! SSIZE: c_int() :: optional: The requested size for a scrolling window
-    ! EXPOSE_EVENT: c_funptr: optional: Callback for expose-event signal
+    ! SSIZE |  c_int() : |  optional |  The requested size for a scrolling window
+    ! EXPOSE_EVENT |  c_funptr |  optional |  Callback for expose-event signal
     ! 		N.B. In GTK3 the signal is called "draw". If this is not given
     ! 		then a default handler is provided which copies the image
     ! 		surface to the drawing area.
-    ! DATA_EXPOSE: c_ptr: optional: Data for expose_event callback
-    ! BUTTON_PRESS_EVENT: c_funptr: optional: Callback for button-press-event
+    ! DATA_EXPOSE |  c_ptr |  optional |  Data for expose_event callback
+    ! BUTTON_PRESS_EVENT |  c_funptr |  optional |  Callback for button-press-event
     ! 		signal
-    ! DATA_BUTTON_PRESS: c_ptr: optional: Data for button_press_event callback
-    ! BUTTON_RELEASE_EVENT: c_funptr: optional: Callback for
+    ! DATA_BUTTON_PRESS |  c_ptr |  optional |  Data for button_press_event callback
+    ! BUTTON_RELEASE_EVENT |  c_funptr |  optional |  Callback for
     ! 		button-release-event signal
-    ! DATA_BUTTON_RELEASE: c_ptr: optional: Data for button_release_event
+    ! DATA_BUTTON_RELEASE |  c_ptr |  optional |  Data for button_release_event
     ! 		callback
-    ! SCROLL_EVENT: c_funptr: optional: Callback for scroll-event signal
-    ! DATA_SCROLL: c_ptr: optional: Data for scroll_event callback
-    ! REALIZE: c_funptr: optional: Callback for realize signal
-    ! DATA_REALIZE: c_ptr: optional: Data for realize callback
-    ! CONFIGURE_EVENT:c_funptr: optional: Callback for configure-event signal
-    ! DATA_CONFIGURE: c_ptr: optional: Data for configure_event callback
-    ! KEY_PRESS_EVENT: c_funptr: optional: Callback for key-press-event
+    ! SCROLL_EVENT |  c_funptr |  optional |  Callback for scroll-event signal
+    ! DATA_SCROLL |  c_ptr |  optional |  Data for scroll_event callback
+    ! REALIZE |  c_funptr |  optional |  Callback for realize signal
+    ! DATA_REALIZE |  c_ptr |  optional |  Data for realize callback
+    ! CONFIGURE_EVENT | c_funptr |  optional |  Callback for configure-event signal
+    ! DATA_CONFIGURE |  c_ptr |  optional |  Data for configure_event callback
+    ! KEY_PRESS_EVENT |  c_funptr |  optional |  Callback for key-press-event
     ! 		signal
-    ! DATA_KEY_PRESS: c_ptr: optional: Data for key_press_event callback
-    ! KEY_RELEASE_EVENT: c_funptr: optional: Callback for
+    ! DATA_KEY_PRESS |  c_ptr |  optional |  Data for key_press_event callback
+    ! KEY_RELEASE_EVENT |  c_funptr |  optional |  Callback for
     ! 		key-release-event signal
-    ! DATA_KEY_RELEASE: c_ptr: optional: Data for key_release_event
+    ! DATA_KEY_RELEASE |  c_ptr |  optional |  Data for key_release_event
     ! 		callback
-    ! MOTION_EVENT: c_funptr: optional: Callback for the motion-notify-event
+    ! MOTION_EVENT |  c_funptr |  optional |  Callback for the motion-notify-event
     ! 		signal
-    ! DATA_MOTION: c_ptr: optional: Data for motion_event
-    ! ENTER_EVENT: c_funptr: optional: Callback for the enter-notify-event
+    ! DATA_MOTION |  c_ptr |  optional |  Data for motion_event
+    ! ENTER_EVENT |  c_funptr |  optional |  Callback for the enter-notify-event
     ! 		signal
-    ! DATA_ENTER: c_ptr: optional: Data for enter_event
-    ! LEAVE_EVENT: c_funptr: optional: Callback for the leave-notify-event
+    ! DATA_ENTER |  c_ptr |  optional |  Data for enter_event
+    ! LEAVE_EVENT |  c_funptr |  optional |  Callback for the leave-notify-event
     ! 		signal
-    ! DATA_LEAVE: c_ptr: optional: Data for leave_event
-    ! DESTROY: c_funptr: optional: Callback when the widget is destroyed.
-    ! DATA_DESTROY: c_ptr: optional: Data to pass to the destroy callback.
-    ! TOOLTIP: string: optional: Tooltip for the drawing area.
-    ! HAS_ALPHA: boolean: optional: If a pixbuf is used, should it have
+    ! DATA_LEAVE |  c_ptr |  optional |  Data for leave_event
+    ! DESTROY |  c_funptr |  optional |  Callback when the widget is destroyed.
+    ! DATA_DESTROY |  c_ptr |  optional |  Data to pass to the destroy callback.
+    ! TOOLTIP |  string |  optional |  Tooltip for the drawing area.
+    ! HAS_ALPHA |  boolean |  optional |  If a pixbuf is used, should it have
     ! 		an alpha (transparency) channel (default=FALSE)
-    ! SIZE_ALLOCATE: c_funptr: optional: Callback for the
+    ! SIZE_ALLOCATE |  c_funptr |  optional |  Callback for the
     ! 		'size-allocate' ('resize' in GTK 4) signal
-    ! DATA_SIZE_ALLOCATE: c_ptr: optional: Data for size_allocate.
-    ! CAIRO_STATUS: c_int: optional: Status code from the cairo surface.
-    ! HSCROLL_POLICY: int: optional: Horizontal scrolling policy for the
+    ! DATA_SIZE_ALLOCATE |  c_ptr |  optional |  Data for size_allocate.
+    ! CAIRO_STATUS |  c_int |  optional |  Status code from the cairo surface.
+    ! HSCROLL_POLICY |  int |  optional |  Horizontal scrolling policy for the
     ! 		containing scroll window (default AUTOMATIC).
-    ! VSCROLL_POLICY: int: optional: Vertical scrolling policy for the
+    ! VSCROLL_POLICY |  int |  optional |  Vertical scrolling policy for the
     ! 		containing scroll window (default AUTOMATIC).
     !
     ! * If an explicit size is given then the drawing area cannot be made
@@ -449,7 +449,7 @@ contains
 
     ! Convenience routine to get the backing surface of a drawing area.
     !
-    ! AREA: c_ptr: required: The drawing area whose surface is required.
+    ! AREA |  c_ptr |  required |  The drawing area whose surface is required.
     !-
 
     isurface = g_object_get_data(area, "backing-surface"//c_null_char)
@@ -466,9 +466,9 @@ contains
     ! Read a drawing area (strictly the cairo surface
     ! backing store) to a GDK pixbuf.
     !
-    ! AREA: c_ptr: required: The drawing area
-    ! X0, Y0: c_int: optional: The origin of the area to return (defaults 0)
-    ! XSIZE, YSIZE: c_int: optional: The size of the region to return
+    ! AREA |  c_ptr |  required |  The drawing area
+    ! X0, Y0 |  c_int |  optional |  The origin of the area to return (defaults 0)
+    ! XSIZE, YSIZE |  c_int |  optional |  The size of the region to return
     ! 		(defaults, from the origin to the top right of the surface).
     !-
 
@@ -516,9 +516,9 @@ contains
 
     ! Render a GdkPixbuf on a drawing area
     !
-    ! AREA: c_ptr: required: The drawing area.
-    ! PIXBUF: c_ptr: required: The pixbuf to draw.
-    ! X, Y: c_int: optional: The coordinate of the upper left corner of the
+    ! AREA |  c_ptr |  required |  The drawing area.
+    ! PIXBUF |  c_ptr |  required |  The pixbuf to draw.
+    ! X, Y |  c_int |  optional |  The coordinate of the upper left corner of the
     ! 		pixbuf on the drawing area (defaults 0).
     !
     ! If you are rendering a pixbuf among other operations then just use
@@ -559,9 +559,9 @@ contains
     ! Default callback for exposing a drawing area. For this to be connected
     ! no explicit expose callback should be specified.
     !
-    ! AREA: c_ptr: required: The drawing area
-    ! EVENT: c_ptr: required: GTK2 = event structure, GTK3 = a cairo context
-    ! DATA: c_ptr: required: A pointer to user data (not used).
+    ! AREA |  c_ptr |  required |  The drawing area
+    ! EVENT |  c_ptr |  required |  GTK2 = event structure, GTK3 = a cairo context
+    ! DATA |  c_ptr |  required |  A pointer to user data (not used).
     !-
 
     type(c_ptr) :: cr, isurface
@@ -591,8 +591,8 @@ contains
     ! Default callback for the destroy signal on the drawing area.
     ! Just destroys the backing surface.
     !
-    ! AREA: c_ptr: required: The drawing area being destroyed.
-    ! DATA: c_ptr: required: User data for the callback (not used)
+    ! AREA |  c_ptr |  required |  The drawing area being destroyed.
+    ! DATA |  c_ptr |  required |  User data for the callback (not used)
     !-
 
     type(c_ptr) :: isurface
@@ -609,8 +609,8 @@ contains
     ! Default call back for resizing the drawing area, just
     ! copies the old backing store to the new one
     !
-    ! AREA: c_ptr: required: The drawing area being destroyed.
-    ! DATA: c_ptr: required: User data for the callback (not used)
+    ! AREA |  c_ptr |  required |  The drawing area being destroyed.
+    ! DATA |  c_ptr |  required |  User data for the callback (not used)
     !-
 
     call hl_gtk_drawing_area_resize(area, copy=.true.)
@@ -623,7 +623,7 @@ contains
 
     ! Create a cairo context which will draw into the backing surface
     !
-    ! AREA: c_ptr: required: The drawing area to which we will draw.
+    ! AREA |  c_ptr |  required |  The drawing area to which we will draw.
     !
     ! After the drawing operations, you should call `gtk_widget_queue_draw`
     ! to update the plot on the screen and `hl_gtk_pixbuf_cairo_destroy`
@@ -651,8 +651,8 @@ contains
 
     ! Update the backing surface and destroy the cairo context
     !
-    ! CR: c_ptr: required: The cairo context to put in the pixbuf
-    ! DESTROY_SURFACE: boolean : optional: Set to TRUE to destroy the
+    ! CR |  c_ptr |  required |  The cairo context to put in the pixbuf
+    ! DESTROY_SURFACE |  boolean  |  optional |  Set to TRUE to destroy the
     ! 		cairo_surface as well as the context. Normally the cairo
     ! 		surface is destroyed by the destroy callback of the drawing
     ! 		area, so does not need to be explicitly destroyed.
@@ -684,11 +684,11 @@ contains
 
     ! Resize a drawing area and its backing store.
     !
-    ! AREA: c_ptr: required: The area to resize.
-    ! SIZE: int(2) : optional: The new size, if omitted, then the
+    ! AREA |  c_ptr |  required |  The area to resize.
+    ! SIZE |  int(2)  |  optional |  The new size, if omitted, then the
     ! 		backing store is resized to match the drawing area (e.g.
     ! 		after resizing the containing window).
-    ! COPY: logical: optional: Set to .true. to copy the surface
+    ! COPY |  logical |  optional |  Set to .true. to copy the surface
     ! 		contents to the new backing store.
     !-
 
@@ -750,9 +750,9 @@ contains
 
     ! Convenience routine to get the current size of a drawing area
     !
-    ! AREA: c_ptr: required: The drawing area whose size is needed.
-    ! WIDTH: c_int: optional: The width of the area.
-    ! HEIGHT: c_int: optional: The height of the area
+    ! AREA |  c_ptr |  required |  The drawing area whose size is needed.
+    ! WIDTH |  c_int |  optional |  The width of the area.
+    ! HEIGHT |  c_int |  optional |  The height of the area
     !-
 
     type(gtkallocation), target :: alloc

@@ -80,15 +80,15 @@ contains
 
     ! Creator for the combobox.
     !
-    ! HAS_ENTRY: boolean: optional: Set to TRUE to add an entry field.
-    ! CHANGED: c_funptr: optional: Callback routine for the "changed" signal.
-    ! DATA: c_ptr: optional: User data for the changed callback.
-    ! INITIAL_CHOICES: string(): optional: Initial list of choices.
-    ! SENSITIVE: boolean: optional: Set to FALSE to make the widget start in an
+    ! HAS_ENTRY |  boolean |  optional |  Set to TRUE to add an entry field.
+    ! CHANGED |  c_funptr |  optional |  Callback routine for the "changed" signal.
+    ! DATA |  c_ptr |  optional |  User data for the changed callback.
+    ! INITIAL_CHOICES |  string() |  optional |  Initial list of choices.
+    ! SENSITIVE |  boolean |  optional |  Set to FALSE to make the widget start in an
     ! 		insensitive state.
-    ! TOOLTIP: string: optional: A tooltip to display when the pointer is
+    ! TOOLTIP |  string |  optional |  A tooltip to display when the pointer is
     ! 		held over the widget.
-    ! ACTIVE: c_int: optional: The initial active selection.
+    ! ACTIVE |  c_int |  optional |  The initial active selection.
     !-
 
     integer(c_int) :: ientry
@@ -137,10 +137,10 @@ contains
 
     ! Add a new choice to a combo box.
     !
-    ! CBOX: c_ptr: required: The combo box to modify.
-    ! TEXT: string: required: The text to add.
-    ! INDEX: c_int: optional: The location at which to add the text.
-    ! AT_START: boolean: optional: If set to TRUE and INDEX is not given
+    ! CBOX |  c_ptr |  required |  The combo box to modify.
+    ! TEXT |  string |  required |  The text to add.
+    ! INDEX |  c_int |  optional |  The location at which to add the text.
+    ! AT_START |  boolean |  optional |  If set to TRUE and INDEX is not given
     ! 		then add the text at the start of the list.
     !
     ! If neither INDEX nor AT_START is present the text is appended.
@@ -172,8 +172,8 @@ contains
 
     ! Delete a line from a combo box
     !
-    ! CBOX: c_ptr: required: The combo box to update
-    ! INDEX: c_int: required: The index of the choce to remove
+    ! CBOX |  c_ptr |  required |  The combo box to update
+    ! INDEX |  c_int |  required |  The index of the choce to remove
     !
     ! Usually called via the generic hl_gtk_combo_box_delete interface.
     !-
@@ -190,8 +190,8 @@ contains
 
     ! Delete lines from a combo box
     !
-    ! CBOX: c_ptr: required: The combo box to update
-    ! INDEX: c_int(): required: The index of the choce to remove
+    ! CBOX |  c_ptr |  required |  The combo box to update
+    ! INDEX |  c_int() |  required |  The index of the choce to remove
     !
     ! Usually called via the generic hl_gtk_combo_box_delete interface.
     !-
@@ -210,7 +210,7 @@ contains
 
     ! Delete all lines from a combo box
     !
-    ! CBOX: c_ptr: required: The combo box to update
+    ! CBOX |  c_ptr |  required |  The combo box to update
     !
     ! Usually called via the generic hl_gtk_combo_box_delete interface.
     !-
@@ -228,9 +228,9 @@ contains
 
     ! Get the selection from a combo box
     !
-    ! CBOX: c_ptr: required: The combo box to query.
-    ! TEXT: c_ptr: optional: C pointer to the text.
-    ! FTEXT: fstring: optional: The string as a Fortran string.
+    ! CBOX |  c_ptr |  required |  The combo box to query.
+    ! TEXT |  c_ptr |  optional |  C pointer to the text.
+    ! FTEXT |  fstring |  optional |  The string as a Fortran string.
     !-
 
     type(c_ptr), target :: ctext
@@ -254,7 +254,7 @@ contains
 
     ! Find the number of entries in a combo box.
     !
-    ! CBOX: c_ptr: required: The combo box to query.
+    ! CBOX |  c_ptr |  required |  The combo box to query.
     !-
 
     type(c_ptr) :: model

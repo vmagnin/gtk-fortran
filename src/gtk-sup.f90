@@ -210,7 +210,7 @@ contains
 
     ! Clear a tree iterator
     !
-    ! ITER: gtktreeiter: required: The iterator to clear
+    ! ITER |  gtktreeiter |  required |  The iterator to clear
     !-
 
     iter%intv=0
@@ -225,7 +225,7 @@ contains
 
     ! Clear a GValue
     !
-    ! GVAL: gvalue: required: The GValue to clear.
+    ! GVAL |  gvalue |  required |  The GValue to clear.
     !-
     gval%il=0
     gval%i64=[0,0]
@@ -359,9 +359,9 @@ contains
 
     ! Convert a null-terminated c-string to  a fortran string
     !
-    ! TEXTPTR: string: required:  The C string to be converted.
-    ! F_STRING: f_string: required: A Scalar Fortran string.
-    ! STATUS: integer: optional: Is set to -1 if the Fortran string
+    ! TEXTPTR |  string |  required |   The C string to be converted.
+    ! F_STRING |  f_string |  required |  A Scalar Fortran string.
+    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string
     !                            is too short.
     !
     ! Usually called via the convert_c_string generic interface.
@@ -393,9 +393,9 @@ contains
     ! Convert a null-terminated LF-separated c-string into a fortran
     ! string array
     !
-    ! TEXTPTR: string: required:  The C string to be converted.
-    ! F_STRING: f_string(): required: A Fortran string array.
-    ! STATUS: integer: optional: Is set to -1 if the Fortran string
+    ! TEXTPTR |  string |  required |   The C string to be converted.
+    ! F_STRING |  f_string() |  required |  A Fortran string array.
+    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string
     !                            is too short for any line.
     !
     ! Usually called via the convert_c_string generic interface.
@@ -445,9 +445,9 @@ contains
 
     ! Convert a null-terminated c-string to  a fortran string
     !
-    ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
-    ! F_STRING: f_string: required: A Scalar Fortran string.
-    ! STATUS: integer: optional: Is set to -1 if the Fortran string
+    ! CTEXT |  c_ptr |  required |   A C poiner to string to be converted.
+    ! F_STRING |  f_string |  required |  A Scalar Fortran string.
+    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string
     !                            is too short.
     !
     ! Usually called via the convert_c_string generic interface.
@@ -480,9 +480,9 @@ contains
 
     ! Convert a null-terminated LF-separated c-string into a fortran
     ! string array
-    ! CTEXT: c_ptr: required:  A C poiner to string to be converted.
-    ! F_STRING: f_string(): required: A  Fortran string. array
-    ! STATUS: integer: optional: Is set to -1 if the Fortran string
+    ! CTEXT |  c_ptr |  required |   A C poiner to string to be converted.
+    ! F_STRING |  f_string() |  required |  A  Fortran string. array
+    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string
     !                            is too short for any of the lines.
     !
     ! Usually called via the convert_c_string generic interface.
@@ -533,9 +533,9 @@ contains
     ! Convert a fortran string array into a null-terminated, LF_separated
     ! c-string
     !
-    ! F_STRING: f_string: required: The fortran string to convert
-    ! TEXTPR: string: required: A C type string, (allocatable).
-    ! LENGTH: c_int: optional: The length of the generated c string.
+    ! F_STRING |  f_string |  required |  The fortran string to convert
+    ! TEXTPR |  string |  required |  A C type string, (allocatable).
+    ! LENGTH |  c_int |  optional |  The length of the generated c string.
     !-
 
     integer :: lcstr, i, j, ii, nfstr
@@ -588,9 +588,9 @@ contains
 
     ! Convert a fortran string into a null-terminated c-string
     !
-    ! F_STRING: f_string: required: The fortran string to convert
-    ! TEXTPR: string: required: A C type string, (allocatable).
-    ! LENGTH: c_int: optional: The length of the generated c string.
+    ! F_STRING |  f_string |  required |  The fortran string to convert
+    ! TEXTPR |  string |  required |  A C type string, (allocatable).
+    ! LENGTH |  c_int |  optional |  The length of the generated c string.
     !-
 
     integer :: lcstr, j
@@ -623,7 +623,7 @@ contains
 
     ! Convert a gboolean to a Fortran logical
     !
-    ! CBOOL: boolean: required: The Gboolean to convert.
+    ! CBOOL |  boolean |  required |  The Gboolean to convert.
     !-
 
     if (cbool == FALSE) then
@@ -640,7 +640,7 @@ contains
 
     ! Convert a Fortran default logical to a gboolean
     !
-    ! FLOG: logical: required: The fortran logical to convert.
+    ! FLOG |  logical |  required |  The fortran logical to convert.
     !
     ! Usually accessed via the generic f_c_logical interface
     !-
@@ -659,7 +659,7 @@ contains
 
     ! Convert a Fortran 1-byte logical to a gboolean
     !
-    ! FLOG: logical*1: required: The fortran logical to convert.
+    ! FLOG |  logical*1 |  required |  The fortran logical to convert.
     !
     ! Usually accessed via the generic f_c_logical interface
     !-
