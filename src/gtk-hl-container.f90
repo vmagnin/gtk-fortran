@@ -1,7 +1,7 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 !
-! This file is part of the gtk-fortran GTK+ Fortran Interface library.
+! This file is part of the gtk-fortran  GTK Fortran Interface library.
 !
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -354,7 +354,7 @@ contains
     ! except that if both are given and their values differ then homogenous is
     ! not set.
     ! For 3.x the ROW and COL settings take precedence over the common setting.
-    ! The NROWS and NCOLS arguments are ignored for Gtk+ 3.x
+    ! The NROWS and NCOLS arguments are ignored for  GTK 3.x
     !-
 
     integer(c_int) :: gridr, gridc
@@ -400,7 +400,7 @@ contains
     ! XOPTS: c_int |  optional |  GTK<=3 |  X fill/expand options (from the GtkAttachOptions enumerator, or 0 for none)
     ! YOPTS: c_int |  optional |  GTK<=3 |  Y fill/expand options.
     !
-    ! N.B. GTK_SHRINK in the options is ignored in Gtk+ 3.x
+    ! N.B. GTK_SHRINK in the options is ignored in  GTK 3.x
     !-
 
     integer(c_int) :: ixsz, iysz
@@ -460,7 +460,7 @@ contains
     !
     ! To set an absolute size, use gtk_table_resize
     ! directly. Negative NX and/or NY will reduce the table.
-    ! For Gtk+3.x this is a do-nothing routine.
+    ! For  GTK3.x this is a do-nothing routine.
     !-
 
   end subroutine hl_gtk_table_expand

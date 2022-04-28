@@ -1,7 +1,7 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 !
-! This file is part of the gtk-fortran GTK+ Fortran Interface library.
+! This file is part of the gtk-fortran  GTK Fortran Interface library.
 !
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -529,7 +529,7 @@ contains
     ! VAL |  c_double |  required |  The value to set.
     !
     ! This is usually accessed via the generic interface
-    ! hl_gtk_spin_button_set_value. Note that since GTK+ implements
+    ! hl_gtk_spin_button_set_value. Note that since  GTK implements
     ! all spin buttons as double either type may be used for any button.
     !-
 
@@ -548,7 +548,7 @@ contains
     ! VAL |  c_int |  required |  The value to set.
     !
     ! This is usually accessed via the generic interface
-    ! hl_gtk_spin_button_set_value. Note that since GTK+ implements
+    ! hl_gtk_spin_button_set_value. Note that since  GTK implements
     ! all spin buttons as double either type may be used for any button.
     !-
 

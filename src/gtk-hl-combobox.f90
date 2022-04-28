@@ -1,7 +1,7 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 
-! This file is part of the gtk-fortran GTK+ Fortran Interface library.
+! This file is part of the gtk-fortran  GTK Fortran Interface library.
 
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 ! --------------------------------------------------------
 ! gtk-hl-combobox.f90
 ! Generated: Tue Oct 29 17:12:20 2013 GMT
-! Generated for GTK+ version: 3.10.0.
+! Generated for  GTK version: 3.10.0.
 ! Generated for GLIB version: 2.38.0.
 ! --------------------------------------------------------
 

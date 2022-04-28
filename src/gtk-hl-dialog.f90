@@ -1,7 +1,7 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 !
-! This file is part of the gtk-fortran GTK+ Fortran Interface library.
+! This file is part of the gtk-fortran  GTK Fortran Interface library.
 !
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -262,7 +262,7 @@ contains
     !
     ! NAME |  string |  optional |  The name of the program etc.
     ! LICENCE |  string |  optional |  The license for the program.
-    ! LICENCE_TYPE |  c_int |  optional |  Specify a license from the GtkLicence enumerator. (Only valid in Gtk+ 3.0 and later)
+    ! LICENCE_TYPE |  c_int |  optional |  Specify a license from the GtkLicence enumerator. (Only valid in  GTK 3.0 and later)
     ! COMMENTS |  string |  optional |  A description of the program/library...
     ! AUTHORS |  string() |  optional |  A list of the authors.
     ! WEBSITE |  string |  optional |  The website.
