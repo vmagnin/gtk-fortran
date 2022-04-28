@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+
+## [unreleased]
+
+### Added
+- `src/extract_hl_doc.py`: generates markdown files for the HL gtk-fortran documentation.
+
+
 ## [gtk-fortran 4.2.1] 2022-04-24
 
 ### Fixed
