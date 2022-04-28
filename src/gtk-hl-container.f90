@@ -88,7 +88,6 @@ contains
     type(c_funptr), intent(in) :: activate
     integer(c_int), optional, intent(in) :: flags
     type(c_ptr), optional, intent(in) :: data
-
     integer(c_int) :: the_flags
 
     ! Higher-level interface to make a GtkApplication
