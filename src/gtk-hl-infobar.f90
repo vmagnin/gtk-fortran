@@ -23,9 +23,9 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modification: 2012-08-30, vmagnin 2020-06-11 (GTK 4)
+
 !*
 ! Infobar
-!------------------------------------------------------------------------------
 module gtk_hl_infobar
   ! Convenience interface for the GtkInfoBar widget.
   ! This is created because the routine for adding multiple buttons is
