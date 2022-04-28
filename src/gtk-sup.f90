@@ -524,7 +524,6 @@ contains
   end subroutine convert_c_string_array_cptr
 
   !+
-  !+
   subroutine convert_f_string_a(f_string, textptr, length)
     character(len=*), intent(in), dimension(:) :: f_string
     character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
@@ -580,6 +579,7 @@ contains
        ii = ii+1
     end do
   end subroutine convert_f_string_a
+
   !+
   subroutine convert_f_string_s(f_string, textptr, length)
     character(len=*), intent(in) :: f_string
