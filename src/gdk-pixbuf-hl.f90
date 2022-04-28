@@ -28,7 +28,7 @@
 !-----------------------------------------------------------------------------
 
 !*
-! GDK_PIXBUF_HL
+! gdk_pixbuf_hl
 module gdk_pixbuf_hl
   ! Some routines to facilitate the use of GDK pixbufs from Fortran.
   ! Allows the use of short-int images to avoid the issues that may result
