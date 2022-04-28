@@ -39,11 +39,11 @@ module gtk_sup
   !  automatically extracted from the GTK headers.
 
   ! Currently it contains:
-  ! GTYPE: Definitions of the integer length and the values for each type.
-  ! GtkTreeIter: Type definition.
-  ! GValue: Pseudo type definition.
-  ! GtkTextIter: Type definition.
-  ! GError: Type definition.
+  ! * GTYPE: Definitions of the integer length and the values for each type.
+  ! * GtkTreeIter: Type definition.
+  ! * GValue: Pseudo type definition.
+  ! * GtkTextIter: Type definition.
+  ! * GError: Type definition.
   !/
 
   use, intrinsic :: iso_c_binding
