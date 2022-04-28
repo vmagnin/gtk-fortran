@@ -80,20 +80,16 @@ contains
     ! DELETE_EVENT |  c_funptr |  optional |  Callback for the "delete-event" signal
     ! CLOSE |  c_funptr |  optional |  Callback for when the assistant is completed
     ! CANCEL |  c_funptr |  optional |  Callback for the Cancel operation.
-    ! DATA_DESTROY |  c_ptr |  optional |  Data to be passed to the destroy
-    ! 		signal handler
-    ! DATA_DELETE_EVENT |  c_ptr |  optional |  Data to be passed to the
-    ! 		delete_event signal handler
+    ! DATA_DESTROY |  c_ptr |  optional |  Data to be passed to the destroy signal handler
+    ! DATA_DELETE_EVENT |  c_ptr |  optional |  Data to be passed to the delete_event signal handler
     ! DATA_CLOSE |  c_ptr |  optional |  Data to be passed to the close signal
     ! DATA_CANCEL |  c_ptr |  optional |  Data to be passed to the cancel signal.
     ! BORDER |  integer |  optional |  Size of the window border
     ! WSIZE |  integer(2) |  optional |  Size of the window
     ! PARENT |  c_ptr |  optional |  An optional parent window for the new window.
     ! ICON |  c_ptr |  optional  |  A GdkPixbuf containing the icon for the window.
-    ! ICON_FILE |  String  |  optional  |  A file from which to read the icon for
-    ! 		the window.
-    ! ICON_NAME |  String  |  optional  |  The name of a standard icon to use for
-    ! 		the window.
+    ! ICON_FILE |  String  |  optional  |  A file from which to read the icon for the window.
+    ! ICON_NAME |  String  |  optional  |  The name of a standard icon to use for the window.
     ! FORWARD |  c_funptr |  optional |  A function to handle paging.
     ! DATA_FORWARD |  c_ptr |  optional |  Data for the paging function.
     !
@@ -213,14 +209,10 @@ contains
     !
     ! ASSTNT |  c_ptr |  required |  The Assistant to which to add the page.
     ! PAGE |  c_ptr |  required |  The widget to add to the assistant.
-    ! TYPE |  c_int |  required |  The type of page (from the GtkAssistantPageType
-    ! 		enumeration).
+    ! TYPE |  c_int |  required |  The type of page (from the GtkAssistantPageType enumeration).
     ! PAGE_TITLE |  string |  optional |  A title for the page.
-    ! COMPLETE |  boolean |  optional |  Can the use advance? (Default FALSE, unless
-    ! 		type is GTK_ASSISTANT_PAGE_INTRO, GTK_ASSISTANT_PAGE_CONFIRM,
-    ! 		or GTK_ASSISTANT_PAGE_SUMMARY).
-    ! POSITION |  c_int |  optional |  The position of the page in the sequence
-    ! 		(Append the page if omitted).
+    ! COMPLETE |  boolean |  optional |  Can the use advance? (Default FALSE, unless type is GTK_ASSISTANT_PAGE_INTRO, GTK_ASSISTANT_PAGE_CONFIRM, or GTK_ASSISTANT_PAGE_SUMMARY).
+    ! POSITION |  c_int |  optional |  The position of the page in the sequence (Append the page if omitted).
     !
     ! N.B. Supplying handlers for actions within the page is the responsibility
     ! of the code creating the page. In particular, a page that is initially

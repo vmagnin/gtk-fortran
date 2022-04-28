@@ -207,18 +207,15 @@ contains
 
     ! Make a multi column list
     !
-    ! SCROLL |  c_ptr |  optional |  A scrollable widget containing the list.
-    ! 		(If present, then this is used to pack the list)
+    ! SCROLL |  c_ptr |  optional |  A scrollable widget containing the list. (If present, then this is used to pack the list)
     ! NCOLS |  c_int |  optional |  The number of columns.
     ! TYPES |  GType() |  optional |  The types for each column.
-    ! CHANGED |  c_funptr |  optional |  Callback function for the "changed"
-    ! 		signal to the associated selection object.
+    ! CHANGED |  c_funptr |  optional |  Callback function for the "changed" signal to the associated selection object.
     ! DATA |  c_ptr |  optional |  Data to be passed to/from the callback.
     ! MULTIPLE |  boolean |  optional |  Whether multiple selections are allowed.
     ! WIDTH |  integer() |  optional |  The width of the displayed columns.
     ! TITLES |  string() |  optional |  Titles for the visible columns.
-    ! HEIGHT |  c_int |  optional |  The height of the display (this is
-    !            actually the height of the scroll box).
+    ! HEIGHT |  c_int |  optional |  The height of the display (this is actually the height of the scroll box).
     ! SWIDTH |  c_int |  Optional |  The width for the scroll box
     ! ALIGN |  c_float() |  optional |  The alignment of the columns
     ! IXPAD |  c_int() |  optional |  The X-padding around the cells.
@@ -226,44 +223,24 @@ contains
     ! RENDERERS |  f_string() |  optional |  List of renderer types.
     ! SENSITIVE |  boolean |  optional |  Whether the widget is intially sensitive.
     ! TOOLTIP |  string |  optional |  Tooltip for the widget
-    ! SORTABLE |  boolean() |  optional |  Set whether the list can be sorted
-    ! 		on that column.
+    ! SORTABLE |  boolean() |  optional |  Set whether the list can be sorted on that column.
     ! EDITABLE |  boolean() |  optional |  Set whether the column can be edited.
-    ! EDITED |  c_funptr |  optional |  An alternative callback for the "edited"
-    ! 		signal on edited cells. N.B. Only a single callback can be set
-    ! 		if different actions are needed for different columns,
-    ! 		you must use the column number inside the callback. See
-    ! 		hl_gtk_listn_edit_cb for how to access the column numbers.
-    ! 		Used for all "text" dereived renderers unless overridden
-    ! 		by specific callbacks.
+    ! EDITED |  c_funptr |  optional |  An alternative callback for the "edited" signal on edited cells. N.B. Only a single callback can be set if different actions are needed for different columns, you must use the column number inside the callback. See hl_gtk_listn_edit_cb for how to access the column numbers. Used for all "text" dereived renderers unless overridden by specific callbacks.
     ! DATA_EDITED |  c_ptr |  optional |  Data to pass to the edited callback.
-    ! EDITED_TEXT |  c_funptr |  optional |  An alternative callback for
-    ! 		text renderers (not applied to derived renderers).
-    ! DATA_EDITED_TEXT |  c_ptr |  optional |  Data to pass to the edited_text
-    ! 		 callback.
-    ! EDITED_SPIN |  c_funptr |  optional |  An alternative callback for
-    ! 		spin button.
-    ! DATA_EDITED_SPIN |  c_ptr |  optional |  Data to pass to the edited_spin
-    ! 		 callback.
-    ! EDITED_COMBO |  c_funptr |  optional |  An alternative callback for
-    ! 		the "edited" signal from a combo cell
-    ! DATA_EDITED_COMBO |  c_ptr |  optional |  Data to pass to the edited_combo
-    ! 		 callback.
-    ! TOGGLED |  c_funptr |  optional |  An alternative callback for the "toggled"
-    ! 		signal from toggle renderers.
+    ! EDITED_TEXT |  c_funptr |  optional |  An alternative callback for text renderers (not applied to derived renderers).
+    ! DATA_EDITED_TEXT |  c_ptr |  optional |  Data to pass to the edited_text  callback.
+    ! EDITED_SPIN |  c_funptr |  optional |  An alternative callback for spin button.
+    ! DATA_EDITED_SPIN |  c_ptr |  optional |  Data to pass to the edited_spin  callback.
+    ! EDITED_COMBO |  c_funptr |  optional |  An alternative callback for the "edited" signal from a combo cell
+    ! DATA_EDITED_COMBO |  c_ptr |  optional |  Data to pass to the edited_combo  callback.
+    ! TOGGLED |  c_funptr |  optional |  An alternative callback for the "toggled" signal from toggle renderers.
     ! DATA_TOGGLED |  c_ptr |  optional |  Data to pass to the toggled callback.
-    ! TOGGLED_RADIO |  c_funptr |  optional |  An alternative callback for the
-    ! 		"toggled" signal from radio toggle renderers.
-    ! DATA_TOGGLED_RADIO |  c_ptr |  optional |  Data to pass to the toggled callback
-    ! 		for radio toggle renderers
-    ! CHANGED_COMBO |  c_funptr |  optional |  Callback for the "changed" signal from
-    ! 		a combo cell. This is not actually all that useful as the
-    ! 		edited signal will be emitted as soon as focus leaves the combo.
+    ! TOGGLED_RADIO |  c_funptr |  optional |  An alternative callback for the "toggled" signal from radio toggle renderers.
+    ! DATA_TOGGLED_RADIO |  c_ptr |  optional |  Data to pass to the toggled callback for radio toggle renderers
+    ! CHANGED_COMBO |  c_funptr |  optional |  Callback for the "changed" signal from a combo cell. This is not actually all that useful as the edited signal will be emitted as soon as focus leaves the combo.
     ! DATA_CHANGED_COMBO |  c_ptr |  optional |  Data to pass to the changed callback.
-    ! HSCROLL_POLICY |  int |  optional |  Horizontal scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC).
-    ! VSCROLL_POLICY |  int |  optional |  Vertical scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC).
+    ! HSCROLL_POLICY |  int |  optional |  Horizontal scrolling policy for the containing scroll window (default AUTOMATIC).
+    ! VSCROLL_POLICY |  int |  optional |  Vertical scrolling policy for the containing scroll window (default AUTOMATIC).
     !
     ! At least one of the array arguments or NCOLS must be given.
     ! If TYPES is not given, then strings are assumed.
@@ -431,8 +408,7 @@ contains
     ! Insert a row into a tabular list.
     !
     ! LIST |  c_ptr |  required |  The list into which to insert the row.
-    ! ROW |  c_int |  optional |  The row BEFORE which to insert the row
-    ! 		(append if absent)
+    ! ROW |  c_int |  optional |  The row BEFORE which to insert the row (append if absent)
     ! COUNT |  c_int |  optional |  How many rows to add (default 1)
     !-
 
@@ -505,14 +481,8 @@ contains
     ! Get the indices of the selected rows
     !
     ! LIST |  c_ptr |  required |  The list whose selections are to be found.
-    ! INDICES |  integer |  optional |  An allocatable array to return the
-    ! 		list of selections. (If count = 0 it will not be allocated).
-    ! 		If this argument is not given, then the number of
-    ! 		selected rows is returned.
-    ! SELECTION |  c_ptr |  optional |  A selection. If this is given then LIST
-    !           is ignored. This is most often used in the callback routine
-    !           for the changed signal when that needs to find which element(s)
-    !           are selected.
+    ! INDICES |  integer |  optional |  An allocatable array to return the list of selections. (If count = 0 it will not be allocated). If this argument is not given, then the number of selected rows is returned.
+    ! SELECTION |  c_ptr |  optional |  A selection. If this is given then LIST is ignored. This is most often used in the callback routine for the changed signal when that needs to find which element(s) are selected.
     !
     ! Returns the number of selections.
     !-
@@ -568,8 +538,7 @@ contains
     ! Set the selected row in a list (single row only).
     !
     ! LIST |  c_ptr |  required |  The list to work on.
-    ! ROW |  c_int |  optional |  The row to select (absent or less than 0 is
-    ! 		 clear selection)
+    ! ROW |  c_int |  optional |  The row to select (absent or less than 0 is  clear selection)
     !-
 
     type(c_ptr) :: selection, store
@@ -732,11 +701,8 @@ contains
     !
     ! LIST |  c_ptr |  required |  The list to work on.
     ! ROW1 |  c_int |  required |  The index of the row to move.
-    ! ROW2 |  c_int |  optional |  The location before which to place
-    ! 		the row. (If omitted, then move to start (or end if AFTER
-    ! 		is TRUE)).
-    ! AFTER |  boolean |  optional |   Set this to TRUE to put the row after
-    ! 		the location instead of before.
+    ! ROW2 |  c_int |  optional |  The location before which to place the row. (If omitted, then move to start (or end if AFTER is TRUE)).
+    ! AFTER |  boolean |  optional |   Set this to TRUE to put the row after the location instead of before.
     !-
 
     type(c_ptr) :: store
@@ -823,8 +789,7 @@ contains
     ! Move a row in a list to a new location
     !
     ! LIST |  c_ptr |  required |  The list to work on.
-    ! INDICES |  c_int() |  required |  The sorting array. The ith element
-    ! 		contains the old location of the new (i-1)th row.
+    ! INDICES |  c_int() |  required |  The sorting array. The ith element contains the old location of the new (i-1)th row.
     !-
 
     type(c_ptr) :: store
@@ -880,18 +845,15 @@ contains
 
     ! A single column selectable list based on the GTK Tree View
     !
-    ! SCROLL |  c_ptr |  optional |  A scroll box that will contain the list
-    ! 		(used for packing etc.)
+    ! SCROLL |  c_ptr |  optional |  A scroll box that will contain the list (used for packing etc.)
     ! WIDTH |  integer |  optional |  The width of the displayed column.
-    ! CHANGED |  c_funptr |  optional |  Callback function for the "changed"
-    !           signal to the associated selection object.
+    ! CHANGED |  c_funptr |  optional |  Callback function for the "changed" signal to the associated selection object.
     ! DATA |  c_ptr |  optional |  Data to be passed to/from the callback.
     ! MULTIPLE |  boolean |  optional |  Whether multiple selections are allowed.
     ! SENSITIVE |  boolean |  optional |  Whether the widget is intially sensitive.
     ! TOOLTIP |  string |  optional |  Tooltip for the widget
     ! TITLE |  string |  optional |  Title for the visible column.
-    ! HEIGHT |  integer |  optional |  The height of the display (this is
-    !            actually the height of the scroll box).
+    ! HEIGHT |  integer |  optional |  The height of the display (this is actually the height of the scroll box).
     !
     ! If other options (e.g. sortable columns or editable cells are needed,
     ! the use hl_gtk_listn_new with 1 column).
@@ -939,8 +901,7 @@ contains
     !
     ! LIST |  c_ptr |  required |  The list to insert to.
     ! TEXT |  string |  optional |  The text to insert.
-    ! ROW |  integer |  optional |  The row at which to insert the text
-    ! 		(omit to append)
+    ! ROW |  integer |  optional |  The row at which to insert the text (omit to append)
     !-
 
     integer(c_int) :: irow
@@ -988,14 +949,8 @@ contains
     ! Get the indices of the selected rows
     !
     ! LIST |  c_ptr |  required |  The list whose selections are to be found.
-    ! INDICES |  integer |  optional |  An allocatable array to return the
-    ! 		list of selections. (If count = 0 it will not be allocated).
-    ! 		If this argument is not given, then the number of
-    ! 		selected rows is returned.
-    ! SELECTION |  c_ptr |  optional |  A selection. If this is given then LIST
-    !           is ignored. This is most often used in the callback routine
-    !           for the changed signal when that needs to find which element(s)
-    !           are selected.
+    ! INDICES |  integer |  optional |  An allocatable array to return the list of selections. (If count = 0 it will not be allocated). If this argument is not given, then the number of selected rows is returned.
+    ! SELECTION |  c_ptr |  optional |  A selection. If this is given then LIST is ignored. This is most often used in the callback routine for the changed signal when that needs to find which element(s) are selected.
     !
     ! Returns the number of selections.
     !-
@@ -1012,8 +967,7 @@ contains
     ! Set the selected row in a list (single row only)
     !
     ! LIST |  c_ptr |  required |  The list to work on.
-    ! ROW |  c_int |  optional |  The row to select (absent or < 0
-    ! 		is clear selection)
+    ! ROW |  c_int |  optional |  The row to select (absent or < 0 is clear selection)
     !-
 
     call hl_gtk_listn_set_selection(list, row)
@@ -1065,10 +1019,8 @@ contains
     !
     ! LIST |  c_ptr |  required |  The list to work on.
     ! ROW1 |  c_int |  required |  The index of the row to move.
-    ! ROW2 |  c_int |  optional |  The location before which to place
-    ! 		the row.
-    ! AFTER |  boolean |  optional |   Set this to TRUE to put the row after
-    ! 		the location instead of before.
+    ! ROW2 |  c_int |  optional |  The location before which to place the row.
+    ! AFTER |  boolean |  optional |   Set this to TRUE to put the row after the location instead of before.
     !-
 
     call hl_gtk_listn_move_row(list, row1, row2, after)
@@ -1099,8 +1051,7 @@ contains
     ! Move a row in a list to a new location
     !
     ! LIST |  c_ptr |  required |  The list to work on.
-    ! INDICES |  c_int() |  required |  The sorting array. The ith element
-    ! 		contains the old location of the new (i-1)th row.
+    ! INDICES |  c_int() |  required |  The sorting array. The ith element contains the old location of the new (i-1)th row.
     !-
 
     call hl_gtk_listn_reorder(list, indices)
@@ -1133,9 +1084,7 @@ contains
     ! Add a custom rendering function to a column of a list
     !
     ! LIST |  c_ptr |  required |  The list to which to apply the rendering function
-    ! FUNC |  c_funptr |  optional |  The function (actually subroutine)
-    ! 		to do the rendering (see GtkTreeCellDataFunc, for
-    ! 		details). Omit or set to C_NULL_FUNPTR to remove a function.
+    ! FUNC |  c_funptr |  optional |  The function (actually subroutine) to do the rendering (see GtkTreeCellDataFunc, for details). Omit or set to C_NULL_FUNPTR to remove a function.
     ! DATA |  c_ptr |  optional |  User data to pass to the function.
     ! DESTROY_NOTIFY |  c_funptr |  optional |  A destroy notify subroutine.
     !-
@@ -1179,18 +1128,15 @@ contains
 
     ! Make a tree view
     !
-    ! SCROLL |  c_ptr |  optional |  A scrollable widget to contain the tree.
-    ! 		(This is used to pack the tree)
+    ! SCROLL |  c_ptr |  optional |  A scrollable widget to contain the tree. (This is used to pack the tree)
     ! NCOLS |  c_int |  optional |  The number of columns.
     ! TYPES |  GType() |  optional |  The types for each column.
-    ! CHANGED |  c_funptr |  optional |  Callback function for the "changed"
-    ! 		signal to the associated selection object.
+    ! CHANGED |  c_funptr |  optional |  Callback function for the "changed" signal to the associated selection object.
     ! DATA |  c_ptr |  optional |  Data to be passed to/from the callback.
     ! MULTIPLE |  boolean |  optional |  Whether multiple selections are allowed.
     ! WIDTH |  integer() |  optional |  The width of the displayed columns.
     ! TITLES |  string() |  optional |  Titles for the visible columns.
-    ! HEIGHT |  c_int |  optional |  The height of the display (this is
-    !            actually the height of the scroll box).
+    ! HEIGHT |  c_int |  optional |  The height of the display (this is actually the height of the scroll box).
     ! SWIDTH |  c_int |  Optional |  The width for the scroll box
     ! ALIGN |  c_float() |  optional |  The alignment of the columns
     ! IXPAD |  c_int() |  optional |  The X-padding around the cells.
@@ -1198,41 +1144,24 @@ contains
     ! RENDERERS: f_string(): List of renderer types.
     ! SENSITIVE |  boolean |  optional |  Whether the widget is intially sensitive.
     ! TOOLTIP |  string |  optional |  Tooltip for the widget
-    ! SORTABLE |  boolean() |  optional |  Set whether the tree can be sorted
-    ! 		on that column.
+    ! SORTABLE |  boolean() |  optional |  Set whether the tree can be sorted on that column.
     ! EDITABLE |  boolean() |  optional |  Set whether the column can be edited.
-    ! EDITED |  f_funptr |  optional |  An alternative callback for the "edited"
-    ! 		signal on edited cells. N.B. Only a single callback can be set
-    ! 		if different actions are needed for different columns,
-    ! 		you must use the column number inside the callback.
+    ! EDITED |  f_funptr |  optional |  An alternative callback for the "edited" signal on edited cells. N.B. Only a single callback can be set if different actions are needed for different columns, you must use the column number inside the callback.
     ! DATA_EDITED |  c_ptr |  optional |  Data to pass to the edited callback.
-    ! EDITED_TEXT |  c_funptr |  optional |  An alternative callback for
-    ! 		text renderers (not applied to derived renderers).
-    ! DATA_EDITED_TEXT |  c_ptr |  optional |  Data to pass to the edited_text
-    ! 		 callback.
-    ! EDITED_SPIN |  c_funptr |  optional |  An alternative callback for
-    ! 		spin button.
-    ! DATA_EDITED_SPIN |  c_ptr |  optional |  Data to pass to the edited_spin
-    ! 		 callback.
-    ! EDITED_COMBO |  c_funptr |  optional |  An alternative callback for
-    ! 		the "edited" signal from a combo cell
-    ! DATA_EDITED_COMBO |  c_ptr |  optional |  Data to pass to the edited_combo
-    ! 		 callback.
-    ! TOGGLED |  c_funptr |  optional |  An alternative callback for the "toggled"
-    ! 		signal from toggle renderers.
+    ! EDITED_TEXT |  c_funptr |  optional |  An alternative callback for text renderers (not applied to derived renderers).
+    ! DATA_EDITED_TEXT |  c_ptr |  optional |  Data to pass to the edited_text  callback.
+    ! EDITED_SPIN |  c_funptr |  optional |  An alternative callback for spin button.
+    ! DATA_EDITED_SPIN |  c_ptr |  optional |  Data to pass to the edited_spin  callback.
+    ! EDITED_COMBO |  c_funptr |  optional |  An alternative callback for the "edited" signal from a combo cell
+    ! DATA_EDITED_COMBO |  c_ptr |  optional |  Data to pass to the edited_combo  callback.
+    ! TOGGLED |  c_funptr |  optional |  An alternative callback for the "toggled" signal from toggle renderers.
     ! DATA_TOGGLED |  c_ptr |  optional |  Data to pass to the toggled callback.
-    ! TOGGLED_RADIO |  c_funptr |  optional |  An alternative callback for the
-    ! 		"toggled" signal from radio toggle renderers.
-    ! DATA_TOGGLED_RADIO |  c_ptr |  optional |  Data to pass to the toggled callback
-    ! 		for radio toggle renderers
-    ! CHANGED_COMBO |  c_funptr |  optional |  Callback for the "changed" signal from
-    ! 		a combo cell. This is not actually all that useful as the
-    ! 		edited signal will be emitted as soon as focus leaves the combo.
+    ! TOGGLED_RADIO |  c_funptr |  optional |  An alternative callback for the "toggled" signal from radio toggle renderers.
+    ! DATA_TOGGLED_RADIO |  c_ptr |  optional |  Data to pass to the toggled callback for radio toggle renderers
+    ! CHANGED_COMBO |  c_funptr |  optional |  Callback for the "changed" signal from a combo cell. This is not actually all that useful as the edited signal will be emitted as soon as focus leaves the combo.
     ! DATA_CHANGED_COMBO |  c_ptr |  optional |  Data to pass to the changed callback.
-    ! HSCROLL_POLICY |  int |  optional |  Horizontal scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC).
-    ! VSCROLL_POLICY |  int |  optional |  Vertical scrolling policy for the
-    ! 		containing scroll window (default AUTOMATIC).
+    ! HSCROLL_POLICY |  int |  optional |  Horizontal scrolling policy for the containing scroll window (default AUTOMATIC).
+    ! VSCROLL_POLICY |  int |  optional |  Vertical scrolling policy for the containing scroll window (default AUTOMATIC).
     !
     ! At least one of the array arguments or NCOLS must be given.
     ! If TYPES is not given, then strings are assumed.
@@ -1383,12 +1312,8 @@ contains
     ! Insert a row into a tabular tree.
     !
     ! TREE |  c_ptr |  required |  The tree into which to insert the row.
-    ! ROW |  c_int() |  optional |  The row BEFORE which to insert the row
-    ! 		(append if an element is -1) For example; to put a new row
-    ! 		after all other children of the second child of the fifth
-    ! 		top-level row use [ 4, 1, -1 ].
-    ! ABSROW |  c_int |  optional |  The row BEFORE which to insert the new row
-    ! 		treating the tree as a flat list.
+    ! ROW |  c_int() |  optional |  The row BEFORE which to insert the row (append if an element is -1) For example; to put a new row after all other children of the second child of the fifth top-level row use [ 4, 1, -1 ].
+    ! ABSROW |  c_int |  optional |  The row BEFORE which to insert the new row treating the tree as a flat list.
     ! COUNT |  c_int |  optional |  How many rows to add (default 1)
     !-
 
@@ -1489,8 +1414,7 @@ contains
     ! TREE |  c_ptr |  required |  The tree to traverse
     ! ITER |  gtktreeiter |  required |  The iterator found
     ! INDEX |  c_int |  required |   The location to be identified
-    ! MODEL |  c_ptr |  optional |  The tree model (if this is given then TREE is
-    ! 		ignored)
+    ! MODEL |  c_ptr |  optional |  The tree model (if this is given then TREE is ignored)
     !
     ! Returns TRUE if the search was successful, FALSE otherwise (not usually
     ! called directly by applications).
@@ -1545,8 +1469,7 @@ contains
     ! TREE |  c_ptr |  required |  The tree to traverse
     ! ITER |  gtktreeiter |  required |  The iterator found
     ! ROW |  c_int() |  required |  The row specifier
-    ! MODEL |  c_ptr |  optional |  The tree model (if this is given then TREE is
-    ! 		ignored)
+    ! MODEL |  c_ptr |  optional |  The tree model (if this is given then TREE is ignored)
     !-
 
     type(gtktreeiter), target :: iter2
@@ -1585,8 +1508,7 @@ contains
     !
     ! TREE |  c_ptr |  required |  The tree to modify
     ! ROW |  integer() |  optional |  The row to remove, if absent clear the tree
-    ! ABSROW |  c_int |  optional |  The row to remove, treating the tree as a
-    ! 		flat list.
+    ! ABSROW |  c_int |  optional |  The row to remove, treating the tree as a flat list.
     !-
 
     integer(c_int) :: valid
@@ -1628,17 +1550,9 @@ contains
     ! Get the indices of the selected rows
     !
     ! TREE |  c_ptr |  required |  The tree whose selections are to be found.
-    ! INDICES |  c_int(,) |  optional |  An allocatable array to return the
-    ! 		tree of selections. (If count = 0 it will not be allocated).
-    ! 		If this argument is not given, then the number of
-    ! 		selected rows is returned.
-    ! DEPTHS |  c_int() |  optional |  An allocatable array to return the depth
-    ! 		of each selection. (Strictly the last meaningful element
-    ! 		of each row of INDICES).
-    ! SELECTION |  c_ptr |  optional |  A selection. If this is given then TREE
-    !           is ignored. This is most often used in the callback routine
-    !           for the changed signal when that needs to find which element(s)
-    !           are selected.
+    ! INDICES |  c_int(,) |  optional |  An allocatable array to return the tree of selections. (If count = 0 it will not be allocated). If this argument is not given, then the number of selected rows is returned.
+    ! DEPTHS |  c_int() |  optional |  An allocatable array to return the depth of each selection. (Strictly the last meaningful element of each row of INDICES).
+    ! SELECTION |  c_ptr |  optional |  A selection. If this is given then TREE is ignored. This is most often used in the callback routine for the changed signal when that needs to find which element(s) are selected.
     !
     ! Returns the number of selections.
     !-
@@ -1718,8 +1632,7 @@ contains
     !
     ! TREE |  c_ptr |  required |  The tree containing the cell.
     ! ROW |  c_int() |  optional |  The row of the cell
-    ! COL |  c_int |  optional |  The column of the cell, (Only optional to
-    ! 		allow format similar to the LISTs).
+    ! COL |  c_int |  optional |  The column of the cell, (Only optional to allow format similar to the LISTs).
     ! ABSROW |  c_int |  optional |  The row, treating the tree as a flat list.
     ! SVALUE |  string |  optional |  A string value for the cell.
     ! FVALUE |  float |  optional |  A single precision FP value for the cell.
@@ -1797,10 +1710,8 @@ contains
     !
     ! TREE |  c_ptr |  required |  The tree containing the cell.
     ! ROW |  c_int() |  optional |  The row of the cell
-    ! COL |  c_int |  optional |  The column of the cell. (Only optional to
-    ! 		allow format similar to the LISTs i.e. tree, row, column).
-    ! ABSROW |  c_int |  optional |  The row of the cell, treating the tree as
-    ! 		a flat list.
+    ! COL |  c_int |  optional |  The column of the cell. (Only optional to allow format similar to the LISTs i.e. tree, row, column).
+    ! ABSROW |  c_int |  optional |  The row of the cell, treating the tree as a flat list.
     ! SVALUE |  string |  optional |  A string value from the cell.
     ! FVALUE |  float |  optional |  A single precision FP value from the cell.
     ! DVALUE |  double |  optional |  A double precision FP value from the cell.
@@ -1918,8 +1829,7 @@ contains
     !
     ! VIEW |  c_ptr |  required |  The list view containing the cell.
     ! ROW |  int() |  optional |  The row number of the cell
-    ! COLNO |  int |  optional |  The column number with the cell (Only optional to
-    ! 		allow format similar to the LISTs).
+    ! COLNO |  int |  optional |  The column number with the cell (Only optional to allow format similar to the LISTs).
     ! ABSROW |  c_int |  optional |  The row, treating the tree as a flat list.
     ! SELECTION |  int |  required |  The element of the combo to set.
     !-
@@ -2270,9 +2180,7 @@ contains
     !
     ! LIST |  c_ptr |  required |  The list to which to apply the rendering function
     ! COLNO |  c_int |  required |  The column index to which to apply it.
-    ! FUNC |  c_funptr |  optional |  The function (actually subroutine)
-    ! 		to do the rendering (see GtkTreeCellDataFunc, for
-    ! 		details). Omit or set to C_NULL_FUNPTR to remove a function.
+    ! FUNC |  c_funptr |  optional |  The function (actually subroutine) to do the rendering (see GtkTreeCellDataFunc, for details). Omit or set to C_NULL_FUNPTR to remove a function.
     ! DATA |  c_ptr |  optional |  User data to pass to the function.
     ! DESTROY_NOTIFY |  c_funptr |  optional |  A destroy notify subroutine.
     !
@@ -3233,8 +3141,7 @@ contains
     ! MIN |  double |  optional |  The minimum value for the spin button
     ! MAX |  double |  optional |  The maximum value for the spin button.
     ! STEP |  double |  optional |  The step size for the spin button.
-    ! BIGSTEP |  double |  optional |  The "jump" size for the spin button (not
-    ! 		actually very useful).
+    ! BIGSTEP |  double |  optional |  The "jump" size for the spin button (not actually very useful).
     ! VALUE |  double |  optional |  The value for the spin button.
     ! DIGITS |  int |  optional |  How many digits to show.
     ! RATE |  double |  optional |  The climb rate.
@@ -3294,11 +3201,9 @@ contains
     ! Create a tree model suitable for a GtkCellRendererCombo and attach
     ! it to the renderer.
     !
-    ! RENDERER |  c_ptr |  required |  The renderer to which the model
-    ! 		will be attached.
+    ! RENDERER |  c_ptr |  required |  The renderer to which the model will be attached.
     ! CMODEL |  c_ptr |  optional |  A custom model for the combobox
-    ! COLNO |  int |  optional |  Which column of the custom model contains
-    ! 		the text.
+    ! COLNO |  int |  optional |  Which column of the custom model contains the text.
     !
     ! This routine is automatically called by the list/tree constructor if needed.
     ! To explicitly set a different model, use one of its aliases
@@ -3351,14 +3256,11 @@ contains
 
     ! Set the strings in the combo model.
     !
-    ! VIEW |  c_ptr |  required |  The tree view that contains the combo
-    ! 		cell renderer.
+    ! VIEW |  c_ptr |  required |  The tree view that contains the combo cell renderer.
     ! COLNO |  c_int |  required |  The column number of the combo renderer.
     ! VALS |  f_string() |  required |  The strings for the combo box.
-    ! APPEND |  c_int |  optional |  Set to TRUE to add the strings to those
-    ! 		already present, otherwise the strings are replaced.
-    ! HAS_ENTRY |  c_int |  optional |  Set to TRUE to add an entry field to
-    ! 		the combo. Set to FALSE to remove an entry field.
+    ! APPEND |  c_int |  optional |  Set to TRUE to add the strings to those already present, otherwise the strings are replaced.
+    ! HAS_ENTRY |  c_int |  optional |  Set to TRUE to add an entry field to the combo. Set to FALSE to remove an entry field.
     !
     ! This routine is always accessed by its aliases hl_gtk_tree_config_combo
     ! or hl_gtk_listn_config_combo

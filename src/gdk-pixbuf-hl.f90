@@ -95,8 +95,7 @@ contains
     !
     ! WIDTH |  int |  required |  The width in pixels of the pixbuf
     ! HEIGHT |  int |  required |  The height in pixels of the pixbuf
-    ! ALPHA |  boolean |  optional |  Whether to include an alpha channel
-    ! 		(default=FALSE)
+    ! ALPHA |  boolean |  optional |  Whether to include an alpha channel (default=FALSE)
     ! BITS |  int |  optional |  The nuber of bits per sample (default=8).
     !
     ! This routine will usually be called via the generic interface
@@ -133,10 +132,7 @@ contains
     ! FILE |  string |  required |  The file to read
     ! WIDTH |  int |  optional |  The desired width for the pixbuf
     ! HEIGHT |  int |  optional |  The desired height for the pixbuf
-    ! ASPECT |  boolean |  optional |  If sizing is given then set to TRUE
-    ! 		to preserve the aspect ratio, or FALSE not to. If both
-    ! 		dimensions are given, then the default is FALSE, if one is
-    ! 		given, the default is TRUE.
+    ! ASPECT |  boolean |  optional |  If sizing is given then set to TRUE to preserve the aspect ratio, or FALSE not to. If both dimensions are given, then the default is FALSE, if one is given, the default is TRUE.
     ! ERROR |  gerror |  optional |  The error code & message.
     !
     ! This routine will usually be called via the generic interface
@@ -812,8 +808,7 @@ contains
     ! ALPHA |  boolean |  optional |  Does the pixbuf have an alpha channel?
     ! HEIGHT |  int |  optional |  How many rows in the image.
     ! WIDTH |  int |  optional |  How many columns in the image.
-    ! ROWSTRIDE |  int |  optional |  How many bytes between the start of
-    ! 		successive rows.
+    ! ROWSTRIDE |  int |  optional |  How many bytes between the start of successive rows.
     !-
 
     if (present(nchannels)) nchannels = gdk_pixbuf_get_n_channels(pixbuf)
@@ -838,10 +833,8 @@ contains
     !
     ! PIXBUF |  c_ptr |  required |  The pixbuf to save
     ! FILE |  f_string |  required |  The filename to which to save.
-    ! TYPE |  f_string |  optional |  The file type to use, if not given then it
-    ! 		is deduced from the extension.
-    ! OPTIONS |  f_string() |  optional |  A list of options in the form
-    ! 		"option=value".
+    ! TYPE |  f_string |  optional |  The file type to use, if not given then it is deduced from the extension.
+    ! OPTIONS |  f_string() |  optional |  A list of options in the form "option=value".
     ! OK |  logical |  optional |  Was the write successful.
     ! ERROR |  f_string |  optional |  An error message if the write failed.
     !-
@@ -990,15 +983,12 @@ contains
     ! Get information about a specific file type.
     !
     ! NAME |  string |  required |  The file type to query.
-    ! MIME_TYPE |  fstring() |  optional |  Will contain a list of mime-types
-    !		associated with this file type.
-    ! EXTENSIONS |  fstring() |  optional |  Will contain a list of file
-    !		extensions normally used for this type.
+    ! MIME_TYPE |  fstring() |  optional |  Will contain a list of mime-types associated with this file type.
+    ! EXTENSIONS |  fstring() |  optional |  Will contain a list of file extensions normally used for this type.
     ! WRITABLE |  logical |  optional |  Whether the type is writable.
     ! SCALABLE |  logical |  optional |  Whether the type is scalable.
     ! DESCRIPTION |  f_string |  optional |  A description of the file type.
-    ! LICENSE |  f_string |  optional |  The license of the module for the
-    !		file type.
+    ! LICENSE |  f_string |  optional |  The license of the module for the file type.
     !
     ! Returns .true. if the type is found, .false. if it is not.
     !-

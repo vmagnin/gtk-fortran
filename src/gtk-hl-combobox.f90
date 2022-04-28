@@ -84,10 +84,8 @@ contains
     ! CHANGED |  c_funptr |  optional |  Callback routine for the "changed" signal.
     ! DATA |  c_ptr |  optional |  User data for the changed callback.
     ! INITIAL_CHOICES |  string() |  optional |  Initial list of choices.
-    ! SENSITIVE |  boolean |  optional |  Set to FALSE to make the widget start in an
-    ! 		insensitive state.
-    ! TOOLTIP |  string |  optional |  A tooltip to display when the pointer is
-    ! 		held over the widget.
+    ! SENSITIVE |  boolean |  optional |  Set to FALSE to make the widget start in an insensitive state.
+    ! TOOLTIP |  string |  optional |  A tooltip to display when the pointer is held over the widget.
     ! ACTIVE |  c_int |  optional |  The initial active selection.
     !-
 
@@ -140,8 +138,7 @@ contains
     ! CBOX |  c_ptr |  required |  The combo box to modify.
     ! TEXT |  string |  required |  The text to add.
     ! INDEX |  c_int |  optional |  The location at which to add the text.
-    ! AT_START |  boolean |  optional |  If set to TRUE and INDEX is not given
-    ! 		then add the text at the start of the list.
+    ! AT_START |  boolean |  optional |  If set to TRUE and INDEX is not given then add the text at the start of the list.
     !
     ! If neither INDEX nor AT_START is present the text is appended.
     !-

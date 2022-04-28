@@ -77,8 +77,7 @@ contains
 
     ! A Version-independent separator.
     !
-    ! HORIZONTAL |  boolean  |  optional  |  Set to TRUE to make
-    ! 		a vertical separator.
+    ! HORIZONTAL |  boolean  |  optional  |  Set to TRUE to make a vertical separator.
     !-
 
     integer(c_int) :: direction

@@ -113,33 +113,24 @@ contains
 
     ! Create a file chooser widget.
     !
-    ! CHOOSER_INFO |  hl_gtk_chooser_info |  required |  IDs and flags of various
-    ! 		subwidgets needed to process the dialog actions.
+    ! CHOOSER_INFO |  hl_gtk_chooser_info |  required |  IDs and flags of various subwidgets needed to process the dialog actions.
     ! CDIR |  string |  optional |  The directory from which they were chosen.
-    ! DIRECTORY |  boolean |  optional |  Set to TRUE to select directories
-    ! 		instead of files.
+    ! DIRECTORY |  boolean |  optional |  Set to TRUE to select directories instead of files.
     ! CREATE |  boolean |  optional |  Set to FALSE to prohibit creating new files.
-    ! MULTIPLE |  boolean |  optional |  Set to TRUE to allow the selection of
-    ! 		multiple files.
+    ! MULTIPLE |  boolean |  optional |  Set to TRUE to allow the selection of multiple files.
     ! ALLOW_URI: boolean |  optional |  GTK<=3 |  Set to TRUE to allow nonlocal selections.
     ! SHOW_HIDDEN: boolean |  optional |  GTK<=3 |  Set to TRUE to show hidden files.
-    ! CONFIRM_OVERWRITE: boolean |  optional |  GTK<=3 |  Set to TRUE to request
-    ! 		confirmation of an overwrite (only used if CREATE
-    ! 		is TRUE).
+    ! CONFIRM_OVERWRITE: boolean |  optional |  GTK<=3 |  Set to TRUE to request confirmation of an overwrite (only used if CREATE is TRUE).
     ! TITLE |  string |  optional |  Title for the window.
-    ! INITIAL_DIR |  string |  optional |  Set the initial directory here instead
-    ! 		of the current directory.
+    ! INITIAL_DIR |  string |  optional |  Set the initial directory here instead of the current directory.
     ! CURRENT |  boolean |  optional |  Use to force start in current directory.
     ! INITIAL_FILE |  string |  optional |  Set the initial file selection.
-    ! FILTER |  string() |  optional |   The file selection filter. Elements
-    ! 		may either be patterns or mime types. Each filter is a
-    ! 		comma-separated list of patterns
+    ! FILTER |  string() |  optional |   The file selection filter. Elements may either be patterns or mime types. Each filter is a comma-separated list of patterns
     ! FILTER_NAME |  string() |  optional |  Names for the filters
     ! PARENT |  c_ptr |  optional |  Parent window for the dialogue.
     ! ALL |  boolean |  optional |  Set to TRUE to add an all-files filter pattern
     ! WSIZE |  c_int(2) |  optional |  Set the size for the dialog.
-    ! EDIT_FILTERS: boolean |  optional |  GTK<=3 |  Set to TRUE to proves an entry window
-    ! 		to add extra filters.
+    ! EDIT_FILTERS: boolean |  optional |  GTK<=3 |  Set to TRUE to proves an entry window to add extra filters.
     !-
 
     type(c_ptr) :: content, junk, gfilter
@@ -335,30 +326,22 @@ contains
     !
     ! FILES |  string() |  required |  The file or files selected.
     ! CDIR |  string |  optional |  The directory from which they were chosen.
-    ! DIRECTORY |  boolean |  optional |  Set to TRUE to select directories
-    ! 		instead of files.
+    ! DIRECTORY |  boolean |  optional |  Set to TRUE to select directories instead of files.
     ! CREATE |  boolean |  optional |  Set to FALSE to prohibit creating new files.
-    ! MULTIPLE |  boolean |  optional |  Set to TRUE to allow the selection of
-    ! 		multiple files.
+    ! MULTIPLE |  boolean |  optional |  Set to TRUE to allow the selection of multiple files.
     ! ALLOW_URI |  boolean |  optional |  Set to TRUE to allow nonlocal selections.
     ! SHOW_HIDDEN: boolean |  optional |  GTK<=3 |  Set to TRUE to show hidden files.
-    ! CONFIRM_OVERWRITE: boolean |  optional |  GTK<=3 |  Set to TRUE to request
-    ! 		confirmation of an overwrite (only used if CREATE
-    ! 		is TRUE).
+    ! CONFIRM_OVERWRITE: boolean |  optional |  GTK<=3 |  Set to TRUE to request confirmation of an overwrite (only used if CREATE is TRUE).
     ! TITLE |  string |  optional |  Title for the window.
-    ! INITIAL_DIR |  string |  optional |  Set the initial directory here instead
-    ! 		of the current directory.
+    ! INITIAL_DIR |  string |  optional |  Set the initial directory here instead of the current directory.
     ! CURRENT |  boolean |  optional |  Use to force start in current directory.
     ! INITIAL_FILE |  string |  optional |  Set the initial file selection.
-    ! FILTER |  string() |  optional |   The file selection filter. Elements
-    ! 		may either be patterns or mime types. Each filter is a
-    ! 		comma-separated list of patterns
+    ! FILTER |  string() |  optional |   The file selection filter. Elements may either be patterns or mime types. Each filter is a comma-separated list of patterns
     ! FILTER_NAME |  string() |  optional |  Names for the filters
     ! PARENT |  c_ptr |  optional |  Parent window for the dialogue.
     ! ALL |  boolean |  optional |  Set to TRUE to add an all-files filter pattern
     ! WSIZE |  c_int(2) |  optional |  Set the size for the dialog.
-    ! EDIT_FILTERS: boolean |  optional |  GTK<=3 |  Set to TRUE to proves an entry window
-    ! 		to add extra filters.
+    ! EDIT_FILTERS: boolean |  optional |  GTK<=3 |  Set to TRUE to proves an entry window to add extra filters.
     !
     ! Returns TRUE if one or more files was selected, FALSE otherwise.
     !-

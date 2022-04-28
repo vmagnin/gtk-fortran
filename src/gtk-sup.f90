@@ -361,8 +361,7 @@ contains
     !
     ! TEXTPTR |  string |  required |   The C string to be converted.
     ! F_STRING |  f_string |  required |  A Scalar Fortran string.
-    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string
-    !                            is too short.
+    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string is too short.
     !
     ! Usually called via the convert_c_string generic interface.
     !-
@@ -395,8 +394,7 @@ contains
     !
     ! TEXTPTR |  string |  required |   The C string to be converted.
     ! F_STRING |  f_string() |  required |  A Fortran string array.
-    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string
-    !                            is too short for any line.
+    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string is too short for any line.
     !
     ! Usually called via the convert_c_string generic interface.
     !-
@@ -447,8 +445,7 @@ contains
     !
     ! CTEXT |  c_ptr |  required |   A C poiner to string to be converted.
     ! F_STRING |  f_string |  required |  A Scalar Fortran string.
-    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string
-    !                            is too short.
+    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string is too short.
     !
     ! Usually called via the convert_c_string generic interface.
     !-
@@ -483,8 +480,7 @@ contains
     !
     ! CTEXT |  c_ptr |  required |   A C poiner to string to be converted.
     ! F_STRING |  f_string() |  required |  A  Fortran string. array
-    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string
-    !                            is too short for any of the lines.
+    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string is too short for any of the lines.
     !
     ! Usually called via the convert_c_string generic interface.
     !-

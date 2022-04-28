@@ -100,18 +100,14 @@ contains
     ! VMIN |  c_double |  required |  The minimum value for the slider
     ! VMAX |  c_double |  required |  The maximum value for the slider
     ! STEP |  c_double |  required |  The step for the slider.
-    ! VERTICAL |  boolean |  optional |  if TRUE then a vertical slider is created
-    ! 		if FALSE or absent, then a horizontal silder is created.
+    ! VERTICAL |  boolean |  optional |  if TRUE then a vertical slider is created if FALSE or absent, then a horizontal silder is created.
     ! INITIAL_VALUE |  c_double |  optional |  Set the intial value of the slider
-    ! VALUE_CHANGED |  c_funptr |  optional |  Callback function for the
-    ! 		"value-changed" signal.
+    ! VALUE_CHANGED |  c_funptr |  optional |  Callback function for the "value-changed" signal.
     ! DATA |  c_ptr |  optional |  User data to pass the the value_changed callback.
     ! DIGITS |  c_int |  optional |  Number of decimal places to show.
-    ! SENSITIVE |  boolean |  optional |  Whether the widget is created in the
-    ! 		sensitive state.
+    ! SENSITIVE |  boolean |  optional |  Whether the widget is created in the sensitive state.
     ! TOOLTIP |  string |  optional |  A tooltip to display.
-    ! DRAW |  boolean |  optional |  Set to FALSE to suppress writing the
-    ! 		value.
+    ! DRAW |  boolean |  optional |  Set to FALSE to suppress writing the value.
     ! LENGTH |  c_int |  optional |  Set the length of the slider in pixels
     !
     ! This routine is usually called via its generic interface
@@ -187,17 +183,13 @@ contains
     !
     ! IMIN |  c_int |  required |  The minimum value for the slider
     ! IMAX |  c_int |  required |  The maximum value for the slider
-    ! VERTICAL |  boolean |  optional |  if TRUE then a vertical slider is created
-    ! 		if FALSE or absent, then a horizontal silder is created.
+    ! VERTICAL |  boolean |  optional |  if TRUE then a vertical slider is created if FALSE or absent, then a horizontal silder is created.
     ! INITIAL_VALUE |  c_int |  optional |  Set the intial value of the slider
-    ! VALUE_CHANGED |  c_funptr |  optional |  Callback function for the
-    ! 		"value-changed" signal.
+    ! VALUE_CHANGED |  c_funptr |  optional |  Callback function for the "value-changed" signal.
     ! DATA |  c_ptr |  optional |  User data to pass the the value_changed callback.
-    ! SENSITIVE |  boolean |  optional |  Whether the widget is created in the
-    ! 		sensitive state.
+    ! SENSITIVE |  boolean |  optional |  Whether the widget is created in the sensitive state.
     ! TOOLTIP |  string |  optional |  A tooltip to display.
-    ! DRAW |  boolean |  optional |  Set to FALSE to suppress writing the
-    ! 		value.
+    ! DRAW |  boolean |  optional |  Set to FALSE to suppress writing the value.
     ! LENGTH |  c_int |  optional |  Set the length of the slider in pixels
     !
     ! This routine is usually called via its generic interface
@@ -385,25 +377,16 @@ contains
     ! VMAX |  c_double |  required |  The maximum value for the spin_button
     ! STEP |  c_double |  required |  The step for the spin_button.
     ! INITIAL_VALUE |  c_double |  optional |  Set the intial value of the spin_button
-    ! VALUE_CHANGED |  c_funptr |  optional |  Callback function for the
-    ! 		"value-changed" signal.
+    ! VALUE_CHANGED |  c_funptr |  optional |  Callback function for the "value-changed" signal.
     ! DATA |  c_ptr |  optional |  User data to pass the the value_changed callback.
     ! DIGITS |  c_int |  optional |  Number of decimal places to show.
-    ! SENSITIVE |  boolean |  optional |  Whether the widget is created in the
-    ! 		sensitive state.
+    ! SENSITIVE |  boolean |  optional |  Whether the widget is created in the sensitive state.
     ! TOOLTIP |  string |  optional |  A tooltip to display.
-    ! WRAP |  boolean |  optional |  If set to TRUE then wrap around if limit is
-    ! 		exceeded
-    ! FOCUS_OUT_EVENT |  c_funptr |  optional |  Callback for the "focus-out-event"
-    ! 		signal, this is a GDK event rather than a GTK signal, so the
-    ! 		call back is a function of 3 arguments returning gboolean.
-    ! DATA_FOCUS_OUT |  c_ptr |  optional |  Data to pass to the focus_out_event
-    ! 		callback
-    ! FOCUS_IN_EVENT |  c_funptr |  optional |  Callback for the "focus-in-event"
-    ! 		signal, this is a GDK event rather than a GTK signal, so the
-    ! 		call back is a function of 3 arguments returning gboolean.
-    ! DATA_FOCUS_IN |  c_ptr |  optional |  Data to pass to the focus_in_event
-    ! 		callback
+    ! WRAP |  boolean |  optional |  If set to TRUE then wrap around if limit is exceeded
+    ! FOCUS_OUT_EVENT |  c_funptr |  optional |  Callback for the "focus-out-event" signal, this is a GDK event rather than a GTK signal, so the call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_OUT |  c_ptr |  optional |  Data to pass to the focus_out_event callback
+    ! FOCUS_IN_EVENT |  c_funptr |  optional |  Callback for the "focus-in-event" signal, this is a GDK event rather than a GTK signal, so the call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_IN |  c_ptr |  optional |  Data to pass to the focus_in_event callback
     !
     ! This routine is usually called via its generic interface
     ! hl_gtk_spin_button_new
@@ -481,24 +464,15 @@ contains
     ! IMIN |  c_int |  required |  The minimum value for the spin_button
     ! IMAX |  c_int |  required |  The maximum value for the spin_button
     ! INITIAL_VALUE |  c_int |  optional |  Set the intial value of the spin_button
-    ! VALUE_CHANGED |  c_funptr |  optional |  Callback function for the
-    ! 		"value-changed" signal.
+    ! VALUE_CHANGED |  c_funptr |  optional |  Callback function for the "value-changed" signal.
     ! DATA |  c_ptr |  optional |  User data to pass the the value_changed callback.
-    ! SENSITIVE |  boolean |  optional |  Whether the widget is created in the
-    ! 		sensitive state.
+    ! SENSITIVE |  boolean |  optional |  Whether the widget is created in the sensitive state.
     ! TOOLTIP |  string |  optional |  A tooltip to display.
-    ! WRAP |  boolean |  optional |  If set to TRUE then wrap around if limit is
-    ! 		exceeded
-    ! FOCUS_OUT_EVENT |  c_funptr |  optional |  Callback for the "focus-out-event"
-    ! 		signal, this is a GDK event rather than a GTK signal, so the
-    ! 		call back is a function of 3 arguments returning gboolean.
-    ! DATA_FOCUS_OUT |  c_ptr |  optional |  Data to pass to the focus_out_event
-    ! 		callback
-    ! FOCUS_IN_EVENT |  c_funptr |  optional |  Callback for the "focus-in-event"
-    ! 		signal, this is a GDK event rather than a GTK signal, so the
-    ! 		call back is a function of 3 arguments returning gboolean.
-    ! DATA_FOCUS_IN |  c_ptr |  optional |  Data to pass to the focus_in_event
-    ! 		callback
+    ! WRAP |  boolean |  optional |  If set to TRUE then wrap around if limit is exceeded
+    ! FOCUS_OUT_EVENT |  c_funptr |  optional |  Callback for the "focus-out-event" signal, this is a GDK event rather than a GTK signal, so the call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_OUT |  c_ptr |  optional |  Data to pass to the focus_out_event callback
+    ! FOCUS_IN_EVENT |  c_funptr |  optional |  Callback for the "focus-in-event" signal, this is a GDK event rather than a GTK signal, so the call back is a function of 3 arguments returning gboolean.
+    ! DATA_FOCUS_IN |  c_ptr |  optional |  Data to pass to the focus_in_event callback
     !
     ! This routine is usually called via its generic interface
     ! hl_gtk_spin_button_new

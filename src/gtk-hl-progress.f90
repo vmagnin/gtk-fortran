@@ -64,10 +64,8 @@ contains
     ! Intializer for a progress bar
     !
     ! VERTICAL |  boolean |  optional |  The orientation of the bar.
-    ! REVERSED |  boolean |  optional |  Whether the direction of the bar should
-    ! 		be reversed.
-    ! STEP |  double |  optional |  The fractional step to advance when
-    ! 		pulsing the bar
+    ! REVERSED |  boolean |  optional |  Whether the direction of the bar should be reversed.
+    ! STEP |  double |  optional |  The fractional step to advance when pulsing the bar
     !-
 
     bar = gtk_progress_bar_new()
