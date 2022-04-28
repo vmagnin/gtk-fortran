@@ -43,7 +43,7 @@ module gtk_draw_hl
   ! cumulative plotting (e.g. PLplot's strip charts) now
   ! works correctly.
   !
-  ! ### Routine List
+  ! **Routine list:**
   !
   ! * hl_gtk_drawing_area_new; Create the drawing area.
   ! * hl_gtk_drawing_area_get_surface; Get the backing cairo surface
