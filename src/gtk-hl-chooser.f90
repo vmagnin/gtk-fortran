@@ -200,7 +200,7 @@ contains
 
     ! Hidden files
     if (present(show_hidden)) then
-       print *, "Not in GTK 4: show_hidden"
+       print *, "Removed from GTK 4: show_hidden"
        lval = show_hidden
     else
        lval = FALSE
@@ -209,7 +209,7 @@ contains
     ! Confirm overwrite
     if (icreate == TRUE) then
        if (present(confirm_overwrite)) then
-          print *, "Not in GTK 4: confirm_overwrite"
+          print *, "Removed from GTK 4: confirm_overwrite"
           lval = confirm_overwrite
        else
           lval = FALSE
@@ -292,7 +292,7 @@ contains
     ! Add an entry box for extra filters.
     if (present(edit_filters)) then
        if (edit_filters == TRUE) then
-          print *, "Not in GTK4 : edit_filters, gtk_file_chooser_set_extra_widget"
+          print *, "Removed from GTK 4: edit_filters, gtk_file_chooser_set_extra_widget"
        end if
     end if
 

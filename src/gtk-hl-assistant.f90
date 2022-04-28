@@ -176,9 +176,9 @@ contains
     if (present(parent)) call gtk_window_set_transient_for(asstnt, parent)
 
     if (present(icon)) then
-       print *, "Not in GTK 4: call gtk_window_set_icon(asstnt, icon)"
+       print *, "Removed from GTK 4: call gtk_window_set_icon(asstnt, icon)"
     else if (present(icon_file)) then
-       print *, "Not in GTK 4: icon_ok = gtk_window_set_icon_from_file (asstnt, icon_file, c_null_ptr)"
+       print *, "Removed from GTK 4: icon_ok = gtk_window_set_icon_from_file (asstnt, icon_file, c_null_ptr)"
     else if (present(icon_name)) then
        call gtk_window_set_icon_name(asstnt, icon_name)
     end if

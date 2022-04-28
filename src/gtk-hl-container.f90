@@ -182,7 +182,7 @@ contains
          & call gtk_window_set_default_size(win, wsize(1), wsize(2))
 
     if (present(delete_event)) then
-        print *, "In GTK 4, there is no more delete-event: use destroy event"
+        print *, "Removed from GTK 4: delete-event (use destroy event instead)"
     end if
 
     if (present(destroy)) then
@@ -204,8 +204,8 @@ contains
     if (present(deletable)) &
          & call gtk_window_set_deletable(win, deletable)
 
-    if (present(above)) print *, "Not in GTK 4: call gtk_window_set_keep_above(win, above)"
-    if (present(below)) print *, "Not in GTK 4: call gtk_window_set_keep_below(win, below)"
+    if (present(above)) print *, "Removed from GTK 4: call gtk_window_set_keep_above(win, above)"
+    if (present(below)) print *, "Removed from GTK 4: call gtk_window_set_keep_below(win, below)"
 
     if (present(parent)) then
        call gtk_window_set_transient_for(win, parent)
@@ -213,10 +213,10 @@ contains
     end if
 
     if (present(icon)) then
-       print *, "Not in GTK 4: call gtk_window_set_icon(win, icon)"
+       print *, "Removed from GTK 4: call gtk_window_set_icon(win, icon)"
        print *, "=> use icon_name instead"
     else if (present(icon_file)) then
-       print *, "Not in GTK 4: icon_ok = gtk_window_set_icon_from_file (win, icon_file, c_null_ptr)"
+       print *, "Removed from GTK 4: icon_ok = gtk_window_set_icon_from_file (win, icon_file, c_null_ptr)"
        print *, "=> use icon_name instead"
     else if (present(icon_name)) then
        call gtk_window_set_icon_name(win, icon_name)
@@ -418,13 +418,13 @@ contains
     end if
 
     if (present(xopts)) then
-       print *, "In GTK 4 GTK_EXPAND and GTK_FILL were removed"
+       print *, "Removed from GTK 4: GTK_EXPAND and GTK_FILL"
     else
        ixexp = TRUE
        ixfill = GTK_ALIGN_FILL
     end if
     if (present(yopts)) then
-       print *, "In GTK 4 GTK_EXPAND and GTK_FILL were removed"
+       print *, "Removed from GTK 4: GTK_EXPAND and GTK_FILL"
     else
        iyexp = TRUE
        iyfill = GTK_ALIGN_FILL
@@ -634,10 +634,10 @@ contains
 
     ! Set up the adjustments
     if (present(hadjustment)) then
-       print *, "In GTK 4 hadjustment was removed from gtk_scrolled_window_new()"
+       print *, "Removed from GTK 4: hadjustment in gtk_scrolled_window_new()"
     end if
     if (present(vadjustment)) then
-       print *, "In GTK 4 vadjustment was removed from gtk_scrolled_window_new()"
+       print *, "Removed from GTK 4: vadjustment in gtk_scrolled_window_new()"
     end if
 
     win = gtk_scrolled_window_new()

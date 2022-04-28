@@ -69,7 +69,7 @@ contains
     ! AUTO_SHOW |  boolean |  optional |  Whether the info bar should be displayed when its parent is shown. Default=FALSE.
     ! TYPE |  c_int |  optional |  The initial message type.
     ! DEFAULT |  c_int |  optional |  Set the initial default response ID.
-    ! HORIZONTAL | boolean |  optional | Set to TRUE to lay the buttons in a row rather than a column. **Not in GTK4.**
+    ! HORIZONTAL | boolean |  optional | Set to TRUE to lay the buttons in a row rather than a column. **Removed from GTK 4.**
     ! BUTTONS_BELOW |  boolean |  optional |  Set to TRUE to place the buttons below the message rather than to the right.
     !-
 
@@ -86,14 +86,14 @@ contains
     call gtk_widget_show (label)
 
     if (present(horizontal)) then
-       print *, "In GTK4, GtkOrientable is not implemented in GtkInfoBar"
+       print *, "Removed from GTK 4: GtkOrientable in GtkInfoBar"
     end if
 
     if (present(buttons_below)) then
        if (c_f_logical(buttons_below)) then
-         print *, "In GTK4, GtkOrientable is not implemented in GtkInfoBar"
+         print *, "Removed from GTK 4: GtkOrientable in GtkInfoBar"
        else
-         print *, "In GTK4, GtkOrientable is not implemented in GtkInfoBar"
+         print *, "Removed from GTK 4: GtkOrientable in GtkInfoBar"
        end if
     end if
 
