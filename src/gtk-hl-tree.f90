@@ -1141,7 +1141,7 @@ contains
     ! ALIGN |  c_float() |  optional |  The alignment of the columns
     ! IXPAD |  c_int() |  optional |  The X-padding around the cells.
     ! IYPAD |  c_int() |  optional |  The Y-Padding around the cells.
-    ! RENDERERS: f_string(): List of renderer types.
+    ! RENDERERS | f_string() | List of renderer types.
     ! SENSITIVE |  boolean |  optional |  Whether the widget is intially sensitive.
     ! TOOLTIP |  string |  optional |  Tooltip for the widget
     ! SORTABLE |  boolean() |  optional |  Set whether the tree can be sorted on that column.
