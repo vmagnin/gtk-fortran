@@ -480,6 +480,7 @@ contains
 
     ! Convert a null-terminated LF-separated c-string into a fortran
     ! string array
+    !
     ! CTEXT |  c_ptr |  required |   A C poiner to string to be converted.
     ! F_STRING |  f_string() |  required |  A  Fortran string. array
     ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string
