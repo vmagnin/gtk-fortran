@@ -158,8 +158,8 @@ contains
     ! RESIZABLE |  boolean |  optional |  Is the window resizable.
     ! DECORATED |  boolean |  optional |  Set FALSE to disable window decorations.
     ! DELETABLE |  boolean |  optional |  Set to FALSE to remove the "delete" button.
-    ! ABOVE: boolean |  optional | Set to TRUE to make the window stay on top of others. **Removed from GTK 4.**
-    ! BELOW: boolean |  optional | Set to TRUE to make the window stay below others. **Removed from GTK 4.**
+    ! ABOVE | boolean |  optional | Set to TRUE to make the window stay on top of others. **Removed from GTK 4.**
+    ! BELOW | boolean |  optional | Set to TRUE to make the window stay below others. **Removed from GTK 4.**
     ! PARENT |  c_ptr |  optional |  An optional parent window for the new window.
     ! ICON |  c_ptr |  optional  |  A GdkPixbuf containing the icon for the window. **Removed from GTK 4.**
     ! ICON_FILE |  String  |  optional  |  A file from which to read the icon for the window. **Removed from GTK 4.**
@@ -397,8 +397,8 @@ contains
     ! YSPAN |  c_int |  optional |  How many cells to span in the Y direction (1)
     ! XPAD |  c_int |  optional |  Padding around the cell in the X direction
     ! YPAD |  c_int |  optional |  Padding in the Y direction
-    ! XOPTS: c_int |  optional | X fill/expand options (from the GtkAttachOptions enumerator, or 0 for none). **Removed from GTK 4.**
-    ! YOPTS: c_int |  optional | Y fill/expand options. **Removed from GTK 4.**
+    ! XOPTS | c_int |  optional | X fill/expand options (from the GtkAttachOptions enumerator, or 0 for none). **Removed from GTK 4.**
+    ! YOPTS | c_int |  optional | Y fill/expand options. **Removed from GTK 4.**
     !
     ! N.B. GTK_SHRINK in the options is ignored in  GTK 3.x
     !-

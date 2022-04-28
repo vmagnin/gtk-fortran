@@ -118,9 +118,9 @@ contains
     ! DIRECTORY |  boolean |  optional |  Set to TRUE to select directories instead of files.
     ! CREATE |  boolean |  optional |  Set to FALSE to prohibit creating new files.
     ! MULTIPLE |  boolean |  optional |  Set to TRUE to allow the selection of multiple files.
-    ! ALLOW_URI: boolean |  optional | Set to TRUE to allow nonlocal selections. **Removed from GTK 4.**
-    ! SHOW_HIDDEN: boolean |  optional | Set to TRUE to show hidden files. **Removed from GTK 4.**
-    ! CONFIRM_OVERWRITE: boolean |  optional | Set to TRUE to request confirmation of an overwrite (only used if CREATE is TRUE). **Removed from GTK 4.**
+    ! ALLOW_URI | boolean |  optional | Set to TRUE to allow nonlocal selections. **Removed from GTK 4.**
+    ! SHOW_HIDDEN | boolean |  optional | Set to TRUE to show hidden files. **Removed from GTK 4.**
+    ! CONFIRM_OVERWRITE | boolean |  optional | Set to TRUE to request confirmation of an overwrite (only used if CREATE is TRUE). **Removed from GTK 4.**
     ! TITLE |  string |  optional |  Title for the window.
     ! INITIAL_DIR |  string |  optional |  Set the initial directory here instead of the current directory.
     ! CURRENT |  boolean |  optional |  Use to force start in current directory.
@@ -130,7 +130,7 @@ contains
     ! PARENT |  c_ptr |  optional |  Parent window for the dialogue.
     ! ALL |  boolean |  optional |  Set to TRUE to add an all-files filter pattern
     ! WSIZE |  c_int(2) |  optional |  Set the size for the dialog.
-    ! EDIT_FILTERS: boolean |  optional | Set to TRUE to proves an entry window to add extra filters. **Removed from GTK 4.**
+    ! EDIT_FILTERS | boolean |  optional | Set to TRUE to proves an entry window to add extra filters. **Removed from GTK 4.**
     !-
 
     type(c_ptr) :: content, junk, gfilter
@@ -330,8 +330,8 @@ contains
     ! CREATE |  boolean |  optional |  Set to FALSE to prohibit creating new files.
     ! MULTIPLE |  boolean |  optional |  Set to TRUE to allow the selection of multiple files.
     ! ALLOW_URI |  boolean |  optional |  Set to TRUE to allow nonlocal selections.
-    ! SHOW_HIDDEN: boolean |  optional | Set to TRUE to show hidden files. **Removed from GTK 4.**
-    ! CONFIRM_OVERWRITE: boolean |  optional | Set to TRUE to request confirmation of an overwrite (only used if CREATE is TRUE). **Removed from GTK 4.**
+    ! SHOW_HIDDEN | boolean |  optional | Set to TRUE to show hidden files. **Removed from GTK 4.**
+    ! CONFIRM_OVERWRITE | boolean |  optional | Set to TRUE to request confirmation of an overwrite (only used if CREATE is TRUE). **Removed from GTK 4.**
     ! TITLE |  string |  optional |  Title for the window.
     ! INITIAL_DIR |  string |  optional |  Set the initial directory here instead of the current directory.
     ! CURRENT |  boolean |  optional |  Use to force start in current directory.
@@ -341,7 +341,7 @@ contains
     ! PARENT |  c_ptr |  optional |  Parent window for the dialogue.
     ! ALL |  boolean |  optional |  Set to TRUE to add an all-files filter pattern
     ! WSIZE |  c_int(2) |  optional |  Set the size for the dialog.
-    ! EDIT_FILTERS: boolean |  optional | Set to TRUE to proves an entry window to add extra filters. **Removed from GTK 4.**
+    ! EDIT_FILTERS | boolean |  optional | Set to TRUE to proves an entry window to add extra filters. **Removed from GTK 4.**
     !
     ! Returns TRUE if one or more files was selected, FALSE otherwise.
     !-
