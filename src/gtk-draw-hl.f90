@@ -133,7 +133,7 @@ contains
     ! SCROLL |  c_ptr |  optional |  If present, then the drawing area will be placed in a scrollable window, whose pointer will be returned here. If it is present, then it rather than the drawable should be used for packing.
     ! SIZE |  c_int() |  optional |  The requested size for the area. If no size is given then a default size of 256x256 is used.
     ! SSIZE |  c_int() : |  optional |  The requested size for a scrolling window
-    ! EXPOSE_EVENT |  c_funptr |  optional |  Callback for expose-event signal N.B. In GTK3 the signal is called "draw". If this is not given then a default handler is provided which copies the image surface to the drawing area.
+    ! EXPOSE_EVENT |  c_funptr |  optional |  Callback for expose-event signal. **N.B.** In GTK 3 the signal is called "draw". If this is not given then a default handler is provided which copies the image surface to the drawing area.
     ! DATA_EXPOSE |  c_ptr |  optional |  Data for expose_event callback
     ! BUTTON_PRESS_EVENT |  c_funptr |  optional |  Callback for button-press-event signal
     ! DATA_BUTTON_PRESS |  c_ptr |  optional |  Data for button_press_event callback
@@ -159,7 +159,7 @@ contains
     ! DATA_DESTROY |  c_ptr |  optional |  Data to pass to the destroy callback.
     ! TOOLTIP |  string |  optional |  Tooltip for the drawing area.
     ! HAS_ALPHA |  boolean |  optional |  If a pixbuf is used, should it have an alpha (transparency) channel (default=FALSE)
-    ! SIZE_ALLOCATE |  c_funptr |  optional |  Callback for the 'size-allocate' ('resize' in GTK 4) signal
+    ! SIZE_ALLOCATE |  c_funptr |  optional |  Callback for the 'resize' signal ('size-allocate' in GTK 3).
     ! DATA_SIZE_ALLOCATE |  c_ptr |  optional |  Data for size_allocate.
     ! CAIRO_STATUS |  c_int |  optional |  Status code from the cairo surface.
     ! HSCROLL_POLICY |  int |  optional |  Horizontal scrolling policy for the containing scroll window (default AUTOMATIC).
@@ -538,7 +538,7 @@ contains
     ! no explicit expose callback should be specified.
     !
     ! AREA |  c_ptr |  required |  The drawing area
-    ! EVENT |  c_ptr |  required |  GTK2 = event structure, GTK3 = a cairo context
+    ! EVENT |  c_ptr |  required |  event structure in GTK+2, a cairo context in GTK>=3
     ! DATA |  c_ptr |  required |  A pointer to user data (not used).
     !-
 

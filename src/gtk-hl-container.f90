@@ -149,7 +149,7 @@ contains
     !
     ! TITLE |  String |  optional |  Title for the window
     ! DESTROY |  c_funptr |  optional |  Callback for the "destroy" signal
-    ! DELETE_EVENT |  c_funptr |  optional |  Callback for the "delete-event" signal (GTK<=3)
+    ! DELETE_EVENT |  c_funptr |  optional |  Callback for the "delete-event" signal. **Removed from GTK 4.**
     ! DATA_DESTROY |  c_ptr |  optional |  Data to be passed to the destroy signal handler
     ! DATA_DELETE_EVENT |  c_ptr |  optional |  Data to be passed to the delete_event signal handler
     ! BORDER |  integer |  optional |  Size of the window border
@@ -158,11 +158,11 @@ contains
     ! RESIZABLE |  boolean |  optional |  Is the window resizable.
     ! DECORATED |  boolean |  optional |  Set FALSE to disable window decorations.
     ! DELETABLE |  boolean |  optional |  Set to FALSE to remove the "delete" button.
-    ! ABOVE: boolean |  optional |  GTK<=3 |  Set to TRUE to make the window stay on top of others.
-    ! BELOW: boolean |  optional |  GTK<=3 |  Set to TRUE to make the window stay below others.
+    ! ABOVE: boolean |  optional | Set to TRUE to make the window stay on top of others. **Removed from GTK 4.**
+    ! BELOW: boolean |  optional | Set to TRUE to make the window stay below others. **Removed from GTK 4.**
     ! PARENT |  c_ptr |  optional |  An optional parent window for the new window.
-    ! ICON |  c_ptr |  optional  |  A GdkPixbuf containing the icon for the window. (GTK<=3)
-    ! ICON_FILE |  String  |  optional  |  A file from which to read the icon for the window.  (GTK<=3)
+    ! ICON |  c_ptr |  optional  |  A GdkPixbuf containing the icon for the window. **Removed from GTK 4.**
+    ! ICON_FILE |  String  |  optional  |  A file from which to read the icon for the window. **Removed from GTK 4.**
     ! ICON_NAME |  String  |  optional  |  The name of a standard icon to use for the window.
     ! MODAL |  boolean |  optional |  Set to true to make the window modal (only meaningful if PARENT is also set).
     !
@@ -397,8 +397,8 @@ contains
     ! YSPAN |  c_int |  optional |  How many cells to span in the Y direction (1)
     ! XPAD |  c_int |  optional |  Padding around the cell in the X direction
     ! YPAD |  c_int |  optional |  Padding in the Y direction
-    ! XOPTS: c_int |  optional |  GTK<=3 |  X fill/expand options (from the GtkAttachOptions enumerator, or 0 for none)
-    ! YOPTS: c_int |  optional |  GTK<=3 |  Y fill/expand options.
+    ! XOPTS: c_int |  optional | X fill/expand options (from the GtkAttachOptions enumerator, or 0 for none). **Removed from GTK 4.**
+    ! YOPTS: c_int |  optional | Y fill/expand options. **Removed from GTK 4.**
     !
     ! N.B. GTK_SHRINK in the options is ignored in  GTK 3.x
     !-
@@ -483,7 +483,7 @@ contains
     ! TAB_POSITION |  c_int |  optional |   Where the tabs are placed (from the GtkPositionType enumerator).
     ! POPUP |  boolean |  optional |  Whether to have a popup tab selector.
     ! SCROLLABLE |  boolean |  optional |  Whether the tabs are scrollable if there are too many to fit.
-    ! GROUP |  string |  optional |  A group name for the notebook (needed if you want to drag tabs from one book to another). N.B. For GTK+2, this probably has to be a variable to work.
+    ! GROUP |  string |  optional |  A group name for the notebook (needed if you want to drag tabs from one book to another). **N.B.** For GTK+2, this probably has to be a variable to work.
     ! SWITCH_PAGE |  c_funptr |  optional |  A callback to be called when the page selection is changed (signal switch-page). Note that this callback has 4 arguments; the notebook, the selected page, the index of that page and the user data.
     ! DATA |  c_ptr |  optional |  Data to pass the the switch-page callback.
     !-
@@ -595,8 +595,8 @@ contains
     ! VPOLICY |  c_int |  optional |  Whether to show the vertical scrollbar default- GTK_POLICY_AUTOMATIC, allowed- any GTK_POLICY_TYPE
     ! HSIZE |  c_int |  optional |  The size of the window in the horizontal direction.
     ! VSIZE |  c_int |  optional |  The size of the window in the vertical direction.
-    ! HADJUSTMENT |  c_ptr |  optional |  An adjustment widget to use in place of the automatically generated scrollbar in the horizontal direction. Removed in GTK 4.
-    ! VADJUSTMENT |  c_ptr |  optional |  An adjustment widget to use in place of the automatically generated scrollbar in the vertical direction. Removed in GTK 4.
+    ! HADJUSTMENT |  c_ptr |  optional |  An adjustment widget to use in place of the automatically generated scrollbar in the horizontal direction. **Removed from GTK 4.**
+    ! VADJUSTMENT |  c_ptr |  optional |  An adjustment widget to use in place of the automatically generated scrollbar in the vertical direction. **Removed from GTK 4.**
     !-
 
     integer(c_int) :: hpol, vpol, hsz, vsz

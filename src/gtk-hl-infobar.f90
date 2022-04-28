@@ -69,7 +69,7 @@ contains
     ! AUTO_SHOW |  boolean |  optional |  Whether the info bar should be displayed when its parent is shown. Default=FALSE.
     ! TYPE |  c_int |  optional |  The initial message type.
     ! DEFAULT |  c_int |  optional |  Set the initial default response ID.
-    ! HORIZONTAL: boolean |  optional |  not in GTK4 |  Set to TRUE to lay the buttons in a row rather than a column.
+    ! HORIZONTAL | boolean |  optional | Set to TRUE to lay the buttons in a row rather than a column. **Not in GTK4.**
     ! BUTTONS_BELOW |  boolean |  optional |  Set to TRUE to place the buttons below the message rather than to the right.
     !-
 
