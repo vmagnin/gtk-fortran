@@ -1,3 +1,30 @@
+# Copyright (C) 2011
+# Free Software Foundation, Inc.
+#
+# This file is part of the gtk-fortran GTK Fortran Interface library.
+#
+# This is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3, or (at your option)
+# any later version.
+#
+# This software is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# Under Section 7 of GPL version 3, you are granted additional
+# permissions described in the GCC Runtime Library Exception, version
+# 3.1, as published by the Free Software Foundation.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+# If not, see <http://www.gnu.org/licenses/>.
+#===============================================================================
+# Contributed by @awvwgk (2022)
+# Last modifications: vmagnin 2022-04-29
+#===============================================================================
+
 if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   # gfortran compiler:
   set(
@@ -14,7 +41,6 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
     "-Wall"
     "-Wextra"
     "-pedantic"
-    # Only gtkf-sketcher.f90 needs Fortran 2008 for execute_command_line():
     "-std=f2008"
     "-Wtabs"
     "-fcheck=all"
