@@ -24,8 +24,8 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   if(UNIX)
     set(CMAKE_EXE_LINKER_FLAGS_INIT "-rdynamic")
   endif()
-elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
-  # ifort compiler:
+elseif((CMAKE_Fortran_COMPILER_ID STREQUAL "Intel") OR (CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM"))
+  # ifort and ifx compilers (OneAPI):
   set(
     CMAKE_Fortran_FLAGS_RELEASE_INIT
     "-g"
