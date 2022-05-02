@@ -31,7 +31,7 @@ module handlers
   use math
 
   implicit none
-  type(c_ptr) r_spin_button
+  type(c_ptr) :: r_spin_button
 
   contains
 

@@ -37,7 +37,7 @@ module handlers
   use math
 
   implicit none
-  type(c_ptr) r_spin_button, my_drawing_area, my_pixbuf
+  type(c_ptr) :: r_spin_button, my_drawing_area, my_pixbuf
   integer(kind=c_int) :: nch, rowstride, width, height, pixwidth, pixheight
   character(kind=c_char), dimension(:), pointer :: pixel
 
