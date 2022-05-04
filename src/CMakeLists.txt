@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2021-05-13, 2022-04-09
+#   vmagnin: 2021-05-13, 2022-05-04
 #
 # CMAKE build file for gtk-fortran
 
@@ -42,6 +42,7 @@ set(sources
     "gdkevents-auto.f90"
     "gsk-auto.f90"
     "graphene-auto.f90"
+    "api_compatibility.f90"
 )
 
 if(NOT NO_BUILD_HL)
