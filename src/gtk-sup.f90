@@ -24,7 +24,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
-! vmagnin 2020-06-08 (GTK 4), 2021-02-03
+! vmagnin 2020-06-08 (GTK 4), 2022-05-05
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
@@ -124,8 +124,8 @@ module gtk_sup
 
   ! Define a GtkTreeIter (this has to be pre-allocated in the calls)
   type, bind(c) :: gtktreeiter
-     integer(c_int) :: intv=0
-     type(c_ptr) :: p0=C_NULL_PTR, p1=C_NULL_PTR, p2=C_NULL_PTR
+     integer(c_int) :: intv = 0
+     type(c_ptr) :: p0 = C_NULL_PTR, p1 = C_NULL_PTR, p2 = C_NULL_PTR
   end type gtktreeiter
 
   ! Define a spacemaker for GValue It's 24 bytes on 64 bit & 20 on 32,
@@ -137,11 +137,11 @@ module gtk_sup
 
   ! Define a GtkTextIter (this has to be pre-allocated in the calls)
   type, bind(c) :: gtktextiter
-     type(c_ptr) :: d1, d2
+     type(c_ptr)    :: d1, d2
      integer(c_int) :: d3, d4, d5, d6, d7, d8
-     type(c_ptr) :: d9, d10
+     type(c_ptr)    :: d9, d10
      integer(c_int) :: d11, d12, d13
-     type(c_ptr) :: d14
+     type(c_ptr)    :: d14
   end type gtktextiter
 
   !+
@@ -187,14 +187,13 @@ module gtk_sup
      module procedure f_c_logical1
   end interface f_c_logical
 
-  ! String conversion routines below lazily use the C std library function
-  ! strlen.  If this is not available for some bizarre reason, then a
+  ! String conversion routines below lazily use the C standard library function
+  ! strlen().  If this is not available for some bizarre reason, then a
   ! simple index of the null character will suffice.
   ! Contributed by Ian Harvey, 2014.
   interface
     function strlen(str) bind(c, name='strlen')
-      use, intrinsic :: iso_c_binding, only: c_size_t, c_ptr
-      implicit none
+      import :: c_size_t, c_ptr
       type(c_ptr), intent(in), value :: str
       integer(c_size_t) :: strlen
     end function strlen
@@ -213,10 +212,10 @@ contains
     ! ITER |  gtktreeiter |  required |  The iterator to clear
     !-
 
-    iter%intv=0
-    iter%p0=C_NULL_PTR
-    iter%p1=C_NULL_PTR
-    iter%p2=C_NULL_PTR
+    iter%intv = 0
+    iter%p0   = C_NULL_PTR
+    iter%p1   = C_NULL_PTR
+    iter%p2   = C_NULL_PTR
   end subroutine clear_gtktreeiter
 
   !+
@@ -227,77 +226,79 @@ contains
     !
     ! GVAL |  gvalue |  required |  The GValue to clear.
     !-
-    gval%il=0
-    gval%i64=[0,0]
+    gval%il  = 0
+    gval%i64 = [0,0]
   end subroutine clear_gvalue
 
   !*********************************
   ! Some string conversion routines
   !*********************************
 
-! String routine from C_interface_module by Joseph M. Krahn
-! http://fortranwiki.org/fortran/show/c_interface_module
-! Copy a C string, passed as a char-array reference, to a Fortran string.
+  ! String routine from C_interface_module by Joseph M. Krahn
+  ! http://fortranwiki.org/fortran/show/c_interface_module
+  ! Copy a C string, passed as a char-array reference, to a Fortran string.
   subroutine C_F_string_chars(C_string, F_string)
-    character(len=1,kind=C_char), intent(in) :: C_string(*)
+    character(len=1, kind=C_char), intent(in) :: C_string(*)
     character(len=*), intent(out) :: F_string
     integer :: i
-    i=1
-    do while(C_string(i)/=c_null_char .and. i<=len(F_string))
+
+    i = 1
+    do while (C_string(i) /= c_null_char .and. i <= len(F_string))
       F_string(i:i) = C_string(i)
-      i=i+1
+      i = i + 1
     end do
-    if (i<len(F_string)) F_string(i:) = ' '
+
+    if (i < len(F_string)) F_string(i:) = ' '
   end subroutine C_F_string_chars
 
-! Copy a C string, passed by pointer, to a Fortran string.
-! If the C pointer is NULL, the Fortran string is blanked.
-! C_string must be NUL terminated, or at least as long as F_string.
-! If C_string is longer, it is truncated. Otherwise, F_string is
-! blank-padded at the end.
+  ! Copy a C string, passed by pointer, to a Fortran string.
+  ! If the C pointer is NULL, the Fortran string is blanked.
+  ! C_string must be NUL terminated, or at least as long as F_string.
+  ! If C_string is longer, it is truncated. Otherwise, F_string is
+  ! blank-padded at the end.
   subroutine C_F_string_ptr(C_string, F_string)
     type(C_ptr), intent(in) :: C_string
     character(len=*), intent(out) :: F_string
-    character(len=1,kind=C_char), dimension(:), pointer :: p_chars
+    character(len=1, kind=C_char), dimension(:), pointer :: p_chars
     integer :: i
+
     if (.not. C_associated(C_string)) then
       F_string = ' '
     else
-      call C_F_pointer(C_string,p_chars,[huge(0)])
-      i=1
-      do while(p_chars(i)/=c_null_char .and. i<=len(F_string))
+      call C_F_pointer(C_string, p_chars, [huge(0)])
+
+      i = 1
+      do while (p_chars(i) /= c_null_char .and. i <= len(F_string))
         F_string(i:i) = p_chars(i)
-        i=i+1
+        i = i + 1
       end do
-      if (i<len(F_string)) F_string(i:) = ' '
+
+      if (i < len(F_string)) F_string(i:) = ' '
     end if
   end subroutine C_F_string_ptr
 
 
   ! Create a default character deferred length allocatable copy of the
-  ! value of a c string.
-  ! Contributed by Ian Harvey, 2014.
-  ! This requires a relatively recent gfortran.
+  ! value of a C string.
+  ! Contributed by Ian Harvey, 2014 (this requires a relatively recent gfortran)
   subroutine c_f_string_copy_alloc(the_ptr, f_string)
     type(c_ptr), intent(in) :: the_ptr
     character(:), intent(out), allocatable :: f_string
-
     character(kind=c_char), pointer :: f_array(:)
     integer :: i
 
     call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
     allocate(character(size(f_array)) :: f_string)
+
     forall (i = 1:size(f_array)) f_string(i:i) = f_array(i)
   end subroutine c_f_string_copy_alloc
 
-  ! Create a default character fixed length copy of the value of a c string.
-  !
+  ! Create a default character fixed length copy of the value of a C string.
   ! This is probably ok for older gfortran.
   subroutine c_f_string_copy(the_ptr, f_string, status)
     type(c_ptr), intent(in) :: the_ptr
     character(*), intent(out) :: f_string
     integer, intent(out), optional :: status
-
     character(kind=c_char), pointer :: f_array(:)
     integer :: i
 
@@ -317,8 +318,8 @@ contains
     if (present(status)) status = 0
   end subroutine c_f_string_copy
 
-  ! Associate a pointer with a c string.
-  !
+
+  ! Associate a pointer with a C string.
   ! This requires a Fortran 2003 compiler (a relatively recent gfortran).
 !  subroutine c_f_string_ptr(the_ptr, f_string)
 !    type(c_ptr), intent(in) :: the_ptr
@@ -334,6 +335,7 @@ contains
 !    ! (but same total number of characters) inside do_association.
 !    call do_association(size(f_array), f_array, f_string)
 !  end subroutine c_f_string_ptr
+
 
   ! Worker routine for c_f_string_ptr
   !
@@ -357,7 +359,7 @@ contains
     character(len=*), intent(out) :: f_string
     integer(c_int), intent(out), optional :: status
 
-    ! Convert a null-terminated c-string to  a fortran string
+    ! Convert a null-terminated C-string to  a Fortran string
     !
     ! TEXTPTR |  string |  required |   The C string to be converted.
     ! F_STRING |  f_string |  required |  A Scalar Fortran string.
@@ -375,7 +377,7 @@ contains
         if (present(status)) status = -1  ! Output string not long enough
         return
       end if
-      f_string(i:i)=textptr(i)
+      f_string(i:i) = textptr(i)
     end do
 
     f_string(i:) = ''
@@ -389,7 +391,7 @@ contains
     character(len=*), intent(out), dimension(:), allocatable :: f_string
     integer, intent(out), optional :: status
 
-    ! Convert a null-terminated LF-separated c-string into a fortran
+    ! Convert a null-terminated LF-separated C-string into a Fortran
     ! string array
     !
     ! TEXTPTR |  string |  required |   The C string to be converted.
@@ -407,7 +409,7 @@ contains
        if (i > size(textptr)) exit
        if (textptr(i) == c_null_char) exit
        if (textptr(i) == c_new_line) count = count+1
-       i = i+1
+       i = i + 1
     end do
     allocate(f_string(count))
 
@@ -417,17 +419,17 @@ contains
        f_string(j) = ""
        do i = 1, len(f_string)
           if (ii > size(textptr)) then
-             if (j < count .and. present(status)) status=-1
+             if (j < count .and. present(status)) status = -1
              return
           end if
 
           if (textptr(ii) == c_null_char) return
           if (textptr(ii) == c_new_line) then
-             ii = ii+1
+             ii = ii + 1
              exit
           end if
-          f_string(j)(i:i)=textptr(ii)
-          ii = ii+1
+          f_string(j)(i:i) = textptr(ii)
+          ii = ii + 1
        end do
        if (i > len(f_string) .and. present(status)) &
             & status = -1  ! Output string not long enough
@@ -441,7 +443,7 @@ contains
     character(len=*), intent(out) :: f_string
     integer, intent(out), optional :: status
 
-    ! Convert a null-terminated c-string to  a fortran string
+    ! Convert a null-terminated C-string to a Fortran string
     !
     ! CTEXT |  c_ptr |  required |   A C poiner to string to be converted.
     ! F_STRING |  f_string |  required |  A Scalar Fortran string.
@@ -475,7 +477,7 @@ contains
     character(len=*), intent(out), dimension(:), allocatable :: f_string
     integer, intent(out), optional :: status
 
-    ! Convert a null-terminated LF-separated c-string into a fortran
+    ! Convert a null-terminated LF-separated C-string into a Fortran
     ! string array
     !
     ! CTEXT |  c_ptr |  required |   A C poiner to string to be converted.
@@ -494,12 +496,13 @@ contains
     i = 1
     do
        if (i > size(textptr)) exit
-       if (textptr(i) == c_new_line) count = count+1
-       i = i+1
+       if (textptr(i) == c_new_line) count = count + 1
+       i = i + 1
     end do
     allocate(f_string(count))
 
     if (present(status)) status = 0
+
     ii = 1
     do j = 1, count
        f_string(j) = ""
@@ -509,11 +512,11 @@ contains
           end if
 
           if (textptr(ii) == c_new_line) then
-             ii = ii+1
+             ii = ii + 1
              exit
           end if
-          f_string(j)(i:i)=textptr(ii)
-          ii = ii+1
+          f_string(j)(i:i) = textptr(ii)
+          ii = ii + 1
        end do
        if (i > len(f_string) .and. present(status)) &
             & status = -1  ! Output string not long enough
@@ -526,12 +529,12 @@ contains
     character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
     integer(c_int), intent(out), optional :: length
 
-    ! Convert a fortran string array into a null-terminated, LF_separated
-    ! c-string
+    ! Convert a Fortran string array into a null-terminated, LF_separated
+    ! C-string
     !
-    ! F_STRING |  f_string |  required |  The fortran string to convert
+    ! F_STRING |  f_string |  required |  The Fortran string to convert
     ! TEXTPR |  string |  required |  A C type string, (allocatable).
-    ! LENGTH |  c_int |  optional |  The length of the generated c string.
+    ! LENGTH |  c_int |  optional |  The length of the generated C string.
     !-
 
     integer :: lcstr, i, j, ii, nfstr
@@ -544,16 +547,16 @@ contains
     lcstr = sum(lfstr)
     do i = 1, nfstr-1
        if (lfstr(i) == 0) then
-          lcstr = lcstr+1
+          lcstr = lcstr + 1
        else if (f_string(i)(lfstr(i):lfstr(i)) /= c_null_char .and. &
             & f_string(i)(lfstr(i):lfstr(i)) /= c_new_line) then
-          lcstr = lcstr+1
+          lcstr = lcstr + 1
        end if
     end do
     if (lfstr(nfstr) == 0) then
-       lcstr = lcstr+1
+       lcstr = lcstr + 1
     else if (f_string(nfstr)(lfstr(nfstr):lfstr(nfstr)) /= c_null_char) then
-       lcstr = lcstr+1
+       lcstr = lcstr + 1
     end if
 
     allocate(textptr(lcstr))
@@ -566,14 +569,14 @@ contains
                & (f_string(i)(j:j) == c_null_char .or. &
                & (f_string(i)(j:j) == c_new_line .and. i /= nfstr))) exit
           textptr(ii) = f_string(i)(j:j)
-          ii = ii+1
+          ii = ii + 1
        end do
        if (i < nfstr) then
           textptr(ii) = c_new_line
        else
           textptr(ii) = c_null_char
        end if
-       ii = ii+1
+       ii = ii + 1
     end do
   end subroutine convert_f_string_a
 
@@ -583,11 +586,11 @@ contains
     character(kind=c_char), dimension(:), intent(out), allocatable :: textptr
     integer(c_int), intent(out), optional :: length
 
-    ! Convert a fortran string into a null-terminated c-string
+    ! Convert a Fortran string into a null-terminated C-string
     !
-    ! F_STRING |  f_string |  required |  The fortran string to convert
+    ! F_STRING |  f_string |  required |  The Fortran string to convert
     ! TEXTPR |  string |  required |  A C type string, (allocatable).
-    ! LENGTH |  c_int |  optional |  The length of the generated c string.
+    ! LENGTH |  c_int |  optional |  The length of the generated C string.
     !-
 
     integer :: lcstr, j
@@ -595,10 +598,10 @@ contains
 
     lcstr = len_trim(f_string)
     if (lcstr == 0) then
-       lcstr = lcstr+1
+       lcstr = lcstr + 1
        add_null = .true.
     else if (f_string(lcstr:lcstr) /= c_null_char) then
-       lcstr = lcstr+1
+       lcstr = lcstr + 1
        add_null = .true.
     else
        add_null = .false.
@@ -610,6 +613,7 @@ contains
     do j = 1, len_trim(f_string)
        textptr(j) = f_string(j:j)
     end do
+
     if (add_null) textptr(lcstr) = c_null_char
   end subroutine convert_f_string_s
 
@@ -637,7 +641,7 @@ contains
 
     ! Convert a Fortran default logical to a gboolean
     !
-    ! FLOG |  logical |  required |  The fortran logical to convert.
+    ! FLOG |  logical |  required |  The Fortran logical to convert.
     !
     ! Usually accessed via the generic f_c_logical interface
     !-
@@ -656,7 +660,7 @@ contains
 
     ! Convert a Fortran 1-byte logical to a gboolean
     !
-    ! FLOG |  logical*1 |  required |  The fortran logical to convert.
+    ! FLOG |  logical*1 |  required |  The Fortran logical to convert.
     !
     ! Usually accessed via the generic f_c_logical interface
     !-
@@ -671,6 +675,7 @@ contains
   !+
   function is_UNIX_OS()
     use g, only: g_get_current_dir
+
     logical :: is_UNIX_OS
     character(len=512) :: path
 
@@ -692,9 +697,9 @@ contains
   ! Contributed by IanH0073 (issue #81)
   function fdate()
     character(29) :: fdate
-    character(8) :: date
+    character(8)  :: date
     character(10) :: time
-    character(5) :: zone
+    character(5)  :: zone
 
     call date_and_time(date, time, zone)
     fdate = date(1:4) // '-' // date(5:6) // '-' // date(7:8)  &
@@ -715,7 +720,7 @@ contains
     do
       read(60,'(A)',iostat=status_read) line
       if ( status_read /= 0 ) exit
-      write(50,'(A)')line(1:len_trim(line))
+      write(50,'(A)') line(1:len_trim(line))
     enddo
     close(60)
     close(50)
