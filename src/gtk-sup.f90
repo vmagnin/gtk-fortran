@@ -10,7 +10,7 @@
 !
 ! This software is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
-! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ! GNU General Public License for more details.
 !
 ! Under Section 7 of GPL version 3, you are granted additional
@@ -18,47 +18,51 @@
 ! 3.1, as published by the Free Software Foundation.
 !
 ! You should have received a copy of the GNU General Public
-!  License along with
+! License along with
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
-! vmagnin 2020-06-08 (GTK 4), 2022-05-05
+! vmagnin 2020-06-08 (GTK 4), 2022-05-06
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
+!
 ! This module contains some supplementary material useful for writing GTK
 ! programs in Fortran.  The functions are not listed in the
-! gtk-fortran-index.csv file.
-!
-! These are mostly definitions that are not (currenty) extracted by the
-! automatic tools. There are also some character conversion routines.
+! gtk-fortran-index.csv file, either because they are not (currenty) extracted
+! by the automatic tools, or because they are just convenient functions
+! added here.
 module gtk_sup
-  ! The definitions in this supplementary module are ones that are not (yet)
-  !  automatically extracted from the GTK headers.
-
   ! Currently it contains:
+  !
   ! * GTYPE: Definitions of the integer length and the values for each type.
-  ! * GtkTreeIter: Type definition.
-  ! * GValue: Pseudo type definition.
+  ! * GtkTreeIter: Type definition, and its clear procedure.
+  ! * GValue: Pseudo type definition, and its clear procedure.
   ! * GtkTextIter: Type definition.
   ! * GError: Type definition.
+  ! * Interfaces for string conversions.
+  ! * Boolean conversion routines.
+  ! * Miscellaneous functions.
+  !
   !/
 
   use, intrinsic :: iso_c_binding
-  use gtk, only:  TRUE, FALSE
+  use gtk, only: TRUE, FALSE
   use g, only: g_type_fundamental
 
   implicit none
 
-  public :: clear_gtktreeiter, clear_gvalue, C_F_string_chars, C_F_string_ptr,&
+  public :: clear_gtktreeiter, clear_gvalue, c_f_string_chars, c_f_string_ptr,&
           & c_f_string_copy_alloc, c_f_string_copy, &
           & convert_c_string_scalar, convert_c_string_array, &
           & convert_c_string_scalar_cptr, convert_c_string_array_cptr, &
           & convert_f_string_a, convert_f_string_s, &
           & c_f_logical, f_c_logical4, &
           & f_c_logical1, is_UNIX_OS, fdate, copy_file
+
+  !============================================================================
   !+
   ! Gtype
   ! The various Gtype definitions from the gtype.h file.
@@ -112,6 +116,7 @@ module gtk_sup
   integer(type_kind), parameter :: G_TYPE_VARIANT = &
        & ishft(21_type_kind, g_type_fundamental_shift)
 
+  !============================================================================
   !+
   ! Iterators and Gvalues
   ! These structures are always allocated in the calling program, rather
@@ -154,9 +159,9 @@ module gtk_sup
      type(c_ptr) :: message    ! A C pointer to the error message.
   end type gerror
 
-  !***********************************
+  !============================================================================
   ! Interfaces for string conversions
-  !***********************************
+  !============================================================================
   interface convert_c_string
      module procedure convert_c_string_scalar
      module procedure convert_c_string_array
@@ -188,7 +193,7 @@ module gtk_sup
   end interface f_c_logical
 
   ! String conversion routines below lazily use the C standard library function
-  ! strlen().  If this is not available for some bizarre reason, then a
+  ! strlen(). If this is not available for some bizarre reason, then a
   ! simple index of the null character will suffice.
   ! Contributed by Ian Harvey, 2014.
   interface
@@ -200,8 +205,10 @@ module gtk_sup
   end interface
 
 contains
+  !============================================================================
   ! These 2 clear_ routines are only needed of you need to re-initialize
   ! the types. The definitions include the initial setting to zero or NULL.
+  !============================================================================
 
   !+
   subroutine clear_gtktreeiter(iter)
@@ -230,52 +237,53 @@ contains
     gval%i64 = [0,0]
   end subroutine clear_gvalue
 
-  !*********************************
+  !============================================================================
   ! Some string conversion routines
-  !*********************************
+  !============================================================================
 
   ! String routine from C_interface_module by Joseph M. Krahn
   ! http://fortranwiki.org/fortran/show/c_interface_module
   ! Copy a C string, passed as a char-array reference, to a Fortran string.
-  subroutine C_F_string_chars(C_string, F_string)
-    character(len=1, kind=C_char), intent(in) :: C_string(*)
-    character(len=*), intent(out) :: F_string
+  subroutine c_f_string_chars(c_string, f_string)
+    character(len=1, kind=C_char), intent(in) :: c_string(*)
+    character(len=*), intent(out) :: f_string
     integer :: i
 
     i = 1
-    do while (C_string(i) /= c_null_char .and. i <= len(F_string))
-      F_string(i:i) = C_string(i)
+    do while (c_string(i) /= c_null_char .and. i <= len(f_string))
+      f_string(i:i) = c_string(i)
       i = i + 1
     end do
 
-    if (i < len(F_string)) F_string(i:) = ' '
-  end subroutine C_F_string_chars
+    if (i < len(f_string)) f_string(i:) = ' '
+  end subroutine c_f_string_chars
+
 
   ! Copy a C string, passed by pointer, to a Fortran string.
   ! If the C pointer is NULL, the Fortran string is blanked.
-  ! C_string must be NUL terminated, or at least as long as F_string.
-  ! If C_string is longer, it is truncated. Otherwise, F_string is
+  ! c_string must be NUL terminated, or at least as long as f_string.
+  ! If c_string is longer, it is truncated. Otherwise, f_string is
   ! blank-padded at the end.
-  subroutine C_F_string_ptr(C_string, F_string)
-    type(C_ptr), intent(in) :: C_string
-    character(len=*), intent(out) :: F_string
+  subroutine c_f_string_ptr(c_string, f_string)
+    type(C_ptr), intent(in) :: c_string
+    character(len=*), intent(out) :: f_string
     character(len=1, kind=C_char), dimension(:), pointer :: p_chars
     integer :: i
 
-    if (.not. C_associated(C_string)) then
-      F_string = ' '
+    if (.not. C_associated(c_string)) then
+      f_string = ' '
     else
-      call C_F_pointer(C_string, p_chars, [huge(0)])
+      call C_F_pointer(c_string, p_chars, [huge(0)])
 
       i = 1
-      do while (p_chars(i) /= c_null_char .and. i <= len(F_string))
-        F_string(i:i) = p_chars(i)
+      do while (p_chars(i) /= c_null_char .and. i <= len(f_string))
+        f_string(i:i) = p_chars(i)
         i = i + 1
       end do
 
-      if (i < len(F_string)) F_string(i:) = ' '
+      if (i < len(f_string)) f_string(i:) = ' '
     end if
-  end subroutine C_F_string_ptr
+  end subroutine c_f_string_ptr
 
 
   ! Create a default character deferred length allocatable copy of the
@@ -292,6 +300,7 @@ contains
 
     forall (i = 1:size(f_array)) f_string(i:i) = f_array(i)
   end subroutine c_f_string_copy_alloc
+
 
   ! Create a default character fixed length copy of the value of a C string.
   ! This is probably ok for older gfortran.
@@ -312,7 +321,7 @@ contains
       f_string(i:i) = f_array(i)
     end do
 
-    ! i here is size(f_array) + 1.  Define the remainder of fstring.
+    ! i here is size(f_array) + 1. Define the remainder of fstring.
     f_string(i:) = ''
 
     if (present(status)) status = 0
@@ -328,9 +337,9 @@ contains
 !    character(kind=c_char), pointer :: f_array(:)
 !
 !    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
-!    ! Here we rely on sequence association.  f_array is an array expression
+!    ! Here we rely on sequence association. f_array is an array expression
 !    ! (one that happens to be an array designator), so it designates an
-!    ! array element sequence of all the elements of the array.  That array
+!    ! array element sequence of all the elements of the array. That array
 !    ! element sequence is then associated with an array of different length
 !    ! (but same total number of characters) inside do_association.
 !    call do_association(size(f_array), f_array, f_string)
@@ -342,8 +351,8 @@ contains
   ! It is processor dependent whether pointers associated with the actual
   ! argument are associated with the dummy argument inside the procedure.
   ! It is similarly processor dependent whether pointers associated with a
-  ! dummy argument remain associated after the procedure exits.  But in
-  ! F2003, this is the only way.  In F2008 things are a little better.  In
+  ! dummy argument remain associated after the procedure exits. But in
+  ! F2003, this is the only way. In F2008 things are a little better. In
   ! F201X they are probably quite ok.
 !  subroutine do_association(l, str, f_string)
 !    integer, intent(in) :: l
@@ -359,7 +368,7 @@ contains
     character(len=*), intent(out) :: f_string
     integer(c_int), intent(out), optional :: status
 
-    ! Convert a null-terminated C-string to  a Fortran string
+    ! Convert a null-terminated C-string to a Fortran string
     !
     ! TEXTPTR |  string |  required |   The C string to be converted.
     ! F_STRING |  f_string |  required |  A Scalar Fortran string.
@@ -436,7 +445,6 @@ contains
     end do
   end subroutine convert_c_string_array
 
-
   !+
   subroutine convert_c_string_scalar_cptr(ctext, f_string, status)
     type(c_ptr), intent(in) :: ctext
@@ -469,7 +477,6 @@ contains
     f_string(i:) = ''
     if (present(status)) status = 0
   end subroutine convert_c_string_scalar_cptr
-
 
   !+
   subroutine convert_c_string_array_cptr(ctext, f_string, status)
@@ -617,6 +624,9 @@ contains
     if (add_null) textptr(lcstr) = c_null_char
   end subroutine convert_f_string_s
 
+  !============================================================================
+  ! Boolean conversion routines
+  !============================================================================
   !+
   function c_f_logical(cbool)
     logical :: c_f_logical
@@ -672,6 +682,10 @@ contains
     end if
   end function f_c_logical1
 
+  !============================================================================
+  ! Miscellaneous
+  !============================================================================
+
   !+
   function is_UNIX_OS()
     use g, only: g_get_current_dir
@@ -710,9 +724,9 @@ contains
   ! A function to copy a text file
   ! Used especially in sketcher/gtkf-sketcher.f90
   subroutine copy_file(source, destination)
-    character(*),intent(in) :: source
-    character(*),intent(in) :: destination
-    character(len=256,kind=c_char) :: line
+    character(*), intent(in) :: source
+    character(*), intent(in) :: destination
+    character(len=256, kind=c_char) :: line
     integer :: status_read
 
     open(50, file=destination, action='write')
