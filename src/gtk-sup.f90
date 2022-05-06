@@ -360,6 +360,9 @@ contains
     end if
   end subroutine c_f_string_ptr
 
+  !============================
+  ! convert_c_string interface
+  !============================
   !+
   subroutine convert_c_string_scalar(textptr, f_string, status)
     character(kind=c_char), dimension(:), intent(in) :: textptr
@@ -528,6 +531,9 @@ contains
     end do
   end subroutine convert_c_string_array_cptr
 
+  !============================
+  ! convert_f_string interface
+  !============================
   !+
   subroutine convert_f_string_a(f_string, textptr, length)
     character(len=*), intent(in), dimension(:) :: f_string
@@ -624,6 +630,7 @@ contains
 
   !============================================================================
   ! Boolean conversion routines
+  ! f_c_logical interface is available for logical(1) and logical(4)
   !============================================================================
   !+
   function c_f_logical(cbool)
