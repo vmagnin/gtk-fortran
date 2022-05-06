@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! The gtk-?-fortran command prints information about gtk-fortran.
 ! Contributors: Vincent Magnin 2021-01-29
-! Last modifications: 2022-04-24
+! Last modifications: 2022-05-06
 !------------------------------------------------------------------------------
 
 module handlers_gtk_fortran
@@ -31,7 +31,7 @@ module handlers_gtk_fortran
   use, intrinsic :: iso_fortran_env, only: compiler_version
   use gtk, only: gtk_get_major_version, gtk_get_minor_version, &
                & gtk_get_micro_version
-  use gtk_sup, only: c_f_string_copy
+  use gtk_sup, only: c_f_string_copy_alloc
   use g, only: g_get_prgname, g_get_os_info
 
   implicit none
@@ -40,11 +40,11 @@ module handlers_gtk_fortran
 
   subroutine activate(app, gdata) bind(c)
     type(c_ptr), value, intent(in)  :: app, gdata
-    character(len=128) :: name_string, os_string
+    character(:), allocatable :: name_string, os_string
     integer :: suffix_pos
     type(c_ptr) :: ret
 
-    call c_f_string_copy(g_get_prgname(), name_string)
+    call c_f_string_copy_alloc(g_get_prgname(), name_string)
     ! Removing the .exe suffix if the OS is Windows:
     suffix_pos = index(name_string, ".exe")
     if (suffix_pos /= 0) name_string = name_string(1:suffix_pos-1)
@@ -52,13 +52,13 @@ module handlers_gtk_fortran
     ! That function may return NULL with some OS:
     ret = g_get_os_info("PRETTY_NAME"//c_null_char)
     if (c_associated(ret)) then
-      call c_f_string_copy(ret, os_string)
+      call c_f_string_copy_alloc(ret, os_string)
     else
       os_string = "?"
     end if
 
-    print '(2A)', TRIM(name_string), " (GTK @GTK_SEMANTIC_VERSION@ and GLib @GLIB_SEMANTIC_VERSION@)"
-    print '(3A,I0,A1,I0,A1,I0)', "Compiled with "//compiler_version()//" on ", TRIM(os_string), &
+    print '(2A)', name_string, " (GTK @GTK_SEMANTIC_VERSION@ and GLib @GLIB_SEMANTIC_VERSION@)"
+    print '(3A,I0,A1,I0,A1,I0)', "Compiled with "//compiler_version()//" on ", os_string, &
       & ", linked to GTK ", gtk_get_major_version(),".", gtk_get_minor_version(), ".", gtk_get_micro_version()
 
     print *

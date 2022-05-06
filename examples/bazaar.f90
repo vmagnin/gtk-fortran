@@ -23,12 +23,12 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, James Tappin
-! GTK 4 version: vmagnin 2020-05-28, 2021-01-28, 2022-04-24
+! GTK 4 version: vmagnin 2020-05-28, 2021-01-28, 2022-05-06
 !------------------------------------------------------------------------------
 
 module various_functions
   use, intrinsic :: iso_c_binding
-  use gtk_sup, only: c_f_string_copy
+  use gtk_sup, only: c_f_string_copy_alloc
   implicit none
 
   contains
@@ -38,23 +38,24 @@ module various_functions
                & g_get_home_dir, g_get_current_dir, g_format_size, &
                & g_get_os_info
 
-    character(len=512) :: my_string
+    ! Automatic reallocation is used for that string:
+    character(:), allocatable :: my_string
     type(c_ptr) :: ret
 
-    call c_f_string_copy(g_get_user_name(), my_string)
-    print *, "Hello ", TRIM(my_string)
+    call c_f_string_copy_alloc(g_get_user_name(), my_string)
+    print *, "Hello ", my_string
 
-    call c_f_string_copy(g_get_host_name(), my_string)
-    print *, "Host name: ", TRIM(my_string)
+    call c_f_string_copy_alloc(g_get_host_name(), my_string)
+    print *, "Host name: ", my_string
 
-    call c_f_string_copy(g_get_application_name(), my_string)
-    print *, "Application name: ", TRIM(my_string)
+    call c_f_string_copy_alloc(g_get_application_name(), my_string)
+    print *, "Application name: ", my_string
 
-    call c_f_string_copy(g_get_home_dir(), my_string)
-    print *, "Home dir: ", TRIM(my_string)
+    call c_f_string_copy_alloc(g_get_home_dir(), my_string)
+    print *, "Home dir: ", my_string
 
-    call c_f_string_copy(g_get_current_dir(), my_string)
-    print *, "Current dir: ", TRIM(my_string)
+    call c_f_string_copy_alloc(g_get_current_dir(), my_string)
+    print *, "Current dir: ", my_string
     if (my_string(1:1) == "/") then
         print *, "UNIX OS"
     else
@@ -64,14 +65,14 @@ module various_functions
     ! That function may return NULL with some OS:
     ret = g_get_os_info("PRETTY_NAME"//c_null_char)
     if (c_associated(ret)) then
-      call c_f_string_copy(ret, my_string)
+      call c_f_string_copy_alloc(ret, my_string)
     else
       my_string = "?"
     end if
-    print *, "Your OS:", my_string
+    print *, "Your OS: ", my_string
 
-    call c_f_string_copy(g_format_size (123456789_c_int64_t), my_string)
-    print *, "g_format_size: ", TRIM(my_string)
+    call c_f_string_copy_alloc(g_format_size (123456789_c_int64_t), my_string)
+    print *, "g_format_size: ", my_string
   end subroutine some_glib_functions
 end module various_functions
 
@@ -298,17 +299,17 @@ contains
   ! GtkObject signal:
   subroutine destroy (widget, gdata) bind(c)
     use, intrinsic :: iso_c_binding, only: c_ptr
-    use gtk_sup, only: c_f_string_copy
+    use gtk_sup, only: c_f_string_copy_alloc
 
     type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr) :: buffer
-    character(len=512) :: my_string
+    character(:), allocatable :: my_string
 
     print *, "my destroy"
 
     buffer = gtk_entry_get_buffer(entry1)
-    call c_f_string_copy(gtk_entry_buffer_get_text(buffer), my_string)
-    print *, "Entry box:", TRIM(my_string)
+    call c_f_string_copy_alloc(gtk_entry_buffer_get_text(buffer), my_string)
+    print *, "Entry box: ", my_string
 
     ! This is the end of the program:
     call gtk_window_destroy(window)

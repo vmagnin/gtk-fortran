@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2022-04-16
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2022-05-06
 !------------------------------------------------------------------------------
 
 module global_widgets
@@ -154,16 +154,16 @@ contains
   ! interesting Julia sets in the combo box:
   subroutine firstCombo (widget, gdata ) bind(c)
     use, intrinsic :: iso_c_binding, only: c_double, c_f_pointer
-    use gtk_sup, only: c_f_string_copy
+    use gtk_sup, only: c_f_string_copy_alloc
     use global_widgets
 
     type(c_ptr), value, intent(in) :: widget, gdata
     real(c_double)                 :: x, y
     integer                        :: choice
-    character(len=512)             :: my_string
+    character(:), allocatable      :: my_string
 
     ! Get the value selected by the user:
-    call c_f_string_copy( gtk_combo_box_text_get_active_text(combo1), my_string)
+    call c_f_string_copy_alloc( gtk_combo_box_text_get_active_text(combo1), my_string)
     read(my_string, *) choice
 
     select case (choice)

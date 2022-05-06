@@ -1,7 +1,7 @@
 ! Copyright (C) 2012
 ! Free Software Foundation, Inc.
 !
-! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+! This file is part of the gtk-fortran GTK Fortran Interface library.
 !
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modification: vmagnin 2020-06-09 (GTK 4), 2020-12-20
+! Last modification: vmagnin 2020-06-09 (GTK 4), 2022-05-06
 !
 ! Based on the C example given in"
 ! https://www.linuxquestions.org/linux/articles/Technical/New_GTK_Widgets_GtkAssistant
@@ -76,7 +76,7 @@ contains
     type(c_ptr), value :: widget, data
     type(c_ptr) :: buffer
     type(c_ptr) :: page, ebox
-    character(len=100) :: ftext
+    character(:), allocatable :: ftext
 
     if (c_associated(data)) then
        ebox = data
@@ -85,12 +85,12 @@ contains
     end if
 
      buffer = gtk_entry_get_buffer(ebox)
-    call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
-    print *, "Entered name as:",trim(ftext)
+    call c_f_string_copy_alloc(gtk_entry_buffer_get_text(buffer), ftext)
+    print *, "Entered name as: ", ftext
 
     page = hl_gtk_assistant_get_current_page(asstnt)
     call hl_gtk_assistant_set_page_complete(asstnt, &
-         & f_c_logical(len_trim(ftext) > 0))
+         & f_c_logical(len(ftext) > 0))
   end subroutine name_enter
 
   subroutine check_tog(widget, data) bind(c)

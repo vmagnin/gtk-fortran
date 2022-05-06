@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! Contributed jtappin.
 ! Last modifications: vmagnin+Ian Harvey, 2020-02-03
-! GTK 4 version: vmagnin 2020-06-02, 2020-07-15
+! GTK 4 version: vmagnin 2020-06-02, 2022-05-06
 !------------------------------------------------------------------------------
 
 module handlers
@@ -109,23 +109,23 @@ contains
   subroutine tv_append(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr) :: buffer
-    character(len=40) :: ftext
+    character(:), allocatable :: ftext
 
     buffer = gtk_entry_get_buffer(entry)
-    call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
+    call c_f_string_copy_alloc(gtk_entry_buffer_get_text(buffer), ftext)
 
-    call hl_gtk_text_view_insert(zedt, [ trim(ftext) ])
+    call hl_gtk_text_view_insert(zedt, [ ftext ])
   end subroutine tv_append
 
   subroutine tv_insert(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     type(c_ptr) :: buffer
-    character(len=40) :: ftext
+    character(:), allocatable :: ftext
 
     buffer = gtk_entry_get_buffer(entry)
-    call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
+    call c_f_string_copy_alloc(gtk_entry_buffer_get_text(buffer), ftext)
 
-    call hl_gtk_text_view_insert(zedt, [ trim(ftext) ], at_cursor=TRUE)
+    call hl_gtk_text_view_insert(zedt, [ ftext ], at_cursor=TRUE)
   end subroutine tv_insert
 
   subroutine tv_clr(widget, gdata) bind(c)

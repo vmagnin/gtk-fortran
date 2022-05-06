@@ -21,7 +21,7 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2022-04-24
+! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2022-05-06
 ! ****************
 ! Automated tests
 ! ****************
@@ -33,7 +33,7 @@
 module tests
   use gtk, only: TRUE, FALSE, gtk_get_major_version, gtk_get_minor_version, &
                  gtk_get_micro_version
-  use gtk_sup, only: c_f_string_copy
+  use gtk_sup, only: c_f_string_copy_alloc
   use g, only: g_ascii_tolower, g_bit_storage, g_date_get_day, &
     g_date_get_days_in_month, g_hostname_is_ip_address, g_inet_socket_address_get_port, &
     g_inet_socket_address_new, g_random_double, g_random_double_range, g_random_int, &
@@ -549,7 +549,7 @@ program gtk_fortran_test
   implicit none
   integer :: errors
   integer :: file_unit
-  character(len=128) :: os_string
+  character(:), allocatable :: os_string
   type(c_ptr) :: ret
 
   print '(A)', "Testing iso_c_binding with GTK and GLib..."
@@ -557,12 +557,12 @@ program gtk_fortran_test
   ! That function may return NULL with some OS:
   ret = g_get_os_info("PRETTY_NAME"//c_null_char)
   if (c_associated(ret)) then
-    call c_f_string_copy(ret, os_string)
+    call c_f_string_copy_alloc(ret, os_string)
   else
     os_string = "?"
   end if
-  
-  print '(3A,I0,A1,I0,A1,I0)', "Compiled with "//compiler_version()//" on ", TRIM(os_string), &
+
+  print '(3A,I0,A1,I0,A1,I0)', "Compiled with "//compiler_version()//" on ", os_string, &
       & ", linked to GTK ", gtk_get_major_version(),".", gtk_get_minor_version(), ".", gtk_get_micro_version()
 
   open(newunit=file_unit, file="tests_errors.txt")

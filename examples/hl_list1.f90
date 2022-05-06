@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modifications: jerryd 2020-06-05 (GTK 4), vmagnin 2020-12-20
+! Last modifications: jerryd 2020-06-05 (GTK 4), vmagnin 2022-05-06
 !------------------------------------------------------------------------------
 
 module l1_handlers
@@ -94,23 +94,24 @@ contains
 
   subroutine b_click(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-
     integer, pointer :: fdata
     type(c_ptr) :: buffer
     integer(c_int16_t) :: ntext
-    character(kind=c_char, len=100) :: ftext
+    character(:), allocatable :: ftext
 
     if (c_associated(gdata)) then
        call c_f_pointer(gdata, fdata)
+
        if (fdata == 1) then
           ntext = gtk_entry_get_text_length(newline)
           buffer = gtk_entry_get_buffer(newline)
-          call c_f_string_copy(gtk_entry_buffer_get_text(buffer), ftext)
+          call c_f_string_copy_alloc(gtk_entry_buffer_get_text(buffer), ftext)
 
-          print *, len_trim(ftext), "*",trim(ftext),"*"
-          call hl_gtk_list1_ins(ihlist, trim(ftext)//c_null_char)
-          fdata = 0
+          print *, len(ftext), ntext, ftext
+          ! Inserts at the end of the list:
+          call hl_gtk_list1_ins(ihlist, ftext//c_null_char)
 
+          ! Clears the buffer and the entry:
           buffer = gtk_entry_get_buffer(newline)
           ! number of caracters = -1 for automatic length:
           call gtk_entry_buffer_set_text (buffer, ""//c_null_char, -1)
@@ -172,7 +173,7 @@ contains
     type(c_ptr), value, intent(in)  :: app, gdata
     character(len=35) :: line
     integer :: i, ltr
-    integer, target :: iappend=0, idel=0
+    integer, target :: iappend=1, idel=0
 
     ! Create the window:
     ihwin = gtk_application_window_new(app)
