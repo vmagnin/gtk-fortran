@@ -345,41 +345,6 @@ contains
     end do
   end subroutine c_f_string_copy_alloc
 
-
-  ! Associate a pointer with a C string.
-  ! This requires a Fortran 2003 compiler (a relatively recent gfortran).
-!  subroutine c_f_string_ptr(the_ptr, f_string)
-!    type(c_ptr), intent(in) :: the_ptr
-!    character(:,kind=c_char), intent(out), pointer :: f_string
-!
-!    character(kind=c_char), pointer :: f_array(:)
-!
-!    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
-!    ! Here we rely on sequence association. f_array is an array expression
-!    ! (one that happens to be an array designator), so it designates an
-!    ! array element sequence of all the elements of the array. That array
-!    ! element sequence is then associated with an array of different length
-!    ! (but same total number of characters) inside do_association.
-!    call do_association(size(f_array), f_array, f_string)
-!  end subroutine c_f_string_ptr
-
-
-  ! Worker routine for c_f_string_ptr
-  !
-  ! It is processor dependent whether pointers associated with the actual
-  ! argument are associated with the dummy argument inside the procedure.
-  ! It is similarly processor dependent whether pointers associated with a
-  ! dummy argument remain associated after the procedure exits. But in
-  ! F2003, this is the only way. In F2008 things are a little better. In
-  ! F201X they are probably quite ok.
-!  subroutine do_association(l, str, f_string)
-!    integer, intent(in) :: l
-!    character(len=l,kind=c_char), intent(in), target :: str(1)
-!    character(:,kind=c_char), intent(out), pointer :: f_string
-!    f_string => str(1)
-!  end subroutine do_association
-
-
   !+
   subroutine convert_c_string_scalar(textptr, f_string, status)
     character(kind=c_char), dimension(:), intent(in) :: textptr
