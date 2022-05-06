@@ -301,15 +301,22 @@ contains
     forall (i = 1:size(f_array)) f_string(i:i) = f_array(i)
   end subroutine c_f_string_copy_alloc
 
-
-  ! Create a default character fixed length copy of the value of a C string.
-  ! This is probably ok for older gfortran.
+  !+
   subroutine c_f_string_copy(the_ptr, f_string, status)
     type(c_ptr), intent(in) :: the_ptr
     character(*), intent(out) :: f_string
     integer, intent(out), optional :: status
     character(kind=c_char), pointer :: f_array(:)
     integer :: i
+
+    ! Create a default character fixed length copy of the value of a C string.
+    !
+    ! THE_PTR |  string |  required |   The C string to be converted.
+    ! F_STRING |  f_string |  required |  A Scalar Fortran string.
+    ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string is too short.
+    !
+    ! If the Fortran string is too short, the C string is cut.
+    !-
 
     call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
 
@@ -318,10 +325,11 @@ contains
         if (present(status)) status = -1
         return
       end if
+
       f_string(i:i) = f_array(i)
     end do
 
-    ! i here is size(f_array) + 1. Define the remainder of fstring.
+    ! i here is size(f_array) + 1. Define the remainder of f_string:
     f_string(i:) = ''
 
     if (present(status)) status = 0
