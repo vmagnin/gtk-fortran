@@ -244,6 +244,32 @@ contains
   ! Some string conversion routines
   !============================================================================
   !+
+  subroutine c_f_string_copy_alloc(the_ptr, f_string)
+    type(c_ptr), intent(in) :: the_ptr
+    character(:), intent(out), allocatable :: f_string
+    character(kind=c_char), pointer :: f_array(:)
+    integer :: i
+
+    ! Create a default character deferred length allocatable copy of the
+    ! value of a C string. This function should be preferred to
+    ! c_f_string_copy() when using a Fortran>=2008 compiler. An advantage is
+    ! that the trim() function will generally not be needed.
+    !
+    ! THE_PTR |  string |  required |   The C string to be converted.
+    ! F_STRING |  f_string |  required |  A Scalar Fortran string.
+    !
+    !-
+    ! Contributed by Ian Harvey, 2014
+
+    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
+    allocate(character(size(f_array)) :: f_string)
+
+    do concurrent (i = 1:size(f_array))
+      f_string(i:i) = f_array(i)
+    end do
+  end subroutine c_f_string_copy_alloc
+
+  !+
   subroutine c_f_string_copy(the_ptr, f_string, status)
     type(c_ptr), intent(in) :: the_ptr
     character(*), intent(out) :: f_string
@@ -276,32 +302,6 @@ contains
 
     if (present(status)) status = 0
   end subroutine c_f_string_copy
-
-  !+
-  subroutine c_f_string_copy_alloc(the_ptr, f_string)
-    type(c_ptr), intent(in) :: the_ptr
-    character(:), intent(out), allocatable :: f_string
-    character(kind=c_char), pointer :: f_array(:)
-    integer :: i
-
-    ! Create a default character deferred length allocatable copy of the
-    ! value of a C string. This function can replace c_f_string_copy()
-    ! when using a Fortran>=2008 compiler. An advantage is that the trim()
-    ! function will generally not be needed.
-    !
-    ! THE_PTR |  string |  required |   The C string to be converted.
-    ! F_STRING |  f_string |  required |  A Scalar Fortran string.
-    !
-    !-
-    ! Contributed by Ian Harvey, 2014
-
-    call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
-    allocate(character(size(f_array)) :: f_string)
-
-    do concurrent (i = 1:size(f_array))
-      f_string(i:i) = f_array(i)
-    end do
-  end subroutine c_f_string_copy_alloc
 
   !+
   subroutine c_f_string_chars(c_string, f_string)
