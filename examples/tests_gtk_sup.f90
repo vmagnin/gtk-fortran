@@ -30,7 +30,7 @@
 module tests
   use, intrinsic :: iso_c_binding
   use gtk, only: TRUE, FALSE, gtk_init, gtk_label_new, gtk_label_get_text
-  use gtk_sup, only: c_f_string_copy, strlen
+  use gtk_sup, only: c_f_string_copy, strlen, c_f_string_copy_alloc
 
   implicit none
 
@@ -41,12 +41,14 @@ contains
     integer :: status
     character(len=128) :: fortran_string
     character(len=2)   :: short_fortran_string
+    character(:), allocatable :: allocatable_fortran_string
 
     errors = 0
 
     widget_ptr = gtk_label_new("A label string"//c_null_char)
     str_ptr = gtk_label_get_text(widget_ptr)
 
+    ! ------------------------------------------------
     print '(A)', ">> c_f_string_copy()"
 
     call c_f_string_copy(str_ptr, fortran_string, status)
@@ -70,6 +72,21 @@ contains
 
     if (trim(short_fortran_string) /= "A ") then
       print '(A)', "c_f_string_copy() does not return the expected Fortran string 'A '"
+      errors = errors + 1
+    end if
+
+    ! ------------------------------------------------
+    print '(A)', ">> c_f_string_copy_alloc()"
+
+    call c_f_string_copy_alloc(str_ptr, allocatable_fortran_string)
+
+    if (trim(allocatable_fortran_string) /= "A label string") then
+      print '(A)', "c_f_string_copy_alloc() does not return the expected Fortran string 'A label string'"
+      errors = errors + 1
+    end if
+
+    if (len(trim(allocatable_fortran_string)) /= strlen(str_ptr)) then
+      print '(A)', "c_f_string_copy_alloc(): len() Fortran function and strlen() C function does not return the same value"
       errors = errors + 1
     end if
 
