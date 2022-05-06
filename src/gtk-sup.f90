@@ -713,12 +713,17 @@ contains
     endif
   end function is_UNIX_OS
 
-  ! Contributed by IanH0073 (issue #81)
+  !+
   function fdate()
     character(29) :: fdate
     character(8)  :: date
     character(10) :: time
     character(5)  :: zone
+
+    ! Returns date, time and timezone in a string without spaces,
+    ! for example: 2022-05-06T15:58:43.790+02:00
+    !-
+    ! Contributed by IanH0073 (issue #81)
 
     call date_and_time(date, time, zone)
     fdate = date(1:4) // '-' // date(5:6) // '-' // date(7:8)  &

@@ -30,7 +30,7 @@
 module tests
   use, intrinsic :: iso_c_binding
   use gtk, only: TRUE, FALSE, gtk_init, gtk_label_new, gtk_label_get_text
-  use gtk_sup, only: c_f_string_copy, strlen, c_f_string_copy_alloc
+  use gtk_sup, only: c_f_string_copy, strlen, c_f_string_copy_alloc, fdate
 
   implicit none
 
@@ -92,6 +92,17 @@ contains
 
   end function test_string_conversion_routines
 
+
+  integer function test_date_routines() result(errors)
+    character(:), allocatable :: today
+
+    print '(A)', ">> fdate()"
+    today = fdate()
+    print '(A)', today
+
+    errors = 0
+  end function test_date_routines
+
 end module tests
 
 
@@ -107,6 +118,8 @@ program tests_gtk_sup
 
   print '(A)', "> test_string_conversion_routines()"
   errors = test_string_conversion_routines()
+  print '(A)', "> test_date_routines()"
+  errors = test_date_routines()
 
   print *
   if (errors == 0) then
