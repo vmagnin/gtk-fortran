@@ -240,51 +240,6 @@ contains
   !============================================================================
   ! Some string conversion routines
   !============================================================================
-
-  ! String routine from C_interface_module by Joseph M. Krahn
-  ! http://fortranwiki.org/fortran/show/c_interface_module
-  ! Copy a C string, passed as a char-array reference, to a Fortran string.
-  subroutine c_f_string_chars(c_string, f_string)
-    character(len=1, kind=C_char), intent(in) :: c_string(*)
-    character(len=*), intent(out) :: f_string
-    integer :: i
-
-    i = 1
-    do while (c_string(i) /= c_null_char .and. i <= len(f_string))
-      f_string(i:i) = c_string(i)
-      i = i + 1
-    end do
-
-    if (i < len(f_string)) f_string(i:) = ' '
-  end subroutine c_f_string_chars
-
-
-  ! Copy a C string, passed by pointer, to a Fortran string.
-  ! If the C pointer is NULL, the Fortran string is blanked.
-  ! c_string must be NUL terminated, or at least as long as f_string.
-  ! If c_string is longer, it is truncated. Otherwise, f_string is
-  ! blank-padded at the end.
-  subroutine c_f_string_ptr(c_string, f_string)
-    type(C_ptr), intent(in) :: c_string
-    character(len=*), intent(out) :: f_string
-    character(len=1, kind=C_char), dimension(:), pointer :: p_chars
-    integer :: i
-
-    if (.not. C_associated(c_string)) then
-      f_string = ' '
-    else
-      call C_F_pointer(c_string, p_chars, [huge(0)])
-
-      i = 1
-      do while (p_chars(i) /= c_null_char .and. i <= len(f_string))
-        f_string(i:i) = p_chars(i)
-        i = i + 1
-      end do
-
-      if (i < len(f_string)) f_string(i:) = ' '
-    end if
-  end subroutine c_f_string_ptr
-
   !+
   subroutine c_f_string_copy(the_ptr, f_string, status)
     type(c_ptr), intent(in) :: the_ptr
@@ -299,7 +254,7 @@ contains
     ! F_STRING |  f_string |  required |  A Scalar Fortran string.
     ! STATUS |  integer |  optional |  Is set to -1 if the Fortran string is too short.
     !
-    ! If the Fortran string is too short, the C string is cut.
+    ! If the Fortran string is too short, the C string is truncated.
     !-
 
     call c_f_pointer(the_ptr, f_array, [strlen(the_ptr)])
@@ -344,6 +299,63 @@ contains
       f_string(i:i) = f_array(i)
     end do
   end subroutine c_f_string_copy_alloc
+
+  !+
+  subroutine c_f_string_chars(c_string, f_string)
+    character(len=1, kind=C_char), intent(in) :: c_string(*)
+    character(len=*), intent(out) :: f_string
+    integer :: i
+
+    ! Copy a C string, passed as a char-array reference, to a Fortran string.
+    ! String routine from C_interface_module by Joseph M. Krahn:
+    ! http://fortranwiki.org/fortran/show/c_interface_module
+    !
+    ! C_STRING |  chars array |  required |   The C chars array to be converted.
+    ! F_STRING |  f_string |  required |  A Scalar Fortran string.
+    !
+    !-
+
+    i = 1
+    do while (c_string(i) /= c_null_char .and. i <= len(f_string))
+      f_string(i:i) = c_string(i)
+      i = i + 1
+    end do
+
+    if (i < len(f_string)) f_string(i:) = ' '
+  end subroutine c_f_string_chars
+
+  !+
+  subroutine c_f_string_ptr(c_string, f_string)
+    type(C_ptr), intent(in) :: c_string
+    character(len=*), intent(out) :: f_string
+    character(len=1, kind=C_char), dimension(:), pointer :: p_chars
+    integer :: i
+
+    ! Copy a C string, passed by pointer, to a Fortran string.
+    ! If the C pointer is NULL, the Fortran string is blanked.
+    ! c_string must be NUL terminated, or at least as long as f_string.
+    ! If c_string is longer, it is truncated. Otherwise, f_string is
+    ! blank-padded at the end.
+    !
+    ! C_STRING |  string |  required |   The C string to be converted.
+    ! F_STRING |  f_string |  required |  A Scalar Fortran string.
+    !
+    !-
+
+    if (.not. c_associated(c_string)) then
+      f_string = ' '
+    else
+      call c_f_pointer(c_string, p_chars, [huge(0)])
+
+      i = 1
+      do while (p_chars(i) /= c_null_char .and. i <= len(f_string))
+        f_string(i:i) = p_chars(i)
+        i = i + 1
+      end do
+
+      if (i < len(f_string)) f_string(i:) = ' '
+    end if
+  end subroutine c_f_string_ptr
 
   !+
   subroutine convert_c_string_scalar(textptr, f_string, status)
