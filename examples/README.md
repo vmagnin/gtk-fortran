@@ -30,3 +30,4 @@ lists.
     - ...
 - tests.f90 is testing things about ISO_C_BINDING and the relations between
 Fortran types and GLib types.
+- tests_gtk_sup.f90 is testing functions of the gtk_sup module.

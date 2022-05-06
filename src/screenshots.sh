@@ -4,7 +4,7 @@
 # You need to install scrot
 # GNU GPL 3
 # Contributed by Vincent MAGNIN 2011-04-27
-# Updated 2020-02-12
+# Updated 2022-05-06
 
 # For a safer script:
 set -eu
@@ -27,7 +27,7 @@ for directory in ../build/examples/ ../build/plplot ../build/sketcher ; do
     pwd
     for file in * ; do
         # Is it an executable file ?
-        if [ -x "${file}" ] && [ ! -d "${file}" ] && [ ! "${file}" = "gio_demo" ] && [ ! "${file}" = "tests" ]; then
+        if [ -x "${file}" ] && [ ! -d "${file}" ] && [ ! "${file}" = "gio_demo" ] && [ ! "${file}" = "tests" ] && [ ! "${file}" = "tests_gtk_sup" ]; then
             echo "${file}"
             #Launch the program:
             ./"${file}" &
