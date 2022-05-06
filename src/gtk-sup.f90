@@ -328,7 +328,8 @@ contains
 
     ! Create a default character deferred length allocatable copy of the
     ! value of a C string. This function can replace c_f_string_copy()
-    ! when using a Fortran>=2008 compiler.
+    ! when using a Fortran>=2008 compiler. An advantage is that the trim()
+    ! function will generally not be needed.
     !
     ! THE_PTR |  string |  required |   The C string to be converted.
     ! F_STRING |  f_string |  required |  A Scalar Fortran string.
