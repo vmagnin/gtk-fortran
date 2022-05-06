@@ -160,21 +160,24 @@ module gtk_sup
   end type gerror
 
   !============================================================================
-  ! Interfaces for string conversions
+  ! Interfaces for conversions
+  ! Some are available with two names:
+  ! convert_c_string = c_f_string
+  ! convert_f_string = f_c_string
   !============================================================================
-  interface convert_c_string
-     module procedure convert_c_string_scalar
-     module procedure convert_c_string_array
-     module procedure convert_c_string_scalar_cptr
-     module procedure convert_c_string_array_cptr
-  end interface convert_c_string
-
   interface c_f_string
      module procedure convert_c_string_scalar
      module procedure convert_c_string_array
      module procedure convert_c_string_scalar_cptr
      module procedure convert_c_string_array_cptr
   end interface c_f_string
+
+  interface convert_c_string
+     module procedure convert_c_string_scalar
+     module procedure convert_c_string_array
+     module procedure convert_c_string_scalar_cptr
+     module procedure convert_c_string_array_cptr
+  end interface convert_c_string
 
   interface f_c_string
      module procedure convert_f_string_a
