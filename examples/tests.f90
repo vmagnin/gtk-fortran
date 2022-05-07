@@ -54,115 +54,115 @@ contains
 
     errors = 0
     if (C_SIGNED_CHAR < 0) then
-      write(1,*) "C_SIGNED_CHAR", C_SIGNED_CHAR
+      print *, "C_SIGNED_CHAR", C_SIGNED_CHAR
       errors = errors + 1
     end if
     if (C_SHORT < 0) then
-      write(1,*) "C_SHORT", C_SHORT
+      print *, "C_SHORT", C_SHORT
       errors = errors + 1
     end if
     if (C_INT < 0) then
-      write(1,*) "C_INT", C_INT
+      print *, "C_INT", C_INT
       errors = errors + 1
     end if
     if (C_LONG < 0) then
-      write(1,*) "C_LONG", C_LONG
+      print *, "C_LONG", C_LONG
       errors = errors + 1
     end if
     if (C_LONG_LONG < 0) then
-      write(1,*) "C_LONG_LONG", C_LONG_LONG
+      print *, "C_LONG_LONG", C_LONG_LONG
       errors = errors + 1
     end if
     if (C_SIZE_T < 0) then
-      write(1,*) "C_SIZE_T", C_SIZE_T
+      print *, "C_SIZE_T", C_SIZE_T
       errors = errors + 1
     end if
     if (C_INTPTR_T < 0) then
-      write(1,*) "C_INTPTR_T", C_INTPTR_T
+      print *, "C_INTPTR_T", C_INTPTR_T
       errors = errors + 1
     end if
     if (C_INTMAX_T < 0) then
-      write(1,*) "C_INTMAX_T", C_INTMAX_T
+      print *, "C_INTMAX_T", C_INTMAX_T
       errors = errors + 1
     end if
     if (C_INT8_T < 0) then
-      write(1,*) "C_INT8_T", C_INT8_T
+      print *, "C_INT8_T", C_INT8_T
       errors = errors + 1
     end if
     if (C_INT16_T < 0) then
-      write(1,*) "C_INT16_T", C_INT16_T
+      print *, "C_INT16_T", C_INT16_T
       errors = errors + 1
     end if
     if (C_INT32_T < 0) then
-      write(1,*) "C_INT32_T", C_INT32_T
+      print *, "C_INT32_T", C_INT32_T
       errors = errors + 1
     end if
     if (C_INT64_T < 0) then
-      write(1,*) "C_INT64_T", C_INT64_T
+      print *, "C_INT64_T", C_INT64_T
       errors = errors + 1
     end if
     if (C_INT_LEAST8_T < 0) then
-      write(1,*) "C_INT_LEAST8_T", C_INT_LEAST8_T
+      print *, "C_INT_LEAST8_T", C_INT_LEAST8_T
       errors = errors + 1
     end if
     if (C_INT_LEAST16_T < 0) then
-      write(1,*) "C_INT_LEAST16_T", C_INT_LEAST16_T
+      print *, "C_INT_LEAST16_T", C_INT_LEAST16_T
       errors = errors + 1
     end if
     if (C_INT_LEAST32_T < 0) then
-      write(1,*) "C_INT_LEAST32_T", C_INT_LEAST32_T
+      print *, "C_INT_LEAST32_T", C_INT_LEAST32_T
       errors = errors + 1
     end if
     if (C_INT_LEAST64_T < 0) then
-      write(1,*) "C_INT_LEAST64_T", C_INT_LEAST64_T
+      print *, "C_INT_LEAST64_T", C_INT_LEAST64_T
       errors = errors + 1
     end if
     if (C_INT_FAST8_T < 0) then
-      write(1,*) "C_INT_FAST8_T", C_INT_FAST8_T
+      print *, "C_INT_FAST8_T", C_INT_FAST8_T
       errors = errors + 1
     end if
     if (C_INT_FAST16_T < 0) then
-      write(1,*) "C_INT_FAST16_T", C_INT_FAST16_T
+      print *, "C_INT_FAST16_T", C_INT_FAST16_T
       errors = errors + 1
     end if
     if (C_INT_FAST32_T < 0) then
-      write(1,*) "C_INT_FAST32_T", C_INT_FAST32_T
+      print *, "C_INT_FAST32_T", C_INT_FAST32_T
       errors = errors + 1
     end if
     if (C_INT_FAST64_T < 0) then
-      write(1,*) "C_INT_FAST64_T", C_INT_FAST64_T
+      print *, "C_INT_FAST64_T", C_INT_FAST64_T
       errors = errors + 1
     end if
     if (C_FLOAT < 0) then
-      write(1,*) "C_FLOAT", C_FLOAT
+      print *, "C_FLOAT", C_FLOAT
       errors = errors + 1
     end if
     if (C_DOUBLE < 0) then
-      write(1,*) "C_DOUBLE", C_DOUBLE
+      print *, "C_DOUBLE", C_DOUBLE
       errors = errors + 1
     end if
     if (C_LONG_DOUBLE < 0) then
-      write(1,*) "C_LONG_DOUBLE", C_LONG_DOUBLE
+      print *, "C_LONG_DOUBLE", C_LONG_DOUBLE
       errors = errors + 1
     end if
     if (C_FLOAT_COMPLEX < 0) then
-      write(1,*) "C_FLOAT_COMPLEX", C_FLOAT_COMPLEX
+      print *, "C_FLOAT_COMPLEX", C_FLOAT_COMPLEX
       errors = errors + 1
     end if
     if (C_DOUBLE_COMPLEX < 0) then
-      write(1,*) "C_DOUBLE_COMPLEX", C_DOUBLE_COMPLEX
+      print *, "C_DOUBLE_COMPLEX", C_DOUBLE_COMPLEX
       errors = errors + 1
     end if
     if (C_LONG_DOUBLE_COMPLEX < 0) then
-      write(1,*) "C_LONG_DOUBLE_COMPLEX", C_LONG_DOUBLE_COMPLEX
+      print *, "C_LONG_DOUBLE_COMPLEX", C_LONG_DOUBLE_COMPLEX
       errors = errors + 1
     end if
     if (C_BOOL < 0) then
-      write(1,*) "C_BOOL", C_BOOL
+      print *, "C_BOOL", C_BOOL
       errors = errors + 1
     end if
     if (C_CHAR < 0) then
-      write(1,*) "C_CHAR", C_CHAR
+      print *, "C_CHAR", C_CHAR
       errors = errors + 1
     end if
 
@@ -179,7 +179,7 @@ contains
     do i=0, 64, +1
       c = char(i)
       if (g_ascii_tolower(int(i,c_int8_t)) /= int(i,c_int8_t)) then
-        write(1,*) "ERROR gchar g_ascii_tolower (gchar c): ", i, g_ascii_tolower(int(i,c_int8_t))
+        print *, "ERROR gchar g_ascii_tolower (gchar c): ", i, g_ascii_tolower(int(i,c_int8_t))
         errors = errors + 1
       end if
     end do
@@ -187,7 +187,7 @@ contains
     do i=65, 90, +1
       c = char(i)
       if (g_ascii_tolower(int(i,c_int8_t)) /= int(i,c_int8_t)+32) then
-        write(1,*) "ERROR gchar g_ascii_tolower (gchar c): ", i, g_ascii_tolower(int(i,c_int8_t))
+        print *, "ERROR gchar g_ascii_tolower (gchar c): ", i, g_ascii_tolower(int(i,c_int8_t))
         errors = errors + 1
       end if
     end do
@@ -195,7 +195,7 @@ contains
     do i=91, 255, +1
       c = char(i)
       if (g_ascii_tolower(int(i,c_int8_t)) /= int(i,c_int8_t)) then
-        write(1,*) "ERROR gchar g_ascii_tolower (gchar c): ", i, g_ascii_tolower(int(i,c_int8_t))
+        print *, "ERROR gchar g_ascii_tolower (gchar c): ", i, g_ascii_tolower(int(i,c_int8_t))
         errors = errors + 1
       end if
     end do
@@ -220,7 +220,7 @@ contains
       gv = g_variant_new_double(a)
       b = g_variant_get_double(gv)
       if (a /= b) then
-        write(1,*) "ERROR g_random_double_range:", i, a, b
+        print *, "ERROR g_random_double_range:", i, a, b
         errors = errors + 1
       end if
       call g_variant_unref(gv)
@@ -237,7 +237,7 @@ contains
     do i = 1, 10000, +1
       r = g_random_double_range(rmin, rmax)
       if ((r<rmin).or.(r>rmax)) then
-        write(1,*) "ERROR g_random_double_range:", r
+        print *, "ERROR g_random_double_range:", r
         errors = errors + 1
       end if
     end do
@@ -266,7 +266,7 @@ contains
       nb = 2_c_long**i - 1
       r = g_bit_storage(nb)
       if (i /= r) then
-        write(1,*) "ERROR g_bit_storage:", i, nb, r
+        print *, "ERROR g_bit_storage:", i, nb, r
         errors = errors + 1
       end if
     end do
@@ -310,7 +310,7 @@ contains
       gv = g_variant_new_uint16(a)
       b = g_variant_get_uint16(gv)
       if (a /= b) then
-        write(1,*) "ERROR g_variant_get_uint16:", a, b
+        print *, "ERROR g_variant_get_uint16:", a, b
         errors = errors + 1
       end if
       call g_variant_unref(gv)
@@ -320,7 +320,7 @@ contains
     gv = g_variant_new_uint16(a)
     b = g_variant_get_uint16(gv)
     if (a /= b) then
-      write(1,*) "ERROR g_variant_get_uint16:", a, b
+      print *, "ERROR g_variant_get_uint16:", a, b
       errors = errors + 1
     end if
     call g_variant_unref(gv)
@@ -335,7 +335,7 @@ contains
       end do
 
       if (a /= b) then
-        write(1,*) "ERROR g_variant_get_uint16:", a, b
+        print *, "ERROR g_variant_get_uint16:", a, b
         errors = errors + 1
       end if
       call g_variant_unref(gv)
@@ -357,7 +357,7 @@ contains
        gv = g_variant_new_int16(a)
        b = g_variant_get_int16(gv)
        if (a /= b) then
-          write(1,*) "ERROR g_variant_get_int16:", a, b
+          print *, "ERROR g_variant_get_int16:", a, b
           errors = errors + 1
        end if
        call g_variant_unref(gv)
@@ -388,7 +388,7 @@ contains
       gv = g_variant_new_int32(a)
       b = g_variant_get_int32(gv)
       if (a /= b) then
-        write(1,*) "ERROR g_variant_get_int32:", a, b
+        print *, "ERROR g_variant_get_int32:", a, b
         errors = errors + 1
       end if
       call g_variant_unref(gv)
@@ -407,7 +407,7 @@ contains
       ! Returns a random number over the range [rmin..rmax-1]:
       r = g_random_int_range(rmin, rmax)
       if ((r < rmin).or.(r >= rmax)) then
-        write(1,*) "ERROR g_random_double_range:", r
+        print *, "ERROR g_random_double_range:", r
         errors = errors + 1
       end if
     end do
@@ -437,7 +437,7 @@ contains
       gv = g_variant_new_uint32(a)
       b = g_variant_get_uint32(gv)
       if (a /= b) then
-        write(1,*) "ERROR g_variant_get_uint32:", a, b
+        print *, "ERROR g_variant_get_uint32:", a, b
         errors = errors + 1
       end if
       call g_variant_unref(gv)
@@ -447,7 +447,7 @@ contains
     gv = g_variant_new_uint32(a)
     b = g_variant_get_uint32(gv)
     if (a /= b) then
-      write(1,*) "ERROR g_variant_get_uint32:", a, b
+      print *, "ERROR g_variant_get_uint32:", a, b
       errors = errors + 1
     end if
     call g_variant_unref(gv)
@@ -462,7 +462,7 @@ contains
       end do
 
       if (a /= b) then
-        write(1,*) "ERROR g_variant_get_uint32:", a, b
+        print *, "ERROR g_variant_get_uint32:", a, b
         errors = errors + 1
       end if
       call g_variant_unref(gv)
@@ -486,7 +486,7 @@ contains
       j = g_variant_get_byte(gv)
       b = achar(j)
       if ((a /= b) .or. (iand(i,255_c_int16_t) /= iand(j, 255_c_int16_t))) then
-        write(1,*) "ERROR test_guchar_in_out:", a, b, i, j
+        print *, "ERROR test_guchar_in_out:", a, b, i, j
         errors = errors + 1
       end if
       call g_variant_unref(gv)
@@ -508,7 +508,7 @@ contains
     l2 = g_variant_get_boolean(gv)
     print *, l1, l2
     if (l1 /= l2) then
-        write(1,*) "ERROR g_variant_get_boolean:", l1, l2
+        print *, "ERROR g_variant_get_boolean:", l1, l2
         errors = errors + 1
     end if
     call g_variant_unref(gv)
@@ -518,7 +518,7 @@ contains
     l2 = g_variant_get_boolean(gv)
     print *, l1, l2
     if (l1 /= l2) then
-        write(1,*) "ERROR g_variant_get_boolean:", l1, l2
+        print *, "ERROR g_variant_get_boolean:", l1, l2
         errors = errors + 1
     end if
 
@@ -533,7 +533,7 @@ contains
     l3 = g_hostname_is_ip_address("blabla"//c_null_char)
     l4 = g_hostname_is_ip_address("192.168,0.1"//c_null_char)
     if ((l1 /= TRUE) .or. (l2 /= FALSE) .or. (l3 /= FALSE) .or. (l4 /= FALSE)) then
-      write(1,*) "ERROR g_hostname_is_ip_address:", l1, l2, l3, l4
+      print *, "ERROR g_hostname_is_ip_address:", l1, l2, l3, l4
       errors = errors + 1
     end if
     call g_variant_unref(gv)
