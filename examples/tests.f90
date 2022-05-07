@@ -21,14 +21,14 @@
 ! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2022-05-06
+! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2022-05-07
 ! ****************
 ! Automated tests
 ! ****************
 ! This program is testing things about ISO_C_BINDING and the relations
-! between Fortran types and GLib types. If it generates errors, please send us
-! the tests_errors.txt file with informations on your system
-! (OS version, GTK version, compiler...)
+! between Fortran types and GLib types. If it generates errors, post
+! an issue on GitHub with information on your system
+! (OS version, GTK version, compiler...) and the error message.
 
 module tests
   use gtk, only: TRUE, FALSE, gtk_get_major_version, gtk_get_minor_version, &
@@ -546,9 +546,9 @@ end module tests
 
 program gtk_fortran_test
   use tests
+
   implicit none
   integer :: errors
-  integer :: file_unit
   character(:), allocatable :: os_string
   type(c_ptr) :: ret
 
@@ -565,36 +565,28 @@ program gtk_fortran_test
   print '(3A,I0,A1,I0,A1,I0)', "Compiled with "//compiler_version()//" on ", os_string, &
       & ", linked to GTK ", gtk_get_major_version(),".", gtk_get_minor_version(), ".", gtk_get_micro_version()
 
-  open(newunit=file_unit, file="tests_errors.txt")
-
-  print *, "test_iso_c_binding()"
+  print '(A)', "test_iso_c_binding()"
   errors = test_iso_c_binding()
-  print *, "test_c_char_in_out()"
+  print '(A)', "test_c_char_in_out()"
   errors = errors +  test_c_char_in_out()
-  print *, "test_guchar_in_out()"
+  print '(A)', "test_guchar_in_out()"
   errors = errors +  test_guchar_in_out()
-  print *, "test_gdouble_in_out()"
+  print '(A)', "test_gdouble_in_out()"
   errors = errors +  test_gdouble_in_out()
-  print *, "test_gulong_in()"
+  print '(A)', "test_gulong_in()"
   errors = errors +  test_gulong_in()
-  print *, "test_int16_in_out()"
+  print '(A)', "test_int16_in_out()"
   errors = errors +  test_int16_in_out()
-  print *, "test_uint16_in_out()"
+  print '(A)', "test_uint16_in_out()"
   errors = errors +  test_uint16_in_out()
-  print *, "test_int32_in_out()"
+  print '(A)', "test_int32_in_out()"
   errors = errors +  test_int32_in_out()
-  print *, "test_uint32_in_out()"
+  print '(A)', "test_uint32_in_out()"
   errors = errors +  test_uint32_in_out()
-  print *, "test_gboolean_in_out()"
+  print '(A)', "test_gboolean_in_out()"
   errors = errors +  test_gboolean_in_out()
 
-  close(file_unit)
-
   print *
-  if (errors == 0) then
-    print *, "No error"
-  else
-    print *, errors, "errors"
-    print *, "See the 'tests_errors.txt' file"
-  end if
+  print '(I3, A)', errors, " errors"
+
 end program gtk_fortran_test
