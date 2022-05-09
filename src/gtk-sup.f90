@@ -24,7 +24,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
-! vmagnin 2020-06-08 (GTK 4), 2022-05-06
+! vmagnin 2020-06-08 (GTK 4), 2022-05-09
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
@@ -735,17 +735,17 @@ contains
     character(*), intent(in) :: source
     character(*), intent(in) :: destination
     character(len=256, kind=c_char) :: line
-    integer :: status_read
+    integer :: status_read, input, output
 
-    open(50, file=destination, action='write')
-    open(60, file=source, action='read')
+    open(newunit=output, file=destination, action='write')
+    open(newunit=input,  file=source, action='read')
     do
-      read(60,'(A)',iostat=status_read) line
+      read(input, '(A)', iostat=status_read) line
       if ( status_read /= 0 ) exit
-      write(50,'(A)') line(1:len_trim(line))
+      write(output, '(A)') line(1:len_trim(line))
     enddo
-    close(60)
-    close(50)
+    close(input)
+    close(output)
   end subroutine copy_file
 
 end module gtk_sup
