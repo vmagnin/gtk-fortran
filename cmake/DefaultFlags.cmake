@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 # Contributed by @awvwgk (2022)
-# Last modifications: vmagnin 2022-04-29
+# Last modifications: vmagnin 2022-06-08
 #===============================================================================
 
 if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
@@ -54,25 +54,26 @@ elseif((CMAKE_Fortran_COMPILER_ID STREQUAL "Intel") OR (CMAKE_Fortran_COMPILER_I
   # ifort and ifx compilers (OneAPI):
   set(
     CMAKE_Fortran_FLAGS_RELEASE_INIT
-    "-g"
-    "-warn all"
-    "-warn nounused"
+    "-O3"
   )
   set(
     CMAKE_Fortran_FLAGS_DEBUG_INIT
-    "-O3"
+    "-g"
+    "-warn all"
+    "-warn nounused"
   )
 else()
   # Standard flags for all the other compilers:
   set(
     CMAKE_Fortran_FLAGS_RELEASE_INIT
-    "-g"
+    "-O3"
   )
   set(
     CMAKE_Fortran_FLAGS_DEBUG_INIT
-    "-O3"
+    "-g"
   )
 endif()
+
 string(REPLACE ";" " " CMAKE_Fortran_FLAGS_RELEASE_INIT "${CMAKE_Fortran_FLAGS_RELEASE_INIT}")
 string(REPLACE ";" " " CMAKE_Fortran_FLAGS_DEBUG_INIT "${CMAKE_Fortran_FLAGS_DEBUG_INIT}")
 string(REPLACE ";" " " CMAKE_EXE_LINKER_FLAGS_INIT "${CMAKE_EXE_LINKER_FLAGS_INIT}")

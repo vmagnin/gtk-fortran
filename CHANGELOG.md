@@ -9,6 +9,9 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - Intel ifx compiler is now supported by CMake (>=3.20), with the id `IntelLLVM`.
 - `tests_gtk_sup.f90`: for testing functions of the gtk_sup module.
 
+### Fixed
+- `cmake/DefaultFlags.cmake`: release and debug flags for non-GFortran compilers were inverted.
+
 ## [gtk-fortran 4.2.1] 2022-04-24
 
 ### Fixed
