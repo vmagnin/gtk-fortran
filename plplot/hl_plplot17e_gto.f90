@@ -45,29 +45,23 @@ module plplot_code_ex17_gto
   use common_ex17_gto
 
   implicit none
-  integer,  parameter :: nsteps = 1000
-  integer, save :: id1, id2, n=0
-  logical :: autoy, acc, pl_errcode
+  integer, save :: id1, n=0
+  logical :: autoy, acc
 
   real(plflt) :: y1, y2, y3, y4, ymin, ymax, xlab, ylab
   real(plflt) :: t, tmin, tmax, tjump, dt, noise
   type(c_ptr) :: cc
   integer :: colbox, collab, colline(4), styline(4)
   character(len=20) :: legline(4)
-  character(len=20) :: toplab
 
 contains
+
   subroutine x17f95(area)
-
     type(c_ptr), intent(in) :: area
-
-    character(len=80) :: errmsg
     character(len=20) :: geometry
-
     ! needed for use as functions instead of subroutines
     integer :: plparseopts_rc
     integer :: plsetopt_rc
-
     ! Define colour map 0 to match the "GRAFFER" colour table in
     ! place of the PLPLOT default.
     integer, parameter, dimension(16) :: rval = [255, 0, 255, &
@@ -99,25 +93,25 @@ contains
     plsetopt_rc = plsetopt( 'geometry', geometry)
     if (plsetopt_rc /= 0) stop "plsetopt error"
 
-    !      Specify some reasonable defaults for ymin and ymax
-    !      The plot will grow automatically if needed (but not shrink)
+    ! Specify some reasonable defaults for ymin and ymax
+    ! The plot will grow automatically if needed (but not shrink)
     ymin = -0.1_plflt
     ymax = 0.1_plflt
 
-    !      Specify initial tmin and tmax -- this determines length of window.
-    !      Also specify maximum jump in t
-    !      This can accomodate adaptive timesteps
+    ! Specify initial tmin and tmax -- this determines length of window.
+    ! Also specify maximum jump in t
+    ! This can accomodate adaptive timesteps
     tmin = 0._plflt
     tmax = 50._plflt
-    !      percentage of plot to jump
+    ! percentage of plot to jump
     tjump = 0.3_plflt
 
-    !      Axes options same as plbox.
-    !      Only automatic tick generation and label placement allowed
-    !      Eventually I'll make this fancier
+    ! Axes options same as plbox.
+    ! Only automatic tick generation and label placement allowed
+    ! Eventually I'll make this fancier
     colbox = 1
     collab = 1
-    !      pens color and line style
+    ! pens color and line style
     styline(1) = 1
     colline(1) = 1
     styline(2) = 3
@@ -127,22 +121,22 @@ contains
     styline(4) = 5
     colline(4) = 5
 
-    !      pens legend
+    ! pens legend
     legline(1) = 'sum'
     legline(2) = 'sin'
     legline(3) = 'sin*noi'
     legline(4) = 'sin+noi'
 
-    !      legend position
+    ! legend position
     xlab = 0._plflt
     ylab = 0.25_plflt
 
-    !      autoscale y
+    ! autoscale y
     autoy = .true.
-    !      scrip, don't accumulate
+    ! scrip, don't accumulate
     acc = .false.
 
-    !      Initialize plplot
+    ! Initialize plplot
     call plinit()
     ! Tell the "extcairo" driver where the context is located.
     call pl_cmd(PLESC_DEVINIT, cc)
@@ -150,8 +144,7 @@ contains
     call pladv(0)
     call plvsta()
 
-    !      Register our error variables with PLplot
-    !      From here on, we're handling all errors here
+    ! Create a 4-pen strip chart
     call plstripc(id1, 'bcnst', 'bcnstv', &
          tmin, tmax, tjump, ymin, ymax, &
          xlab, ylab, &
@@ -160,19 +153,13 @@ contains
          colline, styline, legline, &
          't', '', 'Strip chart demo')
 
-    pl_errcode = .false.
-    if ( pl_errcode ) then
-       write(*,*) errmsg
-       stop
-    endif
-
-    !      autoscale y
+    ! autoscale y
     autoy = .false.
-    !      accumulate
+    ! accumulate
     acc = .true.
 
-    !      This is to represent a loop over time
-    !      Let's try a random walk process
+    ! This is to represent a loop over time
+    ! Let's try a random walk process
     y1 = 0.0_plflt
     y2 = 0.0_plflt
     y3 = 0.0_plflt
@@ -185,9 +172,9 @@ contains
 
   function add_point(area) bind(c)
     integer(c_int) :: add_point
-    type(c_ptr), value :: area
+    type(c_ptr), intent(in) :: area
 
-    n=n+1
+    n = n + 1
 
     t = dble(n) * dt
     noise = plrandd() - 0.5_plflt
@@ -198,8 +185,8 @@ contains
 
     if (c_f_logical(g_main_context_pending(c_null_ptr))) add_point = FALSE   ! Exit
 
-    !        There is no need for all pens to have the same number of
-    !        points or being equally time spaced.
+    ! There is no need for all pens to have the same number of
+    ! points or being equally time spaced.
     if ( mod(n,2) /= 0 ) then
        call plstripa(id1, 0, t, y1)
     endif
@@ -212,25 +199,24 @@ contains
     if ( mod(n,5) /= 0 ) then
        call plstripa(id1, 3, t, y4)
     end if
+
     call gtk_widget_queue_draw(area)
 
     add_point = TRUE
   end function add_point
 
   subroutine close_strip
-    !      Destroy strip chart and its memory
+    ! Destroy strip chart and its memory
     call plstripd(id1)
     call plend()
     call hl_gtk_drawing_area_cairo_destroy(cc)
   end subroutine close_strip
 end module plplot_code_ex17_gto
 
+
 module handlers_ex17_gto
-  use common_ex17_gto
   use gtk_hl_container
   use gtk_hl_button
-  use gtk_draw_hl
-  use, intrinsic :: iso_c_binding
   use plplot_code_ex17_gto
 
   implicit none
@@ -245,10 +231,8 @@ contains
   end subroutine quit_cb
 
   subroutine activate(app, gdata) bind(c)
-    use plplot_code_ex17_gto
-    use common_ex17_gto
     use gtk, only: gtk_application_window_new, gtk_window_set_title
-    implicit none
+
     type(c_ptr), value, intent(in)  :: app, gdata
     ! Pointers toward our GTK widgets:
     type(c_ptr) :: drawing, base, qbut
@@ -279,9 +263,10 @@ end module handlers_ex17_gto
 
 
 program cairo_plplot_ex17_gto
-  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
-  use handlers_ex17_gto
+  use, intrinsic :: iso_c_binding
+  use handlers_ex17_gto, only: activate
   use gtk_hl_container, only: hl_gtk_application_new
+
   implicit none
   type(c_ptr) :: my_app
 
