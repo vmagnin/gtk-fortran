@@ -1,7 +1,7 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 !
-! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+! This file is part of the gtk-fortran GTK Fortran Interface library.
 !
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -22,27 +22,25 @@
 !
 ! Example using GtkBuilder
 ! Jens Hunger, 04-01-2011
-! Last modified: vmagnin 2020-06-20 (GTK 4 version), 2021-10-23
+! Last modified: vmagnin 2020-06-20 (GTK 4 version), 2022-07-12
 
 module widgets
-  use, intrinsic :: iso_c_binding, only: c_null_char, c_null_ptr, c_ptr, c_int
+  use, intrinsic :: iso_c_binding
 
-  ! Declares the used GTK widgets:
   implicit none
-  type(c_ptr) :: window
-  type(c_ptr) :: builder
+  ! Declares the used GTK widgets:
+  type(c_ptr) :: window, builder
+  ! A GTK/GLib main loop:
+  type(c_ptr) :: my_gmainloop
 end module
 
 
 module handlers
-  use gtk, only: gtk_builder_get_object, gtk_builder_new_from_file, &
-             & gtk_widget_show, FALSE, gtk_init
-  use g, only: g_main_loop_new, g_main_loop_run, g_main_loop_quit, &
-             & g_object_unref
-  use widgets
+  use, intrinsic :: iso_c_binding
+  use g, only: g_main_loop_quit
+  use widgets, only: my_gmainloop
 
   implicit none
-  type(c_ptr) :: my_gmainloop
 
 contains
   !*************************************
@@ -54,26 +52,26 @@ contains
     !GCC$ ATTRIBUTES DLLEXPORT :: destroy
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    print *, "my destroy"
+    print *, "My destroy!"
     call g_main_loop_quit(my_gmainloop)
   end subroutine destroy
 
   ! "clicked" is a GtkButton signal
-  subroutine hello(widget, gdata ) bind(c)
+  subroutine hello(widget, gdata) bind(c)
     !GCC$ ATTRIBUTES DLLEXPORT :: hello
     type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Hello World!"
   end subroutine hello
 
-  subroutine button1clicked(widget, gdata ) bind(c)
+  subroutine button1clicked(widget, gdata) bind(c)
     !GCC$ ATTRIBUTES DLLEXPORT :: button1clicked
     type(c_ptr), value, intent(in) :: widget, gdata
 
     print *, "Button 1 clicked!"
   end subroutine button1clicked
 
-  subroutine button2clicked(widget, gdata ) bind(c)
+  subroutine button2clicked(widget, gdata) bind(c)
     !GCC$ ATTRIBUTES DLLEXPORT :: button2clicked
     type(c_ptr), value, intent(in) :: widget, gdata
 
@@ -83,27 +81,29 @@ end module handlers
 
 
 program gtkbuilder
-  use handlers
+  use gtk, only: gtk_init, gtk_builder_new_from_file, gtk_builder_get_object, gtk_widget_show, FALSE
+  use g, only: g_object_unref, g_main_loop_new, g_main_loop_run
+  use widgets
 
   implicit none
 
   ! Initialize the GTK Library:
-  call gtk_init ()
+  call gtk_init()
 
   ! Create a new GtkBuilder object and parse the
-  ! Glade3 XML file 'gtkbuilder.glade' and add it's contents:
-  builder=gtk_builder_new_from_file("gtkbuilder.glade"//c_null_char)
+  ! Glade3 XML file 'gtkbuilder.glade' and add its content:
+  builder = gtk_builder_new_from_file("gtkbuilder.glade"//c_null_char)
 
-  ! get a pointer to the GObject "window" from GtkBuilder
+  ! Get a pointer to the GObject "window" from GtkBuilder:
   window = gtk_builder_get_object(builder, "window"//c_null_char)
 
-  ! free all memory used by XML stuff
+  ! Free all memory used by XML stuff:
   call g_object_unref(builder)
 
-  ! Show the Application Window
+  ! Show the Application Window:
   call gtk_widget_show(window)
 
-  ! Enter the Main Loop:
+  ! Create and enter the GTK/GLib main loop:
   my_gmainloop = g_main_loop_new(c_null_ptr, FALSE)
   call g_main_loop_run(my_gmainloop)
 
