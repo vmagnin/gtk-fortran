@@ -104,17 +104,21 @@ contains
     call gtk_notebook_set_tab_pos(notebook_1, gtk_notebook_get_tab_pos(notebook_1) + 1_c_int)
   end subroutine rotate_book
 
-  ! Add/Remove the page tabs and the borders
+  ! Add/Remove the page tabs and the borders of notebook 1:
   subroutine tabsborder_book(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
-    integer(c_int) :: tval, bval
 
-    tval = FALSE
-    bval = FALSE
-    if (gtk_notebook_get_show_tabs(notebook_1) == FALSE) tval = TRUE
-    if (gtk_notebook_get_show_border(notebook_1) == FALSE) bval = TRUE
-    call gtk_notebook_set_show_tabs(notebook_1, tval)
-    call gtk_notebook_set_show_border(notebook_1, bval)
+    if (gtk_notebook_get_show_tabs(notebook_1) == FALSE) then
+      call gtk_notebook_set_show_tabs(notebook_1, TRUE)
+    else
+      call gtk_notebook_set_show_tabs(notebook_1, FALSE)
+    end if
+
+    if (gtk_notebook_get_show_border(notebook_1) == FALSE) then
+      call gtk_notebook_set_show_border(notebook_1, TRUE)
+    else
+      call gtk_notebook_set_show_border(notebook_1, FALSE)
+    end if
   end subroutine tabsborder_book
 
   ! Remove a page from the notebook
