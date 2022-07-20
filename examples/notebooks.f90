@@ -41,7 +41,7 @@ end module
 module handlers
   use, intrinsic :: iso_c_binding
 
-  use gtk, only: gtk_window_set_title, &
+  use gtk, only: gtk_window_set_title, gtk_notebook_popup_enable, &
   & g_signal_connect, g_signal_connect_swapped, &
   & gtk_window_destroy, gtk_widget_show, gtk_application_window_new, &
   & FALSE, TRUE, GTK_POS_TOP, &
@@ -203,6 +203,8 @@ contains
       call gtk_notebook_set_tab_detachable(notebook_1, frame, TRUE)
     end do
 
+    call gtk_notebook_popup_enable(notebook_1)
+
     ! Add a page to a specific spot
     checkbutton = gtk_check_button_new_with_label("Check me please!"//c_null_char)
     call gtk_widget_set_size_request(checkbutton, 20_c_int, 75_c_int)
@@ -296,6 +298,8 @@ contains
       call gtk_notebook_set_tab_reorderable(notebook_2, frame, TRUE)
       call gtk_notebook_set_tab_detachable(notebook_2, frame, TRUE)
     end do
+
+    call gtk_notebook_popup_enable(notebook_2)
 
     ! If you don't show it, nothing will appear on screen...
     call gtk_widget_show(mainwindow)
