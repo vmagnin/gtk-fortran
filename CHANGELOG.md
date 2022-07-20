@@ -8,6 +8,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - `src/extract_hl_doc.py`: generates markdown files for the HL gtk-fortran documentation.
 - Intel ifx compiler is now supported by CMake (>=3.20), with the id `IntelLLVM`.
 - `tests_gtk_sup.f90`: for testing functions of the gtk_sup module.
+- `examples/notebooks.f90`: notebooks are now scrollable. And a popup menu appears when clicking with the right button on tabs.
 
 ### Fixed
 - `cmake/DefaultFlags.cmake`: release and debug flags for non-GFortran compilers were inverted.
