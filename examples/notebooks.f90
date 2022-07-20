@@ -42,7 +42,7 @@ module handlers
   use, intrinsic :: iso_c_binding
 
   use gtk, only: gtk_window_set_title, gtk_notebook_popup_enable, &
-  & g_signal_connect, g_signal_connect_swapped, &
+  & g_signal_connect, g_signal_connect_swapped, gtk_notebook_set_scrollable, &
   & gtk_window_destroy, gtk_widget_show, gtk_application_window_new, &
   & FALSE, TRUE, GTK_POS_TOP, &
   & gtk_button_new, gtk_button_new_with_label, &
@@ -204,6 +204,7 @@ contains
     end do
 
     call gtk_notebook_popup_enable(notebook_1)
+    call gtk_notebook_set_scrollable(notebook_1, TRUE)
 
     ! Add a page to a specific spot
     checkbutton = gtk_check_button_new_with_label("Check me please!"//c_null_char)
@@ -300,6 +301,7 @@ contains
     end do
 
     call gtk_notebook_popup_enable(notebook_2)
+    call gtk_notebook_set_scrollable(notebook_2, TRUE)
 
     ! If you don't show it, nothing will appear on screen...
     call gtk_widget_show(mainwindow)
