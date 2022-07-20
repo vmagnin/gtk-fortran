@@ -10,6 +10,9 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - `tests_gtk_sup.f90`: for testing functions of the gtk_sup module.
 - `examples/notebooks.f90`: notebooks are now scrollable. And a popup menu appears when clicking with the right button on tabs.
 
+### Changed
+- The `examples/gtkbuilder.glade` UI file has been regenerated with Cambalache and renamed `gtkbuilder.ui`
+
 ### Fixed
 - `cmake/DefaultFlags.cmake`: release and debug flags for non-GFortran compilers were inverted.
 
