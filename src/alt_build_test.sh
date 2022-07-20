@@ -7,7 +7,7 @@
 #
 # GNU GPL v3
 # Contributed by Vincent MAGNIN
-# 2011-04-08, last updated 2022-04-09
+# 2011-04-08, last updated 2022-07-20
 
 # For a safer script:
 set -eu
@@ -79,7 +79,7 @@ echo
 
 # Copy directories and files needed to run the programs:
 cp -r ../../sketcher/data/ ../../sketcher/default.options ../../sketcher/*.glade .
-cp ../../examples/gtkbuilder.glade .
+cp ../../examples/gtkbuilder.ui .
 
 echo ">>> Running each example (CTRL+C to exit)..."
 for i in *.out ; do

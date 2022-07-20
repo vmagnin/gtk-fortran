@@ -22,7 +22,7 @@
 !
 ! Example using GtkBuilder
 ! Jens Hunger, 04-01-2011
-! Last modified: vmagnin 2020-06-20 (GTK 4 version), 2022-07-12
+! Last modified: vmagnin 2020-06-20 (GTK 4 version), 2022-07-20
 
 module widgets
   use, intrinsic :: iso_c_binding
@@ -90,9 +90,9 @@ program gtkbuilder
   ! Initialize the GTK Library:
   call gtk_init()
 
-  ! Create a new GtkBuilder object and parse the
-  ! Glade3 XML file 'gtkbuilder.glade' and add its content:
-  builder = gtk_builder_new_from_file("gtkbuilder.glade"//c_null_char)
+  ! Create a new GtkBuilder object, parse the file 'gtkbuilder.ui'
+  ! (generated with Cambalache) and add its content:
+  builder = gtk_builder_new_from_file("gtkbuilder.ui"//c_null_char)
 
   ! Get a pointer to the GObject "window" from GtkBuilder:
   window = gtk_builder_get_object(builder, "window"//c_null_char)

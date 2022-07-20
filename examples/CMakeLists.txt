@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2022-05-06
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2022-07-20
 #
 # CMAKE build file for gtk-fortran
 
@@ -57,9 +57,9 @@ if (NOT NO_BUILD_EXAMPLES)
   #====================================
   # Build the gtkbuilder example:
   #====================================
-  file(COPY gtkbuilder.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ )
+  file(COPY gtkbuilder.ui DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ )
 
-  add_executable(gtkbuilder2 "gtkbuilder2.f90" "gtkbuilder.glade")
+  add_executable(gtkbuilder2 "gtkbuilder2.f90" "gtkbuilder.ui")
   target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
   set_target_properties(gtkbuilder2 PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtkbuilder2_mod/ )
   # This test is excluded because the directories don't match up.
@@ -72,7 +72,7 @@ endif(NOT NO_BUILD_EXAMPLES)
 if (INSTALL_EXAMPLES)
   install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples${GTKv}
-    PATTERN "gtkbuilder.glade" EXCLUDE
+    PATTERN "gtkbuilder.ui" EXCLUDE
     PATTERN "CMakeLists.txt" EXCLUDE
   )
 endif(INSTALL_EXAMPLES)
