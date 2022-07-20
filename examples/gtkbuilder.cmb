@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!DOCTYPE cambalache-project SYSTEM "cambalache-project.dtd">
+<cambalache-project version="0.10.2" target_tk="gtk-4.0">
+  <ui>
+	(1,None,"gtkbuilder.ui","gtkbuilder.ui",None,None,None,None,None,None)
+  </ui>
+  <object>
+	(1,1,"GtkWindow","window",None,None,None,None,None),
+	(1,2,"GtkBox","box1",1,None,None,None,-1),
+	(1,3,"GtkButton","button1",2,None,None,None,None),
+	(1,4,"GtkButton","button3",2,None,None,None,2),
+	(1,5,"GtkButton","button2",2,None,None,None,1)
+  </object>
+  <object_property>
+	(1,1,"GtkWindow","title","My title",None,None,None,None,None),
+	(1,3,"GtkButton","label","Button1",None,None,None,None,None),
+	(1,4,"GtkButton","label","Exit",None,None,None,None,None),
+	(1,5,"GtkButton","label","Button2",None,None,None,None,None)
+  </object_property>
+  <object_signal>
+	(1,1,4,"GtkButton","clicked","destroy",None,None,None,None,None),
+	(2,1,3,"GtkButton","clicked","hello",None,None,None,None,None),
+	(3,1,5,"GtkButton","clicked","button2clicked",None,None,None,None,None)
+  </object_signal>
+</cambalache-project>
