@@ -1,7 +1,7 @@
 ! Copyright (C) 2011
 ! Free Software Foundation, Inc.
 !
-! This file is part of the gtk-fortran gtk+ Fortran Interface library.
+! This file is part of the gtk-fortran GTK Fortran Interface library.
 !
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jens Hunger, vmagnin
-! Last modification: vmagnin 2020-05-28, 2020-12-22
+! Last modifications: vmagnin 2020-05-28, 2022-07-20
 
 module widgets
   use, intrinsic :: iso_c_binding
@@ -37,8 +37,9 @@ module widgets
   type(c_ptr) :: checkbutton
 end module
 
+
 module handlers
-  use, intrinsic :: iso_c_binding, only: c_null_char
+  use, intrinsic :: iso_c_binding
 
   use gtk, only: gtk_window_set_title, &
   & g_signal_connect, g_signal_connect_swapped, &
@@ -74,41 +75,37 @@ contains
   ! User defined event handlers go here
   !*************************************
 
-  ! next page
-  subroutine next_page_book (widget, gdata ) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
+  ! Next page
+  subroutine next_page_book(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
     if (gtk_notebook_get_current_page(notebook_1) == gtk_notebook_get_n_pages(notebook_1) - 1) then
-      call gtk_notebook_set_current_page (notebook_1, 0_c_int)
+      call gtk_notebook_set_current_page(notebook_1, 0_c_int)
     else
-      call gtk_notebook_next_page (notebook_1)
+      call gtk_notebook_next_page(notebook_1)
     endif
   end subroutine next_page_book
 
-! prev page
-  subroutine prev_page_book (widget, gdata ) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
+  ! Previous page
+  subroutine prev_page_book(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
     if (gtk_notebook_get_current_page(notebook_1) == 0) then
-      call gtk_notebook_set_current_page (notebook_1, -1_c_int)
+      call gtk_notebook_set_current_page(notebook_1, -1_c_int)
     else
-      call gtk_notebook_prev_page (notebook_1)
+      call gtk_notebook_prev_page(notebook_1)
     endif
   end subroutine prev_page_book
 
-! Rotate the position of the tabs
-  subroutine rotate_book (widget, gdata ) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
+  ! Rotate the position of the tabs
+  subroutine rotate_book(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    call gtk_notebook_set_tab_pos (notebook_1, gtk_notebook_get_tab_pos(notebook_1)+1_c_int)
+    call gtk_notebook_set_tab_pos(notebook_1, gtk_notebook_get_tab_pos(notebook_1) + 1_c_int)
   end subroutine rotate_book
 
-! Add/Remove the page tabs and the borders
-  subroutine tabsborder_book (widget, gdata ) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
+  ! Add/Remove the page tabs and the borders
+  subroutine tabsborder_book(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int) :: tval, bval
 
@@ -116,22 +113,21 @@ contains
     bval = FALSE
     if (gtk_notebook_get_show_tabs(notebook_1) == FALSE) tval = TRUE
     if (gtk_notebook_get_show_border(notebook_1) == FALSE) bval = TRUE
-    call gtk_notebook_set_show_tabs (notebook_1, tval)
-    call gtk_notebook_set_show_border (notebook_1, bval)
+    call gtk_notebook_set_show_tabs(notebook_1, tval)
+    call gtk_notebook_set_show_border(notebook_1, bval)
   end subroutine tabsborder_book
 
-! Remove a page from the notebook
-  subroutine remove_book (widget, gdata ) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
+  ! Remove a page from the notebook
+  subroutine remove_book(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int) :: page
 
-    page = gtk_notebook_get_current_page (notebook_1)
+    page = gtk_notebook_get_current_page(notebook_1)
 
     if (page >= 0) then
-      call gtk_notebook_remove_page (notebook_1, page)
+      call gtk_notebook_remove_page(notebook_1, page)
       ! Need to refresh the widget -- This forces the widget to redraw itself.
-      call gtk_widget_queue_draw (notebook_1)
+      call gtk_widget_queue_draw(notebook_1)
     end if
   end subroutine remove_book
 
@@ -140,11 +136,12 @@ contains
   ! The GUI is defined here.
   subroutine activate(app, gdata) bind(c)
     type(c_ptr), value, intent(in)  :: app, gdata
-    ! Pointers toward our GTK widgets:
+    ! Pointer toward our GTK window
     type(c_ptr) :: mainwindow
-    ! Other variables:
+    ! Other variables
     integer :: i
-    character(kind=c_char,len=12) :: istr
+    ! A string version of the i counter:
+    character(kind=c_char, len=12) :: istr
     integer(c_int) :: nb
     character(kind=c_char), dimension(:), pointer :: textptr
     character(len=512) :: my_string
@@ -158,141 +155,143 @@ contains
     ! Adding widgets in the window:
     !******************************************************************
     ! Container for notebook
-    table = gtk_grid_new ()
+    table = gtk_grid_new()
     ! Set the border width (10 pixels) around the container:
-    call gtk_widget_set_margin_start (table, 10_c_int)
-    call gtk_widget_set_margin_end (table, 10_c_int)
-    call gtk_widget_set_margin_top (table, 10_c_int)
-    call gtk_widget_set_margin_bottom (table, 10_c_int)
+    call gtk_widget_set_margin_start(table, 10_c_int)
+    call gtk_widget_set_margin_end(table, 10_c_int)
+    call gtk_widget_set_margin_top(table, 10_c_int)
+    call gtk_widget_set_margin_bottom(table, 10_c_int)
+
     call gtk_window_set_child(mainwindow, table)
 
     ! Create a new notebook, place the position of the tabs
-    notebook_1=gtk_notebook_new()
-    call gtk_notebook_set_tab_pos (notebook_1, GTK_POS_TOP)
-    call gtk_grid_attach (table, notebook_1, 0_c_int, 0_c_int, 6_c_int, 1_c_int)
+    ! https://docs.gtk.org/gtk4/class.Notebook.html
+    notebook_1 = gtk_notebook_new()
+    call gtk_notebook_set_tab_pos(notebook_1, GTK_POS_TOP)
+    call gtk_grid_attach(table, notebook_1, 0_c_int, 0_c_int, 6_c_int, 1_c_int)
 
     ! Attach notebook to group, necessary to enable drag and drop
     ! between the two notebooks
     call gtk_notebook_set_group_name(notebook_1,"group"//c_null_char)
-    call C_F_POINTER(gtk_notebook_get_group_name(notebook_1), textptr, [64])
+    call c_f_pointer(gtk_notebook_get_group_name(notebook_1), textptr, [64])
     call convert_c_string_scalar(textptr, my_string)
-    print *, "group name = <"//TRIM(my_string)//">"
+    print *, "group name = <"//trim(my_string)//">"
 
     !append a bunch of pages to the notebook
-    do i=1,3
-      write(istr,*)i
-
-      frame = gtk_frame_new ("Append Frame "//trim(adjustl(istr))//c_null_char)
-        ! Set the border width (10 pixels) around the frame:
-      call gtk_widget_set_margin_start (frame, 10_c_int)
-      call gtk_widget_set_margin_end (frame, 10_c_int)
-      call gtk_widget_set_margin_top (frame, 10_c_int)
-      call gtk_widget_set_margin_bottom (frame, 10_c_int)
-
-      call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
-
-      label = gtk_label_new ("Append Frame "//trim(adjustl(istr))//c_null_char)
-      call gtk_frame_set_child(frame, label)
-
-      label = gtk_label_new ("Page "//trim(adjustl(istr))//c_null_char)
-      nb = gtk_notebook_append_page (notebook_1, frame, label)
-      call gtk_notebook_set_tab_reorderable (notebook_1, frame, TRUE)
-      call gtk_notebook_set_tab_detachable (notebook_1, frame, TRUE)
-    enddo
-
-    ! add a page to a specific spot
-    checkbutton = gtk_check_button_new_with_label ("Check me please!"//c_null_char)
-    call gtk_widget_set_size_request (checkbutton, 20_c_int, 75_c_int)
-
-    label = gtk_label_new ("Add page"//c_null_char)
-    nb = gtk_notebook_insert_page (notebook_1, checkbutton, label, 2_c_int)
-    call gtk_notebook_set_tab_reorderable(notebook_1, checkbutton, TRUE)
-    call gtk_notebook_set_tab_detachable (notebook_1, checkbutton, TRUE)
-
-    ! prepend pages to the notebook
-    do i=1,3
+    do i = 1, 3
       write(istr,*) i
 
-      frame = gtk_frame_new ("Prepend Frame "//trim(adjustl(istr))//c_null_char)
+      frame = gtk_frame_new("Append Frame "//trim(adjustl(istr))//c_null_char)
       ! Set the border width (10 pixels) around the frame:
-      call gtk_widget_set_margin_start (frame, 10_c_int)
-      call gtk_widget_set_margin_end (frame, 10_c_int)
-      call gtk_widget_set_margin_top (frame, 10_c_int)
-      call gtk_widget_set_margin_bottom (frame, 10_c_int)
+      call gtk_widget_set_margin_start(frame, 10_c_int)
+      call gtk_widget_set_margin_end(frame, 10_c_int)
+      call gtk_widget_set_margin_top(frame, 10_c_int)
+      call gtk_widget_set_margin_bottom(frame, 10_c_int)
 
-      call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
+      call gtk_widget_set_size_request(frame, 100_c_int, 75_c_int)
 
-      label = gtk_label_new ("Prepend Frame "//trim(adjustl(istr))//c_null_char)
+      label = gtk_label_new("Append Frame "//trim(adjustl(istr))//c_null_char)
       call gtk_frame_set_child(frame, label)
 
-      label = gtk_label_new ("PPage "//trim(adjustl(istr))//c_null_char)
-      nb = gtk_notebook_prepend_page (notebook_1, frame, label)
-      call gtk_notebook_set_tab_reorderable (notebook_1, frame, TRUE)
-      call gtk_notebook_set_tab_detachable (notebook_1, frame, TRUE)
-    enddo
+      label = gtk_label_new("Page "//trim(adjustl(istr))//c_null_char)
+      nb = gtk_notebook_append_page(notebook_1, frame, label)
+      call gtk_notebook_set_tab_reorderable(notebook_1, frame, TRUE)
+      call gtk_notebook_set_tab_detachable(notebook_1, frame, TRUE)
+    end do
+
+    ! Add a page to a specific spot
+    checkbutton = gtk_check_button_new_with_label("Check me please!"//c_null_char)
+    call gtk_widget_set_size_request(checkbutton, 20_c_int, 75_c_int)
+
+    label = gtk_label_new("Add page"//c_null_char)
+    nb = gtk_notebook_insert_page(notebook_1, checkbutton, label, 2_c_int)
+    call gtk_notebook_set_tab_reorderable(notebook_1, checkbutton, TRUE)
+    call gtk_notebook_set_tab_detachable(notebook_1, checkbutton, TRUE)
+
+    ! Prepend pages to the notebook
+    do i = 1, 3
+      write(istr,*) i
+
+      frame = gtk_frame_new("Prepend Frame "//trim(adjustl(istr))//c_null_char)
+      ! Set the border width (10 pixels) around the frame:
+      call gtk_widget_set_margin_start(frame, 10_c_int)
+      call gtk_widget_set_margin_end(frame, 10_c_int)
+      call gtk_widget_set_margin_top(frame, 10_c_int)
+      call gtk_widget_set_margin_bottom(frame, 10_c_int)
+
+      call gtk_widget_set_size_request(frame, 100_c_int, 75_c_int)
+
+      label = gtk_label_new("Prepend Frame "//trim(adjustl(istr))//c_null_char)
+      call gtk_frame_set_child(frame, label)
+
+      label = gtk_label_new("PPage "//trim(adjustl(istr))//c_null_char)
+      nb = gtk_notebook_prepend_page(notebook_1, frame, label)
+      call gtk_notebook_set_tab_reorderable(notebook_1, frame, TRUE)
+      call gtk_notebook_set_tab_detachable(notebook_1, frame, TRUE)
+    end do
 
     ! Set what page to start at (page 4)
-    call gtk_notebook_set_current_page (notebook_1, 4_c_int)
+    call gtk_notebook_set_current_page(notebook_1, 4_c_int)
 
     ! Create a bunch of buttons
-    button = gtk_button_new_with_label ("close"//c_null_char)
+    button = gtk_button_new_with_label("close"//c_null_char)
     ! Here the gtk_window_destroy() function will be applied
-    ! to window instead of button:
+    ! to the window instead of the 'close' button:
     call g_signal_connect_swapped(button, "clicked"//c_null_char, &
                                 & c_funloc(gtk_window_destroy), mainwindow)
 
-    call gtk_grid_attach (table, button, 0_c_int, 1_c_int, 1_c_int, 1_c_int)
+    call gtk_grid_attach(table, button, 0_c_int, 1_c_int, 1_c_int, 1_c_int)
 
-    button = gtk_button_new_with_label ("next page"//c_null_char)
-    call g_signal_connect (button, "clicked"//c_null_char, c_funloc(next_page_book))
-    call gtk_grid_attach (table, button, 1_c_int, 1_c_int, 1_c_int, 1_c_int)
+    button = gtk_button_new_with_label("next page"//c_null_char)
+    call g_signal_connect(button, "clicked"//c_null_char, c_funloc(next_page_book))
+    call gtk_grid_attach(table, button, 1_c_int, 1_c_int, 1_c_int, 1_c_int)
 
-    button = gtk_button_new_with_label ("prev page"//c_null_char)
-    call g_signal_connect (button, "clicked"//c_null_char, c_funloc(prev_page_book))
-    call gtk_grid_attach (table, button, 2_c_int, 1_c_int, 1_c_int, 1_c_int)
+    button = gtk_button_new_with_label("prev page"//c_null_char)
+    call g_signal_connect(button, "clicked"//c_null_char, c_funloc(prev_page_book))
+    call gtk_grid_attach(table, button, 2_c_int, 1_c_int, 1_c_int, 1_c_int)
 
-    button = gtk_button_new_with_label ("tab position"//c_null_char)
-    call g_signal_connect (button, "clicked"//c_null_char, c_funloc(rotate_book))
-    call gtk_grid_attach (table, button, 3_c_int, 1_c_int, 1_c_int, 1_c_int)
+    button = gtk_button_new_with_label("tab position"//c_null_char)
+    call g_signal_connect(button, "clicked"//c_null_char, c_funloc(rotate_book))
+    call gtk_grid_attach(table, button, 3_c_int, 1_c_int, 1_c_int, 1_c_int)
 
-    button = gtk_button_new_with_label ("tabs/border on/off"//c_null_char)
-    call g_signal_connect (button, "clicked"//c_null_char, c_funloc(tabsborder_book))
-    call gtk_grid_attach (table, button, 4_c_int, 1_c_int, 1_c_int, 1_c_int)
+    button = gtk_button_new_with_label("tabs/border on/off"//c_null_char)
+    call g_signal_connect(button, "clicked"//c_null_char, c_funloc(tabsborder_book))
+    call gtk_grid_attach(table, button, 4_c_int, 1_c_int, 1_c_int, 1_c_int)
 
-    button = gtk_button_new_with_label ("remove page"//c_null_char)
-    call g_signal_connect (button, "clicked"//c_null_char, c_funloc(remove_book))
-    call gtk_grid_attach (table, button, 5_c_int, 1_c_int, 1_c_int, 1_c_int)
+    button = gtk_button_new_with_label("remove page"//c_null_char)
+    call g_signal_connect(button, "clicked"//c_null_char, c_funloc(remove_book))
+    call gtk_grid_attach(table, button, 5_c_int, 1_c_int, 1_c_int, 1_c_int)
 
     ! Create second notebook, place the position of the tabs
-    notebook_2=gtk_notebook_new()
-    call gtk_notebook_set_tab_pos (notebook_2, GTK_POS_TOP)
-    call gtk_grid_attach (table, notebook_2, 0_c_int, 2_c_int, 6_c_int, 1_c_int)
+    notebook_2 = gtk_notebook_new()
+    call gtk_notebook_set_tab_pos(notebook_2, GTK_POS_TOP)
+    call gtk_grid_attach(table, notebook_2, 0_c_int, 2_c_int, 6_c_int, 1_c_int)
 
-    ! Attach notebook to group
+    ! Attach notebook to group, necessary to enable drag and drop
+    ! between the two notebooks
     call gtk_notebook_set_group_name(notebook_2,"group"//c_null_char)
 
-    !append a bunch of pages to the notebook
-    do i=1,3
+    ! Append a bunch of pages to the second notebook
+    do i = 1, 3
       write(istr,*) i
 
-      frame = gtk_frame_new ("Notebook 2 - Frame "//trim(adjustl(istr))//c_null_char)
+      frame = gtk_frame_new("Notebook 2 - Frame "//trim(adjustl(istr))//c_null_char)
       ! Set the border width (10 pixels) around the frame:
-      call gtk_widget_set_margin_start (frame, 10_c_int)
-      call gtk_widget_set_margin_end (frame, 10_c_int)
-      call gtk_widget_set_margin_top (frame, 10_c_int)
-      call gtk_widget_set_margin_bottom (frame, 10_c_int)
+      call gtk_widget_set_margin_start(frame, 10_c_int)
+      call gtk_widget_set_margin_end(frame, 10_c_int)
+      call gtk_widget_set_margin_top(frame, 10_c_int)
+      call gtk_widget_set_margin_bottom(frame, 10_c_int)
 
-      call gtk_widget_set_size_request (frame, 100_c_int, 75_c_int)
+      call gtk_widget_set_size_request(frame, 100_c_int, 75_c_int)
 
-      label = gtk_label_new ("Notebook 2 - Frame "//trim(adjustl(istr))//c_null_char)
+      label = gtk_label_new("Notebook 2 - Frame "//trim(adjustl(istr))//c_null_char)
       call gtk_frame_set_child(frame, label)
 
-      label = gtk_label_new ("Notebook 2 - Page "//trim(adjustl(istr))//c_null_char)
-      nb = gtk_notebook_append_page (notebook_2, frame, label)
-      call gtk_notebook_set_tab_reorderable (notebook_2, frame, TRUE)
-      call gtk_notebook_set_tab_detachable (notebook_2, frame, TRUE)
-    enddo
-    !******************************************************************
+      label = gtk_label_new("Notebook 2 - Page "//trim(adjustl(istr))//c_null_char)
+      nb = gtk_notebook_append_page(notebook_2, frame, label)
+      call gtk_notebook_set_tab_reorderable(notebook_2, frame, TRUE)
+      call gtk_notebook_set_tab_detachable(notebook_2, frame, TRUE)
+    end do
 
     ! If you don't show it, nothing will appear on screen...
     call gtk_widget_show(mainwindow)
@@ -306,7 +305,7 @@ end module handlers
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program notebooks
-  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding
   ! We will use those GTK functions and values. The "only" statement can improve
   ! significantly the compilation time:
   use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE
@@ -314,12 +313,12 @@ program notebooks
   use handlers
 
   implicit none
-  integer(c_int)     :: status
-  type(c_ptr)        :: app
+  integer(c_int) :: status
+  type(c_ptr)    :: app
 
   ! First, let's create a GTK application (it will initialize GTK).
   ! The application ID must contain at least one point:
-  ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-id-is-valid
+  ! https://docs.gtk.org/gio/type_func.Application.id_is_valid.html
   app = gtk_application_new("gtk-fortran.examples.notebooks"//c_null_char, &
                             & G_APPLICATION_FLAGS_NONE)
   ! The activate signal will be sent by g_application_run().
@@ -329,7 +328,7 @@ program notebooks
                       & c_null_ptr)
   ! Now, the whole application will be managed by GLib (=> main loop).
   ! Note that commandline arguments argc, argv are not passed.
-  ! https://developer.gnome.org/gio/stable/GApplication.html#g-application-run
+  ! https://docs.gtk.org/gio/method.Application.run.html
   status = g_application_run(app, 0_c_int, [c_null_ptr])
 
   print *, "You have exited the GLib main loop, bye, bye..."
