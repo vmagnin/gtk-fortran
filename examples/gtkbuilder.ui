@@ -10,20 +10,43 @@
       <object class="GtkBox" id="box1">
         <child>
           <object class="GtkButton" id="button1">
+            <property name="has-tooltip">True</property>
             <property name="label">Button1</property>
+            <property name="tooltip-text">I will say hello...</property>
             <signal name="clicked" handler="hello"/>
           </object>
         </child>
         <child>
           <object class="GtkButton" id="button2">
+            <property name="has-tooltip">True</property>
             <property name="label">Button2</property>
+            <property name="tooltip-text">I will print 'Button 2 clicked!'</property>
             <signal name="clicked" handler="button2clicked"/>
           </object>
         </child>
         <child>
           <object class="GtkButton" id="button3">
+            <property name="has-tooltip">True</property>
             <property name="label">Exit</property>
+            <property name="tooltip-text">Not clear?</property>
             <signal name="clicked" handler="destroy"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label1">
+            <property name="halign">center</property>
+            <property name="justify">center</property>
+            <property name="label">This user interface was built with the new RAD software Cambalache (see &lt;a href="https://blogs.gnome.org/xjuan/"&gt;https://blogs.gnome.org/xjuan/&lt;/a&gt;)</property>
+            <property name="lines">5</property>
+            <property name="margin-end">10</property>
+            <property name="margin-start">10</property>
+            <property name="margin-top">4</property>
+            <property name="max-width-chars">30</property>
+            <property name="overflow">hidden</property>
+            <property name="selectable">True</property>
+            <property name="use-markup">True</property>
+            <property name="wrap">True</property>
+            <property name="yalign">0.4</property>
           </object>
         </child>
       </object>

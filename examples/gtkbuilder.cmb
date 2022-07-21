@@ -9,17 +9,38 @@
 	(1,2,"GtkBox","box1",1,None,None,None,-1),
 	(1,3,"GtkButton","button1",2,None,None,None,None),
 	(1,4,"GtkButton","button3",2,None,None,None,2),
-	(1,5,"GtkButton","button2",2,None,None,None,1)
+	(1,5,"GtkButton","button2",2,None,None,None,1),
+	(1,6,"GtkLabel","label1",2,None,None,None,3)
   </object>
   <object_property>
 	(1,1,"GtkWindow","title","My title",None,None,None,None,None),
 	(1,3,"GtkButton","label","Button1",None,None,None,None,None),
+	(1,3,"GtkWidget","has-tooltip","True",None,None,None,None,None),
+	(1,3,"GtkWidget","tooltip-text","I will say hello...",None,None,None,None,None),
 	(1,4,"GtkButton","label","Exit",None,None,None,None,None),
-	(1,5,"GtkButton","label","Button2",None,None,None,None,None)
+	(1,4,"GtkWidget","has-tooltip","True",None,None,None,None,None),
+	(1,4,"GtkWidget","tooltip-text","Not clear?",None,None,None,None,None),
+	(1,5,"GtkButton","label","Button2",None,None,None,None,None),
+	(1,5,"GtkWidget","has-tooltip","True",None,None,None,None,None),
+	(1,5,"GtkWidget","tooltip-text","I will print 'Button 2 clicked!'",None,None,None,None,None),
+	(1,6,"GtkLabel","justify","center",None,None,None,None,None),
+	(1,6,"GtkLabel","label","This user interface was built with the new RAD software Cambalache (see &lt;a href=\"https://blogs.gnome.org/xjuan/\"&gt;https://blogs.gnome.org/xjuan/&lt;/a&gt;)",None,None,None,None,None),
+	(1,6,"GtkLabel","lines","5",None,None,None,None,None),
+	(1,6,"GtkLabel","max-width-chars","30",None,None,None,None,None),
+	(1,6,"GtkLabel","selectable","True",None,None,None,None,None),
+	(1,6,"GtkLabel","use-markup","True",None,None,None,None,None),
+	(1,6,"GtkLabel","wrap","True",None,None,None,None,None),
+	(1,6,"GtkLabel","yalign","0.4",None,None,None,None,None),
+	(1,6,"GtkWidget","halign","center",None,None,None,None,None),
+	(1,6,"GtkWidget","margin-end","10",None,None,None,None,None),
+	(1,6,"GtkWidget","margin-start","10",None,None,None,None,None),
+	(1,6,"GtkWidget","margin-top","4",None,None,None,None,None),
+	(1,6,"GtkWidget","overflow","hidden",None,None,None,None,None)
   </object_property>
   <object_signal>
 	(1,1,4,"GtkButton","clicked","destroy",None,None,None,None,None),
 	(2,1,3,"GtkButton","clicked","hello",None,None,None,None,None),
-	(3,1,5,"GtkButton","clicked","button2clicked",None,None,None,None,None)
+	(3,1,5,"GtkButton","clicked","button2clicked",None,None,None,None,None),
+	(4,1,1,"GtkWindow","close-request","destroy",None,None,None,None,None)
   </object_signal>
 </cambalache-project>
