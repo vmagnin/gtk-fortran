@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2022-04-08
+# Last modification: 2022-09-29
 
 """ This module contains functions for printing statistics at the end of the
 gtk-fortran generation process.
@@ -42,7 +42,7 @@ from globals_const import SRC_DIR
 
 
 def hash_gtk_fortran(PATH_DICT, GTKENUMS_FILE):
-    """Compute the SHA1 hash of all *-auto.f90 and *-auto.inc files to detect
+    """Compute the SHA1 hash of all *-auto.* files to detect
     modifications in gtk-fortran (useful during development)
     """
     hasher = hashlib.sha1()
@@ -133,7 +133,7 @@ class Statistics():
 
         print("* Computing time: {0:.2f} s".format(time.time()-T0))
 
-        # Print the SHA1 of all *-auto.f90 files and look for modification:
+        # Print the SHA1 of all *-auto.* files and look for modification:
         hash_gtk_fortran(PATH_DICT, GTKENUMS_FILE)
 
         print("\n\033[1m Used types:", self.used_types, "\033[0m")

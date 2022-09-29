@@ -12,6 +12,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 ### Changed
 - The `examples/gtkbuilder.glade` UI file has been regenerated with Cambalache and renamed `gtkbuilder.ui`
+- `gtk-auto.inc` and `gtkenums-auto.inc` are renamed with the `.in` extension because GitHub believes `.inc` is C++. Fixes issue #263.
 
 ### Fixed
 - `cmake/DefaultFlags.cmake`: release and debug flags for non-GFortran compilers were inverted.

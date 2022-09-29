@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2022-04-10 (tested with Python 3.10.4, Fedora 35)
-# pylint *.py : 8.46/10
+# Last modification: 2022-09-29 (tested with Python 3.10.6, Ubuntu 22.04)
+# pylint *.py : 7.84/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -78,11 +78,11 @@ PATH_DICT = OrderedDict([
     ("/usr/include/gdk-pixbuf-2.0", "gdk-pixbuf-auto.f90"),
     ("/usr/include/glib-2.0", "glib-auto.f90")])
 if GTK_VERSION == "gtk4":
-    GTKENUMS_FILE = "gtkenums-auto.inc"
+    GTKENUMS_FILE = "gtkenums-auto.in"
     PATH_DICT.update([
         ("/usr/include/gtk-4.0/gdk", "gdk-auto.f90"),
         ("/usr/include/gtk-4.0/gsk", "gsk-auto.f90"),
-        ("/usr/include/gtk-4.0/gtk", "gtk-auto.inc"),
+        ("/usr/include/gtk-4.0/gtk", "gtk-auto.in"),
         ("/usr/include/gtk-4.0/unix-print", "unix-print-auto.f90"),
         ("/usr/include/graphene-1.0", "graphene-auto.f90")])
 elif GTK_VERSION == "gtk3":

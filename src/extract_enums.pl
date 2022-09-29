@@ -24,17 +24,17 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by James Tappin 2012-08-14.
-# Vincent Magnin, last modification: 2022-04-08
+# Vincent Magnin, last modification: 2022-09-29
 
 
-# Find the enumerator constants in gtkenums-auto.inc and write
+# Find the enumerator constants in gtkenums-auto.in and write
 # them out to a simple list.
 
 use strict ;
 use warnings ;
 use Getopt::Long;
 
-my $infile="gtkenums-auto.inc";
+my $infile="gtkenums-auto.in";
 my $outfile="gtk-enumerators.lis";
 
 my $str;
