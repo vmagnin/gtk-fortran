@@ -74,5 +74,8 @@ if (INSTALL_EXAMPLES)
   install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/examples${GTKv}
     PATTERN "CMakeLists.txt" EXCLUDE
+    REGEX "\.backup$" EXCLUDE
+    REGEX "~$" EXCLUDE
+    REGEX "/Testing" EXCLUDE
   )
 endif(INSTALL_EXAMPLES)
