@@ -5,14 +5,22 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ## [unreleased]
 
 ### Added
-- `src/extract_hl_doc.py`: generates markdown files for the HL gtk-fortran documentation.
+- `src/extract_hl_doc.py`: generates markdown files for the HL gtk-fortran documentation. Fixes [issue #259](https://github.com/vmagnin/gtk-fortran/issues/259).
 - Intel ifx compiler is now supported by CMake (>=3.20), with the id `IntelLLVM`.
 - `tests_gtk_sup.f90`: for testing functions of the gtk_sup module.
 - `examples/notebooks.f90`: notebooks are now scrollable. And a popup menu appears when clicking with the right button on tabs.
+- A new example has been added in the gtk-fortran-extra repository (MIT license). It demonstrates how you can use modern Fortran parallel features (coarrays, events, teams, collective routines) with gtk-fortran. It computes a Buddhabrot.
+- A new *How to start my own project from a gtk-fortran example?* tutorial, including license considerations.
 
 ### Changed
-- The `examples/gtkbuilder.glade` UI file has been regenerated with Cambalache and renamed `gtkbuilder.ui`
+- `CMakeLists.txt` files: several minor improvements.
+- `examples/notebooks.f90` improved: notebooks are now scrollable, added a popup menu when clicking with the right button on tabs.
+- The `examples/gtkbuilder.glade` UI file has been regenerated with Cambalache (`gtkbuilder.cmb` file) and renamed `gtkbuilder.ui`. The widgets were also improved (tooltips, URL link...).
 - `gtk-auto.inc` and `gtkenums-auto.inc` are renamed with the `.in` extension because GitHub believes `.inc` is C++. Fixes issue #263.
+- Improved code layout in some files, code cleaning, improvements.
+- Uses allocatable strings instead of long strings.
+- The HL gtk-fortran documentation has been fully reviewed and updated.
+- The Wiki documentation has been fully reviewed and refactored: it now uses the Diátaxis framework (Tutorials, How-to, Reference, Explanation).
 
 ### Fixed
 - `cmake/DefaultFlags.cmake`: release and debug flags for non-GFortran compilers were inverted.
