@@ -1,6 +1,6 @@
 # Free Software Foundation, Inc.
 #
-# This file is part of the gtk-fortran gtk+ Fortran Interface library.
+# This file is part of the gtk-fortran GTK Fortran Interface library.
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2021-05-13, 2022-05-04
+#   vmagnin: 2021-05-13, 2022-09-30
 #
 # CMAKE build file for gtk-fortran
 
@@ -122,11 +122,10 @@ file(READ ${CMAKE_CURRENT_SOURCE_DIR}/usemodules.py PYUSERMODULE_IN)
 string(REPLACE "@PATH_TO_CSV@" "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/gtk-fortran/${gtk_V_fortran}-index.csv" PYUSERMODULE_OUT "${PYUSERMODULE_IN}")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-pymodscan "${PYUSERMODULE_OUT}")
 
-# Copy those files:
-file(COPY gtk-fortran-index.csv DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
-file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-index.csv )
-file(COPY gtk-enumerators.lis DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
-file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/gtk-enumerators.lis ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis )
+# Copy and rename those two files in the current binary dir:
+configure_file(gtk-fortran-index.csv ${gtk_V_fortran}-index.csv COPYONLY)
+configure_file(gtk-enumerators.lis gtk-${GTKv}-enumerators.lis COPYONLY)
+
 add_custom_target(usemodules ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-modscan
   ${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}-index.csv ${CMAKE_CURRENT_BINARY_DIR}/gtk-${GTKv}-enumerators.lis )
 

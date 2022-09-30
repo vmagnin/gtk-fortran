@@ -1,6 +1,6 @@
 # Free Software Foundation, Inc.
 #
-# This file is part of the gtk-fortran gtk+ Fortran Interface library.
+# This file is part of the gtk-fortran GTK Fortran Interface library.
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,13 +21,13 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #=============================================================================
 # Contributed by James Tappin 05/20/2011
-# Last modifications: Jens Hunger: 03/07/2013, vmagnin 2022-04-06
+# Last modifications: Jens Hunger: 03/07/2013, vmagnin 2022-09-30
 #
 # CMAKE build file for gtkf-sketcher
 
 include_directories("${CMAKE_BINARY_DIR}/src/modules")
 
-# configure_file() copies a file and substitutes @VAR@ or ${VAR}
+# configure_file() copies and renames a file and substitutes @VAR@ or ${VAR}
 # https://cmake.org/cmake/help/latest/command/configure_file.html
 set(GTKF_PROG_PREFIX "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/${gtk_V_fortran}")
 configure_file(gtkf-sketcher.f90 gtkf-sketcher.out.f90)
@@ -37,12 +37,14 @@ target_link_libraries(gtkf-sketcher gtk-fortran_static ${GTK_LIBRARIES})
 # No test as the glade stuff is too sensitive to location
 
 #==========================================
-# Copy other files needed by gtkf-sketcher:
+# Copy other files needed by gtkf-sketcher
 #==========================================
-file(COPY gtkf-sketcher.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
-file(COPY example.glade DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
-file(COPY default.options DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+configure_file(gtkf-sketcher.glade gtkf-sketcher.glade COPYONLY)
+configure_file(example.glade example.glade COPYONLY)
+configure_file(default.options default.options COPYONLY)
+# Copy the directory 'data' (configure_file() works only with files):
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
-file(COPY ${CMAKE_SOURCE_DIR}/src/usemodules.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/example/ )
-file(COPY ${CMAKE_SOURCE_DIR}/src/tools.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/example/ )
-file(COPY ${CMAKE_SOURCE_DIR}/src/gtk-fortran-index.csv DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/example/ )
+
+configure_file(${CMAKE_SOURCE_DIR}/src/usemodules.py ${CMAKE_CURRENT_BINARY_DIR}/example/usemodules.py COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/src/tools.py ${CMAKE_CURRENT_BINARY_DIR}/example/tools.py COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/src/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/example/gtk-fortran-index.csv COPYONLY)
