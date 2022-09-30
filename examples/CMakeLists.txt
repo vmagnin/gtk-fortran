@@ -57,7 +57,8 @@ if (NOT NO_BUILD_EXAMPLES)
   #====================================
   # Build the gtkbuilder example:
   #====================================
-  file(COPY gtkbuilder.ui DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ )
+  # With this command, CMake will detect the updates of gtkbuilder.ui:
+  configure_file(gtkbuilder.ui gtkbuilder.ui COPYONLY)
 
   add_executable(gtkbuilder2 "gtkbuilder2.f90")
   target_link_libraries(gtkbuilder2 gtk-fortran_static ${GTK_LIBRARIES})
