@@ -147,6 +147,7 @@ install(TARGETS gtk-fortran_static gtk-fortran_shared
 install(DIRECTORY
   ${CMAKE_CURRENT_BINARY_DIR}/modules/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${gtk_V_fortran}
+  PATTERN "handlers_gtk_fortran.mod" EXCLUDE
 )
 
 install(PROGRAMS
