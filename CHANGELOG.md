@@ -23,6 +23,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - The Wiki documentation has been fully reviewed and refactored: it now uses the Diátaxis framework (Tutorials, How-to, Reference, Explanation).
 
 ### Fixed
+- `src/cfwrapper/enums.py`: prepared for GTK 4.8 and GLib 2.74. Two regex were  modified to remove correctly three constants. See [issue #266](https://github.com/vmagnin/gtk-fortran/issues/266).
 - `cmake/DefaultFlags.cmake`: release and debug flags for non-GFortran compilers were inverted.
 
 ## [gtk-fortran 4.2.1] 2022-04-24
