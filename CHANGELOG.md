@@ -5,6 +5,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ## [unreleased]
 
 ### Added
+- `CITATION.cff` file, used by the GitHub interface.
 - `src/extract_hl_doc.py`: generates markdown files for the HL gtk-fortran documentation. Fixes [issue #259](https://github.com/vmagnin/gtk-fortran/issues/259).
 - Intel ifx compiler is now supported by CMake (>=3.20), with the id `IntelLLVM`.
 - `tests_gtk_sup.f90`: for testing functions of the gtk_sup module.

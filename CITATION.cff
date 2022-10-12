@@ -1,0 +1,82 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: gtk-fortran
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Vincent
+    family-names: Magnin
+    email: vincent.magnin@univ-lille.fr
+    affiliation: Lille University (France)
+    orcid: 'https://orcid.org/0000-0002-9016-9955'
+  - given-names: James
+    family-names: Tappin
+    affiliation: >-
+      RAL Space, STFC Rutherford Appleton Laboratory,
+      Harwell Campus​, Didcot,Oxfordshire OX11 0QX,
+      United Kingdom
+    orcid: 'https://orcid.org/0000-0002-1878-5243'
+  - given-names: Jens
+    family-names: Hunger
+    affiliation: >-
+      Technische Universität Dresden, Department of
+      Chemistry and Food Chemistry, Dresden, Germany
+    orcid: 'https://orcid.org/0000-0001-7639-1229'
+  - given-names: Jerry
+    name-particle: De
+    family-names: Lisle
+    affiliation: 'GFortran team, USA'
+identifiers:
+  - type: doi
+    value: 10.21105/joss.01109
+    description: The paper about gtk-fortran
+repository-code: 'https://github.com/vmagnin/gtk-fortran'
+url: 'https://github.com/vmagnin/gtk-fortran/wiki'
+abstract: >-
+  The gtk-fortran project provides bindings to the
+  Fortran language for the GTK libraries (GTK, Cairo,
+  GdkPixbuf, GLib...) and is licensed under GNU GPLv3
+  (see Licenses for more details). Like GTK and
+  Fortran, it is cross-platform (Linux, macOS, BSD,
+  Windows).
+keywords:
+  - Fortran GTK binding GUI
+license: GPL-3.0-or-later
+preferred-citation:
+  type: article
+  authors:
+  - given-names: Vincent
+    family-names: Magnin
+    email: vincent.magnin@univ-lille.fr
+    affiliation: Lille University (France)
+    orcid: 'https://orcid.org/0000-0002-9016-9955'
+  - given-names: James
+    family-names: Tappin
+    affiliation: >-
+      RAL Space, STFC Rutherford Appleton Laboratory,
+      Harwell Campus​, Didcot,Oxfordshire OX11 0QX,
+      United Kingdom
+    orcid: 'https://orcid.org/0000-0002-1878-5243'
+  - given-names: Jens
+    family-names: Hunger
+    affiliation: >-
+      Technische Universität Dresden, Department of
+      Chemistry and Food Chemistry, Dresden, Germany
+    orcid: 'https://orcid.org/0000-0001-7639-1229'
+  - given-names: Jerry
+    name-particle: De
+    family-names: Lisle
+    affiliation: 'GFortran team, USA'
+  doi: "10.21105/joss.01109"
+  journal: "Journal of Open Source Software"
+  month: 1
+  start: 1 # First page number
+  end: 3 # Last page number
+  title: "gtk-fortran: a GTK+ binding to build Graphical User Interfaces in Fortran"
+  issue: 34
+  volume: 4
+  year: 2019
