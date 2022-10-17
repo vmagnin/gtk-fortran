@@ -119,7 +119,7 @@ contains
     print *, "Scroll and new circle radius: ", x, y, radius
     ! We need to redraw the area:
     widget = gtk_event_controller_get_widget(controller)
-    call gtk_widget_queue_draw(widget);
+    call gtk_widget_queue_draw(widget)
   end subroutine scroll_cb
 
   ! "It is called whenever GTK needs to draw the contents of the drawing area

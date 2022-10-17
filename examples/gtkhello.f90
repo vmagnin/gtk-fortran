@@ -68,9 +68,9 @@ contains
     ! Adding widgets in the window:
     !******************************************************************
     ! You need a box where to arrange your buttons, separated by 10 pixels:
-    box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10_c_int);
+    box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10_c_int)
     ! Perhaps you prefer a vertical organization:
-    !box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10_c_int);
+    !box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10_c_int)
     ! Set the border width (10 pixels) around the box:
     call gtk_widget_set_margin_start (box, 10_c_int)
     call gtk_widget_set_margin_end (box, 10_c_int)

@@ -139,7 +139,7 @@ program hl_assistant
   ! Intro page
   junk = gtk_label_new("This is an example of a GtkAssistant"//c_new_line// &
        & "by clicking the forward button,"//c_new_line// &
-       & " you can continue to the next section!"//c_null_char);
+       & " you can continue to the next section!"//c_null_char)
 
   call hl_gtk_assistant_add_page(asstnt, junk, GTK_ASSISTANT_PAGE_INTRO, &
        & page_title="Introduction"//c_null_char)

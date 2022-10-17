@@ -208,7 +208,7 @@ contains
       ! https://developer.gnome.org/gdk-pixbuf/stable/gdk-pixbuf-File-saving.html
       ! https://mail.gnome.org/archives/gtk-list/2004-October/msg00186.html
       cstatus = gdk_pixbuf_savev(my_pixbuf, "julia.png"//c_null_char, &
-                & "png"//c_null_char, c_null_ptr, c_null_ptr, c_null_ptr);
+                & "png"//c_null_char, c_null_ptr, c_null_ptr, c_null_ptr)
 
       if (cstatus == TRUE) then
         string = "Successfully saved: julia.png"//c_null_char
@@ -345,7 +345,7 @@ contains
     call gtk_expander_set_expanded(expander, TRUE)
 
     ! We create a vertical box container:
-    box1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10_c_int);
+    box1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10_c_int)
     call gtk_box_append(box1, expander)
 
     ! We need a widget where to draw our pixbuf.
