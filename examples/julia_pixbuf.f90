@@ -32,7 +32,7 @@ module global_widgets
   character(kind=c_char), dimension(:), pointer :: pixel
   integer(c_int) :: nch, rowstride, width, height, pixwidth, pixheight
   logical :: computing = .false.
-  character(LEN=80) :: string
+  character(len=80) :: string
 end module global_widgets
 
 module handlers
