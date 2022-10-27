@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-02, 2022-04-09
+# Last modification: 2019-04-02, 2022-10-27
 
 """ This module contains functions to analyze C prototypes
     and generate Fortran interfaces.
@@ -34,9 +34,9 @@
 import re           # Regular expression library
 
 # Project modules:
+from tools import multiline
 from globals_const import TAB
 from fortran import iso_c_binding
-from tools import multiline
 
 #---------------------------------------------------------------------------
 # Regular expressions used to identify the different parts of a C prototype:
@@ -213,13 +213,13 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
         # Write the Fortran interface in the .f90 file:
         if not error_flag:
             write_fortran_interface(index, module_name, f_file_name, f_file,
-                                    whole_file_original, c_dir, c_file_name,
+                                    c_dir, c_file_name,
                                     function_status, proto, f_procedure, f_name,
                                     args_list, f_use, declarations, isfunction,
                                     returned_type, f_the_end, my_stats)
 
 
-def write_fortran_interface(index, module_name, f_file_name, f_file, whole_file_original,
+def write_fortran_interface(index, module_name, f_file_name, f_file,
                             c_dir, c_file_name, function_status, prototype,
                             f_procedure, f_name, args_list, f_use, declarations,
                             isfunction, returned_type, f_the_end, my_stats):

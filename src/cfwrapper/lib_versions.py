@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2011-01-28
-# Last modification: 2022-04-10
+# Last modification: 2022-10-27
 
 import os
 import re           # Regular expression library
@@ -133,28 +133,28 @@ class Version():
         all_versions.append(["GLib", self.glib])
         all_versions.append([self.distro_name, self.distro_version])
 
-        VERSIONS_file = csv.writer(open(TOP_DIR+"VERSIONS", "w"), delimiter=";")
+        VERSIONS_file = csv.writer(open(TOP_DIR+"VERSIONS", "w",
+                                        encoding='utf-8'), delimiter=";")
         VERSIONS_file.writerows(all_versions)
 
 
     def update_json_file(self):
         """Update the codemeta.json file a the top of the project.
         """
-        with open('../../codemeta.json', 'r+') as json_file:
+        with open('../../codemeta.json', 'r+', encoding='utf-8') as json_file:
             content = json_file.read()
             json_file.seek(0)
             json_file.truncate()
             content = re.sub('"dateModified": "(.*)"', '"dateModified": "'+datetime.date.today().isoformat()+'"', content)
             content = re.sub('"version": "(.*)"', '"version": "'+self.gtk_fortran+'"', content)
             json_file.write(content)
-            
+
     def update_fpm_file(self):
         """Update the fpm.toml file a the top of the project.
         """
-        with open('../../fpm.toml', 'r+') as fpm_file:
+        with open('../../fpm.toml', 'r+', encoding='utf-8') as fpm_file:
             content = fpm_file.read()
             fpm_file.seek(0)
             fpm_file.truncate()
             content = re.sub('version = "(.*)"', 'version = "'+self.gtk_fortran+'"', content)
             fpm_file.write(content)
-
