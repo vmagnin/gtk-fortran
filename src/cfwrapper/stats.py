@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2022-09-29
+# Last modification: 2022-10-28
 
 """ This module contains functions for printing statistics at the end of the
 gtk-fortran generation process.
@@ -120,18 +120,18 @@ class Statistics():
         print(getpass.getuser() + ", "
               + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()) + "\033[0m")
 
-        print('{:<30}{:>6}'.format("* nb_files scanned =", self.nb_files))
-        print('{:<30}{:>6}'.format("* nb_generated_interfaces =", self.nb_generated_interfaces))
-        print('{:<30}{:>6}'.format("* nb_deprecated_functions =", self.nb_deprecated_functions))
-        print('{:<30}{:>6}'.format("* nb_type_errors =", my_errors.nb_type_errors))
-        print('{:<30}{:>6}'.format("* nb_errors (others) =", my_errors.nb_errors))
-        print('{:<30}{:>6}'.format("* nb_lines treated =", self.nb_lines))
-        print('{:<30}{:>6}'.format("* nb_variadic functions =", self.nb_variadic))
-        print('{:<30}{:>6}'.format("* nb_enumerators =", self.nb_enumerators))
-        print('{:<30}{:>6}'.format("* nb_win32_utf8 =", self.nb_win32_utf8))
-        print('{:<30}{:>6}'.format("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT)))
+        print(f"* nb_files scanned =        {self.nb_files:>6}")
+        print(f"* nb_generated_interfaces = {self.nb_generated_interfaces:>6}")
+        print(f"* nb_deprecated_functions = {self.nb_deprecated_functions:>6}")
+        print(f"* nb_type_errors =          {my_errors.nb_type_errors:>6}")
+        print(f"* nb_errors (others) =      {my_errors.nb_errors:>6}")
+        print(f"* nb_lines treated =        {self.nb_lines:>6}")
+        print(f"* nb_variadic functions =   {self.nb_variadic:>6}")
+        print(f"* nb_enumerators =          {self.nb_enumerators:>6}")
+        print(f"* nb_win32_utf8 =           {self.nb_win32_utf8:>6}")
+        print(f"* Number of types =         {len(TYPES_DICT) + len(TYPES2_DICT):>6}")
 
-        print("* Computing time: {0:.2f} s".format(time.time()-T0))
+        print(f"* Computing time: {time.time()-T0:.2f} s")
 
         # Print the SHA1 of all *-auto.* files and look for modification:
         hash_gtk_fortran(PATH_DICT, GTKENUMS_FILE)

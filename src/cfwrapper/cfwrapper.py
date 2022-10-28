@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2022-10-27 (tested with Python 3.11.0rc2, Fedora 37)
-# $ pylint *.py ../tools.py    => 8.54/10
+# Last modification: 2022-10-28 (tested with Python 3.11.0rc2, Fedora 37)
+# $ pylint *.py ../tools.py    => 8.78/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -256,7 +256,7 @@ print("\033[1m Pass 2: looking for C functions...\033[0m ")
 for library_path in PATH_DICT:
     # Name of the *-auto.* file:
     f_file_name = PATH_DICT[library_path]
-    print('{:<32}{}{:<20}'.format(library_path, " =>  ", f_file_name), end="")
+    print(f"{library_path:<32} =>  {f_file_name:<20}", end="")
 
     # Create the *-auto.* file with its module declaration:
     if f_file_name not in opened_files:
@@ -329,7 +329,7 @@ for library_path in PATH_DICT:
     if module_name != "gtk":    # gtk module is included in gtk.f90
         f_file.write("end interface\nend module "+module_name+"\n")
         f_file.close()
-    print('{:>10}{}'.format(os.stat(SRC_DIR+f_file_name).st_size, " bytes"))
+    print(f"{os.stat(SRC_DIR+f_file_name).st_size:>10} bytes")
     # Next *-auto.* file
 
 
