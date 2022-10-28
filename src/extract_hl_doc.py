@@ -27,7 +27,7 @@
 # Contributed by Vincent Magnin, 2022-04-26
 # Last modification: 2022-04-28
 # Tested with Python 3.10.4, Kubuntu 22.04
-# Pylint rate: 10.0/10
+# Pylint rate: 9.30/10
 #-------------------------------------------------------------------------------
 
 """ Generates markdown files for the HL gtk-fortran documentation.
@@ -118,7 +118,8 @@ print("\033[1m Scanning and parsing HL files... \033[0m")
 for fortran_file in FILES_LIST:
     print(INPUT_DIR+fortran_file)
 
-    whole_file = open(INPUT_DIR+fortran_file, 'r', errors='replace').read()
+    whole_file = open(INPUT_DIR+fortran_file, 'r', errors='replace',
+                      encoding='utf-8').read()
 
     #***************************************
     # Fortran module header
