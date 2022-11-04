@@ -15,6 +15,7 @@ Please post bugs on GitHub:
 
 * README.md: the present file.
 * CHANGELOG.md: list of the releases with main changes.
+* CITATION.cff: file used by the GitHub interface (button "Cite this repository").
 * CMakeLists.txt: main CMake instructions to build the project.
 * codemeta.json: metadata about the project.
 * fpm.toml: Fortran Package Manager manifest.
