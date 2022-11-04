@@ -2,7 +2,8 @@
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
-## [unreleased]
+## [gtk-fortran 4.3.0] 2022-11-??
+This release offers interfaces to GTK 4.8.1 and GLib 2.74.0.
 
 ### Added
 - `CITATION.cff` file, used by the GitHub interface.
@@ -14,6 +15,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - A new *How to start my own project from a gtk-fortran example?* tutorial, including license considerations.
 
 ### Changed
+- The Python scripts received minor code improvements suggested by pylint.
 - `CMakeLists.txt` files: several minor improvements.
 - `examples/notebooks.f90` improved: notebooks are now scrollable, added a popup menu when clicking with the right button on tabs.
 - The `examples/gtkbuilder.glade` UI file has been regenerated with Cambalache (`gtkbuilder.cmb` file) and renamed `gtkbuilder.ui`. The widgets were also improved (tooltips, URL link...).
