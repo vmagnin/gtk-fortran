@@ -2,7 +2,7 @@
 # Show libraries and tools versions used in gtk-fortran
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13
-# Updated 2021-10-20
+# Updated 2022-11-06
 # Needs: in Fedora, lsb_release is in the package redhat-lsb-core
 
 # The shell -e option is not used in this script to avoid exiting each time a
@@ -84,11 +84,12 @@ echo "============"
 echo "BUILD TOOLS:"
 echo "============"
 
-echo "meson $(meson --version)"
+#echo "meson $(meson --version)"
 cmake --version | head -n 1
 echo "pkg-config $(pkg-config --version)"
+make --version | grep "GNU Make"
 git --version
 
-echo "============"
-echo "OTHER TOOLS:"
-echo "============"
+#echo "============"
+#echo "OTHER TOOLS:"
+#echo "============"
