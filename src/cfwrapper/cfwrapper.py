@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2022-10-28 (tested with Python 3.11.0rc2, Fedora 37)
-# $ pylint *.py ../tools.py    => 8.78/10
+# Last modification: 2022-11-09 (tested with Python 3.11.0, Fedora 37)
+# $ pylint *.py ../tools.py    => 8.84/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -338,15 +338,15 @@ enums_file.close()
 
 # Write the list of all GTK functions in the index CSV file:
 index.sort()
-index_file = csv.writer(open(SRC_DIR+"gtk-fortran-index.csv", "w",
-                             encoding='utf-8'), delimiter=";")
-index_file.writerows(index)
+with open(SRC_DIR+"gtk-fortran-index.csv", "w", newline="", encoding="utf-8") as csvfile1:
+    index_file = csv.writer(csvfile1, delimiter=";")
+    index_file.writerows(index)
 
 # Write errors in a CSV file:
 my_errors.sort()
-errors_file = csv.writer(open("cfwrapper-errors.csv", "w",
-                              encoding='utf-8'), delimiter=";")
-errors_file.writerows(my_errors.errors_list)
+with open("cfwrapper-errors.csv", "w", newline="", encoding="utf-8") as csvfile2:
+    errors_file = csv.writer(csvfile2, delimiter=";")
+    errors_file.writerows(my_errors.errors_list)
 
 print()
 

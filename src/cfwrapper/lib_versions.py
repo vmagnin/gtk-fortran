@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2011-01-28
-# Last modification: 2022-10-27
+# Last modification: 2022-11-09
 
 import os
 import re           # Regular expression library
@@ -133,9 +133,9 @@ class Version():
         all_versions.append(["GLib", self.glib])
         all_versions.append([self.distro_name, self.distro_version])
 
-        VERSIONS_file = csv.writer(open(TOP_DIR+"VERSIONS", "w",
-                                        encoding='utf-8'), delimiter=";")
-        VERSIONS_file.writerows(all_versions)
+        with open(TOP_DIR+'VERSIONS', 'w', newline='', encoding='utf-8') as csvfile:
+            VERSIONS_file = csv.writer(csvfile, delimiter=';')
+            VERSIONS_file.writerows(all_versions)
 
 
     def update_json_file(self):
