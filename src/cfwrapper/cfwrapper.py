@@ -339,13 +339,13 @@ enums_file.close()
 # Write the list of all GTK functions in the index CSV file:
 index.sort()
 with open(SRC_DIR+"gtk-fortran-index.csv", "w", newline="", encoding="utf-8") as csvfile1:
-    index_file = csv.writer(csvfile1, delimiter=";")
+    index_file = csv.writer(csvfile1, delimiter=";", dialect='excel')
     index_file.writerows(index)
 
 # Write errors in a CSV file:
 my_errors.sort()
 with open("cfwrapper-errors.csv", "w", newline="", encoding="utf-8") as csvfile2:
-    errors_file = csv.writer(csvfile2, delimiter=";")
+    errors_file = csv.writer(csvfile2, delimiter=";", dialect='excel')
     errors_file.writerows(my_errors.errors_list)
 
 print()

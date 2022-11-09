@@ -134,7 +134,7 @@ class Version():
         all_versions.append([self.distro_name, self.distro_version])
 
         with open(TOP_DIR+'VERSIONS', 'w', newline='', encoding='utf-8') as csvfile:
-            VERSIONS_file = csv.writer(csvfile, delimiter=';')
+            VERSIONS_file = csv.writer(csvfile, delimiter=';', dialect='excel')
             VERSIONS_file.writerows(all_versions)
 
 
