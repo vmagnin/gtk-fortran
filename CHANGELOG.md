@@ -3,7 +3,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 
 ## [gtk-fortran 4.3.0] 2022-11-??
-This release offers interfaces to GTK 4.8.1 and GLib 2.74.0.
+This release offers interfaces to GTK 4.8.2 and GLib 2.74.1.
 
 ### Added
 - `CITATION.cff` file, used by the GitHub interface.

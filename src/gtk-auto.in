@@ -16293,6 +16293,776 @@ end function
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtktypebuiltins.h
 !--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_application_inhibit_flags_get_type (void);
+function gtk_application_inhibit_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_application_inhibit_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_assistant_page_type_get_type (void);
+function gtk_assistant_page_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_assistant_page_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_builder_error_get_type (void);
+function gtk_builder_error_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_builder_error_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_builder_closure_flags_get_type (void);
+function gtk_builder_closure_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_builder_closure_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_cell_renderer_state_get_type (void);
+function gtk_cell_renderer_state_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_cell_renderer_state_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_cell_renderer_mode_get_type (void);
+function gtk_cell_renderer_mode_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_cell_renderer_mode_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_cell_renderer_accel_mode_get_type (void);
+function gtk_cell_renderer_accel_mode_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_cell_renderer_accel_mode_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_debug_flags_get_type (void);
+function gtk_debug_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_debug_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_dialog_flags_get_type (void);
+function gtk_dialog_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_dialog_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_response_type_get_type (void);
+function gtk_response_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_response_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_editable_properties_get_type (void);
+function gtk_editable_properties_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_editable_properties_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_entry_icon_position_get_type (void);
+function gtk_entry_icon_position_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_entry_icon_position_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_align_get_type (void);
+function gtk_align_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_align_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_arrow_type_get_type (void);
+function gtk_arrow_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_arrow_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_baseline_position_get_type (void);
+function gtk_baseline_position_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_baseline_position_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_content_fit_get_type (void);
+function gtk_content_fit_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_content_fit_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_delete_type_get_type (void);
+function gtk_delete_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_delete_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_direction_type_get_type (void);
+function gtk_direction_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_direction_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_icon_size_get_type (void);
+function gtk_icon_size_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_icon_size_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_sensitivity_type_get_type (void);
+function gtk_sensitivity_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_sensitivity_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_text_direction_get_type (void);
+function gtk_text_direction_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_text_direction_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_justification_get_type (void);
+function gtk_justification_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_justification_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_message_type_get_type (void);
+function gtk_message_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_message_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_movement_step_get_type (void);
+function gtk_movement_step_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_movement_step_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_natural_wrap_mode_get_type (void);
+function gtk_natural_wrap_mode_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_natural_wrap_mode_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_scroll_step_get_type (void);
+function gtk_scroll_step_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_scroll_step_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_orientation_get_type (void);
+function gtk_orientation_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_orientation_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_overflow_get_type (void);
+function gtk_overflow_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_overflow_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_pack_type_get_type (void);
+function gtk_pack_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_pack_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_position_type_get_type (void);
+function gtk_position_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_position_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_scroll_type_get_type (void);
+function gtk_scroll_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_scroll_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_selection_mode_get_type (void);
+function gtk_selection_mode_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_selection_mode_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_wrap_mode_get_type (void);
+function gtk_wrap_mode_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_wrap_mode_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_sort_type_get_type (void);
+function gtk_sort_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_sort_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_pages_get_type (void);
+function gtk_print_pages_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_print_pages_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_page_set_get_type (void);
+function gtk_page_set_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_page_set_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_number_up_layout_get_type (void);
+function gtk_number_up_layout_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_number_up_layout_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_ordering_get_type (void);
+function gtk_ordering_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_ordering_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_page_orientation_get_type (void);
+function gtk_page_orientation_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_page_orientation_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_quality_get_type (void);
+function gtk_print_quality_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_print_quality_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_duplex_get_type (void);
+function gtk_print_duplex_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_print_duplex_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_unit_get_type (void);
+function gtk_unit_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_unit_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_tree_view_grid_lines_get_type (void);
+function gtk_tree_view_grid_lines_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_tree_view_grid_lines_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_size_group_mode_get_type (void);
+function gtk_size_group_mode_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_size_group_mode_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_size_request_mode_get_type (void);
+function gtk_size_request_mode_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_size_request_mode_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_scrollable_policy_get_type (void);
+function gtk_scrollable_policy_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_scrollable_policy_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_state_flags_get_type (void);
+function gtk_state_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_state_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_border_style_get_type (void);
+function gtk_border_style_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_border_style_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_level_bar_mode_get_type (void);
+function gtk_level_bar_mode_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_level_bar_mode_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_input_purpose_get_type (void);
+function gtk_input_purpose_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_input_purpose_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_input_hints_get_type (void);
+function gtk_input_hints_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_input_hints_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_propagation_phase_get_type (void);
+function gtk_propagation_phase_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_propagation_phase_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_propagation_limit_get_type (void);
+function gtk_propagation_limit_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_propagation_limit_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_event_sequence_state_get_type (void);
+function gtk_event_sequence_state_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_event_sequence_state_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_pan_direction_get_type (void);
+function gtk_pan_direction_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_pan_direction_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_shortcut_scope_get_type (void);
+function gtk_shortcut_scope_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_shortcut_scope_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_pick_flags_get_type (void);
+function gtk_pick_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_pick_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_constraint_relation_get_type (void);
+function gtk_constraint_relation_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_constraint_relation_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_constraint_strength_get_type (void);
+function gtk_constraint_strength_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_constraint_strength_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_constraint_attribute_get_type (void);
+function gtk_constraint_attribute_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_constraint_attribute_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_constraint_vfl_parser_error_get_type (void);
+function gtk_constraint_vfl_parser_error_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_constraint_vfl_parser_error_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_system_setting_get_type (void);
+function gtk_system_setting_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_system_setting_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_symbolic_color_get_type (void);
+function gtk_symbolic_color_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_symbolic_color_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_accessible_role_get_type (void);
+function gtk_accessible_role_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_accessible_role_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_accessible_state_get_type (void);
+function gtk_accessible_state_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_accessible_state_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_accessible_property_get_type (void);
+function gtk_accessible_property_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_accessible_property_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_accessible_relation_get_type (void);
+function gtk_accessible_relation_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_accessible_relation_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_accessible_tristate_get_type (void);
+function gtk_accessible_tristate_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_accessible_tristate_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_accessible_invalid_state_get_type (void);
+function gtk_accessible_invalid_state_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_accessible_invalid_state_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_accessible_autocomplete_get_type (void);
+function gtk_accessible_autocomplete_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_accessible_autocomplete_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_accessible_sort_get_type (void);
+function gtk_accessible_sort_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_accessible_sort_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_event_controller_scroll_flags_get_type (void);
+function gtk_event_controller_scroll_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_event_controller_scroll_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_file_chooser_action_get_type (void);
+function gtk_file_chooser_action_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_file_chooser_action_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_file_chooser_error_get_type (void);
+function gtk_file_chooser_error_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_file_chooser_error_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_filter_match_get_type (void);
+function gtk_filter_match_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_filter_match_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_filter_change_get_type (void);
+function gtk_filter_change_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_filter_change_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_font_chooser_level_get_type (void);
+function gtk_font_chooser_level_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_font_chooser_level_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_icon_lookup_flags_get_type (void);
+function gtk_icon_lookup_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_icon_lookup_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_icon_theme_error_get_type (void);
+function gtk_icon_theme_error_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_icon_theme_error_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_icon_view_drop_position_get_type (void);
+function gtk_icon_view_drop_position_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_icon_view_drop_position_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_image_type_get_type (void);
+function gtk_image_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_image_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_inscription_overflow_get_type (void);
+function gtk_inscription_overflow_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_inscription_overflow_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_buttons_type_get_type (void);
+function gtk_buttons_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_buttons_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_notebook_tab_get_type (void);
+function gtk_notebook_tab_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_notebook_tab_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_pad_action_type_get_type (void);
+function gtk_pad_action_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_pad_action_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_popover_menu_flags_get_type (void);
+function gtk_popover_menu_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_popover_menu_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_status_get_type (void);
+function gtk_print_status_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_print_status_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_operation_result_get_type (void);
+function gtk_print_operation_result_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_print_operation_result_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_operation_action_get_type (void);
+function gtk_print_operation_action_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_print_operation_action_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_error_get_type (void);
+function gtk_print_error_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_print_error_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_recent_manager_error_get_type (void);
+function gtk_recent_manager_error_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_recent_manager_error_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_revealer_transition_type_get_type (void);
+function gtk_revealer_transition_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_revealer_transition_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_corner_type_get_type (void);
+function gtk_corner_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_corner_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_policy_type_get_type (void);
+function gtk_policy_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_policy_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_shortcut_action_flags_get_type (void);
+function gtk_shortcut_action_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_shortcut_action_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_shortcut_type_get_type (void);
+function gtk_shortcut_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_shortcut_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_sorter_order_get_type (void);
+function gtk_sorter_order_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_sorter_order_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_sorter_change_get_type (void);
+function gtk_sorter_change_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_sorter_change_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_spin_button_update_policy_get_type (void);
+function gtk_spin_button_update_policy_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_spin_button_update_policy_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_spin_type_get_type (void);
+function gtk_spin_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_spin_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_stack_transition_type_get_type (void);
+function gtk_stack_transition_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_stack_transition_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_string_filter_match_mode_get_type (void);
+function gtk_string_filter_match_mode_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_string_filter_match_mode_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_style_context_print_flags_get_type (void);
+function gtk_style_context_print_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_style_context_print_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_text_search_flags_get_type (void);
+function gtk_text_search_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_text_search_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_text_window_type_get_type (void);
+function gtk_text_window_type_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_text_window_type_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_text_view_layer_get_type (void);
+function gtk_text_view_layer_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_text_view_layer_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_text_extend_selection_get_type (void);
+function gtk_text_extend_selection_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_text_extend_selection_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_tree_model_flags_get_type (void);
+function gtk_tree_model_flags_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_tree_model_flags_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_tree_view_drop_position_get_type (void);
+function gtk_tree_view_drop_position_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_tree_view_drop_position_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_tree_view_column_sizing_get_type (void);
+function gtk_tree_view_column_sizing_get_type() bind(c)
+  import :: c_size_t
+  integer(c_size_t) :: gtk_tree_view_column_sizing_get_type
+end function
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkfontbutton.h
 !--------------------------------------------------
@@ -24282,9 +25052,6 @@ subroutine gtk_test_accessible_assertion_message_role(domain, file, line, func,&
   integer(c_int), value :: actual_role
 end subroutine
 
-!--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtk-autocleanups.h
-!--------------------------------------------------
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkdroptargetasync.h
 !--------------------------------------------------
