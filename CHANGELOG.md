@@ -2,16 +2,17 @@
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
-## [gtk-fortran 4.3.0] 2022-11-??
+## [gtk-fortran 4.3.0] 2022-11-10
 This release offers interfaces to GTK 4.8.2 and GLib 2.74.1.
 
 ### Added
+- `screenshots/Julia_gtk-fortran_animated.gif`: four Julia sets in four OS (Fedora, macOS, FreeBSD, MSYS2/Windows).
 - `CITATION.cff` file, used by the GitHub interface.
 - `src/extract_hl_doc.py`: generates markdown files for the HL gtk-fortran documentation. Fixes [issue #259](https://github.com/vmagnin/gtk-fortran/issues/259).
 - Intel ifx compiler is now supported by CMake (>=3.20), with the id `IntelLLVM`.
-- `tests_gtk_sup.f90`: for testing functions of the gtk_sup module.
+- `examples/tests_gtk_sup.f90`: for testing functions of the gtk_sup module.
 - `examples/notebooks.f90`: notebooks are now scrollable. And a popup menu appears when clicking with the right button on tabs.
-- A new example has been added in the gtk-fortran-extra repository (MIT license). It demonstrates how you can use modern Fortran parallel features (coarrays, events, teams, collective routines) with gtk-fortran. It computes a Buddhabrot.
+- A new example has been added in the `gtk-fortran-extra` repository (MIT license). It demonstrates how you can use modern Fortran parallel features (coarrays, events, teams, collective routines) with gtk-fortran. It computes a Buddhabrot.
 - A new *How to start my own project from a gtk-fortran example?* tutorial, including license considerations.
 
 ### Changed
