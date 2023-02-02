@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
 ! The gtk-?-fortran command prints information about gtk-fortran.
 ! Contributors: Vincent Magnin 2021-01-29
-! Last modifications: 2022-05-06
+! Last modifications: 2023-02-02
 !------------------------------------------------------------------------------
 
 module handlers_gtk_fortran
@@ -62,8 +62,8 @@ module handlers_gtk_fortran
       & ", linked to GTK ", gtk_get_major_version(),".", gtk_get_minor_version(), ".", gtk_get_micro_version()
 
     print *
-    print '(A)', "Licensed under GNU GPL 3 with the additional permissions&
-      & described in the GCC Runtime Library Exception version 3.1"
+    print '(A)', "Licensed under GNU GPLv3 or later with the GCC Runtime Library &
+                 &Exception version 3.1"
     print '(A)', "This is free software: you are free to change and redistribute it."
     print '(A)', "There is NO WARRANTY, to the extent permitted by law."
     print *
