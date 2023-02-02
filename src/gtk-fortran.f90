@@ -18,7 +18,7 @@
 ! 3.1, as published by the Free Software Foundation.
 !
 ! You should have received a copy of the GNU General Public License along with
-! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! this program; see the files LICENSE and LICENSE_EXCEPTION respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! The gtk-?-fortran command prints information about gtk-fortran.
@@ -56,8 +56,8 @@ module handlers_gtk_fortran
     print '(A)', "Compiled with "//compiler_version()
 
     print *
-    print '(A)', "Licensed under GNU GPL 3 with the additional permissions&
-      & described in the GCC Runtime Library Exception version 3.1"
+    print '(A)', "Licensed under GNU GPLv3 or later with the GCC Runtime Library &
+                 &Exception version 3.1"
     print '(A)', "This is free software: you are free to change and redistribute it."
     print '(A)', "There is NO WARRANTY, to the extent permitted by law."
     print *

@@ -1,16 +1,39 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-
-## [unreleased (gtk4)]
+## [gtk-fortran dev]
 
 ### Added
-- `src/extract_hl_doc.py`: generates markdown files for the HL gtk-fortran documentation.
+- `LICENSE_EXCEPTION`: the text of the GCC Runtime Library Exception, version 3.1. Note that this exception was chosen in 2011 and was already cited in the header of each source file with the URL of the GNU licenses. Putting the text in the repository is a better practice.
+
+
+## [gtk-fortran 4.3.0] 2022-11-10
+This release offers interfaces to GTK 4.8.2 and GLib 2.74.1.
+
+### Added
+- `screenshots/Julia_gtk-fortran_animated.gif`: four Julia sets in four OS (Fedora, macOS, FreeBSD, MSYS2/Windows).
+- `CITATION.cff` file, used by the GitHub interface.
+- `src/extract_hl_doc.py`: generates markdown files for the HL gtk-fortran documentation. Fixes [issue #259](https://github.com/vmagnin/gtk-fortran/issues/259).
 - Intel ifx compiler is now supported by CMake (>=3.20), with the id `IntelLLVM`.
-- `tests_gtk_sup.f90`: for testing functions of the gtk_sup module.
+- `examples/tests_gtk_sup.f90`: for testing functions of the gtk_sup module.
+- `examples/notebooks.f90`: notebooks are now scrollable. And a popup menu appears when clicking with the right button on tabs.
+- A new example has been added in the `gtk-fortran-extra` repository (MIT license). It demonstrates how you can use modern Fortran parallel features (coarrays, events, teams, collective routines) with gtk-fortran. It computes a Buddhabrot.
+- A new *How to start my own project from a gtk-fortran example?* tutorial, including license considerations.
+
+### Changed
+- The Python scripts received minor code improvements suggested by pylint.
+- `CMakeLists.txt` files: several minor improvements.
+- `examples/notebooks.f90` improved: notebooks are now scrollable, added a popup menu when clicking with the right button on tabs.
+- The `examples/gtkbuilder.glade` UI file has been regenerated with Cambalache (`gtkbuilder.cmb` file) and renamed `gtkbuilder.ui`. The widgets were also improved (tooltips, URL link...).
+- `gtk-auto.inc` and `gtkenums-auto.inc` are renamed with the `.in` extension because GitHub believes `.inc` is C++. Fixes issue #263.
+- Improved code layout in some files, code cleaning, improvements.
+- Uses allocatable strings instead of long strings.
+- The HL gtk-fortran documentation has been fully reviewed and updated.
+- The Wiki documentation has been fully reviewed and refactored: it now uses the Diátaxis framework (Tutorials, How-to, Reference, Explanation).
 
 ### Fixed
-- `cmake/DefaultFlags.cmake`: release and debug flags for non-GFortran compilers were inverted. Backported to gtk3.
+- `src/cfwrapper/enums.py`: prepared for GTK 4.8 and GLib 2.74. Two regex were  modified to remove correctly three constants. See [issue #266](https://github.com/vmagnin/gtk-fortran/issues/266).
+- `cmake/DefaultFlags.cmake`: release and debug flags for non-GFortran compilers were inverted.
 
 ## [gtk-fortran 4.2.1] 2022-04-24
 
@@ -37,7 +60,7 @@ This release offers interfaces to GTK 4.6.2 and GLib 2.72.1.
 - The syntax was modernized in many places (Fortran 2008).
 
 ### Fixed
-- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of ``c_null_ptr`. Needed with the NAG Fortran compiler. Backported to gtk3 branch.
+- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of `c_null_ptr`. Needed with the NAG Fortran compiler. Backported to gtk3 branch.
 - `examples/tests.f90`: loop undefined with ifort. And now uses `g_variant_unref()`.
 - Various bug fixes.
 
@@ -49,7 +72,7 @@ This release offers interfaces to GTK 4.6.2 and GLib 2.72.1.
 - Better handling of default compiler flags, using flags like `CMAKE_Fortran_FLAGS_RELEASE_INIT` (CMake>=3.7 required). A file `cmake/DefaultFlags.cmake` was added.
 
 ### Fixed
-- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of ``c_null_ptr`. Needed with the NAG Fortran compiler.
+- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of `c_null_ptr`. Needed with the NAG Fortran compiler.
 
 
 ## [gtk-fortran 4.1] 2021-10-22

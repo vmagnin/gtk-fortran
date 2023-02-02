@@ -17,7 +17,7 @@
 ! permissions described in the GCC Runtime Library Exception, version
 ! 3.1, as published by the Free Software Foundation.
 ! You should have received a copy of the GNU General Public License along with
-! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! this program; see the files LICENSE and LICENSE_EXCEPTION respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Jens Hunger, 03-27-2011

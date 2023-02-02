@@ -19,7 +19,7 @@
 
 ! You should have received a copy of the GNU General Public
 !  License along with
-! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! this program; see the files LICENSE and LICENSE_EXCEPTION respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
