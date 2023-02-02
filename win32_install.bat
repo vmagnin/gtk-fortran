@@ -18,7 +18,7 @@ REM permissions described in the GCC Runtime Library Exception, version
 REM 3.1, as published by the Free Software Foundation.
 REM
 REM You should have received a copy of the GNU General Public License along with
-REM this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+REM this program; see the files LICENSE and LICENSE_EXCEPTION respectively.
 REM If not, see <http://www.gnu.org/licenses/>.
 REM
 REM Contributed by Jens Hunger: 03/05/2013

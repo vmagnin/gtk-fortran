@@ -18,7 +18,7 @@
 ! 3.1, as published by the Free Software Foundation.
 
 ! You should have received a copy of the GNU General Public License along with
-! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! this program; see the files LICENSE and LICENSE_EXCEPTION respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! gfortran -g gtk.f90 gtk-sup.f90 gtk-hl.f90 hl_menu.f90 `pkg-config --cflags --libs gtk+-2.0`

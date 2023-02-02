@@ -18,7 +18,7 @@
 ! 3.1, as published by the Free Software Foundation.
 
 ! You should have received a copy of the GNU General Public License along with
-! this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+! this program; see the files LICENSE and LICENSE_EXCEPTION respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! gfortran -Wl,--rpath,../../src -I../../src gtkextra-auto.f90 gtkextra_plot.f90 -o gtkextra_plot -L../../src -lgtk-fortran `pkg-config --cflags --libs gtkextra-3.0`

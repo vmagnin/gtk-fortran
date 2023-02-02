@@ -21,7 +21,7 @@
 # 3.1, as published by the Free Software Foundation.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; see the files COPYING3 and COPYING.RUNTIME respectively.
+# this program; see the files LICENSE and LICENSE_EXCEPTION respectively.
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011, Python 2.7.1, Linux Ubuntu 11.04
