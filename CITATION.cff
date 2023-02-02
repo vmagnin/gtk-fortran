@@ -40,12 +40,11 @@ abstract: >-
   The gtk-fortran project provides bindings to the
   Fortran language for the GTK libraries (GTK, Cairo,
   GdkPixbuf, GLib...) and is licensed under GNU GPLv3
-  (see Licenses for more details). Like GTK and
-  Fortran, it is cross-platform (Linux, macOS, BSD,
-  Windows).
+  (with GCC Runtime Library Exception 3.1, see Licenses for more details). 
+  Like GTK and Fortran, it is cross-platform (Linux, macOS, BSD, Windows).
 keywords:
   - Fortran GTK binding GUI
-license: GPL-3.0-or-later
+license: GPL-3.0-or-later WITH GCC-exception-3.1
 preferred-citation:
   type: article
   authors:
