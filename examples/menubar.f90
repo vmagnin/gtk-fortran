@@ -21,7 +21,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !-------------------------------------------------------------------------------
 ! Contributed by: Jerry DeLisle, 2021-02-24
-! Last modifications: 2021-02-24
+! Last modifications: vmagnin 2023-02-17
 ! This example demonstrates a menu bar and is based on:
 !   https://github.com/ToshioCP/Gtk4-tutorial/blob/main/src/menu/menu2.c
 !-------------------------------------------------------------------------------
@@ -48,7 +48,6 @@ module handlers
              & g_object_unref, g_menu_append_section, g_menu_append_submenu
   use, intrinsic :: iso_c_binding, only: c_null_ptr, c_null_char, c_ptr, c_int, c_char, &
                          & c_funloc, c_size_t
-  use, intrinsic :: iso_fortran_env, only: int64
 
   implicit none
   type(c_ptr) :: app, provider
@@ -88,7 +87,7 @@ contains
     color = "label#lb {background-color: "//trim(color_str)//"; }"//c_null_char
 
     print *, "Let's change the color!"
-    call gtk_css_provider_load_from_data (provider, color, -1_int64)
+    call gtk_css_provider_load_from_data (provider, color, -1_c_size_t)
     call g_action_change_state (act, param)
   end subroutine
 

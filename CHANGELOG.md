@@ -6,6 +6,9 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ### Added
 - `LICENSE_EXCEPTION`: the text of the GCC Runtime Library Exception, version 3.1. Note that this exception was chosen in 2011 and was already cited in the header of each source file with the URL of the GNU licenses. Putting the text in the repository is a better practice.
 
+### Fixed
+- `examples/menubar.f90`: the compilation was failing on 32 bits systems, due to an `int64` kind used instead of `c_size_t`. Not totally perfect as it should be the POSIX `ssize_t`: see [issue #272](https://github.com/vmagnin/gtk-fortran/issues/272).
+
 
 ## [gtk-fortran 4.3.0] 2022-11-10
 This release offers interfaces to GTK 4.8.2 and GLib 2.74.1.
