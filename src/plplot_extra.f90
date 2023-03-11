@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !-------------------------------------------------------------------------------
 ! Contributed by: James Tappin, last modification: 2012-02-08
-! vmagnin, 2022-04-15
+! vmagnin, 2022-04-15, 2023-03-10
 !-------------------------------------------------------------------------------
 
 module plplot_extra
@@ -35,6 +35,7 @@ module plplot_extra
     ! to pass just about anything directly to the driver:
     subroutine pl_cmd(cmd, arg) bind(c)
       use, intrinsic :: iso_c_binding, only: c_int, c_ptr
+      implicit none
       ! A PLESC command to pass to the driver:
       integer(c_int), value :: cmd
       ! Data associated with the cmd command:

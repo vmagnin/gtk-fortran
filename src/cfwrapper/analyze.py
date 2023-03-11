@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-02, 2022-10-27
+# Last modifications: 2019-04-02, 2022-10-27, 2023-03-10
 
 """ This module contains functions to analyze C prototypes
     and generate Fortran interfaces.
@@ -233,6 +233,10 @@ def write_fortran_interface(index, module_name, f_file_name, f_file,
         interface3 = 1*TAB + "import :: " + f_use + "\n"
     else:
         interface3 = ""
+    # The 'implicit none' of the Fortran module does not apply to the interfaces,
+    # we therefore harden the code by putting one into each interface:
+    interface3 += 1*TAB + "implicit none\n"
+
     if isfunction:
         interface3 += 1*TAB + returned_type + " :: " + f_name + "\n"
     interface3 += declarations
