@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin, Jerry DeLisle, "jtappin" and Tobias Burnus, 2011-01-23
-! Last modification: 2022-09-29
+! Last modification: 2022-09-29, 2023-03-10
 !
 ! This module is needed for every gtk-fortran application. The gtkenums-auto.in
 ! and gtk-auto.in files are automatically included.
@@ -45,6 +45,7 @@ module gtk
     ! https://developer.gnome.org/gtk4/stable/gtk4-General.html#gtk-init
     ! https://developer.gnome.org/gtk4/3.98/ch31s02.html#id-1.6.4.4.36
     subroutine gtk_init() bind(c)
+      implicit none
     end subroutine
 
     !**************************************************************************

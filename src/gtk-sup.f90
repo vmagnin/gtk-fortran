@@ -24,7 +24,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
-! vmagnin 2020-06-08 (GTK 4), 2022-05-09
+! vmagnin 2020-06-08 (GTK 4), 2022-05-09, 2023-03-10
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
@@ -202,6 +202,7 @@ module gtk_sup
   interface
     function strlen(str) bind(c, name='strlen')
       import :: c_size_t, c_ptr
+      implicit none
       type(c_ptr), intent(in), value :: str
       integer(c_size_t) :: strlen
     end function strlen
