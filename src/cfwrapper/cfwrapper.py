@@ -25,8 +25,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2022-11-09 (tested with Python 3.11.0, Fedora 37)
-# $ pylint *.py ../tools.py    => 8.84/10
+# Last modification: 2023-03-13 (tested with Python 3.10.7, Ubuntu)
+# $ pylint *.py ../tools.py    => 8.80/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -228,6 +228,15 @@ for each in gtk_types:
             TYPES_DICT[each[1]] = TYPES_DICT[each[0]]
         elif each[0] in gtk_funptr:
             TYPES_DICT[each[1]] = ("type(c_funptr)", "c_funptr")
+
+# Write all the types in a CSV file:
+with open(SRC_DIR+"gtk-fortran_types.csv", "w", newline="", encoding="utf-8") as csvfile3:
+    index_file = csv.writer(csvfile3, delimiter=";", dialect='excel')
+    index_file.writerow(["C type", "Fortran type", "Fortran KIND"])
+    for each in TYPES_DICT:
+        index_file.writerow([each, TYPES_DICT[each][0], TYPES_DICT[each][1]])
+    for each in TYPES2_DICT:
+        index_file.writerow([each, TYPES2_DICT[each][0], TYPES2_DICT[each][1]])
 
 # Sorting (useful only for printing):
 gtk_enums.sort()
