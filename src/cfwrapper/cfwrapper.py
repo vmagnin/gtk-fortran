@@ -25,7 +25,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-13 (tested with Python 3.10.7, Ubuntu)
+# Last modification: 2023-03-14 (tested with Python 3.10.7, Ubuntu)
 # $ pylint *.py ../tools.py    => 8.80/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
@@ -143,12 +143,14 @@ TYPES_DICT = {
     "guchar":("integer(kind=c_int8_t)", "c_int8_t"),
     "double": ("real(c_double)", "c_double"),
     "float":("real(c_float)", "c_float"),
-    #typedef unsigned long gsize;   also GType
-    "gsize":  ("integer(c_size_t)", "c_size_t"),
-    #typedef signed long gssize;
-    "gssize":  ("integer(c_size_t)", "c_size_t"),
-    "GType":  ("integer(c_size_t)", "c_size_t"),
     "size_t":  ("integer(c_size_t)", "c_size_t"),
+    # gsize is the same size than size_t:
+    "gsize":  ("integer(c_size_t)", "c_size_t"),
+    # GLib asserts that gssize is the same size as gsize (size_t) but signed:
+    # see https://discourse.gnome.org/t/where-are-defined-glib-types-in-the-new-doc/14473/4
+    "gssize":  ("integer(c_size_t)", "c_size_t"),
+    # typedef gsize GType;
+    "GType":  ("integer(c_size_t)", "c_size_t"),
     "va_list":("type(c_ptr)", "c_ptr"),
     #typedef void* gpointer;
     "gpointer":("type(c_ptr)", "c_ptr"),
