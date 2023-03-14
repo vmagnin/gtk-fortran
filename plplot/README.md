@@ -6,7 +6,7 @@ In this directory there are a few examples of using the [PLplot library](http://
 
 - Either CMake and pkg-config, or fpm (Fortran Package Manager).
 - gtk-fortran: including for these examples the high-level modules gtk\_hl and gtk\_draw\_hl.
-- PLplot>=5.13: including the cairo drivers.
+- PLplot>=5.13: including the Cairo drivers.
 
 A wrapper module `plplot_extra.mod` is created by the gtk-fortran system to allow access to the `pl_cmd()` routine in PLplot which is not in its Fortran binding. It provides low-level access to the system and is needed to correctly configure the "extcairo" driver.
 
@@ -18,8 +18,8 @@ The typical program structure is summarized as:
 
 ### Main:
 
-- Create the gtk widgets, including a drawing area.
-- Realize the widget heirarchy.
+- Create the GTK widgets, including a drawing area.
+- Realize the widget hierarchy.
 - Call the PLplot drawing routine(s).
 - Enter the event loop.
 
@@ -29,7 +29,7 @@ The typical program structure is summarized as:
 
 ### PLplot drawing:
 
-- Connect plplot's output to the backing surface (see below).
+- Connect PLplot's output to the backing surface (see below).
 - Make the plot(s).
 - Call `gtk_widget_queue_draw` on the drawing area to force a redraw.
 
@@ -70,7 +70,7 @@ And then after `plinit` you need:
 
     call pl_cmd(PLESC_DEVINIT, cc)
 
-A fortran interface to `pl_cmd` is provided by the `plplot_extra` module.
+A Fortran interface to `pl_cmd` is provided by the `plplot_extra` module.
 
 
 ## Building the examples

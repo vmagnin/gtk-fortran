@@ -3,11 +3,11 @@
 ## Contains
 In this directory, you will find:
 
-- gtk-fortran-logo.svg: the logo created with Inkscape.
+- `gtk-fortran-logo.svg`: the logo created with Inkscape.
 - The logo in PNG format, in three sizes:
-  - logo-gtk-fortran-small.png: 99x38 pixels.
-  - logo-gtk-fortran.png: 299x115 pixels.
-  - logo-gtk-fortran-big.png: 799x307 pixels.
+  - `logo-gtk-fortran-small.png`: 99x38 pixels.
+  - `logo-gtk-fortran.png`: 299x115 pixels.
+  - `logo-gtk-fortran-big.png`: 799x307 pixels.
 
 ## Licenses
 
