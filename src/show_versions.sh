@@ -1,4 +1,7 @@
 #! /bin/sh
+# This file is part of gtk-fortran, a GTK / Fortran interface library.
+# Copyright (C) 2019 The gtk-fortran team
+#
 # Show libraries and tools versions used in gtk-fortran
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13

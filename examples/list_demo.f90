@@ -1,3 +1,6 @@
+! This file is part of gtk-fortran, a GTK / Fortran interface library.
+! Copyright (C) 2011 The gtk-fortran team
+!
 ! A translation into Fortran of the "hello_world" tree demo from
 ! the GTK TreeView Tutorial.
 ! Original version by: Tim-Philipp Müller (2005)

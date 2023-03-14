@@ -1,4 +1,7 @@
 #!/bin/sh
+# This file is part of gtk-fortran, a GTK / Fortran interface library.
+# Copyright (C) 2016 The gtk-fortran team
+#
 # Script to build gtk-fortran using CMake
 # Vincent MAGNIN, 2016-06-19, modified 2020-02-14
 

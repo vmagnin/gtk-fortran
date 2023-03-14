@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2011
-# Free Software Foundation, Inc.
-#
-# This file is part of the gtk-fortran gtk+ Fortran Interface library.
-#
+# This file is part of gtk-fortran, a GTK / Fortran interface library.
+# Copyright (C) 2011 The gtk-fortran team
+##
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 3, or (at your option)

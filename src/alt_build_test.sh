@@ -1,4 +1,7 @@
 #! /bin/sh
+# This file is part of gtk-fortran, a GTK / Fortran interface library.
+# Copyright (C) 2011 The gtk-fortran team
+#
 # An alternative simple build system, using the directory ../build/byscript
 # and finally launching one by one the examples for testing.
 # - It does not substitute the @..@ strings in gtkf-sketcher.f90,

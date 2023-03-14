@@ -1,4 +1,7 @@
 #! /bin/sh
+# This file is part of gtk-fortran, a GTK / Fortran interface library.
+# Copyright (C) 2011 The gtk-fortran team
+#
 # Automatic screenshots of the gtk-fortran built examples
 # Parameters: $1 suffix (e.g. -ubuntu11_04), $2 sleep time
 # You need to install scrot
