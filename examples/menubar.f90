@@ -21,7 +21,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !-------------------------------------------------------------------------------
 ! Contributed by: Jerry DeLisle, 2021-02-24
-! Last modifications: vmagnin 2023-02-17
+! Last modifications: vmagnin 2023-03-14
 ! This example demonstrates a menu bar and is based on:
 !   https://github.com/ToshioCP/Gtk4-tutorial/blob/main/src/menu/menu2.c
 !-------------------------------------------------------------------------------
@@ -108,7 +108,7 @@ contains
     type(c_ptr) :: menubar, menu, section1, section2, section3, &
       & menu_item_red, menu_item_green, &
       & menu_item_blue, menu_item_quit, menu_item_fullscreen
-    integer(c_size_t) :: length = -1
+    integer(c_size_t) :: length = -1_c_size_t
 
     win = gtk_application_window_new (app)
     call gtk_window_set_title (win, "menubar"//c_null_char)

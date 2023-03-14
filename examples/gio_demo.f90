@@ -21,7 +21,7 @@
 ! this program; see the files LICENSE and LICENSE_EXCEPTION respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 
-! Last modification: vmagnin 02-19-2019
+! Last modification: vmagnin 2023-03-14
 
 program g_io_demo
 
@@ -75,7 +75,7 @@ program g_io_demo
 
      ncput = g_output_stream_write(stream, c_loc(istr), &
           & nchars+1, c_null_ptr, c_loc(errmsg))
-     if (ncput < 0) then
+     if (ncput < 0_c_size_t) then
         call c_f_string(errmsg%message, errtxt)
         print *, errtxt
         stop
