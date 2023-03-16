@@ -97,6 +97,12 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
     """
 
     for proto in preprocessed_list:
+        # C functions must have parentheses:
+        if not "(" in proto:
+            my_errors.new_error(c_dir, c_file_name,
+                                "Not a function (no parentheses)", proto, False)
+            continue    # Go to next prototype in the list
+
         # Do not treat variadic C functions:
         if "..." in proto:
             my_stats.inc_nb_variadic()
@@ -213,6 +219,12 @@ def analyze_arguments(args, f_use, proto, c_dir, c_file_name, gtk_enums, gtk_fun
             my_errors.new_error(c_dir, c_file_name, "Unknown type:  " + arg,
                                 proto, True)
 
+        # Unknown dimension arrays are passed by address, others by value:
+        if "(*)" in f_type:
+            passvar = ""
+        else:
+            passvar = ", value"
+
         # Search the variable name:
         try:
             var_name = RGX_VAR_NAME.search(arg).group(1)
@@ -221,12 +233,6 @@ def analyze_arguments(args, f_use, proto, c_dir, c_file_name, gtk_enums, gtk_fun
             my_errors.new_error(c_dir, c_file_name,
                                 "Variable name not found", proto, False)
             continue    # Next argument in the list
-
-        # Unknown dimension arrays are passed by address, others by value:
-        if "(*)" in f_type:
-            passvar = ""
-        else:
-            passvar = ", value"
 
         # Add this variable:
         if args_list == "":
