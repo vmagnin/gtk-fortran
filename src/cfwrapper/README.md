@@ -6,4 +6,5 @@
   - `cfwrapper/gtk-fortran-hash.pkl`: the SHA1 hash of all `*-auto.f90` files. Useful for the development of `cfwrapper.py` to detect modifications in the resulting `.f90` files.
   - `cfwrapper/cfwrapper-errors.csv`: for the developers, a list of problems encountered by the `cfwrapper.py` script when parsing the `.h` files. Not pushed in GitHub.
   - `../../VERSIONS`: a CSV file with the gtk-fortran, GTK, GLib and distribution versions used to generate the library. It is used by the build system.
+- `cfwrapper/run_tests.py`: for testing some functions of the cfwrapper.
 - Other `*.py` files: the modules used by `cfwrapper.py`.
