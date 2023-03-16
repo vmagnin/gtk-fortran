@@ -39,17 +39,24 @@ from fortran import iso_c_binding
 #---------------------------------------------------------------------------
 # Regular expressions used to identify the different parts of a C prototype:
 #---------------------------------------------------------------------------
-# Type of a function:
+# Type of a function: at the start of the line, possibly a few spaces, a few
+# words possibly followed by a few spaces and/or a few stars (pointers)
 RGX_RETURNED_TYPE = re.compile(r"^ *([_0-9a-zA-Z ]+ *\**)")
-# Name of the function/subroutine:
+# Name of the function: a word, possibly followed by a few spaces, and an
+# opening parenthesis
 RGX_FUNCTION_NAME = re.compile(r"([0-9a-zA-Z_]+) *\(")
-# All the arguments of the function:
+# All the arguments of the function: parentheses at the end of the line,
+# possibly followed by characters, inside the parentheses possibly a few
+# words separated by commas and possibly followed by stars and/or [] (arrays)
 RGX_ARGUMENTS = re.compile(r"\(([0-9a-zA-Z_ ,\*\[\]]*)\).*;$")
-# To list each argument:
+# To list each argument: possibly a few spaces, a word possibly followed by
+# stars (pointer) and/or [] (arrays), possibly followed by a comma
 RGX_ARGS = re.compile(r" *([0-9a-zA-Z_ \*\[\]]+),?")
-# To find the type of an argument:
+# To find the type of an argument: possibly a few spaces, a word followed by
+# a space or a star
 RGX_VAR_TYPE = re.compile(r" *([_0-9a-zA-Z]+)[ |\*]")
-# To find the name of an argument:
+# To find the name of an argument: space or a star, a word, possibly followed
+# by [], at the end of the string
 RGX_VAR_NAME = re.compile(r"[ |\*]([_0-9a-zA-Z]+)(?:\[\])?$")
 # Function name beginning by an underscore:
 RGX_UNDERSCORE = re.compile(r"^_\w+$")
