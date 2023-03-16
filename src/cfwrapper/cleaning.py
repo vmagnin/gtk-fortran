@@ -93,6 +93,10 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     whole_file = re.sub("(?m)^(G_DECLARE_INTERFACE|G_DECLARE_DERIVABLE_TYPE).*$", "", whole_file)
     # Remove GNU macros at the end of declarations (functions prototypes):
     whole_file = re.sub(r"G_GNUC_[\w (),]*;", ";", whole_file)
+    # Remove some GNU macros at the beginning of functions prototypes:
+    whole_file = re.sub(r"G_DECLARE_FINAL_TYPE ?\(.*?\)", "", whole_file)
+    whole_file = re.sub(r"G_DEFINE_AUTOPTR_CLEANUP_FUNC ?\(.*?\)", "", whole_file)
+    whole_file = re.sub(r"GDK_DECLARE_INTERNAL_TYPE ?\(.*?\)", "", whole_file)
     # Remove empty lines:
     whole_file = re.sub(r"(?m)^\n$", "", whole_file)
     # These three functions names are the only ones between parentheses,
