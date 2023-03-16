@@ -84,9 +84,8 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
     whole_file = re.sub("(?m)^(typedef|union|struct).*$",
                         "", whole_file)
-    whole_file = re.sub("(?m)^.*(G_BEGIN_DECLS|CAIRO_BEGIN_DECLS) *$", "", whole_file)
-    whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$",
-                        "", whole_file)
+    whole_file = re.sub("(?m)^.*(G|CAIRO|GRAPHENE)_BEGIN_DECLS *$", "", whole_file)
+    whole_file = re.sub("(?m)^.*(G|CAIRO|GRAPHENE)_END_DECLS *$", "", whole_file)
     whole_file = re.sub(r"(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
     whole_file = re.sub("(?m)^.*(cairo_public) ", "", whole_file)
     whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC|G_GNUC_WARN_UNUSED_RESULT|_GDK_PIXBUF_EXTERN)"
