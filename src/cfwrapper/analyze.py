@@ -106,11 +106,6 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
             my_errors.new_error(c_dir, c_file_name, str(exc), proto, False)
             continue    # Go to next prototype in the list
 
-        if function_type == " ":
-            my_errors.new_error(c_dir, c_file_name,
-                                "Returned type empty", proto, False)
-            continue    # Go to next prototype in the list
-
         # gtk_init() is already defined in gtk.f90. Other functions
         # can be excluded here in case of problem:
         if f_name in ["gtk_init", "g_io_channel_win32_new_messages"]:
