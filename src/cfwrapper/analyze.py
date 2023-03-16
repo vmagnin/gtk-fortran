@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modifications: 2019-04-02, 2022-10-27, 2023-03-10
+# Last modifications: 2023-03-16
 
 """ This module contains functions to analyze C prototypes
     and generate Fortran interfaces.
@@ -54,6 +54,34 @@ RGX_VAR_NAME = re.compile(r"[ |\*]([_0-9a-zA-Z]+)(?:\[\])?$")
 # Function name beginning by an underscore:
 RGX_UNDERSCORE = re.compile(r"^_\w+$")
 
+
+def split_prototype(prototype):
+    """The prototype string is splitted into three parts: the returned type, the name of the
+       function and the list of arguments. If a problem occurs, an exception is raised
+       with an error message.
+    """
+
+    type_returned = RGX_RETURNED_TYPE.search(prototype)
+    try:
+        function_type = type_returned.group(1)
+    except AttributeError:
+        raise Exception("Returned type not found")
+
+    function_name = RGX_FUNCTION_NAME.search(prototype)
+    try:
+        f_name = function_name.group(1)
+    except AttributeError:
+        raise Exception("Function name not found")
+
+    arguments = RGX_ARGUMENTS.search(prototype)
+    try:
+        args = RGX_ARGS.findall(arguments.group(1))
+    except AttributeError:
+        raise Exception("Arguments not found")
+
+    return function_type, f_name, args
+
+
 # TODO: these procedures need refactoring !
 
 def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_list,
@@ -64,26 +92,35 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
     """
 
     for proto in preprocessed_list:
-        error_flag = False
-
-        # Do not treat variadic functions:
+        # Do not treat variadic C functions:
         if "..." in proto:
             my_stats.inc_nb_variadic()
             my_errors.new_error(c_dir, c_file_name,
                                 "Variadic function", proto, False)
-            continue    # Next prototype
+            continue    # Go to next prototype in the list
 
-        type_returned = RGX_RETURNED_TYPE.search(proto)
+        # Split the prototype into its three parts:
         try:
-            function_type = type_returned.group(1)
-        except AttributeError:
-            my_errors.new_error(c_dir, c_file_name,
-                                "Returned type not found", proto, False)
-            continue    # Next prototype
+            function_type, f_name, args = split_prototype(proto)
+        except Exception as exc:
+            my_errors.new_error(c_dir, c_file_name, str(exc), proto, False)
+            continue    # Go to next prototype in the list
+
         if function_type == " ":
             my_errors.new_error(c_dir, c_file_name,
-                                "Returned type not found", proto, False)
-            continue    # Next prototype
+                                "Returned type empty", proto, False)
+            continue    # Go to next prototype in the list
+
+        # gtk_init() is already defined in gtk.f90. Other functions
+        # can be excluded here in case of problem:
+        if f_name in ["gtk_init", "g_io_channel_win32_new_messages"]:
+            continue    # Go to next prototype in the list
+
+        # Functions beginning by an underscore will be excluded:
+        if RGX_UNDERSCORE.match(f_name) is not None:
+            my_errors.new_error(c_dir, c_file_name,
+                                "Function name beginning by underscore", proto, False)
+            continue    # Go to next prototype in the list
 
         # Will it be a Fortran function or a subroutine ?
         if ("void" in function_type) and ("*" not in function_type):
@@ -100,30 +137,9 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
                                                  gtk_funptr, TYPES_DICT, TYPES2_DICT)
             f_use = iso_c
             if "?" in returned_type:    # Function type not found
-                error_flag = True
-                my_errors.new_error(c_dir, c_file_name, "Unknown type:  "
+                my_errors.new_error(c_dir, c_file_name, "Unknown function type:  "
                                     + function_type, proto, True)
-                continue
-
-        # f_name will contain the name of the function in gtk-fortran:
-        function_name = RGX_FUNCTION_NAME.search(proto)
-        try:
-            f_name = function_name.group(1)
-        except AttributeError:
-            my_errors.new_error(c_dir, c_file_name,
-                                "Function name not found", proto, False)
-            continue    # Next prototype
-
-        # gtk_init() is already defined in gtk.f90. Other functions
-        # can be excluded here in case of problem:
-        if f_name in ["gtk_init", "g_io_channel_win32_new_messages"]:
-            continue    # Next prototype
-
-        # Functions beginning by an underscore will be excluded:
-        if RGX_UNDERSCORE.match(f_name) is not None:
-            my_errors.new_error(c_dir, c_file_name,
-                                "Function name beginning by underscore", proto, False)
-            continue    # Next prototype
+                continue    # Go to next prototype in the list
 
         # What is the status of that function ? (Is the C prototype preceded
         # on the previous line by a DEPRECATED or AVAILABLE statement ?)
@@ -137,25 +153,17 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
                 # major updates. The `make -i` command will then generate errors
                 # when a deprecated function is not found:
                 if ARGS.deprecated:
-                    continue
+                    continue    # Go to next prototype in the list
         else:
             function_status = ""
 
-        # Searching the function arguments:
-        arguments = RGX_ARGUMENTS.search(proto)
-        try:
-            args = RGX_ARGS.findall(arguments.group(1))
-        except AttributeError:
-            my_errors.new_error(c_dir, c_file_name,
-                                "Problem determining the arguments", proto, False)
-            continue    # Next prototype
-
         # Each argument of the function is analyzed:
+        error_flag = False
         declarations = ""
         args_list = ""
         for arg in args:
             if arg == "void":
-                continue
+                continue    # Next argument in the list
 
             # Can we find the type of the argument ? The var_type variable is
             # not used elsewhere, but this test is compulsory. Do not remove.
@@ -164,7 +172,7 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
             except AttributeError:
                 my_errors.new_error(c_dir, c_file_name,
                                     "Variable type not found", proto, True)
-                continue    # Next argument
+                continue    # Next argument in the list
 
             # Corresponding Fortran type of the argument:
             f_type, iso_c = iso_c_binding(arg, False, gtk_enums, gtk_funptr,
@@ -192,7 +200,7 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
             except AttributeError:
                 my_errors.new_error(c_dir, c_file_name,
                                     "Variable name not found", proto, False)
-                continue    # Next argument
+                continue    # Next argument in the list
 
             # Unknown dimension arrays are passed by address, others by value:
             if "(*)" in f_type:
