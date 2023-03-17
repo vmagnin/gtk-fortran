@@ -68,23 +68,25 @@ def split_prototype(prototype):
        with an error message.
     """
 
-    type_returned = RGX_RETURNED_TYPE.search(prototype)
-    try:
-        function_type = type_returned.group(1)
-    except AttributeError:
-        raise Exception("Returned type not found")
-
-    function_name = RGX_FUNCTION_NAME.search(prototype)
-    try:
-        f_name = function_name.group(1)
-    except AttributeError:
-        raise Exception("Function name not found")
-
     arguments = RGX_ARGUMENTS.search(prototype)
     try:
         args = RGX_ARGS.findall(arguments.group(1))
     except AttributeError:
         raise Exception("Arguments not found")
+
+    # The name is before arguments. The right bound of a string is excluded.
+    function_name = RGX_FUNCTION_NAME.search(prototype[0:arguments.start(1)])
+    try:
+        f_name = function_name.group(1)
+    except AttributeError:
+        raise Exception("Function name not found")
+
+    # The returned type is before the name. The right bound is excluded.
+    type_returned = RGX_RETURNED_TYPE.search(prototype[0:function_name.start(1)])
+    try:
+        function_type = type_returned.group(1)
+    except AttributeError:
+        raise Exception("Returned type not found")
 
     return function_type, f_name, args
 
@@ -139,8 +141,11 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
             f_procedure = "function "
             f_the_end = "end function"
             isfunction = True
-            returned_type, iso_c = iso_c_binding(function_type, True, gtk_enums,
-                                                 gtk_funptr, TYPES_DICT, TYPES2_DICT)
+            # The function iso_c_binding() is working on a declaration
+            # comprising the type and the name of the entity:
+            declaration = function_type + " " + f_name
+            returned_type, iso_c = iso_c_binding(declaration, True, gtk_enums,
+                                            gtk_funptr, TYPES_DICT, TYPES2_DICT)
             f_use = iso_c
             if "?" in returned_type:    # Function type not found
                 my_errors.new_error(c_dir, c_file_name, "Unknown function type:  "
