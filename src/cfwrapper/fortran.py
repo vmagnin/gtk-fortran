@@ -31,7 +31,7 @@
 import re           # Regular expression library
 
 # Used to identify a C type:
-RGX_TYPE = re.compile(r"^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?")
+RGX_TYPE = re.compile(r"^ *((const )?\w+)[ \*]?")
 
 
 def iso_c_binding(declaration, isReturned, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
