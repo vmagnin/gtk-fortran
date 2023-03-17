@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2019-04-02
+# Last modification: 2023-03-17
 
 """ This module contains functions used in the cfwrapper.
 """
@@ -34,9 +34,12 @@ import re           # Regular expression library
 RGX_TYPE = re.compile(r"^ *((const |G_CONST_RETURN |cairo_public |G_INLINE_FUNC )?\w+)[ \*]?")
 
 
-def iso_c_binding(declaration, returned, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
+def iso_c_binding(declaration, isReturned, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
     """ Returns the Fortran type corresponding to a C type in the ISO_C_BINDING
         module (limited to C types used in GTK), and the KIND type.
+        The declaration contains the type and the name of the entity.
+        The isReturned flag distinguishes types returned by a function and
+        arguments types.
     """
     try:
         c_type = RGX_TYPE.search(declaration).group(1)
@@ -63,7 +66,7 @@ def iso_c_binding(declaration, returned, gtk_enums, gtk_funptr, TYPES_DICT, TYPE
     # Is it a pointer ?
     if "*" in declaration:
         # Is it a string (char or gchar array) ?
-        if ("char" in c_type) and (not returned):
+        if ("char" in c_type) and (not isReturned):
             if "**" in declaration:
                 return "type(c_ptr), dimension(*)", "c_ptr"
             else:
@@ -78,8 +81,9 @@ def iso_c_binding(declaration, returned, gtk_enums, gtk_funptr, TYPES_DICT, TYPE
         array = ""
 
     # Other cases:
-    if len(declaration.split()) >= 3:   # Two words type
+    if len(declaration.split()) >= 3:  # Two words type + the name of the entity
         for item in TYPES2_DICT:
+            # A Python set is an unordered collection of distinct hashable objects
             if set(item.split()).issubset(set(declaration.split())):
                 return TYPES2_DICT[item][0] + array, TYPES2_DICT[item][1]
     else:  # It is a one word type
