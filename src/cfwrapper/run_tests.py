@@ -45,6 +45,7 @@ prototype_list.append("GOBJECT_VAR GType *g_param_spec_types;")
 prototype_list.append("const GtkCssLocation * gtk_css_section_get_start_location (const GtkCssSection *section);")
 prototype_list.append("gboolean (g_str_has_suffix) (const gchar *str, const gchar *suffix);")
 prototype_list.append("GdkPixbufAnimation *gdk_pixbuf_animation_new_from_resource(const char *resource_path, GError **error);")
+prototype_list.append("unsigned int cairo_device_get_reference_count (cairo_device_t *device);")
 
 for prototype in prototype_list:
     print(prototype)
