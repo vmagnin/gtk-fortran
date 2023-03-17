@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modifications: 2023-03-16
+# Last modifications: 2023-03-17
 
 """ This module contains functions to analyze C prototypes
     and generate Fortran interfaces.
@@ -42,13 +42,14 @@ from fortran import iso_c_binding
 # Type of a function: at the start of the line, possibly a few spaces, a few
 # words possibly followed by a few spaces and/or a few stars (pointers)
 RGX_RETURNED_TYPE = re.compile(r"^ *([_0-9a-zA-Z ]+ *\**)")
-# Name of the function: a word, possibly followed by a few spaces, and an
-# opening parenthesis
-RGX_FUNCTION_NAME = re.compile(r"([0-9a-zA-Z_]+) *\(")
+# Name of the function: a word, possibly between parentheses, possibly followed
+# by a few spaces, and a final opening parenthesis
+RGX_FUNCTION_NAME = re.compile(r"\(?([0-9a-zA-Z_]+)\)? *\($")
 # All the arguments of the function: parentheses at the end of the line,
+# possibly preceded by a function name between parentheses,
 # possibly followed by characters, inside the parentheses possibly a few
 # words separated by commas and possibly followed by stars and/or [] (arrays)
-RGX_ARGUMENTS = re.compile(r"\(([0-9a-zA-Z_ ,\*\[\]]*)\).*;$")
+RGX_ARGUMENTS = re.compile(r"\(?.*\)? *\(([0-9a-zA-Z_ ,\*\[\]]*)\).*;$")
 # To list each argument: possibly a few spaces, a word possibly followed by
 # stars (pointer) and/or [] (arrays), possibly followed by a comma
 RGX_ARGS = re.compile(r" *([0-9a-zA-Z_ \*\[\]]+),?")

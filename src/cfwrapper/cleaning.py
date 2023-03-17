@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-16
+# Last modification: 2023-03-17
 
 """ This module contains functions used to clean header files in the cfwrapper.
 """
@@ -36,7 +36,7 @@ from enums import translate_enums
 
 def clean_header_file(c_file_name, whole_file, enums_file):
     """Preprocessing and cleaning of the header file. It also gathers the enums.
-       Do not change the order of the regular expressions !
+       Do not change the order of the regular expressions!
     """
 
     nb_enums = 0
@@ -100,12 +100,6 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     whole_file = re.sub(r"GDK_DECLARE_INTERNAL_TYPE ?\(.*?\)", "", whole_file)
     # Remove empty lines:
     whole_file = re.sub(r"(?m)^\n$", "", whole_file)
-    # These three functions names are the only ones between parentheses,
-    # so we remove parentheses (>=GLib 2.48.O):
-    if c_file_name == "gutils.h":
-        whole_file = whole_file.replace("(g_bit_nth_lsf)", "g_bit_nth_lsf")
-        whole_file = whole_file.replace("(g_bit_nth_msf)", "g_bit_nth_msf")
-        whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
 
     return whole_file, nb_enums
 
