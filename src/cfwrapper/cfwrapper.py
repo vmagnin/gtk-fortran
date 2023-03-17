@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-14 (tested with Python 3.10.7, Ubuntu)
+# Last modification: 2023-03-17 (tested with Python 3.10.7, Ubuntu)
 # $ pylint *.py ../tools.py    => 8.80/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
@@ -116,6 +116,7 @@ TYPES_DICT = {
     "guint64":("integer(c_int64_t)", "c_int64_t"),
     "gint32":("integer(c_int32_t)", "c_int32_t"),
     "guint32":("integer(c_int32_t)", "c_int32_t"),
+    "uint32_t":("integer(c_int32_t)", "c_int32_t"),
     #typedef guint32 GdkWChar;
     "GdkWChar":("integer(c_int32_t)", "c_int32_t"),
     #typedef uint32_t xcb_drawable_t;
@@ -139,6 +140,8 @@ TYPES_DICT = {
     # see https://github.com/vmagnin/gtk-fortran/issues/41#issuecomment-7337877
     "gchar":("integer(kind=c_int8_t)", "c_int8_t"),
     "guchar":("integer(kind=c_int8_t)", "c_int8_t"),
+    # typedef gchar** GStrv
+    "GStrv":("type(c_ptr)", "c_ptr"),
     "double": ("real(c_double)", "c_double"),
     "float":("real(c_float)", "c_float"),
     "size_t":  ("integer(c_size_t)", "c_size_t"),
@@ -159,6 +162,8 @@ TYPES_DICT = {
     #typedef struct _GIConv *GIConv;
     "GIConv":("type(c_ptr)", "c_ptr"),
     "GSignalCMarshaller":("type(c_ptr)", "c_ptr"),
+    # typedef gint32 GTime (Deprecated since: 2.62)
+    "GTime":("integer(c_int32_t)", "c_int32_t"),
     #typedef struct FT_FaceRec_*  FT_Face;
     "FT_Face":("type(c_ptr)", "c_ptr"),
     # X11 types (See /usr/include/X11/Xmd.h), unsigned int (64 bits archi.)
