@@ -23,8 +23,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-17 (tested with Python 3.10.7, Ubuntu)
-# $ pylint *.py ../tools.py    => 8.80/10
+# Last modification: 2023-03-20 (tested with Python 3.10.7, Ubuntu)
+# $ pylint *.py ../tools.py    => 8.33/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -380,5 +380,5 @@ my_stats.print(T0, my_versions.string(), PATH_DICT, GTKENUMS_FILE,
                TYPES_DICT, TYPES2_DICT, my_errors)
 
 if ARGS.build:
-    # Build the gtk-fortran project using CMake:
-    subprocess.call(["./build.sh"], cwd=SRC_DIR)
+    # Build and test gtk-fortran with that interactive script:
+    subprocess.run(["cd .. && ./build.sh"], shell=True)
