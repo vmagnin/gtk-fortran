@@ -131,8 +131,6 @@ enums_file.write(FILE_HEADER+"\n")
 # Index of all the generated Fortran interfaces:
 index = []
 
-opened_files = []
-
 print("\033[1m Pass 2: looking for C functions...\033[0m ")
 
 # Note that PATH_DICT is an OrderedDict:
@@ -142,23 +140,21 @@ for library_path in PATH_DICT:
     print(f"{library_path:<32} =>  {f_file_name:<20}", end="")
 
     # Create the *-auto.* file with its module declaration:
-    if f_file_name not in opened_files:
-        f_file = open(SRC_DIR+f_file_name, "w", encoding='utf-8')
-        opened_files.append(f_file_name)
+    f_file = open(SRC_DIR+f_file_name, "w", encoding='utf-8')
 
-        # The gtk-auto.* file is a special case, it will be included in
-        # the already existing gtk.f90 by an include statement:
-        if "gtk-auto." in f_file_name:
-            module_name = "gtk"
-        else:
-            # The module name is derived from the Fortran file name:
-            module_name = re.search(r"^(.+)-auto\.f90", f_file_name).group(1)
-            module_name = module_name.replace("-", "_")
-            if module_name == "glib":
-                module_name = "g"
-            # Write the beginning of the .f90 file:
-            f_file.write(FILE_HEADER+"\nmodule " + module_name +
-                         "\nuse, intrinsic :: iso_c_binding\nimplicit none\ninterface\n\n")
+    # The gtk-auto.* file is a special case, it will be included in
+    # the already existing gtk.f90 by an include statement:
+    if "gtk-auto." in f_file_name:
+        module_name = "gtk"
+    else:
+        # The module name is derived from the Fortran file name:
+        module_name = re.search(r"^(.+)-auto\.f90", f_file_name).group(1)
+        module_name = module_name.replace("-", "_")
+        if module_name == "glib":
+            module_name = "g"
+        # Write the beginning of the .f90 file:
+        f_file.write(FILE_HEADER+"\nmodule " + module_name +
+                        "\nuse, intrinsic :: iso_c_binding\nimplicit none\ninterface\n\n")
 
     # Analyze each C header file in each subdirectory of that library:
     for directory in os.walk(library_path):
