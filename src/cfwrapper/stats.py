@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2022-10-28
+# Last modification: 2023-03-21
 
 """ This module contains functions for printing statistics at the end of the
 gtk-fortran generation process.
@@ -37,6 +37,7 @@ import getpass      # To obtain the login with getuser()
 
 # Project modules:
 from globals_const import SRC_DIR
+from scan_types_and_enums import types_enums
 
 
 def hash_gtk_fortran(PATH_DICT, GTKENUMS_FILE):
@@ -108,7 +109,7 @@ class Statistics():
     def append_type(self, iso_c):
         self.used_types.append(iso_c)
 
-    def print(self, T0, versions, PATH_DICT, GTKENUMS_FILE, TYPES_DICT, TYPES2_DICT, my_errors):
+    def print(self, T0, versions, PATH_DICT, GTKENUMS_FILE, my_errors):
         """Print various statistics about the generation of gtk-fortran
         """
 
@@ -127,7 +128,7 @@ class Statistics():
         print(f"* nb_variadic functions =   {self.nb_variadic:>6}")
         print(f"* nb_enumerators =          {self.nb_enumerators:>6}")
         print(f"* nb_win32_utf8 =           {self.nb_win32_utf8:>6}")
-        print(f"* Number of types =         {len(TYPES_DICT) + len(TYPES2_DICT):>6}")
+        print(f"* Number of types =         {len(types_enums.TYPES_DICT) + len(types_enums.TYPES2_DICT):>6}")
 
         print(f"* Computing time: {time.time()-T0:.2f} s")
 

@@ -23,8 +23,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-20 (tested with Python 3.10.7, Ubuntu)
-# $ pylint *.py ../tools.py    => 8.33/10
+# Last modification: 2023-03-21 (tested with Python 3.10.7, Ubuntu)
+# $ pylint *.py ../tools.py    => 8.51/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -49,6 +49,8 @@ from stats import Statistics
 sys.path.append('../')
 from cleaning import clean_header_file, preprocess_prototypes
 from analyze import analyze_prototypes
+from scan_types_and_enums import types_enums
+
 
 # Definition of command line options:
 PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files",
@@ -98,107 +100,10 @@ elif GTK_VERSION == "gtk2":
         ("/usr/include/gtk-2.0/gtk", "gtk-auto.f90")])
 PATH_DICT.update([("/usr/include/pango-1.0", "pango-auto.f90")])
 
-
-# -------------------------------------------------------------------------
-# These dictionaries give the Fortran type and its KIND for each GTK type.
-# TYPES_DICT will be completed with other types detected by the algorithm.
-# -------------------------------------------------------------------------
-# One word types:
-TYPES_DICT = {
-    "int":("integer(c_int)", "c_int"),
-    "gint":("integer(c_int)", "c_int"),
-    "guint":("integer(c_int)", "c_int"),
-    #define Bool int    => Xlib.h
-    "Bool":("integer(c_int)", "c_int"),
-    "GPid":("integer(c_int)", "c_int"),
-    "gint64":("integer(c_int64_t)", "c_int64_t"),
-    "goffset":("integer(c_int64_t)", "c_int64_t"),
-    "guint64":("integer(c_int64_t)", "c_int64_t"),
-    "gint32":("integer(c_int32_t)", "c_int32_t"),
-    "guint32":("integer(c_int32_t)", "c_int32_t"),
-    "uint32_t":("integer(c_int32_t)", "c_int32_t"),
-    #typedef guint32 GdkWChar;
-    "GdkWChar":("integer(c_int32_t)", "c_int32_t"),
-    #typedef uint32_t xcb_drawable_t;
-    "xcb_drawable_t":("integer(c_int32_t)", "c_int32_t"),
-    #typedef uint32_t xcb_pixmap_t;
-    "xcb_pixmap_t":("integer(c_int32_t)", "c_int32_t"),
-    #typedef __uid_t uid_t;
-    "uid_t":("integer(c_int32_t)", "c_int32_t"),
-    "gint16":("integer(c_int16_t)", "c_int16_t"),
-    "guint16":("integer(c_int16_t)", "c_int16_t"),
-    "gint8": ("integer(c_int8_t)", "c_int8_t"),
-    "guint8": ("integer(c_int8_t)", "c_int8_t"),
-    "long":("integer(c_long)", "c_long"),
-    "gulong":("integer(c_long)", "c_long"),
-    #typedef __time_t time_t;
-    "time_t":("integer(c_long)", "c_long"),
-    "short":("integer(c_short)", "c_short"),
-    "boolean":("logical(c_bool)", "c_bool"),
-    "char":("character(kind=c_char)", "c_char"),
-    # For gchar & guchar,
-    # see https://github.com/vmagnin/gtk-fortran/issues/41#issuecomment-7337877
-    "gchar":("integer(kind=c_int8_t)", "c_int8_t"),
-    "guchar":("integer(kind=c_int8_t)", "c_int8_t"),
-    # typedef gchar** GStrv
-    "GStrv":("type(c_ptr)", "c_ptr"),
-    "double": ("real(c_double)", "c_double"),
-    "float":("real(c_float)", "c_float"),
-    "size_t":  ("integer(c_size_t)", "c_size_t"),
-    # gsize is the same size than size_t:
-    "gsize":  ("integer(c_size_t)", "c_size_t"),
-    # GLib asserts that gssize is the same size as gsize (size_t) but signed:
-    # see https://discourse.gnome.org/t/where-are-defined-glib-types-in-the-new-doc/14473/4
-    "gssize":  ("integer(c_size_t)", "c_size_t"),
-    # typedef gsize GType;
-    "GType":  ("integer(c_size_t)", "c_size_t"),
-    "va_list":("type(c_ptr)", "c_ptr"),
-    #typedef void* gpointer;
-    "gpointer":("type(c_ptr)", "c_ptr"),
-    #typedef struct _GdkAtom *GdkAtom;
-    "GdkAtom":("type(c_ptr)", "c_ptr"),
-    # GC (Xlib) is it a pointer ?
-    "GC":("type(c_ptr)", "c_ptr"),
-    #typedef struct _GIConv *GIConv;
-    "GIConv":("type(c_ptr)", "c_ptr"),
-    "GSignalCMarshaller":("type(c_ptr)", "c_ptr"),
-    # typedef gint32 GTime (Deprecated since: 2.62)
-    "GTime":("integer(c_int32_t)", "c_int32_t"),
-    #typedef struct FT_FaceRec_*  FT_Face;
-    "FT_Face":("type(c_ptr)", "c_ptr"),
-    # X11 types (See /usr/include/X11/Xmd.h), unsigned int (64 bits archi.)
-    # or unsigned long (32 bits architecture):
-    "Window":("integer(c_long)", "c_long"),
-    #define Drawable CARD32
-    "Drawable":("integer(c_long)", "c_long"),
-    "Font":("integer(c_long)", "c_long"),
-    "Pixmap":("integer(c_long)", "c_long"),
-    "Cursor":("integer(c_long)", "c_long"),
-    "Colormap":("integer(c_long)", "c_long"),
-    "GContext":("integer(c_long)", "c_long"),
-    "Atom":("integer(c_long)", "c_long"),
-    "Picture":("integer(c_long)", "c_long"),
-    "XID":("integer(c_long)", "c_long"),
-    "VisualID":("integer(c_long)", "c_long"),
-    "Time":("integer(c_long)", "c_long"),
-    #define KeyCode CARD8   => unsigned char
-    "KeyCode":("character(kind=c_char)", "c_char"),
-    "KeySym":("integer(c_long)", "c_long"),
-    # enum GWin32OSType
-    "GWin32OSType":("integer(c_int)", "c_int")
-}
-
-# Two words types:
-TYPES2_DICT = {
-    "long double": ("real(c_long_double)", "c_long_double"),
-    "unsigned long":("integer(c_long)", "c_long"),
-    "unsigned short":("integer(c_short)", "c_short"),
-    "unsigned int":("integer(c_int)", "c_int")
-}
-
+# To calculate computing time:
+T0 = time.time()
 # An instance of the Statistics class:
 my_stats = Statistics()
-
 # An instance of the Errors class:
 my_errors = Errors()
 
@@ -207,45 +112,8 @@ my_errors = Errors()
 # functions (funptr) and add derived GTK types
 #*************************************************************************
 print("\033[1m Pass 1: looking for enumerators, funptr and derived types...\033[0m")
-
-gtk_types = []
-
-# These lists will be used by the iso_c_binding() function:
-gtk_enums = []
-gtk_funptr = []
-
-T0 = time.time()     # To calculate computing time
-for library_path in PATH_DICT:
-    for directory in os.walk(library_path):
-        for c_file_name in directory[2]:
-            whole_file = open(directory[0] + "/" + c_file_name, 'r',
-                              errors='replace', encoding='utf-8').read()
-            gtk_enums += re.findall(r"(?ms)^typedef enum.*?}\s?(\w+);", whole_file)
-            gtk_funptr += re.findall(r"(?m)^typedef[ \t]*(?:const)?[ \t]*\w+[ \t]*\*?\s*\(\* ?([\w]*?)\)",
-                                     whole_file)
-            gtk_types += re.findall(r"(?m)^typedef *?(?:const)? *?(\w+) *\*? *([\w]+);",
-                                    whole_file)
-
-# Add derived types:
-for each in gtk_types:
-    if each[1] not in TYPES_DICT:
-        if each[0] in TYPES_DICT:
-            TYPES_DICT[each[1]] = TYPES_DICT[each[0]]
-        elif each[0] in gtk_funptr:
-            TYPES_DICT[each[1]] = ("type(c_funptr)", "c_funptr")
-
-# Write all the types in a CSV file:
-with open(SRC_DIR+"gtk-fortran_types.csv", "w", newline="", encoding="utf-8") as csvfile3:
-    index_file = csv.writer(csvfile3, delimiter=";", dialect='excel')
-    index_file.writerow(["C type", "Fortran type", "Fortran KIND"])
-    for each in TYPES_DICT:
-        index_file.writerow([each, TYPES_DICT[each][0], TYPES_DICT[each][1]])
-    for each in TYPES2_DICT:
-        index_file.writerow([each, TYPES2_DICT[each][0], TYPES2_DICT[each][1]])
-
-# Sorting (useful only for printing):
-gtk_enums.sort()
-gtk_funptr.sort()
+# Just for initializing the class:
+types_enums_initialisation = types_enums(PATH_DICT)
 
 #**************************************************************************
 # Pass 2: Scan of all header files in the directories and subdirectories to
@@ -267,6 +135,7 @@ opened_files = []
 
 print("\033[1m Pass 2: looking for C functions...\033[0m ")
 
+# Note that PATH_DICT is an OrderedDict:
 for library_path in PATH_DICT:
     # Name of the *-auto.* file:
     f_file_name = PATH_DICT[library_path]
@@ -336,7 +205,6 @@ for library_path in PATH_DICT:
 
             analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_list,
                                whole_file_original, directory[0], c_file_name,
-                               gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT,
                                my_stats, my_errors, ARGS)
 
     # Close that *-auto.f90 file:
@@ -376,8 +244,7 @@ my_versions.update_json_file()
 my_versions.update_fpm_file()
 
 # Print the final statistics:
-my_stats.print(T0, my_versions.string(), PATH_DICT, GTKENUMS_FILE,
-               TYPES_DICT, TYPES2_DICT, my_errors)
+my_stats.print(T0, my_versions.string(), PATH_DICT, GTKENUMS_FILE, my_errors)
 
 if ARGS.build:
     # Build and test gtk-fortran with that interactive script:

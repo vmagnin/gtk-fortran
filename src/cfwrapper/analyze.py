@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modifications: 2023-03-17
+# Last modifications: 2023-03-21
 
 """ This module contains functions to analyze C prototypes
     and generate Fortran interfaces.
@@ -35,6 +35,7 @@ import re           # Regular expression library
 from tools import multiline
 from globals_const import TAB
 from fortran import iso_c_binding
+from scan_types_and_enums import types_enums
 
 #---------------------------------------------------------------------------
 # Regular expressions used to identify the different parts of a C prototype:
@@ -93,9 +94,8 @@ def split_prototype(prototype):
 
 
 def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_list,
-                       whole_file_original, c_dir, c_file_name, gtk_enums,
-                       gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats, my_errors,
-                       ARGS):
+                       whole_file_original, c_dir, c_file_name,
+                       my_stats, my_errors, ARGS):
     """Each prototype of the preprocessed list is now analyzed.
     """
 
@@ -145,8 +145,7 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
             # The function iso_c_binding() is working on a declaration
             # comprising the type and the name of the entity:
             declaration = function_type + " " + f_name
-            returned_type, iso_c = iso_c_binding(declaration, True, gtk_enums,
-                                            gtk_funptr, TYPES_DICT, TYPES2_DICT)
+            returned_type, iso_c = iso_c_binding(declaration, True)
             f_use = iso_c
             if "?" in returned_type:    # Function type not found
                 my_errors.new_error(c_dir, c_file_name, "Unknown function type:  "
@@ -170,8 +169,7 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
             function_status = ""
 
         # The list `args` of the function arguments is now analyzed:
-        args_list, f_use, declarations, error_flag = analyze_arguments(args, f_use, proto, c_dir, c_file_name, gtk_enums,
-                                                                       gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats, my_errors)
+        args_list, f_use, declarations, error_flag = analyze_arguments(args, f_use, proto, c_dir, c_file_name, my_stats, my_errors)
         # Write the Fortran interface in the .f90 file:
         if not error_flag:
             write_fortran_interface(index, module_name, f_file_name, f_file,
@@ -182,7 +180,7 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
 
 
 
-def analyze_arguments(args, f_use, proto, c_dir, c_file_name, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT, my_stats, my_errors):
+def analyze_arguments(args, f_use, proto, c_dir, c_file_name, my_stats, my_errors):
     """This function analyzes the list of arguments `args` of the C function.
        It returns the list of Fortran arguments, the iso_c_binding types needed,
        the Fortran declarations of the arguments and an error_flag.
@@ -206,8 +204,7 @@ def analyze_arguments(args, f_use, proto, c_dir, c_file_name, gtk_enums, gtk_fun
             continue    # Next argument in the list
 
         # Corresponding Fortran type of the argument:
-        f_type, iso_c = iso_c_binding(arg, False, gtk_enums, gtk_funptr,
-                                      TYPES_DICT, TYPES2_DICT)
+        f_type, iso_c = iso_c_binding(arg, False)
         if iso_c not in my_stats.used_types:
             my_stats.append_type(iso_c)
 

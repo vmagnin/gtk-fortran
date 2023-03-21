@@ -23,18 +23,21 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-17
+# Last modification: 2023-03-21
 
 """ This module contains functions used in the cfwrapper.
 """
 
 import re           # Regular expression library
 
+from scan_types_and_enums import types_enums
+
+
 # Used to identify a C type:
 RGX_TYPE = re.compile(r"^ *((const )?\w+)[ \*]?")
 
 
-def iso_c_binding(declaration, isReturned, gtk_enums, gtk_funptr, TYPES_DICT, TYPES2_DICT):
+def iso_c_binding(declaration, isReturned):
     """ Returns the Fortran type corresponding to a C type in the ISO_C_BINDING
         module (limited to C types used in GTK), and the KIND type.
         The declaration contains the type and the name of the entity.
@@ -50,12 +53,12 @@ def iso_c_binding(declaration, isReturned, gtk_enums, gtk_funptr, TYPES_DICT, TY
     declaration = re.sub(r"^(const )", "", declaration)
 
     # Is it a "typedef enum" ?
-    for item in gtk_enums:
+    for item in types_enums.gtk_enums:
         if item in c_type:
             return "integer(c_int)", "c_int"
 
     # Is it a pointer toward a function ?
-    for item in gtk_funptr:
+    for item in types_enums.gtk_funptr:
         if item in c_type:
             return "type(c_funptr)", "c_funptr"
 
@@ -82,14 +85,14 @@ def iso_c_binding(declaration, isReturned, gtk_enums, gtk_funptr, TYPES_DICT, TY
 
     # Other cases:
     if len(declaration.split()) >= 3:  # Two words type + the name of the entity
-        for item in TYPES2_DICT:
+        for item in types_enums.TYPES2_DICT:
             # A Python set is an unordered collection of distinct hashable objects
             if set(item.split()).issubset(set(declaration.split())):
-                return TYPES2_DICT[item][0] + array, TYPES2_DICT[item][1]
+                return types_enums.TYPES2_DICT[item][0] + array, types_enums.TYPES2_DICT[item][1]
     else:  # It is a one word type
-        for item in TYPES_DICT:
+        for item in types_enums.TYPES_DICT:
             if item in c_type.split():
-                return TYPES_DICT[item][0] + array, TYPES_DICT[item][1]
+                return types_enums.TYPES_DICT[item][0] + array, types_enums.TYPES_DICT[item][1]
 
     # It is finally an unknown type:
     return "?", "?"
