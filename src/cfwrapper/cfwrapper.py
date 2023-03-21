@@ -160,8 +160,8 @@ for library_path in PATH_DICT:
     for directory in os.walk(library_path):
         for c_file_name in directory[2]:
             # Problematic files can be excluded here:
-            #if c_file_name in ["this_file.h"]:
-            #    continue    # Go to next file
+            if c_file_name in []:
+                continue    # Go to next file
 
             # Write the file name in comments:
             f_file.write("!" + 50*"-" + "\n")
