@@ -199,10 +199,11 @@ for library_path in PATH_DICT:
             my_stats.inc_nb_lines(nb)
 
             if c_file_name in ["gstdio.h"]:
-                # We remove possible duplicated prototypes in this file:
+                # Removes duplicated prototypes (Unix and non-Unix):
                 preprocessed_list = list(set(preprocessed_list))
                 preprocessed_list.sort()
 
+            # The preprocessed list is now ready for deep analyzing:
             analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_list,
                                whole_file_original, directory[0], c_file_name,
                                my_stats, my_errors, ARGS)
