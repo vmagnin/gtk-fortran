@@ -39,7 +39,7 @@ import argparse     # To parse command line
 from collections import OrderedDict
 import sys
 
-# Project modules:
+# Wrapper modules:
 from globals_const import SRC_DIR
 from lib_versions import Version
 from errors import Errors
@@ -72,11 +72,13 @@ GTK_FORTRAN_VERSION = ARGS.version[0]
 my_versions = Version(GTK_VERSION, GTK_FORTRAN_VERSION)
 
 # Define libraries paths and corresponding *-auto.* files.
-# Do not change the order of the dictionary keys:
+# Do not change the order of the dictionary keys.
+# Common libraries:
 PATH_DICT = OrderedDict([
     ("/usr/include/cairo", "cairo-auto.f90"),
     ("/usr/include/gdk-pixbuf-2.0", "gdk-pixbuf-auto.f90"),
     ("/usr/include/glib-2.0", "glib-auto.f90")])
+# Version specific libraries:
 if GTK_VERSION == "gtk4":
     GTKENUMS_FILE = "gtkenums-auto.in"
     PATH_DICT.update([
@@ -150,6 +152,7 @@ for library_path in PATH_DICT:
         # The module name is derived from the Fortran file name:
         module_name = re.search(r"^(.+)-auto\.f90", f_file_name).group(1)
         module_name = module_name.replace("-", "_")
+        # GLib functions are prefixed by the g_, therefore the module is g:
         if module_name == "glib":
             module_name = "g"
         # Write the beginning of the .f90 file:
@@ -174,6 +177,7 @@ for library_path in PATH_DICT:
             # The original file will be used for WIN32 functions
             whole_file = whole_file_original
 
+            # Preprocessing and cleaning of the header file. Also gathers the enums:
             whole_file, nb_enums = clean_header_file(c_file_name, whole_file, enums_file)
             my_stats.inc_nb_enumerators(nb_enums)
 
@@ -210,6 +214,7 @@ for library_path in PATH_DICT:
     print(f"{os.stat(SRC_DIR+f_file_name).st_size:>10} bytes")
     # Next *-auto.* file
 
+#------------------------------------------------------------------------------
 
 # Close global files:
 enums_file.close()
@@ -242,6 +247,6 @@ my_versions.update_fpm_file()
 # Print the final statistics:
 my_stats.print(T0, my_versions.string(), PATH_DICT, GTKENUMS_FILE, my_errors)
 
+# Option -b: build and test gtk-fortran with that interactive script:
 if ARGS.build:
-    # Build and test gtk-fortran with that interactive script:
     subprocess.run(["cd .. && ./build.sh"], shell=True)
