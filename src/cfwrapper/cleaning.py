@@ -63,26 +63,26 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$", "", whole_file)
     # Remove C directives (multilines then monoline):
     whole_file = re.sub(r"(?m)^#(.*[\\][\n])+.*?$", "", whole_file)
-    whole_file = re.sub("(?m)^#.*$", "", whole_file)
+    whole_file = re.sub(r"(?m)^#.*$", "", whole_file)
     # Remove TABs and overnumerous spaces:
     whole_file = whole_file.replace("\t", " ")
-    whole_file = re.sub("[ ]{2,}", " ", whole_file)
+    whole_file = re.sub(r"[ ]{2,}", " ", whole_file)
     # Remove two levels of { } structures:
     for i in [1, 2]:
-        whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
+        whole_file = re.sub(r"(?ms){[^{]*?}$", "", whole_file)
     # Remove structures like: { } a_name;
     whole_file = re.sub(r"(?ms){[^{]*?}[ \w]*?;", "", whole_file)
     # Remove "available_in" and "deprecated" directives:
-    whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$", "", whole_file)
-    whole_file = re.sub("G_GNUC_(BEGIN|END)_IGNORE_DEPRECATIONS", "", whole_file)
+    whole_file = re.sub(r"(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$", "", whole_file)
+    whole_file = re.sub(r"G_GNUC_(BEGIN|END)_IGNORE_DEPRECATIONS", "", whole_file)
     # Remove different kind of declarations:
-    whole_file = re.sub("(?m)^(extern|enum|typedef|union|struct).*$", "", whole_file)
-    whole_file = re.sub("(?m)^.*(G|CAIRO|GRAPHENE)_(BEGIN|END)_DECLS *$", "", whole_file)
+    whole_file = re.sub(r"(?m)^(extern|enum|typedef|union|struct).*$", "", whole_file)
+    whole_file = re.sub(r"(?m)^.*(G|CAIRO|GRAPHENE)_(BEGIN|END)_DECLS *$", "", whole_file)
     whole_file = re.sub(r"(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
-    whole_file = re.sub("(?m)^.*(cairo_public) ", "", whole_file)
-    whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC|G_GNUC_WARN_UNUSED_RESULT|_GDK_PIXBUF_EXTERN)"
+    whole_file = re.sub(r"(?m)^.*(cairo_public) ", "", whole_file)
+    whole_file = re.sub(r"(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC|G_GNUC_WARN_UNUSED_RESULT|_GDK_PIXBUF_EXTERN)"
                         , "", whole_file)   # extern
-    whole_file = re.sub("(?m)^(G_DECLARE_INTERFACE|G_DECLARE_DERIVABLE_TYPE).*$", "", whole_file)
+    whole_file = re.sub(r"(?m)^(G_DECLARE_INTERFACE|G_DECLARE_DERIVABLE_TYPE).*$", "", whole_file)
     # Remove GNU macros at the end of declarations (functions prototypes):
     whole_file = re.sub(r"G_GNUC_[\w (),]*;", ";", whole_file)
     whole_file = re.sub(r"G_ANALYZER_NORETURN *;", ";", whole_file)
