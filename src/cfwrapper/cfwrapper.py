@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-21 (tested with Python 3.10.7, Ubuntu)
+# Last modification: 2023-03-22 (tested with Python 3.10.7, Ubuntu)
 # $ pylint *.py ../tools.py    => 8.51/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
@@ -246,6 +246,7 @@ my_versions.update_json_file()
 my_versions.update_fpm_file()
 
 # Print the final statistics:
+my_stats.inc_nb_funptr_types(len(types_enums.gtk_funptr))
 my_stats.print(T0, my_versions.string(), PATH_DICT, GTKENUMS_FILE, my_errors)
 
 # Option -b: build and test gtk-fortran with that interactive script:

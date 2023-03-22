@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2023-03-21
-# Last modification: 2023-03-21
+# Last modification: 2023-03-22
 
 import os
 import re           # Regular expression library
@@ -179,4 +179,10 @@ class types_enums():
             for each in types_enums.TYPES2_DICT:
                 index_file.writerow([each, types_enums.TYPES2_DICT[each][0], types_enums.TYPES2_DICT[each][1]])
 
+        # Write all the funptr in a CSV file:
         types_enums.gtk_funptr.sort()
+        with open(SRC_DIR+"gtk-fortran_funptr.csv", "w", newline="", encoding="utf-8") as csvfile4:
+            index_file = csv.writer(csvfile4, delimiter=";", dialect='excel')
+            index_file.writerow(["C type"])
+            for each in types_enums.gtk_funptr:
+                index_file.writerow([each])

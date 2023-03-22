@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-21
+# Last modification: 2023-03-22
 
 """ This module contains functions for printing statistics at the end of the
 gtk-fortran generation process.
@@ -84,6 +84,7 @@ class Statistics():
         self.nb_enumerators = 0
         self.nb_win32_utf8 = 0
         self.used_types = []
+        self.nb_funptr_types = 0
 
     def inc_nb_lines(self, n):
         self.nb_lines += n
@@ -109,6 +110,9 @@ class Statistics():
     def append_type(self, iso_c):
         self.used_types.append(iso_c)
 
+    def inc_nb_funptr_types(self, n):
+        self.nb_funptr_types += n
+
     def print(self, T0, versions, PATH_DICT, GTKENUMS_FILE, my_errors):
         """Print various statistics about the generation of gtk-fortran
         """
@@ -129,6 +133,7 @@ class Statistics():
         print(f"* nb_enumerators =          {self.nb_enumerators:>6}")
         print(f"* nb_win32_utf8 =           {self.nb_win32_utf8:>6}")
         print(f"* Number of types =         {len(types_enums.TYPES_DICT) + len(types_enums.TYPES2_DICT):>6}")
+        print(f"* Number of funptr types =  {self.nb_funptr_types:>6}")
 
         print(f"* Computing time: {time.time()-T0:.2f} s")
 
