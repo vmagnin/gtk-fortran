@@ -69,8 +69,8 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     whole_file = whole_file.replace("\t", " ")
     whole_file = re.sub("[ ]{2,}", " ", whole_file)
     # Remove two levels of { } structures:
-    whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
-    whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
+    for i in [1, 2]:
+        whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
     # Remove structures like: { } a_name;
     whole_file = re.sub(r"(?ms){[^{]*?}[ \w]*?;", "", whole_file)
     # Remove "available_in" and "deprecated" directives:
