@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2011-01-28
-# Last modification: 2022-11-09
+# Last modification: 2023-03-22
 
 import os
 import re           # Regular expression library
@@ -143,8 +143,8 @@ class Version():
             content = json_file.read()
             json_file.seek(0)
             json_file.truncate()
-            content = re.sub('"dateModified": "(.*)"', '"dateModified": "'+datetime.date.today().isoformat()+'"', content)
-            content = re.sub('"version": "(.*)"', '"version": "'+self.gtk_fortran+'"', content)
+            content = re.sub(r'"dateModified": "(.*)"', r'"dateModified": "'+datetime.date.today().isoformat()+'"', content)
+            content = re.sub(r'"version": "(.*)"', r'"version": "'+self.gtk_fortran+'"', content)
             json_file.write(content)
 
     def update_fpm_file(self):
@@ -154,5 +154,5 @@ class Version():
             content = fpm_file.read()
             fpm_file.seek(0)
             fpm_file.truncate()
-            content = re.sub('version = "(.*)"', 'version = "'+self.gtk_fortran+'"', content)
+            content = re.sub(r'version = "(.*)"', r'version = "'+self.gtk_fortran+'"', content)
             fpm_file.write(content)
