@@ -60,8 +60,7 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     enums_file.write(f_enum)
 
     # Removing multilines typedef:
-    whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
-                        "", whole_file)
+    whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$", "", whole_file)
     # Remove C directives (multilines then monoline):
     whole_file = re.sub(r"(?m)^#(.*[\\][\n])+.*?$", "", whole_file)
     whole_file = re.sub("(?m)^#.*$", "", whole_file)
@@ -74,8 +73,7 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     # Remove structures like: { } a_name;
     whole_file = re.sub(r"(?ms){[^{]*?}[ \w]*?;", "", whole_file)
     # Remove "available_in" and "deprecated" directives:
-    whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
-                        "", whole_file)
+    whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$", "", whole_file)
     whole_file = re.sub("G_GNUC_(BEGIN|END)_IGNORE_DEPRECATIONS", "", whole_file)
     # Remove different kind of declarations:
     whole_file = re.sub("(?m)^(extern|enum|typedef|union|struct).*$", "", whole_file)
