@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-17
+# Last modification: 2023-03-22
 
 """ This module contains functions used to clean header files in the cfwrapper.
 """
@@ -76,8 +76,7 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     # Remove "available_in" and "deprecated" directives:
     whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
                         "", whole_file)
-    whole_file = re.sub("G_GNUC_BEGIN_IGNORE_DEPRECATIONS", "", whole_file)
-    whole_file = re.sub("G_GNUC_END_IGNORE_DEPRECATIONS", "", whole_file)
+    whole_file = re.sub("G_GNUC_(BEGIN|END)_IGNORE_DEPRECATIONS", "", whole_file)
     # Remove extern C statement:
     whole_file = re.sub("(?m)^(extern).*$", "", whole_file)
     # Remove different kind of declarations:
