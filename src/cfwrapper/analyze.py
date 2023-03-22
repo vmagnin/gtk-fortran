@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modifications: 2023-03-21
+# Last modifications: 2023-03-22
 
 """ This module contains functions to analyze C prototypes
     and generate Fortran interfaces.
@@ -73,22 +73,22 @@ def split_prototype(prototype):
     arguments = RGX_ARGUMENTS.search(prototype)
     try:
         args = RGX_ARGS.findall(arguments.group(1))
-    except AttributeError:
-        raise Exception("Arguments not found")
+    except AttributeError as ex:
+        raise Exception("Arguments not found") from ex
 
     # The name is before arguments. The right bound of a string is excluded.
     function_name = RGX_FUNCTION_NAME.search(prototype[0:arguments.start(1)])
     try:
         f_name = function_name.group(1)
-    except AttributeError:
-        raise Exception("Function name not found")
+    except AttributeError as ex:
+        raise Exception("Function name not found") from ex
 
     # The returned type is before the name. The right bound is excluded.
     type_returned = RGX_RETURNED_TYPE.search(prototype[0:function_name.start(1)])
     try:
         function_type = type_returned.group(1)
-    except AttributeError:
-        raise Exception("Returned type not found")
+    except AttributeError as ex:
+        raise Exception("Returned type not found") from ex
 
     return function_type, f_name, args
 

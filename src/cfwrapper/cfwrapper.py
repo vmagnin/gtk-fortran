@@ -24,7 +24,7 @@
 #
 # Contributed by Vincent Magnin, 01.28.2011
 # Last modification: 2023-03-22 (tested with Python 3.10.7, Ubuntu)
-# $ pylint *.py ../tools.py    => 8.51/10
+# $ pylint *.py ../tools.py    => 8.54/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
