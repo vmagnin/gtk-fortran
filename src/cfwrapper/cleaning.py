@@ -77,12 +77,8 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
                         "", whole_file)
     whole_file = re.sub("G_GNUC_(BEGIN|END)_IGNORE_DEPRECATIONS", "", whole_file)
-    # Remove extern C statement:
-    whole_file = re.sub("(?m)^(extern).*$", "", whole_file)
     # Remove different kind of declarations:
-    whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
-    whole_file = re.sub("(?m)^(typedef|union|struct).*$",
-                        "", whole_file)
+    whole_file = re.sub("(?m)^(extern|enum|typedef|union|struct).*$", "", whole_file)
     whole_file = re.sub("(?m)^.*(G|CAIRO|GRAPHENE)_(BEGIN|END)_DECLS *$", "", whole_file)
     whole_file = re.sub(r"(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
     whole_file = re.sub("(?m)^.*(cairo_public) ", "", whole_file)
