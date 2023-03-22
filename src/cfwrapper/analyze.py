@@ -221,6 +221,7 @@ def analyze_arguments(args, f_use, proto, c_dir, c_file_name, my_stats, my_error
             error_flag = True
             my_errors.new_error(c_dir, c_file_name, "Unknown type:  " + arg,
                                 proto, True)
+            continue    # Next argument in the list
 
         # Unknown dimension arrays are passed by address, others by value:
         if "(*)" in f_type:
