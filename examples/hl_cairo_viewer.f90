@@ -1,5 +1,5 @@
 ! This file is part of gtk-fortran, a GTK / Fortran interface library.
-! Copyright (C) 2011 The gtk-fortran team
+! Copyright (C) 2013 The gtk-fortran team
 !
 ! This is free software; you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 ! this program; see the files LICENSE and LICENSE_EXCEPTION respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
-! Contributed by: James Tappin
+! Contributed by: James Tappin, 2013-01-26
 ! Last modifications: vmagnin 2020-06-19 (GTK 4), 2021-01-12
 !------------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ module v_handlers
   use gtk_hl_combobox
 
   !************************************
-  ! Gtk modules for hl_cairo_viewer.f90
+  ! GTK modules for hl_cairo_viewer.f90
   !************************************
   use cairo, only: cairo_status, cairo_status_to_string
   use gdk_pixbuf, only: gdk_pixbuf_get_height, gdk_pixbuf_get_width
@@ -250,4 +250,3 @@ program hl_cairo_viewer
   app = hl_gtk_application_new("gtk-fortran.examples.hl_cairo_viewer"//c_null_char, &
                              & c_funloc(activate))
 end program hl_cairo_viewer
-
