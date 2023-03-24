@@ -181,7 +181,7 @@ contains
     end if
 
     tl_window = gtk_application_window_new(app)
-    call gtk_window_set_title(tl_window, "Simple Image Viewer"//c_null_char)
+    call gtk_window_set_title(tl_window, "Simple Image Viewer (gtk-fortran)"//c_null_char)
     print *, "Note that you can pass filenames as arguments in the command line"
 
     base = hl_gtk_box_new()
