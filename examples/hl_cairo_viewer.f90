@@ -20,7 +20,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin, 2013-01-26
-! Last modifications: vmagnin 2020-06-19 (GTK 4), 2021-01-12
+! Last modifications: vmagnin 2020-06-19 (GTK 4), 2023-03-24
 !------------------------------------------------------------------------------
 
 module v_handlers
@@ -38,8 +38,10 @@ module v_handlers
   use gdk_pixbuf, only: gdk_pixbuf_get_height, gdk_pixbuf_get_width
   use gtk, only: gtk_combo_box_get_active, gtk_combo_box_set_active, &
        & gtk_widget_set_sensitive, gtk_window_set_child, &
-       & gtk_widget_show, gtk_window_destroy, TRUE, FALSE
+       & gtk_widget_show, gtk_window_destroy, TRUE, FALSE, &
+       & g_signal_connect, gtk_widget_get_name
   use g, only: g_timeout_add
+  use gtk_sup, only: c_f_string_copy_alloc
 
   implicit none
   character(len=256), dimension(:), allocatable :: file_list
@@ -73,16 +75,24 @@ contains
     integer(c_int) :: nx, ny
     type(c_ptr) :: pixbuf
     character(len=120) :: errm=''
+    character(:), allocatable :: widget_name
 
     if (.not. c_associated(view)) return
 
-    if (c_associated(gdata)) then
-       call c_f_pointer(gdata, istep)
-       current_file = current_file + istep
-       call gtk_combo_box_set_active(select, current_file)
+    call c_f_string_copy_alloc(gtk_widget_get_name(widget), widget_name)
+
+    if (widget_name == "GtkApplicationWindow") then
+       ! If the widget is the main window, it means
+       ! it has been resized. We redraw the same file.
     else
-       current_file = gtk_combo_box_get_active(widget)
-       if (current_file < 0) return
+      if (c_associated(gdata)) then
+         call c_f_pointer(gdata, istep)
+         current_file = current_file + istep
+         call gtk_combo_box_set_active(select, current_file)
+      else
+         current_file = gtk_combo_box_get_active(widget)
+         if (current_file < 0) return
+      end if
     end if
 
     call gtk_widget_set_sensitive(prev, f_c_logical(current_file > 0))
@@ -235,6 +245,11 @@ contains
     ! Will show an image passed in the command line, after the
     ! termination of the activate subroutine:
     if (current_file >= 0) timeid = g_timeout_add(100_c_int, c_funloc(show_at_start), select)
+
+    ! If the window is resized, its default_width property is modified
+    ! and this signal means the image needs to be redrawn:
+    call g_signal_connect(tl_window, "notify::default-width"//c_null_char, c_funloc(show_image))
+
   end subroutine activate
 end module v_handlers
 
