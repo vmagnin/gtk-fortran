@@ -153,6 +153,8 @@ contains
     if (current_file < 0 .and. size(file_list) > 0) current_file = 0
     call gtk_combo_box_set_active(select, current_file)
     call gtk_widget_set_sensitive(select, f_c_logical(size(file_list)>0))
+    call gtk_widget_set_sensitive(next, &
+                                & f_c_logical(current_file < size(file_list)-1))
   end subroutine add_files
 
   subroutine activate(app, gdata) bind(c)
