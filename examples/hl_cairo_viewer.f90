@@ -20,7 +20,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin, 2013-01-26
-! Last modifications: vmagnin 2020-06-19 (GTK 4), 2023-03-24
+! Last modifications: vmagnin 2020-06-19 (GTK 4), 2023-03-29
 !------------------------------------------------------------------------------
 
 module v_handlers
@@ -46,25 +46,28 @@ module v_handlers
   implicit none
   character(len=256), dimension(:), allocatable :: file_list
   integer(c_int) :: current_file
-  type(c_ptr) :: tl_window, view, prev, next, select
+  type(c_ptr) :: tl_window, view, prev, next, selector
 
 contains
 
+  ! Callback function of the "Quit" button:
   subroutine delete_v (widget, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
+
     call gtk_window_destroy(tl_window)
   end subroutine delete_v
 
 
-  function show_at_start(select) bind(c)
+  function show_at_start(selector) bind(c)
     ! This function is needed to show image passed as argument
     ! in the command line.
     ! See https://github.com/vmagnin/gtk-fortran/issues/224
     integer(c_int) :: show_at_start
-    type(c_ptr), value, intent(in) :: select
+    type(c_ptr), value, intent(in) :: selector
 
-    call gtk_combo_box_set_active(select, current_file)
-    ! This function will be launched only once:
+    ! Will cause show_image() to be called by the combobox:
+    call gtk_combo_box_set_active(selector, current_file)
+    ! This function will be launched only once if it returns FALSE:
     show_at_start = FALSE
   end function
 
@@ -77,24 +80,25 @@ contains
     character(len=120) :: errm=''
     character(:), allocatable :: widget_name
 
-    if (.not. c_associated(view)) return
-
     call c_f_string_copy_alloc(gtk_widget_get_name(widget), widget_name)
 
     if (widget_name == "GtkApplicationWindow") then
        ! If the widget is the main window, it means
        ! it has been resized. We redraw the same file.
     else
+      ! When clicking on Prev and Next buttons, data -1 or +1 is passed:
       if (c_associated(gdata)) then
          call c_f_pointer(gdata, istep)
          current_file = current_file + istep
-         call gtk_combo_box_set_active(select, current_file)
+         call gtk_combo_box_set_active(selector, current_file)
       else
          current_file = gtk_combo_box_get_active(widget)
          if (current_file < 0) return
       end if
     end if
 
+    ! Depending on the number of loaded images, the Next and Prev buttons
+    ! may be activated (sensitive) or not:
     call gtk_widget_set_sensitive(prev, f_c_logical(current_file > 0))
     call gtk_widget_set_sensitive(next, &
          & f_c_logical(current_file < size(file_list)-1))
@@ -131,12 +135,14 @@ contains
     call c_f_pointer(gdata, idelete)
 
     if (idelete) then
+       ! If idelete is .true., the file_list is reinitialized
+       ! (may happen at start or with the "Replace files" button):
        if (allocated(file_list)) deallocate(file_list)
        allocate(file_list(size(new_files)))
        file_list(:) = new_files(:)
-       call hl_gtk_combo_box_delete(select)
-
+       call hl_gtk_combo_box_delete(selector)
     else
+       ! A file is added to the list:
        allocate(tmp(size(file_list)))
        tmp(:) = file_list(:)
        if (allocated(file_list)) deallocate(file_list)
@@ -146,19 +152,22 @@ contains
        if (current_file < 0) current_file = 0
     end if
 
+    ! Update the combobox:
     do i = 1, size(new_files)
-       call hl_gtk_combo_box_add_text(select, trim(new_files(i))//c_null_char)
+       call hl_gtk_combo_box_add_text(selector, trim(new_files(i))//c_null_char)
     end do
 
     if (current_file < 0 .and. size(file_list) > 0) current_file = 0
-    call gtk_combo_box_set_active(select, current_file)
-    call gtk_widget_set_sensitive(select, f_c_logical(size(file_list)>0))
+
+    call gtk_combo_box_set_active(selector, current_file)
+    call gtk_widget_set_sensitive(selector, f_c_logical(size(file_list)>0))
     call gtk_widget_set_sensitive(next, &
                                 & f_c_logical(current_file < size(file_list)-1))
   end subroutine add_files
 
   subroutine activate(app, gdata) bind(c)
     use gtk, only: gtk_application_window_new, gtk_window_set_title
+
     implicit none
     type(c_ptr), value, intent(in)  :: app, gdata
     integer(c_int) :: nfiles, i, istat
@@ -168,6 +177,7 @@ contains
     type(c_ptr) :: scroll, base, jb, junk, cmsg
     character(len=120) :: err_msg
 
+    ! Do filenames were passed in the command line?
     nfiles = command_argument_count()
     if (nfiles > 0) then
        allocate(file_list(nfiles))
@@ -198,6 +208,7 @@ contains
 
     call hl_gtk_box_pack(base, scroll)
 
+    ! To contain buttons (except Quit):
     jb = hl_gtk_box_new(horizontal=TRUE)
     call hl_gtk_box_pack(base, jb)
 
@@ -207,10 +218,10 @@ contains
          & sensitive=FALSE)
     call hl_gtk_box_pack(jb, prev, expand=FALSE)
 
-    select = hl_gtk_combo_box_new(changed=c_funloc(show_image), &
+    selector = hl_gtk_combo_box_new(changed=c_funloc(show_image), &
          & sensitive=f_c_logical(nfiles > 0), tooltip=&
-         & "Select an image to show"//c_null_char)
-    call hl_gtk_box_pack(jb, select, expand=TRUE)
+         & "selector an image to show"//c_null_char)
+    call hl_gtk_box_pack(jb, selector, expand=TRUE)
 
     next = hl_gtk_button_new("Next >"//c_null_char, &
          & clicked=c_funloc(show_image), data=c_loc(direction(2)), &
@@ -218,13 +229,15 @@ contains
          & sensitive=f_c_logical(nfiles > 0))
     call hl_gtk_box_pack(jb, next, expand=FALSE)
 
+    ! Filling the combobox with files:
     if (nfiles > 0) then
        do i = 1, nfiles
-          call hl_gtk_combo_box_add_text(select, &
+          call hl_gtk_combo_box_add_text(selector, &
                & trim(file_list(i))//c_null_char)
        end do
     end if
 
+    ! iremove(1) is .false. and iremove(2) is .true.:
     junk = hl_gtk_button_new("Add files"//c_null_char, &
          & clicked=c_funloc(add_files), data=c_loc(iremove(1)), &
          & tooltip="Pick files to add to the list."//c_null_char)
@@ -235,6 +248,7 @@ contains
          & tooltip="Pick files to replace the list."//c_null_char)
     call hl_gtk_box_pack(jb, junk, expand=FALSE)
 
+    ! This button is in the first (vertical) box:
     junk=hl_gtk_button_new("Quit"//c_null_char, &
          & clicked=c_funloc(delete_v), tooltip=&
          & "Quit the viewer."//c_null_char)
@@ -242,23 +256,22 @@ contains
 
     call gtk_widget_show(tl_window)
 
+    ! At start, the Add window is opened if no filename was passed in the command line:
     if (nfiles == 0) call add_files(tl_window, c_loc(iremove(2)))
 
     ! Will show an image passed in the command line, after the
-    ! termination of the activate subroutine:
-    if (current_file >= 0) timeid = g_timeout_add(100_c_int, c_funloc(show_at_start), select)
+    ! termination of the activate subroutine (100 ms):
+    if (current_file >= 0) timeid = g_timeout_add(100_c_int, c_funloc(show_at_start), selector)
 
     ! If the window is resized, its default_width property is modified
     ! and this signal means the image needs to be redrawn:
     call g_signal_connect(tl_window, "notify::default-width"//c_null_char, c_funloc(show_image))
-
   end subroutine activate
 end module v_handlers
 
 
 program hl_cairo_viewer
   ! A very simple image viewer
-  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char
   use v_handlers
 
   implicit none
