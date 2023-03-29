@@ -179,8 +179,9 @@ contains
 
     ! Do filenames were passed in the command line?
     nfiles = command_argument_count()
+    allocate(file_list(nfiles))
+
     if (nfiles > 0) then
-       allocate(file_list(nfiles))
        do i = 1, nfiles
           call get_command_argument(i, value=file_list(i))
           print *, file_list(i)
