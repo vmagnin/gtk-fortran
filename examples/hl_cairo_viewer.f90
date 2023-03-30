@@ -20,7 +20,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin, 2013-01-26
-! Last modifications: vmagnin 2020-06-19 (GTK 4), 2023-03-29
+! Last modifications: vmagnin 2020-06-19 (GTK 4), 2023-03-30
 !------------------------------------------------------------------------------
 
 module v_handlers
@@ -264,9 +264,10 @@ contains
     ! termination of the activate subroutine (100 ms):
     if (current_file >= 0) timeid = g_timeout_add(100_c_int, c_funloc(show_at_start), selector)
 
-    ! If the window is resized, its default_width property is modified
-    ! and this signal means the image needs to be redrawn:
-    call g_signal_connect(tl_window, "notify::default-width"//c_null_char, c_funloc(show_image))
+    ! If the window is resized, its default_width and/or default-height properties
+    ! are modified and the signal means the image needs to be redrawn:
+    call g_signal_connect(tl_window, "notify::default-width"//c_null_char,  c_funloc(show_image))
+    call g_signal_connect(tl_window, "notify::default-height"//c_null_char, c_funloc(show_image))
   end subroutine activate
 end module v_handlers
 
