@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2023-03-21
-# Last modification: 2023-03-22
+# Last modification: 2023-04-07
 
 import os
 import re           # Regular expression library
@@ -49,6 +49,7 @@ class types_enums():
         "guint":("integer(c_int)", "c_int"),
         #define Bool int    => Xlib.h
         "Bool":("integer(c_int)", "c_int"),
+        "gboolean":("integer(c_int)", "c_int"),
         "GPid":("integer(c_int)", "c_int"),
         "gint64":("integer(c_int64_t)", "c_int64_t"),
         "goffset":("integer(c_int64_t)", "c_int64_t"),
@@ -82,7 +83,9 @@ class types_enums():
         # typedef gchar** GStrv
         "GStrv":("type(c_ptr)", "c_ptr"),
         "double": ("real(c_double)", "c_double"),
+        "gdouble": ("real(c_double)", "c_double"),
         "float":("real(c_float)", "c_float"),
+        "gfloat":("real(c_float)", "c_float"),
         "size_t":  ("integer(c_size_t)", "c_size_t"),
         # gsize is the same size than size_t:
         "gsize":  ("integer(c_size_t)", "c_size_t"),
@@ -103,6 +106,7 @@ class types_enums():
         "GSignalCMarshaller":("type(c_ptr)", "c_ptr"),
         # typedef gint32 GTime (Deprecated since: 2.62)
         "GTime":("integer(c_int32_t)", "c_int32_t"),
+        "GQuark":("integer(c_int32_t)", "c_int32_t"),
         #typedef struct FT_FaceRec_*  FT_Face;
         "FT_Face":("type(c_ptr)", "c_ptr"),
         # X11 types (See /usr/include/X11/Xmd.h), unsigned int (64 bits archi.)
