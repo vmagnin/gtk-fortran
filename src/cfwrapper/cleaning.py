@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-22
+# Last modification: 2023-04-07
 
 """ This module contains functions used to clean header files in the cfwrapper.
 """
@@ -82,7 +82,7 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     whole_file = re.sub(r"(?m)^.*(cairo_public) ", "", whole_file)
     whole_file = re.sub(r"(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC|G_GNUC_WARN_UNUSED_RESULT|_GDK_PIXBUF_EXTERN)"
                         , "", whole_file)   # extern
-    whole_file = re.sub(r"(?m)^(G_DECLARE_INTERFACE|G_DECLARE_DERIVABLE_TYPE).*$", "", whole_file)
+    whole_file = re.sub(r"(?ms)^(G_DECLARE_INTERFACE|G_DECLARE_DERIVABLE_TYPE) ?\(.*?\)", "", whole_file)
     # Remove GNU macros at the end of declarations (functions prototypes):
     whole_file = re.sub(r"G_GNUC_[\w (),]*;", ";", whole_file)
     whole_file = re.sub(r"G_ANALYZER_NORETURN *;", ";", whole_file)
