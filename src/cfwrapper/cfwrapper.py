@@ -38,6 +38,7 @@ import subprocess   # To launch a shell command
 import argparse     # To parse command line
 from collections import OrderedDict
 import sys
+import textwrap
 
 # Wrapper modules:
 from globals_const import SRC_DIR
@@ -53,12 +54,23 @@ from scan_types_and_enums import types_enums
 
 
 # Definition of command line options:
-PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files",
-                                  epilog="GPLv3 license, https://github.com/vmagnin/gtk-fortran")
-PARSARG.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3, 4],
-                     metavar="2|3|4", nargs=1, required=True,
-                     help="GTK major version")
-PARSARG.add_argument("-v", "--version", action="store", nargs=1, required=True,
+PARSARG = argparse.ArgumentParser(description="Generate gtk-fortran files (can also be tried on other libraries)",
+                formatter_class=argparse.RawDescriptionHelpFormatter,
+                epilog=textwrap.dedent('''\
+                Examples:
+                $ ./cfwrapper.py -g 4 -v 4.4.0 -b
+                For libraries other than GTK:
+                $ ./cfwrapper.py -l /usr/include/foo1 /usr/include/foo2 -m my_foo1 my_foo2
+
+                GPLv3 license with RLE exception 3.1, https://github.com/vmagnin/gtk-fortran'''))
+group_lib = PARSARG.add_mutually_exclusive_group()
+group_lib.add_argument("-g", "--gtk", action="store", type=int, choices=[2, 3, 4],
+                     metavar="2|3|4", nargs=1, help="GTK major version")
+group_lib.add_argument("-l", "--library", action="store", nargs='+',
+                     help="Directory containing the header files")
+PARSARG.add_argument("-m", "--module", action="store", nargs='+',
+                     help="Name of the corresponding Fortran module (must be used with -l)")
+PARSARG.add_argument("-v", "--version", action="store", nargs=1,
                      help="gtk-fortran semantic versioning")
 PARSARG.add_argument("-b", "--build", action="store_true",
                      help="Build gtk-fortran libraries and examples")
@@ -67,44 +79,68 @@ PARSARG.add_argument("-d", "--deprecated", action="store_true",
 PARSARG.add_argument("-s", "--suffix", action="store", nargs=1,
                      help="Add a suffix to the functions names")
 ARGS = PARSARG.parse_args()
-GTK_VERSION = "gtk" + str(ARGS.gtk[0])
-GTK_FORTRAN_VERSION = ARGS.version[0]
 
-#exit()
+if ARGS.gtk:
+    GTK_VERSION = "gtk" + str(ARGS.gtk[0])
+    if not ARGS.version:
+        print("ERROR: -v is required with -g")
+        sys.exit(1)
+    else:
+        GTK_FORTRAN_VERSION = ARGS.version[0]
+else:
+    GTK_VERSION = "not_GTK"
+    GTK_FORTRAN_VERSION = "0.0.0"
 
 # An instance of the Version class:
 my_versions = Version(GTK_VERSION, GTK_FORTRAN_VERSION)
 
 # Define libraries paths and corresponding *-auto.* files.
-# Do not change the order of the dictionary keys.
-# Common libraries:
-PATH_DICT = OrderedDict([
-    ("/usr/include/cairo", "cairo-auto.f90"),
-    ("/usr/include/gdk-pixbuf-2.0", "gdk-pixbuf-auto.f90"),
-    ("/usr/include/glib-2.0", "glib-auto.f90")])
-# Version specific libraries:
-if GTK_VERSION == "gtk4":
-    GTKENUMS_FILE = "gtkenums-auto.in"
-    PATH_DICT.update([
-        ("/usr/include/gtk-4.0/gdk", "gdk-auto.f90"),
-        ("/usr/include/gtk-4.0/gsk", "gsk-auto.f90"),
-        ("/usr/include/gtk-4.0/gtk", "gtk-auto.in"),
-        ("/usr/include/gtk-4.0/unix-print", "unix-print-auto.f90"),
-        ("/usr/include/graphene-1.0", "graphene-auto.f90")])
-elif GTK_VERSION == "gtk3":
-    GTKENUMS_FILE = "gtkenums-auto.f90"
-    PATH_DICT.update([
-        ("/usr/include/atk-1.0", "atk-auto.f90"),
-        ("/usr/include/gtk-3.0/gdk", "gdk-auto.f90"),
-        ("/usr/include/gtk-3.0/gtk", "gtk-auto.f90"),
-        ("/usr/include/gtk-3.0/unix-print", "unix-print-auto.f90")])
-elif GTK_VERSION == "gtk2":
-    GTKENUMS_FILE = "gtkenums-auto.f90"
-    PATH_DICT.update([
-        ("/usr/include/atk-1.0", "atk-auto.f90"),
-        ("/usr/include/gtk-2.0/gdk", "gdk-auto.f90"),
-        ("/usr/include/gtk-2.0/gtk", "gtk-auto.f90")])
-PATH_DICT.update([("/usr/include/pango-1.0", "pango-auto.f90")])
+
+if not ARGS.library:
+    # For the GTK / GLib libraries (gtk-fortran).
+    # Do not change the order of the dictionary keys.
+    # Common libraries:
+    PATH_DICT = OrderedDict([
+        ("/usr/include/cairo", "cairo-auto.f90"),
+        ("/usr/include/gdk-pixbuf-2.0", "gdk-pixbuf-auto.f90"),
+        ("/usr/include/glib-2.0", "glib-auto.f90")])
+    # Version specific libraries:
+    if GTK_VERSION == "gtk4":
+        GTKENUMS_FILE = "gtkenums-auto.in"
+        PATH_DICT.update([
+            ("/usr/include/gtk-4.0/gdk", "gdk-auto.f90"),
+            ("/usr/include/gtk-4.0/gsk", "gsk-auto.f90"),
+            ("/usr/include/gtk-4.0/gtk", "gtk-auto.in"),
+            ("/usr/include/gtk-4.0/unix-print", "unix-print-auto.f90"),
+            ("/usr/include/graphene-1.0", "graphene-auto.f90")])
+    elif GTK_VERSION == "gtk3":
+        GTKENUMS_FILE = "gtkenums-auto.f90"
+        PATH_DICT.update([
+            ("/usr/include/atk-1.0", "atk-auto.f90"),
+            ("/usr/include/gtk-3.0/gdk", "gdk-auto.f90"),
+            ("/usr/include/gtk-3.0/gtk", "gtk-auto.f90"),
+            ("/usr/include/gtk-3.0/unix-print", "unix-print-auto.f90")])
+    elif GTK_VERSION == "gtk2":
+        GTKENUMS_FILE = "gtkenums-auto.f90"
+        PATH_DICT.update([
+            ("/usr/include/atk-1.0", "atk-auto.f90"),
+            ("/usr/include/gtk-2.0/gdk", "gdk-auto.f90"),
+            ("/usr/include/gtk-2.0/gtk", "gtk-auto.f90")])
+    PATH_DICT.update([("/usr/include/pango-1.0", "pango-auto.f90")])
+else:
+    # For other C libraries:
+    if ARGS.build:
+        print("ERROR: -b is only for gtk-fortran")
+        sys.exit(2)
+    if not ARGS.module:
+        print("ERROR: with -l you must use also -m")
+        sys.exit(3)
+    elif len(ARGS.library) != len(ARGS.module):
+        print("ERROR: -l and -m must have the same number of arguments")
+        sys.exit(4)
+    else:
+        PATH_DICT = OrderedDict({(key, value+"-auto.f90") for (key, value) in zip(ARGS.library, ARGS.module)})
+        GTKENUMS_FILE = "other_enums-auto.f90"
 
 # To calculate computing time:
 T0 = time.time()
@@ -238,16 +274,16 @@ with open("cfwrapper-errors.csv", "w", newline="", encoding="utf-8") as csvfile2
 
 print()
 
-# Extracts the structure definitions for Gdk events
-# and generate gdkevents_auto?.f90:
-if GTK_VERSION != "gtk2":
-    subprocess.call(["./extract_events.pl"], cwd=SRC_DIR)
-
 # Write the VERSIONS file in the top directory,
 # and update the codemeta.json and fpm.toml files:
 my_versions.create_file()
 my_versions.update_json_file()
 my_versions.update_fpm_file()
+
+# Extracts the structure definitions for Gdk events
+# and generate gdkevents_auto?.f90:
+if GTK_VERSION != "gtk2":
+    subprocess.call(["./extract_events.pl"], cwd=SRC_DIR)
 
 # Print the final statistics:
 my_stats.inc_nb_funptr_types(len(types_enums.gtk_funptr))

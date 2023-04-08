@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2011-01-28
-# Last modification: 2023-03-22
+# Last modification: 2023-04-08
 
 import os
 import re           # Regular expression library
@@ -58,6 +58,8 @@ class Version():
             self.gtk = self.library(pack_gtk3)
         elif GTK_VERSION == "gtk2":
             self.gtk = self.library(pack_gtk2)
+        else:
+            self.gtk = "not_GTK"
 
         self.gtk_fortran = GTK_FORTRAN_VERSION
         self.glib = self.library(pack_glib)
