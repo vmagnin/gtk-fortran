@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-22 (tested with Python 3.10.7, Ubuntu)
+# Last modification: 2023-04-08 (tested with Python 3.10.7, Ubuntu)
 # $ pylint *.py ../tools.py    => 8.54/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
@@ -64,9 +64,13 @@ PARSARG.add_argument("-b", "--build", action="store_true",
                      help="Build gtk-fortran libraries and examples")
 PARSARG.add_argument("-d", "--deprecated", action="store_true",
                      help="Remove deprecated functions")
+PARSARG.add_argument("-s", "--suffix", action="store", nargs=1,
+                     help="Add a suffix to the functions names")
 ARGS = PARSARG.parse_args()
 GTK_VERSION = "gtk" + str(ARGS.gtk[0])
 GTK_FORTRAN_VERSION = ARGS.version[0]
+
+#exit()
 
 # An instance of the Version class:
 my_versions = Version(GTK_VERSION, GTK_FORTRAN_VERSION)

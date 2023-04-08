@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modifications: 2023-03-22
+# Last modifications: 2023-04-08
 
 """ This module contains functions to analyze C prototypes
     and generate Fortran interfaces.
@@ -176,7 +176,7 @@ def analyze_prototypes(index, module_name, f_file_name, f_file, preprocessed_lis
                                     c_dir, c_file_name,
                                     function_status, proto, f_procedure, f_name,
                                     args_list, f_use, declarations, isfunction,
-                                    returned_type, f_the_end, my_stats)
+                                    returned_type, f_the_end, my_stats, ARGS)
 
 
 
@@ -252,12 +252,16 @@ def analyze_arguments(args, f_use, proto, c_dir, c_file_name, my_stats, my_error
 def write_fortran_interface(index, module_name, f_file_name, f_file,
                             c_dir, c_file_name, function_status, prototype,
                             f_procedure, f_name, args_list, f_use, declarations,
-                            isfunction, returned_type, f_the_end, my_stats):
+                            isfunction, returned_type, f_the_end, my_stats, ARGS):
     """Write the Fortran interface of a function in the *-auto.f90 file
     """
     interface1 = 0*TAB + "! " + function_status + "\n"
     interface1 += 0*TAB + "!" + prototype + "\n"
-    first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
+    if not ARGS.suffix:
+        first_line = 0*TAB + f_procedure + f_name + "(" + args_list + ") bind(c)"
+    else:
+        first_line = 0*TAB + f_procedure + f_name+ARGS.suffix[0] + "(" + args_list + ') bind(c, name="'+f_name+'")'
+
     interface2 = multiline(first_line, 80) + "\n"
     if f_use != "":
         interface3 = 1*TAB + "import :: " + f_use + "\n"
@@ -268,7 +272,10 @@ def write_fortran_interface(index, module_name, f_file_name, f_file,
     interface3 += 1*TAB + "implicit none\n"
 
     if isfunction:
-        interface3 += 1*TAB + returned_type + " :: " + f_name + "\n"
+        if not ARGS.suffix:
+            interface3 += 1*TAB + returned_type + " :: " + f_name + "\n"
+        else:
+            interface3 += 1*TAB + returned_type + " :: " + f_name+ARGS.suffix[0] + "\n"
     interface3 += declarations
     interface3 += 0*TAB + f_the_end + "\n\n"
     interface = interface1+interface2+interface3
