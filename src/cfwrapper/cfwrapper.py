@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-04-09 (tested with Python 3.10.7, Ubuntu)
+# Last modification: 2023-04-12 (tested with Python 3.10.7, Ubuntu)
 # $ pylint *.py ../tools.py    => 8.53/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
@@ -79,6 +79,11 @@ PARSARG.add_argument("-d", "--deprecated", action="store_true",
 PARSARG.add_argument("-s", "--suffix", action="store", nargs=1,
                      help="Add a suffix to the functions names")
 ARGS = PARSARG.parse_args()
+
+# Just print the help if no argument is passed to cfwrapper:
+if len(sys.argv)==1:
+    PARSARG.print_help(sys.stderr)
+    sys.exit(5)
 
 if ARGS.gtk:
     GTK_VERSION = "gtk" + str(ARGS.gtk[0])
