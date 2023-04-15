@@ -15,6 +15,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - `LICENSE_EXCEPTION`: the text of the GCC Runtime Library Exception, version 3.1. Note that this exception was chosen in 2011 and was already cited in the header of each source file with the URL of the GNU licenses. Putting the text in the repository is a better practice.
 
 ### Changed
+- `logo/`: the blue color of the GTK cube, which HSL (hue, saturation, lightness) values are (211, 49, 63), was replaced by a purple whose hue (270) is the same as the hue of the Fortran logo.
 - `src/build.sh` is now an interactive script proposing to build, test and install gtk-fortran. It uses the default Fortran compiler, then build and test with Intel ifx.
 
 ### Fixed
