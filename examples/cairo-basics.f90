@@ -67,49 +67,49 @@ contains
   ! to the screen."
   ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
-    use, intrinsic :: iso_fortran_env, only: wp=>real64
+    use, intrinsic :: iso_c_binding, only: dp=>c_double
 
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
     integer(c_int), value, intent(in) :: width, height
     integer                           :: cstatus
     integer                           :: t
-    real(wp), parameter               :: pi = acos(-1.0_wp)
+    real(dp), parameter               :: pi = acos(-1.0_dp)
 
     ! Bezier curve:
-    call cairo_set_source_rgb(my_cairo_context, 0.9d0, 0.8d0, 0.8d0)
-    call cairo_set_line_width(my_cairo_context, 4d0)
-    call cairo_move_to(my_cairo_context, 0d0, 0d0)
-    call cairo_curve_to(my_cairo_context, 600d0, 50d0, 115d0, 545d0, &
-                      & width*1d0, height*1d0)
+    call cairo_set_source_rgb(my_cairo_context, 0.9_dp, 0.8_dp, 0.8_dp)
+    call cairo_set_line_width(my_cairo_context, 4._dp)
+    call cairo_move_to(my_cairo_context, 0._dp, 0._dp)
+    call cairo_curve_to(my_cairo_context, 600._dp, 50._dp, 115._dp, 545._dp, &
+                      & width*1._dp, height*1._dp)
     call cairo_stroke(my_cairo_context)
 
     ! Lines:
-    call cairo_set_source_rgb(my_cairo_context, 0d0, 0.5d0, 0.5d0)
-    call cairo_set_line_width(my_cairo_context, 2d0)
+    call cairo_set_source_rgb(my_cairo_context, 0._dp, 0.5_dp, 0.5_dp)
+    call cairo_set_line_width(my_cairo_context, 2._dp)
     do t = 0, int(height), +20
-      call cairo_move_to(my_cairo_context, 0d0, t*1d0)
-      call cairo_line_to(my_cairo_context, t*1d0, height*1d0)
+      call cairo_move_to(my_cairo_context, 0._dp, t*1._dp)
+      call cairo_line_to(my_cairo_context, t*1._dp, height*1._dp)
       call cairo_stroke(my_cairo_context)
     end do
 
     ! Text:
-    call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 1d0)
+    call cairo_set_source_rgb(my_cairo_context, 0._dp, 0._dp, 1._dp)
     call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, &
                             & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
-    call cairo_set_font_size (my_cairo_context, 40d0)
-    call cairo_move_to(my_cairo_context, 100d0, 30d0)
+    call cairo_set_font_size (my_cairo_context, 40._dp)
+    call cairo_move_to(my_cairo_context, 100._dp, 30._dp)
     call cairo_show_text (my_cairo_context, "gtk-fortran"//c_null_char)
-    call cairo_move_to(my_cairo_context, 100d0, 75d0)
+    call cairo_move_to(my_cairo_context, 100._dp, 75._dp)
     call cairo_show_text (my_cairo_context, &
                         & "Cairo & Fortran are good friends"//c_null_char)
 
     ! Circles:
     call cairo_new_sub_path(my_cairo_context)
     do t = 1, 50
-        call cairo_set_source_rgb(my_cairo_context, t/50d0, 0d0, 0d0)
-        call cairo_set_line_width(my_cairo_context, 5d0*t/50d0)
-        call cairo_arc(my_cairo_context, 353d0 + 200d0*cos(t*2d0*pi/50), &
-                     & 350d0 + 200d0*sin(t*2d0*pi/50), 50d0, 0d0, 2*pi)
+        call cairo_set_source_rgb(my_cairo_context, t/50._dp, 0._dp, 0._dp)
+        call cairo_set_line_width(my_cairo_context, 5._dp*t/50._dp)
+        call cairo_arc(my_cairo_context, 353._dp + 200._dp*cos(t*2._dp*pi/50), &
+                     & 350._dp + 200._dp*sin(t*2._dp*pi/50), 50._dp, 0._dp, 2*pi)
         call cairo_stroke(my_cairo_context)
     end do
 
