@@ -87,7 +87,8 @@ contains
         print *, "Saved in cairo-basics.png"
       else
         ! Rendering in a SVG file:
-        surface = cairo_svg_surface_create("cairo-basics.svg", real(width, KIND=dp), real(height, KIND=dp))
+        surface = cairo_svg_surface_create("cairo-basics.svg"//c_null_char, &
+                                  & real(width, KIND=dp), real(height, KIND=dp))
         cr = cairo_create(surface)
         call cairo_svg_surface_restrict_to_version(surface, CAIRO_SVG_VERSION_1_2)
         call draw(cr, width, height)
