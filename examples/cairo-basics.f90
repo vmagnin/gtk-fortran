@@ -65,7 +65,7 @@ contains
 
   ! "It is called whenever GTK needs to draw the contents of the drawing area
   ! to the screen."
-  ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
+  ! https://docs.gtk.org/gtk4/class.DrawingArea.html
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
     use, intrinsic :: iso_c_binding, only: dp=>c_double
 
