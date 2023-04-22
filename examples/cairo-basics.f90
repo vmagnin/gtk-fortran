@@ -28,14 +28,15 @@ module handlers
   use gtk, only: gtk_application_window_new, gtk_drawing_area_new, &
   & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
   & gtk_drawing_area_set_draw_func, gtk_window_set_child, gtk_widget_show, &
-  & gtk_window_set_default_size, gtk_window_set_title,&
+  & gtk_window_set_default_size, gtk_window_set_title, CAIRO_SVG_VERSION_1_2, &
   & FALSE, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
 
   use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, &
   & cairo_get_target, cairo_line_to, cairo_move_to, cairo_new_sub_path, &
   & cairo_select_font_face, cairo_set_font_size, cairo_set_line_width, &
   & cairo_set_source, cairo_set_source_rgb, cairo_show_text, cairo_stroke, &
-  & cairo_surface_write_to_png
+  & cairo_surface_write_to_png, cairo_svg_surface_create, &
+  & cairo_svg_surface_restrict_to_version, cairo_surface_destroy
 
   implicit none
 
@@ -68,55 +69,82 @@ contains
   ! https://docs.gtk.org/gtk4/class.DrawingArea.html
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
     use, intrinsic :: iso_c_binding, only: dp=>c_double
-
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
     integer(c_int), value, intent(in) :: width, height
-    integer                           :: cstatus
+    integer :: cstatus
+    integer :: rendering
+    type(c_ptr) :: surface, cr
+
+    ! We will draw two times, once for screen, once in a SVG file:
+    do rendering = 1, 2
+      if (rendering == 1) then
+        ! Rendering on screen:
+        call draw(my_cairo_context, width, height)
+        ! Save the image as a PNG:
+        cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), &
+                                          & "cairo-basics.png"//c_null_char)
+        call cairo_destroy(my_cairo_context)
+        print *, "Saved in cairo-basics.png"
+      else
+        ! Rendering in a SVG file:
+        surface = cairo_svg_surface_create("cairo-basics.svg", real(width, KIND=dp), real(height, KIND=dp))
+        cr = cairo_create(surface)
+        call cairo_svg_surface_restrict_to_version(surface, CAIRO_SVG_VERSION_1_2)
+        call draw(cr, width, height)
+        call cairo_surface_destroy(surface)
+        print *, "Saved in cairo-basics.svg"
+      end if
+    end do
+  end subroutine my_draw_function
+
+  ! It will be called two time, for screen and SVG file:
+  subroutine draw(cr, width, height)
+    use, intrinsic :: iso_c_binding, only: dp=>c_double
+
+    type(c_ptr), value, intent(in)    :: cr
+    integer(c_int), value, intent(in) :: width, height
     integer                           :: t
     real(dp), parameter               :: pi = acos(-1.0_dp)
 
     ! Bezier curve:
-    call cairo_set_source_rgb(my_cairo_context, 0.9_dp, 0.8_dp, 0.8_dp)
-    call cairo_set_line_width(my_cairo_context, 4._dp)
-    call cairo_move_to(my_cairo_context, 0._dp, 0._dp)
-    call cairo_curve_to(my_cairo_context, 600._dp, 50._dp, 115._dp, 545._dp, &
+    call cairo_set_source_rgb(cr, 0.9_dp, 0.8_dp, 0.8_dp)
+    call cairo_set_line_width(cr, 4._dp)
+    call cairo_move_to(cr, 0._dp, 0._dp)
+    call cairo_curve_to(cr, 600._dp, 50._dp, 115._dp, 545._dp, &
                       & width*1._dp, height*1._dp)
-    call cairo_stroke(my_cairo_context)
+    call cairo_stroke(cr)
 
     ! Lines:
-    call cairo_set_source_rgb(my_cairo_context, 0._dp, 0.5_dp, 0.5_dp)
-    call cairo_set_line_width(my_cairo_context, 2._dp)
+    call cairo_set_source_rgb(cr, 0._dp, 0.5_dp, 0.5_dp)
+    call cairo_set_line_width(cr, 2._dp)
     do t = 0, height, +20
-      call cairo_move_to(my_cairo_context, 0._dp, t*1._dp)
-      call cairo_line_to(my_cairo_context, t*1._dp, height*1._dp)
-      call cairo_stroke(my_cairo_context)
+      call cairo_move_to(cr, 0._dp, t*1._dp)
+      call cairo_line_to(cr, t*1._dp, height*1._dp)
+      call cairo_stroke(cr)
     end do
 
     ! Text:
-    call cairo_set_source_rgb(my_cairo_context, 0._dp, 0._dp, 1._dp)
-    call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, &
+    call cairo_set_source_rgb(cr, 0._dp, 0._dp, 1._dp)
+    call cairo_select_font_face(cr, "Times"//c_null_char, &
                             & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
-    call cairo_set_font_size (my_cairo_context, 40._dp)
-    call cairo_move_to(my_cairo_context, 100._dp, 30._dp)
-    call cairo_show_text (my_cairo_context, "gtk-fortran"//c_null_char)
-    call cairo_move_to(my_cairo_context, 100._dp, 75._dp)
-    call cairo_show_text (my_cairo_context, &
+    call cairo_set_font_size (cr, 40._dp)
+    call cairo_move_to(cr, 100._dp, 30._dp)
+    call cairo_show_text (cr, "gtk-fortran"//c_null_char)
+    call cairo_move_to(cr, 100._dp, 75._dp)
+    call cairo_show_text (cr, &
                         & "Cairo & Fortran are good friends"//c_null_char)
 
     ! Circles:
-    call cairo_new_sub_path(my_cairo_context)
+    call cairo_new_sub_path(cr)
     do t = 1, 50
-        call cairo_set_source_rgb(my_cairo_context, t/50._dp, 0._dp, 0._dp)
-        call cairo_set_line_width(my_cairo_context, 5._dp*t/50._dp)
-        call cairo_arc(my_cairo_context, 353._dp + 200._dp*cos(t*2._dp*pi/50), &
+        call cairo_set_source_rgb(cr, t/50._dp, 0._dp, 0._dp)
+        call cairo_set_line_width(cr, 5._dp*t/50._dp)
+        call cairo_arc(cr, 353._dp + 200._dp*cos(t*2._dp*pi/50), &
                      & 350._dp + 200._dp*sin(t*2._dp*pi/50), 50._dp, 0._dp, 2*pi)
-        call cairo_stroke(my_cairo_context)
+        call cairo_stroke(cr)
     end do
+  end subroutine draw
 
-    ! Save the image as a PNG:
-    cstatus = cairo_surface_write_to_png(cairo_get_target(my_cairo_context), &
-                                       & "cairo.png"//c_null_char)
-  end subroutine my_draw_function
 end module handlers
 
 ! We create a GtkApplication:
