@@ -11,7 +11,7 @@ Among those examples:
 - `gtkzero_gapp.f90` just opens an empty GTK window. Based on GtkApplication and GApplication.
 - `gtkhello.f90` opens a window with two buttons.
 - The `*pixbuf*.f90` examples demonstrate pixel drawing (bitmap drawing). The `pixbuf_without_gui.f9`0 example draws a Sierpinski triangle in a PNG file, without using a GUI.
-- The `cairo*.f90` examples demonstrates vectorial drawing using Cairo. And `cairo-basics.f90` also saves the drawing in a SVG file.
+- The `cairo*.f90` examples demonstrates vectorial drawing using Cairo. And `cairo-basics.f90` also saves the drawing in a SVG file and a PDF file.
 - `bazaar.f90` is used for testing various widgets and functions.
 - `gio_demo.f90`: this is a very basic demo to get started with GIO. It uses
 Fortran I/O to read text from the keyboard & writes it to the file `gio_demo.dat` in the current directory.

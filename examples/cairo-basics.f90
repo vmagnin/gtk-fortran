@@ -36,7 +36,8 @@ module handlers
   & cairo_select_font_face, cairo_set_font_size, cairo_set_line_width, &
   & cairo_set_source, cairo_set_source_rgb, cairo_show_text, cairo_stroke, &
   & cairo_surface_write_to_png, cairo_svg_surface_create, &
-  & cairo_svg_surface_restrict_to_version, cairo_surface_destroy
+  & cairo_svg_surface_restrict_to_version, cairo_surface_destroy, &
+  & cairo_pdf_surface_create
 
   implicit none
 
@@ -73,10 +74,10 @@ contains
     integer(c_int), value, intent(in) :: width, height
     integer :: cstatus
     integer :: rendering
-    type(c_ptr) :: surface, cr
+    type(c_ptr) :: surface_svg, surface_pdf, cr_svg, cr_pdf
 
-    ! We will draw two times, once for screen, once in a SVG file:
-    do rendering = 1, 2
+    ! We will draw three times, once for screen, once in a SVG file, once in a PDF:
+    do rendering = 1, 3
       if (rendering == 1) then
         ! Rendering on screen:
         call draw(my_cairo_context, width, height)
@@ -85,15 +86,24 @@ contains
                                           & "cairo-basics.png"//c_null_char)
         call cairo_destroy(my_cairo_context)
         print *, "Saved in cairo-basics.png"
-      else
+      else if (rendering == 2) then
         ! Rendering in a SVG file:
-        surface = cairo_svg_surface_create("cairo-basics.svg"//c_null_char, &
+        surface_svg = cairo_svg_surface_create("cairo-basics.svg"//c_null_char, &
                                   & real(width, KIND=dp), real(height, KIND=dp))
-        cr = cairo_create(surface)
-        call cairo_svg_surface_restrict_to_version(surface, CAIRO_SVG_VERSION_1_2)
-        call draw(cr, width, height)
-        call cairo_surface_destroy(surface)
+        cr_svg = cairo_create(surface_svg)
+        call cairo_svg_surface_restrict_to_version(surface_svg, CAIRO_SVG_VERSION_1_2)
+        call draw(cr_svg, width, height)
+        call cairo_destroy(cr_svg)
+        call cairo_surface_destroy(surface_svg)
         print *, "Saved in cairo-basics.svg"
+      else
+        ! Rendering in a PDF file:
+        surface_pdf = cairo_pdf_surface_create("cairo-basics.pdf"//c_null_char, &
+                                  & real(width, KIND=dp), real(height, KIND=dp))
+        cr_pdf = cairo_create(surface_pdf)
+        call draw(cr_pdf, width, height)
+        call cairo_surface_destroy(surface_pdf)
+        print *, "Saved in cairo-basics.pdf"
       end if
     end do
   end subroutine my_draw_function
