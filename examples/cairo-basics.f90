@@ -86,7 +86,7 @@ contains
     ! Lines:
     call cairo_set_source_rgb(my_cairo_context, 0._dp, 0.5_dp, 0.5_dp)
     call cairo_set_line_width(my_cairo_context, 2._dp)
-    do t = 0, int(height), +20
+    do t = 0, height, +20
       call cairo_move_to(my_cairo_context, 0._dp, t*1._dp)
       call cairo_line_to(my_cairo_context, t*1._dp, height*1._dp)
       call cairo_stroke(my_cairo_context)
