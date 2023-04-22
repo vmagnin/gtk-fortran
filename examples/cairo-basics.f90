@@ -20,11 +20,10 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Jerry DeLisle and Vincent Magnin
-! Last modification: vmagnin 2022-04-05
+! Last modification: vmagnin 2023-04-23
 
 module handlers
-  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_null_ptr, c_null_funptr, &
-                         & c_funloc, c_null_char
+  use, intrinsic :: iso_c_binding
 
   use gtk, only: gtk_application_window_new, gtk_drawing_area_new, &
   & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
@@ -122,7 +121,7 @@ end module handlers
 
 ! We create a GtkApplication:
 program cairo_basics
-  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding
   use gtk, only: gtk_application_new, g_signal_connect, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers, only: activate
