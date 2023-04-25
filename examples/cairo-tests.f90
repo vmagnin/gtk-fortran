@@ -212,8 +212,9 @@ contains
     real(wp)      :: x, y    ! coordinates in the complex plane
     complex(wp)   :: c, z
     real(wp)      :: scx, scy             ! scales
-    integer(int8) :: red, green, blue     ! rgb color
     real(wp)      :: t0, t1
+    integer(int8) :: red, green, blue     ! rgb color
+    integer, parameter :: factor = 8
 
     print *, "Entering Mandelbrot_set() subroutine"
 
@@ -241,9 +242,10 @@ contains
           green = 0
           blue  = 0
         else
-          red   = int(min(255, k*2),  int8)
-          green = int(min(255, k*5),  int8)
-          blue  = int(min(255, k*10), int8)
+          ! Fortran purple is #734f96 : (115, 79, 150)
+          red   = int(min(255, factor*k),  int8)
+          green = int(min(255, nint(factor*k*79./115.)),  int8)
+          blue  = int(min(255, nint(factor*k*150./115.)), int8)
         end if
 
         p = i * nch + j * rowstride + 1
@@ -253,8 +255,10 @@ contains
       end do
       ! This subroutine processes GTK events as needed during the computation
       ! (not really useful in that fast computation example)
-      call pending_events()
-      if (run_status == FALSE) return   ! Exit if we had a delete event
+      if (mod(i, 50) == 0) then
+        call pending_events()
+        if (run_status == FALSE) return   ! Exit if we had a delete event
+      end if
     end do
 
     ! We only draw the image at the end of that fast computation:
