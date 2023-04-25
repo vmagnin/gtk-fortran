@@ -29,7 +29,8 @@ module handlers
   & gtk_drawing_area_set_content_width, gtk_drawing_area_set_content_height, &
   & gtk_drawing_area_set_draw_func, gtk_drawing_area_new, &
   & gtk_widget_queue_draw, gtk_widget_show, gtk_window_set_default_size, &
-  & gtk_window_set_title, TRUE, FALSE, GDK_COLORSPACE_RGB, g_signal_connect, &
+  & gtk_window_set_title, gtk_window_set_resizable, &
+  & TRUE, FALSE, GDK_COLORSPACE_RGB, g_signal_connect, &
   & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL
 
   use cairo, only: cairo_arc, cairo_create, cairo_curve_to, cairo_destroy, &
@@ -166,6 +167,7 @@ contains
     width  = 748
     height = 748
     call gtk_window_set_default_size(my_window, width, height)
+    call gtk_window_set_resizable(my_window, FALSE)
     call gtk_window_set_title(my_window, "Cairo tests: mixing vector graphics with a pixbuf (gtk-fortran)"//c_null_char)
 
     my_drawing_area = gtk_drawing_area_new()
