@@ -78,8 +78,7 @@ contains
     print *, "Entering my_draw_function()"
 
     ! We redraw the Mandelbrot set pixbuf:
-    call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, &
-                                   & 700._dp/4._dp, 700._dp/4._dp)
+    call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0._dp, 0._dp)
     call cairo_paint(my_cairo_context)
 
     ! And do some vectorial Cairo drawings above:
@@ -144,11 +143,11 @@ contains
                         & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
 
     ! Dimensions of the Mandelbrot set picture:
-    pwidth  = width  / 2_c_int
-    pheight = height / 2_c_int
+    pwidth  = width
+    pheight = height
     ! "Creates a new GdkPixbuf structure and allocates a buffer for it":
-    ! RGB, alpha channel (TRUE), 8 bits per color sample, width, height
-    my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8_c_int, pwidth, pheight)
+    ! RGB, no alpha channel (FALSE), 8 bits per color sample, width, height
+    my_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8_c_int, pwidth, pheight)
     ! Queries the number of channels of a pixbuf:
     nch = gdk_pixbuf_get_n_channels(my_pixbuf)
     print *, "Number of channels of the pixbuf: ", nch
@@ -160,7 +159,7 @@ contains
     print *, "Size (bytes) of the pixbuf: ", bytes
 
     call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [bytes])
-    call Mandelbrot_set(my_drawing_area, -2.0_wp, +1.0_wp, -1.5_wp, +1.5_wp, 100_4)
+    call Mandelbrot_set(my_drawing_area, -2.0_wp, +1.0_wp, -1.5_wp, +1.5_wp, 200_4)
     write_png = .true.
 
     call gtk_window_set_child(my_window, my_drawing_area)
@@ -191,15 +190,11 @@ contains
     scy = (ymax - ymin) / pheight  ! y scale
 
     do i = 0, pwidth-1
-      ! We provoke an expose_event:
-      !if (mod(i,10) == 0) then
-      if (mod(i, 1_c_int) == 0) then
-        call gtk_widget_queue_draw(my_drawing_area)
-      end if
-
       x = xmin + scx * i
+
       do j = 0, pheight-1
         y = ymin + scy * j
+
         c = cmplx(x, y, kind=wp)    ! Starting point
         z = (0.0_wp, 0.0_wp)        ! z0
         k = 1
@@ -223,7 +218,6 @@ contains
         pixel(p)   = char(red)
         pixel(p+1) = char(green)
         pixel(p+2) = char(blue)
-        pixel(p+3 )= char(255)  ! Opacity (alpha channel)
 
         ! This subroutine processes GTK events as needed during the computation:
         call pending_events()
@@ -231,6 +225,7 @@ contains
       end do
     end do
 
+    ! We only draw the image at the end of that fast computation:
     call gtk_widget_queue_draw(my_drawing_area)
 
     call cpu_time(t1)
