@@ -56,6 +56,11 @@ module handlers
   character(kind=c_char), dimension(:), pointer :: pixel
   integer(c_int) :: nch, rowstride, width, height, pwidth, pheight
   logical :: write_png
+  ! Mathematical window:
+  real(wp), parameter :: xmin = -2.0_wp
+  real(wp), parameter :: xmax = +1.0_wp
+  real(wp), parameter :: ymin = -1.5_wp
+  real(wp), parameter :: ymax = +1.5_wp
 
 contains
   ! This function is needed to update the GUI during long computations.
@@ -73,39 +78,71 @@ contains
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
     integer(c_int), value, intent(in) :: width, height
-    integer :: cstatus
+    integer :: cstatus, i
     real(dp), parameter :: pi = acos(-1._dp)
+    real(dp) :: Ox, Oy, X_circle
+    real(dp) :: X_cardio, teta, ro
 
     print *, "Entering my_draw_function()"
 
-    ! We draw the Mandelbrot set pixbuf in the Cairo context:
+    ! Pixel coordinates of the mathematical origin:
+    Ox = width  * (0._dp - xmin) / (xmax - xmin)
+    Oy = height * (ymax - 0._dp) / (ymax - ymin)
+
+    ! We draw the Mandelbrot set pixbuf in the Cairo context, starting from
+    ! the top left corner:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0._dp, 0._dp)
     call cairo_paint(my_cairo_context)
 
-    ! Draw cartesian axe
-    ! Yellow:
+    ! Text:
+    call cairo_select_font_face(my_cairo_context, "Arial"//c_null_char, &
+                            & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
+
+    ! Draw cartesian axes, in white:
     call cairo_set_source_rgb(my_cairo_context, 1._dp, 1._dp, 1._dp)
     call cairo_set_line_width(my_cairo_context, 2._dp)
     ! Horizontal axis:
-    call cairo_move_to(my_cairo_context, 0._dp,       height/2._dp)
-    call cairo_line_to(my_cairo_context, width*1._dp, height/2._dp)
+    call cairo_move_to(my_cairo_context, 0._dp,                Oy)
+    call cairo_line_to(my_cairo_context, real(width, KIND=dp), Oy)
     ! Vertical axis:
-    call cairo_move_to(my_cairo_context, width*(2._dp / 3._dp), 0._dp)
-    call cairo_line_to(my_cairo_context, width*(2._dp / 3._dp), height*1._dp)
+    call cairo_move_to(my_cairo_context, Ox, 0._dp)
+    call cairo_line_to(my_cairo_context, Ox, real(height, KIND=dp))
     call cairo_stroke(my_cairo_context)
-
-    ! Text:
-    call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, &
-                            & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
+    ! Texts on the axes:
+    call cairo_set_font_size (my_cairo_context, 20._dp)
+    call cairo_move_to(my_cairo_context, width - 20._wp, Oy - 10._dp)
+    call cairo_show_text (my_cairo_context, "x"//c_null_char)
+    call cairo_move_to(my_cairo_context, Ox - 20._wp, +20._dp)
+    call cairo_show_text (my_cairo_context, "y"//c_null_char)
+    call cairo_move_to(my_cairo_context, Ox - 20._wp, Oy + 20._dp)
+    call cairo_show_text (my_cairo_context, "O"//c_null_char)
     call cairo_set_font_size (my_cairo_context, 32._dp)
-    call cairo_move_to(my_cairo_context, 200._dp, 200._dp)
+    call cairo_move_to(my_cairo_context, width / 10._dp, height / 10._dp)
     call cairo_show_text (my_cairo_context, "Mandelbrot set"//c_null_char)
 
-    ! Circle of radius 1/4 centered around −1:
+    ! Circle of radius 1/4 centered around −1, in yellow:
     call cairo_set_source_rgb(my_cairo_context, 1._dp, 1._dp, 0._dp)
+    call cairo_set_line_width(my_cairo_context, 3._dp)
     call cairo_new_sub_path(my_cairo_context)
-    call cairo_arc(my_cairo_context, width*(1._dp / 3._dp), height/2._dp, (width/3._dp)/4._dp, 0._dp, 2._dp*pi)
+    X_circle = width  * (-1._dp - xmin) / (xmax - xmin)
+    call cairo_arc(my_cairo_context, X_circle, Oy, width / (xmax-xmin) / 4._dp, 0._dp, 2._dp*pi)
     call cairo_stroke(my_cairo_context)
+    call cairo_set_font_size (my_cairo_context, 20._dp)
+    call cairo_move_to(my_cairo_context, X_circle, Oy - 10._dp)
+    call cairo_show_text (my_cairo_context, "circle"//c_null_char)
+
+    ! Main cardioid centered on A(1/4, 0) with polar equation ro(teta) = 1/2*(1 − cos teta)
+    X_cardio = width  * (1._dp/4._dp - xmin) / (xmax - xmin)
+    call cairo_move_to(my_cairo_context, X_cardio, Oy)
+    do i = 1, 100
+      teta = (i * 2._dp * pi) / 100._dp
+      ro = (1._dp - cos(teta)) / 2._dp
+      ro = ro * width / (xmax - xmin)
+      call cairo_line_to(my_cairo_context, X_cardio + ro*cos(teta), Oy + ro*sin(teta))
+    end do
+    call cairo_stroke(my_cairo_context)
+    call cairo_move_to(my_cairo_context, Ox + 5._dp, Oy - 10._dp)
+    call cairo_show_text (my_cairo_context, "cardioid"//c_null_char)
 
     ! The image is written to PNG only one time:
     if (write_png) then
@@ -126,10 +163,10 @@ contains
 
     ! Properties of the main window:
     my_window = gtk_application_window_new(app)
-    width  = 700
-    height = 700
+    width  = 748
+    height = 748
     call gtk_window_set_default_size(my_window, width, height)
-    call gtk_window_set_title(my_window, "Cairo tests: mixing vector graphics with a pixbuf"//c_null_char)
+    call gtk_window_set_title(my_window, "Cairo tests: mixing vector graphics with a pixbuf (gtk-fortran)"//c_null_char)
 
     my_drawing_area = gtk_drawing_area_new()
     call gtk_drawing_area_set_content_width(my_drawing_area, width)
@@ -155,7 +192,7 @@ contains
 
     call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [bytes])
     ! Drawing the whole set:
-    call Mandelbrot_set(my_drawing_area, -2.0_wp, +1.0_wp, -1.5_wp, +1.5_wp, 1000_4)
+    call Mandelbrot_set(my_drawing_area, 1000_4)
     write_png = .true.
 
     call gtk_window_set_child(my_window, my_drawing_area)
@@ -167,10 +204,10 @@ contains
   ! A tribute to Benoit MANDELBROT (1924-2010)
   ! http://en.wikipedia.org/wiki/Mandelbrot_set
   !*********************************************
-  subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
+  subroutine Mandelbrot_set(my_drawing_area, itermax)
     type(c_ptr)   :: my_drawing_area
     integer       :: i, j, k, p, itermax
-    real(wp)      :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
+    real(wp)      :: x, y    ! coordinates in the complex plane
     complex(wp)   :: c, z
     real(wp)      :: scx, scy             ! scales
     integer(int8) :: red, green, blue     ! rgb color
