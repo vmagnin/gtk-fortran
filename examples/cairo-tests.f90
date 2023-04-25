@@ -134,7 +134,7 @@ contains
     width  = 700
     height = 700
     call gtk_window_set_default_size(my_window, width, height)
-    call gtk_window_set_title(my_window, "Cairo tests mixing vector graphics with a pixbuf"//c_null_char)
+    call gtk_window_set_title(my_window, "Cairo tests: mixing vector graphics with a pixbuf"//c_null_char)
 
     my_drawing_area = gtk_drawing_area_new()
     call gtk_drawing_area_set_content_width(my_drawing_area, width)
@@ -159,7 +159,7 @@ contains
     print *, "Size (bytes) of the pixbuf: ", bytes
 
     call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [bytes])
-    call Mandelbrot_set(my_drawing_area, -2.0_wp, +1.0_wp, -1.5_wp, +1.5_wp, 200_4)
+    call Mandelbrot_set(my_drawing_area, -2.0_wp, +1.0_wp, -1.5_wp, +1.5_wp, 1000_4)
     write_png = .true.
 
     call gtk_window_set_child(my_window, my_drawing_area)
@@ -218,11 +218,11 @@ contains
         pixel(p)   = char(red)
         pixel(p+1) = char(green)
         pixel(p+2) = char(blue)
-
-        ! This subroutine processes GTK events as needed during the computation:
-        call pending_events()
-        if (run_status == FALSE) return   ! Exit if we had a delete event
       end do
+      ! This subroutine processes GTK events as needed during the computation
+      ! (not really useful in that fast computation example)
+      call pending_events()
+      if (run_status == FALSE) return   ! Exit if we had a delete event
     end do
 
     ! We only draw the image at the end of that fast computation:
