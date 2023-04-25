@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by Jerry DeLisle and Vincent Magnin
 ! GTK 4 version: vmagnin 2020-05-19
-! Last modification: vmagnin 2020-05-28, 2022-04-05
+! Last modifications: vmagnin 2023-04-25
 !------------------------------------------------------------------------------
 
 module handlers
@@ -45,7 +45,7 @@ module handlers
 
   use g, only: g_main_context_iteration, g_main_context_pending
 
-  use, intrinsic :: iso_fortran_env, only: wp=>real64, int8
+  use, intrinsic :: iso_fortran_env, only: wp=>real64, dp=>real64, int8
   use, intrinsic :: iso_c_binding
 
   implicit none
@@ -59,7 +59,7 @@ module handlers
 
 contains
   ! This function is needed to update the GUI during long computations.
-  ! https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
+  ! https://docs.gtk.org/glib/main-loop.html
   subroutine pending_events ()
     do while(IAND(g_main_context_pending(c_null_ptr), run_status) /= FALSE)
       ! FALSE for non-blocking:
@@ -69,7 +69,7 @@ contains
 
   ! "It is called whenever GTK needs to draw the contents of the drawing area
   ! to the screen."
-  ! https://developer.gnome.org/gtk4/stable/GtkDrawingArea.html#gtk-drawing-area-set-draw-func
+  ! https://docs.gtk.org/gtk4/method.DrawingArea.set_draw_func.html
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
     integer(c_int), value, intent(in) :: width, height
@@ -79,38 +79,38 @@ contains
 
     ! We redraw the Mandelbrot set pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, &
-                                   & 700d0/4d0, 700d0/4d0)
+                                   & 700._dp/4._dp, 700._dp/4._dp)
     call cairo_paint(my_cairo_context)
 
     ! And do some vectorial Cairo drawings above:
-    call cairo_set_line_width(my_cairo_context, 1d0)
-    call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 1d0)
-    call cairo_move_to(my_cairo_context, 100d0, 50d0)
-    call cairo_line_to(my_cairo_context, 700d0, 700d0)
+    call cairo_set_line_width(my_cairo_context, 1._dp)
+    call cairo_set_source_rgb(my_cairo_context, 0._dp, 0._dp, 1._dp)
+    call cairo_move_to(my_cairo_context, 100._dp, 50._dp)
+    call cairo_line_to(my_cairo_context, 700._dp, 700._dp)
     call cairo_stroke(my_cairo_context)
 
-    call cairo_set_source_rgb(my_cairo_context, 1d0, 0d0, 0d0)
-    call cairo_set_line_width(my_cairo_context, 3d0)
-    call cairo_move_to(my_cairo_context, 60d0, 0d0)
-    call cairo_curve_to(my_cairo_context, 600d0, 50d0, 135d0, 45d0, 500d0, 500d0)
+    call cairo_set_source_rgb(my_cairo_context, 1._dp, 0._dp, 0._dp)
+    call cairo_set_line_width(my_cairo_context, 3._dp)
+    call cairo_move_to(my_cairo_context, 60._dp, 0._dp)
+    call cairo_curve_to(my_cairo_context, 600._dp, 50._dp, 135._dp, 45._dp, 500._dp, 500._dp)
     call cairo_stroke(my_cairo_context)
 
-    call cairo_set_source_rgb(my_cairo_context, 1d0, 1d0, 0d0)
-    call cairo_set_line_width(my_cairo_context, 2d0)
-    call cairo_move_to(my_cairo_context, 0d0, height/2d0)
-    call cairo_line_to(my_cairo_context, 1d0*width, height/2d0)
-    call cairo_move_to(my_cairo_context, width/2d0+width/12d0, 0d0)
-    call cairo_line_to(my_cairo_context, width/2d0+width/12d0, height*1d0)
+    call cairo_set_source_rgb(my_cairo_context, 1._dp, 1._dp, 0._dp)
+    call cairo_set_line_width(my_cairo_context, 2._dp)
+    call cairo_move_to(my_cairo_context, 0._dp, height/2._dp)
+    call cairo_line_to(my_cairo_context, 1._dp*width, height/2._dp)
+    call cairo_move_to(my_cairo_context, width/2._dp + width/12._dp, 0._dp)
+    call cairo_line_to(my_cairo_context, width/2._dp + width/12._dp, height*1._dp)
     call cairo_stroke(my_cairo_context)
 
     call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, &
-                   & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
-    call cairo_set_font_size (my_cairo_context, 16d0)
-    call cairo_move_to(my_cairo_context, 200d0, 200d0)
+                            & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
+    call cairo_set_font_size (my_cairo_context, 16._dp)
+    call cairo_move_to(my_cairo_context, 200._dp, 200._dp)
     call cairo_show_text (my_cairo_context, "Mandelbrot set"//c_null_char)
 
     call cairo_new_sub_path(my_cairo_context)
-    call cairo_arc(my_cairo_context, 300d0, 300d0, 100d0, 0d0, acos(-1d0))
+    call cairo_arc(my_cairo_context, 300._dp, 300._dp, 100._dp, 0._dp, acos(-1._dp))
     call cairo_stroke(my_cairo_context)
 
     ! The image is written to PNG only one time:
@@ -128,20 +128,20 @@ contains
     type(c_ptr)     :: my_window
     type(c_ptr)     :: my_drawing_area
     integer(c_int)  :: width, height
-    integer :: bytes
+    integer         :: bytes
 
     ! Properties of the main window:
     my_window = gtk_application_window_new(app)
     width  = 700
     height = 700
     call gtk_window_set_default_size(my_window, width, height)
-    call gtk_window_set_title(my_window, "Cairo tests mixing vectorial drawing and pixbuf"//c_null_char)
+    call gtk_window_set_title(my_window, "Cairo tests mixing vector graphics with a pixbuf"//c_null_char)
 
     my_drawing_area = gtk_drawing_area_new()
     call gtk_drawing_area_set_content_width(my_drawing_area, width)
     call gtk_drawing_area_set_content_height(my_drawing_area, height)
     call gtk_drawing_area_set_draw_func(my_drawing_area, &
-                   & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
+                        & c_funloc(my_draw_function), c_null_ptr, c_null_funptr)
 
     ! Dimensions of the Mandelbrot set picture:
     pwidth  = width  / 2_c_int
@@ -156,7 +156,7 @@ contains
     ! the start of a row and the start of the next row":
     rowstride = gdk_pixbuf_get_rowstride(my_pixbuf)
     print *, "Rowstride of the pixbuf: ", rowstride
-    bytes = pwidth*pheight*nch
+    bytes = pwidth * pheight * nch
     print *, "Size (bytes) of the pixbuf: ", bytes
 
     call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [bytes])
@@ -187,28 +187,28 @@ contains
     print *, "Entering Mandelbrot_set() subroutine"
 
     call cpu_time(t0)
-    scx = (xmax-xmin) / pwidth   ! x scale
-    scy = (ymax-ymin) / pheight  ! y scale
+    scx = (xmax - xmin) / pwidth   ! x scale
+    scy = (ymax - ymin) / pheight  ! y scale
 
-    do i=0, pwidth-1
+    do i = 0, pwidth-1
       ! We provoke an expose_event:
-      !if (mod(i,10)==0) then
-      if (mod(i,1_c_int)==0) then
+      !if (mod(i,10) == 0) then
+      if (mod(i, 1_c_int) == 0) then
         call gtk_widget_queue_draw(my_drawing_area)
       end if
 
       x = xmin + scx * i
-      do j=0, pheight-1
+      do j = 0, pheight-1
         y = ymin + scy * j
         c = cmplx(x, y, kind=wp)    ! Starting point
         z = (0.0_wp, 0.0_wp)        ! z0
         k = 1
         do while ((k <= itermax) .and. ((z%re**2 + z%im**2) < 4.0_wp))
-          z = z*z+c
-          k = k+1
+          z = z*z + c
+          k = k + 1
         end do
 
-        if (k>itermax) then
+        if (k > itermax) then
           ! Black pixel:
           red   = 0
           green = 0
@@ -220,14 +220,14 @@ contains
         end if
 
         p = i * nch + j * rowstride + 1
-        pixel(p)=char(red)
-        pixel(p+1)=char(green)
-        pixel(p+2)=char(blue)
-        pixel(p+3)=char(255)  ! Opacity (alpha channel)
+        pixel(p)   = char(red)
+        pixel(p+1) = char(green)
+        pixel(p+2) = char(blue)
+        pixel(p+3 )= char(255)  ! Opacity (alpha channel)
 
-        ! This subrountine processes gtk events as needed during the computation.
+        ! This subroutine processes GTK events as needed during the computation:
         call pending_events()
-        if (run_status == FALSE) return ! Exit if we had a delete event.
+        if (run_status == FALSE) return   ! Exit if we had a delete event
       end do
     end do
 
@@ -236,13 +236,14 @@ contains
     call cpu_time(t1)
     print '(A, F6.2, A)', "System time = ", t1-t0, " s"
   end subroutine mandelbrot_set
+
 end module handlers
 
 !***********************************************************
 ! We create a GtkApplication:
 !***********************************************************
 program cairo_tests
-  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_funloc, c_null_char, c_null_ptr
+  use, intrinsic :: iso_c_binding
   use gtk, only: gtk_application_new, g_signal_connect, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers, only: activate
@@ -252,7 +253,7 @@ program cairo_tests
   type(c_ptr)    :: app
 
   app = gtk_application_new("gtk-fortran.examples.cairo-tests"//c_null_char, &
-                            & G_APPLICATION_FLAGS_NONE)
+                          & G_APPLICATION_FLAGS_NONE)
   call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), &
                       & c_null_ptr)
   exit_status = g_application_run(app, 0_c_int, [c_null_ptr])
