@@ -74,42 +74,37 @@ contains
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
     integer(c_int), value, intent(in) :: width, height
     integer :: cstatus
+    real(dp), parameter :: pi = acos(-1._dp)
 
     print *, "Entering my_draw_function()"
 
-    ! We redraw the Mandelbrot set pixbuf:
+    ! We draw the Mandelbrot set pixbuf in the Cairo context:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 0._dp, 0._dp)
     call cairo_paint(my_cairo_context)
 
-    ! And do some vectorial Cairo drawings above:
-    call cairo_set_line_width(my_cairo_context, 1._dp)
-    call cairo_set_source_rgb(my_cairo_context, 0._dp, 0._dp, 1._dp)
-    call cairo_move_to(my_cairo_context, 100._dp, 50._dp)
-    call cairo_line_to(my_cairo_context, 700._dp, 700._dp)
-    call cairo_stroke(my_cairo_context)
-
-    call cairo_set_source_rgb(my_cairo_context, 1._dp, 0._dp, 0._dp)
-    call cairo_set_line_width(my_cairo_context, 3._dp)
-    call cairo_move_to(my_cairo_context, 60._dp, 0._dp)
-    call cairo_curve_to(my_cairo_context, 600._dp, 50._dp, 135._dp, 45._dp, 500._dp, 500._dp)
-    call cairo_stroke(my_cairo_context)
-
-    call cairo_set_source_rgb(my_cairo_context, 1._dp, 1._dp, 0._dp)
+    ! Draw cartesian axe
+    ! Yellow:
+    call cairo_set_source_rgb(my_cairo_context, 1._dp, 1._dp, 1._dp)
     call cairo_set_line_width(my_cairo_context, 2._dp)
-    call cairo_move_to(my_cairo_context, 0._dp, height/2._dp)
-    call cairo_line_to(my_cairo_context, 1._dp*width, height/2._dp)
-    call cairo_move_to(my_cairo_context, width/2._dp + width/12._dp, 0._dp)
-    call cairo_line_to(my_cairo_context, width/2._dp + width/12._dp, height*1._dp)
+    ! Horizontal axis:
+    call cairo_move_to(my_cairo_context, 0._dp,       height/2._dp)
+    call cairo_line_to(my_cairo_context, width*1._dp, height/2._dp)
+    ! Vertical axis:
+    call cairo_move_to(my_cairo_context, width*(2._dp / 3._dp), 0._dp)
+    call cairo_line_to(my_cairo_context, width*(2._dp / 3._dp), height*1._dp)
     call cairo_stroke(my_cairo_context)
 
+    ! Text:
     call cairo_select_font_face(my_cairo_context, "Times"//c_null_char, &
                             & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
-    call cairo_set_font_size (my_cairo_context, 16._dp)
+    call cairo_set_font_size (my_cairo_context, 32._dp)
     call cairo_move_to(my_cairo_context, 200._dp, 200._dp)
     call cairo_show_text (my_cairo_context, "Mandelbrot set"//c_null_char)
 
+    ! Circle of radius 1/4 centered around −1:
+    call cairo_set_source_rgb(my_cairo_context, 1._dp, 1._dp, 0._dp)
     call cairo_new_sub_path(my_cairo_context)
-    call cairo_arc(my_cairo_context, 300._dp, 300._dp, 100._dp, 0._dp, acos(-1._dp))
+    call cairo_arc(my_cairo_context, width*(1._dp / 3._dp), height/2._dp, (width/3._dp)/4._dp, 0._dp, 2._dp*pi)
     call cairo_stroke(my_cairo_context)
 
     ! The image is written to PNG only one time:
@@ -159,6 +154,7 @@ contains
     print *, "Size (bytes) of the pixbuf: ", bytes
 
     call c_f_pointer(gdk_pixbuf_get_pixels(my_pixbuf), pixel, [bytes])
+    ! Drawing the whole set:
     call Mandelbrot_set(my_drawing_area, -2.0_wp, +1.0_wp, -1.5_wp, +1.5_wp, 1000_4)
     write_png = .true.
 
@@ -172,9 +168,6 @@ contains
   ! http://en.wikipedia.org/wiki/Mandelbrot_set
   !*********************************************
   subroutine Mandelbrot_set(my_drawing_area, xmin, xmax, ymin, ymax, itermax)
-    ! Whole set: xmin=-2.0_wp, xmax=+1.0_wp, ymin=-1.5_wp, ymax=+1.5_wp, itermax=1000
-    ! Seahorse valley:  around x=-0.743643887037151, y=+0.13182590420533, itermax=5000
-
     type(c_ptr)   :: my_drawing_area
     integer       :: i, j, k, p, itermax
     real(wp)      :: x, y, xmin, xmax, ymin, ymax ! coordinates in the complex plane
