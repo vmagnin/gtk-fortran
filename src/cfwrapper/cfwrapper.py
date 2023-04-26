@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-04-12 (tested with Python 3.10.7, Ubuntu)
+# Last modification: 2023-04-26 (tested with Python 3.10.7, Ubuntu)
 # $ pylint *.py ../tools.py    => 8.53/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
@@ -210,6 +210,9 @@ for library_path in PATH_DICT:
     # Analyze each C header file in each subdirectory of that library:
     for directory in os.walk(library_path):
         for c_file_name in directory[2]:
+            # Only C header files must be considered:
+            if not c_file_name.endswith(".h"):
+                continue    # Go to next file
             # Problematic files can be excluded here:
             if c_file_name in []:
                 continue    # Go to next file
