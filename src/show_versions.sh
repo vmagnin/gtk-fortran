@@ -5,7 +5,7 @@
 # Show libraries and tools versions used in gtk-fortran
 # Parameters: none
 # Contributed by Vincent MAGNIN, 2019-03-13
-# Updated 2022-11-06
+# Updated 2023-04-28
 # Needs: in Fedora, lsb_release is in the package redhat-lsb-core
 
 # The shell -e option is not used in this script to avoid exiting each time a
@@ -35,10 +35,11 @@ readonly LIB_GLIB="libglib2.0-dev"
 readonly LIB_PLPLOT="libplplot-dev"
 
 if echo "${SYSTEM}" | grep -q MINGW ; then
-    pacman -Q mingw-w64-x86_64-gtk2
-    pacman -Q mingw-w64-x86_64-gtk3	
-    pacman -Q mingw-w64-x86_64-glib2
-    pacman -Q mingw-w64-x86_64-plplot
+    pacman -Q mingw-w64-ucrt-x86_64-gtk2
+    pacman -Q mingw-w64-ucrt-x86_64-gtk3	
+    pacman -Q mingw-w64-ucrt-x86_64-gtk4	
+    pacman -Q mingw-w64-ucrt-x86_64-glib2
+    pacman -Q mingw-w64-ucrt-x86_64-plplot
 elif echo "${SYSTEM}" | grep -q MANJARO ; then
     pacman -Q gtk2
     pacman -Q gtk3
