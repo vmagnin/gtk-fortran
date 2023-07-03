@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2023-03-21
-# Last modification: 2023-04-07
+# Last modification: 2023-07-03
 
 import os
 import re           # Regular expression library
@@ -127,8 +127,15 @@ class types_enums():
         #define KeyCode CARD8   => unsigned char
         "KeyCode":("character(kind=c_char)", "c_char"),
         "KeySym":("integer(c_long)", "c_long"),
-        # enum GWin32OSType
-        "GWin32OSType":("integer(c_int)", "c_int")
+        # enums:
+        "GWin32OSType":("integer(c_int)", "c_int"),
+        "GtkLicense":("integer(c_int)", "c_int"),
+        "GApplicationFlags":("integer(c_int)", "c_int"),
+        "GtkInputHints":("integer(c_int)", "c_int"),
+        "GtkInputPurpose":("integer(c_int)", "c_int"),
+        "GtkPackType":("integer(c_int)", "c_int"),
+        "GtkArrowType":("integer(c_int)", "c_int"),
+        "GdkDragAction":("integer(c_int)", "c_int")
     }
 
     # Two words types:
