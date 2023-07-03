@@ -148,7 +148,7 @@ class types_enums():
 
     # These lists will be used by the iso_c_binding() function:
     gtk_enums = []
-    gtk_funptr = []
+    gtk_funptr = ["GDestroyNotify", "GAsyncReadyCallback"]
 
 
     def __init__(self, PATH_DICT):
@@ -170,6 +170,10 @@ class types_enums():
                                             whole_file)
                     gtk_types += re.findall(r"(?m)^typedef *?(?:const)? *?(\w+) *\*? *([\w]+);",
                                             whole_file)
+
+        # Remove duplicated items in types_enums.gtk_funptr:
+        converted_to_set = set(types_enums.gtk_funptr)
+        types_enums.gtk_funptr = list(converted_to_set)
 
         # Add one word derived types in the TYPES_DICT:
         for each in gtk_types:
