@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modifications: 2012-12-31, vmagnin 2020-06-19 (GTK 4 version),
-!                     2021-01-11
+!                     2023-08-07
 !------------------------------------------------------------------------------
 
 !*
@@ -370,7 +370,6 @@ contains
           ! It's a list of GFiles:
           g_file = g_list_model_get_item(chooser_info%chooser_sel_list, i-1_c_int)
           call convert_c_string(g_file_get_path(g_file), files(i))
-          print *, files(i)
           call g_object_unref(g_file)
        end do
        call g_object_unref(chooser_info%chooser_sel_list)
