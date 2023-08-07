@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, James Tappin
-! GTK 4 version: vmagnin 2020-05-28, 2021-01-28, 2022-05-06
+! GTK 4 version: vmagnin 2020-05-28, 2023-08-07
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -115,7 +115,9 @@ module handlers
   & gtk_grid_set_column_homogeneous, &
   & gtk_widget_set_margin_start, gtk_widget_set_margin_end, &
   & gtk_widget_set_margin_top, gtk_widget_set_margin_bottom, &
-  & gtk_get_major_version, gtk_get_minor_version, gtk_get_micro_version
+  & gtk_get_major_version, gtk_get_minor_version, gtk_get_micro_version, &
+  & gtk_widget_set_name, gtk_css_provider_new, gtk_widget_get_display, &
+  & gtk_css_provider_load_from_data, gtk_style_context_add_provider_for_display
 
   use g, only: g_object_unref
 
@@ -145,6 +147,7 @@ contains
     use various_functions
 
     type(c_ptr), value, intent(in)  :: app, gdata
+    type(c_ptr) :: css_provider, gdk_display
 
     ! Create the window:
     window = gtk_application_window_new(app)
@@ -202,6 +205,15 @@ contains
     call gtk_text_buffer_set_text(buffer, "This is just a great bazaar"//char(13)// &
         & "where I can test widgets"//c_new_line//"Vincent"//c_new_line//&
         &"You can edit this text. It will be scrollable."//c_null_char, -1_c_int)
+
+    ! Let's change the background color and the font of the TextView:
+    call gtk_widget_set_name (view, "my_TextView"//c_null_char)
+    css_provider = gtk_css_provider_new()
+    gdk_display = gtk_widget_get_display(window)
+    call gtk_css_provider_load_from_data(css_provider, &
+        & "textview#my_TextView {background-color: Ivory;font-family: times;font-size:16px;}", -1_c_size_t)
+    call gtk_style_context_add_provider_for_display(gdk_display, css_provider, 800_c_int)
+
     scrolled_window = gtk_scrolled_window_new()
     call gtk_scrolled_window_set_child(scrolled_window, view)
     call gtk_grid_attach(table, scrolled_window, 0_c_int, 3_c_int, 3_c_int, 3_c_int)
