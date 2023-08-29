@@ -10,6 +10,9 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ### Changed
 - `examples/bazaar.f90`: modified the font and background of the textview.
 
+### Fixed
+- `src/cfwrapper/fortran.py`: declarations like `const char * const *` must be declared in Fortran as `type(c_ptr), dimension(*) ::`, as they are arrays of C strings (previously, only `**` was considered).
+
 
 ## [gtk-fortran 4.4.0] 2023-05-02
 This release offers interfaces to GTK 4.10.3 and GLib 2.76.2.

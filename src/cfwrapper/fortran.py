@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-03-21
+# Last modification: 2023-08-29
 
 """ This module contains functions used in the cfwrapper.
 """
@@ -70,7 +70,8 @@ def iso_c_binding(declaration, isReturned):
     if "*" in declaration:
         # Is it a string (char or gchar array) ?
         if ("char" in c_type) and (not isReturned):
-            if "**" in declaration:
+            if declaration.count('*') >= 2:
+                # An array of C strings:
                 return "type(c_ptr), dimension(*)", "c_ptr"
             else:
                 return "character(kind=c_char), dimension(*)", "c_char"

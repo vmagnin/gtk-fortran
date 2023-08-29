@@ -112,10 +112,10 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_icon_theme_set_search_path (GtkIconTheme *self, const char * const *path);
 subroutine gtk_icon_theme_set_search_path(self, path) bind(c)
-  import :: c_ptr, c_char
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: self
-  character(kind=c_char), dimension(*) :: path
+  type(c_ptr), dimension(*) :: path
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -139,10 +139,10 @@ end subroutine
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_icon_theme_set_resource_path (GtkIconTheme *self, const char * const *path);
 subroutine gtk_icon_theme_set_resource_path(self, path) bind(c)
-  import :: c_ptr, c_char
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: self
-  character(kind=c_char), dimension(*) :: path
+  type(c_ptr), dimension(*) :: path
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -1537,7 +1537,7 @@ subroutine gtk_application_set_accels_for_action(application,&
   implicit none
   type(c_ptr), value :: application
   character(kind=c_char), dimension(*) :: detailed_action_name
-  character(kind=c_char), dimension(*) :: accels
+  type(c_ptr), dimension(*) :: accels
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -13784,10 +13784,10 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkStringList * gtk_string_list_new (const char * const *strings);
 function gtk_string_list_new(strings) bind(c)
-  import :: c_ptr, c_char
+  import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_string_list_new
-  character(kind=c_char), dimension(*) :: strings
+  type(c_ptr), dimension(*) :: strings
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -13821,12 +13821,12 @@ end subroutine
 !void gtk_string_list_splice (GtkStringList *self, guint position, guint n_removals, const char * const *additions);
 subroutine gtk_string_list_splice(self, position, n_removals, additions)&
 & bind(c)
-  import :: c_ptr, c_int, c_char
+  import :: c_ptr, c_int
   implicit none
   type(c_ptr), value :: self
   integer(c_int), value :: position
   integer(c_int), value :: n_removals
-  character(kind=c_char), dimension(*) :: additions
+  type(c_ptr), dimension(*) :: additions
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -22185,10 +22185,10 @@ end function
 ! GDK_AVAILABLE_IN_4_10
 !void gtk_alert_dialog_set_buttons (GtkAlertDialog *self, const char * const *labels);
 subroutine gtk_alert_dialog_set_buttons(self, labels) bind(c)
-  import :: c_ptr, c_char
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: self
-  character(kind=c_char), dimension(*) :: labels
+  type(c_ptr), dimension(*) :: labels
 end subroutine
 
 ! GDK_AVAILABLE_IN_4_10
@@ -24570,10 +24570,10 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkWidget * gtk_drop_down_new_from_strings (const char * const * strings);
 function gtk_drop_down_new_from_strings(strings) bind(c)
-  import :: c_ptr, c_char
+  import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_drop_down_new_from_strings
-  character(kind=c_char), dimension(*) :: strings
+  type(c_ptr), dimension(*) :: strings
 end function
 
 ! GDK_AVAILABLE_IN_ALL
