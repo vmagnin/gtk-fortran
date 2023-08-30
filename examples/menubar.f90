@@ -19,7 +19,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !-------------------------------------------------------------------------------
 ! Contributed by: Jerry DeLisle, 2021-02-24
-! Last modifications: vmagnin 2023-03-14
+! Last modifications: vmagnin 2023-08-30
 ! This example demonstrates a menu bar and is based on:
 !   https://github.com/ToshioCP/Gtk4-tutorial/blob/main/src/menu/menu2.c
 !-------------------------------------------------------------------------------
@@ -32,10 +32,11 @@ module handlers
                & gtk_label_new, gtk_widget_set_name, gtk_window_set_child, &
                & gtk_application_set_menubar, &
                & gtk_application_window_set_show_menubar, &
+               & gtk_application_set_accels_for_action, &
                & gtk_css_provider_new, gtk_widget_get_display, &
                & gtk_css_provider_load_from_data, g_application_flags_none, &
                & gtk_style_context_add_provider_for_display, gtk_window_present
-  use gtk_sup, only: convert_c_string
+  use gtk_sup, only: convert_c_string, f_c_string
   use g, only: g_variant_new_boolean, g_variant_get_boolean, &
              & g_variant_new_string, g_variant_get_string, g_variant_type_new, &
              & g_simple_action_set_state, g_action_change_state, &
@@ -45,7 +46,7 @@ module handlers
              & g_action_map_add_action, g_menu_append_item, &
              & g_object_unref, g_menu_append_section, g_menu_append_submenu
   use, intrinsic :: iso_c_binding, only: c_null_ptr, c_null_char, c_ptr, c_int, c_char, &
-                         & c_funloc, c_size_t
+                         & c_funloc, c_loc, c_size_t
 
   implicit none
   type(c_ptr) :: app, provider
@@ -107,6 +108,9 @@ contains
       & menu_item_red, menu_item_green, &
       & menu_item_blue, menu_item_quit, menu_item_fullscreen
     integer(c_size_t) :: length = -1_c_size_t
+    character(kind=c_char), dimension(:), allocatable :: stringtmp
+    character(kind=c_char), pointer, dimension(:) :: accels
+    type(c_ptr), dimension(:), allocatable :: c_ptr_array
 
     win = gtk_application_window_new (app)
     call gtk_window_set_title (win, "menubar"//c_null_char)
@@ -122,6 +126,23 @@ contains
                                   & g_variant_type_new("s"//c_null_char), &
                                   & g_variant_new_string ("red"//c_null_char))
     act_quit = g_simple_action_new ("quit"//c_null_char, c_null_ptr)
+  
+    ! To add an accelerator we need a pointer toward a null terminated array
+    ! of strings, but in the present case the array will contain only one string
+    ! (it is possible to have several accelerators for the same action): 
+    allocate(c_ptr_array(1+1))
+    call f_c_string("<Ctrl>q"//c_null_char, stringtmp)
+    allocate(accels(size(stringtmp)))
+    ! A Fortran pointer toward the Fortran string:
+    accels(:) = stringtmp(:)
+    ! Store the C address in the array:
+    c_ptr_array(1) = c_loc(accels(1))
+    nullify(accels)
+    ! The array must be null terminated:
+    c_ptr_array(2) = c_null_ptr
+    ! https://docs.gtk.org/gtk4/method.Application.set_accels_for_action.html
+    call gtk_application_set_accels_for_action(app, "app.quit"//c_null_char, c_ptr_array)
+    deallocate(c_ptr_array)
 
     menubar = g_menu_new ()
     menu = g_menu_new ()

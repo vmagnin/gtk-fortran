@@ -6,6 +6,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ### Added
 - New types (enums) in `src/cfwrapper/scan_types_and_enums.py`, useful for other GNOME libraries.
 - Initializes `types_enums.gtk_funptr` list in `src/cfwrapper/scan_types_and_enums.py` with a few funptr types, and removes possibly duplicated ones.
+- `examples/menubar.f90`: an accelerator `<Ctrl>q` was added for quitting the application.
 
 ### Changed
 - `examples/bazaar.f90`: modified the font and background of the textview.
