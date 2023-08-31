@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [gtk-fortran dev]
+## [gtk-fortran 4.4.1] 2023-08-31
 
 ### Added
 - New types (enums) in `src/cfwrapper/scan_types_and_enums.py`, useful for other GNOME libraries.
