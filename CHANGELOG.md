@@ -1,10 +1,11 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [gtk-fortran dev]
+## [gtk-fortran gtk3 dev]
 
 ### Added
 - `LICENSE_EXCEPTION`: the text of the GCC Runtime Library Exception, version 3.1. Note that this exception was chosen in 2011 and was already cited in the header of each source file with the URL of the GNU licenses. Putting the text in the repository is a better practice.
+- In `gtk-sup.f90`: the function `convert_f_string_aa()` (interface `f_c_string`) converts a fortran string array into an array of null-terminated C strings.
 
 
 ## [gtk-fortran 4.3.0] 2022-11-10
