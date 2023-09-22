@@ -22,7 +22,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
-! vmagnin 2020-06-08 (GTK 4), 2022-05-09, 2023-03-10
+! vmagnin 2020-06-08 (GTK 4), jtappin 2023-09-22
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
@@ -179,11 +179,13 @@ module gtk_sup
 
   interface f_c_string
      module procedure convert_f_string_a
+     module procedure convert_f_string_aa
      module procedure convert_f_string_s
   end interface f_c_string
 
   interface convert_f_string
      module procedure convert_f_string_a
+     module procedure convert_f_string_aa
      module procedure convert_f_string_s
   end interface convert_f_string
 
@@ -589,6 +591,48 @@ contains
        ii = ii + 1
     end do
   end subroutine convert_f_string_a
+  
+  !+
+  subroutine convert_f_string_aa(f_string, textptr, length)
+    character(len=*), intent(in), dimension(:) :: f_string
+    character(kind=c_char), dimension(:,:), intent(out), &
+         & allocatable :: textptr
+    integer(kind=c_int), intent(out), optional, &
+         & dimension(:), allocatable :: length
+
+    ! Convert a fortran string array into an array of null-terminated
+    ! C strings. 
+    !
+    ! F_STRING: f_string: required: The fortran string to convert
+    ! TEXTPR: string: required: A C type string, (allocatable) 2-D
+    ! 	fortran array.
+    ! LENGTH: c_int: optional: An allocatable integer array to return
+    ! the lengths of the strings.	
+    !-
+
+    integer :: lcstr, i, j, nfstr
+    integer, dimension(:), allocatable :: lfstr
+
+    nfstr = size(f_string)
+    allocate(lfstr(nfstr))
+    lfstr = len_trim(f_string)
+    lcstr = maxval(lfstr)+1    ! Add 1 for the NULL terminator on the
+    ! longest element
+
+    allocate(textptr(lcstr,nfstr))
+    if (present(length)) then
+       allocate(length(nfstr))
+       length = lfstr
+    end if
+
+    do i = 1, nfstr
+       do j = 1, lfstr(i)
+          textptr(j,i) = f_string(i)(j:j)
+       end do
+       textptr(j,i) = c_null_char
+    end do
+  end subroutine convert_f_string_aa
+  
 
   !+
   subroutine convert_f_string_s(f_string, textptr, length)

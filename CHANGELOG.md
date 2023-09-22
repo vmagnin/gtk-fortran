@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [gtk-fortran dev]
+
+### Added
+- In `gtk-sup.f90`: the function `convert_f_string_aa()` (interface `f_c_string`) converts a fortran string array into an array of null-terminated C strings.
+
+
 ## [gtk-fortran 4.4.1] 2023-08-31
 
 ### Added
