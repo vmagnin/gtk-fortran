@@ -1305,14 +1305,6 @@ end subroutine
 ! /usr/include/gtk-4.0/gtk/gtklistitem.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
-!GType gtk_list_item_get_type (void) ;
-function gtk_list_item_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_list_item_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
 !gpointer gtk_list_item_get_item (GtkListItem *self);
 function gtk_list_item_get_item(self) bind(c)
   import :: c_ptr
@@ -1375,6 +1367,24 @@ subroutine gtk_list_item_set_activatable(self, activatable) bind(c)
   integer(c_int), value :: activatable
 end subroutine
 
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_list_item_get_focusable (GtkListItem *self) ;
+function gtk_list_item_get_focusable(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_list_item_get_focusable
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_list_item_set_focusable (GtkListItem *self, gboolean focusable);
+subroutine gtk_list_item_set_focusable(self, focusable) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: focusable
+end subroutine
+
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_list_item_set_child (GtkListItem *self, GtkWidget *child);
 subroutine gtk_list_item_set_child(self, child) bind(c)
@@ -1390,6 +1400,42 @@ function gtk_list_item_get_child(self) bind(c)
   import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_list_item_get_child
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_list_item_set_accessible_description (GtkListItem *self, const char *description);
+subroutine gtk_list_item_set_accessible_description(self, description) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: description
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!const char * gtk_list_item_get_accessible_description (GtkListItem *self);
+function gtk_list_item_get_accessible_description(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_list_item_get_accessible_description
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_list_item_set_accessible_label (GtkListItem *self, const char *label);
+subroutine gtk_list_item_set_accessible_label(self, label) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: label
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!const char * gtk_list_item_get_accessible_label (GtkListItem *self);
+function gtk_list_item_get_accessible_label(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_list_item_get_accessible_label
   type(c_ptr), value :: self
 end function
 
@@ -2549,6 +2595,24 @@ function gtk_list_view_get_factory(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+! GDK_AVAILABLE_IN_4_12
+!void gtk_list_view_set_header_factory (GtkListView *self, GtkListItemFactory *factory);
+subroutine gtk_list_view_set_header_factory(self, factory) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: factory
+end subroutine
+
+! 
+!GtkListItemFactory * gtk_list_view_get_header_factory (GtkListView *self);
+function gtk_list_view_get_header_factory(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_list_view_get_header_factory
+  type(c_ptr), value :: self
+end function
+
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_list_view_set_show_separators (GtkListView *self, gboolean show_separators);
 subroutine gtk_list_view_set_show_separators(self, show_separators) bind(c)
@@ -2603,6 +2667,35 @@ function gtk_list_view_get_enable_rubberband(self) bind(c)
   integer(c_int) :: gtk_list_view_get_enable_rubberband
   type(c_ptr), value :: self
 end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_list_view_set_tab_behavior (GtkListView *self, GtkListTabBehavior tab_behavior);
+subroutine gtk_list_view_set_tab_behavior(self, tab_behavior) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: tab_behavior
+end subroutine
+
+! 
+!GtkListTabBehavior gtk_list_view_get_tab_behavior (GtkListView *self);
+function gtk_list_view_get_tab_behavior(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_list_view_get_tab_behavior
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_list_view_scroll_to (GtkListView *self, guint pos, GtkListScrollFlags flags, GtkScrollInfo *scroll);
+subroutine gtk_list_view_scroll_to(self, pos, flags, scroll) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: pos
+  integer(c_int), value :: flags
+  type(c_ptr), value :: scroll
+end subroutine
 
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkshortcutaction.h
@@ -2994,7 +3087,7 @@ function gtk_picture_new_for_paintable(paintable) bind(c)
   type(c_ptr), value :: paintable
 end function
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_pixbuf_new_for_paintable)
 !GtkWidget* gtk_picture_new_for_pixbuf (GdkPixbuf *pixbuf);
 function gtk_picture_new_for_pixbuf(pixbuf) bind(c)
   import :: c_ptr
@@ -3084,7 +3177,7 @@ subroutine gtk_picture_set_resource(self, resource_path) bind(c)
   character(kind=c_char), dimension(*) :: resource_path
 end subroutine
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_picture_set_paintable)
 !void gtk_picture_set_pixbuf (GtkPicture *self, GdkPixbuf *pixbuf);
 subroutine gtk_picture_set_pixbuf(self, pixbuf) bind(c)
   import :: c_ptr
@@ -3377,7 +3470,34 @@ function gtk_gl_area_new() bind(c)
   type(c_ptr) :: gtk_gl_area_new
 end function
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_AVAILABLE_IN_4_12
+!void gtk_gl_area_set_allowed_apis (GtkGLArea *area, GdkGLAPI apis);
+subroutine gtk_gl_area_set_allowed_apis(area, apis) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: area
+  integer(c_int), value :: apis
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!GdkGLAPI gtk_gl_area_get_allowed_apis (GtkGLArea *area);
+function gtk_gl_area_get_allowed_apis(area) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_gl_area_get_allowed_apis
+  type(c_ptr), value :: area
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!GdkGLAPI gtk_gl_area_get_api (GtkGLArea *area);
+function gtk_gl_area_get_api(area) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_gl_area_get_api
+  type(c_ptr), value :: area
+end function
+
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_gl_area_set_allowed_apis)
 !void gtk_gl_area_set_use_es (GtkGLArea *area, gboolean use_es);
 subroutine gtk_gl_area_set_use_es(area, use_es) bind(c)
   import :: c_ptr, c_int
@@ -3386,7 +3506,7 @@ subroutine gtk_gl_area_set_use_es(area, use_es) bind(c)
   integer(c_int), value :: use_es
 end subroutine
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_gl_area_get_api)
 !gboolean gtk_gl_area_get_use_es (GtkGLArea *area);
 function gtk_gl_area_get_use_es(area) bind(c)
   import :: c_int, c_ptr
@@ -3611,6 +3731,25 @@ function gtk_center_box_get_baseline_position(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+! GDK_AVAILABLE_IN_4_12
+!void gtk_center_box_set_shrink_center_last (GtkCenterBox *self, gboolean shrink_center_last);
+subroutine gtk_center_box_set_shrink_center_last(self, shrink_center_last)&
+& bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: shrink_center_last
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_center_box_get_shrink_center_last (GtkCenterBox *self);
+function gtk_center_box_get_shrink_center_last(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_center_box_get_shrink_center_last
+  type(c_ptr), value :: self
+end function
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkgesturerotate.h
 !--------------------------------------------------
@@ -3667,7 +3806,7 @@ function gtk_css_provider_to_string(provider) bind(c)
   type(c_ptr), value :: provider
 end function
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_css_provider_load_from_string)
 !void gtk_css_provider_load_from_data (GtkCssProvider *css_provider, const char *data, gssize length);
 subroutine gtk_css_provider_load_from_data(css_provider, data, length) bind(c)
   import :: c_ptr, c_char, c_size_t
@@ -3675,6 +3814,24 @@ subroutine gtk_css_provider_load_from_data(css_provider, data, length) bind(c)
   type(c_ptr), value :: css_provider
   character(kind=c_char), dimension(*) :: data
   integer(c_size_t), value :: length
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_css_provider_load_from_string (GtkCssProvider *css_provider, const char *string);
+subroutine gtk_css_provider_load_from_string(css_provider, string) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: css_provider
+  character(kind=c_char), dimension(*) :: string
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_css_provider_load_from_bytes (GtkCssProvider *css_provider, GBytes *data);
+subroutine gtk_css_provider_load_from_bytes(css_provider, data) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: css_provider
+  type(c_ptr), value :: data
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -4227,6 +4384,15 @@ function gtk_window_is_fullscreen(window) bind(c)
   type(c_ptr), value :: window
 end function
 
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_window_is_suspended (GtkWindow *window);
+function gtk_window_is_suspended(window) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_window_is_suspended
+  type(c_ptr), value :: window
+end function
+
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_window_destroy (GtkWindow *window);
 subroutine gtk_window_destroy(window) bind(c)
@@ -4406,6 +4572,24 @@ function gtk_button_get_child(button) bind(c)
   import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_button_get_child
+  type(c_ptr), value :: button
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_button_set_can_shrink (GtkButton *button, gboolean can_shrink);
+subroutine gtk_button_set_can_shrink(button, can_shrink) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: button
+  integer(c_int), value :: can_shrink
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_button_get_can_shrink (GtkButton *button);
+function gtk_button_get_can_shrink(button) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_button_get_can_shrink
   type(c_ptr), value :: button
 end function
 
@@ -5253,6 +5437,24 @@ function gtk_grid_view_get_enable_rubberband(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+! GDK_AVAILABLE_IN_4_12
+!void gtk_grid_view_set_tab_behavior (GtkGridView *self, GtkListTabBehavior tab_behavior);
+subroutine gtk_grid_view_set_tab_behavior(self, tab_behavior) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: tab_behavior
+end subroutine
+
+! 
+!GtkListTabBehavior gtk_grid_view_get_tab_behavior (GtkGridView *self);
+function gtk_grid_view_get_tab_behavior(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_grid_view_get_tab_behavior
+  type(c_ptr), value :: self
+end function
+
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_grid_view_set_single_click_activate (GtkGridView *self, gboolean single_click_activate);
 subroutine gtk_grid_view_set_single_click_activate(self, single_click_activate)&
@@ -5271,6 +5473,17 @@ function gtk_grid_view_get_single_click_activate(self) bind(c)
   integer(c_int) :: gtk_grid_view_get_single_click_activate
   type(c_ptr), value :: self
 end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_grid_view_scroll_to (GtkGridView *self, guint pos, GtkListScrollFlags flags, GtkScrollInfo *scroll);
+subroutine gtk_grid_view_scroll_to(self, pos, flags, scroll) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: pos
+  integer(c_int), value :: flags
+  type(c_ptr), value :: scroll
+end subroutine
 
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkaccelgroup.h
@@ -6507,7 +6720,7 @@ function gtk_widget_get_child_visible(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_widget_get_width)
 !int gtk_widget_get_allocated_width (GtkWidget *widget);
 function gtk_widget_get_allocated_width(widget) bind(c)
   import :: c_int, c_ptr
@@ -6516,7 +6729,7 @@ function gtk_widget_get_allocated_width(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_widget_get_height)
 !int gtk_widget_get_allocated_height (GtkWidget *widget);
 function gtk_widget_get_allocated_height(widget) bind(c)
   import :: c_int, c_ptr
@@ -6525,7 +6738,7 @@ function gtk_widget_get_allocated_height(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_widget_get_baseline)
 !int gtk_widget_get_allocated_baseline (GtkWidget *widget);
 function gtk_widget_get_allocated_baseline(widget) bind(c)
   import :: c_int, c_ptr
@@ -6534,7 +6747,7 @@ function gtk_widget_get_allocated_baseline(widget) bind(c)
   type(c_ptr), value :: widget
 end function
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_widget_compute_bounds)
 !void gtk_widget_get_allocation (GtkWidget *widget, GtkAllocation *allocation);
 subroutine gtk_widget_get_allocation(widget, allocation) bind(c)
   import :: c_ptr
@@ -6592,6 +6805,15 @@ function gtk_widget_get_height(widget) bind(c)
   import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_widget_get_height
+  type(c_ptr), value :: widget
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!int gtk_widget_get_baseline (GtkWidget *widget);
+function gtk_widget_get_baseline(widget) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_widget_get_baseline
   type(c_ptr), value :: widget
 end function
 
@@ -6944,7 +7166,7 @@ function gtk_widget_is_ancestor(widget, ancestor) bind(c)
   type(c_ptr), value :: ancestor
 end function
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_widget_compute_point)
 !gboolean gtk_widget_translate_coordinates (GtkWidget *src_widget, GtkWidget *dest_widget, double src_x, double src_y, double *dest_x, double *dest_y);
 function gtk_widget_translate_coordinates(src_widget, dest_widget, src_x,&
 & src_y, dest_x, dest_y) bind(c)
@@ -8628,6 +8850,24 @@ subroutine gtk_file_launcher_set_file(self, file) bind(c)
   type(c_ptr), value :: file
 end subroutine
 
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_file_launcher_get_always_ask (GtkFileLauncher *self);
+function gtk_file_launcher_get_always_ask(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_file_launcher_get_always_ask
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_file_launcher_set_always_ask (GtkFileLauncher *self, gboolean always_ask);
+subroutine gtk_file_launcher_set_always_ask(self, always_ask) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: always_ask
+end subroutine
+
 ! GDK_AVAILABLE_IN_4_10
 !void gtk_file_launcher_launch (GtkFileLauncher *self, GtkWindow *parent, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 subroutine gtk_file_launcher_launch(self, parent, cancellable, callback,&
@@ -9239,6 +9479,24 @@ function gtk_sort_list_model_get_sorter(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+! GDK_AVAILABLE_IN_4_12
+!void gtk_sort_list_model_set_section_sorter (GtkSortListModel *self, GtkSorter *sorter);
+subroutine gtk_sort_list_model_set_section_sorter(self, sorter) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: sorter
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!GtkSorter * gtk_sort_list_model_get_section_sorter (GtkSortListModel *self);
+function gtk_sort_list_model_get_section_sorter(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_sort_list_model_get_section_sorter
+  type(c_ptr), value :: self
+end function
+
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_sort_list_model_set_model (GtkSortListModel *self, GListModel *model);
 subroutine gtk_sort_list_model_set_model(self, model) bind(c)
@@ -9497,743 +9755,6 @@ function gtk_shortcuts_group_get_type() bind(c)
   import :: c_size_t
   implicit none
   integer(c_size_t) :: gtk_shortcuts_group_get_type
-end function
-
-!--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkprintsettings.h
-!--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_print_settings_get_type (void) ;
-function gtk_print_settings_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_print_settings_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintSettings *gtk_print_settings_new (void);
-function gtk_print_settings_new() bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_new
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintSettings *gtk_print_settings_copy (GtkPrintSettings *other);
-function gtk_print_settings_copy(other) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_copy
-  type(c_ptr), value :: other
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintSettings *gtk_print_settings_new_from_file (const char *file_name, GError **error);
-function gtk_print_settings_new_from_file(file_name, error) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr) :: gtk_print_settings_new_from_file
-  character(kind=c_char), dimension(*) :: file_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_settings_load_file (GtkPrintSettings *settings, const char *file_name, GError **error);
-function gtk_print_settings_load_file(settings, file_name, error) bind(c)
-  import :: c_int, c_ptr, c_char
-  implicit none
-  integer(c_int) :: gtk_print_settings_load_file
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: file_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_settings_to_file (GtkPrintSettings *settings, const char *file_name, GError **error);
-function gtk_print_settings_to_file(settings, file_name, error) bind(c)
-  import :: c_int, c_ptr, c_char
-  implicit none
-  integer(c_int) :: gtk_print_settings_to_file
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: file_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintSettings *gtk_print_settings_new_from_key_file (GKeyFile *key_file, const char *group_name, GError **error);
-function gtk_print_settings_new_from_key_file(key_file, group_name, error)&
-& bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr) :: gtk_print_settings_new_from_key_file
-  type(c_ptr), value :: key_file
-  character(kind=c_char), dimension(*) :: group_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_settings_load_key_file (GtkPrintSettings *settings, GKeyFile *key_file, const char *group_name, GError **error);
-function gtk_print_settings_load_key_file(settings, key_file, group_name,&
-& error) bind(c)
-  import :: c_int, c_ptr, c_char
-  implicit none
-  integer(c_int) :: gtk_print_settings_load_key_file
-  type(c_ptr), value :: settings
-  type(c_ptr), value :: key_file
-  character(kind=c_char), dimension(*) :: group_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_to_key_file (GtkPrintSettings *settings, GKeyFile *key_file, const char *group_name);
-subroutine gtk_print_settings_to_key_file(settings, key_file, group_name)&
-& bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: settings
-  type(c_ptr), value :: key_file
-  character(kind=c_char), dimension(*) :: group_name
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_settings_has_key (GtkPrintSettings *settings, const char *key);
-function gtk_print_settings_has_key(settings, key) bind(c)
-  import :: c_int, c_ptr, c_char
-  implicit none
-  integer(c_int) :: gtk_print_settings_has_key
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_print_settings_get (GtkPrintSettings *settings, const char *key);
-function gtk_print_settings_get(settings, key) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr) :: gtk_print_settings_get
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set (GtkPrintSettings *settings, const char *key, const char *value);
-subroutine gtk_print_settings_set(settings, key, value) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-  character(kind=c_char), dimension(*) :: value
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_unset (GtkPrintSettings *settings, const char *key);
-subroutine gtk_print_settings_unset(settings, key) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_foreach (GtkPrintSettings *settings, GtkPrintSettingsFunc func, gpointer user_data);
-subroutine gtk_print_settings_foreach(settings, func, user_data) bind(c)
-  import :: c_ptr, c_funptr
-  implicit none
-  type(c_ptr), value :: settings
-  type(c_funptr), value :: func
-  type(c_ptr), value :: user_data
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_settings_get_bool (GtkPrintSettings *settings, const char *key);
-function gtk_print_settings_get_bool(settings, key) bind(c)
-  import :: c_int, c_ptr, c_char
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_bool
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_bool (GtkPrintSettings *settings, const char *key, gboolean value);
-subroutine gtk_print_settings_set_bool(settings, key, value) bind(c)
-  import :: c_ptr, c_char, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-  integer(c_int), value :: value
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_settings_get_double (GtkPrintSettings *settings, const char *key);
-function gtk_print_settings_get_double(settings, key) bind(c)
-  import :: c_double, c_ptr, c_char
-  implicit none
-  real(c_double) :: gtk_print_settings_get_double
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_settings_get_double_with_default (GtkPrintSettings *settings, const char *key, double def);
-function gtk_print_settings_get_double_with_default(settings, key, def) bind(c)
-  import :: c_double, c_ptr, c_char
-  implicit none
-  real(c_double) :: gtk_print_settings_get_double_with_default
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-  real(c_double), value :: def
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_double (GtkPrintSettings *settings, const char *key, double value);
-subroutine gtk_print_settings_set_double(settings, key, value) bind(c)
-  import :: c_ptr, c_char, c_double
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-  real(c_double), value :: value
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_settings_get_length (GtkPrintSettings *settings, const char *key, GtkUnit unit);
-function gtk_print_settings_get_length(settings, key, unit) bind(c)
-  import :: c_double, c_ptr, c_char, c_int
-  implicit none
-  real(c_double) :: gtk_print_settings_get_length
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_length (GtkPrintSettings *settings, const char *key, double value, GtkUnit unit);
-subroutine gtk_print_settings_set_length(settings, key, value, unit) bind(c)
-  import :: c_ptr, c_char, c_double, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-  real(c_double), value :: value
-  integer(c_int), value :: unit
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!int gtk_print_settings_get_int (GtkPrintSettings *settings, const char *key);
-function gtk_print_settings_get_int(settings, key) bind(c)
-  import :: c_int, c_ptr, c_char
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_int
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!int gtk_print_settings_get_int_with_default (GtkPrintSettings *settings, const char *key, int def);
-function gtk_print_settings_get_int_with_default(settings, key, def) bind(c)
-  import :: c_int, c_ptr, c_char
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_int_with_default
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-  integer(c_int), value :: def
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_int (GtkPrintSettings *settings, const char *key, int value);
-subroutine gtk_print_settings_set_int(settings, key, value) bind(c)
-  import :: c_ptr, c_char, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: key
-  integer(c_int), value :: value
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_print_settings_get_printer (GtkPrintSettings *settings);
-function gtk_print_settings_get_printer(settings) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_get_printer
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_printer (GtkPrintSettings *settings, const char *printer);
-subroutine gtk_print_settings_set_printer(settings, printer) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: printer
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPageOrientation gtk_print_settings_get_orientation (GtkPrintSettings *settings);
-function gtk_print_settings_get_orientation(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_orientation
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_orientation (GtkPrintSettings *settings, GtkPageOrientation orientation);
-subroutine gtk_print_settings_set_orientation(settings, orientation) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: orientation
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPaperSize * gtk_print_settings_get_paper_size (GtkPrintSettings *settings);
-function gtk_print_settings_get_paper_size(settings) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_get_paper_size
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_paper_size (GtkPrintSettings *settings, GtkPaperSize *paper_size);
-subroutine gtk_print_settings_set_paper_size(settings, paper_size) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: settings
-  type(c_ptr), value :: paper_size
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_settings_get_paper_width (GtkPrintSettings *settings, GtkUnit unit);
-function gtk_print_settings_get_paper_width(settings, unit) bind(c)
-  import :: c_double, c_ptr, c_int
-  implicit none
-  real(c_double) :: gtk_print_settings_get_paper_width
-  type(c_ptr), value :: settings
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_paper_width (GtkPrintSettings *settings, double width, GtkUnit unit);
-subroutine gtk_print_settings_set_paper_width(settings, width, unit) bind(c)
-  import :: c_ptr, c_double, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  real(c_double), value :: width
-  integer(c_int), value :: unit
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_settings_get_paper_height (GtkPrintSettings *settings, GtkUnit unit);
-function gtk_print_settings_get_paper_height(settings, unit) bind(c)
-  import :: c_double, c_ptr, c_int
-  implicit none
-  real(c_double) :: gtk_print_settings_get_paper_height
-  type(c_ptr), value :: settings
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_paper_height (GtkPrintSettings *settings, double height, GtkUnit unit);
-subroutine gtk_print_settings_set_paper_height(settings, height, unit) bind(c)
-  import :: c_ptr, c_double, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  real(c_double), value :: height
-  integer(c_int), value :: unit
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_settings_get_use_color (GtkPrintSettings *settings);
-function gtk_print_settings_get_use_color(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_use_color
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_use_color (GtkPrintSettings *settings, gboolean use_color);
-subroutine gtk_print_settings_set_use_color(settings, use_color) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: use_color
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_settings_get_collate (GtkPrintSettings *settings);
-function gtk_print_settings_get_collate(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_collate
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_collate (GtkPrintSettings *settings, gboolean collate);
-subroutine gtk_print_settings_set_collate(settings, collate) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: collate
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_settings_get_reverse (GtkPrintSettings *settings);
-function gtk_print_settings_get_reverse(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_reverse
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_reverse (GtkPrintSettings *settings, gboolean reverse);
-subroutine gtk_print_settings_set_reverse(settings, reverse) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: reverse
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintDuplex gtk_print_settings_get_duplex (GtkPrintSettings *settings);
-function gtk_print_settings_get_duplex(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_duplex
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_duplex (GtkPrintSettings *settings, GtkPrintDuplex duplex);
-subroutine gtk_print_settings_set_duplex(settings, duplex) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: duplex
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintQuality gtk_print_settings_get_quality (GtkPrintSettings *settings);
-function gtk_print_settings_get_quality(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_quality
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_quality (GtkPrintSettings *settings, GtkPrintQuality quality);
-subroutine gtk_print_settings_set_quality(settings, quality) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: quality
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!int gtk_print_settings_get_n_copies (GtkPrintSettings *settings);
-function gtk_print_settings_get_n_copies(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_n_copies
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_n_copies (GtkPrintSettings *settings, int num_copies);
-subroutine gtk_print_settings_set_n_copies(settings, num_copies) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: num_copies
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!int gtk_print_settings_get_number_up (GtkPrintSettings *settings);
-function gtk_print_settings_get_number_up(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_number_up
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_number_up (GtkPrintSettings *settings, int number_up);
-subroutine gtk_print_settings_set_number_up(settings, number_up) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: number_up
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkNumberUpLayout gtk_print_settings_get_number_up_layout (GtkPrintSettings *settings);
-function gtk_print_settings_get_number_up_layout(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_number_up_layout
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_number_up_layout (GtkPrintSettings *settings, GtkNumberUpLayout number_up_layout);
-subroutine gtk_print_settings_set_number_up_layout(settings, number_up_layout)&
-& bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: number_up_layout
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!int gtk_print_settings_get_resolution (GtkPrintSettings *settings);
-function gtk_print_settings_get_resolution(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_resolution
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_resolution (GtkPrintSettings *settings, int resolution);
-subroutine gtk_print_settings_set_resolution(settings, resolution) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: resolution
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!int gtk_print_settings_get_resolution_x (GtkPrintSettings *settings);
-function gtk_print_settings_get_resolution_x(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_resolution_x
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!int gtk_print_settings_get_resolution_y (GtkPrintSettings *settings);
-function gtk_print_settings_get_resolution_y(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_resolution_y
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_resolution_xy (GtkPrintSettings *settings, int resolution_x, int resolution_y);
-subroutine gtk_print_settings_set_resolution_xy(settings, resolution_x,&
-& resolution_y) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: resolution_x
-  integer(c_int), value :: resolution_y
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_settings_get_printer_lpi (GtkPrintSettings *settings);
-function gtk_print_settings_get_printer_lpi(settings) bind(c)
-  import :: c_double, c_ptr
-  implicit none
-  real(c_double) :: gtk_print_settings_get_printer_lpi
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_printer_lpi (GtkPrintSettings *settings, double lpi);
-subroutine gtk_print_settings_set_printer_lpi(settings, lpi) bind(c)
-  import :: c_ptr, c_double
-  implicit none
-  type(c_ptr), value :: settings
-  real(c_double), value :: lpi
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_settings_get_scale (GtkPrintSettings *settings);
-function gtk_print_settings_get_scale(settings) bind(c)
-  import :: c_double, c_ptr
-  implicit none
-  real(c_double) :: gtk_print_settings_get_scale
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_scale (GtkPrintSettings *settings, double scale);
-subroutine gtk_print_settings_set_scale(settings, scale) bind(c)
-  import :: c_ptr, c_double
-  implicit none
-  type(c_ptr), value :: settings
-  real(c_double), value :: scale
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintPages gtk_print_settings_get_print_pages (GtkPrintSettings *settings);
-function gtk_print_settings_get_print_pages(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_print_pages
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_print_pages (GtkPrintSettings *settings, GtkPrintPages pages);
-subroutine gtk_print_settings_set_print_pages(settings, pages) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: pages
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPageRange * gtk_print_settings_get_page_ranges (GtkPrintSettings *settings, int *num_ranges);
-function gtk_print_settings_get_page_ranges(settings, num_ranges) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_get_page_ranges
-  type(c_ptr), value :: settings
-  type(c_ptr), value :: num_ranges
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_page_ranges (GtkPrintSettings *settings, GtkPageRange *page_ranges, int num_ranges);
-subroutine gtk_print_settings_set_page_ranges(settings, page_ranges,&
-& num_ranges) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  type(c_ptr), value :: page_ranges
-  integer(c_int), value :: num_ranges
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPageSet gtk_print_settings_get_page_set (GtkPrintSettings *settings);
-function gtk_print_settings_get_page_set(settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_settings_get_page_set
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_page_set (GtkPrintSettings *settings, GtkPageSet page_set);
-subroutine gtk_print_settings_set_page_set(settings, page_set) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: settings
-  integer(c_int), value :: page_set
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_print_settings_get_default_source (GtkPrintSettings *settings);
-function gtk_print_settings_get_default_source(settings) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_get_default_source
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_default_source (GtkPrintSettings *settings, const char *default_source);
-subroutine gtk_print_settings_set_default_source(settings, default_source)&
-& bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: default_source
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_print_settings_get_media_type (GtkPrintSettings *settings);
-function gtk_print_settings_get_media_type(settings) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_get_media_type
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_media_type (GtkPrintSettings *settings, const char *media_type);
-subroutine gtk_print_settings_set_media_type(settings, media_type) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: media_type
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_print_settings_get_dither (GtkPrintSettings *settings);
-function gtk_print_settings_get_dither(settings) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_get_dither
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_dither (GtkPrintSettings *settings, const char *dither);
-subroutine gtk_print_settings_set_dither(settings, dither) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: dither
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_print_settings_get_finishings (GtkPrintSettings *settings);
-function gtk_print_settings_get_finishings(settings) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_get_finishings
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_finishings (GtkPrintSettings *settings, const char *finishings);
-subroutine gtk_print_settings_set_finishings(settings, finishings) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: finishings
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_print_settings_get_output_bin (GtkPrintSettings *settings);
-function gtk_print_settings_get_output_bin(settings) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_get_output_bin
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_settings_set_output_bin (GtkPrintSettings *settings, const char *output_bin);
-subroutine gtk_print_settings_set_output_bin(settings, output_bin) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: settings
-  character(kind=c_char), dimension(*) :: output_bin
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GVariant *gtk_print_settings_to_gvariant (GtkPrintSettings *settings);
-function gtk_print_settings_to_gvariant(settings) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_to_gvariant
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintSettings *gtk_print_settings_new_from_gvariant (GVariant *variant);
-function gtk_print_settings_new_from_gvariant(variant) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_settings_new_from_gvariant
-  type(c_ptr), value :: variant
 end function
 
 !--------------------------------------------------
@@ -10738,6 +10259,24 @@ function gtk_box_get_baseline_position(box) bind(c)
   type(c_ptr), value :: box
 end function
 
+! GDK_AVAILABLE_IN_4_12
+!void gtk_box_set_baseline_child (GtkBox *box, int child);
+subroutine gtk_box_set_baseline_child(box, child) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: box
+  integer(c_int), value :: child
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!int gtk_box_get_baseline_child (GtkBox *box);
+function gtk_box_get_baseline_child(box) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_box_get_baseline_child
+  type(c_ptr), value :: box
+end function
+
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_box_append (GtkBox *box, GtkWidget *child);
 subroutine gtk_box_append(box, child) bind(c)
@@ -11146,6 +10685,31 @@ subroutine gtk_custom_filter_set_filter_func(self, match_func, user_data,&
 end subroutine
 
 !--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtksectionmodel.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_4_12
+!void gtk_section_model_get_section (GtkSectionModel *self, guint position, guint *out_start, guint *out_end);
+subroutine gtk_section_model_get_section(self, position, out_start, out_end)&
+& bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: position
+  type(c_ptr), value :: out_start
+  type(c_ptr), value :: out_end
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_section_model_sections_changed (GtkSectionModel *self, guint position, guint n_items);
+subroutine gtk_section_model_sections_changed(self, position, n_items) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: position
+  integer(c_int), value :: n_items
+end subroutine
+
+!--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkroot.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
@@ -11438,6 +11002,14 @@ subroutine gtk_flow_box_remove(box, widget) bind(c)
   implicit none
   type(c_ptr), value :: box
   type(c_ptr), value :: widget
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_flow_box_remove_all (GtkFlowBox *box);
+subroutine gtk_flow_box_remove_all(box) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: box
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -11837,6 +11409,24 @@ function gtk_menu_button_get_active(menu_button) bind(c)
   type(c_ptr), value :: menu_button
 end function
 
+! GDK_AVAILABLE_IN_4_12
+!void gtk_menu_button_set_can_shrink (GtkMenuButton *menu_button, gboolean can_shrink);
+subroutine gtk_menu_button_set_can_shrink(menu_button, can_shrink) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: menu_button
+  integer(c_int), value :: can_shrink
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_menu_button_get_can_shrink (GtkMenuButton *menu_button);
+function gtk_menu_button_get_can_shrink(menu_button) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_menu_button_get_can_shrink
+  type(c_ptr), value :: menu_button
+end function
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkselectionfiltermodel.h
 !--------------------------------------------------
@@ -11930,6 +11520,24 @@ function gtk_box_layout_get_baseline_position(box_layout) bind(c)
   import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_box_layout_get_baseline_position
+  type(c_ptr), value :: box_layout
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_box_layout_set_baseline_child (GtkBoxLayout *box_layout, int child);
+subroutine gtk_box_layout_set_baseline_child(box_layout, child) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: box_layout
+  integer(c_int), value :: child
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!int gtk_box_layout_get_baseline_child (GtkBoxLayout *box_layout);
+function gtk_box_layout_get_baseline_child(box_layout) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_box_layout_get_baseline_child
   type(c_ptr), value :: box_layout
 end function
 
@@ -13759,6 +13367,72 @@ subroutine gtk_drawing_area_set_draw_func(self, draw_func, user_data, destroy)&
   type(c_ptr), value :: user_data
   type(c_funptr), value :: destroy
 end subroutine
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcolumnviewcell.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_4_12
+!gpointer gtk_column_view_cell_get_item (GtkColumnViewCell *self);
+function gtk_column_view_cell_get_item(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_column_view_cell_get_item
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!guint gtk_column_view_cell_get_position (GtkColumnViewCell *self) ;
+function gtk_column_view_cell_get_position(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_column_view_cell_get_position
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_column_view_cell_get_selected (GtkColumnViewCell *self) ;
+function gtk_column_view_cell_get_selected(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_column_view_cell_get_selected
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_column_view_cell_get_focusable (GtkColumnViewCell *self) ;
+function gtk_column_view_cell_get_focusable(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_column_view_cell_get_focusable
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_cell_set_focusable (GtkColumnViewCell *self, gboolean focusable);
+subroutine gtk_column_view_cell_set_focusable(self, focusable) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: focusable
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_cell_set_child (GtkColumnViewCell *self, GtkWidget *child);
+subroutine gtk_column_view_cell_set_child(self, child) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: child
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!GtkWidget * gtk_column_view_cell_get_child (GtkColumnViewCell *self);
+function gtk_column_view_cell_get_child(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_column_view_cell_get_child
+  type(c_ptr), value :: self
+end function
 
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkstringlist.h
@@ -15872,281 +15546,75 @@ subroutine gtk_grid_query_child(grid, child, column, row, width, height)&
 end subroutine
 
 !--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkpagesetup.h
+! /usr/include/gtk-4.0/gtk/gtkscrollinfo.h
 !--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_page_setup_get_type (void) ;
-function gtk_page_setup_get_type() bind(c)
+! GDK_AVAILABLE_IN_4_12
+!GType gtk_scroll_info_get_type (void) ;
+function gtk_scroll_info_get_type() bind(c)
   import :: c_size_t
   implicit none
-  integer(c_size_t) :: gtk_page_setup_get_type
+  integer(c_size_t) :: gtk_scroll_info_get_type
 end function
 
-! GDK_AVAILABLE_IN_ALL
-!GtkPageSetup * gtk_page_setup_new (void);
-function gtk_page_setup_new() bind(c)
-  import :: c_int
+! GDK_AVAILABLE_IN_4_12
+!GtkScrollInfo * gtk_scroll_info_new (void);
+function gtk_scroll_info_new() bind(c)
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_page_setup_new
+  type(c_ptr) :: gtk_scroll_info_new
 end function
 
-! GDK_AVAILABLE_IN_ALL
-!GtkPageSetup * gtk_page_setup_copy (GtkPageSetup *other);
-function gtk_page_setup_copy(other) bind(c)
-  import :: c_int
+! GDK_AVAILABLE_IN_4_12
+!GtkScrollInfo * gtk_scroll_info_ref (GtkScrollInfo *self);
+function gtk_scroll_info_ref(self) bind(c)
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_page_setup_copy
-  integer(c_int), value :: other
+  type(c_ptr) :: gtk_scroll_info_ref
+  type(c_ptr), value :: self
 end function
 
-! GDK_AVAILABLE_IN_ALL
-!GtkPageOrientation gtk_page_setup_get_orientation (GtkPageSetup *setup);
-function gtk_page_setup_get_orientation(setup) bind(c)
-  import :: c_int
+! GDK_AVAILABLE_IN_4_12
+!void gtk_scroll_info_unref (GtkScrollInfo *self);
+subroutine gtk_scroll_info_unref(self) bind(c)
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_page_setup_get_orientation
-  integer(c_int), value :: setup
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_page_setup_set_orientation (GtkPageSetup *setup, GtkPageOrientation orientation);
-subroutine gtk_page_setup_set_orientation(setup, orientation) bind(c)
-  import :: c_int
-  implicit none
-  integer(c_int), value :: setup
-  integer(c_int), value :: orientation
+  type(c_ptr), value :: self
 end subroutine
 
-! GDK_AVAILABLE_IN_ALL
-!GtkPaperSize * gtk_page_setup_get_paper_size (GtkPageSetup *setup);
-function gtk_page_setup_get_paper_size(setup) bind(c)
+! GDK_AVAILABLE_IN_4_12
+!void gtk_scroll_info_set_enable_horizontal (GtkScrollInfo *self, gboolean horizontal);
+subroutine gtk_scroll_info_set_enable_horizontal(self, horizontal) bind(c)
   import :: c_ptr, c_int
   implicit none
-  type(c_ptr) :: gtk_page_setup_get_paper_size
-  integer(c_int), value :: setup
-end function
+  type(c_ptr), value :: self
+  integer(c_int), value :: horizontal
+end subroutine
 
-! GDK_AVAILABLE_IN_ALL
-!void gtk_page_setup_set_paper_size (GtkPageSetup *setup, GtkPaperSize *size);
-subroutine gtk_page_setup_set_paper_size(setup, size) bind(c)
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_scroll_info_get_enable_horizontal (GtkScrollInfo *self);
+function gtk_scroll_info_get_enable_horizontal(self) bind(c)
   import :: c_int, c_ptr
   implicit none
-  integer(c_int), value :: setup
-  type(c_ptr), value :: size
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_page_setup_get_top_margin (GtkPageSetup *setup, GtkUnit unit);
-function gtk_page_setup_get_top_margin(setup, unit) bind(c)
-  import :: c_double, c_int
-  implicit none
-  real(c_double) :: gtk_page_setup_get_top_margin
-  integer(c_int), value :: setup
-  integer(c_int), value :: unit
+  integer(c_int) :: gtk_scroll_info_get_enable_horizontal
+  type(c_ptr), value :: self
 end function
 
-! GDK_AVAILABLE_IN_ALL
-!void gtk_page_setup_set_top_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
-subroutine gtk_page_setup_set_top_margin(setup, margin, unit) bind(c)
-  import :: c_int, c_double
-  implicit none
-  integer(c_int), value :: setup
-  real(c_double), value :: margin
-  integer(c_int), value :: unit
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_page_setup_get_bottom_margin (GtkPageSetup *setup, GtkUnit unit);
-function gtk_page_setup_get_bottom_margin(setup, unit) bind(c)
-  import :: c_double, c_int
-  implicit none
-  real(c_double) :: gtk_page_setup_get_bottom_margin
-  integer(c_int), value :: setup
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_page_setup_set_bottom_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
-subroutine gtk_page_setup_set_bottom_margin(setup, margin, unit) bind(c)
-  import :: c_int, c_double
-  implicit none
-  integer(c_int), value :: setup
-  real(c_double), value :: margin
-  integer(c_int), value :: unit
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_page_setup_get_left_margin (GtkPageSetup *setup, GtkUnit unit);
-function gtk_page_setup_get_left_margin(setup, unit) bind(c)
-  import :: c_double, c_int
-  implicit none
-  real(c_double) :: gtk_page_setup_get_left_margin
-  integer(c_int), value :: setup
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_page_setup_set_left_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
-subroutine gtk_page_setup_set_left_margin(setup, margin, unit) bind(c)
-  import :: c_int, c_double
-  implicit none
-  integer(c_int), value :: setup
-  real(c_double), value :: margin
-  integer(c_int), value :: unit
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_page_setup_get_right_margin (GtkPageSetup *setup, GtkUnit unit);
-function gtk_page_setup_get_right_margin(setup, unit) bind(c)
-  import :: c_double, c_int
-  implicit none
-  real(c_double) :: gtk_page_setup_get_right_margin
-  integer(c_int), value :: setup
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_page_setup_set_right_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
-subroutine gtk_page_setup_set_right_margin(setup, margin, unit) bind(c)
-  import :: c_int, c_double
-  implicit none
-  integer(c_int), value :: setup
-  real(c_double), value :: margin
-  integer(c_int), value :: unit
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_page_setup_set_paper_size_and_default_margins (GtkPageSetup *setup, GtkPaperSize *size);
-subroutine gtk_page_setup_set_paper_size_and_default_margins(setup, size)&
-& bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int), value :: setup
-  type(c_ptr), value :: size
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_page_setup_get_paper_width (GtkPageSetup *setup, GtkUnit unit);
-function gtk_page_setup_get_paper_width(setup, unit) bind(c)
-  import :: c_double, c_int
-  implicit none
-  real(c_double) :: gtk_page_setup_get_paper_width
-  integer(c_int), value :: setup
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_page_setup_get_paper_height (GtkPageSetup *setup, GtkUnit unit);
-function gtk_page_setup_get_paper_height(setup, unit) bind(c)
-  import :: c_double, c_int
-  implicit none
-  real(c_double) :: gtk_page_setup_get_paper_height
-  integer(c_int), value :: setup
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_page_setup_get_page_width (GtkPageSetup *setup, GtkUnit unit);
-function gtk_page_setup_get_page_width(setup, unit) bind(c)
-  import :: c_double, c_int
-  implicit none
-  real(c_double) :: gtk_page_setup_get_page_width
-  integer(c_int), value :: setup
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_page_setup_get_page_height (GtkPageSetup *setup, GtkUnit unit);
-function gtk_page_setup_get_page_height(setup, unit) bind(c)
-  import :: c_double, c_int
-  implicit none
-  real(c_double) :: gtk_page_setup_get_page_height
-  integer(c_int), value :: setup
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPageSetup *gtk_page_setup_new_from_file (const char *file_name, GError **error);
-function gtk_page_setup_new_from_file(file_name, error) bind(c)
-  import :: c_int, c_char, c_ptr
-  implicit none
-  integer(c_int) :: gtk_page_setup_new_from_file
-  character(kind=c_char), dimension(*) :: file_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_page_setup_load_file (GtkPageSetup *setup, const char *file_name, GError **error);
-function gtk_page_setup_load_file(setup, file_name, error) bind(c)
-  import :: c_int, c_char, c_ptr
-  implicit none
-  integer(c_int) :: gtk_page_setup_load_file
-  integer(c_int), value :: setup
-  character(kind=c_char), dimension(*) :: file_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_page_setup_to_file (GtkPageSetup *setup, const char *file_name, GError **error);
-function gtk_page_setup_to_file(setup, file_name, error) bind(c)
-  import :: c_int, c_char, c_ptr
-  implicit none
-  integer(c_int) :: gtk_page_setup_to_file
-  integer(c_int), value :: setup
-  character(kind=c_char), dimension(*) :: file_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPageSetup *gtk_page_setup_new_from_key_file (GKeyFile *key_file, const char *group_name, GError **error);
-function gtk_page_setup_new_from_key_file(key_file, group_name, error) bind(c)
-  import :: c_int, c_ptr, c_char
-  implicit none
-  integer(c_int) :: gtk_page_setup_new_from_key_file
-  type(c_ptr), value :: key_file
-  character(kind=c_char), dimension(*) :: group_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_page_setup_load_key_file (GtkPageSetup *setup, GKeyFile *key_file, const char *group_name, GError **error);
-function gtk_page_setup_load_key_file(setup, key_file, group_name, error)&
-& bind(c)
-  import :: c_int, c_ptr, c_char
-  implicit none
-  integer(c_int) :: gtk_page_setup_load_key_file
-  integer(c_int), value :: setup
-  type(c_ptr), value :: key_file
-  character(kind=c_char), dimension(*) :: group_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_page_setup_to_key_file (GtkPageSetup *setup, GKeyFile *key_file, const char *group_name);
-subroutine gtk_page_setup_to_key_file(setup, key_file, group_name) bind(c)
-  import :: c_int, c_ptr, c_char
-  implicit none
-  integer(c_int), value :: setup
-  type(c_ptr), value :: key_file
-  character(kind=c_char), dimension(*) :: group_name
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GVariant *gtk_page_setup_to_gvariant (GtkPageSetup *setup);
-function gtk_page_setup_to_gvariant(setup) bind(c)
+! GDK_AVAILABLE_IN_4_12
+!void gtk_scroll_info_set_enable_vertical (GtkScrollInfo *self, gboolean vertical);
+subroutine gtk_scroll_info_set_enable_vertical(self, vertical) bind(c)
   import :: c_ptr, c_int
   implicit none
-  type(c_ptr) :: gtk_page_setup_to_gvariant
-  integer(c_int), value :: setup
-end function
+  type(c_ptr), value :: self
+  integer(c_int), value :: vertical
+end subroutine
 
-! GDK_AVAILABLE_IN_ALL
-!GtkPageSetup *gtk_page_setup_new_from_gvariant (GVariant *variant);
-function gtk_page_setup_new_from_gvariant(variant) bind(c)
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_scroll_info_get_enable_vertical (GtkScrollInfo *self);
+function gtk_scroll_info_get_enable_vertical(self) bind(c)
   import :: c_int, c_ptr
   implicit none
-  integer(c_int) :: gtk_page_setup_new_from_gvariant
-  type(c_ptr), value :: variant
+  integer(c_int) :: gtk_scroll_info_get_enable_vertical
+  type(c_ptr), value :: self
 end function
 
 !--------------------------------------------------
@@ -16732,320 +16200,6 @@ function gtk_header_bar_get_decoration_layout(bar) bind(c)
 end function
 
 !--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkprintoperation.h
-!--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GQuark gtk_print_error_quark (void);
-function gtk_print_error_quark() bind(c)
-  import :: c_int32_t
-  implicit none
-  integer(c_int32_t) :: gtk_print_error_quark
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_print_operation_get_type (void) ;
-function gtk_print_operation_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_print_operation_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintOperation * gtk_print_operation_new (void);
-function gtk_print_operation_new() bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_operation_new
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_default_page_setup (GtkPrintOperation *op, GtkPageSetup *default_page_setup);
-subroutine gtk_print_operation_set_default_page_setup(op, default_page_setup)&
-& bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: default_page_setup
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPageSetup * gtk_print_operation_get_default_page_setup (GtkPrintOperation *op);
-function gtk_print_operation_get_default_page_setup(op) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_operation_get_default_page_setup
-  type(c_ptr), value :: op
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_print_settings (GtkPrintOperation *op, GtkPrintSettings *print_settings);
-subroutine gtk_print_operation_set_print_settings(op, print_settings) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: op
-  type(c_ptr), value :: print_settings
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintSettings * gtk_print_operation_get_print_settings (GtkPrintOperation *op);
-function gtk_print_operation_get_print_settings(op) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_operation_get_print_settings
-  type(c_ptr), value :: op
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_job_name (GtkPrintOperation *op, const char *job_name);
-subroutine gtk_print_operation_set_job_name(op, job_name) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: op
-  character(kind=c_char), dimension(*) :: job_name
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_n_pages (GtkPrintOperation *op, int n_pages);
-subroutine gtk_print_operation_set_n_pages(op, n_pages) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: n_pages
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_current_page (GtkPrintOperation *op, int current_page);
-subroutine gtk_print_operation_set_current_page(op, current_page) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: current_page
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_use_full_page (GtkPrintOperation *op, gboolean full_page);
-subroutine gtk_print_operation_set_use_full_page(op, full_page) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: full_page
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_unit (GtkPrintOperation *op, GtkUnit unit);
-subroutine gtk_print_operation_set_unit(op, unit) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: unit
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_export_filename (GtkPrintOperation *op, const char *filename);
-subroutine gtk_print_operation_set_export_filename(op, filename) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: op
-  character(kind=c_char), dimension(*) :: filename
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_track_print_status (GtkPrintOperation *op, gboolean track_status);
-subroutine gtk_print_operation_set_track_print_status(op, track_status) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: track_status
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_show_progress (GtkPrintOperation *op, gboolean show_progress);
-subroutine gtk_print_operation_set_show_progress(op, show_progress) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: show_progress
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_allow_async (GtkPrintOperation *op, gboolean allow_async);
-subroutine gtk_print_operation_set_allow_async(op, allow_async) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: allow_async
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_custom_tab_label (GtkPrintOperation *op, const char *label);
-subroutine gtk_print_operation_set_custom_tab_label(op, label) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: op
-  character(kind=c_char), dimension(*) :: label
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintOperationResult gtk_print_operation_run (GtkPrintOperation *op, GtkPrintOperationAction action, GtkWindow *parent, GError **error);
-function gtk_print_operation_run(op, action, parent, error) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_operation_run
-  type(c_ptr), value :: op
-  integer(c_int), value :: action
-  type(c_ptr), value :: parent
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_get_error (GtkPrintOperation *op, GError **error);
-subroutine gtk_print_operation_get_error(op, error) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: op
-  type(c_ptr), value :: error
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPrintStatus gtk_print_operation_get_status (GtkPrintOperation *op);
-function gtk_print_operation_get_status(op) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_operation_get_status
-  type(c_ptr), value :: op
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!const char * gtk_print_operation_get_status_string (GtkPrintOperation *op);
-function gtk_print_operation_get_status_string(op) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_operation_get_status_string
-  type(c_ptr), value :: op
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_operation_is_finished (GtkPrintOperation *op);
-function gtk_print_operation_is_finished(op) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_operation_is_finished
-  type(c_ptr), value :: op
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_cancel (GtkPrintOperation *op);
-subroutine gtk_print_operation_cancel(op) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: op
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_draw_page_finish (GtkPrintOperation *op);
-subroutine gtk_print_operation_draw_page_finish(op) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: op
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_defer_drawing (GtkPrintOperation *op);
-subroutine gtk_print_operation_set_defer_drawing(op) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: op
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_support_selection (GtkPrintOperation *op, gboolean support_selection);
-subroutine gtk_print_operation_set_support_selection(op, support_selection)&
-& bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: support_selection
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_operation_get_support_selection (GtkPrintOperation *op);
-function gtk_print_operation_get_support_selection(op) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_operation_get_support_selection
-  type(c_ptr), value :: op
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_has_selection (GtkPrintOperation *op, gboolean has_selection);
-subroutine gtk_print_operation_set_has_selection(op, has_selection) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: has_selection
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_operation_get_has_selection (GtkPrintOperation *op);
-function gtk_print_operation_get_has_selection(op) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_operation_get_has_selection
-  type(c_ptr), value :: op
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_set_embed_page_setup (GtkPrintOperation *op, gboolean embed);
-subroutine gtk_print_operation_set_embed_page_setup(op, embed) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: op
-  integer(c_int), value :: embed
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_operation_get_embed_page_setup (GtkPrintOperation *op);
-function gtk_print_operation_get_embed_page_setup(op) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_operation_get_embed_page_setup
-  type(c_ptr), value :: op
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!int gtk_print_operation_get_n_pages_to_print (GtkPrintOperation *op);
-function gtk_print_operation_get_n_pages_to_print(op) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_operation_get_n_pages_to_print
-  type(c_ptr), value :: op
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPageSetup *gtk_print_run_page_setup_dialog (GtkWindow *parent, GtkPageSetup *page_setup, GtkPrintSettings *settings);
-function gtk_print_run_page_setup_dialog(parent, page_setup, settings) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_run_page_setup_dialog
-  type(c_ptr), value :: parent
-  integer(c_int), value :: page_setup
-  type(c_ptr), value :: settings
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_run_page_setup_dialog_async (GtkWindow *parent, GtkPageSetup *page_setup, GtkPrintSettings *settings, GtkPageSetupDoneFunc done_cb, gpointer data);
-subroutine gtk_print_run_page_setup_dialog_async(parent, page_setup, settings,&
-& done_cb, data) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: parent
-  integer(c_int), value :: page_setup
-  type(c_ptr), value :: settings
-  integer(c_int), value :: done_cb
-  type(c_ptr), value :: data
-end subroutine
-
-!--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkpasswordentry.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
@@ -17118,6 +16272,184 @@ function gtk_event_controller_legacy_new() bind(c)
   implicit none
   type(c_ptr) :: gtk_event_controller_legacy_new
 end function
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtklistheader.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_4_12
+!gpointer gtk_list_header_get_item (GtkListHeader *self);
+function gtk_list_header_get_item(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_list_header_get_item
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!guint gtk_list_header_get_start (GtkListHeader *self) ;
+function gtk_list_header_get_start(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_list_header_get_start
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!guint gtk_list_header_get_end (GtkListHeader *self) ;
+function gtk_list_header_get_end(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_list_header_get_end
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!guint gtk_list_header_get_n_items (GtkListHeader *self) ;
+function gtk_list_header_get_n_items(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_list_header_get_n_items
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_list_header_set_child (GtkListHeader *self, GtkWidget *child);
+subroutine gtk_list_header_set_child(self, child) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: child
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!GtkWidget * gtk_list_header_get_child (GtkListHeader *self);
+function gtk_list_header_get_child(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_list_header_get_child
+  type(c_ptr), value :: self
+end function
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/gtkcolumnviewrow.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_4_12
+!gpointer gtk_column_view_row_get_item (GtkColumnViewRow *self);
+function gtk_column_view_row_get_item(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_column_view_row_get_item
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!guint gtk_column_view_row_get_position (GtkColumnViewRow *self) ;
+function gtk_column_view_row_get_position(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_column_view_row_get_position
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_column_view_row_get_selected (GtkColumnViewRow *self) ;
+function gtk_column_view_row_get_selected(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_column_view_row_get_selected
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_column_view_row_get_selectable (GtkColumnViewRow *self) ;
+function gtk_column_view_row_get_selectable(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_column_view_row_get_selectable
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_row_set_selectable (GtkColumnViewRow *self, gboolean selectable);
+subroutine gtk_column_view_row_set_selectable(self, selectable) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: selectable
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_column_view_row_get_activatable (GtkColumnViewRow *self) ;
+function gtk_column_view_row_get_activatable(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_column_view_row_get_activatable
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_row_set_activatable (GtkColumnViewRow *self, gboolean activatable);
+subroutine gtk_column_view_row_set_activatable(self, activatable) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: activatable
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_column_view_row_get_focusable (GtkColumnViewRow *self) ;
+function gtk_column_view_row_get_focusable(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_column_view_row_get_focusable
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_row_set_focusable (GtkColumnViewRow *self, gboolean focusable);
+subroutine gtk_column_view_row_set_focusable(self, focusable) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: focusable
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!const char * gtk_column_view_row_get_accessible_description (GtkColumnViewRow *self);
+function gtk_column_view_row_get_accessible_description(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_column_view_row_get_accessible_description
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_row_set_accessible_description (GtkColumnViewRow *self, const char *description);
+subroutine gtk_column_view_row_set_accessible_description(self, description)&
+& bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: description
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!const char * gtk_column_view_row_get_accessible_label (GtkColumnViewRow *self);
+function gtk_column_view_row_get_accessible_label(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_column_view_row_get_accessible_label
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_row_set_accessible_label (GtkColumnViewRow *self, const char *label);
+subroutine gtk_column_view_row_set_accessible_label(self, label) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: label
+end subroutine
 
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtktreeexpander.h
@@ -17588,6 +16920,14 @@ subroutine gtk_list_box_remove(box, child) bind(c)
   implicit none
   type(c_ptr), value :: box
   type(c_ptr), value :: child
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_list_box_remove_all (GtkListBox *box);
+subroutine gtk_list_box_remove_all(box) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: box
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -18972,6 +18312,16 @@ function gtk_viewport_get_child(viewport) bind(c)
   type(c_ptr), value :: viewport
 end function
 
+! GDK_AVAILABLE_IN_4_12
+!void gtk_viewport_scroll_to (GtkViewport *viewport, GtkWidget *descendant, GtkScrollInfo *scroll);
+subroutine gtk_viewport_scroll_to(viewport, descendant, scroll) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: viewport
+  type(c_ptr), value :: descendant
+  type(c_ptr), value :: scroll
+end subroutine
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtklayoutmanager.h
 !--------------------------------------------------
@@ -19039,124 +18389,6 @@ function gtk_layout_manager_get_layout_child(manager, child) bind(c)
   type(c_ptr), value :: manager
   type(c_ptr), value :: child
 end function
-
-!--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkprintcontext.h
-!--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_print_context_get_type (void) ;
-function gtk_print_context_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_print_context_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!cairo_t *gtk_print_context_get_cairo_context (GtkPrintContext *context);
-function gtk_print_context_get_cairo_context(context) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_context_get_cairo_context
-  type(c_ptr), value :: context
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPageSetup *gtk_print_context_get_page_setup (GtkPrintContext *context);
-function gtk_print_context_get_page_setup(context) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_context_get_page_setup
-  type(c_ptr), value :: context
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_context_get_width (GtkPrintContext *context);
-function gtk_print_context_get_width(context) bind(c)
-  import :: c_double, c_ptr
-  implicit none
-  real(c_double) :: gtk_print_context_get_width
-  type(c_ptr), value :: context
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_context_get_height (GtkPrintContext *context);
-function gtk_print_context_get_height(context) bind(c)
-  import :: c_double, c_ptr
-  implicit none
-  real(c_double) :: gtk_print_context_get_height
-  type(c_ptr), value :: context
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_context_get_dpi_x (GtkPrintContext *context);
-function gtk_print_context_get_dpi_x(context) bind(c)
-  import :: c_double, c_ptr
-  implicit none
-  real(c_double) :: gtk_print_context_get_dpi_x
-  type(c_ptr), value :: context
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_print_context_get_dpi_y (GtkPrintContext *context);
-function gtk_print_context_get_dpi_y(context) bind(c)
-  import :: c_double, c_ptr
-  implicit none
-  real(c_double) :: gtk_print_context_get_dpi_y
-  type(c_ptr), value :: context
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_context_get_hard_margins (GtkPrintContext *context, double *top, double *bottom, double *left, double *right);
-function gtk_print_context_get_hard_margins(context, top, bottom, left, right)&
-& bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_context_get_hard_margins
-  type(c_ptr), value :: context
-  type(c_ptr), value :: top
-  type(c_ptr), value :: bottom
-  type(c_ptr), value :: left
-  type(c_ptr), value :: right
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!PangoFontMap *gtk_print_context_get_pango_fontmap (GtkPrintContext *context);
-function gtk_print_context_get_pango_fontmap(context) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_context_get_pango_fontmap
-  type(c_ptr), value :: context
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!PangoContext *gtk_print_context_create_pango_context (GtkPrintContext *context);
-function gtk_print_context_create_pango_context(context) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_context_create_pango_context
-  type(c_ptr), value :: context
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!PangoLayout *gtk_print_context_create_pango_layout (GtkPrintContext *context);
-function gtk_print_context_create_pango_layout(context) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_print_context_create_pango_layout
-  type(c_ptr), value :: context
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_context_set_cairo_context (GtkPrintContext *context, cairo_t *cr, double dpi_x, double dpi_y);
-subroutine gtk_print_context_set_cairo_context(context, cr, dpi_x, dpi_y)&
-& bind(c)
-  import :: c_ptr, c_double
-  implicit none
-  type(c_ptr), value :: context
-  type(c_ptr), value :: cr
-  real(c_double), value :: dpi_x
-  real(c_double), value :: dpi_y
-end subroutine
 
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkcenterlayout.h
@@ -19257,6 +18489,25 @@ function gtk_center_layout_get_end_widget(self) bind(c)
   import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_center_layout_get_end_widget
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_center_layout_set_shrink_center_last (GtkCenterLayout *self, gboolean shrink_center_last);
+subroutine gtk_center_layout_set_shrink_center_last(self, shrink_center_last)&
+& bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: shrink_center_last
+end subroutine
+
+! GDK_AVAILABLE_IN_4_12
+!gboolean gtk_center_layout_get_shrink_center_last (GtkCenterLayout *self);
+function gtk_center_layout_get_shrink_center_last(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_center_layout_get_shrink_center_last
   type(c_ptr), value :: self
 end function
 
@@ -19858,263 +19109,6 @@ function gtk_constraint_is_constant(constraint) bind(c)
   implicit none
   integer(c_int) :: gtk_constraint_is_constant
   type(c_ptr), value :: constraint
-end function
-
-!--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkpapersize.h
-!--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_paper_size_get_type (void) ;
-function gtk_paper_size_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_paper_size_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPaperSize *gtk_paper_size_new (const char *name);
-function gtk_paper_size_new(name) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr) :: gtk_paper_size_new
-  character(kind=c_char), dimension(*) :: name
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPaperSize *gtk_paper_size_new_from_ppd (const char *ppd_name, const char *ppd_display_name, double width, double height);
-function gtk_paper_size_new_from_ppd(ppd_name, ppd_display_name, width, height)&
-& bind(c)
-  import :: c_ptr, c_char, c_double
-  implicit none
-  type(c_ptr) :: gtk_paper_size_new_from_ppd
-  character(kind=c_char), dimension(*) :: ppd_name
-  character(kind=c_char), dimension(*) :: ppd_display_name
-  real(c_double), value :: width
-  real(c_double), value :: height
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPaperSize *gtk_paper_size_new_from_ipp (const char *ipp_name, double width, double height);
-function gtk_paper_size_new_from_ipp(ipp_name, width, height) bind(c)
-  import :: c_ptr, c_char, c_double
-  implicit none
-  type(c_ptr) :: gtk_paper_size_new_from_ipp
-  character(kind=c_char), dimension(*) :: ipp_name
-  real(c_double), value :: width
-  real(c_double), value :: height
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPaperSize *gtk_paper_size_new_custom (const char *name, const char *display_name, double width, double height, GtkUnit unit);
-function gtk_paper_size_new_custom(name, display_name, width, height, unit)&
-& bind(c)
-  import :: c_ptr, c_char, c_double, c_int
-  implicit none
-  type(c_ptr) :: gtk_paper_size_new_custom
-  character(kind=c_char), dimension(*) :: name
-  character(kind=c_char), dimension(*) :: display_name
-  real(c_double), value :: width
-  real(c_double), value :: height
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPaperSize *gtk_paper_size_copy (GtkPaperSize *other);
-function gtk_paper_size_copy(other) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_paper_size_copy
-  type(c_ptr), value :: other
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_paper_size_free (GtkPaperSize *size);
-subroutine gtk_paper_size_free(size) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: size
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_paper_size_is_equal (GtkPaperSize *size1, GtkPaperSize *size2);
-function gtk_paper_size_is_equal(size1, size2) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_paper_size_is_equal
-  type(c_ptr), value :: size1
-  type(c_ptr), value :: size2
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GList *gtk_paper_size_get_paper_sizes (gboolean include_custom);
-function gtk_paper_size_get_paper_sizes(include_custom) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr) :: gtk_paper_size_get_paper_sizes
-  integer(c_int), value :: include_custom
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!const char *gtk_paper_size_get_name (GtkPaperSize *size);
-function gtk_paper_size_get_name(size) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_paper_size_get_name
-  type(c_ptr), value :: size
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!const char *gtk_paper_size_get_display_name (GtkPaperSize *size);
-function gtk_paper_size_get_display_name(size) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_paper_size_get_display_name
-  type(c_ptr), value :: size
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!const char *gtk_paper_size_get_ppd_name (GtkPaperSize *size);
-function gtk_paper_size_get_ppd_name(size) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_paper_size_get_ppd_name
-  type(c_ptr), value :: size
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_paper_size_get_width (GtkPaperSize *size, GtkUnit unit);
-function gtk_paper_size_get_width(size, unit) bind(c)
-  import :: c_double, c_ptr, c_int
-  implicit none
-  real(c_double) :: gtk_paper_size_get_width
-  type(c_ptr), value :: size
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_paper_size_get_height (GtkPaperSize *size, GtkUnit unit);
-function gtk_paper_size_get_height(size, unit) bind(c)
-  import :: c_double, c_ptr, c_int
-  implicit none
-  real(c_double) :: gtk_paper_size_get_height
-  type(c_ptr), value :: size
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_paper_size_is_custom (GtkPaperSize *size);
-function gtk_paper_size_is_custom(size) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_paper_size_is_custom
-  type(c_ptr), value :: size
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_paper_size_is_ipp (GtkPaperSize *size);
-function gtk_paper_size_is_ipp(size) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_paper_size_is_ipp
-  type(c_ptr), value :: size
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_paper_size_set_size (GtkPaperSize *size, double width, double height, GtkUnit unit);
-subroutine gtk_paper_size_set_size(size, width, height, unit) bind(c)
-  import :: c_ptr, c_double, c_int
-  implicit none
-  type(c_ptr), value :: size
-  real(c_double), value :: width
-  real(c_double), value :: height
-  integer(c_int), value :: unit
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_paper_size_get_default_top_margin (GtkPaperSize *size, GtkUnit unit);
-function gtk_paper_size_get_default_top_margin(size, unit) bind(c)
-  import :: c_double, c_ptr, c_int
-  implicit none
-  real(c_double) :: gtk_paper_size_get_default_top_margin
-  type(c_ptr), value :: size
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_paper_size_get_default_bottom_margin (GtkPaperSize *size, GtkUnit unit);
-function gtk_paper_size_get_default_bottom_margin(size, unit) bind(c)
-  import :: c_double, c_ptr, c_int
-  implicit none
-  real(c_double) :: gtk_paper_size_get_default_bottom_margin
-  type(c_ptr), value :: size
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_paper_size_get_default_left_margin (GtkPaperSize *size, GtkUnit unit);
-function gtk_paper_size_get_default_left_margin(size, unit) bind(c)
-  import :: c_double, c_ptr, c_int
-  implicit none
-  real(c_double) :: gtk_paper_size_get_default_left_margin
-  type(c_ptr), value :: size
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!double gtk_paper_size_get_default_right_margin (GtkPaperSize *size, GtkUnit unit);
-function gtk_paper_size_get_default_right_margin(size, unit) bind(c)
-  import :: c_double, c_ptr, c_int
-  implicit none
-  real(c_double) :: gtk_paper_size_get_default_right_margin
-  type(c_ptr), value :: size
-  integer(c_int), value :: unit
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!const char *gtk_paper_size_get_default (void);
-function gtk_paper_size_get_default() bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_paper_size_get_default
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPaperSize *gtk_paper_size_new_from_key_file (GKeyFile *key_file, const char *group_name, GError **error);
-function gtk_paper_size_new_from_key_file(key_file, group_name, error) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr) :: gtk_paper_size_new_from_key_file
-  type(c_ptr), value :: key_file
-  character(kind=c_char), dimension(*) :: group_name
-  type(c_ptr), value :: error
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_paper_size_to_key_file (GtkPaperSize *size, GKeyFile *key_file, const char *group_name);
-subroutine gtk_paper_size_to_key_file(size, key_file, group_name) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: size
-  type(c_ptr), value :: key_file
-  character(kind=c_char), dimension(*) :: group_name
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!GtkPaperSize *gtk_paper_size_new_from_gvariant (GVariant *variant);
-function gtk_paper_size_new_from_gvariant(variant) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_paper_size_new_from_gvariant
-  type(c_ptr), value :: variant
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GVariant *gtk_paper_size_to_gvariant (GtkPaperSize *paper_size);
-function gtk_paper_size_to_gvariant(paper_size) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_paper_size_to_gvariant
-  type(c_ptr), value :: paper_size
 end function
 
 !--------------------------------------------------
@@ -22261,44 +21255,6 @@ subroutine gtk_alert_dialog_show(self, parent) bind(c)
 end subroutine
 
 !--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkprintoperationpreview.h
-!--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_print_operation_preview_get_type (void) ;
-function gtk_print_operation_preview_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_print_operation_preview_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_preview_render_page (GtkPrintOperationPreview *preview, int page_nr);
-subroutine gtk_print_operation_preview_render_page(preview, page_nr) bind(c)
-  import :: c_ptr, c_int
-  implicit none
-  type(c_ptr), value :: preview
-  integer(c_int), value :: page_nr
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_print_operation_preview_end_preview (GtkPrintOperationPreview *preview);
-subroutine gtk_print_operation_preview_end_preview(preview) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: preview
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!gboolean gtk_print_operation_preview_is_selected (GtkPrintOperationPreview *preview, int page_nr);
-function gtk_print_operation_preview_is_selected(preview, page_nr) bind(c)
-  import :: c_int, c_ptr
-  implicit none
-  integer(c_int) :: gtk_print_operation_preview_is_selected
-  type(c_ptr), value :: preview
-  integer(c_int), value :: page_nr
-end function
-
-!--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkcolumnviewcolumn.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
@@ -24014,7 +22970,7 @@ function gtk_image_new_from_resource(resource_path) bind(c)
   character(kind=c_char), dimension(*) :: resource_path
 end function
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_image_new_from_paintable)
 !GtkWidget* gtk_image_new_from_pixbuf (GdkPixbuf *pixbuf);
 function gtk_image_new_from_pixbuf(pixbuf) bind(c)
   import :: c_ptr
@@ -24076,7 +23032,7 @@ subroutine gtk_image_set_from_resource(image, resource_path) bind(c)
   character(kind=c_char), dimension(*) :: resource_path
 end subroutine
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_12_FOR(gtk_image_set_from_paintable)
 !void gtk_image_set_from_pixbuf (GtkImage *image, GdkPixbuf *pixbuf);
 subroutine gtk_image_set_from_pixbuf(image, pixbuf) bind(c)
   import :: c_ptr
@@ -24657,6 +23613,24 @@ function gtk_drop_down_get_list_factory(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+! GDK_AVAILABLE_IN_4_12
+!void gtk_drop_down_set_header_factory (GtkDropDown *self, GtkListItemFactory *factory);
+subroutine gtk_drop_down_set_header_factory(self, factory) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: factory
+end subroutine
+
+! 
+!GtkListItemFactory * gtk_drop_down_get_header_factory (GtkDropDown *self);
+function gtk_drop_down_get_header_factory(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_drop_down_get_header_factory
+  type(c_ptr), value :: self
+end function
+
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_drop_down_set_expression (GtkDropDown *self, GtkExpression *expression);
 subroutine gtk_drop_down_set_expression(self, expression) bind(c)
@@ -24708,6 +23682,24 @@ function gtk_drop_down_get_show_arrow(self) bind(c)
   import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_drop_down_get_show_arrow
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_drop_down_set_search_match_mode (GtkDropDown *self, GtkStringFilterMatchMode search_match_mode);
+subroutine gtk_drop_down_set_search_match_mode(self, search_match_mode) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: search_match_mode
+end subroutine
+
+! 
+!GtkStringFilterMatchMode gtk_drop_down_get_search_match_mode (GtkDropDown *self);
+function gtk_drop_down_get_search_match_mode(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_drop_down_get_search_match_mode
   type(c_ptr), value :: self
 end function
 
@@ -26785,6 +25777,72 @@ function gtk_column_view_get_enable_rubberband(self) bind(c)
   type(c_ptr), value :: self
 end function
 
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_set_tab_behavior (GtkColumnView *self, GtkListTabBehavior tab_behavior);
+subroutine gtk_column_view_set_tab_behavior(self, tab_behavior) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: tab_behavior
+end subroutine
+
+! 
+!GtkListTabBehavior gtk_column_view_get_tab_behavior (GtkColumnView *self);
+function gtk_column_view_get_tab_behavior(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_column_view_get_tab_behavior
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_set_row_factory (GtkColumnView *self, GtkListItemFactory *factory);
+subroutine gtk_column_view_set_row_factory(self, factory) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: factory
+end subroutine
+
+! 
+!GtkListItemFactory * gtk_column_view_get_row_factory (GtkColumnView *self);
+function gtk_column_view_get_row_factory(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_column_view_get_row_factory
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_set_header_factory (GtkColumnView *self, GtkListItemFactory *factory);
+subroutine gtk_column_view_set_header_factory(self, factory) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: factory
+end subroutine
+
+! 
+!GtkListItemFactory * gtk_column_view_get_header_factory (GtkColumnView *self);
+function gtk_column_view_get_header_factory(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_column_view_get_header_factory
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_12
+!void gtk_column_view_scroll_to (GtkColumnView *self, guint pos, GtkColumnViewColumn *column, GtkListScrollFlags flags, GtkScrollInfo *scroll);
+subroutine gtk_column_view_scroll_to(self, pos, column, flags, scroll) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: pos
+  type(c_ptr), value :: column
+  integer(c_int), value :: flags
+  type(c_ptr), value :: scroll
+end subroutine
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtksettings.h
 !--------------------------------------------------
@@ -27547,7 +26605,7 @@ end function
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/deprecated/gtkshow.h
 !--------------------------------------------------
-! GDK_DEPRECATED_IN_4_10_FOR(gtk_file_launcher_launch)
+! GDK_DEPRECATED_IN_4_10_FOR(gtk_uri_launcher_launch)
 !void gtk_show_uri_full (GtkWindow *parent, const char *uri, guint32 timestamp, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 subroutine gtk_show_uri_full(parent, uri, timestamp, cancellable, callback,&
 & user_data) bind(c)
@@ -27561,7 +26619,7 @@ subroutine gtk_show_uri_full(parent, uri, timestamp, cancellable, callback,&
   type(c_ptr), value :: user_data
 end subroutine
 
-! GDK_DEPRECATED_IN_4_10_FOR(gtk_file_launcher_launch)
+! GDK_DEPRECATED_IN_4_10_FOR(gtk_uri_launcher_launch)
 !gboolean gtk_show_uri_full_finish (GtkWindow *parent, GAsyncResult *result, GError **error);
 function gtk_show_uri_full_finish(parent, result, error) bind(c)
   import :: c_int, c_ptr
@@ -27572,7 +26630,7 @@ function gtk_show_uri_full_finish(parent, result, error) bind(c)
   type(c_ptr), value :: error
 end function
 
-! GDK_DEPRECATED_IN_4_10_FOR(gtk_file_launcher_launch)
+! GDK_DEPRECATED_IN_4_10_FOR(gtk_uri_launcher_launch)
 !void gtk_show_uri (GtkWindow *parent, const char *uri, guint32 timestamp);
 subroutine gtk_show_uri(parent, uri, timestamp) bind(c)
   import :: c_ptr, c_char, c_int32_t
@@ -34897,6 +33955,1748 @@ subroutine gtk_tree_selection_unselect_range(selection, start_path, end_path)&
   type(c_ptr), value :: start_path
   type(c_ptr), value :: end_path
 end subroutine
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/print/gtkprintsettings.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_settings_get_type (void) ;
+function gtk_print_settings_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_print_settings_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintSettings *gtk_print_settings_new (void);
+function gtk_print_settings_new() bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_new
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintSettings *gtk_print_settings_copy (GtkPrintSettings *other);
+function gtk_print_settings_copy(other) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_copy
+  type(c_ptr), value :: other
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintSettings *gtk_print_settings_new_from_file (const char *file_name, GError **error);
+function gtk_print_settings_new_from_file(file_name, error) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr) :: gtk_print_settings_new_from_file
+  character(kind=c_char), dimension(*) :: file_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_settings_load_file (GtkPrintSettings *settings, const char *file_name, GError **error);
+function gtk_print_settings_load_file(settings, file_name, error) bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int) :: gtk_print_settings_load_file
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: file_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_settings_to_file (GtkPrintSettings *settings, const char *file_name, GError **error);
+function gtk_print_settings_to_file(settings, file_name, error) bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int) :: gtk_print_settings_to_file
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: file_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintSettings *gtk_print_settings_new_from_key_file (GKeyFile *key_file, const char *group_name, GError **error);
+function gtk_print_settings_new_from_key_file(key_file, group_name, error)&
+& bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr) :: gtk_print_settings_new_from_key_file
+  type(c_ptr), value :: key_file
+  character(kind=c_char), dimension(*) :: group_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_settings_load_key_file (GtkPrintSettings *settings, GKeyFile *key_file, const char *group_name, GError **error);
+function gtk_print_settings_load_key_file(settings, key_file, group_name,&
+& error) bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int) :: gtk_print_settings_load_key_file
+  type(c_ptr), value :: settings
+  type(c_ptr), value :: key_file
+  character(kind=c_char), dimension(*) :: group_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_to_key_file (GtkPrintSettings *settings, GKeyFile *key_file, const char *group_name);
+subroutine gtk_print_settings_to_key_file(settings, key_file, group_name)&
+& bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: settings
+  type(c_ptr), value :: key_file
+  character(kind=c_char), dimension(*) :: group_name
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_settings_has_key (GtkPrintSettings *settings, const char *key);
+function gtk_print_settings_has_key(settings, key) bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int) :: gtk_print_settings_has_key
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_print_settings_get (GtkPrintSettings *settings, const char *key);
+function gtk_print_settings_get(settings, key) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr) :: gtk_print_settings_get
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set (GtkPrintSettings *settings, const char *key, const char *value);
+subroutine gtk_print_settings_set(settings, key, value) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+  character(kind=c_char), dimension(*) :: value
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_unset (GtkPrintSettings *settings, const char *key);
+subroutine gtk_print_settings_unset(settings, key) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_foreach (GtkPrintSettings *settings, GtkPrintSettingsFunc func, gpointer user_data);
+subroutine gtk_print_settings_foreach(settings, func, user_data) bind(c)
+  import :: c_ptr, c_funptr
+  implicit none
+  type(c_ptr), value :: settings
+  type(c_funptr), value :: func
+  type(c_ptr), value :: user_data
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_settings_get_bool (GtkPrintSettings *settings, const char *key);
+function gtk_print_settings_get_bool(settings, key) bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_bool
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_bool (GtkPrintSettings *settings, const char *key, gboolean value);
+subroutine gtk_print_settings_set_bool(settings, key, value) bind(c)
+  import :: c_ptr, c_char, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+  integer(c_int), value :: value
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_settings_get_double (GtkPrintSettings *settings, const char *key);
+function gtk_print_settings_get_double(settings, key) bind(c)
+  import :: c_double, c_ptr, c_char
+  implicit none
+  real(c_double) :: gtk_print_settings_get_double
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_settings_get_double_with_default (GtkPrintSettings *settings, const char *key, double def);
+function gtk_print_settings_get_double_with_default(settings, key, def) bind(c)
+  import :: c_double, c_ptr, c_char
+  implicit none
+  real(c_double) :: gtk_print_settings_get_double_with_default
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+  real(c_double), value :: def
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_double (GtkPrintSettings *settings, const char *key, double value);
+subroutine gtk_print_settings_set_double(settings, key, value) bind(c)
+  import :: c_ptr, c_char, c_double
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+  real(c_double), value :: value
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_settings_get_length (GtkPrintSettings *settings, const char *key, GtkUnit unit);
+function gtk_print_settings_get_length(settings, key, unit) bind(c)
+  import :: c_double, c_ptr, c_char, c_int
+  implicit none
+  real(c_double) :: gtk_print_settings_get_length
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_length (GtkPrintSettings *settings, const char *key, double value, GtkUnit unit);
+subroutine gtk_print_settings_set_length(settings, key, value, unit) bind(c)
+  import :: c_ptr, c_char, c_double, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+  real(c_double), value :: value
+  integer(c_int), value :: unit
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!int gtk_print_settings_get_int (GtkPrintSettings *settings, const char *key);
+function gtk_print_settings_get_int(settings, key) bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_int
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!int gtk_print_settings_get_int_with_default (GtkPrintSettings *settings, const char *key, int def);
+function gtk_print_settings_get_int_with_default(settings, key, def) bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_int_with_default
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+  integer(c_int), value :: def
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_int (GtkPrintSettings *settings, const char *key, int value);
+subroutine gtk_print_settings_set_int(settings, key, value) bind(c)
+  import :: c_ptr, c_char, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: key
+  integer(c_int), value :: value
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_print_settings_get_printer (GtkPrintSettings *settings);
+function gtk_print_settings_get_printer(settings) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_get_printer
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_printer (GtkPrintSettings *settings, const char *printer);
+subroutine gtk_print_settings_set_printer(settings, printer) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: printer
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageOrientation gtk_print_settings_get_orientation (GtkPrintSettings *settings);
+function gtk_print_settings_get_orientation(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_orientation
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_orientation (GtkPrintSettings *settings, GtkPageOrientation orientation);
+subroutine gtk_print_settings_set_orientation(settings, orientation) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: orientation
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPaperSize * gtk_print_settings_get_paper_size (GtkPrintSettings *settings);
+function gtk_print_settings_get_paper_size(settings) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_get_paper_size
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_paper_size (GtkPrintSettings *settings, GtkPaperSize *paper_size);
+subroutine gtk_print_settings_set_paper_size(settings, paper_size) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: settings
+  type(c_ptr), value :: paper_size
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_settings_get_paper_width (GtkPrintSettings *settings, GtkUnit unit);
+function gtk_print_settings_get_paper_width(settings, unit) bind(c)
+  import :: c_double, c_ptr, c_int
+  implicit none
+  real(c_double) :: gtk_print_settings_get_paper_width
+  type(c_ptr), value :: settings
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_paper_width (GtkPrintSettings *settings, double width, GtkUnit unit);
+subroutine gtk_print_settings_set_paper_width(settings, width, unit) bind(c)
+  import :: c_ptr, c_double, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  real(c_double), value :: width
+  integer(c_int), value :: unit
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_settings_get_paper_height (GtkPrintSettings *settings, GtkUnit unit);
+function gtk_print_settings_get_paper_height(settings, unit) bind(c)
+  import :: c_double, c_ptr, c_int
+  implicit none
+  real(c_double) :: gtk_print_settings_get_paper_height
+  type(c_ptr), value :: settings
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_paper_height (GtkPrintSettings *settings, double height, GtkUnit unit);
+subroutine gtk_print_settings_set_paper_height(settings, height, unit) bind(c)
+  import :: c_ptr, c_double, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  real(c_double), value :: height
+  integer(c_int), value :: unit
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_settings_get_use_color (GtkPrintSettings *settings);
+function gtk_print_settings_get_use_color(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_use_color
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_use_color (GtkPrintSettings *settings, gboolean use_color);
+subroutine gtk_print_settings_set_use_color(settings, use_color) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: use_color
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_settings_get_collate (GtkPrintSettings *settings);
+function gtk_print_settings_get_collate(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_collate
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_collate (GtkPrintSettings *settings, gboolean collate);
+subroutine gtk_print_settings_set_collate(settings, collate) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: collate
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_settings_get_reverse (GtkPrintSettings *settings);
+function gtk_print_settings_get_reverse(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_reverse
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_reverse (GtkPrintSettings *settings, gboolean reverse);
+subroutine gtk_print_settings_set_reverse(settings, reverse) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: reverse
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintDuplex gtk_print_settings_get_duplex (GtkPrintSettings *settings);
+function gtk_print_settings_get_duplex(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_duplex
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_duplex (GtkPrintSettings *settings, GtkPrintDuplex duplex);
+subroutine gtk_print_settings_set_duplex(settings, duplex) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: duplex
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintQuality gtk_print_settings_get_quality (GtkPrintSettings *settings);
+function gtk_print_settings_get_quality(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_quality
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_quality (GtkPrintSettings *settings, GtkPrintQuality quality);
+subroutine gtk_print_settings_set_quality(settings, quality) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: quality
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!int gtk_print_settings_get_n_copies (GtkPrintSettings *settings);
+function gtk_print_settings_get_n_copies(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_n_copies
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_n_copies (GtkPrintSettings *settings, int num_copies);
+subroutine gtk_print_settings_set_n_copies(settings, num_copies) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: num_copies
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!int gtk_print_settings_get_number_up (GtkPrintSettings *settings);
+function gtk_print_settings_get_number_up(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_number_up
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_number_up (GtkPrintSettings *settings, int number_up);
+subroutine gtk_print_settings_set_number_up(settings, number_up) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: number_up
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkNumberUpLayout gtk_print_settings_get_number_up_layout (GtkPrintSettings *settings);
+function gtk_print_settings_get_number_up_layout(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_number_up_layout
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_number_up_layout (GtkPrintSettings *settings, GtkNumberUpLayout number_up_layout);
+subroutine gtk_print_settings_set_number_up_layout(settings, number_up_layout)&
+& bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: number_up_layout
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!int gtk_print_settings_get_resolution (GtkPrintSettings *settings);
+function gtk_print_settings_get_resolution(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_resolution
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_resolution (GtkPrintSettings *settings, int resolution);
+subroutine gtk_print_settings_set_resolution(settings, resolution) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: resolution
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!int gtk_print_settings_get_resolution_x (GtkPrintSettings *settings);
+function gtk_print_settings_get_resolution_x(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_resolution_x
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!int gtk_print_settings_get_resolution_y (GtkPrintSettings *settings);
+function gtk_print_settings_get_resolution_y(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_resolution_y
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_resolution_xy (GtkPrintSettings *settings, int resolution_x, int resolution_y);
+subroutine gtk_print_settings_set_resolution_xy(settings, resolution_x,&
+& resolution_y) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: resolution_x
+  integer(c_int), value :: resolution_y
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_settings_get_printer_lpi (GtkPrintSettings *settings);
+function gtk_print_settings_get_printer_lpi(settings) bind(c)
+  import :: c_double, c_ptr
+  implicit none
+  real(c_double) :: gtk_print_settings_get_printer_lpi
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_printer_lpi (GtkPrintSettings *settings, double lpi);
+subroutine gtk_print_settings_set_printer_lpi(settings, lpi) bind(c)
+  import :: c_ptr, c_double
+  implicit none
+  type(c_ptr), value :: settings
+  real(c_double), value :: lpi
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_settings_get_scale (GtkPrintSettings *settings);
+function gtk_print_settings_get_scale(settings) bind(c)
+  import :: c_double, c_ptr
+  implicit none
+  real(c_double) :: gtk_print_settings_get_scale
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_scale (GtkPrintSettings *settings, double scale);
+subroutine gtk_print_settings_set_scale(settings, scale) bind(c)
+  import :: c_ptr, c_double
+  implicit none
+  type(c_ptr), value :: settings
+  real(c_double), value :: scale
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintPages gtk_print_settings_get_print_pages (GtkPrintSettings *settings);
+function gtk_print_settings_get_print_pages(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_print_pages
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_print_pages (GtkPrintSettings *settings, GtkPrintPages pages);
+subroutine gtk_print_settings_set_print_pages(settings, pages) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: pages
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageRange * gtk_print_settings_get_page_ranges (GtkPrintSettings *settings, int *num_ranges);
+function gtk_print_settings_get_page_ranges(settings, num_ranges) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_get_page_ranges
+  type(c_ptr), value :: settings
+  type(c_ptr), value :: num_ranges
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_page_ranges (GtkPrintSettings *settings, GtkPageRange *page_ranges, int num_ranges);
+subroutine gtk_print_settings_set_page_ranges(settings, page_ranges,&
+& num_ranges) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  type(c_ptr), value :: page_ranges
+  integer(c_int), value :: num_ranges
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageSet gtk_print_settings_get_page_set (GtkPrintSettings *settings);
+function gtk_print_settings_get_page_set(settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_settings_get_page_set
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_page_set (GtkPrintSettings *settings, GtkPageSet page_set);
+subroutine gtk_print_settings_set_page_set(settings, page_set) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: settings
+  integer(c_int), value :: page_set
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_print_settings_get_default_source (GtkPrintSettings *settings);
+function gtk_print_settings_get_default_source(settings) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_get_default_source
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_default_source (GtkPrintSettings *settings, const char *default_source);
+subroutine gtk_print_settings_set_default_source(settings, default_source)&
+& bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: default_source
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_print_settings_get_media_type (GtkPrintSettings *settings);
+function gtk_print_settings_get_media_type(settings) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_get_media_type
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_media_type (GtkPrintSettings *settings, const char *media_type);
+subroutine gtk_print_settings_set_media_type(settings, media_type) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: media_type
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_print_settings_get_dither (GtkPrintSettings *settings);
+function gtk_print_settings_get_dither(settings) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_get_dither
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_dither (GtkPrintSettings *settings, const char *dither);
+subroutine gtk_print_settings_set_dither(settings, dither) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: dither
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_print_settings_get_finishings (GtkPrintSettings *settings);
+function gtk_print_settings_get_finishings(settings) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_get_finishings
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_finishings (GtkPrintSettings *settings, const char *finishings);
+subroutine gtk_print_settings_set_finishings(settings, finishings) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: finishings
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_print_settings_get_output_bin (GtkPrintSettings *settings);
+function gtk_print_settings_get_output_bin(settings) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_get_output_bin
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_settings_set_output_bin (GtkPrintSettings *settings, const char *output_bin);
+subroutine gtk_print_settings_set_output_bin(settings, output_bin) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: settings
+  character(kind=c_char), dimension(*) :: output_bin
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GVariant *gtk_print_settings_to_gvariant (GtkPrintSettings *settings);
+function gtk_print_settings_to_gvariant(settings) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_to_gvariant
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintSettings *gtk_print_settings_new_from_gvariant (GVariant *variant);
+function gtk_print_settings_new_from_gvariant(variant) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_settings_new_from_gvariant
+  type(c_ptr), value :: variant
+end function
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/print/gtkpagesetup.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_page_setup_get_type (void) ;
+function gtk_page_setup_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_page_setup_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageSetup * gtk_page_setup_new (void);
+function gtk_page_setup_new() bind(c)
+  import :: c_int
+  implicit none
+  integer(c_int) :: gtk_page_setup_new
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageSetup * gtk_page_setup_copy (GtkPageSetup *other);
+function gtk_page_setup_copy(other) bind(c)
+  import :: c_int
+  implicit none
+  integer(c_int) :: gtk_page_setup_copy
+  integer(c_int), value :: other
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageOrientation gtk_page_setup_get_orientation (GtkPageSetup *setup);
+function gtk_page_setup_get_orientation(setup) bind(c)
+  import :: c_int
+  implicit none
+  integer(c_int) :: gtk_page_setup_get_orientation
+  integer(c_int), value :: setup
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_page_setup_set_orientation (GtkPageSetup *setup, GtkPageOrientation orientation);
+subroutine gtk_page_setup_set_orientation(setup, orientation) bind(c)
+  import :: c_int
+  implicit none
+  integer(c_int), value :: setup
+  integer(c_int), value :: orientation
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPaperSize * gtk_page_setup_get_paper_size (GtkPageSetup *setup);
+function gtk_page_setup_get_paper_size(setup) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr) :: gtk_page_setup_get_paper_size
+  integer(c_int), value :: setup
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_page_setup_set_paper_size (GtkPageSetup *setup, GtkPaperSize *size);
+subroutine gtk_page_setup_set_paper_size(setup, size) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int), value :: setup
+  type(c_ptr), value :: size
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_page_setup_get_top_margin (GtkPageSetup *setup, GtkUnit unit);
+function gtk_page_setup_get_top_margin(setup, unit) bind(c)
+  import :: c_double, c_int
+  implicit none
+  real(c_double) :: gtk_page_setup_get_top_margin
+  integer(c_int), value :: setup
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_page_setup_set_top_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
+subroutine gtk_page_setup_set_top_margin(setup, margin, unit) bind(c)
+  import :: c_int, c_double
+  implicit none
+  integer(c_int), value :: setup
+  real(c_double), value :: margin
+  integer(c_int), value :: unit
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_page_setup_get_bottom_margin (GtkPageSetup *setup, GtkUnit unit);
+function gtk_page_setup_get_bottom_margin(setup, unit) bind(c)
+  import :: c_double, c_int
+  implicit none
+  real(c_double) :: gtk_page_setup_get_bottom_margin
+  integer(c_int), value :: setup
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_page_setup_set_bottom_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
+subroutine gtk_page_setup_set_bottom_margin(setup, margin, unit) bind(c)
+  import :: c_int, c_double
+  implicit none
+  integer(c_int), value :: setup
+  real(c_double), value :: margin
+  integer(c_int), value :: unit
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_page_setup_get_left_margin (GtkPageSetup *setup, GtkUnit unit);
+function gtk_page_setup_get_left_margin(setup, unit) bind(c)
+  import :: c_double, c_int
+  implicit none
+  real(c_double) :: gtk_page_setup_get_left_margin
+  integer(c_int), value :: setup
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_page_setup_set_left_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
+subroutine gtk_page_setup_set_left_margin(setup, margin, unit) bind(c)
+  import :: c_int, c_double
+  implicit none
+  integer(c_int), value :: setup
+  real(c_double), value :: margin
+  integer(c_int), value :: unit
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_page_setup_get_right_margin (GtkPageSetup *setup, GtkUnit unit);
+function gtk_page_setup_get_right_margin(setup, unit) bind(c)
+  import :: c_double, c_int
+  implicit none
+  real(c_double) :: gtk_page_setup_get_right_margin
+  integer(c_int), value :: setup
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_page_setup_set_right_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
+subroutine gtk_page_setup_set_right_margin(setup, margin, unit) bind(c)
+  import :: c_int, c_double
+  implicit none
+  integer(c_int), value :: setup
+  real(c_double), value :: margin
+  integer(c_int), value :: unit
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_page_setup_set_paper_size_and_default_margins (GtkPageSetup *setup, GtkPaperSize *size);
+subroutine gtk_page_setup_set_paper_size_and_default_margins(setup, size)&
+& bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int), value :: setup
+  type(c_ptr), value :: size
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_page_setup_get_paper_width (GtkPageSetup *setup, GtkUnit unit);
+function gtk_page_setup_get_paper_width(setup, unit) bind(c)
+  import :: c_double, c_int
+  implicit none
+  real(c_double) :: gtk_page_setup_get_paper_width
+  integer(c_int), value :: setup
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_page_setup_get_paper_height (GtkPageSetup *setup, GtkUnit unit);
+function gtk_page_setup_get_paper_height(setup, unit) bind(c)
+  import :: c_double, c_int
+  implicit none
+  real(c_double) :: gtk_page_setup_get_paper_height
+  integer(c_int), value :: setup
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_page_setup_get_page_width (GtkPageSetup *setup, GtkUnit unit);
+function gtk_page_setup_get_page_width(setup, unit) bind(c)
+  import :: c_double, c_int
+  implicit none
+  real(c_double) :: gtk_page_setup_get_page_width
+  integer(c_int), value :: setup
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_page_setup_get_page_height (GtkPageSetup *setup, GtkUnit unit);
+function gtk_page_setup_get_page_height(setup, unit) bind(c)
+  import :: c_double, c_int
+  implicit none
+  real(c_double) :: gtk_page_setup_get_page_height
+  integer(c_int), value :: setup
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageSetup *gtk_page_setup_new_from_file (const char *file_name, GError **error);
+function gtk_page_setup_new_from_file(file_name, error) bind(c)
+  import :: c_int, c_char, c_ptr
+  implicit none
+  integer(c_int) :: gtk_page_setup_new_from_file
+  character(kind=c_char), dimension(*) :: file_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_page_setup_load_file (GtkPageSetup *setup, const char *file_name, GError **error);
+function gtk_page_setup_load_file(setup, file_name, error) bind(c)
+  import :: c_int, c_char, c_ptr
+  implicit none
+  integer(c_int) :: gtk_page_setup_load_file
+  integer(c_int), value :: setup
+  character(kind=c_char), dimension(*) :: file_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_page_setup_to_file (GtkPageSetup *setup, const char *file_name, GError **error);
+function gtk_page_setup_to_file(setup, file_name, error) bind(c)
+  import :: c_int, c_char, c_ptr
+  implicit none
+  integer(c_int) :: gtk_page_setup_to_file
+  integer(c_int), value :: setup
+  character(kind=c_char), dimension(*) :: file_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageSetup *gtk_page_setup_new_from_key_file (GKeyFile *key_file, const char *group_name, GError **error);
+function gtk_page_setup_new_from_key_file(key_file, group_name, error) bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int) :: gtk_page_setup_new_from_key_file
+  type(c_ptr), value :: key_file
+  character(kind=c_char), dimension(*) :: group_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_page_setup_load_key_file (GtkPageSetup *setup, GKeyFile *key_file, const char *group_name, GError **error);
+function gtk_page_setup_load_key_file(setup, key_file, group_name, error)&
+& bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int) :: gtk_page_setup_load_key_file
+  integer(c_int), value :: setup
+  type(c_ptr), value :: key_file
+  character(kind=c_char), dimension(*) :: group_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_page_setup_to_key_file (GtkPageSetup *setup, GKeyFile *key_file, const char *group_name);
+subroutine gtk_page_setup_to_key_file(setup, key_file, group_name) bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int), value :: setup
+  type(c_ptr), value :: key_file
+  character(kind=c_char), dimension(*) :: group_name
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GVariant *gtk_page_setup_to_gvariant (GtkPageSetup *setup);
+function gtk_page_setup_to_gvariant(setup) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr) :: gtk_page_setup_to_gvariant
+  integer(c_int), value :: setup
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageSetup *gtk_page_setup_new_from_gvariant (GVariant *variant);
+function gtk_page_setup_new_from_gvariant(variant) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_page_setup_new_from_gvariant
+  type(c_ptr), value :: variant
+end function
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/print/gtkprintoperation.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GQuark gtk_print_error_quark (void);
+function gtk_print_error_quark() bind(c)
+  import :: c_int32_t
+  implicit none
+  integer(c_int32_t) :: gtk_print_error_quark
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_operation_get_type (void) ;
+function gtk_print_operation_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_print_operation_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintOperation * gtk_print_operation_new (void);
+function gtk_print_operation_new() bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_operation_new
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_default_page_setup (GtkPrintOperation *op, GtkPageSetup *default_page_setup);
+subroutine gtk_print_operation_set_default_page_setup(op, default_page_setup)&
+& bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: default_page_setup
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageSetup * gtk_print_operation_get_default_page_setup (GtkPrintOperation *op);
+function gtk_print_operation_get_default_page_setup(op) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_operation_get_default_page_setup
+  type(c_ptr), value :: op
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_print_settings (GtkPrintOperation *op, GtkPrintSettings *print_settings);
+subroutine gtk_print_operation_set_print_settings(op, print_settings) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: op
+  type(c_ptr), value :: print_settings
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintSettings * gtk_print_operation_get_print_settings (GtkPrintOperation *op);
+function gtk_print_operation_get_print_settings(op) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_operation_get_print_settings
+  type(c_ptr), value :: op
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_job_name (GtkPrintOperation *op, const char *job_name);
+subroutine gtk_print_operation_set_job_name(op, job_name) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: op
+  character(kind=c_char), dimension(*) :: job_name
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_n_pages (GtkPrintOperation *op, int n_pages);
+subroutine gtk_print_operation_set_n_pages(op, n_pages) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: n_pages
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_current_page (GtkPrintOperation *op, int current_page);
+subroutine gtk_print_operation_set_current_page(op, current_page) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: current_page
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_use_full_page (GtkPrintOperation *op, gboolean full_page);
+subroutine gtk_print_operation_set_use_full_page(op, full_page) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: full_page
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_unit (GtkPrintOperation *op, GtkUnit unit);
+subroutine gtk_print_operation_set_unit(op, unit) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: unit
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_export_filename (GtkPrintOperation *op, const char *filename);
+subroutine gtk_print_operation_set_export_filename(op, filename) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: op
+  character(kind=c_char), dimension(*) :: filename
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_track_print_status (GtkPrintOperation *op, gboolean track_status);
+subroutine gtk_print_operation_set_track_print_status(op, track_status) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: track_status
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_show_progress (GtkPrintOperation *op, gboolean show_progress);
+subroutine gtk_print_operation_set_show_progress(op, show_progress) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: show_progress
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_allow_async (GtkPrintOperation *op, gboolean allow_async);
+subroutine gtk_print_operation_set_allow_async(op, allow_async) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: allow_async
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_custom_tab_label (GtkPrintOperation *op, const char *label);
+subroutine gtk_print_operation_set_custom_tab_label(op, label) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: op
+  character(kind=c_char), dimension(*) :: label
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintOperationResult gtk_print_operation_run (GtkPrintOperation *op, GtkPrintOperationAction action, GtkWindow *parent, GError **error);
+function gtk_print_operation_run(op, action, parent, error) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_operation_run
+  type(c_ptr), value :: op
+  integer(c_int), value :: action
+  type(c_ptr), value :: parent
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_get_error (GtkPrintOperation *op, GError **error);
+subroutine gtk_print_operation_get_error(op, error) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: op
+  type(c_ptr), value :: error
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPrintStatus gtk_print_operation_get_status (GtkPrintOperation *op);
+function gtk_print_operation_get_status(op) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_operation_get_status
+  type(c_ptr), value :: op
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!const char * gtk_print_operation_get_status_string (GtkPrintOperation *op);
+function gtk_print_operation_get_status_string(op) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_operation_get_status_string
+  type(c_ptr), value :: op
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_operation_is_finished (GtkPrintOperation *op);
+function gtk_print_operation_is_finished(op) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_operation_is_finished
+  type(c_ptr), value :: op
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_cancel (GtkPrintOperation *op);
+subroutine gtk_print_operation_cancel(op) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: op
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_draw_page_finish (GtkPrintOperation *op);
+subroutine gtk_print_operation_draw_page_finish(op) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: op
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_defer_drawing (GtkPrintOperation *op);
+subroutine gtk_print_operation_set_defer_drawing(op) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: op
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_support_selection (GtkPrintOperation *op, gboolean support_selection);
+subroutine gtk_print_operation_set_support_selection(op, support_selection)&
+& bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: support_selection
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_operation_get_support_selection (GtkPrintOperation *op);
+function gtk_print_operation_get_support_selection(op) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_operation_get_support_selection
+  type(c_ptr), value :: op
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_has_selection (GtkPrintOperation *op, gboolean has_selection);
+subroutine gtk_print_operation_set_has_selection(op, has_selection) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: has_selection
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_operation_get_has_selection (GtkPrintOperation *op);
+function gtk_print_operation_get_has_selection(op) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_operation_get_has_selection
+  type(c_ptr), value :: op
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_set_embed_page_setup (GtkPrintOperation *op, gboolean embed);
+subroutine gtk_print_operation_set_embed_page_setup(op, embed) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: op
+  integer(c_int), value :: embed
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_operation_get_embed_page_setup (GtkPrintOperation *op);
+function gtk_print_operation_get_embed_page_setup(op) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_operation_get_embed_page_setup
+  type(c_ptr), value :: op
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!int gtk_print_operation_get_n_pages_to_print (GtkPrintOperation *op);
+function gtk_print_operation_get_n_pages_to_print(op) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_operation_get_n_pages_to_print
+  type(c_ptr), value :: op
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageSetup *gtk_print_run_page_setup_dialog (GtkWindow *parent, GtkPageSetup *page_setup, GtkPrintSettings *settings);
+function gtk_print_run_page_setup_dialog(parent, page_setup, settings) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_run_page_setup_dialog
+  type(c_ptr), value :: parent
+  integer(c_int), value :: page_setup
+  type(c_ptr), value :: settings
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_run_page_setup_dialog_async (GtkWindow *parent, GtkPageSetup *page_setup, GtkPrintSettings *settings, GtkPageSetupDoneFunc done_cb, gpointer data);
+subroutine gtk_print_run_page_setup_dialog_async(parent, page_setup, settings,&
+& done_cb, data) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: parent
+  integer(c_int), value :: page_setup
+  type(c_ptr), value :: settings
+  integer(c_int), value :: done_cb
+  type(c_ptr), value :: data
+end subroutine
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/print/gtkprintcontext.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_context_get_type (void) ;
+function gtk_print_context_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_print_context_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!cairo_t *gtk_print_context_get_cairo_context (GtkPrintContext *context);
+function gtk_print_context_get_cairo_context(context) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_context_get_cairo_context
+  type(c_ptr), value :: context
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPageSetup *gtk_print_context_get_page_setup (GtkPrintContext *context);
+function gtk_print_context_get_page_setup(context) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_context_get_page_setup
+  type(c_ptr), value :: context
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_context_get_width (GtkPrintContext *context);
+function gtk_print_context_get_width(context) bind(c)
+  import :: c_double, c_ptr
+  implicit none
+  real(c_double) :: gtk_print_context_get_width
+  type(c_ptr), value :: context
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_context_get_height (GtkPrintContext *context);
+function gtk_print_context_get_height(context) bind(c)
+  import :: c_double, c_ptr
+  implicit none
+  real(c_double) :: gtk_print_context_get_height
+  type(c_ptr), value :: context
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_context_get_dpi_x (GtkPrintContext *context);
+function gtk_print_context_get_dpi_x(context) bind(c)
+  import :: c_double, c_ptr
+  implicit none
+  real(c_double) :: gtk_print_context_get_dpi_x
+  type(c_ptr), value :: context
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_print_context_get_dpi_y (GtkPrintContext *context);
+function gtk_print_context_get_dpi_y(context) bind(c)
+  import :: c_double, c_ptr
+  implicit none
+  real(c_double) :: gtk_print_context_get_dpi_y
+  type(c_ptr), value :: context
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_context_get_hard_margins (GtkPrintContext *context, double *top, double *bottom, double *left, double *right);
+function gtk_print_context_get_hard_margins(context, top, bottom, left, right)&
+& bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_context_get_hard_margins
+  type(c_ptr), value :: context
+  type(c_ptr), value :: top
+  type(c_ptr), value :: bottom
+  type(c_ptr), value :: left
+  type(c_ptr), value :: right
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!PangoFontMap *gtk_print_context_get_pango_fontmap (GtkPrintContext *context);
+function gtk_print_context_get_pango_fontmap(context) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_context_get_pango_fontmap
+  type(c_ptr), value :: context
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!PangoContext *gtk_print_context_create_pango_context (GtkPrintContext *context);
+function gtk_print_context_create_pango_context(context) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_context_create_pango_context
+  type(c_ptr), value :: context
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!PangoLayout *gtk_print_context_create_pango_layout (GtkPrintContext *context);
+function gtk_print_context_create_pango_layout(context) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_print_context_create_pango_layout
+  type(c_ptr), value :: context
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_context_set_cairo_context (GtkPrintContext *context, cairo_t *cr, double dpi_x, double dpi_y);
+subroutine gtk_print_context_set_cairo_context(context, cr, dpi_x, dpi_y)&
+& bind(c)
+  import :: c_ptr, c_double
+  implicit none
+  type(c_ptr), value :: context
+  type(c_ptr), value :: cr
+  real(c_double), value :: dpi_x
+  real(c_double), value :: dpi_y
+end subroutine
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/print/gtkpapersize.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_paper_size_get_type (void) ;
+function gtk_paper_size_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_paper_size_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPaperSize *gtk_paper_size_new (const char *name);
+function gtk_paper_size_new(name) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr) :: gtk_paper_size_new
+  character(kind=c_char), dimension(*) :: name
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPaperSize *gtk_paper_size_new_from_ppd (const char *ppd_name, const char *ppd_display_name, double width, double height);
+function gtk_paper_size_new_from_ppd(ppd_name, ppd_display_name, width, height)&
+& bind(c)
+  import :: c_ptr, c_char, c_double
+  implicit none
+  type(c_ptr) :: gtk_paper_size_new_from_ppd
+  character(kind=c_char), dimension(*) :: ppd_name
+  character(kind=c_char), dimension(*) :: ppd_display_name
+  real(c_double), value :: width
+  real(c_double), value :: height
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPaperSize *gtk_paper_size_new_from_ipp (const char *ipp_name, double width, double height);
+function gtk_paper_size_new_from_ipp(ipp_name, width, height) bind(c)
+  import :: c_ptr, c_char, c_double
+  implicit none
+  type(c_ptr) :: gtk_paper_size_new_from_ipp
+  character(kind=c_char), dimension(*) :: ipp_name
+  real(c_double), value :: width
+  real(c_double), value :: height
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPaperSize *gtk_paper_size_new_custom (const char *name, const char *display_name, double width, double height, GtkUnit unit);
+function gtk_paper_size_new_custom(name, display_name, width, height, unit)&
+& bind(c)
+  import :: c_ptr, c_char, c_double, c_int
+  implicit none
+  type(c_ptr) :: gtk_paper_size_new_custom
+  character(kind=c_char), dimension(*) :: name
+  character(kind=c_char), dimension(*) :: display_name
+  real(c_double), value :: width
+  real(c_double), value :: height
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPaperSize *gtk_paper_size_copy (GtkPaperSize *other);
+function gtk_paper_size_copy(other) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_paper_size_copy
+  type(c_ptr), value :: other
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_paper_size_free (GtkPaperSize *size);
+subroutine gtk_paper_size_free(size) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: size
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_paper_size_is_equal (GtkPaperSize *size1, GtkPaperSize *size2);
+function gtk_paper_size_is_equal(size1, size2) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_paper_size_is_equal
+  type(c_ptr), value :: size1
+  type(c_ptr), value :: size2
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GList *gtk_paper_size_get_paper_sizes (gboolean include_custom);
+function gtk_paper_size_get_paper_sizes(include_custom) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr) :: gtk_paper_size_get_paper_sizes
+  integer(c_int), value :: include_custom
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!const char *gtk_paper_size_get_name (GtkPaperSize *size);
+function gtk_paper_size_get_name(size) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_paper_size_get_name
+  type(c_ptr), value :: size
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!const char *gtk_paper_size_get_display_name (GtkPaperSize *size);
+function gtk_paper_size_get_display_name(size) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_paper_size_get_display_name
+  type(c_ptr), value :: size
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!const char *gtk_paper_size_get_ppd_name (GtkPaperSize *size);
+function gtk_paper_size_get_ppd_name(size) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_paper_size_get_ppd_name
+  type(c_ptr), value :: size
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_paper_size_get_width (GtkPaperSize *size, GtkUnit unit);
+function gtk_paper_size_get_width(size, unit) bind(c)
+  import :: c_double, c_ptr, c_int
+  implicit none
+  real(c_double) :: gtk_paper_size_get_width
+  type(c_ptr), value :: size
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_paper_size_get_height (GtkPaperSize *size, GtkUnit unit);
+function gtk_paper_size_get_height(size, unit) bind(c)
+  import :: c_double, c_ptr, c_int
+  implicit none
+  real(c_double) :: gtk_paper_size_get_height
+  type(c_ptr), value :: size
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_paper_size_is_custom (GtkPaperSize *size);
+function gtk_paper_size_is_custom(size) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_paper_size_is_custom
+  type(c_ptr), value :: size
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_paper_size_is_ipp (GtkPaperSize *size);
+function gtk_paper_size_is_ipp(size) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_paper_size_is_ipp
+  type(c_ptr), value :: size
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_paper_size_set_size (GtkPaperSize *size, double width, double height, GtkUnit unit);
+subroutine gtk_paper_size_set_size(size, width, height, unit) bind(c)
+  import :: c_ptr, c_double, c_int
+  implicit none
+  type(c_ptr), value :: size
+  real(c_double), value :: width
+  real(c_double), value :: height
+  integer(c_int), value :: unit
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_paper_size_get_default_top_margin (GtkPaperSize *size, GtkUnit unit);
+function gtk_paper_size_get_default_top_margin(size, unit) bind(c)
+  import :: c_double, c_ptr, c_int
+  implicit none
+  real(c_double) :: gtk_paper_size_get_default_top_margin
+  type(c_ptr), value :: size
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_paper_size_get_default_bottom_margin (GtkPaperSize *size, GtkUnit unit);
+function gtk_paper_size_get_default_bottom_margin(size, unit) bind(c)
+  import :: c_double, c_ptr, c_int
+  implicit none
+  real(c_double) :: gtk_paper_size_get_default_bottom_margin
+  type(c_ptr), value :: size
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_paper_size_get_default_left_margin (GtkPaperSize *size, GtkUnit unit);
+function gtk_paper_size_get_default_left_margin(size, unit) bind(c)
+  import :: c_double, c_ptr, c_int
+  implicit none
+  real(c_double) :: gtk_paper_size_get_default_left_margin
+  type(c_ptr), value :: size
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!double gtk_paper_size_get_default_right_margin (GtkPaperSize *size, GtkUnit unit);
+function gtk_paper_size_get_default_right_margin(size, unit) bind(c)
+  import :: c_double, c_ptr, c_int
+  implicit none
+  real(c_double) :: gtk_paper_size_get_default_right_margin
+  type(c_ptr), value :: size
+  integer(c_int), value :: unit
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!const char *gtk_paper_size_get_default (void);
+function gtk_paper_size_get_default() bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_paper_size_get_default
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPaperSize *gtk_paper_size_new_from_key_file (GKeyFile *key_file, const char *group_name, GError **error);
+function gtk_paper_size_new_from_key_file(key_file, group_name, error) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr) :: gtk_paper_size_new_from_key_file
+  type(c_ptr), value :: key_file
+  character(kind=c_char), dimension(*) :: group_name
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_paper_size_to_key_file (GtkPaperSize *size, GKeyFile *key_file, const char *group_name);
+subroutine gtk_paper_size_to_key_file(size, key_file, group_name) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: size
+  type(c_ptr), value :: key_file
+  character(kind=c_char), dimension(*) :: group_name
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!GtkPaperSize *gtk_paper_size_new_from_gvariant (GVariant *variant);
+function gtk_paper_size_new_from_gvariant(variant) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_paper_size_new_from_gvariant
+  type(c_ptr), value :: variant
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GVariant *gtk_paper_size_to_gvariant (GtkPaperSize *paper_size);
+function gtk_paper_size_to_gvariant(paper_size) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_paper_size_to_gvariant
+  type(c_ptr), value :: paper_size
+end function
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/print/gtkprintoperationpreview.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_print_operation_preview_get_type (void) ;
+function gtk_print_operation_preview_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_print_operation_preview_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_preview_render_page (GtkPrintOperationPreview *preview, int page_nr);
+subroutine gtk_print_operation_preview_render_page(preview, page_nr) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: preview
+  integer(c_int), value :: page_nr
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_print_operation_preview_end_preview (GtkPrintOperationPreview *preview);
+subroutine gtk_print_operation_preview_end_preview(preview) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: preview
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!gboolean gtk_print_operation_preview_is_selected (GtkPrintOperationPreview *preview, int page_nr);
+function gtk_print_operation_preview_is_selected(preview, page_nr) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_print_operation_preview_is_selected
+  type(c_ptr), value :: preview
+  integer(c_int), value :: page_nr
+end function
 
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/css/gtkcss.h

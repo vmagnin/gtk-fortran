@@ -110,6 +110,12 @@ GTypePluginCompleteInterfaceInfo
 GTypePluginCompleteTypeInfo
 GTypePluginUnuse
 GTypePluginUse
+GTypeValueCollectFunc
+GTypeValueCopyFunc
+GTypeValueFreeFunc
+GTypeValueInitFunc
+GTypeValueLCopyFunc
+GTypeValuePeekPointerFunc
 GUnixFDSourceFunc
 GVaClosureMarshal
 GValueTransform
