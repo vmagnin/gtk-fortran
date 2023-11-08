@@ -1,7 +1,8 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [gtk-fortran dev]
+## [gtk-fortran 4.5.0] 2023-11-08
+This release offers interfaces to GTK 4.12 and GLib 2.78 (generated under Fedora 39 with GTK 4.12.3 and GLib 2.78.1).
 
 ### Added
 - In `gtk-sup.f90`: the function `convert_f_string_aa()` (interface `f_c_string`) converts a fortran string array into an array of null-terminated C strings.
