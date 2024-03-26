@@ -415,20 +415,21 @@ end module handlers
 
 !*******************************************************************************
 ! In the main program, we declare the GTK application, connect it to its
-! "activate" function where we will create the GUI,
+! "activate" function which will create the GUI,
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program bazaar
-  use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE
+  use, intrinsic :: iso_c_binding
+  use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE, g_signal_connect
   use g, only: g_application_run, g_object_unref
-  use handlers
+  use handlers, only: activate
 
   implicit none
-  integer(c_int)     :: status
-  type(c_ptr)        :: app
+  integer(c_int) :: status
+  type(c_ptr)    :: app
 
   app = gtk_application_new("gtk-fortran.examples.bazaar"//c_null_char, &
-                            & G_APPLICATION_FLAGS_NONE)
+                          & G_APPLICATION_FLAGS_NONE)
   call g_signal_connect(app, "activate"//c_null_char, c_funloc(activate), &
                       & c_null_ptr)
   status = g_application_run(app, 0_c_int, [c_null_ptr])
