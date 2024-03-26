@@ -197,7 +197,7 @@ contains
     call gtk_progress_bar_set_text (progress, "My progress bar"//c_null_char)
     call gtk_grid_attach(table, progress, 1_c_int, 2_c_int, 3_c_int, 1_c_int)
 
-    ! https://developer.gnome.org/gtk4/stable/GtkTextView.html#gtk-text-view-new
+    ! https://docs.gtk.org/gtk4/ctor.TextView.new.html
     view = gtk_text_view_new()
     buffer = gtk_text_view_get_buffer(view)
     call gtk_text_buffer_set_text(buffer, "This is just a great bazaar where I can test widgets"//c_new_line//&
@@ -375,7 +375,7 @@ contains
     integer :: i
 
     dialog = gtk_about_dialog_new()
-    ! https://developer.gnome.org/gtk4/stable/GtkWindow.html#gtk-window-set-transient-for
+    ! https://docs.gtk.org/gtk4/method.Window.set_transient_for.html
     call gtk_window_set_transient_for(dialog, window)
     call gtk_about_dialog_set_program_name(dialog, "The gtk-fortran bazaar"//c_null_char)
     call gtk_about_dialog_set_license_type(dialog, GTK_LICENSE_GPL_3_0)
@@ -405,7 +405,7 @@ contains
     end do
     ! The array must be null terminated:
     c_ptr_array(size(authors)+1) = c_null_ptr
-    ! https://docs.gtk.org/gtk3/method.AboutDialog.set_authors.html
+    ! https://docs.gtk.org/gtk4/method.AboutDialog.set_authors.html
     call gtk_about_dialog_set_authors(dialog, c_ptr_array)
     deallocate(c_ptr_array)
 
