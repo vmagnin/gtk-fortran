@@ -92,8 +92,6 @@ end module
 
 
 module handlers
-  use, intrinsic :: iso_c_binding, only: c_null_ptr, c_null_char
-
   use gtk, only: gtk_about_dialog_new, gtk_about_dialog_set_authors, &
   & gtk_about_dialog_set_comments, &
   & gtk_about_dialog_set_license_type, GTK_LICENSE_GPL_3_0, &
@@ -233,7 +231,6 @@ contains
   ! "It is called whenever GTK needs to draw the contents of the drawing area
   ! to the screen."
   subroutine my_draw_function(widget, my_cairo_context, width, height, gdata) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr, c_int, c_char
     use, intrinsic :: iso_fortran_env, only: wp=>real64
 
     type(c_ptr), value, intent(in)    :: widget, my_cairo_context, gdata
@@ -311,7 +308,6 @@ contains
 
   ! GtkObject signal:
   subroutine destroy (widget, gdata) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr
     use gtk_sup, only: c_f_string_copy_alloc
 
     type(c_ptr), value, intent(in) :: widget, gdata
@@ -339,7 +335,6 @@ contains
 
   ! GtkButton signal:
   subroutine firstbutton (widget, gdata) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr
     use gtk, only: gtk_media_file_new_for_filename, gtk_media_stream_set_volume, gtk_media_stream_play, &
                  & gtk_media_stream_get_playing
     type(c_ptr), value, intent(in) :: widget, gdata
@@ -362,7 +357,6 @@ contains
 
   ! GtkButton signal:
   subroutine secondbutton (widget, gdata) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr
     type(c_ptr), value, intent(in) :: widget, gdata
 
     call gtk_progress_bar_pulse (progress)
@@ -370,7 +364,6 @@ contains
 
   ! GtkButton signal:
   subroutine aboutbutton (widget, gdata) bind(c)
-    use, intrinsic :: iso_c_binding, only: c_ptr
     use gtk_sup, only: f_c_string
 
     type(c_ptr), value, intent(in) :: widget, gdata
@@ -427,7 +420,6 @@ end module handlers
 ! and finally call the GLib main loop.
 !*******************************************************************************
 program bazaar
-  use, intrinsic :: iso_c_binding, only: c_ptr, c_funloc, c_null_char, c_null_ptr
   use gtk, only: gtk_application_new, G_APPLICATION_FLAGS_NONE
   use g, only: g_application_run, g_object_unref
   use handlers
