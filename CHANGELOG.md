@@ -1,12 +1,18 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+
+## [gtk-fortran dev]
+
+### Added
+- The `examples/bazaar.f90` program plays a little melody `demo_sound.ogg` when you click on Button1, by using a GtkMediaStream. The GTK 4 GStreamer backend must be installed (`libgtk-4-media-gstreamer` package in Ubuntu). It was tested with `.ogg`, `.wav` and `.mid` files.
+
+
 ## [gtk-fortran 4.5.0] 2023-11-08
 This release offers interfaces to GTK 4.12 and GLib 2.78 (generated under Fedora 39 with GTK 4.12.3 and GLib 2.78.1).
 
 ### Added
 - In `gtk-sup.f90`: the function `convert_f_string_aa()` (interface `f_c_string`) converts a fortran string array into an array of null-terminated C strings.
-
 
 ## [gtk-fortran 4.4.1] 2023-08-31
 

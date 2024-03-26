@@ -21,7 +21,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2022-09-30
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2024-03-26
 #
 # CMAKE build file for gtk-fortran
 
@@ -52,6 +52,9 @@ if (NOT NO_BUILD_EXAMPLES)
     set_target_properties(${example} PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${example}_mod/ )
     add_test(${example} ./${example})
   endforeach(example)
+
+  # Copy this media file that will be played by the bazaar.f90 example:
+  configure_file(demo_sound.ogg demo_sound.ogg COPYONLY)
 
   #====================================
   # Build the gtkbuilder example:

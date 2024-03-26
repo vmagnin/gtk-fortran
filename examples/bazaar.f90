@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, James Tappin
-! GTK 4 version: vmagnin 2020-05-28, 2023-08-07
+! GTK 4 version: vmagnin 2020-05-28, 2024-03-26
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -87,6 +87,7 @@ module my_widgets
   type(c_ptr) :: view, buffer, scrolled_window
   type(c_ptr) :: my_drawing_area, my_pixbuf
   type(c_ptr) :: dialog
+  type(c_ptr) :: media
 end module
 
 
@@ -202,9 +203,11 @@ contains
     ! https://developer.gnome.org/gtk4/stable/GtkTextView.html#gtk-text-view-new
     view = gtk_text_view_new()
     buffer = gtk_text_view_get_buffer(view)
-    call gtk_text_buffer_set_text(buffer, "This is just a great bazaar"//char(13)// &
-        & "where I can test widgets"//c_new_line//"Vincent"//c_new_line//&
-        &"You can edit this text. It will be scrollable."//c_null_char, -1_c_int)
+    call gtk_text_buffer_set_text(buffer, "This is just a great bazaar where I can test widgets"//c_new_line//&
+        & "Click on Button1 to hear a little melody"//c_new_line//&
+        & "composed with the ForSynth Fortran project:"//c_new_line//&
+        & "https://github.com/vmagnin/forsynth"//c_new_line//c_new_line//&
+        & "You can edit this text. And it is scrollable."//c_null_char, -1_c_int)
 
     ! Let's change the background color and the font of the TextView:
     call gtk_widget_set_name (view, "my_TextView"//c_null_char)
@@ -325,12 +328,36 @@ contains
     call gtk_window_destroy(window)
   end subroutine destroy
 
+  ! Callback function for the signal "notify::ended" emitted by the media stream.
+  ! We use a subroutine because it should return void.
+  subroutine sound_ended(object, gdata) bind(c)
+    type(c_ptr), value, intent(in) :: object, gdata
+    ! Free the media pointer both on C and Fortran sides:
+    call g_object_unref(object)
+    media = c_null_ptr
+  end subroutine
+
   ! GtkButton signal:
   subroutine firstbutton (widget, gdata) bind(c)
     use, intrinsic :: iso_c_binding, only: c_ptr
+    use gtk, only: gtk_media_file_new_for_filename, gtk_media_stream_set_volume, gtk_media_stream_play, &
+                 & gtk_media_stream_get_playing
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    print *, "Hello World!"
+    print *, "Is there anybody in there? Just nod if you can hear me"
+
+    if (.not.c_associated(media)) then
+      ! It plays a little melody
+      ! https://docs.gtk.org/gtk4/class.MediaFile.html
+      media = gtk_media_file_new_for_filename("demo_sound.ogg"//c_null_char)
+      call gtk_media_stream_set_volume(media, 1.0_c_double)
+      call gtk_media_stream_play(media)
+      call g_signal_connect(media, "notify::ended"//c_null_char, c_funloc(sound_ended), c_null_ptr)
+
+      if (gtk_media_stream_get_playing(media) == FALSE) print *, "ERROR: have you installed the libgtk-4-media-gstreamer backend?"
+    else
+      print *, "Be patient, the music is not yet ended!"
+    end if
   end subroutine firstbutton
 
   ! GtkButton signal:

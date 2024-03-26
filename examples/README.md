@@ -13,6 +13,7 @@ Among those examples:
 - The `*pixbuf*.f90` examples demonstrate pixel drawing (bitmap drawing). The `pixbuf_without_gui.f9`0 example draws a Sierpinski triangle in a PNG file, without using a GUI.
 - The `cairo*.f90` examples demonstrates vectorial drawing using Cairo. And `cairo-basics.f90` also saves the drawing in a SVG file and a PDF file.
 - `bazaar.f90` is used for testing various widgets and functions.
+    - `demo_sound.ogg` will be played when you click on Button1.
 - `gio_demo.f90`: this is a very basic demo to get started with GIO. It uses
 Fortran I/O to read text from the keyboard & writes it to the file `gio_demo.dat` in the current directory.
 - `gtkbuilder2.f90` demonstrates how you can use an UI XML file to create your graphical user interface.
