@@ -142,7 +142,6 @@ contains
   ! We use a subroutine because it should return void.
   ! The GUI is defined here.
   subroutine activate(app, gdata) bind(c)
-    use my_widgets
     use various_functions
 
     type(c_ptr), value, intent(in)  :: app, gdata
