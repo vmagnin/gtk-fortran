@@ -142,7 +142,7 @@ contains
   ! We use a subroutine because it should return void.
   ! The GUI is defined here.
   subroutine activate(app, gdata) bind(c)
-    use various_functions
+    use various_functions, only: some_glib_functions
 
     type(c_ptr), value, intent(in)  :: app, gdata
     type(c_ptr) :: css_provider, gdk_display
@@ -151,7 +151,7 @@ contains
     window = gtk_application_window_new(app)
     ! Don't forget that C strings must end with a null char:
     call gtk_window_set_title(window, "A great bazaar to test widgets..."//&
-                                      &c_null_char)
+                                     & c_null_char)
 
     print '(A4,I0,A1,I0,A1,I0)', "GTK ", gtk_get_major_version(),".", &
          & gtk_get_minor_version(), ".", gtk_get_micro_version()
@@ -200,7 +200,8 @@ contains
     ! https://docs.gtk.org/gtk4/ctor.TextView.new.html
     view = gtk_text_view_new()
     buffer = gtk_text_view_get_buffer(view)
-    call gtk_text_buffer_set_text(buffer, "This is just a great bazaar where I can test widgets"//c_new_line//&
+    call gtk_text_buffer_set_text(buffer, &
+        & "This is just a great bazaar where I can test widgets."//c_new_line//&
         & "Click on Button1 to hear a little melody"//c_new_line//&
         & "composed with the ForSynth Fortran project:"//c_new_line//&
         & "https://github.com/vmagnin/forsynth"//c_new_line//c_new_line//&
@@ -211,7 +212,7 @@ contains
     css_provider = gtk_css_provider_new()
     gdk_display = gtk_widget_get_display(window)
     call gtk_css_provider_load_from_data(css_provider, &
-        & "textview#my_TextView {background-color: Ivory;font-family: times;font-size:16px;}", -1_c_size_t)
+        & "textview#my_TextView {background-color: Ivory;font-family: monospace;font-size:14px;}", -1_c_size_t)
     call gtk_style_context_add_provider_for_display(gdk_display, css_provider, 800_c_int)
 
     scrolled_window = gtk_scrolled_window_new()
@@ -242,21 +243,17 @@ contains
 
     print *, "my_draw_function()"
 
+    ! A black horizontal line:
+    call cairo_set_source_rgb(my_cairo_context, 0d0, 0d0, 0d0)
     call cairo_set_line_width(my_cairo_context, 1d0)
     call cairo_move_to(my_cairo_context, 100d0, 20d0)
-    call cairo_line_to(my_cairo_context, 100.5d0, 20d0)
+    call cairo_line_to(my_cairo_context, 300d0, 20d0)
     call cairo_stroke(my_cairo_context)
-
+    ! A red diagonal line:
     call cairo_set_source_rgb(my_cairo_context, 1d0, 0d0, 0d0)
     call cairo_set_line_width(my_cairo_context, 0.5d0)
     call cairo_move_to(my_cairo_context, 50d0, 0d0)
     call cairo_line_to(my_cairo_context, 150d0, 100d0)
-    call cairo_stroke(my_cairo_context)
-
-    call cairo_set_source_rgb(my_cairo_context, 1d0, 0d0, 0d0)
-    call cairo_set_line_width(my_cairo_context, 3d0)
-    call cairo_move_to(my_cairo_context, 60d0, 0d0)
-    call cairo_curve_to(my_cairo_context, 60d0, 50d0, 135d0, 45d0, 100d0, 50d0)
     call cairo_stroke(my_cairo_context)
 
     !*************
@@ -270,13 +267,11 @@ contains
 
     ! pixel is an array with 4 bytes per pixel (RGBA)
     ! We use chars because we need unsigned integers
-    !pixel=char(255)   ! All in white and maximum opacity
-
     do i=1, width*height*nch, nch
       pixel(i)   = char(0)    ! Red
       pixel(i+1) = char(0)    ! Green
       pixel(i+2) = char(255)  ! Blue
-      pixel(i+3) = char(200)  ! Opacity (Alpha channel)
+      pixel(i+3) = char(100)  ! Opacity (Alpha channel)
     end do
 
     ! (0,0) is the top left corner
@@ -287,19 +282,21 @@ contains
       x = j
       y = height/2 + int(50 * sin(j/10.0_wp))
       i = x * nch + y * rowstride + 1
-      pixel(i)   = char(0)
-      pixel(i+1) = char(255)
-      pixel(i+2) = char(0)
-      pixel(i+3) = char(255)
+      pixel(i)   = char(0)    ! Red
+      pixel(i+1) = char(255)  ! Green
+      pixel(i+2) = char(0)    ! Blue
+      pixel(i+3) = char(255)  ! Opacity (Alpha channel)
     end do
 
     ! We redraw the pixbuf:
     call gdk_cairo_set_source_pixbuf(my_cairo_context, my_pixbuf, 20d0, 0d0)
 
-    ! Another Cairo line:
-    call cairo_set_line_width(my_cairo_context, 4d0)
-    call cairo_move_to(my_cairo_context, 0d0, 0d0)
-    call cairo_line_to(my_cairo_context, width*1d0, height*1d0)
+    ! Another Cairo element (will also appear below the pixbuf):
+    ! A red cubic Bézier spline:
+    ! https://cairographics.org/manual/cairo-Paths.html#cairo-curve-to
+    call cairo_set_line_width(my_cairo_context, 3d0)
+    call cairo_move_to(my_cairo_context, 360d0, 20d0)
+    call cairo_curve_to(my_cairo_context, 60d0, 50d0, 135d0, 45d0, 400d0, 150d0)
     call cairo_stroke(my_cairo_context)
 
     call cairo_paint(my_cairo_context)
