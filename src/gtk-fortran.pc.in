@@ -15,4 +15,4 @@ URL: https://github.com/vmagnin/gtk-fortran/wiki
 Version: @version@
 Requires: @gtkname@
 Cflags: @linkerflags@ -I${includedir}
-Libs: -Xlinker -R${libdir} -l${libname}
+Libs: -L${libdir} -Wl,-rpath,${libdir} -l${libname}
