@@ -8,64 +8,6 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - In `gtk-sup.f90`: the function `convert_f_string_aa()` (interface `f_c_string`) converts a fortran string array into an array of null-terminated C strings.
 
 
-## [gtk-fortran 4.3.0] 2022-11-10
-This release offers interfaces to GTK 4.8.2 and GLib 2.74.1.
-
-### Added
-- `screenshots/Julia_gtk-fortran_animated.gif`: four Julia sets in four OS (Fedora, macOS, FreeBSD, MSYS2/Windows).
-- `CITATION.cff` file, used by the GitHub interface.
-- `src/extract_hl_doc.py`: generates markdown files for the HL gtk-fortran documentation. Fixes [issue #259](https://github.com/vmagnin/gtk-fortran/issues/259).
-- Intel ifx compiler is now supported by CMake (>=3.20), with the id `IntelLLVM`.
-- `examples/tests_gtk_sup.f90`: for testing functions of the gtk_sup module.
-- `examples/notebooks.f90`: notebooks are now scrollable. And a popup menu appears when clicking with the right button on tabs.
-- A new example has been added in the `gtk-fortran-extra` repository (MIT license). It demonstrates how you can use modern Fortran parallel features (coarrays, events, teams, collective routines) with gtk-fortran. It computes a Buddhabrot.
-- A new *How to start my own project from a gtk-fortran example?* tutorial, including license considerations.
-
-### Changed
-- The Python scripts received minor code improvements suggested by pylint.
-- `CMakeLists.txt` files: several minor improvements.
-- `examples/notebooks.f90` improved: notebooks are now scrollable, added a popup menu when clicking with the right button on tabs.
-- The `examples/gtkbuilder.glade` UI file has been regenerated with Cambalache (`gtkbuilder.cmb` file) and renamed `gtkbuilder.ui`. The widgets were also improved (tooltips, URL link...).
-- `gtk-auto.inc` and `gtkenums-auto.inc` are renamed with the `.in` extension because GitHub believes `.inc` is C++. Fixes issue #263.
-- Improved code layout in some files, code cleaning, improvements.
-- Uses allocatable strings instead of long strings.
-- The HL gtk-fortran documentation has been fully reviewed and updated.
-- The Wiki documentation has been fully reviewed and refactored: it now uses the Diátaxis framework (Tutorials, How-to, Reference, Explanation).
-
-### Fixed
-- `src/cfwrapper/enums.py`: prepared for GTK 4.8 and GLib 2.74. Two regex were  modified to remove correctly three constants. See [issue #266](https://github.com/vmagnin/gtk-fortran/issues/266).
-- `cmake/DefaultFlags.cmake`: release and debug flags for non-GFortran compilers were inverted.
-
-## [gtk-fortran 4.2.1] 2022-04-24
-
-### Fixed
-- [Issue #257](https://github.com/vmagnin/gtk-fortran/issues/257): `examples/tests.f90`, `examples/bazaar.f90` and `src/gtk-fortran.f90` were crashing (segmentation fault) on macOS because the GLib `g_get_os_info()` function returns NULL on that OS.
-
-
-## [gtk-fortran 4.2] 2022-04-23
-This release offers interfaces to GTK 4.6.2 and GLib 2.72.1.
-
-### Added
-- gtk-fortran can now be used as a simple [fpm](https://fpm.fortran-lang.org) dependency (gtk4 branch only). See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm). It implied some changes:
-    * `gtk-auto.f90` and `gtkenums-auto.f90` are renamed with the `.inc` extension.
-    * Removed `mswindowsonly-auto.f90` and `unixonly-auto.f90`, and added `api_compatibility.f90` with the module `gtk_os_dependent` to keep API compatibility.
-    * `plplot/plplot_extra_ndef.f90` renamed `plplot_extra.f90` and moved to `src/`.
-- `examples/bazaar.f90`: the About button credits the authors of that file. The call to `gtk_about_dialog_set_license()` is replaced by the more convenient `gtk_about_dialog_set_license_type()`.
-- A `tutorials/` directory contains the GTK 4 sources used in the Wiki first tutorial.
-- `src/gtk-fortran.f90`: prints the GTK and GLib version of the release.
-- A [conda repository](https://github.com/conda-forge/gtk-4-fortran-feedstock) for gtk-4-fortran.
-
-### Changed
-- Better handling of default compiler flags, using flags like `CMAKE_Fortran_FLAGS_RELEASE_INIT` (CMake>=3.7 required). A file `cmake/DefaultFlags.cmake` was added. Backported to gtk3 branch.
-- `gtkbuilder2.f90`: replaced `gtk_builder_add_from_file()` by `gtk_builder_new_from_file()`.
-- The syntax was modernized in many places (Fortran 2008).
-
-### Fixed
-- `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of `c_null_ptr`. Needed with the NAG Fortran compiler. Backported to gtk3 branch.
-- `examples/tests.f90`: loop undefined with ifort. And now uses `g_variant_unref()`.
-- Various bug fixes.
-
-
 ## [gtk-fortran 3.24.31] 2022-04-21
 - The gtk-3-fortran library offers interfaces to GTK 3.24.31 and GLib 2.72.1 (generated with Fedora 36).
 
@@ -74,22 +16,6 @@ This release offers interfaces to GTK 4.6.2 and GLib 2.72.1.
 
 ### Fixed
 - `g_application_run()` should be called with an array `[c_null_ptr]` as third argument instead of `c_null_ptr`. Needed with the NAG Fortran compiler.
-
-
-## [gtk-fortran 4.1] 2021-10-22
-The gtk-4-fortran library has been generated from GTK 4.4.0 and GLib 2.70.0 under Fedora 35.
-
-### Added
-- The cfwrapper has a new required parameter `-v` to set the gtk-fortran semantic version (major.minor.patch). It is written in the `VERSIONS` file (used by CMake, `src/extract_events.pl`, `src/alt_build_test.sh`) and `codemeta.json`. Backported to the gtk3 branch.
-
-### Changed
-- The compiler flags for release is now `-O3` instead of `-O3 -mtune=native -march=native`.
-- The `-warn nounused` flag was added for ifort.
-- The Fortran / C interfaces now use the `import ::` statement instead of `use, intrinsic :: iso_c_binding, only:`.
-- In some examples, a module was added to contain the scientific subroutines: `julia_pixbuf.f90`, `mandelbrot_pixbuf.f90`, `cairo-tests.f90`.
-
-### Removed
-- `examples/gtkbuilder.f90`: `gtk_builder_connect_signals_full` being removed from GTK 4, this example has become identical to `gtkbuilder2.f90`.
 
 
 ## [gtk-fortran 3.24.30] 2021-09-08
@@ -102,34 +28,6 @@ The gtk-4-fortran library has been generated from GTK 4.4.0 and GLib 2.70.0 unde
 ### Changed
 - The compiler flags for release is now `-O3` instead of `-O3 -mtune=native -march=native`.
 - The Fortran / C interfaces now use the `import ::` statement instead of `use, intrinsic :: iso_c_binding, only:`.
-
-
-## [gtk-fortran 4.0] 2021-04-28
-- The gtk-4-fortran library has been generated from GTK 4.2.0 and GLib 2.68.1 under Fedora 34.
-- Starting from this 4.0 release, the project will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-- All the improvements included in the simultaneously released gtk-fortran 3.24.28 (gtk3 branch) are also in the gtk4 branch.
-
-### Added
-- GTK 4 now includes the GSK and graphene libraries: src/gsk-auto.f90 and src/graphene-auto.f90 (see https://developer.gnome.org/gtk4/stable/gtk.html)
-- src/gtk.f90: historically, in gtk-fortran g\_signal\_connect() was declared as a subroutine, because the handler\_id returned by the GLib function is usually never used. Here we define both a g\_signal\_connect() function and a subroutine. You will generally use the subroutine in your programs. The function\_g\_signal\_connect\_swapped and g\_signal\_connect\_swapped procedure were also added.
-- examples/menubar.f90: a new menu example based on GMenu and GAction.
-
-### Changed
-- examples/gtkzero_gapp.f90 is now working.
-- examples/gtkhello.f90: new version using GtkApplication.
-- Most examples are now using GtkApplication.
-- sketcher/sketcher.f90 has been ported to GTK 4, but some problems remains due to deprecated functions: it can not detect signals in the UI file and the toplevel widget detection need improvement.
-
-### Removed
-- examples/gtkzero.f90: replaced by gtkzero_gapp.f90.
-- examples/gtkhello2.f90: replaced by gtkhello.f90.
-- examples/menu.f90 & menu2.f90: based on deprecated APIs.
-- examples/hl_radio.f90: based on the GtkRadioButton deprecated API.
-- src/atk-auto.f90: removed from GTK 4 (deprecated API).
-- src/gtk-hl-accelerator.f90: deprecated API.
-- src/gtk-hl-menu.f90 and examples/hl_menu.f90: deprecated API.
-- src/gtk-hl-chooser.f90, bazaar.f90, hl_choosers.f90: GtkFileChooserButton has been removed from GTK 4.
-- meson.build experimental files were removed. They are now apart in the gtk4-dev-meson branch.
 
 
 ## [gtk-fortran 3.24.28] - 2021-04-28
