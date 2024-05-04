@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2011
-# Free Software Foundation, Inc.
-#
-# This file is part of the gtk-fortran GTK / Fortran Interface library.
+# This file is part of gtk-fortran, a GTK / Fortran interface library.
+# Copyright (C) 2011 The gtk-fortran team
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2021-04-03
+# Last modification: 2023-08-08
 
 """ This module contains functions to determine the versions of the libraries
 and programs used in gkt-fortran.
@@ -34,8 +32,8 @@ and programs used in gkt-fortran.
 import re           # Regular expression library
 
 # Project modules:
-from globals_const import TAB
 from tools import multiline
+from globals_const import TAB
 
 
 def set_bit_field(match):
@@ -64,29 +62,31 @@ def translate_enums(c_file_name, enum_list):
                     "GdkSeatCapabilities", "GdkAxisFlags"]:
             continue    # Go to next enum
 
-        parameters = re.findall("(?ms){(.*)}", enum)
+        parameters = re.findall(r"(?ms){(.*)}", enum)
 
         # ********** Cleaning **********
         # Remove lines beginning by #:
-        parameters[0] = re.sub("(?m)^#.*$", "", parameters[0])
+        parameters[0] = re.sub(r"(?m)^#.*$", "", parameters[0])
         # Remove TABs and overnumerous spaces:
         parameters[0] = parameters[0].replace("\t", " ")
-        parameters[0] = re.sub("[ ]{2,}", " ", parameters[0])
-        parameters[0] = re.sub("(?m) +$", "", parameters[0])
+        parameters[0] = re.sub(r"[ ]{2,}", " ", parameters[0])
+        parameters[0] = re.sub(r"(?m) +$", "", parameters[0])
         # Delete characters (   ) and , if they are not between quotes:
         parameters[0] = re.sub(r"(?<!')(\()(?!')", "", parameters[0])
         parameters[0] = re.sub(r"(?<!')(\))(?!')", "", parameters[0])
-        parameters[0] = re.sub("(?<!')(,)(?!')", "", parameters[0])
-        parameters[0] = re.sub("(?m),$", "", parameters[0])
+        parameters[0] = re.sub(r"(?<!')(,)(?!')", "", parameters[0])
+        parameters[0] = re.sub(r"(?m),$", "", parameters[0])
         # Remove the u for unsigned numbers (rare)
-        parameters[0] = re.sub("1u[ ]<<", "1 <<", parameters[0])
+        parameters[0] = re.sub(r"1u[ ]<<", r"1 <<", parameters[0])
         # Remove those preprocessor constants:
-        parameters[0] = re.sub("GLIB_AVAILABLE_ENUMERATOR_IN_\d_[\d]+ ", "", parameters[0])
+        parameters[0] = re.sub(r"(GLIB|GIO|GOBJECT|GDK)_AVAILABLE_ENUMERATOR_IN_\d_[\d]+", "", parameters[0])
+        parameters[0] = re.sub(r"(GLIB|GIO|GOBJECT|GDK)_DEPRECATED_ENUMERATOR_IN_\d_[\d]+_FOR.*", "", parameters[0])
+
         # ********** Refactoring **********
         # Is it a char ?
-        parameters[0] = re.sub("('.?')", r"iachar(\1)", parameters[0])
+        parameters[0] = re.sub(r"('.?')", r"iachar(\1)", parameters[0])
         # Is it in hexadecimal ?
-        parameters[0] = re.sub("0x([0-9A-Fa-f]+)", r"INT(z'\1')",
+        parameters[0] = re.sub(r"0x([0-9A-Fa-f]+)", r"INT(z'\1')",
                                parameters[0])
         # Is it a bit field ?
         parameters[0] = bit_fields.sub(set_bit_field, parameters[0])

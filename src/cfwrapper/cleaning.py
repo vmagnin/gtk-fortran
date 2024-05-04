@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2011
-# Free Software Foundation, Inc.
-#
-# This file is part of the gtk-fortran GTK / Fortran Interface library.
+# This file is part of gtk-fortran, a GTK / Fortran interface library.
+# Copyright (C) 2011 The gtk-fortran team
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2021-01-19
+# Last modification: 2023-04-07
 
 """ This module contains functions used to clean header files in the cfwrapper.
 """
@@ -38,7 +36,7 @@ from enums import translate_enums
 
 def clean_header_file(c_file_name, whole_file, enums_file):
     """Preprocessing and cleaning of the header file. It also gathers the enums.
-       Do not change the order of the regular expressions !
+       Do not change the order of the regular expressions!
     """
 
     nb_enums = 0
@@ -51,57 +49,47 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     whole_file = re.sub(r"(?m)^static inline(.*?\n)+?}", "", whole_file)
 
     # Remove Deprecated statements (necessary before treating enumerators):
-    whole_file = re.sub("[ ]\w*_DEPRECATED_TYPE_[\w()]*;", ";", whole_file)
-    whole_file = re.sub("[ ]\w*_DEPRECATED_ENUMERATOR_IN_[\w()]*[ ]", " ", whole_file)
+    whole_file = re.sub(r"[ ]\w*_DEPRECATED_TYPE_[\w()]*;", ";", whole_file)
+    whole_file = re.sub(r"[ ]\w*_DEPRECATED_ENUMERATOR_IN_[\w()]*[ ]", " ", whole_file)
 
     # Gather and translate C enumerators to Fortran enumerators,
-    # and write them to gtkenums-auto.f90:
+    # and write them to gtkenums-auto.* file:
     enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
     f_enum, nb = translate_enums(c_file_name, enum_types)
     nb_enums += nb
     enums_file.write(f_enum)
 
     # Removing multilines typedef:
-    whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$",
-                        "", whole_file)
+    whole_file = re.sub(r"(?m)^typedef([^;]*?\n)+?[^;]*?;$", "", whole_file)
     # Remove C directives (multilines then monoline):
     whole_file = re.sub(r"(?m)^#(.*[\\][\n])+.*?$", "", whole_file)
-    whole_file = re.sub("(?m)^#.*$", "", whole_file)
+    whole_file = re.sub(r"(?m)^#.*$", "", whole_file)
     # Remove TABs and overnumerous spaces:
     whole_file = whole_file.replace("\t", " ")
-    whole_file = re.sub("[ ]{2,}", " ", whole_file)
+    whole_file = re.sub(r"[ ]{2,}", " ", whole_file)
     # Remove two levels of { } structures:
-    whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
-    whole_file = re.sub("(?ms){[^{]*?}$", "", whole_file)
+    for i in [1, 2]:
+        whole_file = re.sub(r"(?ms){[^{]*?}$", "", whole_file)
     # Remove structures like: { } a_name;
     whole_file = re.sub(r"(?ms){[^{]*?}[ \w]*?;", "", whole_file)
     # Remove "available_in" and "deprecated" directives:
-    whole_file = re.sub("(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$",
-                        "", whole_file)
-    whole_file = re.sub("G_GNUC_BEGIN_IGNORE_DEPRECATIONS", "", whole_file)
-    whole_file = re.sub("G_GNUC_END_IGNORE_DEPRECATIONS", "", whole_file)
-    # Remove extern C statement:
-    whole_file = re.sub("(?m)^(extern).*$", "", whole_file)
+    whole_file = re.sub(r"(?m)^.*(_AVAILABLE_IN_|_DEPRECATED).*$", "", whole_file)
+    whole_file = re.sub(r"G_GNUC_(BEGIN|END)_IGNORE_DEPRECATIONS", "", whole_file)
     # Remove different kind of declarations:
-    whole_file = re.sub("(?m)^(enum).*$", "", whole_file)
-    whole_file = re.sub("(?m)^(typedef|union|struct).*$",
-                        "", whole_file)
-    whole_file = re.sub("(?m)^.*(G_BEGIN_DECLS|CAIRO_BEGIN_DECLS) *$", "", whole_file)
-    whole_file = re.sub("(?m)^.*(G_END_DECLS|CAIRO_END_DECLS) *$",
-                        "", whole_file)
+    whole_file = re.sub(r"(?m)^(extern|enum|typedef|union|struct).*$", "", whole_file)
+    whole_file = re.sub(r"(?m)^.*(G|CAIRO|GRAPHENE)_(BEGIN|END)_DECLS *$", "", whole_file)
     whole_file = re.sub(r"(?m)^.*(G_UNLOCK|G_LOCK|G_LOCK_DEFINE_STATIC)\(.*;$", "", whole_file)
-    whole_file = re.sub("(?m)^.*(cairo_public) ", "", whole_file)
-    whole_file = re.sub("(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC|G_GNUC_WARN_UNUSED_RESULT|_GDK_PIXBUF_EXTERN)"
+    whole_file = re.sub(r"(?m)^.*(cairo_public) ", "", whole_file)
+    whole_file = re.sub(r"(?m)^(GLIB_VAR|GTKVAR|GDKVAR|GDK_PIXBUF_VAR|GTKMAIN_C_VAR|G_INLINE_FUNC|G_GNUC_WARN_UNUSED_RESULT|_GDK_PIXBUF_EXTERN)"
                         , "", whole_file)   # extern
-    whole_file = re.sub("(?m)^(G_DECLARE_INTERFACE|G_DECLARE_DERIVABLE_TYPE).*$", "", whole_file)
+    whole_file = re.sub(r"(?ms)^(G_DECLARE_INTERFACE|G_DECLARE_DERIVABLE_TYPE) ?\(.*?\)", "", whole_file)
+    # Remove GNU macros at the end of declarations (functions prototypes):
+    whole_file = re.sub(r"G_GNUC_[\w (),]*;", ";", whole_file)
+    whole_file = re.sub(r"G_ANALYZER_NORETURN *;", ";", whole_file)
+    # Remove some GNU macros at the beginning of functions prototypes:
+    whole_file = re.sub(r"(G_DECLARE_FINAL_TYPE|G_DEFINE_AUTOPTR_CLEANUP_FUNC|GDK_DECLARE_INTERNAL_TYPE) ?\(.*?\)", "", whole_file)
     # Remove empty lines:
     whole_file = re.sub(r"(?m)^\n$", "", whole_file)
-    # These three functions names are the only ones between parentheses,
-    # so we remove parentheses (>=GLib 2.48.O):
-    if c_file_name == "gutils.h":
-        whole_file = whole_file.replace("(g_bit_nth_lsf)", "g_bit_nth_lsf")
-        whole_file = whole_file.replace("(g_bit_nth_msf)", "g_bit_nth_msf")
-        whole_file = whole_file.replace("(g_bit_storage)", "g_bit_storage")
 
     return whole_file, nb_enums
 

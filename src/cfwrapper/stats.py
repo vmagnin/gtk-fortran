@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2011
-# Free Software Foundation, Inc.
-#
-# This file is part of the gtk-fortran GTK / Fortran Interface library.
+# This file is part of gtk-fortran, a GTK / Fortran interface library.
+# Copyright (C) 2011 The gtk-fortran team
 #
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2020-05-07
+# Last modification: 2023-03-22
 
 """ This module contains functions for printing statistics at the end of the
 gtk-fortran generation process.
@@ -39,16 +37,17 @@ import getpass      # To obtain the login with getuser()
 
 # Project modules:
 from globals_const import SRC_DIR
+from scan_types_and_enums import types_enums
 
 
-def hash_gtk_fortran(PATH_DICT):
-    """Compute the SHA1 hash of all *-auto.f90 files to detect modifications
-    in gtk-fortran (useful during development)
+def hash_gtk_fortran(PATH_DICT, GTKENUMS_FILE):
+    """Compute the SHA1 hash of all *-auto.* files to detect
+    modifications in gtk-fortran (useful during development)
     """
     hasher = hashlib.sha1()
 
     files_list = list(PATH_DICT.values())
-    files_list.extend(["gtkenums-auto.f90", "unixonly-auto.f90", "mswindowsonly-auto.f90"])
+    files_list.extend([GTKENUMS_FILE])
 
     for file_name in files_list:
         with open(SRC_DIR+file_name, 'rb') as auto_file:
@@ -85,6 +84,7 @@ class Statistics():
         self.nb_enumerators = 0
         self.nb_win32_utf8 = 0
         self.used_types = []
+        self.nb_funptr_types = 0
 
     def inc_nb_lines(self, n):
         self.nb_lines += n
@@ -110,7 +110,10 @@ class Statistics():
     def append_type(self, iso_c):
         self.used_types.append(iso_c)
 
-    def print(self, T0, versions, PATH_DICT, TYPES_DICT, TYPES2_DICT, my_errors):
+    def inc_nb_funptr_types(self, n):
+        self.nb_funptr_types += n
+
+    def print(self, T0, versions, PATH_DICT, GTKENUMS_FILE, my_errors):
         """Print various statistics about the generation of gtk-fortran
         """
 
@@ -120,20 +123,21 @@ class Statistics():
         print(getpass.getuser() + ", "
               + time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()) + "\033[0m")
 
-        print('{:<30}{:>6}'.format("* nb_files scanned =", self.nb_files))
-        print('{:<30}{:>6}'.format("* nb_generated_interfaces =", self.nb_generated_interfaces))
-        print('{:<30}{:>6}'.format("* nb_deprecated_functions =", self.nb_deprecated_functions))
-        print('{:<30}{:>6}'.format("* nb_type_errors =", my_errors.nb_type_errors))
-        print('{:<30}{:>6}'.format("* nb_errors (others) =", my_errors.nb_errors))
-        print('{:<30}{:>6}'.format("* nb_lines treated =", self.nb_lines))
-        print('{:<30}{:>6}'.format("* nb_variadic functions =", self.nb_variadic))
-        print('{:<30}{:>6}'.format("* nb_enumerators =", self.nb_enumerators))
-        print('{:<30}{:>6}'.format("* nb_win32_utf8 =", self.nb_win32_utf8))
-        print('{:<30}{:>6}'.format("* Number of types =", len(TYPES_DICT) + len(TYPES2_DICT)))
+        print(f"* nb_files scanned =        {self.nb_files:>6}")
+        print(f"* nb_generated_interfaces = {self.nb_generated_interfaces:>6}")
+        print(f"* nb_deprecated_functions = {self.nb_deprecated_functions:>6}")
+        print(f"* nb_type_errors =          {my_errors.nb_type_errors:>6}")
+        print(f"* nb_errors (others) =      {my_errors.nb_errors:>6}")
+        print(f"* nb_lines treated =        {self.nb_lines:>6}")
+        print(f"* nb_variadic functions =   {self.nb_variadic:>6}")
+        print(f"* nb_enumerators =          {self.nb_enumerators:>6}")
+        print(f"* nb_win32_utf8 =           {self.nb_win32_utf8:>6}")
+        print(f"* Number of types =         {len(types_enums.TYPES_DICT) + len(types_enums.TYPES2_DICT):>6}")
+        print(f"* Number of funptr types =  {self.nb_funptr_types:>6}")
 
-        print("* Computing time: {0:.2f} s".format(time.time()-T0))
+        print(f"* Computing time: {time.time()-T0:.2f} s")
 
-        # Print the SHA1 of all *-auto.f90 files and look for modification:
-        hash_gtk_fortran(PATH_DICT)
+        # Print the SHA1 of all *-auto.* files and look for modification:
+        hash_gtk_fortran(PATH_DICT, GTKENUMS_FILE)
 
         print("\n\033[1m Used types:", self.used_types, "\033[0m")
