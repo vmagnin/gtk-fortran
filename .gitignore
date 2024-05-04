@@ -3,7 +3,10 @@
 *.o
 *~
 *.bak
+*.backup
+*.old
 *.directory
+*__pycache__*
 cfwrapper-errors.csv
 usemodules.txt
 build/
