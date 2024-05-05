@@ -4,9 +4,10 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ## [gtk-fortran gtk3 dev]
 
 ### Added
-- `fpm.toml`
+- gtk-3-fortran can now be used as a simple [fpm](https://fpm.fortran-lang.org) dependency. See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm) (gtk3 branch). It implied some changes:
     * `gtk-auto.f90` and `gtkenums-auto.f90` are renamed with the `.in` extension.
     * Removed `mswindowsonly-auto.f90` and `unixonly-auto.f90`, and added `api_compatibility.f90` with the module `gtk_os_dependent` to keep API compatibility.
+    * `plplot/plplot_extra_ndef.f90` renamed `plplot_extra.f90` and moved to `src/`.
 - `LICENSE_EXCEPTION`: the text of the GCC Runtime Library Exception, version 3.1. Note that this exception was chosen in 2011 and was already cited in the header of each source file with the URL of the GNU licenses. Putting the text in the repository is a better practice.
 - In `gtk-sup.f90`: 
     - the function `convert_f_string_aa()` (interface `f_c_string`) converts a fortran string array into an array of null-terminated C strings.
