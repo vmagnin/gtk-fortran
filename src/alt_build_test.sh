@@ -71,6 +71,10 @@ echo ">>> Executables in ../build/byscript"
 ls ./*.out
 echo
 
+# Copy directories and files needed to run the programs:
+cp -r ../../sketcher/data/ ../../sketcher/default.options ../../sketcher/*.glade .
+cp ../../examples/gtkbuilder.glade .
+
 echo ">>> Running each example (CTRL+C to exit)..."
 for i in *.out ; do 
   if [ ! "${i}" = "gio_demo.out" ]; then
