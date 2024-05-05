@@ -1,6 +1,31 @@
-Last update: 2022-03-11
+Last update: 2024-05-05
 
-Building & Installing gtk-fortran
+Dependencies
+================================
+
+If you want to use gtk-fortran as a fpm dependency, you just need:
+- A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran, ifort, ifx...
+- GTK and the associated development files. For 3.x use the "gtk3" branch.
+- The Fortran Package Manager [fpm](https://fpm.fortran-lang.org).
+
+If you want to build and install the whole project (library, tools, examples...), you also need:
+- CMake (>=3.7) and pkg-config.
+- PLplot (>=5.13) is used if available (you need the development files).
+
+Using gtk-fortran as a fpm dependency
+================================
+
+Starting from version 3.24.41, gtk-3-fortran can be used as a [fpm](https://fpm.fortran-lang.org) dependency. You simply need to add gtk-fortran in the dependencies section of the `fpm.toml` manifest of your project:
+
+```toml
+[dependencies]
+gtk-fortran = { git = "https://github.com/vmagnin/gtk-fortran.git", branch = "gtk3" }
+```
+
+See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm) (MIT license) for a demonstration.
+
+
+Building & installing gtk-fortran
 ================================
 
 The build install system uses `cmake`. This file gives quick instructions to install gtk-fortran. **See the [Wiki documentation](https://github.com/vmagnin/gtk-fortran/wiki#installation-and-building) for more detailed instructions.**
@@ -29,7 +54,7 @@ Useful variables that are specific to gtk-fortran are:
 
        EXCLUDE_PLPLOT -- set this to disable building the plplot
          integration even if PLplot is found.
-       NO_BUILD_HL -- set this to disable building the High Level sub-library 
+       NO_BUILD_HL -- set this to disable building the High Level sub-library
          (includes PLplot and sketcher).
        NO_BUILD_EXAMPLES -- set this to prevent compiling the example
          programs, also mostly useful for packagers.
@@ -61,16 +86,6 @@ Other systems (Windows, macOS, FreeBSD...)
 -------
 
 See the Wiki documentation for specific and detailed instructions.
-
-
-Dependencies
-------------
-
-- A modern Fortran compiler (>= Fortran 2008 standard), for example gfortran, ifort, ifx...
-- GTK and the associated development files. For 3.x use the "gtk3" branch, for 4.x use the "gtk4" branch.
-- CMake 3.7 or higher and pkg-config.
-- PLplot is used if available (you need the development files).
-
 
 Known issues
 ------------
