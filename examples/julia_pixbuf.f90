@@ -22,7 +22,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2020-05-15
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2024-05-05
 
 
 module global_widgets
@@ -222,7 +222,7 @@ contains
 
   ! GtkButton signal emitted by the button "Save as PNG":
   function secondbutton (widget, gdata) result(ret)  bind(c)
-    use gtk_os_dependent, only: gdk_pixbuf_savev
+    use gdk_pixbuf, only: gdk_pixbuf_savev
     use global_widgets
     implicit none
     integer(c_int)    :: ret
