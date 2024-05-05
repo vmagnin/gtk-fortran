@@ -23,8 +23,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-04-26 (tested with Python 3.10.7, Ubuntu)
-# $ pylint *.py ../tools.py    => 8.53/10
+# Last modification: 2024-05-05
+# $ pylint *.py ../tools.py    => 8.51/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
@@ -118,11 +118,11 @@ if ARGS.gtk:
             ("/usr/include/gtk-4.0/unix-print", "unix-print-auto.f90"),
             ("/usr/include/graphene-1.0", "graphene-auto.f90")])
     elif GTK_VERSION == "gtk3":
-        GTKENUMS_FILE = "gtkenums-auto.f90"
+        GTKENUMS_FILE = "gtkenums-auto.in"
         PATH_DICT.update([
             ("/usr/include/atk-1.0", "atk-auto.f90"),
             ("/usr/include/gtk-3.0/gdk", "gdk-auto.f90"),
-            ("/usr/include/gtk-3.0/gtk", "gtk-auto.f90"),
+            ("/usr/include/gtk-3.0/gtk", "gtk-auto.in"),
             ("/usr/include/gtk-3.0/unix-print", "unix-print-auto.f90")])
     elif GTK_VERSION == "gtk2":
         GTKENUMS_FILE = "gtkenums-auto.f90"

@@ -5,6 +5,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 ### Added
 - `fpm.toml`
+    * `gtk-auto.f90` and `gtkenums-auto.f90` are renamed with the `.in` extension.
 - `LICENSE_EXCEPTION`: the text of the GCC Runtime Library Exception, version 3.1. Note that this exception was chosen in 2011 and was already cited in the header of each source file with the URL of the GNU licenses. Putting the text in the repository is a better practice.
 - In `gtk-sup.f90`: 
     - the function `convert_f_string_aa()` (interface `f_c_string`) converts a fortran string array into an array of null-terminated C strings.

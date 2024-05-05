@@ -30,7 +30,7 @@
 # Fortran files composing the gtk-fortran library:
 #=================================================
 
-# Main files (gtk.f90 includes gtk-auto.f90 and gtkenums-auto.f90):
+# Main files (gtk.f90 includes gtk-auto.in and gtkenums-auto.in):
 set(sources
     "atk-auto.f90"
     "cairo-auto.f90"

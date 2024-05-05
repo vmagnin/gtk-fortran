@@ -24,16 +24,17 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by James Tappin 8/14/2012.
+# Last modification: vmagnin, 2024-05-05
 
 
-# Find the enumerator constants in gtkenums-auto.f90 and write 
+# Find the enumerator constants in gtkenums-auto.in and write 
 # them out to a simple list.
 
 use strict ;
 use warnings ;
 use Getopt::Long;
 
-my $infile="gtkenums-auto.f90";
+my $infile="gtkenums-auto.in";
 my $outfile="gtk-enumerators.lis";
 
 my $str;
