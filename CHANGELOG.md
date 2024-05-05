@@ -3,6 +3,8 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 ## [gtk-fortran gtk3 dev]
 
+Offers Fortran interfaces to GTK 3.24.41, GLib 2.80.0, Cairo 1.18.0 (generated with Fedora 40).
+
 ### Added
 - gtk-3-fortran can now be used as a simple [fpm](https://fpm.fortran-lang.org) dependency. See the [gtkzero_fpm example](https://github.com/vmagnin/gtkzero_fpm) (gtk3 branch). It implied some changes:
     * `gtk-auto.f90` and `gtkenums-auto.f90` are renamed with the `.in` extension.
