@@ -41,6 +41,7 @@ set(sources
     "gtk-sup.f90"
     "pango-auto.f90"
     "gdkevents-auto.f90"
+    "api_compatibility.f90"
 )
 
 if(NOT NO_BUILD_HL)
