@@ -22,7 +22,7 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: Jens Hunger: 03/06/2013, ArmstrongJ: 07/04/2016,
-#   vmagnin: 2024-05-05
+#   vmagnin: 2024-05-07
 #
 # CMAKE build file for gtk-fortran
 
@@ -163,8 +163,7 @@ install(PROGRAMS
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 )
 
-install(PROGRAMS
-  "${CMAKE_CURRENT_BINARY_DIR}/${gtk_V_fortran}"
+install(TARGETS ${gtk_V_fortran}
   DESTINATION ${CMAKE_INSTALL_BINDIR}
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 )
