@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2023-03-21
-# Last modification: 2023-07-03
+# Last modification: 2024-10-24
 
 import os
 import re           # Regular expression library
@@ -82,6 +82,11 @@ class types_enums():
         "guchar":("integer(kind=c_int8_t)", "c_int8_t"),
         # typedef gchar** GStrv
         "GStrv":("type(c_ptr)", "c_ptr"),
+        # GVariant and GVariantType are structures, generally used with pointers.
+        # We don't define the types and kinds but this declaration is
+        # needed for GVariant and GVariantType to be treated in Fortran.py:
+        "GVariant":("", ""),
+        "GVariantType":("", ""),
         "double": ("real(c_double)", "c_double"),
         "gdouble": ("real(c_double)", "c_double"),
         "float":("real(c_float)", "c_float"),
