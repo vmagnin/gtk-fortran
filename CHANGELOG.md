@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [gtk-fortran dev] 2024-11-05
+
+### Fixed
+- cfwrapper: Variant and GVariantType types are now correctly used when declared with a double `*` in C. [Issue #289](https://github.com/vmagnin/gtk-fortran/issues/289).
+
+
 ## [gtk-fortran 3.24.41] 2024-05-08
 
 Offers Fortran interfaces to the latests GTK 3.24.41, GLib 2.80.0, Cairo 1.18.0... (generated with Fedora 40)
