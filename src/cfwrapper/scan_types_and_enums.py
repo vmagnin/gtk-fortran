@@ -100,8 +100,6 @@ class types_enums():
         # typedef gsize GType;
         "GType":  ("integer(c_size_t)", "c_size_t"),
         "va_list":("type(c_ptr)", "c_ptr"),
-        #typedef void* gpointer;
-        "gpointer":("type(c_ptr)", "c_ptr"),
         #typedef struct _GdkAtom *GdkAtom;
         "GdkAtom":("type(c_ptr)", "c_ptr"),
         # GC (Xlib) is it a pointer ?
