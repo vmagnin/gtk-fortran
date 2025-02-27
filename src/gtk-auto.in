@@ -2652,29 +2652,29 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkWidget * gtk_list_view_new (GtkSelectionModel *model, GtkListItemFactory *factory);
 function gtk_list_view_new(model, factory) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_list_view_new
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
   type(c_ptr), value :: factory
 end function
 
 ! 
 !GtkSelectionModel * gtk_list_view_get_model (GtkListView *self);
 function gtk_list_view_get_model(self) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_list_view_get_model
+  type(c_ptr) :: gtk_list_view_get_model
   type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_list_view_set_model (GtkListView *self, GtkSelectionModel *model);
 subroutine gtk_list_view_set_model(self, model) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: self
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -5481,29 +5481,29 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkWidget * gtk_grid_view_new (GtkSelectionModel *model, GtkListItemFactory *factory);
 function gtk_grid_view_new(model, factory) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_grid_view_new
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
   type(c_ptr), value :: factory
 end function
 
 ! 
 !GtkSelectionModel * gtk_grid_view_get_model (GtkGridView *self);
 function gtk_grid_view_get_model(self) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_grid_view_get_model
+  type(c_ptr) :: gtk_grid_view_get_model
   type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_grid_view_set_model (GtkGridView *self, GtkSelectionModel *model);
 subroutine gtk_grid_view_set_model(self, model) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: self
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -5648,7 +5648,7 @@ function gtk_accelerator_parse(accelerator, accelerator_key, accelerator_mods)&
   integer(c_int) :: gtk_accelerator_parse
   character(kind=c_char), dimension(*) :: accelerator
   type(c_ptr), value :: accelerator_key
-  integer(c_int), value :: accelerator_mods
+  type(c_ptr), value :: accelerator_mods
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -5662,7 +5662,7 @@ function gtk_accelerator_parse_with_keycode(accelerator, display,&
   type(c_ptr), value :: display
   type(c_ptr), value :: accelerator_key
   type(c_ptr), value :: accelerator_codes
-  integer(c_int), value :: accelerator_mods
+  type(c_ptr), value :: accelerator_mods
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -8302,7 +8302,7 @@ function gtk_column_view_sorter_get_nth_sort_column(self, position, sort_order)&
   type(c_ptr) :: gtk_column_view_sorter_get_nth_sort_column
   type(c_ptr), value :: self
   integer(c_int), value :: position
-  integer(c_int), value :: sort_order
+  type(c_ptr), value :: sort_order
 end function
 
 !--------------------------------------------------
@@ -11706,27 +11706,27 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkSelectionFilterModel * gtk_selection_filter_model_new (GtkSelectionModel *model);
 function gtk_selection_filter_model_new(model) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_selection_filter_model_new
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_selection_filter_model_set_model (GtkSelectionFilterModel *self, GtkSelectionModel *model);
 subroutine gtk_selection_filter_model_set_model(self, model) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: self
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GtkSelectionModel * gtk_selection_filter_model_get_model (GtkSelectionFilterModel *self);
 function gtk_selection_filter_model_get_model(self) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_selection_filter_model_get_model
+  type(c_ptr) :: gtk_selection_filter_model_get_model
   type(c_ptr), value :: self
 end function
 
@@ -12841,9 +12841,9 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkSelectionModel * gtk_stack_get_pages (GtkStack *stack);
 function gtk_stack_get_pages(stack) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_stack_get_pages
+  type(c_ptr) :: gtk_stack_get_pages
   type(c_ptr), value :: stack
 end function
 
@@ -13231,11 +13231,11 @@ end subroutine
 !void gtk_scrolled_window_get_policy (GtkScrolledWindow *scrolled_window, GtkPolicyType *hscrollbar_policy, GtkPolicyType *vscrollbar_policy);
 subroutine gtk_scrolled_window_get_policy(scrolled_window, hscrollbar_policy,&
 & vscrollbar_policy) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: scrolled_window
-  integer(c_int), value :: hscrollbar_policy
-  integer(c_int), value :: vscrollbar_policy
+  type(c_ptr), value :: hscrollbar_policy
+  type(c_ptr), value :: vscrollbar_policy
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -16204,9 +16204,9 @@ end function
 ! GDK_AVAILABLE_IN_4_14
 !GtkPageSetup * gtk_print_setup_get_page_setup (GtkPrintSetup *setup);
 function gtk_print_setup_get_page_setup(setup) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_print_setup_get_page_setup
+  type(c_ptr) :: gtk_print_setup_get_page_setup
   type(c_ptr), value :: setup
 end function
 
@@ -16275,19 +16275,19 @@ end subroutine
 ! GDK_AVAILABLE_IN_4_14
 !GtkPageSetup * gtk_print_dialog_get_page_setup (GtkPrintDialog *self);
 function gtk_print_dialog_get_page_setup(self) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_print_dialog_get_page_setup
+  type(c_ptr) :: gtk_print_dialog_get_page_setup
   type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_4_14
 !void gtk_print_dialog_set_page_setup (GtkPrintDialog *self, GtkPageSetup *page_setup);
 subroutine gtk_print_dialog_set_page_setup(self, page_setup) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: self
-  integer(c_int), value :: page_setup
+  type(c_ptr), value :: page_setup
 end subroutine
 
 ! GDK_AVAILABLE_IN_4_14
@@ -20817,20 +20817,20 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_selection_model_is_selected (GtkSelectionModel *model, guint position);
 function gtk_selection_model_is_selected(model, position) bind(c)
-  import :: c_int
+  import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_selection_model_is_selected
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
   integer(c_int), value :: position
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !GtkBitset * gtk_selection_model_get_selection (GtkSelectionModel *model);
 function gtk_selection_model_get_selection(model) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_selection_model_get_selection
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -20840,7 +20840,7 @@ function gtk_selection_model_get_selection_in_range(model, position, n_items)&
   import :: c_ptr, c_int
   implicit none
   type(c_ptr) :: gtk_selection_model_get_selection_in_range
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
   integer(c_int), value :: position
   integer(c_int), value :: n_items
 end function
@@ -20849,10 +20849,10 @@ end function
 !gboolean gtk_selection_model_select_item (GtkSelectionModel *model, guint position, gboolean unselect_rest);
 function gtk_selection_model_select_item(model, position, unselect_rest)&
 & bind(c)
-  import :: c_int
+  import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_selection_model_select_item
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
   integer(c_int), value :: position
   integer(c_int), value :: unselect_rest
 end function
@@ -20860,10 +20860,10 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_selection_model_unselect_item (GtkSelectionModel *model, guint position);
 function gtk_selection_model_unselect_item(model, position) bind(c)
-  import :: c_int
+  import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_selection_model_unselect_item
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
   integer(c_int), value :: position
 end function
 
@@ -20871,10 +20871,10 @@ end function
 !gboolean gtk_selection_model_select_range (GtkSelectionModel *model, guint position, guint n_items, gboolean unselect_rest);
 function gtk_selection_model_select_range(model, position, n_items,&
 & unselect_rest) bind(c)
-  import :: c_int
+  import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_selection_model_select_range
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
   integer(c_int), value :: position
   integer(c_int), value :: n_items
   integer(c_int), value :: unselect_rest
@@ -20883,10 +20883,10 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_selection_model_unselect_range (GtkSelectionModel *model, guint position, guint n_items);
 function gtk_selection_model_unselect_range(model, position, n_items) bind(c)
-  import :: c_int
+  import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_selection_model_unselect_range
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
   integer(c_int), value :: position
   integer(c_int), value :: n_items
 end function
@@ -20894,19 +20894,19 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_selection_model_select_all (GtkSelectionModel *model);
 function gtk_selection_model_select_all(model) bind(c)
-  import :: c_int
+  import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_selection_model_select_all
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_selection_model_unselect_all (GtkSelectionModel *model);
 function gtk_selection_model_unselect_all(model) bind(c)
-  import :: c_int
+  import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_selection_model_unselect_all
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -20915,7 +20915,7 @@ function gtk_selection_model_set_selection(model, selected, mask) bind(c)
   import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_selection_model_set_selection
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
   type(c_ptr), value :: selected
   type(c_ptr), value :: mask
 end function
@@ -20924,9 +20924,9 @@ end function
 !void gtk_selection_model_selection_changed (GtkSelectionModel *model, guint position, guint n_items);
 subroutine gtk_selection_model_selection_changed(model, position, n_items)&
 & bind(c)
-  import :: c_int
+  import :: c_ptr, c_int
   implicit none
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
   integer(c_int), value :: position
   integer(c_int), value :: n_items
 end subroutine
@@ -26252,10 +26252,10 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkWidget * gtk_column_view_new (GtkSelectionModel *model);
 function gtk_column_view_new(model) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_column_view_new
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
 end function
 
 ! GDK_AVAILABLE_IN_ALL
@@ -26298,19 +26298,19 @@ end subroutine
 ! 
 !GtkSelectionModel * gtk_column_view_get_model (GtkColumnView *self);
 function gtk_column_view_get_model(self) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_column_view_get_model
+  type(c_ptr) :: gtk_column_view_get_model
   type(c_ptr), value :: self
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_column_view_set_model (GtkColumnView *self, GtkSelectionModel *model);
 subroutine gtk_column_view_set_model(self, model) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: self
-  integer(c_int), value :: model
+  type(c_ptr), value :: model
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -28862,11 +28862,11 @@ end subroutine
 ! GDK_DEPRECATED_IN_4_10_FOR(GtkGridView)
 !void gtk_icon_view_get_drag_dest_item (GtkIconView *icon_view, GtkTreePath **path, GtkIconViewDropPosition *pos);
 subroutine gtk_icon_view_get_drag_dest_item(icon_view, path, pos) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: icon_view
   type(c_ptr), value :: path
-  integer(c_int), value :: pos
+  type(c_ptr), value :: pos
 end subroutine
 
 ! GDK_DEPRECATED_IN_4_10_FOR(GtkGridView)
@@ -28880,7 +28880,7 @@ function gtk_icon_view_get_dest_item_at_pos(icon_view, drag_x, drag_y, path,&
   integer(c_int), value :: drag_x
   integer(c_int), value :: drag_y
   type(c_ptr), value :: path
-  integer(c_int), value :: pos
+  type(c_ptr), value :: pos
 end function
 
 ! GDK_DEPRECATED_IN_4_10_FOR(GtkGridView)
@@ -32891,11 +32891,11 @@ end subroutine
 ! GDK_DEPRECATED_IN_4_10_FOR(GtkListView)
 !void gtk_tree_view_get_drag_dest_row (GtkTreeView *tree_view, GtkTreePath **path, GtkTreeViewDropPosition *pos);
 subroutine gtk_tree_view_get_drag_dest_row(tree_view, path, pos) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: tree_view
   type(c_ptr), value :: path
-  integer(c_int), value :: pos
+  type(c_ptr), value :: pos
 end subroutine
 
 ! GDK_DEPRECATED_IN_4_10_FOR(GtkListView)
@@ -32909,7 +32909,7 @@ function gtk_tree_view_get_dest_row_at_pos(tree_view, drag_x, drag_y, path,&
   integer(c_int), value :: drag_x
   integer(c_int), value :: drag_y
   type(c_ptr), value :: path
-  integer(c_int), value :: pos
+  type(c_ptr), value :: pos
 end function
 
 ! GDK_DEPRECATED_IN_4_10_FOR(GtkListView)
@@ -33692,7 +33692,7 @@ function gtk_tree_sortable_get_sort_column_id(sortable, sort_column_id, order)&
   integer(c_int) :: gtk_tree_sortable_get_sort_column_id
   type(c_ptr), value :: sortable
   type(c_ptr), value :: sort_column_id
-  integer(c_int), value :: order
+  type(c_ptr), value :: order
 end function
 
 ! GDK_DEPRECATED_IN_4_10
@@ -35391,72 +35391,72 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkPageSetup * gtk_page_setup_new (void);
 function gtk_page_setup_new() bind(c)
-  import :: c_int
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_page_setup_new
+  type(c_ptr) :: gtk_page_setup_new
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !GtkPageSetup * gtk_page_setup_copy (GtkPageSetup *other);
 function gtk_page_setup_copy(other) bind(c)
-  import :: c_int
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_page_setup_copy
-  integer(c_int), value :: other
+  type(c_ptr) :: gtk_page_setup_copy
+  type(c_ptr), value :: other
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !GtkPageOrientation gtk_page_setup_get_orientation (GtkPageSetup *setup);
 function gtk_page_setup_get_orientation(setup) bind(c)
-  import :: c_int
+  import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_page_setup_get_orientation
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_page_setup_set_orientation (GtkPageSetup *setup, GtkPageOrientation orientation);
 subroutine gtk_page_setup_set_orientation(setup, orientation) bind(c)
-  import :: c_int
+  import :: c_ptr, c_int
   implicit none
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   integer(c_int), value :: orientation
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GtkPaperSize * gtk_page_setup_get_paper_size (GtkPageSetup *setup);
 function gtk_page_setup_get_paper_size(setup) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_page_setup_get_paper_size
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_page_setup_set_paper_size (GtkPageSetup *setup, GtkPaperSize *size);
 subroutine gtk_page_setup_set_paper_size(setup, size) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   type(c_ptr), value :: size
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !double gtk_page_setup_get_top_margin (GtkPageSetup *setup, GtkUnit unit);
 function gtk_page_setup_get_top_margin(setup, unit) bind(c)
-  import :: c_double, c_int
+  import :: c_double, c_ptr, c_int
   implicit none
   real(c_double) :: gtk_page_setup_get_top_margin
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   integer(c_int), value :: unit
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_page_setup_set_top_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
 subroutine gtk_page_setup_set_top_margin(setup, margin, unit) bind(c)
-  import :: c_int, c_double
+  import :: c_ptr, c_double, c_int
   implicit none
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   real(c_double), value :: margin
   integer(c_int), value :: unit
 end subroutine
@@ -35464,19 +35464,19 @@ end subroutine
 ! GDK_AVAILABLE_IN_ALL
 !double gtk_page_setup_get_bottom_margin (GtkPageSetup *setup, GtkUnit unit);
 function gtk_page_setup_get_bottom_margin(setup, unit) bind(c)
-  import :: c_double, c_int
+  import :: c_double, c_ptr, c_int
   implicit none
   real(c_double) :: gtk_page_setup_get_bottom_margin
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   integer(c_int), value :: unit
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_page_setup_set_bottom_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
 subroutine gtk_page_setup_set_bottom_margin(setup, margin, unit) bind(c)
-  import :: c_int, c_double
+  import :: c_ptr, c_double, c_int
   implicit none
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   real(c_double), value :: margin
   integer(c_int), value :: unit
 end subroutine
@@ -35484,19 +35484,19 @@ end subroutine
 ! GDK_AVAILABLE_IN_ALL
 !double gtk_page_setup_get_left_margin (GtkPageSetup *setup, GtkUnit unit);
 function gtk_page_setup_get_left_margin(setup, unit) bind(c)
-  import :: c_double, c_int
+  import :: c_double, c_ptr, c_int
   implicit none
   real(c_double) :: gtk_page_setup_get_left_margin
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   integer(c_int), value :: unit
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_page_setup_set_left_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
 subroutine gtk_page_setup_set_left_margin(setup, margin, unit) bind(c)
-  import :: c_int, c_double
+  import :: c_ptr, c_double, c_int
   implicit none
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   real(c_double), value :: margin
   integer(c_int), value :: unit
 end subroutine
@@ -35504,19 +35504,19 @@ end subroutine
 ! GDK_AVAILABLE_IN_ALL
 !double gtk_page_setup_get_right_margin (GtkPageSetup *setup, GtkUnit unit);
 function gtk_page_setup_get_right_margin(setup, unit) bind(c)
-  import :: c_double, c_int
+  import :: c_double, c_ptr, c_int
   implicit none
   real(c_double) :: gtk_page_setup_get_right_margin
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   integer(c_int), value :: unit
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_page_setup_set_right_margin (GtkPageSetup *setup, double margin, GtkUnit unit);
 subroutine gtk_page_setup_set_right_margin(setup, margin, unit) bind(c)
-  import :: c_int, c_double
+  import :: c_ptr, c_double, c_int
   implicit none
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   real(c_double), value :: margin
   integer(c_int), value :: unit
 end subroutine
@@ -35525,58 +35525,58 @@ end subroutine
 !void gtk_page_setup_set_paper_size_and_default_margins (GtkPageSetup *setup, GtkPaperSize *size);
 subroutine gtk_page_setup_set_paper_size_and_default_margins(setup, size)&
 & bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   type(c_ptr), value :: size
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !double gtk_page_setup_get_paper_width (GtkPageSetup *setup, GtkUnit unit);
 function gtk_page_setup_get_paper_width(setup, unit) bind(c)
-  import :: c_double, c_int
+  import :: c_double, c_ptr, c_int
   implicit none
   real(c_double) :: gtk_page_setup_get_paper_width
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   integer(c_int), value :: unit
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !double gtk_page_setup_get_paper_height (GtkPageSetup *setup, GtkUnit unit);
 function gtk_page_setup_get_paper_height(setup, unit) bind(c)
-  import :: c_double, c_int
+  import :: c_double, c_ptr, c_int
   implicit none
   real(c_double) :: gtk_page_setup_get_paper_height
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   integer(c_int), value :: unit
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !double gtk_page_setup_get_page_width (GtkPageSetup *setup, GtkUnit unit);
 function gtk_page_setup_get_page_width(setup, unit) bind(c)
-  import :: c_double, c_int
+  import :: c_double, c_ptr, c_int
   implicit none
   real(c_double) :: gtk_page_setup_get_page_width
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   integer(c_int), value :: unit
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !double gtk_page_setup_get_page_height (GtkPageSetup *setup, GtkUnit unit);
 function gtk_page_setup_get_page_height(setup, unit) bind(c)
-  import :: c_double, c_int
+  import :: c_double, c_ptr, c_int
   implicit none
   real(c_double) :: gtk_page_setup_get_page_height
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   integer(c_int), value :: unit
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !GtkPageSetup *gtk_page_setup_new_from_file (const char *file_name, GError **error);
 function gtk_page_setup_new_from_file(file_name, error) bind(c)
-  import :: c_int, c_char, c_ptr
+  import :: c_ptr, c_char
   implicit none
-  integer(c_int) :: gtk_page_setup_new_from_file
+  type(c_ptr) :: gtk_page_setup_new_from_file
   character(kind=c_char), dimension(*) :: file_name
   type(c_ptr), value :: error
 end function
@@ -35584,10 +35584,10 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_page_setup_load_file (GtkPageSetup *setup, const char *file_name, GError **error);
 function gtk_page_setup_load_file(setup, file_name, error) bind(c)
-  import :: c_int, c_char, c_ptr
+  import :: c_int, c_ptr, c_char
   implicit none
   integer(c_int) :: gtk_page_setup_load_file
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   character(kind=c_char), dimension(*) :: file_name
   type(c_ptr), value :: error
 end function
@@ -35595,10 +35595,10 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !gboolean gtk_page_setup_to_file (GtkPageSetup *setup, const char *file_name, GError **error);
 function gtk_page_setup_to_file(setup, file_name, error) bind(c)
-  import :: c_int, c_char, c_ptr
+  import :: c_int, c_ptr, c_char
   implicit none
   integer(c_int) :: gtk_page_setup_to_file
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   character(kind=c_char), dimension(*) :: file_name
   type(c_ptr), value :: error
 end function
@@ -35606,9 +35606,9 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkPageSetup *gtk_page_setup_new_from_key_file (GKeyFile *key_file, const char *group_name, GError **error);
 function gtk_page_setup_new_from_key_file(key_file, group_name, error) bind(c)
-  import :: c_int, c_ptr, c_char
+  import :: c_ptr, c_char
   implicit none
-  integer(c_int) :: gtk_page_setup_new_from_key_file
+  type(c_ptr) :: gtk_page_setup_new_from_key_file
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
   type(c_ptr), value :: error
@@ -35621,7 +35621,7 @@ function gtk_page_setup_load_key_file(setup, key_file, group_name, error)&
   import :: c_int, c_ptr, c_char
   implicit none
   integer(c_int) :: gtk_page_setup_load_key_file
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
   type(c_ptr), value :: error
@@ -35630,9 +35630,9 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !void gtk_page_setup_to_key_file (GtkPageSetup *setup, GKeyFile *key_file, const char *group_name);
 subroutine gtk_page_setup_to_key_file(setup, key_file, group_name) bind(c)
-  import :: c_int, c_ptr, c_char
+  import :: c_ptr, c_char
   implicit none
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
   type(c_ptr), value :: key_file
   character(kind=c_char), dimension(*) :: group_name
 end subroutine
@@ -35640,18 +35640,18 @@ end subroutine
 ! GDK_AVAILABLE_IN_ALL
 !GVariant *gtk_page_setup_to_gvariant (GtkPageSetup *setup);
 function gtk_page_setup_to_gvariant(setup) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr) :: gtk_page_setup_to_gvariant
-  integer(c_int), value :: setup
+  type(c_ptr), value :: setup
 end function
 
 ! GDK_AVAILABLE_IN_ALL
 !GtkPageSetup *gtk_page_setup_new_from_gvariant (GVariant *variant);
 function gtk_page_setup_new_from_gvariant(variant) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_page_setup_new_from_gvariant
+  type(c_ptr) :: gtk_page_setup_new_from_gvariant
   type(c_ptr), value :: variant
 end function
 
@@ -35686,18 +35686,18 @@ end function
 !void gtk_print_operation_set_default_page_setup (GtkPrintOperation *op, GtkPageSetup *default_page_setup);
 subroutine gtk_print_operation_set_default_page_setup(op, default_page_setup)&
 & bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr
   implicit none
   type(c_ptr), value :: op
-  integer(c_int), value :: default_page_setup
+  type(c_ptr), value :: default_page_setup
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
 !GtkPageSetup * gtk_print_operation_get_default_page_setup (GtkPrintOperation *op);
 function gtk_print_operation_get_default_page_setup(op) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_print_operation_get_default_page_setup
+  type(c_ptr) :: gtk_print_operation_get_default_page_setup
   type(c_ptr), value :: op
 end function
 
@@ -35948,11 +35948,11 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkPageSetup *gtk_print_run_page_setup_dialog (GtkWindow *parent, GtkPageSetup *page_setup, GtkPrintSettings *settings);
 function gtk_print_run_page_setup_dialog(parent, page_setup, settings) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_print_run_page_setup_dialog
+  type(c_ptr) :: gtk_print_run_page_setup_dialog
   type(c_ptr), value :: parent
-  integer(c_int), value :: page_setup
+  type(c_ptr), value :: page_setup
   type(c_ptr), value :: settings
 end function
 
@@ -35960,12 +35960,12 @@ end function
 !void gtk_print_run_page_setup_dialog_async (GtkWindow *parent, GtkPageSetup *page_setup, GtkPrintSettings *settings, GtkPageSetupDoneFunc done_cb, gpointer data);
 subroutine gtk_print_run_page_setup_dialog_async(parent, page_setup, settings,&
 & done_cb, data) bind(c)
-  import :: c_ptr, c_int
+  import :: c_ptr, c_funptr
   implicit none
   type(c_ptr), value :: parent
-  integer(c_int), value :: page_setup
+  type(c_ptr), value :: page_setup
   type(c_ptr), value :: settings
-  integer(c_int), value :: done_cb
+  type(c_funptr), value :: done_cb
   type(c_ptr), value :: data
 end subroutine
 
@@ -35992,9 +35992,9 @@ end function
 ! GDK_AVAILABLE_IN_ALL
 !GtkPageSetup *gtk_print_context_get_page_setup (GtkPrintContext *context);
 function gtk_print_context_get_page_setup(context) bind(c)
-  import :: c_int, c_ptr
+  import :: c_ptr
   implicit none
-  integer(c_int) :: gtk_print_context_get_page_setup
+  type(c_ptr) :: gtk_print_context_get_page_setup
   type(c_ptr), value :: context
 end function
 

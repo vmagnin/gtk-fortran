@@ -39,7 +39,6 @@ gsize;integer(c_size_t);c_size_t
 gssize;integer(c_size_t);c_size_t
 GType;integer(c_size_t);c_size_t
 va_list;type(c_ptr);c_ptr
-gpointer;type(c_ptr);c_ptr
 GdkAtom;type(c_ptr);c_ptr
 GC;type(c_ptr);c_ptr
 GIConv;type(c_ptr);c_ptr
@@ -62,13 +61,6 @@ Time;integer(c_long);c_long
 KeyCode;character(kind=c_char);c_char
 KeySym;integer(c_long);c_long
 GWin32OSType;integer(c_int);c_int
-GtkLicense;integer(c_int);c_int
-GApplicationFlags;integer(c_int);c_int
-GtkInputHints;integer(c_int);c_int
-GtkInputPurpose;integer(c_int);c_int
-GtkPackType;integer(c_int);c_int
-GtkArrowType;integer(c_int);c_int
-GdkDragAction;integer(c_int);c_int
 cairo_bool_t;integer(c_int);c_int
 gshort;integer(c_short);c_short
 glong;integer(c_long);c_long

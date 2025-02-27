@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2025-02-19
+# Last modification: 2025-02-24
 
 """ This module contains a function to translate C types to Fortran types.
 """
@@ -57,11 +57,6 @@ def iso_c_binding(declaration, isReturned):
 
     # Remove a possible "const " statement:
     declaration = re.sub(r"^(const )", "", declaration)
-
-    # Is it a "typedef enum"?
-    for item in types_enums.gtk_enums:
-        if item in c_type:
-            return "integer(c_int)", "c_int"
 
     # Is it a pointer toward a function?
     for item in types_enums.gtk_funptr:
@@ -108,6 +103,12 @@ def iso_c_binding(declaration, isReturned):
         for item in types_enums.TYPES_DICT:
             if item in c_type.split():
                 return types_enums.TYPES_DICT[item][0] + array, types_enums.TYPES_DICT[item][1]
+
+    # Is it a "typedef enum"?
+    # This treatment must be made at the end of this function (see Issue #290).
+    for item in types_enums.gtk_enums:
+        if item in c_type:
+            return "integer(c_int)", "c_int"
 
     # We failed to identify the C type.
     # This print can be used for debugging those cases:

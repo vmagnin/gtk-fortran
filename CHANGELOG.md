@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [gtk-fortran 4.7.1]
+
+### Fixed
+- cfwrapper: the interfaces of 98 functions are fixed (Issue #290). In `cfwrapper/fortran.py`, the block treating the enums was not placed at the end of the `iso_c_binding()` function: first, C pointers toward enums were not recognized as pointers, and secondly enums having a name included in a GTK type name could cause bad bindings (for example `GtkSelectionMode` and `GtkSelectionModel`).
+
+
 ## [gtk-fortran 4.7.0] 2024-11-05
 This release offers interfaces to GTK 4.16 and GLib 2.82 (generated under Fedora 41 with GTK 4.16.3 and GLib 2.82.2).
 
