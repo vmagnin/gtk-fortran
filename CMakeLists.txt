@@ -21,7 +21,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018,
-# vmagnin 2022-04-06
+# vmagnin 2025-03-07
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -31,7 +31,8 @@
 # -D NO_BUILD_HL=true
 # -D INSTALL_EXAMPLES=true
 
-cmake_minimum_required(VERSION 3.7)
+# CMake 3.10 was released in November 2017:
+cmake_minimum_required(VERSION 3.10)
 
 # Include overwrites before setting up the project
 set(CMAKE_USER_MAKE_RULES_OVERRIDE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/DefaultFlags.cmake)

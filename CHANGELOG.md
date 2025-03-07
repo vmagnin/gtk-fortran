@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [gtk-fortran dev]
+
+### Changed
+- CMake 3.10 is now required (it was released in Nov. 2017).
+
 
 ## [gtk-fortran 4.7.1] 2025-03-04
 
