@@ -1,7 +1,11 @@
 # Changelog
-All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [gtk-fortran dev] 2024-11-05
+
+## [gtk-fortran dev] 2025-03-25
+
+### Changed
+- CMake 3.10 is now required (it was released in Nov. 2017).
 
 ### Fixed
 - cfwrapper: Variant and GVariantType types are now correctly used when declared with a double `*` in C. [Issue #289](https://github.com/vmagnin/gtk-fortran/issues/289).

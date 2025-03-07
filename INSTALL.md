@@ -1,4 +1,4 @@
-Last update: 2024-05-05
+Last update: 2025-03-07
 
 Dependencies
 ================================
@@ -9,7 +9,7 @@ If you want to use gtk-fortran as a fpm dependency, you just need:
 - The Fortran Package Manager [fpm](https://fpm.fortran-lang.org).
 
 If you want to build and install the whole project (library, tools, examples...), you also need:
-- CMake (>=3.7) and pkg-config.
+- CMake (>=3.10) and pkg-config.
 - PLplot (>=5.13) is used if available (you need the development files).
 
 Using gtk-fortran as a fpm dependency
