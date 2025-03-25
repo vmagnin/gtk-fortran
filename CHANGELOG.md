@@ -9,8 +9,9 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 ### Fixed
 - cfwrapper: Variant and GVariantType types are now correctly used when declared with a double `*` in C. [Issue #289](https://github.com/vmagnin/gtk-fortran/issues/289).
-- `gtk-sup.f90`: the `GValue` structure is now defined as three 64 bits variables. It fixes the Windows [issue #244](https://github.com/vmagnin/gtk-fortran/issues/244). See the discussion in the [PR](https://github.com/vmagnin/gtk-fortran/commit/60992129c024e27134f4f31744282311a1656426).
-
+- `gtk-sup.f90`:
+    * the `GValue` structure is now defined as three 64 bits variables. It fixes the Windows [issue #244](https://github.com/vmagnin/gtk-fortran/issues/244). See the discussion in the [PR](https://github.com/vmagnin/gtk-fortran/commit/60992129c024e27134f4f31744282311a1656426).
+    * Four dialog icons names updated: [PR #293](https://github.com/vmagnin/gtk-fortran/pull/293)
 
 ## [gtk-fortran 3.24.41] 2024-05-08
 
