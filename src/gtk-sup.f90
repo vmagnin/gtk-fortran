@@ -196,13 +196,13 @@ module gtk_sup
   character(len=*), parameter :: GTK_STOCK_DIALOG_AUTHENTICATION= &
        & "gtk-dialog-authentication"//c_null_char
   character(len=*), parameter :: GTK_STOCK_DIALOG_INFO = &
-       & "gtk-dialog-info"//c_null_char
+       & "dialog-information"//c_null_char
   character(len=*), parameter :: GTK_STOCK_DIALOG_WARNING = &
-       & "gtk-dialog-warning"//c_null_char
+       & "dialog-warning"//c_null_char
   character(len=*), parameter :: GTK_STOCK_DIALOG_ERROR = &
-       & "gtk-dialog-error"//c_null_char
+       & "dialog-error"//c_null_char
   character(len=*), parameter :: GTK_STOCK_DIALOG_QUESTION = &
-       & "gtk-dialog-question"//c_null_char
+       & "dialog-question"//c_null_char
   character(len=*), parameter :: GTK_STOCK_DIRECTORY = &
        & "gtk-directory"//c_null_char
   character(len=*), parameter :: GTK_STOCK_DISCARD = &
