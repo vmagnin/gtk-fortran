@@ -20,15 +20,18 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 !==============================================================================
-! Contributed by Vincent MAGNIN, 2022-05-06, last modified: 2022-05-06
+! Contributed by Vincent MAGNIN, 2022-05-06, last modified: 2025-03-26
 !
 ! This program is testing functions of the gtk_sup module.
 !==============================================================================
 
 module tests
+  use gtk_sup
   use, intrinsic :: iso_c_binding
   use gtk, only: TRUE, FALSE, gtk_init, gtk_label_new, gtk_label_get_text
-  use gtk_sup, only: c_f_string_copy, strlen, c_f_string_copy_alloc, fdate
+  use g, only: g_value_init, g_value_unset, g_value_set_int, g_value_get_int, &
+             & g_value_set_double, g_value_get_double, g_value_get_pointer, &
+             & g_value_set_pointer, g_value_copy
 
   implicit none
 
@@ -101,6 +104,61 @@ contains
     errors = 0
   end function test_date_routines
 
+  ! https://docs.gtk.org/gobject/method.Value.init.html
+  integer function test_gvalue_routines() result(errors)
+    type(gvalue), target :: val, val2   ! GValue (opaque) structures
+    type(c_ptr) :: p_val, p_val2        ! C pointers toward GValue structures
+
+    errors = 0
+
+    print '(A)', ">> g_value_init(), g_value_set_int(), g_value_get_int()"
+    ! Initialize the GValue:
+    p_val = c_loc(val)
+    p_val = g_value_init(p_val, G_TYPE_INT)
+    call g_value_set_int(p_val, 1234_c_int)
+
+    if (g_value_get_int(p_val) /= 1234_c_int) then
+      print '(A)', "Problem!"
+      errors = errors + 1
+    end if
+
+    print '(A)', ">> g_value_copy()"
+    p_val2 = c_loc(val2)
+    p_val2 = g_value_init(p_val2, G_TYPE_INT)
+    call g_value_copy(p_val, p_val2)
+
+    if (g_value_get_int(p_val2) /= g_value_get_int(p_val)) then
+      print '(A)', "Problem!"
+      errors = errors + 1
+    end if
+
+    print '(A)', ">> g_value_unset(), g_value_set_double(), g_value_get_double()"
+    ! Changing the type of the GValue:
+    call g_value_unset(p_val)
+    p_val = g_value_init(p_val, G_TYPE_DOUBLE)
+
+    call g_value_set_double(p_val, 3.14_c_double)
+    if (g_value_get_double(p_val) /= 3.14_c_double) then
+      print '(A)', "Problem!"
+      errors = errors + 1
+    end if
+
+    print '(A)', ">> g_value_set_pointer(), g_value_get_pointer()"
+    ! Changing the type of the GValue:
+    call g_value_unset(p_val)
+    p_val = g_value_init(p_val, G_TYPE_POINTER)
+
+    call g_value_set_pointer(p_val, c_loc(val))
+    p_val2 = g_value_get_pointer(p_val)
+    ! FIXME: the following lines compiles with Intel ifx but causes an internal
+    ! error with GFortran 14.2.0:
+!    if (.not.c_associated(p_val2, c_loc(val))) then
+!      print '(A)', "Problem!"
+!      errors = errors + 1
+!    end if
+
+  end function test_gvalue_routines
+
 end module tests
 
 
@@ -113,11 +171,15 @@ program tests_gtk_sup
   call gtk_init()
 
   print '(A)', "Testing some gtk_sup functions..."
-
+  print *
   print '(A)', "> test_string_conversion_routines()"
   errors = test_string_conversion_routines()
+  print *
   print '(A)', "> test_date_routines()"
   errors = test_date_routines()
+  print *
+  print '(A)', "> test_gvalue_routines()"
+  errors = errors + test_gvalue_routines()
 
   print *
   if (errors == 0) then

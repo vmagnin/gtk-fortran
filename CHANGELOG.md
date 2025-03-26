@@ -3,6 +3,9 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 ## [gtk-fortran dev]
 
+### Added
+- `examples/tests_gtk_sup.f90`: added `test_gvalue_routines()`.
+
 ### Changed
 - CMake 3.10 is now required (it was released in Nov. 2017).
 
