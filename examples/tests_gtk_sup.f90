@@ -166,17 +166,17 @@ program tests_gtk_sup
   use tests
 
   implicit none
-  integer :: errors
+  integer :: errors = 0
 
   call gtk_init()
 
   print '(A)', "Testing some gtk_sup functions..."
   print *
   print '(A)', "> test_string_conversion_routines()"
-  errors = test_string_conversion_routines()
+  errors = errors + test_string_conversion_routines()
   print *
   print '(A)', "> test_date_routines()"
-  errors = test_date_routines()
+  errors = errors + test_date_routines()
   print *
   print '(A)', "> test_gvalue_routines()"
   errors = errors + test_gvalue_routines()
