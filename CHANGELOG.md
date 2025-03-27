@@ -9,6 +9,9 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ### Changed
 - CMake 3.10 is now required (it was released in Nov. 2017).
 
+### Fixed
+- `src/gtk-sup.f90`: the `GValue` structure is now defined as three 64 bits variables. It fixes the Windows [issue #244](https://github.com/vmagnin/gtk-fortran/issues/244). See the discussion in the gtk3 branch [PR](https://github.com/vmagnin/gtk-fortran/commit/60992129c024e27134f4f31744282311a1656426). Regression tests have been added in `examples/tests_gtk_sup.f90`.
+
 
 ## [gtk-fortran 4.7.1] 2025-03-04
 
