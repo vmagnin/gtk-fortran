@@ -21,8 +21,8 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
-! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
-! vmagnin 2020-06-08 (GTK 4), jtappin 2023-09-22
+! Last modifications: vmagnin+IanH0073 2019-02-21, vmagnin 2020-06-08 (GTK 4),
+!   jtappin 2023-09-22, florianober 2025-03-27
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
@@ -131,11 +131,14 @@ module gtk_sup
      type(c_ptr) :: p0 = C_NULL_PTR, p1 = C_NULL_PTR, p2 = C_NULL_PTR
   end type gtktreeiter
 
-  ! Define a spacemaker for GValue It's 24 bytes on 64 bit & 20 on 32,
-  ! i.e. one long and 2 64-bit integers
+  !+
+  ! Define a spacemaker for GValue. It's 24 bytes on 64 bit, thus
+  ! three 64-bit integers. On 32 bits, it uses only 20 bytes over the 24.
+  ! A GValue is an opaque structure:
+  ! https://docs.gtk.org/gobject/struct.Value.html
+  !-
   type, bind(c) :: gvalue
-     integer(c_long) :: il = 0
-     integer(c_int64_t), dimension(2) :: i64 = [0, 0]
+      integer(kind=c_int64_t), dimension(3) :: i64 = [0, 0, 0]
   end type gvalue
 
   ! Define a GtkTextIter (this has to be pre-allocated in the calls)
@@ -237,8 +240,7 @@ contains
     !
     ! GVAL |  gvalue |  required |  The GValue to clear.
     !-
-    gval%il  = 0
-    gval%i64 = [0,0]
+    gval%i64 = [0, 0, 0]
   end subroutine clear_gvalue
 
   !============================================================================
