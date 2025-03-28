@@ -1,17 +1,23 @@
 name = "gtk-fortran"
-description = "With this file gtk-fortran can be used as a fpm dependency. But if you want a full build and install of gtk-fortran on your system, you must use CMake."
+description = "With this file gtk-fortran can be used as a fpm dependency. But if you want a full build and install of gtk-fortran on your system, you must use CMake for the moment."
 version = "4.7.1"
 license = "GPL-3.0-or-later WITH GCC-exception-3.1"
 author = "Vincent Magnin et al."
 maintainer = "https://github.com/vmagnin/gtk-fortran/issues"
 copyright = "2011 Vincent Magnin et al."
 homepage = "https://github.com/vmagnin/gtk-fortran/wiki"
+categories = ["graphics", "GUI"]
 keywords = ["gtk-fortran", "GUI", "GTK", "fpm"]
 
 # When gtk-fortran is used as a fpm dependency, fpm will automatically discover
 # the gtk-fortran modules in the gtk-fortran/src/ directory.
 
 [build]
+auto-executables = false
+auto-tests = false
+auto-examples = false
+module-naming = false
+
 link = [
   "gtk-4",
   "pangocairo-1.0",
@@ -25,3 +31,11 @@ link = [
   "gobject-2.0",
   "glib-2.0" ]
 
+[install]
+library = false
+test = false
+
+[fortran]
+implicit-typing = false
+implicit-external = false
+source-form = "free"
