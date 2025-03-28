@@ -25,4 +25,4 @@ Fortran I/O to read text from the keyboard & writes it to the file `gio_demo.dat
     - `hl_pbar.f90`: a progress bar.
     - ...
 - `tests.f90` (no GUI) is testing things about ISO_C_BINDING and the relations between Fortran types and GLib types.
-- `tests_gtk_sup.f90` (no GUI) is testing functions of the `gtk_sup` module.
+- `tests_gtk_sup.f90` (no GUI) is testing functions and structures defined in the `gtk_sup` module.
