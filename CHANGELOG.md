@@ -4,13 +4,16 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 ## [gtk-fortran dev] 2025-03-25
 
+### Added
+- `examples/tests_gtk_sup.f90` backported from gtk4 branch.
+
 ### Changed
 - CMake 3.10 is now required (it was released in Nov. 2017).
 
 ### Fixed
 - cfwrapper: Variant and GVariantType types are now correctly used when declared with a double `*` in C. [Issue #289](https://github.com/vmagnin/gtk-fortran/issues/289).
 - `gtk-sup.f90`:
-    * the `GValue` structure is now defined as three 64 bits variables. It fixes the Windows [issue #244](https://github.com/vmagnin/gtk-fortran/issues/244). See the discussion in the [PR](https://github.com/vmagnin/gtk-fortran/commit/60992129c024e27134f4f31744282311a1656426).
+    * the `GValue` structure is now defined as three 64 bits variables. It fixes the Windows [issue #244](https://github.com/vmagnin/gtk-fortran/issues/244). See the discussion in the [PR](https://github.com/vmagnin/gtk-fortran/commit/60992129c024e27134f4f31744282311a1656426). Regression tests have been added in `examples/tests_gtk_sup.f90`.
     * Four dialog icons names updated: [PR #293](https://github.com/vmagnin/gtk-fortran/pull/293)
 
 ## [gtk-fortran 3.24.41] 2024-05-08
