@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modifications: 2023-04-08
+# Last modifications: 2025-02-19
 
 """ This module contains functions to analyze C prototypes
     and generate Fortran interfaces.
@@ -35,7 +35,6 @@ import re           # Regular expression library
 from tools import multiline
 from globals_const import TAB
 from fortran import iso_c_binding
-from scan_types_and_enums import types_enums
 
 #---------------------------------------------------------------------------
 # Regular expressions used to identify the different parts of a C prototype:

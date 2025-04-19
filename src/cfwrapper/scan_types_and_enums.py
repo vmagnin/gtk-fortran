@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 2023-03-21
-# Last modification: 2024-10-24
+# Last modification: 2025-02-19
 
 import os
 import re           # Regular expression library
@@ -34,7 +34,7 @@ from globals_const import SRC_DIR
 
 
 class types_enums():
-    """ This class contains two dictionnaries with the GLib/GTK types,
+    """ This class contains two dictionaries with the GLib/GTK types,
     a list of the enums and a list of funptr types. They are class attributes
     but dynamically completed when an instance is created.
     """
@@ -100,8 +100,6 @@ class types_enums():
         # typedef gsize GType;
         "GType":  ("integer(c_size_t)", "c_size_t"),
         "va_list":("type(c_ptr)", "c_ptr"),
-        #typedef void* gpointer;
-        "gpointer":("type(c_ptr)", "c_ptr"),
         #typedef struct _GdkAtom *GdkAtom;
         "GdkAtom":("type(c_ptr)", "c_ptr"),
         # GC (Xlib) is it a pointer ?
@@ -133,14 +131,7 @@ class types_enums():
         "KeyCode":("character(kind=c_char)", "c_char"),
         "KeySym":("integer(c_long)", "c_long"),
         # enums:
-        "GWin32OSType":("integer(c_int)", "c_int"),
-        "GtkLicense":("integer(c_int)", "c_int"),
-        "GApplicationFlags":("integer(c_int)", "c_int"),
-        "GtkInputHints":("integer(c_int)", "c_int"),
-        "GtkInputPurpose":("integer(c_int)", "c_int"),
-        "GtkPackType":("integer(c_int)", "c_int"),
-        "GtkArrowType":("integer(c_int)", "c_int"),
-        "GdkDragAction":("integer(c_int)", "c_int")
+        "GWin32OSType":("integer(c_int)", "c_int")
     }
 
     # Two words types:

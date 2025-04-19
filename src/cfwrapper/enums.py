@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-08-08
+# Last modification: 2025-03-07
 
 """ This module contains functions to determine the versions of the libraries
 and programs used in gkt-fortran.
@@ -79,8 +79,8 @@ def translate_enums(c_file_name, enum_list):
         # Remove the u for unsigned numbers (rare)
         parameters[0] = re.sub(r"1u[ ]<<", r"1 <<", parameters[0])
         # Remove those preprocessor constants:
-        parameters[0] = re.sub(r"(GLIB|GIO|GOBJECT|GDK)_AVAILABLE_ENUMERATOR_IN_\d_[\d]+", "", parameters[0])
-        parameters[0] = re.sub(r"(GLIB|GIO|GOBJECT|GDK)_DEPRECATED_ENUMERATOR_IN_\d_[\d]+_FOR.*", "", parameters[0])
+        parameters[0] = re.sub(r"(GLIB|GIO|GOBJECT|GDK|PANGO)_AVAILABLE_ENUMERATOR_IN_\d_[\d]+", "", parameters[0])
+        parameters[0] = re.sub(r"(GLIB|GIO|GOBJECT|GDK|PANGO)_DEPRECATED_ENUMERATOR_IN_\d_[\d]+_FOR.*", "", parameters[0])
 
         # ********** Refactoring **********
         # Is it a char ?

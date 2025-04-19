@@ -23,8 +23,8 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2024-05-05
-# $ pylint *.py ../tools.py    => 8.51/10
+# Last modification: 2024-05-08
+# $ pylint *.py ../tools.py    => 8.65/10
 
 """ Generates the *-auto.* files from the C header files of GLib and GTK.
 For help, type: ./cfwrapper.py -h
