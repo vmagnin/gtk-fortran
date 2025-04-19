@@ -6,6 +6,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 ### Added
 - `examples/tests_gtk_sup.f90` backported from gtk4 branch.
+- `src/gtk-sup.f90`: the `fdate()` function was backported from gtk4 branch.
 
 ### Changed
 - CMake 3.10 is now required (it was released in Nov. 2017).

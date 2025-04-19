@@ -24,7 +24,7 @@
 !
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: 2012-06-20, vmagnin+IanH0073 2019-02-21
-! vmagnin 2020-02-11, jtappin 2023-09-22, vmagnin 2024-05-04
+! vmagnin 2020-02-11, jtappin 2023-09-22, vmagnin 2025-04-19
 
 !*
 ! Supplementary material
@@ -57,7 +57,7 @@ module gtk_sup
           & convert_c_string_scalar, convert_c_string_array, &
           & convert_c_string_scalar_cptr, convert_c_string_array_cptr, &
           & convert_f_string_a, convert_f_string_s, c_f_logical, f_c_logical4, &
-          & f_c_logical1
+          & f_c_logical1, fdate
   !+
   ! Gtype
   ! The various Gtype definitions.
@@ -931,5 +931,23 @@ contains
     endif
 
   end function is_UNIX_OS
+
+  !+
+  function fdate()
+    character(29) :: fdate
+    character(8)  :: date
+    character(10) :: time
+    character(5)  :: zone
+
+    ! Returns date, time and timezone in a string without spaces,
+    ! for example: 2022-05-06T15:58:43.790+02:00
+    !-
+    ! Contributed by IanH0073 (issue #81)
+
+    call date_and_time(date, time, zone)
+    fdate = date(1:4) // '-' // date(5:6) // '-' // date(7:8)  &
+            // 'T' // time(1:2) // ':' // time(3:4) // ':' // time(5:10)  &
+            // zone(1:3) // ':' // zone(4:5)
+  end function fdate
 
 end module gtk_sup
