@@ -103,6 +103,10 @@ GSocketSourceFunc
 GSourceDisposeFunc
 GSourceDummyMarshal
 GSourceFunc
+GSourceFuncsCheckFunc
+GSourceFuncsDispatchFunc
+GSourceFuncsFinalizeFunc
+GSourceFuncsPrepareFunc
 GSourceOnceFunc
 GSpawnChildSetupFunc
 GTaskThreadFunc

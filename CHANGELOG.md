@@ -2,7 +2,9 @@
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 
-## [gtk-fortran dev] 2025-04-19
+## [gtk-fortran 3.24.49] 2025-04-19
+
+Offers Fortran interfaces to the latests GTK 3.24.49 and GLib 2.84.1 (generated with Fedora 42).
 
 ### Added
 - `examples/tests_gtk_sup.f90` backported from gtk4 branch.
