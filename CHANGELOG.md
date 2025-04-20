@@ -2,7 +2,7 @@
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 
-## [gtk-fortran 3.24.49] 2025-04-19
+## [gtk-fortran 3.24.49] 2025-04-20
 
 Offers Fortran interfaces to the latests GTK 3.24.49 and GLib 2.84.1 (generated with Fedora 42).
 
@@ -15,11 +15,14 @@ Offers Fortran interfaces to the latests GTK 3.24.49 and GLib 2.84.1 (generated 
 - Latest cfwrapper backported from gtk4 branch.
 
 ### Fixed
-- cfwrapper: the interfaces of 98 functions are fixed ([Issue #290](https://github.com/vmagnin/gtk-fortran/issues/290)). In `cfwrapper/fortran.py`, the block treating the enums was not placed at the end of the `iso_c_binding()` function: first, C pointers toward enums were not recognized as pointers, and secondly enums having a name included in a GTK type name could cause bad bindings (for example `GtkSelectionMode` and `GtkSelectionModel`).
-- cfwrapper: Variant and GVariantType types are now correctly used when declared with a double `*` in C. [Issue #289](https://github.com/vmagnin/gtk-fortran/issues/289).
+- cfwrapper:
+    - the interfaces of 98 functions are fixed ([Issue #290](https://github.com/vmagnin/gtk-fortran/issues/290)). In `cfwrapper/fortran.py`, the block treating the enums was not placed at the end of the `iso_c_binding()` function: first, C pointers toward enums were not recognized as pointers, and secondly enums having a name included in a GTK type name could cause bad bindings (for example `GtkSelectionMode` and `GtkSelectionModel`).
+    - Variant and GVariantType types are now correctly used when declared with a double `*` in C. [Issue #289](https://github.com/vmagnin/gtk-fortran/issues/289).
 - `gtk-sup.f90`:
     * the `GValue` structure is now defined as three 64 bits variables. It fixes the Windows [issue #244](https://github.com/vmagnin/gtk-fortran/issues/244). See the discussion in the [PR](https://github.com/vmagnin/gtk-fortran/commit/60992129c024e27134f4f31744282311a1656426). Regression tests have been added in `examples/tests_gtk_sup.f90`.
     * Four dialog icons names updated: [PR #293](https://github.com/vmagnin/gtk-fortran/pull/293)
+- `src/gtk_hl_dialog.f90`: if providing artists or documenters, the cptr length was calculated from the numbers of authors.
+
 
 ## [gtk-fortran 3.24.41] 2024-05-08
 
