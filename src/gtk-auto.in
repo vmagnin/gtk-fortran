@@ -1301,6 +1301,15 @@ subroutine gtk_accessible_announce(self, message, priority) bind(c)
   integer(c_int), value :: priority
 end subroutine
 
+! GDK_AVAILABLE_IN_4_18
+!void gtk_accessible_update_platform_state (GtkAccessible *self, GtkAccessiblePlatformState state);
+subroutine gtk_accessible_update_platform_state(self, state) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: state
+end subroutine
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkpadcontroller.h
 !--------------------------------------------------
@@ -5261,26 +5270,6 @@ function gtk_stack_switcher_get_stack(switcher) bind(c)
 end function
 
 !--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkshortcutssection.h
-!--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_shortcuts_section_get_type (void) ;
-function gtk_shortcuts_section_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_shortcuts_section_get_type
-end function
-
-! GDK_AVAILABLE_IN_4_14
-!void gtk_shortcuts_section_add_group (GtkShortcutsSection *self, GtkShortcutsGroup *group);
-subroutine gtk_shortcuts_section_add_group(self, group) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: self
-  type(c_ptr), value :: group
-end subroutine
-
-!--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkgestureswipe.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
@@ -8114,6 +8103,24 @@ function gtk_widget_class_get_accessible_role(widget_class) bind(c)
   type(c_ptr), value :: widget_class
 end function
 
+! GDK_AVAILABLE_IN_4_18
+!void gtk_widget_set_limit_events (GtkWidget *widget, gboolean limit_events);
+subroutine gtk_widget_set_limit_events(widget, limit_events) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: widget
+  integer(c_int), value :: limit_events
+end subroutine
+
+! GDK_AVAILABLE_IN_4_18
+!gboolean gtk_widget_get_limit_events (GtkWidget *widget);
+function gtk_widget_get_limit_events(widget) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_widget_get_limit_events
+  type(c_ptr), value :: widget
+end function
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkactionbar.h
 !--------------------------------------------------
@@ -8445,6 +8452,17 @@ subroutine gtk_text_view_get_visible_rect(text_view, visible_rect) bind(c)
   implicit none
   type(c_ptr), value :: text_view
   type(c_ptr), value :: visible_rect
+end subroutine
+
+! GDK_AVAILABLE_IN_4_18
+!void gtk_text_view_get_visible_offset (GtkTextView *text_view, double *x_offset, double *y_offset);
+subroutine gtk_text_view_get_visible_offset(text_view, x_offset, y_offset)&
+& bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: text_view
+  type(c_ptr), value :: x_offset
+  type(c_ptr), value :: y_offset
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -9687,6 +9705,12 @@ subroutine gtk_disable_setlocale() bind(c)
   implicit none
 end subroutine
 
+! GDK_AVAILABLE_IN_4_18
+!void gtk_disable_portals (void);
+subroutine gtk_disable_portals() bind(c)
+  implicit none
+end subroutine
+
 ! GDK_AVAILABLE_IN_ALL
 !PangoLanguage * gtk_get_default_language (void) ;
 function gtk_get_default_language() bind(c)
@@ -10000,26 +10024,6 @@ function gtk_signal_list_item_factory_new() bind(c)
   implicit none
   type(c_ptr) :: gtk_signal_list_item_factory_new
 end function
-
-!--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkshortcutsgroup.h
-!--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_shortcuts_group_get_type (void) ;
-function gtk_shortcuts_group_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_shortcuts_group_get_type
-end function
-
-! GDK_AVAILABLE_IN_4_14
-!void gtk_shortcuts_group_add_shortcut (GtkShortcutsGroup *self, GtkShortcutsShortcut *shortcut);
-subroutine gtk_shortcuts_group_add_shortcut(self, shortcut) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: self
-  type(c_ptr), value :: shortcut
-end subroutine
 
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkconstraintlayout.h
@@ -10911,26 +10915,6 @@ end subroutine
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkimmodule.h
 !--------------------------------------------------
-!--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkshortcutswindow.h
-!--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_shortcuts_window_get_type (void) ;
-function gtk_shortcuts_window_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_shortcuts_window_get_type
-end function
-
-! GDK_AVAILABLE_IN_4_14
-!void gtk_shortcuts_window_add_section (GtkShortcutsWindow *self, GtkShortcutsSection *section);
-subroutine gtk_shortcuts_window_add_section(self, section) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr), value :: self
-  type(c_ptr), value :: section
-end subroutine
-
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkcustomfilter.h
 !--------------------------------------------------
@@ -13802,6 +13786,16 @@ function gtk_string_list_get_string(self, position) bind(c)
   type(c_ptr) :: gtk_string_list_get_string
   type(c_ptr), value :: self
   integer(c_int), value :: position
+end function
+
+! GDK_AVAILABLE_IN_4_18
+!guint gtk_string_list_find (GtkStringList *self, const char *string);
+function gtk_string_list_find(self, string) bind(c)
+  import :: c_int, c_ptr, c_char
+  implicit none
+  integer(c_int) :: gtk_string_list_find
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: string
 end function
 
 !--------------------------------------------------
@@ -16709,6 +16703,24 @@ function gtk_header_bar_get_decoration_layout(bar) bind(c)
   type(c_ptr), value :: bar
 end function
 
+! GDK_AVAILABLE_IN_4_18
+!gboolean gtk_header_bar_get_use_native_controls (GtkHeaderBar *bar);
+function gtk_header_bar_get_use_native_controls(bar) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_header_bar_get_use_native_controls
+  type(c_ptr), value :: bar
+end function
+
+! GDK_AVAILABLE_IN_4_18
+!void gtk_header_bar_set_use_native_controls (GtkHeaderBar *bar, gboolean setting);
+subroutine gtk_header_bar_set_use_native_controls(bar, setting) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: bar
+  integer(c_int), value :: setting
+end subroutine
+
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkpasswordentry.h
 !--------------------------------------------------
@@ -17729,6 +17741,24 @@ function gtk_list_box_get_show_separators(box) bind(c)
   import :: c_int, c_ptr
   implicit none
   integer(c_int) :: gtk_list_box_get_show_separators
+  type(c_ptr), value :: box
+end function
+
+! GDK_AVAILABLE_IN_4_18
+!void gtk_list_box_set_tab_behavior (GtkListBox *box, GtkListTabBehavior behavior);
+subroutine gtk_list_box_set_tab_behavior(box, behavior) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: box
+  integer(c_int), value :: behavior
+end subroutine
+
+! GDK_AVAILABLE_IN_4_18
+!GtkListTabBehavior gtk_list_box_get_tab_behavior (GtkListBox *box);
+function gtk_list_box_get_tab_behavior(box) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_list_box_get_tab_behavior
   type(c_ptr), value :: box
 end function
 
@@ -19653,62 +19683,6 @@ function gtk_constraint_is_constant(constraint) bind(c)
 end function
 
 !--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkshortcutlabel.h
-!--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_shortcut_label_get_type (void) ;
-function gtk_shortcut_label_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_shortcut_label_get_type
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!GtkWidget *gtk_shortcut_label_new (const char *accelerator);
-function gtk_shortcut_label_new(accelerator) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr) :: gtk_shortcut_label_new
-  character(kind=c_char), dimension(*) :: accelerator
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!const char *gtk_shortcut_label_get_accelerator (GtkShortcutLabel *self);
-function gtk_shortcut_label_get_accelerator(self) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_shortcut_label_get_accelerator
-  type(c_ptr), value :: self
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_shortcut_label_set_accelerator (GtkShortcutLabel *self, const char *accelerator);
-subroutine gtk_shortcut_label_set_accelerator(self, accelerator) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: self
-  character(kind=c_char), dimension(*) :: accelerator
-end subroutine
-
-! GDK_AVAILABLE_IN_ALL
-!const char *gtk_shortcut_label_get_disabled_text (GtkShortcutLabel *self);
-function gtk_shortcut_label_get_disabled_text(self) bind(c)
-  import :: c_ptr
-  implicit none
-  type(c_ptr) :: gtk_shortcut_label_get_disabled_text
-  type(c_ptr), value :: self
-end function
-
-! GDK_AVAILABLE_IN_ALL
-!void gtk_shortcut_label_set_disabled_text (GtkShortcutLabel *self, const char *disabled_text);
-subroutine gtk_shortcut_label_set_disabled_text(self, disabled_text) bind(c)
-  import :: c_ptr, c_char
-  implicit none
-  type(c_ptr), value :: self
-  character(kind=c_char), dimension(*) :: disabled_text
-end subroutine
-
-!--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkbuilderlistitemfactory.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
@@ -19815,7 +19789,7 @@ function gtk_application_window_get_id(window) bind(c)
   type(c_ptr), value :: window
 end function
 
-! GDK_AVAILABLE_IN_ALL
+! GDK_DEPRECATED_IN_4_18
 !void gtk_application_window_set_help_overlay (GtkApplicationWindow *window, GtkShortcutsWindow *help_overlay);
 subroutine gtk_application_window_set_help_overlay(window, help_overlay)&
 & bind(c)
@@ -20801,17 +20775,6 @@ function gtk_fixed_get_child_transform(fixed, widget) bind(c)
 end function
 
 !--------------------------------------------------
-! /usr/include/gtk-4.0/gtk/gtkshortcutsshortcut.h
-!--------------------------------------------------
-! GDK_AVAILABLE_IN_ALL
-!GType gtk_shortcuts_shortcut_get_type (void) ;
-function gtk_shortcuts_shortcut_get_type() bind(c)
-  import :: c_size_t
-  implicit none
-  integer(c_size_t) :: gtk_shortcuts_shortcut_get_type
-end function
-
-!--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/gtkselectionmodel.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
@@ -21357,6 +21320,24 @@ subroutine gtk_window_controls_set_decoration_layout(self, layout) bind(c)
   implicit none
   type(c_ptr), value :: self
   character(kind=c_char), dimension(*) :: layout
+end subroutine
+
+! GDK_AVAILABLE_IN_4_18
+!gboolean gtk_window_controls_get_use_native_controls (GtkWindowControls *self);
+function gtk_window_controls_get_use_native_controls(self) bind(c)
+  import :: c_int, c_ptr
+  implicit none
+  integer(c_int) :: gtk_window_controls_get_use_native_controls
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_4_18
+!void gtk_window_controls_set_use_native_controls (GtkWindowControls *self, gboolean setting);
+subroutine gtk_window_controls_set_use_native_controls(self, setting) bind(c)
+  import :: c_ptr, c_int
+  implicit none
+  type(c_ptr), value :: self
+  integer(c_int), value :: setting
 end subroutine
 
 ! GDK_AVAILABLE_IN_ALL
@@ -22814,6 +22795,85 @@ function gtk_file_dialog_select_multiple_folders_finish(self, result, error)&
   type(c_ptr) :: gtk_file_dialog_select_multiple_folders_finish
   type(c_ptr), value :: self
   type(c_ptr), value :: result
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_4_18
+!void gtk_file_dialog_open_text_file (GtkFileDialog *self, GtkWindow *parent, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+subroutine gtk_file_dialog_open_text_file(self, parent, cancellable, callback,&
+& user_data) bind(c)
+  import :: c_ptr, c_funptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: parent
+  type(c_ptr), value :: cancellable
+  type(c_funptr), value :: callback
+  type(c_ptr), value :: user_data
+end subroutine
+
+! GDK_AVAILABLE_IN_4_18
+!GFile * gtk_file_dialog_open_text_file_finish (GtkFileDialog *self, GAsyncResult *result, const char **encoding, GError **error);
+function gtk_file_dialog_open_text_file_finish(self, result, encoding, error)&
+& bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_file_dialog_open_text_file_finish
+  type(c_ptr), value :: self
+  type(c_ptr), value :: result
+  type(c_ptr), dimension(*) :: encoding
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_4_18
+!void gtk_file_dialog_open_multiple_text_files (GtkFileDialog *self, GtkWindow *parent, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+subroutine gtk_file_dialog_open_multiple_text_files(self, parent, cancellable,&
+& callback, user_data) bind(c)
+  import :: c_ptr, c_funptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: parent
+  type(c_ptr), value :: cancellable
+  type(c_funptr), value :: callback
+  type(c_ptr), value :: user_data
+end subroutine
+
+! GDK_AVAILABLE_IN_4_18
+!GListModel * gtk_file_dialog_open_multiple_text_files_finish (GtkFileDialog *self, GAsyncResult *result, const char **encoding, GError **error);
+function gtk_file_dialog_open_multiple_text_files_finish(self, result,&
+& encoding, error) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_file_dialog_open_multiple_text_files_finish
+  type(c_ptr), value :: self
+  type(c_ptr), value :: result
+  type(c_ptr), dimension(*) :: encoding
+  type(c_ptr), value :: error
+end function
+
+! GDK_AVAILABLE_IN_4_18
+!void gtk_file_dialog_save_text_file (GtkFileDialog *self, GtkWindow *parent, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+subroutine gtk_file_dialog_save_text_file(self, parent, cancellable, callback,&
+& user_data) bind(c)
+  import :: c_ptr, c_funptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: parent
+  type(c_ptr), value :: cancellable
+  type(c_funptr), value :: callback
+  type(c_ptr), value :: user_data
+end subroutine
+
+! GDK_AVAILABLE_IN_4_18
+!GFile * gtk_file_dialog_save_text_file_finish (GtkFileDialog *self, GAsyncResult *result, const char **encoding, const char **line_ending, GError **error);
+function gtk_file_dialog_save_text_file_finish(self, result, encoding,&
+& line_ending, error) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_file_dialog_save_text_file_finish
+  type(c_ptr), value :: self
+  type(c_ptr), value :: result
+  type(c_ptr), dimension(*) :: encoding
+  type(c_ptr), dimension(*) :: line_ending
   type(c_ptr), value :: error
 end function
 
@@ -27429,6 +27489,26 @@ subroutine gtk_cell_editable_remove_widget(cell_editable) bind(c)
 end subroutine
 
 !--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/deprecated/gtkshortcutssection.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_shortcuts_section_get_type (void) ;
+function gtk_shortcuts_section_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_shortcuts_section_get_type
+end function
+
+! GDK_DEPRECATED_IN_4_18
+!void gtk_shortcuts_section_add_group (GtkShortcutsSection *self, GtkShortcutsGroup *group);
+subroutine gtk_shortcuts_section_add_group(self, group) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: group
+end subroutine
+
+!--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/deprecated/gtkfilechooserdialog.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
@@ -28060,6 +28140,26 @@ function gtk_cell_renderer_get_state(cell, widget, cell_state) bind(c)
 end function
 
 !--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/deprecated/gtkshortcutsgroup.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_shortcuts_group_get_type (void) ;
+function gtk_shortcuts_group_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_shortcuts_group_get_type
+end function
+
+! GDK_DEPRECATED_IN_4_18
+!void gtk_shortcuts_group_add_shortcut (GtkShortcutsGroup *self, GtkShortcutsShortcut *shortcut);
+subroutine gtk_shortcuts_group_add_shortcut(self, shortcut) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: shortcut
+end subroutine
+
+!--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/deprecated/gtkstylecontext.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
@@ -28298,6 +28398,26 @@ subroutine gtk_app_chooser_refresh(self) bind(c)
   import :: c_ptr
   implicit none
   type(c_ptr), value :: self
+end subroutine
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/deprecated/gtkshortcutswindow.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_shortcuts_window_get_type (void) ;
+function gtk_shortcuts_window_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_shortcuts_window_get_type
+end function
+
+! GDK_DEPRECATED_IN_4_18
+!void gtk_shortcuts_window_add_section (GtkShortcutsWindow *self, GtkShortcutsSection *section);
+subroutine gtk_shortcuts_window_add_section(self, section) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr), value :: self
+  type(c_ptr), value :: section
 end subroutine
 
 !--------------------------------------------------
@@ -31328,6 +31448,62 @@ subroutine gtk_cell_area_request_renderer(area, renderer, orientation, widget,&
 end subroutine
 
 !--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/deprecated/gtkshortcutlabel.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_shortcut_label_get_type (void) ;
+function gtk_shortcut_label_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_shortcut_label_get_type
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!GtkWidget *gtk_shortcut_label_new (const char *accelerator);
+function gtk_shortcut_label_new(accelerator) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr) :: gtk_shortcut_label_new
+  character(kind=c_char), dimension(*) :: accelerator
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!const char *gtk_shortcut_label_get_accelerator (GtkShortcutLabel *self);
+function gtk_shortcut_label_get_accelerator(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_shortcut_label_get_accelerator
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_shortcut_label_set_accelerator (GtkShortcutLabel *self, const char *accelerator);
+subroutine gtk_shortcut_label_set_accelerator(self, accelerator) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: accelerator
+end subroutine
+
+! GDK_AVAILABLE_IN_ALL
+!const char *gtk_shortcut_label_get_disabled_text (GtkShortcutLabel *self);
+function gtk_shortcut_label_get_disabled_text(self) bind(c)
+  import :: c_ptr
+  implicit none
+  type(c_ptr) :: gtk_shortcut_label_get_disabled_text
+  type(c_ptr), value :: self
+end function
+
+! GDK_AVAILABLE_IN_ALL
+!void gtk_shortcut_label_set_disabled_text (GtkShortcutLabel *self, const char *disabled_text);
+subroutine gtk_shortcut_label_set_disabled_text(self, disabled_text) bind(c)
+  import :: c_ptr, c_char
+  implicit none
+  type(c_ptr), value :: self
+  character(kind=c_char), dimension(*) :: disabled_text
+end subroutine
+
+!--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/deprecated/gtkdialog.h
 !--------------------------------------------------
 ! GDK_AVAILABLE_IN_ALL
@@ -33365,6 +33541,17 @@ subroutine gtk_color_chooser_add_palette(chooser, orientation, colors_per_line,&
   integer(c_int), value :: n_colors
   type(c_ptr), value :: colors
 end subroutine
+
+!--------------------------------------------------
+! /usr/include/gtk-4.0/gtk/deprecated/gtkshortcutsshortcut.h
+!--------------------------------------------------
+! GDK_AVAILABLE_IN_ALL
+!GType gtk_shortcuts_shortcut_get_type (void) ;
+function gtk_shortcuts_shortcut_get_type() bind(c)
+  import :: c_size_t
+  implicit none
+  integer(c_size_t) :: gtk_shortcuts_shortcut_get_type
+end function
 
 !--------------------------------------------------
 ! /usr/include/gtk-4.0/gtk/deprecated/gtkcellrenderertoggle.h
