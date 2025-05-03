@@ -277,13 +277,13 @@ contains
     if (present(logo)) call gtk_about_dialog_set_logo(about, logo)
 
     if (present(name)) then
-       call f_c_string(name, string)
+       call convert_f_string(name, string)
        call gtk_about_dialog_set_program_name(about, string)
        deallocate(string)
     end if
 
     if (present(license)) then
-       call f_c_string(license, string)
+       call convert_f_string(license, string)
        call gtk_about_dialog_set_license(about, string)
        deallocate(string)
     else if (present(license_type)) then
@@ -291,32 +291,32 @@ contains
     end if
 
     if (present(comments)) then
-       call f_c_string(comments, string)
+       call convert_f_string(comments, string)
        call gtk_about_dialog_set_comments(about, string)
        deallocate(string)
     end if
     if (present(website)) then
-       call f_c_string(website, string)
+       call convert_f_string(website, string)
        call gtk_about_dialog_set_website(about, string)
        deallocate(string)
     end if
     if (present(website_label)) then
-       call f_c_string(website_label, string)
+       call convert_f_string(website_label, string)
        call gtk_about_dialog_set_website_label(about, string)
        deallocate(string)
     end if
     if (present(translators)) then
-       call f_c_string(translators, string)
+       call convert_f_string(translators, string)
        call gtk_about_dialog_set_translator_credits(about, string)
        deallocate(string)
     end if
     if (present(copyright)) then
-       call f_c_string(copyright, string)
+       call convert_f_string(copyright, string)
        call gtk_about_dialog_set_copyright(about, string)
        deallocate(string)
     end if
     if (present(version)) then
-       call f_c_string(version, string)
+       call convert_f_string(version, string)
        call gtk_about_dialog_set_version(about, string)
        deallocate(string)
     end if
@@ -324,7 +324,7 @@ contains
     if (present(authors)) then
        allocate(cptr(size(authors)+1))
        do i = 1, size(authors)
-          call f_c_string(authors(i), string)
+          call convert_f_string(authors(i), string)
           allocate(credit(size(string)))
           credit(:) = string(:)
           cptr(i) = c_loc(credit(1))
@@ -337,7 +337,7 @@ contains
     if (present(documenters)) then
        allocate(cptr(size(documenters)+1))
        do i = 1, size(documenters)
-          call f_c_string(documenters(i), string)
+          call convert_f_string(documenters(i), string)
           allocate(credit(size(string)))
           credit(:) = string(:)
           cptr(i) = c_loc(credit(1))
@@ -350,7 +350,7 @@ contains
     if (present(artists)) then
        allocate(cptr(size(artists)+1))
        do i = 1, size(artists)
-          call f_c_string(artists(i), string)
+          call convert_f_string(artists(i), string)
           allocate(credit(size(string)))
           credit(:) = string(:)
           cptr(i) = c_loc(credit(1))
@@ -409,13 +409,13 @@ contains
          & comments = &
          &"The gtk-fortran project aims to offer scientists programming "//&
          &"in Fortran a cross-platform library to build Graphical User "//&
-         &"Interfaces (GUI)."//c_new_line// & 
+         &"Interfaces (GUI)."//c_new_line// &
          &"Gtk-fortran is a partial GTK / Fortran binding 100% written "//&
          &"in Fortran, thanks to the ISO_C_BINDING module for "//&
          &"interoperability between C and Fortran, which is a part of the "//&
          &"Fortran 2003 standard. Gtk-Fortran also provides a number of "//&
          &"'high-level' interfaces to common widgets."//&
-         &c_new_line//c_new_line// & 
+         &c_new_line//c_new_line// &
          &"GTK is a free software cross-platform graphical library "//&
          &"available for Linux, Unix, Windows and MacOs X."//C_NULL_CHAR, &
          & website="https://github.com/jerryd/gtk-fortran/wiki"//C_NULL_CHAR,&
