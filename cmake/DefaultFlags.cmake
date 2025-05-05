@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 # Contributed by @awvwgk (2022)
-# Last modifications: vmagnin 2022-06-08
+# Last modifications: vmagnin 2025-05-05
 #===============================================================================
 
 if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
@@ -59,6 +59,7 @@ elseif((CMAKE_Fortran_COMPILER_ID STREQUAL "Intel") OR (CMAKE_Fortran_COMPILER_I
   set(
     CMAKE_Fortran_FLAGS_DEBUG_INIT
     "-g"
+    "-O0"
     "-warn all"
     "-warn nounused"
   )
