@@ -22,7 +22,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: vmagnin+IanH0073 2019-02-21, vmagnin 2020-06-08 (GTK 4),
-!   jtappin 2023-09-22, florianober 2025-03-27
+!   jtappin 2023-09-22, florianober 2025-03-27, vmagnin 2025-05-05
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
@@ -48,7 +48,6 @@ module gtk_sup
 
   use, intrinsic :: iso_c_binding
   use gtk, only: TRUE, FALSE
-  use g, only: g_type_fundamental
 
   implicit none
 
