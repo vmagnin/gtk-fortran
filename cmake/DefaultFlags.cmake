@@ -25,6 +25,16 @@
 # Last modifications: vmagnin 2025-05-05
 #===============================================================================
 
+# Linker flags:
+if(UNIX)
+  # GNU ld -rdynamic option:
+  # Pass the flag -export-dynamic to the ELF linker, on targets that support it.
+  # This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table.
+  # It is especially needed for programs using the GtkBuilder API.
+  set(CMAKE_EXE_LINKER_FLAGS_INIT "-rdynamic")
+endif()
+
+# Compilers flags:
 if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   # gfortran compiler:
   set(
@@ -47,9 +57,6 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
     "-fbacktrace"
     "-Wno-unused-dummy-argument"
   )
-  if(UNIX)
-    set(CMAKE_EXE_LINKER_FLAGS_INIT "-rdynamic")
-  endif()
 elseif((CMAKE_Fortran_COMPILER_ID STREQUAL "Intel") OR (CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM"))
   # ifort and ifx compilers (OneAPI):
   set(

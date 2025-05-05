@@ -6,6 +6,9 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ### Removed
 - `src/gtk-sup.f90`: removed the `f_c_string` interface, which is an aliases of `convert_f_string`, because `f_c_string()` is now also a function defined in the Fortran 2023 standard. See [Issue #294](https://github.com/vmagnin/gtk-fortran/issues/294) and [PR #295](https://github.com/vmagnin/gtk-fortran/pull/295).
 
+### Fixed
+- `cmake/DefaultFlags.cmake`: the GNU ld `-rdynamic` option is now passed to all Fortran compilers in UNIX-like systems. Fixes the [Issue #236](https://github.com/vmagnin/gtk-fortran/issues/236): "With Intel ifort/ifx, gtkbuilder, gtkbuilder2 and gtkf-sketcher could not open gtkbuilder.glade".
+
 
 ## [gtk-fortran 4.8.0] 2025-04-25
 
