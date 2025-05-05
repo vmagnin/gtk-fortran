@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [gtk-fortran dev]
+
+### Removed
+- `src/gtk-sup.f90`: removed the `f_c_string` interface, which is an aliases of `convert_f_string`, because `f_c_string()` is now also a function defined in the Fortran 2023 standard. See [Issue #294](https://github.com/vmagnin/gtk-fortran/issues/294) and [PR #295](https://github.com/vmagnin/gtk-fortran/pull/295).
+
+
 ## [gtk-fortran 4.8.0] 2025-04-25
 
 This release offers interfaces to GTK 4.18 and GLib 2.84 (generated under Fedora 42 with GTK 4.18.4 and GLib 2.84.1).

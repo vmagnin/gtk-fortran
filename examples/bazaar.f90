@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, James Tappin
-! GTK 4 version: vmagnin 2020-05-28, 2024-03-26
+! GTK 4 version: vmagnin 2020-05-28, 2025-05-05
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -360,7 +360,7 @@ contains
 
   ! GtkButton signal:
   subroutine aboutbutton (widget, gdata) bind(c)
-    use gtk_sup, only: f_c_string
+    use gtk_sup, only: convert_f_string
 
     type(c_ptr), value, intent(in) :: widget, gdata
     ! Authors of bazaar.f90 (list returned by git blame bazaar.f90):
@@ -392,7 +392,7 @@ contains
     allocate(c_ptr_array(size(authors)+1))
 
     do i = 1, size(authors)
-      call f_c_string(authors(i), string)
+      call convert_f_string(authors(i), string)
       allocate(credit(size(string)))
       ! A Fortran pointer toward the Fortran string:
       credit(:) = string(:)

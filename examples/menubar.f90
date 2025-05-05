@@ -19,7 +19,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !-------------------------------------------------------------------------------
 ! Contributed by: Jerry DeLisle, 2021-02-24
-! Last modifications: vmagnin 2023-08-30
+! Last modifications: vmagnin 2025-05-05
 ! This example demonstrates a menu bar and is based on:
 !   https://github.com/ToshioCP/Gtk4-tutorial/blob/main/src/menu/menu2.c
 !-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ module handlers
                & gtk_css_provider_new, gtk_widget_get_display, &
                & gtk_css_provider_load_from_data, g_application_flags_none, &
                & gtk_style_context_add_provider_for_display, gtk_window_present
-  use gtk_sup, only: convert_c_string, f_c_string
+  use gtk_sup, only: convert_c_string, convert_f_string
   use g, only: g_variant_new_boolean, g_variant_get_boolean, &
              & g_variant_new_string, g_variant_get_string, g_variant_type_new, &
              & g_simple_action_set_state, g_action_change_state, &
@@ -131,7 +131,7 @@ contains
     ! of strings, but in the present case the array will contain only one string
     ! (it is possible to have several accelerators for the same action): 
     allocate(c_ptr_array(1+1))
-    call f_c_string("<Ctrl>q"//c_null_char, stringtmp)
+    call convert_f_string("<Ctrl>q"//c_null_char, stringtmp)
     allocate(accels(size(stringtmp)))
     ! A Fortran pointer toward the Fortran string:
     accels(:) = stringtmp(:)
