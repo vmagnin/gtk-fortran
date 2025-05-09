@@ -42,6 +42,10 @@ project(gtk-fortran Fortran)
 set(CMAKE_PROJECT_DESCRIPTION "A GTK / Fortran binding")
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/vmagnin/gtk-fortran/wiki/")
 
+message(STATUS "Compiler: ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION} ${CMAKE_Fortran_COMPILER}")
+# Print system, version and path:
+message(STATUS "System: ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_VERSION} ${CMAKE_SYSTEM_PROCESSOR}")
+
 #===============================================================================
 # Version of gtk-fortran for the current branch (from VERSIONS file):
 #===============================================================================
@@ -70,13 +74,7 @@ file(STRINGS VERSIONS OneLine REGEX "GTK;(.*)")
 string(REGEX REPLACE "GTK;" "" GTK_SEMANTIC_VERSION ${OneLine})
 file(STRINGS VERSIONS OneLine REGEX "GLib;(.*)")
 string(REGEX REPLACE "GLib;" "" GLIB_SEMANTIC_VERSION ${OneLine})
-message(STATUS "Based on GTK ${GTK_SEMANTIC_VERSION} and GLib ${GLIB_SEMANTIC_VERSION}")
-
-#===============================================================================
-# Define GNU standard installation directories:
-#===============================================================================
-include(GNUInstallDirs)
-message(STATUS "GNUInstallDirs: ${CMAKE_INSTALL_PREFIX} ${CMAKE_INSTALL_LIBDIR} ${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_DATAROOTDIR} ${CMAKE_INSTALL_MANDIR}")
+message(STATUS "  offering interfaces to GTK ${GTK_SEMANTIC_VERSION} and GLib ${GLIB_SEMANTIC_VERSION}")
 
 #===============================================================================
 # Default build type is release
@@ -90,14 +88,10 @@ endif()
 #===============================================================================
 # Setting compilation flags for various compilers and build types:
 #===============================================================================
-
-# Print system, compiler CMake ID, version and path:
-message(STATUS "System: ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_VERSION} ${CMAKE_SYSTEM_PROCESSOR}")
-message(STATUS "Compiler: ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION} ${CMAKE_Fortran_COMPILER}")
-message(STATUS "Build type is: ${CMAKE_BUILD_TYPE}")
+string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE)
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 # Print compilation flags :
-string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE)
 if(CMAKE_Fortran_FLAGS OR CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE})
   message(STATUS "Compilation flags (general and build type specific):")
   message(STATUS "  CMAKE_Fortran_FLAGS: ${CMAKE_Fortran_FLAGS}")
@@ -185,6 +179,12 @@ if (NOT EXCLUDE_PLPLOT AND NOT NO_BUILD_HL)
 else(NOT EXCLUDE_PLPLOT AND NOT NO_BUILD_HL)
     message(STATUS ">>> PLPLOT excluded as command option")
 endif(NOT EXCLUDE_PLPLOT AND NOT NO_BUILD_HL)
+
+#===============================================================================
+# Define GNU standard installation directories:
+#===============================================================================
+include(GNUInstallDirs)
+message(STATUS "GNUInstallDirs: ${CMAKE_INSTALL_PREFIX} ${CMAKE_INSTALL_LIBDIR} ${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_DATAROOTDIR} ${CMAKE_INSTALL_MANDIR}")
 
 #===============================================================================
 # Add subdirectories to build:
