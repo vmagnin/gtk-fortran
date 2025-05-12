@@ -21,7 +21,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018,
-# vmagnin 2025-05-09
+# vmagnin 2025-05-12
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -150,6 +150,10 @@ link_directories(${GTK_LIBRARY_DIRS})
 # Add other flags to the compiler:
 add_definitions(${GTK_CFLAGS_OTHER})
 
+message(STATUS "Other compilation flags needed by GTK: ${GTK_CFLAGS_OTHER}")
+message(STATUS "GTK_INCLUDE_DIRS: ${GTK_INCLUDE_DIRS}")
+message(STATUS "GTK_LIBRARY_DIRS: ${GTK_LIBRARY_DIRS}")
+
 #===============================================================================
 # PLplot integration (>=5.13 needed)
 # ----------------------------------
@@ -171,9 +175,13 @@ if (NOT EXCLUDE_PLPLOT AND NOT NO_BUILD_HL)
     link_directories(${PLPLOT-FORTRAN_LIBRARY_DIRS})
     # Add other flags to the compiler:
     add_definitions(${PLPLOT-FORTRAN_CFLAGS_OTHER})
+    message(STATUS "Other compilation flags needed by PLplot: ${PLPLOT-FORTRAN_CFLAGS_OTHER}")
+    message(STATUS "PLPLOT-FORTRAN_INCLUDE_DIRS: ${PLPLOT-FORTRAN_INCLUDE_DIRS}")
+    message(STATUS "PLPLOT-FORTRAN_LIBRARY_DIRS: ${PLPLOT-FORTRAN_LIBRARY_DIRS}")
 
     set(LIBRARIES ${LIBRARIES} ${PLPLOT_LIBRARIES})
     include_directories(${PLPLOT_INCLUDE_DIRS})
+    message(STATUS "PLPLOT_INCLUDE_DIRS: ${PLPLOT_INCLUDE_DIRS}")
     set(CMAKE_REQUIRED_LIBRARIES "${PLPLOT_LIBRARIES}")
     set(CMAKE_REQUIRED_INCLUDES "${PLPLOT-FORTRAN_INCLUDE_DIRS}")
 else(NOT EXCLUDE_PLPLOT AND NOT NO_BUILD_HL)
