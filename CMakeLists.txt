@@ -147,7 +147,15 @@ pkg_check_modules(GTK REQUIRED ${GTKname})
 # and to the linker where to look for libraries:
 include_directories(${GTK_INCLUDE_DIRS})
 link_directories(${GTK_LIBRARY_DIRS})
+
 # Add other flags to the compiler:
+# for the new Flang compiler, first remove unknown flags (no ";" if at the end):
+if(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang")
+  string(REGEX REPLACE "-mfpmath=sse;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
+  string(REGEX REPLACE "-msse2;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
+  # Order matters for the following regex!
+  string(REGEX REPLACE "-msse;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
+endif()
 add_definitions(${GTK_CFLAGS_OTHER})
 
 message(STATUS "Other compilation flags needed by GTK: ${GTK_CFLAGS_OTHER}")
