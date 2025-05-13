@@ -173,7 +173,7 @@ contains
     integer(c_int) :: nfiles, i, istat
     integer(c_int) :: timeid
     integer(c_int), dimension(2), target :: direction = [-1, 1]
-    logical, dimension(2), target :: iremove = [.false., .true.]
+    logical(c_bool), dimension(2), target :: iremove = [.false., .true.]
     type(c_ptr) :: scroll, base, jb, junk, cmsg
     character(len=120) :: err_msg
 
