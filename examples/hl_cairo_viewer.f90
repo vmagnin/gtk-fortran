@@ -20,7 +20,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin, 2013-01-26
-! Last modifications: vmagnin 2020-06-19 (GTK 4), 2023-03-30
+! Last modifications: vmagnin 2020-06-19 (GTK 4), 2025-05-13
 !------------------------------------------------------------------------------
 
 module v_handlers
@@ -123,7 +123,7 @@ contains
   subroutine add_files(widget, gdata)  bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
     character(len=256), dimension(:), allocatable :: new_files, tmp
-    logical, pointer :: idelete
+    logical(c_bool), pointer :: idelete
     integer(c_int) :: ipick, i
 
     ipick = hl_gtk_file_chooser_show(new_files, &
