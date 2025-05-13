@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 # Contributed by @awvwgk (2022)
-# Last modifications: vmagnin 2025-05-05
+# Last modifications: vmagnin 2025-05-13
 #===============================================================================
 
 # Linker flags:
@@ -69,6 +69,17 @@ elseif((CMAKE_Fortran_COMPILER_ID STREQUAL "Intel") OR (CMAKE_Fortran_COMPILER_I
     "-O0"
     "-warn all"
     "-warn nounused"
+  )
+elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang")
+  set(
+    CMAKE_Fortran_FLAGS_RELEASE_INIT
+    "-O3"
+  )
+  set(
+    CMAKE_Fortran_FLAGS_DEBUG_INIT
+    "-g"
+    "-Wall"
+    "-pedantic"
   )
 else()
   # Standard flags for all the other compilers:
