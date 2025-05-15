@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 # Contributed by @awvwgk (2022)
-# Last modifications: vmagnin 2025-05-13
+# Last modifications: vmagnin 2025-05-15
 #===============================================================================
 
 # Linker flags:
@@ -51,7 +51,6 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
     "-Wall"
     "-Wextra"
     "-pedantic"
-    "-std=f2008"
     "-Wtabs"
     "-fcheck=all"
     "-fbacktrace"
