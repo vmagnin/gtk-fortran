@@ -20,7 +20,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by Vincent Magnin and Jerry DeLisle
-! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2022-05-06
+! Last modifications: vmagnin+Ian Harvey 2019-02-21, vmagnin 2025-05-18
 !------------------------------------------------------------------------------
 
 module global_widgets
@@ -200,13 +200,16 @@ contains
 
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int)                 :: cstatus, message_id
+	type(c_ptr), dimension(1), parameter :: empty_array_of_C_strings=[c_null_ptr]
 
     ! Save the picture if the computation is finished:
     if (.not. computing) then
       ! https://developer.gnome.org/gdk-pixbuf/stable/gdk-pixbuf-File-saving.html
       ! https://mail.gnome.org/archives/gtk-list/2004-October/msg00186.html
+
       cstatus = gdk_pixbuf_savev(my_pixbuf, "julia.png"//c_null_char, &
-                & "png"//c_null_char, c_null_ptr, c_null_ptr, c_null_ptr)
+                & "png"//c_null_char, empty_array_of_C_strings, &
+                & empty_array_of_C_strings, c_null_ptr)
 
       if (cstatus == TRUE) then
         string = "Successfully saved: julia.png"//c_null_char

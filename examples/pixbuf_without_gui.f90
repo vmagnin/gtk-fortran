@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! Draw a Sierpinski triangle in a PNG file, without any GUI
 ! https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle#Chaos_game
-! Contributed by Vincent Magnin, 2022-04-16
+! Contributed by Vincent Magnin, 2025-05-18
 !------------------------------------------------------------------------------
 
 program pixbuf_without_gui
@@ -39,6 +39,7 @@ program pixbuf_without_gui
   character(c_char), dimension(:), pointer :: pixel
   integer(c_int) :: nch, rowstride, pixwidth, pixheight
   integer(c_int) :: cstatus   ! Command status
+  type(c_ptr), dimension(1), parameter :: empty_array_of_C_strings=[c_null_ptr]
   real(wp), dimension(1:3) :: x, y
   real(wp) :: xx, yy, diag, r
   integer  :: s            ! Triangle vertex number
@@ -88,6 +89,7 @@ program pixbuf_without_gui
   ! https://developer.gnome.org/gdk-pixbuf/stable/gdk-pixbuf-File-saving.html
   ! https://mail.gnome.org/archives/gtk-list/2004-October/msg00186.html
   cstatus = gdk_pixbuf_savev(my_pixbuf, "sierpinski_triangle.png"//c_null_char,&
-              & "png"//c_null_char, c_null_ptr, c_null_ptr, c_null_ptr)
+              & "png"//c_null_char, empty_array_of_C_strings, &
+              & empty_array_of_C_strings, c_null_ptr)
 end program pixbuf_without_gui
 

@@ -19,7 +19,7 @@
 ! this program; see the files LICENSE and LICENSE_EXCEPTION respectively.
 ! If not, see <http://www.gnu.org/licenses/>.
 !
-! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2022-10-03
+! Contributed by Vincent MAGNIN, 02-24-2011, last modified: 2025-05-18
 ! ****************
 ! Automated tests
 ! ****************
@@ -39,7 +39,7 @@ module tests
     g_variant_get_uint16, g_variant_get_uint32, &
     g_variant_new_boolean, g_variant_new_byte, g_variant_new_double, g_variant_new_int16,&
     g_variant_new_int32, g_variant_new_uint16,&
-    g_variant_new_uint32, g_variant_unref, g_get_os_info
+    g_variant_new_uint32, g_variant_unref, g_get_os_info, g_strv_length
   use, intrinsic :: iso_fortran_env, only: compiler_version
   use, intrinsic :: iso_c_binding
 
@@ -493,6 +493,26 @@ contains
   end function test_guchar_in_out
 
 
+ integer function test_C_string_in_out()
+    integer :: errors
+    integer(c_int) :: length
+    ! An empty NULL terminated array of C strings:
+    type(c_ptr), dimension(1), parameter :: empty_array_of_C_strings=[c_null_ptr]
+
+	! https://github.com/vmagnin/gtk-fortran/issues/300
+    ! The following line is accepted by GFortran and ifx, but not by Flang:
+    ! length = g_strv_length(c_null_ptr)
+    ! 	error: Whole scalar actual argument may not be associated with a dummy argument 'str_array=' array
+	! https://docs.gtk.org/glib/func.strv_length.html
+    ! 	guint g_strv_length (gchar** str_array)
+    ! This line is accepted by the three compilers:
+    length = g_strv_length(empty_array_of_C_strings)
+
+    errors = 0
+    test_C_string_in_out = errors
+  end function test_C_string_in_out
+
+
   integer function test_gboolean_in_out()
     integer(c_int) :: l1, l2, l3, l4
     integer :: errors
@@ -568,6 +588,8 @@ program gtk_fortran_test
   errors = errors +  test_c_char_in_out()
   print '(A)', "test_guchar_in_out()"
   errors = errors +  test_guchar_in_out()
+  print '(A)', "test_C_string_in_out()"  
+  errors = errors +  test_C_string_in_out()
   print '(A)', "test_gdouble_in_out()"
   errors = errors +  test_gdouble_in_out()
   print '(A)', "test_gulong_in()"
