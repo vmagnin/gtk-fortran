@@ -200,7 +200,7 @@ contains
 
     type(c_ptr), value, intent(in) :: widget, gdata
     integer(c_int)                 :: cstatus, message_id
-	type(c_ptr), dimension(1), parameter :: empty_array_of_C_strings=[c_null_ptr]
+    type(c_ptr), dimension(1), parameter :: empty_array_of_C_strings=[c_null_ptr]
 
     ! Save the picture if the computation is finished:
     if (.not. computing) then
