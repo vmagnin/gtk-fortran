@@ -39,7 +39,6 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   # gfortran compiler:
   set(
     CMAKE_Fortran_FLAGS_RELEASE_INIT
-    "-pthread"
     "-O3"
     "-mtune=native"
     "-march=native"
@@ -47,7 +46,6 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   set(
     CMAKE_Fortran_FLAGS_DEBUG_INIT
     "-g"
-    "-pthread"
     "-Wall"
     "-Wextra"
     "-fcheck=all"
