@@ -50,7 +50,6 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
     "-pthread"
     "-Wall"
     "-Wextra"
-    "-Wtabs"
     "-fcheck=all"
     "-fbacktrace"
     "-Wno-unused-dummy-argument"
