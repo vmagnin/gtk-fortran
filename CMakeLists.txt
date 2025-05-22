@@ -156,6 +156,7 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang")
   # Order matters for the following regex!
   string(REGEX REPLACE "-msse;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
 endif()
+# TODO: replace add_definitions() by add_compile_options() when CMake>=3.12 will be required: https://cmake.org/cmake/help/latest/command/add_compile_options.html#command:add_compile_options
 add_definitions(${GTK_CFLAGS_OTHER})
 
 message(STATUS "Other compilation flags needed by GTK: ${GTK_CFLAGS_OTHER}")
