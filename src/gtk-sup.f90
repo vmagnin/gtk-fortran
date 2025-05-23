@@ -22,7 +22,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin, Ian Harvey (IanH0073)
 ! Last modifications: vmagnin+IanH0073 2019-02-21, vmagnin 2020-06-08 (GTK 4),
-!   jtappin 2023-09-22, florianober 2025-03-27, vmagnin 2025-05-05
+!   jtappin 2023-09-22, florianober 2025-03-27, vmagnin 2025-05-25
 !------------------------------------------------------------------------------
 !*
 ! Supplementary material
@@ -57,7 +57,7 @@ module gtk_sup
           & convert_c_string_scalar_cptr, convert_c_string_array_cptr, &
           & convert_f_string_a, convert_f_string_s, &
           & c_f_logical, f_c_logical4, &
-          & f_c_logical1, is_UNIX_OS, fdate, copy_file
+          & f_c_logical1, is_UNIX_OS, fmt_date, copy_file
 
   !============================================================================
   !+
@@ -749,8 +749,8 @@ contains
   end function is_UNIX_OS
 
   !+
-  function fdate()
-    character(29) :: fdate
+  function fmt_date()
+    character(29) :: fmt_date
     character(8)  :: date
     character(10) :: time
     character(5)  :: zone
@@ -761,10 +761,10 @@ contains
     ! Contributed by IanH0073 (issue #81)
 
     call date_and_time(date, time, zone)
-    fdate = date(1:4) // '-' // date(5:6) // '-' // date(7:8)  &
+    fmt_date = date(1:4) // '-' // date(5:6) // '-' // date(7:8)  &
             // 'T' // time(1:2) // ':' // time(3:4) // ':' // time(5:10)  &
             // zone(1:3) // ':' // zone(4:5)
-  end function fdate
+  end function fmt_date
 
   ! A function to copy a text file
   ! Used especially in sketcher/gtkf-sketcher.f90

@@ -20,7 +20,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !
 !==============================================================================
-! Contributed by Vincent MAGNIN, 2022-05-06, last modified: 2025-03-26
+! Contributed by Vincent MAGNIN, 2022-05-06, last modified: 2025-05-25
 !
 ! This program is testing functions of the gtk_sup module.
 !==============================================================================
@@ -97,8 +97,8 @@ contains
   integer function test_date_routines() result(errors)
     character(:), allocatable :: today
 
-    print '(A)', ">> fdate()"
-    today = fdate()
+    print '(A)', ">> fmt_date()"
+    today = fmt_date()
     print '(A)', today
 
     errors = 0
