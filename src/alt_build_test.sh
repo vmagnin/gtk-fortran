@@ -17,26 +17,28 @@ set -eu
 
 readonly BUILD_DIR='../build/byscript'
 
-# Allow override of default compiler. For example:
-#  FC='ifort' ./alt_build_test.sh
 # The default compiler is:
 : ${FC="gfortran"}
+# You can override the default by setting the FC environment variable like this:
+#  FC='ifx' ./alt_build_test.sh
 
 # Major version of GTK for the current branch (from VERSIONS file):
 readonly GTKv=$(sed -n -E 's/gtk-fortran;([0-9]+).*/\1/p' ../VERSIONS)
-echo ">>> Building gtk-${GTKv}-fortran with these options:"
+echo ">>> Building gtk-${GTKv}-fortran in the directory ${BUILD_DIR}"
+echo ">>>   with the compiler ${FC} and these options:"
 
 # Compiler and linker options:
 readonly pkgc="$(pkg-config --cflags --libs gtk"${GTKv}")"
 
 if [ "$FC" = "flang" ]; then
-	# Removing options not accepted by Flang compiler:
-	readonly gtkoptions="$(echo "$pkgc" | sed -e 's/ -msse2//g' | sed -e 's/ -msse//g' | sed -e 's/ -mfpmath=sse//g')"
+  # Removing options not accepted by Flang compiler:
+  readonly gtkoptions="$(echo "$pkgc" | sed -e 's/ -msse2//g' | sed -e 's/ -msse//g' | sed -e 's/ -mfpmath=sse//g')"
 elif [ "$FC" = "lfortran" ]; then
-	# Removing options not accepted by LFortran compiler:
-	readonly gtkoptions="$(echo "$pkgc" | sed -e 's/ -msse2//g' | sed -e 's/ -msse//g' | sed -e 's/ -mfpmath=sse//g' | sed -e 's/ -pthread//g')"
+  # Removing options not accepted by LFortran compiler:
+  readonly gtkoptions="$(echo "$pkgc" | sed -e 's/ -msse2//g' | sed -e 's/ -msse//g' | sed -e 's/ -mfpmath=sse//g' | sed -e 's/ -pthread//g')"
 else
-	readonly gtkoptions="$pkgc"
+  # Other compilers, including GFortran:
+  readonly gtkoptions="$pkgc"
 fi
 echo $gtkoptions
 echo
@@ -55,7 +57,7 @@ if [ ! -d byscript ]; then
 fi
 cd byscript
 if [ $? = 0 ]; then
-    echo ">>> Removing old files..."
+    echo ">>> Cleaning the ${BUILD_DIR} directory"
     rm -f ./*.o ./*.mod ./*.out
 fi
 
@@ -103,3 +105,4 @@ for i in *.out ; do
     ./"${i}"
   fi
 done
+
