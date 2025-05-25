@@ -10,7 +10,7 @@
 #
 # GNU GPL v3
 # Contributed by Vincent MAGNIN
-# 2011-04-08, last updated 2022-07-20
+# 2011-04-08, last updated 2025-05-25
 
 # For a safer script:
 set -eu
@@ -24,10 +24,22 @@ readonly BUILD_DIR='../build/byscript'
 
 # Major version of GTK for the current branch (from VERSIONS file):
 readonly GTKv=$(sed -n -E 's/gtk-fortran;([0-9]+).*/\1/p' ../VERSIONS)
-echo "Building gtk-${GTKv}-fortran"
+echo ">>> Building gtk-${GTKv}-fortran with these options:"
 
 # Compiler and linker options:
-readonly gtkoptions="$(pkg-config --cflags --libs gtk"${GTKv}")"
+readonly pkgc="$(pkg-config --cflags --libs gtk"${GTKv}")"
+
+if [ "$FC" = "flang" ]; then
+	# Removing options not accepted by Flang compiler:
+	readonly gtkoptions="$(echo "$pkgc" | sed -e 's/ -msse2//g' | sed -e 's/ -msse//g' | sed -e 's/ -mfpmath=sse//g')"
+elif [ "$FC" = "lfortran" ]; then
+	# Removing options not accepted by LFortran compiler:
+	readonly gtkoptions="$(echo "$pkgc" | sed -e 's/ -msse2//g' | sed -e 's/ -msse//g' | sed -e 's/ -mfpmath=sse//g' | sed -e 's/ -pthread//g')"
+else
+	readonly gtkoptions="$pkgc"
+fi
+echo $gtkoptions
+echo
 
 # Go to the top of the project:
 cd ..
