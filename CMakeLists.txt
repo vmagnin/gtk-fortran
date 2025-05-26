@@ -21,7 +21,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018,
-# vmagnin 2025-05-12
+# vmagnin 2025-05-26
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -148,13 +148,22 @@ pkg_check_modules(GTK REQUIRED ${GTKname})
 include_directories(${GTK_INCLUDE_DIRS})
 link_directories(${GTK_LIBRARY_DIRS})
 
-# Add other flags to the compiler:
-# for the new Flang compiler, first remove unknown flags (no ";" if at the end):
+#===============================================================================
+# Add other flags to the compiler
+#===============================================================================
+# https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html
+# For the new Flang compiler and LFortran, first remove unknown flags (no ";" if at the end):
 if(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang")
   string(REGEX REPLACE "-mfpmath=sse;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
   string(REGEX REPLACE "-msse2;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
   # Order matters for the following regex!
   string(REGEX REPLACE "-msse;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
+elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "LFortran")
+  string(REGEX REPLACE "-mfpmath=sse;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
+  string(REGEX REPLACE "-msse2;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
+  # Order matters for the following regex!
+  string(REGEX REPLACE "-msse;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
+  string(REGEX REPLACE "-pthread;?" "" GTK_CFLAGS_OTHER "${GTK_CFLAGS_OTHER}")
 endif()
 # TODO: replace add_definitions() by add_compile_options() when CMake>=3.12 will be required: https://cmake.org/cmake/help/latest/command/add_compile_options.html#command:add_compile_options
 add_definitions(${GTK_CFLAGS_OTHER})
