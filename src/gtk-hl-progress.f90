@@ -20,7 +20,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin
-! Last modification: 2011-11-21, vmagnin 2020-06-25
+! Last modification: 2011-11-21, vmagnin 2020-06-25, 2025-05-27
 !------------------------------------------------------------------------------
 
 !*
@@ -121,7 +121,7 @@ contains
     else if (present(string)) then
        if (string == FALSE .or. .not. present(val)) return
        ! Otherwise we display a percentage
-       write(sval, "(F5.1,'%')") val*100.
+       write(sval, "(F5.1,'%')") val*100._c_double
 
        call gtk_progress_bar_set_text (bar, trim(sval)//c_null_char)
        call gtk_progress_bar_set_show_text(bar, TRUE)

@@ -20,7 +20,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-17 (GTK 4), 2022-04-05
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2025-05-27
 !------------------------------------------------------------------------------
 
 module cl_handlers
@@ -114,7 +114,7 @@ contains
     call cairo_set_source_rgb(cr, 0.3_c_double, 0.3_c_double, 0._c_double)
     call cairo_new_path(cr)
     call cairo_move_to(cr, xc+r0, yc)
-    call cairo_arc(cr, xc, yc, r0, 0._c_double, 2.*pi)
+    call cairo_arc(cr, xc, yc, r0, 0._c_double, 2*pi)
     call cairo_fill(cr)
 
     ! Sub face
@@ -123,7 +123,7 @@ contains
     ycs = yc + 0.375_c_double*radius
     call cairo_new_path(cr)
     call cairo_move_to(cr, xc+r0, ycs)
-    call cairo_arc(cr, xc, ycs, r0, 0._c_double, 2.*pi)
+    call cairo_arc(cr, xc, ycs, r0, 0._c_double, 2*pi)
     call cairo_fill(cr)
 
     ! Clock dials
@@ -194,8 +194,8 @@ contains
          & CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
     x0 = xc - 0.6_c_double*radius
     call cairo_set_line_width(cr, 1._c_double)
-    call cairo_rectangle(cr, x0-2.*scale_factor, yc+10.*scale_factor, &
-         & 42._c_double*scale_factor,-16._c_double*scale_factor)
+    call cairo_rectangle(cr, x0-2*scale_factor, yc+10*scale_factor, &
+         & 42*scale_factor,-16*scale_factor)
     call cairo_fill_preserve(cr)
     if (dat(5) < 12) then
        call cairo_set_source_rgb(cr, 0._c_double, 0._c_double, 0._c_double)
@@ -205,9 +205,9 @@ contains
     call cairo_stroke(cr)
     call cairo_set_font_size (cr, 12._c_double*scale_factor)
     write(sdate,"(I2.2,a1)") dat(3), char(0)
-    call cairo_move_to(cr, x0,yc+6.*scale_factor)
+    call cairo_move_to(cr, x0,yc+6*scale_factor)
     call cairo_show_text(cr, sdate)
-    call cairo_set_font_size (cr, 9._c_double*scale_factor)
+    call cairo_set_font_size (cr, 9*scale_factor)
     call cairo_show_text(cr, ' '//mnames(dat(2)))
 
     ! Second hand

@@ -21,7 +21,7 @@
 ! ---------------------------------------------------------
 ! Contributed by James Tappin
 ! Last modification: 2012-18-09
-! Last modification: vmagnin (GTK 4) 2020-07-15
+! Last modification: vmagnin (GTK 4) 2020-07-15, 2025-05-27
 ! ---------------------------------------------------------
 
 !*
@@ -306,7 +306,7 @@ contains
     end if
 
     if (present(step)) &
-         & call gtk_range_set_increments(slider, step, 10.*step)
+         & call gtk_range_set_increments(slider, step, 10._c_double*step)
     if (present(digits)) call gtk_scale_set_digits(slider, digits)
 
   end subroutine hl_gtk_slider_set_range
@@ -595,7 +595,7 @@ contains
        call gtk_spin_button_set_range(spin_button, nlower, nupper)
     end if
     if (present(step)) call gtk_spin_button_set_increments(spin_button,&
-         &  step, 10.*step)
+         &  step, 10._c_double*step)
 
     if (present(digits)) call gtk_spin_button_set_digits(spin_button, digits)
 

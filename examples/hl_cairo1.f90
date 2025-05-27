@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin,
 ! originally derived from cairo_basics.f90 by Vincent Magnin & Jerry DeLisle
-! Last modifications: vmagnin 2020-06-17 (GTK 4), 2022-04-05
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2025-05-27
 !------------------------------------------------------------------------------
 
 module handlers
@@ -203,8 +203,8 @@ contains
        call cairo_set_line_width(my_cairo_context, 5._c_double*t/50._c_double)
        call cairo_arc(my_cairo_context, 353._c_double+ &
             & 200._c_double*cos(t*2_c_double*pi/50), &
-            & 350._c_double+200._c_double*sin(t*2._c_double*pi/50.), &
-            & 50._c_double, 0._c_double, 2.*pi)
+            & 350._c_double+200._c_double*sin(t*2._c_double*pi/50._c_double), &
+            & 50._c_double, 0._c_double, 2._c_double*pi)
        call cairo_stroke(my_cairo_context)
     end do
 

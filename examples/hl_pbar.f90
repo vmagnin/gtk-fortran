@@ -20,7 +20,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by James Tappin.
-! Last modification: vmagnin 2020-06-02 (GTK 4 version)
+! Last modification: vmagnin 2020-06-02 (GTK 4 version), 2025-05-27
 !------------------------------------------------------------------------------
 
 module handlers
@@ -99,7 +99,7 @@ program progress
      call g_usleep(10000_c_long) ! So we don't burn CPU cycles
      istep = istep+1
      call system_clock(t1)
-     bval = real(t1-t0,c_double)/10000.
+     bval = real(t1-t0, c_double)/10000._c_double
      if (bval > 1._c_double) exit
      call hl_gtk_progress_bar_set(bar, bval, string=TRUE)
      if (mod(istep, 20) == 0) &
