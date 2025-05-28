@@ -21,7 +21,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018,
-# vmagnin 2025-05-26
+# vmagnin 2025-05-28
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -43,6 +43,7 @@ set(CMAKE_PROJECT_DESCRIPTION "A GTK / Fortran binding")
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/vmagnin/gtk-fortran/wiki/")
 
 message(STATUS "Compiler: ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION} ${CMAKE_Fortran_COMPILER}")
+message(STATUS "Linker: ${CMAKE_Fortran_COMPILER_LINKER_ID} ${CMAKE_Fortran_COMPILER_LINKER_VERSION} ${CMAKE_Fortran_COMPILER_LINKER}")
 # Print system, version and path:
 message(STATUS "System: ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_VERSION} ${CMAKE_SYSTEM_PROCESSOR}")
 
