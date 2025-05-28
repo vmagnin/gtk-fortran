@@ -3,8 +3,19 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 ## [gtk-fortran dev]
 
+### Added
+- In `CMakeLists.txt`:
+  - support for Flang and LFortran. Their unsupported flags are filtered. Note however that LFortran 0.52 alpha is not yet ready to compile gtk-fortran.
+  - A few errors (issue [#300](https://github.com/vmagnin/gtk-fortran/issues/300)) and warnings detected by Flang 20.1.3 were fixed. Flang now compiles entirely gtk-fortran.
+  - Improved messages (compilation flags, GTK and PLplot dirs, installation dirs...).
+- In `src/alt_build_test.sh`: support for Flang and LFortran (when it will be ready to compile gtk-fortran). And messages were improved.
+
+### Changed
+- `src/gtk-sup.f90`: the function `fdate()` was renamed `fmt_date()` to avoid confusion with the GNU intrinsic subroutine.
+
 ### Removed
-- `src/gtk-sup.f90`: removed the `f_c_string` interface, which is an aliases of `convert_f_string`, because `f_c_string()` is now also a function defined in the Fortran 2023 standard. See [Issue #294](https://github.com/vmagnin/gtk-fortran/issues/294) and [PR #295](https://github.com/vmagnin/gtk-fortran/pull/295).
+- In `src/gtk-sup.f90`: removed the `f_c_string` interface, which is an aliases of `convert_f_string`, because `f_c_string()` is now also a function defined in the Fortran 2023 standard. See [Issue #294](https://github.com/vmagnin/gtk-fortran/issues/294) and [PR #295](https://github.com/vmagnin/gtk-fortran/pull/295).
+- In `cmake/DefaultFlags.cmake`: the GFortran flags were reviewed and simplified. In DEBUG mode, `-std=f2008 -pedantic` were removed and also `-Wtabs` which is already implied by `-Wall`. And `-pthread` is already included into the GTK flags.
 
 ### Fixed
 - `cmake/DefaultFlags.cmake`: the GNU ld `-rdynamic` option is now passed to all Fortran compilers in UNIX-like systems. Fixes the [Issue #236](https://github.com/vmagnin/gtk-fortran/issues/236): "With Intel ifort/ifx, gtkbuilder, gtkbuilder2 and gtkf-sketcher could not open gtkbuilder.glade".
