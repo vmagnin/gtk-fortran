@@ -7,7 +7,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - In `CMakeLists.txt`:
   - support for Flang and LFortran. Their unsupported flags are filtered. Note however that LFortran 0.52 alpha is not yet ready to compile gtk-fortran.
   - A few errors (issue [#300](https://github.com/vmagnin/gtk-fortran/issues/300)) and warnings detected by Flang 20.1.3 were fixed. Flang now compiles entirely gtk-fortran.
-  - Improved messages (compilation flags, GTK and PLplot dirs, installation dirs...).
+  - Improved messages (linker version, compilation flags, GTK and PLplot dirs, installation dirs...).
 - In `src/alt_build_test.sh`: support for Flang and LFortran (when it will be ready to compile gtk-fortran). And messages were improved.
 
 ### Changed

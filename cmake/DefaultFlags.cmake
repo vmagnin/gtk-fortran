@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 # Contributed by @awvwgk (2022)
-# Last modifications: vmagnin 2025-05-22
+# Last modifications: vmagnin 2025-05-28
 #===============================================================================
 
 # Linker flags:
@@ -31,7 +31,10 @@ if(UNIX)
   # Pass the flag -export-dynamic to the ELF linker, on targets that support it.
   # This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table.
   # It is especially needed for programs using the GtkBuilder API.
-  set(CMAKE_EXE_LINKER_FLAGS_INIT "-rdynamic")
+  # Fails with LFortran at the moment.
+  if (NOT (CMAKE_Fortran_COMPILER_ID STREQUAL "LFortran"))
+    set(CMAKE_EXE_LINKER_FLAGS_INIT "-rdynamic")
+  endif()
 endif()
 
 # Compilers flags:
