@@ -20,11 +20,11 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #=============================================================================
 # Contributed by James Tappin 05/20/2011
-# Last modifications: Jens Hunger: 03/07/2013, vmagnin 2022-09-30
+# Last modifications: Jens Hunger: 03/07/2013, vmagnin 2025-06-17
 #
 # CMAKE build file for gtkf-sketcher
 
-include_directories("${CMAKE_BINARY_DIR}/src/modules")
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/../src/modules")
 
 # configure_file() copies and renames a file and substitutes @VAR@ or ${VAR}
 # https://cmake.org/cmake/help/latest/command/configure_file.html
@@ -44,6 +44,6 @@ configure_file(default.options default.options COPYONLY)
 # Copy the directory 'data' (configure_file() works only with files):
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
 
-configure_file(${CMAKE_SOURCE_DIR}/src/usemodules.py ${CMAKE_CURRENT_BINARY_DIR}/example/usemodules.py COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/src/tools.py ${CMAKE_CURRENT_BINARY_DIR}/example/tools.py COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/src/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/example/gtk-fortran-index.csv COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../src/usemodules.py ${CMAKE_CURRENT_BINARY_DIR}/example/usemodules.py COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../src/tools.py ${CMAKE_CURRENT_BINARY_DIR}/example/tools.py COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../src/gtk-fortran-index.csv ${CMAKE_CURRENT_BINARY_DIR}/example/gtk-fortran-index.csv COPYONLY)

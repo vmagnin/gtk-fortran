@@ -19,6 +19,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 ### Fixed
 - `cmake/DefaultFlags.cmake`: the GNU ld `-rdynamic` option is now passed to all Fortran compilers in UNIX-like systems. Fixes the [Issue #236](https://github.com/vmagnin/gtk-fortran/issues/236): "With Intel ifort/ifx, gtkbuilder, gtkbuilder2 and gtkf-sketcher could not open gtkbuilder.glade".
+- gtk-fortran can now be used as an external library via CMake FetchContent. Fixes the [Issue #301](https://github.com/vmagnin/gtk-fortran/issues/301) related to the current binary and source dirs.
 
 
 ## [gtk-fortran 4.8.0] 2025-04-25

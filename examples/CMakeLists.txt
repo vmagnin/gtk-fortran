@@ -21,11 +21,11 @@
 #=============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Tests redesigned, James Tappin 05/17/2011
-# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2024-03-26
+# Last modifications: Jens Hunger: 03/06/2013, Vincent Magnin: 2025-06-17
 #
 # CMAKE build file for gtk-fortran
 
-include_directories("${CMAKE_BINARY_DIR}/src/modules")
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/../src/modules")
 
 if (NOT NO_BUILD_EXAMPLES)
   #==========================

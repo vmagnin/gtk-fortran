@@ -20,7 +20,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 # Contributed by James Tappin
-# Last updated: vmagnin 2019-03-14 (PLplot>=5.13), 2022-04-15
+# Last updated: vmagnin 2019-03-14 (PLplot>=5.13), 2025-06-17
 #===============================================================================
 # PLplot integration (>=5.13 needed)
 # ----------------------------------
@@ -33,8 +33,8 @@
 # If a CMake error occurs, add -D EXCLUDE_PLPLOT=true to your CMake command.
 #===============================================================================
 
-include_directories("${CMAKE_BINARY_DIR}/plplot")
-include_directories("${CMAKE_BINARY_DIR}/src/modules")
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/../plplot")
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/../src/modules")
 
 #===============================================================================
 # PLplot extra for accessing the pl_cmd() routine:
