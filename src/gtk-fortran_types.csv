@@ -62,21 +62,21 @@ KeyCode;character(kind=c_char);c_char
 KeySym;integer(c_long);c_long
 GWin32OSType;integer(c_int);c_int
 cairo_bool_t;integer(c_int);c_int
+GDateYear;integer(c_int16_t);c_int16_t
+GDateDay;integer(c_int8_t);c_int8_t
+GTimeSpan;integer(c_int64_t);c_int64_t
+GRefString;character(kind=c_char);c_char
 gshort;integer(c_short);c_short
 glong;integer(c_long);c_long
 grefcount;integer(c_int);c_int
 gatomicrefcount;integer(c_int);c_int
-GTimeSpan;integer(c_int64_t);c_int64_t
-GRefString;character(kind=c_char);c_char
-GDateYear;integer(c_int16_t);c_int16_t
-GDateDay;integer(c_int8_t);c_int8_t
 gunichar;integer(c_int32_t);c_int32_t
 gunichar2;integer(c_int16_t);c_int16_t
 gchararray;integer(kind=c_int8_t);c_int8_t
 bool;integer(c_int);c_int
 PangoGlyphUnit;integer(c_int32_t);c_int32_t
-PangoGlyph;integer(c_int32_t);c_int32_t
 PangoOTTag;integer(c_int32_t);c_int32_t
+PangoGlyph;integer(c_int32_t);c_int32_t
 long double;real(c_long_double);c_long_double
 unsigned long;integer(c_long);c_long
 unsigned short;integer(c_short);c_short

@@ -153,6 +153,7 @@ GdkPixbufSaveFunc
 GdkWaylandToplevelExported
 GskParseErrorFunc
 GskPathForeachFunc
+GskPathIntersectionFunc
 GtkAssistantPageFunc
 GtkCellAllocCallback
 GtkCellCallback
