@@ -1,12 +1,14 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [gtk-fortran dev]
+## [gtk-fortran 4.9.0] 2025-11-20
+
+This release offers interfaces to GTK 4.20 and GLib 2.86 (generated under Fedora 43 with GTK 4.20.2 and GLib 2.86.1).
 
 ### Added
 - In `CMakeLists.txt`:
-  - support for Flang and LFortran. Their unsupported flags are filtered. Note however that LFortran 0.52 alpha is not yet ready to compile gtk-fortran.
-  - A few errors (issue [#300](https://github.com/vmagnin/gtk-fortran/issues/300)) and warnings detected by Flang 20.1.3 were fixed. Flang now compiles entirely gtk-fortran.
+  - support for Flang and LFortran. Their unsupported flags are filtered. Note however that LFortran 0.56 alpha is not yet ready to compile gtk-fortran.
+  - A few errors (issue [#300](https://github.com/vmagnin/gtk-fortran/issues/300)) and warnings detected by Flang 20.1.3 were fixed. Flang now compiles entirely gtk-fortran (last tested with Flang 21.1.5).
   - Improved messages (linker version, compilation flags, GTK and PLplot dirs, installation dirs...).
 - In `src/alt_build_test.sh`: support for Flang and LFortran (when it will be ready to compile gtk-fortran). And messages were improved.
 
