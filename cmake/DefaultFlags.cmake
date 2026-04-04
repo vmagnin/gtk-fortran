@@ -57,17 +57,31 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   )
 elseif((CMAKE_Fortran_COMPILER_ID STREQUAL "Intel") OR (CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM"))
   # ifort and ifx compilers (OneAPI):
-  set(
-    CMAKE_Fortran_FLAGS_RELEASE_INIT
-    "-O3"
-  )
-  set(
-    CMAKE_Fortran_FLAGS_DEBUG_INIT
-    "-g"
-    "-O0"
-    "-warn all"
-    "-warn nounused"
-  )
+  if(WIN32)
+    set(
+      CMAKE_Fortran_FLAGS_RELEASE_INIT
+      "/O2"
+    )
+    set(
+      CMAKE_Fortran_FLAGS_DEBUG_INIT
+      "/debug:full"
+      "/Od"
+      "/warn:all"
+      "/warn:nounused"
+    )
+  else()
+    set(
+      CMAKE_Fortran_FLAGS_RELEASE_INIT
+      "-O3"
+    )
+    set(
+      CMAKE_Fortran_FLAGS_DEBUG_INIT
+      "-g"
+      "-O0"
+      "-warn all"
+      "-warn nounused"
+    )
+  endif()
 elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang")
   # -fPIC is necessary to avoid a linking error
   set(
