@@ -161,7 +161,9 @@ class types_enums():
                 for c_file_name in directory[2]:
                     whole_file = open(directory[0] + "/" + c_file_name, 'r',
                                     errors='replace', encoding='utf-8').read()
-                    types_enums.gtk_enums += re.findall(r"(?ms)^typedef enum.*?}\s?(\w+);", whole_file)
+                    # Remove this attribute from the end of some enumerators:
+                    whole_file = re.sub(r"G_GNUC_FLAG_ENUM",  "", whole_file)
+                    types_enums.gtk_enums += re.findall(r"(?ms)^typedef enum.*?}\s*(\w+);", whole_file)
                     types_enums.gtk_funptr += re.findall(r"(?m)^typedef[ \t]*(?:const)?[ \t]*\w+[ \t]*\*?\s*\(\* ?([\w]*?)\)",
                                             whole_file)
                     gtk_types += re.findall(r"(?m)^typedef *?(?:const)? *?(\w+) *\*? *([\w]+);",
