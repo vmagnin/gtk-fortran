@@ -23,7 +23,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 # Contributed by Vincent Magnin, 01.28.2011
-# Last modification: 2023-04-07
+# Last modification: 2026-04-14
 
 """ This module contains functions used to clean header files in the cfwrapper.
 """
@@ -52,6 +52,8 @@ def clean_header_file(c_file_name, whole_file, enums_file):
     whole_file = re.sub(r"[ ]\w*_DEPRECATED_TYPE_[\w()]*;", ";", whole_file)
     whole_file = re.sub(r"[ ]\w*_DEPRECATED_ENUMERATOR_IN_[\w()]*[ ]", " ", whole_file)
 
+    # Remove this attribute from the end of some enumerators:
+    whole_file = re.sub(r"G_GNUC_FLAG_ENUM",  "", whole_file)
     # Gather and translate C enumerators to Fortran enumerators,
     # and write them to gtkenums-auto.* file:
     enum_types = re.findall(r"(?ms)^(typedef enum\s*?(?:\w+)?\s*?{.*?})\s*?(\w+);", whole_file)
