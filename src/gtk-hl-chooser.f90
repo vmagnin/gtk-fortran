@@ -255,7 +255,7 @@ contains
   function hl_gtk_file_chooser_new(chooser_info, cdir, directory, create, &
        & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
        & initial_dir, current, initial_file, filter, filter_name, parent, &
-       & all, wsize, edit_filters) result(dialog)
+       & all, wsize, edit_filters, confirm_label) result(dialog)
 
     type(c_ptr) :: dialog
     type(hl_gtk_chooser_info), intent(out), target :: chooser_info
@@ -264,6 +264,7 @@ contains
     integer(kind=c_int), intent(in), optional :: allow_uri, show_hidden
     integer(kind=c_int), intent(in), optional :: confirm_overwrite
     character(kind=c_char), dimension(*), intent(in), optional :: title, initial_dir, initial_file
+    character(len=*), intent(in), optional :: confirm_label
     integer(kind=c_int), intent(in), optional :: current
     character(len=*), dimension(:), intent(in), optional :: filter
     character(len=*), dimension(:), intent(in), optional :: filter_name
@@ -301,6 +302,8 @@ contains
     ! WSIZE: c_int(2): optional: Set the size for the dialog.
     ! EDIT_FILTERS: boolean: optional: Set to TRUE to proves an entry window
     ! 		to add extra filters.
+    ! CONFIRM_LABEL: string: optional: Label for the confirmation button.
+    ! 		Use an underscore for mnemonics (e.g., "_Save", "_Open").
     !-
 
     type(c_ptr) :: content, junk, gfilter
@@ -325,7 +328,11 @@ contains
     end if
 
     ! Attach the action buttonsa to the dialogue
-    junk = gtk_dialog_add_button(dialog, "_Open"//C_NULL_CHAR, GTK_RESPONSE_APPLY)
+    if (present(confirm_label)) then
+       junk = gtk_dialog_add_button(dialog, trim(confirm_label)//C_NULL_CHAR, GTK_RESPONSE_APPLY)
+    else
+       junk = gtk_dialog_add_button(dialog, "_Open"//C_NULL_CHAR, GTK_RESPONSE_APPLY)
+    end if
     junk = gtk_dialog_add_button(dialog, "_Cancel"//C_NULL_CHAR, &
          & GTK_RESPONSE_CANCEL)
 
@@ -504,7 +511,7 @@ contains
   function hl_gtk_file_chooser_show(files, cdir, directory, create, &
        & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
        & initial_dir, current, initial_file, filter, filter_name, parent, &
-       & all, wsize, edit_filters) result(isel)
+       & all, wsize, edit_filters, confirm_label) result(isel)
 
     integer(kind=c_int) :: isel
     character(len=*), dimension(:), intent(out), allocatable :: files
@@ -513,6 +520,7 @@ contains
     integer(kind=c_int), intent(in), optional :: allow_uri, show_hidden
     integer(kind=c_int), intent(in), optional :: confirm_overwrite
     character(kind=c_char), dimension(*), intent(in), optional :: title, initial_dir, initial_file
+    character(len=*), intent(in), optional :: confirm_label
     integer(kind=c_int), intent(in), optional :: current
     character(len=*), dimension(:), intent(in), optional :: filter
     character(len=*), dimension(:), intent(in), optional :: filter_name
@@ -549,6 +557,8 @@ contains
     ! WSIZE: c_int(2): optional: Set the size for the dialog.
     ! EDIT_FILTERS: boolean: optional: Set to TRUE to proves an entry window
     ! 		to add extra filters.
+    ! CONFIRM_LABEL: string: optional: Label for the confirmation button.
+    ! 		Use an underscore for mnemonics (e.g., "_Save", "_Open").
     !
     ! Returns TRUE if one or more files was selected, FALSE otherwise.
     !-
@@ -560,7 +570,7 @@ contains
     dialog =  hl_gtk_file_chooser_new(chooser_info, cdir, directory, create, &
          & multiple, allow_uri, show_hidden, confirm_overwrite, title, &
          & initial_dir, current, initial_file, filter, filter_name, parent, &
-         & all, wsize, edit_filters)
+         & all, wsize, edit_filters, confirm_label)
 
     call gtk_widget_show_all (dialog)
     resp = gtk_dialog_run(dialog)
