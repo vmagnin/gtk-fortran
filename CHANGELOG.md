@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [gtk-fortran dev]
+
+### Added
+- `src/gtk-hl-chooser.f90`: Allow customizable confirmation label in high-level file chooser dialogs (by @florianober).
+
+### Fixed
+- [PR #302](https://github.com/vmagnin/gtk-fortran/pull/302): fix Windows ifx build flags (by @jeremynesbitt).
+
+
 ## [gtk-fortran 4.9.0] 2025-11-20
 
 This release offers interfaces to GTK 4.20 and GLib 2.86 (generated under Fedora 43 with GTK 4.20.2 and GLib 2.86.1).
