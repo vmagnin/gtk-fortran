@@ -21,7 +21,7 @@
 #===============================================================================
 # Contributed by Kyle Horne: 05.11.2011
 # Last modifications: James Tappin 8/17/2012, Jens Hunger 01/07/2018,
-# vmagnin 2025-05-28
+# vmagnin 2026-07-15
 #
 # CMAKE build file for gtk-fortran
 # Options:
@@ -91,6 +91,8 @@ endif()
 #===============================================================================
 string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE)
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
+message(STATUS "For architecture: ${CMAKE_Fortran_COMPILER_ARCHITECTURE_ID}")
 
 # Print compilation flags :
 if(CMAKE_Fortran_FLAGS OR CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE})
