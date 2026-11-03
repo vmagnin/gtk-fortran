@@ -683,9 +683,9 @@ contains
        szx = size(1)
        szy = size(2)
     else
-	   call gtk_widget_get_allocation(area,c_loc(alloc))
-	   szx = alloc%width
-	   szy = alloc%height
+       call gtk_widget_get_allocation(area,c_loc(alloc))
+       szx = alloc%width
+       szy = alloc%height
     end if
 
     ! Get the backing store and make a new one with the right type. Then
