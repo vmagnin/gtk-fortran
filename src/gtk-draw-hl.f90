@@ -23,7 +23,7 @@
 !
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modifications: 2013-01-31, vmagnin 2020-02-11
+! Last modifications: 2013-01-31, vmagnin 2020-02-11, 2026-11-03
 
 ! --------------------------------------------------------
 ! gtk-draw-hl.f90
@@ -31,7 +31,6 @@
 ! Generated for GTK+ version: 3.24.0.
 ! Generated for GLIB version: 2.62.0.
 ! --------------------------------------------------------
-
 
 !*
 ! gtk_draw_hl
@@ -768,15 +767,18 @@ contains
 
     ! If the SIZE keyword is present then resize the window
     if (present(size)) then
+       ! https://docs.gtk.org/gtk4/method.Widget.set_size_request.html
+       ! "Sets the minimum size of a widget"
+       ! "...will force them to leave the window at least
+       !  as large as the size request"
        call gtk_widget_set_size_request(area, size(1), size(2))
        szx = size(1)
        szy = size(2)
-    endif
-
-    ! Ensure that the allocation is up-to-date
-    call gtk_widget_get_allocation(area,c_loc(alloc))
-    szx = alloc%width
-    szy = alloc%height
+    else
+       call gtk_widget_get_allocation(area,c_loc(alloc))
+       szx = alloc%width
+       szy = alloc%height
+    end if
 
     ! Get the backing store and make a new one with the right type. Then
     ! make that into the backing store.
