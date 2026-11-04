@@ -21,7 +21,7 @@
 ! -----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modifications: 2013-01-31, vmagnin 2020-06-17 (GTK 4), 2026-11-03
+! Last modifications: 2013-01-31, vmagnin 2020-06-17 (GTK 4), 2026-11-04
 ! -----------------------------------------------------------------------------
 
 !*
@@ -64,7 +64,7 @@ module gtk_draw_hl
        & cairo_image_surface_get_format, cairo_image_surface_get_height, &
        & cairo_image_surface_get_stride, cairo_image_surface_get_width, &
        & cairo_paint, cairo_set_source_surface, cairo_surface_destroy, &
-       & cairo_surface_get_reference_count, cairo_surface_get_type, &
+       & cairo_surface_get_type, &
        & cairo_surface_reference, cairo_surface_status, cairo_status_to_string
 
   use g, only: g_object_get_data, g_object_set_data
@@ -708,11 +708,10 @@ contains
        end if
     end if
 
-    ! Ensure that the old backing store is fully dereferenced.
-    do
-       if (cairo_surface_get_reference_count(cback_old) <= 0) exit
-       call cairo_surface_destroy(cback_old)
-    end do
+	! Release the references held by the drawing area (g_object_set_data() and
+	! safety reference added at creation):
+    call cairo_surface_destroy(cback_old)
+    call cairo_surface_destroy(cback_old)
 
   end subroutine hl_gtk_drawing_area_resize
 
