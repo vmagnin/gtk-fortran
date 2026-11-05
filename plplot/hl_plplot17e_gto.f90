@@ -155,7 +155,7 @@ contains
     ! accumulate
     acc = .true.
 
-    ! This is to represent a loop over timeg_usleep
+    ! This is to represent a loop over time
     ! Let's try a random walk process
     y1 = 0.0_plflt
     y2 = 0.0_plflt
