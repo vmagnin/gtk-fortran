@@ -251,7 +251,10 @@ contains
     base = hl_gtk_box_new()
     call gtk_window_set_child(window, base)
 
-    drawing = hl_gtk_drawing_area_new(size=[1000_c_int, 500_c_int], &
+    height = 500
+    width = 1000
+  
+    drawing = hl_gtk_drawing_area_new(size=[width, height], &
          & has_alpha = FALSE, size_allocate = c_funloc(no_resize_cb))
 
     call hl_gtk_box_pack(base, drawing)
