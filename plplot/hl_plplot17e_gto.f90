@@ -180,8 +180,6 @@ contains
     y3 = y2 * noise
     y4 = y2 + noise/3._plflt
 
-    if (c_f_logical(g_main_context_pending(c_null_ptr))) add_point = FALSE   ! Exit
-
     ! There is no need for all pens to have the same number of
     ! points or being equally time spaced.
     if ( mod(n,2) /= 0 ) then
