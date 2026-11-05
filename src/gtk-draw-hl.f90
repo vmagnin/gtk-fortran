@@ -21,7 +21,7 @@
 ! -----------------------------------------------------------------------------
 ! Contributed by James Tappin
 ! Some code derived from a demo program by "tadeboro" posted on the gtk forums.
-! Last modifications: 2013-01-31, vmagnin 2020-06-17 (GTK 4), 2026-11-04
+! Last modifications: 2013-01-31, vmagnin 2020-06-17 (GTK 4), 2026-11-05
 ! -----------------------------------------------------------------------------
 
 !*
@@ -73,7 +73,8 @@ module gtk_draw_hl
 
   use gtk, only: gtk_drawing_area_new, gtk_scrolled_window_set_child, &
        & gtk_scrolled_window_new, gtk_scrolled_window_set_policy, &
-       & gtk_widget_get_allocation, gtk_widget_set_can_focus, &
+       & gtk_widget_get_height, gtk_widget_get_width, &
+       & gtk_widget_set_can_focus, &
        & gtk_widget_set_size_request, gtk_widget_set_tooltip_text, &
        & g_signal_connect, gtk_widget_queue_draw, &
        & gtk_widget_get_realized, gtk_drawing_area_set_draw_func, &
@@ -664,7 +665,6 @@ contains
 
     type(c_ptr) :: cback, cback_old, cr
     integer(c_int) :: szx, szy, s_type
-    type(gtkallocation), target:: alloc
     logical :: copy_surface
 
     if (present(copy)) then
@@ -683,9 +683,8 @@ contains
        szx = size(1)
        szy = size(2)
     else
-       call gtk_widget_get_allocation(area,c_loc(alloc))
-       szx = alloc%width
-       szy = alloc%height
+       szx = gtk_widget_get_width(area)
+       szy = gtk_widget_get_height(area)
     end if
 
     ! Get the backing store and make a new one with the right type. Then
@@ -727,11 +726,8 @@ contains
     ! HEIGHT |  c_int |  optional |  The height of the area
     !-
 
-    type(gtkallocation), target :: alloc
-
-    call gtk_widget_get_allocation(area,c_loc(alloc))
-    if (present(width)) width = alloc%width
-    if (present(height)) height = alloc%height
+    if (present(width))  width  = gtk_widget_get_width(area)
+    if (present(height)) height = gtk_widget_get_height(area)
 
   end subroutine hl_gtk_drawing_area_get_size
 
