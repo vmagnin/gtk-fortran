@@ -9,6 +9,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ### Fixed
 - [PR #302](https://github.com/vmagnin/gtk-fortran/pull/302): fix Windows ifx build flags (by @jeremynesbitt).
 - `src/gtk-draw-hl.f90`: fixed [issue #273](https://github.com/vmagnin/gtk-fortran/issues/273) concerning `hl_cairo_viewer.f90`. With help from Mistral AI.
+- `plplot/hl_plplot17e.f90` and `plplot/hl_plplot17e_gto.f90`: fixes [issue #215](https://github.com/vmagnin/gtk-fortran/issues/215) (crash). With help from Mistral AI.
 
 
 ## [gtk-fortran 4.9.0] 2025-11-20
