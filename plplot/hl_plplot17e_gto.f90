@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 17 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-10 (GTK 4), 2020-07-14
+! Last modifications: vmagnin 2020-06-10 (GTK 4), 2020-07-14, 2026-11-05
 !------------------------------------------------------------------------------
 
 module common_ex17_gto
@@ -86,7 +86,6 @@ contains
     if (plsetopt_rc /= 0) stop "plsetopt error"
 
     ! The "extcairo" device doesn't read the size from the context.
-    call hl_gtk_drawing_area_get_size(area, width=width, height=height)
     write(geometry, "(I0,'x',I0)") width, height
     plsetopt_rc = plsetopt( 'geometry', geometry)
     if (plsetopt_rc /= 0) stop "plsetopt error"
@@ -156,7 +155,7 @@ contains
     ! accumulate
     acc = .true.
 
-    ! This is to represent a loop over time
+    ! This is to represent a loop over timeg_usleep
     ! Let's try a random walk process
     y1 = 0.0_plflt
     y2 = 0.0_plflt
@@ -170,7 +169,7 @@ contains
 
   function add_point(area) bind(c)
     integer(c_int) :: add_point
-    type(c_ptr), intent(in) :: area
+    type(c_ptr), value, intent(in) :: area
 
     n = n + 1
 
@@ -228,6 +227,14 @@ contains
     call gtk_window_destroy(window)
   end subroutine quit_cb
 
+  ! The default callback replaces the backingsurface. We replace it
+  ! to avoid points being drawn on the old surface (issue #215).
+  subroutine no_resize_cb(area, width, height, data) bind(c)
+    type(c_ptr), value, intent(in) :: area, data
+    integer(c_int), value, intent(in) :: width, height
+    ! Do nothing.
+  end subroutine no_resize_cb
+
   subroutine activate(app, gdata) bind(c)
     use gtk, only: gtk_application_window_new, gtk_window_set_title
 
@@ -239,12 +246,13 @@ contains
     ! Create the window:
     window = gtk_application_window_new(app)
     call gtk_window_set_title(window, "PLplot x17 / gtk-fortran (extcairo) g_timeout version"//c_null_char)
-
+    call gtk_window_set_resizable(window, FALSE)
+   
     base = hl_gtk_box_new()
     call gtk_window_set_child(window, base)
 
     drawing = hl_gtk_drawing_area_new(size=[1000_c_int, 500_c_int], &
-         & has_alpha = FALSE)
+         & has_alpha = FALSE, size_allocate = c_funloc(no_resize_cb))
 
     call hl_gtk_box_pack(base, drawing)
 

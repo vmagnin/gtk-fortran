@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 17 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-10 (GTK 4), 2022-06-09
+! Last modifications: vmagnin 2020-06-10 (GTK 4), 2026-11-04
 !------------------------------------------------------------------------------
 
 module common_ex17
@@ -240,6 +240,14 @@ contains
        boolresult = g_main_context_iteration(c_null_ptr, FALSE)
     end do
   end subroutine pending_events
+  
+  ! The default callback replaces the backingsurface. We replace it
+  ! to avoid points being drawn on the old surface (issue #215).
+  subroutine no_resize_cb(area, width, height, data) bind(c)
+    type(c_ptr), value, intent(in) :: area, data
+    integer(c_int), value, intent(in) :: width, height
+    ! Do nothing.
+  end subroutine no_resize_cb
 end module handlers_ex17
 
 
@@ -260,11 +268,13 @@ program cairo_plplot_ex17
   window = hl_gtk_window_new("PLplot x17 / gtk-fortran (extcairo)"//c_null_char, &
        & destroy = c_funloc(delete_cb))
   base = hl_gtk_box_new()
+  !call gtk_window_set_resizable(window, FALSE)
+
   call gtk_window_set_child(window, base)
 
   drawing = hl_gtk_drawing_area_new(size=[width, height], &
-       & has_alpha = FALSE)
-
+       & has_alpha = FALSE, size_allocate = c_funloc(no_resize_cb))
+       
   call hl_gtk_box_pack(base, drawing)
 
   qbut = hl_gtk_button_new("Quit"//c_null_char, clicked=c_funloc(quit_cb))
