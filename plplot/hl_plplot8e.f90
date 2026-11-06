@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
 ! PLplot code derived from PLplot's example 8 by Alan W. Irwin
-! Last modifications: vmagnin 2020-06-24 (GTK 4), 2020-12-20
+! Last modifications: vmagnin 2020-06-24 (GTK 4), 2026-11-06
 !------------------------------------------------------------------------------
 
 module common_ex8
@@ -29,8 +29,7 @@ module common_ex8
   ! Gtk includes
   use gtk, only: gtk_application_window_new, &
        & gtk_label_new, gtk_window_set_child, &
-       & gtk_check_button_get_active, gtk_window_destroy, &
-       & gtk_widget_get_allocation, gtk_widget_queue_draw, &
+       & gtk_check_button_get_active, gtk_window_destroy, gtk_widget_queue_draw, &
        & gtk_widget_show, FALSE, g_signal_connect_swapped
 
   use gtk_hl_container
@@ -338,13 +337,10 @@ contains
   subroutine resize_area(widget, gdata) bind(c)
     type(c_ptr), value, intent(in) :: widget, gdata
 
-    type(gtkallocation), target:: alloc
-
-    call gtk_widget_get_allocation(draw,c_loc(alloc))
+    width  = gtk_widget_get_width(draw)
+    height = gtk_widget_get_height(draw)
     call hl_gtk_drawing_area_resize(draw)
-    print *, "resize", alloc%width, alloc%height
-    width=alloc%width
-    height=alloc%height
+    print *, "resize", width, height
 
     call draw_08(draw, disp_type, alt, az, ifun)
   end subroutine resize_area

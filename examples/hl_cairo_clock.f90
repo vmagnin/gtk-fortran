@@ -20,7 +20,7 @@
 ! If not, see <http://www.gnu.org/licenses/>.
 !------------------------------------------------------------------------------
 ! Contributed by: James Tappin
-! Last modifications: vmagnin 2020-06-17 (GTK 4), 2025-05-27
+! Last modifications: vmagnin 2020-06-17 (GTK 4), 2026-11-06
 !------------------------------------------------------------------------------
 
 module cl_handlers
@@ -34,8 +34,7 @@ module cl_handlers
        & cairo_show_text, cairo_stroke
   use g, only: g_timeout_add
   use gdk, only: gdk_keyval_from_name
-  use gtk, only: gtk_window_set_child, gtk_window_destroy, &
-       & gtk_widget_get_allocation, gtk_widget_queue_draw, &
+  use gtk, only: gtk_window_set_child, gtk_window_destroy, gtk_widget_queue_draw, &
        & gtk_widget_show, TRUE, FALSE, GDK_CONTROL_MASK, &
        & CAIRO_LINE_CAP_ROUND, CAIRO_FONT_SLANT_NORMAL, &
        & CAIRO_FONT_WEIGHT_BOLD
@@ -280,13 +279,10 @@ contains
 
   subroutine clock_resize(area, data) bind(c)
     type(c_ptr), value :: area, data
-
-    type(gtkallocation), target:: alloc
     integer(c_int) :: irv
 
-    call gtk_widget_get_allocation(area,c_loc(alloc))
-    width = alloc%width
-    height = alloc%height
+    width  = gtk_widget_get_width(area)
+    height = gtk_widget_get_height(area)
 
     call hl_gtk_drawing_area_resize(area)
 
