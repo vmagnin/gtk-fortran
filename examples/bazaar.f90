@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 ! This program is used to test various GTK widgets and functions
 ! Contributors: Vincent Magnin, James Tappin
-! GTK 4 version: vmagnin 2020-05-28, 2025-05-05
+! GTK 4 version: vmagnin 2020-05-28, 2026-11-07
 !------------------------------------------------------------------------------
 
 module various_functions
@@ -88,6 +88,7 @@ module my_widgets
   type(c_ptr) :: my_drawing_area, my_pixbuf
   type(c_ptr) :: dialog
   type(c_ptr) :: media
+  type(c_ptr) :: gdk_display
 end module
 
 
@@ -124,7 +125,7 @@ module handlers
   & cairo_move_to, cairo_paint, cairo_set_line_width, cairo_set_source, &
   & cairo_set_source_rgb, cairo_stroke
 
-  use gdk, only: gdk_cairo_set_source_pixbuf
+  use gdk, only: gdk_cairo_set_source_pixbuf, gdk_display_beep
 
   use gdk_pixbuf, only: gdk_pixbuf_get_has_alpha, gdk_pixbuf_get_n_channels, &
   & gdk_pixbuf_get_pixels, gdk_pixbuf_get_rowstride, gdk_pixbuf_new
@@ -145,7 +146,7 @@ contains
     use various_functions, only: some_glib_functions
 
     type(c_ptr), value, intent(in)  :: app, gdata
-    type(c_ptr) :: css_provider, gdk_display
+    type(c_ptr) :: css_provider
 
     ! Create the window:
     window = gtk_application_window_new(app)
@@ -205,7 +206,8 @@ contains
         & "Click on Button1 to hear a little melody"//c_new_line//&
         & "composed with the ForSynth Fortran project:"//c_new_line//&
         & "https://github.com/vmagnin/forsynth"//c_new_line//c_new_line//&
-        & "You can edit this text. And it is scrollable."//c_null_char, -1_c_int)
+        & "Click on Button2 to hear a Gdk beep and animate the progress bar"//c_new_line//&
+        & "You can edit this text. And it is scrollable."//c_new_line//c_null_char, -1_c_int)
 
     ! Let's change the background color and the font of the TextView:
     call gtk_widget_set_name (view, "my_TextView"//c_null_char)
@@ -356,6 +358,7 @@ contains
     type(c_ptr), value, intent(in) :: widget, gdata
 
     call gtk_progress_bar_pulse (progress)
+    call gdk_display_beep(gdk_display)
   end subroutine secondbutton
 
   ! GtkButton signal:
