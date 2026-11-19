@@ -20,7 +20,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #=============================================================================
 # Contributed by James Tappin 05/20/2011
-# Last modifications: Jens Hunger: 03/07/2013, vmagnin 2025-06-17
+# Last modifications: Jens Hunger: 03/07/2013, vmagnin 2026-11-19
 #
 # CMAKE build file for gtkf-sketcher
 
@@ -33,13 +33,13 @@ configure_file(gtkf-sketcher.f90 gtkf-sketcher.out.f90)
 
 add_executable(gtkf-sketcher "gtkf-sketcher.out.f90")
 target_link_libraries(gtkf-sketcher gtk-fortran_static ${GTK_LIBRARIES})
-# No test as the glade stuff is too sensitive to location
+# No test as the UI stuff is too sensitive to location
 
 #==========================================
 # Copy other files needed by gtkf-sketcher
 #==========================================
-configure_file(gtkf-sketcher.glade gtkf-sketcher.glade COPYONLY)
-configure_file(example.glade example.glade COPYONLY)
+configure_file(gtkf-sketcher.ui gtkf-sketcher.ui COPYONLY)
+configure_file(example.ui example.ui COPYONLY)
 configure_file(default.options default.options COPYONLY)
 # Copy the directory 'data' (configure_file() works only with files):
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )

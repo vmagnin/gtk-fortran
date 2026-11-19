@@ -117,7 +117,7 @@ module connect
   ! tag  <object class="GtkButton" id="button1">  and the attribute "id",
   ! it returns "button1".
   ! We search first the attribute name followed by '="' (the UI files written
-  ! by Glade or gtk4-builder-tool always use double quotes), then the next
+  ! by Cambalache or gtk4-builder-tool always use double quotes), then the next
   ! closing quote. Returns an empty string if the attribute is not found.
   function get_attribute (tag, attr) result(value)
     character(len=*), intent(in)  :: tag    !the whole XML tag, without < and >
@@ -431,7 +431,7 @@ contains
 
     integer(c_int) :: isel
     character(len=120), dimension(:), allocatable :: chfile
-    character(len=30), dimension(2) :: filters
+    character(len=30), dimension(1) :: filters
     character(len=30), dimension(2) :: filtnames
 
     integer(c_int) :: guint, i
@@ -443,10 +443,9 @@ contains
     type(gtktreeiter), target :: iter
     type(gvalue), target :: value
 
-    filters(1) = "*.glade"
-    filtnames(1) = "Glade UI file"
-    filters(2) = "*.ui"
-    filtnames(2) = "UI file"
+    ! Cambalache is generating files with .ui extension:
+    filters(1) = "*.ui"
+    filtnames(1) = "UI file"
 
     isel = hl_gtk_file_chooser_show(chfile, cdir=working_dir, create=FALSE,&
          & title="Select input file"//c_null_char, filter=filters, &
@@ -875,8 +874,8 @@ contains
       write(50,'(A)')"  ! create a new GtkBuilder object"
       write(50,'(A)')"  builder = gtk_builder_new ()"
       write(50,'(A)')""
-      write(50,'(A)')"  ! parse the UI XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object"
-      write(50,'(A)')"  guint = gtk_builder_add_from_file (builder, """//subdir(1:len_trim(subdir))//".glade""//c_null_char, error)"
+      write(50,'(A)')"  ! parse the UI XML file 'gtkbuilder.ui' and add it's contents to the GtkBuilder object"
+      write(50,'(A)')"  guint = gtk_builder_add_from_file (builder, """//subdir(1:len_trim(subdir))//".ui""//c_null_char, error)"
       write(50,'(A)')"  ! If guint == 0, the UI file could not be parsed: check its path and"
       write(50,'(A)')"  ! its XML syntax (you can validate it with 'gtk4-builder-tool validate')."
       write(50,'(A)')""
@@ -1020,10 +1019,10 @@ program gtkfsketcher
   ! create a new GtkBuilder object
   builder = gtk_builder_new ()
 
-  ! parse the UI XML file 'gtkbuilder.glade' and add it's contents to the GtkBuilder object
-  guint = gtk_builder_add_from_file (builder, "gtkf-sketcher.glade"//c_null_char, error)
+  ! parse the UI XML file 'gtkbuilder.ui' and add it's contents to the GtkBuilder object
+  guint = gtk_builder_add_from_file (builder, "gtkf-sketcher.ui"//c_null_char, error)
   if (guint == 0) then
-     print *, "Could not open gtkf-sketcher.glade"
+     print *, "Could not open gtkf-sketcher.ui"
      stop
   end if
 

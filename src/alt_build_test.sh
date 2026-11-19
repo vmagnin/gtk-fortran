@@ -10,7 +10,7 @@
 #
 # GNU GPL v3
 # Contributed by Vincent MAGNIN
-# 2011-04-08, last updated 2025-05-25
+# 2011-04-08, last updated 2026-11-19
 
 # For a safer script:
 set -eu
@@ -95,7 +95,7 @@ ls ./*.out
 echo
 
 # Copy directories and files needed to run the programs:
-cp -r ../../sketcher/data/ ../../sketcher/default.options ../../sketcher/*.glade .
+cp -r ../../sketcher/data/ ../../sketcher/default.options ../../sketcher/*.ui .
 cp ../../examples/gtkbuilder.ui .
 
 echo ">>> Running each example (CTRL+C to exit)..."
