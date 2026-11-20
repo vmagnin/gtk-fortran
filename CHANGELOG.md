@@ -7,6 +7,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - `src/gtk-hl-chooser.f90`: Allow customizable confirmation label in high-level file chooser dialogs (by @florianober).
 
 ### Fixed
+- `sketcher/gtkf-sketcher.f90`: fixed [issue #207](https://github.com/vmagnin/gtk-fortran/issues/207), the tool is now fully ported to GTK 4. The signals are detected by a small XML parser generated with Mistral AI. The [GtkBuilder tutorial](https://github.com/vmagnin/gtk-fortran/wiki/Tutorial-4) has been updated.
 - [PR #302](https://github.com/vmagnin/gtk-fortran/pull/302): fix Windows ifx build flags (by @jeremynesbitt).
 - `src/gtk-draw-hl.f90`: fixed [issue #273](https://github.com/vmagnin/gtk-fortran/issues/273) concerning `hl_cairo_viewer.f90`. With help from Mistral AI.
 - `plplot/hl_plplot17e.f90` and `plplot/hl_plplot17e_gto.f90`: fixes [issue #215](https://github.com/vmagnin/gtk-fortran/issues/215) (crash). With help from Mistral AI.
