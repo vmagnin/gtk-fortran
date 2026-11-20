@@ -5,6 +5,10 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 
 ### Added
 - `src/gtk-hl-chooser.f90`: Allow customizable confirmation label in high-level file chooser dialogs (by @florianober).
+- `examples/bazaar.f90`: added a beep on button 2 with `gdk_display_beep()`.
+
+### Changed
+- Replaced a few deprecated functions: gtk_widget_get_allocation().
 
 ### Fixed
 - `sketcher/gtkf-sketcher.f90`: fixed [issue #207](https://github.com/vmagnin/gtk-fortran/issues/207), the tool is now fully ported to GTK 4. The signals are detected by a small XML parser generated with Mistral AI. The [GtkBuilder tutorial](https://github.com/vmagnin/gtk-fortran/wiki/Tutorial-4) has been updated.
