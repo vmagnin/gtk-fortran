@@ -38,7 +38,7 @@ jobs:
       - name: installation fpm
         uses: fortran-lang/setup-fpm@v12
         with:
-          fpm-version: '0.12.0'
+          fpm-version: 'v0.14.0'
 
       - name: fpm build + test
         run: |
