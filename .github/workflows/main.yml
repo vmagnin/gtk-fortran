@@ -35,12 +35,18 @@ jobs:
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build
 
-      - name: Build and test with fpm
+      - name: installation fpm
         uses: fortran-lang/setup-fpm@v12
         with:
-          fpm-version: 'latest'
+          fpm-version: '0.14.0'
 
       - name: fpm build + test
         run: |
           fpm build
+          xvfb-run -a fpm test
+        if: runner.os == 'Linux'
+      - name: fpm build + test (macOS)
+        run: |
+          fpm build
           fpm test
+        if: runner.os == 'macOS'
