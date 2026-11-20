@@ -3,6 +3,10 @@ name: CI
 on:
   push:
     branches: [gtk4-vmagnin, gtk4]
+    paths-ignore:
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - 'LICENSE'
   pull_request:
 
 jobs:
@@ -20,11 +24,11 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y gfortran cmake libgtk-4-dev xvfb
+          sudo apt-get install -y gfortran cmake pkg-config libgtk-4-dev libplplot-dev plplot-driver-cairo xvfb
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
-        run: brew install gcc gtk4
+        run: brew install gcc gtk4 plplot
 
       - name: Build with CMake
         run: |
