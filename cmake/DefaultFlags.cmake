@@ -22,7 +22,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 # Contributed by @awvwgk (2022)
-# Last modifications: vmagnin 2025-05-28
+# Last modifications: vmagnin 2026-11-20
 #===============================================================================
 
 # Linker flags:
@@ -40,12 +40,24 @@ endif()
 # Compilers flags:
 if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   # gfortran compiler:
-  set(
-    CMAKE_Fortran_FLAGS_RELEASE_INIT
-    "-O3"
-    "-mtune=native"
-    "-march=native"
-  )
+  if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
+    # On Apple Silicon, -march=native is rewritten as -march=apple-m1,
+    # which the compiler rejects; -mtune=native is safe there.
+    set(
+      CMAKE_Fortran_FLAGS_RELEASE_INIT
+      "-O3"
+      "-mtune=native"
+    )
+  else()
+    set(
+      CMAKE_Fortran_FLAGS_RELEASE_INIT
+      "-O3"
+      "-mtune=native"
+      "-march=native"
+    )
+  endif()
+
+  # No problem with macOS for DEBUG:
   set(
     CMAKE_Fortran_FLAGS_DEBUG_INIT
     "-g"
