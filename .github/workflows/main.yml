@@ -36,7 +36,7 @@ jobs:
           cmake --build build
 
       - name: Build and test with fpm
-        uses: fortran-lang/setup-fpm@v7
+        uses: fortran-lang/setup-fpm@v12
         with:
           fpm-version: 'latest'
 
