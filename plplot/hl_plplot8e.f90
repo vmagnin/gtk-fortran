@@ -178,7 +178,7 @@ contains
     call plend
 
     call gtk_widget_queue_draw(area)
-    call g_usleep(200000_c_long) 	! Wait: must be drawn before cc being destroyed
+    call g_usleep(200000_c_long)   ! Wait: must be drawn before cc being destroyed
     call hl_gtk_drawing_area_cairo_destroy(cc)
 
   end subroutine draw_08
