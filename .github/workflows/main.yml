@@ -53,6 +53,8 @@ jobs:
             mingw-w64-ucrt-x86_64-pkgconf
             mingw-w64-ucrt-x86_64-gtk4
             mingw-w64-ucrt-x86_64-plplot
+            mingw-w64-ucrt-x86_64-wxwidgets3.2-msw
+            mingw-w64-ucrt-x86_64-fpm
 
       - name: Build with CMake (Linux, macOS)
         if: runner.os != 'Windows'
