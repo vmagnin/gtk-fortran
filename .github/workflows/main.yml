@@ -1,4 +1,4 @@
-name: CI
+name: CI gkt-4-fortran
 
 on:
   push:
@@ -7,7 +7,16 @@ on:
       - 'README.md'
       - 'CHANGELOG.md'
       - 'LICENSE'
+      - 'src/cfwrapper/**'
+      - 'screenshots/**'
+      - 'logo/**'
+      - 'tutorials/**'
+      - '**.md'
+      - '**.sh'
+      - '**.py'
+      - '**.toml'
   pull_request:
+  	branches: [gtk4]
 
 jobs:
   build:
@@ -24,7 +33,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y gfortran cmake pkg-config libgtk-4-dev libplplot-dev plplot-driver-cairo xvfb
+          sudo apt-get install -y gfortran cmake pkg-config libgtk-4-dev libplplot-dev plplot-driver-cairo
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
@@ -35,7 +44,11 @@ jobs:
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build
 
-      - name: installation fpm
+      - name: Tests (without GUI) with CMake CTest
+        run: |
+          ctest --test-dir build -R '^(regex|pixbuf_without_gui|tests)$'
+
+      - name: Install fpm (Fortran Package Manager)
         uses: fortran-lang/setup-fpm@v12
         with:
           fpm-version: 'v0.14.0'
@@ -43,10 +56,4 @@ jobs:
       - name: fpm build + test
         run: |
           fpm build
-          xvfb-run -a fpm test
-        if: runner.os == 'Linux'
-      - name: fpm build + test (macOS)
-        run: |
-          fpm build
           fpm test
-        if: runner.os == 'macOS'
