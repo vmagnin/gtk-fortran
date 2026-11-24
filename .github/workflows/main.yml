@@ -16,7 +16,7 @@ on:
       - '**.py'
       - '**.toml'
   pull_request:
-  	branches: [gtk4]
+    branches: [gtk4]
 
 jobs:
   build:
