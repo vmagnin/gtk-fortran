@@ -4,7 +4,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 ## [gtk-fortran dev]
 
 ### Added
-- A Continuous Integration (CI) GitHub workflow, testing CMake and fpm build on Ubuntu and macOS.
+- A Continuous Integration (CI) GitHub workflow, testing CMake and fpm build on Ubuntu, macOS and Windows (MSYS2).
 - `src/gtk-hl-chooser.f90`: Allow customizable confirmation label in high-level file chooser dialogs (by @florianober).
 - `examples/bazaar.f90`: added a beep on button 2 with `gdk_display_beep()`.
 
