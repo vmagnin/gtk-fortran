@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to the gtk-fortran project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [gtk-fortran dev]
+## [gtk-fortran 4.9.1] 2026-11-25
 
 ### Added
 - A Continuous Integration (CI) GitHub workflow, testing CMake and fpm build on Ubuntu, macOS and Windows (MSYS2).
@@ -9,7 +9,7 @@ All notable changes to the gtk-fortran project are documented in this file. The 
 - `examples/bazaar.f90`: added a beep on button 2 with `gdk_display_beep()`.
 
 ### Changed
-- Replaced a few deprecated functions: gtk_widget_get_allocation().
+- Replaced a deprecated function: gtk_widget_get_allocation().
 
 ### Fixed
 - `sketcher/gtkf-sketcher.f90`: fixed [issue #207](https://github.com/vmagnin/gtk-fortran/issues/207), the tool is now fully ported to GTK 4. The signals are detected by a small XML parser generated with Mistral AI. The [GtkBuilder tutorial](https://github.com/vmagnin/gtk-fortran/wiki/Tutorial-4) has been updated.
